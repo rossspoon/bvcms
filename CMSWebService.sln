@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSPresenter", "CMSPresente
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageData", "ImageData\ImageData.csproj", "{512DA381-E81B-4121-B978-FC850EC88353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsData", "CmsData\CmsData.csproj", "{C01603B7-AEE1-4FB8-92E3-80D095C71005}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsData", "CmsData\CmsData.csproj", "{98AEE43C-4226-49E7-BD46-C1A85467ECED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +47,14 @@ Global
 		{512DA381-E81B-4121-B978-FC850EC88353}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{512DA381-E81B-4121-B978-FC850EC88353}.Release|Any CPU.Build.0 = Release|Any CPU
 		{512DA381-E81B-4121-B978-FC850EC88353}.Release|x86.ActiveCfg = Release|Any CPU
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Debug|x86.ActiveCfg = Debug|x86
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Debug|x86.Build.0 = Debug|x86
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Release|x86.ActiveCfg = Release|x86
-		{C01603B7-AEE1-4FB8-92E3-80D095C71005}.Release|x86.Build.0 = Release|x86
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Debug|x86.ActiveCfg = Debug|x86
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Debug|x86.Build.0 = Debug|x86
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|x86.ActiveCfg = Release|x86
+		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -115,7 +115,7 @@
                     <td><%= Html.ValidationMessage("medical")%></td>
                 </tr>
                 <tr>
-                    <td><label for="church">Church</label></td>
+                    <td><label for="church">Parent's Church</label></td>
                     <td><%= Html.CheckBox("bellevue") %> Member of Bellevue<br />
                     <%= Html.CheckBox("otherchurch") %> Active in another Local Church</td>
                     <td><%= Html.ValidationMessage("bellevue")%></td>
