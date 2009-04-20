@@ -19,6 +19,7 @@ using System.Web.SessionState;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CmsData;
 
 namespace CMSWeb
 {
@@ -94,7 +95,7 @@ namespace CMSWeb
         }
         private static int maxExcelRows
         {
-            get { return WebConfigurationManager.AppSettings["MaxExcelRows"].ToInt(); }
+            get { return DbUtil.Settings("MaxExcelRows").ToInt(); }
         }
 
         public bool IsReusable

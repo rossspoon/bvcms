@@ -78,7 +78,7 @@ namespace CMSWeb2
                 Util.UserId = u.UserId;
                 Util.UserPeopleId = u.PeopleId;
             }
-            Util.OrgMembersOnly = bool.Parse(ConfigurationManager.AppSettings[Util.STR_OrgMembersOnly]);
+            //Util.OrgMembersOnly = bool.Parse(ConfigurationManager.AppSettings[Util.STR_OrgMembersOnly]);
             Util.SessionStarting = true;
         }
         protected void Session_Start(object sender, EventArgs e)

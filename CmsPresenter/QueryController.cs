@@ -33,7 +33,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<SavedQueryInfo> FetchSavedQueries(bool onlyMine, string sortExpression, int maximumRows, int startRowIndex)
         {
-            var isdev = Roles.IsUserInRole("Developer") && ConfigurationManager.AppSettings["SpecialPowers"] == "true";
+            var isdev = Roles.IsUserInRole("Developer");
             var q = from c in Db.QueryBuilderClauses
                     where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
                     where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)

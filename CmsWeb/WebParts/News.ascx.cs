@@ -26,9 +26,9 @@ namespace CMSWeb.WebParts
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var feedurl = ConfigurationManager.AppSettings["BlogFeedUrl"];
+            var feedurl = DbUtil.Settings("BlogFeedUrl");
             
-            HyperLink1.NavigateUrl = ConfigurationManager.AppSettings["BlogAppUrl"];
+            HyperLink1.NavigateUrl = DbUtil.Settings("BlogAppUrl");
 
             var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);

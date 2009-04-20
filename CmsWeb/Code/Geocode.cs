@@ -27,7 +27,7 @@ namespace CMSWeb
         }
         public static string GoogleAPIKey
         {
-            get { return ConfigurationManager.AppSettings["GoogleMapsKey"]; }
+            get { return DbUtil.Settings("GoogleMapsKey"); }
         }
         private static Uri GetGeocodeUri(string address)
         {
