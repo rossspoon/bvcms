@@ -1,0 +1,29 @@
+/*
+Generics
+*/
+
+body, html
+{
+	color: #333;
+	background-color: #EAECE0;
+	font-family: Helvetica, Arial;
+	font-size: 12px;
+}
+
+.modalPopup
+{
+	background-color: #eff3fb;
+	border-width: 3px;
+	border-style: solid;
+	border-color: Gray;
+	padding: 10px;
+}
+.pagerstyle{
+    color:#444444;
+    background-color:#e5e5e5;
+    font-size:x-small;
+    text-align:right;
+} 
+.pagerstyle select{
+    font-size:x-small;
+}  

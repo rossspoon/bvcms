@@ -1,0 +1,397 @@
+<html>
+<head>
+
+<title>Wasp - Read Me</title>
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+	background-color: #FFFFFF;
+}
+a {  color: #003399; text-decoration: none}
+p {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333}
+h1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #000000;
+}
+h2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #000000;
+}
+ol {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+
+}
+
+.codeExample {
+	background-color: #EFEFEF;
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+	font-family: "Courier New", Courier, mono;
+	font-size: 12px;
+	color: #3300FF;
+}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<p>&nbsp;</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="20" height="100%">
+  <tr align="center" valign="middle"> 
+    <td width="75%" align="left" valign="top">
+	<a href="readme_wasp.html">Read Me</a> | <a href="readme_wasp_example1.html">Example 1</a> | <a href="readme_wasp_example2.html">Example 2</a> | <a href="readme_wasp_example3.html">Example 3</a> | <a href="readme_wasp_example4.html">Example 4</a>
+	<p>&nbsp;</p>
+    <h1>Wasp</h1>
+    <p>Version 2.0<br>
+(Formerly known as: <strong>W</strong>impy <strong>A</strong>V <strong>S</strong>ingle <strong>P</strong>lay)</p>
+    <p>By Mike Gieson <br>
+Available at <a href="http://www.wimpyplayer.com" target="_blank">http://www.wimpyplayer.com</a><br>
+&copy;2002-2006 plaino </p>
+    <p><strong>This product includes software developed by Macromedia, Inc.</strong></p>
+    <p>Macromedia(r) Flash(r) JavaScript Integration Kit<br>
+      Portions noted as part of the JavaScript Integration Kit<br>
+      are Copyright (c) 2005 Macromedia, inc. All rights reserved.<br>
+      http://www.macromedia.com/go/flashjavascript/</p>
+    <p>Macromedia(r) Flash(r) JavaScript Integration Kit Created by:</p>
+    <p>Christian Cantrell<br>
+      http://weblogs.macromedia.com/cantrell/<br>
+      mailto:cantrell@macromedia.com</p>
+    <p>Mike Chambers<br>
+      http://weblogs.macromedia.com/mesh/<br>
+      mailto:mesh@macromedia.com</p>
+    <p>Macromedia</p>
+    <hr size="1" noshade>
+    <p>&nbsp;</p>
+    <p><strong>Contents:</strong></p>
+    <p><a href="#overview">Overview</a></p>
+    <p><a href="#implimenting">Implimenting Wasp</a><br>
+&nbsp; - <a href="#implimenting">Through standard HTML</a><br>
+&nbsp;
+-      <a href="#imp_js">Through JavaScript.</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a href="#setup">JavaScript Setup</a><a href="#js_control"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - </a><a href="#newbie">JavaScript Setup</a><a href="#config"></a> (for newbies) </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <hr size="1" noshade>
+    <h1><a name="overview" id="overview"></a></h1>
+    <h1>Overview</h1>
+    <p>Wasp allows you to present and play video (FLV, SWF video) in your web site without causing a cumbersome third party video program to open such as Windows Media Player, Quicktime or Real Video Player. Wasp is based on Macromedia Flash, which is common to nearly 98% of Internet users.</p>
+    <p>In addition, you no longer need to ask end users &quot;which application would you like to use to watch this video&quot; -- which means that you no longer have to encode each video 3 or 4 times to ensure that all of your visitors will be able to watch your video. </p>
+    <p>Wasp utilizes &quot;standard issue&quot; technology: HTML, JavaScript and Flash, which means that visitors to your site don't have to &quot;do anything special&quot; to watch your video, and you don't need any special server-side scripting in order to present and stream FLV and SWF video throughout your site.</p>
+    <p>Wasp provides the greatest amount of flexibility with a clean polished finish -- sutable for any web site. Advanced webmasters can take advantage of the built-in JavaScript feature that enable you use HTML-based links to load video into the player. This means that you can create a &quot;playlist&quot; using standard HTML. Videos can be loaded into the player using a simple JavaScript link.</p>
+    <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <hr size="1" noshade>
+      <h1><a name="implimenting" id="implimenting"></a></h1>
+      <h1>Implimenting Wasp </h1>
+      <p>There are two ways to implement a video using Wasp.</p>
+      <p><strong>1. Through standard HTML</strong></p>
+      <blockquote>
+        <p>This is the easiest way to use Wasp and only requires that you use the Customizer Tool at wimpyplayer.com to generate the necessary HTML code to include a video on your page. Using this method will prohibit some of the enhanced features such as controlling and loading the video via HTML, but it will at least allow you to present a single video relatively easily. </p>
+        <p><b>A. Upload all the Wasp files to your website.</b></p>
+        <p><b>B. Use the <a href="../customize/customize_button.html">Customizer Tool<br>
+        </a></b>The Customizer Tool will  generate an HTML page that contains the necessary HTML code to display Wasp and your video. </p>
+        <p>When using the customizer tool, you will need to enter the
+          address to wasp.swf and the FLV or SWF video file on your site.
+          So you should have that information ready before your go
+          to the customizer tool.<br>
+          <font color="#990000">Example: <br>
+            http://www.yoursite.com/wasp/wasp.swf</font><br>
+  <font color="#990000">http://www.yoursite.com/wasp/video.flv</font></p>
+        <p><b>C. Upload the resulting HTML file to your web site.</b></p>
+        <p> You can also &quot;copy and paste&quot; the Wasp HTML code from the resulting HTML page into another page on your site. Paste the Wasp HTML
+          anywhere between the &lt;body&gt; and &lt;/body&gt; tags
+          of your HTML page. <font color="#990000"> </font></p>
+        <p><b>D. View the HTML page that contains Wasp.</b> <br>
+          Navigate to the HTML file that contains the Wasp HTML code 
+          with your web browser.<br>
+          <font color="#990000">Example: http://www.yoursite.com/myWasp.html</font></p>
+        <p><a href="http://www.wimpyplayer.com/customize/wimpyWasp.html"></a></p>
+      </blockquote>
+      <p><a name="imp_js" id="imp_js"></a></p>
+    <p><strong>2. Through JavaScript </strong></p>
+    <blockquote>
+      <p>Implimenting Wasp through JavaScript allows you to take full advantage of the interactive features such as being able to dynamically load new videos and pop up video windows..</p>
+      <p>PLEASE NOTE: The JavaScript control feature is intended for advanced HTML  authors who are not afraid to tinker with HTML and modify JavaScript variables.  If you are not comfortable with HTML authoring and JavaScript, we do not  recommend that you attempt to utilize the JavaScript Control feature. <a href="#newbie">There is  a &quot;newbie&quot; section included in this documentation (see below)</a>, which attempts to  help explain some of the technological jargon; be sure you are comfortable with  this before proceeding. </p>
+      <p>The intension of the JavaScript Controls are to make it easier to maintain  your site, add new videos or edit existing videos on your site. Although it may  take a little effort to get up and running, in the end, it is easier than using  the Customizer Tool, or attempting to manually  edit the HTML code every time you need to make a change. Plus, you get the  added flexibility to load videos via HTML, which, in turn, allows you to create  playlists that include a brief description and an image using standard HTML. </p>
+      <p>Again, the JavaScript Controls are intended to make  life easier, not harder, so if you get frustrated easily (or are completely new  to this), it may be a good idea to keep it simple and stick with the Customizer  Tool.      </p>
+      <p><strong>Wasp + JavaScript Controls consists of 3 files:</strong>
+    <table width="435" border="0">
+      <tr>
+        <td width="166" nowrap><p>wasp.swf<br>
+          wasp.js				
+          <br>
+          waspPopup.html		</p></td>
+        <td width="259" nowrap><p>&lt;- The player<br>
+          &lt;- The wiring
+          <br>
+        &lt;- The pop up presenter</p>          </td>
+      </tr>
+    </table>
+    </p>
+      <p>Basically, the way it works is    that the wasp.js file contains a series of functions that create    HTML code on the fly, and uses the    JavaScript Kit developed by Macromedia to allow JavaScript to communicate    with the internal Actionscript in the Wasp player.&nbsp; The end result is    that JavaScript can therefore load    video directly into Wasp.</p>
+      <p>The remainder of this documentation explains how to implement the Wasp  JavaScript Control features. Here are some examples of what the final HTML code  in your page will resemble in order to present, load and control video through  JavaScript: </p>
+      <p>For the sake of reference, a standard HTML link appears as follows:: </p>
+      <p class="codeExample">&lt;a href=&quot;http://www.google.com&quot;&gt;<br>
+        Go to Google <br>
+        &lt;/a&gt; </p>
+      <p>A Wasp pop up video link resembles the following:</p>
+      <p class="codeExample">&lt;a href=&quot;javascript:;&quot; onClick=&quot;waspPopup('example1.flv', 320, 215);&quot;&gt;<br>
+        Pop up<br>
+        &lt;/a&gt;</p>
+      <p>Wasp embedded video HTML code appears as follows:</p>
+      <p class="codeExample">&lt;script&gt;<br>
+        waspEmbed('example1.flv', 240, 160);<br>
+        &lt;/script&gt;</p>
+      <p>To load a video into an existing embedded Wasp player, enter the following:</p>
+      <p class="codeExample">&lt;a href=&quot;javascript:;&quot; onClick=&quot;wasp_loadAndPlay('example1.flv');&quot;&gt;<br>
+        Click to play: Example 1<br>
+        &lt;/a&gt;      </p>
+      <p><a name="setup" id="setup"></a><br>
+      </p>
+    </blockquote>
+    <hr size="1" noshade>
+    <p>&nbsp;</p>
+    <h2>Setup - For experienced users only</h2>
+    <p>Non-experienced users: <a href="#newbie">scroll down to the &quot;newbie&quot; section below</a>)</p>
+    <p><strong>1. Edit the wasp.js file:</strong></p>
+    <blockquote>
+      <p>Change:<strong>waspSWFfilename</strong> to refer to <font color="#CC0000"><strong>wasp.swf</strong></font> on your web site.</p>
+      <blockquote>
+        <p><strong>Example:</strong></p>
+        <p class="codeExample">waspSWFfilename = &quot;http://www.yoursite.com/wasp/wasp.swf&quot;;</p>
+      </blockquote>
+      <p>Change <strong>waspHTMLtemplateFilename</strong> to refer to <font color="#CC0000"><strong>waspPopUp.html</strong></font> on your web site.</p>
+      <blockquote>
+        <p><strong>Example: </strong></p>
+        <p class="codeExample">waspHTMLtemplateFilename = &quot;http://www.yoursite.com/wasp/waspPopUp.html&quot;;</p>
+      </blockquote>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p><strong>2. Reference wasp.js in the &lt;head&gt; tags.</strong></p>
+    <blockquote>
+      <p>For each page that will either link to a video (as a pop up) or play a video, you will need to include a reference to the wasp.js file so that the function calls used on your pages will work.</p>
+      <p><strong>Example:</strong></p>
+      <p class="codeExample">&lt;head&gt;<br>
+&lt;script language='javascript' src='http://www.yoursite.com/wasp/wasp.js'&gt;&lt;/script&gt;<br>
+&lt;/head&gt;</p>
+    </blockquote>
+    <p><strong>3. Include  the wasp function calls anywhere in the &lt;body&gt; of your HTML pages:</strong></p>
+    <blockquote>
+      <p>Pop up link:</p>
+      <p class="codeExample"><span class="func">&lt;a href=&quot;javascript:;&quot; onClick=&quot;</span><span class="string">waspPopup(</span><span class="attrib">'example1.flv', 320, 215</span><span class="string">);</span><span class="func">&quot;&gt;<br>
+        </span><span class="param">Pop up<br>
+        </span><span class="func">&lt;/a&gt;</span></p>
+      <blockquote>
+        <p><b>NOTE:</b> By default, all pop up windows will start playing the video automatically. </p>
+      </blockquote>
+      <p>Embedded Player:</p>
+      <p class="codeExample"><span class="func">&lt;script&gt;<br>
+        </span><span class="string">waspEmbed(</span><span class="attrib">'example1.flv'</span><span class="func">, </span><span class="attrib">240</span><span class="func">, </span><span class="attrib">160</span><span class="string">);</span><span class="func"><br>
+          &lt;/script&gt;</span></p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p><strong>AJAX:</strong></p>
+    <p>Establish a blank player:</p>
+    <p class="codeExample"><span class="string">waspEmbed(</span><span class="attrib">'', 180, 120</span><span class="string">);</span></p>
+    <p>Use an &lt;a href&gt; link to load a video:</p>
+    <p class="codeExample">&lt;a href=&quot;javascript:;&quot; onClick=&quot;wasp_loadAndPlay('example1.flv');&quot;&gt;<br>
+Click to play: Example 1<br>
+&lt;/a&gt;</p>
+    <p><strong>NOTE:</strong> When using AJAX, only one video window can be present on one page. Try using IFRAMEs to load more than one video per page.</p>
+    <p><strong>NOTE:</strong> Flash is somewhat tricky with relative file  references. We only recommend full URL and absolute paths, as relative paths  such as &quot;../../path/to/file.flv&quot; can cause serious difficulties. Flash  assumes the location of the HTML page it is embedded in, not the physical  location of the SWF file. </p>
+    <p><strong>NOTE:</strong> Wasp will not play files above the public_html root.</p>
+    <p>&nbsp;</p>
+    <hr size="1" noshade>
+    <p><a name="newbie" id="newbie"></a>    </p>
+    <h1>Setup - For Newbies</h1>
+    <p>In this section, we will explain how to configure the Wasp files and your  web pages so that you can use Wasp throughout your site.</p>
+    <p>Throughout this tutorial, you will be asked to &quot;Clear your browser's cache.&quot; This  makes sure that your browser loads the latest changes to the files that were edited. <a href="http://www.chami.com/tips/internet/021198I.html" target="_blank">Click here to lean how to clear your browser's cache.</a></p>
+    <p>For development, we highly recommend Mozilla's Firefox browser. FireFox's  &quot;Clear Cache Now&quot; button works well. Internet Explorer does not  always clear files from the cache, which causes many hours of double thinking  where the code is wrong. With FireFox, you KNOW that the cache is cleared when  you &quot;Clear the cache.&quot; To get the Firefox browser or for more  information, visit <a href="http://www.mozilla.com/firefox/">www.firefox.com</a>.</p>
+    <p>To clear the cache in FireFox: From the Main Menu &gt; Tools &gt; Options  &gt; Privacy Icon &gt; Cache tab &gt; &quot;Clear Cache Now.&quot; You can also  include the &quot;clearing of the cache&quot; by clicking the  &quot;settings&quot; tab in the same screen and check &quot;cache&quot; from  the list. When this is selected, select (From the Main menu) &gt; Tools &gt;  Clear Private Data. OR, ctrl+ shift+del.</p>
+    <p>In addition, there is a nifty JavaScript error reporting tool that can help  you determine exactly where the JavaScript error is occurring. The JavaScript  error console can be access From the Main Menu &gt; Tools &gt; JavaScript  Console. </p>
+    <p>Nailing down the &quot;Clear cache&quot; and using the JavaScript Console  will save you lots of time and headaches. </p>
+    <p><strong>PART 1</strong></p>
+    <p>In the first part, we are going to edit the JavaScript file so that the  JavaScript file refers to the proper locations to the Wasp files on your site.  Locations of files, Internet addresses and URLs are all &quot;the same  thing&quot; -- URL stands for &quot;Uniform Resource Locator&quot; and is just  an easy way to say, &quot;this is where I want you to go on the internet,&quot;  or,&quot; the internet address of a web site or file.&quot; </p>
+    <p><strong>1. Open the local copy of wasp.js in a simple text editor.</strong> </p>
+    <blockquote>
+      <p>The simpler the text editor, the better. We recommend notepad, which is  usually located here:<br>
+        <b>C:\WINDOWS\system32\notepad.exe</b><br>
+Make a shortcut to this program and place the shortcut on your desktop, as we  will be referring to it more in the future. </p>
+    </blockquote>
+    <p><strong>2. Scroll down to the line that reads:</strong></p>
+    <blockquote>
+      <p class="codeExample">waspSWFfilename = &quot;wasp.swf&quot;;</p>
+      <p>What you are looking at is called a &quot;variable&quot; -- which means that <strong>waspSWFfilename</strong> can vary depending on your needs. You need this variable to reference the URL to wasp.swf on your web site. </p>
+      <p>You should have already created a new &quot;wasp&quot; folder on your web  site and uploaded all the Wasp files to the newly-created folder. If you have  not, be sure to do so now. Refer to the &quot;<a href="#install">installation</a>&quot;  instructions up at the top of this document. </p>
+      <p><strong>It is a good idea</strong> to test the URL before you go to the next step. Usually, we copy and  paste the URL into an empty browser window to make sure that we&rsquo;re  &quot;hitting&quot; the right file. (Sometimes my typing can be terrible.) </p>
+      <p>You will notice that there are    "comments" in the wasp.js file. Comments are lines that begin with    two slashes //. These slashes are not processed as code;,    they are overlooked when the JavaScript engine ("Interpreter")    reads the script, so    it's a nice way to include "human readable" explanations for how    the script works.</p>
+    </blockquote>
+    <p><strong>3. Change this variable so that it references the location of <font color="#CC0000">wasp.swf</font> on your web site.</strong> </p>
+    <blockquote>
+      <p><strong>Example:</strong></p>
+      <p><span class="codeExample">waspSWFfilename = &quot;http://www.yoursite.com/wasp/wasp.swf&quot;;</span></p>
+      <p>NOTE: Be sure to keep the URL between the quotes, and that the semi-colon is at the end of the line. Otherwise, the code will &quot;break.&quot;</p>
+    </blockquote>
+    <p><strong>4. Do the same thing for the variable named <font color="#CC0000">waspHTMLtemplateFilename</font>.</strong> </p>
+    <blockquote>
+      <p>A couple lines down, you'll see the following line:</p>
+      <p class="codeExample">waspHTMLtemplateFilename = &quot;waspPopup.html&quot;; </p>
+      <p>Change it so that it refers to waspPopup.html on your web site.</p>
+      <p><strong>Example:</strong></p>
+      <p><span class="codeExample">waspHTMLtemplateFilename = &quot;http://www.yoursite.com/wasp/waspPopup.html&quot;; </span> </p>
+    </blockquote>
+    <p><strong>5. Savewasp.js  and re-upload the file to your wasp installation folder.</strong></p>
+    <p><strong>6. Clear your browser's cache</strong></p>
+    <p><strong>7. Pull up _example1.html file on your web site with your browser</strong>. </p>
+    <blockquote>
+      <p>Enter the following into your web browser's &quot;address&quot; field:</p>
+      <p><span class="codeExample">http://www.yoursite.com/wasp/_example1.html</span></p>
+      <p>(Of course you'll want to replace &quot;yoursite.com&quot; with your domain name) </p>
+    </blockquote>
+    <p><strong>8. Click on all the links to make sure that everything is working OK.</strong></p>
+    <p>&nbsp;</p>
+    <p><strong>PART 2 </strong></p>
+    <p>In this second part we are going to edit the example.html files so you will understand the process that you will need to apply to your existing web page(s) in order to use the JavaScript Controls on your web site. </p>
+    <p>&nbsp;</p>
+    <p><strong>2.1. Open your local copy of _example1.html in a text editor.</strong> </p>
+    <blockquote>
+      <p>Toward the top of the page you will find the following line:</p>
+      <p class="codeExample"><span class="func">&lt;script language='javascript' src='</span><span class="string">wasp.js</span><span class="func">'&gt;&lt;/script&gt;</span></p>
+      <p>Edit the reference to &quot;wasp.js&quot; so that it uses a full URL to the wasp.js file on your web site.</p>
+      <p><strong>Example:</strong></p>
+      <p class="codeExample"><span class="func">&lt;script language='javascript' src='</span><span class="string">http://www.yoursite.com/wasp/wasp.js</span><span class="func">'&gt;&lt;/script&gt;</span></p>
+      <p><strong>NOTE:</strong> You can wrap the URL in 'single quotes' or &quot;double quotes&quot; -- we recommend single quotes, but double quotes are OK too. The reason to use one over the other is if you wanted to include a quote in the reference. </p>
+      <p>For example, if you wanted to use a URL such as:<br>
+        <strong>http://www.yoursite.com/bob's files/bob.jpg</strong><br>
+        ... the only way to ensure that the apostrophe would work would be to wrap the URL with double quotes. if we wrapped the URL with single quotes, then the code would &quot;breaK&quot; because the apostrophe would act as the last (or ending) quote:</p>
+      <p><strong>Bad:</strong><br>
+        'http://www.yoursite.com/bob's files/bob.jpg'<br>
+        <strong>Good:</strong><br>
+        &quot;http://www.yoursite.com/bob's files/bob.jpg&quot;</p>
+      <p>Likewise, if we wanted to use a double quote in the URL, we would have to wrap the URL with single quotes:</p>
+      <p><strong>Bad:</strong><br>
+        &quot;http://www.yoursite.com/bob said &quot;hi&quot;/ hello.jpg&quot;<br>
+        <strong>Good:</strong><br>
+        'http://www.yoursite.com/bob said &quot;hi&quot;/ hello.jpg'</p>
+      <p>I do not recommend ever using strange     characters in any file name or folder name. Try and use only alpha-numeric characters.</p>
+      <p>The reason we    provided  this long explanation is because sooner or later you are going to want to use a file with an apostrophe in your wasp code -- like when you try and reference an FLV video such as:</p>
+      <p><strong>Bad:</strong><br>
+        waspPopup('bob's video.flv', 320, 240)<br>
+        <strong>Good:</strong><br>
+        waspPopup(&quot;bob's video.flv&quot;, 320, 240)</p>
+      <p>It will invariably happen, and now you know why.</p>
+    </blockquote>
+    <p><strong>2.2. Save _example1.html and upload it to a DIFFERENT folder on your web site.</strong></p>
+    <blockquote>
+      <p><strong>Example:</strong></p>
+      <p><span class="codeExample">http://www.yoursite.com/someWhereElse/_example1.html</span></p>
+    </blockquote>
+    <p><strong>2.3. Open your browser and enter the URL to the _example1.html file in the NEW folder.</strong> </p>
+    <blockquote>
+      <p>The video should play. If it does not, go back to step 2.1 and try again.</p>
+      <p>If the video does work and you want to include the video on an existing page on your site. You will have to edit your existing page by adding the reference to the wasp.js script in the &lt;head&gt; of your HTML page, then add the call to the javascript function somewhere in the &lt;body&gt; tag.</p>
+      <p>To    do this:</p>
+      <p>Open the _example1.html file in a text editor and copy the line that reads:</p>
+      <p class="codeExample"><span class="func">&lt;script language='javascript' src='</span><span class="string">http://www.yoursite.com/wasp/wasp.js'</span><span class="func">&gt;&lt;/script&gt;</span></p>
+      <p>Then open your existing page and paste the code anywhere between the opening &lt;head&gt; tag and the closing &lt;/head&gt; tag.<br>
+        <strong>Example:</strong></p>
+      <p class="codeExample"><span class="attrib">&lt;html&gt;<br>
+        <br>
+        &lt;head&gt;</span><span class="param"><br>
+                      </span><span class="func">&lt;script language='javascript' src=</span><span class="string">'http://www.yoursite.com/wasp/wasp.js</span><span class="func">'&gt;&lt;/script&gt;</span><span class="param"><br>
+                                </span><span class="attrib">&lt;/head&gt;</span><br>
+                                <br>
+        &lt;body&gt;<br>
+      blah blah blah<br>
+      &lt;/body&gt;<br>
+      <br>
+      &lt;/html&gt;      </p>
+      <p>You can only have one set of &lt;head&gt; tags (an opening &lt;head&gt; and closing &lt;/head&gt; is one set. Do not put two sets in your page... just paste the &lt;script&gt;blah blah&lt;/script&gt; tag BETWEEN the head tags. </p>
+      </blockquote>
+    <p><strong>2.4 Take a deep breath.</strong></p>
+    <p><strong>2.5 Understanding the available &quot;methods&quot; contained in the JavaScript Controls.</strong></p>
+    <blockquote>
+      <p>There are three &quot;methods&quot; of &quot;functions&quot; you can call  in your HTML pages. One is a call to embed a video directly into the page,  another is a text or image link to pop up a new window and the third is a call  to load a new video into an existing embedded player. The later two utilize a  standard HTML hyperlink tag. </p>
+      <p>Let&rsquo;s first start with the easiest of the three...</p>
+    </blockquote>
+    <p><strong>2.6 The embedded player function</strong></p>
+    <blockquote>
+      <p>We can &quot;embed&quot; a video into a web page. As you know, the  Customizer Tool can create HTML code to embed a video into your page. With the  JavaScript Controls, we can do the same things as the Customizer Tool without  having to continually use the Customizer Tool. The &quot;waspEmbed&quot;  function allows us to render all the HTML required to display a video without  all the overhead and complexity of the HTML. </p>
+      <p>To embed a video into your HTML page, include the following code anywhere  between the opening &lt;body&gt; and closing &lt;/body&gt; tags in your HTML  page. This function will write all the code necessary to display the video to  the size you specify. </p>
+      <p><strong>Example:</strong></p>
+      <p class="codeExample">&lt;script&gt;<br>
+        waspEmbed('http://www.yoursite.com/wasp/example1.flv', 240, 160);<br>
+        &lt;/script&gt;</p>
+      <p>Where the URL to the <b>example1.flv</b>  is the file name of the video we want to play. And the two numbers following  the file name refer to the <b>Width</b>  and <b>Height</b> of the  video. </p>
+      </blockquote>
+    <p><strong>2.7 The "pop up window" function</strong> </p>
+    <blockquote>
+      <p>The second way to present a video is to pop it up into a tightly-fitting  window when a user clicks on a text-based link, or on an image link. Utilizing  this functionality requires a little more understanding of how to &quot;call a  function&quot; using a hyperlink rather than just plopping a function down in  the HTML. </p>
+      <p>A "pop up" function call using a text link looks like: </p>
+      <p class="codeExample">&lt;a href="javascript:;" onClick="waspPopup('example1.flv', 320, 215)"&gt;<strong><br>
+        Pop up</strong><br>
+        &lt;/a&gt;</p>
+      <p><b>NOTE:</b> By default, all pop up windows will start playing the video automatically. </p>
+      <p>A pop up function call using an image link looks like:</p>
+      <p class="codeExample">&lt;a href="javascript:;" onClick="waspPopup('example1.flv', 320, 215)"&gt;<br>
+        <strong>&lt;img src="graphic.jpg"&gt;</strong><br>
+        &lt;/a&gt;</p>
+      <p>Where  <strong>example.flv</strong> is the file name of the video we want to play and the two numbers refer to the <strong>Width</strong> and <strong>Height</strong> of the window. </p>
+      <p>NOTE: The minimum size of any pop up window  is 100 pixels by 100 pixels. Browsers will not allow you to pop up a  window that is any smaller;it's a security feature. </p>
+      <p>The Popup function call is similar to a standard HTML hyperlink, but just  a little bit more daunting.</p>
+      <p>With a standard HTML hyperlink, we usually just reference a URL in the  &quot;href&quot; attribute of a hyperlink tag.</p>
+      <p>Example of a standard HTML hyperlink tag:</p>
+      <p class="codeExample">&lt;a href="URL"&gt; Click Here &lt;/a&gt;</p>
+      <p>The <strong>&lt;a&gt;</strong> tag contains one attribute named <strong>href</strong> (which stands  for "Hyperlink Reference"). The &lt;a&gt; tag in our standard HTML  example above is wrapped around the words "Click Here" -- so that when  the words "Click Here" are clicked, the browser knows to go to a new  page... Or, the browser "hyperlinks" to a new page. </p>
+      <p>With  JavaScript we can take advantage of the simplicity of the &lt;a&gt;  hyperlink tag by adding an additional attribute to the &lt;a&gt;  hyperlink tag. The additional reference is an "onClick" attribute. </p>
+      <p><strong>Example:</strong></p>
+      <p><span class="codeExample">&lt;a href="javascript:;" onClick=&quot;do something&quot; &gt; Click Here &lt;/a&gt;</span></p>
+      <p>In order to tell the browser that we are using javascript instead of a  traditional hyperlink reference, we replace the usual URL with the word  &quot;javascript&quot; followed by a colon and semicolon. Doing so indicates to  the browser that we want to override the traditional hyperlink action with a  javascript function.</p>
+      <p>The additional attribute named &quot;onClick&quot; tells the browser what  kind of user interactivity we want the browser to react to. There are a variety  of interactive options we can set this attribute to, but onClick is the most  widely used option -- supported by all browsers, so we'll just stick with this  option.</p>
+      <p>So, now that we have told the browser to address this hyperlink when the  link is clicked on -- or &quot;onClick&quot;&nbsp; -- we need to inform the  browser which JavaScript function to use when the link is clicked. </p>
+      <p>In the same respect that the traditional href attribute &quot;points&quot; the browser to a new  URL, with the onClick attribute, we are &quot;pointing&quot; the browser to a  JavaScript function. The JavaScript function is actually contained in the wasp.js file, which we referenced in  the &lt;head&gt; tag...  here we are just &quot;calling&quot; the function with the specifics about the  video we want to open. </p>
+    </blockquote>
+    <p>&nbsp; </p>
+    <p><strong>2.8 Loading a video into an existing embedded player.</strong></p>
+    <blockquote>
+      <p>The final JavaScript Control allows you to build an HTML-based playlist that includes a short description, an image and whatever else you want. When the user clicks on the link, the video will &quot;load and play&quot; in the existing embedded player.</p>
+      <p>The first step is to follow the instructions for the &quot;embedded player&quot; described  above to establish an embedded player on the page.</p>
+      <p><strong>Example:</strong></p>
+      <p class="codeExample">&lt;script&gt;<br>
+        waspEmbed('', 240, 160);<br>
+        &lt;/script&gt;</p>
+      <p>Then add the following JavaScript link on your page to load a video into the existing embedded Wasp player:</p>
+      <p class="codeExample">&lt;a href=&quot;javascript:;&quot; onClick=&quot;wasp_loadAndPlay('http://www.yoursite.com/wasp/example2.flv');&quot;&gt;<br>
+        Click to play: Example 1<br>
+        &lt;/a&gt;</p>
+      <p>This example is similar to the pop up window example; the difference is that  you must first establish an embedded player on your page before calling the  waspLoadAndPlay function. Technically, the embedded player does not have to be  &quot;empty;&quot; you can populate the embedded player with a video if you  want. </p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p>&nbsp;</p>
+    <p>&copy; 2006 Plaino. <a href="http://www.wimpyplayer.com" target="_blank">www.wimpyplayer.com</a> </p>
+    <p></p>    <p>&nbsp;</p></td>
+  </tr>
+</table>
+</body>
+</html>

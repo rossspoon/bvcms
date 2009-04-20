@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{687619FB-F4C1-42B3-9A33-4BD19390723F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DisciplesData</RootNamespace>
+    <AssemblyName>DisciplesData</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blog.cs" />
+    <Compile Include="BlogCategoryController.cs" />
+    <Compile Include="BlogComment.cs" />
+    <Compile Include="BlogPost.cs" />
+    <Compile Include="BVMembershipProvider.cs" />
+    <Compile Include="BVRoleProvider.cs" />
+    <Compile Include="ContentService.cs" />
+    <Compile Include="DbUtil.cs" />
+    <Compile Include="Forum.cs" />
+    <Compile Include="ForumEntry.cs" />
+    <Compile Include="Generated\PendingNotification.cs" />
+    <Compile Include="Generated\Word.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="Invitation.cs" />
+    <Compile Include="Page.cs" />
+    <Compile Include="PodCast.cs" />
+    <Compile Include="Resource1.Designer.cs">
+      <DependentUpon>Resource1.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Role.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="Verse.cs" />
+    <Compile Include="VerseCategory.cs" />
+    <Compile Include="VerseCategoryXref.cs" />
+    <Compile Include="VerseSummaryController.cs" />
+    <Compile Include="Generated\Blog.cs" />
+    <Compile Include="Generated\BlogCategory.cs" />
+    <Compile Include="Generated\BlogComment.cs" />
+    <Compile Include="Generated\BlogNotify.cs" />
+    <Compile Include="Generated\BlogPost.cs" />
+    <Compile Include="Generated\Content.cs" />
+    <Compile Include="Generated\Context.cs" />
+    <Compile Include="Generated\Forum.cs" />
+    <Compile Include="Generated\ForumEntry.cs" />
+    <Compile Include="Generated\ForumNotify.cs" />
+    <Compile Include="Generated\ForumUserRead.cs" />
+    <Compile Include="Generated\Functions\VerseSummaryForCategory2.cs" />
+    <Compile Include="Generated\Group.cs" />
+    <Compile Include="Generated\Invitation.cs" />
+    <Compile Include="Generated\OtherNotify.cs" />
+    <Compile Include="Generated\Page.cs" />
+    <Compile Include="Generated\PageVisit.cs" />
+    <Compile Include="Generated\PersonalPage.cs" />
+    <Compile Include="Generated\PodCast.cs" />
+    <Compile Include="Generated\PrayerSlot.cs" />
+    <Compile Include="Generated\ReadPlan.cs" />
+    <Compile Include="Generated\Role.cs" />
+    <Compile Include="Generated\TemporaryToken.cs" />
+    <Compile Include="Generated\UploadAuthenticationXref.cs" />
+    <Compile Include="Generated\User.cs" />
+    <Compile Include="Generated\UserRole.cs" />
+    <Compile Include="Generated\Verse.cs" />
+    <Compile Include="Generated\VerseCategory.cs" />
+    <Compile Include="Generated\VerseCategoryXref.cs" />
+    <Compile Include="Generated\Views\BlogCategoriesView.cs" />
+    <Compile Include="Generated\Views\BlogRecentPostView.cs" />
+    <Compile Include="Generated\Views\Oldrole.cs" />
+    <Compile Include="Generated\Views\PodcastSummary.cs" />
+    <Compile Include="Generated\Views\UserList.cs" />
+    <Compile Include="Generated\Views\VerseCategoriesView.cs" />
+    <Compile Include="Generated\Views\VerseSummary.cs" />
+    <Compile Include="Generated\Views\ViewPageVisit.cs" />
+    <Compile Include="Generated\Wall.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="books.xml" />
+    <Content Include="Resource1.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

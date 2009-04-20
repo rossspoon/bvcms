@@ -1,0 +1,190 @@
+﻿<%@ Master Language="C#" AutoEventWireup="True" CodeBehind="Site.master.cs" Inherits="CMSWeb.Site" %>
+
+<%@ Register Assembly="ScriptReferenceProfiler" Namespace="ScriptReferenceProfiler"
+    TagPrefix="cc1" %>
+<%@ Register Src="UserControls/UserArea.ascx" TagName="UserArea" TagPrefix="uc1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>CMS2</title>
+    <link rel="shortcut icon" href="/Content/favicon.ico" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+        <CompositeScript>
+            <Scripts>
+                <asp:ScriptReference Path="~/Content/js/jquery-1.2.6.min.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery-ui-personalized-1.5.2.min.js" />
+                <asp:ScriptReference Path="~/Content/js/superfish.js" />
+                <asp:ScriptReference Path="~/Content/js/supersubs.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery.bgiframe.min.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery-cookie.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery.blockUI.js" />
+                <asp:ScriptReference Path="~/Content/js/thickbox-compressed.js" />
+                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js" />
+            </Scripts>
+        </CompositeScript>
+    </asp:ScriptManager>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("ul.sf-menu").supersubs({
+                minWidth: 8,
+                maxWidth: 27,
+                extraWidth: 1,
+                autoArrows: false
+            }).superfish();
+        });
+        function EnterSubmit(e, myform) {
+            var key = window.event ? e.keyCode : e.which;
+            if (key == 13) {
+                var s = $get('<%=SearchText.ClientID%>');
+                if (s.value != "Quick Search")
+                    window.location = '<%=ResolveUrl("~/Search.aspx?name=")%>' + s.value;
+            }
+            else
+                return true;
+        }
+    </script>
+
+    <div id="CommonHeader">
+        <div>
+            <asp:Label ID="UserHeader" runat="server"></asp:Label>
+            <div id="CommonHeaderUserArea">
+                <uc1:UserArea ID="UserArea1" runat="server" />
+            </div>
+        </div>
+        <div id="CommonNavigation">
+            <ul id="menuone" class="sf-menu" runat="server">
+                <li class="headlink">
+                    <asp:HyperLink ID="HomeLink" NavigateUrl="~/" runat="server">Home</asp:HyperLink>
+                    <ul id="HomeDrop" runat="server">
+                        <li>
+                            <asp:HyperLink ID="HyperLink4" NavigateUrl="~/" runat="server">Home Page</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink5" NavigateUrl="~/Task/List/" runat="server">Tasks</asp:HyperLink></li>
+                    </ul>
+                </li>
+                <li class="headlink">
+                    <asp:HyperLink ID="PersonLink" NavigateUrl="~/Search.aspx" runat="server">Person</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="SearchLink" NavigateUrl="~/Search.aspx" runat="server">Quick Search</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="TagLink" NavigateUrl="~/MyTags.aspx" runat="server">Manage Tags</asp:HyperLink></li>
+                        <li id="CurrentPersonMenuItem" runat="server" visible="false">
+                            <asp:HyperLink ID="CurrentPersonLink" runat="server"></asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink1" NavigateUrl="~/ContactSearch.aspx" runat="server">Contact Search</asp:HyperLink></li>
+                    </ul>
+                </li>
+                <li class="headlink">
+                    <asp:HyperLink ID="OrgLink" NavigateUrl="~/OrganizationSearch.aspx" runat="server">Organization</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="OrgSearchLink" NavigateUrl="~/OrganizationSearch.aspx" runat="server">Search</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink15" NavigateUrl="~/EmailAttendanceNotices.aspx" runat="server">Email Attendance Notices</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink20" NavigateUrl="~/EnrollmentControlReport.aspx" runat="server">Enrollment Control Report</asp:HyperLink></li>
+                        <li id="VBSMenuItem" runat="server" visible="false">
+                            <asp:HyperLink ID="HyperLink21" NavigateUrl="/VBS/" runat="server">VBS Enrollment</asp:HyperLink></li>
+                        <li id="CurrentOrgMenuItem" runat="server" visible="false">
+                            <asp:HyperLink ID="CurrentOrgLink" runat="server"></asp:HyperLink></li>
+                    </ul>
+                </li>
+                <li id="QueryMenuItem" class="headlink" runat="server">
+                    <asp:HyperLink ID="QueryLink" NavigateUrl="~/QueryBuilder.aspx" runat="server">QueryBuilder</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="LastQueryLink" NavigateUrl="~/QueryBuilder.aspx" runat="server">Last Query</asp:HyperLink></li>
+                        <li>
+                            <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton></li>
+                        <li>
+                            <asp:HyperLink ID="SavedQueriesLink" NavigateUrl="~/SavedQueries.aspx" runat="server">Saved Queries</asp:HyperLink></li>
+                        <li id="OpenSavedQueryLink" runat="server" visible="false">
+                            <asp:HyperLink ID="HyperLink2" NavigateUrl="javascript:OpenQuery();" runat="server">Open Saved Query</asp:HyperLink></li>
+                        <li id="SaveQueryLink" runat="server" visible="false">
+                            <asp:HyperLink ID="HyperLink3" NavigateUrl="javascript:SaveQuery();" runat="server">Save Query As</asp:HyperLink></li>
+                    </ul>
+                </li>
+                <li id="ContributionsMenuItem" class="headlink" runat="server" visible="false">
+                    <asp:HyperLink ID="HyperLink7" NavigateUrl="#" runat="server">Contributions</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="HyperLink8" NavigateUrl="~/Contributions/Bundles.aspx" runat="server">Bundles</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink9" NavigateUrl="~/Contributions/All.aspx" runat="server">All</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink13" NavigateUrl="~/Contributions/Years.aspx" runat="server">Years</asp:HyperLink></li>
+                        <li class="headlink">
+                            <asp:HyperLink NavigateUrl="#" runat="server">Reports</asp:HyperLink>
+                            <ul>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink14" NavigateUrl="~/Contributions/Reports/ContributionStatementExtract.aspx"
+                                        runat="server">Statements Extract</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink12" NavigateUrl="~/Contributions/GLExtract.aspx" runat="server">GL Extract</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink10" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFund2.aspx"
+                                        runat="server">Totals by Fund</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink11" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx"
+                                        runat="server">Totals by Fund Range</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink16" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFund2.aspx?pledged=true"
+                                        runat="server">Pledge Totals by Fund</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink17" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx?pledged=true"
+                                        runat="server">Pledge Totals by Fund Range</asp:HyperLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li id="AdminMenuItem" class="headlink" runat="server" visible="false">
+                    <asp:HyperLink ID="AdminMenuLink" NavigateUrl="#" runat="server">Admin</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="HyperLink6" NavigateUrl="~/Admin/Users.aspx" runat="server">Users</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="AuditLink" NavigateUrl="~/Admin/Audit.aspx" runat="server">Audit</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
+                                runat="server">OrgMembersOnly</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="SessionState" NavigateUrl="~/Admin/SessionState.aspx" runat="server">Session State</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink19" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink18" NavigateUrl="~/Admin/LastActivity.aspx" runat="server">Last Activity</asp:HyperLink></li>
+                    </ul>
+                </li>
+            </ul>
+            <asp:TextBox CssClass="CommonNavigationSearch" ID="SearchText" runat="server" OnTextChanged="SearchText_TextChanged"
+                Width="100px" Text="Quick Search" defaultValue="Quick Search" onclick="if(this.defaultValue==this.value) this.value='';"
+                onblur="if(this.value=='') this.value=this.defaultValue;" onkeypress="return EnterSubmit(event,this.form)"></asp:TextBox>
+        </div>
+    </div>
+    <div id="CommonNavigationShadow">
+    </div>
+    <div style="padding-left: 2em">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="CommonFooter">
+        <div id="Common">
+            <div style="text-align: center">
+                &copy;<%=DateTime.Now.Year.ToString() %>
+                <asp:Label ID="FooterEntity" runat="server" Text="Label">Bellevue Baptist Church.</asp:Label>
+                All rights reserved.<br />
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

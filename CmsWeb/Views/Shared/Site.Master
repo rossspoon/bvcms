@@ -1,0 +1,219 @@
+<%@ Master Language="C#" CodeBehind="Site.Master.cs" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title><%= Html.Encode(ViewData["Title"]) %></title>
+    <link rel="shortcut icon" href="/Content/favicon.ico" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/ui.dialog.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/ui.tabs.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/ui.datepicker.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div>
+    <script src="/Content/js/jquery-1.2.6.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/ui.core.js" type="text/javascript"></script>
+    <script src="/Content/js/ui.dialog.js" type="text/javascript"></script>
+    <script src="/Content/js/ui.datepicker.js" type="text/javascript"></script>
+    <script src="/Content/js/superfish.js" type="text/javascript"></script>
+    <script src="/Content/js/supersubs.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery.bgiframe.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/effects.core.js" type="text/javascript"></script>
+    <script src="/Content/js/effects.highlight.js" type="text/javascript"></script>
+    <script src="/Content/js/jQuery-cookie.js" type="text/javascript"></script>    
+    <script src="/Content/js/jQuery.blockUI.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery.dimensions.min.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
+    <script src="/Scripts/ExportToolBar.js" type="text/javascript"></script>    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("ul.sf-menu").supersubs({
+                minWidth: 8,
+                maxWidth: 27,
+                extraWidth: 1,
+                autoArrows: false
+            }).superfish();
+        });
+        function EnterSubmit(e, myform) {
+            var key = window.event ? e.keyCode : e.which;
+            if (key == 13) {
+                var s = $('#SearchText')[0];
+                if (s.value != "Quick Search")
+                    window.location = '/Search.aspx?name=' + s.value;
+            }
+            return true;
+        }
+    </script>
+</div>
+<div>
+    <div id="CommonHeader">
+        <div>
+            <%= DbUtil.Header() %>
+            <div id="CommonHeaderUserArea">
+                <% Html.RenderPartial("LogOnUserControl"); %>
+                <div>
+                    Active Tag: <a href="/MyTags.aspx"><%=Util.CurrentTagName%></a>
+                </div>
+            </div>
+            <div style="clear: both">
+            <ul id="menuone" class="sf-menu">
+                <li class="headlink">
+                    <a href="/">Home</a>
+                    <ul id="HomeDrop">
+                        <li>
+                            <a href="/">Home Page</a></li>
+                        <li>
+                            <a href="/Task/List/">Tasks</a></li>
+                    </ul>
+                </li>
+                <li class="headlink">
+                    <a href="/Search.aspx">Person</a>
+                    <ul>
+                        <li>
+                            <a href="/Search.aspx">Quick Search</a></li>
+                        <li>
+                            <a href="/MyTags.aspx">Manage Tags</a></li>
+<% if (Util.CurrentPeopleId != 0)
+   { %>                            
+                        <li>
+                            <a href="/Person.aspx?id=<%=Util.CurrentPeopleId%>"><%=Session["ActivePerson"]%></a></li>
+<% } %>
+                        <li>
+                            <a href="/ContactSearch.aspx">Contact Search</a></li>
+                    </ul>
+                </li>
+                <li class="headlink">
+                    <a href="/OrganizationSearch.aspx">Organization</a>
+                    <ul>
+                        <li>
+                            <a href="/OrganizationSearch.aspx">Search</a></li>
+                        <li>
+                            <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a></li>
+                        <li>
+                            <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a></li>
+<% if (Page.User.IsInRole("Edit"))
+   { %>                            
+                        <li>
+                            <a href="/VBS/">VBS Enrollment</a></li>
+<% } %>
+<% if (Util.CurrentOrgId != 0)
+   { %>                            
+                        <li>
+                            <a href="/Person.aspx?id=<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
+<% } %>
+                    </ul>
+                </li>
+                <li class="headlink">
+                    <a href="/QueryBuilder.aspx">QueryBuilder</a>
+                    <ul>
+                        <li>
+                            <a href="/QueryBuilder.aspx">Last Query</a></li>
+                        <li>
+                            <%=Html.ActionLink("New Query", "NewQuery", "Home")%></li>
+                        <li>
+                            <a href="/SavedQueries.aspx">Saved Queries</a></li>
+<% if (HttpContext.Current.Items["OnQueryBuilder"].IsNotNull())
+   { %>
+                        <li>
+                            <a href="javascript:OpenQuery();">Open Saved Query</a></li>
+                        <li>
+                            <a href="javascript:SaveQuery();">Save Query As</a></li>
+<% } %>
+                    </ul>
+                </li>
+<% if (Page.User.IsInRole("Finance"))
+   { %>
+                <li class="headlink">
+                    <a href="#" runat="server">Contributions</a>
+                    <ul>
+                        <li>
+                            <a href="/Contributions/Bundles.aspx">Bundles</a></li>
+                        <li>
+                            <a href="/Contributions/All.aspx">All</a></li>
+                        <li>
+                            <a href="/Contributions/Years.aspx">Years</a></li>
+                        <li class="headlink">
+                            <a href="#" runat="server">Reports</a>
+                            <ul>
+                                <li>
+                                    <a href="/Contributions/Reports/ContributionStatementExtract.aspx">
+                                    Statements Extract</a></li>
+                                <li>
+                                    <a href="/Contributions/GLExtract.aspx">
+                                    GL Extract</a></li>
+                                <li>
+                                    <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">
+                                    Totals by Fund</a></li>
+                                <li>
+                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">
+                                    Totals by Fund Range</a></li>
+                                <li>
+                                    <a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">
+                                    Pledge Totals by Fund</a></li>
+                                <li>
+                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
+                                    Pledge Totals by Fund Range</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+<% } %>
+<% if (Page.User.IsInRole("Admin"))
+   { %>
+                <li class="headlink">
+                    <a href="#">Admin</a>
+                    <ul>
+                        <li>
+                            <a href="/Admin/Users.aspx">Users</a></li>
+                        <li>
+                            <a href="/Admin/Audit.aspx">Audit</a></li>
+                        <li>
+                            <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
+                        <li>
+                            <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
+                        <li>
+                            <a href="/Admin/SessionState.aspx">Session State</a></li>
+                        <li>
+                            <a href="/Admin/Activity.aspx">Activity Log</a></li>
+                        <li>
+                            <a href="/Admin/LastActivity.aspx">Last Activity</a></li>
+                    </ul>
+                </li>
+<% } %>
+            </ul>
+            <input type="text" class="CommonNavigationSearch" 
+                id="SearchText" onclick="if(this.defaultValue==this.value) this.value='';"
+                value="Quick Search" defaultValue="Quick Search" 
+                onblur="if(this.value=='') this.value=this.defaultValue;" 
+                onkeypress="return EnterSubmit(event,this.form)" />
+            </div>
+    <div id="CommonNavigationShadow">
+    </div>
+        </div>
+
+
+    </div>
+    
+    <div class="main">
+       <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </div>
+    <div id="CommonFooter">
+        <div id="Common">
+            <div style="text-align: center">
+                &copy;<%=DateTime.Now.Year.ToString()%>
+                <asp:Label ID="FooterEntity" runat="server" Text="Label">Bellevue Baptist Church</asp:Label>
+                All rights reserved.<br />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

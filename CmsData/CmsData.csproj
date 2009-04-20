@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C01603B7-AEE1-4FB8-92E3-80D095C71005}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CMSModel</RootNamespace>
+    <AssemblyName>CMSModel</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attend.cs" />
+    <Compile Include="AuditExtensions.cs" />
+    <Compile Include="Batch\ExpressionVisitor.cs" />
+    <Compile Include="Batch\LinqToSqlExtensions.cs" />
+    <Compile Include="AuditUtility.cs" />
+    <Compile Include="BundleHeader.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="ActivityLog.cs" />
+    <Compile Include="Generated\ActivityLog.cs" />
+    <Compile Include="Generated\AttendanceClassification.cs" />
+    <Compile Include="Generated\AttendTrackLevel.cs" />
+    <Compile Include="Generated\BadET.cs" />
+    <Compile Include="Generated\ChurchAttReportId.cs" />
+    <Compile Include="Generated\Content.cs" />
+    <Compile Include="Generated\Contribution.cs" />
+    <Compile Include="Generated\DiscoveryClassStatus.cs" />
+    <Compile Include="Generated\Division.cs" />
+    <Compile Include="Generated\DivOrg.cs" />
+    <Compile Include="Generated\DropType.cs" />
+    <Compile Include="Generated\Functions\AttendMemberTypeAsOf.cs" />
+    <Compile Include="Generated\Functions\BadEtsList.cs" />
+    <Compile Include="Generated\Functions\Contributor.cs" />
+    <Compile Include="Generated\Functions\CsvTable.cs" />
+    <Compile Include="Generated\Functions\MembersAsOf.cs" />
+    <Compile Include="Generated\Functions\TaggedPerson.cs" />
+    <Compile Include="Generated\FundStatusCode.cs" />
+    <Compile Include="Generated\JoinType.cs" />
+    <Compile Include="Generated\MemberTag.cs" />
+    <Compile Include="Generated\OrgMemMemTag.cs" />
+    <Compile Include="Generated\Preference.cs" />
+    <Compile Include="Generated\Program.cs" />
+    <Compile Include="Generated\TagOrg.cs" />
+    <Compile Include="Generated\TagShare.cs" />
+    <Compile Include="Generated\TagTag.cs" />
+    <Compile Include="Generated\VBSApp.cs" />
+    <Compile Include="Generated\Views\Addr.cs" />
+    <Compile Include="Generated\Views\Addr2.cs" />
+    <Compile Include="Generated\Views\BadETView.cs" />
+    <Compile Include="Generated\Views\City.cs" />
+    <Compile Include="Generated\Views\FirstName.cs" />
+    <Compile Include="Generated\Views\FirstName2.cs" />
+    <Compile Include="Generated\Views\FirstNick.cs" />
+    <Compile Include="Generated\Views\LastName.cs" />
+    <Compile Include="Generated\Views\Nick.cs" />
+    <Compile Include="Generated\WeeklySchedule.cs" />
+    <Compile Include="Generated\Zip.cs" />
+    <Compile Include="IndividualContribution.cs" />
+    <Compile Include="Generated\Attend.cs" />
+    <Compile Include="Generated\BFCSummaryOrgTag.cs" />
+    <Compile Include="Generated\BundleHeaderType.cs" />
+    <Compile Include="Generated\BundleStatusType.cs" />
+    <Compile Include="Generated\ContributionStatus.cs" />
+    <Compile Include="Generated\ContributionType.cs" />
+    <Compile Include="Generated\RssFeed.cs" />
+    <Compile Include="Generated\TaskList.cs" />
+    <Compile Include="Generated\TaskListOwner.cs" />
+    <Compile Include="Generated\TaskStatus.cs" />
+    <Compile Include="ITaskNotify.cs" />
+    <Compile Include="Meeting.cs" />
+    <Compile Include="OrganizationMember.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Task.cs" />
+    <Compile Include="Generated\Task.cs" />
+    <Compile Include="IAuditable.cs" />
+    <Compile Include="DbUtil.cs" />
+    <Compile Include="Family.cs" />
+    <Compile Include="Generated\BaptismStatus.cs" />
+    <Compile Include="Generated\BaptismType.cs" />
+    <Compile Include="Generated\Contactee.cs" />
+    <Compile Include="Generated\Contactor.cs" />
+    <Compile Include="Generated\EntryPoint.cs" />
+    <Compile Include="Generated\EnvelopeOption.cs" />
+    <Compile Include="Generated\Functions\TagsForUser.cs" />
+    <Compile Include="Generated\GenderClass.cs" />
+    <Compile Include="Generated\InterestPoint.cs" />
+    <Compile Include="Generated\MeetingType.cs" />
+    <Compile Include="Generated\MemberLetterStatus.cs" />
+    <Compile Include="Generated\NewContact.cs" />
+    <Compile Include="Generated\NewContactReason.cs" />
+    <Compile Include="Generated\NewContactType.cs" />
+    <Compile Include="Generated\NewMbrClassStatus.cs" />
+    <Compile Include="Generated\OrganizationStatus.cs" />
+    <Compile Include="Generated\Origin.cs" />
+    <Compile Include="Generated\ResidentCode.cs" />
+    <Compile Include="Generated\RollsheetType.cs" />
+    <Compile Include="Generated\VolApplicationStatus.cs" />
+    <Compile Include="Generated\Volunteer.cs" />
+    <Compile Include="Generated\VolunteerCode.cs" />
+    <Compile Include="Generated\VolunteerForm.cs" />
+    <Compile Include="QueryBuilder\CategoryClass.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Generated\Role.cs" />
+    <Compile Include="Generated\UserCanEmailFor.cs" />
+    <Compile Include="Generated\UserRole.cs" />
+    <Compile Include="Generated\Audit.cs" />
+    <Compile Include="Generated\AuditValue.cs" />
+    <Compile Include="Generated\GeoCode.cs" />
+    <Compile Include="Generated\Picture.cs" />
+    <Compile Include="Generated\ZipCodeBoundary.cs" />
+    <Compile Include="Organization.cs" />
+    <Compile Include="Generated\Tag.cs" />
+    <Compile Include="Generated\TagPerson.cs" />
+    <Compile Include="Generated\TagType.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="QueryBuilder\CompareType.cs" />
+    <Compile Include="QueryBuilder\CompareClass.cs" />
+    <Compile Include="QueryBuilder\Expressions.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Generated\Functions\Attendance.cs" />
+    <Compile Include="Generated\Functions\MemberTypeId.cs" />
+    <Compile Include="Generated\Functions\MemberTypesAsOf.cs" />
+    <Compile Include="Generated\Functions\OrganizationsByDiv.cs" />
+    <Compile Include="Generated\Functions\OrganizationsByPerson.cs" />
+    <Compile Include="Generated\Functions\PrevOrganizationsByPerson.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Generated\AddressType.cs" />
+    <Compile Include="Generated\Application.cs" />
+    <Compile Include="Generated\ApplicationPrereq.cs" />
+    <Compile Include="Generated\AttendType.cs" />
+    <Compile Include="Generated\BFCStatus.cs" />
+    <Compile Include="Generated\BundleDetail.cs" />
+    <Compile Include="Generated\BundleHeader.cs" />
+    <Compile Include="Generated\ContactPreference.cs" />
+    <Compile Include="Generated\Context.cs" />
+    <Compile Include="Generated\ContributionFund.cs" />
+    <Compile Include="Generated\CountryLookup.cs" />
+    <Compile Include="Generated\DecisionType.cs" />
+    <Compile Include="Generated\DistListMember.cs" />
+    <Compile Include="Generated\DistributionList.cs" />
+    <Compile Include="Generated\EnrollmentTransaction.cs" />
+    <Compile Include="Generated\Family.cs" />
+    <Compile Include="Generated\FamilyMemberType.cs" />
+    <Compile Include="Generated\FamilyPosition.cs" />
+    <Compile Include="Generated\FamilyRelationship.cs" />
+    <Compile Include="Generated\Gender.cs" />
+    <Compile Include="Generated\Interest.cs" />
+    <Compile Include="Generated\MaritalStatus.cs" />
+    <Compile Include="Generated\Meeting.cs" />
+    <Compile Include="Generated\MemberStatus.cs" />
+    <Compile Include="Generated\MemberType.cs" />
+    <Compile Include="Generated\Ministry.cs" />
+    <Compile Include="Generated\NameSuffix.cs" />
+    <Compile Include="Generated\NameTitle.cs" />
+    <Compile Include="Generated\Organization.cs" />
+    <Compile Include="Generated\OrganizationMember.cs" />
+    <Compile Include="Generated\Person.cs" />
+    <Compile Include="Generated\PhonePreference.cs" />
+    <Compile Include="Generated\PostalLookup.cs" />
+    <Compile Include="Generated\Promotion.cs" />
+    <Compile Include="Generated\PromotionControl.cs" />
+    <Compile Include="Generated\PromotionRef.cs" />
+    <Compile Include="Generated\QueryBuilderClause.cs" />
+    <Compile Include="Generated\RelatedFamily.cs" />
+    <Compile Include="Generated\StateLookup.cs" />
+    <Compile Include="Generated\User.cs" />
+    <Compile Include="Generated\Views\TableColumn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBuilder\QueryBuilderClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QueryBuilder\FieldClass.cs" />
+    <Compile Include="QueryBuilder\FieldType.cs" />
+    <Compile Include="QueryBuilder\QueryType.cs" />
+    <Compile Include="Tag.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QueryBuilder\FieldMap2.xml" />
+    <Content Include="QueryBuilder\CompareMap.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

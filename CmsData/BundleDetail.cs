@@ -1,0 +1,301 @@
+using System; 
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Data;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
+using System.Linq.Expressions;
+using System.ComponentModel;
+
+namespace CmsData
+{
+	[Table(Name="dbo.BundleDetail")]
+	public partial class BundleDetail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+	#region Private Fields
+		
+		private int _BundleDetailId;
+		
+		private int _BundleHeaderId;
+		
+		private int _ContributionId;
+		
+		private int _CreatedBy;
+		
+		private DateTime _CreatedDate;
+		
+   		
+    	
+		private EntityRef< BundleHeader> _BundleHeader;
+		
+		private EntityRef< Contribution> _Contribution;
+		
+	#endregion
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+		
+		partial void OnBundleDetailIdChanging(int value);
+		partial void OnBundleDetailIdChanged();
+		
+		partial void OnBundleHeaderIdChanging(int value);
+		partial void OnBundleHeaderIdChanged();
+		
+		partial void OnContributionIdChanging(int value);
+		partial void OnContributionIdChanged();
+		
+		partial void OnCreatedByChanging(int value);
+		partial void OnCreatedByChanged();
+		
+		partial void OnCreatedDateChanging(DateTime value);
+		partial void OnCreatedDateChanged();
+		
+    #endregion
+		public BundleDetail()
+		{
+			
+			
+			this._BundleHeader = default(EntityRef< BundleHeader>); 
+			
+			this._Contribution = default(EntityRef< Contribution>); 
+			
+			OnCreated();
+		}
+
+		
+    #region Columns
+		
+		[Column(Name="BundleDetailId", UpdateCheck=UpdateCheck.Never, Storage="_BundleDetailId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int BundleDetailId
+		{
+			get { return this._BundleDetailId; }
+
+			set
+			{
+				if (this._BundleDetailId != value)
+				{
+				
+                    this.OnBundleDetailIdChanging(value);
+					this.SendPropertyChanging();
+					this._BundleDetailId = value;
+					this.SendPropertyChanged("BundleDetailId");
+					this.OnBundleDetailIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BundleHeaderId", UpdateCheck=UpdateCheck.Never, Storage="_BundleHeaderId", DbType="int NOT NULL")]
+		public int BundleHeaderId
+		{
+			get { return this._BundleHeaderId; }
+
+			set
+			{
+				if (this._BundleHeaderId != value)
+				{
+				
+					if (this._BundleHeader.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnBundleHeaderIdChanging(value);
+					this.SendPropertyChanging();
+					this._BundleHeaderId = value;
+					this.SendPropertyChanged("BundleHeaderId");
+					this.OnBundleHeaderIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ContributionId", UpdateCheck=UpdateCheck.Never, Storage="_ContributionId", DbType="int NOT NULL")]
+		public int ContributionId
+		{
+			get { return this._ContributionId; }
+
+			set
+			{
+				if (this._ContributionId != value)
+				{
+				
+					if (this._Contribution.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnContributionIdChanging(value);
+					this.SendPropertyChanging();
+					this._ContributionId = value;
+					this.SendPropertyChanged("ContributionId");
+					this.OnContributionIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="int NOT NULL")]
+		public int CreatedBy
+		{
+			get { return this._CreatedBy; }
+
+			set
+			{
+				if (this._CreatedBy != value)
+				{
+				
+                    this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime NOT NULL")]
+		public DateTime CreatedDate
+		{
+			get { return this._CreatedDate; }
+
+			set
+			{
+				if (this._CreatedDate != value)
+				{
+				
+                    this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+
+			}
+
+		}
+
+		
+    #endregion
+        
+    #region Foreign Key Tables
+   		
+	#endregion
+	
+	#region Foreign Keys
+    	
+		[Association(Name="BUNDLE_DETAIL_BUNDLE_FK", Storage="_BundleHeader", ThisKey="BundleHeaderId", IsForeignKey=true)]
+		public BundleHeader BundleHeader
+		{
+			get { return this._BundleHeader.Entity; }
+
+			set
+			{
+				BundleHeader previousValue = this._BundleHeader.Entity;
+				if (((previousValue != value) 
+							|| (this._BundleHeader.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._BundleHeader.Entity = null;
+						previousValue.BundleDetails.Remove(this);
+					}
+
+					this._BundleHeader.Entity = value;
+					if (value != null)
+					{
+						value.BundleDetails.Add(this);
+						
+						this._BundleHeaderId = value.BundleHeaderId;
+						
+					}
+
+					else
+					{
+						
+						this._BundleHeaderId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("BundleHeader");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="BUNDLE_DETAIL_CONTR_FK", Storage="_Contribution", ThisKey="ContributionId", IsForeignKey=true)]
+		public Contribution Contribution
+		{
+			get { return this._Contribution.Entity; }
+
+			set
+			{
+				Contribution previousValue = this._Contribution.Entity;
+				if (((previousValue != value) 
+							|| (this._Contribution.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Contribution.Entity = null;
+						previousValue.BundleDetails.Remove(this);
+					}
+
+					this._Contribution.Entity = value;
+					if (value != null)
+					{
+						value.BundleDetails.Add(this);
+						
+						this._ContributionId = value.ContributionId;
+						
+					}
+
+					else
+					{
+						
+						this._ContributionId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Contribution");
+				}
+
+			}
+
+		}
+
+		
+	#endregion
+	
+		public event PropertyChangingEventHandler PropertyChanging;
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+				this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+   		
+	}
+
+}
+

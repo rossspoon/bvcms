@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CMSPresenter</RootNamespace>
+    <AssemblyName>CMSPresenter</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="sysglobl" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttendController.cs" />
+    <Compile Include="AttendenceController.cs" />
+    <Compile Include="BFCAttendSummaryController.cs" />
+    <Compile Include="BundleController.cs" />
+    <Compile Include="ChurchAttendanceConstants.cs" />
+    <Compile Include="ChurchAttendanceSummaryController.cs" />
+    <Compile Include="com.qas.proweb\AddressLine.cs" />
+    <Compile Include="com.qas.proweb\CanSearch.cs" />
+    <Compile Include="com.qas.proweb\Dataset.cs" />
+    <Compile Include="com.qas.proweb\ExampleAddress.cs" />
+    <Compile Include="com.qas.proweb\FormattedAddress.cs" />
+    <Compile Include="com.qas.proweb\Layout.cs" />
+    <Compile Include="com.qas.proweb\LicensedSet.cs" />
+    <Compile Include="com.qas.proweb\Picklist.cs" />
+    <Compile Include="com.qas.proweb\PicklistItem.cs" />
+    <Compile Include="com.qas.proweb\PromptLine.cs" />
+    <Compile Include="com.qas.proweb\PromptSet.cs" />
+    <Compile Include="com.qas.proweb\ProWeb.cs" />
+    <Compile Include="com.qas.proweb\QuickAddress.cs" />
+    <Compile Include="com.qas.proweb\SearchResult.cs" />
+    <Compile Include="ContactSearchController.cs" />
+    <Compile Include="ContributionStatementController.cs" />
+    <Compile Include="ChurchAttendanceController.cs" />
+    <Compile Include="ActivityController.cs" />
+    <Compile Include="DecisionSummaryController.cs" />
+    <Compile Include="PersonSearchDialogController.cs" />
+    <Compile Include="InfoClasses\ContacteeInfo.cs" />
+    <Compile Include="InfoClasses\ContactorInfo.cs" />
+    <Compile Include="InfoClasses\ContributorInfo.cs" />
+    <Compile Include="InfoClasses\MemberTypeInfo.cs" />
+    <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
+    <Compile Include="RollsheetController.cs" />
+    <Compile Include="InfoClasses\TaskInfo.cs" />
+    <Compile Include="VolunteerAppController.cs" />
+    <Compile Include="FamilyController.cs" />
+    <Compile Include="TagController.cs" />
+    <Compile Include="InfoClasses\InvovementInfo.cs" />
+    <Compile Include="InfoClasses\MailingInfo.cs" />
+    <Compile Include="InfoClasses\ProspectAttendInfo.cs" />
+    <Compile Include="InfoClasses\ProspectInfo.cs" />
+    <Compile Include="InfoClasses\SavedQueryInfo.cs" />
+    <Compile Include="InfoClasses\ToggleTagReturn.cs" />
+    <Compile Include="InfoClasses\TaggedPersonInfo.cs" />
+    <Compile Include="ContactController.cs" />
+    <Compile Include="InvolvementController.cs" />
+    <Compile Include="InfoClasses\ContactInfo.cs" />
+    <Compile Include="InfoClasses\QBPersonInfo.cs" />
+    <Compile Include="InfoClasses\FamilyMember.cs" />
+    <Compile Include="InfoClasses\ExcelInfo.cs" />
+    <Compile Include="InfoClasses\InreachInfo.cs" />
+    <Compile Include="InReachController.cs" />
+    <Compile Include="MailingController.cs" />
+    <Compile Include="MeetingController.cs" />
+    <Compile Include="InfoClasses\AttendInfo.cs" />
+    <Compile Include="InfoClasses\CodeValueItem.cs" />
+    <Compile Include="InfoClasses\MeetingInfo.cs" />
+    <Compile Include="InfoClasses\OrganizationInfo.cs" />
+    <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
+    <Compile Include="InfoClasses\PersonInfo.cs" />
+    <Compile Include="InfoClasses\PersonMemberInfo.cs" />
+    <Compile Include="InfoClasses\QueryClauseDisplay.cs" />
+    <Compile Include="CodeValueController.cs" />
+    <Compile Include="IQueryView.cs" />
+    <Compile Include="ProspectController.cs" />
+    <Compile Include="Providers\CMSMembershipProvider.cs" />
+    <Compile Include="Providers\CMSRoleProvider.cs" />
+    <Compile Include="QueryController.cs" />
+    <Compile Include="QueryBuilderController.cs" />
+    <Compile Include="RoleController.cs" />
+    <Compile Include="UserController.cs" />
+    <Compile Include="OrganizationController.cs" />
+    <Compile Include="OrganizationSearchController.cs" />
+    <Compile Include="PersonController.cs" />
+    <Compile Include="PersonSearchController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CmsData\CmsData.csproj">
+      <Project>{C01603B7-AEE1-4FB8-92E3-80D095C71005}</Project>
+      <Name>CmsData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

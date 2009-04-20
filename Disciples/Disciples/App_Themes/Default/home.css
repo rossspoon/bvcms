@@ -1,0 +1,198 @@
+﻿#sideblog ul {margin: 0; padding: 0;}
+#sideblog li {padding-top: 0.33em;}
+.categoryPaging
+{
+	display: block;
+	text-align: center;
+	color: #696969;
+	font-size:80%;
+}
+.categoryPaging a
+{
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.CommonTextBig
+{
+	margin: 1px;
+	padding: 5px;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+.CommonInputBig
+{
+	width: 90%;
+	font-size: 130%;
+}
+.CommonBreadCrumbArea
+{
+	margin: 0;
+	padding: 8px 0 8px 0;
+	font-size: 85%;
+	color: #000;
+}
+
+.CommonBreadCrumbArea a:link, .CommonBreadCrumbArea a:visited, .CommonBreadCrumbArea a:active
+{
+	color: #000;
+}
+#CSHeaderUserArea
+{
+	float: right;
+	padding: 4px 8px 4px 12px;
+	text-align: right;
+}
+#CSHeaderUserWelcome
+{
+	font-size: 80%;
+	font-weight: bold;
+}
+.adminpanel
+{
+	float: right;
+	border: 1px solid gainsboro;
+	font-size: 8pt;
+	padding: 10px;
+	margin-top: 50px;
+}
+
+/*
+Specific Buttons
+*/
+
+.CommonPrivateMessageButton
+{
+	background-image: url(../images/common/privatemessage.gif);
+}
+.CommonEmailButton
+{
+	background-image: url(../images/common/email.gif);
+}
+.CommonEmailSubscriptionButtonEnabled
+{
+	background-image: url(../images/common/tracktopic-on.gif);
+}
+.CommonEmailSubscriptionButtonDisabled
+{
+	background-image: url(../images/common/tracktopic.gif);
+}
+.CommonEmailSubscriptionButtonProcessing
+{
+	background-image: url(../images/common/tracktopic-wait.gif);
+}
+.CommonFavoriteButton
+{
+	background-image: url(../images/common/favorite.gif);
+}
+.CommonContactButton
+{
+	background-image: url(../images/common/contact.gif);
+}
+.CommonEditButton
+{
+	background-image: url(../images/common/edit.gif);
+}
+.CommonDeleteButton
+{
+	background-image: url(../images/common/delete.gif);
+}
+.CommonUploadButton
+{
+	background-image: Url(../images/common/upload.gif);
+}
+.CommonDownloadButton
+{
+	background-image: url(../images/common/download.gif);
+}
+.CommonPostButton
+{
+	background-image: url(../images/common/newpost.gif);
+}
+.CommonReplyButton
+{
+	background-image: url(../images/common/reply.gif);
+}
+.CommonPreviousButton
+{
+	background-image: url(../images/common/previoustopic.gif);
+}
+.CommonNextButton
+{
+	background-image: url(../images/common/nexttopic.gif);
+}
+.CommonViewButton
+{
+	background-image: url(../images/common/view.gif);
+}
+.CommonLockedButton
+{
+	background-image: url(../images/common/locked.gif);
+}
+.CommonHomepageButton
+{
+	background-image: url(../images/common/homepage.gif);
+}
+.CommonWeblogButton
+{
+	background-image: url(../images/common/weblog.gif);
+}
+.CommonAddButton
+{
+	background-image: url(../images/common/plus20.png);
+}
+.CommonCheckListButton
+{
+	background-image: url(../images/common/checklist20.png);
+}
+.CommonEditBigButton
+{
+	background-image: url(../images/common/editdoc.png);
+}
+.CommonImageTextButton
+{
+	display: inline-table;
+	display: inline-block;
+	margin: 1px;
+	border: solid 1px #999;
+	border-top-color: #ccc;
+	border-left-color: #ccc;
+	background-color: #eee;
+	color: #333;
+	font-size: 80%;
+	font-weight: bold;
+	background-repeat: no-repeat;
+	background-position: 2px center;
+	padding: 4px 4px 4px 22px;
+	line-height: normal;
+	white-space: nowrap;
+}
+
+.CommonImageTextButton:LINK, .CommonImageTextButton:VISITED
+{
+	text-decoration: none;
+	color: #333;
+	margin: 1px;
+}
+
+.CommonImageTextButton:ACTIVE
+{
+	text-decoration: none;
+	color: #333;
+}
+
+.CommonImageTextButton:HOVER
+{
+	text-decoration: underline;
+	color: #333;
+	background-color: #ddd;
+}
+
+. .CommonImageTextButton.Big
+{
+	font-size: 130%;
+	background-position: 4px center;
+	padding-left: 30px;
+	padding-right: 10px;
+}

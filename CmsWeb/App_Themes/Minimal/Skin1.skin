@@ -1,0 +1,136 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+    <asp:GridView SkinId="GridViewSkin" runat="server" CellPadding="4" ForeColor="#333333"
+        GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
+    </asp:GridView>
+    
+    <asp:WebPartZone runat="server" 
+        BorderColor="#CCCCCC" Font-Names="Verdana" Padding="6">
+        <EmptyZoneTextStyle Font-Size="0.8em" />
+        <PartStyle Font-Size="0.8em" ForeColor="#333333" />
+        <TitleBarVerbStyle Font-Size="0.6em" Font-Underline="False" ForeColor="White" />
+        <MenuLabelHoverStyle ForeColor="#D1DDF1" />
+        <MenuPopupStyle BackColor="#3e8cb5" BorderColor="#CCCCCC" BorderWidth="1px" Font-Names="Verdana" Font-Size="0.6em" />
+        <MenuVerbStyle BorderColor="#3e8cb5" BorderStyle="Solid" BorderWidth="1px" ForeColor="White" />
+        <PartTitleStyle BackColor="#3e8cb5" Font-Bold="True" Font-Size="0.8em" ForeColor="White" />
+        <MenuVerbHoverStyle BackColor="#EFF3FB" BorderColor="#CCCCCC" BorderStyle="Solid" BorderWidth="1px" ForeColor="#333333" />
+        <PartChromeStyle BackColor="#EFF3FB" BorderColor="#D1DDF1" Font-Names="Verdana" ForeColor="#333333" />
+        <HeaderStyle Font-Size="0.7em" ForeColor="#CCCCCC" HorizontalAlign="Center" />
+        <MenuLabelStyle ForeColor="White" />
+    </asp:WebPartZone>
+
+    <asp:CatalogZone runat="server" BackColor="#EFF3FB" BorderColor="#CCCCCC" BorderWidth="1px" Font-Names="Verdana" Padding="6" >
+        <HeaderVerbStyle Font-Bold="False" Font-Size="0.8em" Font-Underline="False" ForeColor="#333333"></HeaderVerbStyle>
+        <PartTitleStyle BackColor="#507CD1" Font-Bold="True" Font-Size="0.8em" ForeColor="White"></PartTitleStyle>
+        <FooterStyle HorizontalAlign="Right" BackColor="#D1DDF1"></FooterStyle>
+        <PartChromeStyle BorderColor="#D1DDF1" BorderWidth="1px" BorderStyle="Solid"></PartChromeStyle>
+        <PartLinkStyle Font-Size="0.8em"></PartLinkStyle>
+        <InstructionTextStyle Font-Size="0.8em" ForeColor="#333333"></InstructionTextStyle>
+        <LabelStyle Font-Size="0.8em" ForeColor="#333333"></LabelStyle>
+        <SelectedPartLinkStyle Font-Size="0.8em"></SelectedPartLinkStyle>
+        <VerbStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333"></VerbStyle>
+        <HeaderStyle BackColor="#D1DDF1" Font-Bold="True" Font-Size="0.8em" ForeColor="#333333"></HeaderStyle>
+        <EditUIStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333"></EditUIStyle>
+        <PartStyle BorderColor="#EFF3FB" BorderWidth="5px"></PartStyle>
+        <EmptyZoneTextStyle Font-Size="0.8em" ForeColor="#333333"></EmptyZoneTextStyle>
+    </asp:CatalogZone>
+        
+    <asp:EditorZone runat="server" BackColor="#EFF3FB" BorderColor="#CCCCCC" BorderWidth="1px" Font-Names="Verdana" Padding="6" >
+        <FooterStyle HorizontalAlign="Right" BackColor="#D1DDF1"></FooterStyle>
+        <PartTitleStyle Font-Bold="True" Font-Size="0.8em" ForeColor="#333333"></PartTitleStyle>
+        <PartChromeStyle BorderColor="#D1DDF1" BorderWidth="1px" BorderStyle="Solid"></PartChromeStyle>
+        <PartStyle BorderColor="#EFF3FB" BorderWidth="5px"></PartStyle>
+        <LabelStyle Font-Size="0.8em" ForeColor="#333333"></LabelStyle>
+        <VerbStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333"></VerbStyle>
+        <ErrorStyle Font-Size="0.8em"></ErrorStyle>
+        <EmptyZoneTextStyle Font-Size="0.8em" ForeColor="#333333"></EmptyZoneTextStyle>
+        <EditUIStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333"></EditUIStyle>
+        <HeaderStyle BackColor="#D1DDF1" Font-Bold="True" Font-Size="0.8em" ForeColor="#333333"></HeaderStyle>
+        <HeaderVerbStyle Font-Bold="False" Font-Size="0.8em" Font-Underline="False" ForeColor="#333333"></HeaderVerbStyle>
+        <InstructionTextStyle Font-Size="0.8em" ForeColor="#333333"></InstructionTextStyle>
+    </asp:EditorZone>
+
+    <asp:ConnectionsZone runat="server" BackColor="#EFF3FB" BorderColor="#CCCCCC" BorderWidth="1px" Font-Names="Verdana" Padding="6" >
+        <VerbStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333" />
+        <InstructionTextStyle Font-Size="0.8em" ForeColor="#333333" />
+        <FooterStyle BackColor="#D1DDF1" HorizontalAlign="Right" />
+        <LabelStyle Font-Size="0.8em" ForeColor="#333333" />
+        <HeaderStyle BackColor="#D1DDF1" Font-Bold="True" Font-Size="0.8em" ForeColor="#333333" />
+        <HeaderVerbStyle Font-Bold="False" Font-Size="0.8em" Font-Underline="False" ForeColor="#333333" />
+        <EditUIStyle Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333" />
+    </asp:ConnectionsZone>
+
+
+
+
+<asp:Menu SkinID="MainNav" runat="server"
+  StaticEnableDefaultPopOutImage="false"
+  ForeColor="#124500"
+  StaticHoverStyle-ForeColor="#FFFFFF"
+  StaticHoverStyle-BackColor="#165EA9"
+  StaticMenuItemStyle-HorizontalPadding="10"
+  StaticMenuItemStyle-VerticalPadding="2"
+  DynamicMenuStyle-BackColor="#E6F0FA"
+  DynamicMenuStyle-BorderColor="#165EA9"
+  DynamicMenuStyle-BorderStyle="solid"
+  DynamicMenuStyle-BorderWidth="2"
+  DynamicMenuItemStyle-HorizontalPadding="10"
+  DynamicMenuItemStyle-VerticalPadding="2"
+  DynamicHoverStyle-ForeColor="#FFFFFF"
+  DynamicHoverStyle-BackColor="#165EA9">
+  <StaticHoverStyle ForeColor="#FFFFFF" CssClass="Menu-Skin-DynamicHover" />
+  <DynamicMenuItemStyle HorizontalPadding="10px" VerticalPadding="3px" />
+  <DynamicHoverStyle ForeColor="#FFFFFF" CssClass="Menu-Skin-DynamicHover" />
+</asp:Menu>
+
+<asp:Menu SkinID="SampleMenuVertical" runat="server"
+    Height="20"
+    BackColor="#FFF"
+    ForeColor="black"
+    Font-Size="small" 
+    Font-Names="Tahoma"
+    DynamicHorizontalOffset="-3" 
+    DynamicVerticalOffset="3"
+    StaticEnableDefaultPopOutImage="true"
+    CssClass="Menu-Skin-Vertical">
+    <StaticMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" BorderColor="#648ABD" HorizontalPadding="2px" VerticalPadding="3px" Width="9em" CssClass="Menu-Skin-StaticItem" />
+    <StaticHoverStyle BackColor="#FFF" ForeColor="White" />
+    <DynamicMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" Font-Size="8pt" BorderColor="#648ABD" HorizontalPadding="2px" VerticalPadding="3px" Width="10.5em" CssClass="Menu-Skin-StaticItem" />
+    <DynamicHoverStyle BackColor="#FFF" ForeColor="White" CssClass="Menu-Skin-DynamicHover" />
+</asp:Menu>
+
+<asp:Menu SkinID="SampleMenuHorizontal" runat="server"
+    ForeColor="black"
+    Font-Size="large" 
+    Font-Names="Tahoma"
+    DynamicHorizontalOffset="0" 
+    DynamicVerticalOffset="0"
+    StaticEnableDefaultPopOutImage="true"
+    CssClass="Menu-Skin-Horizontal">
+    <StaticMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" BorderColor="#648ABD" HorizontalPadding="2px" VerticalPadding="3px" Width="9em" CssClass="Menu-Skin-StaticItem" />
+    <StaticHoverStyle BackColor="#4682B3" ForeColor="White" />
+    <DynamicMenuItemStyle ForeColor="black" BorderStyle="solid" BorderWidth="1px" Font-Size="small" BorderColor="#648ABD" HorizontalPadding="2px" VerticalPadding="3px" Width="10.5em" CssClass="Menu-Skin-StaticItem" />
+    <DynamicHoverStyle BackColor="#4682B3" ForeColor="White" CssClass="Menu-Skin-DynamicHover" />
+</asp:Menu>
+
