@@ -29,7 +29,7 @@ namespace CMSWeb.WS
         [AuthenticatonSoapExtensionAttribute]
         public void UploadImage(int? PeopleId, string UserInfo, int TypeId, string mimetype, byte[] bits)
         {
-            var Db = new CMSDataContext(Util.ConnectionStringTest);
+            var Db = DbUtil.Db;
             if (TypeId == 1)
             {
                 var vb = new VBSApp();

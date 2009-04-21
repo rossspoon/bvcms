@@ -314,10 +314,13 @@
 		<Field Name="VBSActiveOtherChurch" Title="VBS Other Church" Type="NullBit" DataValueField="IdCode" DataTextField="Value">
 			Selects only those vbs children who have applicatoins and indicated active in another church or not.
 		</Field>
-		<Field Name="VBSPubPhoto" Title="VBS Pub Photo" Type="Bit" DataValueField="IdCode" DataTextField="Value">
-			Selects only VBS children who have apps and indicated their photo can be published or not.
-		</Field>
-		<Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode" DataTextField="Value">
+    <Field Name="VBSPubPhoto" Title="VBS Pub Photo" Type="Bit" DataValueField="IdCode" DataTextField="Value">
+      Selects only VBS children who have apps and indicated their photo can be published or not.
+    </Field>
+    <Field Name="VBSMedAllergy" Title="VBS Medical Allergy" Type="Bit" DataValueField="IdCode" DataTextField="Value">
+      Selects only VBS children who have Medical/Allergy checked or not.
+    </Field>
+    <Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode" DataTextField="Value">
       Allows you to specify whether to include deceased people in your query.
     </Field>
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode" DataTextField="Value">

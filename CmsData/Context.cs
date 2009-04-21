@@ -357,11 +357,11 @@ namespace CmsData
         }
         public string UserPreference(string pref)
         {
-            return UserPreference(pref, null);
+            return UserPreference(pref, string.Empty);
         }
         public string UserPreference(string pref, string def)
         {
-            var cp = HttpContext.Current.Items["pref-" + pref];
+            var cp = HttpContext.Current.Session["pref-" + pref];
             if (cp != null)
                 return cp.ToString();
             var p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
@@ -377,7 +377,7 @@ namespace CmsData
                 p = new Preference { UserId = Util.UserId, PreferenceX=pref, ValueX = value.ToString() };
                 DbUtil.Db.Preferences.InsertOnSubmit(p);
             }
-            HttpContext.Current.Items["pref-" + pref] = p.ValueX;
+            HttpContext.Current.Session["pref-" + pref] = p.ValueX;
             SubmitChanges();
         }
         [Function(Name = "dbo.LinkEnrollmentTransaction")]

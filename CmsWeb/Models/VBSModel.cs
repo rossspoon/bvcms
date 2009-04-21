@@ -47,9 +47,40 @@ namespace CMSWeb.Models
                     DbUtil.Db.SetUserPreference("PageSize", value);
             }
         }
-        public bool NewAppsOnly { get; set; }
-        public string Grade { get; set; }
-        public string UserInfo { get; set; }
+        private bool? _NewAppsOnly;
+        public bool NewAppsOnly
+        {
+            get
+            {
+                if (_NewAppsOnly.HasValue)
+                    return _NewAppsOnly.Value;
+                _NewAppsOnly = DbUtil.Db.UserPreference("VBSNewAppsOnly").ToBool2();
+                return _NewAppsOnly.Value;
+            }
+            set
+            {
+                _NewAppsOnly = value;
+                DbUtil.Db.SetUserPreference("VBSNewAppsOnly", value);
+            }
+        }
+        private string _Grade;
+        public string Grade
+        {
+            get { return _Grade; }
+            set
+            {
+                _Grade = value;
+            }
+        }
+        private string _UserInfo;
+        public string UserInfo
+        {
+            get { return _UserInfo; }
+            set
+            {
+                _UserInfo = value;
+            }
+        }
 
         public VBSInfo FetchVBSInfo(int? id)
         {

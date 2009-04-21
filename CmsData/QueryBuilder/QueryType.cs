@@ -104,6 +104,7 @@ namespace CmsData
         UserRole,
 		VBSPubPhoto,
 		VBSActiveOtherChurch,
+        VBSMedAllergy,
         VisitedCurrentOrg,
         VolunteerApprovalCode,
 		VolAppStatusCode,

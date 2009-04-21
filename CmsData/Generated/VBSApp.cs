@@ -43,6 +43,8 @@ namespace CmsData
 		
 		private string _UserInfo;
 		
+		private bool? _MedAllergy;
+		
    		
     	
 		private EntityRef< Organization> _Organization;
@@ -94,6 +96,9 @@ namespace CmsData
 		
 		partial void OnUserInfoChanging(string value);
 		partial void OnUserInfoChanged();
+		
+		partial void OnMedAllergyChanging(bool? value);
+		partial void OnMedAllergyChanged();
 		
     #endregion
 		public VBSApp()
@@ -395,6 +400,28 @@ namespace CmsData
 					this._UserInfo = value;
 					this.SendPropertyChanged("UserInfo");
 					this.OnUserInfoChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MedAllergy", UpdateCheck=UpdateCheck.Never, Storage="_MedAllergy", DbType="bit")]
+		public bool? MedAllergy
+		{
+			get { return this._MedAllergy; }
+
+			set
+			{
+				if (this._MedAllergy != value)
+				{
+				
+                    this.OnMedAllergyChanging(value);
+					this.SendPropertyChanging();
+					this._MedAllergy = value;
+					this.SendPropertyChanged("MedAllergy");
+					this.OnMedAllergyChanged();
 				}
 
 			}

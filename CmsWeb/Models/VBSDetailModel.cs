@@ -20,6 +20,7 @@ namespace CMSWeb.Models
         bool PubPhoto { get; set; }
         bool ActiveInAnotherChurch { get; set; }
         string GradeCompleted { get; set; }
+        bool MedAllergy { get; set; }
     }
     public class VBSDetailModel : IVBSDetailBindable
     {
@@ -64,6 +65,11 @@ namespace CMSWeb.Models
         {
             get { return VBSApp.GradeCompleted; }
             set { VBSApp.GradeCompleted = value; }
+        }
+        public bool MedAllergy
+        {
+            get { return VBSApp.MedAllergy ?? false; }
+            set { VBSApp.MedAllergy = value; }
         }
         public bool IsDocument
         {

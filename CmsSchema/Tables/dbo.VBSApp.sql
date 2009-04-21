@@ -12,7 +12,8 @@ CREATE TABLE [dbo].[VBSApp]
 [DivId] [int] NULL,
 [Inactive] [bit] NULL,
 [PubPhoto] [bit] NULL,
-[UserInfo] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[UserInfo] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[MedAllergy] [bit] NULL
 )
 ALTER TABLE [dbo].[VBSApp] ADD
 CONSTRAINT [FK_VBSApp_Organizations] FOREIGN KEY ([OrgId]) REFERENCES [dbo].[Organizations] ([OrganizationId])

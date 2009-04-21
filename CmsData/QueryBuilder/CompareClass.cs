@@ -302,11 +302,15 @@ namespace CmsData
 					return Expressions.VBSActiveOtherChurch(parm,
 							   CompType,
 							   c.CodeIds == "1");
-				case QueryType.VBSPubPhoto:
-					return Expressions.VBSPubPhoto(parm,
-							   CompType,
-							   c.CodeIds == "1");
-				case QueryType.VisitedCurrentOrg:
+                case QueryType.VBSPubPhoto:
+                    return Expressions.VBSPubPhoto(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.VBSMedAllergy:
+                    return Expressions.VBSMedAllergy(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.VisitedCurrentOrg:
                     return Expressions.VisitedCurrentOrg(parm,
                                CompType,
                                c.CodeIds == "1");

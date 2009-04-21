@@ -37,20 +37,20 @@
 <td><label><a id='<%=d.Id%>' class="searchpeople" href="#">search(<%=d.PeopleId%>)</a></label></td>
 <td><label>Name: <a id="namelink" href="/Person.aspx?id=<%=d.PeopleId%>"><%=d.Name%></a></label> </td>
 <td>
-	<label>Can Pub Photo:<%=Html.CheckBox("PubPhoto", d.PubPhoto)%></label>
-	<label>In Other Church:<%=Html.CheckBox("ActiveInAnotherChurch", d.ActiveInAnotherChurch)%></label>
-	<label>Has Medical/Allergy:<%=Html.CheckBox("MedAllergy", d.ActiveInAnotherChurch)%></label>
+	<label>Can Pub Photo:<%=Html.CheckBox("PubPhoto", d.PubPhoto)%></label> |
+	<label>In Other Church:<%=Html.CheckBox("ActiveInAnotherChurch", d.ActiveInAnotherChurch)%></label> |
+	<label>Medical/Allergy:<%=Html.CheckBox("MedAllergy", d.MedAllergy)%></label>
 </td>
-<td>&nbsp;</td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 <td><label>Grade: <%=Html.DropDownList("GradeCompleted", d.GradeCompleteds())%></label></td>
-<td><label>Request:  <%=Html.TextBox("Request", d.Request)%></label></td>
+<td><label>Request:  <%=Html.TextBox("Request", d.Request)%></label>
 <% if (User.IsInRole("Edit"))
    { %>
-<td><input type="submit" name="Submit" value="Submit" /></td>
+<input type="submit" name="Submit" value="Submit" /></td>
 <% } %>
+</td>
 </tr>
 </table>
 </form>

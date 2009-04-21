@@ -104,7 +104,7 @@
                     <td><%= Html.ValidationMessage("emphone")%></td>
                 </tr>
                 <tr>
-                    <td><label for="request">Request Classmate</label></td>
+                    <td><label for="request">Request Teacher/Mate</label></td>
                     <td><%= Html.TextBox("request") %></td>
                     <td><%= Html.ValidationMessage("request") %></td>
                 </tr>
