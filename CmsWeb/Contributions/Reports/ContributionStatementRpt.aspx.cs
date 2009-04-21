@@ -43,7 +43,7 @@ namespace CMSWeb.Contributions.Reports
             {
                 var ctl = new ContributionStatementController();
                 var rd1 = new ReportDataSource("PledgeSummaryInfo", ctl.pledges(e.Parameters[0].Values[0].ToInt(),
-                                                                             e.Parameters[1].Values[0].ToInt()));
+                                                                             e.Parameters[1].Values[0].ToInt(), toDate));
                 var rd2 = new ReportDataSource("ContributionInfo", ctl.quarterlySummary(e.Parameters[0].Values[0].ToInt(),
                                                                              e.Parameters[1].Values[0].ToInt(),
                                                                              fromDate,

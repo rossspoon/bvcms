@@ -66,7 +66,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                 //EventLog.WriteEntry("LoginLog",
                 //    "non-user",
                 //    EventLogEntryType.Information);
-                em.NotifyEmail("attempt to login by non-user",
+                em.NotifyEmail("attempt to login by non-user on " + Request.Url.Authority,
                     "{0} tried to login at {1} but is not a user"
                         .Fmt(Login1.UserName, DateTime.Now));
             }
@@ -75,7 +75,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                 //EventLog.WriteEntry("LoginLog",
                 //    "locked out",
                 //    EventLogEntryType.Information);
-                em.NotifyEmail("user locked out",
+                em.NotifyEmail("user locked out on " + Request.Url.Authority,
                     "{0} tried to login at {1} but is locked out"
                         .Fmt(user.UserName, DateTime.Now));
             }
@@ -84,7 +84,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                 //EventLog.WriteEntry("LoginLog",
                 //    "unapproved",
                 //    EventLogEntryType.Information);
-                em.NotifyEmail("unapproved user logging in",
+                em.NotifyEmail("unapproved user logging in on " + Request.Url.Authority,
                     "{0} tried to login at {1} but is not approved"
                         .Fmt(user.UserName, DateTime.Now));
             }

@@ -30,6 +30,7 @@ namespace CMSWeb2
             routes.IgnoreRoute("{myWebForms}.asmx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.js/{*pathInfo}");
             routes.IgnoreRoute("{name}.ico");
+            routes.IgnoreRoute("{name}.png");
             routes.IgnoreRoute("Admin/{*pathInfo}");
             routes.IgnoreRoute("AppReview/{*pathInfo}");
             routes.IgnoreRoute("CustomErrors/{*pathInfo}");

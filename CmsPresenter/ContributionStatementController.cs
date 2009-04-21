@@ -145,7 +145,7 @@ namespace CMSPresenter
             return q;
         }
 
-        public IEnumerable<PledgeSummaryInfo> pledges(int pid, int? spid)
+        public IEnumerable<PledgeSummaryInfo> pledges(int pid, int? spid, DateTime toDate)
         {
             var PledgeExcludes = new int[] 
             { 
@@ -159,12 +159,14 @@ namespace CMSPresenter
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
                      where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
+                     where p.ContributionDate <= toDate
                      select p;
             var qc = from c in Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
                      where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
                      where !c.PledgeFlag
                      where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
+                     where c.ContributionDate <= toDate
                      group c by c.FundId into g
                      select new { FundId = g.Key, Total = g.Sum(c => c.ContributionAmount) };
             var q = from p in qp

@@ -144,7 +144,7 @@ namespace CMSWeb.Contributions.Reports
             decimal Total = 0;
             var ctl = new ContributionStatementController();
             rWrite(hdr1Pledge + hdr2Pledge);
-            foreach (var p in ctl.pledges(c.PeopleId, c.SpouseID))
+            foreach (var p in ctl.pledges(c.PeopleId, c.SpouseID, td))
                 if (p.Fund != null)
                     recPledges.Add("{0,-16}{1,12:N2}  {2,12:N2} ".Fmt(p.Fund, p.PledgeAmount, p.ContributionAmount));
 
