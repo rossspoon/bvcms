@@ -24,12 +24,12 @@ namespace CMSWeb
             var reportDate = DateTime.Parse(SundayDate.Text);
             reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek); //Sunday Date equal/before date selected
 
-            var caids = new ChurchAttendanceConstants();
-            for (int n = 52; n > 0; n--)
-                if (caids.HasData(reportDate))
-                    break;
-                else
-                    reportDate = reportDate.AddDays(-7);
+            //var caids = new ChurchAttendanceConstants();
+            //for (int n = 52; n > 0; n--)
+            //    if (caids.HasData(reportDate))
+            //        break;
+            //    else
+            //        reportDate = reportDate.AddDays(-7);
             SundayDate.Text = reportDate.ToString("d");
         }
 

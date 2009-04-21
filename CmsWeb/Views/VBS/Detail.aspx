@@ -39,6 +39,7 @@
 <td>
 	<label>Can Pub Photo:<%=Html.CheckBox("PubPhoto", d.PubPhoto)%></label>
 	<label>In Other Church:<%=Html.CheckBox("ActiveInAnotherChurch", d.ActiveInAnotherChurch)%></label>
+	<label>Has Medical/Allergy:<%=Html.CheckBox("MedAllergy", d.ActiveInAnotherChurch)%></label>
 </td>
 <td>&nbsp;</td>
 </tr>
