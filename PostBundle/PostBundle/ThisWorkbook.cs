@@ -41,8 +41,10 @@ namespace PostBundle
             ws.Endpoint.Address = new EndpointAddress("http://bellevue03/cms.asmx");
 #endif
             header = new CmsWs.ServiceAuthHeader();
-            header.Username = "david";
-            header.Password = "ddrr11";
+            var f = new Signin();
+            f.ShowDialog();
+            header.Username = f.Username;
+            header.Password = f.Password;
 
             c = new SearchPane();
             b = new BundlePane();

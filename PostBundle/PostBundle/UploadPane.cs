@@ -23,6 +23,8 @@ namespace PostBundle
             var bundleid = int.Parse(Globals.Sheet1.BundleId.Text.ToString());
             var list = new List<CmsWs.BundleDetail>();
             var t = Globals.Sheet1.Table1.Range;
+            var dt = DateTime.Parse(Globals.Sheet1.BundleDate.Text.ToString());
+
             for (int r = 2; r < t.Rows.Count; r++)
             {
                 var c = t.Cells[r, 1] as Excel.Range;
@@ -34,10 +36,6 @@ namespace PostBundle
                 if (!decimal.TryParse(c.Value2.ToString(), out amt))
                     continue;
                 c = t.Cells[r, 3] as Excel.Range;
-                DateTime dt;
-                if (!DateTime.TryParse(c.Text.ToString(), out dt))
-                    continue;
-                c = t.Cells[r, 4] as Excel.Range;
                 int fund;
                 if (!int.TryParse(c.Value2.ToString(), out fund))
                     continue;
@@ -76,7 +74,7 @@ namespace PostBundle
             var list = new List<object>();
             foreach (Excel.ListRow r in t1.ListRows)
             {
-                var v = r.Range[1, 4] as Excel.Range;
+                var v = r.Range[1, 3] as Excel.Range;
                 list.Add(v.Value2);
             }
             var t = Globals.Sheet2.Table2;

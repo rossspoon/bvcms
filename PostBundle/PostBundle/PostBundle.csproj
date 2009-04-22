@@ -114,6 +114,12 @@
     <Compile Include="BundleResultCtl.Designer.cs">
       <DependentUpon>BundleResultCtl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="PersonResultCtl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +129,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BundlePane.resx">
       <DependentUpon>BundlePane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PersonResultCtl.resx">
       <DependentUpon>PersonResultCtl.cs</DependentUpon>

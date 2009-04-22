@@ -29,8 +29,6 @@ namespace PostBundle {
         
         internal Microsoft.Office.Tools.Excel.NamedRange Amount;
         
-        internal Microsoft.Office.Tools.Excel.NamedRange _Date;
-        
         internal Microsoft.Office.Tools.Excel.NamedRange Fund;
         
         internal Microsoft.Office.Tools.Excel.NamedRange PeopleId;
@@ -145,7 +143,6 @@ namespace PostBundle {
             this.BundleFund.BeginInit();
             this.BundleTotal.BeginInit();
             this.Amount.BeginInit();
-            this._Date.BeginInit();
             this.Fund.BeginInit();
             this.PeopleId.BeginInit();
             this.Pledge.BeginInit();
@@ -161,7 +158,6 @@ namespace PostBundle {
             this.Pledge.EndInit();
             this.PeopleId.EndInit();
             this.Fund.EndInit();
-            this._Date.EndInit();
             this.Amount.EndInit();
             this.BundleTotal.EndInit();
             this.BundleFund.EndInit();
@@ -182,7 +178,6 @@ namespace PostBundle {
             this.BundleFund = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "BundleFund", this, "BundleFund");
             this.BundleTotal = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "BundleTotal", this, "BundleTotal");
             this.Amount = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "Amount", this, "Amount");
-            this._Date = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "Date", this, "_Date");
             this.Fund = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "Fund", this, "Fund");
             this.PeopleId = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "PeopleId", this, "PeopleId");
             this.Pledge = new Microsoft.Office.Tools.Excel.NamedRange(this.ItemProvider, this.HostContext, "Pledge", this, "Pledge");
@@ -200,7 +195,6 @@ namespace PostBundle {
             ((System.ComponentModel.ISupportInitialize)(this.BundleFund)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BundleTotal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Amount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._Date)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Fund)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PeopleId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pledge)).BeginInit();
@@ -215,7 +209,6 @@ namespace PostBundle {
             ((System.ComponentModel.ISupportInitialize)(this.BundleFund)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BundleTotal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Amount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._Date)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Fund)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PeopleId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pledge)).EndInit();
@@ -240,7 +233,6 @@ namespace PostBundle {
             this.Pledge.Dispose();
             this.PeopleId.Dispose();
             this.Fund.Dispose();
-            this._Date.Dispose();
             this.Amount.Dispose();
             this.BundleTotal.Dispose();
             this.BundleFund.Dispose();

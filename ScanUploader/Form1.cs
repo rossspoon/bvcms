@@ -33,13 +33,16 @@ namespace ScanUploader
             InitializeComponent();
             tw = new Twain();
             tw.Init(this.Handle);
-            header.Username = "bvcms";
-            header.Password = "bvcms";
+
+            var f = new Signin();
+            f.ShowDialog();
+            header.Username = f.Username;
+            header.Password = f.Password;
 #if DEBUG
 #else
-#endif
             ws.Endpoint.Address = new EndpointAddress(
                 ConfigurationSettings.AppSettings["serviceUrl"]);
+#endif
 
         }
 

@@ -46,15 +46,13 @@ namespace PostBundle
                 r[1, 2] = "";
                 r[1, 3] = "";
                 r[1, 4] = "";
-                r[1, 5] = "";
             }
             else
             {
                 r[1, 1] = d.PeopleId;
                 r[1, 2] = d.Amount;
-                r[1, 3] = d.Date;
-                r[1, 4] = d.Fund;
-                r[1, 5] = d.Name;
+                r[1, 3] = d.Fund;
+                r[1, 4] = d.Name;
             }
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

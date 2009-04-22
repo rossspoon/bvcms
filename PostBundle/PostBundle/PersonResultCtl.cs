@@ -70,7 +70,7 @@ namespace PostBundle
             Globals.ThisWorkbook.ClickToChange = true;
             var c = Globals.ThisWorkbook.Application.ActiveCell;
             c.Value2 = person.PeopleId.ToString();
-            var n = c.Cells[1, 5] as Excel.Range;
+            var n = c.Cells[1, 4] as Excel.Range;
             n.Value2 = person.Name;
             AddComment(n);
             Globals.ThisWorkbook.ClickToChange = false;

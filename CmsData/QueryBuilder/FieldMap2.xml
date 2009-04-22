@@ -311,8 +311,8 @@
 		<Field Name="IsUser" Title="Is System User" Type="Bit" DataValueField="IdCode" DataTextField="Value">
 			Selects everyone who is a user in the CMS.
 		</Field>
-		<Field Name="VBSActiveOtherChurch" Title="VBS Other Church" Type="NullBit" DataValueField="IdCode" DataTextField="Value">
-			Selects only those vbs children who have applicatoins and indicated active in another church or not.
+		<Field Name="VBSActiveOtherChurch" Title="VBS Other Church" Type="Bit" DataValueField="IdCode" DataTextField="Value">
+			Selects only those VBS children who have applications and indicated active in another church or not.
 		</Field>
     <Field Name="VBSPubPhoto" Title="VBS Pub Photo" Type="Bit" DataValueField="IdCode" DataTextField="Value">
       Selects only VBS children who have apps and indicated their photo can be published or not.

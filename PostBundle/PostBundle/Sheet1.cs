@@ -34,11 +34,9 @@ namespace PostBundle
                 return;
             var c = Target as Excel.Range;
 
-            var d = c.Cells[1, 3] as Excel.Range;
-            d.Value2 = BundleDate.Value;
-            var f = c.Cells[1, 4] as Excel.Range;
+            var f = c.Cells[1, 3] as Excel.Range;
             f.Value2 = BundleFund.Value;
-            var n = c.Cells[1, 5] as Excel.Range;
+            var n = c.Cells[1, 4] as Excel.Range;
 
             if (Globals.ThisWorkbook.ClickToChange)
                 return;
