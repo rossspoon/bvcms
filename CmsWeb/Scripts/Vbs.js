@@ -14,6 +14,7 @@
     $("#UserInfo").change(RefreshPage);
     $("#Grade").change(RefreshPage);
     $("#NewAppsOnly").click(RefreshPage);
+    $('#VbsApps > tbody tr:even').addClass('alt');
 });
 function RefreshPage() {
     var q = $('#filter').formSerialize2();

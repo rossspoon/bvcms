@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="/Content/favicon.ico" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/style.css?v=1" rel="stylesheet" type="text/css" />
     <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
     <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
     <link href="/Content/ui.dialog.css" rel="stylesheet" type="text/css" />

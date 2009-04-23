@@ -286,3 +286,11 @@ div#VBS
 {
     background-color: #eee;
 }
+tr.alt td
+{
+    background-color: #eee;
+}
+.Bold
+{
+    font-weight: bold;
+}

@@ -1,16 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskModel>" %>
 
 <asp:Content ID="indexHead" ContentPlaceHolderID="head" runat="server">
-    <style type="text/css">
-        tr.alt td
-        {
-            background-color: #eee;
-        }
-        .Bold
-        {
-            font-weight: bold;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>

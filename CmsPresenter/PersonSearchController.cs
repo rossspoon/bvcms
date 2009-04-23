@@ -23,7 +23,7 @@ namespace CMSPresenter
         public PersonSearchController()
         {
             Db = DbUtil.Db;
-            TagTypeId = DbUtil.TagTypeId_OrgMembersOnly;
+            TagTypeId = DbUtil.TagTypeId_Personal;
             TagName = Util.CurrentTagName;
             TagOwner = Util.CurrentTagOwnerId;
         }

@@ -32,6 +32,7 @@
             <th><a href="#" class="sortable">Gender</a></th>
             <th><a href="#" class="sortable">Class</a></th>
         </tr>
+        <tbody>
         <% foreach (var v in ViewData.Model.FetchVBSInfo())
            { %>
         <tr>
@@ -56,6 +57,7 @@
             </td>
         </tr>
         <% } %>
+        </tbody>
     </table>
     <div id="OrgChooser" style="width: 366px;height:138px">
         <table>

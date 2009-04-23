@@ -66,19 +66,33 @@ namespace CMSWeb.Models
         private string _Grade;
         public string Grade
         {
-            get { return _Grade; }
+            get
+            {
+                if (_Grade != null)
+                    return _Grade;
+                _Grade = DbUtil.Db.UserPreference("VBSGrade");
+                return _Grade;
+            }
             set
             {
                 _Grade = value;
+                DbUtil.Db.SetUserPreference("VBSGrade", value);
             }
         }
         private string _UserInfo;
         public string UserInfo
         {
-            get { return _UserInfo; }
+            get
+            {
+                if (_UserInfo != null)
+                    return _UserInfo;
+                _UserInfo = DbUtil.Db.UserPreference("VBSUserInfo");
+                return _UserInfo;
+            }
             set
             {
                 _UserInfo = value;
+                DbUtil.Db.SetUserPreference("VBSUserInfo", value);
             }
         }
 
@@ -157,7 +171,7 @@ namespace CMSWeb.Models
         {
             var q = from v in DbUtil.Db.VBSApps
                     where UserInfo == "" || UserInfo == null || v.UserInfo == UserInfo || v.UserInfo == null
-                    where Grade == "" || Grade == null || v.GradeCompleted == Grade
+                    where Grade == "0" || v.GradeCompleted == Grade
                     where !NewAppsOnly || v.PeopleId == null
                     select v;
             if (Dir != "desc")
@@ -263,7 +277,7 @@ namespace CMSWeb.Models
                         Text = g.Key.ToString()
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
         public IEnumerable<SelectListItem> FetchDivisions()
