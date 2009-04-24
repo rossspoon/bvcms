@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 using CmsData;
+using CMSPresenter;
 
 namespace CMSWeb.Reports
 {
@@ -17,7 +18,9 @@ namespace CMSWeb.Reports
             {
                 DbUtil.LogActivity("Viewing Weekly Attendance Summary Rpt");
                 var date = this.QueryString<DateTime?>("date");
-                SundayDate.Text = date.HasValue ? date.Value.ToString("d") : Util.Now.Date.ToString("d");
+                var caids = new ChurchAttendanceConstants();
+                SundayDate.Text = date.HasValue ? date.Value.ToString("d") 
+                    : caids.MostRecentAttendedSunday().ToString("d");
             }
             DateTime reportDate = DateTime.Parse(SundayDate.Text);
             reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek);

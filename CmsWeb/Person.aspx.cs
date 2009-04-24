@@ -110,7 +110,7 @@ namespace CMSWeb
             if (vbs != null)
             {
                 VBSFormLink.NavigateUrl = "/VBS/Detail/{0}".Fmt(vbs.Id);
-                VBSFormLink.Visible = User.IsInRole("Finance");
+                VBSFormLink.Visible = User.IsInRole("Attendance");
             }
 
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)

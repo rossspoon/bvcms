@@ -196,6 +196,7 @@ namespace CMSPresenter
             tag2.PersonTags.Add(new TagPerson { Person = p });
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
+            AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
             return p;
         }
         private static AddFamilyType ParseFamilyType(object value)

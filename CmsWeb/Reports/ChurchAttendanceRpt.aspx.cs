@@ -21,17 +21,12 @@ namespace CMSWeb.Reports
             {
                 DbUtil.LogActivity("Viewing Church Attendance Rpt");
                 var date = this.QueryString<DateTime?>("date");
-                SundayDate.Text = date.HasValue ? date.Value.ToString("d") : Util.Now.Date.ToString("d");
+                var caids = new ChurchAttendanceConstants();
+                SundayDate.Text = date.HasValue ? date.Value.ToString("d") 
+                    : caids.MostRecentAttendedSunday().ToString("d");
             }
-
             DateTime reportDate = DateTime.Parse(SundayDate.Text);
             reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek); //Sunday Date equal/before date selected
-            //var caids = new ChurchAttendanceConstants();
-            //for (int n = 52; n > 0; n--)
-            //    if (caids.HasData(reportDate))
-            //        break;
-            //    else
-            //        reportDate = reportDate.AddDays(-7);
             SundayDate.Text = reportDate.ToString("d");
         }
 

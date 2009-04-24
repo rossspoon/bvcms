@@ -17,7 +17,10 @@
             <ItemTemplate>
                 <tr style="background-color:#DCDCDC;color: #000000;">
                     <td>
-                        <asp:HyperLink ID="NameLink" runat="server" NavigateUrl='<%# Eval("UserId", "~/Admin/Activity.aspx?uid={0}") %>' Text='<%# Eval("Name") %>'></asp:HyperLink>
+                        <asp:HyperLink ID="UserLink" runat="server" NavigateUrl='<%# Eval("UserId", "~/Admin/Activity.aspx?uid={0}") %>' Text='<%# Eval("Username") %>'></asp:HyperLink>
+                    </td>
+                    <td>
+                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("Name") %>' />
                     </td>
                     <td>
                         <asp:HyperLink ID="ActivityLink" runat="server" NavigateUrl='<%# Eval("Url") %>' Text='<%# Eval("Activity") %>'></asp:HyperLink>
@@ -43,6 +46,8 @@
                             <table ID="itemPlaceholderContainer" runat="server" border="1" 
                                 style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
                                 <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
+                                    <th runat="server">
+                                        User</th>
                                     <th runat="server">
                                         Name</th>
                                     <th runat="server">

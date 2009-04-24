@@ -21,16 +21,18 @@ namespace CMSPresenter
 {
     public class BFCAttendSummaryController
     {
-        private const int MiscTags = 1104;
+        private int MiscTags;
         TimeSpan t800, t930, t1100;
-
+        int dbUtilBFClassOrgTagId;
         private CMSDataContext Db;
         public BFCAttendSummaryController()
         {
             Db = DbUtil.Db;
+            MiscTags = Db.Programs.Single(d => d.Name == DbUtil.MiscTagsString).Id;
             t800 = TimeSpan.Parse("8:00");
             t930 = TimeSpan.Parse("9:30");
             t1100 = TimeSpan.Parse("11:00");
+            dbUtilBFClassOrgTagId = DbUtil.BFClassOrgTagId;
         }
         public class BFCAttendSummaryInfo
         {
@@ -62,7 +64,7 @@ namespace CMSPresenter
         {
             var q2 = from m in Db.Meetings
                      let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
-                     where div.ProgId == 101
+                     where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate.Value.Date == sunday.Date
                      group m by new { div.BFCSummaryOrgTags.First().SortOrder, m.MeetingDate } into g
@@ -123,7 +125,7 @@ namespace CMSPresenter
             // all the matching meeting division/date/hour counts for the date range
             var q2 = from m in Db.Meetings
                      let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
-                     where div.ProgId == 101
+                     where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate >= fromDate && m.MeetingDate < toDate.AddDays(1)
                      group m by new { div.BFCSummaryOrgTags.First().SortOrder, m.MeetingDate } into g

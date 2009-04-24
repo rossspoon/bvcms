@@ -19,8 +19,8 @@ namespace CMSWeb.Reports
                 DbUtil.LogActivity("Viewing Weekly Attendance Rpt");
                 var fdate = this.QueryString<DateTime?>("fdate");
                 var tdate = this.QueryString<DateTime?>("fdate");
-                DateTime today = Util.Now.Date;
-
+                var caids = new ChurchAttendanceConstants();
+                DateTime today = caids.MostRecentAttendedSunday();
                 FromDate.Text = fdate.HasValue ? fdate.Value.ToString("d") : new DateTime(today.Year, today.Month, 1).ToString("d");
                 ToDate.Text = tdate.HasValue ? tdate.Value.ToString("d") : new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString("d");
             }

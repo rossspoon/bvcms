@@ -19,17 +19,11 @@ namespace CMSWeb
             if (!IsPostBack)
             {
                 DbUtil.LogActivity("Viewing Church Attendance Summary Rpt");
-                SundayDate.Text = Util.Now.Date.ToString("d");
+                var caids = new ChurchAttendanceConstants();
+                SundayDate.Text = caids.MostRecentAttendedSunday().ToString("d");
             }
             var reportDate = DateTime.Parse(SundayDate.Text);
             reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek); //Sunday Date equal/before date selected
-
-            //var caids = new ChurchAttendanceConstants();
-            //for (int n = 52; n > 0; n--)
-            //    if (caids.HasData(reportDate))
-            //        break;
-            //    else
-            //        reportDate = reportDate.AddDays(-7);
             SundayDate.Text = reportDate.ToString("d");
         }
 
