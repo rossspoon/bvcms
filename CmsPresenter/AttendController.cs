@@ -35,7 +35,7 @@ namespace CMSPresenter
             Db = DbUtil.Db;
             var c = new CodeValueController();
             AttendCodes = c.AttendanceTypeCodes();
-            MemberCodes = CodeValueController.MemberTypeCodes();
+            MemberCodes = CodeValueController.MemberTypeCodes2();
         }
 
         private int _count;
@@ -185,7 +185,7 @@ namespace CMSPresenter
 
         public static int GetAttendanceTypeId(int MemberTypeId)
         {
-            return CodeValueController.MemberTypeCodes().Single(mt => mt.Id == MemberTypeId).AttendanceTypeId;
+            return CodeValueController.MemberTypeCodes2().Single(mt => mt.Id == MemberTypeId).AttendanceTypeId;
         }
 
         public IEnumerable<AttendInfo> AttendHistory(int pid, string sortExpression, int maximumRows, int startRowIndex)
@@ -283,7 +283,7 @@ namespace CMSPresenter
             else if (o.MemberTypeId.HasValue) // member of this class
             {
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
-                Attendance.AttendanceTypeId = CodeValueController.MemberTypeCodes()
+                Attendance.AttendanceTypeId = CodeValueController.MemberTypeCodes2()
                     .Single(mt => mt.Id == Attendance.MemberTypeId).AttendanceTypeId;
 
                 if (o.IsRegularHour.Value && InSvcMember != null && o.IsSameHour.Value) // rarely true

@@ -196,7 +196,6 @@ namespace CMSPresenter
             tag2.PersonTags.Add(new TagPerson { Person = p });
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
-            AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
             return p;
         }
         private static AddFamilyType ParseFamilyType(object value)
@@ -210,6 +209,7 @@ namespace CMSPresenter
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             var p = AddPerson(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
             DbUtil.Db.SubmitChanges();
+            AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
         public static bool AddNewPerson(string name, string dob, string selectedValue, int GenderId, int OriginId, int? EntryPointId)

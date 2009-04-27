@@ -21,11 +21,6 @@ namespace CMSWeb
     {
         public System.Web.UI.ScriptManager ScriptManager { get { return ScriptManager1; } }
 
-        public void SetQueryBuilder()
-        {
-            SaveQueryLink.Visible = !Util.OrgMembersOnly;
-            OpenSavedQueryLink.Visible = !Util.OrgMembersOnly;
-        }
         public bool NoCache { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -83,7 +78,7 @@ namespace CMSWeb
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
             qb.CleanSlate();
-            Response.Redirect("~/QueryBuilder.aspx");
+            Response.Redirect("/QueryBuilder/Main/");
         }
 
         protected void SearchText_TextChanged(object sender, EventArgs e)

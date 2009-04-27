@@ -172,7 +172,7 @@
                 <asp:QueryStringParameter Name="orgid" QueryStringField="id" Type="Int32" />
             </SelectParameters>
         </asp:ObjectDataSource>
-        <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes"
+        <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes2"
             TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
         <asp:ObjectDataSource ID="UserTags" runat="server" SelectMethod="UserTagsWithUnspecified"
             TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

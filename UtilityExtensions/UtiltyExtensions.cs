@@ -100,6 +100,8 @@ namespace UtilityExtensions
         }
         public static string[] SplitStr(this string s, string delimiter)
         {
+            if (s == null)
+                return "".Split(delimiter.ToCharArray());
             return s.Split(delimiter.ToCharArray());
         }
         public static string[] SplitStr(this string s, string delimiter, int nitems)

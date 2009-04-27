@@ -74,10 +74,10 @@ namespace CMSWeb.Models
         private Regex AddrRegex = new Regex(
         @"\A(?<addr>.*);\s*(?<city>.*),\s+(?<state>[A-Z]*)\s+(?<zip>\d{5}(-\d{4})?)\z");
 
-        private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
+        private IEnumerable<SearchPeopleInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query
-                    select new PeopleInfo
+                    select new SearchPeopleInfo
                     {
                         PeopleId = p.PeopleId,
                         Name = p.Name,
@@ -94,7 +94,7 @@ namespace CMSWeb.Models
             return q;
         }
 
-        public IEnumerable<PeopleInfo> PeopleList()
+        public IEnumerable<SearchPeopleInfo> PeopleList()
         {
             var query = ApplySearch();
             query = ApplySort(query, Sort).Skip(StartRow).Take(PageSize.Value);
@@ -371,7 +371,7 @@ namespace CMSWeb.Models
             return null;
         }
     }
-    public class PeopleInfo
+    public class SearchPeopleInfo
     {
         public int PeopleId { get; set; }
         public string Name { get; set; }

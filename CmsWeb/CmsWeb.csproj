@@ -361,6 +361,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
+    <Compile Include="Controllers\QueryBuilderController.cs" />
     <Compile Include="Controllers\DisplayController.cs" />
     <Compile Include="Controllers\SearchPeopleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -381,6 +382,8 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\QueryModel.cs" />
+    <Compile Include="Models\PeopleInfo.cs" />
     <Compile Include="Models\VBSDetailModel.cs" />
     <Compile Include="Models\VBSModel.cs" />
     <Compile Include="Models\PagerModel.cs" />
@@ -948,6 +951,9 @@
     <Content Include="bin\RouteDebug.dll" />
     <Content Include="Content\arrows-ffffff.png" />
     <Content Include="Content\content.css" />
+    <Content Include="Content\dropdown.gif" />
+    <Content Include="Content\dropdown_active.gif" />
+    <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\header-gradient.png" />
     <Content Include="Content\images\222222_11x11_icon_arrows_leftright.gif" />
@@ -1004,6 +1010,7 @@
     <Content Include="Content\jqModal.css" />
     <Content Include="Content\jquery-ui-1.7.1.custom.css" />
     <Content Include="Content\jquery.tooltip.css" />
+    <Content Include="Content\jqueryMultiSelect.css" />
     <Content Include="Content\js2\effects.core.js" />
     <Content Include="Content\js2\effects.highlight.js" />
     <Content Include="Content\js2\jquery-1.3.2.js" />
@@ -1017,6 +1024,7 @@
     <Content Include="Content\js\jquery.FCKEditor.js" />
     <Content Include="Content\js\jquery.FCKEditor.pack.js" />
     <Content Include="Content\js\jquery.MetaData.js" />
+    <Content Include="Content\js\jqueryMultiSelect.js" />
     <Content Include="Content\loading.gif" />
     <Content Include="Content\navigation-shadow.png" />
     <Content Include="Content\shadow.png" />
@@ -1608,7 +1616,12 @@
     <None Include="fckeditor\_samples\php\sampleposteddata.php" />
     <None Include="fckeditor\_samples\py\sample01.py" />
     <None Include="fckeditor\_samples\py\sampleposteddata.py" />
+    <Content Include="Scripts\ExportToolbar2.js" />
+    <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Views\Display\EditPage.aspx" />
+    <Content Include="Views\QueryBuilder\Conditions.ascx" />
+    <Content Include="Views\QueryBuilder\Main.aspx" />
+    <Content Include="Views\QueryBuilder\Results.aspx" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Content\js\jquery.confirm-1.2.js" />
     <Content Include="Content\js\jquery.dimensions.js" />
@@ -1659,6 +1672,7 @@
     <Content Include="Content\js\ui.tabs.min.js" />
     <Content Include="Scripts\Vbs.js" />
     <Content Include="Views\Display\Page.aspx" />
+    <Content Include="Views\Shared\ExportToolBar.ascx" />
     <Content Include="Views\VBS\Detail.aspx" />
     <Content Include="Views\VBS\Index.aspx" />
     <Content Include="Views\SearchPeople\Index.aspx" />

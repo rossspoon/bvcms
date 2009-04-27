@@ -661,7 +661,7 @@
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_ScheduleId" runat="server" SelectMethod="Schedules"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes"
+    <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes2"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_GenderTypeId" runat="server" SelectMethod="GenderClasses"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

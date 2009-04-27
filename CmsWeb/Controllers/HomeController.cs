@@ -28,7 +28,7 @@ namespace CMSWeb.Controllers
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
             qb.CleanSlate();
-            return Redirect("/Querybuilder.aspx");
+            return Redirect("/QueryBuilder/Main");
         }
         public ActionResult DoBirthDays()
         {

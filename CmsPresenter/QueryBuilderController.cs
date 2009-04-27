@@ -71,7 +71,6 @@ namespace CMSPresenter
             var c = Db.LoadQueryById(id);
             if (c == null)
                 return;
-            //view.CategoryText = c.FieldInfo.CategoryTitle;
             view.FieldText = c.FieldInfo.Name;
             UpdateExpressionView();
             view.ComparisonText = c.Comparison;
@@ -262,7 +261,7 @@ namespace CMSPresenter
                                      where c.FieldType == fieldMap.Type
                                      select c.CompType;
             view.TextVisible = false;
-            view.DataTextField = fieldMap.DataTextField;
+            view.DataTextField = "Value";
             view.DataValueField = fieldMap.DataValueField;
 
             view.SubDivOrgVisible = fieldMap.HasParam("SubDivOrg");

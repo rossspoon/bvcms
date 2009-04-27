@@ -1019,7 +1019,7 @@ namespace CMSPresenter
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public static List<MemberTypeItem> MemberTypeCodes()
+        public static List<MemberTypeItem> MemberTypeCodes2()
         {
             const string NAME = "MemberTypeCodes";
             var list = HttpRuntime.Cache[NAME] as List<MemberTypeItem>;
@@ -1038,6 +1038,12 @@ namespace CMSPresenter
                 HttpRuntime.Cache[NAME] = list;
             }
             return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public static IEnumerable<CodeValueItem> MemberTypeCodes()
+        {
+            var list = MemberTypeCodes2();
+            return list.Select(c => new CodeValueItem { Code = c.Code, Id = c.Id, Value = c.Value });
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
@@ -1089,6 +1095,7 @@ namespace CMSPresenter
                     select new CodeValueItem
                     {
                         Value = g.Key,
+                        Code = g.Key,
                     };
             return q;
         }

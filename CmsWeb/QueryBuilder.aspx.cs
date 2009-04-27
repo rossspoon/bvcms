@@ -49,7 +49,7 @@ namespace CMSWeb
 
             if (!site.ScriptManager.IsInAsyncPostBack)
             {
-                site.SetQueryBuilder();
+                //site.SetQueryBuilder();
                 ExportToolBar1.TaggedEvent += new EventHandler(ExportToolBar1_TaggedEvent);
             }
             ConditionSelection.Selected += new QueryConditions.ConditionSelectHandler(ConditionSelection_Selected);

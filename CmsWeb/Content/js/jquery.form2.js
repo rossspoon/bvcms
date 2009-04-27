@@ -72,7 +72,7 @@ $.QueryString = function(q, item) {
     return r[item];
 };
 $.block = function() {
-    $.blockUI({ showOverlay: false, message: 'working on it...<img src="/content/loading.gif"/>' });
+    $.blockUI({ message: 'working on it...<img src="/content/loading.gif"/>' });
 };
 $.unblock = function() {
     $.unblockUI({ fadeOut: 150 });

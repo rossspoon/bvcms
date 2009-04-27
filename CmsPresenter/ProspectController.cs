@@ -21,7 +21,7 @@ namespace CMSPresenter
             Db = new CMSDataContext(Util.ConnectionString);
             var c = new CodeValueController();
             AttendCodes = c.AttendanceTypeCodes();
-            MemberCodes = CodeValueController.MemberTypeCodes();
+            MemberCodes = CodeValueController.MemberTypeCodes2();
         }
 
         public IEnumerable<ProspectInfo> ListByQuery(int qid)

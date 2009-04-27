@@ -67,7 +67,6 @@ namespace CmsData
         public List<string> ParamList { get; set; }
         public string DataSource { get; set; }
         public string DataValueField { get; set; }
-        public string DataTextField { get; set; }
         private string formatArgs(string fmt, QueryBuilderClause c)
         {
             var p = new List<object>();

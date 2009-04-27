@@ -48,7 +48,6 @@ namespace CmsData
                                               Type = FieldClass.Convert((string)f.Attribute("Type")),
                                               Params = (string)f.Attribute("Params"),
                                               DataSource = (string)f.Attribute("DataSource"),
-                                              DataTextField = (string)f.Attribute("DataTextField"),
                                               DataValueField = (string)f.Attribute("DataValueField"),
                                               Description = f.Value,
                                           }

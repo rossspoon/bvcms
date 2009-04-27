@@ -114,17 +114,17 @@
                     <a href="/QueryBuilder.aspx">QueryBuilder</a>
                     <ul>
                         <li>
-                            <a href="/QueryBuilder.aspx">Last Query</a></li>
+                            <a href="/QueryBuilder/Main">Last Query</a></li>
                         <li>
                             <%=Html.ActionLink("New Query", "NewQuery", "Home")%></li>
                         <li>
                             <a href="/SavedQueries.aspx">Saved Queries</a></li>
-<% if (HttpContext.Current.Items["OnQueryBuilder"].IsNotNull())
+<% if (ViewData["OnQueryBuilder"] == "true")
    { %>
                         <li>
-                            <a href="javascript:OpenQuery();">Open Saved Query</a></li>
+                            <a id="ShowOpenQuery" href="#">Open Saved Query</a></li>
                         <li>
-                            <a href="javascript:SaveQuery();">Save Query As</a></li>
+                            <a id="ShowSaveQuery" href="#">Save Query As</a></li>
 <% } %>
                     </ul>
                 </li>

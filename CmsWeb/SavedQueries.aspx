@@ -24,7 +24,7 @@
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField DataField="User" HeaderText="User" SortExpression="User" />
-            <asp:HyperLinkField DataNavigateUrlFields="QueryId" DataNavigateUrlFormatString="~/QueryBuilder.aspx?id={0}"
+            <asp:HyperLinkField DataNavigateUrlFields="QueryId" DataNavigateUrlFormatString="/QueryBuilder/Main/{0}"
                 Text="Edit in QB" />
             <asp:TemplateField HeaderText="Description" SortExpression="Description">
                 <ItemTemplate>

@@ -125,13 +125,6 @@
                             <%=Html.ActionLink("New Query", "NewQuery", "Home")%></li>
                         <li>
                             <a href="/SavedQueries.aspx">Saved Queries</a></li>
-<% if (HttpContext.Current.Items["OnQueryBuilder"].IsNotNull())
-   { %>
-                        <li>
-                            <a href="javascript:OpenQuery();">Open Saved Query</a></li>
-                        <li>
-                            <a href="javascript:SaveQuery();">Save Query As</a></li>
-<% } %>
                     </ul>
                 </li>
 <% if (Page.User.IsInRole("Finance"))

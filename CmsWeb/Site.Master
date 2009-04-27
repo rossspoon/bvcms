@@ -95,18 +95,14 @@
                     </ul>
                 </li>
                 <li id="QueryMenuItem" class="headlink" runat="server">
-                    <asp:HyperLink ID="QueryLink" NavigateUrl="~/QueryBuilder.aspx" runat="server">QueryBuilder</asp:HyperLink>
+                    <asp:HyperLink ID="QueryLink" NavigateUrl="/QueryBuilder/Main" runat="server">QueryBuilder</asp:HyperLink>
                     <ul>
                         <li>
-                            <asp:HyperLink ID="LastQueryLink" NavigateUrl="~/QueryBuilder.aspx" runat="server">Last Query</asp:HyperLink></li>
+                            <asp:HyperLink ID="LastQueryLink" NavigateUrl="/QueryBuilder/Main" runat="server">Last Query</asp:HyperLink></li>
                         <li>
                             <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton></li>
                         <li>
                             <asp:HyperLink ID="SavedQueriesLink" NavigateUrl="~/SavedQueries.aspx" runat="server">Saved Queries</asp:HyperLink></li>
-                        <li id="OpenSavedQueryLink" runat="server" visible="false">
-                            <asp:HyperLink ID="HyperLink2" NavigateUrl="javascript:OpenQuery();" runat="server">Open Saved Query</asp:HyperLink></li>
-                        <li id="SaveQueryLink" runat="server" visible="false">
-                            <asp:HyperLink ID="HyperLink3" NavigateUrl="javascript:SaveQuery();" runat="server">Save Query As</asp:HyperLink></li>
                     </ul>
                 </li>
                 <li id="ContributionsMenuItem" class="headlink" runat="server" visible="false">

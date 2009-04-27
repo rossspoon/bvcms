@@ -74,7 +74,7 @@
                 </td>
             </tr>
         </table>
-        <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes"
+        <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes2"
             TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     </div>
     </form>

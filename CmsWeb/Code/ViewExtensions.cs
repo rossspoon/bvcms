@@ -13,6 +13,7 @@ using UtilityExtensions;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Collections.Generic;
 
 public enum ListType
 {
@@ -98,7 +99,7 @@ public static class ViewExtensions
         return b.ToString(TagRenderMode.Normal);
     }
     public static string HyperLink(this System.Web.Mvc.HtmlHelper helper, 
-        string link, 
+        string link,
         string text, 
         object htmlAttributes)
     {
@@ -128,7 +129,7 @@ public static class ViewExtensions
         var b = tb;
         b.MergeAttribute("href", link);
         if (onclick.HasValue())
-            b.MergeAttribute("onclick", onclick);
+            b.MergeAttribute("onclick", "return " + onclick);
         var attr = new RouteValueDictionary(htmlAttributes);
         b.MergeAttributes<string, object>(attr);
         return b.ToString(TagRenderMode.Normal);
@@ -181,5 +182,53 @@ public static class ViewExtensions
         d = true;
 #endif
         return d;
+    }
+    private static string TryGetModel(this HtmlHelper helper, string name)
+    {
+        ModelState val;
+        helper.ViewData.ModelState.TryGetValue(name, out val);
+        string s = null;
+        if (val != null)
+            s = val.Value.AttemptedValue;
+        return s;
+    }
+    public static string DropDownList2(this System.Web.Mvc.HtmlHelper helper, string name, IEnumerable<SelectListItem> list, bool visible)
+    {
+        var tb = new TagBuilder("select");
+        tb.MergeAttribute("id", name);
+        tb.MergeAttribute("name", name);
+        if (!visible)
+            tb.MergeAttribute("style", "display: none");
+        var s = helper.TryGetModel(name);
+        var sb = new StringBuilder();
+        foreach (var o in list)
+        {
+            var ot = new TagBuilder("option");
+            ot.MergeAttribute("value", o.Value);
+            bool selected = false;
+            if (s.HasValue())
+                selected = s == o.Value;
+            else if (o.Selected)
+                selected = true;
+            if (selected)
+               ot.MergeAttribute("selected", "selected");
+            ot.SetInnerText(o.Text);
+            sb.Append(ot.ToString());
+        }
+        tb.InnerHtml = sb.ToString();
+        return tb.ToString();
+    }
+    public static string TextBox2(this System.Web.Mvc.HtmlHelper helper, string name, bool visible)
+    {
+        var tb = new TagBuilder("input");
+        tb.MergeAttribute("type", "text");
+        tb.MergeAttribute("id", name);
+        tb.MergeAttribute("name", name);
+        if (!visible)
+            tb.MergeAttribute("style", "display: none");
+        var s = helper.TryGetModel(name);
+        var viewDataValue = Convert.ToString(helper.ViewData.Eval(name));
+        tb.MergeAttribute("value", s ?? viewDataValue);
+        return tb.ToString();
     }
 }
