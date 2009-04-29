@@ -100,6 +100,7 @@ namespace CMSWeb.Models
         {
 			var sa = new []
 			{ 
+				new { Value="", Text="(not specified yet)" }, 
 				new { Value="Pre-K", Text="Pre-K (4 before Oct 1 last year)" }, 
 				new { Value="K-5", Text="K-5 (5 before Oct 1 last year)" }, 
 				new { Value="1st", Text="1st grade completed this May" }, 
@@ -108,6 +109,7 @@ namespace CMSWeb.Models
 				new { Value="4th", Text="4th grade completed this May" }, 
 				new { Value="5th", Text="5th grade completed this May" }, 
 				new { Value="Exceptional", Text="Exceptional" }, 
+				new { Value="Other", Text="Other" }, 
 			};
 			return from g in sa
 				   select new SelectListItem

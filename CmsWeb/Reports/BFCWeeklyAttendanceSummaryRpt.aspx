@@ -31,7 +31,7 @@
         <hr />
         <asp:ListView ID="ListView1" runat="server" DataSourceID="dsBFCWeeklyAttendance">
             <LayoutTemplate>
-                <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" style="width: 500px">
+                <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" style="width: 500px" align="center">
                     <tr id="Tr1" runat="server" class="headerrow">
                         <th id="Th1" align="left" runat="server">
                             Division Name

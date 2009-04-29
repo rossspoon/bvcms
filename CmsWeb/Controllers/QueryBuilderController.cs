@@ -46,7 +46,13 @@ namespace CMSWeb.Controllers
         {
             var m = new QueryModel { Comparison = Comparison, ConditionName = ConditionName };
             m.SetCodes();
-            return Json(new { CodeData = m.CodeData, SelectMultiple = m.SelectMultiple });
+            return Json(new
+            { 
+                CodesVisible = m.CodesVisible, 
+                CodeVisible = m.CodeVisible, 
+                CodeData = m.CodeData, 
+                SelectMultiple = m.SelectMultiple 
+            });
         }
         public JsonResult EditCondition(int id)
         {
@@ -107,6 +113,7 @@ namespace CMSWeb.Controllers
             var m = new QueryModel();
             return Json(m.SavedQueries());
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveQuery(string SavedQueryDesc, bool IsPublic)
         {
             var m = new QueryModel { SavedQueryDesc = SavedQueryDesc, IsPublic = IsPublic };
@@ -114,7 +121,7 @@ namespace CMSWeb.Controllers
             m.SaveQuery();
             var c = new ContentResult();
             c.Content = m.Description;
-            return Json(m.SavedQueries());
+            return c;
         }
         public ActionResult Results()
         {
@@ -122,6 +129,13 @@ namespace CMSWeb.Controllers
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
             return PartialView(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult ToggleTag(int id)
+        {
+            var r = Person.ToggleTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return Json(new { HasTag = r });
         }
     }
 }

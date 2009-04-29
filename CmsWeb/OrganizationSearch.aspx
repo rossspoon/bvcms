@@ -22,28 +22,6 @@
         $get('<%=TriggerRollsheetPopup.ClientID%>').click();
         $get('<%=RollsheetInputPanel.ClientID%>').focus();
     }
-    function ViewRollsheet() {
-        Page_ClientValidate(' ');
-        if (Page_IsValid) {
-            var did = '<%=OrgDivisions.SelectedValue %>';
-            var sid = '<%=Schedule.SelectedValue %>';
-            var sts = '<%=Status.SelectedValue %>';
-            var nam = '<%=NameSearch.Text %>';
-            var d = $get('<%=MeetingDate.ClientID %>').value;
-            var t = $get('<%=MeetingTime.ClientID %>').value;
-            var args = "?did=" + did +
-                   "&sid=" + sid +
-                   "&sts=" + sts +
-                   "&nam=" + nam +
-                   "&date=" + d +
-                   "&time=" + t;
-
-            var newWindowUrl = "Reports/RollsheetRpt.aspx" + args
-            window.open(newWindowUrl);
-        }
-        return Page_IsValid;
-    }
-
     function ViewRollsheet2() {
         Page_ClientValidate(' ');
         if (Page_IsValid) {
@@ -223,9 +201,7 @@
                     Meeting Time: <asp:TextBox ID="MeetingTime" runat="server" ToolTip="Time in Format hh:mm am or pm"></asp:TextBox>
                     <cc2:CalendarExtender ID="MeetingDateExtender" runat="server" TargetControlID="MeetingDate"></cc2:CalendarExtender>
                     <span class="footer">
-                        <asp:LinkButton ID="RollsheetLoad" runat="server" CausesValidation="false" Text="Create"
-                             OnClientClick="ViewRollsheet();" ValidationGroup="RollSheetValidatorGroup" />
-                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" Text="(create new version)"
+                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" Text="Create"
                              OnClientClick="ViewRollsheet2();" ValidationGroup="RollSheetValidatorGroup" />
                         <asp:LinkButton ID="RollsheetCancel" runat="server" CausesValidation="false" Text="Cancel" />
                     </span>

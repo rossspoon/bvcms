@@ -21,7 +21,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <center>
+    <div style="text-align:center">
         <h1>
             Church Attendance</h1>
         Sunday Date:
@@ -29,7 +29,7 @@
         <cc2:CalendarExtender ID="SundayDateExtender" runat="server" TargetControlID="SundayDate">
         </cc2:CalendarExtender>
         <hr />
-        <table>
+        <table align="center">
             <tr>
                 <td valign="top">
                     <asp:ListView ID="ChurchAttendance" runat="server" DataSourceID="dsChurchAttendance">
@@ -196,7 +196,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td colspan="3" align="center">
                     <asp:ListView ID="WednesdayAttendance" runat="server" DataSourceID="dsWednesdayAttendance">
                         <LayoutTemplate>
                             <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
@@ -233,7 +233,7 @@
                 </td>
             </tr>
         </table>
-    </center>
+    </div>
     <!-- Data Source Objects -->
     <asp:ObjectDataSource ID="dsChurchAttendance" runat="server" SelectMethod="ChurchAttendance"
         TypeName="CMSPresenter.ChurchAttendanceController">

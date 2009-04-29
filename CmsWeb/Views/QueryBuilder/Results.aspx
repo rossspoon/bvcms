@@ -58,7 +58,7 @@
         <a href='<%="/Person.aspx?id=" + p.BFTeacherId %>'><%=p.BFTeacher %></a>
     </td>
     <td>
-        <a href="#" class="taguntag" title="Add to/Remove from Active Tag"><%=p.HasTag? "Remove" : "Add" %></a>
+        <a href="#" class="taguntag" title="Add to/Remove from Active Tag" value='<%=p.PeopleId %>'><%=p.HasTag? "Remove" : "Add" %></a>
     </td>
 </tr>
 <% } %>

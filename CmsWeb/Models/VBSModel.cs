@@ -170,8 +170,8 @@ namespace CMSWeb.Models
         public IEnumerable<VBSInfo> FetchVBSInfo()
         {
             var q = from v in DbUtil.Db.VBSApps
-                    where UserInfo == "" || UserInfo == null || v.UserInfo == UserInfo || v.UserInfo == null
-                    where Grade == "0" || v.GradeCompleted == Grade
+                    where UserInfo == "0" || v.UserInfo == UserInfo || v.UserInfo == null
+                    where Grade == "0" || v.GradeCompleted == Grade || (Grade == "99" && v.GradeCompleted == null)
                     where !NewAppsOnly || v.PeopleId == null
                     select v;
             if (Dir != "desc")
@@ -263,7 +263,7 @@ namespace CMSWeb.Models
                         Text = g.Key.ToString()
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
         public IEnumerable<SelectListItem> FetchClasses()
@@ -278,6 +278,7 @@ namespace CMSWeb.Models
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            list.Add(new SelectListItem { Text = "Blank", Value = "99" });
             return list;
         }
         public IEnumerable<SelectListItem> FetchDivisions()

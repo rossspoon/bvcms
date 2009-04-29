@@ -92,6 +92,7 @@ function AddListClick() {
         $("#actions").html(a[1]);
         $('#ListName').val('');
     });
+    return false;
 }
 function AddTaskEnter(e) {
     var key = window.event ? e.keyCode : e.which;
@@ -110,6 +111,7 @@ function AddTaskClick() {
             $('#tasks > tbody tr:first').addClass("alt");
         $('#TaskDesc').val('');
     });
+    return false;
 }
 function ShowDetail(id) {
     var drid = $("#TaskId").val();
@@ -127,27 +129,32 @@ function ShowDetail(id) {
             $('#r' + id).html(ret);
         });
     }
+    return false;
 }
 function Deselect() {
     var id = $("#TaskId").val();
     $.post('/Task/Columns/' + id, function(ret) {
         $('#r' + id).removeClass("detailrow").html(ret);
     });
+    return false;
 }
 function SetPriority(id, priority) {
     $.getJSON('/Task/Priority/'+id+'?priority='+priority, null, function(ret) {
         $('#Priority').text(ret.Priority);
     });
+    return false;
 }
 function SetComplete(id) {
     $.post('/Task/SetComplete/' + id, null, function(ret) {
         $('#r' + id).removeClass('detailrow').html(ret);
     });
+    return false;
 }
 function Accept(id) {
     $.post('/Task/Accept/'+id, null, function(ret) {
         $('#r' + id).html(ret);
     });
+    return false;
 }
 $(function() {
     $("#dialogbox").dialog({
@@ -289,4 +296,5 @@ function Update() {
     $.post('/Task/Update/' + id, qs, function(ret) {
         $('#r' + id).html(ret);
     }, "html");
+    return false;
 }

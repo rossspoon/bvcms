@@ -24,10 +24,10 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <div style="text-align: center">
     <h1>
         Decision Summary Report</h1>
-    <div style="text-align: center">
-        <table style="font-size: large; text-align: left">
+        <table style="font-size: large; text-align: left" align="center">
             <tr>
                 <td style="text-align: right">
                     From Date:
@@ -63,13 +63,13 @@
             SetFocusOnError="True" ValidationGroup="vgDates" Type="Date" Text="To Date must be after From Date."
             CssClass="noPrint"></asp:CompareValidator>
         <hr />
-        <table cellpadding="4">
+        <table cellpadding="4" align="center">
             <tr>
                 <td colspan="2">
                     <asp:ListView ID="DecisionsView" runat="server" DataSourceID="ODSDecisions" 
                         onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" style="" align="center">
                                 <tr id="Tr7" runat="server" style="">
                                     <th class="HeaderLine" id="Th13" runat="server" colspan="2">
                                         Decisions
@@ -90,7 +90,7 @@
                             </tr>
                         </ItemTemplate>
                         <EmptyDataTemplate>
-                            <table id="Table1" runat="server" style="">
+                            <table id="Table1" runat="server" style="" align="center">
                                 <tr>
                                     <th>
                                         No Decisions
@@ -241,7 +241,7 @@
                     <asp:ListView ID="DroppedMemberChurchView" runat="server" 
                         DataSourceID="ODSDroppedMembersByChurch" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" style="" align="center">
                                 <tr id="Tr13" runat="server" style="">
                                     <th class="HeaderLine" id="Th19" runat="server" colspan="2">
                                         Dropped Members by Church

@@ -172,12 +172,13 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<WorshipAttendInfo> WednesdayAttendance(DateTime sunday)
         {
-            var wednesday = sunday.AddDays(-4);
+            var wednesday = sunday.AddDays(-4).AddHours(17);
 
             var q3 = from m in Db.Meetings
-                     where m.MeetingDate.Value.Date == wednesday
+                     where m.MeetingDate.Value.Date == wednesday.Date
+                     where m.MeetingDate.Value >= wednesday
                      where m.NumPresent > 0
-                     let div = m.Organization.DivOrgs.Single(t => t.Division.Program.Name != DbUtil.MiscTagsString).Division
+                     let div = m.Organization.DivOrgs.First(t => t.Division.Program.Name != DbUtil.MiscTagsString).Division
                      group m by
                         WedWorship.Contains(m.OrganizationId) ? "Prayer and Praise Service" :
                         div.Id == CrownTagId ? "Crown Ministry" :

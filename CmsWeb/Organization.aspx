@@ -54,18 +54,6 @@
             $get('<%=RollsheetInputPanel.ClientID%>').focus();
         }
 
-        function ViewRollsheet() {
-            Page_ClientValidate();
-            if (Page_IsValid) {
-                var id = '<%=Request.QueryString["id"].ToString()%>';
-                var d = $get('<%=MeetingDate.ClientID %>').value;
-                var t = $get('<%=MeetingTime.ClientID %>').value;
-                var args = "?oid=" + id + "&date=" + d + "&time=" + t;
-                var newWindowUrl = "Reports/RollsheetRpt.aspx" + args
-                window.open(newWindowUrl);
-            }
-            return Page_IsValid;
-        }
         function ViewRollsheet2() {
             Page_ClientValidate();
             if (Page_IsValid) {
@@ -564,9 +552,7 @@
                         <td>
                         </td>
                         <td class="footer">
-                            <asp:LinkButton ID="RollsheetLoad" runat="server" CausesValidation="false" Text="Create"
-                                OnClientClick="ViewRollsheet();" ValidationGroup="RollSheetValidatorGroup" />
-                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" Text="(create new version)"
+                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" Text="Create"
                                 OnClientClick="ViewRollsheet2();" ValidationGroup="NewMeetingValidatorGroup" />
                             <asp:LinkButton ID="RollsheetCancel" runat="server" CausesValidation="false" Text="Cancel" />
                         </td>

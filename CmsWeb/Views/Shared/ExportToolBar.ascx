@@ -44,12 +44,12 @@
                 Choir Attendance Labels</a></li>
         </ul>
     </li>
-    <li class="headlink"><a href=''><img src="/images/Tag.png" />
+    <li class="headlink"><a href='#'><img src="/images/Tag.png" />
         Tag</a>
         <ul>
-            <li><a id="TagAll" href=''><img src="/images/Tag.png" />
+            <li><a id="TagAll" href='#'><img src="/images/Tag.png" />
                 Add All</a></li>
-            <li><a id="TagRemoveAll" href=''><img src="/images/Tag.png" />
+            <li><a id="UnTagAll" href='#'><img src="/images/Tag.png" />
                 Remove All</a></li>
         </ul>
     </li>

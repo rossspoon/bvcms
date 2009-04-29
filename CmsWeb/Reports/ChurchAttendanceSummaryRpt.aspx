@@ -20,7 +20,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <center>
+    <div style="text-align:center">
         <h1>
             Church Attendance Summary</h1>
         <span>Sunday Date:&nbsp;</span><asp:TextBox ID="SundayDate" runat="server" AutoPostBack="True"
@@ -31,7 +31,7 @@
         <asp:ListView ID="ListView1" runat="server" DataSourceID="dsAttendanceSummary">
             <LayoutTemplate>
                 <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
-                    style="width: 400px">
+                    style="width: 400px" align="center">
                     <tr id="itemPlaceholder" runat="server">
                     </tr>
                 </table>
@@ -50,7 +50,7 @@
                 </tr>
             </ItemTemplate>
             <EmptyDataTemplate>
-                <table id="Table1" runat="server" style="">
+                <table id="Table1" runat="server" style="" align="center">
                     <tr>
                         <td>
                             No data was returned.
@@ -65,7 +65,7 @@
         <asp:ListView ID="InterestPointInfo" runat="server" DataSourceID="dsInterestPointInfo">
             <LayoutTemplate>
                 <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
-                    style="width: 400px">
+                    style="width: 400px" align="center">
                     <tr class="headerrow">
                         <th>
                             &nbsp;
@@ -101,7 +101,7 @@
                 </tr>
             </ItemTemplate>
             <EmptyDataTemplate>
-                <table id="Table1" runat="server" style="">
+                <table id="Table1" runat="server" style="" align="center">
                     <tr>
                         <td>
                             No data was returned.
@@ -115,7 +115,7 @@
         <asp:ListView ID="ListView2" runat="server" DataSourceID="dsGuestCentral">
             <LayoutTemplate>
                 <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
-                    style="width: 400px">
+                    style="width: 400px" align="center">
                     <tr class="headerrow">
                         <th>
                             &nbsp;
@@ -151,7 +151,7 @@
                 </tr>
             </ItemTemplate>
             <EmptyDataTemplate>
-                <table id="Table1" runat="server" style="">
+                <table id="Table1" runat="server" style="" align="center">
                     <tr>
                         <td>
                             No data was returned.
@@ -160,7 +160,7 @@
                 </table>
             </EmptyDataTemplate>
         </asp:ListView>
-    </center>
+    </div>
     <asp:ObjectDataSource ID="dsAttendanceSummary" runat="server" SelectMethod="AttendanceSummary"
         TypeName="CMSPresenter.ChurchAttendanceSummaryController" 
         onobjectcreating="ODS_ObjectCreating">

@@ -3,11 +3,12 @@
    { %>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />
 <% } %>
-<td colspan="7"><a name="select" />
+<td colspan="7"><a name="select" /><a name="detail">
     <table class="Design2" style="border: 3px solid black">
     <tr><td align="right" colspan="2"><a href="#" onclick="Deselect();return false">
         <img style="border:0" src="/Content/images/888888_11x11_icon_close.gif" /></a></td></tr>
         <tr>
+   
             <th>Task</th>
             <td>
                 <%=Html.Hidden("TaskId", ViewData.Model.Id)%>
@@ -162,6 +163,6 @@
             </td>
         </tr>
 <% } %>
-    </table>
+    </table></a>
 </td>
 

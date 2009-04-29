@@ -160,7 +160,11 @@ namespace CMSWeb.Models
         public void SetState()
         {
             RightPanelVisible = true;
-            TextVisible = true;
+            IntegerValue = "";
+            NumberValue = "";
+            DateValue = "";
+            Program = 0;
+            TextVisible = false;
             NumberVisible = false;
             TextValue = "";
             CodeVisible = false;
@@ -182,7 +186,6 @@ namespace CMSWeb.Models
             ConditionName = ConditionName;
 
             CompareData = Comparisons().ToList();
-            TextVisible = false;
 
             DivisionVisible = fieldMap.HasParam("SubDivOrg");
             ProgramVisible = fieldMap.HasParam("DivOrg");
@@ -426,13 +429,16 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Programs()
         {
-            return from t in Db.Programs
-                   orderby t.Name
-                   select new SelectListItem
-                   {
-                       Value = t.Id.ToString(),
-                       Text = t.Name
-                   };
+            var q = from t in Db.Programs
+                    orderby t.Name
+                    select new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
         }
         public IEnumerable<SelectListItem> Divisions(int? progid)
         {

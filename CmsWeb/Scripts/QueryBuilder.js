@@ -21,24 +21,28 @@ $(function() {
         $.post('/QueryBuilder/AddToGroup/', qs, function(ret) {
             FillConditionGrid(ret);
         });
+        return false;
     });
     $('#Add').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Add/', qs, function(ret) {
             FillConditionGrid(ret);
         });
+        return false;
     });
     $('#Update').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Update/', qs, function(ret) {
             FillConditionGrid(ret);
         });
+        return false;
     });
     $('#Remove').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Remove/', qs, function(ret) {
             FillConditionGrid(ret);
         });
+        return false;
     });
     $('#Run').click(function(ev) {
         qs = $('#conditionForm').serialize();
@@ -64,6 +68,7 @@ $(function() {
             $('#ExistingQueries').fillOptions(ret);
         }, "json");
         $('#OpenQueryDiv').dialog("open");
+        return false;
     });
     $('#OpenQuery').click(function(ev) {
         $('#OpenQueryDiv').dialog("close");
@@ -71,12 +76,13 @@ $(function() {
     });
     $('#SaveQuery').click(function(ev) {
         $('#OpenQueryDiv').dialog("close");
-        $.post("/QueryBuilder/SaveQuery/", { 
-            SavedQueryDesc: $('#SavedQueryDesc').val(), 
-            IsPublic: $('#IsPublic').val() 
+        $.post("/QueryBuilder/SaveQuery/", {
+            SavedQueryDesc: $('#SavedQueryDesc').val(),
+            IsPublic: $('#IsPublic').val()
         }, function(ret) {
             $("#Description").text(ret);
         });
+        return false;
     });
 });
 function HighlightCondition() {
@@ -156,6 +162,12 @@ function RefreshList() {
         $('#toolbar').show();
         $('#Results').html(ret);
         $('#people tbody tr:even').addClass('alt');
+        $('a.taguntag').click(function(ev) {
+            $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function(ret) {
+                $(ev.target).text(ret.HasTag ? "Remove" : "Add");
+            }, "json");
+            return false;
+        });
         $('#people thead a.sortable').click(function(ev) {
             var newsort = $(this).text();
             var oldsort = $("#Sort").val();
@@ -167,6 +179,7 @@ function RefreshList() {
                 $("#Direction").val('asc');
             qs = $('#conditionForm').serialize();
             RefreshList();
+            return false;
         });
         $.unblock();
     });
@@ -210,6 +223,7 @@ function EditCondition(ev) {
         UpdateView(ret);
         $.unblock();
     }, "json");
+    return false;
 }
 
 (function($) {
@@ -237,6 +251,7 @@ function EditCondition(ev) {
                 $('#QueryConditionSelect').dialog("close");
                 UpdateView(ret);
             }, "json");
+            return false;
         });
         return this;
     };
@@ -245,20 +260,21 @@ function EditCondition(ev) {
 function UpdateCodes(ret) {
     $('#values').multiSelectRemove();
     $('#CodeValue').remove();
-    if (ret.SelectMultiple) {
-        $('#values').after('<select id="CodeValues"></select>');
-        $('#CodeValues').fillOptions(ret.CodeData, true);
-        $('#CodeValues').multiSelect({ oneOrMoreSelected: '*' });
-    }
-    else {
-        $('#values').after('<select id="CodeValue"></select>');
-        $('#CodeValue').fillOptions(ret.CodeData);
+    if (ret.CodeVisible || ret.CodesVisible) {
+        if (ret.SelectMultiple) {
+            $('#values').after('<select id="CodeValues"></select>');
+            $('#CodeValues').fillOptions(ret.CodeData, true);
+            $('#CodeValues').multiSelect({ oneOrMoreSelected: '*' });
+        }
+        else {
+            $('#values').after('<select id="CodeValue"></select>');
+            $('#CodeValue').fillOptions(ret.CodeData);
+        }
     }
 }
 
 function UpdateView(vs) {
-    if (vs.CodeVisible || vs.CodesVisible)
-        UpdateCodes(vs);
+    UpdateCodes(vs);
     $('#Comparison').fillOptions(vs.CompareData);
     if (vs.CodeVisible || vs.CodesVisible)
         CascadeComparison();
@@ -269,6 +285,8 @@ function UpdateView(vs) {
     $('#ConditionName').val(vs.ConditionName);
     $('#ConditionText').text(vs.ConditionText);
     $('#TextValue').val(vs.TextValue);
+    $('#IntegerValue').val(vs.IntegerValue);
+    $('#NumberValue').val(vs.NumberValue);
     $('#DateValue').val(vs.DateValue);
     $('#CodeValue').val(vs.CodeValue);
     $('#CodesValue').val(vs.CodesValue);

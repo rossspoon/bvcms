@@ -24,7 +24,7 @@
     <div style="text-align: center">
         <h1>
             BFC Division Average Attendance</h1>
-        <table style="text-align: left">
+        <table style="text-align: left" align="center">
             <tr>
                 <td style="text-align: right">
                     From Date:
@@ -66,7 +66,7 @@
         <hr />
         <asp:ListView ID="ListView1" runat="server" DataSourceID="dsBFCWeeklyAttendance">
             <LayoutTemplate>
-                <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" style="width: 500px">
+                <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" style="width: 500px" align="center">
                     <tr runat="server" class="headerrow">
                         <th align="left" runat="server">
                             Division Name
