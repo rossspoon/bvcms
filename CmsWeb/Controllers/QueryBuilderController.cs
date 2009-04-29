@@ -15,6 +15,7 @@ using System.Web.Routing;
 using CMSWeb;
 using CMSWeb.Models;
 using CmsData;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Controllers
 {
@@ -39,7 +40,7 @@ namespace CMSWeb.Controllers
         {
             var m = new QueryModel { ConditionName = ConditionName, SelectedId = id };
             m.LoadScratchPad();
-            m.SetState();
+            m.SetVisibility();
             return Json(m);
         }
         public JsonResult GetCodes(string Comparison, string ConditionName)
@@ -68,8 +69,9 @@ namespace CMSWeb.Controllers
             var m = new QueryModel();
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
-            m.AddConditionToGroup();
-            return PartialView("Conditions", m);
+            if (Validate(m))
+                m.AddConditionToGroup();
+            return PartialView("TryConditions", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Add()
@@ -77,8 +79,9 @@ namespace CMSWeb.Controllers
             var m = new QueryModel();
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
-            m.AddConditionAfterCurrent();
-            return PartialView("Conditions", m);
+            if (Validate(m))
+                m.AddConditionAfterCurrent();
+            return PartialView("TryConditions", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update()
@@ -86,17 +89,23 @@ namespace CMSWeb.Controllers
             var m = new QueryModel();
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
-            m.UpdateCondition();
-            return PartialView("Conditions", m);
+            if (Validate(m))
+                m.UpdateCondition();
+            return PartialView("TryConditions", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Remove()
+        public JsonResult Remove()
         {
             var m = new QueryModel();
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
             m.DeleteCondition();
-            return PartialView("Conditions", m);
+            return Json(m);
+        }
+        public ActionResult Conditions()
+        {
+            var m = new QueryModel();
+            return View(m);
         }
         public JsonResult GetDivisions(int id)
         {
@@ -136,6 +145,44 @@ namespace CMSWeb.Controllers
             var r = Person.ToggleTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Json(new { HasTag = r });
+        }
+
+        private bool Validate(QueryModel m)
+        {
+            m.SetVisibility();
+            DateTime dt;
+            if (m.StartDateVisible && !DateTime.TryParse(m.StartDate, out dt))
+                m.Errors.Add("StartDate", "invalid");
+            if (m.EndDateVisible && m.EndDate.HasValue() && !DateTime.TryParse(m.EndDate, out dt))
+                m.Errors.Add("EndDate", "invalid");
+            int i;
+            if (m.DaysVisible && !int.TryParse(m.Days, out i))
+                m.Errors.Add("Days", "must be integer");
+
+            if (m.WeekVisible)
+            {
+                if (!Regex.IsMatch(m.Week, "^(1|2|3|4|5)(,(1|2|3|4|5))*$"))
+                    m.Errors.Add("Week", "need week numbers separated by ,");
+                m.Quarters = m.Week;
+            }
+
+            if (m.QuartersVisible && !Regex.IsMatch(m.Quarters, "^(1|2|3|4)(,(1|2|3|4))*$"))
+                m.Errors.Add("Quarters", "need quarters separated by ,");
+
+            if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
+                m.Errors.Add("IntegerValue", "need integer");
+
+            decimal d;
+            if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))
+                m.Errors.Add("NumberValue", "need number");
+
+            if (m.CodesVisible && m.CodeValues.Length == 0)
+                m.Errors.Add("CodeValues", "must select item(s)");
+
+            if (m.DateVisible && !DateTime.TryParse(m.DateValue, out dt))
+                m.Errors.Add("DateValue", "need date");
+
+            return m.Errors.Count == 0;
         }
     }
 }

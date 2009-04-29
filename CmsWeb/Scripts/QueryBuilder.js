@@ -19,29 +19,38 @@ $(function() {
     $('#AddToGroup').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/AddToGroup/', qs, function(ret) {
-            FillConditionGrid(ret);
+            var a = ret.split("<---------->");
+            if (!ShowErrors(a[1]))
+                FillConditionGrid(a[0]);
         });
         return false;
     });
     $('#Add').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Add/', qs, function(ret) {
-            FillConditionGrid(ret);
+            var a = ret.split("<---------->");
+            if (!ShowErrors(a[1]))
+                FillConditionGrid(a[0]);
         });
         return false;
     });
     $('#Update').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Update/', qs, function(ret) {
-            FillConditionGrid(ret);
+            var a = ret.split("<---------->");
+            if (!ShowErrors(a[1]))
+                FillConditionGrid(a[0]);
         });
         return false;
     });
     $('#Remove').click(function() {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Remove/', qs, function(ret) {
-            FillConditionGrid(ret);
-        });
+            UpdateView(ret);
+            $.post('/QueryBuilder/Conditions/', null, function(ret) {
+                FillConditionGrid(ret);
+            });
+        }, "json");
         return false;
     });
     $('#Run').click(function(ev) {
@@ -215,7 +224,6 @@ function CascadeComparison() {
     });
 }
 function EditCondition(ev) {
-    $('#SelectedId').val(ev.target.id);
     $('#ConditionGrid li a').removeClass('SelectedRow');
     $('#ConditionGrid li a#' + ev.target.id).addClass('SelectedRow');
     $.block();
@@ -273,7 +281,21 @@ function UpdateCodes(ret) {
     }
 }
 
+function ShowErrors(j) {
+    $('.validate').each(function() {
+        $(this).next(".error").remove();
+    });
+    var e = eval('(' + j + ')');
+    if (e.count == 0)
+        return false;
+    $('.validate').each(function() {
+        if (e[this.id])
+            $(this).after("<span class='error'> " + e[this.id] + "</span>");
+    });
+    return true;
+}
 function UpdateView(vs) {
+    $('#SelectedId').val(vs.SelectedId);
     UpdateCodes(vs);
     $('#Comparison').fillOptions(vs.CompareData);
     if (vs.CodeVisible || vs.CodesVisible)

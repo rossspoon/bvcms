@@ -17,8 +17,8 @@ namespace CMSWeb.Models
         int? Program { get; set; }
         int? Division { get; set; }
         int? Organization { get; set; }
-        int? Days { get; set; }
-        int? Week { get; set; }
+        string Days { get; set; }
+        string Week { get; set; }
         string Quarters { get; set; }
         string StartDate { get; set; }
         string EndDate { get; set; }
@@ -51,6 +51,7 @@ namespace CMSWeb.Models
             TagTypeId = DbUtil.TagTypeId_Personal;
             TagName = Util.CurrentTagName;
             TagOwner = Util.CurrentTagOwnerId;
+            Errors = new Dictionary<string, string>();
         }
         public string Description { get; set; }
         public int? QueryId { get; set; }
@@ -121,8 +122,8 @@ namespace CMSWeb.Models
         public int? Program { get; set; }
         public int? Division { get; set; }
         public int? Organization { get; set; }
-        public int? Days { get; set; }
-        public int? Week { get; set; }
+        public string Days { get; set; }
+        public string Week { get; set; }
         public string Quarters { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
@@ -157,36 +158,24 @@ namespace CMSWeb.Models
         }
         public string ConditionText { get { return fieldMap.Title; } }
 
-        public void SetState()
+        public void SetVisibility()
         {
+            //TextValue = "";
+            //IntegerValue = "";
+            //NumberValue = "";
+            //DateValue = "";
+            //Program = 0;
+            //CodeValue = null;
+
             RightPanelVisible = true;
-            IntegerValue = "";
-            NumberValue = "";
-            DateValue = "";
-            Program = 0;
             TextVisible = false;
             NumberVisible = false;
-            TextValue = "";
             CodeVisible = false;
             CodesVisible = false;
             DateVisible = false;
-            ProgramVisible = false;
-            DivisionVisible = false;
-            EndDateVisible = false;
-            StartDateVisible = false;
-            OrganizationVisible = false;
-            DaysVisible = false;
-            WeekVisible = false;
-            SavedQueryVisible = false;
-            QuartersVisible = false;
-            TagsVisible = false;
             CodeData = null;
-            CompareData = Comparisons().ToList();
-            CodeValue = null;
             ConditionName = ConditionName;
-
             CompareData = Comparisons().ToList();
-
             DivisionVisible = fieldMap.HasParam("SubDivOrg");
             ProgramVisible = fieldMap.HasParam("DivOrg");
             OrganizationVisible = fieldMap.HasParam("Organization");
@@ -310,7 +299,7 @@ namespace CMSWeb.Models
             c.Organization = Organization ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
-            c.Days = Days.ToInt();
+            c.Days = int.Parse(Days);
             c.Quarters = Quarters;
             c.Tags = Tags;
             c.SavedQueryIdDesc = SavedQueryDesc;
@@ -320,7 +309,7 @@ namespace CMSWeb.Models
         {
             var c = Db.LoadQueryById(SelectedId);
             ConditionName = c.FieldInfo.Name;
-            SetState();
+            SetVisibility();
             Comparison = c.Comparison;
             switch (c.FieldInfo.Type)
             {
@@ -364,14 +353,14 @@ namespace CMSWeb.Models
             AddToGroupEnabled = c.IsGroup;
             AddEnabled = !c.IsFirst;
             RemoveEnabled = !c.IsFirst;
-            Days = c.Days;
+            Days = c.Days.ToString();
             Quarters = c.Quarters;
             Tags = c.Tags;
             SavedQueryDesc = c.SavedQueryIdDesc;
         }
         public void SetCodes()
         {
-            SetState();
+            SetVisibility();
             SelectMultiple = Comparison.EndsWith("OneOf");
         }
         private void NewCondition(QueryBuilderClause gc, int order)
@@ -635,6 +624,7 @@ namespace CMSWeb.Models
                 }
             return q;
         }
+        public Dictionary<string, string> Errors;
 
         #region Paging
         public bool ShowResults { get; set; }

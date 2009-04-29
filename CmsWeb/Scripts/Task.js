@@ -111,7 +111,6 @@ function AddTaskClick() {
             $('#tasks > tbody tr:first').addClass("alt");
         $('#TaskDesc').val('');
     });
-    return false;
 }
 function ShowDetail(id) {
     var drid = $("#TaskId").val();
@@ -129,7 +128,6 @@ function ShowDetail(id) {
             $('#r' + id).html(ret);
         });
     }
-    return false;
 }
 function Deselect() {
     var id = $("#TaskId").val();

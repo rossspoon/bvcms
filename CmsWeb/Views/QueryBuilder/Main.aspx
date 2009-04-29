@@ -31,50 +31,43 @@
                 <tr id="DaysDiv" style="display:none">
                     <td>Days:</td>
                     <td>
-                        <%=Html.TextBox("Days") %>
-                        <%=Html.ValidationMessage("Days") %>
+                        <%=Html.TextBoxClass("Days", "validate") %>
                     </td>
                 </tr>
                 <tr id="WeekDiv" style="display:none">
                     <td>Week:</td>
                     <td>
-                        <%=Html.TextBox("Week") %>
-                        <%=Html.ValidationMessage("Week") %>
+                        <%=Html.TextBoxClass("Week", "validate") %>
                     </td>
                 </tr>
                 <tr id="QuartersDiv" style="display:none">
                     <td>Quarters:</td>
                     <td>
-                        <%=Html.TextBox("Quarters") %>
-                        <%=Html.ValidationMessage("Quarters") %>
+                        <%=Html.TextBoxClass("Quarters", "validate") %>
                     </td>
                 </tr>
                 <tr id="TagDiv" style="display:none">
                     <td>Tags:</td>
                     <td>
-                        <%=Html.TextBox("Tags") %>
-                        <%=Html.ValidationMessage("Tags") %>
+                        <%=Html.TextBoxClass("Tags", "validate")%>
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
                     <td>Saved Query:</td>
                     <td>
-                        <%=Html.TextBox("SavedQueryDesc") %>
-                        <%=Html.ValidationMessage("SavedQueryDesc")%>
+                        <%=Html.TextBoxClass("SavedQueryDesc", "validate")%>
                     </td>
                 </tr>
                 <tr id="StartDiv" style="display:none">
                     <td>Start Date:</td>
                     <td>
-                        <input id="StartDate" name="StartDate" class="datepicker" />
-                        <%=Html.ValidationMessage("StartDate")%>
+                        <%=Html.TextBoxClass("StartDate", "datepicker validate") %>
                     </td>
                 </tr>
                 <tr id="EndDiv" style="display:none">
                     <td>End Date:</td>
                     <td>
-                        <input id="EndDate" name="EndDate" class="datepicker" />
-                        <%=Html.ValidationMessage("EndDate")%>
+                        <%=Html.TextBoxClass("EndDate", "datepicker validate") %>
                     </td>
                 </tr>
                 <tr id="ProgDiv" style="display:none">
@@ -113,15 +106,10 @@
                 <tr>
                     <td>
                         <span id="values" style="display:none"></span>
-                        <%=Html.TextBox("TextValue") %>
-                        <%=Html.TextBox("NumberValue") %>
-                        <%=Html.TextBox("IntegerValue") %>
-                        <input id="DateValue" name="DateValue" class="datepicker" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <%=Html.ValidationMessage("RightSide")%>
+                        <%=Html.TextBoxClass("TextValue", "validate")%>
+                        <%=Html.TextBoxClass("NumberValue", "validate")%>
+                        <%=Html.TextBoxClass("IntegerValue", "validate")%>
+                        <%=Html.TextBoxClass("DateValue", "datepicker validate")%>
                     </td>
                 </tr>
             </table>

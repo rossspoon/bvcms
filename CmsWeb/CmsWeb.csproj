@@ -1622,6 +1622,7 @@
     <Content Include="Views\QueryBuilder\Conditions.ascx" />
     <Content Include="Views\QueryBuilder\Main.aspx" />
     <Content Include="Views\QueryBuilder\Results.aspx" />
+    <Content Include="Views\QueryBuilder\TryConditions.ascx" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Content\js\jquery.confirm-1.2.js" />
     <Content Include="Content\js\jquery.dimensions.js" />

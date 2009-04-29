@@ -231,4 +231,16 @@ public static class ViewExtensions
         tb.MergeAttribute("value", s ?? viewDataValue);
         return tb.ToString();
     }
+    public static string TextBoxClass(this System.Web.Mvc.HtmlHelper helper, string name, string @class)
+    {
+        var tb = new TagBuilder("input");
+        tb.MergeAttribute("type", "text");
+        tb.MergeAttribute("id", name);
+        tb.MergeAttribute("name", name);
+        tb.MergeAttribute("class", @class);
+        var s = helper.TryGetModel(name);
+        var viewDataValue = Convert.ToString(helper.ViewData.Eval(name));
+        tb.MergeAttribute("value", s ?? viewDataValue);
+        return tb.ToString();
+    }
 }
