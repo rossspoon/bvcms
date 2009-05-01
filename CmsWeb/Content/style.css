@@ -173,9 +173,10 @@ a:hover
 	position: absolute;
 	display: none;
 	background-color: #FFFFCC;
-	border: 1px outset white;
+	border: 1px outset black;
+	list-style-type: none;
 	padding: 2px;
-	z-index: 2004; /*	opacity:.9; 	filter: alpha(opacity=90); */
+	z-index: 2004; 
 }
 .modalBackground
 {

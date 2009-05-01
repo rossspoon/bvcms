@@ -8,6 +8,7 @@
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Content/js/ui.tabs.js" type="text/javascript"></script>
     <script src="/Content/js/jqueryMultiSelect.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.contextMenu.js" type="text/javascript"></script>
     <script src="/Scripts/QueryBuilder.js" type="text/javascript"></script>
     <script src="/Scripts/ExportToolbar2.js" type="text/javascript"></script>
 </div>
@@ -126,23 +127,27 @@
 </table>
 <%=Html.Hidden("SelectedId") %>
 <table class="modalPopup" style="margin-top: 6px">
-        <tr><td colspan="2" style="background-color: #a9cfe2; border: solid 1px Gray; color: Black;
-                font-size: medium">Conditions</td>
-        </tr>
-        <tr>
-            <td>
-                <ul id="ConditionGrid" style="list-style-type: none; margin-left: 0px; font-size: large;">
-                <% Html.RenderPartial("Conditions", Model); %>
-                </ul>
-            </td>
-            <td align="center" valign="bottom">
-                <div>
-                    <input id="Run" type="image" src="/images/Run.png" alt="Run Query" title="Run Query" />
-                </div>
-                <div>Run</div>
-            </td>
-        </tr>
-    </table>
+    <tr><td colspan="2" style="background-color: #a9cfe2; border: solid 1px Gray; color: Black;
+            font-size: medium">Conditions</td>
+    </tr>
+    <tr>
+        <td>
+            <ul id="ConditionGrid" style="list-style-type: none; margin-left: 0px; font-size: large;">
+            <% Html.RenderPartial("Conditions", Model); %>
+            </ul>
+        </td>
+        <td align="center" valign="bottom">
+            <div>
+                <input id="Run" type="image" src="/images/Run.png" alt="Run Query" title="Run Query" />
+            </div>
+            <div>Run</div>
+        </td>
+    </tr>
+</table>
+<ul id="InsCopyMenu" class="popupMenu">
+    <li><a href="#ins">Insert Group Above</a></li>
+    <li><a href="#copy">Copy As New</a></li>
+</ul>
 <div id="toolbar" style='<%=Model.ShowResults? "" : "display:none"%>'>
 <% Html.RenderPartial("ExportToolBar"); %>
 </div>

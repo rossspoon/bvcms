@@ -8,12 +8,10 @@ $(function() {
     $(".datepicker").datepicker({ dateFormat: 'm/d/yy' });
     HighlightCondition();
     $('#Program').change(function(ev) {
-        $.block();
         $.post('/QueryBuilder/GetDivisions/' + $(this).val(), null, function(ret) {
             $('#Division').fillOptions(ret.Divisions);
             $('#Organization').fillOptions(ret.Organizations);
             CascadeDivision();
-            $.unblock();
         }, "json");
     });
     $('#AddToGroup').click(function() {
@@ -98,31 +96,20 @@ function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');
     $('#ConditionGrid li a#' + $('#SelectedId').val()).addClass('SelectedRow');
     $('#ConditionGrid li a').click(EditCondition);
-    $(".conditionPopup").hoverIntent({
-        sensitivity: 1,
-        interval: 50,
-        timeout: 300,
-        over: function() {
-            $(this).children('.popupMenu').show();
-            $(this).addClass('HoverRow');
-        },
-        out: function() {
-            $(this).children('.popupMenu').hide();
-            $(this).removeClass('HoverRow');
-        }
-    });
-    $(".insGroupAbove").click(function() {
-    var qid = $(this).parent().parent().prev()[0].id;
-        $.post("/QueryBuilder/InsGroupAbove/" + qid, null, function(ret) {
-            $.navigate("/QueryBuilder/Main/" + ret);
-        });
-    });
-    $(".copyAsNew").click(function() {
-    var qid = $(this).parent().parent().prev()[0].id;
-        $.post("/QueryBuilder/CopyAsNew/" + qid, null, function(ret) {
-            $.navigate("/QueryBuilder/Main/" + ret);
-        });
-    });
+    $(".conditionPopup").contextMenu({ menu: 'InsCopyMenu' }, function(action, el, pos) {
+	    switch (action) {
+	        case "ins":
+	            $.post("/QueryBuilder/InsGroupAbove/" + $(el).attr('id'), null, function(ret) {
+	                $.navigate("/QueryBuilder/Main/" + ret);
+	            });
+	            break;
+	        case "copy":
+	            $.post("/QueryBuilder/CopyAsNew/" + $(el).attr('id'), null, function(ret) {
+	                $.navigate("/QueryBuilder/Main/" + ret);
+	            });
+	            break;
+	    }
+	});
 }
 function FillConditionGrid(html) {
     $('#ConditionGrid').html(html);
@@ -228,9 +215,7 @@ function SetPageSize(sz) {
 }
 function CascadeDivision() {
     $('#Division').change(function(ev) {
-        $.block();
         $.post('/QueryBuilder/GetOrganizations/' + $(this).val(), null, function(ret) {
-            $.unblock();
             $('#Organization').fillOptions(ret);
         }, "json");
     });
@@ -247,12 +232,11 @@ function CascadeComparison() {
     });
 }
 function EditCondition(ev) {
-    $('#ConditionGrid li a').removeClass('SelectedRow');
-    $('#ConditionGrid li a#' + ev.target.id).addClass('SelectedRow');
-    $.block();
-    $.post('/QueryBuilder/EditCondition/', { Id: ev.target.id }, function(ret) {
+    $('#ConditionGrid li').removeClass('SelectedRow');
+    var qid = $(this).parent("li").attr("id");
+    $('#ConditionGrid li#' + qid).addClass('SelectedRow');
+    $.post('/QueryBuilder/EditCondition/' + qid, null, function(ret) {
         UpdateView(ret);
-        $.unblock();
     }, "json");
     return false;
 }
