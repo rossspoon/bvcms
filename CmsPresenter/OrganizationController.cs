@@ -88,6 +88,7 @@ namespace CMSPresenter
                 MemberTypeId = MemberTypeId,
                 EnrollmentDate = EnrollmentDate,
                 InactiveDate = InactiveDate,
+                CreatedDate = Util.Now,
             };
             var name = (from o in Db.Organizations
                         where o.OrganizationId == OrganizationId

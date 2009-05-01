@@ -256,6 +256,13 @@ namespace CMSWeb.Models
                 return dt;
             return null;
         }
+        int? IntParse(string s)
+        {
+            int i;
+            if (int.TryParse(s, out i))
+                return i;
+            return null;
+        }
         string DateString(DateTime? dt)
         {
             if (dt.HasValue)
@@ -299,7 +306,7 @@ namespace CMSWeb.Models
             c.Organization = Organization ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
-            c.Days = int.Parse(Days);
+            c.Days = Days.ToInt();
             c.Quarters = Quarters;
             c.Tags = Tags;
             c.SavedQueryIdDesc = SavedQueryDesc;
@@ -409,6 +416,57 @@ namespace CMSWeb.Models
         {
             var c = Db.LoadQueryById(SelectedId);
             UpdateCondition(c);
+        }
+        public void CopyAsNew()
+        {
+            var Qb = Db.LoadQueryById(SelectedId).Clone();
+            if (!Qb.IsGroup)
+            {
+                var g = new QueryBuilderClause();
+                g.SetQueryType(QueryType.Group);
+                g.SetComparisonType(CompareType.AllTrue);
+                Qb.Parent = g;
+                Qb = g;
+            }
+            Db.SubmitChanges();
+            QueryId = Qb.QueryId;
+        }
+        public void InsertGroupAbove()
+        {
+            var cc = Db.LoadQueryById(SelectedId);
+            var g = new QueryBuilderClause();
+            g.SetQueryType(QueryType.Group);
+            g.SetComparisonType(CompareType.AllTrue);
+            g.ClauseOrder = cc.ClauseOrder;
+            if (cc.IsFirst)
+                cc.Parent = g;
+            else
+            {
+                var currParent = cc.Parent;
+                // find all clauses from cc down at same level
+                var q = from c in cc.Parent.Clauses
+                        orderby c.ClauseOrder
+                        where c.ClauseOrder >= cc.ClauseOrder
+                        select c;
+                foreach (var c in q)
+                    c.Parent = g;   // change to new parent
+                g.Parent = currParent;
+            }
+            if (cc.SavedBy.HasValue())
+            {
+                g.SavedBy = Util.UserName;
+                g.Description = cc.Description;
+                g.CreatedOn = cc.CreatedOn;
+                cc.IsPublic = false;
+                cc.Description = null;
+                cc.SavedBy = null;
+            }
+            Db.SubmitChanges();
+            if (g.IsFirst)
+            {
+                Qb = g;
+                QueryId = g.QueryId;
+            }
         }
         public IEnumerable<SelectListItem> Comparisons()
         {

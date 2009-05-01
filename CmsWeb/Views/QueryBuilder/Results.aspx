@@ -43,7 +43,7 @@
         <%=p.BirthDate %>
     </td>
     <td>
-        <a href='<%="http://www.googoe.com/maps?q=" + p.Address + ",+" + p.CityStateZip %>'><%=p.Address %></a>
+        <a href='<%="http://www.google.com/maps?q=" + p.Address + ",+" + p.CityStateZip %>'><%=p.Address %></a>
         <br />
         <%=p.CityStateZip %>
     </td>
@@ -52,7 +52,7 @@
        { %>
         <%=ph%><br />
     <% } %>
-        <a href='<%="mailto:" + p.Email %>'><%=p.Name %></a>
+        <a href='<%="mailto:" + p.Email %>'><%=p.Email %></a>
     </td>
     <td>
         <a href='<%="/Person.aspx?id=" + p.BFTeacherId %>'><%=p.BFTeacher %></a>

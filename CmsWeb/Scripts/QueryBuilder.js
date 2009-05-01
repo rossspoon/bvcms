@@ -98,13 +98,36 @@ function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');
     $('#ConditionGrid li a#' + $('#SelectedId').val()).addClass('SelectedRow');
     $('#ConditionGrid li a').click(EditCondition);
+    $(".conditionPopup").hoverIntent({
+        sensitivity: 1,
+        interval: 50,
+        timeout: 300,
+        over: function() {
+            $(this).children('.popupMenu').show();
+            $(this).addClass('HoverRow');
+        },
+        out: function() {
+            $(this).children('.popupMenu').hide();
+            $(this).removeClass('HoverRow');
+        }
+    });
+    $(".insGroupAbove").click(function() {
+    var qid = $(this).parent().parent().prev()[0].id;
+        $.post("/QueryBuilder/InsGroupAbove/" + qid, null, function(ret) {
+            $.navigate("/QueryBuilder/Main/" + ret);
+        });
+    });
+    $(".copyAsNew").click(function() {
+    var qid = $(this).parent().parent().prev()[0].id;
+        $.post("/QueryBuilder/CopyAsNew/" + qid, null, function(ret) {
+            $.navigate("/QueryBuilder/Main/" + ret);
+        });
+    });
 }
 function FillConditionGrid(html) {
     $('#ConditionGrid').html(html);
     HighlightCondition();
     $('#ConditionGrid li a').click(EditCondition);
-    $('#Results').empty();
-    $('#toolbar').hide();
 }
 (function($) {
     $.QueryString = function(q, item) {

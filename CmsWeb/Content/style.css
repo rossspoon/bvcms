@@ -171,8 +171,8 @@ a:hover
 .popupMenu
 {
 	position: absolute;
-	visibility: hidden;
-	background-color: white;
+	display: none;
+	background-color: #FFFFCC;
 	border: 1px outset white;
 	padding: 2px;
 	z-index: 2004; /*	opacity:.9; 	filter: alpha(opacity=90); */
@@ -195,6 +195,10 @@ a:hover
 .SelectedRow
 {
 	background-color: #d0ddee;
+}
+.HoverRow
+{
+    background-color: #FFFFCC;
 }
 .QBConditionTitle
 {

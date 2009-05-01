@@ -98,9 +98,8 @@ namespace CmsData
                     && et.TransactionDate <= enddt // transaction starts <= looked for end
                     && (et.NextTranChangeDate ?? Util.Now) >= startdt // transaction ends >= looked for start
                     && (et.OrganizationId == orgid || orgid == 0)
-                    && (et.Organization.Tags.Any(t => t.Id == divid) || divid == 0)
-                    && (et.Organization.Tags.Any(t => t.Tag
-                            .TagTags.Any(pt => pt.ParentTagId == progid)) || progid == 0)
+                    && (et.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                    && (et.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
                     );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -290,7 +289,7 @@ namespace CmsData
                     (m.OrganizationId == org || org == 0)
                     && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                .First().CreatedDate;
+                .First().CreatedDate.Value.Date;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Constant(date, typeof(DateTime?));
             return Compare(left, op, right);

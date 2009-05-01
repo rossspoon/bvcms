@@ -41,6 +41,19 @@ namespace CMSWeb.Controllers
             var m = new QueryModel { ConditionName = ConditionName, SelectedId = id };
             m.LoadScratchPad();
             m.SetVisibility();
+
+            m.TextValue = "";
+            m.IntegerValue = "";
+            m.DateValue = "";
+            m.CodeValue = null;
+            m.CodeValues = new string[0];
+            m.Days = "";
+            m.Program = 0;
+            m.Quarters = "";
+            m.Week = "";
+            m.StartDate = "";
+            m.EndDate = "";
+            
             return Json(m);
         }
         public JsonResult GetCodes(string Comparison, string ConditionName)
@@ -101,6 +114,26 @@ namespace CMSWeb.Controllers
             m.LoadScratchPad();
             m.DeleteCondition();
             return Json(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult InsGroupAbove(int id)
+        {
+            var m = new QueryModel { SelectedId = id };
+            m.LoadScratchPad();
+            m.InsertGroupAbove();
+            var c = new ContentResult();
+            c.Content = m.QueryId.ToString();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CopyAsNew(int id)
+        {
+            var m = new QueryModel { SelectedId = id };
+            m.LoadScratchPad();
+            m.CopyAsNew();
+            var c = new ContentResult();
+            c.Content = m.QueryId.ToString();
+            return c;
         }
         public ActionResult Conditions()
         {

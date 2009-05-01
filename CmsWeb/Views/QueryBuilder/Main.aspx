@@ -151,7 +151,6 @@
        Html.RenderPartial("Results", Model); %>
 </div>
 </form>
-    
 <div id="QueryConditionSelect" class="modalPopup" title="Select a Condition" style="margin-top: 6px; width: 700px; height: 500px;">
     <div>
         <a id="NewGroup" href="#">Or start a new group of conditions</a><br />

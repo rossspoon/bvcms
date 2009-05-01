@@ -277,7 +277,7 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentAttendMemberType:
-                    return Expressions.RecentAttendType(parm,
+                    return Expressions.RecentAttendMemberType(parm,
                                c.DivOrg,
                                c.SubDivOrg,
                                c.Organization,
