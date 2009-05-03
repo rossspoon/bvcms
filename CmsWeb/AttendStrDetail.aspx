@@ -8,8 +8,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <asp:HyperLink ID="Name" runat="server"></asp:HyperLink><br />
-    <asp:HyperLink ID="Org" runat="server"></asp:HyperLink>
+    <asp:Label ID="Name" runat="server"></asp:Label><br />
+    <asp:Label ID="Org" runat="server"></asp:Label>
     <div style="text-align:center">
         <asp:GridView ID="GridView1" runat="server" style="text-align:left" 
             SkinID="GridViewSkin">

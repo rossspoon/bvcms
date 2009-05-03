@@ -64,7 +64,7 @@ namespace CMSPresenter
                     where p.Attends.Any(a => a.AttendanceFlag == true
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
-                        && VisitAttendTypes.Contains(a.AttendanceTypeId)
+                        && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                     )
                     where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
                     select p.PeopleId;

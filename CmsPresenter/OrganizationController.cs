@@ -138,7 +138,7 @@ namespace CMSPresenter
                                        where p.Attends.Any(a =>
                                            a.AttendanceFlag == true
                                            && !p.OrganizationMembers.Any(om => om.OrganizationId == o.OrganizationId)
-                                           && AttendController.VisitAttendTypes.Contains(a.AttendanceTypeId)
+                                           && AttendController.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                                            && a.OrganizationId == o.OrganizationId
                                            && a.MeetingDate <= MeetingDate
                                            && a.MeetingDate >= LookbackDt)

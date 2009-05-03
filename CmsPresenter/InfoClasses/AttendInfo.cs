@@ -27,8 +27,7 @@ namespace CMSPresenter
         public string Name { get; set; }
         public string MemberType { get; set; }
         public string AttendType { get; set; }
-        public bool? _AttendFlag { get; set; }
-        public bool AttendFlag { get { return _AttendFlag == null ? false : _AttendFlag.Value; } }
+        public bool AttendFlag { get; set; }
         public int RollSheetSectionId { get; set; }
     }
 }

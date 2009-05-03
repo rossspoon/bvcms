@@ -32,12 +32,12 @@ namespace CMSPresenter
     }
     public static class CodeValueItemUtil
     {
-        public static string ItemValue(this List<CodeValueItem> list, int id)
+        public static string ItemValue(this List<CodeValueItem> list, int? id)
         {
             var item = list.SingleOrDefault(i => i.Id == id);
             return item == null ? "(null)" : item.Value;
         }
-        public static string ItemValue(this List<MemberTypeItem> list, int id)
+        public static string ItemValue(this List<MemberTypeItem> list, int? id)
         {
             var item = list.SingleOrDefault(i => i.Id == id);
             return item == null ? "(null)" : item.Value;

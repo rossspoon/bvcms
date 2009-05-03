@@ -82,6 +82,9 @@ namespace CMSWeb
                 case "Children":
                     d = InvolvementController.ChildrenList(qid.Value, maxExcelRows);
                     break;
+                case "Church":
+                    d = InvolvementController.ChurchList(qid.Value, maxExcelRows);
+                    break;
                 case "Attend":
                     d = InvolvementController.AttendList(qid.Value, maxExcelRows);
                     break;

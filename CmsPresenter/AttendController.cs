@@ -63,12 +63,12 @@ namespace CMSPresenter
                             a.AttendanceFlag != false
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && a.OrganizationId == meeting.OrganizationId
-                            && VisitAttendTypes.Contains(a.AttendanceTypeId)
+                            && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
                         )
                     || // members
                         (inEditMode && !meeting.GroupMeetingFlag
-                        && p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId 
+                        && p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId
                             && om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
 
                     select new AttendInfo
@@ -87,7 +87,7 @@ namespace CMSPresenter
                             attend.MemberTypeId),
                         Name = p.Name2,
                         PeopleId = p.PeopleId,
-                        _AttendFlag = attend == null ? null : attend.AttendanceFlag,
+                        AttendFlag = attend == null ? false : attend.AttendanceFlag,
                         RollSheetSectionId = ismember ? 1 : 2,
                     };
 
@@ -124,7 +124,7 @@ namespace CMSPresenter
                             a.AttendanceFlag != false
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && a.OrganizationId == meeting.OrganizationId
-                            && VisitAttendTypes.Contains(a.AttendanceTypeId)
+                            && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
                         )
                     || // members
@@ -215,48 +215,46 @@ namespace CMSPresenter
             return q2;
         }
 
-        public static bool IsRecentVisitor(CmsData.Meeting theMeeting, int peopleId)
-        {
-            var wks = 3; // default lookback
-            if (theMeeting.Organization.RollSheetVisitorWks.HasValue)
-                wks = theMeeting.Organization.RollSheetVisitorWks.Value;
+        //public static bool IsRecentVisitor(CmsData.Meeting theMeeting, int peopleId)
+        //{
+        //    var wks = 3; // default lookback
+        //    if (theMeeting.Organization.RollSheetVisitorWks.HasValue)
+        //        wks = theMeeting.Organization.RollSheetVisitorWks.Value;
 
-            var dt = theMeeting.MeetingDate.Value.AddDays(wks * -7);
+        //    var dt = theMeeting.MeetingDate.Value.AddDays(wks * -7);
 
-            var matchingPerson = DbUtil.Db.People.SingleOrDefault(
-                        p => p.PeopleId == peopleId
-                    &&
-                        p.Attends.Any(a =>
-                            a.AttendanceFlag != false
-                            && a.MeetingDate >= dt && a.MeetingDate <= theMeeting.MeetingDate
-                            && a.Meeting.OrganizationId == theMeeting.OrganizationId
-                            && VisitAttendTypes.Contains(a.AttendanceTypeId)
-                            )
-                    && // not members
-                        !(p.OrganizationMembers.Any(om => om.OrganizationId == theMeeting.OrganizationId))
-                    );
+        //    var matchingPerson = DbUtil.Db.People.SingleOrDefault(
+        //                p => p.PeopleId == peopleId
+        //            &&
+        //                p.Attends.Any(a =>
+        //                    a.AttendanceFlag != false
+        //                    && a.MeetingDate >= dt && a.MeetingDate <= theMeeting.MeetingDate
+        //                    && a.Meeting.OrganizationId == theMeeting.OrganizationId
+        //                    && VisitAttendTypes.Contains(a.AttendanceTypeId)
+        //                    )
+        //            && // not members
+        //                !(p.OrganizationMembers.Any(om => om.OrganizationId == theMeeting.OrganizationId))
+        //            );
 
-            return (matchingPerson != null);
-        }
+        //    return (matchingPerson != null);
+        //}
 
         public string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
-			Meeting OtherMeeting = null;
+            Meeting OtherMeeting = null;
 
             var r = Db.AttendMeetingInfo(MeetingId, PeopleId);
 
             var o = r.GetResult<CMSDataContext.AttendMeetingInfo2>().First();
             var Attendance = r.GetResult<Attend>().FirstOrDefault();
             var Meeting = r.GetResult<Meeting>().First();
+            var VIPAttendance = r.GetResult<Attend>().FirstOrDefault();
+            var VIPMember = r.GetResult<OrganizationMember>().FirstOrDefault();
+            var BFCAttendance = r.GetResult<Attend>().FirstOrDefault();
             var BFCMember = r.GetResult<OrganizationMember>().FirstOrDefault();
-            var InSvcMember = r.GetResult<OrganizationMember>().FirstOrDefault();
+            var BFCMeeting = r.GetResult<Meeting>().FirstOrDefault();
 
-            bool haveExcuse = o.IsRegularHour.Value && o.IsSameHour.Value 
-                && (InSvcMember != null 
-                        || (BFCMember != null 
-                            && o.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP));
-
-            if (o.AttendedElsewhere.Value && attended && !haveExcuse)
+            if (o.AttendedElsewhere > 0 && attended)
                 return "{0}({1}) already attended elsewhere".Fmt(o.Name, PeopleId);
 
             if (Attendance == null)
@@ -264,35 +262,76 @@ namespace CMSPresenter
                 Attendance = new Attend
                 {
                     OrganizationId = Meeting.OrganizationId,
-                    MeetingId = MeetingId,
                     PeopleId = PeopleId,
                     MeetingDate = Meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
                     CreatedBy = Db.CurrentUser.UserId,
                 };
-                Db.Attends.InsertOnSubmit(Attendance);
+                Meeting.Attends.Add(Attendance);
             }
             Attendance.AttendanceFlag = attended;
 
-            if (o.IsOffSite.Value && attended == false)
+            if (Meeting.GroupMeetingFlag && o.MemberTypeId.HasValue)
             {
-                Attendance.AttendanceFlag = null;
+                Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
+                Attendance.MemberTypeId = o.MemberTypeId.Value;
+            }
+            else if (o.IsOffSite == true && attended == false)
+            {
+                Attendance.OtherAttends = 1;
                 Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
             }
             else if (o.MemberTypeId.HasValue) // member of this class
             {
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
-                Attendance.AttendanceTypeId = CodeValueController.MemberTypeCodes2()
-                    .Single(mt => mt.Id == Attendance.MemberTypeId).AttendanceTypeId;
+                Attendance.AttendanceTypeId = GetAttendType(Attendance.AttendanceFlag, Attendance.MemberTypeId);
+                Attendance.BFCAttendance = Attendance.OrganizationId == o.BFClassId;
 
-                if (o.IsRegularHour.Value && InSvcMember != null && o.IsSameHour.Value) // rarely true
-                    OtherMeeting = RecordAttendanceInOtherClass(Db, Meeting, InSvcMember, attended,
-                            (int)Attend.AttendTypeCode.InService);
-                else if (o.IsRegularHour.Value && o.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP
-                        && BFCMember != null && o.IsSameHour.Value)
-                    OtherMeeting = RecordAttendanceInOtherClass(Db, Meeting, BFCMember, attended,
-                                (int)Attend.AttendTypeCode.Volunteer);
+                if (BFCMember != null && (attended || BFCAttendance != null)) // related BFC
+                {
+                    /* At this point I am recording attendance for a vip class 
+                     * or for a class where I am doing InService (long term) teaching
+                     * And now I am looking at the BFClass where I am a regular member or an InService Member
+                     * I don't need to be here if I am reversing my attendance and there is no BFCAttendance to fix
+                     */
+                    if (BFCAttendance == null)
+                        BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
+
+                    BFCAttendance.OtherAttends = attended ? 1 : 0;
+                    Attendance.OtherAttends = BFCAttendance.AttendanceFlag ? 1 : 0;
+
+                    if (o.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP)
+                    {
+                        if (BFCAttendance.OtherAttends > 0)
+                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                        else
+                            BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId);
+                    }
+                    else if (BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
+                    {
+                        if (BFCAttendance.OtherAttends > 0)
+                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.InService;
+                        else
+                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
+                    }
+
+                    if (BFCMeeting != null) // already existed
+                        OtherMeeting = BFCMeeting;
+                    else
+                        OtherMeeting = BFCAttendance.Meeting;
+                }
+                else if (VIPAttendance != null) // need to indicate BFCAttendance or not
+                {
+                    /* At this point I am recording attendance for a BFClass
+                     * And now I am looking at the VIP class where I a sometimes volunteer
+                     */
+                    VIPAttendance.OtherAttends = attended ? 1 : 0;
+                    Attendance.OtherAttends = VIPAttendance.AttendanceFlag ? 1 : 0;
+
+                    if (VIPAttendance.AttendanceFlag == true)
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                }
             }
             else // not a member of this class 
             {
@@ -303,9 +342,20 @@ namespace CMSPresenter
                         Attendance.MemberTypeEnum = Attend.MemberTypeCode.VisitingMember;
                         Attendance.AttendTypeEnum = Attend.AttendTypeCode.VisitingMember;
                     }
-                    if (o.IsRegularHour.Value && o.IsSameHour.Value)
-                        OtherMeeting = RecordAttendanceInOtherClass(Db, Meeting, BFCMember, attended,
-                                (int)Attend.AttendTypeCode.OtherClass);
+                    if (BFCAttendance != null)
+                        BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
+
+                    BFCAttendance.OtherAttends = attended ? 1 : 0;
+
+                    if (BFCAttendance.OtherAttends > 0)
+                        BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
+                    else
+                        BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId);
+
+                    if (BFCMeeting != null) // already existed
+                        OtherMeeting = BFCMeeting;
+                    else
+                        OtherMeeting = BFCAttendance.Meeting;
                 }
                 else // not a member of another class (visitor)
                 {
@@ -327,50 +377,23 @@ namespace CMSPresenter
 
             Db.UpdateAttendStr(Meeting.OrganizationId, PeopleId);
             if (OtherMeeting != null)
-			{
-				Db.UpdateAttendStr(OtherMeeting.OrganizationId, PeopleId);
-				Db.UpdateMeetingCounters(OtherMeeting.MeetingId);
-			}
+            {
+                Db.UpdateAttendStr(OtherMeeting.OrganizationId, PeopleId);
+                Db.UpdateMeetingCounters(OtherMeeting.MeetingId);
+            }
             return null; // no error
         }
-        private static Meeting RecordAttendanceInOtherClass(CMSDataContext Db,
-            CmsData.Meeting meeting,
-            OrganizationMember om,
-            bool attended,
-            int attendType)
+        private Attend CreateOtherAttend(Meeting meeting, OrganizationMember member)
         {
-            if (attended)
+            var q = from m in Db.Meetings
+                    where m.MeetingDate == meeting.MeetingDate
+                    where m.OrganizationId == member.OrganizationId
+                    select m;
+            var othMeeting = q.SingleOrDefault();
+
+            if (othMeeting == null)
             {
-                var oa = CreateOtherAttendance(Db, meeting, om);
-                oa.MemberTypeId = om.MemberTypeId;
-                oa.AttendanceTypeId = attendType;
-				return oa.Meeting;
-            }
-            return RemoveOtherAttendance(Db, meeting, om);
-        }
-        private static Meeting RemoveOtherAttendance(CMSDataContext Db, CmsData.Meeting meeting, OrganizationMember member)
-        {
-            var oMeeting = Db.Meetings.SingleOrDefault(m =>
-                m.MeetingDate == meeting.MeetingDate
-                && m.OrganizationId == member.OrganizationId);
-            if (oMeeting == null)
-                return null;
-            var oa = oMeeting.Attends.SingleOrDefault(a => a.PeopleId == member.PeopleId);
-            if (oa != null)
-			{
-				Db.Attends.DeleteOnSubmit(oa);
-				return oMeeting;
-			}
-			return null;
-        }
-        private static Attend CreateOtherAttendance(CMSDataContext Db, CmsData.Meeting meeting, OrganizationMember member)
-        {
-            var oMeeting = Db.Meetings.SingleOrDefault(m =>
-                m.MeetingDate == meeting.MeetingDate
-                && m.OrganizationId == member.OrganizationId);
-            if (oMeeting == null)
-            {
-                oMeeting = new CmsData.Meeting
+                othMeeting = new Meeting
                 {
                     OrganizationId = member.OrganizationId,
                     MeetingDate = meeting.MeetingDate,
@@ -379,24 +402,37 @@ namespace CMSPresenter
                     GroupMeetingFlag = false,
                     Location = member.Organization.Location,
                 };
-                Db.Meetings.InsertOnSubmit(oMeeting);
+                Db.Meetings.InsertOnSubmit(othMeeting);
             }
-            var oAttend = Db.Attends.SingleOrDefault(a => a.PeopleId == member.PeopleId
-                && a.MeetingId == oMeeting.MeetingId);
-            if (oAttend == null)
+            var q2 = from a in Db.Attends
+                     where a.PeopleId == member.PeopleId
+                     where a.MeetingId == othMeeting.MeetingId
+                     select a;
+            var othAttend = q2.SingleOrDefault();
+            if (othAttend == null) // attendance not recorded yet
             {
-                oAttend = new Attend
+                othAttend = new Attend
                 {
                     PeopleId = member.PeopleId,
                     OrganizationId = member.OrganizationId,
+                    MemberTypeId = member.MemberTypeId,
                     MeetingDate = meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
                     CreatedBy = Db.CurrentUser.UserId,
+                    Meeting = othMeeting,
                 };
-                oMeeting.Attends.Add(oAttend);
+                Db.Attends.InsertOnSubmit(othAttend);
             }
-            oAttend.AttendanceFlag = null;
-            return oAttend;
+            return othAttend;
+        }
+        private int? GetAttendType(bool attended, int? memberTypeId)
+        {
+            if (!attended)
+                return null;
+            var q = from m in CodeValueController.MemberTypeCodes2()
+                    where m.Id == memberTypeId
+                    select m;
+            return q.Single().AttendanceTypeId;
         }
     }
 }

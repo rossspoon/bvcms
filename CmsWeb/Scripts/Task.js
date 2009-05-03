@@ -36,7 +36,7 @@ function ClickTab(tab) {
     return false;
 }
 function StripeList() {
-    $('#tasks > tbody tr:even').addClass('alt');
+    $('#tasks > tbody > tr:even').addClass('alt');
 }
 function DeleteList(qs) {
     $.post('/Task/Action/', qs, function(ret) {

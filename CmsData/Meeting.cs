@@ -34,7 +34,7 @@ namespace CmsData
                     {
                         NumPresent = m.Attends.Count(a => a.AttendanceFlag == true),
                         NumNewVisit = m.Attends.Count(a => a.AttendanceFlag == true && a.AttendanceTypeId == (int)Attend.AttendTypeCode.NewVisitor),
-                        NumMembers = m.Attends.Count(a => a.AttendanceFlag == true && members.Contains(a.AttendanceTypeId)),
+                        NumMembers = m.Attends.Count(a => a.AttendanceFlag == true && members.Contains(a.AttendanceTypeId.Value)),
                         NumVstMembers = m.Attends.Count(a => a.AttendanceFlag == true && a.AttendanceTypeId == (int)Attend.AttendTypeCode.VisitingMember),
                         NumRepeatVst = m.Attends.Count(a => a.AttendanceFlag == true && a.AttendanceTypeId == (int)Attend.AttendTypeCode.RecentVisitor),
                     };

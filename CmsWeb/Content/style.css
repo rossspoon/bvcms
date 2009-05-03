@@ -304,3 +304,12 @@ tr.alt td
     color: red;
     font-weight:bold;
 }
+ul#ConditionGrid
+{
+    list-style-type: none; 
+    margin-left: 0; 
+    padding-left: 0; 
+    font-size: large;
+    margin-top: 0px; 
+    margin-bottom: 0px;
+}

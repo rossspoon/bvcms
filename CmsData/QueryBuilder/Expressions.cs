@@ -151,7 +151,7 @@ namespace CmsData
                 p.Attends.Any(a => a.MeetingDate >= from
                     && a.MeetingDate < to
                     && a.AttendanceFlag == true
-                    && ids.Contains(a.AttendanceTypeId)
+                    && ids.Contains(a.AttendanceTypeId.Value)
                     && (a.Meeting.OrganizationId == org || org == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
@@ -175,7 +175,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a => a.MeetingDate >= mindt
                     && a.AttendanceFlag == true
-                    && ids.Contains(a.AttendanceTypeId)
+                    && ids.Contains(a.AttendanceTypeId.Value)
                     && (a.Meeting.OrganizationId == org || org == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
@@ -223,7 +223,7 @@ namespace CmsData
                 p.Attends.Any(a =>
                     a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
-                    && ids.Contains(a.AttendanceTypeId)
+                    && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Util.CurrentOrgId
                     );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
@@ -534,7 +534,7 @@ namespace CmsData
             Expression<Func<Person, double>> pred = p =>
 
                 p.Attends.Count(a =>
-                    a.AttendanceFlag != null
+                    a.EffAttendFlag != null
                     && a.MeetingDate >= start && a.MeetingDate <= end
                     && (a.OrganizationId == org || org == 0)
                     && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
@@ -545,7 +545,7 @@ namespace CmsData
                     == 0 ? 0 :
 
                 p.Attends.Count(a =>
-                    a.AttendanceFlag == true
+                    a.EffAttendFlag == true
                     && a.MeetingDate >= start && a.MeetingDate <= end
                     && (a.OrganizationId == org || org == 0)
                     && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
@@ -556,7 +556,7 @@ namespace CmsData
                     * 100.0 /
 
                 p.Attends.Count(a =>
-                    a.AttendanceFlag != null
+                    a.EffAttendFlag != null
                     && a.MeetingDate >= start && a.MeetingDate <= end
                     && (a.OrganizationId == org || org == 0)
                     && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)

@@ -26,8 +26,8 @@ namespace CMSWeb
                     orderby a.MeetingDate descending
                     select new
                     {
-                        Indicator = Indicator(a.AttendanceTypeId, a.AttendanceFlag),
-                        AttendanceFlag = a.AttendanceFlag.HasValue ? (a.AttendanceFlag.Value ? "1" : "0") : "",
+                        Indicator = Indicator(a.AttendanceTypeId, a.EffAttendFlag),
+                        AttendanceFlag = a.EffAttendFlag.HasValue ? (a.EffAttendFlag.Value ? "1" : "0") : "_",
                         a.MeetingDate,
                         a.MeetingId,
                         AttendType = a.AttendType.Description,
@@ -36,9 +36,9 @@ namespace CMSWeb
                     };
             GridView1.DataSource = q.Take(60);
             GridView1.DataBind();
-            Name.NavigateUrl = "/Person.aspx?id=" + id;
+            //Name.NavigateUrl = "/Person.aspx?id=" + id;
             Name.Text = DbUtil.Db.LoadPersonById(id.Value).Name;
-            Org.NavigateUrl = "/Organization.aspx?id=" + oid;
+            //Org.NavigateUrl = "/Organization.aspx?id=" + oid;
             Org.Text = DbUtil.Db.LoadOrganizationById(oid.Value).FullName;
 
 
@@ -58,47 +58,22 @@ namespace CMSWeb
             GridView2.DataSource = q2;
             GridView2.DataBind();
         }
-        private string Indicator(int type, bool? flag)
+        private string Indicator(int? type, bool? flag)
         {
-            switch (type)
-            {
-                case 70: return "I";
-                case 90: return "G";
-                case 80: return "O";
-                case 110: return "*";
-                case 0: return ".";
-                default:
-                    if (flag == null)
-                        return "*";
-                    else if (flag.Value)
-                        return "P";
-                    else
-                        return ".";
-            }
+            if (flag == null) // attended elsewhere or Group
+                switch (type)
+                {
+                    case 20: return "V";
+                    case 70: return "I";
+                    case 90: return "G";
+                    case 80: return "O";
+                    case 110: return "*";
+                    default: return "*";
+                }
+            else if (flag.Value) // attended here
+                    return "P";
+            else // absent
+                return ".";
         }
     }
 }
-
-/*	DECLARE @mindt DATETIME
-
-	SELECT @mindt = MIN(MeetingDate)
-	FROM dbo.Attend
-	WHERE OrganizationId = @orgid AND PeopleId = @pid
-
-	SELECT TOP 52 @a = 
-	CASE a.AttendanceTypeId
-	WHEN 70 THEN 'I'
-	WHEN 90 THEN 'G'
-	WHEN 80 THEN 'O'
-	WHEN 110 THEN '*'
-	WHEN 0 THEN '.'
-	ELSE CASE a.AttendanceFlag
-		WHEN NULL THEN '*'
-		WHEN 1 THEN 'P'
-		WHEN 0 THEN '.'
-		END
-	END + @a
-	FROM dbo.Attend a
-	WHERE a.MeetingDate >= @mindt AND a.PeopleId = @pid AND a.OrganizationId = @orgid
-	ORDER BY MeetingDate DESC
-*/

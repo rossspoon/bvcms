@@ -132,7 +132,7 @@
     </tr>
     <tr>
         <td>
-            <ul id="ConditionGrid" style="list-style-type: none; margin-left: 0px; font-size: large;">
+            <ul id="ConditionGrid">
             <% Html.RenderPartial("Conditions", Model); %>
             </ul>
         </td>

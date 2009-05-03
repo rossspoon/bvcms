@@ -304,7 +304,7 @@ namespace CmsData
                     OrganizationMembers.Any(um =>
                         um.Organization.SecurityTypeId != 3 &&
                         um.OrganizationId == a.Meeting.OrganizationId && um.PeopleId == me)
-                    && attype.Contains(a.AttendanceTypeId) && a.MeetingDate > dt)
+                    && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)
                 select p;
             TagAll(q, tag);
 
@@ -334,22 +334,26 @@ namespace CmsData
         }
         public class AttendMeetingInfo2
         {
-            public bool? AttendedElsewhere { get; set; }
+            public int? AttendedElsewhere { get; set; }
             public int? MemberTypeId { get; set; }
-            public bool? IsRegularHour { get; set; }
-            public int? ScheduleId { get; set; }
-            public bool? IsSameHour { get; set; }
+            //public bool? IsRegularHour { get; set; }
+            //public int? ScheduleId { get; set; }
+            //public bool? IsSameHour { get; set; }
             public bool? IsOffSite { get; set; }
             public bool? IsRecentVisitor { get; set; }
             public string Name { get; set; }
+            public int? BFClassId { get; set; }
         }
 
         [Function(Name= "dbo.AttendMeetingInfo")]
         [ResultType(typeof(AttendMeetingInfo2))]
-        [ResultType(typeof(Attend))]
-        [ResultType(typeof(Meeting))]
-        [ResultType(typeof(OrganizationMember))]
-        [ResultType(typeof(OrganizationMember))]
+        [ResultType(typeof(Attend))] // Attendance
+        [ResultType(typeof(Meeting))] // Meeting Attended
+        [ResultType(typeof(Attend))] // VIP Attendance
+        [ResultType(typeof(OrganizationMember))] // VIP Membership
+        [ResultType(typeof(Attend))] // BFC Attendance at same time
+        [ResultType(typeof(OrganizationMember))] // BFC membership
+        [ResultType(typeof(Meeting))] // BFC Meeting Attended
         public IMultipleResults AttendMeetingInfo(int MeetingId, int PeopleId)
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),MeetingId, PeopleId);

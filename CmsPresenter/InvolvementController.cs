@@ -103,9 +103,42 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
+        public static IEnumerable ChurchList(int queryid, int maximumRows)
+        {
+            var Db = DbUtil.Db;
+            var qB = Db.LoadQueryById(queryid);
+            var q = Db.People.Where(qB.Predicate());
+            var q2 = from p in q
+                     select new
+                     {
+                         PeopleId = p.PeopleId,
+                         Title = p.TitleCode,
+                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         LastName = p.LastName,
+                         Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
+                         City = p.PrimaryCity,
+                         State = p.PrimaryState,
+                         Zip = p.PrimaryZip.FmtZip(),
+                         Email = p.EmailAddress,
+                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                         JoinDate = p.JoinDate.FormatDate(),
+                         HomePhone = p.HomePhone.FmtFone(),
+                         CellPhone = p.CellPhone.FmtFone(),
+                         WorkPhone = p.WorkPhone.FmtFone(),
+                         PhonePref = p.PhonePrefId,
+                         MemberStatus = p.MemberStatus.Description,
+                         BFTeacher = p.BibleFellowshipTeacher,
+                         Age = p.Age.ToString(),
+                         PrevChurch = p.OtherPreviousChurch,
+                         NewChurch = p.OtherNewChurch,
+                     };
+            return q2.Take(maximumRows);
+        }
 
         public static IEnumerable AttendList(int queryid, int maximumRows)
         {
+
             var Db = DbUtil.Db;
             var qB = Db.LoadQueryById(queryid);
             var q = Db.People.Where(qB.Predicate());

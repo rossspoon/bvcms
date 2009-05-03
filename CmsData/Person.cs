@@ -283,6 +283,7 @@ namespace CmsData
                     MeetingDate = a.MeetingDate,
                     AttendanceFlag = a.AttendanceFlag,
                     OtherOrgId = a.OtherOrgId,
+                    OtherAttends = a.OtherAttends,
                     AttendanceTypeId = a.AttendanceTypeId,
                     CreatedBy = a.CreatedBy,
                     CreatedDate = a.CreatedDate,

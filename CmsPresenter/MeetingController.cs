@@ -118,7 +118,7 @@ namespace CMSPresenter
         {
             // get list of people who have attended an event for this organization (including visitors)
             var pids = from a in Db.Attends
-                       where a.AttendanceFlag == true
+                       where a.EffAttendFlag == true
                        where a.MeetingId == mtgid
                        select new { a.PeopleId, a.Meeting.Organization.OrganizationId, status = a.AttendType.Description };
 

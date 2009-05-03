@@ -33,12 +33,15 @@
             <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Involvement' 
+            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
                 Attendance</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Involvement' 
+            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Children' 
                 target="_blank" title="Contains emergency contact, who brought child info"><img src="/images/Excel.png" />
                 Children</a></li>
+            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Church' 
+                target="_blank" title="Contains other Church Info"><img src="/images/Excel.png" />
+                Other Church</a></li>
             <li><a href='/Reports/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
                 Choir Attendance Labels</a></li>

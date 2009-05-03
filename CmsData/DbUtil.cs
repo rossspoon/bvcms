@@ -101,6 +101,8 @@ namespace CmsData
         }
         public static string Settings(string name)
         {
+            if (HttpContext.Current == null)
+                return "";
             var list = HttpContext.Current.Cache["Settings"] as Dictionary<string, string>;
             if (list == null)
             {

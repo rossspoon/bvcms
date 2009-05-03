@@ -17,6 +17,8 @@ namespace CmsData
 		
 	#region Private Fields
 		
+		private int _AttendId;
+		
 		private int _PeopleId;
 		
 		private int _MeetingId;
@@ -25,11 +27,11 @@ namespace CmsData
 		
 		private DateTime _MeetingDate;
 		
-		private bool? _AttendanceFlag;
+		private bool _AttendanceFlag;
 		
 		private int? _OtherOrgId;
 		
-		private int _AttendanceTypeId;
+		private int? _AttendanceTypeId;
 		
 		private int? _CreatedBy;
 		
@@ -37,7 +39,11 @@ namespace CmsData
 		
 		private int _MemberTypeId;
 		
-		private int _AttendId;
+		private int _OtherAttends;
+		
+		private bool? _BFCAttendance;
+		
+		private bool? _EffAttendFlag;
 		
    		
     	
@@ -58,6 +64,9 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
+		partial void OnAttendIdChanging(int value);
+		partial void OnAttendIdChanged();
+		
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
 		
@@ -70,13 +79,13 @@ namespace CmsData
 		partial void OnMeetingDateChanging(DateTime value);
 		partial void OnMeetingDateChanged();
 		
-		partial void OnAttendanceFlagChanging(bool? value);
+		partial void OnAttendanceFlagChanging(bool value);
 		partial void OnAttendanceFlagChanged();
 		
 		partial void OnOtherOrgIdChanging(int? value);
 		partial void OnOtherOrgIdChanged();
 		
-		partial void OnAttendanceTypeIdChanging(int value);
+		partial void OnAttendanceTypeIdChanging(int? value);
 		partial void OnAttendanceTypeIdChanged();
 		
 		partial void OnCreatedByChanging(int? value);
@@ -88,8 +97,14 @@ namespace CmsData
 		partial void OnMemberTypeIdChanging(int value);
 		partial void OnMemberTypeIdChanged();
 		
-		partial void OnAttendIdChanging(int value);
-		partial void OnAttendIdChanged();
+		partial void OnOtherAttendsChanging(int value);
+		partial void OnOtherAttendsChanged();
+		
+		partial void OnBFCAttendanceChanging(bool? value);
+		partial void OnBFCAttendanceChanged();
+		
+		partial void OnEffAttendFlagChanging(bool? value);
+		partial void OnEffAttendFlagChanged();
 		
     #endregion
 		public Attend()
@@ -111,6 +126,28 @@ namespace CmsData
 
 		
     #region Columns
+		
+		[Column(Name="AttendId", UpdateCheck=UpdateCheck.Never, Storage="_AttendId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int AttendId
+		{
+			get { return this._AttendId; }
+
+			set
+			{
+				if (this._AttendId != value)
+				{
+				
+                    this.OnAttendIdChanging(value);
+					this.SendPropertyChanging();
+					this._AttendId = value;
+					this.SendPropertyChanged("AttendId");
+					this.OnAttendIdChanged();
+				}
+
+			}
+
+		}
+
 		
 		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL")]
 		public int PeopleId
@@ -209,8 +246,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendanceFlag", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceFlag", DbType="bit")]
-		public bool? AttendanceFlag
+		[Column(Name="AttendanceFlag", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceFlag", DbType="bit NOT NULL")]
+		public bool AttendanceFlag
 		{
 			get { return this._AttendanceFlag; }
 
@@ -253,8 +290,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendanceTypeId", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceTypeId", DbType="int NOT NULL")]
-		public int AttendanceTypeId
+		[Column(Name="AttendanceTypeId", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceTypeId", DbType="int")]
+		public int? AttendanceTypeId
 		{
 			get { return this._AttendanceTypeId; }
 
@@ -347,21 +384,65 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendId", UpdateCheck=UpdateCheck.Never, Storage="_AttendId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int AttendId
+		[Column(Name="OtherAttends", UpdateCheck=UpdateCheck.Never, Storage="_OtherAttends", DbType="int NOT NULL")]
+		public int OtherAttends
 		{
-			get { return this._AttendId; }
+			get { return this._OtherAttends; }
 
 			set
 			{
-				if (this._AttendId != value)
+				if (this._OtherAttends != value)
 				{
 				
-                    this.OnAttendIdChanging(value);
+                    this.OnOtherAttendsChanging(value);
 					this.SendPropertyChanging();
-					this._AttendId = value;
-					this.SendPropertyChanged("AttendId");
-					this.OnAttendIdChanged();
+					this._OtherAttends = value;
+					this.SendPropertyChanged("OtherAttends");
+					this.OnOtherAttendsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BFCAttendance", UpdateCheck=UpdateCheck.Never, Storage="_BFCAttendance", DbType="bit")]
+		public bool? BFCAttendance
+		{
+			get { return this._BFCAttendance; }
+
+			set
+			{
+				if (this._BFCAttendance != value)
+				{
+				
+                    this.OnBFCAttendanceChanging(value);
+					this.SendPropertyChanging();
+					this._BFCAttendance = value;
+					this.SendPropertyChanged("BFCAttendance");
+					this.OnBFCAttendanceChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EffAttendFlag", UpdateCheck=UpdateCheck.Never, Storage="_EffAttendFlag", DbType="bit", IsDbGenerated=true)]
+		public bool? EffAttendFlag
+		{
+			get { return this._EffAttendFlag; }
+
+			set
+			{
+				if (this._EffAttendFlag != value)
+				{
+				
+                    this.OnEffAttendFlagChanging(value);
+					this.SendPropertyChanging();
+					this._EffAttendFlag = value;
+					this.SendPropertyChanged("EffAttendFlag");
+					this.OnEffAttendFlagChanged();
 				}
 
 			}
@@ -449,7 +530,7 @@ namespace CmsData
 					else
 					{
 						
-						this._AttendanceTypeId = default(int);
+						this._AttendanceTypeId = default(int?);
 						
 					}
 
