@@ -19,6 +19,8 @@ namespace CmsData
 		
 		private int _Id;
 		
+		private string _Code;
+		
 		private string _Description;
 		
 		private int _Day;
@@ -38,6 +40,9 @@ namespace CmsData
 		
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
+		
+		partial void OnCodeChanging(string value);
+		partial void OnCodeChanged();
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
@@ -76,6 +81,28 @@ namespace CmsData
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="varchar(10)")]
+		public string Code
+		{
+			get { return this._Code; }
+
+			set
+			{
+				if (this._Code != value)
+				{
+				
+                    this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
 				}
 
 			}

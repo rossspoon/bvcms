@@ -977,6 +977,7 @@ namespace CMSPresenter
                         select new CodeValueItem
                         {
                             Id = c.Id,
+                            Code = c.Code,
                             Value = c.Description
                         };
                 list = q.ToList();

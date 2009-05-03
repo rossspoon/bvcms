@@ -43,6 +43,8 @@ namespace CmsData
 		
 		private int _Organization;
 		
+		private int _Schedule;
+		
 		private int _Days;
 		
 		private string _SavedBy;
@@ -110,6 +112,9 @@ namespace CmsData
 		
 		partial void OnOrganizationChanging(int value);
 		partial void OnOrganizationChanged();
+		
+		partial void OnScheduleChanging(int value);
+		partial void OnScheduleChanged();
 		
 		partial void OnDaysChanging(int value);
 		partial void OnDaysChanged();
@@ -432,6 +437,28 @@ namespace CmsData
 					this._Organization = value;
 					this.SendPropertyChanged("Organization");
 					this.OnOrganizationChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Schedule", UpdateCheck=UpdateCheck.Never, Storage="_Schedule", DbType="int NOT NULL")]
+		public int Schedule
+		{
+			get { return this._Schedule; }
+
+			set
+			{
+				if (this._Schedule != value)
+				{
+				
+                    this.OnScheduleChanging(value);
+					this.SendPropertyChanging();
+					this._Schedule = value;
+					this.SendPropertyChanged("Schedule");
+					this.OnScheduleChanged();
 				}
 
 			}

@@ -17,6 +17,7 @@ namespace CMSWeb.Models
         int? Program { get; set; }
         int? Division { get; set; }
         int? Organization { get; set; }
+        int? Schedule { get; set; }
         string Days { get; set; }
         string Week { get; set; }
         string Quarters { get; set; }
@@ -108,6 +109,7 @@ namespace CMSWeb.Models
         public bool EndDateVisible { get; set; }
         public bool StartDateVisible { get; set; }
         public bool OrganizationVisible { get; set; }
+        public bool ScheduleVisible { get; set; }
         public bool DaysVisible { get; set; }
         public bool WeekVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
@@ -122,6 +124,7 @@ namespace CMSWeb.Models
         public int? Program { get; set; }
         public int? Division { get; set; }
         public int? Organization { get; set; }
+        public int? Schedule { get; set; }
         public string Days { get; set; }
         public string Week { get; set; }
         public string Quarters { get; set; }
@@ -179,6 +182,7 @@ namespace CMSWeb.Models
             DivisionVisible = fieldMap.HasParam("SubDivOrg");
             ProgramVisible = fieldMap.HasParam("DivOrg");
             OrganizationVisible = fieldMap.HasParam("Organization");
+            ScheduleVisible = fieldMap.HasParam("Schedule");
             DaysVisible = fieldMap.HasParam("Days");
             WeekVisible = fieldMap.HasParam("Week");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
@@ -304,6 +308,7 @@ namespace CMSWeb.Models
             c.DivOrg = Program ?? 0;
             c.SubDivOrg = Division ?? 0;
             c.Organization = Organization ?? 0;
+            c.Schedule = Schedule ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
@@ -354,6 +359,7 @@ namespace CMSWeb.Models
             Division = c.SubDivOrg;
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
+            Schedule = c.Schedule;
             StartDate = DateString(c.StartDate);
             EndDate = DateString(c.EndDate);
             SelectMultiple = c.HasMultipleCodes;
@@ -473,6 +479,19 @@ namespace CMSWeb.Models
             return from c in CompareClass.Comparisons
                    where c.FieldType == fieldMap.Type
                    select new SelectListItem { Text = c.CompType.ToString(), Value = c.CompType.ToString() };
+        }
+        public IEnumerable<SelectListItem> Schedules()
+        {
+            var q = from t in Db.WeeklySchedules
+                    orderby t.MeetingTime
+                    select new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
         }
         public IEnumerable<SelectListItem> Programs()
         {

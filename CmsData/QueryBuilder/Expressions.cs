@@ -25,6 +25,7 @@ namespace CmsData
             int? progid,
             int? divid,
             int org,
+            int sched,
             CompareType op,
             params int[] ids)
         {
@@ -34,6 +35,7 @@ namespace CmsData
                     && (m.OrganizationId == org || org == 0)
                     && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (m.Organization.ScheduleId == sched || sched == 0)
                     );
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -202,6 +204,26 @@ namespace CmsData
                     && (a.Meeting.OrganizationId == org || org == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression NumberOfMemberships(
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
+            int? sched,
+            CompareType op,
+            int cnt)
+        {
+            Expression<Func<Person, int>> pred = p =>
+                p.OrganizationMembers.Count(m => 
+                    (m.OrganizationId == org || org == 0)
+                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (m.Organization.ScheduleId == sched || sched == 0)
                     );
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);

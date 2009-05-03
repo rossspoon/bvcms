@@ -77,6 +77,7 @@ namespace CmsData
         MemberTypeAsOf,
         MemberTypeCodes,
         NickName,
+        NumberOfMemberships,
         OrgInactiveDate,
         OrgJoinDate,
         OrgJoinDateCompare,

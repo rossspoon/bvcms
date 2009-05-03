@@ -233,7 +233,7 @@
       Select members of an organization by the date on which their organization membership record was created. Specify the Program or Program/Division or Program/Division/Organization.
       Todo: explain how unknown dates work
     </Field>
-    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Select members of an organization by their member type within a specified Program, Program/Division, or Program/Division/Organization. 
     </Field>
     <Field Name="InCurrentOrg" Title="In Current Organization" Type="Bit" DataValueField="IdCode">
@@ -254,8 +254,11 @@
 		<Field Name="VolAppStatusCode" Title="Volunteer App Status Code" Type="Code" DataSource="VolApplicationStatusCodes" DataValueField="IdCode">
 			Indication of Volunteer Application Status
 		</Field>
-		<Field Name="VolunteerProcessedDateMonthsAgo" Title="Volunteer Approved months ago" Type="NullInteger">
+    <Field Name="VolunteerProcessedDateMonthsAgo" Title="Volunteer Approved months ago" Type="NullInteger">
       Indicate number of months ago volunteer application was approved
+    </Field>
+    <Field Name="NumberOfMemberships" Title="Number of Memberships" Type="NullInteger" DisplayAs="NumMemberships({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule">
+      Has a number of memberships in a prog, div, org, sched
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
       Indicates Volunteer Applications are in the church system

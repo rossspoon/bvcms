@@ -207,12 +207,12 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
-                // O --------------------------
                 case QueryType.MemberTypeCodes:
                     return Expressions.MemberTypeIds(parm,
                                c.DivOrg,
                                c.SubDivOrg,
                                c.Organization,
+                               c.Schedule,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.MemberTypeAsOf:
@@ -224,6 +224,16 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
+                // N -------------------
+                case QueryType.NumberOfMemberships:
+                    return Expressions.NumberOfMemberships(parm,
+                               c.DivOrg,
+                               c.SubDivOrg,
+                               c.Organization,
+                               c.Schedule,
+                               CompType,
+                               c.TextValue.ToInt());
+                // O --------------------------
                 case QueryType.OrgMemberCreatedDate:
                     return Expressions.OrgMemberCreatedDate(parm,
                                c.DivOrg,

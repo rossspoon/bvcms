@@ -89,6 +89,12 @@
                         <select id="Organization" ></select>
                     </td>
                 </tr>
+                <tr id="SchedDiv" style="display:none">
+                    <td>Schedule:</td>
+                    <td>
+                        <%=Html.DropDownList("Schedule", Model.Schedules()) %>
+                    </td>
+                </tr>
             </table>
         </td>
         <td valign="top">
@@ -186,9 +192,8 @@
 </div>
 <div id="OpenQueryDiv" title="Open Query" class="modalDiv">
     <select id="ExistingQueries"></select>
-        <div style="text-align:right; vertical-align:bottom">
-            <input id="OpenQuery" type="button" value="Open" />
-        </div>
+    <div style="text-align:right; vertical-align:bottom">
+        <input id="OpenQuery" type="button" value="Open" />
     </div>
 </div>
 <div id="SaveQueryDiv" class="modalDiv">
