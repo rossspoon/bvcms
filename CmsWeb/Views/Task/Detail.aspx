@@ -69,11 +69,11 @@
                 <span class="edit-select" vid="Status" canedit='<%=ViewData.Model.IsAnOwner%>'><%=ViewData.Model.Status%></span>
                 <% if (ViewData.Model.CanComplete)
                    { %>
-                <a href="#" onclick="SetComplete(<%=ViewData.Model.Id%>)" style="font-size:120%">(complete)</a>
+                <a href="#" onclick="SetComplete(<%=ViewData.Model.Id%>);return false;" style="font-size:120%">(complete)</a>
                 <% }
                    if (ViewData.Model.CanAccept)
                    { %>
-                <a href="#" onclick="Accept(<%=ViewData.Model.Id%>)" style="font-size:120%">(accept)</a>
+                <a href="#" onclick="Accept(<%=ViewData.Model.Id%>);return false;" style="font-size:120%">(accept)</a>
                 <% }
                    if (ViewData.Model.ShowCompleted)
                    { %>

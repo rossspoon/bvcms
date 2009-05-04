@@ -32,7 +32,8 @@ namespace CMSWeb
                         a.MeetingId,
                         AttendType = a.AttendType.Description,
                         MemberType = a.MemberType.Description,
-                        a.OtherOrgId
+                        a.OtherAttends,
+                        a.OtherOrgId,
                     };
             GridView1.DataSource = q.Take(60);
             GridView1.DataBind();

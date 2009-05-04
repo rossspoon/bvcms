@@ -180,7 +180,7 @@
        { %>
             <div>
                 <a id='<%=p.Name %>' class="FieldLink" href="#"><%=p.Title %></a>
-                <span style="cursor: pointer" onclick="toggle(this)"><img src="/images/help_out.gif" /></span>
+                <span style="cursor: pointer" onclick="toggle(this);return false;"><img src="/images/help_out.gif" /></span>
             </div>
             <div class="moreinfo">
                 <%=p.Description %>

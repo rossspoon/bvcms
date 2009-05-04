@@ -122,16 +122,19 @@ namespace CMSPresenter
                          Zip = p.PrimaryZip.FmtZip(),
                          Email = p.EmailAddress,
                          BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
-                         JoinDate = p.JoinDate.FormatDate(),
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),
                          WorkPhone = p.WorkPhone.FmtFone(),
                          PhonePref = p.PhonePrefId,
-                         MemberStatus = p.MemberStatus.Description,
                          BFTeacher = p.BibleFellowshipTeacher,
                          Age = p.Age.ToString(),
-                         PrevChurch = p.OtherPreviousChurch,
+                         MemberStatus = p.MemberStatus.Description,
+                         DropType = p.DropType.Description,
+                         DropDate = p.DropDate.FormatDate(),
                          NewChurch = p.OtherNewChurch,
+                         JoinType = p.JoinType.Description,
+                         JoinDate = p.JoinDate.FormatDate(),
+                         PrevChurch = p.OtherPreviousChurch,
                      };
             return q2.Take(maximumRows);
         }

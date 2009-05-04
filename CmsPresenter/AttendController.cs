@@ -82,7 +82,7 @@ namespace CMSPresenter
                         MeetingDate = meeting.MeetingDate,
                         MemberType = Db.MemberDesc(attend == null ?
                             (ismember ?
-                                (int)OrganizationMember.MemberTypeCode.Member :
+                                membership.MemberTypeId :
                                 (int)OrganizationMember.MemberTypeCode.Visitor) :
                             attend.MemberTypeId),
                         Name = p.Name2,
@@ -273,8 +273,11 @@ namespace CMSPresenter
 
             if (Meeting.GroupMeetingFlag && o.MemberTypeId.HasValue)
             {
-                Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
+                if (VIPAttendance != null && VIPAttendance.AttendanceFlag == true)
+                    Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                else
+                    Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
             }
             else if (o.IsOffSite == true && attended == false)
             {
@@ -285,7 +288,7 @@ namespace CMSPresenter
             else if (o.MemberTypeId.HasValue) // member of this class
             {
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
-                Attendance.AttendanceTypeId = GetAttendType(Attendance.AttendanceFlag, Attendance.MemberTypeId);
+                Attendance.AttendanceTypeId = GetAttendType(Attendance.AttendanceFlag, Attendance.MemberTypeId, null);
                 Attendance.BFCAttendance = Attendance.OrganizationId == o.BFClassId;
 
                 if (BFCMember != null && (attended || BFCAttendance != null)) // related BFC
@@ -306,7 +309,7 @@ namespace CMSPresenter
                         if (BFCAttendance.OtherAttends > 0)
                             BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         else
-                            BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId);
+                            BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
                     }
                     else if (BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
                     {
@@ -342,7 +345,7 @@ namespace CMSPresenter
                         Attendance.MemberTypeEnum = Attend.MemberTypeCode.VisitingMember;
                         Attendance.AttendTypeEnum = Attend.AttendTypeCode.VisitingMember;
                     }
-                    if (BFCAttendance != null)
+                    if (BFCAttendance == null)
                         BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
 
                     BFCAttendance.OtherAttends = attended ? 1 : 0;
@@ -350,7 +353,7 @@ namespace CMSPresenter
                     if (BFCAttendance.OtherAttends > 0)
                         BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
                     else
-                        BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId);
+                        BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
 
                     if (BFCMeeting != null) // already existed
                         OtherMeeting = BFCMeeting;
@@ -425,8 +428,10 @@ namespace CMSPresenter
             }
             return othAttend;
         }
-        private int? GetAttendType(bool attended, int? memberTypeId)
+        private int? GetAttendType(bool attended, int? memberTypeId, Meeting meeting)
         {
+            if (meeting != null && meeting.GroupMeetingFlag == true)
+                return (int)Attend.AttendTypeCode.Group;
             if (!attended)
                 return null;
             var q = from m in CodeValueController.MemberTypeCodes2()
