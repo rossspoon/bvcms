@@ -7,56 +7,17 @@ CREATE PROCEDURE [dbo].[AttendMeetingInfo]
 ( @MeetingId INT, @PeopleId INT)
 AS
 BEGIN
-	DECLARE @orgid INT,
-			@meetdt DATE,
-			@tm TIME,
-			@dt DATETIME,
-			@regularhour BIT,
-			@attendedelsewhere BIT,
-			@membertypeid INT,
-			@schedid INT
+	DECLARE @orgid INT
+			,@meetingdate DATETIME
+			,@meetdt DATE
+			,@tm TIME
+			,@dt DATETIME
+			,@regularhour BIT
+			,@membertypeid INT
+			,@schedid INT
+			,@attendedelsewhere INT
+			,@allowoverlap BIT
 
-	SELECT
-		@orgid = m.OrganizationId,
-		@schedid = o.ScheduleId,
-		@dt = DATEADD(DAY, o.RollSheetVisitorWks * -7, m.MeetingDate),
-		@attendedelsewhere = CASE WHEN exists(
-				SELECT NULL FROM Attend ae
-				JOIN dbo.Organizations oo 
-				ON ae.OrganizationId = oo.OrganizationId
-				WHERE ae.PeopleId = @PeopleId
-				AND ae.AttendanceFlag = 1
-				AND ae.MeetingDate = m.MeetingDate
-				AND ae.OrganizationId <> m.OrganizationId
-				AND oo.AllowAttendOverlap <> 1
-				AND o.AllowAttendOverlap <> 1)
-			THEN 1 ELSE 0 END,
-		@membertypeid = (SELECT om.MemberTypeId
-					FROM dbo.OrganizationMembers om
-					WHERE om.OrganizationId = o.OrganizationId
-					AND om.PeopleId = @PeopleId)
-
-	FROM dbo.Meetings m
-	JOIN dbo.Organizations o ON m.OrganizationId = o.OrganizationId
-	WHERE m.MeetingId = @MeetingId
-
-	IF @dt IS NULL
-		SELECT @dt = DATEADD(DAY, 3 * -7, @meetdt)
-
-	DECLARE @name VARCHAR(50), @bfclassid INT
-
-	SELECT @name = p.[Name], @bfclassid = BibleFellowshipClassId
-	FROM dbo.People p
-	WHERE PeopleId = @PeopleId
-
-
-	SELECT
-		@meetdt = CONVERT(DATE, m.MeetingDate),
-		@tm = CONVERT(TIME, m.MeetingDate)
-	FROM dbo.Meetings m
-	WHERE m.MeetingId = @MeetingId
-		
-		
 	SELECT @regularhour = CASE WHEN EXISTS(
 		SELECT null
 			FROM dbo.Meetings m
@@ -67,11 +28,40 @@ BEGIN
 				AND w.[Day] = (DATEPART(weekday, m.MeetingDate) - 1))
 		THEN 1 ELSE 0 END
 
+	SELECT
+		@orgid = m.OrganizationId,
+		@schedid = o.ScheduleId,
+		@dt = DATEADD(DAY, o.RollSheetVisitorWks * -7, m.MeetingDate),
+		@meetingdate = m.MeetingDate,
+		@allowoverlap = o.AllowAttendOverlap,
+		@membertypeid = (SELECT om.MemberTypeId
+					FROM dbo.OrganizationMembers om
+					WHERE om.OrganizationId = o.OrganizationId
+					AND om.PeopleId = @PeopleId)
 
-	DECLARE	@isrecentvisitor BIT,
-			@isinservice BIT,
-			@isoffsite BIT,
-			@issamehour bit
+	FROM dbo.Meetings m
+	JOIN dbo.Organizations o ON m.OrganizationId = o.OrganizationId
+	WHERE m.MeetingId = @MeetingId
+
+	DECLARE @name VARCHAR(50), @bfclassid INT
+
+	SELECT @name = p.[Name], @bfclassid = BibleFellowshipClassId
+	FROM dbo.People p
+	WHERE PeopleId = @PeopleId
+
+	SELECT
+		@meetdt = CONVERT(DATE, m.MeetingDate),
+		@tm = CONVERT(TIME, m.MeetingDate)
+	FROM dbo.Meetings m
+	WHERE m.MeetingId = @MeetingId
+		
+	IF @dt IS NULL
+		SELECT @dt = DATEADD(DAY, 3 * -7, @meetdt)
+
+	DECLARE	@isrecentvisitor BIT
+			--,@isinservice BIT
+			,@isoffsite BIT
+			--,@issamehour bit
 
 	SELECT @isrecentvisitor = CASE WHEN exists(
 				SELECT NULL FROM Attend
@@ -83,14 +73,14 @@ BEGIN
 				AND AttendanceTypeId IN (50, 60)) -- new and recent
 			THEN 1 ELSE 0 END
 
-	SELECT @isinservice = CASE WHEN exists(
-				SELECT NULL FROM dbo.OrganizationMembers om
-				JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
-				WHERE om.PeopleId = @PeopleId
-				AND om.OrganizationId <> @orgid
-				AND om.MemberTypeId = 500 -- inservice member
-				AND o.ScheduleId = @schedid)
-			THEN 1 ELSE 0 END
+	--SELECT @isinservice = CASE WHEN exists(
+	--			SELECT NULL FROM dbo.OrganizationMembers om
+	--			JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
+	--			WHERE om.PeopleId = @PeopleId
+	--			AND om.OrganizationId <> @orgid
+	--			AND om.MemberTypeId = 500 -- inservice member
+	--			AND o.ScheduleId = @schedid)
+	--		THEN 1 ELSE 0 END
 			
 	SELECT @isoffsite = CASE WHEN exists(
 				SELECT NULL FROM dbo.OrganizationMembers om
@@ -102,23 +92,54 @@ BEGIN
 				AND @meetdt <= o.LastMeetingDate)
 			THEN 1 ELSE 0 END
 
-	SELECT @issamehour = CASE WHEN exists(
-				SELECT NULL FROM dbo.OrganizationMembers om
-				JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
-				WHERE om.PeopleId = @PeopleId
-				AND om.OrganizationId <> @orgid
-				AND om.OrganizationId = @bfclassid
-				AND o.ScheduleId = @schedid)
-			THEN 1 ELSE 0 END
+	DECLARE @otherattend INT, 
+			@bfcattend INT, 
+			@bfcid INT
+	
+	SELECT TOP 1 @otherattend = ae.AttendId
+	FROM Attend ae
+	JOIN dbo.Organizations o ON ae.OrganizationId = o.OrganizationId
+	WHERE ae.PeopleId = @PeopleId
+	AND ae.MeetingDate = @meetingdate
+	AND ae.OrganizationId <> @orgid
+	
+	-- BFC class membership
+	SELECT @bfcid = om.OrganizationId FROM dbo.OrganizationMembers om
+	JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
+	WHERE om.PeopleId = @PeopleId 
+	AND om.OrganizationId <> @orgid
+	AND o.ScheduleId = @schedid AND @regularhour = 1
+	AND (om.OrganizationId = @bfclassid OR om.MemberTypeId = 500) -- regular or InSvc
+
+	-- BFC Attendance at same time
+	SELECT @bfcattend = a.AttendId FROM dbo.Attend a
+	JOIN dbo.OrganizationMembers om ON a.OrganizationId = om.OrganizationId
+	JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
+	WHERE o.ScheduleId = @schedid AND @regularhour = 1
+	AND a.MeetingDate = @meetingdate
+	AND om.OrganizationId <> @orgid
+	AND om.OrganizationId = @bfcid
+
+	-- attended elsewhere at same time
+	SELECT TOP 1 @attendedelsewhere = ae.AttendId 
+	FROM Attend ae
+	JOIN dbo.Organizations o ON ae.OrganizationId = o.OrganizationId
+	WHERE ae.PeopleId = @PeopleId
+	AND ae.AttendanceFlag = 1
+	AND ae.MeetingDate = @meetingdate
+	AND ae.OrganizationId NOT IN (@orgid, @bfcid)
+	AND o.AllowAttendOverlap <> 1
+	AND @allowoverlap <> 1
+
+-- The returned records:
 			
-	SELECT	@attendedElsewhere AttendedElsewhere, 
-			@membertypeid MemberTypeId, 
-			@regularhour IsRegularHour, 
-			@schedid ScheduleId,
-			@issamehour IsSameHour,
-			@isoffsite IsOffSite,
-			@isrecentvisitor IsRecentVisitor,
-			@name Name
+	SELECT
+		 @attendedelsewhere AttendedElsewhere
+		,@membertypeid MemberTypeId
+		,@isoffsite IsOffSite
+		,@isrecentvisitor IsRecentVisitor
+		,@name Name
+		,@bfclassid BFClassId
 	
 	-- Attend if any
 	SELECT * FROM dbo.Attend
@@ -128,19 +149,32 @@ BEGIN
 	SELECT * FROM dbo.Meetings
 	WHERE MeetingId = @MeetingId
 	
-	-- normal class membership
+	-- Related VIP Attendance
+	SELECT v.*
+	FROM Attend v
+	JOIN dbo.OrganizationMembers om ON v.OrganizationId = om.OrganizationId
+	WHERE v.PeopleId = @PeopleId
+	AND v.MeetingDate = @meetingdate
+	AND v.OrganizationId <> @orgid
+	AND om.MemberTypeId = 700 -- vip
+	AND @orgid = @bfclassid
+	
+	-- BFC class membership 
 	SELECT * FROM dbo.OrganizationMembers
-	WHERE PeopleId = @PeopleId AND OrganizationId = @bfclassid
+	WHERE OrganizationId = @bfcid
+	AND PeopleId = @PeopleId
 	
-	-- inservice class member
-	SELECT * FROM dbo.OrganizationMembers om
-	JOIN dbo.Organizations o ON om.OrganizationId = o.OrganizationId
-	WHERE om.PeopleId = @PeopleId
-	AND om.OrganizationId <> @orgid
-	AND om.MemberTypeId = 500 -- inservice member
-	AND o.ScheduleId = @schedid
+	-- BFC Attendance at same time
+	SELECT a.* FROM dbo.Attend a
+	JOIN dbo.OrganizationMembers om ON a.OrganizationId = om.OrganizationId
+	WHERE AttendId = @bfcattend
+
+	-- BFC Meeting at same time
+	SELECT m.* FROM dbo.Meetings m
+	JOIN dbo.Attend a ON m.MeetingId = a.MeetingId
+	WHERE AttendId = @bfcattend
 	
-		
 END
+
 
 GO

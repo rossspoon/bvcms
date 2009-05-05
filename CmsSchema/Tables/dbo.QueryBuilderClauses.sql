@@ -20,7 +20,8 @@ CREATE TABLE [dbo].[QueryBuilderClauses]
 [CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_QueryBuilderClauses_ModifiedOn] DEFAULT (getdate()),
 [Quarters] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [SavedQueryIdDesc] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF_QueryBuilderClauses_SavedQueryId] DEFAULT ((0)),
-[Tags] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[Tags] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Schedule] [int] NOT NULL CONSTRAINT [DF_QueryBuilderClauses_Schedule] DEFAULT ((0))
 )
 
 

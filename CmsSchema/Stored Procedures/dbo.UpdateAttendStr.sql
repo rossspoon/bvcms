@@ -30,13 +30,13 @@ BEGIN
 	SELECT @tct = COUNT(*) FROM dbo.Attend
      WHERE PeopleId = @pid
        AND OrganizationId = @orgid
-       AND AttendanceFlag IS NOT NULL
+       AND EffAttendFlag IS NOT NULL
        AND MeetingDate >= @yearago
        
     SELECT @act = COUNT(*) FROM dbo.Attend
      WHERE PeopleId = @pid
        AND OrganizationId = @orgid
-       AND AttendanceFlag = 1
+       AND EffAttendFlag = 1
        AND MeetingDate >= @yearago
        
        
@@ -59,18 +59,18 @@ BEGIN
 		WHERE OrganizationId = @orgid AND PeopleId = @pid
 
 	SELECT @a = 
-		CASE a.AttendanceTypeId
-		WHEN 20 THEN 'V'
-		WHEN 70 THEN 'I'
-		WHEN 90 THEN 'G'
-		WHEN 80 THEN 'O'
-		WHEN 110 THEN '*'
-		WHEN 0 THEN '.'
-		ELSE CASE a.AttendanceFlag
-			WHEN NULL THEN '*'
-			WHEN 1 THEN 'P'
-			WHEN 0 THEN '.'
+		CASE 
+		WHEN a.EffAttendFlag IS NULL THEN
+			CASE a.AttendanceTypeId
+			WHEN 20 THEN 'V'
+			WHEN 70 THEN 'I'
+			WHEN 90 THEN 'G'
+			WHEN 80 THEN 'O'
+			WHEN 110 THEN '*'
+			ELSE '*'
 			END
+		WHEN a.EffAttendFlag = 1 THEN 'P'
+		ELSE '.'
 		END + @a
 	FROM dbo.Attend a
 	WHERE a.MeetingDate >= @dt AND a.PeopleId = @pid AND a.OrganizationId = @orgid
