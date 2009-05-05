@@ -42,7 +42,8 @@ namespace CMSWeb
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Children&");
-            TagAddLabel.Text = Single? "Add" : "Add All";
+            ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Church&");
+            TagAddLabel.Text = Single ? "Add" : "Add All";
             TagRemoveLabel.Text = Single? "Remove" : "Remove All";
             PurgeAllItem.Visible = Page.User.IsInRole("Admin");
         }

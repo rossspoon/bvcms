@@ -60,6 +60,11 @@
                     <asp:Image ID="Image15" ImageUrl="~/images/Excel.png" runat="server" />
                     Children</asp:HyperLink></li>
             <li>
+                <asp:HyperLink ID="ChurchLink" ToolTip="Includes Drop/Join/Other Church info"
+                    runat="server">
+                    <asp:Image ID="Image19" ImageUrl="~/images/Excel.png" runat="server" />
+                    Other Churches</asp:HyperLink></li>
+            <li>
                 <asp:HyperLink ID="ChoirLink" ToolTip="Labels for Choir Attendance"
                     runat="server">
                     <asp:Image ID="Image18" ImageUrl="~/images/tags.png" runat="server" />

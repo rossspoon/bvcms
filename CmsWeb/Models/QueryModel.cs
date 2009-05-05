@@ -320,6 +320,8 @@ namespace CMSWeb.Models
         public void EditCondition()
         {
             var c = Db.LoadQueryById(SelectedId);
+            if (c == null)
+                return;
             ConditionName = c.FieldInfo.Name;
             SetVisibility();
             Comparison = c.Comparison;

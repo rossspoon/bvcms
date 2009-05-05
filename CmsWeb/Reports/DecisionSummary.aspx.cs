@@ -17,8 +17,8 @@ namespace CMSWeb.StaffOnly
             {
                 DbUtil.LogActivity("Viewing Decision Summary Rpt");
                 var today = Util.Now.Date;
-                var sunday = today.AddDays(-(int)today.DayOfWeek);
-                FromDate.Text = sunday.ToString("d");
+                FromDate.Text = new DateTime(today.Year, 1, 1).ToString("d");
+                ToDate.Text = today.ToString("d");
             }
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -87,12 +87,13 @@ namespace CMSWeb.StaffOnly
                             qb.AddNewClause(QueryType.OtherNewChurch, CompareType.IsNull, "");
                             qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
                             break;
-                        case "All":
+                        case "Total":
                             break;
                         default:
                             qb.AddNewClause(QueryType.OtherNewChurch, CompareType.Equal, e.CommandArgument);
                             break;
                     }
+                    qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
                     break;
             }
             DbUtil.Db.SubmitChanges();

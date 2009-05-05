@@ -350,9 +350,8 @@ namespace CmsData
         [ResultType(typeof(Attend))] // Attendance
         [ResultType(typeof(Meeting))] // Meeting Attended
         [ResultType(typeof(Attend))] // VIP Attendance
-        [ResultType(typeof(OrganizationMember))] // VIP Membership
-        [ResultType(typeof(Attend))] // BFC Attendance at same time
         [ResultType(typeof(OrganizationMember))] // BFC membership
+        [ResultType(typeof(Attend))] // BFC Attendance at same time
         [ResultType(typeof(Meeting))] // BFC Meeting Attended
         public IMultipleResults AttendMeetingInfo(int MeetingId, int PeopleId)
         {

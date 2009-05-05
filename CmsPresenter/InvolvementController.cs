@@ -109,6 +109,7 @@ namespace CMSPresenter
             var qB = Db.LoadQueryById(queryid);
             var q = Db.People.Where(qB.Predicate());
             var q2 = from p in q
+                     let rescode = Db.ResidentCodes.SingleOrDefault(r => r.Id == p.PrimaryResCode).Description
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -135,6 +136,7 @@ namespace CMSPresenter
                          JoinType = p.JoinType.Description,
                          JoinDate = p.JoinDate.FormatDate(),
                          PrevChurch = p.OtherPreviousChurch,
+                         Resident = rescode,
                      };
             return q2.Take(maximumRows);
         }

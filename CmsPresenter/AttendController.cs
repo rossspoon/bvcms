@@ -215,43 +215,18 @@ namespace CMSPresenter
             return q2;
         }
 
-        //public static bool IsRecentVisitor(CmsData.Meeting theMeeting, int peopleId)
-        //{
-        //    var wks = 3; // default lookback
-        //    if (theMeeting.Organization.RollSheetVisitorWks.HasValue)
-        //        wks = theMeeting.Organization.RollSheetVisitorWks.Value;
-
-        //    var dt = theMeeting.MeetingDate.Value.AddDays(wks * -7);
-
-        //    var matchingPerson = DbUtil.Db.People.SingleOrDefault(
-        //                p => p.PeopleId == peopleId
-        //            &&
-        //                p.Attends.Any(a =>
-        //                    a.AttendanceFlag != false
-        //                    && a.MeetingDate >= dt && a.MeetingDate <= theMeeting.MeetingDate
-        //                    && a.Meeting.OrganizationId == theMeeting.OrganizationId
-        //                    && VisitAttendTypes.Contains(a.AttendanceTypeId)
-        //                    )
-        //            && // not members
-        //                !(p.OrganizationMembers.Any(om => om.OrganizationId == theMeeting.OrganizationId))
-        //            );
-
-        //    return (matchingPerson != null);
-        //}
-
         public string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
-            Meeting OtherMeeting = null;
+            var OtherMeetings = new List<Attend>();
 
             var r = Db.AttendMeetingInfo(MeetingId, PeopleId);
 
             var o = r.GetResult<CMSDataContext.AttendMeetingInfo2>().First();
             var Attendance = r.GetResult<Attend>().FirstOrDefault();
             var Meeting = r.GetResult<Meeting>().First();
-            var VIPAttendance = r.GetResult<Attend>().FirstOrDefault();
-            var VIPMember = r.GetResult<OrganizationMember>().FirstOrDefault();
-            var BFCAttendance = r.GetResult<Attend>().FirstOrDefault();
+            var VIPAttendance = r.GetResult<Attend>().ToList();
             var BFCMember = r.GetResult<OrganizationMember>().FirstOrDefault();
+            var BFCAttendance = r.GetResult<Attend>().FirstOrDefault();
             var BFCMeeting = r.GetResult<Meeting>().FirstOrDefault();
 
             if (o.AttendedElsewhere > 0 && attended)
@@ -274,7 +249,7 @@ namespace CMSPresenter
             if (Meeting.GroupMeetingFlag && o.MemberTypeId.HasValue)
             {
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
-                if (VIPAttendance != null && VIPAttendance.AttendanceFlag == true)
+                if (VIPAttendance.Count > 0 && VIPAttendance.Any(a => a.AttendanceFlag == true))
                     Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                 else
                     Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
@@ -318,22 +293,21 @@ namespace CMSPresenter
                         else
                             BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
                     }
-
-                    if (BFCMeeting != null) // already existed
-                        OtherMeeting = BFCMeeting;
-                    else
-                        OtherMeeting = BFCAttendance.Meeting;
+                    OtherMeetings.Add(BFCAttendance);
                 }
-                else if (VIPAttendance != null) // need to indicate BFCAttendance or not
+                else if (VIPAttendance.Count > 0) // need to indicate BFCAttendance or not
                 {
                     /* At this point I am recording attendance for a BFClass
-                     * And now I am looking at the VIP class where I a sometimes volunteer
+                     * And now I am looking at the one or more VIP classes where I a sometimes volunteer
                      */
-                    VIPAttendance.OtherAttends = attended ? 1 : 0;
-                    Attendance.OtherAttends = VIPAttendance.AttendanceFlag ? 1 : 0;
-
-                    if (VIPAttendance.AttendanceFlag == true)
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                    foreach (var a in VIPAttendance)
+                    {
+                        a.OtherAttends = attended ? 1 : 0;
+                        if (a.AttendanceFlag == true)
+                            Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                        OtherMeetings.Add(a);
+                    }
+                    Attendance.OtherAttends = VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
                 }
             }
             else // not a member of this class 
@@ -355,10 +329,7 @@ namespace CMSPresenter
                     else
                         BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
 
-                    if (BFCMeeting != null) // already existed
-                        OtherMeeting = BFCMeeting;
-                    else
-                        OtherMeeting = BFCAttendance.Meeting;
+                    OtherMeetings.Add(BFCAttendance);
                 }
                 else // not a member of another class (visitor)
                 {
@@ -379,10 +350,10 @@ namespace CMSPresenter
             }
 
             Db.UpdateAttendStr(Meeting.OrganizationId, PeopleId);
-            if (OtherMeeting != null)
+            foreach(var m in OtherMeetings)
             {
-                Db.UpdateAttendStr(OtherMeeting.OrganizationId, PeopleId);
-                Db.UpdateMeetingCounters(OtherMeeting.MeetingId);
+                Db.UpdateAttendStr(m.OrganizationId, PeopleId);
+                Db.UpdateMeetingCounters(m.MeetingId);
             }
             return null; // no error
         }
