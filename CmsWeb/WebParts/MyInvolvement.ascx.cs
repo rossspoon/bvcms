@@ -26,6 +26,8 @@ namespace CMSWeb.WebParts
                 dsMyInvolvement.SelectParameters.Add("startRowIndex", "0");
                 grdMyInvolvement.DataBind();
             }
+            else
+                grdMyInvolvement.Visible = false;
         }
     }
 }

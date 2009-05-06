@@ -41,9 +41,11 @@ namespace CMSWeb.Reports
 			var donorlabel = ListView1.FindControl("DonorCount") as Label;
 			var countlabel = ListView1.FindControl("Count") as Label;
 			var totallabel = ListView1.FindControl("Total") as Label;
-			donorlabel.Text = ctl.RangeTotal.DonorCount.ToString("n0");
-			countlabel.Text = ctl.RangeTotal.Count.ToString("n0");
-			totallabel.Text = "&nbsp;&nbsp;" + ctl.RangeTotal.Total.Value.ToString("c0");
+            if (donorlabel == null)
+                return;
+			donorlabel.Text = (ctl.RangeTotal.DonorCount ?? 0).ToString("n0");
+            countlabel.Text = (ctl.RangeTotal.Count ?? 0).ToString("n0");
+            totallabel.Text = "&nbsp;&nbsp;" + (ctl.RangeTotal.Total ?? 0).ToString("c0");
         }
 
         protected void ObjectDataSource1_ObjectCreated(object sender, ObjectDataSourceEventArgs e)

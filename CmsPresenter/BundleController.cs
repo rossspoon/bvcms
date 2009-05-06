@@ -108,9 +108,9 @@ namespace CMSPresenter
 			get { return RangeLabels[RangeId - 1]; }
 		}
 		public int RangeId { get; set; }
-		public int Count { get; set; }
-		public int DonorCount { get; set; }
-		public decimal PctCount { get; set; }
+		public int? Count { get; set; }
+		public int? DonorCount { get; set; }
+		public decimal? PctCount { get; set; }
 		private decimal? total;
 		public decimal? Total
 		{
@@ -643,7 +643,7 @@ namespace CMSPresenter
                     where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where !contributionTypes.Contains(c.ContributionTypeId)
                     where c.PledgeFlag == Pledges
-                    where c.FundId == fundid
+                    where c.FundId == fundid || fundid == 0
                     where Pledges || c.PostingDate != null
 					select c;
 

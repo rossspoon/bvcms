@@ -122,7 +122,7 @@ namespace CMSWeb.Models
 
         public TaskModel()
         {
-            if (PeopleId == 0)
+            if (PeopleId == 0 && Util.UserPeopleId != null)
                 PeopleId = Util.UserPeopleId.Value;
         }
 

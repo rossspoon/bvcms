@@ -18,17 +18,6 @@ using System.Web.Security;
 
 namespace CMSPresenter
 {
-    public enum ExternalOrgTypes : int
-    {
-        School = 10,
-        College = 20,
-        Business = 30,
-        Hospital = 40,
-        Church = 50,
-        Organization = 60,
-        Other = 98
-    }
-
     [DataObject]
     public class CodeValueController
     {
@@ -319,6 +308,7 @@ namespace CMSPresenter
                 list = q.ToList();
                 HttpRuntime.Cache[NAME] = list;
             }
+            list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });
             return list;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]

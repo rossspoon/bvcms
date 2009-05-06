@@ -97,7 +97,7 @@ namespace CMSWeb.StaffOnly
                     break;
             }
             DbUtil.Db.SubmitChanges();
-            Response.Redirect("~/SavedQuery.aspx?id=" + qb.QueryId);
+            Response.Redirect("/QueryBuilder/Main/" + qb.QueryId);
         }
     }
 }

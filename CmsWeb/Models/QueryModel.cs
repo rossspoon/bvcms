@@ -528,6 +528,7 @@ namespace CMSWeb.Models
                     where ot.DivId == divid
                     && (SqlMethods.DateDiffMonth(ot.Organization.OrganizationClosedDate, Util.Now) < 14
                         || ot.Organization.OrganizationStatusId == 30)
+                    where Util.OrgMembersOnly == false || (ot.Organization.SecurityTypeId != 3)
                     orderby ot.Organization.OrganizationStatusId, ot.Organization.OrganizationName
                     select new SelectListItem
                     {
