@@ -592,6 +592,20 @@ namespace CMSWeb.Models
             var q = Db.People.Where(Qb.Predicate());
             return q;
         }
+        public void TagAll()
+        {
+            if (Qb == null)
+                LoadScratchPad();
+            var q = Db.People.Where(Qb.Predicate());
+            Db.TagAll(q);
+        }
+        public void UnTagAll()
+        {
+            if (Qb == null)
+                LoadScratchPad();
+            var q = Db.People.Where(Qb.Predicate());
+            Db.UnTagAll(q);
+        }
         private IEnumerable<PeopleInfo> FetchPeopleList(IQueryable<Person> query)
         {
             var q = from p in query

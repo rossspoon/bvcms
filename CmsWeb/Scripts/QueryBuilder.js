@@ -91,6 +91,22 @@ $(function() {
         });
         return false;
     });
+    $('#TagAll').click(function(ev) {
+        $.block();
+        $.post("/QueryBuilder/TagAll/", null, function(ret) {
+            $(".taguntag").text(ret);
+            $.unblock();
+        });
+        return false;
+    });
+    $('#UnTagAll').click(function(ev) {
+        $.block();
+        $.post("/QueryBuilder/UnTagAll/", null, function(ret) {
+            $(".taguntag").text(ret);
+            $.unblock();
+        });
+        return false;
+    });
 });
 function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');

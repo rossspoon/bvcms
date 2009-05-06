@@ -179,6 +179,26 @@ namespace CMSWeb.Controllers
             DbUtil.Db.SubmitChanges();
             return Json(new { HasTag = r });
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult TagAll()
+        {
+            var m = new QueryModel();
+            m.LoadScratchPad();
+            m.TagAll();
+            var c = new ContentResult();
+            c.Content = "Remove";
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult UnTagAll()
+        {
+            var m = new QueryModel();
+            m.LoadScratchPad();
+            m.UnTagAll();
+            var c = new ContentResult();
+            c.Content = "Add";
+            return c;
+        }
 
         private bool Validate(QueryModel m)
         {
