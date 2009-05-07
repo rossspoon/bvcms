@@ -23,51 +23,19 @@ namespace CmsData
 		
 		private DateTime _CreatedDate;
 		
-		private bool _RecordStatus;
-		
 		private int _OrganizationStatusId;
-		
-		private int _OrganizationTypeId;
-		
-		private int _GroupMeetingTypeId;
 		
 		private int _DivisionId;
 		
 		private int? _LeaderMemberTypeId;
 		
-		private int? _OrganizationSize;
-		
-		private int _GenderTypeId;
-		
-		private int _MaritalStatusId;
-		
-		private int? _AgeRangeStart;
-		
-		private int? _AgeRangeEnd;
-		
-		private int? _GradeRangeStart;
-		
-		private int? _GradeRangeEnd;
-		
-		private int _RollSheetTypeId;
-		
-		private bool _TrackVisitors;
-		
 		private int? _RollSheetVisitorWks;
 		
 		private int _AttendTrkLevelId;
 		
-		private int _SecurityTypeId;
-		
 		private int _AttendClassificationId;
 		
-		private bool _AttendanceSummaryFlag;
-		
-		private int? _QtrlySummaryInterval;
-		
-		private bool _VipFlag;
-		
-		private bool _Confidential;
+		private int _SecurityTypeId;
 		
 		private DateTime? _FirstMeetingDate;
 		
@@ -78,18 +46,6 @@ namespace CmsData
 		private string _Location;
 		
 		private string _OrganizationName;
-		
-		private string _OrganizationCode;
-		
-		private string _OrganizationDescription;
-		
-		private string _UltIncidentId;
-		
-		private bool? _PromotableFlag;
-		
-		private int _RollSheetPrintLead;
-		
-		private int _MeetingSequence;
 		
 		private int? _ModifiedBy;
 		
@@ -102,6 +58,10 @@ namespace CmsData
 		private int? _ParentOrgId;
 		
 		private bool _AllowAttendOverlap;
+		
+		private int? _GradeRangeStart;
+		
+		private int? _GradeRangeEnd;
 		
 		private int? _MemberCount;
 		
@@ -155,17 +115,8 @@ namespace CmsData
 		partial void OnCreatedDateChanging(DateTime value);
 		partial void OnCreatedDateChanged();
 		
-		partial void OnRecordStatusChanging(bool value);
-		partial void OnRecordStatusChanged();
-		
 		partial void OnOrganizationStatusIdChanging(int value);
 		partial void OnOrganizationStatusIdChanged();
-		
-		partial void OnOrganizationTypeIdChanging(int value);
-		partial void OnOrganizationTypeIdChanged();
-		
-		partial void OnGroupMeetingTypeIdChanging(int value);
-		partial void OnGroupMeetingTypeIdChanged();
 		
 		partial void OnDivisionIdChanging(int value);
 		partial void OnDivisionIdChanged();
@@ -173,56 +124,17 @@ namespace CmsData
 		partial void OnLeaderMemberTypeIdChanging(int? value);
 		partial void OnLeaderMemberTypeIdChanged();
 		
-		partial void OnOrganizationSizeChanging(int? value);
-		partial void OnOrganizationSizeChanged();
-		
-		partial void OnGenderTypeIdChanging(int value);
-		partial void OnGenderTypeIdChanged();
-		
-		partial void OnMaritalStatusIdChanging(int value);
-		partial void OnMaritalStatusIdChanged();
-		
-		partial void OnAgeRangeStartChanging(int? value);
-		partial void OnAgeRangeStartChanged();
-		
-		partial void OnAgeRangeEndChanging(int? value);
-		partial void OnAgeRangeEndChanged();
-		
-		partial void OnGradeRangeStartChanging(int? value);
-		partial void OnGradeRangeStartChanged();
-		
-		partial void OnGradeRangeEndChanging(int? value);
-		partial void OnGradeRangeEndChanged();
-		
-		partial void OnRollSheetTypeIdChanging(int value);
-		partial void OnRollSheetTypeIdChanged();
-		
-		partial void OnTrackVisitorsChanging(bool value);
-		partial void OnTrackVisitorsChanged();
-		
 		partial void OnRollSheetVisitorWksChanging(int? value);
 		partial void OnRollSheetVisitorWksChanged();
 		
 		partial void OnAttendTrkLevelIdChanging(int value);
 		partial void OnAttendTrkLevelIdChanged();
 		
-		partial void OnSecurityTypeIdChanging(int value);
-		partial void OnSecurityTypeIdChanged();
-		
 		partial void OnAttendClassificationIdChanging(int value);
 		partial void OnAttendClassificationIdChanged();
 		
-		partial void OnAttendanceSummaryFlagChanging(bool value);
-		partial void OnAttendanceSummaryFlagChanged();
-		
-		partial void OnQtrlySummaryIntervalChanging(int? value);
-		partial void OnQtrlySummaryIntervalChanged();
-		
-		partial void OnVipFlagChanging(bool value);
-		partial void OnVipFlagChanged();
-		
-		partial void OnConfidentialChanging(bool value);
-		partial void OnConfidentialChanged();
+		partial void OnSecurityTypeIdChanging(int value);
+		partial void OnSecurityTypeIdChanged();
 		
 		partial void OnFirstMeetingDateChanging(DateTime? value);
 		partial void OnFirstMeetingDateChanged();
@@ -238,24 +150,6 @@ namespace CmsData
 		
 		partial void OnOrganizationNameChanging(string value);
 		partial void OnOrganizationNameChanged();
-		
-		partial void OnOrganizationCodeChanging(string value);
-		partial void OnOrganizationCodeChanged();
-		
-		partial void OnOrganizationDescriptionChanging(string value);
-		partial void OnOrganizationDescriptionChanged();
-		
-		partial void OnUltIncidentIdChanging(string value);
-		partial void OnUltIncidentIdChanged();
-		
-		partial void OnPromotableFlagChanging(bool? value);
-		partial void OnPromotableFlagChanged();
-		
-		partial void OnRollSheetPrintLeadChanging(int value);
-		partial void OnRollSheetPrintLeadChanged();
-		
-		partial void OnMeetingSequenceChanging(int value);
-		partial void OnMeetingSequenceChanged();
 		
 		partial void OnModifiedByChanging(int? value);
 		partial void OnModifiedByChanged();
@@ -274,6 +168,12 @@ namespace CmsData
 		
 		partial void OnAllowAttendOverlapChanging(bool value);
 		partial void OnAllowAttendOverlapChanged();
+		
+		partial void OnGradeRangeStartChanging(int? value);
+		partial void OnGradeRangeStartChanged();
+		
+		partial void OnGradeRangeEndChanging(int? value);
+		partial void OnGradeRangeEndChanged();
 		
 		partial void OnMemberCountChanging(int? value);
 		partial void OnMemberCountChanged();
@@ -389,28 +289,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RecordStatus", UpdateCheck=UpdateCheck.Never, Storage="_RecordStatus", DbType="bit NOT NULL")]
-		public bool RecordStatus
-		{
-			get { return this._RecordStatus; }
-
-			set
-			{
-				if (this._RecordStatus != value)
-				{
-				
-                    this.OnRecordStatusChanging(value);
-					this.SendPropertyChanging();
-					this._RecordStatus = value;
-					this.SendPropertyChanged("RecordStatus");
-					this.OnRecordStatusChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="OrganizationStatusId", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationStatusId", DbType="int NOT NULL")]
 		public int OrganizationStatusId
 		{
@@ -429,50 +307,6 @@ namespace CmsData
 					this._OrganizationStatusId = value;
 					this.SendPropertyChanged("OrganizationStatusId");
 					this.OnOrganizationStatusIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrganizationTypeId", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationTypeId", DbType="int NOT NULL")]
-		public int OrganizationTypeId
-		{
-			get { return this._OrganizationTypeId; }
-
-			set
-			{
-				if (this._OrganizationTypeId != value)
-				{
-				
-                    this.OnOrganizationTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationTypeId = value;
-					this.SendPropertyChanged("OrganizationTypeId");
-					this.OnOrganizationTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GroupMeetingTypeId", UpdateCheck=UpdateCheck.Never, Storage="_GroupMeetingTypeId", DbType="int NOT NULL")]
-		public int GroupMeetingTypeId
-		{
-			get { return this._GroupMeetingTypeId; }
-
-			set
-			{
-				if (this._GroupMeetingTypeId != value)
-				{
-				
-                    this.OnGroupMeetingTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._GroupMeetingTypeId = value;
-					this.SendPropertyChanged("GroupMeetingTypeId");
-					this.OnGroupMeetingTypeIdChanged();
 				}
 
 			}
@@ -517,204 +351,6 @@ namespace CmsData
 					this._LeaderMemberTypeId = value;
 					this.SendPropertyChanged("LeaderMemberTypeId");
 					this.OnLeaderMemberTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrganizationSize", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationSize", DbType="int")]
-		public int? OrganizationSize
-		{
-			get { return this._OrganizationSize; }
-
-			set
-			{
-				if (this._OrganizationSize != value)
-				{
-				
-                    this.OnOrganizationSizeChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationSize = value;
-					this.SendPropertyChanged("OrganizationSize");
-					this.OnOrganizationSizeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GenderTypeId", UpdateCheck=UpdateCheck.Never, Storage="_GenderTypeId", DbType="int NOT NULL")]
-		public int GenderTypeId
-		{
-			get { return this._GenderTypeId; }
-
-			set
-			{
-				if (this._GenderTypeId != value)
-				{
-				
-                    this.OnGenderTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._GenderTypeId = value;
-					this.SendPropertyChanged("GenderTypeId");
-					this.OnGenderTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="MaritalStatusId", UpdateCheck=UpdateCheck.Never, Storage="_MaritalStatusId", DbType="int NOT NULL")]
-		public int MaritalStatusId
-		{
-			get { return this._MaritalStatusId; }
-
-			set
-			{
-				if (this._MaritalStatusId != value)
-				{
-				
-                    this.OnMaritalStatusIdChanging(value);
-					this.SendPropertyChanging();
-					this._MaritalStatusId = value;
-					this.SendPropertyChanged("MaritalStatusId");
-					this.OnMaritalStatusIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AgeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_AgeRangeStart", DbType="int")]
-		public int? AgeRangeStart
-		{
-			get { return this._AgeRangeStart; }
-
-			set
-			{
-				if (this._AgeRangeStart != value)
-				{
-				
-                    this.OnAgeRangeStartChanging(value);
-					this.SendPropertyChanging();
-					this._AgeRangeStart = value;
-					this.SendPropertyChanged("AgeRangeStart");
-					this.OnAgeRangeStartChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AgeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_AgeRangeEnd", DbType="int")]
-		public int? AgeRangeEnd
-		{
-			get { return this._AgeRangeEnd; }
-
-			set
-			{
-				if (this._AgeRangeEnd != value)
-				{
-				
-                    this.OnAgeRangeEndChanging(value);
-					this.SendPropertyChanging();
-					this._AgeRangeEnd = value;
-					this.SendPropertyChanged("AgeRangeEnd");
-					this.OnAgeRangeEndChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GradeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeStart", DbType="int")]
-		public int? GradeRangeStart
-		{
-			get { return this._GradeRangeStart; }
-
-			set
-			{
-				if (this._GradeRangeStart != value)
-				{
-				
-                    this.OnGradeRangeStartChanging(value);
-					this.SendPropertyChanging();
-					this._GradeRangeStart = value;
-					this.SendPropertyChanged("GradeRangeStart");
-					this.OnGradeRangeStartChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GradeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeEnd", DbType="int")]
-		public int? GradeRangeEnd
-		{
-			get { return this._GradeRangeEnd; }
-
-			set
-			{
-				if (this._GradeRangeEnd != value)
-				{
-				
-                    this.OnGradeRangeEndChanging(value);
-					this.SendPropertyChanging();
-					this._GradeRangeEnd = value;
-					this.SendPropertyChanged("GradeRangeEnd");
-					this.OnGradeRangeEndChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="RollSheetTypeId", UpdateCheck=UpdateCheck.Never, Storage="_RollSheetTypeId", DbType="int NOT NULL")]
-		public int RollSheetTypeId
-		{
-			get { return this._RollSheetTypeId; }
-
-			set
-			{
-				if (this._RollSheetTypeId != value)
-				{
-				
-                    this.OnRollSheetTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._RollSheetTypeId = value;
-					this.SendPropertyChanged("RollSheetTypeId");
-					this.OnRollSheetTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="TrackVisitors", UpdateCheck=UpdateCheck.Never, Storage="_TrackVisitors", DbType="bit NOT NULL")]
-		public bool TrackVisitors
-		{
-			get { return this._TrackVisitors; }
-
-			set
-			{
-				if (this._TrackVisitors != value)
-				{
-				
-                    this.OnTrackVisitorsChanging(value);
-					this.SendPropertyChanging();
-					this._TrackVisitors = value;
-					this.SendPropertyChanged("TrackVisitors");
-					this.OnTrackVisitorsChanged();
 				}
 
 			}
@@ -769,28 +405,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SecurityTypeId", UpdateCheck=UpdateCheck.Never, Storage="_SecurityTypeId", DbType="int NOT NULL")]
-		public int SecurityTypeId
-		{
-			get { return this._SecurityTypeId; }
-
-			set
-			{
-				if (this._SecurityTypeId != value)
-				{
-				
-                    this.OnSecurityTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._SecurityTypeId = value;
-					this.SendPropertyChanged("SecurityTypeId");
-					this.OnSecurityTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="AttendClassificationId", UpdateCheck=UpdateCheck.Never, Storage="_AttendClassificationId", DbType="int NOT NULL")]
 		public int AttendClassificationId
 		{
@@ -813,87 +427,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendanceSummaryFlag", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceSummaryFlag", DbType="bit NOT NULL")]
-		public bool AttendanceSummaryFlag
+		[Column(Name="SecurityTypeId", UpdateCheck=UpdateCheck.Never, Storage="_SecurityTypeId", DbType="int NOT NULL")]
+		public int SecurityTypeId
 		{
-			get { return this._AttendanceSummaryFlag; }
+			get { return this._SecurityTypeId; }
 
 			set
 			{
-				if (this._AttendanceSummaryFlag != value)
+				if (this._SecurityTypeId != value)
 				{
 				
-                    this.OnAttendanceSummaryFlagChanging(value);
+                    this.OnSecurityTypeIdChanging(value);
 					this.SendPropertyChanging();
-					this._AttendanceSummaryFlag = value;
-					this.SendPropertyChanged("AttendanceSummaryFlag");
-					this.OnAttendanceSummaryFlagChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="QtrlySummaryInterval", UpdateCheck=UpdateCheck.Never, Storage="_QtrlySummaryInterval", DbType="int")]
-		public int? QtrlySummaryInterval
-		{
-			get { return this._QtrlySummaryInterval; }
-
-			set
-			{
-				if (this._QtrlySummaryInterval != value)
-				{
-				
-                    this.OnQtrlySummaryIntervalChanging(value);
-					this.SendPropertyChanging();
-					this._QtrlySummaryInterval = value;
-					this.SendPropertyChanged("QtrlySummaryInterval");
-					this.OnQtrlySummaryIntervalChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipFlag", UpdateCheck=UpdateCheck.Never, Storage="_VipFlag", DbType="bit NOT NULL")]
-		public bool VipFlag
-		{
-			get { return this._VipFlag; }
-
-			set
-			{
-				if (this._VipFlag != value)
-				{
-				
-                    this.OnVipFlagChanging(value);
-					this.SendPropertyChanging();
-					this._VipFlag = value;
-					this.SendPropertyChanged("VipFlag");
-					this.OnVipFlagChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Confidential", UpdateCheck=UpdateCheck.Never, Storage="_Confidential", DbType="bit NOT NULL")]
-		public bool Confidential
-		{
-			get { return this._Confidential; }
-
-			set
-			{
-				if (this._Confidential != value)
-				{
-				
-                    this.OnConfidentialChanging(value);
-					this.SendPropertyChanging();
-					this._Confidential = value;
-					this.SendPropertyChanged("Confidential");
-					this.OnConfidentialChanged();
+					this._SecurityTypeId = value;
+					this.SendPropertyChanged("SecurityTypeId");
+					this.OnSecurityTypeIdChanged();
 				}
 
 			}
@@ -1004,138 +552,6 @@ namespace CmsData
 					this._OrganizationName = value;
 					this.SendPropertyChanged("OrganizationName");
 					this.OnOrganizationNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrganizationCode", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationCode", DbType="varchar(10) NOT NULL")]
-		public string OrganizationCode
-		{
-			get { return this._OrganizationCode; }
-
-			set
-			{
-				if (this._OrganizationCode != value)
-				{
-				
-                    this.OnOrganizationCodeChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationCode = value;
-					this.SendPropertyChanged("OrganizationCode");
-					this.OnOrganizationCodeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrganizationDescription", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationDescription", DbType="varchar(256)")]
-		public string OrganizationDescription
-		{
-			get { return this._OrganizationDescription; }
-
-			set
-			{
-				if (this._OrganizationDescription != value)
-				{
-				
-                    this.OnOrganizationDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationDescription = value;
-					this.SendPropertyChanged("OrganizationDescription");
-					this.OnOrganizationDescriptionChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="UltIncidentId", UpdateCheck=UpdateCheck.Never, Storage="_UltIncidentId", DbType="varchar(50)")]
-		public string UltIncidentId
-		{
-			get { return this._UltIncidentId; }
-
-			set
-			{
-				if (this._UltIncidentId != value)
-				{
-				
-                    this.OnUltIncidentIdChanging(value);
-					this.SendPropertyChanging();
-					this._UltIncidentId = value;
-					this.SendPropertyChanged("UltIncidentId");
-					this.OnUltIncidentIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PromotableFlag", UpdateCheck=UpdateCheck.Never, Storage="_PromotableFlag", DbType="bit")]
-		public bool? PromotableFlag
-		{
-			get { return this._PromotableFlag; }
-
-			set
-			{
-				if (this._PromotableFlag != value)
-				{
-				
-                    this.OnPromotableFlagChanging(value);
-					this.SendPropertyChanging();
-					this._PromotableFlag = value;
-					this.SendPropertyChanged("PromotableFlag");
-					this.OnPromotableFlagChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="RollSheetPrintLead", UpdateCheck=UpdateCheck.Never, Storage="_RollSheetPrintLead", DbType="int NOT NULL")]
-		public int RollSheetPrintLead
-		{
-			get { return this._RollSheetPrintLead; }
-
-			set
-			{
-				if (this._RollSheetPrintLead != value)
-				{
-				
-                    this.OnRollSheetPrintLeadChanging(value);
-					this.SendPropertyChanging();
-					this._RollSheetPrintLead = value;
-					this.SendPropertyChanged("RollSheetPrintLead");
-					this.OnRollSheetPrintLeadChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="MeetingSequence", UpdateCheck=UpdateCheck.Never, Storage="_MeetingSequence", DbType="int NOT NULL")]
-		public int MeetingSequence
-		{
-			get { return this._MeetingSequence; }
-
-			set
-			{
-				if (this._MeetingSequence != value)
-				{
-				
-                    this.OnMeetingSequenceChanging(value);
-					this.SendPropertyChanging();
-					this._MeetingSequence = value;
-					this.SendPropertyChanged("MeetingSequence");
-					this.OnMeetingSequenceChanged();
 				}
 
 			}
@@ -1277,6 +693,50 @@ namespace CmsData
 					this._AllowAttendOverlap = value;
 					this.SendPropertyChanged("AllowAttendOverlap");
 					this.OnAllowAttendOverlapChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GradeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeStart", DbType="int")]
+		public int? GradeRangeStart
+		{
+			get { return this._GradeRangeStart; }
+
+			set
+			{
+				if (this._GradeRangeStart != value)
+				{
+				
+                    this.OnGradeRangeStartChanging(value);
+					this.SendPropertyChanging();
+					this._GradeRangeStart = value;
+					this.SendPropertyChanged("GradeRangeStart");
+					this.OnGradeRangeStartChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GradeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeEnd", DbType="int")]
+		public int? GradeRangeEnd
+		{
+			get { return this._GradeRangeEnd; }
+
+			set
+			{
+				if (this._GradeRangeEnd != value)
+				{
+				
+                    this.OnGradeRangeEndChanging(value);
+					this.SendPropertyChanging();
+					this._GradeRangeEnd = value;
+					this.SendPropertyChanged("GradeRangeEnd");
+					this.OnGradeRangeEndChanged();
 				}
 
 			}

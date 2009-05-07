@@ -246,10 +246,6 @@ namespace CmsData
         partial void UpdateNewContactType(NewContactType instance);
         partial void DeleteNewContactType(NewContactType instance);
         
-        partial void InsertNewMbrClassStatus(NewMbrClassStatus instance);
-        partial void UpdateNewMbrClassStatus(NewMbrClassStatus instance);
-        partial void DeleteNewMbrClassStatus(NewMbrClassStatus instance);
-        
         partial void InsertOrganizationMember(OrganizationMember instance);
         partial void UpdateOrganizationMember(OrganizationMember instance);
         partial void DeleteOrganizationMember(OrganizationMember instance);
@@ -787,12 +783,6 @@ namespace CmsData
 		public Table< NewContactType> NewContactTypes
 		{
 			get	{ return this.GetTable< NewContactType>(); }
-
-		}
-
-		public Table< NewMbrClassStatus> NewMbrClassStatuses
-		{
-			get	{ return this.GetTable< NewMbrClassStatus>(); }
 
 		}
 

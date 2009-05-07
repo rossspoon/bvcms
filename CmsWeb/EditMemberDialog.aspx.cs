@@ -61,7 +61,6 @@ namespace CMSWeb
                         MemberTypeId = OrgMember.MemberTypeId,
                         OrganizationName = OrgMember.Organization.OrganizationName,
                         TransactionDate = Util.Now,
-                        RollSheetSectionId = OrgMember.RollSheetSectionId,
                         TransactionTypeId = 3,// change
                         VipWeek1 = OrgMember.VipWeek1,
                         VipWeek2 = OrgMember.VipWeek2,

@@ -49,7 +49,6 @@ namespace CMSPresenter
                         Schedule = o.WeeklySchedule.Description,
                         Location = o.Location,
                         HasTag = o.DivOrgs.Any(ot => ot.DivId == tagid),
-                        ChildRollSheet = o.RollSheetTypeId > 2,
                     };
             return q;
         }
@@ -105,7 +104,6 @@ namespace CMSPresenter
                                 && a.MeetingDate <= MeetingDate
                                 && a.MeetingDate >= LookbackDt)
                                 select p).Count(),
-                         ChildRollSheet = o.RollSheetTypeId > 2,
                      };
             return q2;
         }

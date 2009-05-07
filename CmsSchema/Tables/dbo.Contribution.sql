@@ -13,15 +13,6 @@ CREATE TABLE [dbo].[Contribution]
 [PledgeFlag] [bit] NOT NULL,
 [ModifiedBy] [int] NULL,
 [ModifiedDate] [datetime] NULL,
-[BrokerContactDate] [datetime] NULL,
-[BrokerName] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[CheckReceivedDate] [datetime] NULL,
-[DateSold] [datetime] NULL,
-[Amount] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[FundDistributionInfo] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ReturnedCheckNum] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ReturnedCheckBank] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ReturnedCheckDate] [datetime] NULL,
 [PostingDate] [datetime] NULL
 )
 CREATE NONCLUSTERED INDEX [IX_ContributionTypeId] ON [dbo].[Contribution] ([ContributionTypeId])

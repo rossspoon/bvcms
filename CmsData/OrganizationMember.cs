@@ -67,7 +67,6 @@ namespace CmsData
                     MemberTypeId = MemberTypeId,
                     OrganizationName = Organization.OrganizationName,
                     TransactionDate = Util.Now,
-                    RollSheetSectionId = RollSheetSectionId,
                     TransactionTypeId = 5, // drop
                     CreatedBy = Util.UserId,
                     CreatedDate = Util.Now,

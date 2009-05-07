@@ -157,17 +157,6 @@
                     </tr>
                     <tr>
                         <th>
-                            Org Type:
-                        </th>
-                        <td>
-                            <cc1:DisplayOrEditDropDown ID="OrganizationTypeId" runat="server" BindingMode="TwoWay"
-                                BindingSource="organization" DataTextField="Value" DataValueField="Id" Width="150px"
-                                BindingMember="OrganizationTypeId" DataSourceID="ODS_OrganizationTypeId" MakeDefault0="False">
-                            </cc1:DisplayOrEditDropDown>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             Leader Type:
                         </th>
                         <td>
@@ -205,9 +194,7 @@
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Inactive-tab"><span>Inactive</span></a></li>
             <li><a href="#Visitors-tab"><span>Visitors</span></a></li>
-            <li><a href="#Demographic-tab"><span>Demographic</span></a></li>
-            <li><a href="#Schedule-tab"><span>Schedule</span></a></li>
-            <li><a href="#Tracking-tab"><span>Tracking</span></a></li>
+            <li><a href="#Schedule-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
         </ul>
         <div id="Members-tab" style='<%=displaynone%>'>
@@ -230,118 +217,6 @@
                     <uc4:VisitorGrid ID="VisitorGrid1" runat="server" DataSourceID="VisitorData" />
                 </ContentTemplate>
             </asp:UpdatePanel>
-        </div>
-        <div id="Demographic-tab" style='<%=displaynone%>'>
-            <table class="Design2">
-                <tr>
-                    <td>
-                        &#160;&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Flags:
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <cc1:DisplayOrEditCheckbox ID="VipFlag" runat="server" BindingSource="organization"
-                            Text="VIP" TextIfChecked="VIP Organization" BindingMember="VipFlag" BindingMode="TwoWay"
-                            TextIfNotChecked="" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <cc1:DisplayOrEditCheckbox ID="Confidential" runat="server" BindingSource="organization"
-                            Text="Confidential" TextIfChecked="Confidential Organization" BindingMember="Confidential"
-                            BindingMode="TwoWay" TextIfNotChecked="" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <cc1:DisplayOrEditCheckbox ID="PromotableFlag" runat="server" BindingSource="organization"
-                            Text="Promotable" TextIfChecked="Promotable Organization" BindingMember="PromotableFlag"
-                            BindingMode="TwoWay" TextIfNotChecked="" />
-                    </td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <td>
-                        &#160;&nbsp
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                    Age Range Start:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="AgeRangeStart" runat="server" BindingSource="organization"
-                                        BindingMember="AgeRangeStart" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Grade Range Start:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="GradeRangeStart" runat="server" BindingSource="organization"
-                                        BindingMember="GradeRangeStart" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                    Age Range End:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="AgeRangeEnd" runat="server" BindingSource="organization"
-                                        BindingMember="AgeRangeEnd" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Grade Range End:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="GradeRangeEnd" runat="server" BindingSource="organization"
-                                        BindingMember="GradeRangeEnd" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <table class="Design2">
-                <tr>
-                    <th>
-                        Gender:
-                    </th>
-                    <td>
-                        <cc1:DisplayOrEditDropDown ID="GenderTypeId" runat="server" BindingMode="TwoWay"
-                            BindingSource="organization" DataTextField="Value" DataValueField="Id" BindingMember="GenderTypeId"
-                            DataSourceID="ODS_GenderTypeId" MakeDefault0="False">
-                        </cc1:DisplayOrEditDropDown>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Marital Status:
-                    </th>
-                    <td>
-                        <cc1:DisplayOrEditDropDown ID="MaritalStatusId" runat="server" BindingMode="TwoWay"
-                            BindingSource="organization" DataTextField="Value" DataValueField="Id" BindingMember="MaritalStatusId"
-                            DataSourceID="ODS_MaritalStatusId" MakeDefault0="False">
-                        </cc1:DisplayOrEditDropDown>
-                    </td>
-                </tr>
-            </table>
         </div>
         <div id="Schedule-tab" style='<%=displaynone%>'>
             <table class="Design2">
@@ -394,34 +269,6 @@
                     </td>
                 </tr>
             </table>
-        </div>
-        <div id="Tracking-tab" style='<%=displaynone%>'>
-            <table class="Design2">
-                <tr>
-                    <td>
-                        &#160;&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Flags:
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <cc1:DisplayOrEditCheckbox ID="TrackVisitors" runat="server" BindingSource="organization"
-                            Text="Track Visitors" TextIfChecked="Track Visitors" BindingMember="TrackVisitors"
-                            BindingMode="TwoWay" TextIfNotChecked="" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <cc1:DisplayOrEditCheckbox ID="AttendanceSummaryFlag" runat="server" BindingSource="organization"
-                            Text="Attendance Summary Flag" TextIfChecked="Attendance Summary Flag" BindingMember="AttendanceSummaryFlag"
-                            BindingMode="TwoWay" TextIfNotChecked="" />
-                    </td>
-                </tr>
-            </table>
             <table class="Design2">
                 <tr>
                     <th>
@@ -448,17 +295,6 @@
                 </tr>
                 <tr>
                     <th>
-                        Rollsheet Type:
-                    </th>
-                    <td>
-                        <cc1:DisplayOrEditDropDown ID="RollSheetTypeId" runat="server" BindingMode="TwoWay"
-                            BindingSource="organization" DataTextField="Value" DataValueField="Id" Width="200px"
-                            BindingMember="RollSheetTypeId" DataSourceID="ODS_RollSheetTypeId" MakeDefault0="False">
-                        </cc1:DisplayOrEditDropDown>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         Security Type:
                     </th>
                     <td>
@@ -480,16 +316,6 @@
                     <td>
                         <cc1:DisplayOrEditText ID="RollSheetVisitorWks" runat="server" BindingSource="organization"
                             BindingMember="RollSheetVisitorWks" BindingMode="TwoWay" ChangedStatus="False"
-                            Width="135px"></cc1:DisplayOrEditText>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Quarterly Summary Interval:
-                    </th>
-                    <td>
-                        <cc1:DisplayOrEditText ID="QtrlySummaryInterval" runat="server" BindingSource="organization"
-                            BindingMember="QtrlySummaryInterval" BindingMode="TwoWay" ChangedStatus="False"
                             Width="135px"></cc1:DisplayOrEditText>
                     </td>
                 </tr>
@@ -648,12 +474,6 @@
     <asp:ObjectDataSource ID="ODS_ScheduleId" runat="server" SelectMethod="Schedules"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes2"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_GenderTypeId" runat="server" SelectMethod="GenderClasses"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_MaritalStatusId" runat="server" SelectMethod="MaritalStatusCodes"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_RollSheetTypeId" runat="server" SelectMethod="RollsheetTypes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_SecurityTypeId" runat="server" SelectMethod="SecurityTypeCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

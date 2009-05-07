@@ -101,7 +101,6 @@ namespace CMSPresenter
                 OrganizationName = name,
                 TransactionDate = Util.Now,
                 EnrollmentDate = om.EnrollmentDate,
-                RollSheetSectionId = 2,
                 TransactionTypeId = 1, // join
                 CreatedBy = Util.UserId,
                 CreatedDate = Util.Now,
@@ -144,7 +143,6 @@ namespace CMSPresenter
                                            && a.MeetingDate >= LookbackDt)
                                        select p).Count(),
                        Schedule = o.WeeklySchedule.Description,
-                       ChildRollSheet = o.RollSheetTypeId > 2,
                    };
         }
 
@@ -224,38 +222,14 @@ namespace CMSPresenter
             var org = Db.Organizations.Single(o => o.OrganizationId == orgid);
             var neworg = new Organization
             {
-                AgeRangeEnd = org.AgeRangeEnd,
-                AgeRangeStart = org.AgeRangeStart,
-                AttendClassificationId = org.AttendClassificationId,
-                AttendanceSummaryFlag = org.AttendanceSummaryFlag,
                 AttendTrkLevelId = org.AttendTrkLevelId,
-                Confidential = org.Confidential,
                 CreatedDate = DateTime.Now,
                 CreatedBy = Db.CurrentUser.UserId,
                 DivisionId = org.DivisionId,
-                GenderTypeId = org.GenderTypeId,
-                GradeRangeStart = org.GradeRangeStart,
-                GradeRangeEnd = org.GradeRangeEnd,
-                GroupMeetingTypeId = org.GroupMeetingTypeId,
                 LeaderMemberTypeId = org.LeaderMemberTypeId,
-                MaritalStatusId = org.MaritalStatusId,
-                MeetingSequence = org.MeetingSequence,
-                OrganizationCode = org.OrganizationCode,
-                OrganizationTypeId = org.OrganizationTypeId,
-                OrganizationStatusId = org.OrganizationStatusId,
-                OrganizationDescription = org.OrganizationDescription,
                 OrganizationName = org.OrganizationName + " (copy)",
-                PromotableFlag = org.PromotableFlag,
-                QtrlySummaryInterval = org.QtrlySummaryInterval,
-                RecordStatus = false,
-                RollSheetPrintLead = org.RollSheetPrintLead,
-                RollSheetVisitorWks = org.RollSheetVisitorWks,
-                RollSheetTypeId = org.RollSheetTypeId,
                 ScheduleId = org.ScheduleId,
                 SecurityTypeId = org.SecurityTypeId,
-                TrackVisitors = org.TrackVisitors,
-                UltIncidentId = org.UltIncidentId,
-                VipFlag = org.VipFlag,
                 EntryPointId = org.EntryPointId,
             };
             Db.Organizations.InsertOnSubmit(neworg);

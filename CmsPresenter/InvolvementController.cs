@@ -94,12 +94,6 @@ namespace CMSPresenter
                          Age = p.Age.ToString(),
                          School = p.SchoolOther,
                          Grade = p.Grade.ToString(),
-                         EmergencyContact = string.Join(" ", (from om in p.OrganizationMembers
-                                                              where om.EmergencyContactInfo != null
-                                                              select om.EmergencyContactInfo).ToArray()),
-                         WhoBringsChild = string.Join(" ", (from om in p.OrganizationMembers
-                                                            where om.WhoBringsChildInfo != null
-                                                            select om.WhoBringsChildInfo).ToArray()),
                      };
             return q2.Take(maximumRows);
         }

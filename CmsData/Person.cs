@@ -241,30 +241,19 @@ namespace CmsData
                 om.Organization.OrganizationMembers.Add(
                     new OrganizationMember
                     {
-                        AllergyInfo = om.AllergyInfo,
-                        AllergyText = om.AllergyText,
-                        ClothingSizeInfo = om.ClothingSizeInfo,
                         CreatedBy = om.CreatedBy,
                         CreatedDate = om.CreatedDate,
-                        EmergencyContactInfo = om.EmergencyContactInfo,
                         EnrollmentDate = om.EnrollmentDate,
-                        FeePaid = om.FeePaid,
-                        GroupNumber = om.GroupNumber,
                         InactiveDate = om.InactiveDate,
                         MemberTypeId = om.MemberTypeId,
                         ModifiedBy = Util.UserId,
                         ModifiedDate = DateTime.Now,
                         PeopleId = otherid,
-                        PositionId = om.PositionId,
-                        RobeNumber = om.RobeNumber,
-                        RollSheetSectionId = om.RollSheetSectionId,
-                        SectionId = om.SectionId,
                         VipWeek1 = om.VipWeek1,
                         VipWeek2 = om.VipWeek2,
                         VipWeek3 = om.VipWeek3,
                         VipWeek4 = om.VipWeek4,
                         VipWeek5 = om.VipWeek5,
-                        WhoBringsChildInfo = om.WhoBringsChildInfo
                     });
                 Db.OrganizationMembers.DeleteOnSubmit(om);
             }

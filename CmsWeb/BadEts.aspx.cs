@@ -54,7 +54,7 @@ namespace CMSWeb
                 case "Time++":
                     t = DbUtil.Db.EnrollmentTransactions.Single(et => et.TransactionId == id);
                     t.TransactionDate = t.TransactionDate.AddSeconds(1.0);
-                    t.TransactionNotes = "fix";
+                    //t.TransactionNotes = "fix";
                     DbUtil.Db.SubmitChanges();
                     UpdateLinks(t);
                     DbUtil.Db.FlagOddTransaction(t.PeopleId, t.OrganizationId);
@@ -63,7 +63,7 @@ namespace CMSWeb
                 case "Disable":
                     t = DbUtil.Db.EnrollmentTransactions.Single(et => et.TransactionId == id);
                     t.TransactionStatus = true;
-                    t.TransactionNotes = "fix";
+                    //t.TransactionNotes = "fix";
                     DbUtil.Db.SubmitChanges();
                     UpdateLinks(t);
                     DbUtil.Db.FlagOddTransaction(t.PeopleId, t.OrganizationId);
@@ -98,7 +98,7 @@ namespace CMSWeb
             nt.OrganizationName = t.OrganizationName;
             nt.MemberTypeId = t.MemberTypeId;
             nt.CreatedDate = DateTime.Now;
-            nt.TransactionNotes = "fix";
+            //nt.TransactionNotes = "fix";
             DbUtil.Db.EnrollmentTransactions.InsertOnSubmit(nt);
             return nt;
         }

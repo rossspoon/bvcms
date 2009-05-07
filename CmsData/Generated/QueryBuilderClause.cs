@@ -43,8 +43,6 @@ namespace CmsData
 		
 		private int _Organization;
 		
-		private int _Schedule;
-		
 		private int _Days;
 		
 		private string _SavedBy;
@@ -60,6 +58,8 @@ namespace CmsData
 		private string _SavedQueryIdDesc;
 		
 		private string _Tags;
+		
+		private int _Schedule;
 		
    		
    		private EntitySet< QueryBuilderClause> _Clauses;
@@ -113,9 +113,6 @@ namespace CmsData
 		partial void OnOrganizationChanging(int value);
 		partial void OnOrganizationChanged();
 		
-		partial void OnScheduleChanging(int value);
-		partial void OnScheduleChanged();
-		
 		partial void OnDaysChanging(int value);
 		partial void OnDaysChanged();
 		
@@ -139,6 +136,9 @@ namespace CmsData
 		
 		partial void OnTagsChanging(string value);
 		partial void OnTagsChanged();
+		
+		partial void OnScheduleChanging(int value);
+		partial void OnScheduleChanged();
 		
     #endregion
 		public QueryBuilderClause()
@@ -444,28 +444,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Schedule", UpdateCheck=UpdateCheck.Never, Storage="_Schedule", DbType="int NOT NULL")]
-		public int Schedule
-		{
-			get { return this._Schedule; }
-
-			set
-			{
-				if (this._Schedule != value)
-				{
-				
-                    this.OnScheduleChanging(value);
-					this.SendPropertyChanging();
-					this._Schedule = value;
-					this.SendPropertyChanged("Schedule");
-					this.OnScheduleChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Days", UpdateCheck=UpdateCheck.Never, Storage="_Days", DbType="int NOT NULL")]
 		public int Days
 		{
@@ -635,6 +613,28 @@ namespace CmsData
 					this._Tags = value;
 					this.SendPropertyChanged("Tags");
 					this.OnTagsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Schedule", UpdateCheck=UpdateCheck.Never, Storage="_Schedule", DbType="int NOT NULL")]
+		public int Schedule
+		{
+			get { return this._Schedule; }
+
+			set
+			{
+				if (this._Schedule != value)
+				{
+				
+                    this.OnScheduleChanging(value);
+					this.SendPropertyChanging();
+					this._Schedule = value;
+					this.SendPropertyChanged("Schedule");
+					this.OnScheduleChanged();
 				}
 
 			}

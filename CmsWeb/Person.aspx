@@ -1432,8 +1432,6 @@
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSDiscoveryClassStatusID" runat="server" SelectMethod="DiscoveryClassStatusCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSNewMbrClassStatusId" runat="server" SelectMethod="NewMbrClassStatuses"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSLetterStatusId" runat="server" SelectMethod="LetterStatusCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 </asp:Content>

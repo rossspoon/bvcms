@@ -90,28 +90,6 @@ namespace CMSPresenter
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<CodeValueItem> NewMbrClassStatuses()
-        {
-            const string NAME = "NewMbrClassStatusCodes";
-            var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
-            if (list == null)
-            {
-                var q = from ms in Db.NewMbrClassStatuses
-                        orderby ms.Description
-                        select new CodeValueItem
-                        {
-                            Id = ms.Id,
-                            Code = ms.Code,
-                            Value = ms.Description
-                        };
-                list = q.ToList();
-                HttpRuntime.Cache[NAME] = list;
-            }
-            return list;
-        }
-
-
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> JoinTypes()
         {
             const string NAME = "JoinTypes";
@@ -1157,7 +1135,6 @@ namespace CMSPresenter
                     select new CodeValueItem
                     {
                         Id = ot.OrgId,
-                        Code = ot.Organization.OrganizationCode,
                         Value = Organization.FormatOrgName(ot.Organization.OrganizationName,
                            ot.Organization.LeaderName, ot.Organization.Location)
                     };

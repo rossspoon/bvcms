@@ -33,8 +33,6 @@ namespace CmsData
 		
 		private bool _DoNotVisitFlag;
 		
-		private bool _NewsletterFlag;
-		
 		private int _AddressTypeId;
 		
 		private int _PhonePrefId;
@@ -45,11 +43,7 @@ namespace CmsData
 		
 		private int _MemberStatusId;
 		
-		private int _LmApprovalLevelId;
-		
 		private int _FamilyId;
-		
-		private int? _OccupationId;
 		
 		private int? _Grade;
 		
@@ -73,8 +67,6 @@ namespace CmsData
 		
 		private int? _DiscoveryClassStatusId;
 		
-		private bool _NewMbrClassRegistered;
-		
 		private int? _NewMbrClassStatusId;
 		
 		private int? _LetterStatusId;
@@ -82,8 +74,6 @@ namespace CmsData
 		private int _JoinCodeId;
 		
 		private int? _EnvelopeOptionsId;
-		
-		private int? _EnvelopeNumber;
 		
 		private bool? _BadAddressFlag;
 		
@@ -317,8 +307,6 @@ namespace CmsData
 		
 		private EntityRef< MemberStatus> _MemberStatus;
 		
-		private EntityRef< NewMbrClassStatus> _NewMbrClassStatus;
-		
 		private EntityRef< Origin> _Origin;
 		
 		private EntityRef< PhonePreference> _PhonePreference;
@@ -358,9 +346,6 @@ namespace CmsData
 		partial void OnDoNotVisitFlagChanging(bool value);
 		partial void OnDoNotVisitFlagChanged();
 		
-		partial void OnNewsletterFlagChanging(bool value);
-		partial void OnNewsletterFlagChanged();
-		
 		partial void OnAddressTypeIdChanging(int value);
 		partial void OnAddressTypeIdChanged();
 		
@@ -376,14 +361,8 @@ namespace CmsData
 		partial void OnMemberStatusIdChanging(int value);
 		partial void OnMemberStatusIdChanged();
 		
-		partial void OnLmApprovalLevelIdChanging(int value);
-		partial void OnLmApprovalLevelIdChanged();
-		
 		partial void OnFamilyIdChanging(int value);
 		partial void OnFamilyIdChanged();
-		
-		partial void OnOccupationIdChanging(int? value);
-		partial void OnOccupationIdChanged();
 		
 		partial void OnGradeChanging(int? value);
 		partial void OnGradeChanged();
@@ -418,9 +397,6 @@ namespace CmsData
 		partial void OnDiscoveryClassStatusIdChanging(int? value);
 		partial void OnDiscoveryClassStatusIdChanged();
 		
-		partial void OnNewMbrClassRegisteredChanging(bool value);
-		partial void OnNewMbrClassRegisteredChanged();
-		
 		partial void OnNewMbrClassStatusIdChanging(int? value);
 		partial void OnNewMbrClassStatusIdChanged();
 		
@@ -432,9 +408,6 @@ namespace CmsData
 		
 		partial void OnEnvelopeOptionsIdChanging(int? value);
 		partial void OnEnvelopeOptionsIdChanged();
-		
-		partial void OnEnvelopeNumberChanging(int? value);
-		partial void OnEnvelopeNumberChanged();
 		
 		partial void OnBadAddressFlagChanging(bool? value);
 		partial void OnBadAddressFlagChanged();
@@ -753,8 +726,6 @@ namespace CmsData
 			
 			this._MemberStatus = default(EntityRef< MemberStatus>); 
 			
-			this._NewMbrClassStatus = default(EntityRef< NewMbrClassStatus>); 
-			
 			this._Origin = default(EntityRef< Origin>); 
 			
 			this._PhonePreference = default(EntityRef< PhonePreference>); 
@@ -951,28 +922,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="NewsletterFlag", UpdateCheck=UpdateCheck.Never, Storage="_NewsletterFlag", DbType="bit NOT NULL")]
-		public bool NewsletterFlag
-		{
-			get { return this._NewsletterFlag; }
-
-			set
-			{
-				if (this._NewsletterFlag != value)
-				{
-				
-                    this.OnNewsletterFlagChanging(value);
-					this.SendPropertyChanging();
-					this._NewsletterFlag = value;
-					this.SendPropertyChanged("NewsletterFlag");
-					this.OnNewsletterFlagChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="AddressTypeId", UpdateCheck=UpdateCheck.Never, Storage="_AddressTypeId", DbType="int NOT NULL")]
 		public int AddressTypeId
 		{
@@ -1098,28 +1047,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LmApprovalLevelId", UpdateCheck=UpdateCheck.Never, Storage="_LmApprovalLevelId", DbType="int NOT NULL")]
-		public int LmApprovalLevelId
-		{
-			get { return this._LmApprovalLevelId; }
-
-			set
-			{
-				if (this._LmApprovalLevelId != value)
-				{
-				
-                    this.OnLmApprovalLevelIdChanging(value);
-					this.SendPropertyChanging();
-					this._LmApprovalLevelId = value;
-					this.SendPropertyChanged("LmApprovalLevelId");
-					this.OnLmApprovalLevelIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="FamilyId", UpdateCheck=UpdateCheck.Never, Storage="_FamilyId", DbType="int NOT NULL")]
 		public int FamilyId
 		{
@@ -1138,28 +1065,6 @@ namespace CmsData
 					this._FamilyId = value;
 					this.SendPropertyChanged("FamilyId");
 					this.OnFamilyIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OccupationId", UpdateCheck=UpdateCheck.Never, Storage="_OccupationId", DbType="int")]
-		public int? OccupationId
-		{
-			get { return this._OccupationId; }
-
-			set
-			{
-				if (this._OccupationId != value)
-				{
-				
-                    this.OnOccupationIdChanging(value);
-					this.SendPropertyChanging();
-					this._OccupationId = value;
-					this.SendPropertyChanged("OccupationId");
-					this.OnOccupationIdChanged();
 				}
 
 			}
@@ -1430,28 +1335,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="NewMbrClassRegistered", UpdateCheck=UpdateCheck.Never, Storage="_NewMbrClassRegistered", DbType="bit NOT NULL")]
-		public bool NewMbrClassRegistered
-		{
-			get { return this._NewMbrClassRegistered; }
-
-			set
-			{
-				if (this._NewMbrClassRegistered != value)
-				{
-				
-                    this.OnNewMbrClassRegisteredChanging(value);
-					this.SendPropertyChanging();
-					this._NewMbrClassRegistered = value;
-					this.SendPropertyChanged("NewMbrClassRegistered");
-					this.OnNewMbrClassRegisteredChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="NewMbrClassStatusId", UpdateCheck=UpdateCheck.Never, Storage="_NewMbrClassStatusId", DbType="int")]
 		public int? NewMbrClassStatusId
 		{
@@ -1461,9 +1344,6 @@ namespace CmsData
 			{
 				if (this._NewMbrClassStatusId != value)
 				{
-				
-					if (this._NewMbrClassStatus.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnNewMbrClassStatusIdChanging(value);
 					this.SendPropertyChanging();
@@ -1545,28 +1425,6 @@ namespace CmsData
 					this._EnvelopeOptionsId = value;
 					this.SendPropertyChanged("EnvelopeOptionsId");
 					this.OnEnvelopeOptionsIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="EnvelopeNumber", UpdateCheck=UpdateCheck.Never, Storage="_EnvelopeNumber", DbType="int")]
-		public int? EnvelopeNumber
-		{
-			get { return this._EnvelopeNumber; }
-
-			set
-			{
-				if (this._EnvelopeNumber != value)
-				{
-				
-                    this.OnEnvelopeNumberChanging(value);
-					this.SendPropertyChanging();
-					this._EnvelopeNumber = value;
-					this.SendPropertyChanged("EnvelopeNumber");
-					this.OnEnvelopeNumberChanged();
 				}
 
 			}
@@ -4192,48 +4050,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("MemberStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_NewMbrClassStatus", Storage="_NewMbrClassStatus", ThisKey="NewMbrClassStatusId", IsForeignKey=true)]
-		public NewMbrClassStatus NewMbrClassStatus
-		{
-			get { return this._NewMbrClassStatus.Entity; }
-
-			set
-			{
-				NewMbrClassStatus previousValue = this._NewMbrClassStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._NewMbrClassStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._NewMbrClassStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._NewMbrClassStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._NewMbrClassStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._NewMbrClassStatusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("NewMbrClassStatus");
 				}
 
 			}

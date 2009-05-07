@@ -17,8 +17,6 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _AttendId;
-		
 		private int _PeopleId;
 		
 		private int _MeetingId;
@@ -40,6 +38,8 @@ namespace CmsData
 		private int _MemberTypeId;
 		
 		private int _OtherAttends;
+		
+		private int _AttendId;
 		
 		private bool? _BFCAttendance;
 		
@@ -63,9 +63,6 @@ namespace CmsData
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-		
-		partial void OnAttendIdChanging(int value);
-		partial void OnAttendIdChanged();
 		
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
@@ -100,6 +97,9 @@ namespace CmsData
 		partial void OnOtherAttendsChanging(int value);
 		partial void OnOtherAttendsChanged();
 		
+		partial void OnAttendIdChanging(int value);
+		partial void OnAttendIdChanged();
+		
 		partial void OnBFCAttendanceChanging(bool? value);
 		partial void OnBFCAttendanceChanged();
 		
@@ -126,28 +126,6 @@ namespace CmsData
 
 		
     #region Columns
-		
-		[Column(Name="AttendId", UpdateCheck=UpdateCheck.Never, Storage="_AttendId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int AttendId
-		{
-			get { return this._AttendId; }
-
-			set
-			{
-				if (this._AttendId != value)
-				{
-				
-                    this.OnAttendIdChanging(value);
-					this.SendPropertyChanging();
-					this._AttendId = value;
-					this.SendPropertyChanged("AttendId");
-					this.OnAttendIdChanged();
-				}
-
-			}
-
-		}
-
 		
 		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL")]
 		public int PeopleId
@@ -399,6 +377,28 @@ namespace CmsData
 					this._OtherAttends = value;
 					this.SendPropertyChanged("OtherAttends");
 					this.OnOtherAttendsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AttendId", UpdateCheck=UpdateCheck.Never, Storage="_AttendId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int AttendId
+		{
+			get { return this._AttendId; }
+
+			set
+			{
+				if (this._AttendId != value)
+				{
+				
+                    this.OnAttendIdChanging(value);
+					this.SendPropertyChanging();
+					this._AttendId = value;
+					this.SendPropertyChanged("AttendId");
+					this.OnAttendIdChanged();
 				}
 
 			}

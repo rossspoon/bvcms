@@ -25,37 +25,13 @@ namespace CmsData
 		
 		private DateTime? _CreatedDate;
 		
-		private bool _RecordStatus;
-		
 		private int _MemberTypeId;
 		
-		private int _RollSheetSectionId;
-		
-		private bool _FeePaid;
-		
-		private bool _AllergyInfo;
-		
-		private int? _RobeNumber;
-		
-		private int? _GroupNumber;
-		
-		private int? _SectionId;
-		
 		private DateTime? _EnrollmentDate;
-		
-		private string _ClothingSizeInfo;
-		
-		private string _EmergencyContactInfo;
-		
-		private string _WhoBringsChildInfo;
-		
-		private string _AllergyText;
 		
 		private int? _ModifiedBy;
 		
 		private DateTime? _ModifiedDate;
-		
-		private int? _PositionId;
 		
 		private bool? _VipWeek1;
 		
@@ -104,53 +80,17 @@ namespace CmsData
 		partial void OnCreatedDateChanging(DateTime? value);
 		partial void OnCreatedDateChanged();
 		
-		partial void OnRecordStatusChanging(bool value);
-		partial void OnRecordStatusChanged();
-		
 		partial void OnMemberTypeIdChanging(int value);
 		partial void OnMemberTypeIdChanged();
 		
-		partial void OnRollSheetSectionIdChanging(int value);
-		partial void OnRollSheetSectionIdChanged();
-		
-		partial void OnFeePaidChanging(bool value);
-		partial void OnFeePaidChanged();
-		
-		partial void OnAllergyInfoChanging(bool value);
-		partial void OnAllergyInfoChanged();
-		
-		partial void OnRobeNumberChanging(int? value);
-		partial void OnRobeNumberChanged();
-		
-		partial void OnGroupNumberChanging(int? value);
-		partial void OnGroupNumberChanged();
-		
-		partial void OnSectionIdChanging(int? value);
-		partial void OnSectionIdChanged();
-		
 		partial void OnEnrollmentDateChanging(DateTime? value);
 		partial void OnEnrollmentDateChanged();
-		
-		partial void OnClothingSizeInfoChanging(string value);
-		partial void OnClothingSizeInfoChanged();
-		
-		partial void OnEmergencyContactInfoChanging(string value);
-		partial void OnEmergencyContactInfoChanged();
-		
-		partial void OnWhoBringsChildInfoChanging(string value);
-		partial void OnWhoBringsChildInfoChanged();
-		
-		partial void OnAllergyTextChanging(string value);
-		partial void OnAllergyTextChanged();
 		
 		partial void OnModifiedByChanging(int? value);
 		partial void OnModifiedByChanged();
 		
 		partial void OnModifiedDateChanging(DateTime? value);
 		partial void OnModifiedDateChanged();
-		
-		partial void OnPositionIdChanging(int? value);
-		partial void OnPositionIdChanged();
 		
 		partial void OnVipWeek1Changing(bool? value);
 		partial void OnVipWeek1Changed();
@@ -292,28 +232,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RecordStatus", UpdateCheck=UpdateCheck.Never, Storage="_RecordStatus", DbType="bit NOT NULL")]
-		public bool RecordStatus
-		{
-			get { return this._RecordStatus; }
-
-			set
-			{
-				if (this._RecordStatus != value)
-				{
-				
-                    this.OnRecordStatusChanging(value);
-					this.SendPropertyChanging();
-					this._RecordStatus = value;
-					this.SendPropertyChanged("RecordStatus");
-					this.OnRecordStatusChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="MemberTypeId", UpdateCheck=UpdateCheck.Never, Storage="_MemberTypeId", DbType="int NOT NULL")]
 		public int MemberTypeId
 		{
@@ -339,138 +257,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RollSheetSectionId", UpdateCheck=UpdateCheck.Never, Storage="_RollSheetSectionId", DbType="int NOT NULL")]
-		public int RollSheetSectionId
-		{
-			get { return this._RollSheetSectionId; }
-
-			set
-			{
-				if (this._RollSheetSectionId != value)
-				{
-				
-                    this.OnRollSheetSectionIdChanging(value);
-					this.SendPropertyChanging();
-					this._RollSheetSectionId = value;
-					this.SendPropertyChanged("RollSheetSectionId");
-					this.OnRollSheetSectionIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FeePaid", UpdateCheck=UpdateCheck.Never, Storage="_FeePaid", DbType="bit NOT NULL")]
-		public bool FeePaid
-		{
-			get { return this._FeePaid; }
-
-			set
-			{
-				if (this._FeePaid != value)
-				{
-				
-                    this.OnFeePaidChanging(value);
-					this.SendPropertyChanging();
-					this._FeePaid = value;
-					this.SendPropertyChanged("FeePaid");
-					this.OnFeePaidChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AllergyInfo", UpdateCheck=UpdateCheck.Never, Storage="_AllergyInfo", DbType="bit NOT NULL")]
-		public bool AllergyInfo
-		{
-			get { return this._AllergyInfo; }
-
-			set
-			{
-				if (this._AllergyInfo != value)
-				{
-				
-                    this.OnAllergyInfoChanging(value);
-					this.SendPropertyChanging();
-					this._AllergyInfo = value;
-					this.SendPropertyChanged("AllergyInfo");
-					this.OnAllergyInfoChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="RobeNumber", UpdateCheck=UpdateCheck.Never, Storage="_RobeNumber", DbType="int")]
-		public int? RobeNumber
-		{
-			get { return this._RobeNumber; }
-
-			set
-			{
-				if (this._RobeNumber != value)
-				{
-				
-                    this.OnRobeNumberChanging(value);
-					this.SendPropertyChanging();
-					this._RobeNumber = value;
-					this.SendPropertyChanged("RobeNumber");
-					this.OnRobeNumberChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GroupNumber", UpdateCheck=UpdateCheck.Never, Storage="_GroupNumber", DbType="int")]
-		public int? GroupNumber
-		{
-			get { return this._GroupNumber; }
-
-			set
-			{
-				if (this._GroupNumber != value)
-				{
-				
-                    this.OnGroupNumberChanging(value);
-					this.SendPropertyChanging();
-					this._GroupNumber = value;
-					this.SendPropertyChanged("GroupNumber");
-					this.OnGroupNumberChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SectionId", UpdateCheck=UpdateCheck.Never, Storage="_SectionId", DbType="int")]
-		public int? SectionId
-		{
-			get { return this._SectionId; }
-
-			set
-			{
-				if (this._SectionId != value)
-				{
-				
-                    this.OnSectionIdChanging(value);
-					this.SendPropertyChanging();
-					this._SectionId = value;
-					this.SendPropertyChanged("SectionId");
-					this.OnSectionIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="EnrollmentDate", UpdateCheck=UpdateCheck.Never, Storage="_EnrollmentDate", DbType="datetime")]
 		public DateTime? EnrollmentDate
 		{
@@ -486,94 +272,6 @@ namespace CmsData
 					this._EnrollmentDate = value;
 					this.SendPropertyChanged("EnrollmentDate");
 					this.OnEnrollmentDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ClothingSizeInfo", UpdateCheck=UpdateCheck.Never, Storage="_ClothingSizeInfo", DbType="varchar(256)")]
-		public string ClothingSizeInfo
-		{
-			get { return this._ClothingSizeInfo; }
-
-			set
-			{
-				if (this._ClothingSizeInfo != value)
-				{
-				
-                    this.OnClothingSizeInfoChanging(value);
-					this.SendPropertyChanging();
-					this._ClothingSizeInfo = value;
-					this.SendPropertyChanged("ClothingSizeInfo");
-					this.OnClothingSizeInfoChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="EmergencyContactInfo", UpdateCheck=UpdateCheck.Never, Storage="_EmergencyContactInfo", DbType="varchar(256)")]
-		public string EmergencyContactInfo
-		{
-			get { return this._EmergencyContactInfo; }
-
-			set
-			{
-				if (this._EmergencyContactInfo != value)
-				{
-				
-                    this.OnEmergencyContactInfoChanging(value);
-					this.SendPropertyChanging();
-					this._EmergencyContactInfo = value;
-					this.SendPropertyChanged("EmergencyContactInfo");
-					this.OnEmergencyContactInfoChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="WhoBringsChildInfo", UpdateCheck=UpdateCheck.Never, Storage="_WhoBringsChildInfo", DbType="varchar(256)")]
-		public string WhoBringsChildInfo
-		{
-			get { return this._WhoBringsChildInfo; }
-
-			set
-			{
-				if (this._WhoBringsChildInfo != value)
-				{
-				
-                    this.OnWhoBringsChildInfoChanging(value);
-					this.SendPropertyChanging();
-					this._WhoBringsChildInfo = value;
-					this.SendPropertyChanged("WhoBringsChildInfo");
-					this.OnWhoBringsChildInfoChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AllergyText", UpdateCheck=UpdateCheck.Never, Storage="_AllergyText", DbType="varchar(256)")]
-		public string AllergyText
-		{
-			get { return this._AllergyText; }
-
-			set
-			{
-				if (this._AllergyText != value)
-				{
-				
-                    this.OnAllergyTextChanging(value);
-					this.SendPropertyChanging();
-					this._AllergyText = value;
-					this.SendPropertyChanged("AllergyText");
-					this.OnAllergyTextChanged();
 				}
 
 			}
@@ -618,28 +316,6 @@ namespace CmsData
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
 					this.OnModifiedDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PositionId", UpdateCheck=UpdateCheck.Never, Storage="_PositionId", DbType="int")]
-		public int? PositionId
-		{
-			get { return this._PositionId; }
-
-			set
-			{
-				if (this._PositionId != value)
-				{
-				
-                    this.OnPositionIdChanging(value);
-					this.SendPropertyChanging();
-					this._PositionId = value;
-					this.SendPropertyChanged("PositionId");
-					this.OnPositionIdChanged();
 				}
 
 			}

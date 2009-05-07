@@ -8,15 +8,12 @@ CREATE TABLE [dbo].[People]
 [DoNotMailFlag] [bit] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_MAIL_FLAG] DEFAULT ((0)),
 [DoNotCallFlag] [bit] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_CALL_FLAG] DEFAULT ((0)),
 [DoNotVisitFlag] [bit] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_VISIT_FLAG] DEFAULT ((0)),
-[NewsletterFlag] [bit] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_NEWSLETTER_FLAG] DEFAULT ((0)),
 [AddressTypeId] [int] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_ADDRESS_TYPE_ID] DEFAULT ((10)),
 [PhonePrefId] [int] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_PHONE_PREF_ID] DEFAULT ((10)),
 [MaritalStatusId] [int] NOT NULL,
 [PositionInFamilyId] [int] NOT NULL,
 [MemberStatusId] [int] NOT NULL,
-[LmApprovalLevelId] [int] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_LM_APPROVAL_LEVEL_ID] DEFAULT ((0)),
 [FamilyId] [int] NOT NULL,
-[OccupationId] [int] NULL,
 [Grade] AS ([dbo].[SchoolGrade]([PeopleId])),
 [BirthMonth] [int] NULL,
 [BirthDay] [int] NULL,
@@ -28,12 +25,10 @@ CREATE TABLE [dbo].[People]
 [BaptismStatusId] [int] NULL,
 [DecisionTypeId] [int] NULL,
 [DiscoveryClassStatusId] [int] NULL,
-[NewMbrClassRegistered] [bit] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_NEW_MBR_CLASS_REGISTERED] DEFAULT ((0)),
 [NewMbrClassStatusId] [int] NULL,
 [LetterStatusId] [int] NULL,
 [JoinCodeId] [int] NOT NULL CONSTRAINT [DF_PEOPLE_TBL_JOIN_CODE_ID] DEFAULT ((0)),
 [EnvelopeOptionsId] [int] NULL,
-[EnvelopeNumber] [int] NULL,
 [BadAddressFlag] [bit] NULL,
 [AltBadAddressFlag] [bit] NULL,
 [ResCodeId] [int] NULL,
@@ -113,9 +108,9 @@ CREATE TABLE [dbo].[People]
 [PreferredName] AS (case when [Nickname]<>'' then [nickname] else [FirstName] end+' '),
 [BibleFellowshipTeacherId] AS ([dbo].[BibleFellowshipTeacherId]([PeopleId])),
 [Name2] AS (([LastName]+', ')+case when [Nickname]<>'' then [nickname] else [FirstName] end),
+[LastContact] AS ([dbo].[LastContact]([PeopleId])),
 [BibleFellowshipClassId] AS ([dbo].[BibleFellowshipClassId]([PeopleId])),
-[InBFClass] AS ([dbo].[InBFClass]([PeopleId])),
-[LastContact] AS ([dbo].[LastContact]([PeopleId]))
+[InBFClass] AS ([dbo].[InBFClass]([PeopleId]))
 )
 
 ALTER TABLE [dbo].[People] ADD
@@ -130,8 +125,7 @@ GO
 
 CREATE NONCLUSTERED INDEX [IX_PEOPLE_TBL] ON [dbo].[People] ([EmailAddress])
 GO
-CREATE NONCLUSTERED INDEX [PEOPLE_ENVELOPE_NUMBER_IX] ON [dbo].[People] ([EnvelopeNumber])
-GO
+
 CREATE NONCLUSTERED INDEX [PEOPLE_FAMILY_FK_IX] ON [dbo].[People] ([FamilyId])
 GO
 
@@ -161,8 +155,7 @@ ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_MemberLetterStatus] FOR
 GO
 ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_MemberStatus] FOREIGN KEY ([MemberStatusId]) REFERENCES [lookup].[MemberStatus] ([Id])
 GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_NewMbrClassStatus] FOREIGN KEY ([NewMbrClassStatusId]) REFERENCES [lookup].[NewMbrClassStatus] ([Id])
-GO
+
 ALTER TABLE [dbo].[People] WITH NOCHECK ADD CONSTRAINT [FK_PEOPLE_TBL_Origin] FOREIGN KEY ([OriginId]) REFERENCES [lookup].[Origin] ([Id])
 GO
 ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_PhonePreference] FOREIGN KEY ([PhonePrefId]) REFERENCES [lookup].[PhonePreference] ([Id])

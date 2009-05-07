@@ -95,15 +95,6 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropDown OrganizationStatusId;
         
         /// <summary>
-        /// OrganizationTypeId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropDown OrganizationTypeId;
-        
-        /// <summary>
         /// LeaderMemberTypeId control.
         /// </summary>
         /// <remarks>
@@ -248,87 +239,6 @@ namespace CMSWeb {
         protected global::CMSWeb.UserControls.VisitorGrid VisitorGrid1;
         
         /// <summary>
-        /// VipFlag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditCheckbox VipFlag;
-        
-        /// <summary>
-        /// Confidential control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditCheckbox Confidential;
-        
-        /// <summary>
-        /// PromotableFlag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditCheckbox PromotableFlag;
-        
-        /// <summary>
-        /// AgeRangeStart control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditText AgeRangeStart;
-        
-        /// <summary>
-        /// GradeRangeStart control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditText GradeRangeStart;
-        
-        /// <summary>
-        /// AgeRangeEnd control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditText AgeRangeEnd;
-        
-        /// <summary>
-        /// GradeRangeEnd control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditText GradeRangeEnd;
-        
-        /// <summary>
-        /// GenderTypeId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropDown GenderTypeId;
-        
-        /// <summary>
-        /// MaritalStatusId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropDown MaritalStatusId;
-        
-        /// <summary>
         /// ScheduleId control.
         /// </summary>
         /// <remarks>
@@ -383,24 +293,6 @@ namespace CMSWeb {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
         
         /// <summary>
-        /// TrackVisitors control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditCheckbox TrackVisitors;
-        
-        /// <summary>
-        /// AttendanceSummaryFlag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditCheckbox AttendanceSummaryFlag;
-        
-        /// <summary>
         /// AttendTrkLevelId control.
         /// </summary>
         /// <remarks>
@@ -419,15 +311,6 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropDown AttendClassificationId;
         
         /// <summary>
-        /// RollSheetTypeId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropDown RollSheetTypeId;
-        
-        /// <summary>
         /// SecurityTypeId control.
         /// </summary>
         /// <remarks>
@@ -444,15 +327,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CustomControls.DisplayOrEditText RollSheetVisitorWks;
-        
-        /// <summary>
-        /// QtrlySummaryInterval control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CustomControls.DisplayOrEditText QtrlySummaryInterval;
         
         /// <summary>
         /// MeetingsPanel control.
@@ -768,33 +642,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ODS_LeaderMemberTypeId;
-        
-        /// <summary>
-        /// ODS_GenderTypeId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_GenderTypeId;
-        
-        /// <summary>
-        /// ODS_MaritalStatusId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_MaritalStatusId;
-        
-        /// <summary>
-        /// ODS_RollSheetTypeId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_RollSheetTypeId;
         
         /// <summary>
         /// ODS_SecurityTypeId control.
