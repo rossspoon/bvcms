@@ -182,7 +182,6 @@ namespace CMSWeb
 
             var div = DbUtil.Db.Divisions.Single(d => d.Id == divid);
             DbUtil.Db.DivOrgs.DeleteAllOnSubmit(div.DivOrgs);
-            DbUtil.Db.BFCSummaryOrgTags.DeleteAllOnSubmit(div.BFCSummaryOrgTags);
             DbUtil.Db.Divisions.DeleteOnSubmit(div);
             DbUtil.Db.SubmitChanges();
             OrgDivisions.DataBind();

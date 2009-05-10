@@ -15,15 +15,17 @@ namespace CMSWeb.Reports
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
                 DbUtil.LogActivity("Viewing Weekly Attendance Summary Rpt");
-                var date = this.QueryString<DateTime?>("date");
+            var dt = DateTime.MinValue;
+            if (IsPostBack)
+                DateTime.TryParse(SundayDate.Text, out dt);
+            if (!IsPostBack || dt == DateTime.MinValue)
+            {
                 var caids = new ChurchAttendanceConstants();
-                SundayDate.Text = date.HasValue ? date.Value.ToString("d") 
-                    : caids.MostRecentAttendedSunday().ToString("d");
+                var date = this.QueryString<DateTime?>("date");
+                dt = date.HasValue ? date.Value : caids.MostRecentAttendedSunday();
             }
-            DateTime reportDate = DateTime.Parse(SundayDate.Text);
-            reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek);
+            var reportDate = dt.AddDays(-(int)dt.DayOfWeek); //Sunday Date equal/before date selected
             SundayDate.Text = reportDate.ToString("d");
         }
     }

@@ -67,7 +67,7 @@ namespace CMSPresenter
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate.Value.Date == sunday.Date
-                     group m by new { div.BFCSummaryOrgTags.First().SortOrder, m.MeetingDate } into g
+                     group m by new { div.SortOrder, m.MeetingDate } into g
                      select new
                      {
                          g.Key.SortOrder,
@@ -76,8 +76,9 @@ namespace CMSPresenter
                      };
             var qlist = q2.ToList();
 
-            var qSortOrderName = from i in Db.BFCSummaryOrgTags
-                                 select new { i.SortOrder, i.Tag.Name };
+            var qSortOrderName = from i in Db.Divisions
+                                 where i.SortOrder != null
+                                 select new { i.SortOrder, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);
 
             // division rows
@@ -85,7 +86,7 @@ namespace CMSPresenter
                         group m by new { m.SortOrder } into g
                         select new BFCAttendSummaryInfo
                         {
-                            Order = g.Key.SortOrder,
+                            Order = g.Key.SortOrder ?? 0,
                             Name = namelist[g.Key.SortOrder].Name,
                             Class = "",
                             Cnt800 = qlist.Where(m => m.DateHour.TimeOfDay == t800 && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
@@ -128,7 +129,7 @@ namespace CMSPresenter
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate >= fromDate && m.MeetingDate < toDate.AddDays(1)
-                     group m by new { div.BFCSummaryOrgTags.First().SortOrder, m.MeetingDate } into g
+                     group m by new { div.SortOrder, m.MeetingDate } into g
                      select new
                      {
                          g.Key.SortOrder,
@@ -171,8 +172,9 @@ namespace CMSPresenter
                         group tm by tm.DateHour.Date into g
                         select g.Sum(m => m.Count);
 
-            var qSortOrderName = from i in Db.BFCSummaryOrgTags
-                                 select new { i.SortOrder, i.Tag.Name };
+            var qSortOrderName = from i in Db.Divisions
+                                 where i.SortOrder != null
+                                 select new { i.SortOrder, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);
 
             // division rows
@@ -180,7 +182,7 @@ namespace CMSPresenter
                         group m by new { m.SortOrder } into g
                         select new BFCAvgAttendSummaryInfo
                         {
-                            Order = g.Key.SortOrder,
+                            Order = g.Key.SortOrder ?? 0,
                             Name = namelist[g.Key.SortOrder].Name,
                             Class = "",
                             Avg800 = g.Where(m => m.TimeOfDay == t800 && m.SortOrder == g.Key.SortOrder).Average(m => (double?)m.Count),

@@ -70,6 +70,9 @@
       <HintPath>..\..\Binaries\RouteDebug.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -90,6 +93,12 @@
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Abstractions.dll</HintPath>
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -144,12 +153,25 @@
     <Compile Include="Admin\ClearCache.aspx.designer.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\ListDetails.aspx.designer.cs">
+      <DependentUpon>ListDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\LastActivity.aspx.cs">
       <DependentUpon>LastActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\LastActivity.aspx.designer.cs">
       <DependentUpon>LastActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Lookups.aspx.cs">
+      <DependentUpon>Lookups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Lookups.aspx.designer.cs">
+      <DependentUpon>Lookups.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\OneTimeETStudy.aspx.cs">
       <DependentUpon>OneTimeETStudy.aspx</DependentUpon>
@@ -361,12 +383,142 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
+    <Compile Include="Controllers\MetroZipController.cs" />
+    <Compile Include="Controllers\MinistryController.cs" />
+    <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\QueryBuilderController.cs" />
     <Compile Include="Controllers\DisplayController.cs" />
     <Compile Include="Controllers\SearchPeopleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\VBSController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Admin\DynamicData\Content\FilterUserControl.ascx.cs">
+      <DependentUpon>FilterUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\Content\FilterUserControl.ascx.designer.cs">
+      <DependentUpon>FilterUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\Content\GridViewPager.ascx.cs">
+      <DependentUpon>GridViewPager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\Content\GridViewPager.ascx.designer.cs">
+      <DependentUpon>GridViewPager.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Boolean.ascx.cs">
+      <DependentUpon>Boolean.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Boolean.ascx.designer.cs">
+      <DependentUpon>Boolean.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Boolean_Edit.ascx.cs">
+      <DependentUpon>Boolean_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Boolean_Edit.ascx.designer.cs">
+      <DependentUpon>Boolean_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Children.ascx.cs">
+      <DependentUpon>Children.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Children.ascx.designer.cs">
+      <DependentUpon>Children.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\DateTime.ascx.cs">
+      <DependentUpon>DateTime.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\DateTime.ascx.designer.cs">
+      <DependentUpon>DateTime.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\DateTime_Edit.ascx.cs">
+      <DependentUpon>DateTime_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\DateTime_Edit.ascx.designer.cs">
+      <DependentUpon>DateTime_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Decimal_Edit.ascx.cs">
+      <DependentUpon>Decimal_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Decimal_Edit.ascx.designer.cs">
+      <DependentUpon>Decimal_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\ForeignKey.ascx.cs">
+      <DependentUpon>ForeignKey.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\ForeignKey.ascx.designer.cs">
+      <DependentUpon>ForeignKey.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\ForeignKey_Edit.ascx.cs">
+      <DependentUpon>ForeignKey_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\ForeignKey_Edit.ascx.designer.cs">
+      <DependentUpon>ForeignKey_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Integer_Edit.ascx.cs">
+      <DependentUpon>Integer_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Integer_Edit.ascx.designer.cs">
+      <DependentUpon>Integer_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\MultilineText_Edit.ascx.cs">
+      <DependentUpon>MultilineText_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\MultilineText_Edit.ascx.designer.cs">
+      <DependentUpon>MultilineText_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Text.ascx.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Text.ascx.designer.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Text_Edit.ascx.cs">
+      <DependentUpon>Text_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\FieldTemplates\Text_Edit.ascx.designer.cs">
+      <DependentUpon>Text_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Details.aspx.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Details.aspx.designer.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Insert.aspx.cs">
+      <DependentUpon>Insert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\Insert.aspx.designer.cs">
+      <DependentUpon>Insert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DynamicData\PageTemplates\ListDetails.aspx.cs">
+      <DependentUpon>ListDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="EnrollmentControlReport.aspx.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -382,6 +534,9 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\MetroZipModel.cs" />
+    <Compile Include="Models\MinistryModel.cs" />
+    <Compile Include="Models\FundModel.cs" />
     <Compile Include="Models\QueryModel.cs" />
     <Compile Include="Models\PeopleInfo.cs" />
     <Compile Include="Models\VBSDetailModel.cs" />
@@ -916,6 +1071,7 @@
     <Content Include="Admin\Activity.aspx" />
     <Content Include="Admin\ClearCache.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
+    <Content Include="Admin\Lookups.aspx" />
     <Content Include="Admin\OneTimeETStudy.aspx" />
     <Content Include="Admin\SessionState.aspx" />
     <Content Include="Admin\Web.config" />
@@ -1048,6 +1204,32 @@
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="AddTagSharedsDialog.aspx" />
+    <Content Include="Admin\DynamicData\Content\FilterUserControl.ascx" />
+    <Content Include="Admin\DynamicData\Content\GridViewPager.ascx" />
+    <Content Include="Admin\DynamicData\Content\Images\Back.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\header_back.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\PgFirst.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\PgLast.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\PgNext.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\PgPrev.gif" />
+    <Content Include="Admin\DynamicData\Content\Images\plus.gif" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Boolean.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Boolean_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Children.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\DateTime.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\DateTime_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Decimal_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\ForeignKey.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\ForeignKey_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Integer_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\MultilineText_Edit.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Text.ascx" />
+    <Content Include="Admin\DynamicData\FieldTemplates\Text_Edit.ascx" />
+    <Content Include="Admin\DynamicData\PageTemplates\Details.aspx" />
+    <Content Include="Admin\DynamicData\PageTemplates\Edit.aspx" />
+    <Content Include="Admin\DynamicData\PageTemplates\Insert.aspx" />
+    <Content Include="Admin\DynamicData\PageTemplates\List.aspx" />
+    <Content Include="Admin\DynamicData\PageTemplates\ListDetails.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="EditMembersDialog.aspx" />
     <Content Include="favicon.ico" />
@@ -1573,6 +1755,7 @@
     <None Include="Config\CreateDb.sql" />
     <None Include="Config\CreateImageDb.sql" />
     <None Include="Config\InitializeDb.sql" />
+    <Content Include="Admin\DynamicData\web.config" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.cfm" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.php" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.pl" />
@@ -1625,6 +1808,15 @@
     <None Include="fckeditor\_samples\py\sampleposteddata.py" />
     <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
+    <Content Include="Views\MetroZip\Details.aspx" />
+    <Content Include="Views\MetroZip\Edit.aspx" />
+    <Content Include="Views\MetroZip\Index.aspx" />
+    <Content Include="Views\Ministry\Details.aspx" />
+    <Content Include="Views\Ministry\Edit.aspx" />
+    <Content Include="Views\Ministry\Index.aspx" />
+    <Content Include="Views\Fund\Details.aspx" />
+    <Content Include="Views\Fund\Edit.aspx" />
+    <Content Include="Views\Fund\Index.aspx" />
     <Content Include="Views\Display\EditPage.aspx" />
     <Content Include="Views\QueryBuilder\Conditions.ascx" />
     <Content Include="Views\QueryBuilder\Main.aspx" />
@@ -1757,6 +1949,9 @@
     <Content Include="WebParts\Reports.ascx" />
     <Content Include="UserControls\VisitorGrid.ascx" />
     <Content Include="UserControls\QuickSearchParameters.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Admin\DynamicData\CustomPages\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

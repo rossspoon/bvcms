@@ -63,14 +63,14 @@ namespace CMSWeb.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public JsonResult SelectOrg(int Id, int DivId, int OrgId)
 		{
-			var m = new Models.VBSModel();
+            var m = new Models.VBSModel();
 			var v = m.UpdateVBSApp(Id, DivId, OrgId);
 			return Json(new { OrgName = v.OrgName });
 		}
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Delete(int vid)
 		{
-			var m = new Models.VBSModel();
+            var m = new Models.VBSModel();
 			m.DeleteVBSApp(vid);
 			return RedirectToAction("Index");
 		}

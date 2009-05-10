@@ -476,6 +476,7 @@ namespace CMSPresenter
                 list = q.ToList();
                 HttpRuntime.Cache[NAME] = list;
             }
+            list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });
             return list;
         }
 

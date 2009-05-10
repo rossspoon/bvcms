@@ -32,8 +32,6 @@ namespace CmsData
 		private string _OwnerName;
 		
    		
-   		private EntitySet< BFCSummaryOrgTag> _BFCSummaryOrgTags;
-		
    		private EntitySet< TagShare> _TagShares;
 		
    		private EntitySet< TagOrg> _OrgTags;
@@ -80,8 +78,6 @@ namespace CmsData
     #endregion
 		public Tag()
 		{
-			
-			this._BFCSummaryOrgTags = new EntitySet< BFCSummaryOrgTag>(new Action< BFCSummaryOrgTag>(this.attach_BFCSummaryOrgTags), new Action< BFCSummaryOrgTag>(this.detach_BFCSummaryOrgTags)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -268,16 +264,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_BFCSummaryOrgTags_Tag", Storage="_BFCSummaryOrgTags", OtherKey="OrgTagId")]
-   		public EntitySet< BFCSummaryOrgTag> BFCSummaryOrgTags
-   		{
-   		    get { return this._BFCSummaryOrgTags; }
-
-			set	{ this._BFCSummaryOrgTags.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_TagShare_Tag", Storage="_TagShares", OtherKey="TagId")]
    		public EntitySet< TagShare> TagShares
    		{
@@ -433,19 +419,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_BFCSummaryOrgTags(BFCSummaryOrgTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = this;
-		}
-
-		private void detach_BFCSummaryOrgTags(BFCSummaryOrgTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = null;
-		}
-
-		
 		private void attach_TagShares(TagShare entity)
 		{
 			this.SendPropertyChanging();

@@ -23,9 +23,9 @@ namespace CmsData
 		
 		private int? _ProgId;
 		
-   		
-   		private EntitySet< BFCSummaryOrgTag> _BFCSummaryOrgTags;
+		private int? _SortOrder;
 		
+   		
    		private EntitySet< DivOrg> _DivOrgs;
 		
     	
@@ -47,11 +47,12 @@ namespace CmsData
 		partial void OnProgIdChanging(int? value);
 		partial void OnProgIdChanged();
 		
+		partial void OnSortOrderChanging(int? value);
+		partial void OnSortOrderChanged();
+		
     #endregion
 		public Division()
 		{
-			
-			this._BFCSummaryOrgTags = new EntitySet< BFCSummaryOrgTag>(new Action< BFCSummaryOrgTag>(this.attach_BFCSummaryOrgTags), new Action< BFCSummaryOrgTag>(this.detach_BFCSummaryOrgTags)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
@@ -133,20 +134,32 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="SortOrder", UpdateCheck=UpdateCheck.Never, Storage="_SortOrder", DbType="int")]
+		public int? SortOrder
+		{
+			get { return this._SortOrder; }
+
+			set
+			{
+				if (this._SortOrder != value)
+				{
+				
+                    this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_BFCSummaryOrgTags_Division", Storage="_BFCSummaryOrgTags", OtherKey="OrgTagId")]
-   		public EntitySet< BFCSummaryOrgTag> BFCSummaryOrgTags
-   		{
-   		    get { return this._BFCSummaryOrgTags; }
-
-			set	{ this._BFCSummaryOrgTags.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_DivOrg_Division", Storage="_DivOrgs", OtherKey="DivId")]
    		public EntitySet< DivOrg> DivOrgs
    		{
@@ -220,19 +233,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_BFCSummaryOrgTags(BFCSummaryOrgTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = this;
-		}
-
-		private void detach_BFCSummaryOrgTags(BFCSummaryOrgTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = null;
-		}
-
-		
 		private void attach_DivOrgs(DivOrg entity)
 		{
 			this.SendPropertyChanging();

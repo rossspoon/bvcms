@@ -295,6 +295,18 @@
                 </tr>
                 <tr>
                     <th>
+                        Entry Point:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditDropDown ID="EntryPointId" runat="server" BindingMode="TwoWay"
+                            BindingSource="organization" DataTextField="Value" DataValueField="Id" Width="200px"
+                            BindingMember="EntryPointId" DataSourceID="ODS_EntryPointId"
+                            MakeDefault0="True">
+                        </cc1:DisplayOrEditDropDown>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         Security Type:
                     </th>
                     <td>
@@ -478,6 +490,8 @@
     <asp:ObjectDataSource ID="ODS_SecurityTypeId" runat="server" SelectMethod="SecurityTypeCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_AttendTrkLevelId" runat="server" SelectMethod="AttendanceTrackLevelCodes"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_EntryPointId" runat="server" SelectMethod="EntryPoints"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_AttendClassificationId" runat="server" SelectMethod="AttendanceClassifications"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

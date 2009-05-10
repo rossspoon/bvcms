@@ -82,9 +82,9 @@ $(function() {
         window.location = "/QueryBuilder/Main/" + $("#ExistingQueries").val();
     });
     $('#SaveQuery').click(function(ev) {
-        $('#OpenQueryDiv').dialog("close");
+        $('#SaveQueryDiv').dialog("close");
         $.post("/QueryBuilder/SaveQuery/", {
-            SavedQueryDesc: $('#SavedQueryDesc').val(),
+            SavedQueryDesc: $('#SaveQueryDesc').val(),
             IsPublic: $('#IsPublic').val()
         }, function(ret) {
             $("#Description").text(ret);
@@ -338,6 +338,7 @@ function UpdateView(vs) {
     $('#Program').val(vs.Program);
     $('#Division').val(vs.Division);
     $('#Organization').val(vs.Organization);
+    $('#SavedQueryDesc').val(vs.SavedQueryDesc);
     $('#Schedule').val(vs.Schedule);
     $('#Tags').val(vs.Tags);
     $('#Days').val(vs.Days);

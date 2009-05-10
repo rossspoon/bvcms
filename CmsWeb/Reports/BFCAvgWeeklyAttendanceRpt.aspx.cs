@@ -15,15 +15,25 @@ namespace CMSWeb.Reports
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
                 DbUtil.LogActivity("Viewing Weekly Attendance Rpt");
+            var fdt = DateTime.MinValue;
+            var tdt = DateTime.MinValue;
+            if (IsPostBack)
+            {
+                DateTime.TryParse(FromDate.Text, out fdt);
+                DateTime.TryParse(ToDate.Text, out tdt);
+            }
+            if (!IsPostBack || fdt == DateTime.MinValue || tdt == DateTime.MinValue)
+            {
                 var fdate = this.QueryString<DateTime?>("fdate");
                 var tdate = this.QueryString<DateTime?>("fdate");
                 var caids = new ChurchAttendanceConstants();
-                DateTime today = caids.MostRecentAttendedSunday();
-                FromDate.Text = fdate.HasValue ? fdate.Value.ToString("d") : new DateTime(today.Year, today.Month, 1).ToString("d");
-                ToDate.Text = tdate.HasValue ? tdate.Value.ToString("d") : new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString("d");
+                var today = caids.MostRecentAttendedSunday();
+                fdt = fdate.HasValue ? fdate.Value : new DateTime(today.Year, today.Month, 1);
+                tdt = tdate.HasValue ? tdate.Value : new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
             }
+            FromDate.Text = fdt.ToString("d");
+            ToDate.Text = tdt.ToString("d");
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {

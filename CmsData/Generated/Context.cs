@@ -66,10 +66,6 @@ namespace CmsData
         partial void UpdateBFCStatus(BFCStatus instance);
         partial void DeleteBFCStatus(BFCStatus instance);
         
-        partial void InsertBFCSummaryOrgTag(BFCSummaryOrgTag instance);
-        partial void UpdateBFCSummaryOrgTag(BFCSummaryOrgTag instance);
-        partial void DeleteBFCSummaryOrgTag(BFCSummaryOrgTag instance);
-        
         partial void InsertBundleDetail(BundleDetail instance);
         partial void UpdateBundleDetail(BundleDetail instance);
         partial void DeleteBundleDetail(BundleDetail instance);
@@ -513,12 +509,6 @@ namespace CmsData
 		public Table< BFCStatus> BFCStatuses
 		{
 			get	{ return this.GetTable< BFCStatus>(); }
-
-		}
-
-		public Table< BFCSummaryOrgTag> BFCSummaryOrgTags
-		{
-			get	{ return this.GetTable< BFCSummaryOrgTag>(); }
 
 		}
 

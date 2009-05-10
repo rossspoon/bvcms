@@ -48,6 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -115,7 +118,6 @@
     <Compile Include="Generated\Zip.cs" />
     <Compile Include="IndividualContribution.cs" />
     <Compile Include="Generated\Attend.cs" />
-    <Compile Include="Generated\BFCSummaryOrgTag.cs" />
     <Compile Include="Generated\BundleHeaderType.cs" />
     <Compile Include="Generated\BundleStatusType.cs" />
     <Compile Include="Generated\ContributionStatus.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Generated\TaskListOwner.cs" />
     <Compile Include="Generated\TaskStatus.cs" />
     <Compile Include="ITaskNotify.cs" />
+    <Compile Include="Lookups.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="OrganizationMember.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

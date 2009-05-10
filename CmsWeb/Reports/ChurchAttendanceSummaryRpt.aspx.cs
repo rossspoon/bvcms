@@ -17,13 +17,16 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
                 DbUtil.LogActivity("Viewing Church Attendance Summary Rpt");
+            var dt = DateTime.MinValue;
+            if (IsPostBack)
+                DateTime.TryParse(SundayDate.Text, out dt);
+            if (!IsPostBack || dt == DateTime.MinValue)
+            {
                 var caids = new ChurchAttendanceConstants();
-                SundayDate.Text = caids.MostRecentAttendedSunday().ToString("d");
+                dt = caids.MostRecentAttendedSunday();
             }
-            var reportDate = DateTime.Parse(SundayDate.Text);
-            reportDate = reportDate.AddDays(-(int)reportDate.DayOfWeek); //Sunday Date equal/before date selected
+            var reportDate = dt.AddDays(-(int)dt.DayOfWeek); //Sunday Date equal/before date selected
             SundayDate.Text = reportDate.ToString("d");
         }
 

@@ -322,9 +322,9 @@ namespace CMSPresenter
                     where MorningWorship.Contains(m.OrganizationId)
                     where m.NumPresent > 0
                     orderby m.MeetingDate descending
-                    select m.MeetingDate;
-            var dt = q.First();
-            return dt.Value.Date;
+                    select m.MeetingDate.Value.Date;
+            var dt = q.FirstOrDefault();
+            return dt == DateTime.MinValue ? DateTime.Today : dt;
         }
     }
 }

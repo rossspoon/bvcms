@@ -31,6 +31,7 @@ namespace CMSWeb.Models
         string DateValue { get; set; }
         string NumberValue { get; set; }
         string IntegerValue { get; set; }
+        string SavedQueryDesc { get; set; }
         string Sort { get; set; }
         string Direction { get; set; }
         int? Page { get; set; }

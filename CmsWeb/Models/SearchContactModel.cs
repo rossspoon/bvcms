@@ -224,7 +224,7 @@ namespace CMSWeb.Models
                     };
             return q.WithNotSpecified();
         }
-        public IEnumerable<SelectListItem> Ministries()
+        public List<SelectListItem> Ministries()
         {
             var q = from m in Db.Ministries
                     orderby m.MinistryName
@@ -233,7 +233,9 @@ namespace CMSWeb.Models
                         Value = m.MinistryId.ToString(),
                         Text = m.MinistryName
                     };
-            return q;
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(Not Specified)", Value = "0" });
+            return list;
         }
     }
 }

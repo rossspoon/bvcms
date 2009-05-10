@@ -56,7 +56,7 @@
                 <tr id="SavedQueryDiv" style="display:none">
                     <td>Saved Query:</td>
                     <td>
-                        <%=Html.TextBoxClass("SavedQueryDesc", "validate")%>
+                        <%=Html.DropDownList("SavedQueryDesc", Model.SavedQueries())%>
                     </td>
                 </tr>
                 <tr id="StartDiv" style="display:none">
@@ -199,7 +199,7 @@
 <div id="SaveQueryDiv" class="modalDiv">
     <div style="text-align: left">
         Query Description:
-        <%=Html.TextBox("SavedQueryDesc") %>
+        <%=Html.TextBox("SaveQueryDesc") %>
         &nbsp;
         <%=Html.CheckBox("IsPublic") %> Is Public
         <span class="footer">

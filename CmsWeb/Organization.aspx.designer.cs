@@ -311,6 +311,15 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropDown AttendClassificationId;
         
         /// <summary>
+        /// EntryPointId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditDropDown EntryPointId;
+        
+        /// <summary>
         /// SecurityTypeId control.
         /// </summary>
         /// <remarks>
@@ -660,6 +669,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ODS_AttendTrkLevelId;
+        
+        /// <summary>
+        /// ODS_EntryPointId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_EntryPointId;
         
         /// <summary>
         /// ODS_AttendClassificationId control.

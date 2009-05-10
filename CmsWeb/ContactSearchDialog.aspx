@@ -99,7 +99,7 @@
                 </th>
                 <td>
                     <cc1:DropDownCC ID="MinistryList" runat="server" DataTextField="Value" DataSourceID="MinistryListData"
-                        DataValueField="Id" AppendDataBoundItems="True">
+                        DataValueField="Id" AppendDataBoundItems="False">
                     </cc1:DropDownCC>
                 </td>
             </tr>

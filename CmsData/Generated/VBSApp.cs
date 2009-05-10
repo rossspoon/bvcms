@@ -228,7 +228,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="varchar(50)")]
+		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="varchar(140)")]
 		public string Request
 		{
 			get { return this._Request; }

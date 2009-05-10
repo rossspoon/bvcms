@@ -112,8 +112,6 @@
                             <asp:HyperLink ID="HyperLink8" NavigateUrl="~/Contributions/Bundles.aspx" runat="server">Bundles</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="HyperLink9" NavigateUrl="~/Contributions/All.aspx" runat="server">All</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink13" NavigateUrl="~/Contributions/Years.aspx" runat="server">Years</asp:HyperLink></li>
                         <li class="headlink">
                             <asp:HyperLink NavigateUrl="#" runat="server">Reports</asp:HyperLink>
                             <ul>
@@ -148,6 +146,8 @@
                         <li>
                             <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
                                 runat="server">OrgMembersOnly</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink2" NavigateUrl="~/Admin/Lookups.aspx" runat="server">Lookup Tables</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
                         <li>
