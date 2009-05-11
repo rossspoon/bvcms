@@ -2,7 +2,8 @@ CREATE TABLE [dbo].[Division]
 (
 [Id] [int] NOT NULL IDENTITY(1, 1),
 [Name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ProgId] [int] NULL
+[ProgId] [int] NULL,
+[SortOrder] [int] NULL
 )
 GO
 ALTER TABLE [dbo].[Division] ADD CONSTRAINT [PK_Division] PRIMARY KEY CLUSTERED ([Id])

@@ -5,7 +5,7 @@ CREATE TABLE [dbo].[VBSApp]
 [ImgId] [int] NULL,
 [IsDocument] [bit] NULL,
 [Uploaded] [datetime] NULL,
-[Request] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Request] [varchar] (140) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ActiveInAnotherChurch] [bit] NULL,
 [GradeCompleted] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OrgId] [int] NULL,
