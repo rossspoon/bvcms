@@ -1,4 +1,4 @@
-<%@ Master Language="C#" CodeBehind="Site.Master.cs" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
@@ -54,6 +54,10 @@
     </script>
 </div>
 <div>
+    <% if (((string)Application["getoff"]).HasValue())
+       { %>
+    <%= "<span class='urgentNotice'>{0}</span>".Fmt(Application["getoff"])%>
+    <% } %>
     <div id="CommonHeader">
         <div>
             <%= DbUtil.Header() %>
@@ -176,9 +180,13 @@
                         <li>
                             <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
                         <li>
+                            <a href="/Admin/Lookups.aspx">Lookup Tables</a></li>
+                        <li>
                             <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
                         <li>
                             <a href="/Admin/SessionState.aspx">Session State</a></li>
+                        <li>
+                            <a href="/Admin/UrgentMessage.aspx">Urgent Message</a></li>
                         <li>
                             <a href="/Admin/Activity.aspx">Activity Log</a></li>
                         <li>

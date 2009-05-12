@@ -23,7 +23,7 @@ namespace CMSWeb.Reports
                 DateTime.TryParse(FromDate.Text, out fdt);
                 DateTime.TryParse(ToDate.Text, out tdt);
             }
-            if (!IsPostBack || fdt == DateTime.MinValue || tdt == DateTime.MinValue)
+            if (!IsPostBack || fdt.Year < 1900 || tdt.Year < 1900)
             {
                 var fdate = this.QueryString<DateTime?>("fdate");
                 var tdate = this.QueryString<DateTime?>("fdate");

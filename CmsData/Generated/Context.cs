@@ -310,10 +310,6 @@ namespace CmsData
         partial void UpdateRole(Role instance);
         partial void DeleteRole(Role instance);
         
-        partial void InsertRollsheetType(RollsheetType instance);
-        partial void UpdateRollsheetType(RollsheetType instance);
-        partial void DeleteRollsheetType(RollsheetType instance);
-        
         partial void InsertRssFeed(RssFeed instance);
         partial void UpdateRssFeed(RssFeed instance);
         partial void DeleteRssFeed(RssFeed instance);
@@ -875,12 +871,6 @@ namespace CmsData
 		public Table< Role> Roles
 		{
 			get	{ return this.GetTable< Role>(); }
-
-		}
-
-		public Table< RollsheetType> RollsheetTypes
-		{
-			get	{ return this.GetTable< RollsheetType>(); }
 
 		}
 

@@ -313,3 +313,11 @@ ul#ConditionGrid
     margin-top: 0px; 
     margin-bottom: 0px;
 }
+.urgentNotice
+{
+    font-size: x-large;
+    color:Red;
+    background-color: Yellow;
+    padding-left: 1em;
+    padding-right: 1em;
+}

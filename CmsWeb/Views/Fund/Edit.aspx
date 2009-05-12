@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.FundModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsData.ContributionFund>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -12,85 +12,70 @@
             <legend>Fields</legend>
             <p>
                 <label for="FundId">FundId:</label>
-                <%= Html.TextBox("fund.FundId", Model.fund.FundId) %>
-                <%= Html.ValidationMessage("FundId", "*") %>
+                <%= Html.Encode(Model.FundId) %>
             </p>
             <p>
                 <label for="FundName">FundName:</label>
-                <%= Html.TextBox("fund.FundName", Model.fund.FundName) %>
-                <%= Html.ValidationMessage("FundName", "*") %>
+                <%= Html.TextBox("FundName") %>
             </p>
             <p>
                 <label for="FundDescription">FundDescription:</label>
-                <%= Html.TextBox("fund.FundDescription", Model.fund.FundDescription) %>
-                <%= Html.ValidationMessage("FundDescription", "*") %>
+                <%= Html.TextBox("FundDescription") %>
             </p>
             <p>
                 <label for="FundStatusId">FundStatusId:</label>
-                <%= Html.DropDownList("fund.FundStatusId", Model.FundStatuses()) %>
-                <%= Html.ValidationMessage("FundStatusId", "*") %>
+                <% Html.RenderAction<CMSWeb.Controllers.FundController>(c => c.FundStatus(Model)); %>
             </p>
             <p>
                 <label for="FundTypeId">FundTypeId:</label>
-                <%= Html.TextBox("FundTypeId", Model.fund.FundTypeId) %>
-                <%= Html.ValidationMessage("FundTypeId", "*") %>
+                <% Html.RenderAction<CMSWeb.Controllers.FundController>(c => c.FundType(Model)); %>
             </p>
             <p>
                 <label for="FundPledgeFlag">FundPledgeFlag:</label>
-                <%= Html.CheckBox("FundPledgeFlag", Model.fund.FundPledgeFlag) %>
-                <%= Html.ValidationMessage("FundPledgeFlag", "*") %>
+                <%= Html.CheckBox("FundPledgeFlag") %>
             </p>
             <p>
                 <label for="FundTarget">FundTarget:</label>
-                <%= Html.TextBox("FundTarget", String.Format("{0:F}", Model.fund.FundTarget)) %>
-                <%= Html.ValidationMessage("FundTarget", "*") %>
+                <%= Html.TextBox("FundTarget") %>
             </p>
             <p>
                 <label for="FundOpenDate">FundOpenDate:</label>
-                <%= Html.TextBox("FundOpenDate", String.Format("{0:g}", Model.fund.FundOpenDate)) %>
-                <%= Html.ValidationMessage("FundOpenDate", "*") %>
+                <%= Html.TextBox("FundOpenDate") %>
             </p>
             <p>
                 <label for="FundCloseDate">FundCloseDate:</label>
-                <%= Html.TextBox("FundCloseDate", String.Format("{0:g}", Model.fund.FundCloseDate)) %>
-                <%= Html.ValidationMessage("FundCloseDate", "*") %>
+                <%= Html.TextBox("FundCloseDate") %>
             </p>
             <p>
                 <label for="FundAccountCode">FundAccountCode:</label>
-                <%= Html.TextBox("FundAccountCode", Model.fund.FundAccountCode) %>
-                <%= Html.ValidationMessage("FundAccountCode", "*") %>
+                <%= Html.TextBox("FundAccountCode") %>
             </p>
             <p>
                 <label for="FundIncomeDept">FundIncomeDept:</label>
-                <%= Html.TextBox("FundIncomeDept", Model.fund.FundIncomeDept) %>
-                <%= Html.ValidationMessage("FundIncomeDept", "*") %>
+                <%= Html.TextBox("FundIncomeDept") %>
             </p>
             <p>
                 <label for="FundIncomeAccount">FundIncomeAccount:</label>
-                <%= Html.TextBox("FundIncomeAccount", Model.fund.FundIncomeAccount) %>
-                <%= Html.ValidationMessage("FundIncomeAccount", "*") %>
+                <%= Html.TextBox("FundIncomeAccount") %>
             </p>
             <p>
                 <label for="FundIncomeFund">FundIncomeFund:</label>
-                <%= Html.TextBox("FundIncomeFund", Model.fund.FundIncomeFund) %>
-                <%= Html.ValidationMessage("FundIncomeFund", "*") %>
+                <%= Html.TextBox("FundIncomeFund") %>
             </p>
             <p>
                 <label for="FundCashDept">FundCashDept:</label>
-                <%= Html.TextBox("FundCashDept", Model.fund.FundCashDept) %>
-                <%= Html.ValidationMessage("FundCashDept", "*") %>
+                <%= Html.TextBox("FundCashDept") %>
             </p>
             <p>
                 <label for="FundCashAccount">FundCashAccount:</label>
-                <%= Html.TextBox("FundCashAccount", Model.fund.FundCashAccount) %>
-                <%= Html.ValidationMessage("FundCashAccount", "*") %>
+                <%= Html.TextBox("FundCashAccount") %>
             </p>
             <p>
                 <label for="FundCashFund">FundCashFund:</label>
-                <%= Html.TextBox("FundCashFund", Model.fund.FundCashFund) %>
-                <%= Html.ValidationMessage("FundCashFund", "*") %>
+                <%= Html.TextBox("FundCashFund") %>
             </p>
             <p>
+                <%=Html.Hidden("FundId") %>
                 <input type="submit" value="Save" />
             </p>
         </fieldset>

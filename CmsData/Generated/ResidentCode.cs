@@ -24,6 +24,8 @@ namespace CmsData
 		private string _Description;
 		
    		
+   		private EntitySet< Zip> _Zips;
+		
     	
 	#endregion
 	
@@ -44,6 +46,8 @@ namespace CmsData
     #endregion
 		public ResidentCode()
 		{
+			
+			this._Zips = new EntitySet< Zip>(new Action< Zip>(this.attach_Zips), new Action< Zip>(this.detach_Zips)); 
 			
 			
 			OnCreated();
@@ -122,6 +126,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_Zips_ResidentCode", Storage="_Zips", OtherKey="MetroMarginalCode")]
+   		public EntitySet< Zip> Zips
+   		{
+   		    get { return this._Zips; }
+
+			set	{ this._Zips.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -143,6 +157,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_Zips(Zip entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = this;
+		}
+
+		private void detach_Zips(Zip entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = null;
+		}
+
+		
 	}
 
 }

@@ -157,7 +157,6 @@
     <Compile Include="Generated\OrganizationStatus.cs" />
     <Compile Include="Generated\Origin.cs" />
     <Compile Include="Generated\ResidentCode.cs" />
-    <Compile Include="Generated\RollsheetType.cs" />
     <Compile Include="Generated\VolApplicationStatus.cs" />
     <Compile Include="Generated\Volunteer.cs" />
     <Compile Include="Generated\VolunteerCode.cs" />

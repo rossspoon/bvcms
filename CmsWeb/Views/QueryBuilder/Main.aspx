@@ -47,10 +47,10 @@
                         <%=Html.TextBoxClass("Quarters", "validate") %>
                     </td>
                 </tr>
-                <tr id="TagDiv" style="display:none">
+                <tr id="TagsDiv" style="display:none">
                     <td>Tags:</td>
                     <td>
-                        <%=Html.TextBoxClass("Tags", "validate")%>
+                        <span id="tagvalues" style="display:none"></span>
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">

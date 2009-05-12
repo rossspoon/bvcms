@@ -28,6 +28,10 @@ namespace CMSWeb
             if (ScriptManager.IsInAsyncPostBack)
                 return;
 
+            urgentNotice.Visible = ((string)Application["getoff"]).HasValue();
+            if (urgentNotice.Visible)
+                urgentNotice.Text = (string)Application["getoff"];
+
             if (NoCache)
             {
                 Response.Cache.SetExpires(DateTime.Now.AddDays(-1));

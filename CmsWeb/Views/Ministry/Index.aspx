@@ -1,62 +1,58 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<CmsData.Ministry>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<script type="text/javascript">
-    //id=elements_id&value=user_edited_content
-    $(".click").editable("http://www.appelsiini.net/projects/jeditable/php/echo.php", {
-        indicator: "<img src='img/indicator.gif'>",
-        tooltip: "Click to edit...",
-        style: "inherit"
-    });
-    $(".editable_select_json").editable("http://www.appelsiini.net/projects/jeditable/php/save.php", {
-        indicator: '<img src="img/indicator.gif">',
-        loadurl: "http://www.appelsiini.net/projects/jeditable/php/json.php", //{"D":"Letter D","E":"Letter E","F":"Letter F","G":"Letter G","selected":"F"}
-        type: "select",
-        submit: "OK",
-        style: "inherit"
-    });
-</script>
-    <h2>Ministries</h2>
+    <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".clickEdit").editable("/Scaffold/Ministry/Edit/", {
+                indicator: "<img src='/images/loading.gif'>",
+                tooltip: "Click to edit...",
+                style: 'display: inline',
+                width: '200px'
+            });
+            $("a.delete").click(function(ev) {
+                if(confirm("are you sure?"))
+                    $.post("/Scaffold/Ministry/Delete/" + $(this).attr("id"), null, function(ret) {
+                        window.location = "/Scaffold/Ministry/";
+                    });
+            });
+        });
+    </script>
+   <h2>Ministries</h2>
 
     <table>
         <tr>
-            <th></th>
             <th>
                 MinistryId
             </th>
             <th>
                 MinistryName
             </th>
-            <th>
-                MinistryDescription
-            </th>
+            <th></th>
         </tr>
 
-    <% foreach (var item in Model) { %>
-    
+    <% foreach (var item in Model) 
+       { %>
         <tr>
+            <td><%=item.MinistryId %></td>
             <td>
-                <%= Html.ActionLink("Edit", "Edit", new { id=item.MinistryId }) %> |
-                <%= Html.ActionLink("Details", "Details", new { id = item.MinistryId })%>
+                <span id='<%="MinistryName." + item.MinistryId %>' 
+                    class='clickEdit'>
+                <%=item.MinistryName%>
+                </span>
             </td>
             <td>
-                <%= Html.Encode(item.MinistryId)%>
-            </td>
-            <td>
-                <%= Html.Encode(item.MinistryName) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.MinistryDescription) %>
+                <a id='d<%= item.MinistryId %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
             </td>
         </tr>
-    
     <% } %>
 
     </table>
 
-    <p>
-        <%= Html.ActionLink("Create New", "Create") %>
-    </p>
+    <% using (Html.BeginForm("Create", "Ministry"))
+       { %>
+    <p><input type="submit" value="Create" /></p>
+    <% } %>
 
 </asp:Content>
 

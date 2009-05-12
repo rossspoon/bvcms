@@ -11,72 +11,65 @@ namespace CMSWeb.Controllers
 {
     public class FundController : Controller
     {
-        //
-        // GET: /Funds/
-
         public ActionResult Index()
         {
             var m = DbUtil.Db.ContributionFunds.AsEnumerable();
             return View(m);
         }
-
-        //
-        // GET: /Funds/Details/5
-
-        public ActionResult Details(int id)
-        {
-            var m = new FundModel();
-            m.fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
-            if (m.fund == null)
-                RedirectToAction("Index");
-            return View(m.fund);
-        }
-
-        //
-        // POST: /Funds/Create
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create()
+        public ActionResult Create(int fundid)
         {
             try
             {
-                var m = new FundModel();
-                var id = m.InsertFund();
-                return RedirectToAction("Edit", new { id = id });
+                var f = new ContributionFund { FundName = "new fund", FundId=fundid };
+                DbUtil.Db.ContributionFunds.InsertOnSubmit(f);
+                DbUtil.Db.SubmitChanges();
+                return RedirectToAction("Edit", new { id = f.FundId });
             }
             catch
             {
                 return RedirectToAction("Index");
             }
         }
-
-        //
-        // GET: /Funds/Edit/5
-
         public ActionResult Edit(int id)
         {
-            var m = new FundModel { FundId = id };
-            if (m.fund == null)
+            var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
+            if (fund == null)
                 RedirectToAction("Index");
-            return View(m);
+            return View(fund);
         }
 
         public ActionResult Delete(int id)
         {
-            var m = new FundModel();
-            m.DeleteFund(id);
+            var f = DbUtil.Db.ContributionFunds.SingleOrDefault(fu => fu.FundId == id);
+            if (f != null)
+                DbUtil.Db.ContributionFunds.DeleteOnSubmit(f);
+            DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");
         }
-        //
-        // POST: /Funds/Edit/5
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update(int id)
+        public ActionResult Update(int FundId)
         {
-            var m = new FundModel { FundId = id };
-            if (m.fund != null)
-                UpdateModel(m.fund);
+            var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == FundId);
+            if (fund != null)
+                UpdateModel(fund);
+            DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");
+        }
+        public ActionResult FundStatus(ContributionFund fund)
+        {
+            var list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Text = "Open", Value = "1", Selected = fund.FundStatusId == 1});
+            list.Add(new SelectListItem { Text = "Closed", Value = "2", Selected = fund.FundStatusId == 2});
+            return View(list);
+        }
+        public ActionResult FundType(ContributionFund fund)
+        {
+            var list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Text = "1", Value = "1", Selected = fund.FundTypeId == 1 });
+            list.Add(new SelectListItem { Text = "2", Value = "2", Selected = fund.FundTypeId == 2 });
+            list.Add(new SelectListItem { Text = "3", Value = "3", Selected = fund.FundTypeId == 3 });
+            return View(list);
         }
     }
 }

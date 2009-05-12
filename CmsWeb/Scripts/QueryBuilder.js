@@ -326,7 +326,13 @@ function UpdateView(vs) {
     $('#Division').fillOptions(vs.DivisionData);
     CascadeDivision();
     $('#Organization').fillOptions(vs.OrganizationData);
-
+    if (vs.TagsVisible) {
+        $('#tagvalues').multiSelectRemove();
+        $('#Tags').remove();
+        $('#tagvalues').after('<select id="Tags"></select>');
+        $('#Tags').fillOptions(vs.TagData, true);
+        $('#Tags').multiSelect({ oneOrMoreSelected: '*' });
+    }
     $('#ConditionName').val(vs.ConditionName);
     $('#ConditionText').text(vs.ConditionText);
     $('#TextValue').val(vs.TextValue);
@@ -340,7 +346,6 @@ function UpdateView(vs) {
     $('#Organization').val(vs.Organization);
     $('#SavedQueryDesc').val(vs.SavedQueryDesc);
     $('#Schedule').val(vs.Schedule);
-    $('#Tags').val(vs.Tags);
     $('#Days').val(vs.Days);
     $('#Week').val(vs.Week);
     $('#Quarters').val(vs.Quarters);

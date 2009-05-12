@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    <a href="/Scaffold/AddressTypes/List.aspx">AddressType</a><br />
+<%--    <a href="/Scaffold/AddressTypes/List.aspx">AddressType</a><br />
     <a href="/Scaffold/AttendanceClassifications/List.aspx">AttendanceClassification</a><br />
     <a href="/Scaffold/AttendTrackLevels/List.aspx">AttendTrackLevel</a><br />
     <a href="/Scaffold/AttendTypes/List.aspx">AttendType</a><br />
@@ -54,7 +54,7 @@
     <a href="/Scaffold/Programs/List.aspx">Program</a><br />
     <a href="/Scaffold/Divisions/List.aspx">Divisions</a><br />
     <br />
-    <a href="/Scaffold/Fund/Index">ContributionFunds</a><br />
+--%>    <a href="/Scaffold/Fund/Index">ContributionFunds</a><br />
     <a href="/Scaffold/Ministry/Index">Ministries</a><br />
     <a href="/Scaffold/MetroZip/Index">MetroZips</a><br />
     </div>

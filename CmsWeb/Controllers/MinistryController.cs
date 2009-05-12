@@ -6,78 +6,56 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using CMSWeb.Models;
+using UtilityExtensions;
 
 namespace CMSWeb.Controllers
 {
     public class MinistryController : Controller
     {
-        //
-        // GET: /Funds/
-
         public ActionResult Index()
         {
-            var m = DbUtil.Db.ContributionFunds.AsEnumerable();
+            var m = DbUtil.Db.Ministries.AsEnumerable();
             return View(m);
         }
-
-        //
-        // GET: /Funds/Details/5
-
-        public ActionResult Details(int id)
-        {
-            var m = new MinistryModel();
-            m.ministry = DbUtil.Db.Ministries.SingleOrDefault(mi => mi.MinistryId == id);
-            if (m.ministry == null)
-                RedirectToAction("Index");
-            return View(m.ministry);
-        }
-
-        //
-        // POST: /Funds/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create()
         {
-            try
-            {
-                var m = new MinistryModel();
-                var id = m.InsertMinistry();
-                return RedirectToAction("Edit", new { id = id });
-            }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
-        //
-        // GET: /Funds/Edit/5
-
-
-        public ActionResult Edit(int id)
-        {
-            var m = new MinistryModel { MinistryId = id };
-            if (m.ministry == null)
-                RedirectToAction("Index");
-            return View(m);
-        }
-
-        public ActionResult Delete(int id)
-        {
-            var m = new MinistryModel();
-            m.DeleteMinistry(id);
+            var m = new Ministry { MinistryName = "NEW" };
+            DbUtil.Db.Ministries.InsertOnSubmit(m);
+            DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");
         }
-        //
-        // POST: /Funds/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update(int id)
+        public ContentResult Edit(string id, string value)
         {
-            var m = new MinistryModel { MinistryId = id };
-            if (m.ministry != null)
-                UpdateModel(m.ministry);
-            return RedirectToAction("Index");
+            var a = id.Split('.');
+            var c = new ContentResult();
+            c.Content = value;
+            var min = DbUtil.Db.Ministries.SingleOrDefault(m => m.MinistryId == a[1].ToInt());
+            if (min == null)
+                return c;
+            switch (a[0])
+            {
+                case "MinistryName":
+                    min.MinistryName = value;
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            return c;
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public EmptyResult Delete(string id)
+        {
+            id = id.Substring(1);
+            var min = DbUtil.Db.Ministries.SingleOrDefault(m => m.MinistryId == id.ToInt());
+            if (min == null)
+                return new EmptyResult();
+            DbUtil.Db.Ministries.DeleteOnSubmit(min);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
         }
     }
 }

@@ -231,6 +231,7 @@ namespace CMSPresenter
                 ScheduleId = org.ScheduleId,
                 SecurityTypeId = org.SecurityTypeId,
                 EntryPointId = org.EntryPointId,
+                OrganizationStatusId = org.OrganizationStatusId,
             };
             Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in org.DivOrgs)

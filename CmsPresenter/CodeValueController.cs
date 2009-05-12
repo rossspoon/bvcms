@@ -824,26 +824,6 @@ namespace CMSPresenter
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<CodeValueItem> RollsheetTypes()
-        {
-            const string NAME = "RollsheetTypes";
-            var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
-            if (list == null)
-            {
-                var q = from c in Db.RollsheetTypes
-                        select new CodeValueItem
-                        {
-                            Id = c.Id,
-                            Code = c.Code,
-                            Value = c.Description,
-                        };
-                list = q.ToList();
-                HttpRuntime.Cache[NAME] = list;
-            }
-            return list;
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> AttendanceTrackLevelCodes()
         {
             const string NAME = "AttendanceTrackLevelCodes";

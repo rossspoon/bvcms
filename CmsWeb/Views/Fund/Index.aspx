@@ -32,7 +32,6 @@
         <tr>
             <td>
                 <%= Html.ActionLink("Edit", "Edit", new { id=item.FundId }) %> |
-                <%= Html.ActionLink("Details", "Details", new { id=item.FundId })%>
             </td>
             <td>
                 <%= Html.Encode(item.FundId) %>
@@ -58,9 +57,13 @@
 
     </table>
 
+    <% using (Html.BeginForm("Create", "Fund"))
+       { %>
     <p>
-        <%= Html.ActionLink("Create New", "Create") %>
+        New Fund Id: <%= Html.TextBox("fundid") %>
+        <input type="submit" value="Create" />
     </p>
+    <% } %>
 
 </asp:Content>
 

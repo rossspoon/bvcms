@@ -31,7 +31,7 @@ namespace CMSWeb.Contributions
         {
             if (!Page.IsValid)
                 return;
-            var dt1 = DateTime.Parse(FromDate.Text);
+            var dt1 = DateTime.Parse(FromDate.Text); // todo: tryparse here
             var dt2 = DateTime.Parse(ToDate.Text);
             Response.Clear();
             Response.Buffer = true;

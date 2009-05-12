@@ -47,7 +47,7 @@
                 return true;
         }
     </script>
-
+<asp:Label ID="urgentNotice" class="urgentNotice" runat="server" Visible="false">System is shutting down in 5 minutes, back up in 15</asp:Label>
     <div id="CommonHeader">
         <div>
             <asp:Label ID="UserHeader" runat="server"></asp:Label>
@@ -152,6 +152,8 @@
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="SessionState" NavigateUrl="~/Admin/SessionState.aspx" runat="server">Session State</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink3" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="HyperLink19" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
                         <li>

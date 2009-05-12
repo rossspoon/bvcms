@@ -23,6 +23,8 @@ namespace CmsData
 		
    		
     	
+		private EntityRef< ResidentCode> _ResidentCode;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -40,6 +42,8 @@ namespace CmsData
 		public Zip()
 		{
 			
+			
+			this._ResidentCode = default(EntityRef< ResidentCode>); 
 			
 			OnCreated();
 		}
@@ -79,6 +83,9 @@ namespace CmsData
 				if (this._MetroMarginalCode != value)
 				{
 				
+					if (this._ResidentCode.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnMetroMarginalCodeChanging(value);
 					this.SendPropertyChanging();
 					this._MetroMarginalCode = value;
@@ -99,6 +106,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_Zips_ResidentCode", Storage="_ResidentCode", ThisKey="MetroMarginalCode", IsForeignKey=true)]
+		public ResidentCode ResidentCode
+		{
+			get { return this._ResidentCode.Entity; }
+
+			set
+			{
+				ResidentCode previousValue = this._ResidentCode.Entity;
+				if (((previousValue != value) 
+							|| (this._ResidentCode.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ResidentCode.Entity = null;
+						previousValue.Zips.Remove(this);
+					}
+
+					this._ResidentCode.Entity = value;
+					if (value != null)
+					{
+						value.Zips.Add(this);
+						
+						this._MetroMarginalCode = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._MetroMarginalCode = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("ResidentCode");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

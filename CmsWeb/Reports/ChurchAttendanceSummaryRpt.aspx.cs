@@ -21,7 +21,7 @@ namespace CMSWeb
             var dt = DateTime.MinValue;
             if (IsPostBack)
                 DateTime.TryParse(SundayDate.Text, out dt);
-            if (!IsPostBack || dt == DateTime.MinValue)
+            if (!IsPostBack || dt.Year < 1900)
             {
                 var caids = new ChurchAttendanceConstants();
                 dt = caids.MostRecentAttendedSunday();

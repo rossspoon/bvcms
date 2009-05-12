@@ -535,3 +535,11 @@ div.bottomhyperlink img
     padding-right: .4em;
     border: none;
 }
+.urgentNotice
+{
+    font-size: x-large;
+    color:Red;
+    background-color: Yellow;
+    padding-left: 1em;
+    padding-right: 1em;
+}

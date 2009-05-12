@@ -22,7 +22,7 @@ namespace CMSWeb.Reports
             var dt = DateTime.MinValue;
             if (IsPostBack)
                 DateTime.TryParse(SundayDate.Text, out dt);
-            if (!IsPostBack || dt == DateTime.MinValue)
+            if (!IsPostBack || dt.Year < 1900)
             {
                 var caids = new ChurchAttendanceConstants();
                 var date = this.QueryString<DateTime?>("date");

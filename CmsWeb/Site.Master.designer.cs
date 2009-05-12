@@ -41,6 +41,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
+        /// urgentNotice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label urgentNotice;
+        
+        /// <summary>
         /// UserHeader control.
         /// </summary>
         /// <remarks>
@@ -435,6 +444,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink SessionState;
+        
+        /// <summary>
+        /// HyperLink3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
         
         /// <summary>
         /// HyperLink19 control.

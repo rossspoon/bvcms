@@ -6,77 +6,59 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using CMSWeb.Models;
+using UtilityExtensions;
 
 namespace CMSWeb.Controllers
 {
     public class MetroZipController : Controller
     {
-        //
-        // GET: /Funds/
-
         public ActionResult Index()
         {
             var m = DbUtil.Db.Zips.AsEnumerable();
             return View(m);
         }
 
-        //
-        // GET: /Funds/Details/5
-
-        public ActionResult Details(string id)
-        {
-            var m = new MetroZipModel();
-            m.zip = DbUtil.Db.Zips.SingleOrDefault(f => f.ZipCode == id);
-            if (m.zip == null)
-                RedirectToAction("Index");
-            return View(m.zip);
-        }
-
-        //
-        // POST: /Funds/Create
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create()
+        public ActionResult Create(string zipcode)
         {
-            try
-            {
-                var m = new MetroZipModel();
-                var id = m.InsertZip();
-                return RedirectToAction("Edit", new { id = id });
-            }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
-        //
-        // GET: /Funds/Edit/5
-
-        public ActionResult Edit(string id)
-        {
-            var m = new MetroZipModel { ZipCode = id };
-            if (m.zip == null)
-                RedirectToAction("Index");
-            return View(m);
-        }
-
-        public ActionResult Delete(string id)
-        {
-            var m = new MetroZipModel();
-            m.DeleteZip(id);
+            var m = new Zip { ZipCode = zipcode };
+            DbUtil.Db.Zips.InsertOnSubmit(m);
+            DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");
         }
-        //
-        // POST: /Funds/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update(string id)
+        public ContentResult Edit(string id, string value)
         {
-            var m = new MetroZipModel { ZipCode = id };
-            if (m.zip != null)
-                UpdateModel(m.zip);
-            return RedirectToAction("Index");
+            id = id.Substring(1);
+            var zip = DbUtil.Db.Zips.SingleOrDefault(m => m.ZipCode == id);
+            zip.MetroMarginalCode = value.ToInt();
+            DbUtil.Db.SubmitChanges();
+            var c = new ContentResult();
+            c.Content = zip.ResidentCode.Description;
+            return c;
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public EmptyResult Delete(string id)
+        {
+            id = id.Substring(1);
+            var zip = DbUtil.Db.Zips.SingleOrDefault(m => m.ZipCode == id);
+            if (zip == null)
+                return new EmptyResult();
+            DbUtil.Db.Zips.DeleteOnSubmit(zip);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
+        }
+        public JsonResult ResidentCodes()
+        {
+            var q = from c in DbUtil.Db.ResidentCodes
+                    select new
+                    {
+                        Code = c.Id.ToString(),
+                        Value = c.Description,
+                    };
+            return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
     }
 }

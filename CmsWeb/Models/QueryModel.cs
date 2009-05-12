@@ -1,4 +1,10 @@
-﻿using System;
+﻿/* Author: David Carroll
+ * Copyright (c) 2008, 2009 Bellevue Baptist Church 
+ * Licensed under the GNU General Public License (GPL v2)
+ * you may not use this code except in compliance with the License.
+ * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,7 +30,7 @@ namespace CMSWeb.Models
         string StartDate { get; set; }
         string EndDate { get; set; }
         string Comparison { get; set; }
-        string Tags { get; set; }
+        string[] Tags { get; set; }
         string CodeValue { get; set; }
         string[] CodeValues { get; set; }
         string TextValue { get; set; }
@@ -117,6 +123,7 @@ namespace CMSWeb.Models
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
 
+        public List<SelectListItem> TagData { get; set; }
         public List<SelectListItem> CodeData { get; set; }
         public List<SelectListItem> CompareData { get; set; }
         public List<SelectListItem> ProgramData { get; set; }
@@ -132,7 +139,7 @@ namespace CMSWeb.Models
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Comparison { get; set; }
-        public string Tags { get; set; }
+        public string[] Tags { get; set; }
         public string SavedQueryDesc { get; set; }
         public bool IsPublic { get; set; }
 
@@ -189,6 +196,11 @@ namespace CMSWeb.Models
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
             TagsVisible = fieldMap.HasParam("Tags");
+            if (TagsVisible)
+            {
+                var cv = new CMSPresenter.CodeValueController();
+                TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
+            }
             StartDateVisible = fieldMap.HasParam("StartDate");
             EndDateVisible = fieldMap.HasParam("EndDate");
 
@@ -314,7 +326,8 @@ namespace CMSWeb.Models
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
             c.Quarters = Quarters;
-            c.Tags = Tags;
+            if (Tags != null)
+                c.Tags = string.Join(";", Tags);
             c.SavedQueryIdDesc = SavedQueryDesc;
             Db.SubmitChanges();
         }
@@ -371,7 +384,15 @@ namespace CMSWeb.Models
             RemoveEnabled = !c.IsFirst;
             Days = c.Days.ToString();
             Quarters = c.Quarters;
-            Tags = c.Tags;
+            if (TagsVisible)
+            {
+                if(c.Tags != null)
+                    Tags = c.Tags.Split(';');
+                var cv = new CMSPresenter.CodeValueController();
+                TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
+                foreach (var i in TagData)
+                    i.Selected = Tags.Contains(i.Value);
+            }
             SavedQueryDesc = c.SavedQueryIdDesc;
         }
         public void SetCodes()
