@@ -24,7 +24,7 @@ namespace CMSWeb.Controllers
             var m = new Zip { ZipCode = zipcode };
             DbUtil.Db.Zips.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Index");
+            return Redirect("/MetroZip/");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

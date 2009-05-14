@@ -163,6 +163,9 @@
                                 <li>
                                     <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
                                     Pledge Totals by Fund Range</a></li>
+                                <li>
+                                    <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">
+                                    Pledge Report</a></li>
                             </ul>
                         </li>
                     </ul>

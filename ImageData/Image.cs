@@ -4,6 +4,7 @@ using System.Data.Linq;
 using System.IO;
 using Drawing = System.Drawing;
 using System.Drawing.Imaging;
+using UtilityExtensions;
 
 namespace ImageData
 {
@@ -99,6 +100,34 @@ namespace ImageData
             if (i == null)
                 return;
             DbUtil.Db.Images.DeleteOnSubmit(i);
+        }
+        public bool HasMedical() // special function
+        {
+            var line = Medical();
+            if (!line.HasValue())
+                return false;
+            var tt = line.Split(':');
+            if (tt.Length == 1)
+                return false;
+            if (tt[1].ToLower().Contains("none"))
+                return false;
+            if (tt[1].ToLower().Contains("n/a"))
+                return false;
+            if (tt[1].ToLower().Contains("nka"))
+                return false;
+            return tt[1].HasValue();
+        }
+        public string Medical() // special function
+        {
+            if (Mimetype != "text/plain")
+                return null;
+            var t = System.Text.ASCIIEncoding.ASCII.GetString(Bits);
+            var q = from li in t.SplitStr("\r\n")
+                    where li.StartsWith("Medical:")
+                    select li;
+            if (q.Count() == 0)
+                return null;
+            return q.First().Trim();
         }
     }
 }

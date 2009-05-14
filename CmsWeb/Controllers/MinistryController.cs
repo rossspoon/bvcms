@@ -24,7 +24,7 @@ namespace CMSWeb.Controllers
             var m = new Ministry { MinistryName = "NEW" };
             DbUtil.Db.Ministries.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Index");
+            return Redirect("/Ministry/");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

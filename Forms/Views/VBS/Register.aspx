@@ -112,7 +112,7 @@
                     <td><label for="medical">Allergies or<br />
                            Medical Problems</label></td>
                     <td><%= Html.TextArea("medical") %></td>
-                    <td><%= Html.ValidationMessage("medical")%></td>
+                    <td><%= Html.ValidationMessage("medical")%>Leave blank if none</td>
                 </tr>
                 <tr>
                     <td><label for="church">Parent's Church</label></td>

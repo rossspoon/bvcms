@@ -305,6 +305,8 @@ namespace CmsData
                     c.contact.contactees.Add(new Contactee { PeopleId = otherid });
                 Db.Contactees.DeleteOnSubmit(c);
             }
+            foreach (var f in this.VBSApps)
+                f.PeopleId = otherid;
         }
         public bool PurgePerson()
         {

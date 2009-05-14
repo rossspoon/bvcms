@@ -203,6 +203,7 @@ namespace Forms.Models
 			vb.PubPhoto = pubphoto == 1;
             vb.GradeCompleted = grade;
             vb.Request = request;
+            vb.MedAllergy = medical.HasValue();
 
             var p = FindMember().FirstOrDefault();
             if (p != null)

@@ -55,24 +55,6 @@ namespace CMSWeb2
 
             routes.RouteExistingFiles = true;
 
-            var model = new System.Web.DynamicData.MetaModel();
-
-            model.RegisterContext(typeof(CMSDataContext), new ContextConfiguration() { ScaffoldAllTables = false });
-            model.DynamicDataFolderVirtualPath = "~/Admin/DynamicData";
-            routes.Add(new DynamicDataRoute("Scaffold/{table}/{action}.aspx")
-            {
-                Constraints = new RouteValueDictionary(new { action = "List|Details|Edit|Insert" }),
-                Model = model
-            });
-            //routes.Add(new DynamicDataRoute("{table}/ListDetails.aspx") {
-            //    Action = PageAction.Details,
-            //    ViewName = "ListDetails",
-            //    Model = model
-            //});
-
-            routes.MapRoute("Scaffold",
-                "Scaffold/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = "" });
             routes.MapRoute("Cache",
                 "cache/{action}/{key}/{version}",
                 new { controller = "Cache", action = "Content", key = "", version = "" });

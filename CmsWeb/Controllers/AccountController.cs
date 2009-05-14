@@ -69,7 +69,7 @@ namespace CMSWeb.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return Redirect("/Home/");
             }
         }
 

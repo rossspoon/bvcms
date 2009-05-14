@@ -77,7 +77,7 @@ namespace CMSWeb.Controllers
             content.Body = html;
             content.Title = title;
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Page", new { page = page });
+            return RedirectToAction("Page", "Display", new { page = page });
         }
     }
 }

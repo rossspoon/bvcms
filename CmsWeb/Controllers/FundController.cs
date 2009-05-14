@@ -24,18 +24,18 @@ namespace CMSWeb.Controllers
                 var f = new ContributionFund { FundName = "new fund", FundId=fundid };
                 DbUtil.Db.ContributionFunds.InsertOnSubmit(f);
                 DbUtil.Db.SubmitChanges();
-                return RedirectToAction("Edit", new { id = f.FundId });
+                return RedirectToAction("Edit", "Fund", new { id = f.FundId });
             }
             catch
             {
-                return RedirectToAction("Index");
+                return Redirect("/Fund/");
             }
         }
         public ActionResult Edit(int id)
         {
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
             if (fund == null)
-                RedirectToAction("Index");
+                Redirect("/Fund/");
             return View(fund);
         }
 
@@ -45,7 +45,7 @@ namespace CMSWeb.Controllers
             if (f != null)
                 DbUtil.Db.ContributionFunds.DeleteOnSubmit(f);
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Index");
+            return Redirect("/Fund/");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update(int FundId)
@@ -54,7 +54,7 @@ namespace CMSWeb.Controllers
             if (fund != null)
                 UpdateModel(fund);
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Index");
+            return Redirect("/Fund/");
         }
         public ActionResult FundStatus(ContributionFund fund)
         {

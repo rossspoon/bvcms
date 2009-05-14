@@ -204,6 +204,13 @@
     <Compile Include="Admin\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\VBSMed.aspx.cs">
+      <DependentUpon>VBSMed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\VBSMed.aspx.designer.cs">
+      <DependentUpon>VBSMed.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AppReview\FormImage.aspx.cs">
       <DependentUpon>FormImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -250,6 +257,13 @@
     </Compile>
     <Compile Include="Contributions\Reports\JournalDetails.aspx.designer.cs">
       <DependentUpon>JournalDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Reports\PledgeReport.aspx.cs">
+      <DependentUpon>PledgeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Reports\PledgeReport.aspx.designer.cs">
+      <DependentUpon>PledgeReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Reports\Reports.Master.cs">
       <DependentUpon>Reports.Master</DependentUpon>
@@ -1079,6 +1093,7 @@
     <Content Include="Admin\OneTimeETStudy.aspx" />
     <Content Include="Admin\SessionState.aspx" />
     <Content Include="Admin\UrgentMessage.aspx" />
+    <Content Include="Admin\VBSMed.aspx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AccessDenied.htm" />
     <Content Include="AppReview\FormImage.aspx" />
@@ -1207,6 +1222,7 @@
     <Content Include="Content\ui.theme.css" />
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
+    <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="AddTagSharedsDialog.aspx" />

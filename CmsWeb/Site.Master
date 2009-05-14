@@ -132,6 +132,9 @@
                                 <li>
                                     <asp:HyperLink ID="HyperLink17" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx?pledged=true"
                                         runat="server">Pledge Totals by Fund Range</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink13" Target="_blank" NavigateUrl="~/Contributions/Reports/PledgeReport.aspx"
+                                        runat="server">Pledge Report</asp:HyperLink></li>
                             </ul>
                         </li>
                     </ul>

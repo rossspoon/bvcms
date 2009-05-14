@@ -72,7 +72,7 @@ namespace CMSWeb.Controllers
 		{
             var m = new Models.VBSModel();
 			m.DeleteVBSApp(vid);
-			return RedirectToAction("Index");
+			return Redirect("/VBS/");
 		}
 	}
 }
