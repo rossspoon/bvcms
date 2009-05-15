@@ -149,8 +149,20 @@
                         <li>
                             <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
                                 runat="server">OrgMembersOnly</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink2" NavigateUrl="~/Admin/Lookups.aspx" runat="server">Lookup Tables</asp:HyperLink></li>
+                        <li class="headlink">
+                            <asp:HyperLink ID="HyperLink22" NavigateUrl="#" runat="server">Lookup Tables</asp:HyperLink>
+                            <ul>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink23" NavigateUrl="/Ministry/"
+                                        runat="server">Ministries</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink24" NavigateUrl="/MetroZip/" 
+                                        runat="server">MetroZips</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink25" NavigateUrl="/Fund/"
+                                        runat="server">Funds</asp:HyperLink></li>
+                            </ul>
+                        </li>
                         <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
                         <li>

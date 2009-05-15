@@ -11,6 +11,7 @@ namespace CMSWeb.Controllers
 {
     public class FundController : Controller
     {
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = DbUtil.Db.ContributionFunds.AsEnumerable();
@@ -31,6 +32,7 @@ namespace CMSWeb.Controllers
                 return Redirect("/Fund/");
             }
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
@@ -39,6 +41,7 @@ namespace CMSWeb.Controllers
             return View(fund);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var f = DbUtil.Db.ContributionFunds.SingleOrDefault(fu => fu.FundId == id);

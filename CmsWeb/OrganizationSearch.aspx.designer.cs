@@ -194,6 +194,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink MeetingsLink;
         
         /// <summary>
+        /// RosterRpt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton RosterRpt;
+        
+        /// <summary>
         /// RollsheetPanel control.
         /// </summary>
         /// <remarks>

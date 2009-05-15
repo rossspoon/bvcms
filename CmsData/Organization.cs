@@ -18,8 +18,6 @@ namespace CmsData
         }
         public enum OrgStatusCode
         {
-            Create = 10,
-            Review = 20,
             Active = 30,
             Inactive = 40,
         }

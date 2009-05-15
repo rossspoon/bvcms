@@ -42,6 +42,23 @@
         }
         return Page_IsValid;
     }
+    function ViewRosterRpt() {
+        Page_ClientValidate(' ');
+        if (Page_IsValid) {
+            var did = '<%=OrgDivisions.SelectedValue %>';
+            if (did == '0') {
+                alert('must choose division');
+                return false;
+            }
+            var sid = '<%=Schedule.SelectedValue %>';
+            var args = "?div=" + did +
+                   "&schedule=" + sid;
+
+            var newWindowUrl = "Reports/RosterReport.aspx" + args
+            window.open(newWindowUrl);
+        }
+        return Page_IsValid;
+    }
     </script>
 
     <div>
@@ -190,7 +207,8 @@
 
     <asp:LinkButton ID="ExportExcel" runat="server" OnClick="ExportExcel_Click" Text="Export to Excel" /> &nbsp;|
     <asp:LinkButton ID="RollsheetRpt" runat="server" OnClientClick="OpenRollsheet(); return false;" Text="Create Roll Sheet(s)"/> &nbsp;|
-    <asp:HyperLink ID="MeetingsLink" runat="server">Meetings</asp:HyperLink>
+    <asp:HyperLink ID="MeetingsLink" runat="server">Meetings</asp:HyperLink> |
+    <asp:LinkButton ID="RosterRpt" runat="server" OnClientClick="ViewRosterRpt(); return false;">Roster</asp:LinkButton>
 &nbsp;<asp:UpdatePanel ID="RollsheetPanel" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:LinkButton ID="TriggerRollsheetPopup" style="display:none" runat="server">LinkButton</asp:LinkButton>            

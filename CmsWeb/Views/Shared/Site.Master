@@ -182,8 +182,17 @@
                             <a href="/Admin/Audit.aspx">Audit</a></li>
                         <li>
                             <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
-                        <li>
-                            <a href="/Admin/Lookups.aspx">Lookup Tables</a></li>
+                        <li class="headlink">
+                            <a href="#" runat="server">Lookup Tables</a>
+                            <ul>
+                                <li>
+                                    <a href="/Ministry/">Ministries</a></li>
+                                <li>
+                                    <a href="/MetroZip/">MetroZips</a></li>
+                                <li>
+                                    <a href="/Fund/">Funds</a></li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
                         <li>

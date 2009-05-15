@@ -43,7 +43,9 @@ namespace CmsData
         {
             var q = from o in Db.Organizations
                     where o.OrganizationId == OrganizationId
-                    let count = Db.Attends.Count(a => a.PeopleId == PeopleId && a.OrganizationId == OrganizationId)
+                    let count = Db.Attends.Count(a => a.PeopleId == PeopleId 
+                        && a.OrganizationId == OrganizationId 
+                        && a.MeetingDate < DateTime.Today)
                     select new
                     {
                         FirstMeetingDt = o.FirstMeetingDate,
@@ -51,12 +53,17 @@ namespace CmsData
                         TrackAttendance = o.AttendTrkLevelId == 20
                     };
             var i = q.Single();
-            if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now || (i.TrackAttendance && i.AttendCount == 0))
+            if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now 
+                || (i.TrackAttendance && i.AttendCount == 0))
             {
                 var qt = from et in Db.EnrollmentTransactions
                          where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
                          select et;
                 Db.EnrollmentTransactions.DeleteAllOnSubmit(qt);
+                var qa = from et in Db.Attends
+                         where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
+                         select et;
+                Db.Attends.DeleteAllOnSubmit(qa);
             }
             else
             {

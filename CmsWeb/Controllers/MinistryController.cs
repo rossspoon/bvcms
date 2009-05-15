@@ -12,6 +12,7 @@ namespace CMSWeb.Controllers
 {
     public class MinistryController : Controller
     {
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = DbUtil.Db.Ministries.AsEnumerable();

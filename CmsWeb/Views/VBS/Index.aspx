@@ -13,12 +13,12 @@
     
     <form id="filter" method="get" action="/VBS/Index">
     <div class="modalPopup">
-       UserInfo: <%=Html.DropDownList("UserInfo", ViewData.Model.FetchUserInfos())%>
-       | Grade Completed: <%=Html.DropDownList("Grade", ViewData.Model.FetchClasses())%>
+       UserInfo: <%=Html.DropDownList("UserInfo", Model.FetchUserInfos())%>
+       | Grade Completed: <%=Html.DropDownList("Grade", Model.FetchClasses())%>
        | New Applications Only: <%=Html.CheckBox("NewAppsOnly")%>
     </div>
-    <%=Html.Hidden("Sort", ViewData.Model.Sort) %>
-    <%=Html.Hidden("Dir", ViewData.Model.Dir) %>
+    <%=Html.Hidden("Sort", Model.Sort) %>
+    <%=Html.Hidden("Dir", Model.Dir) %>
     </form>
     <table id="VbsApps">
         <tr>
@@ -33,11 +33,11 @@
             <th><a href="#" class="sortable">Class</a></th>
         </tr>
         <tbody>
-        <% foreach (var v in ViewData.Model.FetchVBSInfo())
+        <% foreach (var v in Model.FetchVBSInfo())
            { %>
         <tr>
             <td><%=v.UserInfo%></td>
-            <td><a href="/VBS/Detail/<%=v.Id%>"><%="{0:yy-MM-dd HH:mm}".Fmt(v.Uploaded)%></a></td>
+            <td><a href="/VBS/Detail/<%=v.Id%>"><%="{0:MM-dd-yy HH:mm}".Fmt(v.Uploaded)%></a></td>
             <td>
             <% if(v.PeopleId != null) 
                { %>
@@ -61,7 +61,7 @@
     </table>
     <div id="OrgChooser" style="width: 366px;height:138px">
         <table>
-        <tr><td>Division</td><td><%=Html.DropDownList("Divs", ViewData.Model.FetchDivisions()) %></td></tr>
+        <tr><td>Division</td><td><%=Html.DropDownList("Divs", Model.FetchDivisions()) %></td></tr>
         <tr><td>Organization</td><td><select id="Orgs"></select></td></tr>
         <tr><td colspan="2" align="right"><input type="button" id="selectorg" value="OK" /></td></tr>
         </table>

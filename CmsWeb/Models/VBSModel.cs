@@ -103,8 +103,8 @@ namespace CMSWeb.Models
                     select new VBSInfo
                     {
                         Id = v.Id,
-						MemberOurChurch = v.PeopleId == null ? false : v.Person.MemberStatusId == 10,
-						ActiveInAnotherChurch = v.ActiveInAnotherChurch ?? false,
+                        MemberOurChurch = v.PeopleId == null ? false : v.Person.MemberStatusId == 10,
+                        ActiveInAnotherChurch = v.ActiveInAnotherChurch ?? false,
                         PubPhoto = v.PubPhoto ?? false,
                         GradeCompleted = v.GradeCompleted,
                         Gender = v.PeopleId == null ? "" : (v.Person.GenderId == 1 ? "M" : (v.Person.GenderId == 2 ? "F" : "")),
@@ -118,18 +118,18 @@ namespace CMSWeb.Models
                     };
             return q.SingleOrDefault();
         }
-		public void DeleteVBSApp(int id)
-		{
-			var v = DbUtil.Db.VBSApps.Single(vb => vb.Id == id);
+        public void DeleteVBSApp(int id)
+        {
+            var v = DbUtil.Db.VBSApps.Single(vb => vb.Id == id);
             var img = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == v.ImgId);
-			DbUtil.Db.VBSApps.DeleteOnSubmit(v);
-			DbUtil.Db.SubmitChanges();
-			if (img != null)
-			{
+            DbUtil.Db.VBSApps.DeleteOnSubmit(v);
+            DbUtil.Db.SubmitChanges();
+            if (img != null)
+            {
                 ImageData.DbUtil.Db.Images.DeleteOnSubmit(img);
                 ImageData.DbUtil.Db.SubmitChanges();
-			}
-		}
+            }
+        }
         public VBSInfo UpdateVBSApp(int id, int DivId, int OrgId)
         {
             var q = from vb in DbUtil.Db.VBSApps
@@ -149,12 +149,23 @@ namespace CMSWeb.Models
                 }
                 v.DivId = DivId;
                 v.OrgId = OrgId;
-                CMSPresenter.OrganizationController.InsertOrgMembers(OrgId, 
-                    v.PeopleId.Value, 
-                    (int)OrganizationMember.MemberTypeCode.Member, 
-                    Util.Now, 
+                CMSPresenter.OrganizationController.InsertOrgMembers(OrgId,
+                    v.PeopleId.Value,
+                    (int)OrganizationMember.MemberTypeCode.Member,
+                    Util.Now,
                     null);
                 DbUtil.Db.SubmitChanges();
+                var qme = from m in DbUtil.Db.Meetings
+                          where m.OrganizationId == v.OrgId
+                          where m.MeetingDate.Value.Date == DateTime.Today
+                          orderby m.MeetingDate descending
+                          select m;
+                var meeting = qme.SingleOrDefault();
+                if (meeting != null)
+                {
+                    var ac = new CMSPresenter.AttendController();
+                    ac.RecordAttendance(v.PeopleId.Value, meeting.MeetingId, true);
+                }
             }
             var vi = new VBSInfo
             {
@@ -181,7 +192,7 @@ namespace CMSWeb.Models
                         q = q.OrderBy(v => v.PeopleId == null ? "" : v.Person.Name2);
                         break;
                     case "Member":
-                        q = q.OrderBy(v => v.PeopleId == null? false : v.Person.MemberStatusId == 10);
+                        q = q.OrderBy(v => v.PeopleId == null ? false : v.Person.MemberStatusId == 10);
                         break;
                     case "Grade":
                         q = from v in q
@@ -205,7 +216,7 @@ namespace CMSWeb.Models
                         break;
                 }
             else // descending
-                switch(Sort) 
+                switch (Sort)
                 {
                     case "Name":
                         q = q.OrderByDescending(v => v.PeopleId == null ? "" : v.Person.Name2);
@@ -236,7 +247,7 @@ namespace CMSWeb.Models
                    select new VBSInfo
                    {
                        Id = v.Id,
-					   MemberOurChurch = v.PeopleId == null? false : v.Person.MemberStatusId == 10,
+                       MemberOurChurch = v.PeopleId == null ? false : v.Person.MemberStatusId == 10,
                        ActiveInAnotherChurch = v.ActiveInAnotherChurch ?? false,
                        PubPhoto = v.PubPhoto ?? false,
                        GradeCompleted = v.GradeCompleted,
@@ -313,7 +324,7 @@ namespace CMSWeb.Models
         public int? PeopleId { get; set; }
         public int Id { get; set; }
         public bool PubPhoto { get; set; }
-		public bool MemberOurChurch { get; set; }
+        public bool MemberOurChurch { get; set; }
         public bool ActiveInAnotherChurch { get; set; }
         public string GradeCompleted { get; set; }
         public string Gender { get; set; }
