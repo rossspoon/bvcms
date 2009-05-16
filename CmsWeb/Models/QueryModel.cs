@@ -445,6 +445,8 @@ namespace CMSWeb.Models
         public void UpdateCondition()
         {
             var c = Db.LoadQueryById(SelectedId);
+            if (c == null)
+                return;
             UpdateCondition(c);
         }
         public void CopyAsNew()
