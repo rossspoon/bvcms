@@ -61,6 +61,9 @@ namespace CMSWeb2
             routes.MapRoute("Task",
                 "Task/{action}/{id}",
                 new { controller = "Task", action = "List", id = "" });
+            routes.MapRoute("QB",
+                "QueryBuilder/{action}/{id}",
+                new { controller = "QueryBuilder", action = "Main", id = "" });
             routes.MapRoute("Display",
                 "Display/{action}/{page}",
                 new { controller = "Display", action = "Page", page = "" });

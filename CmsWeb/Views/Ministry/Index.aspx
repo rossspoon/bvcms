@@ -4,7 +4,7 @@
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
-            $(".clickEdit").editable("/Scaffold/Ministry/Edit/", {
+            $(".clickEdit").editable("/Ministry/Edit/", {
                 indicator: "<img src='/images/loading.gif'>",
                 tooltip: "Click to edit...",
                 style: 'display: inline',
@@ -12,8 +12,8 @@
             });
             $("a.delete").click(function(ev) {
                 if(confirm("are you sure?"))
-                    $.post("/Scaffold/Ministry/Delete/" + $(this).attr("id"), null, function(ret) {
-                        window.location = "/Scaffold/Ministry/";
+                    $.post("/Ministry/Delete/" + $(this).attr("id"), null, function(ret) {
+                        window.location = "/Ministry/";
                     });
             });
         });

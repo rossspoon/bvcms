@@ -6,47 +6,20 @@
     </Field>
   </Category>
   <Category Title="Personal">
-    <Field Name="TitleCode" Title="Title" Type="CodeStr" DataSource="TitleCodes" DataValueField="Code">
-      Codes for Mr. Dr. Mrs. Ms. etc.
-    </Field>
-    <Field Name="FirstName" Title="First Name" Type="String">
-      Searchs all or part of First Name
-    </Field>
-    <Field Name="NickName" Title="Nick Name" Type="String">
-      Searchs all or part of "goes by" Name
-    </Field>
-    <Field Name="LastName" Title="Last Name" Type="String">
-      Searchs all or part of Lastname
-    </Field>
     <Field Name="Age" Type="NullInteger">
       Selects on age if birthdate is available
-    </Field>
-    <Field Name="Birthday" Title="Birthday" Type="DateString" ToolTip="MM/DD/YYYY or MM/DD or MM or YYYY">
-      Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
-    </Field>
-    <Field Name="DeceasedDate" Title="Deceased Date" Type="Date">
-      Todo: explain how unknown dates work
-    </Field>
-    <Field Name="DaysTillBirthday" Title="Days Till Birthday" Type="Integer">
-      Number of days until next birthday (if known.) Always less than 365.
     </Field>
     <Field Name="GenderId" Title="Gender" Type="Code" DataSource="GenderCodes" DataValueField="IdCode">
       Search by gender type
     </Field>
-    <Field Name="PositionInFamilyId" Title="Position in Family" Type="Code" DataSource="FamilyPositionCodes" DataValueField="IdCode">
-      Search by codes for Primary Adult, Secondary Adult or Child
-    </Field>
-    <Field Name="FamilyHasChildren" Title="Family Has Children" Type="Bit" DataValueField="IdCode">
-      A member of the family is 12 or under
-    </Field>
-    <Field Name="IsHeadOfHousehold" Title="Is Head of Household" Type="Bit" DataValueField="IdCode">
-      This person is the head of the family household
-    </Field>
     <Field Name="MaritalStatusId" Title="Marital Status" Type="Code" DataSource="MaritalStatusCodes" DataValueField="IdCode">
       Search by Single, Married, Separated, Divorced, Widowed,Unknown
     </Field>
-    <Field Name="WeddingDate"  Title="Wedding Date" Type="Date">
-      Todo: explain how unknown dates work
+    <Field Name="Birthday" Title="Birthday" Type="DateString" ToolTip="MM/DD/YYYY or MM/DD or MM or YYYY">
+      Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
+    </Field>
+    <Field Name="DaysTillBirthday" Title="Days Till Birthday" Type="Integer">
+      Number of days until next birthday (if known.) Always less than 365.
     </Field>
     <Field Name="Grade" Type="Integer">
       Grade in school 
@@ -60,13 +33,57 @@
     <Field Name="HasPicture" Title="Has Picture" Type="Bit" DataValueField="IdCode">
       Indication of whether picture has been uploaded for this person
     </Field>
+    <Field Name="DeceasedDate" Title="Deceased Date" Type="Date">
+      Todo: explain how unknown dates work
+    </Field>
+    <Field Name="FirstName" Title="First Name" Type="String">
+      Searchs all or part of First Name
+    </Field>
+    <Field Name="NickName" Title="Nick Name" Type="String">
+      Searchs all or part of "goes by" Name
+    </Field>
+    <Field Name="LastName" Title="Last Name" Type="String">
+      Searchs all or part of Lastname
+    </Field>
+    <Field Name="TitleCode" Title="Title" Type="CodeStr" DataSource="TitleCodes" DataValueField="Code">
+      Codes for Mr. Dr. Mrs. Ms. etc.
+    </Field>
+    <Field Name="PositionInFamilyId" Title="Position in Family" Type="Code" DataSource="FamilyPositionCodes" DataValueField="IdCode">
+      Search by codes for Primary Adult, Secondary Adult or Child
+    </Field>
+    <Field Name="FamilyHasChildren" Title="Family Has Children" Type="Bit" DataValueField="IdCode">
+      A member of the family is 12 or under
+    </Field>
+    <Field Name="IsHeadOfHousehold" Title="Is Head of Household" Type="Bit" DataValueField="IdCode">
+      This person is the head of the family household
+    </Field>
     <Field Name="HasRelatedFamily" Title="Has Related Family" Type="Bit" DataValueField="IdCode">
       Indication of whether this person's family is related to another family
+    </Field>
+    <Field Name="WeddingDate"  Title="Wedding Date" Type="Date">
+      Todo: explain how unknown dates work
     </Field>
     <Field Name="PeopleId" Title="PeopleId (internal)" Type="Integer">
     </Field>
   </Category>
-  <Category Title="Contact">
+  <Category Title="Growth">
+    <Field Name="EntryPointId" Title="Entry Point" Type="Code" DataSource="EntryPoints" DataValueField="IdCode">
+      Initial Contact Point with Church
+    </Field>
+    <Field Name="OriginId" Title="Record Origin" Type="Code" DataSource="Origins" DataValueField="IdCode">
+      Record Originated from what source?
+    </Field>
+    <Field Name="MemberAnyChurch" Title="Member of Any Church" Type="NullBit" DataValueField="IdCode">
+      From decision card indicating membership in another church.
+      May be unknown (null)
+    </Field>
+    <Field Name="DaysSinceContact" Title="Days Since Last Contact" Type="Integer">
+			Selects people based on number of days since last contacted.
+			Only selects those with any contact
+		</Field>
+		<Field Name="HasContacts" Title="Has Contacts" Type="Bit" DataValueField="IdCode">
+			Selects people who have had any contacts or not
+		</Field>
     <Field Name="ChristAsSavior" Title="Professed Christ as Savior" Type="Bit" DataValueField="IdCode">
       From checkbox on decision card, indicates a decision was made at an event.
     </Field>
@@ -79,6 +96,29 @@
     <Field Name="PleaseVisit" Title="Please Visit" Type="Bit" DataValueField="IdCode">
       From a checkbox on a decision card, desires a visit from a minister.
     </Field>
+	</Category>
+  <Category Title="Contact Info">
+    <Field Name="PrimaryResCode" Title="Resident Code" Type="Code" DataSource="ResidentCodes" DataValueField="IdCode">
+      Codes for address: Metro, Marginal, Non-resident, Unable to locate
+    </Field>
+    <Field Name="PrimaryZip" Title="Zip" Type="String">
+      Primary Zip Code
+    </Field>
+    <Field Name="PrimaryCity" Title="City" Type="String">
+      Primary City
+    </Field>
+    <Field Name="PrimaryState" Title="State" Type="CodeStr" DataSource="GetStateList" DataValueField="Code">
+      Primary State Code
+    </Field>
+    <Field Name="PrimaryAddress" Title="Address" Type="String">
+      Searches by first line of primary address.
+    </Field>
+    <Field Name="PrimaryAddress2" Title="Address line two" Type="String">
+      Searches by second line of primary address
+    </Field>
+    <Field Name="HomePhone" Title="Phone" Type="String">
+      Searches by home phone.
+    </Field>
     <Field Name="DoNotCallFlag" Title="Do Not Call" Type="Bit" DataValueField="IdCode">
       Person has asked not be contacted by telephone.
     </Field>
@@ -88,53 +128,20 @@
     <Field Name="DoNotMailFlag" Title="Do Not Mail" Type="Bit" DataValueField="IdCode">
       Person has asked to be removed from mailing list or we do not have a correct address for them.
     </Field>
-		<Field Name="DaysSinceContact" Title="Days Since Last Contact" Type="Integer">
-			Selects people based on number of days since last contacted.
-			Only selects those with any contact
-		</Field>
-		<Field Name="HasContacts" Title="Has Contacts" Type="Bit" DataValueField="IdCode">
-			Selects people who have had any contacts or not
-		</Field>
-	</Category>
-  <Category Title="Contact Info">
-    <Field Name="HomePhone" Title="Phone" Type="String">
-      Searches by home phone.
-    </Field>
-    <Field Name="PrimaryAddress" Title="Address" Type="String">
-      Searches by first line of primary address.
-    </Field>
-    <Field Name="PrimaryAddress2" Title="Address line two" Type="String">
-      Searches by second line of primary address
-    </Field>
-    <Field Name="PrimaryCity" Title="City" Type="String">
-      Primary City
-    </Field>
-    <Field Name="PrimaryState" Title="State" Type="CodeStr" DataSource="GetStateList" DataValueField="Code">
-      Primary State Code
-    </Field>
-    <Field Name="PrimaryZip" Title="Zip" Type="String">
-      Primary Zip Code
-    </Field>
     <Field Name="PrimaryBadAddrFlag" Title="Bad Address Flag" Type="Bit" DataValueField="IdCode">
       Address is flagged as invalid
     </Field>
-    <Field Name="PrimaryResCode" Title="Resident Code" Type="Code" DataSource="ResidentCodes" DataValueField="IdCode">
-      Codes for address: Metro, Marginal, Non-resident, Unable to locate
-    </Field>
   </Category>
   <Category Title="Church Status">
+    <Field Name="MemberStatusId" Title="Church Member Status" Type="Code" DisplayAs="ChurchMemberStatus" DataSource="MemberStatusCodes" DataValueField="IdCode">
+      Codes for church membership status: Previous, Pending, Member, Non-member
+    </Field>
     <Field Name="DecisionDate" Title="Decision Date" Type="Date">
       Date indivdual made a decision to join the church.
       Todo: explain how unknown dates work
     </Field>
     <Field Name="DecisionTypeId" Title="Decision Type" Type="Code" DataSource="DecisionCodes" DataValueField="IdCode">
       Type of decision during counseling: POF/Baptism, POF not for Membership, Letter, Statement, Statement Requiring Baptism
-    </Field>
-    <Field Name="DiscoveryClassDate" Title="Step 1 Date" Type="Date">
-      Todo: explain how unknown dates work
-    </Field>
-    <Field Name="DiscoveryClassStatusId" Title="Step 1 Status" Type="Code" DataSource="DiscoveryClassStatusCodes" DataValueField="IdCode">
-      Step 1 Class Status: Pending, Attended, Exempted Child, Admin Approval, Grandfathered (formerly Discovery class)
     </Field>
     <Field Name="JoinDate" Title="Join Date" Type="Date">
       Date membership steps were completed.
@@ -143,12 +150,30 @@
     <Field Name="JoinCodeId" Title="Join Type" Type="Code" DataSource="JoinTypes" DataValueField="IdCode">
       Codes to indicate method of joining
     </Field>
+    <Field Name="OtherPreviousChurch" Title="Former Church" Type="String">
+      Church before joining Bellevue
+    </Field>
     <Field Name="DropDate" Title="Drop Date" Type="Date">
       Date individual is dropped from church membership role.
       Todo: explain how unknown dates work
     </Field>
+    <Field Name="DropCodeId" Title="Drop Type" Type="Code" DataSource="DropTypes" DataValueField="IdCode">
+      Codes to indicate reason for dropping record from church membership: Duplicate, Administrative, Deceased, Another SB Church, Request, Another Denomination
+    </Field>
+    <Field Name="OtherNewChurch" Title="New Church" Type="String">
+      Destination Church after leaving Bellevue
+    </Field>
+    <Field Name="DiscoveryClassDate" Title="Step 1 Date" Type="Date">
+      Todo: explain how unknown dates work
+    </Field>
+    <Field Name="DiscoveryClassStatusId" Title="Step 1 Status" Type="Code" DataSource="DiscoveryClassStatusCodes" DataValueField="IdCode">
+      Step 1 Class Status: Pending, Attended, Exempted Child, Admin Approval, Grandfathered (formerly Discovery class)
+    </Field>
     <Field Name="BaptismDate" Title="Baptism Date" Type="Date">
       Baptism Date
+    </Field>
+    <Field Name="BaptismTypeId" Title="Baptism Type" Type="Code" DataSource="BaptismTypes" DataValueField="IdCode">
+      Baptism Type: Original, Subsequent, Biological, Non-Member, Required
     </Field>
     <Field Name="BaptismSchedDate" Title="Baptism Scheduled Date" Type="Date">
       Baptism Scheduled Date
@@ -162,34 +187,9 @@
     <Field Name="LetterStatusId" Title="Letter Status" Type="Code" DataSource="LetterStatusCodes" DataValueField="IdCode">
       Membership Letter Status: First Request, Second Request, Non-Responsive, Complete
     </Field>
-    <Field Name="BaptismTypeId" Title="Baptism Type" Type="Code" DataSource="BaptismTypes" DataValueField="IdCode">
-      Baptism Type: Original, Subsequent, Biological, Non-Member, Required
-    </Field>
-    <Field Name="DropCodeId" Title="Drop Type" Type="Code" DataSource="DropTypes" DataValueField="IdCode">
-      Codes to indicate reason for dropping record from church membership: Duplicate, Administrative, Deceased, Another SB Church, Request, Another Denomination
-    </Field>
-    <Field Name="OtherNewChurch" Title="New Church" Type="String">
-      Destination Church after leaving Bellevue
-    </Field>
-    <Field Name="OtherPreviousChurch" Title="Former Church" Type="String">
-      Church before joining Bellevue
-    </Field>
-    <Field Name="MemberStatusId" Title="Church Member Status" Type="Code" DisplayAs="ChurchMemberStatus" DataSource="MemberStatusCodes" DataValueField="IdCode">
-      Codes for church membership status: Previous, Pending, Member, Non-member
-    </Field>
-    <Field Name="MemberAnyChurch" Title="Member of Any Church" Type="NullBit" DataValueField="IdCode">
-      From decision card indicating membership in another church.
-      May be unknown (null)
-    </Field>
     <Field Name="FamHasPrimAdultChurchMemb" Title="Family Has Primary Adult Church Member" Type="Bit" DataValueField="IdCode">
       Indicator that individual has another primary adult family member who is a member of the church.
     </Field>
-		<Field Name="EntryPointId" Title="Entry Point" Type="Code" DataSource="EntryPoints" DataValueField="IdCode">
-			Initial Contact Point with Church
-		</Field>
-		<Field Name="OriginId" Title="Record Origin" Type="Code" DataSource="Origins" DataValueField="IdCode">
-			Record Originated from what source?
-		</Field>
 		<Field Name="EnvelopeOptionsId" Title="Envelope Options" Type="Code" DataSource="EnvelopeOptions" DataValueField="IdCode">
       Envelope Options
     </Field>
@@ -201,20 +201,29 @@
     <Field Name="InBFClass" Title="In Bible Fellowship" Type="Bit" DataValueField="IdCode">
       Currently enrolled in a Bible Fellowship Class
     </Field>
-    <Field Name="BibleFellowshipTeacher" Title="Bible Fellowship Teacher" Type="String">
-      Name of Bible Fellowship Teacher
-    </Field>
     <Field Name="IsMemberOf" Type="Bit" DisplayAs="IsMember({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
       Selects members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
     </Field>
-    <Field Name="IsInactiveMemberOf" Type="Bit" DisplayAs="IsInactiveMember({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
-      Selects inactive members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
+    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
+      Select members of an organization by their member type within a specified Program, Program/Division, or Program/Division/Organization. 
+    </Field>
+    <Field Name="MemberTypeAsOf" Title="Member Type As Of" Type="Code" DisplayAs="MemberTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
+      Selects specified member types of organization(s) as of a date range. Specify a date range, or just a starting date (through current). Then specify the Program or Program/Division or Program/Division/Organization, then specify one or more member types.
     </Field>
     <Field Name="MembOfOrgWithSched" Title="Member Of Org With Schedule" Type="Code" DisplayAs="MembOfOrgWithSched({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataSource="Schedules" DataValueField="IdCode">
       Selects members of organizations which meet according to one or more specified schedules.
     </Field>
+    <Field Name="IsInactiveMemberOf" Type="Bit" DisplayAs="IsInactiveMember({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+      Selects inactive members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
+    </Field>
+    <Field Name="WasMemberAsOf" Type="Bit" DisplayAs="WasMemberAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+      Select members based on a date range that they were enrolled in that Program; Program/Division; or Program/Division/ Organization
+    </Field>
     <Field Name="OrgJoinDate" Title="Org Enrollment Date" Type="Bit" DisplayAs="OrgJoinDate({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,StartDate" >
       Selects members of an organization by the date they joined the organization
+    </Field>
+    <Field Name="OrgJoinDateDaysAgo" Title="Organization Join Date Days Ago" Type="Integer" DisplayAs="OrgJoinDateDaysAgo({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
+      Selects members of an organization who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. Enter the number of days to compare with on the right side.
     </Field>
     <Field Name="OrgInactiveDate" Title="Org Inactive Date" Type="Date" DisplayAs="OrgInactiveDate({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" >
       Selects members of an organization by date they become inactive.
@@ -223,30 +232,15 @@
     <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataSource="DateFields" DataValueField="Code">
       Selects members of an organization where the date they joined the organization is compared with another system date such as Church Join Date (less than, greater than etc..)
     </Field>
-    <Field Name="MemberTypeAsOf" Title="Member Type As Of" Type="Code" DisplayAs="MemberTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
-      Selects specified member types of organization(s) as of a date range. Specify a date range, or just a starting date (through current). Then specify the Program or Program/Division or Program/Division/Organization, then specify one or more member types.
-    </Field>
-    <Field Name="OrgJoinDateDaysAgo" Title="Organization Join Date Days Ago" Type="Integer" DisplayAs="OrgJoinDateDaysAgo({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
-      Selects members of an organization who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. Enter the number of days to compare with on the right side.
-    </Field>
     <Field Name="OrgMemberCreatedDate" Title="Org Member Created Date" Type="Date" DisplayAs="OrgMemberCreatedDate({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
       Select members of an organization by the date on which their organization membership record was created. Specify the Program or Program/Division or Program/Division/Organization.
       Todo: explain how unknown dates work
     </Field>
-    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
-      Select members of an organization by their member type within a specified Program, Program/Division, or Program/Division/Organization. 
+    <Field Name="BibleFellowshipTeacher" Title="Bible Fellowship Teacher" Type="String">
+      Name of Bible Fellowship Teacher
     </Field>
-    <Field Name="InCurrentOrg" Title="In Current Organization" Type="Bit" DataValueField="IdCode">
-      Selects everyone who is enrolled in the last organization you worked with. (used internally, but you can too if it will help you)
-    </Field>
-    <Field Name="InactiveCurrentOrg" Title="Inactive in Current Organization" Type="Bit" DataValueField="IdCode">
-      Selects everyone who is enrolled but inactive in the last organization you worked with. (used internally, but you can too if it will help you)
-    </Field>
-    <Field Name="WasMemberAsOf" Type="Bit" DisplayAs="WasMemberAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
-      Select members based on a date range that they were enrolled in that Program; Program/Division; or Program/Division/ Organization
-    </Field>
-    <Field Name="WorksVolunteerWeek" Title="Works Volunteer Week(1,2,3,4,5)" Type="Bit" DisplayAs="WorksVolunteerWeek({0}, {1}, {2}, {3})" Params="Week,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
-      Selects Volunteers in Preschool based on the week of the month they serve (1,2,3,4,5)
+    <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
+      Indicates Volunteer Applications are in the church system
     </Field>
 		<Field Name="VolunteerApprovalCode" Title="Volunteer Approval Code" Type="Code" DataSource="VolunteerCodes" DataValueField="IdCode">
 			Indication of Volunteer Approval: None, Standard or Leader
@@ -257,16 +251,31 @@
     <Field Name="VolunteerProcessedDateMonthsAgo" Title="Volunteer Approved months ago" Type="NullInteger">
       Indicate number of months ago volunteer application was approved
     </Field>
+    <Field Name="WorksVolunteerWeek" Title="Works VIP Week(1,2,3,4,5)" Type="Bit" DisplayAs="WorksVIPWeek({0}, {1}, {2}, {3})" Params="Week,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+      Selects Volunteers in Preschool based on the week of the month they serve (1,2,3,4,5)
+    </Field>
     <Field Name="NumberOfMemberships" Title="Number of Memberships" Type="NullInteger" DisplayAs="NumMemberships({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule">
       Has a number of memberships in a prog, div, org, sched
     </Field>
-    <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
-      Indicates Volunteer Applications are in the church system
+    <Field Name="InCurrentOrg" Title="In Current Organization" Type="Bit" DataValueField="IdCode">
+      Selects everyone who is enrolled in the last organization you worked with. (used internally, but you can too if it will help you)
+    </Field>
+    <Field Name="InactiveCurrentOrg" Title="Inactive in Current Organization" Type="Bit" DataValueField="IdCode">
+      Selects everyone who is enrolled but inactive in the last organization you worked with. (used internally, but you can too if it will help you)
     </Field>
   </Category>
   <Category Title="Attendance">
     <Field Name="AttendMemberTypeAsOf" Title="Member Type Attended As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Selects members of a Program, Program/Division or Program/Division/Organization by their member type and by a date range in which they attended
+    </Field>
+    <Field Name="RecentAttendMemberType" Title="Recent Attended Member Type" Type="Code" DisplayAs="RecentAttendMemberType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="MemberTypeCodes" DataValueField="IdCode">
+      Selects members based on member type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
+    </Field>
+    <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
+      Selects attendees based on an attendance type within a Program, Program/Division or Program/Division/Organization for a specified date range.
+    </Field>
+    <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
+      Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
     <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
@@ -279,26 +288,20 @@
       Selects attendees based on an attendance count within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This condition runs faster than the Attendance % History condition
     </Field>
-    <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
-      Selects attendees based on an attendance type within a Program, Program/Division or Program/Division/Organization for a specified date range.
-    </Field>
-    <Field Name="RecentAttendMemberType" Title="Recent Attended Member Type" Type="Code" DisplayAs="RecentAttendMemberType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="MemberTypeCodes" DataValueField="IdCode">
-      Selects members based on member type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
-    </Field>
-    <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
-      Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
-    </Field>
     <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
+    </Field>
+    <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
+      Selects everyone who has visited the last organization you worked with within the days specified. (used internally, but you can too if it will help you)
     </Field>
     <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
       Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.
     </Field>-->
-    <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
-      Selects everyone who has visited the last organization you worked with within the days specified. (used internally, but you can too if it will help you)
-    </Field>
   </Category>
   <Category Title="Miscellaneous">
+    <Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode">
+      Allows you to specify whether to include deceased people in your query.
+    </Field>
     <Field Name="HasCurrentTag" Title="Active Tag" Type="Bit" DataValueField="IdCode">
       Selects those who are in your 'Active Tag' at the time you run the query.
     </Field>
@@ -308,12 +311,6 @@
     <Field Name="SavedQuery" Title="Saved Queries" Type="Bit" DisplayAs="Query({0})" Params="SavedQueryIdDesc" DataValueField="IdCode">
       Selects everyone within a specified Saved Query.
     </Field>
-    <Field Name="UserRole" Title="User In Role" Type="Code" DisplayAs="UserRole" DataSource="UserRoles" DataValueField="IdCode">
-      Selects everyone with a specified User Role in the CMS.
-    </Field>
-		<Field Name="IsUser" Title="Is System User" Type="Bit" DataValueField="IdCode">
-			Selects everyone who is a user in the CMS.
-		</Field>
 		<Field Name="VBSActiveOtherChurch" Title="VBS Other Church" Type="Bit" DataValueField="IdCode">
 			Selects only those VBS children who have applications and indicated active in another church or not.
 		</Field>
@@ -323,23 +320,26 @@
     <Field Name="VBSMedAllergy" Title="VBS Medical Allergy" Type="Bit" DataValueField="IdCode">
       Selects only VBS children who have Medical/Allergy checked or not.
     </Field>
-    <Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode">
-      Allows you to specify whether to include deceased people in your query.
-    </Field>
-    <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
-      Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
-    </Field>
     <Field Name="InOneOfMyOrgs" Title="In one of my organizations" Type="Bit" DataValueField="IdCode">
       People that are a member of an organization that you are also a member of
     </Field>
     <Field Name="HasLowerName" Title="Has Lowercase Name" Type="Bit" DataValueField="IdCode">
       First or Last name starts with a lowercase character
     </Field>
+    <Field Name="UserRole" Title="User In Role" Type="Code" DisplayAs="UserRole" DataSource="UserRoles" DataValueField="IdCode">
+      Selects everyone with a specified User Role in the CMS.
+    </Field>
+		<Field Name="IsUser" Title="Is System User" Type="Bit" DataValueField="IdCode">
+			Selects everyone who is a user in the CMS.
+		</Field>
     <Field Name="CreatedBy" Title="Record Created By User" Type="String">
       Record Created By User
     </Field>
     <Field Name="BadET" Title="Bad Enrollment Transaction" Type="Code" DataSource="BadETCodes" DataValueField="IdCode">
       Two drops in a row (55), Two Enrollments in a row (11), or a missing drop (10)
+    </Field>
+    <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
+      Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
     </Field>
   </Category>
 </Fields>

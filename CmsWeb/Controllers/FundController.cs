@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using CMSWeb.Models;
+using UtilityExtensions;
 
 namespace CMSWeb.Controllers
 {
@@ -22,7 +23,25 @@ namespace CMSWeb.Controllers
         {
             try
             {
-                var f = new ContributionFund { FundName = "new fund", FundId=fundid };
+                var f = new ContributionFund 
+                { 
+                    FundName = "new fund", 
+                    FundId=fundid,
+                    ChurchId = 1,
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    RecordStatus = false,
+                    FundStatusId = 1,
+                    FundTypeId = 1,
+                    FundPledgeFlag = false,
+                    FundOpenDate = DateTime.Today,
+                    FundIncomeDept = "",
+                    FundIncomeAccount = "",
+                    FundIncomeFund = "",
+                    FundCashDept = "",
+                    FundCashAccount = "",
+                    FundCashFund = "",
+                };
                 DbUtil.Db.ContributionFunds.InsertOnSubmit(f);
                 DbUtil.Db.SubmitChanges();
                 return RedirectToAction("Edit", "Fund", new { id = f.FundId });

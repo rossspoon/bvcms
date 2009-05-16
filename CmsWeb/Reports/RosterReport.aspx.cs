@@ -29,7 +29,6 @@ namespace CMSWeb.Reports
             public string MemberType { get; set; }
         }
 
-        private PdfPCell box;
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
@@ -49,10 +48,10 @@ namespace CMSWeb.Reports
             var qid = this.QueryString<int?>("queryid");
             var div = this.QueryString<int?>("div");
             var schedule = this.QueryString<int?>("schedule");
-            dt = this.QueryString<DateTime>("dt");
+            dt = DateTime.Now;
             var tm = this.QueryString<string>("tm");
 
-            doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
+            doc = new Document(PageSize.LETTER, 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
             w.PageEvent = pageEvents;
             doc.Open();
@@ -63,7 +62,7 @@ namespace CMSWeb.Reports
             if (qid.HasValue)
             {
                 var o = list(org, null, null).First();
-                var mct = StartPageSet(o);
+                StartPageSet(o);
                 var qB = DbUtil.Db.LoadQueryById(qid.Value);
                 var q = from p in DbUtil.Db.People.Where(qB.Predicate())
                         join m in ctl.FetchOrgMembers(o.OrgId) on p.PeopleId equals m.PeopleId into j
@@ -79,52 +78,48 @@ namespace CMSWeb.Reports
                 foreach (var i in q)
                     AddRow(i.MembertypeCode, i.Name, i.PeopleId, i.vbapp, font);
                 if (t.Rows.Count > 1)
-                    mct.AddElement(t);
+                    doc.Add(t);
                 else
-                    mct.AddElement(new Phrase("no data"));
-                doc.Add(mct);
+                    doc.Add(new Phrase("no data"));
             }
             else
                 foreach (var o in list(org, div, schedule))
                 {
-                    var mct = StartPageSet(o);
-
                     var q = from m in ctl.FetchOrgMembers(o.OrgId)
                             let vbapp = DbUtil.Db.VBSApps.Where(v => v.PeopleId == m.PeopleId).OrderByDescending(v => v.Uploaded).FirstOrDefault()
                             orderby m.Name2
                             select new
                             {
-                                m.Name,
-                                MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
+                                m.Name2,
+                                m.MemberType,
                                 vbapp,
                                 m.PeopleId,
                             };
+                    if (q.Count() == 0)
+                        continue;
+                    StartPageSet(o);
                     foreach (var i in q)
-                        AddRow(i.MembertypeCode, i.Name, i.PeopleId, i.vbapp, font);
+                        AddRow(i.MemberType, i.Name2, i.PeopleId, i.vbapp, font);
 
-                    if (t.Rows.Count > 0)
-                        mct.AddElement(t);
+                    if (t.Rows.Count > 1)
+                        doc.Add(t);
                     else
-                        mct.AddElement(new Phrase("no data"));
-                    doc.Add(mct);
+                        doc.Add(new Phrase("no data"));
                 }
             pageEvents.EndPageSet();
             doc.Close();
             Response.End();
         }
 
-        private MultiColumnText StartPageSet(OrgInfo o)
+        private void StartPageSet(OrgInfo o)
         {
-            var mct = new MultiColumnText();
-            mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
             t = new PdfPTable(4);
             t.WidthPercentage = 100;
             t.SetWidths(new int[] { 15, 30, 15, 40 });
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
             pageEvents.StartPageSet(
                                     "{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher),
-                                    "{0:dddd M/d/yy h:mm tt} ({1})".Fmt(dt, o.OrgId),
-                                    "M.{0}.{1:MMddyyHHmm}".Fmt(o.OrgId, dt));
+                                    "({1})".Fmt(dt, o.OrgId));
 
             var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
             t.AddCell(new Phrase("PeopleId", boldfont));
@@ -132,7 +127,6 @@ namespace CMSWeb.Reports
             t.AddCell(new Phrase("Member Type", boldfont));
             t.AddCell(new Phrase("Medical", boldfont));
 
-            return mct;
         }
         private void AddRow(string Code, string name, int pid, VBSApp app, Font font)
         {
@@ -142,9 +136,9 @@ namespace CMSWeb.Reports
             string med = "see registration card";
             if (app == null)
                 med = "";
-            else if (!(app.MedAllergy ?? false))
+            else if (app.MedAllergy == false)
                 med = "";
-            else if (app.IsDocument ?? false)
+            else if (app.IsDocument == true)
             {
                 var img = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == app.ImgId);
                 med = "";
@@ -218,7 +212,7 @@ namespace CMSWeb.Reports
                 npages.ShowText((writer.PageNumber + 1).ToString());
                 npages.EndText();
             }
-            public void StartPageSet(string header1, string header2, string barcode)
+            public void StartPageSet(string header1, string header2)
             {
                 EndPageSet();
                 document.NewPage();
@@ -260,7 +254,7 @@ namespace CMSWeb.Reports
                 dc.AddTemplate(npages, 30 + len, 30);
 
                 //---Column 2
-                text = "Attendance Rollsheet";
+                text = "Roster Report";
                 len = font.GetWidthPoint(text, 8);
                 dc.BeginText();
                 dc.SetFontAndSize(font, 8);

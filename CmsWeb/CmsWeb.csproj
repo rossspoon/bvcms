@@ -586,13 +586,6 @@
     <Compile Include="Reports\RosterReport.aspx.designer.cs">
       <DependentUpon>RosterReport.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\EnrollmentReport.aspx.cs">
-      <DependentUpon>EnrollmentReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Reports\EnrollmentReport.aspx.designer.cs">
-      <DependentUpon>EnrollmentReport.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Reports\Rollsheet.aspx.cs">
       <DependentUpon>Rollsheet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1667,7 +1660,6 @@
     <None Include="fckeditor\_samples\py\sample01.py" />
     <None Include="fckeditor\_samples\py\sampleposteddata.py" />
     <Content Include="Reports\RosterReport.aspx" />
-    <Content Include="Reports\EnrollmentReport.aspx" />
     <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Views\Fund\FundType.ascx" />

@@ -5,17 +5,17 @@
     <script type="text/javascript">
         //id=elements_id&value=user_edited_content
         $(function() {
-            $(".clickSelect").editable("/Scaffold/MetroZip/Edit/", {
+            $(".clickSelect").editable("/MetroZip/Edit/", {
                 indicator: '<img src="/images/loading.gif">',
-                loadurl: "/Scaffold/MetroZip/ResidentCodes/",
+                loadurl: "/MetroZip/ResidentCodes/",
                 type: "select",
                 submit: "OK",
                 style: 'display: inline'
             });
             $("a.delete").click(function(ev) {
                 if (confirm("are you sure?"))
-                    $.post("/Scaffold/MetroZip/Delete/" + $(this).attr("id"), null, function(ret) {
-                        window.location = "/Scaffold/MetroZip/";
+                    $.post("/MetroZip/Delete/" + $(this).attr("id"), null, function(ret) {
+                        window.location = "/MetroZip/";
                     });
                 return false;
             });

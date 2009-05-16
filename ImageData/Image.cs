@@ -106,16 +106,13 @@ namespace ImageData
             var line = Medical();
             if (!line.HasValue())
                 return false;
-            var tt = line.Split(':');
-            if (tt.Length == 1)
+            if (line.ToLower().Contains("none"))
                 return false;
-            if (tt[1].ToLower().Contains("none"))
+            if (line.ToLower().Contains("n/a"))
                 return false;
-            if (tt[1].ToLower().Contains("n/a"))
+            if (line.ToLower().Contains("nka"))
                 return false;
-            if (tt[1].ToLower().Contains("nka"))
-                return false;
-            return tt[1].HasValue();
+            return line.HasValue();
         }
         public string Medical() // special function
         {
@@ -127,7 +124,8 @@ namespace ImageData
                     select li;
             if (q.Count() == 0)
                 return null;
-            return q.First().Trim();
+            var a = q.First().Split(':');
+            return a[1].Trim();
         }
     }
 }
