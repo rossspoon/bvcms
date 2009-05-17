@@ -1,77 +1,203 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CMSWeb.Default" Title="CMS2 Home" %>
-<%@ Register src="WebParts/MyCalendar.ascx" tagname="MyCalendar" tagprefix="uc2" %>
-<%@ Register src="WebParts/News.ascx" tagname="News" tagprefix="uc1" %>
-<%@ Register src="WebParts/Birthdays.ascx" tagname="Birthdays" tagprefix="uc3" %>
-<%@ Register src="WebParts/Reports.ascx" tagname="Reports" tagprefix="uc4" %>
-<%@ Register src="WebParts/MyInvolvement.ascx" tagname="MyInvolvement" tagprefix="uc5" %>
+﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master"
+    AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CMSWeb.Default"
+    Title="CMS2 Home" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server"></asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
-        <asp:WebPartManager ID="WebPartManager1" runat="server" />
-        <table>
+        <table cellpadding="6" cellspacing="0" border="0" style="width: 100%; height: 100%">
             <tr valign="top">
                 <td>
-                    <asp:WebPartZone ID="LeftZone" runat="server" CloseVerb-Visible="false" MinimizeVerb-Visible="false" Width="100%">
-                    <CloseVerb Visible="False"></CloseVerb>
-                        <ZoneTemplate>
-                            <uc3:Birthdays ID="Birthdays1" Title="Birthdays" runat="server"/>
-                        </ZoneTemplate>
-
-                        <MinimizeVerb Visible="False"></MinimizeVerb>
-                    </asp:WebPartZone>
+                    <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="dashtitle">
+                                Birthdays
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:HyperLink ID="BFClass" runat="server">BFClass</asp:HyperLink>
+                                <div style="overflow: auto; height: 100px">
+                                    <asp:GridView ID="Birthdays" runat="server" AutoGenerateColumns="False" ShowHeader="False"
+                                        SkinID="GridViewSkin">
+                                        <Columns>
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person.aspx?id={0}"
+                                                DataTextField="Name" DataTextFormatString="{0}" />
+                                            <asp:BoundField DataField="Birthday" DataFormatString="{0:MMM dd}" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                     <br />
-                    <asp:WebPartZone ID="LeftZone2" runat="server" CloseVerb-Visible="false" MinimizeVerb-Visible="false" Width="100%">
-                        <CloseVerb Visible="False"></CloseVerb>
-                        <ZoneTemplate>
-                            <uc4:Reports ID="Reports1" runat="server" Title="Reports"/>
-                        </ZoneTemplate>
-
-                        <MinimizeVerb Visible="False"></MinimizeVerb>
-                    </asp:WebPartZone>
+                    <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="dashtitle">
+                                Reports
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="overflow: auto; height: 125px;">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Reports/ChurchAttendanceSummaryRpt.aspx"
+                                                    Target="_blank">Church Attendance Summary</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Reports/ChurchAttendanceRpt.aspx"
+                                                    Target="_blank">Church Attendance</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Reports/BFCWeeklyAttendanceSummaryRpt.aspx"
+                                                    Target="_blank">BFC Weekly Attendance Summary</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/Reports/BFCAvgWeeklyAttendanceRpt.aspx"
+                                                    Target="_blank">BFC Average Weekly Attendance</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="DecisionSummary" runat="server" NavigateUrl="~/Reports/DecisionSummary.aspx"
+                                                    Target="_blank">Decision Summary Report</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                     <br />
-                    <asp:WebPartZone ID="LeftZone3" runat="server" CloseVerb-Visible="false" MinimizeVerb-Visible="false" Width="100%">
-                        <CloseVerb Visible="False"></CloseVerb>
-                        <ZoneTemplate>
-                            <uc5:MyInvolvement ID="ucMyInvolvement" runat="server" Title="My Involvement" />
-                        </ZoneTemplate>
-                        <MinimizeVerb Visible="False"></MinimizeVerb>
-                    </asp:WebPartZone>
+                    <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="dashtitle">
+                                My Involvement
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="overflow: auto; height: 105px;">
+                                    <asp:GridView ID="grdMyInvolvement" runat="server" AutoGenerateColumns="False" DataSourceID="dsMyInvolvement"
+                                        SkinID="GridViewSkin" AllowPaging="true" AllowSorting="true" Visible="true" EmptyDataText="No Current Enrollments Found."
+                                        ShowHeader="false" ShowFooter="false">
+                                        <Columns>
+                                            <asp:TemplateField SortExpression="Name">
+                                                <ItemTemplate>
+                                                    <asp:HyperLink ID="OrgLink" runat="server" NavigateUrl='<%# Eval("Id", "~/Organization.aspx?id={0}") %>'
+                                                        Text='<%# Eval("Name") %>'></asp:HyperLink></ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="MemberType" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
                 <td>
-                    <asp:WebPartZone ID="MiddleZone" runat="server" CloseVerb-Visible="false" MinimizeVerb-Visible="false">
-                        <CloseVerb Visible="False"></CloseVerb>
-                        <ZoneTemplate>
-                            <uc1:News ID="News1" Title="News and Announcements" runat="server"/>
-                        </ZoneTemplate>
-
-                        <MinimizeVerb Visible="False"></MinimizeVerb>
-                    </asp:WebPartZone>
+                    <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="dashtitle">
+                                News
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4 style="font: verdana; color: #2b637d;font-size:.8em">
+                                    <asp:HyperLink ID="BlogLink" runat="server" Target="_blank">CMS2 News</asp:HyperLink>
+                                </h4>
+                                <div style="overflow: auto; height: 600px;">
+                                    <asp:GridView ID="NewsGrid" runat="server" AutoGenerateColumns="False" ShowHeader="False"
+                                        SkinID="GridViewSkin">
+                                        <Columns>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("Url") %>' Target="_blank"
+                                                        Text='<%# Eval("Title") %>'></asp:HyperLink>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("Published", "{0:d}") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Author">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("Author") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
                 <td>
-                    <asp:WebPartZone ID="RightZone" runat="server" CloseVerb-Visible="false" MinimizeVerb-Visible="false">
-                        <CloseVerb Visible="False"></CloseVerb>
-                        <ZoneTemplate>
-                            <uc2:MyCalendar Title="Tasks" ID="MyCalendar1" runat="server" />
-                        </ZoneTemplate>
-
-                    <MinimizeVerb Visible="False"></MinimizeVerb>
-                    </asp:WebPartZone>
-                </td>
-                <td style="width:auto">
-                    <asp:EditorZone ID="EditorZone1" runat="server">
-                        <ZoneTemplate>
-                            <asp:LayoutEditorPart ID="LayoutEditorPart1" runat="server" />
-                        </ZoneTemplate>
-                    </asp:EditorZone>
-                    <asp:CatalogZone ID="CatalogZone1" runat="server">
-                        <ZoneTemplate>
-                            <asp:PageCatalogPart ID="PageCatalogPart1" runat="server" />
-                        </ZoneTemplate>
-                    </asp:CatalogZone>
-                    <asp:ConnectionsZone ID="ConnectionsZone1" runat="server"></asp:ConnectionsZone>
+                    <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="dashtitle">&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4 style="font: verdana; color: #2b637d">
+                                    <asp:HyperLink ID="HyperLink6" NavigateUrl="~/Task/List/" runat="server">My Tasks</asp:HyperLink>
+                                </h4>
+                                <div style="overflow: auto; height: 522px;">
+                                    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" ShowHeader="False"
+                                        SkinID="GridViewSkin" DataSourceID="ObjectDataSource1">
+                                        <Columns>
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Task/List/{0}"
+                                                DataTextField="Description" HeaderText="Task" />
+                                            <asp:BoundField DataField="Who" HeaderText="Who" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
     </div>
+    <asp:ObjectDataSource ID="dsMyInvolvement" runat="server" SelectMethod="EnrollData"
+        TypeName="CMSPresenter.PersonController" EnablePaging="true" SortParameterName="sortExpression"
+        SelectCountMethod="EnrollDataCount">
+        <SelectParameters>
+            <asp:Parameter Name="pid" Type="Int32" />
+            <asp:Parameter Name="sortExpression" Type="String" DefaultValue="Organization" />
+            <asp:Parameter Name="maximumRows" Type="Int32" />
+            <asp:Parameter Name="startRowIndex" Type="Int32" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" DeleteMethod="DeleteTask"
+        OldValuesParameterFormatString="original_{0}" SelectMethod="FetchContactTasks"
+        TypeName="CMSWeb.Models.TaskModel" UpdateMethod="UpdateTask">
+        <DeleteParameters>
+            <asp:Parameter Name="TaskId" Type="Int32" />
+            <asp:Parameter Name="notify" Type="Object" />
+        </DeleteParameters>
+        <UpdateParameters>
+            <asp:Parameter Name="Description" Type="String" />
+            <asp:Parameter Name="Due" Type="String" />
+            <asp:Parameter Name="Location" Type="String" />
+            <asp:Parameter Name="Notes" Type="String" />
+            <asp:Parameter Name="Priority" Type="Int32" />
+            <asp:Parameter Name="Project" Type="String" />
+            <asp:Parameter Name="StatusId" Type="Int32" />
+            <asp:Parameter Name="Id" Type="Int32" />
+            <asp:Parameter Name="notify" Type="Object" />
+        </UpdateParameters>
+    </asp:ObjectDataSource>
 </asp:Content>

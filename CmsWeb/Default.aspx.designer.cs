@@ -14,147 +14,129 @@ namespace CMSWeb {
     public partial class Default {
         
         /// <summary>
-        /// WebPartManager1 control.
+        /// BFClass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartManager WebPartManager1;
+        protected global::System.Web.UI.WebControls.HyperLink BFClass;
         
         /// <summary>
-        /// LeftZone control.
+        /// Birthdays control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartZone LeftZone;
+        protected global::System.Web.UI.WebControls.GridView Birthdays;
         
         /// <summary>
-        /// Birthdays1 control.
+        /// HyperLink1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.WebParts.Birthdays Birthdays1;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
         
         /// <summary>
-        /// LeftZone2 control.
+        /// HyperLink2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartZone LeftZone2;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink2;
         
         /// <summary>
-        /// Reports1 control.
+        /// HyperLink3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.UserControls.Reports Reports1;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
         
         /// <summary>
-        /// LeftZone3 control.
+        /// HyperLink4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartZone LeftZone3;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink4;
         
         /// <summary>
-        /// ucMyInvolvement control.
+        /// DecisionSummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.WebParts.MyInvolvement ucMyInvolvement;
+        protected global::System.Web.UI.WebControls.HyperLink DecisionSummary;
         
         /// <summary>
-        /// MiddleZone control.
+        /// grdMyInvolvement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartZone MiddleZone;
+        protected global::System.Web.UI.WebControls.GridView grdMyInvolvement;
         
         /// <summary>
-        /// News1 control.
+        /// BlogLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.WebParts.News News1;
+        protected global::System.Web.UI.WebControls.HyperLink BlogLink;
         
         /// <summary>
-        /// RightZone control.
+        /// NewsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.WebPartZone RightZone;
+        protected global::System.Web.UI.WebControls.GridView NewsGrid;
         
         /// <summary>
-        /// MyCalendar1 control.
+        /// HyperLink6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.WebParts.MyCalendar MyCalendar1;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink6;
         
         /// <summary>
-        /// EditorZone1 control.
+        /// GridView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.EditorZone EditorZone1;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
-        /// LayoutEditorPart1 control.
+        /// dsMyInvolvement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.LayoutEditorPart LayoutEditorPart1;
+        protected global::System.Web.UI.WebControls.ObjectDataSource dsMyInvolvement;
         
         /// <summary>
-        /// CatalogZone1 control.
+        /// ObjectDataSource1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.CatalogZone CatalogZone1;
-        
-        /// <summary>
-        /// PageCatalogPart1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.PageCatalogPart PageCatalogPart1;
-        
-        /// <summary>
-        /// ConnectionsZone1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.WebParts.ConnectionsZone ConnectionsZone1;
+        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource1;
     }
 }

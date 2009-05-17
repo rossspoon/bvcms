@@ -775,20 +775,6 @@
     <Compile Include="UserControls\PersonGrid.ascx.designer.cs">
       <DependentUpon>PersonGrid.ascx</DependentUpon>
     </Compile>
-    <Compile Include="WebParts\MyInvolvement.ascx.cs">
-      <DependentUpon>MyInvolvement.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebParts\MyInvolvement.ascx.designer.cs">
-      <DependentUpon>MyInvolvement.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="WebParts\Reports.ascx.cs">
-      <DependentUpon>Reports.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebParts\Reports.ascx.designer.cs">
-      <DependentUpon>Reports.ascx</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UserArea.ascx.cs">
       <DependentUpon>UserArea.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -809,27 +795,6 @@
     </Compile>
     <Compile Include="UserControls\VisitorGrid.ascx.designer.cs">
       <DependentUpon>VisitorGrid.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="WebParts\Birthdays.ascx.cs">
-      <DependentUpon>Birthdays.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebParts\Birthdays.ascx.designer.cs">
-      <DependentUpon>Birthdays.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="WebParts\MyCalendar.ascx.cs">
-      <DependentUpon>MyCalendar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebParts\MyCalendar.ascx.designer.cs">
-      <DependentUpon>MyCalendar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="WebParts\News.ascx.cs">
-      <DependentUpon>News.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebParts\News.ascx.designer.cs">
-      <DependentUpon>News.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\QuickSearchParameters.ascx.cs">
       <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
@@ -906,9 +871,6 @@
     <Content Include="UserControls\MemberGrid.ascx" />
     <Content Include="UserControls\PersonGrid.ascx" />
     <Content Include="UserControls\UserArea.ascx" />
-    <Content Include="WebParts\Birthdays.ascx" />
-    <Content Include="WebParts\MyCalendar.ascx" />
-    <Content Include="WebParts\News.ascx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -1519,7 +1481,6 @@
     <Content Include="fckeditor\_upgrade.html" />
     <Content Include="fckeditor\_whatsnew.html" />
     <Content Include="fckeditor\_whatsnew_history.html" />
-    <Content Include="HTMLPage1.htm" />
     <Content Include="images\adobe.png" />
     <Content Include="images\ajax-loader.gif" />
     <Content Include="images\delete.gif" />
@@ -1765,8 +1726,6 @@
     <Content Include="Views\Home\About.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
-    <Content Include="WebParts\MyInvolvement.ascx" />
-    <Content Include="WebParts\Reports.ascx" />
     <Content Include="UserControls\VisitorGrid.ascx" />
     <Content Include="UserControls\QuickSearchParameters.ascx" />
   </ItemGroup>

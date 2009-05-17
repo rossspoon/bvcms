@@ -543,3 +543,16 @@ div.bottomhyperlink img
     padding-left: 1em;
     padding-right: 1em;
 }
+.dashbox 
+{
+    background-color:#EFF3FB;
+    border:1px solid #D1DDF1;
+    font-size: .9em;
+    min-width: 30em;
+}
+.dashtitle
+{
+    background-color:#3E8CB5;
+    color:White;
+    font-weight:bold;
+}
