@@ -47,28 +47,13 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.20820.16598, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\AjaxControlToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\CookComputing.XmlRpc.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\itextsharp.dll</HintPath>
-    </Reference>
+    <Reference Include="AjaxControlToolkit, Version=3.0.20820.16598, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL" />
+    <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d" />
+    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
     <Reference Include="Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\Microsoft.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\RouteDebug.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -897,14 +882,6 @@
     <Content Include="images\Report.png" />
     <Content Include="images\Tag.png" />
     <Content Include="App_Themes\Minimal\Skin1.skin" />
-    <Content Include="bin\CMSModel.dll" />
-    <Content Include="bin\CMSModel.pdb" />
-    <Content Include="bin\CMSPresenter.dll" />
-    <Content Include="bin\CMSPresenter.pdb" />
-    <Content Include="bin\CustomControls.dll" />
-    <Content Include="bin\CustomControls.pdb" />
-    <Content Include="bin\Utility.dll" />
-    <Content Include="bin\Utility.pdb" />
     <Content Include="MyTags.aspx" />
     <Content Include="images\1pix.gif" />
     <Content Include="images\EmptyMap.png" />
@@ -967,11 +944,9 @@
     <Content Include="BadEts.aspx" />
     <Content Include="Binaries\AjaxControlToolkit.dll" />
     <Content Include="Binaries\CookComputing.XmlRpc.dll" />
-    <Content Include="Binaries\EcmaScript.NET.modified.dll" />
     <Content Include="Binaries\itextsharp.dll" />
     <Content Include="Binaries\Microsoft.Web.Mvc.dll" />
     <Content Include="Binaries\RouteDebug.dll" />
-    <Content Include="Binaries\ScriptReferenceProfiler.dll" />
     <Content Include="AddContactorDialog.aspx" />
     <Content Include="AddContacteeDialog.aspx" />
     <Content Include="AddTaskAboutDialog.aspx" />
@@ -979,10 +954,6 @@
     <Content Include="AddFamilyDialog.aspx" />
     <Content Include="AddFamilyMembersDialog.aspx" />
     <Content Include="AddVisitorDialog.aspx" />
-    <Content Include="Binaries\Yahoo.Yui.Compressor.dll" />
-    <Content Include="bin\CMSImage.dll" />
-    <Content Include="bin\CMSImage.pdb" />
-    <Content Include="bin\RouteDebug.dll" />
     <Content Include="Content\arrows-ffffff.png" />
     <Content Include="Content\content.css" />
     <Content Include="Content\dropdown.gif" />
@@ -1570,8 +1541,6 @@
     <Content Include="App_Themes\Standard\thickbox.css" />
     <Content Include="App_Themes\tabber.css" />
     <Content Include="App_Themes\Standard\ui.tabs.css" />
-    <Content Include="bin\AjaxControlToolkit.dll" />
-    <Content Include="bin\CookComputing.XmlRpc.dll" />
     <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc" />
     <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc" />
     <EmbeddedResource Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc" />
