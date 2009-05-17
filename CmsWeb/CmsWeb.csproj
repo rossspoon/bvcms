@@ -894,6 +894,16 @@
     <Content Include="Admin\Web.config" />
     <Content Include="AccessDenied.htm" />
     <Content Include="AppReview\FormImage.aspx" />
+    <Content Include="App_Data\ImageDb.mdf">
+    </Content>
+    <Content Include="App_Data\ImageDb_log.ldf">
+      <DependentUpon>ImageDb.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\StarterDb.mdf">
+    </Content>
+    <Content Include="App_Data\StarterDb_log.ldf">
+      <DependentUpon>StarterDb.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Offline1.htm" />
     <Content Include="App_Themes\Minimal\Common2.css" />
     <Content Include="AddMemberDialog.aspx" />
@@ -1530,11 +1540,13 @@
     <Content Include="Reports\BFCWeeklyAttendanceSummaryRpt.aspx" />
     <Content Include="Reports\ChurchAttendanceRpt.aspx" />
     <Content Include="Reports\ChurchAttendanceSummaryRpt.aspx" />
-    <Content Include="Config\ConnectionStrings.config" />
+    <Content Include="Config\ConnectionStrings2.config" />
     <Content Include="Config\smtp.config" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Config\Authentication.config" />
     <Content Include="Config\CustomErrors.config" />
+    <Content Include="Config\ConnectionStrings.config" />
+    <Content Include="Config\Authentication2.config" />
     <None Include="Config\CreateContentDb.sql" />
     <None Include="Config\CreateDb.sql" />
     <None Include="Config\CreateImageDb.sql" />
