@@ -14,6 +14,12 @@ namespace CmsData
 {
     public partial class Family : IAuditable
     {
+        public enum PositionInFamily
+        {
+            PrimaryAdult = 10,
+            SecondaryAdult = 20,
+            Child = 30,
+        }
         public string CityStateZip
         {
             get { return Util.FormatCSZ4(CityName,StateCode,ZipCode); }

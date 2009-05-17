@@ -37,9 +37,9 @@ namespace CmsData
 		
 		private int _MemberTypeId;
 		
-		private int _OtherAttends;
-		
 		private int _AttendId;
+		
+		private int _OtherAttends;
 		
 		private bool? _BFCAttendance;
 		
@@ -94,11 +94,11 @@ namespace CmsData
 		partial void OnMemberTypeIdChanging(int value);
 		partial void OnMemberTypeIdChanged();
 		
-		partial void OnOtherAttendsChanging(int value);
-		partial void OnOtherAttendsChanged();
-		
 		partial void OnAttendIdChanging(int value);
 		partial void OnAttendIdChanged();
+		
+		partial void OnOtherAttendsChanging(int value);
+		partial void OnOtherAttendsChanged();
 		
 		partial void OnBFCAttendanceChanging(bool? value);
 		partial void OnBFCAttendanceChanged();
@@ -362,28 +362,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OtherAttends", UpdateCheck=UpdateCheck.Never, Storage="_OtherAttends", DbType="int NOT NULL")]
-		public int OtherAttends
-		{
-			get { return this._OtherAttends; }
-
-			set
-			{
-				if (this._OtherAttends != value)
-				{
-				
-                    this.OnOtherAttendsChanging(value);
-					this.SendPropertyChanging();
-					this._OtherAttends = value;
-					this.SendPropertyChanged("OtherAttends");
-					this.OnOtherAttendsChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="AttendId", UpdateCheck=UpdateCheck.Never, Storage="_AttendId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AttendId
 		{
@@ -399,6 +377,28 @@ namespace CmsData
 					this._AttendId = value;
 					this.SendPropertyChanged("AttendId");
 					this.OnAttendIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OtherAttends", UpdateCheck=UpdateCheck.Never, Storage="_OtherAttends", DbType="int NOT NULL")]
+		public int OtherAttends
+		{
+			get { return this._OtherAttends; }
+
+			set
+			{
+				if (this._OtherAttends != value)
+				{
+				
+                    this.OnOtherAttendsChanging(value);
+					this.SendPropertyChanging();
+					this._OtherAttends = value;
+					this.SendPropertyChanged("OtherAttends");
+					this.OnOtherAttendsChanged();
 				}
 
 			}

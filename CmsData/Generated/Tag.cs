@@ -34,13 +34,7 @@ namespace CmsData
    		
    		private EntitySet< TagShare> _TagShares;
 		
-   		private EntitySet< TagOrg> _OrgTags;
-		
    		private EntitySet< TagPerson> _PersonTags;
-		
-   		private EntitySet< TagTag> _Tags;
-		
-   		private EntitySet< TagTag> _TagTags;
 		
     	
 		private EntityRef< TagType> _TagType;
@@ -81,13 +75,7 @@ namespace CmsData
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
-			this._OrgTags = new EntitySet< TagOrg>(new Action< TagOrg>(this.attach_OrgTags), new Action< TagOrg>(this.detach_OrgTags)); 
-			
 			this._PersonTags = new EntitySet< TagPerson>(new Action< TagPerson>(this.attach_PersonTags), new Action< TagPerson>(this.detach_PersonTags)); 
-			
-			this._Tags = new EntitySet< TagTag>(new Action< TagTag>(this.attach_Tags), new Action< TagTag>(this.detach_Tags)); 
-			
-			this._TagTags = new EntitySet< TagTag>(new Action< TagTag>(this.attach_TagTags), new Action< TagTag>(this.detach_TagTags)); 
 			
 			
 			this._TagType = default(EntityRef< TagType>); 
@@ -274,42 +262,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="OrgTags__Tag", Storage="_OrgTags", OtherKey="Id")]
-   		public EntitySet< TagOrg> OrgTags
-   		{
-   		    get { return this._OrgTags; }
-
-			set	{ this._OrgTags.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="PersonTags__Tag", Storage="_PersonTags", OtherKey="Id")]
    		public EntitySet< TagPerson> PersonTags
    		{
    		    get { return this._PersonTags; }
 
 			set	{ this._PersonTags.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="Tags__ParentTag", Storage="_Tags", OtherKey="ParentTagId")]
-   		public EntitySet< TagTag> Tags
-   		{
-   		    get { return this._Tags; }
-
-			set	{ this._Tags.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="TagTags__Tag", Storage="_TagTags", OtherKey="Id")]
-   		public EntitySet< TagTag> TagTags
-   		{
-   		    get { return this._TagTags; }
-
-			set	{ this._TagTags.Assign(value); }
 
    		}
 
@@ -432,19 +390,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_OrgTags(TagOrg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = this;
-		}
-
-		private void detach_OrgTags(TagOrg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = null;
-		}
-
-		
 		private void attach_PersonTags(TagPerson entity)
 		{
 			this.SendPropertyChanging();
@@ -452,32 +397,6 @@ namespace CmsData
 		}
 
 		private void detach_PersonTags(TagPerson entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = null;
-		}
-
-		
-		private void attach_Tags(TagTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.ParentTag = this;
-		}
-
-		private void detach_Tags(TagTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.ParentTag = null;
-		}
-
-		
-		private void attach_TagTags(TagTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Tag = this;
-		}
-
-		private void detach_TagTags(TagTag entity)
 		{
 			this.SendPropertyChanging();
 			entity.Tag = null;

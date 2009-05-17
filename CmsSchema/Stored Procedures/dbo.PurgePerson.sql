@@ -50,12 +50,9 @@ BEGIN
 		UPDATE dbo.VolunteerForm SET UploaderId = NULL WHERE UploaderId IN (SELECT UserId FROM dbo.Users WHERE PeopleId = @pid)
 		DELETE FROM dbo.Users WHERE PeopleId = @pid
 		
-		DELETE FROM dbo.TagOrg WHERE Id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagPerson WHERE id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagShare WHERE TagId IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagShare WHERE PeopleId = @pid
-		DELETE FROM dbo.TagTag WHERE Id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
-		DELETE FROM dbo.TagTag WHERE ParentTagId IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.Tag WHERE PeopleId = @pid
 		
 		SELECT @fid = FamilyId, @pic = PictureId FROM dbo.People WHERE PeopleId = @pid
@@ -78,8 +75,6 @@ BEGIN
 		RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
 	END CATCH 
  
-END 
-        
-                
+END
 
 GO

@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.ComponentModel;
 using System.Transactions;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace CmsData
 {
@@ -323,6 +324,68 @@ namespace CmsData
         public bool Deceased
         {
             get { return DeceasedDate.HasValue; }
+        }
+        private static void NameSplit(string name, out string First, out string Last)
+        {
+            var a = name.Split(' ');
+            First = "";
+            if (a.Length > 1)
+            {
+                First = a[0];
+                Last = a[1];
+            }
+            else
+                Last = a[0];
+
+        }
+        public static Person Add(Family fam, int position, Tag tag, string name, string dob, bool Married, int gender, int originId, int? EntryPointId)
+        {
+            string First, Last;
+            NameSplit(name, out First, out Last);
+            if (!First.HasValue() || Married)
+                switch (gender)
+                {
+                    case 0: First = "A"; break;
+                    case 1: if (!First.HasValue()) First = "Husbander"; break;
+                    case 2: First = "Wifey"; break;
+                }
+            return Add(fam, position, tag, First, null, Last, dob, Married, gender, originId, EntryPointId);
+        }
+        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
+        {
+            var p = new Person();
+            DbUtil.Db.People.InsertOnSubmit(p);
+            p.PositionInFamilyId = position;
+            p.AddressTypeId = 10;
+
+            p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
+            p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
+            p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
+
+            p.GenderId = gender;
+            if (p.GenderId == 99)
+                p.GenderId = 0;
+            if (Married)
+                p.MaritalStatusId = (int)Person.MaritalStatusCode.Married;
+
+            DateTime dt;
+            if (DateTime.TryParse(dob, out dt))
+            {
+                p.BirthDay = dt.Day;
+                p.BirthMonth = dt.Month;
+                if (Regex.IsMatch(dob, @"\d+/\d+/\d+"))
+                    p.BirthYear = dt.Year;
+            }
+
+            p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
+            fam.People.Add(p);
+            if(tag != null)
+                tag.PersonTags.Add(new TagPerson { Person = p });
+            var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            tag2.PersonTags.Add(new TagPerson { Person = p });
+            p.OriginId = originId;
+            p.EntryPointId = EntryPointId;
+            return p;
         }
 
         #region Tags

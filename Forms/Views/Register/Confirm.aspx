@@ -6,10 +6,10 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Vacation Bible School Registration Received</h2>
+    <h2>Church Database Registration Received</h2>
     <p>
-        Thank you for registering your child.  You should receive a confirmation email shortly.
+        Thank you for registering.  You should receive a confirmation email shortly.
     </p>
-    <a href="/VBS/">Register another child</a>
+    <a href="/Register/Form2/">Register another family member</a>
 
 </asp:Content>

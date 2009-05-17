@@ -6,9 +6,9 @@
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
-        Welcome to Bellevue Forms</h2>
+        Forms</h2>
    <p>
-        Bellevue members and friends can sign up for our various programs and eventson this site.</p>
+        Members and friends can sign up for our various programs and events on this site.</p>
     <h3>
         Help...</h3>
     <p>

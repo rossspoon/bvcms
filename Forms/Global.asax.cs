@@ -17,6 +17,11 @@ namespace Forms
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "reg",                                              // Route name
+                "Register/{action}/{id}",                           // URL with parameters
+                new { controller = "Register", action = "Form", id = "" }  // Parameter defaults
+            );
+            routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults

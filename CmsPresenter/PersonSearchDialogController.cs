@@ -155,49 +155,6 @@ namespace CMSPresenter
             NewFamily = 1,
             Couple = 2,
         }
-        private static Person AddPerson(Family fam, int position, Tag tag, string name, string dob, bool Married, int gender, int originId, int? EntryPointId)
-        {
-            var p = new Person();
-            DbUtil.Db.People.InsertOnSubmit(p);
-            p.PositionInFamilyId = position;
-            p.AddressTypeId = 10; // family
-
-            string First, Last;
-            PersonSearchController.NameSplit(name, out First, out Last);
-            if (!First.HasValue() || Married)
-                switch (gender)
-                {
-                    case 0: First = "A"; break;
-                    case 1: if (!First.HasValue()) First = "Husbander"; break;
-                    case 2: First = "Wifey"; break;
-                }
-            p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(First);
-            p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(Last);
-
-            p.GenderId = gender;
-            if (p.GenderId == 99)
-                p.GenderId = 0;
-            if (Married)
-                p.MaritalStatusId = 20;
-
-            DateTime dt;
-            if (DateTime.TryParse(dob, out dt))
-            {
-                p.BirthDay = dt.Day;
-                p.BirthMonth = dt.Month;
-                if (Regex.IsMatch(dob, @"\d+/\d+/\d+"))
-                    p.BirthYear = dt.Year;
-            }
-
-            p.MemberStatusId = 50; // JustAdded
-            fam.People.Add(p);
-            tag.PersonTags.Add(new TagPerson { Person = p });
-            var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-            tag2.PersonTags.Add(new TagPerson { Person = p });
-            p.OriginId = originId;
-            p.EntryPointId = EntryPointId;
-            return p;
-        }
         private static AddFamilyType ParseFamilyType(object value)
         {
             return (AddFamilyType)Enum.Parse(typeof(AddFamilyType), value.ToString());
@@ -207,9 +164,9 @@ namespace CMSPresenter
             var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == FamilyId);
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
-            var p = AddPerson(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
+            var p = Person.Add(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
             DbUtil.Db.SubmitChanges();
-            AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
+            Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
         public static bool AddNewPerson(string name, string dob, string selectedValue, int GenderId, int OriginId, int? EntryPointId)
@@ -251,33 +208,16 @@ namespace CMSPresenter
             Person p1, p2 = null;
             if (famtype == AddFamilyType.Couple)
             {
-                p1 = AddPerson(fam, position, tag, name, dob, true, 1, OriginId, EntryPointId); // male
-                p2 = AddPerson(fam, position, tag, name, dob, true, 2, OriginId, EntryPointId); // female
+                p1 = Person.Add(fam, position, tag, name, dob, true, 1, OriginId, EntryPointId); // male
+                p2 = Person.Add(fam, position, tag, name, dob, true, 2, OriginId, EntryPointId); // female
             }
             else
-                p1 = AddPerson(fam, position, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+                p1 = Person.Add(fam, position, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
             DbUtil.Db.SubmitChanges();
-            AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p1.PeopleId);
+            Task.AddNewPerson(Util.UserPeopleId.Value, p1.PeopleId);
             if (p2 != null)
-                AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p2.PeopleId);
+                Task.AddNewPerson(Util.UserPeopleId.Value, p2.PeopleId);
             return true;
         }
-        public static void AddNewPersonTask(int ownerid, int coownerid, int newpersonid)
-        {
-            var Db = DbUtil.Db;
-            var task = new Task
-            {
-                ListId = Task.GetRequiredTaskList("InBox", ownerid).Id,
-                OwnerId = ownerid,
-                Description = "New Person Data Entry",
-                CoOwnerId = coownerid,
-                CoListId = Task.GetRequiredTaskList("InBox", coownerid).Id,
-                WhoId = newpersonid,
-                StatusEnum = Task.StatusCode.Active,
-            };
-            Db.Tasks.InsertOnSubmit(task);
-            Db.SubmitChanges();
-        }
-
     }
 }

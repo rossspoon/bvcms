@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
+using System.Configuration;
 
 namespace Forms.Controllers
 {
@@ -12,8 +13,7 @@ namespace Forms.Controllers
     {
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
+            ViewData["header"] = ConfigurationManager.AppSettings["header"];
             return View();
         }
 

@@ -7,7 +7,7 @@
     <asp:ContentPlaceHolder ID="TitleContent" runat="server">
         <title></title>
     </asp:ContentPlaceHolder>
-    <link href="/Content/Site.css?v=2" rel="stylesheet" type="text/css" />
+    <link href="/Content/Site2.css?v=2" rel="stylesheet" type="text/css" />
     </head>
 
 <body>
@@ -15,22 +15,9 @@
 
         <div id="header">
            <div id="title">
-                  <h1><img alt="Crosses" src="/Content/Crosses.png" 
-                        style="width: 87px; height: 87px" align="middle" />&nbsp;Bellevue Forms</h1>
-            </div>
-              
-            <div id="logindisplay">
-                <% Html.RenderPartial("LogOnUserControl"); %>
-            </div> 
-            
-            <div id="menucontainer">
-            
-                <ul id="menu">              
-                    <li><%= Html.ActionLink("Home", "Index", "Home")%></li>
-                    <li><%= Html.ActionLink("Vacation Bible School", "Register", "VBS")%></li>
-                    <li><a href="http://prayer.bellevue.org">Prayer Room</a></li>
-                </ul>
-            </div>
+              <h1><img alt="logo" src="<%=ConfigurationManager.AppSettings["logoimg"] %>" 
+                    align="middle" />&nbsp;<%=ViewData["header"]%></h1>
+           </div>
         </div>
 
         <div id="main">
@@ -42,3 +29,4 @@
     </div>
 </body>
 </html>
+

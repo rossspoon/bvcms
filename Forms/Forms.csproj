@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\VBSController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -68,8 +69,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\VBSModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
@@ -104,16 +107,25 @@
     <Content Include="Content\jquery.tooltip.css" />
     <Content Include="Content\pager.css" />
     <Content Include="Content\Site2.css" />
-    <Content Include="Views\Shared\Site2.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\connectionStrings.config" />
+    <Content Include="Config\smtp.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\AppSettings.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\CustomErrors.config" />
+    <Content Include="Views\Register\Confirm.aspx" />
+    <Content Include="Views\Register\Form2.aspx" />
+    <Content Include="Views\Register\Login.aspx" />
+    <Content Include="Views\Register\Form.aspx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CmsData\CmsData.csproj">
-      <Project>{C01603B7-AEE1-4FB8-92E3-80D095C71005}</Project>
+      <Project>{98AEE43C-4226-49E7-BD46-C1A85467ECED}</Project>
       <Name>CmsData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DisciplesData\DisciplesData.csproj">
-      <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
-      <Name>DisciplesData</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageData\ImageData.csproj">
       <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>
@@ -135,7 +147,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>57773</DevelopmentServerPort>
+          <DevelopmentServerPort>62937</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

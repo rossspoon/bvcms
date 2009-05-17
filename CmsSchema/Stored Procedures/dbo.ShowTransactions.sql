@@ -13,7 +13,6 @@ BEGIN
 		OrganizationId, 
 		PeopleId, 
 		NextTranChangeDate,
-		ClothingSizeInfo,
 		dbo.NextTranChangeDate(PeopleId, OrganizationId, TransactionId, TransactionTypeId) NextTranChangeDate0,
 		EnrollmentTransactionId,
 		dbo.EnrollmentTransactionId(PeopleId, OrganizationId, TransactionId, TransactionTypeId) EnrollmentTransactionId0,
@@ -23,7 +22,5 @@ BEGIN
 	ORDER BY TransactionId
 
 END
-
-
 
 GO

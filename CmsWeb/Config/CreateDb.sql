@@ -1,44 +1,7 @@
-﻿/****** Object:  Schema [lookup]    Script Date: 05/11/2009 20:26:32 ******/
+﻿/****** Object:  Schema [lookup]    Script Date: 05/16/2009 16:51:50 ******/
 CREATE SCHEMA [lookup] AUTHORIZATION [dbo]
 GO
-/****** Object:  Table [lookup].[PhonePreference]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[PhonePreference](
-	[Id] [int] NOT NULL,
-	[Code] [varchar](20) NULL,
-	[Description] [varchar](100) NULL,
- CONSTRAINT [PK_PhonePreference] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (0, N'NO', N'Do Not Call')
-INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (10, N'HME', N'Home')
-INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (20, N'CEL', N'Cell')
-INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (30, N'WRK', N'Work')
-/****** Object:  Table [dbo].[Picture]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Picture](
-	[PictureId] [int] IDENTITY(1,1) NOT NULL,
-	[CreatedDate] [datetime] NULL,
-	[CreatedBy] [varchar](50) NULL,
-	[LargeId] [int] NULL,
-	[MediumId] [int] NULL,
-	[SmallId] [int] NULL,
- CONSTRAINT [PK_Picture] PRIMARY KEY CLUSTERED 
-(
-	[PictureId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [lookup].[MemberStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[MemberStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -58,7 +21,44 @@ INSERT [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (20, N'No', 
 INSERT [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (30, N'Pending', N'Pending Member')
 INSERT [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (40, N'Previous', N'Previous Member')
 INSERT [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (50, N'Add', N'Just Added')
-/****** Object:  Table [lookup].[MemberLetterStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[PhonePreference]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[PhonePreference](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](20) NULL,
+	[Description] [varchar](100) NULL,
+ CONSTRAINT [PK_PhonePreference] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (0, N'NO', N'Do Not Call')
+INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (10, N'HME', N'Home')
+INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (20, N'CEL', N'Cell')
+INSERT [lookup].[PhonePreference] ([Id], [Code], [Description]) VALUES (30, N'WRK', N'Work')
+/****** Object:  Table [dbo].[Picture]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Picture](
+	[PictureId] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [varchar](50) NULL,
+	[LargeId] [int] NULL,
+	[MediumId] [int] NULL,
+	[SmallId] [int] NULL,
+ CONSTRAINT [PK_Picture] PRIMARY KEY CLUSTERED 
+(
+	[PictureId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [lookup].[MemberLetterStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,7 +78,53 @@ INSERT [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (10, N
 INSERT [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (20, N'2ndReq', N'2nd Request')
 INSERT [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (30, N'Non-Resp', N'Non-Responsive')
 INSERT [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (40, N'Complete', N'Complete')
-/****** Object:  Table [lookup].[InterestPoint]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[Origin]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[Origin](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](20) NULL,
+	[Description] [varchar](100) NULL,
+ CONSTRAINT [PK_Origin] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (0, N'NSP', N'Not Specified')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (10, N'VISIT', N'Visit')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (20, N'NEWNBR', N'New Neighbor List')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (30, N'REFERL', N'Referral')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (40, N'REQUEST', N'Request (Newsletter/Info)')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (50, N'DTC', N'Deacon Telephone')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (60, N'EESRVY', N'Survey (EE)')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (70, N'ENROLL', N'Enrollment')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (80, N'MEMDEC', N'Membership Decision')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (90, N'CONTRIB', N'Contribution')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (98, N'OTHER', N'Other')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (99, N'UNKNOWN', N'Unknown')
+INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (100, N'FAM', N'New Family Member')
+/****** Object:  Table [lookup].[Gender]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[Gender](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](20) NULL,
+	[Description] [varchar](100) NULL,
+ CONSTRAINT [PK_Gender] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (0, N'U', N'Unknown')
+INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (1, N'M', N'Male')
+INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (2, N'F', N'Female')
+/****** Object:  Table [lookup].[InterestPoint]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -107,7 +153,7 @@ INSERT [lookup].[InterestPoint] ([Id], [Code], [Description]) VALUES (70, N'Webs
 INSERT [lookup].[InterestPoint] ([Id], [Code], [Description]) VALUES (80, N'EE Team', N'EE Team')
 INSERT [lookup].[InterestPoint] ([Id], [Code], [Description]) VALUES (98, N'Other', N'Other')
 INSERT [lookup].[InterestPoint] ([Id], [Code], [Description]) VALUES (99, N'UNKNOWN', N'Unknown')
-/****** Object:  Table [lookup].[JoinType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[JoinType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -128,53 +174,7 @@ INSERT [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (20, N'BPS', N'B
 INSERT [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (30, N'BPB', N'Baptism BIO')
 INSERT [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (40, N'STM', N'Statement')
 INSERT [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (50, N'LET', N'Letter')
-/****** Object:  Table [lookup].[Origin]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[Origin](
-	[Id] [int] NOT NULL,
-	[Code] [varchar](20) NULL,
-	[Description] [varchar](100) NULL,
- CONSTRAINT [PK_Origin] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (0, N'NSP', N'Not Specified')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (10, N'VISIT', N'Visit')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (20, N'NEWNBR', N'New Neighbor List')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (30, N'REFERL', N'Referral')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (40, N'REQUEST', N'Request (Newsletter/Info)')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (50, N'DTC', N'Deacon Telephone')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (60, N'EESRVY', N'Survey (EE)')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (70, N'ENROLL', N'Enrollment')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (80, N'MEMDEC', N'Membership Decision')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (90, N'CONTRIB', N'Contribution')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (98, N'OTHER', N'Other')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (99, N'UNKNOWN', N'Unknown')
-INSERT [lookup].[Origin] ([Id], [Code], [Description]) VALUES (100, N'FAM', N'New Family Member')
-/****** Object:  Table [lookup].[Gender]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[Gender](
-	[Id] [int] NOT NULL,
-	[Code] [varchar](20) NULL,
-	[Description] [varchar](100) NULL,
- CONSTRAINT [PK_Gender] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (0, N'U', N'Unknown')
-INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (1, N'M', N'Male')
-INSERT [lookup].[Gender] ([Id], [Code], [Description]) VALUES (2, N'F', N'Female')
-/****** Object:  Table [lookup].[MaritalStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[MaritalStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -195,7 +195,7 @@ INSERT [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (20, N'MAR'
 INSERT [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (30, N'SEP', N'Separated')
 INSERT [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (40, N'DIV', N'Divorced')
 INSERT [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (50, N'WID', N'Widowed')
-/****** Object:  Table [lookup].[DiscoveryClassStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[DiscoveryClassStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -217,7 +217,7 @@ INSERT [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (30,
 INSERT [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (40, N'GF', N'Grandfathered')
 INSERT [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (50, N'EX', N'Exempted Child (thru Grade 8)')
 INSERT [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (99, N'UNK', N'Unknown')
-/****** Object:  Table [lookup].[EntryPoint]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[EntryPoint]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -247,7 +247,7 @@ INSERT [lookup].[EntryPoint] ([Id], [Code], [Description]) VALUES (82, N'SML', N
 INSERT [lookup].[EntryPoint] ([Id], [Code], [Description]) VALUES (83, N'SMEN', N'Sportsmen')
 INSERT [lookup].[EntryPoint] ([Id], [Code], [Description]) VALUES (98, N'OTHER', N'Other')
 INSERT [lookup].[EntryPoint] ([Id], [Code], [Description]) VALUES (99, N'UNKNOWN', N'Unknown')
-/****** Object:  Table [lookup].[FamilyPosition]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[FamilyPosition]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -265,7 +265,7 @@ GO
 INSERT [lookup].[FamilyPosition] ([Id], [Code], [Description]) VALUES (10, N'10', N'Primary Adult')
 INSERT [lookup].[FamilyPosition] ([Id], [Code], [Description]) VALUES (20, N'20', N'Secondary Adult')
 INSERT [lookup].[FamilyPosition] ([Id], [Code], [Description]) VALUES (30, N'30', N'Child')
-/****** Object:  Table [lookup].[EnvelopeOption]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[EnvelopeOption]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -284,7 +284,7 @@ INSERT [lookup].[EnvelopeOption] ([Id], [Code], [Description]) VALUES (0, N'Null
 INSERT [lookup].[EnvelopeOption] ([Id], [Code], [Description]) VALUES (1, N'I', N'Individual')
 INSERT [lookup].[EnvelopeOption] ([Id], [Code], [Description]) VALUES (2, N'J', N'Joint')
 INSERT [lookup].[EnvelopeOption] ([Id], [Code], [Description]) VALUES (9, N'N', N'None')
-/****** Object:  Table [lookup].[DecisionType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[DecisionType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -306,7 +306,7 @@ INSERT [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (30, N'LETTE
 INSERT [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (40, N'STATEMENT', N'Statement')
 INSERT [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (50, N'BAP-REQD', N'Stmt requiring Baptism')
 INSERT [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (60, N'CANCELLED', N'Cancelled')
-/****** Object:  Table [lookup].[DropType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[DropType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -329,7 +329,7 @@ INSERT [lookup].[DropType] ([Id], [Code], [Description]) VALUES (40, N'LET', N'L
 INSERT [lookup].[DropType] ([Id], [Code], [Description]) VALUES (50, N'REQ', N'Requested Drop')
 INSERT [lookup].[DropType] ([Id], [Code], [Description]) VALUES (60, N'AND', N'Another Denomination')
 INSERT [lookup].[DropType] ([Id], [Code], [Description]) VALUES (98, N'OTH', N'Other')
-/****** Object:  Table [lookup].[BaptismStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[BaptismStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -349,7 +349,7 @@ INSERT [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (10, N'SCH'
 INSERT [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (20, N'NSC', N'Not Scheduled')
 INSERT [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (30, N'CMP', N'Completed')
 INSERT [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (40, N'CAN', N'Cancelled')
-/****** Object:  Table [lookup].[BaptismType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[BaptismType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -370,7 +370,7 @@ INSERT [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (20, N'SUB', 
 INSERT [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (30, N'BIO', N'Biological')
 INSERT [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (40, N'NON', N'Non-Member')
 INSERT [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (50, N'RFM', N'Required')
-/****** Object:  Table [lookup].[AddressType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[AddressType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -389,7 +389,7 @@ INSERT [lookup].[AddressType] ([Id], [Code], [Description]) VALUES (10, N'F1', N
 INSERT [lookup].[AddressType] ([Id], [Code], [Description]) VALUES (20, N'F2', N'Family Alternate')
 INSERT [lookup].[AddressType] ([Id], [Code], [Description]) VALUES (30, N'P1', N'Personal')
 INSERT [lookup].[AddressType] ([Id], [Code], [Description]) VALUES (40, N'P2', N'Personal Alternate')
-/****** Object:  UserDefinedFunction [dbo].[Age]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[Age]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -432,7 +432,7 @@ select @m = BirthMonth, @d = BirthDay, @y = BirthYear, @p_deceased_date = Deceas
 	RETURN @v_return
 	END
 GO
-/****** Object:  Table [dbo].[Program]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Program]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -451,7 +451,7 @@ SET IDENTITY_INSERT [dbo].[Program] ON
 INSERT [dbo].[Program] ([Id], [Name], [BFProgram]) VALUES (1, N'First Program', 1)
 INSERT [dbo].[Program] ([Id], [Name], [BFProgram]) VALUES (2, N'Misc Tags', NULL)
 SET IDENTITY_INSERT [dbo].[Program] OFF
-/****** Object:  Table [dbo].[Division]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Division]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -470,7 +470,7 @@ GO
 SET IDENTITY_INSERT [dbo].[Division] ON
 INSERT [dbo].[Division] ([Id], [Name], [ProgId], [SortOrder]) VALUES (1, N'First Division', 1, NULL)
 SET IDENTITY_INSERT [dbo].[Division] OFF
-/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipClassId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipClassId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -494,7 +494,7 @@ AS
 	return @oid
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipTeacher]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipTeacher]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -509,7 +509,7 @@ AS
 	return @name
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipTeacherId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[BibleFellowshipTeacherId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -535,49 +535,7 @@ ORDER BY EnrollmentDate
 	return @id
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[HomePhone]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[HomePhone](@pid int)
-RETURNS varchar(11)
-AS
-	BEGIN
-	declare @homephone varchar(11)
-	select @homephone = f.HomePhone from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @homephone
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[InBFClass]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[InBFClass]
-	(
-	@pid int
-	)
-RETURNS bit
-AS
-	BEGIN
-	declare @mem BIT, @bfid INT
-	SELECT TOP 1 @bfid = Id FROM dbo.Program WHERE BFProgram = 1
-
-	select @mem = 1
-	FROM dbo.OrganizationMembers  AS om
-	join dbo.Organizations o on o.OrganizationId = om.OrganizationId
-	join dbo.DivOrg AS do ON o.OrganizationId = do.OrgId
-	join dbo.Division d ON do.DivId = d.Id
-	where d.ProgId = @bfid and om.PeopleId = @pid
-
-	RETURN isnull(@mem, 0)
-
-	END
-GO
-/****** Object:  Table [dbo].[Ministries]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Ministries]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -608,7 +566,7 @@ GO
 SET IDENTITY_INSERT [dbo].[Ministries] ON
 INSERT [dbo].[Ministries] ([MinistryId], [MinistryName], [CreatedBy], [CreatedDate], [ModifiedBy], [ModifiedDate], [RecordStatus], [DepartmentId], [MinistryDescription], [MinistryContactId], [ChurchId]) VALUES (0, N'(unspecified)', 1, CAST(0x00009C0100000000 AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[Ministries] OFF
-/****** Object:  Table [lookup].[NewContactReason]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[NewContactReason]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -632,7 +590,7 @@ INSERT [lookup].[NewContactReason] ([Id], [Code], [Description]) VALUES (131, N'
 INSERT [lookup].[NewContactReason] ([Id], [Code], [Description]) VALUES (140, N'IR', N'In-Reach')
 INSERT [lookup].[NewContactReason] ([Id], [Code], [Description]) VALUES (150, N'I', N'Information')
 INSERT [lookup].[NewContactReason] ([Id], [Code], [Description]) VALUES (160, N'O', N'Other')
-/****** Object:  Table [lookup].[NewContactType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[NewContactType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -660,7 +618,7 @@ INSERT [lookup].[NewContactType] ([Id], [Code], [Description]) VALUES (10, N'EV'
 INSERT [lookup].[NewContactType] ([Id], [Code], [Description]) VALUES (11, N'PI', N'Phone In')
 INSERT [lookup].[NewContactType] ([Id], [Code], [Description]) VALUES (12, N'SV', N'SurveyEE')
 INSERT [lookup].[NewContactType] ([Id], [Code], [Description]) VALUES (99, N'U', N'Unknown')
-/****** Object:  Table [dbo].[NewContact]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[NewContact]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -689,7 +647,7 @@ CREATE TABLE [dbo].[NewContact](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[LastContact]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[LastContact]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -715,7 +673,249 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[SpouseId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[HomePhone]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[HomePhone](@pid int)
+RETURNS varchar(11)
+AS
+	BEGIN
+	declare @homephone varchar(11)
+	select @homephone = f.HomePhone from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @homephone
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[InBFClass]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[InBFClass]
+	(
+	@pid int
+	)
+RETURNS bit
+AS
+	BEGIN
+	declare @mem BIT, @bfid INT
+	SELECT TOP 1 @bfid = Id FROM dbo.Program WHERE BFProgram = 1
+
+	select @mem = 1
+	FROM dbo.OrganizationMembers  AS om
+	join dbo.Organizations o on o.OrganizationId = om.OrganizationId
+	join dbo.DivOrg AS do ON o.OrganizationId = do.OrgId
+	join dbo.Division d ON do.DivId = d.Id
+	where d.ProgId = @bfid and om.PeopleId = @pid
+
+	RETURN isnull(@mem, 0)
+
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryAddress]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryAddress] ( @pid int )
+RETURNS varchar(60)
+AS
+	BEGIN
+declare @addr varchar(60)
+select @addr =
+	case AddressTypeId
+			when 10 then f.AddressLineOne
+			when 20 then f.AltAddressLineOne
+			when 30 then p.AddressLineOne
+			when 40 then p.AltAddressLineOne
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @addr
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryAddress2]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryAddress2] ( @pid int )
+RETURNS varchar(60)
+AS
+	BEGIN
+declare @addr varchar(60)
+select @addr =
+	case AddressTypeId
+			when 10 then f.AddressLineTwo
+			when 20 then f.AltAddressLineTwo
+			when 30 then p.AddressLineTwo
+			when 40 then p.AltAddressLineTwo
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @addr
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryBadAddressFlag]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryBadAddressFlag]( @pid int )
+RETURNS int
+AS
+	BEGIN
+declare @flag bit
+select @flag =
+	case AddressTypeId
+		when 10 then f.BadAddressFlag
+		when 20 then f.AltBadAddressFlag
+		when 30 then p.BadAddressFlag
+		when 40 then p.AltBadAddressFlag
+	end
+	
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+if (@flag is null)
+	select @flag = 0
+
+	RETURN @flag
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryCity]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryCity] ( @pid int )
+RETURNS varchar(50)
+AS
+	BEGIN
+declare @city varchar(50)
+select @city =
+	case AddressTypeId
+			when 10 then f.CityName
+			when 20 then f.AltCityName
+			when 30 then p.CityName
+			when 40 then p.AltCityName
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @city
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryResCode]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryResCode]( @pid int )
+RETURNS int
+AS
+	BEGIN
+declare @rescodeid int
+select @rescodeid =
+	case AddressTypeId
+		when 10 then f.ResCodeId
+		when 20 then f.AltResCodeId
+		when 30 then p.ResCodeId
+		when 40 then p.AltResCodeId
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+if @rescodeid is null
+	select @rescodeid = 40
+
+	RETURN @rescodeid
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryState]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryState] ( @pid int )
+RETURNS varchar(5)
+AS
+	BEGIN
+declare @st varchar(5)
+select @st =
+	case AddressTypeId
+			when 10 then f.StateCode
+			when 20 then f.AltStateCode
+			when 30 then p.StateCode
+			when 40 then p.AltStateCode
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @st
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[PrimaryZip]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[PrimaryZip] ( @pid int )
+RETURNS varchar(11)
+AS
+	BEGIN
+declare @zip varchar(11)
+select @zip =
+	case AddressTypeId
+			when 10 then f.ZipCode
+			when 20 then f.AltZipCode
+			when 30 then p.ZipCode
+			when 40 then p.AltZipCode
+	end
+from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
+where PeopleId = @pid
+
+	RETURN @zip
+	END
+GO
+/****** Object:  UserDefinedFunction [dbo].[SchoolGrade]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date, ,>
+-- Description:	<Description, ,>
+-- =============================================
+CREATE FUNCTION [dbo].[SchoolGrade] (@pid INT)
+RETURNS INT
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE @g INT
+
+SELECT TOP 1 @g = GradeRangeStart FROM dbo.Organizations o
+WHERE EXISTS(
+		SELECT NULL 
+		FROM dbo.OrganizationMembers om 
+		WHERE om.OrganizationId = o.OrganizationId
+		AND om.PeopleId = @pid AND om.MemberTypeId = 220
+		)
+AND o.GradeRangeStart = o.GradeRangeEnd AND o.GradeRangeStart IS NOT NULL AND o.GradeRangeStart <> 0
+
+
+	-- Return the result of the function
+	RETURN @g
+
+END
+GO
+/****** Object:  UserDefinedFunction [dbo].[SpouseId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -762,207 +962,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[SchoolGrade]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date, ,>
--- Description:	<Description, ,>
--- =============================================
-CREATE FUNCTION [dbo].[SchoolGrade] (@pid INT)
-RETURNS INT
-AS
-BEGIN
-	-- Declare the return variable here
-	DECLARE @g INT
-
-SELECT TOP 1 @g = GradeRangeStart FROM dbo.Organizations o
-WHERE EXISTS(
-		SELECT NULL 
-		FROM dbo.OrganizationMembers om 
-		WHERE om.OrganizationId = o.OrganizationId
-		AND om.PeopleId = @pid AND om.MemberTypeId = 220
-		)
-AND o.GradeRangeStart = o.GradeRangeEnd AND o.GradeRangeStart IS NOT NULL AND o.GradeRangeStart <> 0
-
-
-	-- Return the result of the function
-	RETURN @g
-
-END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryAddress]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryAddress] ( @pid int )
-RETURNS varchar(60)
-AS
-	BEGIN
-declare @addr varchar(60)
-select @addr =
-	case AddressTypeId
-			when 10 then f.AddressLineOne
-			when 20 then f.AltAddressLineOne
-			when 30 then p.AddressLineOne
-			when 40 then p.AltAddressLineOne
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @addr
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryAddress2]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryAddress2] ( @pid int )
-RETURNS varchar(60)
-AS
-	BEGIN
-declare @addr varchar(60)
-select @addr =
-	case AddressTypeId
-			when 10 then f.AddressLineTwo
-			when 20 then f.AltAddressLineTwo
-			when 30 then p.AddressLineTwo
-			when 40 then p.AltAddressLineTwo
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @addr
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryBadAddressFlag]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryBadAddressFlag]( @pid int )
-RETURNS int
-AS
-	BEGIN
-declare @flag bit
-select @flag =
-	case AddressTypeId
-		when 10 then f.BadAddressFlag
-		when 20 then f.AltBadAddressFlag
-		when 30 then p.BadAddressFlag
-		when 40 then p.AltBadAddressFlag
-	end
-	
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-if (@flag is null)
-	select @flag = 0
-
-	RETURN @flag
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryCity]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryCity] ( @pid int )
-RETURNS varchar(50)
-AS
-	BEGIN
-declare @city varchar(50)
-select @city =
-	case AddressTypeId
-			when 10 then f.CityName
-			when 20 then f.AltCityName
-			when 30 then p.CityName
-			when 40 then p.AltCityName
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @city
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryResCode]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryResCode]( @pid int )
-RETURNS int
-AS
-	BEGIN
-declare @rescodeid int
-select @rescodeid =
-	case AddressTypeId
-		when 10 then f.ResCodeId
-		when 20 then f.AltResCodeId
-		when 30 then p.ResCodeId
-		when 40 then p.AltResCodeId
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-if @rescodeid is null
-	select @rescodeid = 40
-
-	RETURN @rescodeid
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryState]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryState] ( @pid int )
-RETURNS varchar(5)
-AS
-	BEGIN
-declare @st varchar(5)
-select @st =
-	case AddressTypeId
-			when 10 then f.StateCode
-			when 20 then f.AltStateCode
-			when 30 then p.StateCode
-			when 40 then p.AltStateCode
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @st
-	END
-GO
-/****** Object:  UserDefinedFunction [dbo].[PrimaryZip]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[PrimaryZip] ( @pid int )
-RETURNS varchar(11)
-AS
-	BEGIN
-declare @zip varchar(11)
-select @zip =
-	case AddressTypeId
-			when 10 then f.ZipCode
-			when 20 then f.AltZipCode
-			when 30 then p.ZipCode
-			when 40 then p.AltZipCode
-	end
-from dbo.People p join dbo.Families f on f.FamilyId = p.FamilyId
-where PeopleId = @pid
-
-	RETURN @zip
-	END
-GO
-/****** Object:  Table [dbo].[People]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[People]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1098,7 +1098,7 @@ GO
 SET IDENTITY_INSERT [dbo].[People] ON
 INSERT [dbo].[People] ([PeopleId], [CreatedBy], [CreatedDate], [DropCodeId], [GenderId], [DoNotMailFlag], [DoNotCallFlag], [DoNotVisitFlag], [AddressTypeId], [PhonePrefId], [MaritalStatusId], [PositionInFamilyId], [MemberStatusId], [FamilyId], [BirthMonth], [BirthDay], [BirthYear], [OriginId], [EntryPointId], [InterestPointId], [BaptismTypeId], [BaptismStatusId], [DecisionTypeId], [DiscoveryClassStatusId], [NewMbrClassStatusId], [LetterStatusId], [JoinCodeId], [EnvelopeOptionsId], [BadAddressFlag], [AltBadAddressFlag], [ResCodeId], [AltResCodeId], [AddressFromDate], [AddressToDate], [AltAddressFromDate], [AltAddressToDate], [WeddingDate], [OriginDate], [BaptismSchedDate], [BaptismDate], [DecisionDate], [DiscoveryClassDate], [NewMbrClassDateCompleted], [LetterDateRequested], [LetterDateReceived], [JoinDate], [DropDate], [DeceasedDate], [TitleCode], [FirstName], [MiddleName], [MaidenName], [LastName], [SuffixCode], [NickName], [AddressLineOne], [AddressLineTwo], [CityName], [StateCode], [ZipCode], [CountryName], [StreetName], [AltAddressLineOne], [AltAddressLineTwo], [AltCityName], [AltStateCode], [AltZipCode], [AltCountryName], [AltStreetName], [CellPhone], [WorkPhone], [EmailAddress], [OtherPreviousChurch], [OtherNewChurch], [SchoolOther], [EmployerOther], [OccupationOther], [HobbyOther], [SkillOther], [InterestOther], [LetterStatusNotes], [Comments], [ChristAsSavior], [MemberAnyChurch], [InterestedInJoining], [PleaseVisit], [InfoBecomeAChristian], [ContributionsStatement], [ModifiedBy], [ModifiedDate], [PictureId], [ContributionOptionsId]) VALUES (1, 1, CAST(0x00009C0001776267 AS DateTime), 0, 0, 0, 0, 0, 10, 0, 0, 10, 50, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'The', NULL, NULL, N'Admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[People] OFF
-/****** Object:  UserDefinedFunction [dbo].[UName]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[UName]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1123,7 +1123,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[UName2]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[UName2]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1148,7 +1148,7 @@ BEGIN
 
 END
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1190,7 +1190,7 @@ SET IDENTITY_INSERT [dbo].[Users] ON
 INSERT [dbo].[Users] ([UserId], [PeopleId], [Username], [Comment], [Password], [PasswordQuestion], [PasswordAnswer], [IsApproved], [LastActivityDate], [LastLoginDate], [LastPasswordChangedDate], [CreationDate], [IsLockedOut], [LastLockedOutDate], [FailedPasswordAttemptCount], [FailedPasswordAttemptWindowStart], [FailedPasswordAnswerAttemptCount], [FailedPasswordAnswerAttemptWindowStart], [EmailAddress], [ItemsInGrid], [CurrentCart], [MustChangePassword], [Host], [TempPassword]) VALUES (1, 1, N'Admin', NULL, N'', NULL, NULL, 1, CAST(0x00009C01015FD458 AS DateTime), CAST(0x00009C01015EB6BB AS DateTime), NULL, CAST(0x00009C000177624F AS DateTime), 0, NULL, 0, NULL, 0, NULL, N'bbcms01@bellevue.org', NULL, NULL, 0, N'localhost', NULL)
 INSERT [dbo].[Users] ([UserId], [PeopleId], [Username], [Comment], [Password], [PasswordQuestion], [PasswordAnswer], [IsApproved], [LastActivityDate], [LastLoginDate], [LastPasswordChangedDate], [CreationDate], [IsLockedOut], [LastLockedOutDate], [FailedPasswordAttemptCount], [FailedPasswordAttemptWindowStart], [FailedPasswordAnswerAttemptCount], [FailedPasswordAnswerAttemptWindowStart], [EmailAddress], [ItemsInGrid], [CurrentCart], [MustChangePassword], [Host], [TempPassword]) VALUES (2, 1, N'David', N'', N'/3qmnrIINA0TGqj0jY2vk0CO+Fo=', NULL, NULL, 1, CAST(0x00009C01015F65CE AS DateTime), NULL, CAST(0x00009C01015F65CE AS DateTime), CAST(0x00009C01015F65CE AS DateTime), 0, CAST(0x00009C01015F65CE AS DateTime), 0, CAST(0x00009C01015F65CE AS DateTime), 0, CAST(0x00009C01015F65CE AS DateTime), N'david@davidcarroll.name', NULL, NULL, 0, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[Users] OFF
-/****** Object:  Table [dbo].[UserCanEmailFor]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[UserCanEmailFor]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1205,7 +1205,7 @@ CREATE TABLE [dbo].[UserCanEmailFor](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Preferences]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Preferences]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1221,47 +1221,7 @@ CREATE TABLE [dbo].[Preferences](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TagType]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TagType](
-	[Id] [int] NOT NULL,
-	[Name] [varchar](50) NOT NULL,
- CONSTRAINT [PK_TagTypes] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [dbo].[TagType] ([Id], [Name]) VALUES (1, N'Personal')
-INSERT [dbo].[TagType] ([Id], [Name]) VALUES (3, N'CouplesHelper')
-INSERT [dbo].[TagType] ([Id], [Name]) VALUES (4, N'AddSelected')
-INSERT [dbo].[TagType] ([Id], [Name]) VALUES (5, N'OrgMembersOnly')
-/****** Object:  Table [dbo].[Tag]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Tag](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[TypeId] [int] NOT NULL,
-	[Owner] [varchar](50) NULL,
-	[Active] [bit] NULL,
-	[PeopleId] [int] NULL,
-	[OwnerName]  AS ([dbo].[UName]([PeopleId])),
- CONSTRAINT [PK_Tag] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET IDENTITY_INSERT [dbo].[Tag] ON
-INSERT [dbo].[Tag] ([Id], [Name], [TypeId], [Owner], [Active], [PeopleId]) VALUES (1, N'TrackBirthdays', 1, NULL, NULL, 1)
-SET IDENTITY_INSERT [dbo].[Tag] OFF
-/****** Object:  Table [lookup].[VolApplicationStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[VolApplicationStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1281,7 +1241,7 @@ INSERT [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (10,
 INSERT [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (20, N'WD', N'Withdrawn')
 INSERT [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (30, N'Not', N'Not Approved')
 INSERT [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (40, N'Pend', N'Pending')
-/****** Object:  Table [dbo].[Volunteer]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Volunteer]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1300,7 +1260,7 @@ CREATE TABLE [dbo].[Volunteer](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[VolunteerForm]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[VolunteerForm]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1325,7 +1285,7 @@ CREATE NONCLUSTERED INDEX [IX_VolunteerForm] ON [dbo].[VolunteerForm]
 	[PeopleId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[UserName]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[UserName]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1343,7 +1303,47 @@ WHERE     PeopleId = @pid
 	return @name
 	END
 GO
-/****** Object:  Table [dbo].[TagShare]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[TagType]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TagType](
+	[Id] [int] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_TagTypes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[TagType] ([Id], [Name]) VALUES (1, N'Personal')
+INSERT [dbo].[TagType] ([Id], [Name]) VALUES (3, N'CouplesHelper')
+INSERT [dbo].[TagType] ([Id], [Name]) VALUES (4, N'AddSelected')
+INSERT [dbo].[TagType] ([Id], [Name]) VALUES (5, N'OrgMembersOnly')
+/****** Object:  Table [dbo].[Tag]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tag](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[TypeId] [int] NOT NULL,
+	[Owner] [varchar](50) NULL,
+	[Active] [bit] NULL,
+	[PeopleId] [int] NULL,
+	[OwnerName]  AS ([dbo].[UName]([PeopleId])),
+ CONSTRAINT [PK_Tag] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Tag] ON
+INSERT [dbo].[Tag] ([Id], [Name], [TypeId], [Owner], [Active], [PeopleId]) VALUES (1, N'TrackBirthdays', 1, NULL, NULL, 1)
+SET IDENTITY_INSERT [dbo].[Tag] OFF
+/****** Object:  Table [dbo].[TagShare]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1358,7 +1358,7 @@ CREATE TABLE [dbo].[TagShare](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TagPerson]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[TagPerson]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1378,7 +1378,7 @@ CREATE NONCLUSTERED INDEX [IX_TagPerson] ON [dbo].[TagPerson]
 	[PeopleId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[TaggedPeople]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[TaggedPeople]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1401,7 +1401,7 @@ BEGIN
     RETURN
 END
 GO
-/****** Object:  Table [lookup].[MemberType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[MemberType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1464,7 +1464,7 @@ INSERT [lookup].[MemberType] ([Id], [Code], [Description], [AttendanceTypeId]) V
 INSERT [lookup].[MemberType] ([Id], [Code], [Description], [AttendanceTypeId]) VALUES (500, N'IM', N'In-Service Member', 70)
 INSERT [lookup].[MemberType] ([Id], [Code], [Description], [AttendanceTypeId]) VALUES (700, N'VI', N'VIP', 20)
 INSERT [lookup].[MemberType] ([Id], [Code], [Description], [AttendanceTypeId]) VALUES (710, N'VL', N'Volunteer', 20)
-/****** Object:  Table [lookup].[AttendType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[AttendType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1490,7 +1490,7 @@ INSERT [lookup].[AttendType] ([Id], [Code], [Description]) VALUES (80, N'OFS', N
 INSERT [lookup].[AttendType] ([Id], [Code], [Description]) VALUES (90, N'GRP', N'Group')
 INSERT [lookup].[AttendType] ([Id], [Code], [Description]) VALUES (100, N'HMB', N'Homebound')
 INSERT [lookup].[AttendType] ([Id], [Code], [Description]) VALUES (110, N'OC', N'Other Class')
-/****** Object:  Table [lookup].[WeeklySchedule]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[WeeklySchedule]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1534,7 +1534,7 @@ INSERT [lookup].[WeeklySchedule] ([Id], [Description], [Day], [MeetingTime], [Co
 INSERT [lookup].[WeeklySchedule] ([Id], [Description], [Day], [MeetingTime], [Code]) VALUES (1032, N'Saturday 8:30 AM', 6, CAST(0x00009B54008C1360 AS DateTime), N'Sa0830')
 INSERT [lookup].[WeeklySchedule] ([Id], [Description], [Day], [MeetingTime], [Code]) VALUES (1034, N'Saturday 6:00 PM', 6, CAST(0x00009B540128A180 AS DateTime), N'Sa1800')
 INSERT [lookup].[WeeklySchedule] ([Id], [Description], [Day], [MeetingTime], [Code]) VALUES (1035, N'Sunday 2:00 PM', 0, CAST(0x00009B5400E6B680 AS DateTime), N'Su1400')
-/****** Object:  Table [lookup].[OrganizationStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[OrganizationStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1553,7 +1553,7 @@ INSERT [lookup].[OrganizationStatus] ([Id], [Code], [Description]) VALUES (10, N
 INSERT [lookup].[OrganizationStatus] ([Id], [Code], [Description]) VALUES (20, N'R', N'Review')
 INSERT [lookup].[OrganizationStatus] ([Id], [Code], [Description]) VALUES (30, N'A', N'Active')
 INSERT [lookup].[OrganizationStatus] ([Id], [Code], [Description]) VALUES (40, N'I', N'Inactive')
-/****** Object:  Table [lookup].[AttendTrackLevel]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[AttendTrackLevel]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1571,7 +1571,7 @@ GO
 INSERT [lookup].[AttendTrackLevel] ([Id], [Code], [Description]) VALUES (0, N'N', N'None')
 INSERT [lookup].[AttendTrackLevel] ([Id], [Code], [Description]) VALUES (10, N'HC', N'Headcount')
 INSERT [lookup].[AttendTrackLevel] ([Id], [Code], [Description]) VALUES (20, N'I', N'Individual')
-/****** Object:  UserDefinedFunction [dbo].[OrganizationLeaderId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[OrganizationLeaderId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1604,7 +1604,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[OrganizationLeaderName]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[OrganizationLeaderName]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1638,7 +1638,7 @@ BEGIN
 	RETURN @name
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[OrganizationMemberCount]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[OrganizationMemberCount]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1653,7 +1653,7 @@ BEGIN
 	RETURN @c
 END
 GO
-/****** Object:  Table [dbo].[Organizations]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Organizations]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1699,7 +1699,7 @@ GO
 SET IDENTITY_INSERT [dbo].[Organizations] ON
 INSERT [dbo].[Organizations] ([OrganizationId], [CreatedBy], [CreatedDate], [OrganizationStatusId], [DivisionId], [LeaderMemberTypeId], [RollSheetVisitorWks], [AttendTrkLevelId], [SecurityTypeId], [FirstMeetingDate], [LastMeetingDate], [OrganizationClosedDate], [Location], [OrganizationName], [ModifiedBy], [ModifiedDate], [ScheduleId], [EntryPointId], [ParentOrgId], [AllowAttendOverlap], [AttendClassificationId], [GradeRangeStart], [GradeRangeEnd]) VALUES (1, 1, CAST(0x00009C000177626B AS DateTime), 30, 1, NULL, NULL, 20, 0, NULL, NULL, NULL, NULL, N'First Organization', NULL, NULL, 1001, NULL, NULL, 0, 0, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[Organizations] OFF
-/****** Object:  Table [dbo].[Meetings]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Meetings]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1733,7 +1733,7 @@ CREATE NONCLUSTERED INDEX [IX_MEETINGS_ORG_ID] ON [dbo].[Meetings]
 	[OrganizationId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Attend]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Attend]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1785,7 +1785,7 @@ CREATE NONCLUSTERED INDEX [IX_Attend_4] ON [dbo].[Attend]
 	[MeetingId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ActivityLog]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[ActivityLog]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1810,7 +1810,7 @@ INSERT [dbo].[ActivityLog] ([Id], [ActivityDate], [UserId], [Activity], [PageUrl
 INSERT [dbo].[ActivityLog] ([Id], [ActivityDate], [UserId], [Activity], [PageUrl]) VALUES (5, CAST(0x00009C01015FBFAB AS DateTime), 1, N'Viewing Weekly Attendance Rpt', N'/Reports/BFCAvgWeeklyAttendanceRpt.aspx')
 INSERT [dbo].[ActivityLog] ([Id], [ActivityDate], [UserId], [Activity], [PageUrl]) VALUES (6, CAST(0x00009C01015FC651 AS DateTime), 1, N'Viewing Decision Summary Rpt', N'/Reports/DecisionSummary.aspx')
 SET IDENTITY_INSERT [dbo].[ActivityLog] OFF
-/****** Object:  StoredProcedure [dbo].[LinkEnrollmentTransaction]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[LinkEnrollmentTransaction]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1858,7 +1858,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  Table [dbo].[EnrollmentTransaction]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[EnrollmentTransaction]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1921,7 +1921,7 @@ CREATE NONCLUSTERED INDEX [IX_ENROLLMENT_TRANSACTION_TBL] ON [dbo].[EnrollmentTr
 	[TransactionDate] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[BadET]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[BadET]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1949,7 +1949,7 @@ CREATE NONCLUSTERED INDEX [IX_BadET_1] ON [dbo].[BadET]
 	[TranId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ContributionFund]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[ContributionFund]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1995,7 +1995,7 @@ CREATE NONCLUSTERED INDEX [FUND_NAME_IX] ON [dbo].[ContributionFund]
 	[FundName] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [lookup].[ContributionStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[ContributionStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2013,7 +2013,7 @@ GO
 INSERT [lookup].[ContributionStatus] ([Id], [Code], [Description]) VALUES (0, N'C', N'Recorded')
 INSERT [lookup].[ContributionStatus] ([Id], [Code], [Description]) VALUES (1, N'V', N'Reversed')
 INSERT [lookup].[ContributionStatus] ([Id], [Code], [Description]) VALUES (2, N'R', N'Returned')
-/****** Object:  Table [lookup].[ContributionType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[ContributionType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2034,7 +2034,7 @@ INSERT [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (4, N'G'
 INSERT [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (6, N'RC', N'Returned Check')
 INSERT [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (7, N'RV', N'Reversed')
 INSERT [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (8, N'PL', N'Pledge')
-/****** Object:  Table [dbo].[Contribution]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Contribution]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2090,7 +2090,7 @@ CREATE NONCLUSTERED INDEX [IX_INDIVIDUAL_CONTRIBUTION_TBL_2] ON [dbo].[Contribut
 	[PledgeFlag] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Contactees]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Contactees]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2107,7 +2107,7 @@ CREATE TABLE [dbo].[Contactees](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Contactors]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Contactors]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2122,7 +2122,7 @@ CREATE TABLE [dbo].[Contactors](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[CoupleFlag]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[CoupleFlag]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2168,7 +2168,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetEldestFamilyMember]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetEldestFamilyMember]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2194,7 +2194,7 @@ BEGIN
 	RETURN @Result
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[HeadOfHouseholdId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[HeadOfHouseholdId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2251,7 +2251,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[HeadOfHouseHoldSpouseId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[HeadOfHouseHoldSpouseId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2281,7 +2281,7 @@ BEGIN
 
 END
 GO
-/****** Object:  Table [dbo].[Families]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Families]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2328,7 +2328,7 @@ GO
 SET IDENTITY_INSERT [dbo].[Families] ON
 INSERT [dbo].[Families] ([FamilyId], [CreatedBy], [CreatedDate], [RecordStatus], [BadAddressFlag], [AltBadAddressFlag], [ResCodeId], [AltResCodeId], [AddressFromDate], [AddressToDate], [AltAddressFromDate], [AltAddressToDate], [AddressLineOne], [AddressLineTwo], [CityName], [StateCode], [ZipCode], [CountryName], [StreetName], [AltAddressLineOne], [AltAddressLineTwo], [AltCityName], [AltStateCode], [AltZipCode], [AltCountryName], [AltStreetName], [HomePhone], [ModifiedBy], [ModifiedDate]) VALUES (1, 1, CAST(0x00009C0001776267 AS DateTime), 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[Families] OFF
-/****** Object:  Table [dbo].[OrganizationMembers]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[OrganizationMembers]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2363,144 +2363,7 @@ CREATE NONCLUSTERED INDEX [ORGANIZATION_MEMBERS_PPL_FK_IX] ON [dbo].[Organizatio
 	[PeopleId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TagOrg]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TagOrg](
-	[Id] [int] NOT NULL,
-	[OrganizationId] [int] NOT NULL,
- CONSTRAINT [PK_TagOrg] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC,
-	[OrganizationId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [IX_TagOrg] ON [dbo].[TagOrg] 
-(
-	[OrganizationId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[RelatedFamilies]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[RelatedFamilies](
-	[FamilyId] [int] NOT NULL,
-	[RelatedFamilyId] [int] NOT NULL,
-	[CreatedBy] [int] NOT NULL,
-	[CreatedDate] [datetime] NOT NULL,
-	[FamilyRelationshipDesc] [varchar](256) NOT NULL,
-	[ModifiedBy] [int] NULL,
-	[ModifiedDate] [datetime] NULL,
- CONSTRAINT [RELATED_FAMILIES_PK] PRIMARY KEY NONCLUSTERED 
-(
-	[FamilyId] ASC,
-	[RelatedFamilyId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [RELATED_FAMILIES_RELATED_FK_IX] ON [dbo].[RelatedFamilies] 
-(
-	[RelatedFamilyId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[TaskList]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TaskList](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CreatedBy] [int] NULL,
-	[Name] [varchar](50) NULL,
- CONSTRAINT [PK_TaskList] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET IDENTITY_INSERT [dbo].[TaskList] ON
-INSERT [dbo].[TaskList] ([Id], [CreatedBy], [Name]) VALUES (1, 0, N'InBox')
-INSERT [dbo].[TaskList] ([Id], [CreatedBy], [Name]) VALUES (2, 0, N'Personal')
-SET IDENTITY_INSERT [dbo].[TaskList] OFF
-/****** Object:  Table [dbo].[TaskListOwners]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TaskListOwners](
-	[TaskListId] [int] NOT NULL,
-	[PeopleId] [int] NOT NULL,
- CONSTRAINT [PK_TaskListOwners] PRIMARY KEY CLUSTERED 
-(
-	[TaskListId] ASC,
-	[PeopleId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [lookup].[TaskStatus]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[TaskStatus](
-	[Id] [int] NOT NULL,
-	[Code] [varchar](50) NULL,
-	[Description] [varchar](100) NULL,
- CONSTRAINT [PK_TaskStatus] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (10, N'A', N'Active')
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (20, N'W', N'Waiting For')
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (30, N'S', N'Someday')
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (40, N'C', N'Completed')
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (50, N'P', N'Pending Acceptance')
-INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (60, N'R', N'ReDelegated')
-/****** Object:  Table [dbo].[Task]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Task](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[OwnerId] [int] NOT NULL,
-	[ListId] [int] NOT NULL,
-	[CoOwnerId] [int] NULL,
-	[CoListId] [int] NULL,
-	[StatusId] [int] NULL,
-	[CreatedOn] [datetime] NOT NULL,
-	[SourceContactId] [int] NULL,
-	[CompletedContactId] [int] NULL,
-	[Notes] [varchar](max) NULL,
-	[ModifiedBy] [int] NULL,
-	[ModifiedOn] [datetime] NULL,
-	[Project] [varchar](50) NULL,
-	[Archive] [bit] NOT NULL,
-	[Priority] [int] NULL,
-	[WhoId] [int] NULL,
-	[Due] [datetime] NULL,
-	[Location] [varchar](50) NULL,
-	[Description] [varchar](100) NULL,
-	[CompletedOn] [datetime] NULL,
- CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [IX_Task] ON [dbo].[Task] 
-(
-	[OwnerId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-/****** Object:  StoredProcedure [dbo].[UpdateMeetingCounters]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateMeetingCounters]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2538,7 +2401,7 @@ BEGIN
 	END
 END
 GO
-/****** Object:  Table [dbo].[Roles]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Roles]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2569,7 +2432,7 @@ INSERT [dbo].[Roles] ([RoleName], [RoleId]) VALUES (N'OrgMembersOnly', 7)
 INSERT [dbo].[Roles] ([RoleName], [RoleId]) VALUES (N'OrgTagger', 6)
 INSERT [dbo].[Roles] ([RoleName], [RoleId]) VALUES (N'Staff', 2)
 SET IDENTITY_INSERT [dbo].[Roles] OFF
-/****** Object:  Table [dbo].[UserRole]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[UserRole]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2599,7 +2462,124 @@ INSERT [dbo].[UserRole] ([UserId], [RoleId]) VALUES (2, 5)
 INSERT [dbo].[UserRole] ([UserId], [RoleId]) VALUES (2, 6)
 INSERT [dbo].[UserRole] ([UserId], [RoleId]) VALUES (2, 8)
 INSERT [dbo].[UserRole] ([UserId], [RoleId]) VALUES (2, 9)
-/****** Object:  StoredProcedure [dbo].[PurgePerson]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  Table [dbo].[RelatedFamilies]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RelatedFamilies](
+	[FamilyId] [int] NOT NULL,
+	[RelatedFamilyId] [int] NOT NULL,
+	[CreatedBy] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[FamilyRelationshipDesc] [varchar](256) NOT NULL,
+	[ModifiedBy] [int] NULL,
+	[ModifiedDate] [datetime] NULL,
+ CONSTRAINT [RELATED_FAMILIES_PK] PRIMARY KEY NONCLUSTERED 
+(
+	[FamilyId] ASC,
+	[RelatedFamilyId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [RELATED_FAMILIES_RELATED_FK_IX] ON [dbo].[RelatedFamilies] 
+(
+	[RelatedFamilyId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TaskList]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TaskList](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedBy] [int] NULL,
+	[Name] [varchar](50) NULL,
+ CONSTRAINT [PK_TaskList] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[TaskList] ON
+INSERT [dbo].[TaskList] ([Id], [CreatedBy], [Name]) VALUES (1, 0, N'InBox')
+INSERT [dbo].[TaskList] ([Id], [CreatedBy], [Name]) VALUES (2, 0, N'Personal')
+SET IDENTITY_INSERT [dbo].[TaskList] OFF
+/****** Object:  Table [dbo].[TaskListOwners]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TaskListOwners](
+	[TaskListId] [int] NOT NULL,
+	[PeopleId] [int] NOT NULL,
+ CONSTRAINT [PK_TaskListOwners] PRIMARY KEY CLUSTERED 
+(
+	[TaskListId] ASC,
+	[PeopleId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [lookup].[TaskStatus]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[TaskStatus](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](50) NULL,
+	[Description] [varchar](100) NULL,
+ CONSTRAINT [PK_TaskStatus] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (10, N'A', N'Active')
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (20, N'W', N'Waiting For')
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (30, N'S', N'Someday')
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (40, N'C', N'Completed')
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (50, N'P', N'Pending Acceptance')
+INSERT [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (60, N'R', N'ReDelegated')
+/****** Object:  Table [dbo].[Task]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Task](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[OwnerId] [int] NOT NULL,
+	[ListId] [int] NOT NULL,
+	[CoOwnerId] [int] NULL,
+	[CoListId] [int] NULL,
+	[StatusId] [int] NULL,
+	[CreatedOn] [datetime] NOT NULL,
+	[SourceContactId] [int] NULL,
+	[CompletedContactId] [int] NULL,
+	[Notes] [varchar](max) NULL,
+	[ModifiedBy] [int] NULL,
+	[ModifiedOn] [datetime] NULL,
+	[Project] [varchar](50) NULL,
+	[Archive] [bit] NOT NULL,
+	[Priority] [int] NULL,
+	[WhoId] [int] NULL,
+	[Due] [datetime] NULL,
+	[Location] [varchar](50) NULL,
+	[Description] [varchar](100) NULL,
+	[CompletedOn] [datetime] NULL,
+ CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [IX_Task] ON [dbo].[Task] 
+(
+	[OwnerId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  StoredProcedure [dbo].[PurgePerson]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2651,12 +2631,9 @@ BEGIN
 		UPDATE dbo.VolunteerForm SET UploaderId = NULL WHERE UploaderId IN (SELECT UserId FROM dbo.Users WHERE PeopleId = @pid)
 		DELETE FROM dbo.Users WHERE PeopleId = @pid
 		
-		DELETE FROM dbo.TagOrg WHERE Id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagPerson WHERE id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagShare WHERE TagId IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.TagShare WHERE PeopleId = @pid
-		DELETE FROM dbo.TagTag WHERE Id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
-		DELETE FROM dbo.TagTag WHERE ParentTagId IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
 		DELETE FROM dbo.Tag WHERE PeopleId = @pid
 		
 		SELECT @fid = FamilyId, @pic = PictureId FROM dbo.People WHERE PeopleId = @pid
@@ -2681,7 +2658,7 @@ BEGIN
  
 END
 GO
-/****** Object:  StoredProcedure [dbo].[PurgeAllPeople]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[PurgeAllPeople]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2723,7 +2700,7 @@ BEGIN
 		DEALLOCATE pcur
 END
 GO
-/****** Object:  StoredProcedure [dbo].[PrimaryAdult3]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[PrimaryAdult3]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2744,16 +2721,7 @@ BEGIN
 	ON p.FamilyId = v.FamilyId
 END
 GO
-/****** Object:  View [dbo].[LastName]    Script Date: 05/11/2009 20:26:37 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[LastName]
-AS
-SELECT LastName, COUNT(*) AS [count] FROM dbo.People GROUP BY LastName
-GO
-/****** Object:  Table [dbo].[VBSApp]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[VBSApp]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2779,7 +2747,7 @@ CREATE TABLE [dbo].[VBSApp](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[WasDeaconActive2008]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[WasDeaconActive2008]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2808,7 +2776,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateAttendStr]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateAttendStr]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2903,7 +2871,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateAllAttendStr]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateAllAttendStr]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2938,7 +2906,7 @@ BEGIN
 		DEALLOCATE cur
 END
 GO
-/****** Object:  View [dbo].[Nick]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  View [dbo].[Nick]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2947,7 +2915,7 @@ CREATE VIEW [dbo].[Nick]
 AS
 SELECT NickName, COUNT(*) AS [count] FROM dbo.People GROUP BY NickName
 GO
-/****** Object:  UserDefinedFunction [dbo].[NextBirthday]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[NextBirthday]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2977,35 +2945,16 @@ if @date < @today
 RETURN @date
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[InBFClass2]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  View [dbo].[LastName]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE FUNCTION [dbo].[InBFClass2]
-	(
-	@pid int
-	)
-RETURNS bit
+CREATE VIEW [dbo].[LastName]
 AS
-	BEGIN
-	declare @mem bit
-
-select @mem = 1
-FROM dbo.OrganizationMembers  AS om
-join dbo.Organizations o on o.OrganizationId = om.OrganizationId
-join dbo.TagOrg AS tgo on tgo.organizationid = o.OrganizationId
-join dbo.Tag t on tgo.id = t.id
-join dbo.TagTag tt on tt.id = t.id
-where tt.parenttagid = 101 
-and o.RecordStatus = 0 
-and om.RecordStatus = 0
-and om.PeopleId = @pid
-
-RETURN isnull(@mem, 0)
-	END
+SELECT LastName, COUNT(*) AS [count] FROM dbo.People GROUP BY LastName
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateLargeMeetingCounters]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateLargeMeetingCounters]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3036,7 +2985,24 @@ BEGIN
 		DEALLOCATE cur
 END
 GO
-/****** Object:  View [dbo].[FirstNick]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteTagForUser]    Script Date: 05/16/2009 16:51:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DeleteTagForUser](@tag varchar, @user varchar)
+AS
+	/* SET NOCOUNT ON */
+	declare @id int
+	select @id = id from tag where name = @tag and @user = owner
+	
+	delete from tagperson where id = @id
+	delete from tagshare where tagid = @id
+	delete from tag where id = @id
+	
+	RETURN
+GO
+/****** Object:  View [dbo].[FirstNick]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3045,7 +3011,7 @@ CREATE VIEW [dbo].[FirstNick]
 AS
 SELECT FirstName, NickName, COUNT(*) AS [count] FROM dbo.People GROUP BY FirstName, NickName
 GO
-/****** Object:  View [dbo].[FirstName2]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  View [dbo].[FirstName2]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3057,7 +3023,7 @@ FROM         (SELECT     FirstName, GenderId, CASE WHEN Age <= 18 THEN 'C' ELSE 
                        FROM          dbo.People) AS ttt
 GROUP BY FirstName, GenderId, CA
 GO
-/****** Object:  View [dbo].[FirstName]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  View [dbo].[FirstName]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3068,7 +3034,7 @@ SELECT     FirstName, COUNT(*) AS count
 FROM         dbo.People
 GROUP BY FirstName
 GO
-/****** Object:  UserDefinedFunction [dbo].[EnrollmentTransactionId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[EnrollmentTransactionId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3096,7 +3062,7 @@ AS
 	RETURN @TransactionId
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[NextTranChangeDate]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[NextTranChangeDate]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3123,7 +3089,7 @@ AS
 	RETURN @dt
 	END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowTransactions]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[ShowTransactions]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3138,7 +3104,6 @@ BEGIN
 		OrganizationId, 
 		PeopleId, 
 		NextTranChangeDate,
-		ClothingSizeInfo,
 		dbo.NextTranChangeDate(PeopleId, OrganizationId, TransactionId, TransactionTypeId) NextTranChangeDate0,
 		EnrollmentTransactionId,
 		dbo.EnrollmentTransactionId(PeopleId, OrganizationId, TransactionId, TransactionTypeId) EnrollmentTransactionId0,
@@ -3149,7 +3114,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowOddTransactions]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[ShowOddTransactions]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3199,7 +3164,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  StoredProcedure [dbo].[PopulateComputedEnrollmentTransactions]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[PopulateComputedEnrollmentTransactions]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3212,7 +3177,7 @@ BEGIN
 		EnrollmentTransactionId = dbo.EnrollmentTransactionId(PeopleId, OrganizationId, TransactionId, TransactionTypeId)
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[NextChangeTransactionId2]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[NextChangeTransactionId2]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3240,7 +3205,7 @@ AS
 	RETURN @rtid
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[NextChangeTransactionId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[NextChangeTransactionId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3267,7 +3232,7 @@ AS
 	RETURN @rtid
 	END
 GO
-/****** Object:  StoredProcedure [dbo].[LinkEnrollmentTransactions]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[LinkEnrollmentTransactions]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3301,7 +3266,7 @@ BEGIN
 	DEALLOCATE c
 END
 GO
-/****** Object:  Trigger [insEnrollmentTransaction]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  Trigger [insEnrollmentTransaction]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3338,7 +3303,7 @@ BEGIN
 	DEALLOCATE c
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[EnrollmentTransactionId2]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[EnrollmentTransactionId2]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3367,7 +3332,7 @@ AS
 	RETURN @TransactionId
 	END
 GO
-/****** Object:  View [dbo].[City]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  View [dbo].[City]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3376,7 +3341,7 @@ CREATE VIEW [dbo].[City]
 AS
 SELECT PrimaryCity AS City, PrimaryState AS State, PrimaryZip AS Zip, COUNT(*) AS [count] FROM dbo.People GROUP BY PrimaryCity, PrimaryState, PrimaryZip
 GO
-/****** Object:  UserDefinedFunction [dbo].[Birthday]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[Birthday]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3399,7 +3364,7 @@ BEGIN
 	RETURN @dt
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[Contributors]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[Contributors]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3449,7 +3414,7 @@ RETURN
 	AND (@fid = 0 OR @fid = p.FamilyId)
 )
 GO
-/****** Object:  StoredProcedure [dbo].[FlagOddTransactions]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[FlagOddTransactions]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3506,7 +3471,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  StoredProcedure [dbo].[FlagOddTransaction]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[FlagOddTransaction]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3564,7 +3529,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  View [dbo].[BadETView]    Script Date: 05/11/2009 20:26:37 ******/
+/****** Object:  View [dbo].[BadETView]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3581,7 +3546,7 @@ WHERE     EXISTS
                             FROM          dbo.BadET
                             WHERE      (OrgId = et2.OrganizationId) AND (PeopleId = et2.PeopleId))
 GO
-/****** Object:  UserDefinedFunction [dbo].[BadEtsList]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[BadEtsList]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3609,7 +3574,7 @@ OR EXISTS(SELECT NULL FROM dbo.BadET
 			AND Flag = @flag))
 )
 GO
-/****** Object:  Table [dbo].[DivOrg]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[DivOrg]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3625,7 +3590,7 @@ CREATE TABLE [dbo].[DivOrg](
 ) ON [PRIMARY]
 GO
 INSERT [dbo].[DivOrg] ([DivId], [OrgId]) VALUES (1, 1)
-/****** Object:  StoredProcedure [dbo].[PurgeOrganization]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[PurgeOrganization]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3642,7 +3607,6 @@ BEGIN
 		DELETE FROM dbo.Attend WHERE OrganizationId = @oid
 		DELETE FROM dbo.DivOrg WHERE OrgId = @oid
 		DELETE FROM dbo.Meetings WHERE OrganizationId = @oid
-		DELETE FROM dbo.TagOrg WHERE OrganizationId = @oid
 		DELETE FROM dbo.Organizations WHERE OrganizationId = @oid
 		COMMIT
 	END TRY 
@@ -3657,7 +3621,7 @@ BEGIN
 	END CATCH 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[PersonAttendCountOrg]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[PersonAttendCountOrg]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3679,7 +3643,7 @@ AS
               AND a.AttendanceFlag = 1)
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[LastAttended]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[LastAttended]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3696,7 +3660,7 @@ AS
 	RETURN @dt
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[LastAttend]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[LastAttend]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3713,7 +3677,7 @@ AS
 	RETURN @dt
 	END
 GO
-/****** Object:  UserDefinedFunction [dbo].[DaysSinceAttend]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[DaysSinceAttend]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3742,7 +3706,7 @@ BEGIN
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[AttendStr_3]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[AttendStr_3]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3783,7 +3747,7 @@ BEGIN
 	RETURN @a
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[AttendPct_2]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[AttendPct_2]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3835,7 +3799,7 @@ BEGIN
     
 END
 GO
-/****** Object:  StoredProcedure [dbo].[AddAbsents]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[AddAbsents]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3917,7 +3881,7 @@ END CATCH
 
 END
 GO
-/****** Object:  Table [lookup].[ContactPreference]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[ContactPreference]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3937,7 +3901,7 @@ INSERT [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (10, N'
 INSERT [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (20, N'PHN', N'Phone')
 INSERT [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (30, N'EML', N'Email')
 INSERT [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (40, N'VST', N'Visit')
-/****** Object:  Table [dbo].[Audits]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Audits]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3955,7 +3919,7 @@ CREATE TABLE [dbo].[Audits](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [lookup].[BFCStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[BFCStatus]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3975,7 +3939,7 @@ INSERT [lookup].[BFCStatus] ([Id], [Code], [Description]) VALUES (10, N'VST', N'
 INSERT [lookup].[BFCStatus] ([Id], [Code], [Description]) VALUES (20, N'RVT', N'Recent Visitor')
 INSERT [lookup].[BFCStatus] ([Id], [Code], [Description]) VALUES (30, N'MEM', N'Member')
 INSERT [lookup].[BFCStatus] ([Id], [Code], [Description]) VALUES (40, N'HMB', N'Homebound')
-/****** Object:  Table [dbo].[ChurchAttReportIds]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[ChurchAttReportIds]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3989,7 +3953,7 @@ CREATE TABLE [dbo].[ChurchAttReportIds](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [lookup].[BundleStatusTypes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[BundleStatusTypes]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4006,7 +3970,7 @@ CREATE TABLE [lookup].[BundleStatusTypes](
 GO
 INSERT [lookup].[BundleStatusTypes] ([Id], [Code], [Description]) VALUES (0, N'C', N'Closed')
 INSERT [lookup].[BundleStatusTypes] ([Id], [Code], [Description]) VALUES (1, N'O', N'Open')
-/****** Object:  Table [lookup].[BundleHeaderTypes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[BundleHeaderTypes]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4025,7 +3989,7 @@ INSERT [lookup].[BundleHeaderTypes] ([Id], [Code], [Description]) VALUES (1, N'G
 INSERT [lookup].[BundleHeaderTypes] ([Id], [Code], [Description]) VALUES (2, N'LC', N'Loose Checks and Cash')
 INSERT [lookup].[BundleHeaderTypes] ([Id], [Code], [Description]) VALUES (3, N'PE', N'Preprinted Envelopes')
 INSERT [lookup].[BundleHeaderTypes] ([Id], [Code], [Description]) VALUES (4, N'OL', N'Online')
-/****** Object:  UserDefinedFunction [dbo].[DollarRange]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[DollarRange]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4063,7 +4027,7 @@ DECLARE @ret INT
 	RETURN @ret
 END
 GO
-/****** Object:  Table [lookup].[CountryLookup]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[CountryLookup]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4168,7 +4132,7 @@ INSERT [lookup].[CountryLookup] ([CountryName], [CountryCode], [DisplayFlag]) VA
 INSERT [lookup].[CountryLookup] ([CountryName], [CountryCode], [DisplayFlag]) VALUES (N'Yugoslavia', N'YUG', 0)
 INSERT [lookup].[CountryLookup] ([CountryName], [CountryCode], [DisplayFlag]) VALUES (N'Zambia', N'ZMB', 0)
 INSERT [lookup].[CountryLookup] ([CountryName], [CountryCode], [DisplayFlag]) VALUES (N'Zimbabwe', N'ZWE', 1)
-/****** Object:  UserDefinedFunction [dbo].[DayAndTime]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[DayAndTime]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4200,7 +4164,7 @@ SELECT @daytime =
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[CsvTable]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[CsvTable]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4233,14 +4197,14 @@ END
 	RETURN 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[FirstMondayOfMonth]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[FirstMondayOfMonth]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE FUNCTION [dbo].[FirstMondayOfMonth] (@inputDate DATETIME)RETURNS DATETIME BEGIN     RETURN DATEADD(wk, DATEDIFF(wk, 0, dateadd(dd, 6 - datepart(day, @inputDate), @inputDate)), 0)  END
 GO
-/****** Object:  Table [lookup].[FamilyRelationship]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[FamilyRelationship]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4270,7 +4234,7 @@ INSERT [lookup].[FamilyRelationship] ([Id], [Code], [Description]) VALUES (225, 
 INSERT [lookup].[FamilyRelationship] ([Id], [Code], [Description]) VALUES (230, N'GRD', N'Grand Daughter')
 INSERT [lookup].[FamilyRelationship] ([Id], [Code], [Description]) VALUES (235, N'GRS', N'Grand Son')
 INSERT [lookup].[FamilyRelationship] ([Id], [Code], [Description]) VALUES (980, N'OTH', N'Other')
-/****** Object:  Table [lookup].[FamilyMemberType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[FamilyMemberType]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4287,7 +4251,7 @@ CREATE TABLE [lookup].[FamilyMemberType](
 GO
 INSERT [lookup].[FamilyMemberType] ([Id], [Code], [Description]) VALUES (0, N'ADU', N'Adult')
 INSERT [lookup].[FamilyMemberType] ([Id], [Code], [Description]) VALUES (1, N'CHI', N'Child')
-/****** Object:  UserDefinedFunction [dbo].[EntryPointId]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[EntryPointId]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4314,7 +4278,7 @@ BEGIN
 	RETURN @ret
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DisableForeignKeys]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[DisableForeignKeys]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4368,7 +4332,7 @@ AS
     CLOSE foreignKeyCursor
     DEALLOCATE foreignKeyCursor
 GO
-/****** Object:  Table [dbo].[GeoCodes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[GeoCodes]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4383,7 +4347,7 @@ CREATE TABLE [dbo].[GeoCodes](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [lookup].[GenderClass]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[GenderClass]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4401,7 +4365,29 @@ GO
 INSERT [lookup].[GenderClass] ([Id], [Code], [Description]) VALUES (0, N'C', N'Coed')
 INSERT [lookup].[GenderClass] ([Id], [Code], [Description]) VALUES (1, N'M', N'Male')
 INSERT [lookup].[GenderClass] ([Id], [Code], [Description]) VALUES (2, N'F', N'Female')
-/****** Object:  UserDefinedFunction [dbo].[LastNameCount]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  Table [lookup].[PostalLookup]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[PostalLookup](
+	[PostalCode] [varchar](15) NOT NULL,
+	[CityName] [varchar](20) NULL,
+	[StateCode] [varchar](20) NULL,
+	[CountryName] [varchar](30) NULL,
+	[ResCodeId] [int] NULL,
+ CONSTRAINT [PK_POSTAL_LOOKUP_TBL] PRIMARY KEY CLUSTERED 
+(
+	[PostalCode] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [POSTAL_LOOKUP_CODE_IX] ON [lookup].[PostalLookup] 
+(
+	[PostalCode] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  UserDefinedFunction [dbo].[LastNameCount]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4423,60 +4409,7 @@ BEGIN
 
 END
 GO
-/****** Object:  Table [lookup].[MeetingType]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[MeetingType](
-	[Id] [int] NOT NULL,
-	[Code] [char](1) NULL,
-	[Description] [varchar](10) NULL,
- CONSTRAINT [PK_MeetingType] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[MeetingType] ([Id], [Code], [Description]) VALUES (0, N'G', N'Group')
-INSERT [lookup].[MeetingType] ([Id], [Code], [Description]) VALUES (1, N'R', N'Roster')
-/****** Object:  Table [lookup].[AttendanceClassification]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[AttendanceClassification](
-	[Id] [int] NOT NULL,
-	[Code] [varchar](10) NULL,
-	[Description] [varchar](50) NULL,
- CONSTRAINT [PK_AttendanceClassification] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (0, N'N', N'Normal')
-INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (1, N'IS', N'InService')
-INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (2, N'OS', N'OffSite')
-INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (3, N'B', N'Baptism')
-INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (4, N'DC', N'Step 1 Class')
-/****** Object:  UserDefinedFunction [dbo].[MemberStatusDescription]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE FUNCTION [dbo].[MemberStatusDescription](@pid int)
-RETURNS varchar(50)
-AS
-	BEGIN
-	declare @desc varchar(50)
-	select @desc = m.description from lookup.memberstatus m
-	join dbo.People p on p.MemberStatusId = m.id
-	where p.PeopleId = @pid
-	return @desc
-	END
-GO
-/****** Object:  Table [lookup].[NameTitle]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[NameTitle]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4498,7 +4431,7 @@ INSERT [lookup].[NameTitle] ([Id], [Code], [Description]) VALUES (120, N'Ms.', N
 INSERT [lookup].[NameTitle] ([Id], [Code], [Description]) VALUES (130, N'Miss', N'Miss')
 INSERT [lookup].[NameTitle] ([Id], [Code], [Description]) VALUES (140, N'Dr.', N'Dr.')
 INSERT [lookup].[NameTitle] ([Id], [Code], [Description]) VALUES (150, N'Rev.', N'Rev.')
-/****** Object:  Table [lookup].[NameSuffix]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[NameSuffix]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4520,94 +4453,300 @@ INSERT [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (130, N'II', N
 INSERT [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (140, N'III', N'III')
 INSERT [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (150, N'IV', N'IV')
 INSERT [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (160, N'V', N'V')
-/****** Object:  StoredProcedure [dbo].[PopulateTagShares]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  UserDefinedFunction [dbo].[Tool_VarbinaryToVarcharHex]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE PROCEDURE [dbo].[PopulateTagShares]
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+/**
+<summary>
+Based on ufn_VarbinaryToVarcharHex by Clay Beatty.
+Used by Tool_ScriptDiagram2005
 
-	INSERT INTO dbo.TagShare (
-		TagId,
-		PeopleId
-	) 
-	SELECT DISTINCT t.Id, u.PeopleId 
-	FROM dbo.TagShared t
-	JOIN Users u ON t.SharedUser = u.Username
+Function has two 'parts':
+
+PART ONE: takes large VarbinaryValue chunks (greater than four bytes) 
+and splits them into half, calling the function recursively with 
+each half until the chunks are only four bytes long
+
+PART TWO: notices the VarbinaryValue is four bytes or less, and 
+starts actually processing these four byte chunks. It does this
+by splitting the least-significant (rightmost) byte into two 
+hexadecimal characters and recursively calling the function
+with the more significant bytes until none remain (four recursive
+calls in total).
+</summary>
+<author>Craig Dunn</author>
+<remarks>
+Clay Beatty's original function was written for Sql Server 2000.
+Sql Server 2005 introduces the VARBINARY(max) datatype which this 
+function now uses.
+
+References
+----------
+1) MSDN: Using Large-Value Data Types
+http://msdn2.microsoft.com/en-us/library/ms178158.aspx
+
+2) Clay's "original" Script, Save, Export SQL 2000 Database Diagrams
+http://www.thescripts.com/forum/thread81534.html or
+http://groups-beta.google.com/group/comp.databases.ms-sqlserver/browse_frm/thread/ca9a9229d06a56f9?dq=&hl=en&lr=&ie=UTF-8&oe=UTF-8&prev=/groups%3Fdq%3D%26num%3D25%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26group%3Dcomp.databases.ms-sqlserver%26start%3D25
+</remarks>
+<param name="VarbinaryValue">binary data to be converted to Hexadecimal </param>
+<returns>Hexadecimal representation of binary data, using chars [0-0a-f]</returns>
+*/
+CREATE FUNCTION [dbo].[Tool_VarbinaryToVarcharHex]
+(
+	@VarbinaryValue	VARBINARY(max)
+)
+RETURNS VARCHAR(max) AS
+	BEGIN
+	DECLARE @NumberOfBytes 	INT
+
+	SET @NumberOfBytes = DATALENGTH(@VarbinaryValue)
+	-- PART ONE --
+	IF (@NumberOfBytes > 4)
+	BEGIN
+		DECLARE @FirstHalfNumberOfBytes INT
+		DECLARE @SecondHalfNumberOfBytes INT
+		SET @FirstHalfNumberOfBytes  = @NumberOfBytes/2
+		SET @SecondHalfNumberOfBytes = @NumberOfBytes - @FirstHalfNumberOfBytes
+		-- Call this function recursively with the two parts of the input split in half
+		RETURN dbo.Tool_VarbinaryToVarcharHex(CAST(SUBSTRING(@VarbinaryValue, 1					        , @FirstHalfNumberOfBytes)  AS VARBINARY(max)))
+			 + dbo.Tool_VarbinaryToVarcharHex(CAST(SUBSTRING(@VarbinaryValue, @FirstHalfNumberOfBytes+1 , @SecondHalfNumberOfBytes) AS VARBINARY(max)))
+	END
 	
-	UPDATE dbo.Tag
-	SET PeopleId = u.PeopleId
-	FROM dbo.Tag t
-	JOIN dbo.Users u ON t.Owner = u.Username
+	IF (@NumberOfBytes = 0)
+	BEGIN
+		RETURN ''	-- No bytes found, therefore no 'hex string' is returned
+	END
+	
+	-- PART TWO --
+	DECLARE @LowByte 		INT
+	DECLARE @HighByte 		INT
+	-- @NumberOfBytes <= 4 (four or less characters/8 hex digits were input)
+	--						 eg. 88887777 66665555 44443333 22221111
+	-- We'll process ONLY the right-most (least-significant) Byte, which consists
+	-- of eight bits, or two hexadecimal values (eg. 22221111 --> XY) 
+	-- where XY are two hex digits [0-f]
+
+	-- 1. Carve off the rightmost four bits/single hex digit (ie 1111)
+	--    BINARY AND 15 will result in a number with maxvalue of 15
+	SET @LowByte = CAST(@VarbinaryValue AS INT) & 15
+	-- Now determine which ASCII char value
+	SET @LowByte = CASE 
+	WHEN (@LowByte < 10)		-- 9 or less, convert to digits [0-9]
+		THEN (48 + @LowByte)	-- 48 ASCII = 0 ... 57 ASCII = 9
+		ELSE (87 + @LowByte)	-- else 10-15, convert to chars [a-f]
+	END							-- (87+10)97 ASCII = a ... (87+15_102 ASCII = f
+
+	-- 2. Carve off the rightmost eight bits/single hex digit (ie 22221111)
+	--    Divide by 16 does a shift-left (now processing 2222)
+	SET @HighByte = CAST(@VarbinaryValue AS INT) & 255
+	SET @HighByte = (@HighByte / 16)
+	-- Again determine which ASCII char value	
+	SET @HighByte = CASE 
+	WHEN (@HighByte < 10)		-- 9 or less, convert to digits [0-9]
+		THEN (48 + @HighByte)	-- 48 ASCII = 0 ... 57 ASCII = 9
+		ELSE (87 + @HighByte)	-- else 10-15, convert to chars [a-f]
+	END							-- (87+10)97 ASCII = a ... (87+15)102 ASCII = f
+	
+	-- 3. Trim the byte (two hex values) from the right (least significant) input Binary
+	--    in preparation for further parsing
+	SET @VarbinaryValue = SUBSTRING(@VarbinaryValue, 1, (@NumberOfBytes-1))
+
+	-- 4. Recursively call this method on the remaining Binary data, concatenating the two 
+	--    hexadecimal 'values' we just decoded as their ASCII character representation
+	--    ie. we pass 88887777 66665555 44443333 back to this function, adding XY to the result string
+	RETURN dbo.Tool_VarbinaryToVarcharHex(@VarbinaryValue) + CHAR(@HighByte) + CHAR(@LowByte)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteTagForUser]    Script Date: 05/11/2009 20:26:33 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[DeleteTagForUser](@tag varchar, @user varchar)
-AS
-	/* SET NOCOUNT ON */
-	declare @id int
-	select @id = id from tag where name = @tag and @user = owner
-	
-	delete from tagorg where id = @id
-	delete from tagtag where id = @id
-	delete from tagperson where id = @id
-	delete from tagshared where id = @id
-	delete from tag where id = @id
-	
-	RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[ShowTableSizes]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  UserDefinedFunction [dbo].[SundayForWeek]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
 -- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
+-- Create date: <Create Date, ,>
+-- Description:	<Description, ,>
 -- =============================================
-CREATE PROCEDURE [dbo].[ShowTableSizes]
+CREATE FUNCTION [dbo].[SundayForWeek](@year INT, @week INT)
+RETURNS datetime
 AS
 BEGIN
-CREATE TABLE #temp (
-       table_name sysname ,
-       row_count int,
-       reserved_size varchar(50),
-       data_size varchar(50),
-       index_size varchar(50),
-       unused_size varchar(50))
-SET NOCOUNT ON
-INSERT     #temp
-EXEC       sp_msforeachtable 'sp_spaceused ''?'''
-SELECT     b.table_schema as owner,
-		   a.table_name,
-           a.row_count,
-           count(*) as col_count,
-           a.data_size
-FROM       #temp a
-INNER JOIN information_schema.columns b
-           ON a.table_name collate database_default
-                = b.table_name collate database_default
-GROUP BY   b.table_schema, a.table_name, a.row_count, a.data_size
-ORDER BY   a.row_count desc
-DROP TABLE #temp
+
+DECLARE @dt DATETIME 
+SELECT @dt = DATEADD(MONTH,((@year-1900)*12),0) -- jan 1 for year
+SELECT @dt = DATEADD(MONTH, 9, @dt) -- Oct 1 for year
+SELECT @dt = DATEADD(d, -DATEPART(dw, @dt)+1, @dt) -- sunday of that week
+IF DATEPART(MONTH, @dt) < 10 -- are we in september now?
+	SELECT @dt = DATEADD(d, 7, @dt) -- next sunday (to get into october)
+SELECT @dt = DATEADD(ww, @week - 1, @dt) -- sunday for week number
+
+	-- Return the result of the function
+	RETURN @dt
+
 END
 GO
-/****** Object:  Table [dbo].[RssFeed]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[StateLookup]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[StateLookup](
+	[StateCode] [varchar](2) NOT NULL,
+	[StateName] [varchar](30) NULL,
+ CONSTRAINT [PK_STATE_LOOKUP_TBL] PRIMARY KEY CLUSTERED 
+(
+	[StateCode] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [STATE_LOOKUP_CODE_IX] ON [lookup].[StateLookup] 
+(
+	[StateCode] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AA', N'Armed Forces America')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AE', N'Armed Forces East')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AK', N'Alaska')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AL', N'Alabama')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AP', N'Armed Forces Pacific')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AR', N'Arkansas')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AZ', N'Arizona')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CA', N'California')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CO', N'Colorado')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CT', N'Connecticut')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CZ', N'Canal Zone')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'DC', N'District Of Columbia')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'DE', N'Delaware')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'FL', N'Florida')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'FR', N'Foreign Address')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'GA', N'Georgia')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'GU', N'Guam')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'HI', N'Hawaii')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IA', N'Iowa')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ID', N'Idaho')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IL', N'Illinois')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IN', N'Indiana')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'KS', N'Kansas')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'KY', N'Kentucky')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'LA', N'Louisiana')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MA', N'Massachusetts')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MD', N'Maryland')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ME', N'Maine')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MI', N'Michigan')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MN', N'Minnesota')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MO', N'Missouri')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MS', N'Mississippi')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MT', N'Montana')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NC', N'North Carolina')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ND', N'North Dakota')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NE', N'Nebraska')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NH', N'New Hampshire')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NJ', N'New Jersey')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NM', N'New Mexico')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NV', N'Nevada')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NY', N'New York')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OH', N'Ohio')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OK', N'Oklahoma')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OR', N'Oregon')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'PA', N'Pennsylvania')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'PR', N'Puerto Rico')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'RI', N'Rhode Island')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'SC', N'South Carolina')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'SD', N'South Dakota')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'TN', N'Tennessee')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'TX', N'Texas')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'UT', N'Utah')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VA', N'Virginia')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VI', N'Virgin Islands')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VT', N'Vermont')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WA', N'Washington')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WI', N'Wisconsin')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WV', N'West Virginia')
+INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WY', N'Wyoming')
+/****** Object:  UserDefinedFunction [dbo].[StartsLower]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date, ,>
+-- Description:	<Description, ,>
+-- =============================================
+CREATE FUNCTION [dbo].[StartsLower] (@s NVARCHAR) 
+RETURNS bit
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE @ret bit
+
+	SELECT @ret = 0
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @ret = 1 WHERE @s COLLATE Latin1_General_BIN2 > 'Z'
+
+
+	-- Return the result of the function
+	RETURN @ret
+
+END
+GO
+/****** Object:  Table [lookup].[MeetingType]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[MeetingType](
+	[Id] [int] NOT NULL,
+	[Code] [char](1) NULL,
+	[Description] [varchar](10) NULL,
+ CONSTRAINT [PK_MeetingType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[MeetingType] ([Id], [Code], [Description]) VALUES (0, N'G', N'Group')
+INSERT [lookup].[MeetingType] ([Id], [Code], [Description]) VALUES (1, N'R', N'Roster')
+/****** Object:  Table [lookup].[AttendanceClassification]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [lookup].[AttendanceClassification](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](10) NULL,
+	[Description] [varchar](50) NULL,
+ CONSTRAINT [PK_AttendanceClassification] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (0, N'N', N'Normal')
+INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (1, N'IS', N'InService')
+INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (2, N'OS', N'OffSite')
+INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (3, N'B', N'Baptism')
+INSERT [lookup].[AttendanceClassification] ([Id], [Code], [Description]) VALUES (4, N'DC', N'Step 1 Class')
+/****** Object:  UserDefinedFunction [dbo].[MemberStatusDescription]    Script Date: 05/16/2009 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [dbo].[MemberStatusDescription](@pid int)
+RETURNS varchar(50)
+AS
+	BEGIN
+	declare @desc varchar(50)
+	select @desc = m.description from lookup.memberstatus m
+	join dbo.People p on p.MemberStatusId = m.id
+	where p.PeopleId = @pid
+	return @desc
+	END
+GO
+/****** Object:  Table [dbo].[RssFeed]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4751,7 +4890,7 @@ INSERT [dbo].[RssFeed] ([Url], [Data], [ETag], [LastModified]) VALUES (N'http://
 </channel>
 </rss>
 ', N'WG5d2YOyRI8VHBg9QiCTQBU4M3I', CAST(0x00009C01015F417C AS DateTime))
-/****** Object:  Table [lookup].[ResidentCode]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [lookup].[ResidentCode]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4770,162 +4909,7 @@ INSERT [lookup].[ResidentCode] ([Id], [Code], [Description]) VALUES (10, N'M', N
 INSERT [lookup].[ResidentCode] ([Id], [Code], [Description]) VALUES (20, N'G', N'Marginal')
 INSERT [lookup].[ResidentCode] ([Id], [Code], [Description]) VALUES (30, N'N', N'Non-Resident')
 INSERT [lookup].[ResidentCode] ([Id], [Code], [Description]) VALUES (40, N'U', N'Unable to Locate')
-/****** Object:  UserDefinedFunction [dbo].[SundayForWeek]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date, ,>
--- Description:	<Description, ,>
--- =============================================
-CREATE FUNCTION [dbo].[SundayForWeek](@year INT, @week INT)
-RETURNS datetime
-AS
-BEGIN
-
-DECLARE @dt DATETIME 
-SELECT @dt = DATEADD(MONTH,((@year-1900)*12),0) -- jan 1 for year
-SELECT @dt = DATEADD(MONTH, 9, @dt) -- Oct 1 for year
-SELECT @dt = DATEADD(d, -DATEPART(dw, @dt)+1, @dt) -- sunday of that week
-IF DATEPART(MONTH, @dt) < 10 -- are we in september now?
-	SELECT @dt = DATEADD(d, 7, @dt) -- next sunday (to get into october)
-SELECT @dt = DATEADD(ww, @week - 1, @dt) -- sunday for week number
-
-	-- Return the result of the function
-	RETURN @dt
-
-END
-GO
-/****** Object:  Table [lookup].[StateLookup]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[StateLookup](
-	[StateCode] [varchar](2) NOT NULL,
-	[StateName] [varchar](30) NULL,
- CONSTRAINT [PK_STATE_LOOKUP_TBL] PRIMARY KEY CLUSTERED 
-(
-	[StateCode] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [STATE_LOOKUP_CODE_IX] ON [lookup].[StateLookup] 
-(
-	[StateCode] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AA', N'Armed Forces America')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AE', N'Armed Forces East')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AK', N'Alaska')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AL', N'Alabama')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AP', N'Armed Forces Pacific')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AR', N'Arkansas')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'AZ', N'Arizona')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CA', N'California')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CO', N'Colorado')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CT', N'Connecticut')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'CZ', N'Canal Zone')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'DC', N'District Of Columbia')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'DE', N'Delaware')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'FL', N'Florida')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'FR', N'Foreign Address')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'GA', N'Georgia')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'GU', N'Guam')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'HI', N'Hawaii')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IA', N'Iowa')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ID', N'Idaho')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IL', N'Illinois')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'IN', N'Indiana')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'KS', N'Kansas')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'KY', N'Kentucky')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'LA', N'Louisiana')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MA', N'Massachusetts')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MD', N'Maryland')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ME', N'Maine')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MI', N'Michigan')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MN', N'Minnesota')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MO', N'Missouri')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MS', N'Mississippi')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'MT', N'Montana')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NC', N'North Carolina')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'ND', N'North Dakota')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NE', N'Nebraska')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NH', N'New Hampshire')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NJ', N'New Jersey')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NM', N'New Mexico')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NV', N'Nevada')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'NY', N'New York')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OH', N'Ohio')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OK', N'Oklahoma')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'OR', N'Oregon')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'PA', N'Pennsylvania')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'PR', N'Puerto Rico')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'RI', N'Rhode Island')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'SC', N'South Carolina')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'SD', N'South Dakota')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'TN', N'Tennessee')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'TX', N'Texas')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'UT', N'Utah')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VA', N'Virginia')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VI', N'Virgin Islands')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'VT', N'Vermont')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WA', N'Washington')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WI', N'Wisconsin')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WV', N'West Virginia')
-INSERT [lookup].[StateLookup] ([StateCode], [StateName]) VALUES (N'WY', N'Wyoming')
-/****** Object:  UserDefinedFunction [dbo].[StartsLower]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date, ,>
--- Description:	<Description, ,>
--- =============================================
-CREATE FUNCTION [dbo].[StartsLower] (@s NVARCHAR) 
-RETURNS bit
-AS
-BEGIN
-	-- Declare the return variable here
-	DECLARE @ret bit
-
-	SELECT @ret = 0
-	-- Add the T-SQL statements to compute the return value here
-	SELECT @ret = 1 WHERE @s COLLATE Latin1_General_BIN2 > 'Z'
-
-
-	-- Return the result of the function
-	RETURN @ret
-
-END
-GO
-/****** Object:  Table [lookup].[PostalLookup]    Script Date: 05/11/2009 20:26:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [lookup].[PostalLookup](
-	[PostalCode] [varchar](15) NOT NULL,
-	[CityName] [varchar](20) NULL,
-	[StateCode] [varchar](20) NULL,
-	[CountryName] [varchar](30) NULL,
-	[ResCodeId] [int] NULL,
- CONSTRAINT [PK_POSTAL_LOOKUP_TBL] PRIMARY KEY CLUSTERED 
-(
-	[PostalCode] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [POSTAL_LOOKUP_CODE_IX] ON [lookup].[PostalLookup] 
-(
-	[PostalCode] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[QueryBuilderClauses]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[QueryBuilderClauses]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4969,7 +4953,7 @@ CREATE NONCLUSTERED INDEX [IX_QueryBuilderClauses] ON [dbo].[QueryBuilderClauses
 	[SavedBy] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Promotions]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Promotions]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4993,7 +4977,44 @@ CREATE TABLE [dbo].[Promotions](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [lookup].[VolunteerCodes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  StoredProcedure [dbo].[ShowTableSizes]    Script Date: 05/16/2009 16:51:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[ShowTableSizes]
+AS
+BEGIN
+CREATE TABLE #temp (
+       table_name sysname ,
+       row_count int,
+       reserved_size varchar(50),
+       data_size varchar(50),
+       index_size varchar(50),
+       unused_size varchar(50))
+SET NOCOUNT ON
+INSERT     #temp
+EXEC       sp_msforeachtable 'sp_spaceused ''?'''
+SELECT     b.table_schema as owner,
+		   a.table_name,
+           a.row_count,
+           count(*) as col_count,
+           a.data_size
+FROM       #temp a
+INNER JOIN information_schema.columns b
+           ON a.table_name collate database_default
+                = b.table_name collate database_default
+GROUP BY   b.table_schema, a.table_name, a.row_count, a.data_size
+ORDER BY   a.row_count desc
+DROP TABLE #temp
+END
+GO
+/****** Object:  Table [lookup].[VolunteerCodes]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5011,114 +5032,7 @@ GO
 INSERT [lookup].[VolunteerCodes] ([Id], [Code], [Description]) VALUES (0, N'NA', N'None')
 INSERT [lookup].[VolunteerCodes] ([Id], [Code], [Description]) VALUES (10, N'S', N'Standard')
 INSERT [lookup].[VolunteerCodes] ([Id], [Code], [Description]) VALUES (30, N'L', N'Leader')
-/****** Object:  UserDefinedFunction [dbo].[Tool_VarbinaryToVarcharHex]    Script Date: 05/11/2009 20:26:36 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/**
-<summary>
-Based on ufn_VarbinaryToVarcharHex by Clay Beatty.
-Used by Tool_ScriptDiagram2005
-
-Function has two 'parts':
-
-PART ONE: takes large VarbinaryValue chunks (greater than four bytes) 
-and splits them into half, calling the function recursively with 
-each half until the chunks are only four bytes long
-
-PART TWO: notices the VarbinaryValue is four bytes or less, and 
-starts actually processing these four byte chunks. It does this
-by splitting the least-significant (rightmost) byte into two 
-hexadecimal characters and recursively calling the function
-with the more significant bytes until none remain (four recursive
-calls in total).
-</summary>
-<author>Craig Dunn</author>
-<remarks>
-Clay Beatty's original function was written for Sql Server 2000.
-Sql Server 2005 introduces the VARBINARY(max) datatype which this 
-function now uses.
-
-References
-----------
-1) MSDN: Using Large-Value Data Types
-http://msdn2.microsoft.com/en-us/library/ms178158.aspx
-
-2) Clay's "original" Script, Save, Export SQL 2000 Database Diagrams
-http://www.thescripts.com/forum/thread81534.html or
-http://groups-beta.google.com/group/comp.databases.ms-sqlserver/browse_frm/thread/ca9a9229d06a56f9?dq=&hl=en&lr=&ie=UTF-8&oe=UTF-8&prev=/groups%3Fdq%3D%26num%3D25%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26group%3Dcomp.databases.ms-sqlserver%26start%3D25
-</remarks>
-<param name="VarbinaryValue">binary data to be converted to Hexadecimal </param>
-<returns>Hexadecimal representation of binary data, using chars [0-0a-f]</returns>
-*/
-CREATE FUNCTION [dbo].[Tool_VarbinaryToVarcharHex]
-(
-	@VarbinaryValue	VARBINARY(max)
-)
-RETURNS VARCHAR(max) AS
-	BEGIN
-	DECLARE @NumberOfBytes 	INT
-
-	SET @NumberOfBytes = DATALENGTH(@VarbinaryValue)
-	-- PART ONE --
-	IF (@NumberOfBytes > 4)
-	BEGIN
-		DECLARE @FirstHalfNumberOfBytes INT
-		DECLARE @SecondHalfNumberOfBytes INT
-		SET @FirstHalfNumberOfBytes  = @NumberOfBytes/2
-		SET @SecondHalfNumberOfBytes = @NumberOfBytes - @FirstHalfNumberOfBytes
-		-- Call this function recursively with the two parts of the input split in half
-		RETURN dbo.Tool_VarbinaryToVarcharHex(CAST(SUBSTRING(@VarbinaryValue, 1					        , @FirstHalfNumberOfBytes)  AS VARBINARY(max)))
-			 + dbo.Tool_VarbinaryToVarcharHex(CAST(SUBSTRING(@VarbinaryValue, @FirstHalfNumberOfBytes+1 , @SecondHalfNumberOfBytes) AS VARBINARY(max)))
-	END
-	
-	IF (@NumberOfBytes = 0)
-	BEGIN
-		RETURN ''	-- No bytes found, therefore no 'hex string' is returned
-	END
-	
-	-- PART TWO --
-	DECLARE @LowByte 		INT
-	DECLARE @HighByte 		INT
-	-- @NumberOfBytes <= 4 (four or less characters/8 hex digits were input)
-	--						 eg. 88887777 66665555 44443333 22221111
-	-- We'll process ONLY the right-most (least-significant) Byte, which consists
-	-- of eight bits, or two hexadecimal values (eg. 22221111 --> XY) 
-	-- where XY are two hex digits [0-f]
-
-	-- 1. Carve off the rightmost four bits/single hex digit (ie 1111)
-	--    BINARY AND 15 will result in a number with maxvalue of 15
-	SET @LowByte = CAST(@VarbinaryValue AS INT) & 15
-	-- Now determine which ASCII char value
-	SET @LowByte = CASE 
-	WHEN (@LowByte < 10)		-- 9 or less, convert to digits [0-9]
-		THEN (48 + @LowByte)	-- 48 ASCII = 0 ... 57 ASCII = 9
-		ELSE (87 + @LowByte)	-- else 10-15, convert to chars [a-f]
-	END							-- (87+10)97 ASCII = a ... (87+15_102 ASCII = f
-
-	-- 2. Carve off the rightmost eight bits/single hex digit (ie 22221111)
-	--    Divide by 16 does a shift-left (now processing 2222)
-	SET @HighByte = CAST(@VarbinaryValue AS INT) & 255
-	SET @HighByte = (@HighByte / 16)
-	-- Again determine which ASCII char value	
-	SET @HighByte = CASE 
-	WHEN (@HighByte < 10)		-- 9 or less, convert to digits [0-9]
-		THEN (48 + @HighByte)	-- 48 ASCII = 0 ... 57 ASCII = 9
-		ELSE (87 + @HighByte)	-- else 10-15, convert to chars [a-f]
-	END							-- (87+10)97 ASCII = a ... (87+15)102 ASCII = f
-	
-	-- 3. Trim the byte (two hex values) from the right (least significant) input Binary
-	--    in preparation for further parsing
-	SET @VarbinaryValue = SUBSTRING(@VarbinaryValue, 1, (@NumberOfBytes-1))
-
-	-- 4. Recursively call this method on the remaining Binary data, concatenating the two 
-	--    hexadecimal 'values' we just decoded as their ASCII character representation
-	--    ie. we pass 88887777 66665555 44443333 back to this function, adding XY to the result string
-	RETURN dbo.Tool_VarbinaryToVarcharHex(@VarbinaryValue) + CHAR(@HighByte) + CHAR(@LowByte)
-END
-GO
-/****** Object:  StoredProcedure [dbo].[AttendMeetingInfo]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[AttendMeetingInfo]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5296,7 +5210,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  Table [dbo].[Zips]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[Zips]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5310,161 +5224,7 @@ CREATE TABLE [dbo].[Zips](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[Tool_ScriptDiagram2005]    Script Date: 05/11/2009 20:26:33 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/**
-<summary>
-Script Sql Server 2005 diagrams
-(inspired by usp_ScriptDatabaseDiagrams for Sql Server 2000 by Clay Beatty)
-</summary>
-<example>
---NOTE: Scalar-valued Function [Tool_VarbinaryToVarcharHex] must exist before this script is run
-EXEC Tool_ScriptDiagram2005 'DatabaseName'
-</example>
-<author>Craig Dunn</author>
-<remarks>
-Helpful Articles
-----------------
-1) Upload / Download to Sql 2005
-http://staceyw.spaces.live.com/blog/cns!F4A38E96E598161E!404.entry
-
-2) MSDN: Using Large-Value Data Types
-http://msdn2.microsoft.com/en-us/library/ms178158.aspx
-
-3) "original" Script, Save, Export SQL 2000 Database Diagrams
-http://www.thescripts.com/forum/thread81534.html
-http://groups-beta.google.com/group/comp.databases.ms-sqlserver/browse_frm/thread/ca9a9229d06a56f9?dq=&hl=en&lr=&ie=UTF-8&oe=UTF-8&prev=/groups%3Fdq%3D%26num%3D25%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26group%3Dcomp.databases.ms-sqlserver%26start%3D25
-</remarks>
-<param name="name">Name of the diagram in the Sql Server database instance</param>
-*/
-CREATE PROCEDURE [dbo].[Tool_ScriptDiagram2005]
-(
-	@name VARCHAR(128)
-)
-AS
-BEGIN
-	DECLARE @diagram_id		INT
-	DECLARE @index			INT
-	DECLARE @size			INT
-	DECLARE @chunk			INT
-	DECLARE @line			VARCHAR(max)
-	-- Set start index, and chunk 'constant' value
-	SET @index = 1  -- 
-	SET @chunk = 32	-- values that work: 2, 6
-					-- values that fail: 15,16, 64
-	-- Get PK diagram_id using the diagram's name (which is what the user is familiar with)
-	SELECT 
-		@diagram_id=diagram_id	
-	,	@size = DATALENGTH(definition) 
-	FROM sysdiagrams 
-	WHERE [name] = @name
-
-	IF @diagram_id IS NULL
-	BEGIN
-		PRINT '/**<error>
-Diagram name [' + @name + '] could not be found.
-</error>*/' 
-	END
-	ELSE -- Diagram exists
-	BEGIN
-		-- Now with the diagram_id, do all the work
-		PRINT '/**'
-		PRINT '<summary>'
-		PRINT 'Restore diagram ''' + @name + ''''
-		PRINT '</summary>'
-		PRINT '<remarks>'
-		PRINT 'Generated by Tool_ScriptDiagram2005/Tool_VarbinaryToVarcharHex'
-		PRINT 'Will attempt to create [sysdiagrams] table if it doesn''t already exist'
-		PRINT '</remarks>'
-		PRINT '<generated>' + LEFT(CONVERT(VARCHAR(23), GETDATE(), 121), 16) + '</generated>'
-		PRINT '*/'
-		PRINT 'PRINT ''=== Tool_ScriptDiagram2005 restore diagram [' + @name + '] ==='''
-		PRINT '	-- If the sysdiagrams table has not been created in this database, create it!
-				IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ''sysdiagrams'')
-				BEGIN
-					-- Create table script generated by Sql Server Management Studio
-					-- _Assume_ this is roughly equivalent to what Sql Server/Management Studio
-					-- creates the first time you add a diagram to a 2005 database
-					CREATE TABLE [dbo].[sysdiagrams](
-						[name] [sysname] NOT NULL,
-						[principal_id] [int] NOT NULL,
-						[diagram_id] [int] IDENTITY(1,1) NOT NULL,
-						[version] [int] NULL,
-						[definition] [varbinary](max) NULL,
-					PRIMARY KEY CLUSTERED 
-					(
-						[diagram_id] ASC
-					)WITH (PAD_INDEX  = OFF, IGNORE_DUP_KEY = OFF) ,
-					 CONSTRAINT [UK_principal_name] UNIQUE NONCLUSTERED 
-					(
-						[principal_id] ASC,
-						[name] ASC
-					)WITH (PAD_INDEX  = OFF, IGNORE_DUP_KEY = OFF) 
-					) 
-					EXEC sys.sp_addextendedproperty @name=N''microsoft_database_tools_support'', @value=1 , @level0type=N''SCHEMA'',@level0name=N''dbo'', @level1type=N''TABLE'',@level1name=N''sysdiagrams''
-					PRINT ''[sysdiagrams] table was created as it did not already exist''
-				END
-				-- Target table will now exist, if it didn''t before'
-		PRINT 'SET NOCOUNT ON -- Hide (1 row affected) messages'
-		PRINT 'DECLARE @newid INT'
-		PRINT 'DECLARE @DiagramSuffix          varchar (50)'
-		PRINT ''
-		PRINT 'PRINT ''Suffix diagram name with date, to ensure uniqueness'''	
-		PRINT 'SET @DiagramSuffix = '' '' + LEFT(CONVERT(VARCHAR(23), GETDATE(), 121), 16)'
-		PRINT ''
-		PRINT 'PRINT ''Create row for new diagram'''
-		-- Output the INSERT that _creates_ the diagram record, with a non-NULL [definition],
-		-- important because .WRITE *cannot* be called against a NULL value (in the WHILE loop)
-		-- so we insert 0x so that .WRITE has 'something' to append to...
-		PRINT 'BEGIN TRY'
-		PRINT '    PRINT ''Write diagram ' + @name + ' into new row (and get [diagram_id])'''
-		SELECT @line =  
-			  '    INSERT INTO sysdiagrams ([name], [principal_id], [version], [definition])'
-			+ ' VALUES (''' + [name] + '''+@DiagramSuffix, '+ CAST (principal_id AS VARCHAR(100))+', '+CAST (version AS VARCHAR(100))+', 0x)'
-		FROM sysdiagrams WHERE diagram_id = @diagram_id
-		PRINT @line
-		PRINT '    SET @newid = SCOPE_IDENTITY()'
-		PRINT 'END TRY'
-		PRINT 'BEGIN CATCH'
-		PRINT '    PRINT ''XxXxX '' + Error_Message() + '' XxXxX'''
-		PRINT '    PRINT ''XxXxX END Tool_ScriptDiagram2005 - fix the error before running again XxXxX'''
-		PRINT '    RETURN'
-		PRINT 'END CATCH'
-		PRINT ''
-		PRINT 'PRINT ''Now add all the binary data...'''
-		PRINT 'BEGIN TRY'
-		WHILE @index < @size
-		BEGIN
-			-- Output as many UPDATE statements as required to append all the diagram binary
-			-- data, represented as hexadecimal strings
-			SELECT @line =  
-				 '    UPDATE sysdiagrams SET [definition] .Write ('
-				+ ' 0x' + UPPER(dbo.Tool_VarbinaryToVarcharHex (SUBSTRING (definition, @index, @chunk)))
-				+ ', null, 0) WHERE diagram_id = @newid -- index:' + CAST(@index AS VARCHAR(100))
-			FROM	sysdiagrams 
-			WHERE	diagram_id = @diagram_id
-			PRINT @line
-			SET @index = @index + @chunk
-		END
-		PRINT ''
-		PRINT '    PRINT ''=== Finished writing diagram id '' + CAST(@newid AS VARCHAR(100)) + ''  ==='''
-		PRINT '    PRINT ''=== Refresh your Databases-[DbName]-Database Diagrams to see the new diagram ==='''
-		PRINT 'END TRY'
-		PRINT 'BEGIN CATCH'
-		PRINT '    -- If we got here, the [definition] updates didn''t complete, so delete the diagram row'
-		PRINT '    -- (and hope it doesn''t fail!)'
-		PRINT '    DELETE FROM sysdiagrams WHERE diagram_id = @newid'
-		PRINT '    PRINT ''XxXxX '' + Error_Message() + '' XxXxX'''
-		PRINT '    PRINT ''XxXxX END Tool_ScriptDiagram2005 - fix the error before running again XxXxX'''
-		PRINT '    RETURN'
-		PRINT 'END CATCH'
-	END
-END
-GO
-/****** Object:  Table [dbo].[PromotionControl]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[PromotionControl]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5493,7 +5253,7 @@ CREATE TABLE [dbo].[PromotionControl](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MemberTags]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[MemberTags]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5508,7 +5268,7 @@ CREATE TABLE [dbo].[MemberTags](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[OrgMemMemTags]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[OrgMemMemTags]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5525,7 +5285,7 @@ CREATE TABLE [dbo].[OrgMemMemTags](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[MemberDesc]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[MemberDesc]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5539,7 +5299,7 @@ BEGIN
 	RETURN @ret
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[DaysSinceContact]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[DaysSinceContact]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5563,7 +5323,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteAllQueriesWithNoChildren]    Script Date: 05/11/2009 20:26:33 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteAllQueriesWithNoChildren]    Script Date: 05/16/2009 16:51:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5579,7 +5339,7 @@ where not exists (select null from QueryBuilderClauses where groupid = q.queryid
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[MembersAsOf]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[MembersAsOf]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5621,7 +5381,7 @@ BEGIN
 	RETURN
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[AttendMemberTypeAsOf]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[AttendMemberTypeAsOf]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5666,7 +5426,7 @@ BEGIN
 	RETURN
 END
 GO
-/****** Object:  Table [dbo].[BundleHeader]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[BundleHeader]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5699,7 +5459,7 @@ CREATE NONCLUSTERED INDEX [BUNDLE_HEADER_CHURCH_FK_IX] ON [dbo].[BundleHeader]
 	[ChurchId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[BundleDetail]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[BundleDetail]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5726,7 +5486,7 @@ CREATE NONCLUSTERED INDEX [BUNDLE_DETAIL_CONTR_FK_IX] ON [dbo].[BundleDetail]
 	[ContributionId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AuditValues]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Table [dbo].[AuditValues]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5743,7 +5503,7 @@ CREATE TABLE [dbo].[AuditValues](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  UserDefinedFunction [dbo].[AttendDesc]    Script Date: 05/11/2009 20:26:36 ******/
+/****** Object:  UserDefinedFunction [dbo].[AttendDesc]    Script Date: 05/16/2009 16:51:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5762,744 +5522,720 @@ BEGIN
 	RETURN @ret
 END
 GO
-/****** Object:  Default [DF_Attend_AttendanceFlag]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Attend_AttendanceFlag]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend] ADD  CONSTRAINT [DF_Attend_AttendanceFlag]  DEFAULT ((0)) FOR [AttendanceFlag]
 GO
-/****** Object:  Default [DF_Attend_OtherAttends]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Attend_OtherAttends]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend] ADD  CONSTRAINT [DF_Attend_OtherAttends]  DEFAULT ((0)) FOR [OtherAttends]
 GO
-/****** Object:  Default [DF_ENROLLMENT_TRANSACTION_TBL_TRANSACTION_STATUS]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_ENROLLMENT_TRANSACTION_TBL_TRANSACTION_STATUS]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[EnrollmentTransaction] ADD  CONSTRAINT [DF_ENROLLMENT_TRANSACTION_TBL_TRANSACTION_STATUS]  DEFAULT ((0)) FOR [TransactionStatus]
 GO
-/****** Object:  Default [DF_FAMILIES_TBL_RECORD_STATUS]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_FAMILIES_TBL_RECORD_STATUS]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Families] ADD  CONSTRAINT [DF_FAMILIES_TBL_RECORD_STATUS]  DEFAULT ((0)) FOR [RecordStatus]
 GO
-/****** Object:  Default [DF_GeoCodes_Latitude]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_GeoCodes_Latitude]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[GeoCodes] ADD  CONSTRAINT [DF_GeoCodes_Latitude]  DEFAULT ((0)) FOR [Latitude]
 GO
-/****** Object:  Default [DF_GeoCodes_Longitude]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_GeoCodes_Longitude]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[GeoCodes] ADD  CONSTRAINT [DF_GeoCodes_Longitude]  DEFAULT ((0)) FOR [Longitude]
 GO
-/****** Object:  Default [DF__MEETINGS___NUM_P__4D4B3A2F]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___NUM_P__4D4B3A2F]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___NUM_P__4D4B3A2F]  DEFAULT ((0)) FOR [NumPresent]
 GO
-/****** Object:  Default [DF__MEETINGS___NUM_M__4F3382A1]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___NUM_M__4F3382A1]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___NUM_M__4F3382A1]  DEFAULT ((0)) FOR [NumMembers]
 GO
-/****** Object:  Default [DF__MEETINGS___NUM_V__5027A6DA]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___NUM_V__5027A6DA]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___NUM_V__5027A6DA]  DEFAULT ((0)) FOR [NumVstMembers]
 GO
-/****** Object:  Default [DF__MEETINGS___NUM_R__511BCB13]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___NUM_R__511BCB13]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___NUM_R__511BCB13]  DEFAULT ((0)) FOR [NumRepeatVst]
 GO
-/****** Object:  Default [DF__MEETINGS___NUM_N__520FEF4C]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___NUM_N__520FEF4C]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___NUM_N__520FEF4C]  DEFAULT ((0)) FOR [NumNewVisit]
 GO
-/****** Object:  Default [DF__MEETINGS___GROUP__5AA5354D]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF__MEETINGS___GROUP__5AA5354D]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings] ADD  CONSTRAINT [DF__MEETINGS___GROUP__5AA5354D]  DEFAULT ((0)) FOR [GroupMeetingFlag]
 GO
-/****** Object:  Default [DF_Organizations_AllowAttendOverlap]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Organizations_AllowAttendOverlap]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations] ADD  CONSTRAINT [DF_Organizations_AllowAttendOverlap]  DEFAULT ((0)) FOR [AllowAttendOverlap]
 GO
-/****** Object:  Default [DF_Organizations_AttendClassificationId]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Organizations_AttendClassificationId]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations] ADD  CONSTRAINT [DF_Organizations_AttendClassificationId]  DEFAULT ((0)) FOR [AttendClassificationId]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_GENDER_ID]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_GENDER_ID]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_GENDER_ID]  DEFAULT ((0)) FOR [GenderId]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_MAIL_FLAG]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_MAIL_FLAG]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_MAIL_FLAG]  DEFAULT ((0)) FOR [DoNotMailFlag]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_CALL_FLAG]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_CALL_FLAG]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_CALL_FLAG]  DEFAULT ((0)) FOR [DoNotCallFlag]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_VISIT_FLAG]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_DO_NOT_VISIT_FLAG]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_DO_NOT_VISIT_FLAG]  DEFAULT ((0)) FOR [DoNotVisitFlag]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_ADDRESS_TYPE_ID]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_ADDRESS_TYPE_ID]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_ADDRESS_TYPE_ID]  DEFAULT ((10)) FOR [AddressTypeId]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_PHONE_PREF_ID]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_PHONE_PREF_ID]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_PHONE_PREF_ID]  DEFAULT ((10)) FOR [PhonePrefId]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_JOIN_CODE_ID]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_JOIN_CODE_ID]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_JOIN_CODE_ID]  DEFAULT ((0)) FOR [JoinCodeId]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_CHRIST_AS_SAVIOR]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_CHRIST_AS_SAVIOR]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_CHRIST_AS_SAVIOR]  DEFAULT ((0)) FOR [ChristAsSavior]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_INTERESTED_IN_JOINING]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_INTERESTED_IN_JOINING]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_INTERESTED_IN_JOINING]  DEFAULT ((0)) FOR [InterestedInJoining]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_PLEASE_VISIT]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_PLEASE_VISIT]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_PLEASE_VISIT]  DEFAULT ((0)) FOR [PleaseVisit]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_INFO_BECOME_A_CHRISTIAN]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_INFO_BECOME_A_CHRISTIAN]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_INFO_BECOME_A_CHRISTIAN]  DEFAULT ((0)) FOR [InfoBecomeAChristian]
 GO
-/****** Object:  Default [DF_PEOPLE_TBL_CONTRIBUTIONS_STATEMENT]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_PEOPLE_TBL_CONTRIBUTIONS_STATEMENT]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People] ADD  CONSTRAINT [DF_PEOPLE_TBL_CONTRIBUTIONS_STATEMENT]  DEFAULT ((0)) FOR [ContributionsStatement]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_ClauseOrder]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_ClauseOrder]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_ClauseOrder]  DEFAULT ((0)) FOR [ClauseOrder]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_DivOrgs]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_DivOrgs]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_DivOrgs]  DEFAULT ((0)) FOR [DivOrg]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_SubDivOrgs]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_SubDivOrgs]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_SubDivOrgs]  DEFAULT ((0)) FOR [SubDivOrg]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_Organization]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_Organization]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_Organization]  DEFAULT ((0)) FOR [Organization]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_Days]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_Days]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_Days]  DEFAULT ((0)) FOR [Days]
 GO
-/****** Object:  Default [QueryBuilderIsPublic]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [QueryBuilderIsPublic]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [QueryBuilderIsPublic]  DEFAULT ((0)) FOR [IsPublic]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_ModifiedOn]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_ModifiedOn]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_ModifiedOn]  DEFAULT (getdate()) FOR [CreatedOn]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_SavedQueryId]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_SavedQueryId]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_SavedQueryId]  DEFAULT ((0)) FOR [SavedQueryIdDesc]
 GO
-/****** Object:  Default [DF_QueryBuilderClauses_Schedule]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_QueryBuilderClauses_Schedule]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses] ADD  CONSTRAINT [DF_QueryBuilderClauses_Schedule]  DEFAULT ((0)) FOR [Schedule]
 GO
-/****** Object:  Default [DF_Tag_TypeId]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Tag_TypeId]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Tag] ADD  CONSTRAINT [DF_Tag_TypeId]  DEFAULT ((1)) FOR [TypeId]
 GO
-/****** Object:  Default [DF_Task_Archive]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Task_Archive]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task] ADD  CONSTRAINT [DF_Task_Archive]  DEFAULT ((0)) FOR [Archive]
 GO
-/****** Object:  Default [DF_Users_IsApproved]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Users_IsApproved]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_IsApproved]  DEFAULT ((0)) FOR [IsApproved]
 GO
-/****** Object:  Default [DF_Users_IsLockedOut]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Users_IsLockedOut]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_IsLockedOut]  DEFAULT ((0)) FOR [IsLockedOut]
 GO
-/****** Object:  Default [DF_Users_FailedPasswordAttemptCount]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Users_FailedPasswordAttemptCount]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_FailedPasswordAttemptCount]  DEFAULT ((0)) FOR [FailedPasswordAttemptCount]
 GO
-/****** Object:  Default [DF_Users_FailedPasswordAnswerAttemptCount]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Users_FailedPasswordAnswerAttemptCount]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_FailedPasswordAnswerAttemptCount]  DEFAULT ((0)) FOR [FailedPasswordAnswerAttemptCount]
 GO
-/****** Object:  Default [DF_Users_MustChangePassword]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Users_MustChangePassword]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_MustChangePassword]  DEFAULT ((0)) FOR [MustChangePassword]
 GO
-/****** Object:  Default [DF_Volunteer_Standard]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Volunteer_Standard]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Volunteer] ADD  CONSTRAINT [DF_Volunteer_Standard]  DEFAULT ((0)) FOR [Standard]
 GO
-/****** Object:  Default [DF_Volunteer_Children]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Volunteer_Children]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Volunteer] ADD  CONSTRAINT [DF_Volunteer_Children]  DEFAULT ((0)) FOR [Children]
 GO
-/****** Object:  Default [DF_Volunteer_Leader]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  Default [DF_Volunteer_Leader]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Volunteer] ADD  CONSTRAINT [DF_Volunteer_Leader]  DEFAULT ((0)) FOR [Leader]
 GO
-/****** Object:  ForeignKey [FK_ActivityLog_Users]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ActivityLog_Users]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[ActivityLog]  WITH CHECK ADD  CONSTRAINT [FK_ActivityLog_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[ActivityLog] CHECK CONSTRAINT [FK_ActivityLog_Users]
 GO
-/****** Object:  ForeignKey [FK_Attend_MemberType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Attend_MemberType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend]  WITH CHECK ADD  CONSTRAINT [FK_Attend_MemberType] FOREIGN KEY([MemberTypeId])
 REFERENCES [lookup].[MemberType] ([Id])
 GO
 ALTER TABLE [dbo].[Attend] CHECK CONSTRAINT [FK_Attend_MemberType]
 GO
-/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_AttendType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_AttendType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend]  WITH CHECK ADD  CONSTRAINT [FK_AttendWithAbsents_TBL_AttendType] FOREIGN KEY([AttendanceTypeId])
 REFERENCES [lookup].[AttendType] ([Id])
 GO
 ALTER TABLE [dbo].[Attend] CHECK CONSTRAINT [FK_AttendWithAbsents_TBL_AttendType]
 GO
-/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_MEETINGS_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_MEETINGS_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend]  WITH CHECK ADD  CONSTRAINT [FK_AttendWithAbsents_TBL_MEETINGS_TBL] FOREIGN KEY([MeetingId])
 REFERENCES [dbo].[Meetings] ([MeetingId])
 GO
 ALTER TABLE [dbo].[Attend] CHECK CONSTRAINT [FK_AttendWithAbsents_TBL_MEETINGS_TBL]
 GO
-/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_ORGANIZATIONS_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_ORGANIZATIONS_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend]  WITH CHECK ADD  CONSTRAINT [FK_AttendWithAbsents_TBL_ORGANIZATIONS_TBL] FOREIGN KEY([OrganizationId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[Attend] CHECK CONSTRAINT [FK_AttendWithAbsents_TBL_ORGANIZATIONS_TBL]
 GO
-/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_PEOPLE_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_AttendWithAbsents_TBL_PEOPLE_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Attend]  WITH CHECK ADD  CONSTRAINT [FK_AttendWithAbsents_TBL_PEOPLE_TBL] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Attend] CHECK CONSTRAINT [FK_AttendWithAbsents_TBL_PEOPLE_TBL]
 GO
-/****** Object:  ForeignKey [FK_AuditValues_Audits]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_AuditValues_Audits]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[AuditValues]  WITH CHECK ADD  CONSTRAINT [FK_AuditValues_Audits] FOREIGN KEY([AuditId])
 REFERENCES [dbo].[Audits] ([Id])
 GO
 ALTER TABLE [dbo].[AuditValues] CHECK CONSTRAINT [FK_AuditValues_Audits]
 GO
-/****** Object:  ForeignKey [FK_BadET_EnrollmentTransaction]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_BadET_EnrollmentTransaction]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BadET]  WITH CHECK ADD  CONSTRAINT [FK_BadET_EnrollmentTransaction] FOREIGN KEY([TranId])
 REFERENCES [dbo].[EnrollmentTransaction] ([TransactionId])
 GO
 ALTER TABLE [dbo].[BadET] CHECK CONSTRAINT [FK_BadET_EnrollmentTransaction]
 GO
-/****** Object:  ForeignKey [FK_BadET_Organizations]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_BadET_Organizations]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BadET]  WITH CHECK ADD  CONSTRAINT [FK_BadET_Organizations] FOREIGN KEY([OrgId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[BadET] CHECK CONSTRAINT [FK_BadET_Organizations]
 GO
-/****** Object:  ForeignKey [FK_BadET_People]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_BadET_People]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BadET]  WITH CHECK ADD  CONSTRAINT [FK_BadET_People] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[BadET] CHECK CONSTRAINT [FK_BadET_People]
 GO
-/****** Object:  ForeignKey [BUNDLE_DETAIL_BUNDLE_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [BUNDLE_DETAIL_BUNDLE_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BundleDetail]  WITH NOCHECK ADD  CONSTRAINT [BUNDLE_DETAIL_BUNDLE_FK] FOREIGN KEY([BundleHeaderId])
 REFERENCES [dbo].[BundleHeader] ([BundleHeaderId])
 GO
 ALTER TABLE [dbo].[BundleDetail] CHECK CONSTRAINT [BUNDLE_DETAIL_BUNDLE_FK]
 GO
-/****** Object:  ForeignKey [BUNDLE_DETAIL_CONTR_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [BUNDLE_DETAIL_CONTR_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BundleDetail]  WITH NOCHECK ADD  CONSTRAINT [BUNDLE_DETAIL_CONTR_FK] FOREIGN KEY([ContributionId])
 REFERENCES [dbo].[Contribution] ([ContributionId])
 GO
 ALTER TABLE [dbo].[BundleDetail] CHECK CONSTRAINT [BUNDLE_DETAIL_CONTR_FK]
 GO
-/****** Object:  ForeignKey [BundleHeaders__Fund]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [BundleHeaders__Fund]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BundleHeader]  WITH CHECK ADD  CONSTRAINT [BundleHeaders__Fund] FOREIGN KEY([FundId])
 REFERENCES [dbo].[ContributionFund] ([FundId])
 GO
 ALTER TABLE [dbo].[BundleHeader] CHECK CONSTRAINT [BundleHeaders__Fund]
 GO
-/****** Object:  ForeignKey [FK_BUNDLE_HEADER_TBL_BundleHeaderTypes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_BUNDLE_HEADER_TBL_BundleHeaderTypes]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BundleHeader]  WITH CHECK ADD  CONSTRAINT [FK_BUNDLE_HEADER_TBL_BundleHeaderTypes] FOREIGN KEY([BundleHeaderTypeId])
 REFERENCES [lookup].[BundleHeaderTypes] ([Id])
 GO
 ALTER TABLE [dbo].[BundleHeader] CHECK CONSTRAINT [FK_BUNDLE_HEADER_TBL_BundleHeaderTypes]
 GO
-/****** Object:  ForeignKey [FK_BUNDLE_HEADER_TBL_BundleStatusTypes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_BUNDLE_HEADER_TBL_BundleStatusTypes]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[BundleHeader]  WITH CHECK ADD  CONSTRAINT [FK_BUNDLE_HEADER_TBL_BundleStatusTypes] FOREIGN KEY([BundleStatusId])
 REFERENCES [lookup].[BundleStatusTypes] ([Id])
 GO
 ALTER TABLE [dbo].[BundleHeader] CHECK CONSTRAINT [FK_BUNDLE_HEADER_TBL_BundleStatusTypes]
 GO
-/****** Object:  ForeignKey [contactees__contact]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [contactees__contact]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contactees]  WITH CHECK ADD  CONSTRAINT [contactees__contact] FOREIGN KEY([ContactId])
 REFERENCES [dbo].[NewContact] ([ContactId])
 GO
 ALTER TABLE [dbo].[Contactees] CHECK CONSTRAINT [contactees__contact]
 GO
-/****** Object:  ForeignKey [contactsHad__person]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [contactsHad__person]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contactees]  WITH CHECK ADD  CONSTRAINT [contactsHad__person] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Contactees] CHECK CONSTRAINT [contactsHad__person]
 GO
-/****** Object:  ForeignKey [contactsMade__person]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [contactsMade__person]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contactors]  WITH CHECK ADD  CONSTRAINT [contactsMade__person] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Contactors] CHECK CONSTRAINT [contactsMade__person]
 GO
-/****** Object:  ForeignKey [contactsMakers__contact]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [contactsMakers__contact]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contactors]  WITH CHECK ADD  CONSTRAINT [contactsMakers__contact] FOREIGN KEY([ContactId])
 REFERENCES [dbo].[NewContact] ([ContactId])
 GO
 ALTER TABLE [dbo].[Contactors] CHECK CONSTRAINT [contactsMakers__contact]
 GO
-/****** Object:  ForeignKey [FK_Contribution_ContributionFund]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contribution_ContributionFund]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contribution]  WITH CHECK ADD  CONSTRAINT [FK_Contribution_ContributionFund] FOREIGN KEY([FundId])
 REFERENCES [dbo].[ContributionFund] ([FundId])
 GO
 ALTER TABLE [dbo].[Contribution] CHECK CONSTRAINT [FK_Contribution_ContributionFund]
 GO
-/****** Object:  ForeignKey [FK_Contribution_ContributionStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contribution_ContributionStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contribution]  WITH CHECK ADD  CONSTRAINT [FK_Contribution_ContributionStatus] FOREIGN KEY([ContributionStatusId])
 REFERENCES [lookup].[ContributionStatus] ([Id])
 GO
 ALTER TABLE [dbo].[Contribution] CHECK CONSTRAINT [FK_Contribution_ContributionStatus]
 GO
-/****** Object:  ForeignKey [FK_Contribution_ContributionType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contribution_ContributionType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contribution]  WITH CHECK ADD  CONSTRAINT [FK_Contribution_ContributionType] FOREIGN KEY([ContributionTypeId])
 REFERENCES [lookup].[ContributionType] ([Id])
 GO
 ALTER TABLE [dbo].[Contribution] CHECK CONSTRAINT [FK_Contribution_ContributionType]
 GO
-/****** Object:  ForeignKey [FK_Contribution_People]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contribution_People]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Contribution]  WITH CHECK ADD  CONSTRAINT [FK_Contribution_People] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Contribution] CHECK CONSTRAINT [FK_Contribution_People]
 GO
-/****** Object:  ForeignKey [FK_Division_Program]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Division_Program]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Division]  WITH CHECK ADD  CONSTRAINT [FK_Division_Program] FOREIGN KEY([ProgId])
 REFERENCES [dbo].[Program] ([Id])
 GO
 ALTER TABLE [dbo].[Division] CHECK CONSTRAINT [FK_Division_Program]
 GO
-/****** Object:  ForeignKey [FK_DivOrg_Division]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_DivOrg_Division]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[DivOrg]  WITH CHECK ADD  CONSTRAINT [FK_DivOrg_Division] FOREIGN KEY([DivId])
 REFERENCES [dbo].[Division] ([Id])
 GO
 ALTER TABLE [dbo].[DivOrg] CHECK CONSTRAINT [FK_DivOrg_Division]
 GO
-/****** Object:  ForeignKey [FK_DivOrg_Organizations]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_DivOrg_Organizations]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[DivOrg]  WITH CHECK ADD  CONSTRAINT [FK_DivOrg_Organizations] FOREIGN KEY([OrgId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[DivOrg] CHECK CONSTRAINT [FK_DivOrg_Organizations]
 GO
-/****** Object:  ForeignKey [ENROLLMENT_TRANSACTION_ORG_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [ENROLLMENT_TRANSACTION_ORG_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[EnrollmentTransaction]  WITH NOCHECK ADD  CONSTRAINT [ENROLLMENT_TRANSACTION_ORG_FK] FOREIGN KEY([OrganizationId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[EnrollmentTransaction] CHECK CONSTRAINT [ENROLLMENT_TRANSACTION_ORG_FK]
 GO
-/****** Object:  ForeignKey [ENROLLMENT_TRANSACTION_PPL_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [ENROLLMENT_TRANSACTION_PPL_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[EnrollmentTransaction]  WITH NOCHECK ADD  CONSTRAINT [ENROLLMENT_TRANSACTION_PPL_FK] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[EnrollmentTransaction] CHECK CONSTRAINT [ENROLLMENT_TRANSACTION_PPL_FK]
 GO
-/****** Object:  ForeignKey [FK_ENROLLMENT_TRANSACTION_TBL_MemberType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ENROLLMENT_TRANSACTION_TBL_MemberType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[EnrollmentTransaction]  WITH NOCHECK ADD  CONSTRAINT [FK_ENROLLMENT_TRANSACTION_TBL_MemberType] FOREIGN KEY([MemberTypeId])
 REFERENCES [lookup].[MemberType] ([Id])
 GO
 ALTER TABLE [dbo].[EnrollmentTransaction] CHECK CONSTRAINT [FK_ENROLLMENT_TRANSACTION_TBL_MemberType]
 GO
-/****** Object:  ForeignKey [FK_MEETINGS_TBL_ORGANIZATIONS_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_MEETINGS_TBL_ORGANIZATIONS_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Meetings]  WITH NOCHECK ADD  CONSTRAINT [FK_MEETINGS_TBL_ORGANIZATIONS_TBL] FOREIGN KEY([OrganizationId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[Meetings] CHECK CONSTRAINT [FK_MEETINGS_TBL_ORGANIZATIONS_TBL]
 GO
-/****** Object:  ForeignKey [FK_MemberTags_Program]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_MemberTags_Program]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[MemberTags]  WITH CHECK ADD  CONSTRAINT [FK_MemberTags_Program] FOREIGN KEY([ProgId])
 REFERENCES [dbo].[Program] ([Id])
 GO
 ALTER TABLE [dbo].[MemberTags] CHECK CONSTRAINT [FK_MemberTags_Program]
 GO
-/****** Object:  ForeignKey [FK_Contacts_ContactTypes]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contacts_ContactTypes]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[NewContact]  WITH CHECK ADD  CONSTRAINT [FK_Contacts_ContactTypes] FOREIGN KEY([ContactTypeId])
 REFERENCES [lookup].[NewContactType] ([Id])
 GO
 ALTER TABLE [dbo].[NewContact] CHECK CONSTRAINT [FK_Contacts_ContactTypes]
 GO
-/****** Object:  ForeignKey [FK_Contacts_Ministries]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Contacts_Ministries]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[NewContact]  WITH CHECK ADD  CONSTRAINT [FK_Contacts_Ministries] FOREIGN KEY([MinistryId])
 REFERENCES [dbo].[Ministries] ([MinistryId])
 GO
 ALTER TABLE [dbo].[NewContact] CHECK CONSTRAINT [FK_Contacts_Ministries]
 GO
-/****** Object:  ForeignKey [FK_NewContacts_ContactReasons]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_NewContacts_ContactReasons]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[NewContact]  WITH CHECK ADD  CONSTRAINT [FK_NewContacts_ContactReasons] FOREIGN KEY([ContactReasonId])
 REFERENCES [lookup].[NewContactReason] ([Id])
 GO
 ALTER TABLE [dbo].[NewContact] CHECK CONSTRAINT [FK_NewContacts_ContactReasons]
 GO
-/****** Object:  ForeignKey [FK_ORGANIZATION_MEMBERS_TBL_MemberType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ORGANIZATION_MEMBERS_TBL_MemberType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[OrganizationMembers]  WITH NOCHECK ADD  CONSTRAINT [FK_ORGANIZATION_MEMBERS_TBL_MemberType] FOREIGN KEY([MemberTypeId])
 REFERENCES [lookup].[MemberType] ([Id])
 GO
 ALTER TABLE [dbo].[OrganizationMembers] CHECK CONSTRAINT [FK_ORGANIZATION_MEMBERS_TBL_MemberType]
 GO
-/****** Object:  ForeignKey [ORGANIZATION_MEMBERS_ORG_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [ORGANIZATION_MEMBERS_ORG_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[OrganizationMembers]  WITH NOCHECK ADD  CONSTRAINT [ORGANIZATION_MEMBERS_ORG_FK] FOREIGN KEY([OrganizationId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[OrganizationMembers] CHECK CONSTRAINT [ORGANIZATION_MEMBERS_ORG_FK]
 GO
-/****** Object:  ForeignKey [ORGANIZATION_MEMBERS_PPL_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [ORGANIZATION_MEMBERS_PPL_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[OrganizationMembers]  WITH NOCHECK ADD  CONSTRAINT [ORGANIZATION_MEMBERS_PPL_FK] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[OrganizationMembers] CHECK CONSTRAINT [ORGANIZATION_MEMBERS_PPL_FK]
 GO
-/****** Object:  ForeignKey [ChildOrgs__ParentOrg]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [ChildOrgs__ParentOrg]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations]  WITH NOCHECK ADD  CONSTRAINT [ChildOrgs__ParentOrg] FOREIGN KEY([ParentOrgId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[Organizations] CHECK CONSTRAINT [ChildOrgs__ParentOrg]
 GO
-/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_AttendTrackLevel]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_AttendTrackLevel]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations]  WITH CHECK ADD  CONSTRAINT [FK_ORGANIZATIONS_TBL_AttendTrackLevel] FOREIGN KEY([AttendTrkLevelId])
 REFERENCES [lookup].[AttendTrackLevel] ([Id])
 GO
 ALTER TABLE [dbo].[Organizations] CHECK CONSTRAINT [FK_ORGANIZATIONS_TBL_AttendTrackLevel]
 GO
-/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_EntryPoint]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_EntryPoint]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations]  WITH CHECK ADD  CONSTRAINT [FK_ORGANIZATIONS_TBL_EntryPoint] FOREIGN KEY([EntryPointId])
 REFERENCES [lookup].[EntryPoint] ([Id])
 GO
 ALTER TABLE [dbo].[Organizations] CHECK CONSTRAINT [FK_ORGANIZATIONS_TBL_EntryPoint]
 GO
-/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_OrganizationStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_OrganizationStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations]  WITH CHECK ADD  CONSTRAINT [FK_ORGANIZATIONS_TBL_OrganizationStatus] FOREIGN KEY([OrganizationStatusId])
 REFERENCES [lookup].[OrganizationStatus] ([Id])
 GO
 ALTER TABLE [dbo].[Organizations] CHECK CONSTRAINT [FK_ORGANIZATIONS_TBL_OrganizationStatus]
 GO
-/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_WeeklySchedule]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_ORGANIZATIONS_TBL_WeeklySchedule]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Organizations]  WITH CHECK ADD  CONSTRAINT [FK_ORGANIZATIONS_TBL_WeeklySchedule] FOREIGN KEY([ScheduleId])
 REFERENCES [lookup].[WeeklySchedule] ([Id])
 GO
 ALTER TABLE [dbo].[Organizations] CHECK CONSTRAINT [FK_ORGANIZATIONS_TBL_WeeklySchedule]
 GO
-/****** Object:  ForeignKey [FK_OrgMemMemTags_MemberTags]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_OrgMemMemTags_MemberTags]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[OrgMemMemTags]  WITH CHECK ADD  CONSTRAINT [FK_OrgMemMemTags_MemberTags] FOREIGN KEY([MemberTagId])
 REFERENCES [dbo].[MemberTags] ([Id])
 GO
 ALTER TABLE [dbo].[OrgMemMemTags] CHECK CONSTRAINT [FK_OrgMemMemTags_MemberTags]
 GO
-/****** Object:  ForeignKey [FK_OrgMemMemTags_OrganizationMembers]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_OrgMemMemTags_OrganizationMembers]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[OrgMemMemTags]  WITH CHECK ADD  CONSTRAINT [FK_OrgMemMemTags_OrganizationMembers] FOREIGN KEY([OrgId], [PeopleId])
 REFERENCES [dbo].[OrganizationMembers] ([OrganizationId], [PeopleId])
 GO
 ALTER TABLE [dbo].[OrgMemMemTags] CHECK CONSTRAINT [FK_OrgMemMemTags_OrganizationMembers]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_AddressType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_AddressType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH NOCHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_AddressType] FOREIGN KEY([AddressTypeId])
 REFERENCES [lookup].[AddressType] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_AddressType]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_BaptismStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_BaptismStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_BaptismStatus] FOREIGN KEY([BaptismStatusId])
 REFERENCES [lookup].[BaptismStatus] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_BaptismStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_BaptismType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_BaptismType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_BaptismType] FOREIGN KEY([BaptismTypeId])
 REFERENCES [lookup].[BaptismType] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_BaptismType]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_DecisionType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_DecisionType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_DecisionType] FOREIGN KEY([DecisionTypeId])
 REFERENCES [lookup].[DecisionType] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_DecisionType]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_DiscoveryClassStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_DiscoveryClassStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_DiscoveryClassStatus] FOREIGN KEY([DiscoveryClassStatusId])
 REFERENCES [lookup].[DiscoveryClassStatus] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_DiscoveryClassStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_DropStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_DropStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_DropStatus] FOREIGN KEY([DropCodeId])
 REFERENCES [lookup].[DropType] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_DropStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_EntryPoint]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_EntryPoint]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_EntryPoint] FOREIGN KEY([EntryPointId])
 REFERENCES [lookup].[EntryPoint] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_EntryPoint]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_EnvelopeOption]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_EnvelopeOption]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_EnvelopeOption] FOREIGN KEY([EnvelopeOptionsId])
 REFERENCES [lookup].[EnvelopeOption] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_EnvelopeOption]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_FamilyPosition]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_FamilyPosition]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_FamilyPosition] FOREIGN KEY([PositionInFamilyId])
 REFERENCES [lookup].[FamilyPosition] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_FamilyPosition]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_Gender]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_Gender]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_Gender] FOREIGN KEY([GenderId])
 REFERENCES [lookup].[Gender] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_Gender]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_InterestPoint]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_InterestPoint]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_InterestPoint] FOREIGN KEY([InterestPointId])
 REFERENCES [lookup].[InterestPoint] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_InterestPoint]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_JoinType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_JoinType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_JoinType] FOREIGN KEY([JoinCodeId])
 REFERENCES [lookup].[JoinType] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_JoinType]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_MaritalStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_MaritalStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH NOCHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_MaritalStatus] FOREIGN KEY([MaritalStatusId])
 REFERENCES [lookup].[MaritalStatus] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_MaritalStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_MemberLetterStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_MemberLetterStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_MemberLetterStatus] FOREIGN KEY([LetterStatusId])
 REFERENCES [lookup].[MemberLetterStatus] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_MemberLetterStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_MemberStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_MemberStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_MemberStatus] FOREIGN KEY([MemberStatusId])
 REFERENCES [lookup].[MemberStatus] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_MemberStatus]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_Origin]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_Origin]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH NOCHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_Origin] FOREIGN KEY([OriginId])
 REFERENCES [lookup].[Origin] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_Origin]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_PhonePreference]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_PhonePreference]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_PhonePreference] FOREIGN KEY([PhonePrefId])
 REFERENCES [lookup].[PhonePreference] ([Id])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_PhonePreference]
 GO
-/****** Object:  ForeignKey [FK_PEOPLE_TBL_Picture]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_PEOPLE_TBL_Picture]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_PEOPLE_TBL_Picture] FOREIGN KEY([PictureId])
 REFERENCES [dbo].[Picture] ([PictureId])
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_PEOPLE_TBL_Picture]
 GO
-/****** Object:  ForeignKey [PEOPLE_FAMILY_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [PEOPLE_FAMILY_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[People]  WITH NOCHECK ADD  CONSTRAINT [PEOPLE_FAMILY_FK] FOREIGN KEY([FamilyId])
 REFERENCES [dbo].[Families] ([FamilyId])
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[People] CHECK CONSTRAINT [PEOPLE_FAMILY_FK]
 GO
-/****** Object:  ForeignKey [FK_UserPreferences_Users]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_UserPreferences_Users]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Preferences]  WITH CHECK ADD  CONSTRAINT [FK_UserPreferences_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[Preferences] CHECK CONSTRAINT [FK_UserPreferences_Users]
 GO
-/****** Object:  ForeignKey [PROMOTION_CONTROL_PROMO_FK]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [PROMOTION_CONTROL_PROMO_FK]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[PromotionControl]  WITH NOCHECK ADD  CONSTRAINT [PROMOTION_CONTROL_PROMO_FK] FOREIGN KEY([PromotionId])
 REFERENCES [dbo].[Promotions] ([PromotionId])
 GO
 ALTER TABLE [dbo].[PromotionControl] CHECK CONSTRAINT [PROMOTION_CONTROL_PROMO_FK]
 GO
-/****** Object:  ForeignKey [Clauses__Parent]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [Clauses__Parent]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[QueryBuilderClauses]  WITH NOCHECK ADD  CONSTRAINT [Clauses__Parent] FOREIGN KEY([GroupId])
 REFERENCES [dbo].[QueryBuilderClauses] ([QueryId])
 GO
 ALTER TABLE [dbo].[QueryBuilderClauses] CHECK CONSTRAINT [Clauses__Parent]
 GO
-/****** Object:  ForeignKey [RelatedFamilies1__RelatedFamily1]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [RelatedFamilies1__RelatedFamily1]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[RelatedFamilies]  WITH NOCHECK ADD  CONSTRAINT [RelatedFamilies1__RelatedFamily1] FOREIGN KEY([FamilyId])
 REFERENCES [dbo].[Families] ([FamilyId])
 GO
 ALTER TABLE [dbo].[RelatedFamilies] CHECK CONSTRAINT [RelatedFamilies1__RelatedFamily1]
 GO
-/****** Object:  ForeignKey [RelatedFamilies2__RelatedFamily2]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [RelatedFamilies2__RelatedFamily2]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[RelatedFamilies]  WITH NOCHECK ADD  CONSTRAINT [RelatedFamilies2__RelatedFamily2] FOREIGN KEY([RelatedFamilyId])
 REFERENCES [dbo].[Families] ([FamilyId])
 GO
 ALTER TABLE [dbo].[RelatedFamilies] CHECK CONSTRAINT [RelatedFamilies2__RelatedFamily2]
 GO
-/****** Object:  ForeignKey [Tags__TagType]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [Tags__TagType]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Tag]  WITH NOCHECK ADD  CONSTRAINT [Tags__TagType] FOREIGN KEY([TypeId])
 REFERENCES [dbo].[TagType] ([Id])
 GO
 ALTER TABLE [dbo].[Tag] CHECK CONSTRAINT [Tags__TagType]
 GO
-/****** Object:  ForeignKey [TagsOwned__PersonOwner]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [TagsOwned__PersonOwner]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Tag]  WITH CHECK ADD  CONSTRAINT [TagsOwned__PersonOwner] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Tag] CHECK CONSTRAINT [TagsOwned__PersonOwner]
 GO
-/****** Object:  ForeignKey [OrgTags__Tag]    Script Date: 05/11/2009 20:26:35 ******/
-ALTER TABLE [dbo].[TagOrg]  WITH NOCHECK ADD  CONSTRAINT [OrgTags__Tag] FOREIGN KEY([Id])
-REFERENCES [dbo].[Tag] ([Id])
-GO
-ALTER TABLE [dbo].[TagOrg] CHECK CONSTRAINT [OrgTags__Tag]
-GO
-/****** Object:  ForeignKey [Tags__Organization]    Script Date: 05/11/2009 20:26:35 ******/
-ALTER TABLE [dbo].[TagOrg]  WITH NOCHECK ADD  CONSTRAINT [Tags__Organization] FOREIGN KEY([OrganizationId])
-REFERENCES [dbo].[Organizations] ([OrganizationId])
-GO
-ALTER TABLE [dbo].[TagOrg] CHECK CONSTRAINT [Tags__Organization]
-GO
-/****** Object:  ForeignKey [PersonTags__Tag]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [PersonTags__Tag]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TagPerson]  WITH NOCHECK ADD  CONSTRAINT [PersonTags__Tag] FOREIGN KEY([Id])
 REFERENCES [dbo].[Tag] ([Id])
 GO
 ALTER TABLE [dbo].[TagPerson] CHECK CONSTRAINT [PersonTags__Tag]
 GO
-/****** Object:  ForeignKey [Tags__Person]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [Tags__Person]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TagPerson]  WITH NOCHECK ADD  CONSTRAINT [Tags__Person] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[TagPerson] CHECK CONSTRAINT [Tags__Person]
 GO
-/****** Object:  ForeignKey [FK_TagShare_People]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_TagShare_People]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TagShare]  WITH CHECK ADD  CONSTRAINT [FK_TagShare_People] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[TagShare] CHECK CONSTRAINT [FK_TagShare_People]
 GO
-/****** Object:  ForeignKey [FK_TagShare_Tag]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_TagShare_Tag]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TagShare]  WITH CHECK ADD  CONSTRAINT [FK_TagShare_Tag] FOREIGN KEY([TagId])
 REFERENCES [dbo].[Tag] ([Id])
 GO
 ALTER TABLE [dbo].[TagShare] CHECK CONSTRAINT [FK_TagShare_Tag]
 GO
-/****** Object:  ForeignKey [Tags__ParentTag]    Script Date: 05/11/2009 20:26:35 ******/
-ALTER TABLE [dbo].[TagTag]  WITH NOCHECK ADD  CONSTRAINT [Tags__ParentTag] FOREIGN KEY([ParentTagId])
-REFERENCES [dbo].[Tag] ([Id])
-GO
-ALTER TABLE [dbo].[TagTag] CHECK CONSTRAINT [Tags__ParentTag]
-GO
-/****** Object:  ForeignKey [TagTags__Tag]    Script Date: 05/11/2009 20:26:35 ******/
-ALTER TABLE [dbo].[TagTag]  WITH NOCHECK ADD  CONSTRAINT [TagTags__Tag] FOREIGN KEY([Id])
-REFERENCES [dbo].[Tag] ([Id])
-GO
-ALTER TABLE [dbo].[TagTag] CHECK CONSTRAINT [TagTags__Tag]
-GO
-/****** Object:  ForeignKey [CoTasks__CoTaskList]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [CoTasks__CoTaskList]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [CoTasks__CoTaskList] FOREIGN KEY([CoListId])
 REFERENCES [dbo].[TaskList] ([Id])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [CoTasks__CoTaskList]
 GO
-/****** Object:  ForeignKey [FK_Task_TaskStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Task_TaskStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [FK_Task_TaskStatus] FOREIGN KEY([StatusId])
 REFERENCES [lookup].[TaskStatus] ([Id])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [FK_Task_TaskStatus]
 GO
-/****** Object:  ForeignKey [Tasks__Owner]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [Tasks__Owner]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [Tasks__Owner] FOREIGN KEY([OwnerId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [Tasks__Owner]
 GO
-/****** Object:  ForeignKey [Tasks__TaskList]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [Tasks__TaskList]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [Tasks__TaskList] FOREIGN KEY([ListId])
 REFERENCES [dbo].[TaskList] ([Id])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [Tasks__TaskList]
 GO
-/****** Object:  ForeignKey [TasksAboutPerson__AboutWho]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [TasksAboutPerson__AboutWho]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [TasksAboutPerson__AboutWho] FOREIGN KEY([WhoId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [TasksAboutPerson__AboutWho]
 GO
-/****** Object:  ForeignKey [TasksAssigned__SourceContact]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [TasksAssigned__SourceContact]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [TasksAssigned__SourceContact] FOREIGN KEY([SourceContactId])
 REFERENCES [dbo].[NewContact] ([ContactId])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [TasksAssigned__SourceContact]
 GO
-/****** Object:  ForeignKey [TasksCompleted__CompletedContact]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [TasksCompleted__CompletedContact]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [TasksCompleted__CompletedContact] FOREIGN KEY([CompletedContactId])
 REFERENCES [dbo].[NewContact] ([ContactId])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [TasksCompleted__CompletedContact]
 GO
-/****** Object:  ForeignKey [TasksCoOwned__CoOwner]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [TasksCoOwned__CoOwner]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [TasksCoOwned__CoOwner] FOREIGN KEY([CoOwnerId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [TasksCoOwned__CoOwner]
 GO
-/****** Object:  ForeignKey [FK_TaskListOwners_PEOPLE_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_TaskListOwners_PEOPLE_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TaskListOwners]  WITH CHECK ADD  CONSTRAINT [FK_TaskListOwners_PEOPLE_TBL] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[TaskListOwners] CHECK CONSTRAINT [FK_TaskListOwners_PEOPLE_TBL]
 GO
-/****** Object:  ForeignKey [FK_TaskListOwners_TaskList]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_TaskListOwners_TaskList]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[TaskListOwners]  WITH CHECK ADD  CONSTRAINT [FK_TaskListOwners_TaskList] FOREIGN KEY([TaskListId])
 REFERENCES [dbo].[TaskList] ([Id])
 GO
 ALTER TABLE [dbo].[TaskListOwners] CHECK CONSTRAINT [FK_TaskListOwners_TaskList]
 GO
-/****** Object:  ForeignKey [UsersICanEmailFor__Assistant]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [UsersICanEmailFor__Assistant]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[UserCanEmailFor]  WITH CHECK ADD  CONSTRAINT [UsersICanEmailFor__Assistant] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[UserCanEmailFor] CHECK CONSTRAINT [UsersICanEmailFor__Assistant]
 GO
-/****** Object:  ForeignKey [UsersWhoCanEmailForMe__Boss]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [UsersWhoCanEmailForMe__Boss]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[UserCanEmailFor]  WITH CHECK ADD  CONSTRAINT [UsersWhoCanEmailForMe__Boss] FOREIGN KEY([CanEmailFor])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[UserCanEmailFor] CHECK CONSTRAINT [UsersWhoCanEmailForMe__Boss]
 GO
-/****** Object:  ForeignKey [FK_UserRole_Roles]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_UserRole_Roles]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[UserRole]  WITH CHECK ADD  CONSTRAINT [FK_UserRole_Roles] FOREIGN KEY([RoleId])
 REFERENCES [dbo].[Roles] ([RoleId])
 GO
 ALTER TABLE [dbo].[UserRole] CHECK CONSTRAINT [FK_UserRole_Roles]
 GO
-/****** Object:  ForeignKey [FK_UserRole_Users]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_UserRole_Users]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[UserRole]  WITH CHECK ADD  CONSTRAINT [FK_UserRole_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[UserRole] CHECK CONSTRAINT [FK_UserRole_Users]
 GO
-/****** Object:  ForeignKey [FK_Users_PEOPLE_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Users_PEOPLE_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_PEOPLE_TBL] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_PEOPLE_TBL]
 GO
-/****** Object:  ForeignKey [FK_VBSApp_Organizations]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_VBSApp_Organizations]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[VBSApp]  WITH CHECK ADD  CONSTRAINT [FK_VBSApp_Organizations] FOREIGN KEY([OrgId])
 REFERENCES [dbo].[Organizations] ([OrganizationId])
 GO
 ALTER TABLE [dbo].[VBSApp] CHECK CONSTRAINT [FK_VBSApp_Organizations]
 GO
-/****** Object:  ForeignKey [FK_VBSApp_People]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_VBSApp_People]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[VBSApp]  WITH CHECK ADD  CONSTRAINT [FK_VBSApp_People] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[VBSApp] CHECK CONSTRAINT [FK_VBSApp_People]
 GO
-/****** Object:  ForeignKey [FK_Volunteer_PEOPLE_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Volunteer_PEOPLE_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Volunteer]  WITH CHECK ADD  CONSTRAINT [FK_Volunteer_PEOPLE_TBL] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Volunteer] CHECK CONSTRAINT [FK_Volunteer_PEOPLE_TBL]
 GO
-/****** Object:  ForeignKey [FK_Volunteer_VolApplicationStatus]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Volunteer_VolApplicationStatus]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Volunteer]  WITH CHECK ADD  CONSTRAINT [FK_Volunteer_VolApplicationStatus] FOREIGN KEY([StatusId])
 REFERENCES [lookup].[VolApplicationStatus] ([Id])
 GO
 ALTER TABLE [dbo].[Volunteer] CHECK CONSTRAINT [FK_Volunteer_VolApplicationStatus]
 GO
-/****** Object:  ForeignKey [FK_VolunteerForm_PEOPLE_TBL]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_VolunteerForm_PEOPLE_TBL]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[VolunteerForm]  WITH CHECK ADD  CONSTRAINT [FK_VolunteerForm_PEOPLE_TBL] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[VolunteerForm] CHECK CONSTRAINT [FK_VolunteerForm_PEOPLE_TBL]
 GO
-/****** Object:  ForeignKey [FK_VolunteerForm_Volunteer1]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_VolunteerForm_Volunteer1]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[VolunteerForm]  WITH CHECK ADD  CONSTRAINT [FK_VolunteerForm_Volunteer1] FOREIGN KEY([PeopleId])
 REFERENCES [dbo].[Volunteer] ([PeopleId])
 GO
 ALTER TABLE [dbo].[VolunteerForm] CHECK CONSTRAINT [FK_VolunteerForm_Volunteer1]
 GO
-/****** Object:  ForeignKey [VolunteerFormsUploaded__Uploader]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [VolunteerFormsUploaded__Uploader]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[VolunteerForm]  WITH CHECK ADD  CONSTRAINT [VolunteerFormsUploaded__Uploader] FOREIGN KEY([UploaderId])
 REFERENCES [dbo].[Users] ([UserId])
 GO
 ALTER TABLE [dbo].[VolunteerForm] CHECK CONSTRAINT [VolunteerFormsUploaded__Uploader]
 GO
-/****** Object:  ForeignKey [FK_Zips_ResidentCode]    Script Date: 05/11/2009 20:26:35 ******/
+/****** Object:  ForeignKey [FK_Zips_ResidentCode]    Script Date: 05/16/2009 16:51:51 ******/
 ALTER TABLE [dbo].[Zips]  WITH CHECK ADD  CONSTRAINT [FK_Zips_ResidentCode] FOREIGN KEY([MetroMarginalCode])
 REFERENCES [lookup].[ResidentCode] ([Id])
 GO

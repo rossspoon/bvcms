@@ -29,13 +29,17 @@ namespace CmsData
 		
 		private int? _LeaderMemberTypeId;
 		
+		private int? _GradeRangeStart;
+		
+		private int? _GradeRangeEnd;
+		
 		private int? _RollSheetVisitorWks;
 		
 		private int _AttendTrkLevelId;
 		
-		private int _AttendClassificationId;
-		
 		private int _SecurityTypeId;
+		
+		private int _AttendClassificationId;
 		
 		private DateTime? _FirstMeetingDate;
 		
@@ -59,10 +63,6 @@ namespace CmsData
 		
 		private bool _AllowAttendOverlap;
 		
-		private int? _GradeRangeStart;
-		
-		private int? _GradeRangeEnd;
-		
 		private int? _MemberCount;
 		
 		private int? _LeaderId;
@@ -85,8 +85,6 @@ namespace CmsData
    		private EntitySet< VBSApp> _VBSApps;
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
-		
-   		private EntitySet< TagOrg> _Tags;
 		
     	
 		private EntityRef< Organization> _ParentOrg;
@@ -124,17 +122,23 @@ namespace CmsData
 		partial void OnLeaderMemberTypeIdChanging(int? value);
 		partial void OnLeaderMemberTypeIdChanged();
 		
+		partial void OnGradeRangeStartChanging(int? value);
+		partial void OnGradeRangeStartChanged();
+		
+		partial void OnGradeRangeEndChanging(int? value);
+		partial void OnGradeRangeEndChanged();
+		
 		partial void OnRollSheetVisitorWksChanging(int? value);
 		partial void OnRollSheetVisitorWksChanged();
 		
 		partial void OnAttendTrkLevelIdChanging(int value);
 		partial void OnAttendTrkLevelIdChanged();
 		
-		partial void OnAttendClassificationIdChanging(int value);
-		partial void OnAttendClassificationIdChanged();
-		
 		partial void OnSecurityTypeIdChanging(int value);
 		partial void OnSecurityTypeIdChanged();
+		
+		partial void OnAttendClassificationIdChanging(int value);
+		partial void OnAttendClassificationIdChanged();
 		
 		partial void OnFirstMeetingDateChanging(DateTime? value);
 		partial void OnFirstMeetingDateChanged();
@@ -169,12 +173,6 @@ namespace CmsData
 		partial void OnAllowAttendOverlapChanging(bool value);
 		partial void OnAllowAttendOverlapChanged();
 		
-		partial void OnGradeRangeStartChanging(int? value);
-		partial void OnGradeRangeStartChanged();
-		
-		partial void OnGradeRangeEndChanging(int? value);
-		partial void OnGradeRangeEndChanged();
-		
 		partial void OnMemberCountChanging(int? value);
 		partial void OnMemberCountChanged();
 		
@@ -203,8 +201,6 @@ namespace CmsData
 			this._VBSApps = new EntitySet< VBSApp>(new Action< VBSApp>(this.attach_VBSApps), new Action< VBSApp>(this.detach_VBSApps)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
-			
-			this._Tags = new EntitySet< TagOrg>(new Action< TagOrg>(this.attach_Tags), new Action< TagOrg>(this.detach_Tags)); 
 			
 			
 			this._ParentOrg = default(EntityRef< Organization>); 
@@ -358,6 +354,50 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="GradeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeStart", DbType="int")]
+		public int? GradeRangeStart
+		{
+			get { return this._GradeRangeStart; }
+
+			set
+			{
+				if (this._GradeRangeStart != value)
+				{
+				
+                    this.OnGradeRangeStartChanging(value);
+					this.SendPropertyChanging();
+					this._GradeRangeStart = value;
+					this.SendPropertyChanged("GradeRangeStart");
+					this.OnGradeRangeStartChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GradeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeEnd", DbType="int")]
+		public int? GradeRangeEnd
+		{
+			get { return this._GradeRangeEnd; }
+
+			set
+			{
+				if (this._GradeRangeEnd != value)
+				{
+				
+                    this.OnGradeRangeEndChanging(value);
+					this.SendPropertyChanging();
+					this._GradeRangeEnd = value;
+					this.SendPropertyChanged("GradeRangeEnd");
+					this.OnGradeRangeEndChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="RollSheetVisitorWks", UpdateCheck=UpdateCheck.Never, Storage="_RollSheetVisitorWks", DbType="int")]
 		public int? RollSheetVisitorWks
 		{
@@ -405,28 +445,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendClassificationId", UpdateCheck=UpdateCheck.Never, Storage="_AttendClassificationId", DbType="int NOT NULL")]
-		public int AttendClassificationId
-		{
-			get { return this._AttendClassificationId; }
-
-			set
-			{
-				if (this._AttendClassificationId != value)
-				{
-				
-                    this.OnAttendClassificationIdChanging(value);
-					this.SendPropertyChanging();
-					this._AttendClassificationId = value;
-					this.SendPropertyChanged("AttendClassificationId");
-					this.OnAttendClassificationIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SecurityTypeId", UpdateCheck=UpdateCheck.Never, Storage="_SecurityTypeId", DbType="int NOT NULL")]
 		public int SecurityTypeId
 		{
@@ -442,6 +460,28 @@ namespace CmsData
 					this._SecurityTypeId = value;
 					this.SendPropertyChanged("SecurityTypeId");
 					this.OnSecurityTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AttendClassificationId", UpdateCheck=UpdateCheck.Never, Storage="_AttendClassificationId", DbType="int NOT NULL")]
+		public int AttendClassificationId
+		{
+			get { return this._AttendClassificationId; }
+
+			set
+			{
+				if (this._AttendClassificationId != value)
+				{
+				
+                    this.OnAttendClassificationIdChanging(value);
+					this.SendPropertyChanging();
+					this._AttendClassificationId = value;
+					this.SendPropertyChanged("AttendClassificationId");
+					this.OnAttendClassificationIdChanged();
 				}
 
 			}
@@ -700,50 +740,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="GradeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeStart", DbType="int")]
-		public int? GradeRangeStart
-		{
-			get { return this._GradeRangeStart; }
-
-			set
-			{
-				if (this._GradeRangeStart != value)
-				{
-				
-                    this.OnGradeRangeStartChanging(value);
-					this.SendPropertyChanging();
-					this._GradeRangeStart = value;
-					this.SendPropertyChanged("GradeRangeStart");
-					this.OnGradeRangeStartChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GradeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeEnd", DbType="int")]
-		public int? GradeRangeEnd
-		{
-			get { return this._GradeRangeEnd; }
-
-			set
-			{
-				if (this._GradeRangeEnd != value)
-				{
-				
-                    this.OnGradeRangeEndChanging(value);
-					this.SendPropertyChanging();
-					this._GradeRangeEnd = value;
-					this.SendPropertyChanged("GradeRangeEnd");
-					this.OnGradeRangeEndChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
 		public int? MemberCount
 		{
@@ -890,16 +886,6 @@ namespace CmsData
    		    get { return this._OrganizationMembers; }
 
 			set	{ this._OrganizationMembers.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="Tags__Organization", Storage="_Tags", OtherKey="OrganizationId")]
-   		public EntitySet< TagOrg> Tags
-   		{
-   		    get { return this._Tags; }
-
-			set	{ this._Tags.Assign(value); }
 
    		}
 
@@ -1233,19 +1219,6 @@ namespace CmsData
 		}
 
 		private void detach_OrganizationMembers(OrganizationMember entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_Tags(TagOrg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_Tags(TagOrg entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

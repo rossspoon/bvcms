@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 using System.Net.Mail;
+using System.Configuration;
 
 namespace Forms.Controllers
 {
@@ -22,6 +23,7 @@ namespace Forms.Controllers
         public AccountController()
             : this(null, null)
         {
+            ViewData["header"] = ConfigurationManager.AppSettings["header"];
         }
 
         // This constructor is not used by the MVC framework but is instead provided for ease

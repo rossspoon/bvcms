@@ -98,9 +98,7 @@
     <Compile Include="Generated\OrgMemMemTag.cs" />
     <Compile Include="Generated\Preference.cs" />
     <Compile Include="Generated\Program.cs" />
-    <Compile Include="Generated\TagOrg.cs" />
     <Compile Include="Generated\TagShare.cs" />
-    <Compile Include="Generated\TagTag.cs" />
     <Compile Include="Generated\VBSApp.cs" />
     <Compile Include="Generated\Views\Addr.cs" />
     <Compile Include="Generated\Views\Addr2.cs" />

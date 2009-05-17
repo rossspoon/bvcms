@@ -322,10 +322,6 @@ namespace CmsData
         partial void UpdateTag(Tag instance);
         partial void DeleteTag(Tag instance);
         
-        partial void InsertTagOrg(TagOrg instance);
-        partial void UpdateTagOrg(TagOrg instance);
-        partial void DeleteTagOrg(TagOrg instance);
-        
         partial void InsertTagPerson(TagPerson instance);
         partial void UpdateTagPerson(TagPerson instance);
         partial void DeleteTagPerson(TagPerson instance);
@@ -333,10 +329,6 @@ namespace CmsData
         partial void InsertTagShare(TagShare instance);
         partial void UpdateTagShare(TagShare instance);
         partial void DeleteTagShare(TagShare instance);
-        
-        partial void InsertTagTag(TagTag instance);
-        partial void UpdateTagTag(TagTag instance);
-        partial void DeleteTagTag(TagTag instance);
         
         partial void InsertTagType(TagType instance);
         partial void UpdateTagType(TagType instance);
@@ -892,12 +884,6 @@ namespace CmsData
 
 		}
 
-		public Table< TagOrg> TagOrgs
-		{
-			get	{ return this.GetTable< TagOrg>(); }
-
-		}
-
 		public Table< TagPerson> TagPeople
 		{
 			get	{ return this.GetTable< TagPerson>(); }
@@ -907,12 +893,6 @@ namespace CmsData
 		public Table< TagShare> TagShares
 		{
 			get	{ return this.GetTable< TagShare>(); }
-
-		}
-
-		public Table< TagTag> TagTags
-		{
-			get	{ return this.GetTable< TagTag>(); }
 
 		}
 

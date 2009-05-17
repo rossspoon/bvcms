@@ -118,7 +118,7 @@ namespace CMSPresenter
             return count;
         }
 
-        public static void NameSplit(string name, out string First, out string Last)
+        private static void NameSplit(string name, out string First, out string Last)
         {
             var a = name.Split(' ');
             First = "";
