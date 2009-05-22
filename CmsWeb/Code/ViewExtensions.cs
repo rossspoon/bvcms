@@ -23,10 +23,6 @@ public enum ListType
 }
 public static class ViewExtensions
 {
-    public static string AppSetting(this System.Web.Mvc.HtmlHelper helper, string setting)
-    {
-        return ConfigurationManager.AppSettings[setting];
-    }
     public static string RegisterScript(this System.Web.Mvc.HtmlHelper helper, string scriptFileName)
     {
         string scriptRoot = VirtualPathUtility.ToAbsolute("~/Scripts");

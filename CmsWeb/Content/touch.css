@@ -1,0 +1,49 @@
+﻿a.btn
+{
+    float: left;
+    background: buttonface url(border-2.gif) no-repeat;
+    cursor: pointer;
+    font-size: 0;
+    text-align: center;
+    text-align: center;
+    vertical-align: top;
+    display: block;
+    text-decoration: none;
+    margin: 3px 2px;
+}
+a.btn span
+{
+    padding-top: 6px;
+    padding-bottom: 15px;
+    font: xx-large/1 Verdana;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    left: 1px;
+    top: 1px;
+    display: block;
+    text-decoration: none;
+    background: url(border.gif) right bottom no-repeat;
+    color: #222;
+}
+td.btn
+{
+    background-color: ButtonFace; 
+    border: outset thin gray;
+    cursor: pointer;
+    font-size:large;
+    padding: 10px;
+    vertical-align: middle;
+}
+a.btn span.goback
+{
+    width: 100%;
+    height: 100%;
+    padding-left:10px;
+    padding-right:10px;
+}
+body
+{
+    font: 0.75em/1.3 Verdana;
+}
+

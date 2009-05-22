@@ -161,6 +161,9 @@
                                 <li>
                                     <asp:HyperLink ID="HyperLink25" NavigateUrl="/Fund/"
                                         runat="server">Funds</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink2" NavigateUrl="/Setting/"
+                                        runat="server">Settings</asp:HyperLink></li>
                             </ul>
                         </li>
                         <li>

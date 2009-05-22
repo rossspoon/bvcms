@@ -45,8 +45,6 @@ namespace CmsData
 		
 		private int _FamilyId;
 		
-		private int? _Grade;
-		
 		private int? _BirthMonth;
 		
 		private int? _BirthDay;
@@ -239,6 +237,8 @@ namespace CmsData
 		
 		private bool? _InBFClass;
 		
+		private int? _Grade;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -363,9 +363,6 @@ namespace CmsData
 		
 		partial void OnFamilyIdChanging(int value);
 		partial void OnFamilyIdChanged();
-		
-		partial void OnGradeChanging(int? value);
-		partial void OnGradeChanged();
 		
 		partial void OnBirthMonthChanging(int? value);
 		partial void OnBirthMonthChanged();
@@ -654,6 +651,9 @@ namespace CmsData
 		
 		partial void OnInBFClassChanging(bool? value);
 		partial void OnInBFClassChanged();
+		
+		partial void OnGradeChanging(int? value);
+		partial void OnGradeChanged();
 		
     #endregion
 		public Person()
@@ -1065,28 +1065,6 @@ namespace CmsData
 					this._FamilyId = value;
 					this.SendPropertyChanged("FamilyId");
 					this.OnFamilyIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Grade", UpdateCheck=UpdateCheck.Never, Storage="_Grade", DbType="int", IsDbGenerated=true)]
-		public int? Grade
-		{
-			get { return this._Grade; }
-
-			set
-			{
-				if (this._Grade != value)
-				{
-				
-                    this.OnGradeChanging(value);
-					this.SendPropertyChanging();
-					this._Grade = value;
-					this.SendPropertyChanged("Grade");
-					this.OnGradeChanged();
 				}
 
 			}
@@ -3232,6 +3210,28 @@ namespace CmsData
 					this._InBFClass = value;
 					this.SendPropertyChanged("InBFClass");
 					this.OnInBFClassChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Grade", UpdateCheck=UpdateCheck.Never, Storage="_Grade", DbType="int")]
+		public int? Grade
+		{
+			get { return this._Grade; }
+
+			set
+			{
+				if (this._Grade != value)
+				{
+				
+                    this.OnGradeChanging(value);
+					this.SendPropertyChanging();
+					this._Grade = value;
+					this.SendPropertyChanged("Grade");
+					this.OnGradeChanged();
 				}
 
 			}

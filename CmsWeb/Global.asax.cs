@@ -26,6 +26,21 @@ namespace CMSWeb2
         {
             RegisterRoutes(RouteTable.Routes);
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+            Application["starting"] = true;
+        }
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (Application["starting"].IsNotNull())
+            {
+                try
+                {
+                    DbUtil.Db.DeleteSpecialTags(null);
+                }
+                finally
+                {
+                    Application.Remove("starting");
+                }
+            }
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -77,10 +92,6 @@ namespace CMSWeb2
 
         public static void StartSession()
         {
-            if (HttpContext.Current.Request.Url.Port == 58001) // testing port
-                HttpContext.Current.Session["CMS"] = "CMSTest";
-            else
-                HttpContext.Current.Session["CMS"] = "CMS";
             if (Util.UserId == 0 && Util.UserName.HasValue())
             {
                 var u = DbUtil.Db.Users.Single(us => us.Username == Util.UserName);
@@ -128,15 +139,6 @@ namespace CMSWeb2
                 em.NotifyEmail("CMS2 error for user: " + User.Identity.Name,
                     "<h3>{0}</h3>\n<div style='font-family:Courier New'>\n{1}\n</div>"
                     .Fmt(err.Message, err.ToString().Replace("\n", "<br/>\n")));
-            }
-        }
-        protected void Session_End(object sender, EventArgs e)
-        {
-            var tag = DbUtil.Db.Tags.SingleOrDefault(t => t.Name == Session.SessionID);
-            if (tag != null)
-            {
-                tag.DeleteTag();
-                DbUtil.Db.SubmitChanges();
             }
         }
     }

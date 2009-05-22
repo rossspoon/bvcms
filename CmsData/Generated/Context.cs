@@ -314,6 +314,10 @@ namespace CmsData
         partial void UpdateRssFeed(RssFeed instance);
         partial void DeleteRssFeed(RssFeed instance);
         
+        partial void InsertSetting(Setting instance);
+        partial void UpdateSetting(Setting instance);
+        partial void DeleteSetting(Setting instance);
+        
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
         partial void DeleteStateLookup(StateLookup instance);
@@ -872,6 +876,12 @@ namespace CmsData
 
 		}
 
+		public Table< Setting> Settings
+		{
+			get	{ return this.GetTable< Setting>(); }
+
+		}
+
 		public Table< StateLookup> StateLookups
 		{
 			get	{ return this.GetTable< StateLookup>(); }
@@ -1412,18 +1422,6 @@ namespace CmsData
                 oid,
                 tid,
                 typeid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.InBFClass2", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? InBFClass2(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Boolean)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
                 ).ReturnValue));
 		}
 

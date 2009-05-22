@@ -413,5 +413,11 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), mid);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.DeleteSpecialTags")]
+        public int DeleteSpecialTags([Parameter(DbType = "Int")] int? pid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
+            return ((int)(result.ReturnValue));
+        }
     }
 }

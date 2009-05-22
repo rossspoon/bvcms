@@ -71,7 +71,15 @@ namespace CMSWeb
             var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
 
-            var req = WebRequest.Create(feedurl) as HttpWebRequest;
+            HttpWebRequest req = null;
+
+            try
+            {
+                req = WebRequest.Create(feedurl) as HttpWebRequest;
+            }
+            catch
+            {
+            }
 
             if (feed != null)
             {
@@ -85,34 +93,36 @@ namespace CMSWeb
                 feed.Url = feedurl;
             }
 
-            try
+            if (req != null)
             {
-                var resp = req.GetResponse() as HttpWebResponse;
-                feed.LastModified = resp.LastModified;
-                feed.ETag = resp.Headers["ETag"];
-                var sr = new StreamReader(resp.GetResponseStream());
-                feed.Data = sr.ReadToEnd();
-                sr.Close();
-                DbUtil.Db.SubmitChanges();
-            }
-            catch (WebException)
-            {
-            }
+                try
+                {
+                    var resp = req.GetResponse() as HttpWebResponse;
+                    feed.LastModified = resp.LastModified;
+                    feed.ETag = resp.Headers["ETag"];
+                    var sr = new StreamReader(resp.GetResponseStream());
+                    feed.Data = sr.ReadToEnd();
+                    sr.Close();
+                    DbUtil.Db.SubmitChanges();
+                }
+                catch (WebException)
+                {
+                }
+                 XDocument rssFeed = XDocument.Parse(feed.Data);
 
-            XDocument rssFeed = XDocument.Parse(feed.Data);
+                var posts = from item in rssFeed.Descendants("item")
+                            let au = item.Element("author")
+                            select new
+                            {
+                                Title = item.Element("title").Value,
+                                Published = DateTime.Parse(item.Element("pubDate").Value),
+                                Url = item.Element("link").Value,
+                                Author = au != null ? au.Value : "David Carroll",
+                            };
 
-            var posts = from item in rssFeed.Descendants("item")
-                        let au = item.Element("author")
-                        select new
-                        {
-                            Title = item.Element("title").Value,
-                            Published = DateTime.Parse(item.Element("pubDate").Value),
-                            Url = item.Element("link").Value,
-                            Author = au != null ? au.Value : "David Carroll",
-                        };
-
-            NewsGrid.DataSource = posts;
-            NewsGrid.DataBind();
+                NewsGrid.DataSource = posts;
+                NewsGrid.DataBind();
+           }
         }
     }
 }

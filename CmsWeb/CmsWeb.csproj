@@ -368,11 +368,14 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
+    <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\MetroZipController.cs" />
     <Compile Include="Controllers\MinistryController.cs" />
     <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\QueryBuilderController.cs" />
     <Compile Include="Controllers\DisplayController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\SearchPeopleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\VBSController.cs" />
@@ -394,6 +397,7 @@
     <Compile Include="Code\ViewExtensions.cs" />
     <Compile Include="Models\QueryModel.cs" />
     <Compile Include="Models\PeopleInfo.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\VBSDetailModel.cs" />
     <Compile Include="Models\VBSModel.cs" />
     <Compile Include="Models\PagerModel.cs" />
@@ -927,7 +931,11 @@
     <Content Include="AddFamilyMembersDialog.aspx" />
     <Content Include="AddVisitorDialog.aspx" />
     <Content Include="Content\arrows-ffffff.png" />
+    <Content Include="Content\border-2.gif" />
+    <Content Include="Content\border.gif" />
+    <Content Include="Content\btn0.png" />
     <Content Include="Content\content.css" />
+    <Content Include="Content\Crosses.png" />
     <Content Include="Content\dropdown.gif" />
     <Content Include="Content\dropdown_active.gif" />
     <Content Include="Content\dropdown_hover.gif" />
@@ -1009,6 +1017,7 @@
     <Content Include="Content\navigation-shadow.png" />
     <Content Include="Content\shadow.png" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Site2.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\pager.css" />
     <Content Include="Content\superfish.css" />
@@ -1016,6 +1025,7 @@
     <Content Include="Content\tab.png" />
     <Content Include="Content\thickbox.css" />
     <Content Include="Content\tbsep.gif" />
+    <Content Include="Content\touch.css" />
     <Content Include="Content\ui.all.css" />
     <Content Include="Content\ui.datepicker.css" />
     <Content Include="Content\ui.dialog.css" />
@@ -1542,7 +1552,6 @@
     <Content Include="Reports\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Config\ConnectionStrings2.config" />
     <Content Include="Config\smtp.config" />
-    <Content Include="Config\AppSettings.config" />
     <Content Include="Config\Authentication.config" />
     <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\ConnectionStrings.config" />
@@ -1597,9 +1606,15 @@
     <None Include="fckeditor\_samples\php\sampleposteddata.php" />
     <None Include="fckeditor\_samples\py\sample01.py" />
     <None Include="fckeditor\_samples\py\sampleposteddata.py" />
+    <Content Include="Views\Setting\Index.aspx" />
+    <Content Include="Views\Shared\Site2.Master" />
     <Content Include="Reports\RosterReport.aspx" />
     <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
+    <Content Include="Views\CheckIn\Children.aspx" />
+    <Content Include="Views\CheckIn\Keyboard.ascx" />
+    <Content Include="Views\CheckIn\Index.aspx" />
+    <Content Include="Views\CheckIn\Match.aspx" />
     <Content Include="Views\Fund\FundType.ascx" />
     <Content Include="Views\Fund\FundStatus.ascx" />
     <Content Include="Views\MetroZip\Index.aspx" />
@@ -1611,6 +1626,10 @@
     <Content Include="Views\QueryBuilder\Main.aspx" />
     <Content Include="Views\QueryBuilder\Results.aspx" />
     <Content Include="Views\QueryBuilder\TryConditions.ascx" />
+    <Content Include="Views\Register\Confirm.aspx" />
+    <Content Include="Views\Register\Index.aspx" />
+    <Content Include="Views\Register\Form2.aspx" />
+    <Content Include="Views\Register\Login.aspx" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Content\js\jquery.confirm-1.2.js" />
     <Content Include="Content\js\jquery.dimensions.js" />

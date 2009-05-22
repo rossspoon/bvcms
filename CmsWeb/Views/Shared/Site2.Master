@@ -1,0 +1,32 @@
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <asp:ContentPlaceHolder ID="TitleContent" runat="server">
+        <title></title>
+    </asp:ContentPlaceHolder>
+    <link href="/Content/Site2.css?v=2" rel="stylesheet" type="text/css" />
+    </head>
+
+<body>
+    <div class="page">
+
+        <div id="header">
+           <div id="title">
+              <h1><img alt="logo" src="<%=ViewData["logoimg"] %>" 
+                    align="middle" />&nbsp;<%=ViewData["header"]%></h1>
+           </div>
+        </div>
+
+        <div id="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

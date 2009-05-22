@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Configuration;
 using System.Web.Mvc;
+using System.Net.Mail;
 
 namespace UtilityExtensions
 {
@@ -301,24 +302,22 @@ namespace UtilityExtensions
         {
             get
             {
-                string cms = "CMS";
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session["CMS"] != null)
-                            cms = HttpContext.Current.Session["CMS"] as string;
-                return ConfigurationManager.ConnectionStrings[cms].ConnectionString;
+                var host = HttpContext.Current.Request.Url.Authority;
+                if (ConfigurationManager.ConnectionStrings[host].IsNotNull())
+                    return ConfigurationManager.ConnectionStrings[host].ConnectionString;
+                else
+                    return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
             }
         }
         public static string ConnectionStringImage
         {
             get
             {
-                string cms = "CMSImage";
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session["CMSImage"] != null)
-                            cms = HttpContext.Current.Session["CMSImage"] as string;
-                return ConfigurationManager.ConnectionStrings[cms].ConnectionString;
+                var host = HttpContext.Current.Request.Url.Authority + ".image";
+                if (ConfigurationManager.ConnectionStrings[host].IsNotNull())
+                    return ConfigurationManager.ConnectionStrings[host].ConnectionString;
+                else
+                    return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
             }
         }
         public static string ConnectionStringTest
@@ -660,6 +659,30 @@ namespace UtilityExtensions
             Response.Clear();
             Response.Write("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>".Fmt(message,href,text));
             Response.End();
+        }
+        public static MailAddress TryGetMailAddress(string address, string name)
+        {
+            try
+            {
+                var m = new MailAddress(address, name);
+                return m;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static bool ValidEmail(string email)
+        {
+            try
+            {
+                var a = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
     public class EventArg<T> : EventArgs

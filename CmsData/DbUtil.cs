@@ -106,22 +106,8 @@ namespace CmsData
             var list = HttpContext.Current.Cache["Settings"] as Dictionary<string, string>;
             if (list == null)
             {
-                list = new Dictionary<string, string>();
-                var ct = Db.Contents.SingleOrDefault(c => c.Name == "Settings");
-                if (ct != null)
-                {
-                    var xdoc = XDocument.Parse(ct.Body);
-                    var q = from dt in xdoc.Descendants("dt")
-                            let dd = (XElement)((XNode)dt.NextNode)
-                            select new
-                            {
-                                name = dt.Value,
-                                value = dd.Value
-                            };
-                    foreach (var def in q)
-                        list[def.name] = def.value;
-                    HttpContext.Current.Cache["Settings"] = list;
-                }
+                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX);
+                HttpContext.Current.Cache["Settings"] = list;
             }
             if (list.ContainsKey(name))
                 return list[name];
