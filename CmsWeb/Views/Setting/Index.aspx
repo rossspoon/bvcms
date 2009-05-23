@@ -34,10 +34,7 @@
         <tr>
             <td><%=item.Id %></td>
             <td>
-                <span id='<%=item.Id %>' 
-                    class='clickEdit'>
-                <%=item.SettingX%>
-                </span>
+                <span id='<%=item.Id %>' class='clickEdit'><%=item.SettingX%></span>
             </td>
             <td>
                 <a id='d<%= item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>

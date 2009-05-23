@@ -40,9 +40,7 @@
             <td><%= Html.Encode(item.ZipCode)%></td>
             <td>
                 <span id='r<%=item.ZipCode %>' 
-                    class='clickSelect'>
-                <%=item.ResidentCode == null ? "" : item.ResidentCode.Description%>
-                </span>
+                    class='clickSelect'><%=item.ResidentCode == null ? "" : item.ResidentCode.Description%></span>
             </td>
             <td>
                 <a id='d<%=item.ZipCode %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>

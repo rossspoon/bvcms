@@ -914,7 +914,7 @@
     <Content Include="App_Themes\Standard\header-gradient.png" />
     <Content Include="App_Themes\Standard\loading.gif" />
     <Content Include="App_Themes\Standard\navigation-shadow.png" />
-    <Content Include="App_Themes\Standard\style.css" />
+    <Content Include="App_Themes\Standard\style2.css" />
     <Content Include="App_Themes\ui.datepicker.css" />
     <Content Include="AttendStrDetail.aspx" />
     <Content Include="BadEts.aspx" />

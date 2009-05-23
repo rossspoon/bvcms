@@ -37,9 +37,7 @@
             <td><%=item.MinistryId %></td>
             <td>
                 <span id='<%="MinistryName." + item.MinistryId %>' 
-                    class='clickEdit'>
-                <%=item.MinistryName%>
-                </span>
+                    class='clickEdit'><%=item.MinistryName%></span>
             </td>
             <td>
                 <a id='d<%= item.MinistryId %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
