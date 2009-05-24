@@ -331,6 +331,17 @@
                             Width="135px"></cc1:DisplayOrEditText>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        Grade:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="GradeRangeStart" runat="server" BindingSource="organization"
+                            BindingMember="GradeRangeStart" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+            </table>
+            <table class="Design2">
             </table>
         </div>
         <div id="Meetings-tab" style='<%=displaynone%>'>

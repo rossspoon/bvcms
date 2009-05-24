@@ -79,8 +79,10 @@ namespace CMSWeb
 
         protected void Delete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
+            var pid = OrgMember.PeopleId;
             OrgMember.Drop();
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.UpdateSchoolGrade(pid);
 
             this.Page.ClientScript.RegisterStartupScript(typeof(EditMemberDialog),
                "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);

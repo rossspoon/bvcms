@@ -108,6 +108,7 @@ namespace CMSPresenter
             Db.OrganizationMembers.InsertOnSubmit(om);
             Db.EnrollmentTransactions.InsertOnSubmit(et);
             Db.SubmitChanges();
+            Db.UpdateSchoolGrade(PeopleId);
         }
 
         public IEnumerable<OrganizationInfo> GetOrganizationInfo(int orgid)

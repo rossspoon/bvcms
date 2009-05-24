@@ -338,6 +338,15 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditText RollSheetVisitorWks;
         
         /// <summary>
+        /// GradeRangeStart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText GradeRangeStart;
+        
+        /// <summary>
         /// MeetingsPanel control.
         /// </summary>
         /// <remarks>

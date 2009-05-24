@@ -86,6 +86,7 @@ namespace CmsData
                 Db.EnrollmentTransactions.InsertOnSubmit(et);
             }
             Db.OrganizationMembers.DeleteOnSubmit(this);
+
         }
     }
 }

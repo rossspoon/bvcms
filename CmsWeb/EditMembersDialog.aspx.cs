@@ -53,10 +53,14 @@ namespace CMSWeb
             var q = from p in SearchDialog.SelectedPeople()
                     from om in p.OrganizationMembers.Where(om => om.OrganizationId == OrgId)
                     select om;
+            var list = new List<int>();
             foreach (var om in q)
             {
                 if (membertype == (int)OrganizationMember.MemberTypeCode.Drop)
+                {
+                    list.Add(om.PeopleId);
                     om.Drop();
+                }
                 else
                 {
                     om.MemberTypeId = membertype;
@@ -64,6 +68,8 @@ namespace CMSWeb
                 }
             }
             DbUtil.Db.SubmitChanges();
+            foreach(var pid in list)
+                DbUtil.Db.UpdateSchoolGrade(pid);
             this.Page.ClientScript.RegisterStartupScript(typeof(AddMemberDialog),
                 "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }
