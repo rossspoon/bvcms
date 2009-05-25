@@ -19,7 +19,6 @@ namespace CMSWeb
     public partial class Organization : System.Web.UI.Page
     {
         public CmsData.Organization organization;
-        public string displaynone = "display:none";
 
         protected override void OnInit(EventArgs e)
         {

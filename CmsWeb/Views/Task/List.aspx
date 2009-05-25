@@ -4,11 +4,15 @@
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
+
         <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-        <script src="/Content/js/ui.tabs.js" type="text/javascript"></script>
+
         <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
+
         <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
+
         <script src="/Scripts/Task.js" type="text/javascript"></script>
+
     </div>
     <form id="form" action="/Task/List" method="get">
     <%=Html.Hidden("SortTask")%>
@@ -16,20 +20,26 @@
         <% if (Page.User.IsInRole("AdvancedTask"))
            { %>
         <tr>
-            <th>Project:</th>
+            <th>
+                Project:
+            </th>
             <td>
                 <%=Html.DropDownList("Project", ViewData.Model.Projects())%>
             </td>
         </tr>
         <tr>
-            <th>Location:</th>
+            <th>
+                Location:
+            </th>
             <td>
                 <%=Html.DropDownList("Location", ViewData.Model.Locations())%>
             </td>
         </tr>
         <% } %>
         <tr>
-            <th>Status:</th>
+            <th>
+                Status:
+            </th>
             <td>
                 <%=Html.DropDownList("StatusId", ViewData.Model.TaskStatusCodes(), new { onchange = "RefreshList()" })%>
             </td>
@@ -43,10 +53,14 @@
         </tr>
     </table>
     <%=Html.Hidden("CurTab", ViewData.Model.MyListId())%>
-    <ul id="tabs" class="ui-tabs-nav">
-        <% Html.RenderPartial("Tabs", ViewData.Model); %>
-    </ul>
-    <div style="clear: both" class="ui-tabs-panel">
+    <div id="tabs">
+        <ul>
+            <% Html.RenderPartial("Tabs", ViewData.Model); %>
+        </ul>
+        <% foreach (var list in ViewData.Model.FetchTaskLists())
+           { %>
+        <div id='<%=list.Id %>' style="display:none"></div>
+        <% } %>
         <table id="tasks">
             <thead>
                 <tr>
@@ -85,7 +99,7 @@
                     </th>
                     <th>
                         <a href="#" class="sortable">Assigned</a>
-                   </th>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -93,12 +107,11 @@
             </tbody>
         </table>
         <% Html.RenderPartial("Pager", ViewData.Model.pagerModel()); %>
-    </div>
-    <div>
-        New List(tab):
-        <input type="text" id="ListName" style="width: 217px" onkeypress="return AddListEnter(event)" />
-        <a href="#" onclick="return AddListClick()">Add List</a>
-    </div>
+        <div>
+            New List(tab):
+            <input type="text" id="ListName" style="width: 217px" onkeypress="return AddListEnter(event)" />
+            <a href="#" onclick="return AddListClick()">Add List</a>
+        </div>
     </form>
     <div id="dialogbox" title="Search Contacts" style="width: 560px; overflow: scroll">
     </div>

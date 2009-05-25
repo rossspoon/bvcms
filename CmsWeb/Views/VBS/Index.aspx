@@ -8,7 +8,6 @@
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-    <script src="/Content/js/ui.draggable.js" type="text/javascript"></script>
     <script src="/Scripts/Vbs.js" type="text/javascript"></script>
     
     <form id="filter" method="get" action="/VBS/Index">
@@ -44,7 +43,7 @@
                 <a id='n<%=v.Id%>' href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
             <% } %>
             </td>
-            <td><%=v.Request%></td>
+            <td width="20%"><%=v.Request%></td>
             <td><%=v.MemberOurChurch%></td>
             <td><%=v.ActiveInAnotherChurch%></td>
             <td><%=v.GradeCompleted%></td>

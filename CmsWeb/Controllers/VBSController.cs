@@ -61,11 +61,11 @@ namespace CMSWeb.Controllers
             return Json(m.FetchOrganizations(DivId.Value, OrgId.Value));
         }
 		[AcceptVerbs(HttpVerbs.Post)]
-		public JsonResult SelectOrg(int Id, int DivId, int OrgId)
+		public JsonResult SelectOrg(int Id, int OrgId)
 		{
             var m = new Models.VBSModel();
-			var v = m.UpdateVBSApp(Id, DivId, OrgId);
-			return Json(new { OrgName = v.OrgName });
+			var v = m.UpdateVBSApp(Id, OrgId);
+			return Json(new { OrgName = v.OrgName, DivId = v.DivId, OrgId = v.OrgId });
 		}
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Delete(int vid)

@@ -14,8 +14,8 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
         <CompositeScript>
             <Scripts>
-                <asp:ScriptReference Path="~/Content/js/jquery-1.2.6.min.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery-ui-personalized-1.5.2.min.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery-1.3.2.min.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery-ui-1.7.1.custom.min.js" />
                 <asp:ScriptReference Path="~/Content/js/superfish.js" />
                 <asp:ScriptReference Path="~/Content/js/supersubs.js" />
                 <asp:ScriptReference Path="~/Content/js/jquery.bgiframe.min.js" />
@@ -168,6 +168,8 @@
                         </li>
                         <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink26" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx" runat="server">Delete Special Tags</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="SessionState" NavigateUrl="~/Admin/SessionState.aspx" runat="server">Session State</asp:HyperLink></li>
                         <li>

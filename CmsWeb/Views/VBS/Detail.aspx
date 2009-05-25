@@ -9,7 +9,6 @@
         <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
         <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
         <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-        <script src="/Content/js/ui.draggable.js" type="text/javascript"></script>
         <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     </div>
 

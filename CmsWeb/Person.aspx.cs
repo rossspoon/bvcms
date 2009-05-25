@@ -44,7 +44,6 @@ namespace CMSWeb
             ExportToolBar1.queryId = qb.QueryId;
         }
 
-        public string displaynone = "display:none";
         protected void Page_Load(object sender, EventArgs e)
         {
             var site = (CMSWeb.Site)Page.Master;

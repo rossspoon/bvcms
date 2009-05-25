@@ -18,8 +18,8 @@
             imgLoader = new Image();
             imgLoader.src = tb_pathToImage;
 
-            var $maintabs = $("#main-tab > ul").tabs();
-            var $addrtabs = $("#Address-tab > ul").tabs();
+            var $maintabs = $("#main-tab").tabs();
+            var $addrtabs = $("#Address-tab").tabs();
             var t = $.cookie('maintab2');
             if (t)
                 $maintabs.tabs('select', parseInt(t));
@@ -152,7 +152,7 @@
             <li><a href="#Address-tab"><span>Addresses</span></a></li>
             <li><a href="#Relations-tab"><span>Family Relations</span></a></li>
         </ul>
-        <div id="Members-tab" style='<%=displaynone%>'>
+        <div id="Members-tab">
             <table>
                 <tr>
                     <td>
@@ -232,19 +232,19 @@
                 </tr>
             </table>
         </div>
-        <div id="Address-tab" style='<%=displaynone%>'>
+        <div id="Address-tab">
             <ul>
                 <li><a href="#Family1-tab"><span>Family</span></a></li>
                 <li><a href="#Family2-tab"><span>Family Alternate</span></a></li>
             </ul>
-            <div id="Family1-tab" style='<%=displaynone%>'>
+            <div id="Family1-tab">
                 <uc1:address ID="FamilyPrimaryAddr" runat="server" AddressType="Family" />
             </div>
-            <div id="Family2-tab" style='<%=displaynone%>'>
+            <div id="Family2-tab">
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="Relations-tab" style='<%=displaynone%>'>
+        <div id="Relations-tab">
             <table>
                 <tr>
                     <td>

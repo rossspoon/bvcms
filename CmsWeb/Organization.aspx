@@ -24,7 +24,7 @@
             imgLoader = new Image();
             imgLoader.src = tb_pathToImage;
 
-            var $maintabs = $("#main-tab > ul").tabs();
+            var $maintabs = $("#main-tab").tabs();
             var t = $.cookie('maintab3');
             if (t) {
                 $maintabs.tabs('select', parseInt(t));
@@ -102,7 +102,17 @@
                     </tr>
                     <tr>
                         <th>
-                            Division:
+                            Main Division:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="DivisionId" runat="server" BindingMode="TwoWay" BindingSource="organization"
+                                Width="250px" DataSourceID="ODS_Divisions" DataTextField="Value" DataValueField="Id">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Divisions:
                         </th>
                         <td>
                             <cc1:DisplayOrEditDropCheck ID="TagString" runat="server" BindingMode="TwoWay" BindingSource="organization"
@@ -197,15 +207,15 @@
             <li><a href="#Schedule-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
         </ul>
-        <div id="Members-tab" style='<%=displaynone%>'>
+        <div id="Members-tab">
             <uc1:ExportToolBar ID="ExportToolBar1" runat="server" />
             <uc2:MemberGrid ID="MemberGrid1" runat="server" />
         </div>
-        <div id="Inactive-tab" style='<%=displaynone%>'>
+        <div id="Inactive-tab">
             <uc1:ExportToolBar ID="ExportToolBar3" runat="server" />
             <uc2:MemberGrid ID="MemberGrid2" runat="server" Active="0" />
         </div>
-        <div id="Visitors-tab" style='<%=displaynone%>'>
+        <div id="Visitors-tab">
             <uc1:ExportToolBar ID="ExportToolBar2" runat="server" />
             &nbsp;Visitor Lookback Days:
             <asp:TextBox ID="VisitLookbackDays" runat="server" Width="34px"></asp:TextBox>
@@ -218,7 +228,7 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <div id="Schedule-tab" style='<%=displaynone%>'>
+        <div id="Schedule-tab">
             <table class="Design2">
                 <tr>
                     <th>
@@ -344,7 +354,7 @@
             <table class="Design2">
             </table>
         </div>
-        <div id="Meetings-tab" style='<%=displaynone%>'>
+        <div id="Meetings-tab">
             <asp:UpdatePanel ID="MeetingsPanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:LinkButton ID="NewMeetingLink" runat="server" OnClientClick="OpenNewMeeting();return false;"
@@ -490,6 +500,8 @@
             <asp:Parameter Name="startRowIndex" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_Divisions" runat="server" SelectMethod="AllOrgDivTags"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_OrganizationStatusId" runat="server" SelectMethod="OrganizationStatusCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_OrganizationTypeId" runat="server" SelectMethod="OrganizationTypes"

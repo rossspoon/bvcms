@@ -100,6 +100,7 @@ namespace CMSWeb.Models
         {
             var q = from v in DbUtil.Db.VBSApps
                     where id == v.Id
+                    let org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == v.OrgId)
                     select new VBSInfo
                     {
                         Id = v.Id,
@@ -111,9 +112,9 @@ namespace CMSWeb.Models
                         Name = v.Person.Name,
                         Request = v.Request,
                         Uploaded = v.Uploaded,
-                        DivId = v.DivId,
                         OrgId = v.OrgId,
-                        OrgName = v.Organization.OrganizationName,
+                        OrgName = org != null ? org.OrganizationName : null,
+                        DivId = org != null ? (int?)org.DivisionId : null,
                         UserInfo = v.UserInfo
                     };
             return q.SingleOrDefault();
@@ -130,13 +131,13 @@ namespace CMSWeb.Models
                 ImageData.DbUtil.Db.SubmitChanges();
             }
         }
-        public VBSInfo UpdateVBSApp(int id, int DivId, int OrgId)
+        public VBSInfo UpdateVBSApp(int id, int OrgId)
         {
             var q = from vb in DbUtil.Db.VBSApps
                     where vb.Id == id
                     select vb;
             var v = q.Single();
-            if (v.DivId != DivId || v.OrgId != OrgId)
+            if (v.OrgId != OrgId)
             {
                 if (v.OrgId != null)
                 {
@@ -147,14 +148,11 @@ namespace CMSWeb.Models
                     if (member != null)
                         member.Drop();
                 }
-                v.DivId = DivId;
-                v.OrgId = OrgId;
                 CMSPresenter.OrganizationController.InsertOrgMembers(OrgId,
                     v.PeopleId.Value,
                     (int)OrganizationMember.MemberTypeCode.Member,
                     Util.Now,
                     null);
-                DbUtil.Db.SubmitChanges();
                 var qme = from m in DbUtil.Db.Meetings
                           where m.OrganizationId == v.OrgId
                           where m.MeetingDate.Value.Date == DateTime.Today
@@ -167,20 +165,11 @@ namespace CMSWeb.Models
                     ac.RecordAttendance(v.PeopleId.Value, meeting.MeetingId, true);
                 }
             }
-            var vi = new VBSInfo
-            {
-                Id = id,
-                DivId = DivId,
-                OrgId = OrgId,
-                OrgName = (from vb in DbUtil.Db.VBSApps
-                           where vb.Id == id
-                           select vb.Organization.OrganizationName).Single()
-            };
-            return vi;
+            return FetchVBSInfo(id);
         }
         public IEnumerable<VBSInfo> FetchVBSInfo()
         {
-            var q = from v in DbUtil.Db.VBSApps
+            var q = from v in DbUtil.Db.ViewVBSInfos
                     where UserInfo == "0" || v.UserInfo == UserInfo || v.UserInfo == null
                     where Grade == "0" || v.GradeCompleted == Grade || (Grade == "99" && v.GradeCompleted == null)
                     where !NewAppsOnly || v.PeopleId == null
@@ -189,23 +178,23 @@ namespace CMSWeb.Models
                 switch (Sort)
                 {
                     case "Name":
-                        q = q.OrderBy(v => v.PeopleId == null ? "" : v.Person.Name2);
+                        q = q.OrderBy(v => v.PeopleId == null ? "" : v.Name2);
                         break;
                     case "Member":
-                        q = q.OrderBy(v => v.PeopleId == null ? false : v.Person.MemberStatusId == 10);
+                        q = q.OrderBy(v => v.PeopleId == null ? false : v.MemberStatusId == 10);
                         break;
                     case "Grade":
                         q = from v in q
                             orderby v.GradeCompleted,
-                                v.OrgId == null ? "" : v.Organization.OrganizationName,
-                                v.PeopleId == null ? "" : v.Person.Name2
+                                v.OrgName,
+                                v.Name2
                             select v;
                         break;
                     case "Gender":
-                        q = q.OrderBy(v => v.PeopleId == null ? 0 : v.Person.GenderId);
+                        q = q.OrderBy(v => v.GenderId);
                         break;
                     case "Class":
-                        q = q.OrderBy(v => v.OrgId == null ? "" : v.Organization.OrganizationName);
+                        q = q.OrderBy(v => v.OrgName);
                         break;
                     case "UserInfo":
                         q = q.OrderBy(v => v.OrgId == null ? "" : v.UserInfo);
@@ -219,22 +208,22 @@ namespace CMSWeb.Models
                 switch (Sort)
                 {
                     case "Name":
-                        q = q.OrderByDescending(v => v.PeopleId == null ? "" : v.Person.Name2);
+                        q = q.OrderByDescending(v => v.Name2);
                         break;
                     case "Member":
-                        q = q.OrderByDescending(v => v.PeopleId != null ? v.Person.MemberStatusId == 10 : false);
+                        q = q.OrderByDescending(v => v.PeopleId != null ? v.MemberStatusId == 10 : false);
                         break;
                     case "Grade":
                         q = q.OrderByDescending(v => v.GradeCompleted)
-                            .ThenBy(v => v.OrgId == null ? "" : v.Organization.OrganizationName)
-                            .ThenBy(v => v.PeopleId == null ? "" : v.Person.Name2);
+                            .ThenBy(v => v.OrgName)
+                            .ThenBy(v => v.Name2);
                         break;
                     case "Gender":
-                        q = q.OrderByDescending(v => v.PeopleId == null ? 0 : v.Person.GenderId);
+                        q = q.OrderByDescending(v => v.GenderId);
                         break;
                     case "Class":
-                        q = q.OrderByDescending(v => v.OrgId == null ? "" : v.Organization.OrganizationName)
-                            .ThenBy(v => v.PeopleId == null ? "" : v.Person.Name2);
+                        q = q.OrderByDescending(v => v.OrgName)
+                            .ThenBy(v => v.Name2);
                         break;
                     case "UserInfo":
                         q = q.OrderByDescending(v => v.OrgId == null ? "" : v.UserInfo);
@@ -247,18 +236,18 @@ namespace CMSWeb.Models
                    select new VBSInfo
                    {
                        Id = v.Id,
-                       MemberOurChurch = v.PeopleId == null ? false : v.Person.MemberStatusId == 10,
+                       MemberOurChurch = v.PeopleId == null ? false : v.MemberStatusId == 10,
                        ActiveInAnotherChurch = v.ActiveInAnotherChurch ?? false,
                        PubPhoto = v.PubPhoto ?? false,
                        GradeCompleted = v.GradeCompleted,
-                       Gender = v.PeopleId == null ? "" : (v.Person.GenderId == 1 ? "M" : (v.Person.GenderId == 2 ? "F" : "")),
-                       Name = v.Person.Name,
+                       Gender = v.PeopleId == null ? "" : (v.GenderId == 1 ? "M" : (v.GenderId == 2 ? "F" : "")),
+                       Name = v.Name,
                        PeopleId = v.PeopleId,
                        Request = v.Request,
                        Uploaded = v.Uploaded,
                        DivId = v.DivId ?? 0,
                        OrgId = v.OrgId ?? 0,
-                       OrgName = v.Organization.OrganizationName ?? "select class",
+                       OrgName = v.OrgName ?? "select class",
                        UserInfo = v.UserInfo
                    };
         }

@@ -29,10 +29,10 @@
             imgLoader.src = tb_pathToImage;
             decisiondt = $get('<%=DecisionTypeId.ClientID%>');
 
-            $("#member-tab > ul").tabs();
-            var $maintabs = $("#main-tab > ul").tabs();
-            $("#enrollment-tab > ul").tabs();
-            var $addrtabs = $("#address-tab > ul").tabs();
+            $("#member-tab").tabs();
+            var $maintabs = $("#main-tab").tabs();
+            $("#enrollment-tab").tabs();
+            var $addrtabs = $("#address-tab").tabs();
 
             var t = $.cookie('maintab');
             if (t && t != "2") // exclude enrollment
@@ -304,7 +304,7 @@
             <li><a href="#growth-tab"><span>Growth</span></a></li>
             <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
         </ul>
-        <div id="basic-tab" style='<%=displaynone%>'>
+        <div id="basic-tab">
             <table>
                 <tr>
                     <td valign="top">
@@ -607,34 +607,34 @@
                 </tr>
             </table>
         </div>
-        <div id="address-tab" style='<%=displaynone%>'>
+        <div id="address-tab">
             <ul>
                 <li><a href="#personal1-tab"><span>Personal</span></a></li>
                 <li><a href="#personal2-tab"><span>Personal Alternate</span></a></li>
                 <li><a href="#family1-tab"><span>Family</span></a></li>
                 <li><a href="#family2-tab"><span>Family Alternate</span></a></li>
             </ul>
-            <div id="personal1-tab" style='<%=displaynone%>'>
+            <div id="personal1-tab">
                 <uc1:address ID="PersonPrimaryAddr" runat="server" AddressType="Personal" />
             </div>
-            <div id="personal2-tab" style='<%=displaynone%>'>
+            <div id="personal2-tab">
                 <uc1:address ID="PersonAltAddr" runat="server" AddressType="PersonalAlternate" />
             </div>
-            <div id="family1-tab" style='<%=displaynone%>'>
+            <div id="family1-tab">
                 <uc1:address ID="FamilyPrimaryAddr" runat="server" AddressType="Family" />
             </div>
-            <div id="family2-tab" style='<%=displaynone%>'>
+            <div id="family2-tab">
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="enrollment-tab" style='<%=displaynone%>'>
+        <div id="enrollment-tab">
             <ul>
                 <li><a href="#current-tab"><span>Current</span></a></li>
                 <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
                 <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
             </ul>
-            <div id="current-tab" style='<%=displaynone%>'>
+            <div id="current-tab">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="EnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="EnrollData"
@@ -674,7 +674,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="previous-tab" style='<%=displaynone%>'>
+            <div id="previous-tab">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PrevEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PreviousEnrollData"
@@ -715,7 +715,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="pending-tab" style='<%=displaynone%>'>
+            <div id="pending-tab">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PendingEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PendingEnrollData"
@@ -746,7 +746,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="attendance-tab" style='<%=displaynone%>'>
+            <div id="attendance-tab">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="AttendGrid" runat="server" AllowPaging="True" SkinID="GridViewSkin"
@@ -776,12 +776,12 @@
                 </asp:UpdatePanel>
             </div>
         </div>
-        <div id="member-tab" style='<%=displaynone%>'>
+        <div id="member-tab">
             <ul>
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
-            <div id="membersum-tab" style='<%=displaynone%>'>
+            <div id="membersum-tab">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1098,7 +1098,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="membernotes-tab" style='<%=displaynone%>'>
+            <div id="membernotes-tab">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1151,7 +1151,7 @@
                 </table>
             </div>
         </div>
-        <div id="growth-tab" style='<%=displaynone%>'>
+        <div id="growth-tab">
             <table>
                 <tr>
                     <td valign="top" style="border-style: groove; border-width: thin;">
@@ -1313,7 +1313,7 @@
                 </tr>
             </table>
         </div>
-        <div id="volunteer-tab" style='<%=displaynone%>'>
+        <div id="volunteer-tab">
             <table class="Design2" style="border-style: groove; border-width: thin;">
                 <tr>
                     <th>

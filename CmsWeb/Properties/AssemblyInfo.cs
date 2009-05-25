@@ -15,15 +15,6 @@ using System.Web.UI;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: WebResource("CMSWeb.Code.hoverIntent.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.jquery-1.2.6.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.jquery.bgiframe.min.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.superfish.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.supersubs.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.ui.core.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.ui.tabs.js", "text/javascript")]
-[assembly: WebResource("CMSWeb.Code.ExportToolBar.js", "text/javascript")]
-
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.

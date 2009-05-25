@@ -6,7 +6,6 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 <div>
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/ui.tabs.js" type="text/javascript"></script>
     <script src="/Content/js/jqueryMultiSelect.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.contextMenu.js" type="text/javascript"></script>
     <script src="/Scripts/QueryBuilder.js" type="text/javascript"></script>
@@ -162,31 +161,31 @@
        Html.RenderPartial("Results", Model); %>
 </div>
 </form>
-<div id="QueryConditionSelect" class="modalPopup" title="Select a Condition" style="margin-top: 6px; width: 700px; height: 500px;">
+<div id="QueryConditionSelect" class="modalPopup" title="Select a Condition" style="font-size: smaller;">
     <div>
         <a id="NewGroup" href="#">Or start a new group of conditions</a><br />
     </div>
-    <div id="tabber" style="overflow: auto; height: 450px; margin:4px; border-top:solid 2px gray">
-        <ul>
+    <div id="tabber">
+    <ul>
 <% foreach(var c in Model.FieldCategories())
    { %>
-            <li><a href='<%= "#" + c.Name %>'><span><%= c.Title %></span></a></li>
+        <li><a href='<%= "#" + c.Name %>'><span><%= c.Title %></span></a></li>
 <% } %>
-        </ul>
+    </ul>
 <% foreach(var c in Model.FieldCategories())
    { %>
-        <div id='<%=c.Name %>'>
-    <% foreach(var p in c.Fields) 
-       { %>
-            <div>
-                <a id='<%=p.Name %>' class="FieldLink" href="#"><%=p.Title %></a>
-                <span style="cursor: pointer" onclick="toggle(this);return false;"><img src="/images/help_out.gif" /></span>
-            </div>
-            <div class="moreinfo">
-                <%=p.Description %>
-            </div>
-    <% } %>
-        </div>
+    <div id="<%=c.Name %>"  style="overflow: auto; height: 450px; margin:4px;">
+        <% foreach(var p in c.Fields) 
+           { %>
+                <div>
+                    <a id='<%=p.Name %>' class="FieldLink" href="#"><%=p.Title %></a>
+                    <span style="cursor: pointer" onclick="toggle(this);return false;"><img src="/images/help_out.gif" /></span>
+                </div>
+                <div class="moreinfo">
+                    <%=p.Description %>
+                </div>
+        <% } %>
+    </div>
 <% } %>
     </div>
 </div>

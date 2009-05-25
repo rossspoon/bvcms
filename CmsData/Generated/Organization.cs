@@ -82,8 +82,6 @@ namespace CmsData
 		
    		private EntitySet< Meeting> _Meetings;
 		
-   		private EntitySet< VBSApp> _VBSApps;
-		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
     	
@@ -197,8 +195,6 @@ namespace CmsData
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
 			this._Meetings = new EntitySet< Meeting>(new Action< Meeting>(this.attach_Meetings), new Action< Meeting>(this.detach_Meetings)); 
-			
-			this._VBSApps = new EntitySet< VBSApp>(new Action< VBSApp>(this.attach_VBSApps), new Action< VBSApp>(this.detach_VBSApps)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -870,16 +866,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_VBSApp_Organizations", Storage="_VBSApps", OtherKey="OrgId")]
-   		public EntitySet< VBSApp> VBSApps
-   		{
-   		    get { return this._VBSApps; }
-
-			set	{ this._VBSApps.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="ORGANIZATION_MEMBERS_ORG_FK", Storage="_OrganizationMembers", OtherKey="OrganizationId")]
    		public EntitySet< OrganizationMember> OrganizationMembers
    		{
@@ -1193,19 +1179,6 @@ namespace CmsData
 		}
 
 		private void detach_Meetings(Meeting entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_VBSApps(VBSApp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_VBSApps(VBSApp entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

@@ -43,9 +43,10 @@ namespace CMSWeb.Controllers
             m.SetVisibility();
 
             m.TextValue = "";
+            m.Comparison = "";
             m.IntegerValue = "";
             m.DateValue = "";
-            m.CodeValue = null;
+            m.CodeValue = "";
             m.CodeValues = new string[0];
             m.Days = "";
             m.Program = 0;

@@ -35,8 +35,6 @@ namespace CmsData
 		
 		private int? _OrgId;
 		
-		private int? _DivId;
-		
 		private bool? _Inactive;
 		
 		private bool? _PubPhoto;
@@ -47,8 +45,6 @@ namespace CmsData
 		
    		
     	
-		private EntityRef< Organization> _Organization;
-		
 		private EntityRef< Person> _Person;
 		
 	#endregion
@@ -85,9 +81,6 @@ namespace CmsData
 		partial void OnOrgIdChanging(int? value);
 		partial void OnOrgIdChanged();
 		
-		partial void OnDivIdChanging(int? value);
-		partial void OnDivIdChanged();
-		
 		partial void OnInactiveChanging(bool? value);
 		partial void OnInactiveChanged();
 		
@@ -104,8 +97,6 @@ namespace CmsData
 		public VBSApp()
 		{
 			
-			
-			this._Organization = default(EntityRef< Organization>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -294,7 +285,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
+		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int", IsDbGenerated=true)]
 		public int? OrgId
 		{
 			get { return this._OrgId; }
@@ -304,36 +295,11 @@ namespace CmsData
 				if (this._OrgId != value)
 				{
 				
-					if (this._Organization.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnOrgIdChanging(value);
 					this.SendPropertyChanging();
 					this._OrgId = value;
 					this.SendPropertyChanged("OrgId");
 					this.OnOrgIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="DivId", UpdateCheck=UpdateCheck.Never, Storage="_DivId", DbType="int")]
-		public int? DivId
-		{
-			get { return this._DivId; }
-
-			set
-			{
-				if (this._DivId != value)
-				{
-				
-                    this.OnDivIdChanging(value);
-					this.SendPropertyChanging();
-					this._DivId = value;
-					this.SendPropertyChanged("DivId");
-					this.OnDivIdChanged();
 				}
 
 			}
@@ -437,48 +403,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_VBSApp_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
-		public Organization Organization
-		{
-			get { return this._Organization.Entity; }
-
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Organization.Entity = null;
-						previousValue.VBSApps.Remove(this);
-					}
-
-					this._Organization.Entity = value;
-					if (value != null)
-					{
-						value.VBSApps.Add(this);
-						
-						this._OrgId = value.OrganizationId;
-						
-					}
-
-					else
-					{
-						
-						this._OrgId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Organization");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FK_VBSApp_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{

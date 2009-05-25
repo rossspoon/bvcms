@@ -26,21 +26,21 @@ namespace CMSWeb2
         {
             RegisterRoutes(RouteTable.Routes);
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
-            Application["starting"] = true;
+            //Application["starting"] = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (Application["starting"].IsNotNull())
-            {
-                try
-                {
-                    DbUtil.Db.DeleteSpecialTags(null);
-                }
-                finally
-                {
-                    Application.Remove("starting");
-                }
-            }
+            //if (Application["starting"].IsNotNull())
+            //{
+            //    try
+            //    {
+            //        DbUtil.Db.DeleteSpecialTags(null);
+            //    }
+            //    finally
+            //    {
+            //        Application.Remove("starting");
+            //    }
+            //}
         }
         public static void RegisterRoutes(RouteCollection routes)
         {

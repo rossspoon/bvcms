@@ -110,6 +110,7 @@
     <Compile Include="Generated\Views\FirstNick.cs" />
     <Compile Include="Generated\Views\LastName.cs" />
     <Compile Include="Generated\Views\Nick.cs" />
+    <Compile Include="Generated\Views\VBSInfo.cs" />
     <Compile Include="Generated\WeeklySchedule.cs" />
     <Compile Include="Generated\Zip.cs" />
     <Compile Include="IndividualContribution.cs" />

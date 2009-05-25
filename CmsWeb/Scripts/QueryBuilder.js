@@ -1,6 +1,6 @@
 ﻿var qs = "";
 $(function() {
-    $("#tabber > ul").tabs();
+    $("#tabber").tabs();
     $("#SelectCondition").SelectCondition();
     $('#Tags').click(function(ev) {
         $('#TagsPopup').show();
@@ -266,8 +266,9 @@ function EditCondition(ev) {
             modal: true,
             autoOpen: false,
             closeOnEscape: true,
-            width: 700,
-            height: 525
+            width: 750,
+            height: 575,
+            position: 'top'
         });
         this.click(function(ev) {
             o.Id = this.id;

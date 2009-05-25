@@ -41,11 +41,11 @@ function RefreshPage() {
         });
         $("#Divs").change(PopDivs);
         $('#selectorg').click(function() {
-            var data = { DivId: $("#Divs").val(), OrgId: $("#Orgs").val() };
+            var data = { OrgId: $("#Orgs").val() };
             $.post('/VBS/SelectOrg/' + o.Id, data, function(ret) {
                 $("a#" + o.Id).text(ret.OrgName)
-                    .attr("divid", data.DivId)
-                    .attr("orgid", data.OrgId);
+                    .attr("divid", ret.DivId)
+                    .attr("orgid", ret.OrgId);
                 $('#OrgChooser').dialog("close");
             }, "json");
         });
@@ -55,7 +55,7 @@ function RefreshPage() {
         var divid = $("#Divs").val();
         var data = {};
         if ($(ev.target).attr("divid"))
-            data = { DivId: $(ev.target).attr("divid"), OrgId: $(ev.target).attr('orgid') }        
+            data = { DivId: $(ev.target).attr("divid"), OrgId: $(ev.target).attr('orgid') }
         $.getJSON('/VBS/OrgOptions/' + divid, data || {}, function(j) {
             if (data)
                 $('#Divs').val(data.DivId);

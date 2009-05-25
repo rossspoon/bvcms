@@ -13,7 +13,7 @@
         function OpenQuery() { $find('<%=OpenQueryPopup.ClientID%>').show(); }
         function SaveQuery() { $find('<%=SaveQueryPopup.ClientID%>').show(); }
         function SelectCondition() {
-            jQuery("#tabber > ul").tabs();
+            jQuery("#tabber").tabs();
             $find('<%=ConditionSelectPopupBehavior.ClientID%>').show();
         }
     </script>

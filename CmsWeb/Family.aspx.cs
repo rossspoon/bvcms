@@ -21,7 +21,6 @@ namespace CMSWeb
     {
         public Family family;
         public Person person;
-        public string displaynone = "display:none";
 
         protected void Page_Load(object sender, EventArgs e)
         {

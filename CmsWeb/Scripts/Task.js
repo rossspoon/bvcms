@@ -1,5 +1,11 @@
 ﻿$(function() {
     SearchClicked = RefreshList;
+    $('#tabs').tabs();
+    $("#tabs > ul > li > a").click(function() {
+        var x = $(this).attr("href").substring(1);
+        return ClickTab(x);
+    });
+
     SelectTab();
     StripeList();
     var c = $.cookie("tasklast");
@@ -23,14 +29,13 @@ function SetPageSize(sz) {
     $.navigate("/Task/List", q);
 }
 function SelectTab(tab) {
-    var tselected = "ui-tabs-selected";
-    $('#tabs li').removeClass(tselected);
     if (tab)
         $('#CurTab').val(tab);
-    $('#' + $("#CurTab").val()).addClass(tselected);
+    $('#tabs').tabs('select', '#' + $('#CurTab').val()); 
 }
 function ClickTab(tab) {
-    SelectTab(tab);
+    if (tab)
+        $('#CurTab').val(tab);
     $.cookie('CurTaskTab', tab, { expires: 360 });
     RefreshList();
     return false;

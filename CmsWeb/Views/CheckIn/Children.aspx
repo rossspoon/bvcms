@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <script src="/Content/js/jquery-1.2.6.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function() {

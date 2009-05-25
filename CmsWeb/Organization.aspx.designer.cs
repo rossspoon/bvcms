@@ -41,6 +41,15 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditText OrganizationName;
         
         /// <summary>
+        /// DivisionId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditDropDown DivisionId;
+        
+        /// <summary>
         /// TagString control.
         /// </summary>
         /// <remarks>
@@ -624,6 +633,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource VisitorData;
+        
+        /// <summary>
+        /// ODS_Divisions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_Divisions;
         
         /// <summary>
         /// ODS_OrganizationStatusId control.

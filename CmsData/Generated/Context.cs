@@ -1047,6 +1047,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.VBSInfo> ViewVBSInfos
+	    {
+		    get { return this.GetTable< View.VBSInfo>(); }
+
+	    }
+
     #endregion
 	#region Table Functions
 		
@@ -1702,6 +1708,18 @@ namespace CmsData
             )
 		{
 			return ((DateTime)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.VBSOrg", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? VBSOrg(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
                 ).ReturnValue));
