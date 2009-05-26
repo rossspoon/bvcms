@@ -358,9 +358,12 @@ namespace CmsData
             p.PositionInFamilyId = position;
             p.AddressTypeId = 10;
 
-            p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
-            p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
-            p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
+            if (firstname.HasValue())
+                p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
+            if (nickname.HasValue())
+                p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
+            if (lastname.HasValue())
+                p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
 
             p.GenderId = gender;
             if (p.GenderId == 99)

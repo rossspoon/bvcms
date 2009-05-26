@@ -165,7 +165,7 @@
     <div>
         <a id="NewGroup" href="#">Or start a new group of conditions</a><br />
     </div>
-    <div id="tabber">
+    <div id="tabber" class="ui-tabs">
     <ul>
 <% foreach(var c in Model.FieldCategories())
    { %>
@@ -174,7 +174,7 @@
     </ul>
 <% foreach(var c in Model.FieldCategories())
    { %>
-    <div id="<%=c.Name %>"  style="overflow: auto; height: 450px; margin:4px;">
+    <div id="<%=c.Name %>"  style="overflow: auto; height: 450px; margin:4px;" class="ui-tabs-hide">
         <% foreach(var p in c.Fields) 
            { %>
                 <div>

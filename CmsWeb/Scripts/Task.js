@@ -186,7 +186,7 @@ function SearchContacts() {
     $('#dialogbox').dialog("option", "title", "Select Contact");
     $('#dialogbox').load("/Task/SearchContact/", null, function() {
         queryString = $('#searchform').formSerialize2();
-        $(".datepicker").datepicker();
+        $(".datepicker").datepicker({ changeYear: true, changeMonth: true });
         $("#contacts").initPager();
         $('#contacts > thead a.sortable').click(function(ev) {
             $("#contacts #Sort").val($(ev.target).text());
@@ -290,7 +290,7 @@ function Edit() {
     var id = $("#TaskId").val();
     $.post('/Task/Edit/' + id, function(ret) {
         $('#r' + id).html(ret);
-        $(".datepicker").datepicker();
+        $(".datepicker").datepicker({ changeYear: true, changeMonth: true });
     });
 } 
 function Update() {

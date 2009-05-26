@@ -304,7 +304,7 @@
             <li><a href="#growth-tab"><span>Growth</span></a></li>
             <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
         </ul>
-        <div id="basic-tab">
+        <div id="basic-tab" class="ui-tabs-hide">
             <table>
                 <tr>
                     <td valign="top">
@@ -607,34 +607,34 @@
                 </tr>
             </table>
         </div>
-        <div id="address-tab">
+        <div id="address-tab" class="ui-tabs-hide ui-tabs">
             <ul>
                 <li><a href="#personal1-tab"><span>Personal</span></a></li>
                 <li><a href="#personal2-tab"><span>Personal Alternate</span></a></li>
                 <li><a href="#family1-tab"><span>Family</span></a></li>
                 <li><a href="#family2-tab"><span>Family Alternate</span></a></li>
             </ul>
-            <div id="personal1-tab">
+            <div id="personal1-tab" class="ui-tabs-hide">
                 <uc1:address ID="PersonPrimaryAddr" runat="server" AddressType="Personal" />
             </div>
-            <div id="personal2-tab">
+            <div id="personal2-tab" class="ui-tabs-hide">
                 <uc1:address ID="PersonAltAddr" runat="server" AddressType="PersonalAlternate" />
             </div>
-            <div id="family1-tab">
+            <div id="family1-tab" class="ui-tabs-hide">
                 <uc1:address ID="FamilyPrimaryAddr" runat="server" AddressType="Family" />
             </div>
-            <div id="family2-tab">
+            <div id="family2-tab" class="ui-tabs-hide">
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="enrollment-tab">
+        <div id="enrollment-tab" class="ui-tabs-hide ui-tabs">
             <ul>
                 <li><a href="#current-tab"><span>Current</span></a></li>
                 <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
                 <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
             </ul>
-            <div id="current-tab">
+            <div id="current-tab" class="ui-tabs-hide">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="EnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="EnrollData"
@@ -674,7 +674,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="previous-tab">
+            <div id="previous-tab" class="ui-tabs-hide">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PrevEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PreviousEnrollData"
@@ -715,7 +715,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="pending-tab">
+            <div id="pending-tab" class="ui-tabs-hide">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PendingEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PendingEnrollData"
@@ -746,7 +746,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="attendance-tab">
+            <div id="attendance-tab" class="ui-tabs-hide">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="AttendGrid" runat="server" AllowPaging="True" SkinID="GridViewSkin"
@@ -776,12 +776,12 @@
                 </asp:UpdatePanel>
             </div>
         </div>
-        <div id="member-tab">
+        <div id="member-tab" class="ui-tabs-hide ui-tabs">
             <ul>
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
-            <div id="membersum-tab">
+            <div id="membersum-tab" class="ui-tabs-hide">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1098,7 +1098,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="membernotes-tab">
+            <div id="membernotes-tab" class="ui-tabs-hide">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1151,7 +1151,7 @@
                 </table>
             </div>
         </div>
-        <div id="growth-tab">
+        <div id="growth-tab" class="ui-tabs-hide">
             <table>
                 <tr>
                     <td valign="top" style="border-style: groove; border-width: thin;">
@@ -1313,7 +1313,7 @@
                 </tr>
             </table>
         </div>
-        <div id="volunteer-tab">
+        <div id="volunteer-tab" class="ui-tabs-hide">
             <table class="Design2" style="border-style: groove; border-width: thin;">
                 <tr>
                     <th>

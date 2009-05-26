@@ -5,7 +5,11 @@ $(function() {
     $('#Tags').click(function(ev) {
         $('#TagsPopup').show();
     });
-    $(".datepicker").datepicker({ dateFormat: 'm/d/yy' });
+    $(".datepicker").datepicker({
+        dateFormat: 'm/d/yy',
+        changeMonth: true,
+        changeYear: true
+    });
     HighlightCondition();
     $('#Program').change(function(ev) {
         $.post('/QueryBuilder/GetDivisions/' + $(this).val(), null, function(ret) {
