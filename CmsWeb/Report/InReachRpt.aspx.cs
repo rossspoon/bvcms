@@ -17,7 +17,8 @@ namespace CMSWeb
         private void localReport_SubreportProcessing(object sender, SubreportProcessingEventArgs e)
         {
             var ctl = new ContactController();
-            e.DataSources.Add(new ReportDataSource("ContactInfo", ctl.ContactList(e.Parameters[0].Values[0].ToInt()))); 
+            e.DataSources.Add(new ReportDataSource("ContactInfo", 
+                ctl.ContactList(e.Parameters[0].Values[0].ToInt()).ToList())); 
         }
         private void RenderReport()
         {
@@ -34,13 +35,16 @@ namespace CMSWeb
 
 
             if (id.HasValue)
-                rd = new ReportDataSource("InReachInfo", ctl.ListByQuery(id.Value)); //rd = new ReportDataSource();
+                rd = new ReportDataSource("InReachInfo", 
+                    ctl.ListByQuery(id.Value).ToList()); //rd = new ReportDataSource();
             //rd = new ReportDataSource("PastAttendeeInfo", ctl.QueryLabelInfo(id.Value));
             else if (orgid.HasValue)
-                rd = new ReportDataSource("InReachInfo", ctl.InReachOrgList(orgid.Value));
+                rd = new ReportDataSource("InReachInfo", 
+                    ctl.InReachOrgList(orgid.Value).ToList());
             //rd = new ReportDataSource("PasAttendeeInfo", ctl.OrgLabelInfo(orgid.Value));
             else if (divid.HasValue)
-                rd = new ReportDataSource("InReachInfo", ctl.InReachDivisionList(divid.Value));
+                rd = new ReportDataSource("InReachInfo", 
+                    ctl.InReachDivisionList(divid.Value).ToList());
             else
                 rd = null;
 

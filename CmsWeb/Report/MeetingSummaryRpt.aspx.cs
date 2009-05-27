@@ -37,8 +37,8 @@ namespace CMSWeb.Reports
 
             //Give the collection a name (EmployeeCollection) so that we can reference it in our report designer
             //ReportDataSource reportDataSource = new ReportDataSource("EmployeeCollection", employeeCollection);
-            rd1 = new ReportDataSource("PastAttendeeInfo", ctl.AbsenteesAndVisitors(mtgid.Value));
-            rd2 = new ReportDataSource("MeetingInfo", ctl.Meeting(mtgid.Value));
+            rd1 = new ReportDataSource("PastAttendeeInfo", ctl.AbsenteesAndVisitors(mtgid.Value).ToList());
+            rd2 = new ReportDataSource("MeetingInfo", ctl.Meeting(mtgid.Value).ToList());
             localReport.DataSources.Add(rd1);
             localReport.DataSources.Add(rd2);
 

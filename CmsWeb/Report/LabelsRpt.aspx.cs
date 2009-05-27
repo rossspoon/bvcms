@@ -32,19 +32,24 @@ namespace CMSWeb
             switch (labelNameFormat)
             {
                 case "Individual":
-                    rd = new ReportDataSource(STR_MailingInfo, ctl.FetchIndividualList(STR_Name, id.Value));
+                    rd = new ReportDataSource(STR_MailingInfo, 
+                        ctl.FetchIndividualList(STR_Name, id.Value).ToList());
                     break;
                 case "Family":
-                    rd = new ReportDataSource(STR_MailingInfo, ctl.FetchFamilyList(STR_Name, id.Value));
+                    rd = new ReportDataSource(STR_MailingInfo,
+                        ctl.FetchFamilyList(STR_Name, id.Value).ToList());
                     break;
                 case "ParentsOf":
-                    rd = new ReportDataSource(STR_MailingInfo, ctl.FetchParentsOfList(STR_Name, id.Value));
+                    rd = new ReportDataSource(STR_MailingInfo,
+                        ctl.FetchParentsOfList(STR_Name, id.Value).ToList());
                     break;
                 case "CouplesEither":
-                    rd = new ReportDataSource(STR_MailingInfo, ctl.FetchCouplesEitherList(STR_Name, id.Value));
+                    rd = new ReportDataSource(STR_MailingInfo,
+                        ctl.FetchCouplesEitherList(STR_Name, id.Value).ToList());
                     break;
                 case "CouplesBoth":
-                    rd = new ReportDataSource(STR_MailingInfo, ctl.FetchCouplesBothList(STR_Name, id.Value));
+                    rd = new ReportDataSource(STR_MailingInfo,
+                        ctl.FetchCouplesBothList(STR_Name, id.Value).ToList());
                     break;
             }
 

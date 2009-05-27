@@ -41,9 +41,9 @@ namespace CMSWeb
             var orgid = this.QueryString<int>("id");
             var ac = new AttendenceController();
             ReportDataSource reportDataSource1 = new ReportDataSource("PastAttendeeInfo", 
-                ac.PastAttendees(orgid));
+                ac.PastAttendees(orgid).ToList());
             ReportDataSource reportDataSource2 = new ReportDataSource("OrganizationInfo", 
-                ac.GetOrganizationInfo(orgid));
+                ac.GetOrganizationInfo(orgid).ToList());
 
             localReport.DataSources.Add(reportDataSource1);
             localReport.DataSources.Add(reportDataSource2);

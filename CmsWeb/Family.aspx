@@ -62,9 +62,6 @@
             <td valign="top">
                 <div>
                     <asp:LinkButton ID="TagUnTag" runat="server"></asp:LinkButton></div>
-                <%--                    <asp:HyperLink ID="Picture" Width="90px" Height="120px" runat="server">
-                    </asp:HyperLink>
---%>
             </td>
             <td>
                 <table>
@@ -146,13 +143,13 @@
             </td>
         </tr>
     </table>
-    <div id="main-tab">
+    <div id="main-tab" class='ui-tabs'>
         <ul>
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Address-tab"><span>Addresses</span></a></li>
             <li><a href="#Relations-tab"><span>Family Relations</span></a></li>
         </ul>
-        <div id="Members-tab">
+        <div id="Members-tab" class="ui-tabs-hide">
             <table>
                 <tr>
                     <td>
@@ -232,19 +229,19 @@
                 </tr>
             </table>
         </div>
-        <div id="Address-tab">
+        <div id="Address-tab" class="ui-tabs-hide ui-tabs">
             <ul>
                 <li><a href="#Family1-tab"><span>Family</span></a></li>
                 <li><a href="#Family2-tab"><span>Family Alternate</span></a></li>
             </ul>
-            <div id="Family1-tab">
+            <div id="Family1-tab" class="ui-tabs-hide">
                 <uc1:address ID="FamilyPrimaryAddr" runat="server" AddressType="Family" />
             </div>
-            <div id="Family2-tab">
+            <div id="Family2-tab" class="ui-tabs-hide">
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="Relations-tab">
+        <div id="Relations-tab" class="ui-tabs-hide">
             <table>
                 <tr>
                     <td>

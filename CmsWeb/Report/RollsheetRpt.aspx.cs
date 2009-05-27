@@ -23,13 +23,15 @@ namespace CMSWeb.Reports
             if (e.ReportPath == "RollsheetStandardDetailSubRpt")
             {
                 var ctl = new RollsheetController();
-                var rd1 = new ReportDataSource("PersonMemberInfo", ctl.FetchOrgMembers(e.Parameters[0].Values[0].ToInt()));
+                var rd1 = new ReportDataSource("PersonMemberInfo", 
+                    ctl.FetchOrgMembers(e.Parameters[0].Values[0].ToInt()).ToList());
                 e.DataSources.Add(rd1);
             }
             else if (e.ReportPath == "RollsheetStandardDetailVisitorSubRpt")
             {
                 var ctl = new RollsheetController();
-                var rd1 = new ReportDataSource("PersonVisitorInfo", ctl.FetchVisitors(e.Parameters[0].Values[0].ToInt(),meetingdate));
+                var rd1 = new ReportDataSource("PersonVisitorInfo", 
+                    ctl.FetchVisitors(e.Parameters[0].Values[0].ToInt(),meetingdate).ToList());
                 e.DataSources.Add(rd1);
             }
 
@@ -62,9 +64,11 @@ namespace CMSWeb.Reports
             //ReportDataSource reportDataSource = new ReportDataSource("EmployeeCollection", employeeCollection);
 
             if (oid.HasValue)
-                rd1 = new ReportDataSource("OrganizationInfo", ctl.FetchOrgsList(oid.Value,meetingdate));
+                rd1 = new ReportDataSource("OrganizationInfo", 
+                    ctl.FetchOrgsList(oid.Value,meetingdate).ToList());
             else
-                rd1 = new ReportDataSource("OrganizationInfo", ctl.FetchOrgsList(nam, did.Value, sid.Value, sts.Value));
+                rd1 = new ReportDataSource("OrganizationInfo", 
+                    ctl.FetchOrgsList(nam, did.Value, sid.Value, sts.Value).ToList());
 
             localReport.DataSources.Add(rd1);
             localReport.SubreportProcessing += new SubreportProcessingEventHandler(localReport_SubreportProcessing);

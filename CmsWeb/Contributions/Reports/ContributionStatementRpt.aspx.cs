@@ -23,31 +23,35 @@ namespace CMSWeb.Contributions.Reports
             if (e.ReportPath == "ContributionsSubReport")
             {
                 var ctl = new ContributionStatementController();
-                var rd1 = new ReportDataSource("ContributionInfo", ctl.contributions(e.Parameters[0].Values[0].ToInt(),
-                                                                                     e.Parameters[1].Values[0].ToInt(),
-                                                                                     fromDate,
-                                                                                     toDate));
+                var rd1 = new ReportDataSource("ContributionInfo", 
+                    ctl.contributions(e.Parameters[0].Values[0].ToInt(),
+                         e.Parameters[1].Values[0].ToInt(),
+                         fromDate,
+                         toDate).ToList());
                 e.DataSources.Add(rd1);
             }
             else if (e.ReportPath == "GiftInKindSubRpt")
             {
                 var ctl = new ContributionStatementController();
-                var rd1 = new ReportDataSource("ContributionInfo", ctl.gifts(e.Parameters[0].Values[0].ToInt(),
-                                                                             e.Parameters[1].Values[0].ToInt(),
-                                                                             fromDate,
-                                                                             toDate).DefaultIfEmpty());
+                var rd1 = new ReportDataSource("ContributionInfo", 
+                    ctl.gifts(e.Parameters[0].Values[0].ToInt(),
+                         e.Parameters[1].Values[0].ToInt(),
+                         fromDate,
+                         toDate).DefaultIfEmpty().ToList());
                 e.DataSources.Add(rd1);
             }
 
             else if (e.ReportPath == "PledgeSummarySubRpt")
             {
                 var ctl = new ContributionStatementController();
-                var rd1 = new ReportDataSource("PledgeSummaryInfo", ctl.pledges(e.Parameters[0].Values[0].ToInt(),
-                                                                             e.Parameters[1].Values[0].ToInt(), toDate));
-                var rd2 = new ReportDataSource("ContributionInfo", ctl.quarterlySummary(e.Parameters[0].Values[0].ToInt(),
-                                                                             e.Parameters[1].Values[0].ToInt(),
-                                                                             fromDate,
-                                                                             toDate));
+                var rd1 = new ReportDataSource("PledgeSummaryInfo", 
+                    ctl.pledges(e.Parameters[0].Values[0].ToInt(),
+                         e.Parameters[1].Values[0].ToInt(), toDate).ToList());
+                var rd2 = new ReportDataSource("ContributionInfo", 
+                    ctl.quarterlySummary(e.Parameters[0].Values[0].ToInt(),
+                         e.Parameters[1].Values[0].ToInt(),
+                         fromDate,
+                         toDate).ToList());
                 e.DataSources.Add(rd1);
                 e.DataSources.Add(rd2);
             }
@@ -72,11 +76,13 @@ namespace CMSWeb.Contributions.Reports
             var ctl = new ContributionStatementController();
 
             if (typ.Value == 1)
-                rd1 = new ReportDataSource("ContributorInfo", ctl.contributor(id.Value, fromDate, toDate));
+                rd1 = new ReportDataSource("ContributorInfo", 
+                    ctl.contributor(id.Value, fromDate, toDate).ToList());
             else
             {
                 var fid = DbUtil.Db.People.Single(p => p.PeopleId == id.Value).FamilyId;
-                rd1 = new ReportDataSource("ContributorInfo", ctl.family(fid, fromDate, toDate));
+                rd1 = new ReportDataSource("ContributorInfo", 
+                    ctl.family(fid, fromDate, toDate).ToList());
             }
 
             localReport.DataSources.Add(rd1);

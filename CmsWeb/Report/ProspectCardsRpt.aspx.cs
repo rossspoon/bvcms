@@ -30,27 +30,27 @@ namespace CMSWeb.Reports
             if (e.ReportPath == "AttendanceSummarySubRpt")
             {
                 var ctl = new ProspectController();
-                e.DataSources.Add(new ReportDataSource("ProspectAttendInfo", ctl.AttendHistory(e.Parameters[0].Values[0].ToInt())));
+                e.DataSources.Add(new ReportDataSource("ProspectAttendInfo", 
+                    ctl.AttendHistory(e.Parameters[0].Values[0].ToInt()).ToList()));
             }
             else if (e.ReportPath == "PastContactsSummarySubRpt")
             {
                 var ctl = new ContactController();
-                e.DataSources.Add(new ReportDataSource("ContactInfo", ctl.ContactList(e.Parameters[0].Values[0].ToInt())));
+                e.DataSources.Add(new ReportDataSource("ContactInfo",
+                    ctl.ContactList(e.Parameters[0].Values[0].ToInt()).ToList()));
             }
             else if (e.ReportPath == "CurrentEnrollmentSubRpt")
             {
                 var ctl = new ProspectController();
-                e.DataSources.Add(new ReportDataSource("OrganizationView", ctl.EnrollData(e.Parameters[0].Values[0].ToInt())));
+                e.DataSources.Add(new ReportDataSource("OrganizationView",
+                    ctl.EnrollData(e.Parameters[0].Values[0].ToInt()).ToList()));
             }
             else if (e.ReportPath == "FamilySummarySubRpt")
             {
                 var ctl = new ProspectController();
-                e.DataSources.Add(new ReportDataSource("FamilyMember", ctl.FamilyMembers(e.Parameters[0].Values[0].ToInt())));
+                e.DataSources.Add(new ReportDataSource("FamilyMember",
+                    ctl.FamilyMembers(e.Parameters[0].Values[0].ToInt()).ToList()));
             }
-            else
-            {
-            }
-
         }
 
         private void RenderReport()
@@ -63,7 +63,7 @@ namespace CMSWeb.Reports
 
             ReportDataSource rd = null;
             var ctl = new ProspectController();
-            rd = new ReportDataSource("ProspectInfo",ctl.ListByQuery(id.Value));
+            rd = new ReportDataSource("ProspectInfo",ctl.ListByQuery(id.Value).ToList());
             localReport.DataSources.Add(rd);
             localReport.SubreportProcessing += new SubreportProcessingEventHandler(localReport_SubreportProcessing);
 
