@@ -9,7 +9,7 @@
     <form id="form1" runat="server">
 <%--    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" Font-Size="8pt"
         Height="1600px" Width="100%" SizeToReportContent="True">
-        <LocalReport ReportPath="Reports/PastAttendeeRpt.rdlc">
+        <LocalReport ReportPath="Report/PastAttendeeRpt.rdlc">
             <DataSources>
                 <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="PastAttendeeInfo" />
                 <rsweb:ReportDataSource DataSourceId="ObjectDataSource2" Name="OrganizationInfo" />

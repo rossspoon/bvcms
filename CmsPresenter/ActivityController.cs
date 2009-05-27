@@ -29,11 +29,6 @@ namespace CMSPresenter
     [DataObject]
     public class ActivityController
     {
-        private CMSDataContext Db;
-        public ActivityController()
-        {
-            Db = DbUtil.Db;
-        }
         int _count;
         public int Count(int uid, int maximumRows, int startRowIndex)
         {
@@ -42,7 +37,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<ActivityInfo> Activity(int uid, int maximumRows, int startRowIndex)
         {
-            var q = from a in Db.ActivityLogs
+            var q = from a in DbUtil.Db.ActivityLogs
                     where a.UserId == uid || uid == 0
                     select a;
             _count = q.Count();

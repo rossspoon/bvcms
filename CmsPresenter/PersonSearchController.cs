@@ -18,11 +18,8 @@ namespace CMSPresenter
     [DataObject]
     public class PersonSearchController
     {
-        internal CMSDataContext Db;
-
         public PersonSearchController()
         {
-            Db = DbUtil.Db;
             TagTypeId = DbUtil.TagTypeId_Personal;
             TagName = Util.CurrentTagName;
             TagOwner = Util.CurrentTagOwnerId;
@@ -103,7 +100,7 @@ namespace CMSPresenter
             if (TagTypeId == DbUtil.TagTypeId_AddSelected)
             {
                 query = ApplySort(query, sortExpression);
-                var t = Db.FetchOrCreateTag(TagName, TagOwner, TagTypeId);
+                var t = DbUtil.Db.FetchOrCreateTag(TagName, TagOwner, TagTypeId);
                 query = t.People().Union(query);
             }
             else

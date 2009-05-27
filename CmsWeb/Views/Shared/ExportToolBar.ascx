@@ -10,7 +10,7 @@
     <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 
         Export</a>
         <ul>
-            <li><a href='/Reports/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+            <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Labels (pdf for label printer)"><img src="/images/tags.png" /> 
                 Labels</a></li>
             <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
@@ -24,10 +24,10 @@
     <li class="headlink"><a href=''><img src="/images/Report.png" /> 
         Reports</a>
         <ul>
-            <li><a href='/Reports/ProspectCardsrpt.aspx?id=<%=ViewData["queryid"]%>'
+            <li><a href='/Report/ProspectCardsrpt.aspx?id=<%=ViewData["queryid"]%>'
                 target="_blank"><img src="/images/Report.png" /> 
                 Prospect Form</a></li>
-            <li><a href='/Reports/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
+            <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach Form</a></li>
             <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Involvement' 
@@ -42,7 +42,7 @@
             <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Church' 
                 target="_blank" title="Contains other Church Info"><img src="/images/Excel.png" />
                 Other Church</a></li>
-            <li><a href='/Reports/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
+            <li><a href='/Report/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
                 Choir Attendance Labels</a></li>
         </ul>

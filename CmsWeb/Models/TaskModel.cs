@@ -40,7 +40,6 @@ namespace CMSWeb.Models
     public class TaskModel : ITaskFormBindable
     {
         private const string STR_InBox = "InBox";
-        private CMSDataContext Db = DbUtil.Db;
 
         public int PeopleId { get; set; }
         private int? _Id;
@@ -130,7 +129,7 @@ namespace CMSWeb.Models
         {
             Task.GetRequiredTaskList(STR_InBox, PeopleId);
             Task.GetRequiredTaskList("Personal", PeopleId);
-            return from t in Db.TaskLists
+            return from t in DbUtil.Db.TaskLists
                    where t.TaskListOwners.Any(tlo => tlo.PeopleId == PeopleId) || t.CreatedBy == PeopleId
                    orderby t.Name
                    select new TaskListInfo
@@ -159,7 +158,7 @@ namespace CMSWeb.Models
         };
         public IEnumerable<SelectListItem> ActionItems()
         {
-            var q = from t in Db.TaskLists
+            var q = from t in DbUtil.Db.TaskLists
                     where t.TaskListOwners.Any(tlo => tlo.PeopleId == PeopleId) || t.CreatedBy == PeopleId
                     orderby t.Name
                     select new SelectListItem
@@ -241,7 +240,7 @@ namespace CMSWeb.Models
             var somedaycode = (int)Task.StatusCode.Someday;
 
             var iPhone = HttpContext.Current.Request.UserAgent.Contains("iPhone");
-            var q2 = from t in Db.Tasks
+            var q2 = from t in DbUtil.Db.Tasks
                      where t.Id == id
                      //let tListId = t.CoOwnerId == PeopleId ? t.CoListId.Value : t.ListId
                      select new TaskDetail
@@ -289,7 +288,7 @@ namespace CMSWeb.Models
         public IEnumerable<ContactTaskInfo> FetchContactTasks()
         {
             var completedcode = (int)Task.StatusCode.Complete;
-            var q = from t in Db.Tasks
+            var q = from t in DbUtil.Db.Tasks
                     // not archived
                     where t.Archive == false // not archived
                     // I am involved in
@@ -394,7 +393,7 @@ namespace CMSWeb.Models
 
         public void DeleteTask(int TaskId, ITaskNotify notify)
         {
-            var task = Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
+            var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
             if (task == null)
                 return;
 
@@ -404,8 +403,8 @@ namespace CMSWeb.Models
                     notify.EmailNotification(task.Owner, task.CoOwner,
                         "Task Deleted by " + task.Owner.Name,
                         task.Description + "<br/>\n" + task.AboutName);
-                Db.Tasks.DeleteOnSubmit(task);
-                Db.SubmitChanges();
+                DbUtil.Db.Tasks.DeleteOnSubmit(task);
+                DbUtil.Db.SubmitChanges();
             }
             else // I must be cowner, I can't delete
             {
@@ -417,7 +416,7 @@ namespace CMSWeb.Models
         private IQueryable<Task> ApplySearch()
         {
             int listid = CurListId;
-            var q = Db.Tasks.Where(t => t.Archive == false && (t.CoOwnerId == PeopleId ? t.CoListId.Value : t.ListId) == listid);
+            var q = DbUtil.Db.Tasks.Where(t => t.Archive == false && (t.CoOwnerId == PeopleId ? t.CoListId.Value : t.ListId) == listid);
             if (OwnerOnly.Value) // I see only my own tasks or tasks I have been delegated
                 q = q.Where(t => t.OwnerId == PeopleId || t.CoOwnerId == PeopleId);
             else // I see my own tasks where I am owner or cowner plus other people's tasks where I share the list the task is in
@@ -450,7 +449,7 @@ namespace CMSWeb.Models
         public IEnumerable<SelectListItem> Locations()
         {
             string[] a = { "@work", "@home", "@car", "@computer" };
-            var q = from t in Db.Tasks
+            var q = from t in DbUtil.Db.Tasks
                     where t.OwnerId == PeopleId
                     where t.Location != ""
                     orderby t.Location
@@ -467,7 +466,7 @@ namespace CMSWeb.Models
         }
         private IQueryable<string> projects()
         {
-            return from t in Db.Tasks
+            return from t in DbUtil.Db.Tasks
                    where t.Archive == false
                    where t.TaskList.TaskListOwners.Any(tlo => tlo.PeopleId == PeopleId) || t.TaskList.CreatedBy == PeopleId
                    where t.Project != ""
@@ -487,12 +486,12 @@ namespace CMSWeb.Models
 
         public int AddCompletedContact(int id, ITaskNotify notify)
         {
-            var task = Db.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
             var c = new NewContact { ContactDate = Util.Now.Date };
             c.CreatedDate = c.ContactDate;
             c.ContactTypeId = 7;
             c.ContactReasonId = 160;
-            var min = Db.Ministries.SingleOrDefault(m => m.MinistryName == task.Project);
+            var min = DbUtil.Db.Ministries.SingleOrDefault(m => m.MinistryName == task.Project);
             if (min != null)
                 c.MinistryId = min.MinistryId;
             c.contactees.Add(new Contactee { PeopleId = task.WhoId.Value });
@@ -508,24 +507,24 @@ namespace CMSWeb.Models
                     "Task Completed with a Contact by " + task.Owner.Name,
                     TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
             task.CompletedOn = c.ContactDate;
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
             return c.ContactId;
         }
 
         public void AcceptTask(int id, ITaskNotify notify)
         {
-            var task = Db.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
             task.StatusEnum = Task.StatusCode.Active;
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
             notify.EmailNotification(task.CoOwner, task.Owner,
                 "Task Accepted from " + task.CoOwner.Name,
                 TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
         }
         public void AddSourceContact(int id, int contactid)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
-            task.SourceContact = Db.NewContacts.SingleOrDefault(nc => nc.ContactId == contactid);
-            Db.SubmitChanges();
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
+            task.SourceContact = DbUtil.Db.NewContacts.SingleOrDefault(nc => nc.ContactId == contactid);
+            DbUtil.Db.SubmitChanges();
         }
         public void Delegate(int taskid, int toid, ITaskNotify notify)
         {
@@ -582,36 +581,36 @@ namespace CMSWeb.Models
 
         public void SetDescription(int id, string value, ITaskNotify notify)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             ChangeTask(sb, task, "Description", value);
             NotifyIfNeeded(notify, sb, task);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void SetLocation(int id, string value)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             task.Location = value;
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void SetStatus(int id, string value, ITaskNotify notify)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var cvc = new CodeValueController();
             var ts = cvc.TaskStatusCodes();
             var statusid = ts.Single(t => t.Value == value).Id;
             var sb = new StringBuilder();
             ChangeTask(sb, task, "StatusId", statusid);
             NotifyIfNeeded(notify, sb, task);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void MoveTasksToList(IEnumerable<int> tids, int listid)
         {
-            var mlist = Db.TaskLists.Single(tl => tl.Id == listid);
-            var q = from t in Db.Tasks
+            var mlist = DbUtil.Db.TaskLists.Single(tl => tl.Id == listid);
+            var q = from t in DbUtil.Db.Tasks
                     where tids.Contains(t.Id)
                     // if I am the coowner
                     // and if this task is on a shared list
@@ -629,10 +628,11 @@ namespace CMSWeb.Models
                     mlist.CoTasks.Add(t);
                 else
                     mlist.Tasks.Add(t);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
         public void DeleteList(string tab)
         {
+            var Db = DbUtil.Db;
             var id = tab.Substring(1).ToInt();
             if (id <= 0)
                 return;
@@ -656,6 +656,7 @@ namespace CMSWeb.Models
 
         public void AddList(string name)
         {
+            var Db = DbUtil.Db;
             var txt = name.ToLower();
             if (string.Compare(txt, STR_InBox, true) == 0 || string.Compare(txt, "personal", true) == 0)
                 return;
@@ -681,28 +682,28 @@ namespace CMSWeb.Models
                 OwnerId = pid,
                 StatusEnum = Task.StatusCode.Active,
             };
-            Db.Tasks.InsertOnSubmit(task);
-            Db.SubmitChanges();
+            DbUtil.Db.Tasks.InsertOnSubmit(task);
+            DbUtil.Db.SubmitChanges();
             return task.Id;
         }
 
         public void SetPriority(int p)
         {
-            var task = Db.Tasks.Single(t => t.Id == Id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == Id);
             if (p == 0)
                 task.Priority = null;
             else
                 task.Priority = p;
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void SetProject(int id, string value, ITaskNotify notify)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             ChangeTask(sb, task, "Project", value);
             NotifyIfNeeded(notify, sb, task);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void DeleteTasks(IEnumerable<int> list, ITaskNotify notify)
@@ -713,7 +714,7 @@ namespace CMSWeb.Models
 
         public void Priortize(IEnumerable<int> list, string p)
         {
-            var q = from t in Db.Tasks
+            var q = from t in DbUtil.Db.Tasks
                     where list.Contains(t.Id)
                     select t;
             int? priority = p.Substring(1).ToInt();
@@ -721,23 +722,23 @@ namespace CMSWeb.Models
                 priority = null;
             foreach (var t in q)
                 t.Priority = priority;
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
         public void CompleteTask(int id, ITaskNotify notify)
         {
-            var task = Db.Tasks.Single(t => t.Id == id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             var statusid = (int)Task.StatusCode.Complete;
             ChangeTask(sb, task, "StatusId", statusid);
             NotifyIfNeeded(notify, sb, task);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
 
 
         public void ArchiveTask(int TaskId, ITaskNotify notify)
         {
-            var task = Db.Tasks.Single(t => t.Id == TaskId);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == TaskId);
 
             if (task.OwnerId == PeopleId)
             {
@@ -746,7 +747,7 @@ namespace CMSWeb.Models
                         "Task Archived by " + task.Owner.Name,
                         task.Description + "<br/>\n" + task.AboutName);
                 task.Archive = true;
-                Db.SubmitChanges();
+                DbUtil.Db.SubmitChanges();
             }
             else // I must be cowner, I can't archive
             {

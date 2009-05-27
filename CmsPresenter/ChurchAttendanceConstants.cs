@@ -314,7 +314,6 @@ namespace CMSPresenter
                 return _GuestCentralMetroOrgs;
             }
         }
-        protected CMSDataContext Db = DbUtil.Db;
         public DateTime MostRecentAttendedSunday()
         {
             var q = from m in DbUtil.Db.Meetings

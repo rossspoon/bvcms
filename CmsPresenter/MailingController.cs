@@ -20,18 +20,12 @@ namespace CMSPresenter
     [DataObject]
     public class MailingController
     {
-        private CMSDataContext Db;
-
-        public MailingController()
-        {
-            Db = DbUtil.Db;
-        }
         public bool UseTitles { get; set; }
 
         public IEnumerable<MailingInfo> FetchIndividualList(string sortExpression, int QueryId)
         {
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var Qb = DbUtil.Db.LoadQueryById(QueryId);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
 
             var q2 = from p in q
                      where p.DeceasedDate == null
@@ -48,6 +42,7 @@ namespace CMSPresenter
                          LabelName = UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name,
                          Name = p.Name,
                          LastName = p.LastName,
+                         PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
             return q2;
@@ -62,16 +57,16 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<MailingInfo> FetchFamilyList(int startRowIndex, int maximumRows, string sortExpression, int QueryId)
         {
-            var Qb = Db.LoadQueryById(QueryId);
+            var Qb = DbUtil.Db.LoadQueryById(QueryId);
 
-            var qp = Db.People.Where(Qb.Predicate());
-            var q = from f in Db.Families
+            var qp = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = from f in DbUtil.Db.Families
                     where qp.Any(p => p.FamilyId == f.FamilyId)
                     select f.People.Single(fm => fm.PeopleId == f.HeadOfHouseholdId);
 
             _FamilyCount = q.Count();
             var q2 = from h in q
-                     let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
+                     let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
                      where h.DeceasedDate == null
                      where (h.BadAddressFlag == null || h.BadAddressFlag == false)
                      where h.DoNotMailFlag == false
@@ -92,6 +87,7 @@ namespace CMSPresenter
                                       UseTitles ? (h.TitleCode != null ? h.TitleCode + " " + h.Name : h.Name) : h.Name),
                          Name = h.Name,
                          LastName = h.LastName,
+                         PeopleId = h.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
             if (maximumRows == 0)
@@ -109,8 +105,8 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchParentsOfList(string sortExpression, int QueryId)
         {
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var Qb = DbUtil.Db.LoadQueryById(QueryId);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
             var q2 = from p in q
                      where p.DeceasedDate == null
                      where (p.BadAddressFlag == null || p.BadAddressFlag == false)
@@ -126,6 +122,7 @@ namespace CMSPresenter
                          LabelName = (p.PositionInFamilyId == 30 ? ("Parents Of " + p.Name) : UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name),
                          Name = p.Name,
                          LastName = p.LastName,
+                         PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
             return q2;
@@ -147,10 +144,10 @@ namespace CMSPresenter
         
         public IEnumerable<MailingInfo> FetchCouplesEitherList(string sortExpression, int QueryId)
         {
-            var q = Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
-                     let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
+                     let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
                      select new MailingInfo
                      {
                          Address = p.PrimaryAddress,
@@ -167,6 +164,7 @@ namespace CMSPresenter
                                              : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
                          Name = p.Name,
                          LastName = p.LastName,
+                         PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
             return q2;
@@ -174,7 +172,7 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchCouplesBothList(string sortExpression, int QueryId)
         {
-            var q = Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      // get spouse if in the query
@@ -195,6 +193,7 @@ namespace CMSPresenter
                                              : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
                          Name = p.Name,
                          LastName = p.LastName,
+                         PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
             return q2;
@@ -215,7 +214,7 @@ namespace CMSPresenter
         
         public IEnumerable FetchExcelCouplesBoth(int QueryId, int maximumRows)
         {
-            var q = Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      // get spouse if in the query
@@ -248,10 +247,10 @@ namespace CMSPresenter
         
         public IEnumerable FetchExcelCouplesEither(int QueryId, int maximumRows)
         {
-            var q = Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
-                     let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
+                     let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -282,15 +281,15 @@ namespace CMSPresenter
         
         public IEnumerable FetchExcelFamily(int QueryId, int maximumRows)
         {
-            var Qb = Db.LoadQueryById(QueryId);
+            var Qb = DbUtil.Db.LoadQueryById(QueryId);
 
-            var qp = Db.People.Where(Qb.Predicate());
-            var q = from f in Db.Families
+            var qp = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = from f in DbUtil.Db.Families
                     where qp.Any(p => p.FamilyId == f.FamilyId)
                     select f.People.Single(fm => fm.PeopleId == f.HeadOfHouseholdId);
 
             return (from h in q
-                    let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
+                    let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
                     where h.DeceasedDate == null
                     where (h.BadAddressFlag == null || h.BadAddressFlag == false)
                     where h.DoNotMailFlag == false
@@ -316,8 +315,8 @@ namespace CMSPresenter
         
         public IEnumerable FetchExcelParents(int QueryId, int maximumRows)
         {
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var Qb = DbUtil.Db.LoadQueryById(QueryId);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
             var q2 = from p in q
                      where p.DeceasedDate == null
                      where (p.BadAddressFlag == null || p.BadAddressFlag == false)

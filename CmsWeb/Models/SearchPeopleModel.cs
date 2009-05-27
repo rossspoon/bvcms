@@ -70,7 +70,6 @@ namespace CMSWeb.Models
             }
         }
 
-        private CMSDataContext Db = DbUtil.Db;
         private Regex AddrRegex = new Regex(
         @"\A(?<addr>.*);\s*(?<city>.*),\s+(?<state>[A-Z]*)\s+(?<zip>\d{5}(-\d{4})?)\z");
 
@@ -131,6 +130,7 @@ namespace CMSWeb.Models
         }
         private IQueryable<Person> ApplySearch()
         {
+            var Db = DbUtil.Db;
             var query = Db.People.Select(p => p);
             if (Util.OrgMembersOnly)
                 query = Db.OrgMembersOnlyTag.People();
@@ -241,6 +241,7 @@ namespace CMSWeb.Models
 
         public IEnumerable<SelectListItem> UserTags()
         {
+            var Db = DbUtil.Db;
             Db.TagCurrent(); // make sure the current tag exists
             int userPeopleId = Util.UserPeopleId.Value;
             var q1 = from t in Db.Tags
@@ -268,7 +269,7 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> MemberStatusCodes()
         {
-            var q = from ms in Db.MemberStatuses
+            var q = from ms in DbUtil.Db.MemberStatuses
                     select new SelectListItem
                     {
                         Value = ms.Id.ToString(),
@@ -278,7 +279,7 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> GenderCodes()
         {
-            var q = from ms in Db.Genders
+            var q = from ms in DbUtil.Db.Genders
                     select new SelectListItem
                     {
                         Value = ms.Id.ToString(),
@@ -288,6 +289,7 @@ namespace CMSWeb.Models
         }
         public int? AddNewPerson()
         {
+            var Db = DbUtil.Db;
             var p = new Person { AddressTypeId = 10 };
             Db.People.InsertOnSubmit(p);
             DateTime bdt;

@@ -22,19 +22,19 @@ namespace CmsData.View
 		
 		private string _Name2;
 		
-		private int _PeopleId;
+		private int? _PeopleId;
 		
 		private string _UserInfo;
 		
 		private bool? _PubPhoto;
 		
-		private int _MemberStatusId;
+		private int? _MemberStatusId;
 		
 		private bool? _ActiveInAnotherChurch;
 		
 		private string _GradeCompleted;
 		
-		private int _GenderId;
+		private int? _GenderId;
 		
 		private string _Request;
 		
@@ -104,8 +104,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int NOT NULL")]
-		public int PeopleId
+		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int")]
+		public int? PeopleId
 		{
 			get
 			{
@@ -155,8 +155,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="MemberStatusId", Storage="_MemberStatusId", DbType="int NOT NULL")]
-		public int MemberStatusId
+		[Column(Name="MemberStatusId", Storage="_MemberStatusId", DbType="int")]
+		public int? MemberStatusId
 		{
 			get
 			{
@@ -206,8 +206,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="GenderId", Storage="_GenderId", DbType="int NOT NULL")]
-		public int GenderId
+		[Column(Name="GenderId", Storage="_GenderId", DbType="int")]
+		public int? GenderId
 		{
 			get
 			{

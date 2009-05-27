@@ -25,12 +25,6 @@ namespace CMSPresenter
     [DataObject]
     public class OrganizationController
     {
-        private CMSDataContext Db;
-        public OrganizationController()
-        {
-            Db = DbUtil.Db;
-        }
-
         private int _count;
         private Dictionary<int, CodeValueItem> dict = (new CodeValueController()).AttendanceTrackLevelCodes().ToDictionary(cv => cv.Id);
         private int[] ChildSecurityRollSheets = new int[] { 4, 5, 6, 7 };
@@ -39,7 +33,7 @@ namespace CMSPresenter
         public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, string sortExpression, int maximumRows, int startRowIndex)
         {
             int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
-            var q = from om in Db.OrganizationMembers
+            var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == OrganizationId
                     where (Active && om.MemberTypeId != inactive)
                         || (!Active && om.MemberTypeId == inactive)
@@ -57,7 +51,7 @@ namespace CMSPresenter
         public IEnumerable<PersonVisitorInfo> Visitors(int orgid, string sortExpression, int maximumRows, int startRowIndex)
         {
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
-            var q = Db.People.Where(qb.Predicate());
+            var q = DbUtil.Db.People.Where(qb.Predicate());
             q = q.Where(p => !p.OrganizationMembers.Any(om => om.OrganizationId == orgid));
             visitorCount = q.Count();
             q = ApplySort(q, orgid, sortExpression);
@@ -220,12 +214,12 @@ namespace CMSPresenter
 
         public Organization CloneOrg(int orgid)
         {
-            var org = Db.Organizations.Single(o => o.OrganizationId == orgid);
+            var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
             var neworg = new Organization
             {
                 AttendTrkLevelId = org.AttendTrkLevelId,
                 CreatedDate = DateTime.Now,
-                CreatedBy = Db.CurrentUser.UserId,
+                CreatedBy = DbUtil.Db.CurrentUser.UserId,
                 DivisionId = org.DivisionId,
                 LeaderMemberTypeId = org.LeaderMemberTypeId,
                 OrganizationName = org.OrganizationName + " (copy)",
@@ -234,10 +228,10 @@ namespace CMSPresenter
                 EntryPointId = org.EntryPointId,
                 OrganizationStatusId = org.OrganizationStatusId,
             };
-            Db.Organizations.InsertOnSubmit(neworg);
+            DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in org.DivOrgs)
                 neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
             return neworg;
         }
         public static IQueryable<OrganizationMember> ApplySort(IQueryable<OrganizationMember> query, string sort)
@@ -520,10 +514,10 @@ namespace CMSPresenter
                             person.Name, orgname, mt.MeetingDate);
                     }
                 }
-                notify.EmailNotification(Db.CurrentUser.Person, person, "Attendance reports ready for viewing on CMS", sb.ToString());
+                notify.EmailNotification(DbUtil.Db.CurrentUser.Person, person, "Attendance reports ready for viewing on CMS", sb.ToString());
             }
             sb2.Append("</table>\n");
-            notify.EmailNotification(Db.CurrentUser.Person, Db.CurrentUser.Person, "Attendance emails sent", sb2.ToString());
+            notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person, "Attendance emails sent", sb2.ToString());
         }
     }
 }

@@ -24,11 +24,9 @@ namespace CMSPresenter
         private int MiscTags;
         TimeSpan t800, t930, t1100;
         int dbUtilBFClassOrgTagId;
-        private CMSDataContext Db;
         public BFCAttendSummaryController()
         {
-            Db = DbUtil.Db;
-            MiscTags = Db.Programs.Single(d => d.Name == DbUtil.MiscTagsString).Id;
+            MiscTags = DbUtil.Db.Programs.Single(d => d.Name == DbUtil.MiscTagsString).Id;
             t800 = TimeSpan.Parse("8:00");
             t930 = TimeSpan.Parse("9:30");
             t1100 = TimeSpan.Parse("11:00");
@@ -62,7 +60,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<BFCAttendSummaryInfo> BFCWeeklyAttendanceSummary(DateTime sunday)
         {
-            var q2 = from m in Db.Meetings
+            var q2 = from m in DbUtil.Db.Meetings
                      let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
@@ -76,7 +74,7 @@ namespace CMSPresenter
                      };
             var qlist = q2.ToList();
 
-            var qSortOrderName = from i in Db.Divisions
+            var qSortOrderName = from i in DbUtil.Db.Divisions
                                  where i.SortOrder != null
                                  select new { i.SortOrder, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);
@@ -124,7 +122,7 @@ namespace CMSPresenter
         public IEnumerable<BFCAvgAttendSummaryInfo> BFCAvgWeeklyAttendanceSummary(DateTime fromDate, DateTime toDate)
         {
             // all the matching meeting division/date/hour counts for the date range
-            var q2 = from m in Db.Meetings
+            var q2 = from m in DbUtil.Db.Meetings
                      let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
@@ -172,7 +170,7 @@ namespace CMSPresenter
                         group tm by tm.DateHour.Date into g
                         select g.Sum(m => m.Count);
 
-            var qSortOrderName = from i in Db.Divisions
+            var qSortOrderName = from i in DbUtil.Db.Divisions
                                  where i.SortOrder != null
                                  select new { i.SortOrder, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);

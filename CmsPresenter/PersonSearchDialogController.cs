@@ -55,12 +55,6 @@ namespace CMSPresenter
     [DataObject]
     public class PersonSearchDialogController
     {
-        internal CMSDataContext Db;
-
-        public PersonSearchDialogController()
-        {
-            Db = DbUtil.Db;
-        }
         static int TagTypeId_AddSelected = DbUtil.TagTypeId_AddSelected;
         public static void ResetSearchTags()
         {
@@ -77,7 +71,7 @@ namespace CMSPresenter
         public IEnumerable<PersonDialogSearchInfo> FetchSearchList(
             string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
         {
-            var t = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
+            var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             var n = t.People().Count();
             var list = FetchPeopleList(t.People()).ToList();
             var ids = list.Select(p => p.PeopleId).ToArray();

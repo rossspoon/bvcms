@@ -33,8 +33,6 @@ namespace CMSWeb.Models
         public int? position { get; set; }
         public bool married { get; set; }
 
-        private CMSDataContext Db = DbUtil.Db;
-
         public string PrepareSummaryText()
         {
             var sb = new StringBuilder();
@@ -61,7 +59,7 @@ namespace CMSWeb.Models
 
         public IEnumerable<SelectListItem> StateList()
         {
-            var q = from r in Db.StateLookups
+            var q = from r in DbUtil.Db.StateLookups
                     select new SelectListItem
                     {
                         Text = r.StateCode,
@@ -72,7 +70,7 @@ namespace CMSWeb.Models
         public IQueryable<CmsData.Person> FindMember()
         {
             homephone = Util.GetDigits(homephone);
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where (p.LastName.StartsWith(lastname) || p.MaidenName.StartsWith(lastname))
                             && (p.FirstName.StartsWith(first)
                             || p.NickName.StartsWith(first)
@@ -136,7 +134,7 @@ namespace CMSWeb.Models
             };
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
             return p;
         }
         public void SavePerson(int FamilyId)
@@ -144,7 +142,7 @@ namespace CMSWeb.Models
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
     }
 }

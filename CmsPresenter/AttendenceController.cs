@@ -18,12 +18,6 @@ namespace CMSPresenter
 {
     public class AttendenceController
     {
-        private CMSDataContext Db;
-        public AttendenceController()
-        {
-            Db = DbUtil.Db;
-        }
-
         public IEnumerable<OrganizationInfo> GetOrganizationInfo(int orgid)
         {
             return (new OrganizationController()).GetOrganizationInfo(orgid);
@@ -31,6 +25,7 @@ namespace CMSPresenter
 
         public IEnumerable<PastAttendeeInfo> PastAttendees(int orgid)
         {
+            var Db = DbUtil.Db;
             // get list of people who have attended an event for this organization (including visitors)
             var pids = from a in Db.Attends
                        where a.Meeting.OrganizationId == orgid

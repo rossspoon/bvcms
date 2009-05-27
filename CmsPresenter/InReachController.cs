@@ -13,17 +13,10 @@ namespace CMSPresenter
 {
     public class InReachController
     {
-        private CMSDataContext Db;
-
-        public InReachController()
-        {
-            Db = DbUtil.Db;
-        }
-
         public IEnumerable<InReachInfo> ListByQuery(int qid)
         {
-            var qB = Db.LoadQueryById(qid);
-            var q = Db.People.Where(qB.Predicate());
+            var qB = DbUtil.Db.LoadQueryById(qid);
+            var q = DbUtil.Db.People.Where(qB.Predicate());
             return FetchList(q);
         }
 
@@ -91,7 +84,7 @@ namespace CMSPresenter
 
         public IEnumerable<InReachInfo> InReachOrgList(int orgid)
         {
-            var pids = from om in Db.OrganizationMembers
+            var pids = from om in DbUtil.Db.OrganizationMembers
                        from m in om.Organization.Meetings
                        from a in m.Attends
                        where om.OrganizationId == orgid
@@ -100,23 +93,23 @@ namespace CMSPresenter
                        where h.Max(z => z.a.MeetingDate) < Util.Now.Date.AddDays(-45)
                        select h;
 
-            var q =  from p in Db.People
+            var q = from p in DbUtil.Db.People
                      join pid in pids on p.PeopleId equals pid.Key.PeopleId
-                     let attendct = Db.Attends
+                    let attendct = DbUtil.Db.Attends
                                      .Count(a => a.OrganizationId == pid.Key.OrgId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
-                     let lastattend = Db.Attends
+                    let lastattend = DbUtil.Db.Attends
                                      .Where(a => a.OrganizationId == pid.Key.OrgId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                                      .Max(a => a.MeetingDate)
-                     let status = Db.OrganizationMembers
+                    let status = DbUtil.Db.OrganizationMembers
                                      .Count(m => m.PeopleId == p.PeopleId && m.OrganizationId == pid.Key.OrgId) == 0 ?
                                      "visitor" : "member"
-                     let attendpct = Db.OrganizationMembers
+                    let attendpct = DbUtil.Db.OrganizationMembers
                                      .Where(ap => ap.PeopleId == p.PeopleId && ap.OrganizationId == pid.Key.OrgId)
                                      .Max(ap => ap.AttendPct)
-                     let attendstr = Db.OrganizationMembers
+                    let attendstr = DbUtil.Db.OrganizationMembers
                                      .Where(astr => astr.PeopleId == p.PeopleId && astr.OrganizationId == pid.Key.OrgId)
                                      .Max(astr => astr.AttendStr)
-                     let divisionname = Db.Organizations.SingleOrDefault(a => a.OrganizationId == pid.Key.OrgId)
+                    let divisionname = DbUtil.Db.Organizations.SingleOrDefault(a => a.OrganizationId == pid.Key.OrgId)
                         .DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name
                      select new InReachInfo
                      {
@@ -140,7 +133,7 @@ namespace CMSPresenter
                          DivisionName = divisionname,
                          Fullname = p.Name,
                          OrganizationId = pid.Key.OrgId,
-                         OrganizationName = Db.Organizations
+                         OrganizationName = DbUtil.Db.Organizations
                                             .Where(a => a.OrganizationId == pid.Key.OrgId)
                                             .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
 
@@ -152,7 +145,7 @@ namespace CMSPresenter
         }
         public IEnumerable<InReachInfo> InReachDivisionList(int divid)
         {
-            var pids = from om in Db.OrganizationMembers
+            var pids = from om in DbUtil.Db.OrganizationMembers
                        from m in om.Organization.Meetings
                        from a in m.Attends
                        where om.Organization.DivisionId == divid
@@ -161,20 +154,20 @@ namespace CMSPresenter
                        where h.Max(z => z.a.MeetingDate) < Util.Now.Date.AddDays(-45)
                        select h;
 
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     join pid in pids on p.PeopleId equals pid.Key.PeopleId
-                    let attendct = Db.Attends
+                    let attendct = DbUtil.Db.Attends
                                     .Count(a => a.OrganizationId == pid.Key.OrgId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
-                    let lastattend = Db.Attends
+                    let lastattend = DbUtil.Db.Attends
                                     .Where(a => a.OrganizationId == pid.Key.OrgId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                                     .Max(a => a.MeetingDate)
-                    let status = Db.OrganizationMembers
+                    let status = DbUtil.Db.OrganizationMembers
                                     .Count(m => m.PeopleId == p.PeopleId && m.OrganizationId == pid.Key.OrgId) == 0 ?
                                     "visitor" : "member"
-                    let attendpct = Db.OrganizationMembers
+                    let attendpct = DbUtil.Db.OrganizationMembers
                                     .Where(ap => ap.PeopleId == p.PeopleId && ap.OrganizationId == pid.Key.OrgId)
                                     .Max(ap => ap.AttendPct)
-                    let attendstr = Db.OrganizationMembers
+                    let attendstr = DbUtil.Db.OrganizationMembers
                                     .Where(astr => astr.PeopleId == p.PeopleId && astr.OrganizationId == pid.Key.OrgId)
                                     .Max(astr => astr.AttendStr)
                     let divisionname = p.OrganizationMembers.Single(om => om.OrganizationId == pid.Key.OrgId).Organization
@@ -201,7 +194,7 @@ namespace CMSPresenter
                         DivisionName = divisionname,
                         Fullname = p.Name,
                         OrganizationId = pid.Key.OrgId,
-                        OrganizationName = Db.Organizations
+                        OrganizationName = DbUtil.Db.Organizations
                                            .Where(a => a.OrganizationId == pid.Key.OrgId)
                                            .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
 
@@ -212,21 +205,21 @@ namespace CMSPresenter
         }
         public IEnumerable<InReachInfo> InReachQueryList(int qid)
         {
-            var Qb = Db.LoadQueryById(qid);
-   
-            var q = from p in Db.People
+            var Qb = DbUtil.Db.LoadQueryById(qid);
+
+            var q = from p in DbUtil.Db.People
                     join pid in Qb.PeopleIds() on p.PeopleId equals pid
-                    let attendct = Db.Attends
+                    let attendct = DbUtil.Db.Attends
                                     .Count(a => a.OrganizationId == p.BibleFellowshipClassId && p.PeopleId == p.PeopleId && a.AttendanceFlag == true)
-                    let lastattend = Db.Attends
+                    let lastattend = DbUtil.Db.Attends
                                     .Where(a => a.OrganizationId == p.BibleFellowshipClassId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                                     .Max(a => a.MeetingDate)
-                    let status = Db.OrganizationMembers
+                    let status = DbUtil.Db.OrganizationMembers
                                     .Count(m => m.PeopleId == p.PeopleId && m.OrganizationId == p.BibleFellowshipClassId) == 0 ? "visitor" : "member"
-                    let attendpct = Db.OrganizationMembers
+                    let attendpct = DbUtil.Db.OrganizationMembers
                                     .Where(ap => ap.PeopleId == p.PeopleId && ap.OrganizationId == p.BibleFellowshipClassId)
                                     .Max(ap => ap.AttendPct)
-                    let attendstr = Db.OrganizationMembers
+                    let attendstr = DbUtil.Db.OrganizationMembers
                                     .Where(astr => astr.PeopleId == p.PeopleId && astr.OrganizationId == p.BibleFellowshipClassId)
                                     .Max(astr => astr.AttendStr)
                     let divisionname = p.OrganizationMembers.Single(om => om.OrganizationId == p.BibleFellowshipClassId).Organization
@@ -253,7 +246,7 @@ namespace CMSPresenter
                         DivisionName = divisionname,
                         Fullname = p.Name,
                         OrganizationId = (int)p.BibleFellowshipClassId,
-                        OrganizationName = Db.Organizations
+                        OrganizationName = DbUtil.Db.Organizations
                                            .Where(a => a.OrganizationId == p.BibleFellowshipClassId)
                                            .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
 

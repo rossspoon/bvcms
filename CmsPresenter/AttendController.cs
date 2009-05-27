@@ -21,7 +21,6 @@ namespace CMSPresenter
     [DataObject]
     public class AttendController
     {
-        private CMSDataContext Db;
         private List<CodeValueItem> AttendCodes;
         private List<MemberTypeItem> MemberCodes;
         public static int[] VisitAttendTypes = new int[] 
@@ -32,7 +31,6 @@ namespace CMSPresenter
         };
         public AttendController()
         {
-            Db = DbUtil.Db;
             var c = new CodeValueController();
             AttendCodes = c.AttendanceTypeCodes();
             MemberCodes = CodeValueController.MemberTypeCodes2();
@@ -42,7 +40,7 @@ namespace CMSPresenter
 
         public IEnumerable<AttendInfo> Attendees(int meetid, bool inEditMode)
         {
-            var meeting = Db.Meetings.Single(m => m.MeetingId == meetid); // this will come out of cache, because Db has already read it
+            var meeting = DbUtil.Db.Meetings.Single(m => m.MeetingId == meetid); // this will come out of cache, because Db has already read it
 
             var wks = 3; // default lookback
             if (meeting.Organization.RollSheetVisitorWks.HasValue)
@@ -50,7 +48,7 @@ namespace CMSPresenter
 
             var dt = meeting.MeetingDate.Value.AddDays(wks * -7);
 
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     let membership = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId)
                     let ismember = p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId)
                     let attend = p.Attends.SingleOrDefault(a => a.OrganizationId == meeting.OrganizationId && a.MeetingId == meetid)
@@ -73,14 +71,14 @@ namespace CMSPresenter
 
                     select new AttendInfo
                     {
-                        AttendType = Db.AttendDesc(attend == null ?
+                        AttendType = DbUtil.Db.AttendDesc(attend == null ?
                             (ismember ?
                                 (int)Attend.AttendTypeCode.Member :
                                 (int)Attend.AttendTypeCode.RecentVisitor) :
                             attend.AttendanceTypeId),
                         MeetingName = "Test",
                         MeetingDate = meeting.MeetingDate,
-                        MemberType = Db.MemberDesc(attend == null ?
+                        MemberType = DbUtil.Db.MemberDesc(attend == null ?
                             (ismember ?
                                 membership.MemberTypeId :
                                 (int)OrganizationMember.MemberTypeCode.Visitor) :
@@ -106,7 +104,7 @@ namespace CMSPresenter
         }
         public IEnumerable<AttendedInfo> RollSheetAttendees(int meetid)
         {
-            var meeting = Db.Meetings.Single(m => m.MeetingId == meetid); // this will come out of cache, because Db has already read it
+            var meeting = DbUtil.Db.Meetings.Single(m => m.MeetingId == meetid); // this will come out of cache, because Db has already read it
 
             var wks = 3; // default lookback
             if (meeting.Organization.RollSheetVisitorWks.HasValue)
@@ -114,7 +112,7 @@ namespace CMSPresenter
 
             var dt = meeting.MeetingDate.Value.AddDays(wks * -7);
 
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     let attend = p.Attends.SingleOrDefault(a => a.OrganizationId == meeting.OrganizationId && a.MeetingId == meetid)
                     where
                         // anybody who attended this meeting
@@ -190,7 +188,7 @@ namespace CMSPresenter
 
         public IEnumerable<AttendInfo> AttendHistory(int pid, string sortExpression, int maximumRows, int startRowIndex)
         {
-            var q = from a in Db.Attends
+            var q = from a in DbUtil.Db.Attends
                     where a.PeopleId == pid
                     where !(a.Meeting.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
                     where a.AttendanceFlag == true || a.AttendanceFlag == null
@@ -219,7 +217,7 @@ namespace CMSPresenter
         {
             var OtherMeetings = new List<Attend>();
 
-            var r = Db.AttendMeetingInfo(MeetingId, PeopleId);
+            var r = DbUtil.Db.AttendMeetingInfo(MeetingId, PeopleId);
 
             var o = r.GetResult<CMSDataContext.AttendMeetingInfo2>().First();
             var Attendance = r.GetResult<Attend>().FirstOrDefault();
@@ -240,7 +238,7 @@ namespace CMSPresenter
                     PeopleId = PeopleId,
                     MeetingDate = Meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = Db.CurrentUser.UserId,
+                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
                 };
                 Meeting.Attends.Add(Attendance);
             }
@@ -342,24 +340,24 @@ namespace CMSPresenter
             }
             try
             {
-                Db.SubmitChanges();
+                DbUtil.Db.SubmitChanges();
             }
             catch (SqlException ex)
             {
                 throw new Exception("Error recording attendance pid={0},dt={1}".Fmt(PeopleId, Meeting.MeetingDate), ex);
             }
 
-            Db.UpdateAttendStr(Meeting.OrganizationId, PeopleId);
+            DbUtil.Db.UpdateAttendStr(Meeting.OrganizationId, PeopleId);
             foreach(var m in OtherMeetings)
             {
-                Db.UpdateAttendStr(m.OrganizationId, PeopleId);
-                Db.UpdateMeetingCounters(m.MeetingId);
+                DbUtil.Db.UpdateAttendStr(m.OrganizationId, PeopleId);
+                DbUtil.Db.UpdateMeetingCounters(m.MeetingId);
             }
             return null; // no error
         }
         private Attend CreateOtherAttend(Meeting meeting, OrganizationMember member)
         {
-            var q = from m in Db.Meetings
+            var q = from m in DbUtil.Db.Meetings
                     where m.MeetingDate == meeting.MeetingDate
                     where m.OrganizationId == member.OrganizationId
                     select m;
@@ -376,9 +374,9 @@ namespace CMSPresenter
                     GroupMeetingFlag = false,
                     Location = member.Organization.Location,
                 };
-                Db.Meetings.InsertOnSubmit(othMeeting);
+                DbUtil.Db.Meetings.InsertOnSubmit(othMeeting);
             }
-            var q2 = from a in Db.Attends
+            var q2 = from a in DbUtil.Db.Attends
                      where a.PeopleId == member.PeopleId
                      where a.MeetingId == othMeeting.MeetingId
                      select a;
@@ -392,10 +390,10 @@ namespace CMSPresenter
                     MemberTypeId = member.MemberTypeId,
                     MeetingDate = meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = Db.CurrentUser.UserId,
+                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
                     Meeting = othMeeting,
                 };
-                Db.Attends.InsertOnSubmit(othAttend);
+                DbUtil.Db.Attends.InsertOnSubmit(othAttend);
             }
             return othAttend;
         }

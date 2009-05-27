@@ -16,19 +16,18 @@ namespace CMSWeb
     public partial class VolunteerApp : System.Web.UI.Page
     {
         public Volunteer vol;
-        CMSDataContext Db = DbUtil.Db;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = this.QueryString<int>("id");
-            vol = Db.Volunteers.SingleOrDefault(v => v.PeopleId == id);
+            vol = DbUtil.Db.Volunteers.SingleOrDefault(v => v.PeopleId == id);
             if (!Page.IsPostBack)
             {
                 if (vol == null)
                 {
                     vol = new Volunteer { PeopleId = id };
-                    Db.Volunteers.InsertOnSubmit(vol);
-                    Db.SubmitChanges();
+                    DbUtil.Db.Volunteers.InsertOnSubmit(vol);
+                    DbUtil.Db.SubmitChanges();
                     DbUtil.LogActivity("Viewing VolunteerApp for {0}".Fmt(vol.Person.Name));
                 }
             }
@@ -38,7 +37,7 @@ namespace CMSWeb
         protected void Upload_Click(object sender, EventArgs e)
         {
             var f = new VolunteerForm { UploaderId = Util.UserId, PeopleId = vol.PeopleId };
-            Db.VolunteerForms.InsertOnSubmit(f);
+            DbUtil.Db.VolunteerForms.InsertOnSubmit(f);
             f.AppDate = Util.Now;
             f.UploaderId = Util.UserId;
             var bits = new byte[ImageFile.PostedFile.ContentLength];
@@ -116,14 +115,14 @@ namespace CMSWeb
             if (e.CommandName == "delete")
             {
                 int id = e.CommandArgument.ToInt();
-                var form = Db.VolunteerForms.Single(f => f.Id == id);
+                var form = DbUtil.Db.VolunteerForms.Single(f => f.Id == id);
 
                 ImageData.Image.DeleteOnSubmit(form.SmallId);
                 ImageData.Image.DeleteOnSubmit(form.MediumId);
                 ImageData.Image.DeleteOnSubmit(form.LargeId);
 
-                Db.VolunteerForms.DeleteOnSubmit(form);
-                Db.SubmitChanges();
+                DbUtil.Db.VolunteerForms.DeleteOnSubmit(form);
+                DbUtil.Db.SubmitChanges();
                 DataList1.DataBind();
             }
         }

@@ -35,24 +35,24 @@ namespace CMSPresenter
         }
         public string SharedCount()
         {
-            return Db.TagCurrent().SharedWithCountString();
+            return DbUtil.Db.TagCurrent().SharedWithCountString();
         }
         public Tag NewTag(string name)
         {
             Util.CurrentTag = name;
-            return Db.TagCurrent();
+            return DbUtil.Db.TagCurrent();
         }
         public void RenameTag(string name)
         {
-            Db.TagCurrent().Name = name;
-            Db.SubmitChanges();
+            DbUtil.Db.TagCurrent().Name = name;
+            DbUtil.Db.SubmitChanges();
             Util.CurrentTag = name;
         }
         public void DeleteTag()
         {
-            var t = Db.TagCurrent();
+            var t = DbUtil.Db.TagCurrent();
             t.DeleteTag();
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> UserTags(int? pid)

@@ -30,19 +30,13 @@ namespace CMSPresenter
             public int? Attended { get; set; }
             public string Leader { get; set; }
         }
-        private CMSDataContext Db;
-        public MeetingController()
-        {
-            Db = DbUtil.Db;
-            Db.CommandTimeout = 900;
-        }
 
         //private List<CodeValueItem> codes = (new CodeValueController()).MeetingStatusCodes();
         private int _count;
 
         public IEnumerable<MeetingInfo0> Meetings(int orgid, string sortExpression, int maximumRows, int startRowIndex)
         {
-            var q = from m in Db.Meetings
+            var q = from m in DbUtil.Db.Meetings
                     where m.OrganizationId == orgid
                     select m;
             _count = q.Count();
@@ -64,11 +58,11 @@ namespace CMSPresenter
         public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId)
         {
             var name = HttpContext.Current.Server.UrlDecode(Name);
-            var q = Db.Organizations.Select(o => o);
+            var q = DbUtil.Db.Organizations.Select(o => o);
             q = OrganizationSearchController.ApplySearch(q, name, ProgId, DivId, SchedId, (int)Organization.OrgStatusCode.Active);
             var q2 = from o in q
                      where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
-                     join m in Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
+                     join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
                      from m in mr.Where(m => m.MeetingDate.Value.Date == MeetingDate).DefaultIfEmpty()
                      let div = o.DivOrgs.First(t => t.Division.Program.Name != DbUtil.MiscTagsString).Division
                      orderby div.Program.Name, div.Name, o.OrganizationName
@@ -88,7 +82,7 @@ namespace CMSPresenter
         }
         public IEnumerable<MeetingInfo> Meeting(int mtgid)
         {
-            var q = Db.Meetings.Where(m => m.MeetingId == mtgid);
+            var q = DbUtil.Db.Meetings.Where(m => m.MeetingId == mtgid);
             _count = q.Count();
             var q2 = q.Select(m =>
                    new MeetingInfo
@@ -117,23 +111,23 @@ namespace CMSPresenter
         public IEnumerable<PastAttendeeInfo> Attendees(int mtgid, string sort)
         {
             // get list of people who have attended an event for this organization (including visitors)
-            var pids = from a in Db.Attends
+            var pids = from a in DbUtil.Db.Attends
                        where a.EffAttendFlag == true
                        where a.MeetingId == mtgid
                        select new { a.PeopleId, a.Meeting.Organization.OrganizationId, status = a.AttendType.Description };
 
-            var q1 = from p in Db.People
+            var q1 = from p in DbUtil.Db.People
                      join pid in pids on p.PeopleId equals pid.PeopleId
-                     let attendct = Db.Attends
+                     let attendct = DbUtil.Db.Attends
                                      .Count(a => a.Meeting.OrganizationId == pid.OrganizationId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
-                     let lastattend = Db.Attends
+                     let lastattend = DbUtil.Db.Attends
                                      .Where(a => a.Meeting.OrganizationId == pid.OrganizationId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                                      .Max(a => a.MeetingDate)
                      let status = pid.status
-                     let attendpct = Db.OrganizationMembers
+                     let attendpct = DbUtil.Db.OrganizationMembers
                                      .Where(ap => ap.PeopleId == p.PeopleId && ap.OrganizationId == pid.OrganizationId)
                                      .Max(ap => ap.AttendPct)
-                     let attendstr = Db.OrganizationMembers
+                     let attendstr = DbUtil.Db.OrganizationMembers
                                      .Where(astr => astr.PeopleId == p.PeopleId && astr.OrganizationId == pid.OrganizationId)
                                      .Max(astr => astr.AttendStr)
                      select new
@@ -199,19 +193,19 @@ namespace CMSPresenter
             var visitors = Attendees(mtgid).Where(a => a.Status == "New Visitor" || a.Status == "Recent Visitor" || a.Status == "Visiting Member");
             var attendees = Attendees(mtgid).Where(a => a.Status == "Member" || a.Status == "Leader" || a.Status == "In-Service");
 
-            var absentees = from m in Db.Meetings
+            var absentees = from m in DbUtil.Db.Meetings
                             from om in m.Organization.OrganizationMembers
-                            join p in Db.People on om.PeopleId equals p.PeopleId
-                            let attendct = Db.Attends
+                            join p in DbUtil.Db.People on om.PeopleId equals p.PeopleId
+                            let attendct = DbUtil.Db.Attends
                                             .Count(a => a.OrganizationId == om.OrganizationId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
-                            let lastattend = Db.Attends
+                            let lastattend = DbUtil.Db.Attends
                                             .Where(a => a.OrganizationId == om.OrganizationId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                                             .Max(a => a.MeetingDate)
                             let status = "Absent"
-                            let attendpct = Db.OrganizationMembers
+                            let attendpct = DbUtil.Db.OrganizationMembers
                                             .Where(ap => ap.PeopleId == p.PeopleId && ap.OrganizationId == om.OrganizationId)
                                             .Max(ap => ap.AttendPct)
-                            let attendstr = Db.OrganizationMembers
+                            let attendstr = DbUtil.Db.OrganizationMembers
                                             .Where(astr => astr.PeopleId == p.PeopleId && astr.OrganizationId == om.OrganizationId)
                                             .Max(astr => astr.AttendStr)
                             where m.MeetingId == mtgid
@@ -282,22 +276,22 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Delete, false)]
         public void DeleteMeeting(int MeetingId)
         {
-            var meeting = Db.Meetings.SingleOrDefault(m => m.MeetingId == MeetingId);
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == MeetingId);
             if (meeting == null)
                 return;
-            var q = from a in Db.Attends
+            var q = from a in DbUtil.Db.Attends
                     where a.MeetingId == MeetingId
                     select a.PeopleId;
             var list = q.ToList();
 
-            var attendees = Db.Attends.Where(a => a.MeetingId == MeetingId);
+            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == MeetingId);
             var attendcontrol = new AttendController();
             foreach (var a in attendees)
                 if (a.AttendanceFlag == true)
                     attendcontrol.RecordAttendance(a.PeopleId, MeetingId, false);
-            Db.Attends.DeleteAllOnSubmit(attendees);
-            Db.Meetings.DeleteOnSubmit(meeting);
-            Db.SubmitChanges();
+            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
+            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
+            DbUtil.Db.SubmitChanges();
         }
     }
 }

@@ -21,10 +21,8 @@ namespace CMSPresenter
     [DataObject]
     public class CodeValueController
     {
-        private CMSDataContext Db;
         public CodeValueController()
         {
-            Db = DbUtil.Db;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public static List<CodeValueItem> GetStateList()
@@ -54,7 +52,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.MemberLetterStatuses
+                var q = from ms in DbUtil.Db.MemberLetterStatuses
                         orderby ms.Description
                         select new CodeValueItem
                         {
@@ -75,7 +73,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.EnvelopeOptions
+                var q = from ms in DbUtil.Db.EnvelopeOptions
                         orderby ms.Description
                         select new CodeValueItem
                         {
@@ -96,7 +94,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.JoinTypes
+                var q = from ms in DbUtil.Db.JoinTypes
                         orderby ms.Description
                         select new CodeValueItem
                         {
@@ -117,7 +115,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.NameTitles
+                var q = from ms in DbUtil.Db.NameTitles
                         orderby ms.Description
                         select new CodeValueItem
                         {
@@ -138,7 +136,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from sc in Db.VolApplicationStatuses
+                var q = from sc in DbUtil.Db.VolApplicationStatuses
                         orderby sc.Description
                         select new CodeValueItem
                         {
@@ -159,7 +157,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.DropTypes
+                var q = from ms in DbUtil.Db.DropTypes
                         orderby ms.Description
                         select new CodeValueItem
                         {
@@ -180,7 +178,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.Genders
+                var q = from ms in DbUtil.Db.Genders
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -199,7 +197,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.BundleStatusTypes
+                var q = from ms in DbUtil.Db.BundleStatusTypes
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -218,7 +216,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.BundleHeaderTypes
+                var q = from ms in DbUtil.Db.BundleHeaderTypes
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -237,7 +235,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.ContributionStatuses
+                var q = from ms in DbUtil.Db.ContributionStatuses
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -256,7 +254,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.ContributionTypes
+                var q = from ms in DbUtil.Db.ContributionTypes
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -275,7 +273,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from f in Db.ContributionFunds
+                var q = from f in DbUtil.Db.ContributionFunds
                         where f.FundStatusId == 1
                         orderby f.FundId
                         select new CodeValueItem
@@ -305,7 +303,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.DiscoveryClassStatuses
+                var q = from c in DbUtil.Db.DiscoveryClassStatuses
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -325,7 +323,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.EntryPoints
+                var q = from ms in DbUtil.Db.EntryPoints
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -345,7 +343,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.Origins
+                var q = from ms in DbUtil.Db.Origins
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -365,7 +363,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.InterestPoints
+                var q = from ms in DbUtil.Db.InterestPoints
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -385,7 +383,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.BaptismTypes
+                var q = from ms in DbUtil.Db.BaptismTypes
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -405,7 +403,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.BaptismStatuses
+                var q = from ms in DbUtil.Db.BaptismStatuses
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -425,7 +423,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.DecisionTypes
+                var q = from ms in DbUtil.Db.DecisionTypes
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -445,7 +443,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.FamilyPositions
+                var q = from ms in DbUtil.Db.FamilyPositions
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -465,7 +463,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from m in Db.Ministries
+                var q = from m in DbUtil.Db.Ministries
                         orderby m.MinistryName
                         select new CodeValueItem
                         {
@@ -487,7 +485,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.NewContactReasons
+                var q = from c in DbUtil.Db.NewContactReasons
                         orderby c.Description
                         select new CodeValueItem
                         {
@@ -508,7 +506,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.NewContactTypes
+                var q = from c in DbUtil.Db.NewContactTypes
                         orderby c.Description
                         select new CodeValueItem
                         {
@@ -527,11 +525,11 @@ namespace CMSPresenter
         {
             var ownerstring = "";
             if (UserPeopleId == Util.UserPeopleId)
-                Db.TagCurrent(); // make sure the current tag exists
+                DbUtil.Db.TagCurrent(); // make sure the current tag exists
             else
                 ownerstring = UserPeopleId + ":";
 
-            var q1 = from t in Db.Tags
+            var q1 = from t in DbUtil.Db.Tags
                      where t.PeopleId == UserPeopleId
                      where t.TypeId == DbUtil.TagTypeId_Personal
                      orderby t.Name
@@ -541,12 +539,12 @@ namespace CMSPresenter
                          Code = t.Id + "," + ownerstring + t.Name,
                          Value = t.Name
                      };
-            var q2 = from t in Db.Tags
+            var q2 = from t in DbUtil.Db.Tags
                      where t.PeopleId != UserPeopleId
                      where t.TagShares.Any(ts => ts.PeopleId == UserPeopleId)
                      where t.TypeId == DbUtil.TagTypeId_Personal
                      orderby t.PersonOwner.Name2, t.Name
-                     let op = Db.People.SingleOrDefault(p => p.PeopleId == t.PeopleId)
+                     let op = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == t.PeopleId)
                      select new CodeValueItem
                      {
                          Id = t.Id,
@@ -567,7 +565,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> UsersToEmailFrom()
         {
-            var user = Db.CurrentUser;
+            var user = DbUtil.Db.CurrentUser;
             var q = from u in user.UsersICanEmailFor
                     select new CodeValueItem
                     {
@@ -583,7 +581,7 @@ namespace CMSPresenter
         public List<CodeValueItem> UserQueries()
         {
             string uname = Util.UserName;
-            var q1 = from qb in Db.QueryBuilderClauses
+            var q1 = from qb in DbUtil.Db.QueryBuilderClauses
                      where qb.SavedBy == uname
                      orderby qb.Description
                      select new CodeValueItem
@@ -592,7 +590,7 @@ namespace CMSPresenter
                          Code = qb.QueryId.ToString(),
                          Value = qb.SavedBy + ":" + qb.Description
                      };
-            var q2 = from qb in Db.QueryBuilderClauses
+            var q2 = from qb in DbUtil.Db.QueryBuilderClauses
                      where qb.SavedBy != uname && qb.IsPublic
                      orderby qb.SavedBy, qb.Description
                      select new CodeValueItem
@@ -613,7 +611,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.MaritalStatuses
+                var q = from ms in DbUtil.Db.MaritalStatuses
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -679,7 +677,7 @@ namespace CMSPresenter
         //    var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
         //    if (list == null)
         //    {
-        //        var q = from ms in Db.MeetingStatuses
+        //        var q = from ms in DbUtil.Db.MeetingStatuses
         //                select new CodeValueItem
         //                {
         //                    Id = ms.Id,
@@ -726,7 +724,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.OrganizationStatuses
+                var q = from c in DbUtil.Db.OrganizationStatuses
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -790,7 +788,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.MeetingTypes
+                var q = from c in DbUtil.Db.MeetingTypes
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -810,7 +808,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.GenderClasses
+                var q = from c in DbUtil.Db.GenderClasses
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -830,7 +828,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.AttendTrackLevels
+                var q = from c in DbUtil.Db.AttendTrackLevels
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -881,7 +879,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from i in Db.AttendanceClassifications
+                var q = from i in DbUtil.Db.AttendanceClassifications
                         orderby i.Id
                         select new CodeValueItem
                         {
@@ -902,7 +900,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from ms in Db.MemberStatuses
+                var q = from ms in DbUtil.Db.MemberStatuses
                         select new CodeValueItem
                         {
                             Id = ms.Id,
@@ -922,7 +920,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.WeeklySchedules
+                var q = from c in DbUtil.Db.WeeklySchedules
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -938,7 +936,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> UserRoles()
         {
-            return from s in Db.Roles
+            return from s in DbUtil.Db.Roles
                    orderby s.RoleId
                    select new CodeValueItem
                    {
@@ -951,12 +949,12 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> MemberTypeCodesByFreq()
         {
-            var q = from mt in Db.OrganizationMembers
+            var q = from mt in DbUtil.Db.OrganizationMembers
                     group mt by mt.MemberTypeId into g
                     orderby g.Count()
                     select new { g.Key, count = g.Count() };
 
-            var q2 = from mt in Db.MemberTypes
+            var q2 = from mt in DbUtil.Db.MemberTypes
                      join g in q on mt.Id equals g.Key
                      orderby g.count descending
                      select new CodeValueItem
@@ -1003,7 +1001,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in Db.AttendTypes
+                var q = from c in DbUtil.Db.AttendTypes
                         select new CodeValueItem
                         {
                             Id = c.Id,
@@ -1023,7 +1021,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from at in Db.AddressTypes
+                var q = from at in DbUtil.Db.AddressTypes
                         select new CodeValueItem
                         {
                             Id = at.Id,
@@ -1069,7 +1067,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from vc in Db.VolunteerCodes
+                var q = from vc in DbUtil.Db.VolunteerCodes
                         select new CodeValueItem
                         {
                             Id = vc.Id,
@@ -1088,7 +1086,7 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from vc in Db.TaskStatuses
+                var q = from vc in DbUtil.Db.TaskStatuses
                         orderby vc.Description
                         select new CodeValueItem
                         {
@@ -1108,7 +1106,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> GetOrganizationList(int DivId)
         {
-            var q = from ot in Db.DivOrgs
+            var q = from ot in DbUtil.Db.DivOrgs
                     where ot.DivId == DivId
                     && (SqlMethods.DateDiffMonth(ot.Organization.OrganizationClosedDate, Util.Now) < 14
                         || ot.Organization.OrganizationStatusId == 30)
@@ -1125,7 +1123,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> OrgDivTags()
         {
-            return from t in Db.Programs
+            return from t in DbUtil.Db.Programs
                    orderby t.Name
                    select new CodeValueItem
                    {
@@ -1137,7 +1135,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> OrgSubDivTags(int ProgId)
         {
-            var q = from div in Db.Divisions
+            var q = from div in DbUtil.Db.Divisions
                     where div.ProgId == ProgId
                     orderby div.Name
                     select new CodeValueItem
@@ -1151,7 +1149,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<string> OrgSubDivTags2(int ProgId)
         {
-            var q = from program in Db.Programs
+            var q = from program in DbUtil.Db.Programs
                     from div in program.Divisions
                     where (program.Id == ProgId || ProgId == 0)
                     orderby program.Name, div.Name
@@ -1167,7 +1165,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> AllOrgDivTags()
         {
-            var q = from program in Db.Programs
+            var q = from program in DbUtil.Db.Programs
                     from div in program.Divisions
                     orderby program.Name, div.Name
                     select new CodeValueItem
@@ -1180,7 +1178,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<DropDownItem> AllOrgDivTags2()
         {
-            var q = from program in Db.Programs
+            var q = from program in DbUtil.Db.Programs
                     from div in program.Divisions
                     orderby program.Name, div.Name
                     select new DropDownItem

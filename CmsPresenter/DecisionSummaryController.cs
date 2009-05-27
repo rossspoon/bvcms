@@ -34,11 +34,6 @@ namespace CMSPresenter
     [DataObject]
     public class DecisionSummaryController
     {
-        private CMSDataContext Db;
-        public DecisionSummaryController()
-        {
-            Db = DbUtil.Db;
-        }
         private int[] decisionTypes = new int[] 
         { 
             (int)Person.DecisionCode.Unknown,
@@ -58,7 +53,7 @@ namespace CMSPresenter
         public IEnumerable<TypeCountInfo> DecisionsByType(DateTime? dt1, DateTime? dt2)
         {
             // member decisions
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.DecisionDate >= dt1 && p.DecisionDate < (dt2 ?? dt1).Value.AddDays(1)
                     where p.DecisionTypeId != null
                     where !decisionTypes.Contains(p.DecisionTypeId.Value)
@@ -71,7 +66,7 @@ namespace CMSPresenter
                         Count = g.Count(),
                     };
             // non member decisions
-            var q2 = from p in Db.People
+            var q2 = from p in DbUtil.Db.People
                      where p.DecisionDate >= dt1 && p.DecisionDate < (dt2 ?? dt1).Value.AddDays(1)
                      where p.DecisionTypeId == null ||
                          decisionTypes.Contains(p.DecisionTypeId.Value)
@@ -88,7 +83,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> BaptismsByGender(DateTime? dt1, DateTime? dt2)
         {
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.BaptismDate >= dt1 && p.BaptismDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.GenderId + "," + p.Gender.Code into g
                     orderby g.Key
@@ -103,7 +98,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> BaptismsByType(DateTime? dt1, DateTime? dt2)
         {
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.BaptismDate >= dt1 && p.BaptismDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.BaptismTypeId + "," + p.BaptismType.Code into g
                     orderby g.Key
@@ -119,7 +114,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> NewMemberByType(DateTime? dt1, DateTime? dt2)
         {
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.JoinDate >= dt1 && p.JoinDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.JoinCodeId + "," + p.JoinType.Code into g
                     orderby g.Key
@@ -135,7 +130,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> DroppedMemberByType(DateTime? dt1, DateTime? dt2)
         {
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.DropDate >= dt1 && p.DropDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.DropCodeId + "," + p.DropType.Code into g
                     orderby g.Key
@@ -151,7 +146,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> DroppedMemberByChurch(DateTime? dt1, DateTime? dt2)
         {
-            var q0 = from p in Db.People
+            var q0 = from p in DbUtil.Db.People
                      where p.DropDate >= dt1 && p.DropDate < (dt2 ?? dt1).Value.AddDays(1)
                      select p;
             var count = (float)q0.Count();

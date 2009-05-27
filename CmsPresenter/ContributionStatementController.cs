@@ -26,17 +26,11 @@ namespace CMSPresenter
 
     public class ContributionStatementController
     {
-        private CMSDataContext Db;
-        public ContributionStatementController()
-        {
-            Db = DbUtil.Db;
-        }
-
         int[] Gifts = new int[] { 2, 3, 4 };
 
         public IEnumerable contributions(int pid, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
                     where c.PeopleId == pid
                     where c.ContributionDate >= fromDate.Date && c.ContributionDate <= toDate.Date
                     where !BundleController.ReturnedReversedTypes.Contains(c.ContributionTypeId)
@@ -54,7 +48,7 @@ namespace CMSPresenter
         {
             //var pids = new int[] { 817023, 865610, 828611, 828612 };
 
-            var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
+            var q11 = from p in DbUtil.Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? 1 : p.ContributionOptionsId
                       let name = (p.ContributionOptionsId == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
@@ -97,7 +91,7 @@ namespace CMSPresenter
 
         public IEnumerable<ContributorInfo> contributor(int pid, DateTime fromDate, DateTime toDate)
         {
-            int sid = Db.People.Where(p => p.PeopleId == pid).Single().SpouseId.ToInt();
+            int sid = DbUtil.Db.People.Where(p => p.PeopleId == pid).Single().SpouseId.ToInt();
             return contributors(fromDate, toDate, pid, sid, 0);
         }
 
@@ -108,7 +102,7 @@ namespace CMSPresenter
 
         public IEnumerable<ContributionInfo> contributions(int pid, int? spid, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
                     where !BundleController.ReturnedReversedTypes.Contains(c.ContributionTypeId)
                     where c.ContributionTypeId != (int)Contribution.TypeCode.BrokeredProperty
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
@@ -128,7 +122,7 @@ namespace CMSPresenter
 
         public IEnumerable<ContributionInfo> gifts(int pid, int? spid, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
                     where c.ContributionTypeId == (int)Contribution.TypeCode.BrokeredProperty
                     where c.ContributionDate >= fromDate
                     where c.ContributionDate <= toDate
@@ -154,14 +148,14 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.Reversed 
             };
 
-            var qp = from p in Db.Contributions
+            var qp = from p in DbUtil.Db.Contributions
                      where p.PeopleId == pid || (p.Person.ContributionOptionsId == 2 && p.PeopleId == spid)
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
                      where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
                      where p.ContributionDate <= toDate
                      select p;
-            var qc = from c in Db.Contributions
+            var qc = from c in DbUtil.Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
                      where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
                      where !c.PledgeFlag
@@ -184,7 +178,7 @@ namespace CMSPresenter
 
         public IEnumerable<ContributionInfo> quarterlySummary(int pid, int? spid, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
                     where c.ContributionTypeId == (int)Contribution.TypeCode.CheckCash
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where c.ContributionDate >= fromDate

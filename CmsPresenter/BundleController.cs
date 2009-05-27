@@ -134,15 +134,10 @@ namespace CMSPresenter
             (int)Contribution.TypeCode.ReturnedCheck, 
             (int)Contribution.TypeCode.Reversed 
         };
-		private CMSDataContext Db;
-		public BundleController()
-		{
-			Db = DbUtil.Db;
-		}
 		[DataObjectMethod(DataObjectMethodType.Select, true)]
 		public IEnumerable<BundleInfo> FetchBundles(int startRowIndex, int maximumRows, string sortExpression)
 		{
-			var q = from b in Db.BundleHeaders select b;
+            var q = from b in DbUtil.Db.BundleHeaders select b;
 			var q2 = from b in q
 					 where b.RecordStatus == false
 					 select new BundleInfo
@@ -218,7 +213,7 @@ namespace CMSPresenter
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public IEnumerable<ContributionInfo> FetchBundleDetails(int bundleId)
 		{
-			var q = from d in Db.BundleDetails
+            var q = from d in DbUtil.Db.BundleDetails
 					where bundleId == d.BundleHeaderId
 					orderby d.BundleDetailId
 					select new ContributionInfo
@@ -264,7 +259,7 @@ namespace CMSPresenter
 		}
 		private IQueryable<ContributionInfo> FetchContributions2(string sortExpression, int peopleId, int year, int statusid, int typeid, int fundid)
 		{
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					select c;
 			q = ApplyWhere(q, peopleId, year, statusid, typeid, fundid);
 			countContributions = q.Count();
@@ -304,7 +299,7 @@ namespace CMSPresenter
 		}
 		public decimal Total(int peopleId, int year, int statusid, int typeid, int fundid)
 		{
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
 					where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
 					where c.PledgeFlag == false
@@ -317,7 +312,7 @@ namespace CMSPresenter
 		}
 		public decimal TotalItems(int BundleId)
 		{
-			var q = from d in Db.BundleDetails
+            var q = from d in DbUtil.Db.BundleDetails
 					where d.BundleHeaderId == BundleId
 					where d.Contribution.ContributionStatusId == (int)Contribution.StatusCode.Recorded
 					where !ReturnedReversedTypes.Contains(d.Contribution.ContributionTypeId)
@@ -329,7 +324,7 @@ namespace CMSPresenter
 		}
 		public decimal TotalHeader(int BundleId)
 		{
-			var b = Db.BundleHeaders.Single(bh => bh.BundleHeaderId == BundleId);
+            var b = DbUtil.Db.BundleHeaders.Single(bh => bh.BundleHeaderId == BundleId);
 			return (b.TotalEnvelopes.HasValue ? b.TotalEnvelopes.Value : 0)
 				+ (b.TotalChecks.HasValue ? b.TotalChecks.Value : 0)
 				+ (b.TotalCash.HasValue ? b.TotalCash.Value : 0);
@@ -338,7 +333,7 @@ namespace CMSPresenter
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public IEnumerable FetchYearlyContributions(int peopleId)
 		{
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where peopleId == c.PeopleId || peopleId == 0
 					where c.PledgeFlag == false
 					//where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
@@ -435,14 +430,14 @@ namespace CMSPresenter
 				RecordStatus = false,
 				FundId = 1, // Local Church Operations
 			};
-			Db.BundleHeaders.InsertOnSubmit(b);
-			Db.SubmitChanges();
+            DbUtil.Db.BundleHeaders.InsertOnSubmit(b);
+            DbUtil.Db.SubmitChanges();
 			return b;
 		}
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public List<DepositInfo> FetchDepositBundles(DateTime depositdt)
 		{
-			var q = from b in Db.BundleHeaders
+            var q = from b in DbUtil.Db.BundleHeaders
 					where b.DepositDate == depositdt
 					orderby b.BundleHeaderId
 					select new DepositInfo
@@ -469,7 +464,7 @@ namespace CMSPresenter
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public IEnumerable<CodeValueItem> Funds(int PeopleId)
 		{
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where c.PeopleId == PeopleId || PeopleId == 0
 					group c by new { c.FundId, c.ContributionFund.FundName } into g
 					orderby g.Key.FundName
@@ -482,7 +477,7 @@ namespace CMSPresenter
 		}
 		public IEnumerable<CodeValueItem> OpenFunds()
 		{
-			var q = from c in Db.ContributionFunds
+            var q = from c in DbUtil.Db.ContributionFunds
 					where c.FundStatusId == 1
 					orderby c.FundId
 					select new CodeValueItem
@@ -495,7 +490,7 @@ namespace CMSPresenter
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public IEnumerable Years(int PeopleId)
 		{
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where c.PeopleId == PeopleId || PeopleId == 0
 					group c by c.ContributionDate.Value.Year into g
 					orderby g.Key descending
@@ -605,7 +600,7 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed, 
             };
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where dt1 <= c.ContributionDate.Value.Date
 					where c.ContributionDate.Value.Date <= dt2
 					where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
@@ -637,7 +632,7 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed, 
             };
-			var q0 = from c in Db.Contributions
+            var q0 = from c in DbUtil.Db.Contributions
                     where dt1 <= c.ContributionDate.Value.Date
                     where c.ContributionDate.Value.Date <= dt2
                     where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
@@ -648,7 +643,7 @@ namespace CMSPresenter
 					select c;
 
             var q = from c in q0
-                    group c by Db.DollarRange(c.ContributionAmount) into g
+                    group c by DbUtil.Db.DollarRange(c.ContributionAmount) into g
                     orderby g.Key
                     select new RangeInfo
                     {
@@ -694,7 +689,7 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed, 
             };
-			var q = from c in Db.Contributions
+            var q = from c in DbUtil.Db.Contributions
 					where dt1 <= c.ContributionDate.Value.Date
 					where c.ContributionDate.Value.Date <= dt2
 					where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded

@@ -19,12 +19,6 @@ namespace CMSPresenter
     public class FamilyController
     {
         private int _count; 
-        private CMSDataContext Db;
-
-        public FamilyController()
-        {
-            Db = DbUtil.Db;
-        }
 
         private static IEnumerable<FamilyMember> FetchList(IQueryable<Family> query)
         {
@@ -49,7 +43,7 @@ namespace CMSPresenter
 
          public IEnumerable<FamilyMember> GetFamilyMembers(int id)
          {
-             var q = from f in Db.Families
+             var q = from f in DbUtil.Db.Families
                      where f.FamilyId == id
                      select f;
              _count = q.Count();
@@ -57,10 +51,10 @@ namespace CMSPresenter
          }
 
          public IEnumerable<RelatedFamily> GetRelatedFamilies(int id)
-         { 
-             var rf1 = from rf in Db.Families.Single(f => f.FamilyId == id).RelatedFamilies1
+         {
+             var rf1 = from rf in DbUtil.Db.Families.Single(f => f.FamilyId == id).RelatedFamilies1
                        select rf;
-             var rf2 = from rf in Db.Families.Single(f => f.FamilyId == id).RelatedFamilies2
+             var rf2 = from rf in DbUtil.Db.Families.Single(f => f.FamilyId == id).RelatedFamilies2
                        select rf;
              var q = rf1.Union(rf2);
 
@@ -70,12 +64,12 @@ namespace CMSPresenter
          [DataObjectMethod(DataObjectMethodType.Update, false)]
          public void UpdateFamilyMember(int PeopleId, int PositionInFamilyId)
          {
-             var p = Db.People.Single(a => a.PeopleId == PeopleId);
-             var c = Db.People.Count(a=> a.FamilyId == p.FamilyId && a.PositionInFamilyId == 10);
+             var p = DbUtil.Db.People.Single(a => a.PeopleId == PeopleId);
+             var c = DbUtil.Db.People.Count(a => a.FamilyId == p.FamilyId && a.PositionInFamilyId == 10);
              if (!(PositionInFamilyId == 10 && c > 1))
              {
                 p.PositionInFamilyId = PositionInFamilyId;
-                Db.SubmitChanges();
+                DbUtil.Db.SubmitChanges();
              }
 
          }
@@ -86,11 +80,11 @@ namespace CMSPresenter
              Family f;
              RelatedFamily fr;
 
-             f = Db.Families.Single(g => g.FamilyId == FamilyId);
+             f = DbUtil.Db.Families.Single(g => g.FamilyId == FamilyId);
              fr = f.RelatedFamilies1.First(a => a.RelatedFamilyId == RelatedFamilyId);
              if (fr == null) fr = f.RelatedFamilies2.First(a => a.FamilyId == RelatedFamilyId);
              fr.FamilyRelationshipDesc = FamilyRelationshipDesc;
-             Db.SubmitChanges();
+             DbUtil.Db.SubmitChanges();
 
          }
         //public IEnumerable<FamilyMember> ListByQuery(int qid)

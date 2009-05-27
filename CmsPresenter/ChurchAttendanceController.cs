@@ -43,7 +43,7 @@ namespace CMSPresenter
             if (qlist != null)
                 return;
             string misctag = DbUtil.MiscTagsString;
-            var q = from m in Db.Meetings
+            var q = from m in DbUtil.Db.Meetings
                     where m.MeetingDate.Value.Date == sunday
                     where m.NumPresent > 0
                     select new MeetInfo
@@ -127,7 +127,7 @@ namespace CMSPresenter
         {
             var dt1 = sunday.AddDays(-4);
             var dt2 = sunday.AddDays(2);
-            var q3 = from p in Db.People
+            var q3 = from p in DbUtil.Db.People
                      where p.BaptismDate >= dt1 && p.BaptismDate <= dt2
                      group p by p.BaptismType.Description into g
                      orderby g.Key
@@ -150,7 +150,7 @@ namespace CMSPresenter
         {
             var dt1 = sunday.AddDays(-4);
             var dt2 = sunday.AddDays(2);
-            var q3 = from p in Db.People
+            var q3 = from p in DbUtil.Db.People
                      where p.DecisionDate >= dt1 && p.DecisionDate <= dt2
                      group p by p.DecisionType.Description into g
                      orderby g.Key
@@ -174,7 +174,7 @@ namespace CMSPresenter
         {
             var wednesday = sunday.AddDays(-4).AddHours(17);
 
-            var q3 = from m in Db.Meetings
+            var q3 = from m in DbUtil.Db.Meetings
                      where m.MeetingDate.Value.Date == wednesday.Date
                      where m.MeetingDate.Value >= wednesday
                      where m.NumPresent > 0

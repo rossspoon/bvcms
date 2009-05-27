@@ -44,7 +44,7 @@ namespace CMSPresenter
         {
             if (qlist != null)
                 return;
-            var q = from m in Db.Meetings
+            var q = from m in DbUtil.Db.Meetings
                     where m.MeetingDate.Value.Date == sunday
                     where m.NumPresent > 0
                     select new MeetInfo
@@ -69,7 +69,7 @@ namespace CMSPresenter
                      {
                          Count = g.Sum(),
                          Name = "Worship Attendance",
-                         Link = "~/Reports/ChurchAttendanceRpt.aspx?date=" + sunday.ToShortDateString(),
+                         Link = "~/Report/ChurchAttendanceRpt.aspx?date=" + sunday.ToShortDateString(),
                          Sort = 1
                      };
 
@@ -80,7 +80,7 @@ namespace CMSPresenter
                      {
                          Count = g.Sum(),
                          Name = "Bible Fellowship Attendance",
-                         Link = "~/Reports/BFCWeeklyAttendanceSummaryRpt.aspx?date=" + sunday.ToShortDateString(),
+                         Link = "~/Report/BFCWeeklyAttendanceSummaryRpt.aspx?date=" + sunday.ToShortDateString(),
                          Sort = 2
                      };
 
@@ -117,7 +117,7 @@ namespace CMSPresenter
                          Sort = 5
                      };
 
-            var q6 = from c in Db.Contactees
+            var q6 = from c in DbUtil.Db.Contactees
                      where c.contact.ContactDate.Date > sunday.AddDays(-6) && c.contact.ContactDate.Date < sunday.AddDays(1) && c.contact.ContactMade.Value
                      group c by true into g
                      select new AttendanceSummaryInfo
@@ -128,7 +128,7 @@ namespace CMSPresenter
                          Sort = 6
                      };
 
-            var q7 = from a in Db.Attends
+            var q7 = from a in DbUtil.Db.Attends
                      where a.AttendanceFlag == true
                      where a.MeetingDate.Date > sunday.AddDays(-6) && a.MeetingDate.Date < sunday.AddDays(1)
                      where MorningWorship.Contains(a.OrganizationId) || ExtendedSessions.Contains(a.OrganizationId)
@@ -151,12 +151,12 @@ namespace CMSPresenter
                                      (from p in Db.AttendTypes.Take(1)
                                       select new { Name = "Guest Enrollments", p.Id })
                                  group x by x.Name into y
-                                 select new AttendanceSummaryInfo { StatCount = 0, StatName = y.Key, SortId = 6, StatLink = "~/Reports/ChurchAttendanceSummaryRpt.aspx" };
+                                 select new AttendanceSummaryInfo { StatCount = 0, StatName = y.Key, SortId = 6, StatLink = "~/Report/ChurchAttendanceSummaryRpt.aspx" };
                         var q8 = from x in
                                      (from p in Db.AttendTypes.Take(1)
                                       select new { Name = "Guest Attendance Special Events", p.Id })
                                  group x by x.Name into y
-                                 select new AttendanceSummaryInfo { StatCount = 0, StatName = y.Key, SortId = 8, StatLink = "~/Reports/ChurchAttendanceSummaryRpt.aspx" };
+                                 select new AttendanceSummaryInfo { StatCount = 0, StatName = y.Key, SortId = 8, StatLink = "~/Report/ChurchAttendanceSummaryRpt.aspx" };
             */
             if (q1.Count() == 0)
                 return q1;
@@ -211,7 +211,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<InterestPointInfo> GuestInterestPoints(DateTime sunday)
         {
-            var q = from a in Db.Attends
+            var q = from a in DbUtil.Db.Attends
                     where MorningWorship.Contains(a.OrganizationId)
                     where a.AttendanceFlag == true
                     where a.MeetingDate.Date == sunday.Date

@@ -28,7 +28,7 @@
             var t = $.cookie('maintab3');
             if (t) {
                 $maintabs.tabs('select', parseInt(t));
-                if (t == "6")
+                if (t == "4")
                     $get('<%=ShowMeetings.ClientID%>').click();
             }
             $("#main-tab > ul > li > a").click(function() {
@@ -61,7 +61,7 @@
                 var d = $get('<%=MeetingDate.ClientID %>').value;
                 var t = $get('<%=MeetingTime.ClientID %>').value;
                 var args = "?org=" + id + "&dt=" + d + " " + t;
-                var newWindowUrl = "Reports/Rollsheet.aspx" + args
+                var newWindowUrl = "Report/Rollsheet.aspx" + args
                 window.open(newWindowUrl);
             }
             return Page_IsValid;

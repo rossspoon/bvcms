@@ -54,7 +54,7 @@ namespace CMSWeb
             Util.CurrentOrgId = organization.OrganizationId;
             Session["ActiveOrganization"] = organization.OrganizationName;
             EditUpdateButton1.DataBind();
-            RecentAttendRpt.NavigateUrl = "~/Reports/PastAttendeeRpt.aspx?id=" + organization.OrganizationId;
+            RecentAttendRpt.NavigateUrl = "~/Report/PastAttendeeRpt.aspx?id=" + organization.OrganizationId;
             ExportToolBar1.TaggedEvent += new EventHandler(ExportToolBar1_TaggedEvent);
             ExportToolBar2.TaggedEvent += new EventHandler(ExportToolBar2_TaggedEvent);
             ExportToolBar3.TaggedEvent += new EventHandler(ExportToolBar3_TaggedEvent);

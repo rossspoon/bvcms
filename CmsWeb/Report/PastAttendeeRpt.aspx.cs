@@ -12,7 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using Microsoft.Reporting.WebForms;
 using CmsData;
-
+using CMSPresenter;
+using UtilityExtensions;
 
 namespace CMSWeb
 {
@@ -37,8 +38,12 @@ namespace CMSWeb
 
             //Give the collection a name (EmployeeCollection) so that we can reference it in our report designer
             //ReportDataSource reportDataSource = new ReportDataSource("EmployeeCollection", employeeCollection);
-            ReportDataSource reportDataSource1 = new ReportDataSource("PastAttendeeInfo", ObjectDataSource1);
-            ReportDataSource reportDataSource2 = new ReportDataSource("OrganizationInfo", ObjectDataSource2);
+            var orgid = this.QueryString<int>("id");
+            var ac = new AttendenceController();
+            ReportDataSource reportDataSource1 = new ReportDataSource("PastAttendeeInfo", 
+                ac.PastAttendees(orgid));
+            ReportDataSource reportDataSource2 = new ReportDataSource("OrganizationInfo", 
+                ac.GetOrganizationInfo(orgid));
 
             localReport.DataSources.Add(reportDataSource1);
             localReport.DataSources.Add(reportDataSource2);

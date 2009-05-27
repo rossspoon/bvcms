@@ -17,12 +17,6 @@ namespace CMSPresenter
 {
     public class RollsheetController
     {
-        private CMSDataContext Db;
-        public RollsheetController()
-        {
-            Db = DbUtil.Db;
-        }
-
         public IEnumerable<OrganizationInfo> FetchOrgsList(string name, int DivId, int SchedId, int StatusId)
         {
             return (new OrganizationSearchController().FetchOrganizationExcelList(name, DivId, SchedId, StatusId));
@@ -35,7 +29,7 @@ namespace CMSPresenter
 
         public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid)
         {
-            var q = from om in Db.OrganizationMembers
+            var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     where om.EnrollmentDate <= Util.Now.Date
@@ -55,12 +49,12 @@ namespace CMSPresenter
         public IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate)
         {
             var wks = 3; // default lookback
-            var org = Db.Organizations.Single(o => o.OrganizationId == orgid);
+            var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
             if (org.RollSheetVisitorWks.HasValue)
                 wks = org.RollSheetVisitorWks.Value;
             var dt = MeetingDate.AddDays(wks * -7);
 
-            var q = from p in Db.People
+            var q = from p in DbUtil.Db.People
                     where p.Attends.Any(a => a.AttendanceFlag == true
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
@@ -70,7 +64,7 @@ namespace CMSPresenter
                     select p.PeopleId;
 
             var r = from pid in q
-                    join p in Db.People on pid equals p.PeopleId
+                    join p in DbUtil.Db.People on pid equals p.PeopleId
                     let f = p.Family
                     orderby p.Name2, p.Name
                     select new PersonVisitorInfo

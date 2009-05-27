@@ -37,7 +37,7 @@
                    "&schedule=" + sid +
                    "&dt=" + d + " " + t;
 
-            var newWindowUrl = "Reports/Rollsheet.aspx" + args
+            var newWindowUrl = "Report/Rollsheet.aspx" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;
@@ -54,7 +54,7 @@
             var args = "?div=" + did +
                    "&schedule=" + sid;
 
-            var newWindowUrl = "Reports/RosterReport.aspx" + args
+            var newWindowUrl = "Report/RosterReport.aspx" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;

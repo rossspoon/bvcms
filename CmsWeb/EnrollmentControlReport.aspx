@@ -18,7 +18,7 @@
                 alert('select a program');
                 return false;
             }
-            url = '<%= Page.ResolveUrl("~/Reports/EnrollmentControl.aspx") %>'
+            url = '<%= Page.ResolveUrl("~/Report/EnrollmentControl.aspx") %>'
                 + "?div=" + $get('<%= DivOrg.ClientID %>').value
                 + "&subdiv=" + $get('<%= SubDivOrg.ClientID %>').value
                 + "&schedule=" + $get('<%= Schedule.ClientID %>').value;

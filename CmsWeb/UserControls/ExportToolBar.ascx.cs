@@ -33,12 +33,12 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
-            LabelsLink.NavigateUrl = Popup("Reports/LabelsRpt.aspx?");
+            LabelsLink.NavigateUrl = Popup("Report/LabelsRpt.aspx?");
             ExcelLink.NavigateUrl = Popup("ExportExcel.ashx?");
             BulkMailLink.NavigateUrl = Popup("bulkmail.ashx?");
-            ProspectLink.NavigateUrl = GoTo("NewWindow", "Reports/ProspectCardsRpt.aspx?");
-            InreachLink.NavigateUrl = GoTo("NewWindow", "Reports/InreachRpt.aspx?");
-            ChoirLink.NavigateUrl = GoTo("NewWindow", "Reports/ChoirMeeting.aspx?");
+            ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
+            InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
+            ChoirLink.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Children&");
