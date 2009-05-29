@@ -57,11 +57,6 @@
                     (Husband and wife should both be primary)</td>
                 </tr>
                 <tr>
-                    <td><label for="grade">Grade</label></td>
-                    <td><%=Html.TextBox("grade")%></td>
-                    <td><%= Html.ValidationMessage("grade") %></td>
-                </tr>
-                <tr>
                     <td><label for="address">Address Line 1</label></td>
                     <td><%= Html.TextBox("address1") %></td>
                     <td><%= Html.ValidationMessage("address1") %></td>

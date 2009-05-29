@@ -34,7 +34,7 @@ namespace CMSWeb.Reports
             Response.Clear();
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
-            var doc = new Document(PageSize.LETTER, 36, 36, 64, 64);
+            var doc = new Document(PageSize.LETTER, 36, 36, 36, 42);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
             w.PageEvent = new HeadFoot();
 
@@ -55,7 +55,8 @@ namespace CMSWeb.Reports
 
             var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
 
-            var header = new HeaderFooter(new Phrase(headtext), false);
+            var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8);
+            var header = new HeaderFooter(new Phrase(headtext, boldfont), false);
             header.Border = Rectangle.NO_BORDER;
             doc.Header = header;
 
@@ -66,18 +67,18 @@ namespace CMSWeb.Reports
             t.WidthPercentage = 100;
             t.SetWidths(new int[] { 20, 30, 10, 15 });
 
-            var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
+            var font = FontFactory.GetFont(FontFactory.HELVETICA, 8);
             t.AddCell(new Phrase("Name", boldfont));
             t.AddCell(new Phrase("Organization", boldfont));
             t.AddCell(new Phrase("Location", boldfont));
             t.AddCell(new Phrase("Member Type", boldfont));
-
+            
             foreach (var m in list(subdiv, div, schedule))
             {
-                t.AddCell(m.Name);
-                t.AddCell(m.Organization);
-                t.AddCell(m.Location);
-                t.AddCell(m.MemberType);
+                t.AddCell(new Phrase(m.Name, font));
+                t.AddCell(new Phrase(m.Organization,font));
+                t.AddCell(new Phrase(m.Location,font));
+                t.AddCell(new Phrase(m.MemberType, font));
             }
             if (t.Rows.Count > 1)
                 doc.Add(t);

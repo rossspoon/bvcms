@@ -57,11 +57,6 @@
                     <td><%= Html.ValidationMessage("gender2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="grade">Grade</label></td>
-                    <td><%=Html.TextBox("grade")%></td>
-                    <td><%= Html.ValidationMessage("grade") %></td>
-                </tr>
-                <tr>
                     <td><label for="cellphone">Cell Phone</label></td>
                     <td><%= Html.TextBox("cellphone") %></td>
                     <td><%= Html.ValidationMessage("cellphone") %></td>

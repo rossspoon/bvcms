@@ -20,7 +20,6 @@ namespace CMSWeb.Models
         private DateTime _dob;
         public DateTime DOB { get { return _dob;} }
 		public int? gender { get; set; }
-        public string grade {get; set;}
         public string address1 { get; set; }
         public string address2 { get; set; }
         public string city { get; set; }
@@ -43,7 +42,6 @@ namespace CMSWeb.Models
             sb.AppendFormat("Gender:\t{0}\n", gender == 1 ? "M" : "F");
             sb.AppendFormat("Maried:\t{0}\n", married);
             sb.AppendFormat("Position:\t{0}\n", position == 10 ? "Primary" : position == 20 ? "Secondary" : "Child");
-            sb.AppendFormat("Grade:\t{0}\n", grade);
             sb.AppendFormat("Addr1:\t{0}\n", address1);
             sb.AppendFormat("Addr2:\t{0}\n", address2);
             sb.AppendFormat("City:\t{0}\n", city);
@@ -110,8 +108,6 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("gender2", "gender required");
             if (!position.HasValue)
                 ModelState.AddModelError("position2", "position required");
-            if (grade == "0")
-                ModelState.AddModelError("grade", "grade required");
             var d = cellphone.GetDigits().Length;
             if (cellphone.HasValue() && (d != 7 && d != 10))
                 ModelState.AddModelError("cellphone", "7 or 10 digits");

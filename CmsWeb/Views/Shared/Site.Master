@@ -173,22 +173,17 @@
                         <li>
                             <a href="/Admin/Users.aspx">Users</a></li>
                         <li>
-                            <a href="/Admin/Audit.aspx">Audit</a></li>
+                            <a href="/Program/">Programs</a></li>
+                        <li>
+                            <a href="/Ministry/">Ministries</a></li>
+                        <li>
+                            <a href="/MetroZip/">MetroZips</a></li>
+                        <li>
+                            <a href="/Fund/">Funds</a></li>
+                        <li>
+                            <a href="/Setting/">Settings</a></li>
                         <li>
                             <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
-                        <li class="headlink">
-                            <a href="#" runat="server">Lookup Tables</a>
-                            <ul>
-                                <li>
-                                    <a href="/Ministry/">Ministries</a></li>
-                                <li>
-                                    <a href="/MetroZip/">MetroZips</a></li>
-                                <li>
-                                    <a href="/Fund/">Funds</a></li>
-                                <li>
-                                    <a href="/Setting/">Settings</a></li>
-                            </ul>
-                        </li>
                         <li>
                             <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
                         <li>

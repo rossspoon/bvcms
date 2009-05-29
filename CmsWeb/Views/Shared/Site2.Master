@@ -15,7 +15,7 @@
 
         <div id="header">
            <div id="title">
-              <h1><img alt="logo" src="<%=ViewData["logoimg"] %>" 
+              <h1><img alt="logo" src='<%=ViewData["logoimg"] %>' 
                     align="middle" />&nbsp;<%=ViewData["header"]%></h1>
            </div>
         </div>
