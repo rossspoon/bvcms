@@ -374,6 +374,22 @@ namespace CmsData
         partial void UpdateVolApplicationStatus(VolApplicationStatus instance);
         partial void DeleteVolApplicationStatus(VolApplicationStatus instance);
         
+        partial void InsertVolInterest(VolInterest instance);
+        partial void UpdateVolInterest(VolInterest instance);
+        partial void DeleteVolInterest(VolInterest instance);
+        
+        partial void InsertVolInterestCode(VolInterestCode instance);
+        partial void UpdateVolInterestCode(VolInterestCode instance);
+        partial void DeleteVolInterestCode(VolInterestCode instance);
+        
+        partial void InsertVolInterestInterestCode(VolInterestInterestCode instance);
+        partial void UpdateVolInterestInterestCode(VolInterestInterestCode instance);
+        partial void DeleteVolInterestInterestCode(VolInterestInterestCode instance);
+        
+        partial void InsertVolOpportunity(VolOpportunity instance);
+        partial void UpdateVolOpportunity(VolOpportunity instance);
+        partial void DeleteVolOpportunity(VolOpportunity instance);
+        
         partial void InsertVolunteer(Volunteer instance);
         partial void UpdateVolunteer(Volunteer instance);
         partial void DeleteVolunteer(Volunteer instance);
@@ -966,6 +982,30 @@ namespace CmsData
 
 		}
 
+		public Table< VolInterest> VolInterests
+		{
+			get	{ return this.GetTable< VolInterest>(); }
+
+		}
+
+		public Table< VolInterestCode> VolInterestCodes
+		{
+			get	{ return this.GetTable< VolInterestCode>(); }
+
+		}
+
+		public Table< VolInterestInterestCode> VolInterestInterestCodes
+		{
+			get	{ return this.GetTable< VolInterestInterestCode>(); }
+
+		}
+
+		public Table< VolOpportunity> VolOpportunities
+		{
+			get	{ return this.GetTable< VolOpportunity>(); }
+
+		}
+
 		public Table< Volunteer> Volunteers
 		{
 			get	{ return this.GetTable< Volunteer>(); }
@@ -1050,6 +1090,12 @@ namespace CmsData
 	    public Table< View.VBSInfo> ViewVBSInfos
 	    {
 		    get { return this.GetTable< View.VBSInfo>(); }
+
+	    }
+
+	    public Table< View.VolInterestView> ViewVolInterestViews
+	    {
+		    get { return this.GetTable< View.VolInterestView>(); }
 
 	    }
 

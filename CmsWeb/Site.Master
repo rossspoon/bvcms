@@ -90,6 +90,8 @@
                             <asp:HyperLink ID="HyperLink20" NavigateUrl="~/EnrollmentControlReport.aspx" runat="server">Enrollment Control Report</asp:HyperLink></li>
                         <li id="VBSMenuItem" runat="server" visible="false">
                             <asp:HyperLink ID="HyperLink21" NavigateUrl="/VBS/" runat="server">VBS Enrollment</asp:HyperLink></li>
+                        <li id="VolInterestMenuItem" runat="server" visible="false">
+                            <asp:HyperLink ID="HyperLink3" NavigateUrl="/VolInterestView.aspx" runat="server">Volunteer Interests</asp:HyperLink></li>
                         <li id="CurrentOrgMenuItem" runat="server" visible="false">
                             <asp:HyperLink ID="CurrentOrgLink" runat="server"></asp:HyperLink></li>
                     </ul>
@@ -156,6 +158,9 @@
                         <li>
                             <asp:HyperLink ID="Funds" NavigateUrl="/Fund/"
                                 runat="server">Funds</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink2" NavigateUrl="/VolOpportunity/"
+                                runat="server">Volunteer Opportunities</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="Settings" NavigateUrl="/Setting/"
                                 runat="server">Settings</asp:HyperLink></li>

@@ -74,6 +74,7 @@ namespace CMSWeb
             AdminMenuItem.Visible = Page.User.IsInRole("Admin");
             ContributionsMenuItem.Visible = Page.User.IsInRole("Finance");
             VBSMenuItem.Visible = Page.User.IsInRole("Edit");
+            VolInterestMenuItem.Visible = Page.User.IsInRole("Edit");
             OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;
             UserHeader.Text = DbUtil.Header();

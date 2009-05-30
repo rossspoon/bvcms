@@ -24,7 +24,7 @@ namespace CmsData
 
         partial void OnCreated()
         {
-            CommandTimeout = 300;
+            CommandTimeout = 600;
         }
         private string _LogFile;
         public string LogFile

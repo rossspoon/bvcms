@@ -111,6 +111,11 @@
     <Compile Include="Generated\Views\LastName.cs" />
     <Compile Include="Generated\Views\Nick.cs" />
     <Compile Include="Generated\Views\VBSInfo.cs" />
+    <Compile Include="Generated\Views\VolInterestView.cs" />
+    <Compile Include="Generated\VolInterest.cs" />
+    <Compile Include="Generated\VolInterestCode.cs" />
+    <Compile Include="Generated\VolInterestInterestCode.cs" />
+    <Compile Include="Generated\VolOpportunity.cs" />
     <Compile Include="Generated\WeeklySchedule.cs" />
     <Compile Include="Generated\Zip.cs" />
     <Compile Include="IndividualContribution.cs" />

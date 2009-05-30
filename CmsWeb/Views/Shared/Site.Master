@@ -181,6 +181,8 @@
                         <li>
                             <a href="/Fund/">Funds</a></li>
                         <li>
+                            <a href="/VolOpportunity/">Volunteer Opportunties</a></li>
+                        <li>
                             <a href="/Setting/">Settings</a></li>
                         <li>
                             <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>

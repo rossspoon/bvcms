@@ -36,7 +36,7 @@ namespace CMSWeb
                 _From = value;
             }
         }
-        
+
         private MailAddress ReplyTo;
         private List<MailAddress> Addresses = new List<MailAddress>();
         private IEnumerable<Person> people;
@@ -45,6 +45,16 @@ namespace CMSWeb
         {
             ReplyTo = new MailAddress(fromaddr, fromname);
             From = new MailAddress(DbUtil.SystemEmailAddress, fromname);
+            if (From.Host == ReplyTo.Host)
+            {
+                From = ReplyTo;
+                ReplyTo = null;
+            }
+        }
+        public Emailer(string fromaddr)
+        {
+            ReplyTo = new MailAddress(fromaddr);
+            From = new MailAddress(DbUtil.SystemEmailAddress);
             if (From.Host == ReplyTo.Host)
             {
                 From = ReplyTo;
@@ -124,7 +134,7 @@ namespace CMSWeb
                     msg.Subject = Subject;
                     var b = Message.Replace("{name}", p.Name);
                     b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                    b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName :  p.FirstName);
+                    b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
                     msg.Body = b;
                     if (a != null)
                         msg.Attachments.Add(a);
@@ -147,6 +157,35 @@ namespace CMSWeb
                     i++;
                     smtp.Send(msg);
                 }
+            }
+        }
+        public void SendPersonEmail(Person p, string subject, string message)
+        {
+            Subject = subject;
+            Message = message;
+
+            var smtp = new SmtpClient();
+            try
+            {
+                var to = new MailAddress(p.EmailAddress, p.Name);
+                var msg = new MailMessage(From, to);
+                msg.ReplyTo = ReplyTo;
+                msg.Subject = Subject;
+                var b = Message.Replace("{name}", p.Name);
+                b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+                b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+                msg.Body = b;
+                msg.IsBodyHtml = true;
+                smtp.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                var f = new MailAddress(DbUtil.SystemEmailAddress);
+                var msg = new MailMessage(f, From);
+                msg.Subject = ex.Message;
+                msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
+                msg.IsBodyHtml = true;
+                smtp.Send(msg);
             }
         }
         public void EmailNotification(Person from, Person to, string subject, string message)

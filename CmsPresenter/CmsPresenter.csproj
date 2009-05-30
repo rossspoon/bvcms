@@ -99,6 +99,7 @@
     <Compile Include="ContributionStatementController.cs" />
     <Compile Include="ChurchAttendanceController.cs" />
     <Compile Include="ActivityController.cs" />
+    <Compile Include="VolInterestController.cs" />
     <Compile Include="DecisionSummaryController.cs" />
     <Compile Include="PersonSearchDialogController.cs" />
     <Compile Include="InfoClasses\ContacteeInfo.cs" />
