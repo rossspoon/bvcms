@@ -100,7 +100,7 @@ This text: "Goto Bellevue" = "www.bellevue.org" is a hyperlink too.
                 would look like this in the email:<br />
                 <div class="boxThinBorder">
                     <p>
-                        Hi John,<br />
+                        Hi David,<br />
                         <br />
                         I could call you by your whole name like this: David Carroll.<br />
                         <br />

@@ -204,11 +204,13 @@ namespace CMSWeb.Controllers
         private bool Validate(QueryModel m)
         {
             m.SetVisibility();
-            DateTime dt;
-            if (m.StartDateVisible && !DateTime.TryParse(m.StartDate, out dt))
-                m.Errors.Add("StartDate", "invalid");
-            if (m.EndDateVisible && m.EndDate.HasValue() && !DateTime.TryParse(m.EndDate, out dt))
-                m.Errors.Add("EndDate", "invalid");
+            DateTime dt = DateTime.MinValue;
+            if (m.StartDateVisible)
+                if (!DateTime.TryParse(m.StartDate, out dt) || dt.Year >= 1900 && dt.Year <= 2200)
+                    m.Errors.Add("StartDate", "invalid");
+            if (m.EndDateVisible && m.EndDate.HasValue())
+                if (!DateTime.TryParse(m.EndDate, out dt) || dt.Year >= 1900 && dt.Year <= 2200)
+                    m.Errors.Add("EndDate", "invalid");
             int i;
             if (m.DaysVisible && !int.TryParse(m.Days, out i))
                 m.Errors.Add("Days", "must be integer");
@@ -233,8 +235,9 @@ namespace CMSWeb.Controllers
             if (m.CodesVisible && m.CodeValues.Length == 0)
                 m.Errors.Add("CodeValues", "must select item(s)");
 
-            if (m.DateVisible && !DateTime.TryParse(m.DateValue, out dt))
-                m.Errors.Add("DateValue", "need date");
+            if (m.DateVisible)
+                if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year >= 1900 && dt.Year <= 2200)
+                    m.Errors.Add("DateValue", "need valid date");
 
             return m.Errors.Count == 0;
         }

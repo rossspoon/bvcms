@@ -173,7 +173,7 @@ namespace CMSPresenter
 
             string name;
             if (potentialName.HasValue())
-                name = potentialName;
+                name = potentialName.Trim();
             else
                 name = famtype == AddFamilyType.Couple ? "NewCouple" : "NewPerson";
 

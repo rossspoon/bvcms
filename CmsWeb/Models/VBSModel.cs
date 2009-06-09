@@ -154,12 +154,11 @@ namespace CMSWeb.Models
                     Util.Now,
                     null);
                 var qme = from m in DbUtil.Db.Meetings
-                          where m.OrganizationId == v.OrgId
-                          where m.MeetingDate.Value.Date == DateTime.Today
+                          where m.OrganizationId == OrgId
                           orderby m.MeetingDate descending
                           select m;
-                var meeting = qme.SingleOrDefault();
-                if (meeting != null)
+                var meeting = qme.FirstOrDefault();
+                if (meeting != null && (DateTime.Now - meeting.MeetingDate.Value).TotalHours <= 24)
                 {
                     var ac = new CMSPresenter.AttendController();
                     ac.RecordAttendance(v.PeopleId.Value, meeting.MeetingId, true);

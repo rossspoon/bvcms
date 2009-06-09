@@ -26,21 +26,6 @@ namespace CMSWeb2
         {
             RegisterRoutes(RouteTable.Routes);
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
-            //Application["starting"] = true;
-        }
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            //if (Application["starting"].IsNotNull())
-            //{
-            //    try
-            //    {
-            //        DbUtil.Db.DeleteSpecialTags(null);
-            //    }
-            //    finally
-            //    {
-            //        Application.Remove("starting");
-            //    }
-            //}
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -99,7 +84,6 @@ namespace CMSWeb2
                 Util.UserId = u.UserId;
                 Util.UserPeopleId = u.PeopleId;
             }
-            //Util.OrgMembersOnly = bool.Parse(ConfigurationManager.AppSettings[Util.STR_OrgMembersOnly]);
             Util.SessionStarting = true;
         }
         protected void Session_Start(object sender, EventArgs e)

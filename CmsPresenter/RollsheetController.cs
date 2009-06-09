@@ -32,7 +32,7 @@ namespace CMSPresenter
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
-                    where om.EnrollmentDate <= Util.Now.Date
+                    where om.EnrollmentDate <= Util.Now
                     orderby om.Person.Name2
                     select om;
             var q2 = OrganizationController.FetchPeopleList(q);

@@ -24,9 +24,9 @@ namespace CMSWeb.Controllers
             var ph = Util.GetDigits(id);
             var q = from p in DbUtil.Db.People
                     where p.Family.HomePhone.EndsWith(ph)
-                    || p.CellPhone.EndsWith(id)
+                    || p.CellPhone.EndsWith(ph)
                     where p.Family.HeadOfHouseholdId == p.PeopleId
-                    where p.Family.People.Any(c => c.Grade < 3)
+                    where p.Family.People.Any(c => c.Age <= 9)
                     select new Fam
                     {
                         FamId = p.FamilyId,
@@ -35,7 +35,7 @@ namespace CMSWeb.Controllers
                         City = p.PrimaryCity,
                         St = p.PrimaryState,
                         Zip = p.PrimaryZip,
-                        NumGrade2 = p.Family.People.Count(c => c.Grade < 3)
+                        NumGrade2 = p.Family.People.Count(c => c.Age <= 9)
                     };
             return View(q);
         }
@@ -44,8 +44,10 @@ namespace CMSWeb.Controllers
             var q = from p in DbUtil.Db.People
                     where p.FamilyId == id
                     where p.PositionInFamilyId == 30
-                    where p.Grade < 3
-                    let att = p.Attends.Where(a => a.AttendanceFlag && a.Organization.DivOrgs.Any(dor => dor.Division.ProgId == DbUtil.BFClassOrgTagId)).OrderByDescending(a => a.MeetingDate).FirstOrDefault()
+                    where p.Age <- 9
+                    let att = p.Attends.Where(a => a.AttendanceFlag 
+                        && a.Organization.DivOrgs.Any(dor => dor.Division.ProgId == DbUtil.BFClassOrgTagId))
+                        .OrderByDescending(a => a.MeetingDate).FirstOrDefault()
                     select new
                     {
                         p.PeopleId,

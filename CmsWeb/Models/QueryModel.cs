@@ -312,7 +312,7 @@ namespace CMSWeb.Models
                 case FieldType.DateField:
                 case FieldType.Bit:
                 case FieldType.NullBit:
-                    if (c.HasMultipleCodes)
+                    if (c.HasMultipleCodes && CodeValues != null)
                         c.CodeIdValue = string.Join(";", CodeValues);
                     else
                         c.CodeIdValue = CodeValue;
@@ -411,7 +411,7 @@ namespace CMSWeb.Models
         public void SaveQuery()
         {
             var saveto = Db.QueryBuilderClauses.FirstOrDefault(c =>
-                c.SavedBy == Util.UserName && c.Description == Description);
+                c.SavedBy == Util.UserName && c.Description == SavedQueryDesc);
             if (saveto == null)
             {
                 saveto = new QueryBuilderClause();
