@@ -11,21 +11,21 @@
    
             <th>Task</th>
             <td>
-                <%=Html.Hidden("TaskId", ViewData.Model.Id)%>
-                <%=ViewData.Model.Description%>
+                <%=Html.Hidden("TaskId", Model.Id)%>
+                <%=Model.Description%>
             </td>
         </tr>
         <tr>
             <th>Created</th>
             <td>
-                <span style="font-size: smaller; color: Gray"><%=ViewData.Model.CreatedOn.ToString("f")%></span>
+                <span style="font-size: smaller; color: Gray"><%=Model.CreatedOn.ToString("f")%></span>
             </td>
         </tr>
         <tr>
             <th>Owner</th>
             <td>
-                <%=Html.HyperLink(ViewData.Model.TaskEmail, ViewData.Model.Owner)%>
-                <% if (ViewData.Model.IsOwner) 
+                <%=Html.HyperLink(Model.TaskEmail, Model.Owner)%>
+                <% if (Model.IsOwner) 
                    { %>
                 <%=Html.HyperLink("#", "(transfer)", "SearchPeople(ChangeOwnerPerson);return false")%>
                 <% } %>
@@ -34,27 +34,27 @@
         <tr>
             <th>Delegated To:</th>
             <td>
-                <% if (ViewData.Model.CoOwnerId.HasValue) 
+                <% if (Model.CoOwnerId.HasValue) 
                    { %>
-                <%=Html.HyperLink("mailto:" + ViewData.Model.CoOwnerEmail, ViewData.Model.CoOwner) %>
+                <%=Html.HyperLink("mailto:" + Model.CoOwnerEmail, Model.CoOwner) %>
                 <% } 
-                   if (ViewData.Model.IsOwner) 
+                   if (Model.IsOwner) 
                    { %>
-                <%=Html.HyperLink("#", ViewData.Model.ChangeCoOwner, "SearchPeople(AddDelegatePerson);return false")%>
+                <%=Html.HyperLink("#", Model.ChangeCoOwner, "SearchPeople(AddDelegatePerson);return false")%>
                 <% } %>
             </td>
         </tr>
         <tr>
             <th>Due</th>
             <td>
-                <%="{0:d}".Fmt(ViewData.Model.Due) %>
+                <%="{0:d}".Fmt(Model.Due) %>
             </td>
         </tr>
         <tr>
             <th>Priority</th>
             <td>
-                <span id="Priority" style="margin-right:3em"><%=ViewData.Model.Priority%></span>
-                <% if(ViewData.Model.IsAnOwner) 
+                <span id="Priority" style="margin-right:3em"><%=Model.Priority%></span>
+                <% if(Model.IsAnOwner) 
                    { %>
                     <a href="#" onclick="SetPriority(<%=ViewData.Model.Id%>,1);return false;"> 1 </a>
                     <a href="#" onclick="SetPriority(<%=ViewData.Model.Id%>,2);return false;"> 2 </a>
@@ -66,59 +66,59 @@
         <tr>
             <th>Status:</th>
             <td>
-                <span class="edit-select" vid="Status" canedit='<%=ViewData.Model.IsAnOwner%>'><%=ViewData.Model.Status%></span>
-                <% if (ViewData.Model.CanComplete)
+                <span class="edit-select" vid="Status" canedit='<%=Model.IsAnOwner%>'><%=Model.Status%></span>
+                <% if (Model.CanComplete)
                    { %>
-                <a href="#" onclick="SetComplete(<%=ViewData.Model.Id%>);return false;" style="font-size:120%">(complete)</a>
+                <a href="#" onclick="SetComplete(<%=Model.Id%>);return false;" style="font-size:120%">(complete)</a>
                 <% }
-                   if (ViewData.Model.CanAccept)
+                   if (Model.CanAccept)
                    { %>
                 <a href="#" onclick="Accept(<%=ViewData.Model.Id%>);return false;" style="font-size:120%">(accept)</a>
                 <% }
-                   if (ViewData.Model.ShowCompleted)
+                   if (Model.ShowCompleted)
                    { %>
-                <span style="font-size: smaller; color: Gray" runat="server"><%="{0:f}".Fmt(ViewData.Model.CompletedOn)%></span>
+                <span style="font-size: smaller; color: Gray" runat="server"><%="{0:f}".Fmt(Model.CompletedOn)%></span>
                 <% } %>
             </td>
         </tr>
-        <% if (ViewData.Model.ShowLocation)
+        <% if (Model.ShowLocation)
            { %>
         <tr>
             <th>Project:</th>
-            <td><%=ViewData.Model.Project%>
+            <td><%=Model.Project%>
             </td>
         </tr>
         <% } %>
         <tr style='font-size: larger'>
             <th>Regarding Person:</th>
             <td style="border: 1px solid grey">
-                <% if (ViewData.Model.WhoId.HasValue)
+                <% if (Model.WhoId.HasValue)
                    { %>
-                <%=Html.HyperLink("/Person.aspx?id=" + ViewData.Model.WhoId, ViewData.Model.Who)%>
+                <%=Html.HyperLink("/Person.aspx?id=" + Model.WhoId, Model.Who)%>
                 <% } 
-                   if (ViewData.Model.IsAnOwner)
+                   if (Model.IsAnOwner)
                    { %>
-                <%=Html.HyperLink("#", ViewData.Model.ChangeWho, "SearchPeople(AddAboutPerson);return false")%>
+                <%=Html.HyperLink("#", Model.ChangeWho, "SearchPeople(AddAboutPerson);return false")%>
                 <% }
-                   if (ViewData.Model.WhoId.HasValue)
+                   if (Model.WhoId.HasValue)
                    { %>
-                <%=Html.HyperLink(ViewData.Model.ProspectReportLink(), "Prospect Report", new { target = "_blank" })%>
+                <%=Html.HyperLink(Model.ProspectReportLink(), "Prospect Report", new { target = "_blank" })%>
                 <div>
-                    <%=Html.HyperLink("http://www.google.com/maps?q=" + ViewData.Model.WhoAddrCityStateZip, ViewData.Model.WhoAddress, new { target = "_blank" })%>
-                    | <%=Html.HyperLink("http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=" + ViewData.Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
-                    <%=Html.HyperLink("mailto:" + ViewData.Model.WhoEmail, ViewData.Model.WhoEmail2)%>
-                    | <%=ViewData.Model.WhoPhone%> 
+                    <%=Html.HyperLink("http://www.google.com/maps?q=" + Model.WhoAddrCityStateZip, Model.WhoAddress, new { target = "_blank" })%>
+                    | <%=Html.HyperLink("http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=" + Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
+                    <%=Html.HyperLink("mailto:" + Model.WhoEmail, Model.WhoEmail2)%>
+                    | <%=Model.WhoPhone%> 
                 </div>
                 <% } %>
             </td>
         </tr>
-        <% if (ViewData.Model.ShowLocation)
+        <% if (Model.ShowLocation)
            { %>
         <tr>
             <th>Location:</th>
             <td>
-                <span class=".location"><%=ViewData.Model.Location%></span>
-                <% if (ViewData.Model.IsAnOwner)
+                <span class=".location"><%=Model.Location%></span>
+                <% if (Model.IsAnOwner)
                    { %>
                 <div id='SetLocation'></div>
                 <% } %>
@@ -128,20 +128,20 @@
         <tr>
             <th>Source Contact:</th>
             <td>
-                <%=Html.HyperLink("/Contact.aspx?id=" + ViewData.Model.SourceContactId, 
-                    "{0:d}".Fmt(ViewData.Model.SourceContact)) %>
-                <% if(ViewData.Model.IsAnOwner)
+                <%=Html.HyperLink("/Contact.aspx?id=" + Model.SourceContactId, 
+                    "{0:d}".Fmt(Model.SourceContact)) %>
+                <% if(Model.IsAnOwner)
                    { %>
-                <%=Html.HyperLink("#", ViewData.Model.SourceContactChange, "SearchContacts();return false")%>
+                <%=Html.HyperLink("#", Model.SourceContactChange, "SearchContacts();return false")%>
                 <% } %>
             </td>
         </tr>
         <tr>
             <th>Completed Contact:</th>
             <td>
-                <%=Html.HyperLink("/Contact.aspx?id=" + ViewData.Model.CompletedContactId, 
-                    "{0:d}".Fmt(ViewData.Model.CompletedContact)) %>
-                <% if(ViewData.Model.CanCompleteWithContact) 
+                <%=Html.HyperLink("/Contact.aspx?id=" + Model.CompletedContactId, 
+                    "{0:d}".Fmt(Model.CompletedContact)) %>
+                <% if(Model.CanCompleteWithContact) 
                    { %>
                 <%=Html.HyperLink("#", "(complete)", "CompleteWithContact()")%>
                 <% } %>
@@ -151,15 +151,15 @@
             <th>Notes:<br /></th>
             <td>
                 <div style="width: 30em">
-                    <%=ViewData.Model.FmtNotes%>
+                    <%=Model.FmtNotes%>
                 </div>
             </td>
         </tr>
-<% if(ViewData.Model.IsAnOwner)
+<% if(Model.IsAnOwner)
 { %>
         <tr>
             <td colspan="2" align="center">
-                <input type="button" value="Edit" onclick="Edit(<%=ViewData.Model.Id%>)" />
+                <input type="button" value="Edit" onclick="Edit(<%=Model.Id%>)" />
             </td>
         </tr>
 <% } %>

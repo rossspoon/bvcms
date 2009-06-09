@@ -9,21 +9,21 @@
             <tr>
                 <th>Task</th>
                 <td>
-                    <%=Html.Hidden("TaskId", ViewData.Model.Id)%>
-                    <%=Html.TextBox("Description", ViewData.Model.Description)%>
+                    <%=Html.Hidden("TaskId", Model.Id)%>
+                    <%=Html.TextBox("Description", Model.Description)%>
                 </td>
             </tr>
             <tr>
                 <th>Created</th>
                 <td>
-                    <span style="font-size: smaller; color: Gray"><%=ViewData.Model.CreatedOn.ToString("f")%></span>
+                    <span style="font-size: smaller; color: Gray"><%=Model.CreatedOn.ToString("f")%></span>
                 </td>
             </tr>
             <tr>
                 <th>Owner</th>
                 <td>
-                    <%=Html.HyperLink(ViewData.Model.TaskEmail, ViewData.Model.Owner)%>
-                    <% if (ViewData.Model.IsOwner) 
+                    <%=Html.HyperLink(Model.TaskEmail, Model.Owner)%>
+                    <% if (Model.IsOwner) 
                        { %>
                     <%=Html.HyperLink("javascript:SearchPeople(ChangeOwnerPerson)", "(transfer)")%>
                     <% } %>
@@ -32,51 +32,51 @@
             <tr>
                 <th>Delegated To:</th>
                 <td>
-                    <% if (ViewData.Model.CoOwnerId.HasValue) 
+                    <% if (Model.CoOwnerId.HasValue) 
                        { %>
-                    <%=Html.HyperLink("mailto:" + ViewData.Model.CoOwnerEmail, ViewData.Model.CoOwner) %>
+                    <%=Html.HyperLink("mailto:" + Model.CoOwnerEmail, Model.CoOwner) %>
                     <% } 
-                       if (ViewData.Model.IsOwner) 
+                       if (Model.IsOwner) 
                        { %>
-                    <%=Html.HyperLink("javascript:SearchPeople(AddDelegatePerson)", ViewData.Model.ChangeCoOwner)%>
+                    <%=Html.HyperLink("javascript:SearchPeople(AddDelegatePerson)", Model.ChangeCoOwner)%>
                     <% } %>
                 </td>
             </tr>
             <tr>
                 <th>Due</th>
                 <td>
-                    <%=Html.TextBox("Due", ViewData.Model.Due, new { @class = "datepicker" })%>
+                    <%=Html.TextBox("Due", Model.Due, new { @class = "datepicker" })%>
                 </td>
             </tr>
             <tr>
                 <th>Priority</th>
                 <td>
-                    <%=Html.DropDownList("Priority", ViewData.Model.PriorityList())%>
+                    <%=Html.DropDownList("Priority", Model.PriorityList())%>
                 </td>
             </tr>
             <tr>
                 <th>Status:</th>
                 <td>
-                    <%=Html.DropDownList("StatusId", ViewData.Model.StatusList())%>
+                    <%=Html.DropDownList("StatusId", Model.StatusList())%>
                 </td>
             </tr>
-            <% if (ViewData.Model.ShowLocation)
+            <% if (Model.ShowLocation)
                { %>
             <tr>
                 <th>Project:</th>
-                <td><%=ViewData.Model.Project%>
+                <td><%=Model.Project%>
                 </td>
             </tr>
             <% } %>
             <tr>
                 <th>Regarding Person:</th>
-                <td><%=ViewData.Model.Who%></td>
+                <td><%=Model.Who%></td>
             </tr>
-            <% if (ViewData.Model.ShowLocation)
+            <% if (Model.ShowLocation)
                { %>
             <tr>
                 <th>Location:</th>
-                <td><%=ViewData.Model.Location%></td>
+                <td><%=Model.Location%></td>
             </tr>
             <% } %>
             <tr>

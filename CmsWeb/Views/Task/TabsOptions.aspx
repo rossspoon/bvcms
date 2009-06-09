@@ -1,7 +1,7 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskModel>" %>
-<% Html.RenderPartial("Tabs", ViewData.Model); %>
+<% Html.RenderPartial("Tabs", Model); %>
 <---------->
-<% foreach(var item in ViewData.Model.ActionItems())
+<% foreach(var item in Model.ActionItems())
    { %>
 <option value="<%=item.Value%>"<%=(item.Selected ? " selected" : "")%>><%=item.Text%></option>
 <% } %>

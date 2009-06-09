@@ -5,8 +5,4 @@
 <% } %>
 <% foreach (var t in ViewData.Model.FetchTasks())
     Html.RenderPartial("Row", t); %>
-<tr><td colspan="7">
-<input type="hidden" id="Count" value='<%=ViewData.Model.Count%>' />
-<%=Html.Hidden("Sort",ViewData.Model.Sort)%>
-</td></tr>
 

@@ -24,7 +24,7 @@
                 Project:
             </th>
             <td>
-                <%=Html.DropDownList("Project", ViewData.Model.Projects())%>
+                <%=Html.DropDownList("Project", Model.Projects())%>
             </td>
         </tr>
         <tr>
@@ -32,7 +32,7 @@
                 Location:
             </th>
             <td>
-                <%=Html.DropDownList("Location", ViewData.Model.Locations())%>
+                <%=Html.DropDownList("Location", Model.Locations())%>
             </td>
         </tr>
         <% } %>
@@ -41,7 +41,7 @@
                 Status:
             </th>
             <td>
-                <%=Html.DropDownList("StatusId", ViewData.Model.TaskStatusCodes(), new { onchange = "RefreshList()" })%>
+                <%=Html.DropDownList("StatusId", Model.TaskStatusCodes(), new { onchange = "RefreshList()" })%>
             </td>
         </tr>
         <tr>
@@ -52,33 +52,30 @@
             </td>
         </tr>
     </table>
-    <%=Html.Hidden("CurTab", ViewData.Model.MyListId())%>
+    <%=Html.Hidden("CurTab", Model.MyListId())%>
     <div id="tabs">
         <ul>
-            <% Html.RenderPartial("Tabs", ViewData.Model); %>
+            <% Html.RenderPartial("Tabs", Model); %>
         </ul>
-        <% foreach (var list in ViewData.Model.FetchTaskLists())
+        <% foreach (var list in Model.FetchTaskLists())
            { %>
         <div id='<%=list.Id %>' style="display:none"></div>
         <% } %>
+    </div>
+        <table>
+            <tr>
+                <td>
+                    <%=Html.DropDownList("actions", ViewData.Model.ActionItems(), new { onchange = "DoAction()" })%>
+                </td>
+                <td>
+                    New Task:
+                    <input type="text" id="TaskDesc" style="width: 217px" onkeypress="return AddTaskEnter(event)" />
+                    <a href="javascript:AddTaskClick()">Add Task</a>
+                </td>
+            </tr>
+        </table>
         <table id="tasks">
             <thead>
-                <tr>
-                    <td colspan="7">
-                        <table>
-                            <tr>
-                                <td>
-                                    <%=Html.DropDownList("actions", ViewData.Model.ActionItems(), new { onchange = "DoAction()" })%>
-                                </td>
-                                <td>
-                                    New Task:
-                                    <input type="text" id="TaskDesc" style="width: 217px" onkeypress="return AddTaskEnter(event)" />
-                                    <a href="javascript:AddTaskClick()">Add Task</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
                 <tr>
                     <th>
                     </th>
@@ -103,15 +100,17 @@
                 </tr>
             </thead>
             <tbody>
-                <% Html.RenderPartial("Rows", ViewData.Model); %>
+                <% Html.RenderPartial("Rows", Model); %>
             </tbody>
         </table>
-        <% Html.RenderPartial("Pager", ViewData.Model.pagerModel()); %>
+        <% Html.RenderPartial("Pager", Model.pagerModel()); %>
         <div>
             New List(tab):
             <input type="text" id="ListName" style="width: 217px" onkeypress="return AddListEnter(event)" />
             <a href="#" onclick="return AddListClick()">Add List</a>
         </div>
+<input type="hidden" id="Count" value='<%=Model.Count%>' />
+<%=Html.Hidden("Sort",Model.Sort)%>
     </form>
     <div id="dialogbox" title="Search Contacts" style="width: 560px; overflow: scroll">
     </div>
