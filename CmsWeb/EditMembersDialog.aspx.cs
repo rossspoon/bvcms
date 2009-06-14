@@ -21,28 +21,50 @@ namespace CMSWeb
     public partial class EditMembersDialog : System.Web.UI.Page
     {
         public int? OrgId;
-
+        private bool GroupMode = false;
+        public int? GroupId = 0;
         private string from;
+        private List<int> members;
         protected void Page_Load(object sender, EventArgs e)
         {
             var dp = ListView1.FindControl("pager") as DataPager;
             if (dp != null)
                 dp.PageSize = Util.GetPageSizeCookie();
             OrgId = Page.QueryString<int?>("id");
+            GroupId = Page.QueryString<int?>("group");
             from = Page.QueryString<string>("from");
-            if (!OrgId.HasValue || !from.HasValue())
+            GroupMode = GroupId.HasValue;
+            EditSection.Visible = !GroupMode;
+            if (!OrgId.HasValue || (!from.HasValue() && !GroupMode))
                 throw new Exception("Cannot visit EditMembersDialog this way");
             if (!IsPostBack)
             {
                 MemberType.SelectedValue = "220";
                 PersonSearchDialogController.ResetSearchTags();
             }
+            if (GroupMode)
+            {
+                var q = from m in DbUtil.Db.OrgMemMemTags
+                        where m.OrgId == OrgId && m.MemberTagId == GroupId
+                        select m.PeopleId;
+                members = q.ToList();
+            }
         }
 
         [System.Web.Services.WebMethod]
-        public static string ToggleTag(int PeopleId, string controlid)
+        public static string ToggleTag(int PeopleId, int OrgId, int GroupId, string controlid)
         {
-            return SearchDialog.ToggleTag(PeopleId, controlid);
+            if (GroupId > 0)
+            {
+                var Db = DbUtil.Db;
+                var m = Db.OrganizationMembers.Single(om => om.OrganizationId == OrgId && om.PeopleId == PeopleId);
+                var r = new ToggleTagReturn { ControlId = controlid };
+                r.HasTag = m.ToggleTag(GroupId);
+                Db.SubmitChanges();
+                return SearchDialog.JsonReturnStr(r);
+            }
+            else
+                return SearchDialog.ToggleTag(PeopleId, controlid);
         }
         protected void UpdateSelectedMembers_Click(object sender, EventArgs e)
         {
@@ -68,7 +90,7 @@ namespace CMSWeb
                 }
             }
             DbUtil.Db.SubmitChanges();
-            foreach(var pid in list)
+            foreach (var pid in list)
                 DbUtil.Db.UpdateSchoolGrade(pid);
             this.Page.ClientScript.RegisterStartupScript(typeof(AddMemberDialog),
                 "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
@@ -76,9 +98,9 @@ namespace CMSWeb
 
         protected void SelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            var q = PersonSearchDialogController.SearchMembers(SearchMemberType.Text.ToInt(), 
-                        TagSearch.SelectedValue.ToInt(), 
-                        SearchInactiveDate.Text.ToDate(), 
+            var q = PersonSearchDialogController.SearchMembers(SearchMemberType.Text.ToInt(),
+                        TagSearch.SelectedValue.ToInt(),
+                        SearchInactiveDate.Text.ToDate(),
                         OrgId.Value);
             var q2 = q.Select(om => om.Person);
             Tag tag = null;
@@ -101,6 +123,19 @@ namespace CMSWeb
             TagSearch.SelectedValue = "0";
             SearchInactiveDate.Text = "";
             ListView1.DataBind();
+        }
+
+        protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (!GroupMode)
+                return;
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                var cb = e.Item.FindControl("ck") as CheckBox;
+                var r = e.Item as ListViewDataItem;
+                var d = r.DataItem as PersonDialogSearchInfo;
+                cb.Checked = members.Contains(d.PeopleId);
+            }
         }
     }
 }

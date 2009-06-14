@@ -16,6 +16,12 @@
         var result = eval('(' + e + ')');
         $get(result.ControlId).checked = result.HasTag;
     }
+    function Toggle(PeopleId, ControlId) {
+        var gid = '<%= GroupId %>';
+        var orgid = '<%= OrgId %>';
+        PageMethods.ToggleTag(PeopleId, orgid, gid, ControlId, ToggleCallback);
+        return false;
+    }
 </script>
 
 <body>
@@ -23,71 +29,70 @@
     <div>
         <input type="hidden" id="retval" />
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
-<table class="modalPopup">
-    <tr style="font-size: small">
-        <td colspan="2">
-            <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            Tag:
-        </th>
-        <td colspan="2">
-            <asp:DropDownList ID="TagSearch" runat="server" DataTextField="Value" 
-                AutoPostBack="true" DataValueField="Id"
-                DataSourceID="UserTags" 
-                onselectedindexchanged="Search_Changed">
-            </asp:DropDownList>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            Member Type:
-        </th>
-        <td colspan="2">
-            <asp:DropDownList ID="SearchMemberType" runat="server" AutoPostBack="true" 
-                DataSourceID="MemberTypeData" DataTextField="Value"
-                DataValueField="Id" AppendDataBoundItems="true"
-                onselectedindexchanged="Search_Changed">
-                <asp:ListItem Value="0">(unspecified)</asp:ListItem>
-            </asp:DropDownList>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            Inactive Date:
-        </th>
-        <td valign="top">
-            <asp:TextBox ID="SearchInactiveDate" runat="server" Width="121px" 
-                AutoPostBack="true" ontextchanged="Search_Changed"></asp:TextBox>
-             <cc2:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True"
-                PopupPosition="TopLeft" TargetControlID="SearchInactiveDate">
-            </cc2:CalendarExtender>
-       </td>
-        <td colspan="2" align="center">
-            &nbsp;</td>
-    </tr>
-</table>
+        <table class="modalPopup">
+            <tr style="font-size: small">
+                <td colspan="2">
+                    <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Tag:
+                </th>
+                <td colspan="2">
+                    <asp:DropDownList ID="TagSearch" runat="server" DataTextField="Value" AutoPostBack="true"
+                        DataValueField="Id" DataSourceID="UserTags" OnSelectedIndexChanged="Search_Changed">
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Member Type:
+                </th>
+                <td colspan="2">
+                    <asp:DropDownList ID="SearchMemberType" runat="server" AutoPostBack="true" DataSourceID="MemberTypeData"
+                        DataTextField="Value" DataValueField="Id" AppendDataBoundItems="true" OnSelectedIndexChanged="Search_Changed">
+                        <asp:ListItem Value="0">(unspecified)</asp:ListItem>
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Inactive Date:
+                </th>
+                <td valign="top">
+                    <asp:TextBox ID="SearchInactiveDate" runat="server" Width="121px" AutoPostBack="true"
+                        OnTextChanged="Search_Changed"></asp:TextBox>
+                    <cc2:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" PopupPosition="TopLeft"
+                        TargetControlID="SearchInactiveDate">
+                    </cc2:CalendarExtender>
+                </td>
+                <td colspan="2" align="center">
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
         <div id="EditSection" runat="server">
             <br />
             <asp:DropDownList ID="MemberType" runat="server" DataSourceID="MemberTypeData" DataTextField="Value"
                 DataValueField="Id" AppendDataBoundItems="true">
                 <asp:ListItem Value="-1">Drop</asp:ListItem>
             </asp:DropDownList>
-        InActive Date:
-            <asp:TextBox ID="InactiveDate" runat="server" ToolTip="Goes Inactive Date" 
-                Height="22px" Width="80px"></asp:TextBox>
+            InActive Date:
+            <asp:TextBox ID="InactiveDate" runat="server" ToolTip="Goes Inactive Date" Height="22px"
+                Width="80px"></asp:TextBox>
             <cc2:CalendarExtender ID="InactiveDate_CalendarExtender" runat="server" Enabled="True"
                 PopupPosition="TopLeft" TargetControlID="InactiveDate">
             </cc2:CalendarExtender>
+            &nbsp;
+            <asp:Button ID="UpdateSelectedMembers" runat="server" OnClick="UpdateSelectedMembers_Click"
+                Text="Update Selected" />
         </div>
-        <asp:Button ID="UpdateSelectedMembers" runat="server" OnClick="UpdateSelectedMembers_Click"
-            Text="Update Selected" /> <asp:CheckBox ID="SelectAll" Text="Select All" 
-            runat="server" AutoPostBack="True" 
-            oncheckedchanged="SelectAll_CheckedChanged" />
+        <asp:CheckBox ID="SelectAll" Text="Select All" runat="server" AutoPostBack="True"
+            OnCheckedChanged="SelectAll_CheckedChanged" />
         <div style="overflow: auto; height: 200px;">
-            <asp:ListView ID="ListView1" runat="server" DataSourceID="MemberData" DataKeyNames="PeopleId">
+            <asp:ListView ID="ListView1" runat="server" DataSourceID="MemberData" 
+                DataKeyNames="PeopleId" onitemdatabound="ListView1_ItemDataBound">
                 <LayoutTemplate>
                     <table id="Table1" runat="server">
                         <tr id="Tr1" runat="server">
@@ -130,7 +135,8 @@
                     <tr id="Tr4" style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'
                         title='<%# Eval("ToolTip") %>'>
                         <td>
-                            <asp:CheckBox ID="ck" runat="server" Checked='<%# (bool)Eval("HasTag") %>' onclick='<%# Eval("PeopleId", "PageMethods.ToggleTag({0}, this.id, ToggleCallback); return false;") %>'>
+                            <asp:CheckBox ID="ck" runat="server" Checked='<%# (bool)Eval("HasTag") %>' 
+                                onclick='<%# Eval("PeopleId", "return Toggle({0}, this.id);") %>'>
                             </asp:CheckBox>
                         </td>
                         <td>
@@ -165,8 +171,7 @@
                 <asp:Parameter Name="startRowIndex" Type="Int32" />
                 <asp:Parameter Name="maximumRows" Type="Int32" />
                 <asp:Parameter Name="sortExpression" Type="String" />
-                <asp:ControlParameter ControlID="SearchMemberType" Name="memtype" 
-                    Type="Int32" />
+                <asp:ControlParameter ControlID="SearchMemberType" Name="memtype" Type="Int32" />
                 <asp:ControlParameter ControlID="TagSearch" Name="tag" Type="Int32" />
                 <asp:ControlParameter ControlID="SearchInactiveDate" Name="inactive" Type="Datetime" />
                 <asp:QueryStringParameter Name="orgid" QueryStringField="id" Type="Int32" />

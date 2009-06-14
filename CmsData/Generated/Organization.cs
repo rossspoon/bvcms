@@ -82,6 +82,8 @@ namespace CmsData
 		
    		private EntitySet< Meeting> _Meetings;
 		
+   		private EntitySet< MemberTag> _MemberTags;
+		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
     	
@@ -195,6 +197,8 @@ namespace CmsData
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
 			this._Meetings = new EntitySet< Meeting>(new Action< Meeting>(this.attach_Meetings), new Action< Meeting>(this.detach_Meetings)); 
+			
+			this._MemberTags = new EntitySet< MemberTag>(new Action< MemberTag>(this.attach_MemberTags), new Action< MemberTag>(this.detach_MemberTags)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -866,6 +870,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_MemberTags_Organizations", Storage="_MemberTags", OtherKey="OrgId")]
+   		public EntitySet< MemberTag> MemberTags
+   		{
+   		    get { return this._MemberTags; }
+
+			set	{ this._MemberTags.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="ORGANIZATION_MEMBERS_ORG_FK", Storage="_OrganizationMembers", OtherKey="OrganizationId")]
    		public EntitySet< OrganizationMember> OrganizationMembers
    		{
@@ -1179,6 +1193,19 @@ namespace CmsData
 		}
 
 		private void detach_Meetings(Meeting entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+
+		
+		private void attach_MemberTags(MemberTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+
+		private void detach_MemberTags(MemberTag entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

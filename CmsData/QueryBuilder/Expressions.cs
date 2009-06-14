@@ -779,6 +779,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
+                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId == 0)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))

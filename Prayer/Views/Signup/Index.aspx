@@ -133,11 +133,13 @@
    <table id="leg"  cellspacing="0">
   <col></col>
   <col align="left"></col>
-   <tr><td>&nbsp;</td><td>3 open</td></tr>
-   <tr><td class="o1"></td><td>2 open</td></tr>
-   <tr><td class="o2"></td><td>1 open</td></tr>
-   <tr><td class="o3"></td><td>filled</td></tr>
-   <tr><td class="m2"></td><td>yours</td></tr>
+   <tr><td colspan="3">Check a box to claim a spot</td></tr>
+   <tr><td>&nbsp;</td><td>&nbsp;</td><td>empty</td></tr>
+   <tr><td class="m1"></td><td class="o1"></td><td>few</td></tr>
+   <tr><td class="m2"></td><td class="o2"></td><td>some</td></tr>
+   <tr><td class="m3"></td><td class="o3"></td><td>many</td></tr>
+   <tr><td colspan="3">green = yours</td></tr>
+   <tr><td colspan="3">unchecked = available</td></tr>
    </table>
    </td></tr></table>
     <div class="growlUI" style="display: none;">

@@ -139,6 +139,7 @@
     <SelectParameters>
         <asp:QueryStringParameter Name="OrganizationId" QueryStringField="id" Type="Int32" />
         <asp:Parameter Name="Active" Type="Boolean" />
+        <asp:Parameter Name="GroupId" Type="Int32" />
         <asp:Parameter Name="sortExpression" Type="String" />
         <asp:Parameter Name="maximumRows" Type="Int32" />
         <asp:Parameter Name="startRowIndex" Type="Int32" />

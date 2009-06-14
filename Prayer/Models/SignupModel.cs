@@ -126,9 +126,9 @@ namespace Prayer.Models
         {
             var g = Group.LoadByName("Prayer Partners");
             var a = g.GetUsersInRole(GroupType.Admin);
-            foreach(var admin in a)
-                Prayer.Controllers.AccountController.Email(admin.Name, admin.EmailAddress, 
-                "time {0} for {1}".Fmt(si.Mine ? "claimed" : "released", u.Name), 
+            foreach (var admin in a)
+                Prayer.Controllers.AccountController.Email(admin.Name, admin.EmailAddress,
+                "time {0} for {1}".Fmt(si.Mine ? "claimed" : "released", u.Name),
                 "{0} {1:hh:mm tt} changed at {2} ({3} total)".Fmt(
                 DayName(si.Day), si.Time, DateTime.Now, si.Owners.Count));
         }
@@ -213,7 +213,7 @@ namespace Prayer.Models
             user = u;
         }
         private User user;
-        private const int MaxCubes = 3;
+        private const int MaxCubes = 8;
         public Dictionary<int, string> Owners { get; set; }
         public bool Checked
         {
@@ -231,11 +231,21 @@ namespace Prayer.Models
         {
             get
             {
+                var r = (double)Owners.Count / MaxCubes;
                 var c = "slot";
-                if (Mine)
-                    c += " m" + Owners.Count;
-                else if (Owners.Count > 0)
-                    c += " o" + Owners.Count;
+                if (r > 0)
+                {
+                    if (Mine)
+                        c += " m";
+                    else
+                        c += " o";
+                    if (r < .35)
+                        c += 1;
+                    else if (r > .8)
+                        c += 3;
+                    else
+                        c += 2;
+                }
                 return "class=\"{0}\"".Fmt(c);
             }
         }
@@ -271,7 +281,7 @@ namespace Prayer.Models
             get
             {
                 var sb = new StringBuilder(((DayOfWeek)Day).ToString() + ", {0:hh:mm tt}".Fmt(Time));
-                foreach(var o in Owners)
+                foreach (var o in Owners)
                 {
                     sb.Append(" - ");
                     sb.Append(o.Value);
@@ -283,8 +293,13 @@ namespace Prayer.Models
         }
         public string SlotCell()
         {
-            return "<td {1}{2}><input id='{0}' type='checkbox'{3}{4}{5}/></td>"
+            var s = "<td {1}{2}><input id='{0}' type='checkbox'{3}{4}{5}/>"
                 .Fmt(Id, classAttr, titleAttr, checkedAttr, onclickAttr, disabledAttr);
+            var r = (double)Owners.Count / MaxCubes;
+            var h = Convert.ToInt32(Math.Round(r * 20));
+            if (h > 0)
+                s += "<img align='bottom' border='0' src='/content/dot.gif' width='2' height='" + h + "'/>";
+            return s += "</td>";
         }
     }
 }

@@ -19,6 +19,7 @@ namespace CMSWeb
     public partial class MemberGrid : System.Web.UI.UserControl
     {
         public int OrgId { get; set; }
+        public int GroupId { get; set; }
         private int _Active = 1;
         public int Active
         {
@@ -75,6 +76,7 @@ namespace CMSWeb
         protected void MembersData_Selecting(object sender, ObjectDataSourceSelectingEventArgs e)
         {
             e.InputParameters["Active"] = Active != 0;
+            e.InputParameters["GroupId"] = GroupId;
         }
 
         //protected void MemberGrid1_ItemUpdated(object sender, ListViewUpdatedEventArgs e)

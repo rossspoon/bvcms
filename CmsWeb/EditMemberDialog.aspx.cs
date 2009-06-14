@@ -87,5 +87,27 @@ namespace CMSWeb
             this.Page.ClientScript.RegisterStartupScript(typeof(EditMemberDialog),
                "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }
+        protected void Groups_DataBound(object sender, EventArgs e)
+        {
+            var cbl = sender as CheckBoxList;
+            foreach (ListItem li in cbl.Items)
+                li.Selected = OrgMember.OrgMemMemTags.Any(mt => mt.MemberTagId == li.Value.ToInt());
+        }
+
+        protected void Groups_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var g = OrgMember.OrgMemMemTags.SingleOrDefault(mt => mt.MemberTagId == Groups.SelectedValue.ToInt());
+            if (g == null)
+            {
+                g = new OrgMemMemTag { MemberTagId = Groups.SelectedValue.ToInt() };
+                OrgMember.OrgMemMemTags.Add(g);
+            }
+            else
+            {
+                DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(g);
+                OrgMember.OrgMemMemTags.Remove(g);
+            }
+            DbUtil.Db.SubmitChanges();
+        }
     }
 }

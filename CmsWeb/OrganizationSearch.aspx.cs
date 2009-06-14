@@ -188,6 +188,15 @@ namespace CMSWeb
             Tags.DataBind();
         }
 
+        protected void Tags_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var a = Tags.SelectedValue.SplitStr(":");
+            var progid = a[0].ToInt();
+            var divid = a[1].ToInt();
+            progdivid.Text = "prog: {0}, div: {1}".Fmt(progid, divid);
+            OrganizationGrid.DataBind();
+        }
+
         [System.Web.Services.WebMethod]
         public static string ToggleTag(int OrganizationId, int tagid, string controlid)
         {
@@ -235,14 +244,6 @@ namespace CMSWeb
             }
         }
 
-        protected void Tags_SelectedIndexChanged(object sender, EventArgs e)
-        {
-			var a = Tags.SelectedValue.SplitStr(":");
-			var progid = a[0].ToInt();
-			var divid = a[1].ToInt();
-			progdivid.Text = "prog: {0}, div: {1}".Fmt(progid, divid);
-			OrganizationGrid.DataBind();
-        }
         private void CreateMeeting(string meetingcode)
         {
             var a = meetingcode.SplitStr(".");

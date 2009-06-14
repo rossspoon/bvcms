@@ -1031,6 +1031,7 @@
     <Content Include="Content\jquery.contextMenu.css" />
     <Content Include="Content\jquery.tooltip.css" />
     <Content Include="Content\jqueryMultiSelect.css" />
+    <Content Include="Content\js\simpletabs.js" />
     <Content Include="Content\js\jquery-1.3.2.min.js" />
     <Content Include="Content\js\jquery-ui-1.7.2.custom.min.js" />
     <Content Include="Content\js\jquery.contextMenu.js" />
@@ -1697,7 +1698,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>58724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

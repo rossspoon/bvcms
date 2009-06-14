@@ -26,8 +26,6 @@ namespace CmsData
    		
    		private EntitySet< Division> _Divisions;
 		
-   		private EntitySet< MemberTag> _MemberTags;
-		
     	
 	#endregion
 	
@@ -50,8 +48,6 @@ namespace CmsData
 		{
 			
 			this._Divisions = new EntitySet< Division>(new Action< Division>(this.attach_Divisions), new Action< Division>(this.detach_Divisions)); 
-			
-			this._MemberTags = new EntitySet< MemberTag>(new Action< MemberTag>(this.attach_MemberTags), new Action< MemberTag>(this.detach_MemberTags)); 
 			
 			
 			OnCreated();
@@ -140,16 +136,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_MemberTags_Program", Storage="_MemberTags", OtherKey="ProgId")]
-   		public EntitySet< MemberTag> MemberTags
-   		{
-   		    get { return this._MemberTags; }
-
-			set	{ this._MemberTags.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -178,19 +164,6 @@ namespace CmsData
 		}
 
 		private void detach_Divisions(Division entity)
-		{
-			this.SendPropertyChanging();
-			entity.Program = null;
-		}
-
-		
-		private void attach_MemberTags(MemberTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Program = this;
-		}
-
-		private void detach_MemberTags(MemberTag entity)
 		{
 			this.SendPropertyChanging();
 			entity.Program = null;

@@ -317,11 +317,11 @@ div#title
 table#slots { border:2px black solid }
 th.slot, td.slot { text-align:center; width:4em; border-left: 2px black solid; border-right:2px black solid }
 td.we { background-color: #EEE }
-td.o3 { background-color: #F66 }
+td.o3 { background-color: #F33 }
 td.o2 { background-color: #F99 }
-td.o1 { background-color: #FCC }
-td.m3 { background-color: #060 }
-td.m2 { background-color: #0C0 }
+td.o1 { background-color: #FEE }
+td.m3 { background-color: #0B0 }
+td.m2 { background-color: #0D0 }
 td.m1 { background-color: #0F0 }
 div.growlUI { background: url(check48.png) no-repeat 10px 10px }
 div.growlUI2 { background: url(attention48.png) no-repeat 10px 10px }

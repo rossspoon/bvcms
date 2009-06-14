@@ -356,7 +356,10 @@ function UpdateView(vs) {
     $('#Quarters').val(vs.Quarters);
     $('#StartDate').val(vs.StartDate);
     $('#EndDate').val(vs.EndDate);
-    $('#Comparison').val(vs.Comparison);
+    if (vs.Comparison)
+        $('#Comparison').val(vs.Comparison);
+    else
+        $('#Comparison')[0].selected = true;
 
     $('#SchedDiv').showhide(vs.ScheduleVisible);
     $('#ProgDiv').showhide(vs.ProgramVisible);

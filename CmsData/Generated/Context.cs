@@ -1185,6 +1185,17 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.QBClauses", IsComposable = true)]
+		public IQueryable< View.QBClause > QBClauses(
+            [Parameter(DbType="int")] int? qid
+            )
+		{
+			return this.CreateMethodCallQuery< View.QBClause>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                qid
+                );
+		}
+
 		[Function(Name="dbo.TaggedPeople", IsComposable = true)]
 		public IQueryable< View.TaggedPerson > TaggedPeople(
             [Parameter(DbType="int")] int? tagid
@@ -1759,18 +1770,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.VBSOrg", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? VBSOrg(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.OrganizationLeaderName", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string OrganizationLeaderName(
@@ -1846,6 +1845,18 @@ namespace CmsData
 		[Function(Name="dbo.DaysSinceContact", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? DaysSinceContact(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.VBSOrg", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? VBSOrg(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
 		{

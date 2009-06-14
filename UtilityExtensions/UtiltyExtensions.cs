@@ -445,6 +445,24 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_ActiveOrganizationId] = value;
             }
         }
+        const string STR_ActiveGroupId = "ActiveGroupId";
+        public static int CurrentGroupId
+        {
+            get
+            {
+                int id = 0;
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_ActiveGroupId] != null)
+                            id = HttpContext.Current.Session[STR_ActiveGroupId].ToInt();
+                return id;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_ActiveGroupId] = value;
+            }
+        }
         const string STR_ActivePersonId = "ActivePersonId";
         public static int CurrentPeopleId
         {

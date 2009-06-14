@@ -91,7 +91,7 @@ namespace CMSWeb
             Db.SubmitChanges();
             return JsonReturnStr(r);
         }
-        private static string JsonReturnStr(ToggleTagReturn r)
+        internal static string JsonReturnStr(ToggleTagReturn r)
         {
             var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
             var ms = new MemoryStream();

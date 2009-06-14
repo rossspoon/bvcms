@@ -21,13 +21,13 @@ namespace CmsData
 		
 		private string _Name;
 		
-		private int? _ProgId;
+		private int? _OrgId;
 		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
     	
-		private EntityRef< Program> _Program;
+		private EntityRef< Organization> _Organization;
 		
 	#endregion
 	
@@ -42,8 +42,8 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
-		partial void OnProgIdChanging(int? value);
-		partial void OnProgIdChanged();
+		partial void OnOrgIdChanging(int? value);
+		partial void OnOrgIdChanged();
 		
     #endregion
 		public MemberTag()
@@ -52,7 +52,7 @@ namespace CmsData
 			this._OrgMemMemTags = new EntitySet< OrgMemMemTag>(new Action< OrgMemMemTag>(this.attach_OrgMemMemTags), new Action< OrgMemMemTag>(this.detach_OrgMemMemTags)); 
 			
 			
-			this._Program = default(EntityRef< Program>); 
+			this._Organization = default(EntityRef< Organization>); 
 			
 			OnCreated();
 		}
@@ -104,24 +104,24 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ProgId", UpdateCheck=UpdateCheck.Never, Storage="_ProgId", DbType="int")]
-		public int? ProgId
+		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
+		public int? OrgId
 		{
-			get { return this._ProgId; }
+			get { return this._OrgId; }
 
 			set
 			{
-				if (this._ProgId != value)
+				if (this._OrgId != value)
 				{
 				
-					if (this._Program.HasLoadedOrAssignedValue)
+					if (this._Organization.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-                    this.OnProgIdChanging(value);
+                    this.OnOrgIdChanging(value);
 					this.SendPropertyChanging();
-					this._ProgId = value;
-					this.SendPropertyChanged("ProgId");
-					this.OnProgIdChanged();
+					this._OrgId = value;
+					this.SendPropertyChanged("OrgId");
+					this.OnOrgIdChanged();
 				}
 
 			}
@@ -147,41 +147,41 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_MemberTags_Program", Storage="_Program", ThisKey="ProgId", IsForeignKey=true)]
-		public Program Program
+		[Association(Name="FK_MemberTags_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
+		public Organization Organization
 		{
-			get { return this._Program.Entity; }
+			get { return this._Organization.Entity; }
 
 			set
 			{
-				Program previousValue = this._Program.Entity;
+				Organization previousValue = this._Organization.Entity;
 				if (((previousValue != value) 
-							|| (this._Program.HasLoadedOrAssignedValue == false)))
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._Program.Entity = null;
+						this._Organization.Entity = null;
 						previousValue.MemberTags.Remove(this);
 					}
 
-					this._Program.Entity = value;
+					this._Organization.Entity = value;
 					if (value != null)
 					{
 						value.MemberTags.Add(this);
 						
-						this._ProgId = value.Id;
+						this._OrgId = value.OrganizationId;
 						
 					}
 
 					else
 					{
 						
-						this._ProgId = default(int?);
+						this._OrgId = default(int?);
 						
 					}
 
-					this.SendPropertyChanged("Program");
+					this.SendPropertyChanged("Organization");
 				}
 
 			}

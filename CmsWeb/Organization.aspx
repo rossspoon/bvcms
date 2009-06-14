@@ -180,6 +180,53 @@
                     </tr>
                 </table>
             </td>
+            <td id="ManageGroups" runat="server">
+                <table>
+                    <tr>
+                        <th colspan="2">
+                            Manage Groups
+                        </th>
+                    </tr>
+                    <tr>
+                        <th align="right">
+                            Change Active Group:
+                        </th>
+                        <td>
+                            <asp:DropDownList ID="Groups" runat="server"
+                            AutoPostBack="True" OnSelectedIndexChanged="Groups_SelectedIndexChanged" 
+                                DataSourceID="GroupData" DataTextField="Name" DataValueField="Id" 
+                                ondatabound="Groups_DataBound">
+                            </asp:DropDownList>
+                            &nbsp;
+                            <asp:LinkButton ID="DeleteGroup" runat="server" OnClick="DeleteGroup_Click">Delete Group</asp:LinkButton> |
+                            <asp:HyperLink ID="UpdateGroup" runat="server" CssClass="thickbox3" ToolTip='Update Group Members'>Group Members</asp:HyperLink>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align="right">
+                            New Group Name:
+                        </th>
+                        <td>
+                            <asp:TextBox ID="GroupName" runat="server" Width="225px"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="GroupNameValidator" runat="server" ErrorMessage="GroupName is Required"
+                                ControlToValidate="GroupName" ValidationGroup="GroupName"></asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align="right">
+                            &nbsp;
+                        </th>
+                        <td>
+                            <asp:LinkButton ID="MakeNewGroup" runat="server" 
+                                OnClick="MakeNewGroup_Click" 
+                                ValidationGroup="GroupName">Make New Group</asp:LinkButton>&nbsp;|
+                            <asp:LinkButton ID="RenameGroup" runat="server" 
+                                OnClick="RenameGroup_Click" 
+                                ValidationGroup="GroupName">Rename Group</asp:LinkButton>
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
     <table>
@@ -209,6 +256,9 @@
         </ul>
         <div id="Members-tab" class="ui-tabs-hide">
             <uc1:ExportToolBar ID="ExportToolBar1" runat="server" />
+            <asp:DropDownList ID="GroupFilter" runat="server" DataSourceID="GroupData2" DataTextField="Name" DataValueField="Id"
+                AutoPostBack="True" OnSelectedIndexChanged="Group_SelectedIndexChanged">
+            </asp:DropDownList>
             <uc2:MemberGrid ID="MemberGrid1" runat="server" />
         </div>
         <div id="Inactive-tab" class="ui-tabs-hide">
@@ -518,4 +568,18 @@
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_AttendClassificationId" runat="server" SelectMethod="AttendanceClassifications"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="GroupData" runat="server" 
+        SelectMethod="FetchMemberGroups" 
+        TypeName="CMSPresenter.OrganizationController">
+        <SelectParameters>
+            <asp:QueryStringParameter Name="oid" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="GroupData2" runat="server" 
+        SelectMethod="FetchMemberGroups2" 
+        TypeName="CMSPresenter.OrganizationController">
+        <SelectParameters>
+            <asp:QueryStringParameter Name="oid" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
 </asp:Content>

@@ -113,29 +113,29 @@
                     <table>
                         <tr>
                             <th colspan="2">
-                                Manage Organization Tags
+                                Manage Divisions
                             </th>
                         </tr>
                         <tr>
                             <th align="right">
-                                Change Active Tag:
+                                Change Active Division:
                             </th>
                             <td>
                                 <asp:DropDownList ID="Tags" runat="server" DataTextField="Text" DataSourceID="OrgTagData2"
                                     DataValueField="Value" AutoPostBack="True" OnSelectedIndexChanged="Tags_SelectedIndexChanged">
                                 </asp:DropDownList>
                                 &nbsp;
-                                <asp:LinkButton ID="DeleteTag" runat="server" OnClick="DeleteTag_Click">Delete Tag</asp:LinkButton><br />
+                                <asp:LinkButton ID="DeleteTag" runat="server" OnClick="DeleteTag_Click">Delete Division</asp:LinkButton><br />
 								<asp:Label ID="progdivid" runat="server"></asp:Label>
                             </td>
                         </tr>
                         <tr>
                             <th align="right">
-                                New Tag Name:
+                                New Division Name:
                             </th>
                             <td>
                                 <asp:TextBox ID="TagName" runat="server" Width="225px"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="TagNameValidator" runat="server" ErrorMessage="TagName is Required"
+                                <asp:RequiredFieldValidator ID="TagNameValidator" runat="server" ErrorMessage="DivName is Required"
                                     ControlToValidate="TagName" ValidationGroup="TagName"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
@@ -145,8 +145,8 @@
                             </th>
                             <td>
                                 <asp:LinkButton ID="MakeNewTag" runat="server" OnClick="MakeNewTag_Click" ValidationGroup="TagName">Make New 
-        Tag</asp:LinkButton>&nbsp;|
-                                <asp:LinkButton ID="RenameTag" runat="server" OnClick="RenameTag_Click" ValidationGroup="TagName">Rename Tag</asp:LinkButton>
+        Division</asp:LinkButton>&nbsp;|
+                                <asp:LinkButton ID="RenameTag" runat="server" OnClick="RenameTag_Click" ValidationGroup="TagName">Rename Division</asp:LinkButton>
                             </td>
                         </tr>
                     </table>

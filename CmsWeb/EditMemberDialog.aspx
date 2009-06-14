@@ -22,17 +22,25 @@
                 </td>
             </tr>
             <tr>
+            <td>Attendance:</td>
+                <td colspan="2"> 
+                    <asp:HyperLink ID="AttendString" runat="server" style="font-family: Courier New"></asp:HyperLink>
+                </td>
+            </tr>
+            <tr>
             <td>Member Type:</td>
                 <td> 
                     <cc1:DisplayOrEditDropDown ID="MemberTypeId" BindingMode="TwoWay" BindingSource="OrgMember"
                         DataSourceID="MemberTypeData" DataTextField="Value" DataValueField="Id" runat="server">
                     </cc1:DisplayOrEditDropDown>
                 </td>
-            </tr>
-            <tr>
-            <td>Attendance:</td>
-                <td> 
-                    <asp:HyperLink ID="AttendString" runat="server" style="font-family: Courier New"></asp:HyperLink>
+                <td valign="top" rowspan="5">
+                Groups
+                    <asp:CheckBoxList ID="Groups" runat="server" DataSourceID="ObjectDataSource1" 
+                        DataTextField="Name" DataValueField="Id" AutoPostBack="True" 
+                        onselectedindexchanged="Groups_SelectedIndexChanged" 
+                        ondatabound="Groups_DataBound">
+                    </asp:CheckBoxList>
                 </td>
             </tr>
             <tr>
@@ -52,7 +60,6 @@
             <tr>
             <td>VIP Week:</td>
                 <td>
-                    
                     <cc1:DisplayOrEditCheckbox ID="VipWeek1" Text="1" BindingSource="OrgMember" runat="server" />
                     <cc1:DisplayOrEditCheckbox ID="VipWeek2" Text="2" BindingSource="OrgMember" runat="server" />
                     <cc1:DisplayOrEditCheckbox ID="VipWeek3" Text="3" BindingSource="OrgMember" runat="server" />
@@ -76,6 +83,12 @@
         </table>
         <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes2"
             TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="FetchMemberGroups"
+            TypeName="CMSPresenter.OrganizationController">
+            <SelectParameters>
+                <asp:QueryStringParameter Name="oid" QueryStringField="oid" Type="Int32" />
+            </SelectParameters>
+        </asp:ObjectDataSource>
     </div>
     </form>
 </body>

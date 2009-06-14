@@ -22,6 +22,11 @@ namespace CMSPresenter
         public string NameParent2 { get; set; }
         public string VisitorType { get; set; }
     }
+    public class GroupInfo
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
     [DataObject]
     public class OrganizationController
     {
@@ -30,11 +35,12 @@ namespace CMSPresenter
         private int[] ChildSecurityRollSheets = new int[] { 4, 5, 6, 7 };
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == OrganizationId
+                    where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId == 0
                     where (Active && om.MemberTypeId != inactive)
                         || (!Active && om.MemberTypeId == inactive)
                     select om;
@@ -59,7 +65,7 @@ namespace CMSPresenter
 
             return q2;
         }
-        public int Count(int OrganizationId, bool Active, string sortExpression, int maximumRows, int startRowIndex)
+        public int Count(int OrganizationId, bool Active, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             return _count;
         }
@@ -123,7 +129,7 @@ namespace CMSPresenter
                        LastMeetingDate = Util.FormatDate(o.LastMeetingDate),
                        LeaderId = o.LeaderId,
                        LeaderName = o.LeaderName,
-                       MemberCount = o.OrganizationMembers.Count(om => 
+                       MemberCount = o.OrganizationMembers.Count(om =>
                            om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive),
                        OrganizationId = o.OrganizationId,
                        OrganizationName = o.OrganizationName,
@@ -518,6 +524,22 @@ namespace CMSPresenter
             }
             sb2.Append("</table>\n");
             notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person, "Attendance emails sent", sb2.ToString());
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<MemberTag> FetchMemberGroups(int oid)
+        {
+            var q = from g in DbUtil.Db.MemberTags
+                    where g.OrgId == oid
+                    orderby g.Name
+                    select g;
+            return q;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<MemberTag> FetchMemberGroups2(int oid)
+        {
+            var list = FetchMemberGroups(oid).ToList();
+            list.Insert(0, new MemberTag { Id = 0, Name = "(not specified)" });
+            return list;
         }
     }
 }

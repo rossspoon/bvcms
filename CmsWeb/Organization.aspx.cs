@@ -13,6 +13,9 @@ using System.Web.Configuration;
 using System.Web;
 using System.Collections;
 using CmsData;
+using System.Text;
+using System.Runtime.Serialization.Json;
+using System.IO;
 
 namespace CMSWeb
 {
@@ -51,6 +54,8 @@ namespace CMSWeb
                 TagString.DataSource = organization.TagPickList();
                 TagString.DataBindList();
             }
+            if (Util.CurrentOrgId != organization.OrganizationId)
+                Util.CurrentGroupId = 0;
             Util.CurrentOrgId = organization.OrganizationId;
             Session["ActiveOrganization"] = organization.OrganizationName;
             EditUpdateButton1.DataBind();
@@ -67,6 +72,7 @@ namespace CMSWeb
             RollsheetRpt.Visible = User.IsInRole("Attendance");
             NewMeetingLink.Visible = User.IsInRole("Attendance");
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
+            ManageGroups.Visible = User.IsInRole("ManageGroups");
         }
 
         void MemberGrid_RebindMemberGrids(object sender, EventArgs e)
@@ -212,7 +218,89 @@ namespace CMSWeb
                 return;
             }
             Util.CurrentOrgId = 0;
+            Util.CurrentGroupId = 0;
             Response.EndShowMessage("Organization Deleted", "/", "click here");
+        }
+
+        protected void DeleteGroup_Click(object sender, EventArgs e)
+        {
+            var group = DbUtil.Db.MemberTags.Single(g => g.Id == Groups.SelectedValue.ToInt());
+            DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
+            DbUtil.Db.MemberTags.DeleteOnSubmit(group);
+            DbUtil.Db.SubmitChanges();
+            Groups.DataBind();
+            MemberGrid1.DataBind();
+            GroupFilter.DataBind();
+        }
+
+        protected void MakeNewGroup_Click(object sender, EventArgs e)
+        {
+            var Db = DbUtil.Db;
+            var group = Db.MemberTags.SingleOrDefault(g => 
+                g.Name == GroupName.Text && g.OrgId == organization.OrganizationId);
+            if (group == null) // must be a new group
+            {
+                group = new MemberTag 
+                { 
+                    Name = GroupName.Text, 
+                    OrgId = organization.OrganizationId 
+                };
+                Db.MemberTags.InsertOnSubmit(group);
+                Db.SubmitChanges();
+                Groups.DataBind();
+                GroupFilter.DataBind();
+            }
+        }
+
+        protected void RenameGroup_Click(object sender, EventArgs e)
+        {
+            var group = DbUtil.Db.MemberTags.Single(d => d.Id == Groups.SelectedValue.ToInt());
+            group.Name = GroupName.Text;
+            DbUtil.Db.SubmitChanges();
+            Groups.DataBind();
+            GroupFilter.DataBind();
+        }
+
+        [System.Web.Services.WebMethod]
+        public static string ToggleTag(int OrgId, int PeopleId, int groupid, string controlid)
+        {
+            if (groupid == 0)
+                return "";
+            var Db = DbUtil.Db;
+            var member = Db.OrganizationMembers.SingleOrDefault(m => 
+                m.PeopleId == PeopleId && m.OrganizationId == OrgId);
+            var r = new ToggleTagReturn { ControlId = controlid };
+            r.HasTag = member.ToggleTag(groupid);
+            Db.SubmitChanges();
+            var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
+            var ms = new MemoryStream();
+            jss.WriteObject(ms, r);
+            return Encoding.Default.GetString(ms.ToArray());
+        }
+
+        protected void Group_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Util.CurrentGroupId = GroupFilter.SelectedValue.ToInt();
+            MemberGrid1.GroupId = Util.CurrentGroupId;
+            MemberGrid1.DataBind();
+        }
+        protected void Groups_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateGroupsUrl();
+        }
+        private void UpdateGroupsUrl()
+        {
+            UpdateGroup.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&group={1}&TB_iframe=true&height=450&width=600"
+                            .Fmt(organization.OrganizationId, Groups.SelectedValue);
+            if (Groups.SelectedItem != null)
+                UpdateGroup.ToolTip = "Update Group Members: " + Groups.SelectedItem.Text;
+            else
+                UpdateGroup.Enabled = false;
+        }
+
+        protected void Groups_DataBound(object sender, EventArgs e)
+        {
+            UpdateGroupsUrl();
         }
     }
 }

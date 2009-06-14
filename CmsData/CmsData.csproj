@@ -91,6 +91,7 @@
     <Compile Include="Generated\Functions\Contributor.cs" />
     <Compile Include="Generated\Functions\CsvTable.cs" />
     <Compile Include="Generated\Functions\MembersAsOf.cs" />
+    <Compile Include="Generated\Functions\QBClause.cs" />
     <Compile Include="Generated\Functions\TaggedPerson.cs" />
     <Compile Include="Generated\FundStatusCode.cs" />
     <Compile Include="Generated\JoinType.cs" />
