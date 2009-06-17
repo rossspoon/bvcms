@@ -215,6 +215,8 @@
             </table>
         </LayoutTemplate>
     </asp:ListView>
+    <asp:HyperLink ID="rollsheetlink" Target="_blank" runat="server">Meeting Rollsheet of Attendees</asp:HyperLink>
+    <br />
     <asp:ObjectDataSource ID="AttendData" runat="server" SelectCountMethod="Count"
         SelectMethod="Attendees" TypeName="CMSPresenter.AttendController"
         OnSelected="AttendData_Selected">

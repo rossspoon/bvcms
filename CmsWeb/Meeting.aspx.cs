@@ -68,6 +68,7 @@ namespace CMSWeb
 			MeetingAttendanceLink.NavigateUrl = "~/Report/MeetingAttendanceRpt.aspx?mtgid={0}".Fmt(meeting.MeetingId);
 			MeetingSummaryLink.NavigateUrl = "~/Report/MeetingSummaryRpt.aspx?mtgid={0}".Fmt(meeting.MeetingId);
 			TextBox1.Focus();
+            rollsheetlink.NavigateUrl = "~/Report/Rollsheet.aspx?meetingid={0}".Fmt(meeting.MeetingId);
 		}
 
 		protected void UpdateFieldVisibility()

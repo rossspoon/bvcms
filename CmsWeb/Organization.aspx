@@ -55,16 +55,20 @@
         }
 
         function ViewRollsheet2() {
-            Page_ClientValidate();
-            if (Page_IsValid) {
-                var id = '<%=Request.QueryString["id"].ToString()%>';
-                var d = $get('<%=MeetingDate.ClientID %>').value;
-                var t = $get('<%=MeetingTime.ClientID %>').value;
-                var args = "?org=" + id + "&dt=" + d + " " + t;
-                var newWindowUrl = "Report/Rollsheet.aspx" + args
-                window.open(newWindowUrl);
+            var re = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
+            var d = $get('<%=MeetingDate.ClientID %>').value;
+            var t = $get('<%=MeetingTime.ClientID %>').value;
+            if (!re.test(t)) {
+                alert('enter valid time'); 
+                return;
             }
-            return Page_IsValid;
+            if (!d) {
+                alert('enter valid date');
+                return;
+            }
+            var args = "?org=curr&dt=" + d + " " + t;
+            var newWindowUrl = "Report/Rollsheet.aspx" + args
+            window.open(newWindowUrl);
         }
 
         function OpenNewMeeting() {
@@ -234,9 +238,6 @@
             <td style="margin-bottom: 20px">
                 <asp:HyperLink ID="RecentAttendRpt" runat="server" Target="_blank">Recent Attendance Report</asp:HyperLink>&nbsp
                 | &nbsp
-                <asp:LinkButton ID="RollsheetRpt" runat="server" OnClientClick="OpenRollsheet();return false;"
-                    Text="Create Roll Sheet" />
-                &nbsp;|
                 <cc1:LinkButtonConfirm ID="CloneOrg1" OnClick="CloneOrg_Click" Confirm="This will make a copy of the org. Are you sure?"
                     runat="server">Copy this Organization</cc1:LinkButtonConfirm>
             </td>
@@ -438,9 +439,6 @@
                             <asp:TextBox ID="MeetingDate" runat="server"></asp:TextBox>
                             <cc2:CalendarExtender ID="MeetingDateExtender" runat="server" TargetControlID="MeetingDate">
                             </cc2:CalendarExtender>
-                            <asp:RequiredFieldValidator ID="MeetingDateRequiredFieldValidator" runat="server"
-                                ErrorMessage="Please enter a Meeting Date." ControlToValidate="MeetingDate" SetFocusOnError="True"
-                                ValidationGroup="RollSheetValidatorGroup"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -449,12 +447,6 @@
                         </th>
                         <td>
                             <asp:TextBox ID="MeetingTime" runat="server" ToolTip="Time in Format hh:mm am or pm"></asp:TextBox>
-                            <asp:RegularExpressionValidator ID="MeetingTimeValidator" runat="server" ErrorMessage="Invalid time: Use format hh:mm am or pm."
-                                ControlToValidate="MeetingTime" ValidationExpression="^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$"
-                                SetFocusOnError="True" ValidationGroup="RollSheetValidatorGroup"></asp:RegularExpressionValidator>
-                            <asp:RequiredFieldValidator ID="MeetingTimeRequiredFieldValidator" runat="server"
-                                ErrorMessage="Please enter a meeting time." ControlToValidate="MeetingTime" SetFocusOnError="True"
-                                ValidationGroup="RollSheetValidatorGroup"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -489,11 +481,10 @@
                             Meeting Date:
                         </th>
                         <td>
-                            <asp:TextBox ID="NewMeetingDate" runat="server"></asp:TextBox><asp:RequiredFieldValidator
-                                ID="NewMeetingDateRequiredFieldValidator" runat="server" ErrorMessage="Please enter a Meeting Date."
-                                ControlToValidate="NewMeetingDate" SetFocusOnError="True" ValidationGroup="NewMeetingValidatorGroup"></asp:RequiredFieldValidator><cc2:CalendarExtender
+                            <asp:TextBox ID="NewMeetingDate" runat="server"></asp:TextBox>
+                            <cc2:CalendarExtender
                                     ID="NewMeetingDateExtender" runat="server" TargetControlID="NewMeetingDate">
-                                </cc2:CalendarExtender>
+                            </cc2:CalendarExtender>
                         </td>
                     </tr>
                     <tr>
@@ -501,9 +492,8 @@
                             Meeting Time:
                         </th>
                         <td>
-                            <asp:TextBox ID="NewMeetingTime" runat="server" ToolTip="Time in Format hh:mm am or pm"></asp:TextBox><asp:RequiredFieldValidator
-                                ID="NewMeetingTimeRequiredFieldValidator" runat="server" ErrorMessage="Please enter a meeting time."
-                                ControlToValidate="NewMeetingTime" SetFocusOnError="True" ValidationGroup="NewMeetingValidatorGroup"></asp:RequiredFieldValidator><asp:RegularExpressionValidator
+                            <asp:TextBox ID="NewMeetingTime" runat="server" ToolTip="Time in Format hh:mm am or pm"></asp:TextBox>
+                            <asp:RegularExpressionValidator
                                     ID="NewMeetingTimeValidator" runat="server" ErrorMessage="Invalid time: Use format hh:mm am or pm."
                                     ControlToValidate="NewMeetingTime" ValidationExpression="^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$"
                                     SetFocusOnError="True" ValidationGroup="NewMeetingValidatorGroup"></asp:RegularExpressionValidator>

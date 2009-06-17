@@ -28,6 +28,7 @@ namespace CMSWeb
             base.OnInit(e);
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             ExportToolBar1.queryId = qb.QueryId;
+            ExportToolBar1.OrganizationContext = true;
             qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
             ExportToolBar2.queryId = qb.QueryId;
             qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
@@ -67,9 +68,9 @@ namespace CMSWeb
             MemberGrid2.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
             VisitorGrid1.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
             MemberGrid1.OrgId = organization.OrganizationId;
+            MemberGrid1.GroupId = Util.CurrentGroupId;
             MemberGrid2.OrgId = organization.OrganizationId;
             CloneOrg1.Visible = User.IsInRole("Edit");
-            RollsheetRpt.Visible = User.IsInRole("Attendance");
             NewMeetingLink.Visible = User.IsInRole("Attendance");
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
             ManageGroups.Visible = User.IsInRole("ManageGroups");
@@ -243,12 +244,13 @@ namespace CMSWeb
                 group = new MemberTag 
                 { 
                     Name = GroupName.Text, 
-                    OrgId = organization.OrganizationId 
+                    OrgId = organization.OrganizationId
                 };
                 Db.MemberTags.InsertOnSubmit(group);
                 Db.SubmitChanges();
                 Groups.DataBind();
                 GroupFilter.DataBind();
+                UpdateGroupsUrl();
             }
         }
 
@@ -262,7 +264,7 @@ namespace CMSWeb
         }
 
         [System.Web.Services.WebMethod]
-        public static string ToggleTag(int OrgId, int PeopleId, int groupid, string controlid)
+        public static string ToggleGroup(int OrgId, int PeopleId, int groupid, string controlid)
         {
             if (groupid == 0)
                 return "";
@@ -270,7 +272,7 @@ namespace CMSWeb
             var member = Db.OrganizationMembers.SingleOrDefault(m => 
                 m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             var r = new ToggleTagReturn { ControlId = controlid };
-            r.HasTag = member.ToggleTag(groupid);
+            r.HasTag = member.ToggleGroup(groupid);
             Db.SubmitChanges();
             var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
             var ms = new MemoryStream();
@@ -293,7 +295,10 @@ namespace CMSWeb
             UpdateGroup.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&group={1}&TB_iframe=true&height=450&width=600"
                             .Fmt(organization.OrganizationId, Groups.SelectedValue);
             if (Groups.SelectedItem != null)
+            {
                 UpdateGroup.ToolTip = "Update Group Members: " + Groups.SelectedItem.Text;
+                UpdateGroup.Enabled = true;
+            }
             else
                 UpdateGroup.Enabled = false;
         }

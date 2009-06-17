@@ -104,8 +104,7 @@
                     </table>
                 </LayoutTemplate>
             </asp:ListView>
-            <asp:CustomValidator ID="CheckNewUser" runat="server" ErrorMessage="User already exists"></asp:CustomValidator>
-            <asp:Label ID="LabelInsertMessage" runat="server"></asp:Label>
+    <asp:HyperLink ID="HyperLink3" NavigateUrl="~/Admin/Users_edit.aspx" runat="server">New User</asp:HyperLink>
     <asp:ObjectDataSource ID="ObjectDataSourceMembershipUser" runat="server"
         SelectMethod="GetUsers" TypeName="UserController"
         SortParameterName="sortExpression"

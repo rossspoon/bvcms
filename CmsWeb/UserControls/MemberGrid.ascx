@@ -2,8 +2,8 @@
     Inherits="CMSWeb.MemberGrid" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
-<asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" ToolTip='Add Member'>Add Member(s)</asp:HyperLink>
-<asp:HyperLink ID="UpdateMembers" runat="server" CssClass="thickbox3" ToolTip='Batch Update Members'>Update Members</asp:HyperLink>
+Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" ToolTip='Add Organization Member'>Add</asp:HyperLink>
+<asp:HyperLink ID="UpdateMembers" runat="server" CssClass="thickbox3" ToolTip='Batch Update Members'>Update</asp:HyperLink>
 <div style="clear: both">
 </div>
 <asp:UpdatePanel ID="MemberPanel" runat="server" UpdateMode="Always">

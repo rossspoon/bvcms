@@ -60,10 +60,10 @@
 #comments li.response {clear: both; border-top: 1px solid #999;
   list-style: none;}
 #comments li.response h5 {margin-bottom: 1em;}
-#comments li.response div.text {margin-left: 5em;}
+#comments li.response div.text {margin-left: 10em;}
 #comments ul.meta {color: #999; padding-top: 0.55em; font-style: normal;}
 #comments ul.meta a {color: #669;}
-#comments ul.meta li {margin: 0 0 0 2.33em; padding: 0;}
+#comments ul.meta li {margin: 0 0 0 1em; padding: 0;}
 #comments ul.meta li.cn {float: left; width: 1.5em ;margin: 0; padding-right: 0.5em;
   font-size: 1em; text-align: right;}
 #comments ul.meta li.ci {font-size: 1em; margin: 0;}

@@ -383,6 +383,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\StepClassController.cs" />
     <Compile Include="Controllers\VolOpportunityController.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
@@ -412,6 +413,7 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VolunteerModel.cs" />
     <Compile Include="Models\QueryModel.cs" />
     <Compile Include="Models\PeopleInfo.cs" />
@@ -548,9 +550,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="QueryBuilder.aspx.designer.cs">
-      <DependentUpon>QueryBuilder.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\BFCAvgWeeklyAttendanceRpt.aspx.cs">
       <DependentUpon>BFCAvgWeeklyAttendanceRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -656,13 +655,6 @@
     <Compile Include="Report\Rollsheet.aspx.designer.cs">
       <DependentUpon>Rollsheet.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\RollsheetRpt.aspx.cs">
-      <DependentUpon>RollsheetRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\RollsheetRpt.aspx.designer.cs">
-      <DependentUpon>RollsheetRpt.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\RosterReport.aspx.cs">
       <DependentUpon>RosterReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -711,9 +703,6 @@
     <Compile Include="SavedQueries.aspx.designer.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
     </Compile>
-    <Compile Include="QueryBuilderView.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -740,10 +729,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryBuilder.aspx.cs">
-      <DependentUpon>QueryBuilder.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="SavedQuery.aspx.cs">
       <DependentUpon>SavedQuery.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -865,7 +850,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Organization.aspx" />
-    <Content Include="QueryBuilder.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Audit.aspx" />
@@ -1544,8 +1528,9 @@
     <Content Include="Report\PastAttendeeRpt.aspx" />
     <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\Rollsheet.aspx" />
-    <Content Include="Report\RollsheetRpt.aspx" />
     <Content Include="Report\RosterReport.aspx" />
+    <Content Include="Views\StepClass\Step1.aspx" />
+    <Content Include="Views\StepClass\Step1Confirm.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />
     <Content Include="Views\VolOpportunity\Index.aspx" />
     <Content Include="Views\Program\Index.aspx" />

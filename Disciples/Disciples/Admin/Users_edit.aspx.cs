@@ -64,10 +64,11 @@ public partial class admin_user_edit : System.Web.UI.Page
 
     public void SaveClick(object sender, EventArgs e)
     {
-        if (isEditMode)
-            UpdateUser(sender, e);
-        else
+        if (!isEditMode)
             AddUser(sender, e);
+        UpdateUser(sender, e);
+        if (!isEditMode)
+            Response.Redirect("~/Admin/Users_edit.aspx?username=" + mu.Username);
     }
     public void DeleteClick(object sender, EventArgs e)
     {
@@ -128,7 +129,7 @@ public partial class admin_user_edit : System.Web.UI.Page
     }
     public void UpdateUser(object sender, EventArgs e)
     {
-        if (!Page.IsValid)
+        if (!Page.IsValid || mu == null)
             return;
         try
         {
@@ -171,11 +172,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             {
                 mu.PasswordQuestion = "what is 1+1?";
                 mu.PasswordAnswer = "2";
-                UpdateProfile();
-                UpdateRoleMembership();
             }
-            SaveButton.Enabled = false;
-            Response.Redirect("Users.aspx");
         }
         catch (Exception ex)
         {

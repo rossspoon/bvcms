@@ -1,17 +1,18 @@
-using System;
-using System.Web.Services;
+﻿using System;
 using System.Collections.Generic;
-using DiscData;
 using System.Linq;
+using System.Web;
+using System.Web.Services;
+using DiscData;
 
 namespace BellevueTeachers
 {
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    public class WebService : System.Web.Services.WebService
+    public class WebService1 : System.Web.Services.WebService
     {
 
-        public WebService()
+        public WebService1()
         {
         }
 
@@ -64,6 +65,4 @@ namespace BellevueTeachers
         }
 
     }
-
-
 }

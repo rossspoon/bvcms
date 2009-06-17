@@ -32,6 +32,12 @@ namespace CMSPresenter
         public int? Age { get; set; }
         public string MemberStatus { get; set; }
         public bool HasTag { get; set; }
+        internal IEnumerable<string> _Groups { get; set; }
+        public string Groups
+        {
+            get { return string.Join(",", _Groups.ToArray()); }
+        }
+        
         public string ToolTip
         {
             get
@@ -93,10 +99,8 @@ namespace CMSPresenter
         {
             var q0 = SearchMembers(memtype, tag, inactive, orgid);
             count = q0.Count();
-            var q1 = from om in q0
-                     select om.Person;
-            var q = FetchPeopleList(q1);
-            return q.Skip(startRowIndex).Take(maximumRows);
+            var q1 = q0.OrderBy(m => m.Person.Name2).Skip(startRowIndex).Take(maximumRows);
+            return FetchMemberList(q1);
         }
         public int Count(int startRowIndex, int maximumRows, string sortExpression,
                 int memtype, int tag, DateTime? inactive, int orgid)
@@ -114,6 +118,30 @@ namespace CMSPresenter
                 q0 = q0.Where(om => om.InactiveDate == inactive);
             return q0;
         }
+        public IQueryable<PersonDialogSearchInfo> FetchMemberList(IQueryable<OrganizationMember> query)
+        {
+            var TagName = Util.SessionId;
+            var TagOwner = Util.UserPeopleId;
+            var q = from m in query
+                    select new PersonDialogSearchInfo
+                    {
+                        PeopleId = m.PeopleId,
+                        Name = m.Person.Name,
+                        LastName = m.Person.LastName,
+                        JoinDate = m.Person.JoinDate,
+                        BirthDate = m.Person.BirthMonth + "/" + m.Person.BirthDay + "/" + m.Person.BirthYear,
+                        Address = m.Person.PrimaryAddress,
+                        CityStateZip = m.Person.PrimaryCity + ", " + m.Person.PrimaryState + " " + m.Person.PrimaryZip.Substring(0, 5),
+                        HomePhone = m.Person.HomePhone,
+                        CellPhone = m.Person.CellPhone,
+                        WorkPhone = m.Person.WorkPhone,
+                        Age = m.Person.Age,
+                        MemberStatus = m.Person.MemberStatus.Description,
+                        _Groups = m.OrgMemMemTags.Select(mt => mt.MemberTag.Name),
+                    };
+            return q;
+        }
+
         public IQueryable<PersonDialogSearchInfo> FetchPeopleList(IQueryable<Person> query)
         {
             var TagName = Util.SessionId;

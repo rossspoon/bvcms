@@ -88,6 +88,9 @@ namespace CMSWeb
                 case "Attend":
                     d = InvolvementController.AttendList(qid.Value, maxExcelRows);
                     break;
+                case "Organization":
+                    d = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
+                    break;
             }
             var dg = new DataGrid();
             dg.EnableViewState = false;

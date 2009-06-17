@@ -46,6 +46,7 @@ namespace CMSWeb
                 .Fmt(OrgMember.PeopleId, OrgMember.OrganizationId);
             AttendString.Text = OrgMember.AttendStr;
             AttendString.Target = "_blank";
+            Groups.Visible = EditUpdateButton1.Editing == false;
         }
         protected void EditUpdateButton1_Click(object sender, EventArgs e)
         {
@@ -94,20 +95,33 @@ namespace CMSWeb
                 li.Selected = OrgMember.OrgMemMemTags.Any(mt => mt.MemberTagId == li.Value.ToInt());
         }
 
-        protected void Groups_SelectedIndexChanged(object sender, EventArgs e)
+        protected void UpdateGroups_Click(object sender, EventArgs e)
         {
-            var g = OrgMember.OrgMemMemTags.SingleOrDefault(mt => mt.MemberTagId == Groups.SelectedValue.ToInt());
-            if (g == null)
+            var mlist = OrgMember.OrgMemMemTags.ToList();
+            var clist = new List<int>();
+            for (var i = 0; i < Groups.Items.Count; i++)
             {
-                g = new OrgMemMemTag { MemberTagId = Groups.SelectedValue.ToInt() };
-                OrgMember.OrgMemMemTags.Add(g);
+                var item = Groups.Items[i] as ListItem;
+                if (item.Selected)
+                    clist.Add(item.Value.ToInt());
             }
-            else
+            var deletes = mlist.Where(g => !clist.Contains(g.MemberTagId));
+            DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(deletes);
+            var mlist2 = mlist.Select(m => m.MemberTagId).ToList();
+            var adds = clist.Where(g => !mlist2.Contains(g));
+            foreach (var i in adds)
             {
-                DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(g);
-                OrgMember.OrgMemMemTags.Remove(g);
+                var mt = new OrgMemMemTag
+                {
+                    MemberTagId = i,
+                    PeopleId = OrgMember.PeopleId,
+                    OrgId = OrgMember.OrganizationId
+                };
+                DbUtil.Db.OrgMemMemTags.InsertOnSubmit(mt);
             }
             DbUtil.Db.SubmitChanges();
+            this.Page.ClientScript.RegisterStartupScript(typeof(EditMemberDialog),
+              "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }
     }
 }

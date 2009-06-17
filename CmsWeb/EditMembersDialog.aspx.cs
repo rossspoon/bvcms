@@ -21,33 +21,35 @@ namespace CMSWeb
     public partial class EditMembersDialog : System.Web.UI.Page
     {
         public int? OrgId;
-        private bool GroupMode = false;
         public int? GroupId = 0;
         private string from;
         private List<int> members;
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            var dp = ListView1.FindControl("pager") as DataPager;
-            if (dp != null)
-                dp.PageSize = Util.GetPageSizeCookie();
+            base.OnInit(e);
             OrgId = Page.QueryString<int?>("id");
             GroupId = Page.QueryString<int?>("group");
-            from = Page.QueryString<string>("from");
-            GroupMode = GroupId.HasValue;
-            EditSection.Visible = !GroupMode;
-            if (!OrgId.HasValue || (!from.HasValue() && !GroupMode))
-                throw new Exception("Cannot visit EditMembersDialog this way");
-            if (!IsPostBack)
-            {
-                MemberType.SelectedValue = "220";
-                PersonSearchDialogController.ResetSearchTags();
-            }
-            if (GroupMode)
+            if (GroupId.HasValue)
             {
                 var q = from m in DbUtil.Db.OrgMemMemTags
                         where m.OrgId == OrgId && m.MemberTagId == GroupId
                         select m.PeopleId;
                 members = q.ToList();
+            }
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            var dp = ListView1.FindControl("pager") as DataPager;
+            if (dp != null)
+                dp.PageSize = Util.GetPageSizeCookie();
+            from = Page.QueryString<string>("from");
+            EditSection.Visible = !GroupId.HasValue;
+            if (!OrgId.HasValue || (!from.HasValue() && EditSection.Visible))
+                throw new Exception("Cannot visit EditMembersDialog this way");
+            if (!IsPostBack)
+            {
+                MemberType.SelectedValue = "220";
+                PersonSearchDialogController.ResetSearchTags();
             }
         }
 
@@ -59,7 +61,7 @@ namespace CMSWeb
                 var Db = DbUtil.Db;
                 var m = Db.OrganizationMembers.Single(om => om.OrganizationId == OrgId && om.PeopleId == PeopleId);
                 var r = new ToggleTagReturn { ControlId = controlid };
-                r.HasTag = m.ToggleTag(GroupId);
+                r.HasTag = m.ToggleGroup(GroupId);
                 Db.SubmitChanges();
                 return SearchDialog.JsonReturnStr(r);
             }
@@ -127,7 +129,7 @@ namespace CMSWeb
 
         protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
-            if (!GroupMode)
+            if (!GroupId.HasValue)
                 return;
             if (e.Item.ItemType == ListViewItemType.DataItem)
             {

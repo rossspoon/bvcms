@@ -65,7 +65,7 @@ namespace CMSWeb.Reports
                 StartPageSet(o);
                 var qB = DbUtil.Db.LoadQueryById(qid.Value);
                 var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        join m in ctl.FetchOrgMembers(o.OrgId) on p.PeopleId equals m.PeopleId into j
+                        join m in ctl.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
                         from m in j.DefaultIfEmpty()
                         orderby p.Name2
                         select new
@@ -85,7 +85,7 @@ namespace CMSWeb.Reports
             else
                 foreach (var o in list(org, div, schedule))
                 {
-                    var q = from m in ctl.FetchOrgMembers(o.OrgId)
+                    var q = from m in ctl.FetchOrgMembers(o.OrgId, null)
                             let vbapp = DbUtil.Db.VBSApps.Where(v => v.PeopleId == m.PeopleId).OrderByDescending(v => v.Uploaded).FirstOrDefault()
                             orderby m.Name2
                             select new

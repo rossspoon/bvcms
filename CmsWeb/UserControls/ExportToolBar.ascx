@@ -64,11 +64,6 @@
                     runat="server">
                     <asp:Image ID="Image19" ImageUrl="~/images/Excel.png" runat="server" />
                     Other Churches</asp:HyperLink></li>
-            <li>
-                <asp:HyperLink ID="ChoirLink" ToolTip="Labels for Choir Attendance"
-                    runat="server">
-                    <asp:Image ID="Image18" ImageUrl="~/images/tags.png" runat="server" />
-                    Choir Attendance Labels</asp:HyperLink></li>
         </ul>
     </li>
     <li class="headlink"><a href="#">
@@ -94,11 +89,19 @@
                     OnClick="AddContact_Click"><asp:Image ID="Image17" ImageUrl="~/images/Tag.png" runat="server" />
                     <asp:Label ID="Label1" runat="server">Add Contact</asp:Label></cc2:LinkButtonConfirm>
                 </li>
-            <li id="PurgeAllItem" runat="server">
-                <cc2:LinkButtonConfirm ID="PurgeAll" runat="server" Confirm="Are you sure you want to purge all these?"
-                    OnClick="PurgeAll_Click">
-                    <asp:Label ID="Label2" runat="server">Purge All</asp:Label></cc2:LinkButtonConfirm>
-                </li>
+            <li>
+                <asp:HyperLink ID="ChoirLink" ToolTip="Labels for Choir Attendance"
+                    runat="server">
+                    <asp:Image ID="Image18" ImageUrl="~/images/tags.png" runat="server" />
+                    Choir Labels</asp:HyperLink></li>
+            <li id="RollsheetItem" runat="server">
+                <a title="Rollsheet Report" href="#" onclick="OpenRollsheet();return false;">
+                    <asp:Image ID="Image20" ImageUrl="~/images/tags.png" runat="server" />Rollsheet Report</a></li>
+            <li id="MemberItem" runat="server">
+                <asp:HyperLink ID="MemberLink" ToolTip="Includes Org Member info"
+                    runat="server">
+                    <asp:Image ID="Image21" ImageUrl="~/images/Excel.png" runat="server" />
+                    Member Export</asp:HyperLink></li>
         </ul>
     </li>
 </ul>

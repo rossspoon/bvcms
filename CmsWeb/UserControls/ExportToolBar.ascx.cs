@@ -29,6 +29,7 @@ namespace CMSWeb
         public int queryId { get; set; }
         private QueryController QueryControl = new QueryController();
         public bool Single { get; set; }
+        public bool OrganizationContext { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -43,9 +44,11 @@ namespace CMSWeb
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Children&");
             ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Church&");
+            MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Organization&");
             TagAddLabel.Text = Single ? "Add" : "Add All";
             TagRemoveLabel.Text = Single? "Remove" : "Remove All";
-            PurgeAllItem.Visible = Page.User.IsInRole("Admin");
+            RollsheetItem.Visible = OrganizationContext;
+            MemberItem.Visible = OrganizationContext;
         }
         private string GoTo(string function, string target)
         {

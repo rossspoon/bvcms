@@ -11,7 +11,7 @@ namespace PostPodcast
 {
     public partial class Form1 : Form
     {
-        BellevueTeachers.WebService ws = new BellevueTeachers.WebService();
+        WebSvc.WebService1 ws = new WebSvc.WebService1();
         private string key, code;
 
         public Form1()
@@ -33,8 +33,8 @@ namespace PostPodcast
         {
             getGuid();
             if (!IsDev)
-                ws.Url = "http://disciples.bellevue.org/Webservice.asmx";
-                //ws.Url = "http://localhost:53135/BellevueTeachers/Webservice.asmx";
+                ws.Url = "http://disciples.bellevue.org/Webservice1.asmx";
+                //ws.Url = "http://localhost:53135/BellevueTeachers/Webservice1.asmx";
 
             time[] ta = new time[] { 
                 new time(8,0), new time(9, 30),new time(11, 0),

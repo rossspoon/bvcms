@@ -9,7 +9,7 @@
                     <li class='response alt'>
                         <ul class="meta">
                             <li class="poster">
-                                <%= comment.Poster %></li>
+                                <%= comment.PosterName %></li>
                             <li class="date">
                                 <%= comment.DatePosted.ToString("ddd d MMM yyyy")%></li>
                             <li class="time">

@@ -36,7 +36,7 @@ namespace CMSWeb.Reports
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
-        private DateTime dt;
+        private DateTime? dt;
         private PdfContentByte dc;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -45,12 +45,18 @@ namespace CMSWeb.Reports
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var org = this.QueryString<int?>("org");
-            var qid = this.QueryString<int?>("queryid");
+            int? org = null;
+            int? group = null;
+            if (this.QueryString<string>("org") == "curr")
+            {
+                org = Util.CurrentOrgId;
+                group = Util.CurrentGroupId;
+            }
             var div = this.QueryString<int?>("div");
             var schedule = this.QueryString<int?>("schedule");
-            dt = this.QueryString<DateTime>("dt");
-            var tm = this.QueryString<string>("tm");
+            dt = this.QueryString<DateTime?>("dt");
+
+            var mid = this.QueryString<int?>("meetingid");
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
@@ -64,44 +70,34 @@ namespace CMSWeb.Reports
             var ctl = new RollsheetController();
             dc = w.DirectContent;
 
-            if (qid.HasValue)
+            CmsData.Meeting meeting = null;
+            if (mid.HasValue)
             {
-                var o = list(org, null, null).First();
+                meeting = DbUtil.Db.Meetings.Single(mt => mt.MeetingId == mid);
+                dt = meeting.MeetingDate;
+                org = meeting.OrganizationId;
+            }
+            foreach (var o in list(org, group, div, schedule))
+            {
                 var mct = StartPageSet(o);
-                var qB = DbUtil.Db.LoadQueryById(qid.Value);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        join m in ctl.FetchOrgMembers(o.OrgId) on p.PeopleId equals m.PeopleId into j
-                        from m in j.DefaultIfEmpty()
-                        orderby p.Name2
-                        select new
-                        {
-                            p.Name2,
-                            MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
-                            p.PeopleId,
-                        };
-                foreach (var i in q)
-                    AddRow(i.MembertypeCode, i.Name2, i.PeopleId, font);
-                if (t.Rows.Count > 1)
+
+                if (meeting != null)
+                    foreach (var a in meeting.Attends.Where(at => at.AttendanceFlag == true))
+                        AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, font);
+                else
+                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, group))
+                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, font);
+                if (!group.HasValue && meeting == null)
+                {
+                    foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
+                        AddRow(m.VisitorType, m.Name2, m.PeopleId, boldfont);
+                }
+                if (t.Rows.Count > 0)
                     mct.AddElement(t);
                 else
                     mct.AddElement(new Phrase("no data"));
                 doc.Add(mct);
             }
-            else
-                foreach (var o in list(org, div, schedule))
-                {
-                    var mct = StartPageSet(o);
-
-                    foreach (var m in ctl.FetchOrgMembers(o.OrgId))
-                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, font);
-                    foreach (var m in ctl.FetchVisitors(o.OrgId, dt))
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, boldfont);
-                    if (t.Rows.Count > 0)
-                        mct.AddElement(t);
-                    else
-                        mct.AddElement(new Phrase("no data"));
-                    doc.Add(mct);
-                }
             pageEvents.EndPageSet();
             doc.Close();
             Response.End();
@@ -149,7 +145,7 @@ namespace CMSWeb.Reports
             public string Teacher { get; set; }
             public string Location { get; set; }
         }
-        private IEnumerable<OrgInfo> list(int? orgid, int? divid, int? schedule)
+        private IEnumerable<OrgInfo> list(int? orgid, int? groupid, int? divid, int? schedule)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null

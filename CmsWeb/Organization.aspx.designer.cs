@@ -194,15 +194,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink RecentAttendRpt;
         
         /// <summary>
-        /// RollsheetRpt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton RollsheetRpt;
-        
-        /// <summary>
         /// CloneOrg1 control.
         /// </summary>
         /// <remarks>
@@ -518,15 +509,6 @@ namespace CMSWeb {
         protected global::AjaxControlToolkit.CalendarExtender MeetingDateExtender;
         
         /// <summary>
-        /// MeetingDateRequiredFieldValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator MeetingDateRequiredFieldValidator;
-        
-        /// <summary>
         /// MeetingTime control.
         /// </summary>
         /// <remarks>
@@ -534,24 +516,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox MeetingTime;
-        
-        /// <summary>
-        /// MeetingTimeValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator MeetingTimeValidator;
-        
-        /// <summary>
-        /// MeetingTimeRequiredFieldValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator MeetingTimeRequiredFieldValidator;
         
         /// <summary>
         /// LinkButton1 control.
@@ -617,15 +581,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.TextBox NewMeetingDate;
         
         /// <summary>
-        /// NewMeetingDateRequiredFieldValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator NewMeetingDateRequiredFieldValidator;
-        
-        /// <summary>
         /// NewMeetingDateExtender control.
         /// </summary>
         /// <remarks>
@@ -642,15 +597,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox NewMeetingTime;
-        
-        /// <summary>
-        /// NewMeetingTimeRequiredFieldValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator NewMeetingTimeRequiredFieldValidator;
         
         /// <summary>
         /// NewMeetingTimeValidator control.

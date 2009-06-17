@@ -68,6 +68,9 @@ namespace CMSWeb2
             routes.MapRoute("Display",
                 "Display/{action}/{page}",
                 new { controller = "Display", action = "Page", page = "" });
+            routes.MapRoute("StepClass",
+                "StepClass/{action}",
+                new { controller = "StepClass", action = "Step1" });
             routes.MapRoute("TaskDetailRow",
                 "Task/Detail/{id}/Row/{rowid}",
                 new { controller = "Task", action = "Detail", id = "" });

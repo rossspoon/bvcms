@@ -54,6 +54,7 @@ public partial class Blog_Post : System.Web.UI.Page
         DbUtil.Db.SubmitChanges();
         bc.NotifyEmail();
         ListView2.DataBind();
+        this.Comments.Text = "";
     }
 
     protected void Preview_Click(object sender, EventArgs e)

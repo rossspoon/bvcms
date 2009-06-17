@@ -124,7 +124,8 @@ namespace CMSPresenter
             var isdev = HttpContext.Current.User.IsInRole("Developer");
             _contacteeCount = q.Count();
             var q2 = from c in q.Skip(startRowIndex).Take(maximumRows)
-                     let task = Db.Tasks.SingleOrDefault(t => t.WhoId == c.PeopleId && t.SourceContactId == cid)
+                     let task = Db.Tasks.FirstOrDefault(t => 
+                         t.WhoId == c.PeopleId && t.SourceContactId == cid)
                      select new ContacteeInfo
                      {
                          ContactId = c.ContactId,

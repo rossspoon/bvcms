@@ -123,6 +123,9 @@
                                         <th id="Th5" runat="server">
                                             Age
                                         </th>
+                                        <th id="Th6" runat="server">
+                                            Groups
+                                        </th>
                                     </tr>
                                     <tr id="itemPlaceholder" runat="server">
                                     </tr>
@@ -150,6 +153,9 @@
                         </td>
                         <td>
                             <asp:Label ID="AgeLabel" runat="server" Text='<%# Eval("Age") %>' />
+                        </td>
+                        <td>
+                            <%# Eval("Groups") %>
                         </td>
                     </tr>
                 </ItemTemplate>

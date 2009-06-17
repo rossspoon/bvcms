@@ -172,5 +172,40 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
+        public static IEnumerable OrgMemberList(int queryid, int maximumRows)
+        {
+
+            var Db = DbUtil.Db;
+            var qB = Db.LoadQueryById(queryid);
+            var q = Db.People.Where(qB.Predicate());
+            var q2 = from p in q
+                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     select new
+                     {
+                         PeopleId = p.PeopleId,
+                         Title = p.TitleCode,
+                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         LastName = p.LastName,
+                         Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
+                         City = p.PrimaryCity,
+                         State = p.PrimaryState,
+                         Zip = p.PrimaryZip.FmtZip(),
+                         Email = p.EmailAddress,
+                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                         JoinDate = p.JoinDate.FormatDate(),
+                         HomePhone = p.HomePhone.FmtFone(),
+                         CellPhone = p.CellPhone.FmtFone(),
+                         WorkPhone = p.WorkPhone.FmtFone(),
+                         MemberStatus = p.MemberStatus.Description,
+                         Age = p.Age.ToString(),
+                         School = p.SchoolOther,
+                         LastAttend = bfm.LastAttended.ToString(),
+                         AttendPct = bfm.AttendPct.ToString(),
+                         AttendStr = bfm.AttendStr,
+                         MemberType = bfm.MemberType.Description,
+                     };
+            return q2.Take(maximumRows);
+        }
     }
 }

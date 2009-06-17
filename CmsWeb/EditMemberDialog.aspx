@@ -37,10 +37,11 @@
                 <td valign="top" rowspan="5">
                 Groups
                     <asp:CheckBoxList ID="Groups" runat="server" DataSourceID="ObjectDataSource1" 
-                        DataTextField="Name" DataValueField="Id" AutoPostBack="True" 
-                        onselectedindexchanged="Groups_SelectedIndexChanged" 
+                        DataTextField="Name" DataValueField="Id" 
                         ondatabound="Groups_DataBound">
                     </asp:CheckBoxList>
+                    <asp:Button ID="UpdateGroups" runat="server" Text="Update Groups" 
+                        onclick="UpdateGroups_Click" />
                 </td>
             </tr>
             <tr>

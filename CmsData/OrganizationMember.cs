@@ -88,7 +88,7 @@ namespace CmsData
             Db.OrganizationMembers.DeleteOnSubmit(this);
 
         }
-        public bool ToggleTag(int groupid)
+        public bool ToggleGroup(int groupid)
         {
             var group = OrgMemMemTags.SingleOrDefault(g => 
                 g.OrgId == OrganizationId && g.PeopleId == PeopleId && g.MemberTagId == groupid);

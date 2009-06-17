@@ -42,6 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Binaries\FredCK.FCKeditorV2.dll</HintPath>
     </Reference>
+    <Reference Include="Intelligencia.UrlRewriter, Version=2.0.0.1, Culture=neutral, PublicKeyToken=0573f3650687980d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -330,10 +331,6 @@
     <Compile Include="Verse\Practice2.aspx.designer.cs">
       <DependentUpon>Practice2.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebService.cs">
-      <DependentUpon>WebService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -597,7 +594,6 @@
     <Content Include="PostPodcast\PostPodcast.htm" />
     <Content Include="PostPodcast\Run.aspx" />
     <Content Include="PostPodcast\setup.exe" />
-    <Content Include="WebService.asmx" />
     <Content Include="wimpy_wasp\icon.jpg" />
     <Content Include="wimpy_wasp\readme_wasp.html" />
     <Content Include="wimpy_wasp\readme_wasp_example1.html" />
@@ -751,6 +747,10 @@
     <Compile Include="users.ashx.cs">
       <DependentUpon>users.ashx</DependentUpon>
     </Compile>
+    <Compile Include="WebService1.asmx.cs">
+      <DependentUpon>WebService1.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Content Include="BlogPost\rsd.ashx" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.cfm" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.php" />
@@ -837,6 +837,11 @@
     <Content Include="Admin\Users.aspx" />
     <Content Include="App_Offline1.htm" />
     <Content Include="App_Themes\Default\images\kahuna-fade.gif" />
+    <Content Include="bin\CustomControls.dll" />
+    <Content Include="bin\CustomControls.pdb" />
+    <Content Include="bin\DisciplesData.dll" />
+    <Content Include="bin\DisciplesData.pdb" />
+    <Content Include="bin\Intelligencia.UrlRewriter.dll" />
     <Content Include="Blog\EditComment.aspx" />
     <Content Include="Global.asax" />
     <Content Include="images\blogo.jpg" />
@@ -847,7 +852,7 @@
     <Content Include="App_Themes\Other\skel.css" />
     <Content Include="App_Themes\Other\theme.css" />
     <Content Include="App_Themes\Default\wordpress.css" />
-    <Content Include="App_Themes\Default\tfe.css" />
+    <Content Include="App_Themes\Default\tfe-v2.css" />
     <Content Include="App_Themes\Default\home.css" />
     <Content Include="Blog\Archives.ascx" />
     <Content Include="Blog\BlogEdit.ascx" />
@@ -1243,6 +1248,7 @@
     <Content Include="js\ui.tabs.js" />
     <Content Include="images\headerimage.jpg" />
     <Content Include="StopNotifications.aspx" />
+    <Content Include="WebService1.asmx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

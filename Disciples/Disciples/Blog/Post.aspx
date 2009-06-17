@@ -6,8 +6,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
     <div id="main">
         <div id="thoughts">
-            <uc1:Item ID="Item1" EnableViewState="false" SingleItem="true" runat="server" />
             <div id="entry">
+            <uc1:Item ID="Item1" EnableViewState="false" SingleItem="true" runat="server" />
+            </div>
+            <div id="comments">
                 <a name="comments"></a>
                 <h3>
                     <%=Item1.BlogPost.CommentCount %>
@@ -37,12 +39,6 @@
                         </ItemTemplate>
                     </asp:ListView>
                 </ol>
-                <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="FetchPostComments"
-                    TypeName="DiscData.BlogPostController">
-                    <SelectParameters>
-                        <asp:QueryStringParameter Name="BlogPostId" QueryStringField="id" Type="Int32" />
-                    </SelectParameters>
-                </asp:ObjectDataSource>
                 <a name="postcomment"></a>
                 <div id="postcomment" runat="server">
                     <h3>
@@ -53,7 +49,7 @@
                         is underlined***<br />
                         This text: &quot;Goto Bellevue&quot; = &quot;www.bellevue.org&quot; is a hyperlink.
                     </p>
-                    <hr>
+                    <hr />
                     <p>
                         <label for="comment">
                             Your Comment</label>
@@ -87,6 +83,12 @@
             </div>
         </div>
     </div>
+    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="FetchPostComments"
+        TypeName="DiscData.BlogPostController">
+        <SelectParameters>
+            <asp:QueryStringParameter Name="BlogPostId" QueryStringField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphSideBar" runat="server">
     <div id="extra">
