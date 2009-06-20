@@ -1529,6 +1529,10 @@
     <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\Rollsheet.aspx" />
     <Content Include="Report\RosterReport.aspx" />
+    <Content Include="Views\StepClass\Step3Confirm.aspx" />
+    <Content Include="Views\StepClass\Step3.aspx" />
+    <Content Include="Views\StepClass\Step2.aspx" />
+    <Content Include="Views\StepClass\Step2Confirm.aspx" />
     <Content Include="Views\StepClass\Step1.aspx" />
     <Content Include="Views\StepClass\Step1Confirm.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />
@@ -1667,7 +1671,6 @@
     <Content Include="VolInterestView.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reports\rdlc\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

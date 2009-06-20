@@ -51,7 +51,7 @@
         <td valign="top">
             <input name="DateOfBirth" title="YYYY or MM or MM/DD or MM/DD/YY" style="width:190px" type="text" class="clearable" />
         </td>
-        <td colspan="2" align="center">
+        <td colspan="2" align="left">
             <input type="button" tabindex="6" onclick="SearchClicked()" value="Search" />
         </td>
     </tr>

@@ -107,6 +107,7 @@ namespace CMSWeb.Models
                 .Fmt(OwnerEmail, Description, Id);
             }
         }
+        public bool ForceCompleteWContact { get; set; }
         public string CoOwnerEmail { get; set; }
         public string WhoEmail
         {
@@ -186,11 +187,11 @@ namespace CMSWeb.Models
         }
         public bool CanComplete
         {
-            get { return IsAnOwner && this.StatusEnum != Task.StatusCode.Complete; }
+            get { return IsAnOwner && this.StatusEnum != Task.StatusCode.Complete && !ForceCompleteWContact; }
         }
         public bool CanCompleteWithContact
         {
-            get { return CanComplete && WhoId != null; }
+            get { return IsAnOwner && this.StatusEnum != Task.StatusCode.Complete && WhoId != null; }
         }
         public bool CanAccept
         {
@@ -230,6 +231,7 @@ namespace CMSWeb.Models
             TaskModel.ChangeTask(sb, task, "Due", Due);
             TaskModel.ChangeTask(sb, task, "Notes", Notes);
             TaskModel.ChangeTask(sb, task, "StatusId", StatusId);
+            task.ForceCompleteWContact = ForceCompleteWContact;
             if (HttpContext.Current.User.IsInRole("AdvancedTask"))
                 TaskModel.ChangeTask(sb, task, "Project", Project);
 

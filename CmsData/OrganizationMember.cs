@@ -16,6 +16,7 @@ namespace CmsData
     {
         public enum MemberTypeCode
         {
+            Teacher = 160,
             Member = 220,
             InActive = 230,
             VisitingMember = 300,
@@ -85,6 +86,7 @@ namespace CmsData
                 };
                 Db.EnrollmentTransactions.InsertOnSubmit(et);
             }
+            Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
             Db.OrganizationMembers.DeleteOnSubmit(this);
 
         }

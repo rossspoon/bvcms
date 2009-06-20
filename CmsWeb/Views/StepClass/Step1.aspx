@@ -33,8 +33,7 @@
                 <tr>
                     <td><label for="homephone">Phone #</label></td>
                     <td><%= Html.TextBox("phone")%></td>
-                    <td><%= Html.ValidationMessage("phone")%>
-                    <%= Html.ValidationMessage("phone")%></td>
+                    <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
                     <td><label for="email">Email</label></td>
@@ -55,7 +54,7 @@
                 </tr>
                 </table>
             </fieldset>
-            If you are having difficulty registering online, please call Gail Stewart at 347-5783.
+            If you are having difficulty registering online, please call Gail Stewart at 347-5763.
         </div>
     <% } %>
 </asp:Content>

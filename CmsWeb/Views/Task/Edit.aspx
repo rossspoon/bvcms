@@ -39,6 +39,7 @@
                        if (Model.IsOwner) 
                        { %>
                     <%=Html.HyperLink("javascript:SearchPeople(AddDelegatePerson)", Model.ChangeCoOwner)%>
+                    <%=Html.CheckBox("ForceCompleteWContact") %> Complete With Contact
                     <% } %>
                 </td>
             </tr>

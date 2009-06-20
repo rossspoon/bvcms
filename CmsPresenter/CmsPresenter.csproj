@@ -108,7 +108,6 @@
     <Compile Include="InfoClasses\MemberTypeInfo.cs" />
     <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
     <Compile Include="RollsheetController.cs" />
-    <Compile Include="InfoClasses\TaskInfo.cs" />
     <Compile Include="VolunteerAppController.cs" />
     <Compile Include="FamilyController.cs" />
     <Compile Include="TagController.cs" />

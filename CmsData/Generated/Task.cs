@@ -57,6 +57,8 @@ namespace CmsData
 		
 		private DateTime? _CompletedOn;
 		
+		private bool? _ForceCompleteWContact;
+		
    		
     	
 		private EntityRef< TaskList> _CoTaskList;
@@ -141,6 +143,9 @@ namespace CmsData
 		
 		partial void OnCompletedOnChanging(DateTime? value);
 		partial void OnCompletedOnChanged();
+		
+		partial void OnForceCompleteWContactChanging(bool? value);
+		partial void OnForceCompleteWContactChanged();
 		
     #endregion
 		public Task()
@@ -626,6 +631,28 @@ namespace CmsData
 					this._CompletedOn = value;
 					this.SendPropertyChanged("CompletedOn");
 					this.OnCompletedOnChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ForceCompleteWContact", UpdateCheck=UpdateCheck.Never, Storage="_ForceCompleteWContact", DbType="bit")]
+		public bool? ForceCompleteWContact
+		{
+			get { return this._ForceCompleteWContact; }
+
+			set
+			{
+				if (this._ForceCompleteWContact != value)
+				{
+				
+                    this.OnForceCompleteWContactChanging(value);
+					this.SendPropertyChanging();
+					this._ForceCompleteWContact = value;
+					this.SendPropertyChanged("ForceCompleteWContact");
+					this.OnForceCompleteWContactChanged();
 				}
 
 			}

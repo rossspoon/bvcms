@@ -31,6 +31,7 @@ namespace CMSWeb.Models
         string CurTab { get; set; }
         string Project { get; set; }
         string Location { get; set; }
+        bool? ForceCompleteWContact { get; set; }
         int? StatusId { get; set; }
         bool? OwnerOnly { get; set; }
         string Sort { get; set; }
@@ -55,6 +56,7 @@ namespace CMSWeb.Models
         
         public string Project { get; set; }
         public string Location { get; set; }
+        public bool? ForceCompleteWContact { get; set; }
         public int? StatusId { get; set; }
         public string CurTab
         {
@@ -276,6 +278,7 @@ namespace CMSWeb.Models
                          CreatedOn = t.CreatedOn,
                          CompletedOn = t.CompletedOn,
                          NotiPhone = !iPhone,
+                         ForceCompleteWContact = t.ForceCompleteWContact ?? false,
                      };
             return q2.Single();
         }

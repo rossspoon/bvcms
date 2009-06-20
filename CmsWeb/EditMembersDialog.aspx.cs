@@ -21,7 +21,7 @@ namespace CMSWeb
     public partial class EditMembersDialog : System.Web.UI.Page
     {
         public int? OrgId;
-        public int? GroupId = 0;
+        public int? GroupId;
         private string from;
         private List<int> members;
         protected override void OnInit(EventArgs e)
@@ -36,6 +36,8 @@ namespace CMSWeb
                         select m.PeopleId;
                 members = q.ToList();
             }
+            else
+                GroupId = 0;
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -129,7 +131,7 @@ namespace CMSWeb
 
         protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
-            if (!GroupId.HasValue)
+            if (GroupId == 0)
                 return;
             if (e.Item.ItemType == ListViewItemType.DataItem)
             {

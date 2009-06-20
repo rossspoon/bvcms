@@ -166,8 +166,9 @@ $(function() {
         modal: true,
         autoOpen: false,
         closeOnEscape: true,
-        width: 600,
+        width: 700,
         height: 525,
+        position: 'top',
         close: function(event, ui) {
             $('#dialogbox').empty();
             SearchClicked = RefreshList;

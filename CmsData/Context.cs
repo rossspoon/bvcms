@@ -285,8 +285,9 @@ namespace CmsData
             var q = from p in People
                     where p.OrganizationMembers.Any(m =>
                         OrganizationMembers.Any(um =>
-                            um.Organization.SecurityTypeId != 3 &&
-                            um.OrganizationId == m.OrganizationId && um.PeopleId == me))
+                            (um.Organization.SecurityTypeId != 3 
+                                || um.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher) 
+                             && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgMembersOnly);
 
