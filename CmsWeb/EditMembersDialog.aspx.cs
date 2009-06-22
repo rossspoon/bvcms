@@ -30,14 +30,17 @@ namespace CMSWeb
             OrgId = Page.QueryString<int?>("id");
             GroupId = Page.QueryString<int?>("group");
             if (GroupId.HasValue)
-            {
-                var q = from m in DbUtil.Db.OrgMemMemTags
-                        where m.OrgId == OrgId && m.MemberTagId == GroupId
-                        select m.PeopleId;
-                members = q.ToList();
-            }
+                SetMembers();
             else
                 GroupId = 0;
+            MemberData.SelectParameters["noinactive"].DefaultValue = (GroupId > 0).ToString();
+        }
+        private void SetMembers()
+        {
+            var q = from m in DbUtil.Db.OrgMemMemTags
+                    where m.OrgId == OrgId && m.MemberTagId == GroupId
+                    select m.PeopleId;
+            members = q.ToList();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -105,13 +108,37 @@ namespace CMSWeb
             var q = PersonSearchDialogController.SearchMembers(SearchMemberType.Text.ToInt(),
                         TagSearch.SelectedValue.ToInt(),
                         SearchInactiveDate.Text.ToDate(),
-                        OrgId.Value);
-            var q2 = q.Select(om => om.Person);
-            Tag tag = null;
-            if (SelectAll.Checked)
-                tag = DbUtil.Db.PopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
+                        OrgId.Value, GroupId > 0);
+            if (GroupId > 0)
+                if (SelectAll.Checked)
+                {
+                    var q2 = from om in q
+                             where !om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId)
+                             select om;
+                    foreach (var om in q2)
+                        om.ToggleGroup(GroupId.Value);
+                    DbUtil.Db.SubmitChanges();
+                    SetMembers();
+                }
+                else
+                {
+                    var q2 = from om in q
+                             where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId)
+                             select om;
+                    foreach (var om in q2)
+                        om.ToggleGroup(GroupId.Value);
+                    DbUtil.Db.SubmitChanges();
+                    SetMembers();
+                }
             else
-                DbUtil.Db.DePopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
+            {
+                var q2 = q.Select(om => om.Person);
+                Tag tag = null;
+                if (SelectAll.Checked)
+                    tag = DbUtil.Db.PopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
+                else
+                    DbUtil.Db.DePopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
+            }
             ListView1.Visible = true;
             ListView1.DataBind();
         }

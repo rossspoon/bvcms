@@ -35,7 +35,7 @@ namespace CmsData
                 case FieldType.CodeStr:
                     return Display.Fmt(fld, c.CodeValues);
                 case FieldType.String:
-                case FieldType.DateString:
+                case FieldType.StringEqual:
                 case FieldType.Number:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
@@ -301,6 +301,8 @@ namespace CmsData
                                c.SavedQueryIdDesc,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.SmallGroup:
+                    return Expressions.SmallGroup(parm, CompType, c.TextValue);
 
                 // U ----------------------
                 case QueryType.UserRole:

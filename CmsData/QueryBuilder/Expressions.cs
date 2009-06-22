@@ -327,6 +327,19 @@ namespace CmsData
             var right = Expression.Constant(name, typeof(string));
             return Compare(left, op, right);
         }
+        internal static Expression SmallGroup(
+            ParameterExpression parm, 
+            CompareType op,
+            string name)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                    m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name));
+            var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
 
         internal static Expression OrgJoinDateCompare(
            ParameterExpression parm,

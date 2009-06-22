@@ -95,21 +95,29 @@ namespace CMSPresenter
         public int count;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList(int startRowIndex, int maximumRows, string sortExpression,
-            int memtype, int tag, DateTime? inactive, int orgid)
+            int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive)
         {
-            var q0 = SearchMembers(memtype, tag, inactive, orgid);
+//'MemberData' could not find a non-generic method 'FetchOrgMemberList' that has parameters: 
+            //startRowIndex, maximumRows, sortExpression, 
+            //memtype, tag, inactive, orgid, noinactive."
+
+            var q0 = SearchMembers(memtype, tag, inactivedt, orgid, noinactive);
             count = q0.Count();
             var q1 = q0.OrderBy(m => m.Person.Name2).Skip(startRowIndex).Take(maximumRows);
             return FetchMemberList(q1);
         }
         public int Count(int startRowIndex, int maximumRows, string sortExpression,
-                int memtype, int tag, DateTime? inactive, int orgid)
+                int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive)
         {
             return count;
         }
-        public static IQueryable<OrganizationMember> SearchMembers(int memtype, int tag, DateTime? inactive, int orgid)
+        public static IQueryable<OrganizationMember> SearchMembers(int memtype, int tag, 
+            DateTime? inactive, int orgid, bool? noinactive)
         {
-            var q0 = DbUtil.Db.OrganizationMembers.Where(om => om.OrganizationId == orgid);
+            var q0 = from om in DbUtil.Db.OrganizationMembers
+                     where om.OrganizationId == orgid
+                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive || noinactive == false
+                     select om;
             if (memtype != 0)
                 q0 = q0.Where(om => om.MemberTypeId == memtype);
             if (tag > 0)

@@ -213,7 +213,7 @@ namespace CMSWeb.Models
                     CodeData = ConvertToSelect(cvctl.BitCodes(), fieldMap.DataValueField);
                     break;
                 case FieldType.String:
-                case FieldType.DateString:
+                case FieldType.StringEqual:
                     TextVisible = true;
                     break;
                 case FieldType.NullNumber:
@@ -293,7 +293,7 @@ namespace CMSWeb.Models
             switch (c.FieldInfo.Type)
             {
                 case FieldType.String:
-                case FieldType.DateString:
+                case FieldType.StringEqual:
                     c.TextValue = TextValue;
                     break;
                 case FieldType.Integer:
@@ -342,7 +342,7 @@ namespace CMSWeb.Models
             switch (c.FieldInfo.Type)
             {
                 case FieldType.String:
-                case FieldType.DateString:
+                case FieldType.StringEqual:
                     TextValue = c.TextValue;
                     break;
                 case FieldType.Integer:

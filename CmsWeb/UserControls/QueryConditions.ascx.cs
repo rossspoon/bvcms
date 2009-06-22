@@ -18,6 +18,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using CmsData;
 using CMSPresenter;
+using System.Collections.Generic;
 
 namespace CMSWeb
 {
@@ -30,9 +31,9 @@ namespace CMSWeb
         {
             if (!Page.IsPostBack)
             {
-                ConditionTabs.DataSource = QueryBuilderController.FieldCategories();
+                ConditionTabs.DataSource = FieldCategories();
                 ConditionTabs.DataBind();
-                Repeater1.DataSource = QueryBuilderController.FieldCategories();
+                Repeater1.DataSource = FieldCategories();
                 Repeater1.DataBind();
             }
         }
@@ -48,6 +49,13 @@ namespace CMSWeb
         {
             if (Selected != null)
                 Selected("Group");
+        }
+        public IEnumerable<CategoryClass> FieldCategories()
+        {
+            var q = from c in CategoryClass.Categories
+                    where c.Title != "Grouping"
+                    select c;
+            return q;
         }
     }
 }

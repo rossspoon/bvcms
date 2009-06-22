@@ -15,7 +15,7 @@
     <Field Name="MaritalStatusId" Title="Marital Status" Type="Code" DataSource="MaritalStatusCodes" DataValueField="IdCode">
       Search by Single, Married, Separated, Divorced, Widowed,Unknown
     </Field>
-    <Field Name="Birthday" Title="Birthday" Type="DateString" ToolTip="MM/DD/YYYY or MM/DD or MM or YYYY">
+    <Field Name="Birthday" Title="Birthday" Type="StringEqual" ToolTip="MM/DD/YYYY or MM/DD or MM or YYYY">
       Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
     </Field>
     <Field Name="DaysTillBirthday" Title="Days Till Birthday" Type="Integer">
@@ -238,6 +238,9 @@
     </Field>
     <Field Name="BibleFellowshipTeacher" Title="Bible Fellowship Teacher" Type="String">
       Name of Bible Fellowship Teacher
+    </Field>
+    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual">
+      Person is in a small group named such
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
       Indicates Volunteer Applications are in the church system

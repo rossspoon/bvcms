@@ -142,7 +142,6 @@
     <Compile Include="Providers\CMSMembershipProvider.cs" />
     <Compile Include="Providers\CMSRoleProvider.cs" />
     <Compile Include="QueryController.cs" />
-    <Compile Include="QueryBuilderController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
     <Compile Include="OrganizationController.cs" />

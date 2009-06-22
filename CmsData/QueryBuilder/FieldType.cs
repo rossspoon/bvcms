@@ -23,6 +23,6 @@ namespace CmsData
         NullNumber,
         NullInteger,
         Group,
-        DateString,
+        StringEqual,
     }
 }

@@ -101,6 +101,7 @@ namespace CmsData
         RecentAttendType,
         SavedQuery,
         SchoolOther,
+        SmallGroup,
         TitleCode,
         UserRole,
 		VBSPubPhoto,

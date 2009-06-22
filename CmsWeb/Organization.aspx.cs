@@ -225,7 +225,9 @@ namespace CMSWeb
 
         protected void DeleteGroup_Click(object sender, EventArgs e)
         {
-            var group = DbUtil.Db.MemberTags.Single(g => g.Id == Groups.SelectedValue.ToInt());
+            var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Id == Groups.SelectedValue.ToInt());
+            if (group == null)
+                return;
             DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
             DbUtil.Db.MemberTags.DeleteOnSubmit(group);
             DbUtil.Db.SubmitChanges();

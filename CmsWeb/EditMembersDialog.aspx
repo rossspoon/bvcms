@@ -179,8 +179,9 @@
                 <asp:Parameter Name="sortExpression" Type="String" />
                 <asp:ControlParameter ControlID="SearchMemberType" Name="memtype" Type="Int32" />
                 <asp:ControlParameter ControlID="TagSearch" Name="tag" Type="Int32" />
-                <asp:ControlParameter ControlID="SearchInactiveDate" Name="inactive" Type="Datetime" />
+                <asp:ControlParameter ControlID="SearchInactiveDate" Name="inactivedt" Type="Datetime" />
                 <asp:QueryStringParameter Name="orgid" QueryStringField="id" Type="Int32" />
+                <asp:Parameter Name="noinactive" Type="Boolean" />
             </SelectParameters>
         </asp:ObjectDataSource>
         <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes2"

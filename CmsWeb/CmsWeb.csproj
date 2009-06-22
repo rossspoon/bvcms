@@ -1529,6 +1529,7 @@
     <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\Rollsheet.aspx" />
     <Content Include="Report\RosterReport.aspx" />
+    <Content Include="Views\SoulMate\Index.aspx" />
     <Content Include="Views\StepClass\Step3Confirm.aspx" />
     <Content Include="Views\StepClass\Step3.aspx" />
     <Content Include="Views\StepClass\Step2.aspx" />
