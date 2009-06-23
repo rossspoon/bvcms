@@ -96,7 +96,7 @@ namespace CMSWeb.Models
             return list;
         }
 
-        internal void EnrollInClass(string name)
+        internal void EnrollInClass()
         {
             var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                 om.OrganizationId == meeting.OrganizationId && om.PeopleId == person.PeopleId);

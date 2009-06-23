@@ -309,5 +309,10 @@ namespace CMSWeb
         {
             UpdateGroupsUrl();
         }
+
+        protected void GroupFilter_DataBound(object sender, EventArgs e)
+        {
+            GroupFilter.SelectedValue = Util.CurrentGroupId.ToString();
+        }
     }
 }

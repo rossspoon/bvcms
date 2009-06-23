@@ -42,7 +42,7 @@ namespace CMSWeb.Controllers
             }
             if (!ModelState.IsValid)
                 return View(m);
-            m.EnrollInClass("Step 1");
+            m.EnrollInClass();
             DbUtil.Db.SubmitChanges();
             SendEmail(m, "Step 1");
             return RedirectToAction("Step1Confirm");
@@ -62,7 +62,7 @@ namespace CMSWeb.Controllers
             ValidateStep23(m);
             if (!ModelState.IsValid)
                 return View(m);
-            m.EnrollInClass("Step 2");
+            m.EnrollInClass();
             DbUtil.Db.SubmitChanges();
             SendEmail(m, "Step 2");
             return RedirectToAction("Step2Confirm");
@@ -82,7 +82,7 @@ namespace CMSWeb.Controllers
             ValidateStep23(m);
             if (!ModelState.IsValid)
                 return View(m);
-            m.EnrollInClass("Step 3");
+            m.EnrollInClass();
             DbUtil.Db.SubmitChanges();
             SendEmail(m, "Step 3");
             return RedirectToAction("Step3Confirm");

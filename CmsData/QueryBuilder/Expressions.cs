@@ -328,17 +328,45 @@ namespace CmsData
             return Compare(left, op, right);
         }
         internal static Expression SmallGroup(
-            ParameterExpression parm, 
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
             CompareType op,
             string name)
         {
-            Expression<Func<Person, bool>> pred = p =>
+            Expression<Func<Person, bool>> pred1 = p =>
                     p.OrganizationMembers.Any(m =>
-                    m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name));
-            var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
-                expr = Expression.Not(expr);
-            return expr;
+                        (m.OrganizationId == org || org == 0)
+                        && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                        && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
+            if (name.HasValue())
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                        p.OrganizationMembers.Any(m =>
+                            (m.OrganizationId == org || org == 0)
+                            && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                            && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                            && m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.Contains(name)));
+                var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+                if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                    expr = Expression.Not(expr);
+                return Expression.And(expr1, expr);
+            }
+            else
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                        p.OrganizationMembers.Any(m =>
+                            (m.OrganizationId == org || org == 0)
+                            && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                            && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                            && m.OrgMemMemTags.Count() == 0);
+                var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+                if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                    expr = Expression.Not(expr);
+                return Expression.And(expr1, expr);
+            }
         }
 
         internal static Expression OrgJoinDateCompare(

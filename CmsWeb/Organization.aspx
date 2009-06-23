@@ -257,8 +257,10 @@
         </ul>
         <div id="Members-tab" class="ui-tabs-hide">
             <uc1:ExportToolBar ID="ExportToolBar1" runat="server" />
-            <asp:DropDownList ID="GroupFilter" runat="server" DataSourceID="GroupData2" DataTextField="Name" DataValueField="Id"
-                AutoPostBack="True" OnSelectedIndexChanged="Group_SelectedIndexChanged">
+            <asp:DropDownList ID="GroupFilter" runat="server" DataSourceID="GroupData2" 
+                DataTextField="Name" DataValueField="Id"
+                AutoPostBack="True" OnSelectedIndexChanged="Group_SelectedIndexChanged" 
+                ondatabound="GroupFilter_DataBound">
             </asp:DropDownList>
             <uc2:MemberGrid ID="MemberGrid1" runat="server" />
         </div>

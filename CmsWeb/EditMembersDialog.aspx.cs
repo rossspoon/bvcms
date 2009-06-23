@@ -22,6 +22,7 @@ namespace CMSWeb
     {
         public int? OrgId;
         public int? GroupId;
+        private bool GroupMode;
         private string from;
         private List<int> members;
         protected override void OnInit(EventArgs e)
@@ -29,18 +30,25 @@ namespace CMSWeb
             base.OnInit(e);
             OrgId = Page.QueryString<int?>("id");
             GroupId = Page.QueryString<int?>("group");
-            if (GroupId.HasValue)
-                SetMembers();
-            else
-                GroupId = 0;
+            GroupMode = GroupId.HasValue;
+            SetMembers();
+            GroupId = GroupId ?? 0;
             MemberData.SelectParameters["noinactive"].DefaultValue = (GroupId > 0).ToString();
         }
         private void SetMembers()
         {
-            var q = from m in DbUtil.Db.OrgMemMemTags
-                    where m.OrgId == OrgId && m.MemberTagId == GroupId
-                    select m.PeopleId;
-            members = q.ToList();
+            if (GroupMode)
+            {
+                var q = from m in DbUtil.Db.OrgMemMemTags
+                        where m.OrgId == OrgId && m.MemberTagId == GroupId
+                        select m.PeopleId;
+                members = q.ToList();
+            }
+            else
+            {
+                var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+                members = DbUtil.Db.TaggedPeople(tag.Id).Select(p => p.PeopleId.Value).ToList();
+            }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -109,7 +117,7 @@ namespace CMSWeb
                         TagSearch.SelectedValue.ToInt(),
                         SearchInactiveDate.Text.ToDate(),
                         OrgId.Value, GroupId > 0);
-            if (GroupId > 0)
+            if (GroupMode)
                 if (SelectAll.Checked)
                 {
                     var q2 = from om in q
@@ -138,6 +146,7 @@ namespace CMSWeb
                     tag = DbUtil.Db.PopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
                 else
                     DbUtil.Db.DePopulateSpecialTag(q2, DbUtil.TagTypeId_AddSelected);
+                SetMembers();
             }
             ListView1.Visible = true;
             ListView1.DataBind();
@@ -158,15 +167,12 @@ namespace CMSWeb
 
         protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
-            if (GroupId == 0)
+            if (e.Item.ItemType != ListViewItemType.DataItem)
                 return;
-            if (e.Item.ItemType == ListViewItemType.DataItem)
-            {
-                var cb = e.Item.FindControl("ck") as CheckBox;
-                var r = e.Item as ListViewDataItem;
-                var d = r.DataItem as PersonDialogSearchInfo;
-                cb.Checked = members.Contains(d.PeopleId);
-            }
+            var cb = e.Item.FindControl("ck") as CheckBox;
+            var r = e.Item as ListViewDataItem;
+            var d = r.DataItem as PersonDialogSearchInfo;
+            cb.Checked = members.Contains(d.PeopleId);
         }
     }
 }

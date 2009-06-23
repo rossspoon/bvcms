@@ -239,7 +239,7 @@
     <Field Name="BibleFellowshipTeacher" Title="Bible Fellowship Teacher" Type="String">
       Name of Bible Fellowship Teacher
     </Field>
-    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual">
+    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
       Person is in a small group named such
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">

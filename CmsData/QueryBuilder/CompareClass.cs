@@ -302,7 +302,11 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.SmallGroup:
-                    return Expressions.SmallGroup(parm, CompType, c.TextValue);
+                    return Expressions.SmallGroup(parm,
+                               c.DivOrg,
+                               c.SubDivOrg,
+                               c.Organization,
+                               CompType, c.TextValue);
 
                 // U ----------------------
                 case QueryType.UserRole:

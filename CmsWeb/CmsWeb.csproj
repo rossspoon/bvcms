@@ -383,6 +383,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\SoulMateController.cs" />
     <Compile Include="Controllers\StepClassController.cs" />
     <Compile Include="Controllers\VolOpportunityController.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
@@ -413,6 +414,7 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VolunteerModel.cs" />
     <Compile Include="Models\QueryModel.cs" />
@@ -1529,6 +1531,7 @@
     <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\Rollsheet.aspx" />
     <Content Include="Report\RosterReport.aspx" />
+    <Content Include="Views\SoulMate\ChildCare.aspx" />
     <Content Include="Views\SoulMate\Index.aspx" />
     <Content Include="Views\StepClass\Step3Confirm.aspx" />
     <Content Include="Views\StepClass\Step3.aspx" />
