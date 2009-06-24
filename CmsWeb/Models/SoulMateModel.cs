@@ -12,8 +12,37 @@ using CMSPresenter;
 
 namespace CMSWeb.Models
 {
+    public class ChildItem
+    {
+        public string Name { get; set; }
+        public string Birthday { get; set; }
+        public int Age { get; set; }
+    }
     public class SoulMateModel
     {
+        int? SoulMateId { get; set; }
+        public SoulMateModel(int id)
+        {
+            SoulMateId = id;
+            var q = from sm in DbUtil.Db.SoulMates
+                    where sm.Id == id
+                    select new
+                    {
+                        sm.Him,
+                        sm.Her,
+                        sm.Meeting,
+                        sm.ChildCareMeeting
+                    };
+            var s = q.Single();
+            _Person1 = s.Him;
+            _Person2 = s.Her;
+            _meeting = s.Meeting;
+            _ChildCareMeeting = s.ChildCareMeeting;
+        }
+        public SoulMateModel()
+        {
+
+        }
         public string first1 { get; set; }
         public string lastname1 { get; set; }
         public string dob1 { get; set; }
@@ -27,6 +56,7 @@ namespace CMSWeb.Models
         {
             get { return _Person1; }
         }
+        public int? ChildParent { get; set; }
 
         public string first2 { get; set; }
         public string lastname2 { get; set; }
@@ -44,6 +74,7 @@ namespace CMSWeb.Models
 
         public int Relation { get; set; }
 
+        internal CmsData.Meeting _ChildCareMeeting;
         internal CmsData.Meeting _meeting;
         public CmsData.Meeting meeting
         {
@@ -140,6 +171,27 @@ namespace CMSWeb.Models
                 new SelectListItem { Value="3", Text="Engaged" },
                 new SelectListItem { Value="4", Text="Might as well be married" },
             };
+        }
+        public IEnumerable<SelectListItem> Parents()
+        {
+            return new List<SelectListItem> 
+            {
+                new SelectListItem { Value=person2.PeopleId.ToString(), Text=person2.Name },
+                new SelectListItem { Value=person1.PeopleId.ToString(), Text=person1.Name },
+            };
+        }
+        public IEnumerable<ChildItem> Children()
+        {
+            var q = from c in DbUtil.Db.People
+                    where c.Attends.Any(a => a.MeetingId == _ChildCareMeeting.MeetingId)
+                    where c.Family.People.Any(p => p.PeopleId == person1.PeopleId || p.PeopleId == person2.PeopleId)
+                    select new ChildItem
+                    {
+                        Name = c.Name,
+                        Birthday = Util.FormatBirthday(c.BirthYear, c.BirthMonth, c.BirthDay),
+                        Age = c.Age ?? 0
+                    };
+            return q;
         }
 
         internal void EnrollInClass(Person person)

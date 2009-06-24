@@ -56,7 +56,7 @@ namespace CMSWeb
             if (dp != null)
                 dp.PageSize = Util.GetPageSizeCookie();
             from = Page.QueryString<string>("from");
-            EditSection.Visible = !GroupId.HasValue;
+            EditSection.Visible = !GroupMode;
             if (!OrgId.HasValue || (!from.HasValue() && EditSection.Visible))
                 throw new Exception("Cannot visit EditMembersDialog this way");
             if (!IsPostBack)

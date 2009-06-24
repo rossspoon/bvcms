@@ -264,6 +264,10 @@ namespace CmsData
 		
    		private EntitySet< VolunteerForm> _VolunteerForms;
 		
+   		private EntitySet< SoulMate> _HerSoulMates;
+		
+   		private EntitySet< SoulMate> _HisSoulMates;
+		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
    		private EntitySet< TagPerson> _Tags;
@@ -682,6 +686,10 @@ namespace CmsData
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
+			
+			this._HerSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HerSoulMates), new Action< SoulMate>(this.detach_HerSoulMates)); 
+			
+			this._HisSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HisSoulMates), new Action< SoulMate>(this.detach_HisSoulMates)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -3363,6 +3371,26 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="HerSoulMates__Her", Storage="_HerSoulMates", OtherKey="HerId")]
+   		public EntitySet< SoulMate> HerSoulMates
+   		{
+   		    get { return this._HerSoulMates; }
+
+			set	{ this._HerSoulMates.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="HisSoulMates__Him", Storage="_HisSoulMates", OtherKey="HimId")]
+   		public EntitySet< SoulMate> HisSoulMates
+   		{
+   		    get { return this._HisSoulMates; }
+
+			set	{ this._HisSoulMates.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="ORGANIZATION_MEMBERS_PPL_FK", Storage="_OrganizationMembers", OtherKey="PeopleId")]
    		public EntitySet< OrganizationMember> OrganizationMembers
    		{
@@ -4395,6 +4423,32 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
+		}
+
+		
+		private void attach_HerSoulMates(SoulMate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Her = this;
+		}
+
+		private void detach_HerSoulMates(SoulMate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Her = null;
+		}
+
+		
+		private void attach_HisSoulMates(SoulMate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Him = this;
+		}
+
+		private void detach_HisSoulMates(SoulMate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Him = null;
 		}
 
 		

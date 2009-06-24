@@ -100,6 +100,7 @@
     <Compile Include="Generated\Preference.cs" />
     <Compile Include="Generated\Program.cs" />
     <Compile Include="Generated\Setting.cs" />
+    <Compile Include="Generated\SoulMate.cs" />
     <Compile Include="Generated\TagShare.cs" />
     <Compile Include="Generated\VBSApp.cs" />
     <Compile Include="Generated\Views\Addr.cs" />

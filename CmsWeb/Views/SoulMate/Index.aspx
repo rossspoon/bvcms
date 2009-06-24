@@ -85,7 +85,7 @@
                 </tr>
                 <tr><th colspan="2">Relationship</th></tr>
                 <tr>
-                    <td><label for="Relation">Event Dates</label></td>
+                    <td><label for="Relation">Relationship</label></td>
                     <td><%=Html.DropDownList("Relation", Model.Relations()) %></td>
                     <td><%= Html.ValidationMessage("Relation")%></td>
                 </tr>

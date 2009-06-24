@@ -30,6 +30,9 @@
     <Field Name="EmployerOther" Title="Employer" Type="CodeStr" DataSource="Employers">
       Name of Employer, if applicable
     </Field>
+    <Field Name="OccupationOther" Title="Occupation" Type="CodeStr" DataSource="Occupations">
+      Occupation, if applicable
+    </Field>
     <Field Name="HasPicture" Title="Has Picture" Type="Bit" DataValueField="IdCode">
       Indication of whether picture has been uploaded for this person
     </Field>

@@ -15,35 +15,26 @@
                 <col style="width: 13em; text-align:right" />
                 <col />
                 <col />
-                <tr><th colspan="2">His Info</th></tr>
+                <tr><th colspan="2">Parent</th></tr>
                 <tr>
-                    <td><label for="first1">First Name</label></td>
-                    <td><%= Html.TextBox("first1") %></td>
-                    <td><%= Html.ValidationMessage("first1") %></td>
+                    <td><label for="ChildParent">Parent</label></td>
+                    <td><%=Html.DropDownList("ChildParent", Model.Parents())%></td>
+                    <td><%= Html.ValidationMessage("ChildParent")%></td>
                 </tr>
                 <tr>
-                    <td><label for="lastname1">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname1") %></td>
-                    <td><%= Html.ValidationMessage("lastname1") %></td>
+                    <td><label for="first">First Name</label></td>
+                    <td><%= Html.TextBox("first") %></td>
+                    <td><%= Html.ValidationMessage("first") %></td>
                 </tr>
                 <tr>
-                    <td><label for="dob1">Date of Birth</label></td>
-                    <td><%= Html.TextBox("dob1") %></td>
-                    <td><%= Html.ValidationMessage("dob1") %></td>
+                    <td><label for="lastname">Last Name</label></td>
+                    <td><%= Html.TextBox("lastname") %></td>
+                    <td><%= Html.ValidationMessage("lastname") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone1">Phone #</label></td>
-                    <td><%= Html.TextBox("phone1")%></td>
-                    <td><%= Html.ValidationMessage("phone1")%></td>
-                </tr>
-                <tr>
-                    <td><label for="email1">Email</label></td>
-                    <td><%= Html.TextBox("email1") %></td>
-                    <td><%= Html.ValidationMessage("email1") %></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td colspan = "2"><%= Html.CheckBox("preferredEmail1") %> This is his preferred email address</td>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><%= Html.TextBox("dob") %></td>
+                    <td><%= Html.ValidationMessage("dob") %></td>
                 </tr>
 
                 <tr>
@@ -51,6 +42,15 @@
                 </tr>
                 </table>
             </fieldset>
+            <table>
+            <tr>
+                <th>Name</th><th>Date of Birth</th>
+                <% foreach (var c in Model.Children())
+                   { %>
+                <td></td><td></td>
+                <% } %>
+            </tr>
+            </table>
             If you are having difficulty registering online, please call SOMEONE at 347-5000.
         </div>
     <% } %>

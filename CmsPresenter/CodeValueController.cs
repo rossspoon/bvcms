@@ -1061,6 +1061,19 @@ namespace CMSPresenter
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<CodeValueItem> Occupations()
+        {
+            var q = from p in DbUtil.Db.People
+                    group p by p.OccupationOther into g
+                    orderby g.Key
+                    select new CodeValueItem
+                    {
+                        Value = g.Key,
+                    };
+            return q;
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> VolunteerCodes()
         {
             const string NAME = "VolunteerCodes";

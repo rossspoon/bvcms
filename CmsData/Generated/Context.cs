@@ -318,6 +318,10 @@ namespace CmsData
         partial void UpdateSetting(Setting instance);
         partial void DeleteSetting(Setting instance);
         
+        partial void InsertSoulMate(SoulMate instance);
+        partial void UpdateSoulMate(SoulMate instance);
+        partial void DeleteSoulMate(SoulMate instance);
+        
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
         partial void DeleteStateLookup(StateLookup instance);
@@ -895,6 +899,12 @@ namespace CmsData
 		public Table< Setting> Settings
 		{
 			get	{ return this.GetTable< Setting>(); }
+
+		}
+
+		public Table< SoulMate> SoulMates
+		{
+			get	{ return this.GetTable< SoulMate>(); }
 
 		}
 
