@@ -28,7 +28,7 @@ namespace CMSWeb.Controllers
                     FundName = "new fund", 
                     FundId=fundid,
                     ChurchId = 1,
-                    CreatedBy = Util.UserId,
+                    CreatedBy = Util.UserId1,
                     CreatedDate = DateTime.Now,
                     RecordStatus = false,
                     FundStatusId = 1,

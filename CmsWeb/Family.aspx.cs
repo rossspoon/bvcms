@@ -126,7 +126,7 @@ namespace CMSWeb
             var f = new Family
             {
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 AddressLineOne = d.PrimaryAddress,
                 AddressLineTwo = d.PrimaryAddress2,
                 CityName = d.PrimaryCity,

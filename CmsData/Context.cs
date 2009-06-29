@@ -53,14 +53,14 @@ namespace CmsData
             //base.SubmitChanges(failureMode);
 
             int t = Thread.CurrentThread.ManagedThreadId;
-            if (LogFile.Length > 0)
+            if (LogFile.HasValue())
             {
                 this.Log = File.AppendText(LogFile);
                 DateTime n = Util.Now;
                 this.Log.WriteLine("-->> {0} at {1:d};{2:T}, by {3}", t, n, n, Util.UserName);
             }
             base.SubmitChanges(failureMode);
-            if (LogFile.Length > 0)
+            if (LogFile.HasValue())
             {
                 this.Log.WriteLine("--<< {0}", t);
                 this.Log.Close();
@@ -378,7 +378,7 @@ namespace CmsData
                 p.ValueX = value.ToString();
             else
             {
-                p = new Preference { UserId = Util.UserId, PreferenceX=pref, ValueX = value.ToString() };
+                p = new Preference { UserId = Util.UserId1, PreferenceX=pref, ValueX = value.ToString() };
                 DbUtil.Db.Preferences.InsertOnSubmit(p);
             }
             HttpContext.Current.Session["pref-" + pref] = p.ValueX;

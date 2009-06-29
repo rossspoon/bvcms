@@ -425,7 +425,7 @@ namespace CMSPresenter
 				BundleStatusId = (int)BundleHeader.StatusCode.Open,
 				ChurchId = 1,
 				ContributionDate = dt,
-				CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
 				CreatedDate = DateTime.Now,
 				RecordStatus = false,
 				FundId = 1, // Local Church Operations

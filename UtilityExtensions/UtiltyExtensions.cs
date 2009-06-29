@@ -352,13 +352,19 @@ namespace UtilityExtensions
                     if (HttpContext.Current.Session != null)
                         if (HttpContext.Current.Session[STR_UserId] != null)
                             id = HttpContext.Current.Session[STR_UserId].ToInt();
-                return id == 0 ? ConfigurationManager.AppSettings["TestId"].ToInt() : id;
+                if (id == 0)
+                    id = ConfigurationManager.AppSettings["TestId"].ToInt();
+                return id;
             }
             set
             {
                 if (HttpContext.Current != null)
                     HttpContext.Current.Session[STR_UserId] = value;
             }
+        }
+        public static int UserId1
+        {
+            get { return UserId == 0 ? 1 : UserId; }
         }
         private const string STR_UserPeopleId = "UserPeopleId";
         public static int? UserPeopleId

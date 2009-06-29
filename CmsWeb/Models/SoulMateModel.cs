@@ -17,10 +17,11 @@ namespace CMSWeb.Models
         public string Name { get; set; }
         public string Birthday { get; set; }
         public int Age { get; set; }
+        public string Gender { get; set; }
     }
     public class SoulMateModel
     {
-        int? SoulMateId { get; set; }
+        public int? SoulMateId { get; set; }
         public SoulMateModel(int id)
         {
             SoulMateId = id;
@@ -31,18 +32,27 @@ namespace CMSWeb.Models
                         sm.Him,
                         sm.Her,
                         sm.Meeting,
-                        sm.ChildCareMeeting
+                        sm.ChildCareMeeting,
+                        sm.HisEmail,
+                        sm.HerEmail,
+                        sm.HisEmailPreferred,
+                        sm.HerEmailPreferred
                     };
             var s = q.Single();
             _Person1 = s.Him;
             _Person2 = s.Her;
             _meeting = s.Meeting;
             _ChildCareMeeting = s.ChildCareMeeting;
+            email1 = s.HisEmail;
+            email2 = s.HerEmail;
+            preferredEmail1 = s.HisEmailPreferred.Value;
+            preferredEmail2 = s.HerEmailPreferred.Value;
         }
         public SoulMateModel()
         {
 
         }
+        public int? gender { get; set; }
         public string first1 { get; set; }
         public string lastname1 { get; set; }
         public string dob1 { get; set; }
@@ -51,6 +61,11 @@ namespace CMSWeb.Models
         public string phone1 { get; set; }
         public string email1 { get; set; }
         public bool preferredEmail1 { get; set; }
+        public bool shownew1 { get; set; }
+        public string addr1 { get; set; }
+        public string zip1 { get; set; }
+        public string city1 { get; set; }
+        public string state1 { get; set; }
         private Person _Person1;
         public Person person1
         {
@@ -66,6 +81,11 @@ namespace CMSWeb.Models
         public string phone2 { get; set; }
         public string email2 { get; set; }
         public bool preferredEmail2 { get; set; }
+        public bool shownew2 { get; set; }
+        public string addr2 { get; set; }
+        public string zip2 { get; set; }
+        public string city2 { get; set; }
+        public string state2 { get; set; }
         private Person _Person2;
         public Person person2
         {
@@ -75,6 +95,21 @@ namespace CMSWeb.Models
         public int Relation { get; set; }
 
         internal CmsData.Meeting _ChildCareMeeting;
+        public CmsData.Meeting childcaremeeting
+        {
+            get
+            {
+                if (_ChildCareMeeting == null)
+                {
+                    var q = from m in DbUtil.Db.Meetings
+                            where m.Organization.OrganizationId == DbUtil.Settings("SmlChildcareId").ToInt()
+                            where m.MeetingDate == meeting.MeetingDate
+                            select m;
+                    _ChildCareMeeting = q.FirstOrDefault();
+                }
+                return _ChildCareMeeting;
+            }
+        }
         internal CmsData.Meeting _meeting;
         public CmsData.Meeting meeting
         {
@@ -83,7 +118,7 @@ namespace CMSWeb.Models
                 if (_meeting == null)
                 {
                     var q = from m in DbUtil.Db.Meetings
-                            where m.Organization.OrganizationName == "Soulmate Live"
+                            where m.Organization.OrganizationId == DbUtil.Settings("SmlGroupId").ToInt()
                             where m.MeetingDate > DateTime.Now.AddDays(3)
                             orderby m.MeetingDate ascending
                             select m;
@@ -110,7 +145,7 @@ namespace CMSWeb.Models
         {
             return FindMember(phone2, lastname2, first2, DOB2, out _Person2);
         }
-        private int FindMember(string phone, string last, string first, DateTime DOB,
+        internal int FindMember(string phone, string last, string first, DateTime DOB,
             out Person person)
         {
             var fone = Util.GetDigits(phone);
@@ -144,6 +179,17 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("phone1", "7 or 10 digits");
             if (!email1.HasValue() || !Util.ValidEmail(email1))
                 ModelState.AddModelError("email1", "Please specify a valid email address.");
+            if (shownew1)
+            {
+                if (!addr1.HasValue())
+                    ModelState.AddModelError("addr1", "need address");
+                if (zip1.GetDigits().Length != 5)
+                    ModelState.AddModelError("zip1", "need 5 digit zip");
+                if (!city1.HasValue())
+                    ModelState.AddModelError("city1", "need city");
+                if (!state1.HasValue())
+                    ModelState.AddModelError("state1", "need state");
+            }
 
             if (!first2.HasValue())
                 ModelState.AddModelError("first2", "first name required");
@@ -156,11 +202,34 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("phone2", "7 or 10 digits");
             if (!email2.HasValue() || !Util.ValidEmail(email2))
                 ModelState.AddModelError("email2", "Please specify a valid email address.");
+            if (shownew2)
+            {
+                if (!addr2.HasValue())
+                    ModelState.AddModelError("addr2", "need address");
+                if (zip2.GetDigits().Length != 5)
+                    ModelState.AddModelError("zip2", "need 5 digit zip");
+                if (!city2.HasValue())
+                    ModelState.AddModelError("city2", "need city");
+                if (!state2.HasValue())
+                    ModelState.AddModelError("state2", "need state");
+            }
 
             if (Relation == 0)
                 ModelState.AddModelError("Relation", "Please select a relationship");
         }
-
+        public void ValidateChild(ModelStateDictionary modelState)
+        {
+            if (!first1.HasValue())
+                modelState.AddModelError("first1", "first name required");
+            if (!lastname1.HasValue())
+                modelState.AddModelError("lastname1", "last name required");
+            if (!DateTime.TryParse(dob1, out _dob1))
+                modelState.AddModelError("dob1", "valid birth date required");
+            if (!gender.HasValue)
+                modelState.AddModelError("gender2", "gender required");
+            if (!ChildParent.HasValue)
+                modelState.AddModelError("ChildParent", "choose a parent");
+        }
         public IEnumerable<SelectListItem> Relations()
         {
             return new List<SelectListItem> 
@@ -174,8 +243,9 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Parents()
         {
-            return new List<SelectListItem> 
+            return new List<SelectListItem>
             {
+                new SelectListItem { Value="0", Text="(select parent)" },
                 new SelectListItem { Value=person2.PeopleId.ToString(), Text=person2.Name },
                 new SelectListItem { Value=person1.PeopleId.ToString(), Text=person1.Name },
             };
@@ -183,13 +253,28 @@ namespace CMSWeb.Models
         public IEnumerable<ChildItem> Children()
         {
             var q = from c in DbUtil.Db.People
-                    where c.Attends.Any(a => a.MeetingId == _ChildCareMeeting.MeetingId)
+                    where c.Attends.Any(a => a.MeetingId == childcaremeeting.MeetingId)
                     where c.Family.People.Any(p => p.PeopleId == person1.PeopleId || p.PeopleId == person2.PeopleId)
                     select new ChildItem
                     {
                         Name = c.Name,
-                        Birthday = Util.FormatBirthday(c.BirthYear, c.BirthMonth, c.BirthDay),
-                        Age = c.Age ?? 0
+                        Birthday = c.BirthMonth + "/" + c.BirthDay + "/" + c.BirthYear,
+                        Age = c.Age ?? 0,
+                        Gender = c.Gender.Description
+                    };
+            return q;
+        }
+        public IEnumerable<ChildItem> Children(Person par)
+        {
+            var q = from c in DbUtil.Db.People
+                    where c.Attends.Any(a => a.MeetingId == childcaremeeting.MeetingId)
+                    where c.Family.People.Any(p => p.PeopleId == par.PeopleId)
+                    select new ChildItem
+                    {
+                        Name = c.Name,
+                        Birthday = c.BirthMonth + "/" + c.BirthDay + "/" + c.BirthYear,
+                        Age = c.Age ?? 0,
+                        Gender = c.Gender.Description
                     };
             return q;
         }
@@ -215,6 +300,83 @@ namespace CMSWeb.Models
                 actl.RecordAttendance(person.PeopleId, attend.MeetingId, false);
             actl.RecordAttendance(person.PeopleId, meeting.MeetingId, true);
             DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
+        }
+
+        public void EnrollInChildcare(Person c)
+        {
+            var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
+                om.OrganizationId == childcaremeeting.OrganizationId && om.PeopleId == c.PeopleId);
+            if (member == null)
+                OrganizationController.InsertOrgMembers(
+                    childcaremeeting.OrganizationId,
+                    c.PeopleId,
+                    (int)OrganizationMember.MemberTypeCode.Member,
+                    DateTime.Today, null);
+
+            var attend = DbUtil.Db.Attends.SingleOrDefault(a =>
+                a.OrganizationId == childcaremeeting.OrganizationId
+                && a.PeopleId == c.PeopleId
+                && a.AttendanceFlag == true
+                && a.MeetingDate > DateTime.Now);
+            var actl = new CMSPresenter.AttendController();
+            if (attend != null)
+                actl.RecordAttendance(c.PeopleId, attend.MeetingId, false);
+            actl.RecordAttendance(c.PeopleId, childcaremeeting.MeetingId, true);
+            DbUtil.Db.UpdateMeetingCounters(childcaremeeting.MeetingId);
+        }
+        internal void AddPeople()
+        {
+            var married = Relation < 3;
+            if (person1 != null && person2 != null)
+                return;
+            if (married && person1 != null && person2 == null)
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2);
+            else if (married && person1 == null && person2 != null)
+                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1);
+            else if (married && person1 == null && person2 == null)
+            {
+                _Person1 = AddPerson(first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, married);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2);
+            }
+            else if (!married && person1 != null && person2 == null)
+                _Person2 = AddPerson(first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, false);
+            else if (!married && person1 == null && person2 != null)
+                _Person1 = AddPerson(first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, false);
+            else if (!married && person1 == null && person2 == null)
+            {
+                _Person1 = AddPerson(first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, married);
+                _Person2 = AddPerson(first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, married);
+            }
+        }
+        internal Person AddPersonToPerson(Person p, string first, string last, string dob)
+        {
+            var np = Person.Add(p.Family, 10,
+                null, first, null, last, dob, true, 1, 0, null);
+            DbUtil.Db.SubmitChanges();
+            return np;
+        }
+        internal Person AddPerson(string first, string last, string dob, 
+            string addr, string city, string state, string zip, string phone, bool married)
+        {
+            var f = new Family
+            {
+                AddressLineOne = addr,
+                CityName = city,
+                StateCode = state,
+                ZipCode = zip,
+                HomePhone = phone,
+            };
+            var np = Person.Add(f, 10,
+                null, first, null, last, dob, married, 1, 0, null);
+            DbUtil.Db.SubmitChanges();
+            return np;
+        }
+        public Person AddChild(Person p)
+        {
+            var np = Person.Add(p.Family, 30,
+                null, first1, null, lastname1, dob1, false, gender.Value, 0, null);
+            DbUtil.Db.SubmitChanges();
+            return np;
         }
     }
 }

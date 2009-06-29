@@ -95,7 +95,7 @@ namespace CMSWeb
                 ContactReasonId = contact.ContactReasonId,
                 MinistryId = contact.MinistryId,
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
             };
             DbUtil.Db.NewContacts.InsertOnSubmit(c);
             foreach (var cp in contact.contactsMakers)

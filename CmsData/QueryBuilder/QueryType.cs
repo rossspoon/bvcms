@@ -36,6 +36,7 @@ namespace CmsData
         DoNotVisitFlag,
         DropDate,
         DropCodeId,
+        EmailAddress,
         EmployerOther,
         EntryPointId,
         EnvelopeOptionsId,

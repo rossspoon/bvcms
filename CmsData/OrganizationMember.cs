@@ -76,7 +76,7 @@ namespace CmsData
                     OrganizationName = Organization.OrganizationName,
                     TransactionDate = Util.Now,
                     TransactionTypeId = 5, // drop
-                    CreatedBy = Util.UserId,
+                    CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
                     VipWeek1 = VipWeek1,
                     VipWeek2 = VipWeek2,

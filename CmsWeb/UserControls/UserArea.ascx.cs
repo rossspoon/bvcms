@@ -13,6 +13,7 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             HiddenField1.Value = Util.UserName;
+            TagLink.ToolTip = Util.UserId.ToString();
         }
         protected override void OnInit(EventArgs e)
         {

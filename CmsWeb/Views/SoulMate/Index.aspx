@@ -5,6 +5,59 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+
+    <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $("#first1").keypress(function(e) {
+                if (e.which == 126) {
+                    $("#first1").val('David');
+                    $("#lastname1").val('Carroll');
+                    $("#dob1").val('5/30/52');
+                    $("#phone1").val('7581862');
+                    $("#email1").val('davcar@pobox.com');
+                    $("#first2").val('Karen');
+                    $("#lastname2").val('Worrell');
+                    $("#dob2").val('8/16/52');
+                    $("#phone2").val('8332104');
+                    $("#email2").val('kworrell@bellevue.org');
+                    $("#Relation").val('4');
+                    return false;
+                }
+            });
+        });
+    </script>
+<% if(Model.shownew1)
+   { %>
+    <script type="text/javascript">
+        $(function() {
+            $("#zip1").change(function() {
+                $.post('/SoulMate/CityState/' + $(this).val(), null, function(ret) {
+                    if (ret) {
+                        $('#state1').val(ret.state);
+                        $('#city1').val(ret.city);
+                    }
+                }, 'json');
+            });
+        });
+    </script>
+<% }
+   if(Model.shownew2)
+   { %>
+    <script type="text/javascript">
+        $(function() {
+            $("#zip2").change(function() {
+                $.post('/SoulMate/CityState/' + $(this).val(), null, function(ret) {
+                    if (ret) {
+                        $('#state2').text(ret.state);
+                        $('#city2').text(ret.city);
+                    }
+                }, 'json');
+            });
+        });
+    </script>    
+<% } %>
     <h2>Register for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
 
     <%= Html.ValidationSummary() %>
@@ -45,11 +98,27 @@
                     <td>&nbsp;</td>
                     <td colspan = "2"><%= Html.CheckBox("preferredEmail1") %> This is his preferred email address</td>
                 </tr>
-            <% if (Model.person1 == null)
+            <% if (Model.shownew1)
                { %>
                 <tr>
+                    <td><%=Html.Hidden("shownew1") %>
+                    <label for="addr1">Address</label></td>
+                    <td><%=Html.TextBox("addr1") %></td>
+                    <td><%= Html.ValidationMessage("addr1") %></td>
+                </tr>
+                <tr>
+                    <td><label for="zip1">Zip</label></td>
+                    <td><%=Html.TextBox("zip1")%></td>
+                    <td><%= Html.ValidationMessage("zip1")%></td>
+                </tr>
+                <tr>
+                    <td><label for="city1">City</label></td>
+                    <td><%=Html.TextBox("city1")%></td>
                     <td></td>
-                    <td></td>
+                </tr>
+                <tr>
+                    <td><label for="state1">State</label></td>
+                    <td><%=Html.TextBox("state1")%></td>
                     <td></td>
                 </tr>
             <% } %>
@@ -83,6 +152,31 @@
                     <td>&nbsp;</td>
                     <td colspan = "2"><%= Html.CheckBox("preferredEmail2") %> This is her preferred email address</td>
                 </tr>
+            <% if (Model.shownew2)
+               { %>
+                <tr>
+                    <td><%=Html.Hidden("shownew2") %>
+                    <label for="addr2">Address</label></td>
+                    <td><%=Html.TextBox("addr2") %></td>
+                    <td><%= Html.ValidationMessage("addr2") %></td>
+                </tr>
+                <tr>
+                    <td><label for="zip2">Zip</label></td>
+                    <td><%=Html.TextBox("zip2")%></td>
+                    <td><%= Html.ValidationMessage("zip2")%></td>
+                </tr>
+                <tr>
+                    <td><label for="city2">City</label></td>
+                    <td><%=Html.TextBox("city2")%></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><label for="state2">State</label></td>
+                    <td><%=Html.TextBox("state2")%></td>
+                    <td></td>
+                </tr>
+            <% } %>
+                
                 <tr><th colspan="2">Relationship</th></tr>
                 <tr>
                     <td><label for="Relation">Relationship</label></td>
@@ -95,7 +189,7 @@
                 </tr>
                 </table>
             </fieldset>
-            If you are having difficulty registering online, please call SOMEONE at 347-5000.
+            <p>If you are having difficulty registering online, please call the Young Adult office at 347-5000.</p>
         </div>
     <% } %>
 </asp:Content>

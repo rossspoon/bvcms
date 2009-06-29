@@ -18,12 +18,12 @@ namespace CmsData
                     var dtNow = Util.Now;
                     if (IsInsert)
                     {
-                        entity.CreatedBy = Util.UserId;
+                        entity.CreatedBy = Util.UserId1;
                         entity.CreatedDate = dtNow;
                     }
                     else
                     {
-                        entity.ModifiedBy = Util.UserId;
+                        entity.ModifiedBy = Util.UserId1;
                         entity.ModifiedDate = dtNow;
                     }
                 }

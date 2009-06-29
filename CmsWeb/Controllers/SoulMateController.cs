@@ -8,20 +8,18 @@ using CmsData;
 using System.Configuration;
 using CMSWeb.Models;
 using UtilityExtensions;
+using System.Text;
 
 namespace CMSWeb.Controllers
 {
     [HandleError]
     public class SoulMateController : Controller
     {
-        public SoulMateController()
-        {
-            ViewData["header"] = "Soulmate Registration";
-            ViewData["logoimg"] = DbUtil.Settings("VolLogo");
-        }
         public ActionResult Index()
         {
             var m = new Models.SoulMateModel();
+            if (m.meeting == null)
+                return View("CheckBack");
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -33,42 +31,131 @@ namespace CMSWeb.Controllers
                 if (count > 1)
                     ModelState.AddModelError("_FORM", "More than one match for him, sorry");
                 else if (count == 0)
-                    ModelState.AddModelError("_FORM", "Cannot find his church record.");
+                    if (!m.shownew1)
+                    {
+                        ModelState.AddModelError("_FORM", "Cannot find his church record.");
+                        m.shownew1 = true;
+                    }
 
                 count = m.FindMember2();
                 if (count > 1)
                     ModelState.AddModelError("_FORM", "More than one match for her, sorry");
                 else if (count == 0)
-                    ModelState.AddModelError("_FORM", "Cannot find her church record.");
+                    if(!m.shownew2)
+                    {
+                        ModelState.AddModelError("_FORM", "Cannot find her church record.");
+                        m.shownew2 = true;
+                    }
             }
             if (!ModelState.IsValid)
                 return View(m);
+            m.AddPeople();
             m.EnrollInClass(m.person1);
             m.EnrollInClass(m.person2);
+            var sm = DbUtil.Db.SoulMates.SingleOrDefault(s => 
+                s.EventId == m.meeting.MeetingId 
+                && s.HerId == m.person2.PeopleId 
+                && s.HimId == m.person1.PeopleId);
+            if (sm == null)
+            {
+                sm = new SoulMate
+                {
+                    EventId = m.meeting.MeetingId,
+                    HerId = m.person2.PeopleId,
+                    HerEmail = m.email2,
+                    HerEmailPreferred = m.preferredEmail2,
+                    HimId = m.person1.PeopleId,
+                    HisEmail = m.email1,
+                    HisEmailPreferred = m.preferredEmail1,
+                    Relationship = m.Relation,
+                    ChildcareId = m.childcaremeeting.MeetingId
+                };
+                DbUtil.Db.SoulMates.InsertOnSubmit(sm);
+            }
+            else
+                sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
-            SendEmail(m.person1, m.email1, m.preferredEmail1, m.meeting);
-            SendEmail(m.person2, m.email2, m.preferredEmail2, m.meeting);
-            return RedirectToAction("Confirm");
+            return RedirectToAction("ChildCare", new { id = sm.Id });
         }
-        public ActionResult Step1Confirm()
+        public ActionResult ChildCare(int id)
         {
-            return View();
+            var m = new Models.SoulMateModel(id);
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View(m);
+
+            UpdateModel(m);
+            m.ValidateChild(ModelState);
+            if (!ModelState.IsValid)
+                return View(m);
+            int count = 0;
+            Person c = null;
+            Person p = null;
+            if (m.ChildParent.Value == m.person1.PeopleId)
+            {
+                p = m.person1;
+                count = m.FindMember(m.person1.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
+            }
+            else
+            {
+                p = m.person2;
+                count = m.FindMember(m.person2.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
+            }
+            if (count > 1)
+                ModelState.AddModelError("_FORM", "More than one match for child, sorry");
+            if (c == null)
+                c = m.AddChild(p);
+            m.EnrollInChildcare(c);
+            return View(m);
         }
-        private void SendEmail(Person p, string email, bool preferred, CmsData.Meeting meeting)
+        public JsonResult CityState(string id)
+        {
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
+            if (z == null)
+                return Json(null);
+            return Json( new { city = z.City, state = z.State });
+        }
+        public ActionResult Confirm(int id)
+        {
+            var m = new Models.SoulMateModel(id);
+            SendEmail(m.person1, m.email1, m.preferredEmail1, m.meeting, m.Children(m.person1));
+            SendEmail(m.person2, m.email2, m.preferredEmail2, m.meeting, m.Children(m.person2));
+            return View(m);
+        }
+
+        private void SendEmail(Person p, string email, bool preferred, 
+            CmsData.Meeting meeting, IEnumerable<ChildItem> children)
         {
             if (p.EmailAddress != email && preferred)
             {
-                HomeController.Email(DbUtil.Settings("RegMail"),
+                HomeController.Email(DbUtil.Settings("SmlMail"),
                                 p.Name, p.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
 <p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
                 p.EmailAddress = email;
                 DbUtil.Db.SubmitChanges();
             }
-            HomeController.Email(DbUtil.Settings("RegMail"),
-                                p.Name, email, "Soulmate Live Registration",
-@"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Soulmate Live Event for the following date:</p>
-<p>{1:ddd MMM d, yyyy} 4:30 to 6:00 PM</p>".Fmt(p.PreferredName, meeting.MeetingDate, meeting.Organization.OrganizationName));
+            var sb = new StringBuilder();
+            if (children.Count() > 0)
+            {
+                sb.AppendLine("<table><tr><th colspan=\"3\">Children in Childcare</th></tr><tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Gender</th></tr>");
+                foreach (var c in children)
+                {
+                    sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td></tr>\n",
+                        c.Name, c.Birthday, c.Age, c.Gender);
+                }
+                sb.AppendLine("</table>");
+            }
+            HomeController.Email(DbUtil.Settings("SmlMail"),
+                                p.Name, email, "(0} Registration".Fmt(meeting.Organization.OrganizationName),
+@"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Event for the following date:</p>
+<p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(
+            p.PreferredName, meeting.MeetingDate, meeting.Organization.OrganizationName,
+            sb.ToString()));
+            HomeController.Email(email,
+                                "", DbUtil.Settings("SmlMail"), "(0} Registration".Fmt(meeting.Organization.OrganizationName),
+@"{0}({1}) registered for {3} for the following date:</p>
+<p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
+            p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
         }
     }
 }

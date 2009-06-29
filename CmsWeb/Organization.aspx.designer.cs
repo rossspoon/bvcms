@@ -464,22 +464,13 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.Button ShowMeetings;
         
         /// <summary>
-        /// RollsheetPanel control.
+        /// TriggerRollsheetPopup2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel RollsheetPanel;
-        
-        /// <summary>
-        /// TriggerRollsheetPopup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton TriggerRollsheetPopup;
+        protected global::System.Web.UI.WebControls.Button TriggerRollsheetPopup2;
         
         /// <summary>
         /// RollsheetInputPanel control.
@@ -545,22 +536,13 @@ namespace CMSWeb {
         protected global::AjaxControlToolkit.ModalPopupExtender RollsheetPopup;
         
         /// <summary>
-        /// NewMeetingPanel control.
+        /// TriggerNewMeetingPopup2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel NewMeetingPanel;
-        
-        /// <summary>
-        /// TriggerNewMeetingPopup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton TriggerNewMeetingPopup;
+        protected global::System.Web.UI.WebControls.Button TriggerNewMeetingPopup2;
         
         /// <summary>
         /// NewMeetingInputPanel control.

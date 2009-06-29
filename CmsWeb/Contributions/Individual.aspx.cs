@@ -43,7 +43,7 @@ namespace CMSWeb.Contributions
                 var r = new Contribution
                 {
                     ContributionStatusId = (int)Contribution.StatusCode.Recorded,
-                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                    CreatedBy = Util.UserId1,
                     CreatedDate = now,
                     PeopleId = c.PeopleId,
                     ContributionAmount = c.ContributionAmount,

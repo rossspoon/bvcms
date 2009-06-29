@@ -120,6 +120,7 @@
     <Compile Include="Generated\VolOpportunity.cs" />
     <Compile Include="Generated\WeeklySchedule.cs" />
     <Compile Include="Generated\Zip.cs" />
+    <Compile Include="Generated\ZipCode.cs" />
     <Compile Include="IndividualContribution.cs" />
     <Compile Include="Generated\Attend.cs" />
     <Compile Include="Generated\BundleHeaderType.cs" />

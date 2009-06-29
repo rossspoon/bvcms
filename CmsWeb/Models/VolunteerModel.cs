@@ -46,9 +46,9 @@ namespace CMSWeb.Models
                             && (p.FirstName.StartsWith(first)
                             || p.NickName.StartsWith(first)
                             || p.MiddleName.StartsWith(first))
-                    where p.CellPhone.Contains(phone)
-                            || p.WorkPhone.Contains(phone)
-                            || p.Family.HomePhone.Contains(phone)
+                    where p.CellPhone.Contains(fone)
+                            || p.WorkPhone.Contains(fone)
+                            || p.Family.HomePhone.Contains(fone)
                     where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
                     select p;
             var count = q.Count();

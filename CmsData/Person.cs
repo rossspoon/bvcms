@@ -247,7 +247,7 @@ namespace CmsData
                         EnrollmentDate = om.EnrollmentDate,
                         InactiveDate = om.InactiveDate,
                         MemberTypeId = om.MemberTypeId,
-                        ModifiedBy = Util.UserId,
+                        ModifiedBy = Util.UserId1,
                         ModifiedDate = DateTime.Now,
                         PeopleId = otherid,
                         VipWeek1 = om.VipWeek1,

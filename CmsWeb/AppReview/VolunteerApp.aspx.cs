@@ -36,10 +36,10 @@ namespace CMSWeb
 
         protected void Upload_Click(object sender, EventArgs e)
         {
-            var f = new VolunteerForm { UploaderId = Util.UserId, PeopleId = vol.PeopleId };
+            var f = new VolunteerForm { UploaderId = Util.UserId1, PeopleId = vol.PeopleId };
             DbUtil.Db.VolunteerForms.InsertOnSubmit(f);
             f.AppDate = Util.Now;
-            f.UploaderId = Util.UserId;
+            f.UploaderId = Util.UserId1;
             var bits = new byte[ImageFile.PostedFile.ContentLength];
             ImageFile.PostedFile.InputStream.Read(bits, 0, bits.Length);
             var mimetype = ImageFile.PostedFile.ContentType.ToLower();

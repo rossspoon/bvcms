@@ -223,7 +223,7 @@ namespace CMSWeb
             var c = new NewContact
             {
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 ContactDate = Util.Now.Date,
                 ContactTypeId = 99,
                 ContactReasonId = 99,
@@ -266,7 +266,7 @@ namespace CMSWeb
             var c = new NewContact
             {
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 ContactDate = Util.Now.Date,
                 ContactTypeId = 99,
                 ContactReasonId = 99,

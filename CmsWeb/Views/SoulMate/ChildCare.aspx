@@ -22,36 +22,43 @@
                     <td><%= Html.ValidationMessage("ChildParent")%></td>
                 </tr>
                 <tr>
-                    <td><label for="first">First Name</label></td>
-                    <td><%= Html.TextBox("first") %></td>
-                    <td><%= Html.ValidationMessage("first") %></td>
+                    <td><label for="first1">First Name</label></td>
+                    <td><%= Html.TextBox("first1") %></td>
+                    <td><%= Html.ValidationMessage("first1") %></td>
                 </tr>
                 <tr>
-                    <td><label for="lastname">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname") %></td>
-                    <td><%= Html.ValidationMessage("lastname") %></td>
+                    <td><label for="lastname1">Last Name</label></td>
+                    <td><%= Html.TextBox("lastname1") %></td>
+                    <td><%= Html.ValidationMessage("lastname1") %></td>
                 </tr>
                 <tr>
-                    <td><label for="dob">Date of Birth</label></td>
-                    <td><%= Html.TextBox("dob") %></td>
-                    <td><%= Html.ValidationMessage("dob") %></td>
+                    <td><label for="gender">Gender</label></td>
+                    <td><%= Html.RadioButton("gender", 1) %> Male
+                    <%= Html.RadioButton("gender", 2) %> Female</td>
+                    <td><%= Html.ValidationMessage("gender2") %></td>
+                </tr>
+                <tr>
+                    <td><label for="dob1">Date of Birth</label></td>
+                    <td><%= Html.TextBox("dob1") %></td>
+                    <td><%= Html.ValidationMessage("dob1") %></td>
                 </tr>
 
                 <tr>
-                    <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
+                    <td>&nbsp;</td><td><input type="submit" value="Register Child" /></td>
                 </tr>
                 </table>
             </fieldset>
+            
+            <h2>Children Registered</h2>
             <table>
-            <tr>
-                <th>Name</th><th>Date of Birth</th>
+            <tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Gender</th></tr>
                 <% foreach (var c in Model.Children())
                    { %>
-                <td></td><td></td>
+            <tr><td><%=c.Name %></td><td><%=c.Birthday %> ()</td><td><%=c.Age %></td><td><%=c.Gender %></td></tr>
                 <% } %>
-            </tr>
             </table>
-            If you are having difficulty registering online, please call SOMEONE at 347-5000.
+            <h3><%=Html.ActionLink("Complete Registration", "Confirm", new { id = Model.SoulMateId })%></h3>
+            <p>If you are having difficulty registering online, please call the Young Adult office at 347-5000.</p>
         </div>
     <% } %>
 </asp:Content>

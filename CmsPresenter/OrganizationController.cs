@@ -102,7 +102,7 @@ namespace CMSPresenter
                 TransactionDate = Util.Now,
                 EnrollmentDate = om.EnrollmentDate,
                 TransactionTypeId = 1, // join
-                CreatedBy = Util.UserId,
+                CreatedBy = Util.UserId1,
                 CreatedDate = Util.Now,
             };
             Db.OrganizationMembers.InsertOnSubmit(om);
@@ -225,7 +225,7 @@ namespace CMSPresenter
             {
                 AttendTrkLevelId = org.AttendTrkLevelId,
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 DivisionId = org.DivisionId,
                 LeaderMemberTypeId = org.LeaderMemberTypeId,
                 OrganizationName = org.OrganizationName + " (copy)",

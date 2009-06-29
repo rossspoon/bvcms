@@ -66,6 +66,8 @@
     <Field Name="WeddingDate"  Title="Wedding Date" Type="Date">
       Todo: explain how unknown dates work
     </Field>
+    <Field Name="EmailAddress"  Title="Email" Type="String">
+    </Field>
     <Field Name="PeopleId" Title="PeopleId (internal)" Type="Integer">
     </Field>
   </Category>

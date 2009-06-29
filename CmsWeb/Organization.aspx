@@ -50,8 +50,7 @@
         }
 
         function OpenRollsheet() {
-            $get('<%=TriggerRollsheetPopup.ClientID%>').click();
-            $get('<%=RollsheetInputPanel.ClientID%>').focus();
+            $find('<%=RollsheetPopup.ClientID%>').show();
         }
 
         function ViewRollsheet2() {
@@ -72,8 +71,7 @@
         }
 
         function OpenNewMeeting() {
-            $get('<%=TriggerNewMeetingPopup.ClientID%>').click();
-            $get('<%=NewMeetingInputPanel.ClientID%>').focus();
+            $find('<%=NewMeetingPopup.ClientID%>').show();
         }
     </script>
 
@@ -423,10 +421,8 @@
             </asp:UpdatePanel>
         </div>
     </div>
-    <asp:UpdatePanel ID="RollsheetPanel" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <asp:LinkButton ID="TriggerRollsheetPopup" Style="display: none" runat="server">LinkButton</asp:LinkButton>
-            <asp:Panel ID="RollsheetInputPanel" runat="server" CssClass="modalDiv" Style="display: none">
+            <asp:Button ID="TriggerRollsheetPopup2" Style="display: none" runat="server"></asp:Button>
+           <asp:Panel ID="RollsheetInputPanel" runat="server" CssClass="modalDiv" Style="display: none">
                 <table>
                     <tr>
                         <th colspan="2" style="font-size: larger; font-weight: bold">
@@ -462,15 +458,11 @@
                     </tr>
                 </table>
             </asp:Panel>
-            <cc2:ModalPopupExtender ID="RollsheetPopup" BehaviorID="RollsheetPopupBehavior" runat="server"
-                TargetControlID="TriggerRollsheetPopup" PopupControlID="RollsheetInputPanel"
+            <cc2:ModalPopupExtender ID="RollsheetPopup" runat="server"
+                TargetControlID="TriggerRollsheetPopup2" PopupControlID="RollsheetInputPanel"
                 CancelControlID="RollsheetCancel" DropShadow="true" BackgroundCssClass="modalBackground">
             </cc2:ModalPopupExtender>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    <asp:UpdatePanel ID="NewMeetingPanel" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <asp:LinkButton ID="TriggerNewMeetingPopup" Style="display: none" runat="server">LinkButton</asp:LinkButton>
+            <asp:Button ID="TriggerNewMeetingPopup2" Style="display: none" runat="server"></asp:Button>
             <asp:Panel ID="NewMeetingInputPanel" runat="server" CssClass="modalDiv" Style="display: none">
                 <table>
                     <tr>
@@ -514,12 +506,10 @@
                     </tr>
                 </table>
             </asp:Panel>
-            <cc2:ModalPopupExtender ID="NewMeetingPopup" BehaviorID="NewMeetingPopupBehavior"
-                runat="server" TargetControlID="TriggerNewMeetingPopup" PopupControlID="NewMeetingInputPanel"
+            <cc2:ModalPopupExtender ID="NewMeetingPopup"
+                runat="server" TargetControlID="TriggerNewMeetingPopup2" PopupControlID="NewMeetingInputPanel"
                 CancelControlID="NewMeetingCancel" DropShadow="true" BackgroundCssClass="modalBackground">
             </cc2:ModalPopupExtender>
-        </ContentTemplate>
-    </asp:UpdatePanel>
     <asp:ObjectDataSource ID="MeetingData" runat="server" EnablePaging="True" SelectCountMethod="MeetingCount"
         DeleteMethod="DeleteMeeting" SortParameterName="sortExpression" SelectMethod="Meetings"
         TypeName="CMSPresenter.MeetingController">

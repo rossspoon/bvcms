@@ -8,12 +8,9 @@
 
     <h2>Registration Successful</h2>
     <p>
-        Thank you for enrolling in Step 3.  
+        Thank you for registering for SoulMate Live.
         You should receive an email confirmation shortly.
     </p>
-    <p>
-        <a href="/StepClass/Step3">Register another family member</a>
-    </p>
-    <a href="http://www.bellevue.org/pages/page.asp?page_id=66485" target="_top">Return to Member Development</a>
+    <a href="http://www.SoulMateLive.org" target="_top">Return to SoulMate Live</a>
 
 </asp:Content>

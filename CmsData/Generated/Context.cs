@@ -410,6 +410,10 @@ namespace CmsData
         partial void UpdateWeeklySchedule(WeeklySchedule instance);
         partial void DeleteWeeklySchedule(WeeklySchedule instance);
         
+        partial void InsertZipCode(ZipCode instance);
+        partial void UpdateZipCode(ZipCode instance);
+        partial void DeleteZipCode(ZipCode instance);
+        
         partial void InsertZip(Zip instance);
         partial void UpdateZip(Zip instance);
         partial void DeleteZip(Zip instance);
@@ -1037,6 +1041,12 @@ namespace CmsData
 		public Table< WeeklySchedule> WeeklySchedules
 		{
 			get	{ return this.GetTable< WeeklySchedule>(); }
+
+		}
+
+		public Table< ZipCode> ZipCodes
+		{
+			get	{ return this.GetTable< ZipCode>(); }
 
 		}
 

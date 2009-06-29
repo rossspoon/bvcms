@@ -88,7 +88,7 @@ namespace CmsData
                 {
                     MeetingDate = MeetingDate.Value,
                     PeopleId = i.PeopleId,
-                    CreatedBy = Util.UserId,
+                    CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
                     AttendanceFlag = false,
                     OrganizationId = OrganizationId,

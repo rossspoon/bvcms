@@ -56,7 +56,7 @@ namespace CmsData
             var a = new ActivityLog
             {
                 ActivityDate = Util.Now,
-                UserId = Util.UserId,
+                UserId = Util.UserId1,
                 Activity = activity,
                 PageUrl = recordPageUrl ? HttpContext.Current.Request.RawUrl : null,
             };

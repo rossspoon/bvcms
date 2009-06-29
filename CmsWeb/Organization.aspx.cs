@@ -163,7 +163,7 @@ namespace CMSWeb
             mt = new CmsData.Meeting
             {
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 OrganizationId = organization.OrganizationId,
                 GroupMeetingFlag = false,
                 Location = organization.Location,
@@ -190,7 +190,7 @@ namespace CMSWeb
             mt = new CmsData.Meeting
             {
                 CreatedDate = DateTime.Now,
-                CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                CreatedBy = Util.UserId1,
                 OrganizationId = organization.OrganizationId,
                 GroupMeetingFlag = true,
                 Location = organization.Location,
@@ -312,6 +312,9 @@ namespace CMSWeb
 
         protected void GroupFilter_DataBound(object sender, EventArgs e)
         {
+            var v = GroupFilter.Items.FindByValue(Util.CurrentGroupId.ToString());
+            if (v == null)
+                Util.CurrentGroupId = 0;
             GroupFilter.SelectedValue = Util.CurrentGroupId.ToString();
         }
     }

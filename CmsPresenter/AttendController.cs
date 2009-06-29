@@ -238,7 +238,7 @@ namespace CMSPresenter
                     PeopleId = PeopleId,
                     MeetingDate = Meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                    CreatedBy = Util.UserId1,
                 };
                 Meeting.Attends.Add(Attendance);
             }
@@ -370,7 +370,7 @@ namespace CMSPresenter
                     OrganizationId = member.OrganizationId,
                     MeetingDate = meeting.MeetingDate,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                    CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
                     Location = member.Organization.Location,
                 };
@@ -390,7 +390,7 @@ namespace CMSPresenter
                     MemberTypeId = member.MemberTypeId,
                     MeetingDate = meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = DbUtil.Db.CurrentUser.UserId,
+                    CreatedBy = Util.UserId1,
                     Meeting = othMeeting,
                 };
                 DbUtil.Db.Attends.InsertOnSubmit(othAttend);
