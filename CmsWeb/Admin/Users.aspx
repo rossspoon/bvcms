@@ -26,7 +26,10 @@
 
     <asp:HyperLink ID="HyperLink1" NavigateUrl="~/" runat="server">HomePage</asp:HyperLink>
             <asp:TextBox runat="server" ID="TextBox1" BorderStyle="Solid" />
-            <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" /><br />
+            <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" />
+            <asp:DropDownList ID="RolesDD" runat="server" DataSourceID="UserRoles" AutoPostBack="true" DataTextField="Code" DataValueField="Id">
+            </asp:DropDownList>
+    <br />
             <asp:DataPager ID="pager1" PagedControlID="ListView1" runat="server">
                 <Fields>
                     <cc1:PagerField NextPageImageUrl="~/images/arrow_right2.gif" PreviousPageImageUrl="~/images/arrow_left.gif" />
@@ -287,6 +290,8 @@
     <asp:Button ID="ButtonCreateNewRole" runat="server" OnClick="ButtonCreateNewRole_Click"
         Text="Create New Role" />
     <asp:TextBox ID="TextBoxCreateNewRole" runat="server"></asp:TextBox>
+    <asp:ObjectDataSource ID="UserRoles" runat="server" SelectMethod="UserRoles" TypeName="CMSPresenter.CodeValueController">
+    </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ObjectDataSourceMembershipUser" runat="server" DeleteMethod="Delete"
         SelectMethod="GetUsers" TypeName="CMSPresenter.UserController" UpdateMethod="Update"
         SortParameterName="sortExpression" OnInserted="ObjectDataSourceMembershipUser_Inserted"
@@ -307,6 +312,7 @@
         </UpdateParameters>
         <SelectParameters>
             <asp:ControlParameter ControlID="TextBox1" Name="name" Type="String" />
+            <asp:ControlParameter ControlID="RolesDD" Name="roleid" Type="Int32" />
             <asp:Parameter Name="sortExpression" Type="String" />
             <asp:Parameter Name="startIndex" Type="Int32" />
             <asp:Parameter Name="maximumRows" Type="Int32" />

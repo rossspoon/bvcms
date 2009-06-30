@@ -936,7 +936,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> UserRoles()
         {
-            return from s in DbUtil.Db.Roles
+            var q = from s in DbUtil.Db.Roles
                    orderby s.RoleId
                    select new CodeValueItem
                    {
@@ -944,6 +944,9 @@ namespace CMSPresenter
                        Code = s.RoleName,
                        Value = s.RoleName,
                    };
+            var list = q.ToList();
+            list.Insert(0, new CodeValueItem { Code="(not specified)", Id=0});
+            return list;
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]

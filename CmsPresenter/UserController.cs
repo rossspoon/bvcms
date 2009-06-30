@@ -83,18 +83,20 @@ namespace CMSPresenter
         }
 
         private int count;
-        public int Count(string name, string sortExpression, int startIndex, int maximumRows)
+        public int Count(string name, int roleid, string sortExpression, int startIndex, int maximumRows)
         {
             return count;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<User> GetUsers(string name, string sortExpression, int startIndex, int maximumRows)
+        public IEnumerable<User> GetUsers(string name, int roleid, string sortExpression, int startIndex, int maximumRows)
         {
             var q = from u in Db.Users
                     select u;
 
             if (name.HasValue())
                 q = q.Where(u => u.Name2.StartsWith(name));
+            if (roleid > 0)
+                q = q.Where(u => u.UserRoles.Any(ur => ur.RoleId == roleid));
             count = q.Count();
 
             if (!sortExpression.HasValue())

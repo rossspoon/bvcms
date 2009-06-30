@@ -110,7 +110,7 @@
                     </ul>
                 </li>
                 <li class="headlink">
-                    <a href="/QueryBuilder.aspx">QueryBuilder</a>
+                    <a href="/QueryBuilder/Main">QueryBuilder</a>
                     <ul>
                         <li>
                             <a href="/QueryBuilder/Main">Last Query</a></li>

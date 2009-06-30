@@ -367,7 +367,9 @@ namespace CMSWeb.Models
                 HomePhone = phone,
             };
             var np = Person.Add(f, 10,
-                null, first, null, last, dob, married, 1, 0, null);
+                null, first, null, last, dob, married, 1, 
+                    DbUtil.Settings("SmlOrigin").ToInt(), 
+                    DbUtil.Settings("SmlEntry").ToInt());
             DbUtil.Db.SubmitChanges();
             return np;
         }

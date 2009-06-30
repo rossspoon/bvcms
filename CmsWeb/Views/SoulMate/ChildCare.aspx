@@ -54,11 +54,11 @@
             <tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Gender</th></tr>
                 <% foreach (var c in Model.Children())
                    { %>
-            <tr><td><%=c.Name %></td><td><%=c.Birthday %> ()</td><td><%=c.Age %></td><td><%=c.Gender %></td></tr>
+            <tr><td><%=c.Name %></td><td><%=c.Birthday %></td><td><%=c.Age %></td><td><%=c.Gender %></td></tr>
                 <% } %>
             </table>
-            <h3><%=Html.ActionLink("Complete Registration", "Confirm", new { id = Model.SoulMateId })%></h3>
-            <p>If you are having difficulty registering online, please call the Young Adult office at 347-5000.</p>
+            <h3><%=Html.ActionLink("Confirm your registration here", "Confirm", new { id = Model.SoulMateId })%></h3>
+            <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp") %></p>
         </div>
     <% } %>
 </asp:Content>

@@ -189,7 +189,7 @@
                 </tr>
                 </table>
             </fieldset>
-            <p>If you are having difficulty registering online, please call the Young Adult office at 347-5000.</p>
+            <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp") %></p>
         </div>
     <% } %>
 </asp:Content>

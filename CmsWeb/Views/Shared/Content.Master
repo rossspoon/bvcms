@@ -111,10 +111,10 @@
                     </ul>
                 </li>
                 <li class="headlink">
-                    <a href="/QueryBuilder.aspx">QueryBuilder</a>
+                    <a href="/QueryBuilder/Main">QueryBuilder</a>
                     <ul>
                         <li>
-                            <a href="/QueryBuilder.aspx">Last Query</a></li>
+                            <a href="/QueryBuilder/Main">Last Query</a></li>
                         <li>
                             <%=Html.ActionLink("New Query", "NewQuery", "Home")%></li>
                         <li>
