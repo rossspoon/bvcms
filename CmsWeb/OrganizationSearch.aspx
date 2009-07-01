@@ -31,10 +31,12 @@
                 return false;
             }
             var sid = '<%=Schedule.SelectedValue %>';
+            var nam = '<%=NameSearch.Text %>';
             var d = $get('<%=MeetingDate.ClientID %>').value;
             var t = $get('<%=MeetingTime.ClientID %>').value;
             var args = "?div=" + did +
                    "&schedule=" + sid +
+                   "&name=" + nam +
                    "&dt=" + d + " " + t;
 
             var newWindowUrl = "Report/Rollsheet.aspx" + args

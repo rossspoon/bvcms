@@ -290,6 +290,7 @@ namespace CMSPresenter
                 if (a.AttendanceFlag == true)
                     attendcontrol.RecordAttendance(a.PeopleId, MeetingId, false);
             DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
+            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
             DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
             DbUtil.Db.SubmitChanges();
         }

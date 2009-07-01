@@ -54,6 +54,7 @@ namespace CMSWeb.Reports
             }
             var div = this.QueryString<int?>("div");
             var schedule = this.QueryString<int?>("schedule");
+            var name = this.QueryString<string>("name");
             dt = this.QueryString<DateTime?>("dt");
 
             var mid = this.QueryString<int?>("meetingid");
@@ -77,7 +78,7 @@ namespace CMSWeb.Reports
                 dt = meeting.MeetingDate;
                 org = meeting.OrganizationId;
             }
-            foreach (var o in list(org, group, div, schedule))
+            foreach (var o in list(org, group, div, schedule, name))
             {
                 var mct = StartPageSet(o);
 
@@ -145,13 +146,14 @@ namespace CMSWeb.Reports
             public string Teacher { get; set; }
             public string Location { get; set; }
         }
-        private IEnumerable<OrgInfo> list(int? orgid, int? groupid, int? divid, int? schedule)
+        private IEnumerable<OrgInfo> list(int? orgid, int? groupid, int? divid, int? schedule, string name)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.ScheduleId == schedule || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo
                     {

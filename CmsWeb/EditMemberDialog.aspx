@@ -77,7 +77,7 @@
                         ImageUrl="~/images/delete.gif" 
                         onclick="Delete_Click" />
                     <cc2:ConfirmButtonExtender ID="Delete_ConfirmButtonExtender" 
-                        runat="server" ConfirmText="Are you sure you want to delete?" Enabled="True" TargetControlID="Delete">
+                        runat="server" ConfirmText="Are you sure you want to drop?" Enabled="True" TargetControlID="Delete">
                     </cc2:ConfirmButtonExtender>
                 </td>
             </tr>
