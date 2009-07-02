@@ -125,7 +125,7 @@ namespace CMSWeb.Controllers
         {
             if (m.person.EmailAddress != m.email && m.preferredEmail)
             {
-                HomeController.Email(DbUtil.Settings("RegMail"),
+                HomeController.Email(DbUtil.Settings("StepMail"),
                                 m.person.Name, m.person.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
 <p>If this was not you, please contact us ASAP.</p>".Fmt(
@@ -136,13 +136,13 @@ namespace CMSWeb.Controllers
             HomeController.Email(DbUtil.Settings("StepMail"),
                                 m.person.Name, m.email, "Step Class Registration",
 @"Hi {0},<p>Thank you for registering. You are now enrolled in the {2} Class for the following date:</p>
-<p>{1:ddd MMM d, yyyy} 4:30 to 6:00 PM</p>".Fmt(
-            m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name));
+<p>{1:ddd MMM d, yyyy h:mm tt} to {3:h:mm tt}</p>".Fmt(
+            m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
             HomeController.Email(m.email,
                                 "", DbUtil.Settings("StepMail"), "Step Class Registration",
 @"{0}({1}) registered in the {3} Class for the following date:</p>
-<p>{2:ddd MMM d, yyyy} 4:30 to 6:00 PM</p>".Fmt(
-            m.person.Name, m.person.PeopleId, m.meeting.MeetingDate, name));
+<p>{2:ddd MMM d, yyyy h:mm tt} to {4:h:mm tt}</p>".Fmt(
+            m.person.Name, m.person.PeopleId, m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
         }
     }
 }

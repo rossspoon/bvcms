@@ -94,6 +94,10 @@ namespace CMSWeb.Models
 
         public int Relation { get; set; }
 
+        internal int childcaremeetingid
+        {
+            get { return childcaremeeting == null ? 0 : childcaremeeting.MeetingId; }
+        }
         internal CmsData.Meeting _ChildCareMeeting;
         public CmsData.Meeting childcaremeeting
         {
@@ -269,7 +273,7 @@ namespace CMSWeb.Models
         public IEnumerable<ChildItem> Children(Person par)
         {
             var q = from c in DbUtil.Db.People
-                    where c.Attends.Any(a => a.MeetingId == childcaremeeting.MeetingId)
+                    where c.Attends.Any(a => a.MeetingId == childcaremeetingid)
                     where c.Family.People.Any(p => p.PeopleId == par.PeopleId)
                     select new ChildItem
                     {

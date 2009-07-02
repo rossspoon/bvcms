@@ -68,14 +68,16 @@ namespace CMSWeb.Controllers
                     HisEmail = m.email1,
                     HisEmailPreferred = m.preferredEmail1,
                     Relationship = m.Relation,
-                    ChildcareId = m.childcaremeeting.MeetingId
+                    ChildcareId = m.childcaremeetingid
                 };
                 DbUtil.Db.SoulMates.InsertOnSubmit(sm);
             }
             else
                 sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("ChildCare", new { id = sm.Id });
+            if (m.childcaremeeting != null)
+                return RedirectToAction("ChildCare", new { id = sm.Id });
+            return RedirectToAction("Confirm", new { id = sm.Id });
         }
         public ActionResult ChildCare(int id)
         {
@@ -146,13 +148,13 @@ namespace CMSWeb.Controllers
                 sb.AppendLine("</table>");
             }
             HomeController.Email(DbUtil.Settings("SmlMail"),
-                                p.Name, email, "(0} Registration".Fmt(meeting.Organization.OrganizationName),
+                                p.Name, email, "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Event for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(
             p.PreferredName, meeting.MeetingDate, meeting.Organization.OrganizationName,
             sb.ToString()));
             HomeController.Email(email,
-                                "", DbUtil.Settings("SmlMail"), "(0} Registration".Fmt(meeting.Organization.OrganizationName),
+                                "", DbUtil.Settings("SmlMail"), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"{0}({1}) registered for {3} for the following date:</p>
 <p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
             p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
