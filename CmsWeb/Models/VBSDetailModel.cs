@@ -94,6 +94,7 @@ namespace CMSWeb.Models
                 }
                 VBSApp.PeopleId = pid;
                 DbUtil.Db.SubmitChanges();
+                OrganizationMember.UpdateMeetingsToUpdate();
             }
         }
         public IEnumerable<SelectListItem> GradeCompleteds()

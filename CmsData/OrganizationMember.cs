@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilityExtensions;
+using System.Web;
 
 namespace CmsData
 {
     public partial class OrganizationMember
     {
+        private const string STR_MeetingsToUpdate = "MeetingsToUpdate";
         public enum MemberTypeCode
         {
             Teacher = 160,
@@ -64,6 +66,12 @@ namespace CmsData
                 var qa = from et in Db.Attends
                          where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
                          select et;
+                var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
+                var mids = qa.Select(a => a.MeetingId).ToList();
+                if (smids != null)
+                    smids.AddRange(mids);
+                else
+                    HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
                 Db.Attends.DeleteAllOnSubmit(qa);
             }
             else
@@ -89,6 +97,12 @@ namespace CmsData
             Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
             Db.OrganizationMembers.DeleteOnSubmit(this);
 
+        }
+        public static void UpdateMeetingsToUpdate()
+        {
+            var mids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
+            foreach (var mid in mids)
+                DbUtil.Db.UpdateMeetingCounters(mid);
         }
         public bool ToggleGroup(int groupid)
         {

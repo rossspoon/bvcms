@@ -312,7 +312,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CodeIdValue", UpdateCheck=UpdateCheck.Never, Storage="_CodeIdValue", DbType="varchar(1000)")]
+		[Column(Name="CodeIdValue", UpdateCheck=UpdateCheck.Never, Storage="_CodeIdValue", DbType="varchar(3000)")]
 		public string CodeIdValue
 		{
 			get { return this._CodeIdValue; }

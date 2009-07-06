@@ -126,7 +126,7 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_PEOPLE_TBL_DecisionType", Storage="_People", OtherKey="DecisionTypeId")]
+   		[Association(Name="FK_People_DecisionType", Storage="_People", OtherKey="DecisionTypeId")]
    		public EntitySet< Person> People
    		{
    		    get { return this._People; }

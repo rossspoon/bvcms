@@ -24,8 +24,6 @@ namespace CmsData
 		private string _Description;
 		
    		
-   		private EntitySet< Person> _People;
-		
     	
 	#endregion
 	
@@ -46,8 +44,6 @@ namespace CmsData
     #endregion
 		public DiscoveryClassStatus()
 		{
-			
-			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
 			
 			OnCreated();
@@ -126,16 +122,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_PEOPLE_TBL_DiscoveryClassStatus", Storage="_People", OtherKey="DiscoveryClassStatusId")]
-   		public EntitySet< Person> People
-   		{
-   		    get { return this._People; }
-
-			set	{ this._People.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -157,19 +143,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_People(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.DiscoveryClassStatus = this;
-		}
-
-		private void detach_People(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.DiscoveryClassStatus = null;
-		}
-
-		
 	}
 
 }

@@ -105,6 +105,7 @@ namespace CMSWeb
                 }
             }
             DbUtil.Db.SubmitChanges();
+            OrganizationMember.UpdateMeetingsToUpdate();
             foreach (var pid in list)
                 DbUtil.Db.UpdateSchoolGrade(pid);
             this.Page.ClientScript.RegisterStartupScript(typeof(AddMemberDialog),

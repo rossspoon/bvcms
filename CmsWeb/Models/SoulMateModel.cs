@@ -94,9 +94,9 @@ namespace CMSWeb.Models
 
         public int Relation { get; set; }
 
-        internal int childcaremeetingid
+        internal int? childcaremeetingid
         {
-            get { return childcaremeeting == null ? 0 : childcaremeeting.MeetingId; }
+            get { return childcaremeeting == null ? null : (int?)childcaremeeting.MeetingId; }
         }
         internal CmsData.Meeting _ChildCareMeeting;
         public CmsData.Meeting childcaremeeting

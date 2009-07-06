@@ -181,6 +181,7 @@ namespace CMSWeb
                 {
                     MemberProfileAutomation();
                     DbUtil.Db.SubmitChanges();
+                    OrganizationMember.UpdateMeetingsToUpdate();
                     DbUtil.LogActivity("Updated Person: {0}".Fmt(person.Name));
                     DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
                     EditUpdateButton1.DataBind();

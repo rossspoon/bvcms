@@ -26,8 +26,6 @@ namespace CmsData
    		
    		private EntitySet< Organization> _Organizations;
 		
-   		private EntitySet< Person> _People;
-		
     	
 	#endregion
 	
@@ -50,8 +48,6 @@ namespace CmsData
 		{
 			
 			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
-			
-			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
 			
 			OnCreated();
@@ -140,16 +136,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_PEOPLE_TBL_EntryPoint", Storage="_People", OtherKey="EntryPointId")]
-   		public EntitySet< Person> People
-   		{
-   		    get { return this._People; }
-
-			set	{ this._People.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -178,19 +164,6 @@ namespace CmsData
 		}
 
 		private void detach_Organizations(Organization entity)
-		{
-			this.SendPropertyChanging();
-			entity.EntryPoint = null;
-		}
-
-		
-		private void attach_People(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.EntryPoint = this;
-		}
-
-		private void detach_People(Person entity)
 		{
 			this.SendPropertyChanging();
 			entity.EntryPoint = null;

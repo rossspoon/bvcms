@@ -83,6 +83,7 @@ namespace CMSWeb
             var pid = OrgMember.PeopleId;
             OrgMember.Drop();
             DbUtil.Db.SubmitChanges();
+            OrganizationMember.UpdateMeetingsToUpdate();
             DbUtil.Db.UpdateSchoolGrade(pid);
 
             this.Page.ClientScript.RegisterStartupScript(typeof(EditMemberDialog),

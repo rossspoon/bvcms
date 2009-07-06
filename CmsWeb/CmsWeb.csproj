@@ -1497,13 +1497,10 @@
     <Content Include="Contributions\Years.aspx" />
     <Content Include="Meetings.aspx" />
     <Content Include="PurgeProgress.aspx" />
-    <Content Include="Config\ConnectionStrings2.config" />
     <Content Include="Config\smtp.config" />
     <Content Include="Config\Authentication.config" />
     <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\ConnectionStrings.config" />
-    <Content Include="Config\Authentication2.config" />
-    <Content Include="Config\smtp2.config" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.cfm" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.php" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.pl" />
@@ -1696,7 +1693,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>58724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

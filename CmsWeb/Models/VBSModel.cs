@@ -147,6 +147,8 @@ namespace CMSWeb.Models
                     var member = qm.SingleOrDefault();
                     if (member != null)
                         member.Drop();
+                    DbUtil.Db.SubmitChanges();
+                    OrganizationMember.UpdateMeetingsToUpdate();
                 }
                 CMSPresenter.OrganizationController.InsertOrgMembers(OrgId,
                     v.PeopleId.Value,

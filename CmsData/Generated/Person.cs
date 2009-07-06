@@ -239,12 +239,20 @@ namespace CmsData
 		
 		private int? _Grade;
 		
+		private string _CellPhoneLU;
+		
+		private string _WorkPhoneLU;
+		
+		private string _HomePhoneLU;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
    		private EntitySet< Contactor> _contactsMade;
 		
    		private EntitySet< EnrollmentTransaction> _EnrollmentTransactions;
+		
+   		private EntitySet< Family> _FamiliesHeaded;
 		
    		private EntitySet< Attend> _Attends;
 		
@@ -281,43 +289,29 @@ namespace CmsData
    		private EntitySet< Task> _TasksCoOwned;
 		
     	
-		private EntityRef< AddressType> _AddressType;
-		
-		private EntityRef< BaptismStatus> _BaptismStatus;
-		
 		private EntityRef< BaptismType> _BaptismType;
 		
 		private EntityRef< DecisionType> _DecisionType;
 		
-		private EntityRef< DiscoveryClassStatus> _DiscoveryClassStatus;
-		
 		private EntityRef< DropType> _DropType;
 		
-		private EntityRef< EntryPoint> _EntryPoint;
-		
-		private EntityRef< EnvelopeOption> _EnvelopeOption;
+		private EntityRef< Family> _Family;
 		
 		private EntityRef< FamilyPosition> _FamilyPosition;
 		
 		private EntityRef< Gender> _Gender;
 		
-		private EntityRef< InterestPoint> _InterestPoint;
-		
 		private EntityRef< JoinType> _JoinType;
 		
 		private EntityRef< MaritalStatus> _MaritalStatus;
-		
-		private EntityRef< MemberLetterStatus> _MemberLetterStatus;
 		
 		private EntityRef< MemberStatus> _MemberStatus;
 		
 		private EntityRef< Origin> _Origin;
 		
-		private EntityRef< PhonePreference> _PhonePreference;
+		private EntityRef< InterestPoint> _InterestPoint;
 		
 		private EntityRef< Picture> _Picture;
-		
-		private EntityRef< Family> _Family;
 		
 	#endregion
 	
@@ -659,6 +653,15 @@ namespace CmsData
 		partial void OnGradeChanging(int? value);
 		partial void OnGradeChanged();
 		
+		partial void OnCellPhoneLUChanging(string value);
+		partial void OnCellPhoneLUChanged();
+		
+		partial void OnWorkPhoneLUChanging(string value);
+		partial void OnWorkPhoneLUChanged();
+		
+		partial void OnHomePhoneLUChanging(string value);
+		partial void OnHomePhoneLUChanged();
+		
     #endregion
 		public Person()
 		{
@@ -668,6 +671,8 @@ namespace CmsData
 			this._contactsMade = new EntitySet< Contactor>(new Action< Contactor>(this.attach_contactsMade), new Action< Contactor>(this.detach_contactsMade)); 
 			
 			this._EnrollmentTransactions = new EntitySet< EnrollmentTransaction>(new Action< EnrollmentTransaction>(this.attach_EnrollmentTransactions), new Action< EnrollmentTransaction>(this.detach_EnrollmentTransactions)); 
+			
+			this._FamiliesHeaded = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded), new Action< Family>(this.detach_FamiliesHeaded)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
@@ -704,43 +709,29 @@ namespace CmsData
 			this._TasksCoOwned = new EntitySet< Task>(new Action< Task>(this.attach_TasksCoOwned), new Action< Task>(this.detach_TasksCoOwned)); 
 			
 			
-			this._AddressType = default(EntityRef< AddressType>); 
-			
-			this._BaptismStatus = default(EntityRef< BaptismStatus>); 
-			
 			this._BaptismType = default(EntityRef< BaptismType>); 
 			
 			this._DecisionType = default(EntityRef< DecisionType>); 
 			
-			this._DiscoveryClassStatus = default(EntityRef< DiscoveryClassStatus>); 
-			
 			this._DropType = default(EntityRef< DropType>); 
 			
-			this._EntryPoint = default(EntityRef< EntryPoint>); 
-			
-			this._EnvelopeOption = default(EntityRef< EnvelopeOption>); 
+			this._Family = default(EntityRef< Family>); 
 			
 			this._FamilyPosition = default(EntityRef< FamilyPosition>); 
 			
 			this._Gender = default(EntityRef< Gender>); 
 			
-			this._InterestPoint = default(EntityRef< InterestPoint>); 
-			
 			this._JoinType = default(EntityRef< JoinType>); 
 			
 			this._MaritalStatus = default(EntityRef< MaritalStatus>); 
-			
-			this._MemberLetterStatus = default(EntityRef< MemberLetterStatus>); 
 			
 			this._MemberStatus = default(EntityRef< MemberStatus>); 
 			
 			this._Origin = default(EntityRef< Origin>); 
 			
-			this._PhonePreference = default(EntityRef< PhonePreference>); 
+			this._InterestPoint = default(EntityRef< InterestPoint>); 
 			
 			this._Picture = default(EntityRef< Picture>); 
-			
-			this._Family = default(EntityRef< Family>); 
 			
 			OnCreated();
 		}
@@ -940,9 +931,6 @@ namespace CmsData
 				if (this._AddressTypeId != value)
 				{
 				
-					if (this._AddressType.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnAddressTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._AddressTypeId = value;
@@ -964,9 +952,6 @@ namespace CmsData
 			{
 				if (this._PhonePrefId != value)
 				{
-				
-					if (this._PhonePreference.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPhonePrefIdChanging(value);
 					this.SendPropertyChanging();
@@ -1181,9 +1166,6 @@ namespace CmsData
 				if (this._EntryPointId != value)
 				{
 				
-					if (this._EntryPoint.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnEntryPointIdChanging(value);
 					this.SendPropertyChanging();
 					this._EntryPointId = value;
@@ -1256,9 +1238,6 @@ namespace CmsData
 				if (this._BaptismStatusId != value)
 				{
 				
-					if (this._BaptismStatus.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnBaptismStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._BaptismStatusId = value;
@@ -1306,9 +1285,6 @@ namespace CmsData
 				if (this._DiscoveryClassStatusId != value)
 				{
 				
-					if (this._DiscoveryClassStatus.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnDiscoveryClassStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._DiscoveryClassStatusId = value;
@@ -1352,9 +1328,6 @@ namespace CmsData
 			{
 				if (this._LetterStatusId != value)
 				{
-				
-					if (this._MemberLetterStatus.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnLetterStatusIdChanging(value);
 					this.SendPropertyChanging();
@@ -1402,9 +1375,6 @@ namespace CmsData
 			{
 				if (this._EnvelopeOptionsId != value)
 				{
-				
-					if (this._EnvelopeOption.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnEnvelopeOptionsIdChanging(value);
 					this.SendPropertyChanging();
@@ -2939,7 +2909,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="HomePhone", UpdateCheck=UpdateCheck.Never, Storage="_HomePhone", DbType="varchar(11)", IsDbGenerated=true)]
+		[Column(Name="HomePhone", UpdateCheck=UpdateCheck.Never, Storage="_HomePhone", DbType="varchar(20)")]
 		public string HomePhone
 		{
 			get { return this._HomePhone; }
@@ -3247,6 +3217,72 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="CellPhoneLU", UpdateCheck=UpdateCheck.Never, Storage="_CellPhoneLU", DbType="char(7)")]
+		public string CellPhoneLU
+		{
+			get { return this._CellPhoneLU; }
+
+			set
+			{
+				if (this._CellPhoneLU != value)
+				{
+				
+                    this.OnCellPhoneLUChanging(value);
+					this.SendPropertyChanging();
+					this._CellPhoneLU = value;
+					this.SendPropertyChanged("CellPhoneLU");
+					this.OnCellPhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="WorkPhoneLU", UpdateCheck=UpdateCheck.Never, Storage="_WorkPhoneLU", DbType="char(7)")]
+		public string WorkPhoneLU
+		{
+			get { return this._WorkPhoneLU; }
+
+			set
+			{
+				if (this._WorkPhoneLU != value)
+				{
+				
+                    this.OnWorkPhoneLUChanging(value);
+					this.SendPropertyChanging();
+					this._WorkPhoneLU = value;
+					this.SendPropertyChanged("WorkPhoneLU");
+					this.OnWorkPhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="HomePhoneLU", UpdateCheck=UpdateCheck.Never, Storage="_HomePhoneLU", DbType="char(7)")]
+		public string HomePhoneLU
+		{
+			get { return this._HomePhoneLU; }
+
+			set
+			{
+				if (this._HomePhoneLU != value)
+				{
+				
+                    this.OnHomePhoneLUChanging(value);
+					this.SendPropertyChanging();
+					this._HomePhoneLU = value;
+					this.SendPropertyChanged("HomePhoneLU");
+					this.OnHomePhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3277,6 +3313,16 @@ namespace CmsData
    		    get { return this._EnrollmentTransactions; }
 
 			set	{ this._EnrollmentTransactions.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_FamiliesHeaded", OtherKey="HeadOfHouseholdId")]
+   		public EntitySet< Family> FamiliesHeaded
+   		{
+   		    get { return this._FamiliesHeaded; }
+
+			set	{ this._FamiliesHeaded.Assign(value); }
 
    		}
 
@@ -3455,91 +3501,7 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_PEOPLE_TBL_AddressType", Storage="_AddressType", ThisKey="AddressTypeId", IsForeignKey=true)]
-		public AddressType AddressType
-		{
-			get { return this._AddressType.Entity; }
-
-			set
-			{
-				AddressType previousValue = this._AddressType.Entity;
-				if (((previousValue != value) 
-							|| (this._AddressType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._AddressType.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._AddressType.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._AddressTypeId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._AddressTypeId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("AddressType");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_BaptismStatus", Storage="_BaptismStatus", ThisKey="BaptismStatusId", IsForeignKey=true)]
-		public BaptismStatus BaptismStatus
-		{
-			get { return this._BaptismStatus.Entity; }
-
-			set
-			{
-				BaptismStatus previousValue = this._BaptismStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._BaptismStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._BaptismStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._BaptismStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._BaptismStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._BaptismStatusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("BaptismStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_BaptismType", Storage="_BaptismType", ThisKey="BaptismTypeId", IsForeignKey=true)]
+		[Association(Name="FK_People_BaptismType", Storage="_BaptismType", ThisKey="BaptismTypeId", IsForeignKey=true)]
 		public BaptismType BaptismType
 		{
 			get { return this._BaptismType.Entity; }
@@ -3581,7 +3543,7 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_DecisionType", Storage="_DecisionType", ThisKey="DecisionTypeId", IsForeignKey=true)]
+		[Association(Name="FK_People_DecisionType", Storage="_DecisionType", ThisKey="DecisionTypeId", IsForeignKey=true)]
 		public DecisionType DecisionType
 		{
 			get { return this._DecisionType.Entity; }
@@ -3623,49 +3585,7 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_DiscoveryClassStatus", Storage="_DiscoveryClassStatus", ThisKey="DiscoveryClassStatusId", IsForeignKey=true)]
-		public DiscoveryClassStatus DiscoveryClassStatus
-		{
-			get { return this._DiscoveryClassStatus.Entity; }
-
-			set
-			{
-				DiscoveryClassStatus previousValue = this._DiscoveryClassStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._DiscoveryClassStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._DiscoveryClassStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._DiscoveryClassStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._DiscoveryClassStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._DiscoveryClassStatusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("DiscoveryClassStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_DropStatus", Storage="_DropType", ThisKey="DropCodeId", IsForeignKey=true)]
+		[Association(Name="FK_People_DropType", Storage="_DropType", ThisKey="DropCodeId", IsForeignKey=true)]
 		public DropType DropType
 		{
 			get { return this._DropType.Entity; }
@@ -3707,41 +3627,41 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_EntryPoint", Storage="_EntryPoint", ThisKey="EntryPointId", IsForeignKey=true)]
-		public EntryPoint EntryPoint
+		[Association(Name="FK_People_Families", Storage="_Family", ThisKey="FamilyId", IsForeignKey=true)]
+		public Family Family
 		{
-			get { return this._EntryPoint.Entity; }
+			get { return this._Family.Entity; }
 
 			set
 			{
-				EntryPoint previousValue = this._EntryPoint.Entity;
+				Family previousValue = this._Family.Entity;
 				if (((previousValue != value) 
-							|| (this._EntryPoint.HasLoadedOrAssignedValue == false)))
+							|| (this._Family.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._EntryPoint.Entity = null;
+						this._Family.Entity = null;
 						previousValue.People.Remove(this);
 					}
 
-					this._EntryPoint.Entity = value;
+					this._Family.Entity = value;
 					if (value != null)
 					{
 						value.People.Add(this);
 						
-						this._EntryPointId = value.Id;
+						this._FamilyId = value.FamilyId;
 						
 					}
 
 					else
 					{
 						
-						this._EntryPointId = default(int?);
+						this._FamilyId = default(int);
 						
 					}
 
-					this.SendPropertyChanged("EntryPoint");
+					this.SendPropertyChanged("Family");
 				}
 
 			}
@@ -3749,49 +3669,7 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_EnvelopeOption", Storage="_EnvelopeOption", ThisKey="EnvelopeOptionsId", IsForeignKey=true)]
-		public EnvelopeOption EnvelopeOption
-		{
-			get { return this._EnvelopeOption.Entity; }
-
-			set
-			{
-				EnvelopeOption previousValue = this._EnvelopeOption.Entity;
-				if (((previousValue != value) 
-							|| (this._EnvelopeOption.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._EnvelopeOption.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._EnvelopeOption.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._EnvelopeOptionsId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._EnvelopeOptionsId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("EnvelopeOption");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_FamilyPosition", Storage="_FamilyPosition", ThisKey="PositionInFamilyId", IsForeignKey=true)]
+		[Association(Name="FK_People_FamilyPosition", Storage="_FamilyPosition", ThisKey="PositionInFamilyId", IsForeignKey=true)]
 		public FamilyPosition FamilyPosition
 		{
 			get { return this._FamilyPosition.Entity; }
@@ -3833,7 +3711,7 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_Gender", Storage="_Gender", ThisKey="GenderId", IsForeignKey=true)]
+		[Association(Name="FK_People_Gender", Storage="_Gender", ThisKey="GenderId", IsForeignKey=true)]
 		public Gender Gender
 		{
 			get { return this._Gender.Entity; }
@@ -3868,6 +3746,174 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Gender");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_JoinType", Storage="_JoinType", ThisKey="JoinCodeId", IsForeignKey=true)]
+		public JoinType JoinType
+		{
+			get { return this._JoinType.Entity; }
+
+			set
+			{
+				JoinType previousValue = this._JoinType.Entity;
+				if (((previousValue != value) 
+							|| (this._JoinType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._JoinType.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._JoinType.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._JoinCodeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._JoinCodeId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("JoinType");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_MaritalStatus", Storage="_MaritalStatus", ThisKey="MaritalStatusId", IsForeignKey=true)]
+		public MaritalStatus MaritalStatus
+		{
+			get { return this._MaritalStatus.Entity; }
+
+			set
+			{
+				MaritalStatus previousValue = this._MaritalStatus.Entity;
+				if (((previousValue != value) 
+							|| (this._MaritalStatus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._MaritalStatus.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._MaritalStatus.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._MaritalStatusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._MaritalStatusId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("MaritalStatus");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_MemberStatus", Storage="_MemberStatus", ThisKey="MemberStatusId", IsForeignKey=true)]
+		public MemberStatus MemberStatus
+		{
+			get { return this._MemberStatus.Entity; }
+
+			set
+			{
+				MemberStatus previousValue = this._MemberStatus.Entity;
+				if (((previousValue != value) 
+							|| (this._MemberStatus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._MemberStatus.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._MemberStatus.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._MemberStatusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._MemberStatusId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("MemberStatus");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_Origin", Storage="_Origin", ThisKey="OriginId", IsForeignKey=true)]
+		public Origin Origin
+		{
+			get { return this._Origin.Entity; }
+
+			set
+			{
+				Origin previousValue = this._Origin.Entity;
+				if (((previousValue != value) 
+							|| (this._Origin.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Origin.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._Origin.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._OriginId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._OriginId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Origin");
 				}
 
 			}
@@ -3917,258 +3963,6 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_PEOPLE_TBL_JoinType", Storage="_JoinType", ThisKey="JoinCodeId", IsForeignKey=true)]
-		public JoinType JoinType
-		{
-			get { return this._JoinType.Entity; }
-
-			set
-			{
-				JoinType previousValue = this._JoinType.Entity;
-				if (((previousValue != value) 
-							|| (this._JoinType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._JoinType.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._JoinType.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._JoinCodeId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._JoinCodeId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("JoinType");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_MaritalStatus", Storage="_MaritalStatus", ThisKey="MaritalStatusId", IsForeignKey=true)]
-		public MaritalStatus MaritalStatus
-		{
-			get { return this._MaritalStatus.Entity; }
-
-			set
-			{
-				MaritalStatus previousValue = this._MaritalStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._MaritalStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._MaritalStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._MaritalStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._MaritalStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._MaritalStatusId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("MaritalStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_MemberLetterStatus", Storage="_MemberLetterStatus", ThisKey="LetterStatusId", IsForeignKey=true)]
-		public MemberLetterStatus MemberLetterStatus
-		{
-			get { return this._MemberLetterStatus.Entity; }
-
-			set
-			{
-				MemberLetterStatus previousValue = this._MemberLetterStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._MemberLetterStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._MemberLetterStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._MemberLetterStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._LetterStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._LetterStatusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("MemberLetterStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_MemberStatus", Storage="_MemberStatus", ThisKey="MemberStatusId", IsForeignKey=true)]
-		public MemberStatus MemberStatus
-		{
-			get { return this._MemberStatus.Entity; }
-
-			set
-			{
-				MemberStatus previousValue = this._MemberStatus.Entity;
-				if (((previousValue != value) 
-							|| (this._MemberStatus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._MemberStatus.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._MemberStatus.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._MemberStatusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._MemberStatusId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("MemberStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_Origin", Storage="_Origin", ThisKey="OriginId", IsForeignKey=true)]
-		public Origin Origin
-		{
-			get { return this._Origin.Entity; }
-
-			set
-			{
-				Origin previousValue = this._Origin.Entity;
-				if (((previousValue != value) 
-							|| (this._Origin.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Origin.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._Origin.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._OriginId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._OriginId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Origin");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_PEOPLE_TBL_PhonePreference", Storage="_PhonePreference", ThisKey="PhonePrefId", IsForeignKey=true)]
-		public PhonePreference PhonePreference
-		{
-			get { return this._PhonePreference.Entity; }
-
-			set
-			{
-				PhonePreference previousValue = this._PhonePreference.Entity;
-				if (((previousValue != value) 
-							|| (this._PhonePreference.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._PhonePreference.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._PhonePreference.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._PhonePrefId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._PhonePrefId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("PhonePreference");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FK_PEOPLE_TBL_Picture", Storage="_Picture", ThisKey="PictureId", IsForeignKey=true)]
 		public Picture Picture
 		{
@@ -4204,48 +3998,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Picture");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="PEOPLE_FAMILY_FK", Storage="_Family", ThisKey="FamilyId", IsForeignKey=true)]
-		public Family Family
-		{
-			get { return this._Family.Entity; }
-
-			set
-			{
-				Family previousValue = this._Family.Entity;
-				if (((previousValue != value) 
-							|| (this._Family.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Family.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._Family.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._FamilyId = value.FamilyId;
-						
-					}
-
-					else
-					{
-						
-						this._FamilyId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("Family");
 				}
 
 			}
@@ -4306,6 +4058,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
+		}
+
+		
+		private void attach_FamiliesHeaded(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.HeadOfHousehold = this;
+		}
+
+		private void detach_FamiliesHeaded(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.HeadOfHousehold = null;
 		}
 
 		

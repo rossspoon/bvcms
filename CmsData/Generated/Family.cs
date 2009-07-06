@@ -81,6 +81,8 @@ namespace CmsData
 		
 		private int? _CoupleFlag;
 		
+		private string _HomePhoneLU;
+		
    		
    		private EntitySet< Person> _People;
 		
@@ -89,6 +91,8 @@ namespace CmsData
    		private EntitySet< RelatedFamily> _RelatedFamilies2;
 		
     	
+		private EntityRef< Person> _HeadOfHousehold;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -192,6 +196,9 @@ namespace CmsData
 		partial void OnCoupleFlagChanging(int? value);
 		partial void OnCoupleFlagChanged();
 		
+		partial void OnHomePhoneLUChanging(string value);
+		partial void OnHomePhoneLUChanged();
+		
     #endregion
 		public Family()
 		{
@@ -202,6 +209,8 @@ namespace CmsData
 			
 			this._RelatedFamilies2 = new EntitySet< RelatedFamily>(new Action< RelatedFamily>(this.attach_RelatedFamilies2), new Action< RelatedFamily>(this.detach_RelatedFamilies2)); 
 			
+			
+			this._HeadOfHousehold = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -847,7 +856,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="HeadOfHouseholdId", UpdateCheck=UpdateCheck.Never, Storage="_HeadOfHouseholdId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="HeadOfHouseholdId", UpdateCheck=UpdateCheck.Never, Storage="_HeadOfHouseholdId", DbType="int")]
 		public int? HeadOfHouseholdId
 		{
 			get { return this._HeadOfHouseholdId; }
@@ -856,6 +865,9 @@ namespace CmsData
 			{
 				if (this._HeadOfHouseholdId != value)
 				{
+				
+					if (this._HeadOfHousehold.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnHeadOfHouseholdIdChanging(value);
 					this.SendPropertyChanging();
@@ -913,11 +925,33 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="HomePhoneLU", UpdateCheck=UpdateCheck.Never, Storage="_HomePhoneLU", DbType="char(7)")]
+		public string HomePhoneLU
+		{
+			get { return this._HomePhoneLU; }
+
+			set
+			{
+				if (this._HomePhoneLU != value)
+				{
+				
+                    this.OnHomePhoneLUChanging(value);
+					this.SendPropertyChanging();
+					this._HomePhoneLU = value;
+					this.SendPropertyChanged("HomePhoneLU");
+					this.OnHomePhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
-   		[Association(Name="PEOPLE_FAMILY_FK", Storage="_People", OtherKey="FamilyId")]
+   		[Association(Name="FK_People_Families", Storage="_People", OtherKey="FamilyId")]
    		public EntitySet< Person> People
    		{
    		    get { return this._People; }
@@ -951,6 +985,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_HeadOfHousehold", ThisKey="HeadOfHouseholdId", IsForeignKey=true)]
+		public Person HeadOfHousehold
+		{
+			get { return this._HeadOfHousehold.Entity; }
+
+			set
+			{
+				Person previousValue = this._HeadOfHousehold.Entity;
+				if (((previousValue != value) 
+							|| (this._HeadOfHousehold.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._HeadOfHousehold.Entity = null;
+						previousValue.FamiliesHeaded.Remove(this);
+					}
+
+					this._HeadOfHousehold.Entity = value;
+					if (value != null)
+					{
+						value.FamiliesHeaded.Add(this);
+						
+						this._HeadOfHouseholdId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._HeadOfHouseholdId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("HeadOfHousehold");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
