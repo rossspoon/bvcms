@@ -254,6 +254,8 @@ namespace CmsData
 		
    		private EntitySet< Family> _FamiliesHeaded;
 		
+   		private EntitySet< Family> _FamiliesHeaded2;
+		
    		private EntitySet< Attend> _Attends;
 		
    		private EntitySet< BadET> _BadETs;
@@ -673,6 +675,8 @@ namespace CmsData
 			this._EnrollmentTransactions = new EntitySet< EnrollmentTransaction>(new Action< EnrollmentTransaction>(this.attach_EnrollmentTransactions), new Action< EnrollmentTransaction>(this.detach_EnrollmentTransactions)); 
 			
 			this._FamiliesHeaded = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded), new Action< Family>(this.detach_FamiliesHeaded)); 
+			
+			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
@@ -3327,6 +3331,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FamiliesHeaded2__HeadOfHouseholdSpouse", Storage="_FamiliesHeaded2", OtherKey="HeadOfHouseholdSpouseId")]
+   		public EntitySet< Family> FamiliesHeaded2
+   		{
+   		    get { return this._FamiliesHeaded2; }
+
+			set	{ this._FamiliesHeaded2.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
    		public EntitySet< Attend> Attends
    		{
@@ -4071,6 +4085,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.HeadOfHousehold = null;
+		}
+
+		
+		private void attach_FamiliesHeaded2(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.HeadOfHouseholdSpouse = this;
+		}
+
+		private void detach_FamiliesHeaded2(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.HeadOfHouseholdSpouse = null;
 		}
 
 		

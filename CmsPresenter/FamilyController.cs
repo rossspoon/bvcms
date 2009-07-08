@@ -25,7 +25,8 @@ namespace CMSPresenter
             var Db = query.GetDataContext() as CMSDataContext;
             var q = from f in query
                     from p in f.People
-                    orderby p.PeopleId == f.HeadOfHouseholdId ? 1 : p.PeopleId == f.HeadOfHouseholdSpouseId ? 2 : 3, p.Age descending, p.LastName, p.Name
+                    let hoh = p.PeopleId == f.HeadOfHouseholdId ? 1 : p.PeopleId == f.HeadOfHouseholdSpouseId ? 2 : 3
+                    orderby hoh, p.Age descending, p.LastName, p.Name
                     select new FamilyMember{
                         Age = p.Age,
                         Id = p.FamilyId,
@@ -34,7 +35,7 @@ namespace CMSPresenter
                         Name = p.Name,
                         PositionInFamilyId = p.FamilyPosition.Id,
                         PositionInFamily = p.FamilyPosition.Description,
-                        PeopleId = p.PeopleId
+                        PeopleId = p.PeopleId,
                     };
             return q;
 

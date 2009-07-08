@@ -122,9 +122,9 @@ namespace CmsCheckin
             sw.WriteLine("\x02L");
             sw.WriteLine("H07");
             sw.WriteLine("D11");
-            sw.WriteLine("191100300500015" + c.Name + " (" + c.PeopleId + " " + c.Gender + ")");
-            sw.WriteLine("191100300300015" + c.Birthday + " (" + c.Age + ")    " + time.ToString("MMddHHmm-ss"));
-            sw.WriteLine("191100300100015" + c.Class);
+            sw.WriteLine("191100500400015" + c.Name);
+            sw.WriteLine("191100300200015" + " (" + c.PeopleId + " " + c.Gender + ")  " + time.ToString("M/d/yy HHmmss"));
+            //sw.WriteLine("191100300100015" + c.Class);
             sw.WriteLine("E");
             sw.Flush();
 

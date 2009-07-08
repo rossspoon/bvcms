@@ -59,6 +59,12 @@
                 </td>
             </tr>
             <tr>
+            <td>&nbsp;</td>
+                <td>
+                    <cc1:DisplayOrEditCheckbox ID="Pending" Text="Pending" BindingSource="OrgMember" runat="server" />
+                </td>
+            </tr>
+            <tr>
             <td>VIP Week:</td>
                 <td>
                     <cc1:DisplayOrEditCheckbox ID="VipWeek1" Text="1" BindingSource="OrgMember" runat="server" />

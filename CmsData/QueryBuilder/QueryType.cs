@@ -88,6 +88,7 @@ namespace CmsData
 		OriginId,
         OtherNewChurch,
         OtherPreviousChurch,
+        PendingCurrentOrg,
         PeopleId,
         PleaseVisit,
         PositionInFamilyId,

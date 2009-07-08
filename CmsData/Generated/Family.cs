@@ -93,6 +93,8 @@ namespace CmsData
     	
 		private EntityRef< Person> _HeadOfHousehold;
 		
+		private EntityRef< Person> _HeadOfHouseholdSpouse;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -211,6 +213,8 @@ namespace CmsData
 			
 			
 			this._HeadOfHousehold = default(EntityRef< Person>); 
+			
+			this._HeadOfHouseholdSpouse = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -881,7 +885,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="HeadOfHouseholdSpouseId", UpdateCheck=UpdateCheck.Never, Storage="_HeadOfHouseholdSpouseId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="HeadOfHouseholdSpouseId", UpdateCheck=UpdateCheck.Never, Storage="_HeadOfHouseholdSpouseId", DbType="int")]
 		public int? HeadOfHouseholdSpouseId
 		{
 			get { return this._HeadOfHouseholdSpouseId; }
@@ -890,6 +894,9 @@ namespace CmsData
 			{
 				if (this._HeadOfHouseholdSpouseId != value)
 				{
+				
+					if (this._HeadOfHouseholdSpouse.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnHeadOfHouseholdSpouseIdChanging(value);
 					this.SendPropertyChanging();
@@ -1020,6 +1027,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("HeadOfHousehold");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FamiliesHeaded2__HeadOfHouseholdSpouse", Storage="_HeadOfHouseholdSpouse", ThisKey="HeadOfHouseholdSpouseId", IsForeignKey=true)]
+		public Person HeadOfHouseholdSpouse
+		{
+			get { return this._HeadOfHouseholdSpouse.Entity; }
+
+			set
+			{
+				Person previousValue = this._HeadOfHouseholdSpouse.Entity;
+				if (((previousValue != value) 
+							|| (this._HeadOfHouseholdSpouse.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._HeadOfHouseholdSpouse.Entity = null;
+						previousValue.FamiliesHeaded2.Remove(this);
+					}
+
+					this._HeadOfHouseholdSpouse.Entity = value;
+					if (value != null)
+					{
+						value.FamiliesHeaded2.Add(this);
+						
+						this._HeadOfHouseholdSpouseId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._HeadOfHouseholdSpouseId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("HeadOfHouseholdSpouse");
 				}
 
 			}

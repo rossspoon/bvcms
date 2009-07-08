@@ -78,6 +78,7 @@ namespace CmsData
                 return false;
 
             var q0 = from om in Db.OrganizationMembers
+                     where om.Pending ?? false == false
                      where !Db.Attends.Any(a => om.PeopleId == a.PeopleId && a.MeetingId == MeetingId)
                      select new { om.PeopleId, om.MemberTypeId };
             var ret = false;

@@ -84,7 +84,7 @@
             <cc2:CalendarExtender ID="InactiveDate_CalendarExtender" runat="server" Enabled="True"
                 PopupPosition="TopLeft" TargetControlID="InactiveDate">
             </cc2:CalendarExtender>
-            &nbsp;
+            &nbsp;<asp:CheckBox ID="Pending" runat="server" Text="Pending" />&nbsp;
             <asp:Button ID="UpdateSelectedMembers" runat="server" OnClick="UpdateSelectedMembers_Click"
                 Text="Update Selected" />
         </div>
@@ -182,6 +182,7 @@
                 <asp:ControlParameter ControlID="SearchInactiveDate" Name="inactivedt" Type="Datetime" />
                 <asp:QueryStringParameter Name="orgid" QueryStringField="id" Type="Int32" />
                 <asp:Parameter Name="noinactive" Type="Boolean" />
+                <asp:Parameter Name="pending" Type="Boolean" />
             </SelectParameters>
         </asp:ObjectDataSource>
         <asp:ObjectDataSource ID="MemberTypeData" runat="server" SelectMethod="MemberTypeCodes2"

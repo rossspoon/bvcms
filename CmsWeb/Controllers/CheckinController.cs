@@ -20,6 +20,7 @@ namespace CMSWeb.Controllers
             var q = from f in DbUtil.Db.Families
                     where f.HomePhoneLU.StartsWith(ph)
                     || f.HeadOfHousehold.CellPhoneLU.StartsWith(ph)
+                    || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(ph)
                     select new Fam
                     {
                         FamId = f.FamilyId,

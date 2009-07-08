@@ -13,13 +13,13 @@
             $("a.delete").click(function(ev) {
                 if(confirm("are you sure?"))
                     $.post("/VolOpportunity/DeleteCode/" + $(this).attr("id"), null, function(ret) {
-                    window.location = "/VolOpportunity/Codes";
+                    window.location = '/VolOpportunity/Codes/<%=ViewData["OpportunityId"] %>';
                     });
             });
         });
     </script>
-   <h2>Volunteer Interest Codes</h2>
-   Opportunity: <a href='/VolOpportunity/'><%=ViewData["Opportunity"] %></a>
+   <h2><a href="/VolOpportunity/">Volunteer Interest Codes</a></h2>
+   Opportunity: <a href='/Volunteer/Index/<%=ViewData["OpportunityId"] %>'><%=ViewData["Opportunity"] %></a>
     <table>
         <tr>
             <th>

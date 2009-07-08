@@ -22,6 +22,7 @@ namespace CMSWeb
     {
         public int? OrgId;
         public int? GroupId;
+        public bool? PendingMembers;
         private bool GroupMode;
         private string from;
         private List<int> members;
@@ -30,10 +31,20 @@ namespace CMSWeb
             base.OnInit(e);
             OrgId = Page.QueryString<int?>("id");
             GroupId = Page.QueryString<int?>("group");
+            PendingMembers = Page.QueryString<bool?>("pending");
+            if (!PendingMembers.HasValue)
+                PendingMembers = false;
             GroupMode = GroupId.HasValue;
+            if (!IsPostBack)
+            {
+                MemberType.SelectedValue = "220";
+                PersonSearchDialogController.ResetSearchTags();
+            }
             SetMembers();
             GroupId = GroupId ?? 0;
             MemberData.SelectParameters["noinactive"].DefaultValue = (GroupId > 0).ToString();
+            MemberData.SelectParameters["pending"].DefaultValue = PendingMembers.ToString();
+            Pending.Checked = PendingMembers ?? false;
         }
         private void SetMembers()
         {
@@ -59,11 +70,6 @@ namespace CMSWeb
             EditSection.Visible = !GroupMode;
             if (!OrgId.HasValue || (!from.HasValue() && EditSection.Visible))
                 throw new Exception("Cannot visit EditMembersDialog this way");
-            if (!IsPostBack)
-            {
-                MemberType.SelectedValue = "220";
-                PersonSearchDialogController.ResetSearchTags();
-            }
         }
 
         [System.Web.Services.WebMethod]
@@ -102,6 +108,7 @@ namespace CMSWeb
                 {
                     om.MemberTypeId = membertype;
                     om.InactiveDate = inactivedate;
+                    om.Pending = Pending.Checked;
                 }
             }
             DbUtil.Db.SubmitChanges();
@@ -117,7 +124,7 @@ namespace CMSWeb
             var q = PersonSearchDialogController.SearchMembers(SearchMemberType.Text.ToInt(),
                         TagSearch.SelectedValue.ToInt(),
                         SearchInactiveDate.Text.ToDate(),
-                        OrgId.Value, GroupId > 0);
+                        OrgId.Value, GroupId > 0, PendingMembers.Value);
             if (GroupMode)
                 if (SelectAll.Checked)
                 {

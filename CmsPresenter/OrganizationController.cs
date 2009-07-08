@@ -35,7 +35,7 @@ namespace CMSPresenter
         private int[] ChildSecurityRollSheets = new int[] { 4, 5, 6, 7 };
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, bool Pending, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
             var q = from om in DbUtil.Db.OrganizationMembers
@@ -43,10 +43,29 @@ namespace CMSPresenter
                     where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId == 0
                     where (Active && om.MemberTypeId != inactive)
                         || (!Active && om.MemberTypeId == inactive)
+                    where (Pending && om.Pending == true)
+                        || (!Pending && (om.Pending ?? false) == false)
                     select om;
             _count = q.Count();
             q = ApplySort(q, sortExpression);
             var q2 = FetchPeopleList(q.Skip(startRowIndex).Take(maximumRows));
+            return q2;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable PrevOrgMembers(int OrganizationId, string sortExpression, int maximumRows, int startRowIndex)
+        {
+            var q = from etd in DbUtil.Db.EnrollmentTransactions
+                    where etd.TransactionStatus == false
+                    where etd.OrganizationId == OrganizationId
+                    where etd.TransactionTypeId >= 4
+                    select etd;
+            var _countprev = q.Count();
+            //q = ApplyEnrollSort(q, sortExpression);
+
+            var q2 = from etd in q
+                     let ete = DbUtil.Db.EnrollmentTransactions.SingleOrDefault(ete =>
+                        ete.TransactionId == etd.EnrollmentTransactionId)
+                     select etd.Person;
             return q2;
         }
         private int visitorCount;
@@ -65,7 +84,7 @@ namespace CMSPresenter
 
             return q2;
         }
-        public int Count(int OrganizationId, bool Active, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
+        public int Count(int OrganizationId, bool Active, bool Pending, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             return _count;
         }

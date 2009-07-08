@@ -51,6 +51,8 @@ namespace CmsData
 		
 		private DateTime? _LastAttended;
 		
+		private bool? _Pending;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -118,6 +120,9 @@ namespace CmsData
 		
 		partial void OnLastAttendedChanging(DateTime? value);
 		partial void OnLastAttendedChanged();
+		
+		partial void OnPendingChanging(bool? value);
+		partial void OnPendingChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -514,6 +519,28 @@ namespace CmsData
 					this._LastAttended = value;
 					this.SendPropertyChanged("LastAttended");
 					this.OnLastAttendedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Pending", UpdateCheck=UpdateCheck.Never, Storage="_Pending", DbType="bit")]
+		public bool? Pending
+		{
+			get { return this._Pending; }
+
+			set
+			{
+				if (this._Pending != value)
+				{
+				
+                    this.OnPendingChanging(value);
+					this.SendPropertyChanging();
+					this._Pending = value;
+					this.SendPropertyChanged("Pending");
+					this.OnPendingChanged();
 				}
 
 			}

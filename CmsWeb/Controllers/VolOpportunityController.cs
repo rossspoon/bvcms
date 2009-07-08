@@ -99,9 +99,10 @@ namespace CMSWeb.Controllers
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult DeleteCode(int id)
+        public EmptyResult DeleteCode(string id)
         {
-            var intcode = DbUtil.Db.VolInterestCodes.SingleOrDefault(vo => vo.Id == id);
+            int code = id.Substring(1).ToInt();
+            var intcode = DbUtil.Db.VolInterestCodes.SingleOrDefault(vo => vo.Id == code);
             if (intcode == null)
                 return new EmptyResult();
             DbUtil.Db.VolInterestCodes.DeleteOnSubmit(intcode);

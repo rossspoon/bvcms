@@ -95,27 +95,28 @@ namespace CMSPresenter
         public int count;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList(int startRowIndex, int maximumRows, string sortExpression,
-            int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive)
+            int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive, bool pending)
         {
 //'MemberData' could not find a non-generic method 'FetchOrgMemberList' that has parameters: 
             //startRowIndex, maximumRows, sortExpression, 
             //memtype, tag, inactive, orgid, noinactive."
 
-            var q0 = SearchMembers(memtype, tag, inactivedt, orgid, noinactive);
+            var q0 = SearchMembers(memtype, tag, inactivedt, orgid, noinactive, pending);
             count = q0.Count();
             var q1 = q0.OrderBy(m => m.Person.Name2).Skip(startRowIndex).Take(maximumRows);
             return FetchMemberList(q1);
         }
         public int Count(int startRowIndex, int maximumRows, string sortExpression,
-                int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive)
+                int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive, bool pending)
         {
             return count;
         }
         public static IQueryable<OrganizationMember> SearchMembers(int memtype, int tag, 
-            DateTime? inactive, int orgid, bool? noinactive)
+            DateTime? inactive, int orgid, bool? noinactive, bool pending)
         {
             var q0 = from om in DbUtil.Db.OrganizationMembers
                      where om.OrganizationId == orgid
+                     where (om.Pending ?? false) == pending
                      where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive || noinactive == false
                      select om;
             if (memtype != 0)

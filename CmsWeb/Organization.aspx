@@ -249,6 +249,7 @@
         <ul>
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Inactive-tab"><span>Inactive</span></a></li>
+            <li><a href="#Pending-tab"><span>Pending</span></a></li>
             <li><a href="#Visitors-tab"><span>Visitors</span></a></li>
             <li><a href="#Schedule-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
@@ -260,11 +261,15 @@
                 AutoPostBack="True" OnSelectedIndexChanged="Group_SelectedIndexChanged" 
                 ondatabound="GroupFilter_DataBound">
             </asp:DropDownList>
-            <uc2:MemberGrid ID="MemberGrid1" runat="server" />
+            <uc2:MemberGrid ID="MemberGrid1" runat="server" Active="1" Pending="0" />
         </div>
         <div id="Inactive-tab" class="ui-tabs-hide">
             <uc1:ExportToolBar ID="ExportToolBar3" runat="server" />
-            <uc2:MemberGrid ID="MemberGrid2" runat="server" Active="0" />
+            <uc2:MemberGrid ID="MemberGrid2" runat="server" Active="0" Pending="0" />
+        </div>
+        <div id="Pending-tab" class="ui-tabs-hide">
+            <uc1:ExportToolBar ID="ExportToolBar4" runat="server" />
+            <uc2:MemberGrid ID="MemberGrid3" runat="server" Active="1" Pending="1" />
         </div>
         <div id="Visitors-tab" class="ui-tabs-hide">
             <uc1:ExportToolBar ID="ExportToolBar2" runat="server" />

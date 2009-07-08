@@ -101,8 +101,9 @@ namespace CmsData
         public static void UpdateMeetingsToUpdate()
         {
             var mids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
-            foreach (var mid in mids)
-                DbUtil.Db.UpdateMeetingCounters(mid);
+            if (mids != null)
+                foreach (var mid in mids)
+                    DbUtil.Db.UpdateMeetingCounters(mid);
         }
         public bool ToggleGroup(int groupid)
         {

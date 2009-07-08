@@ -269,6 +269,11 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.StartDate);
+                // P ----------------
+                case QueryType.PendingCurrentOrg:
+                    return Expressions.PendingCurrentOrg(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 // R ----------------
                 case QueryType.RecentAttendType:
                     return Expressions.RecentAttendType(parm,

@@ -33,6 +33,8 @@ namespace CMSWeb
             ExportToolBar2.queryId = qb.QueryId;
             qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
             ExportToolBar3.queryId = qb.QueryId;
+            qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
+            ExportToolBar4.queryId = qb.QueryId;
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -64,12 +66,15 @@ namespace CMSWeb
             ExportToolBar1.TaggedEvent += new EventHandler(ExportToolBar1_TaggedEvent);
             ExportToolBar2.TaggedEvent += new EventHandler(ExportToolBar2_TaggedEvent);
             ExportToolBar3.TaggedEvent += new EventHandler(ExportToolBar3_TaggedEvent);
+            ExportToolBar4.TaggedEvent += new EventHandler(ExportToolBar4_TaggedEvent);
             MemberGrid1.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
             MemberGrid2.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
+            MemberGrid3.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
             VisitorGrid1.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
             MemberGrid1.OrgId = organization.OrganizationId;
             MemberGrid1.GroupId = Util.CurrentGroupId;
             MemberGrid2.OrgId = organization.OrganizationId;
+            MemberGrid3.OrgId = organization.OrganizationId;
             CloneOrg1.Visible = User.IsInRole("Edit");
             NewMeetingLink.Visible = User.IsInRole("Attendance");
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
@@ -80,6 +85,7 @@ namespace CMSWeb
         {
             MemberGrid1.DataBind();
             MemberGrid2.DataBind();
+            MemberGrid3.DataBind();
             VisitorGrid1.DataBind();
         }
 
@@ -96,6 +102,10 @@ namespace CMSWeb
         void ExportToolBar1_TaggedEvent(object sender, EventArgs e)
         {
             MemberGrid1.DataBind();
+        }
+        void ExportToolBar4_TaggedEvent(object sender, EventArgs e)
+        {
+            MemberGrid3.DataBind();
         }
 
         protected void EditUpdateButton1_Click(object sender, EventArgs e)

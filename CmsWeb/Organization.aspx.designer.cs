@@ -275,6 +275,24 @@ namespace CMSWeb {
         protected global::CMSWeb.MemberGrid MemberGrid2;
         
         /// <summary>
+        /// ExportToolBar4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSWeb.ExportToolBar ExportToolBar4;
+        
+        /// <summary>
+        /// MemberGrid3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSWeb.MemberGrid MemberGrid3;
+        
+        /// <summary>
         /// ExportToolBar2 control.
         /// </summary>
         /// <remarks>

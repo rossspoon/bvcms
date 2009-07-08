@@ -69,10 +69,9 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<OrganizationView> EnrollData(int pid, string sortExpression, int maximumRows, int startRowIndex)
         {
-            var dt = Util.Now.Date.AddDays(1);
             var q = from om in Db.OrganizationMembers
                     where om.PeopleId == pid
-                    where dt > om.EnrollmentDate
+                    where (om.Pending ?? false) == false
                     where !(om.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
                     select om;
             _EnrollDataCount = q.Count();
@@ -140,7 +139,7 @@ namespace CMSPresenter
             var dt = Util.Now;
             var q = from o in Db.Organizations
                     from om in o.OrganizationMembers
-                    where om.PeopleId == pid && om.EnrollmentDate > dt
+                    where om.PeopleId == pid && om.Pending.Value == true
                     let l = Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
                     let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                     orderby o.OrganizationName

@@ -26,6 +26,12 @@ namespace CMSWeb
             get { return _Active; }
             set { _Active = value; }
         }
+        private int _Pending = 0;
+        public int Pending
+        {
+            get { return _Pending; }
+            set { _Pending = value; }
+        }
         public event EventHandler RebindMemberGrids;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,8 +41,8 @@ namespace CMSWeb
             UpdateMembers.Visible = Page.User.IsInRole("Attendance");
             AddMember.NavigateUrl = "~/AddMemberDialog.aspx?id={0}&from={1}&TB_iframe=true&height=450&width=600"
                 .Fmt(OrgId, MemberPanel.ClientID);
-            UpdateMembers.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&from={1}&TB_iframe=true&height=450&width=600"
-                .Fmt(OrgId, MemberPanel.ClientID);
+            UpdateMembers.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+                .Fmt(OrgId, MemberPanel.ClientID, Pending == 1);
             Page.ClientScript.RegisterClientScriptBlock(typeof(MemberGrid), "membergrid", script);
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)
                 if (Page.Request.Params["__EVENTTARGET"] == MemberPanel.ClientID)
@@ -76,6 +82,7 @@ namespace CMSWeb
         protected void MembersData_Selecting(object sender, ObjectDataSourceSelectingEventArgs e)
         {
             e.InputParameters["Active"] = Active != 0;
+            e.InputParameters["Pending"] = Pending != 0;
             e.InputParameters["GroupId"] = GroupId;
         }
 

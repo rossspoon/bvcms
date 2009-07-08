@@ -821,7 +821,8 @@ namespace CmsData
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
                         && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId == 0)
-                        && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive);
+                        && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -836,6 +837,20 @@ namespace CmsData
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
                         && m.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression PendingCurrentOrg(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                        m.OrganizationId == Util.CurrentOrgId
+                        && (m.Pending ?? false) == true);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

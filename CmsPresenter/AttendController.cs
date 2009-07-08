@@ -50,7 +50,7 @@ namespace CMSPresenter
 
             var q = from p in DbUtil.Db.People
                     let membership = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId)
-                    let ismember = p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId)
+                    let ismember = p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId && (om.Pending ?? false) == false)
                     let attend = p.Attends.SingleOrDefault(a => a.OrganizationId == meeting.OrganizationId && a.MeetingId == meetid)
                     where
                         // anybody who attended this meeting
@@ -126,7 +126,7 @@ namespace CMSPresenter
                             )
                         )
                     || // members
-                        (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId))
+                        (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId && (om.Pending ?? false) == false))
                     select new AttendedInfo
                     {
                         PeopleId = p.PeopleId,

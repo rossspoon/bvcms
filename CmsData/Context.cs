@@ -159,6 +159,22 @@ namespace CmsData
             }
             return qb;
         }
+        public QueryBuilderClause QueryBuilderPendingCurrentOrg()
+        {
+            const string STR_PendingCurrentOrg = "PendingCurrentOrg";
+            var qb = QueryBuilderClauses.FirstOrDefault(c => c.SavedBy == STR_System
+                && c.Description == STR_PendingCurrentOrg);
+            if (qb == null)
+            {
+                qb = QueryBuilderClause.NewGroupClause();
+                qb.Description = STR_PendingCurrentOrg;
+                qb.SavedBy = STR_System;
+                qb.AddNewClause(QueryType.PendingCurrentOrg, CompareType.Equal, "1,T");
+                QueryBuilderClauses.InsertOnSubmit(qb);
+                SubmitChanges();
+            }
+            return qb;
+        }
         public QueryBuilderClause QueryBuilderVisitedCurrentOrg()
         {
             const string STR_VisitedCurrentOrg = "VisitedCurrentOrg";
