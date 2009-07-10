@@ -84,7 +84,7 @@ namespace CMSPresenter
              f = DbUtil.Db.Families.Single(g => g.FamilyId == FamilyId);
              fr = f.RelatedFamilies1.First(a => a.RelatedFamilyId == RelatedFamilyId);
              if (fr == null) fr = f.RelatedFamilies2.First(a => a.FamilyId == RelatedFamilyId);
-             fr.FamilyRelationshipDesc = FamilyRelationshipDesc;
+             fr.FamilyRelationshipDesc = FamilyRelationshipDesc ?? "";
              DbUtil.Db.SubmitChanges();
 
          }

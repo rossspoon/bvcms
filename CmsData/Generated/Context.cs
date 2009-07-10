@@ -286,10 +286,6 @@ namespace CmsData
         partial void UpdateProgram(Program instance);
         partial void DeleteProgram(Program instance);
         
-        partial void InsertPromotionControl(PromotionControl instance);
-        partial void UpdatePromotionControl(PromotionControl instance);
-        partial void DeletePromotionControl(PromotionControl instance);
-        
         partial void InsertPromotion(Promotion instance);
         partial void UpdatePromotion(Promotion instance);
         partial void DeletePromotion(Promotion instance);
@@ -855,12 +851,6 @@ namespace CmsData
 		public Table< Program> Programs
 		{
 			get	{ return this.GetTable< Program>(); }
-
-		}
-
-		public Table< PromotionControl> PromotionControls
-		{
-			get	{ return this.GetTable< PromotionControl>(); }
 
 		}
 
@@ -1811,6 +1801,18 @@ namespace CmsData
 			return ((String)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 dt
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? BibleFellowshipClassId2(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
                 ).ReturnValue));
 		}
 

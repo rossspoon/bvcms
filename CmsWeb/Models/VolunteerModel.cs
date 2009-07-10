@@ -37,6 +37,15 @@ namespace CMSWeb.Models
         public string email { get; set; }
         public Person person { get; set; }
         public string[] interests { get; set; }
+        public string question { get; set; }
+
+        public string Checked(int id)
+        {
+            if (interests != null && interests.Contains(id.ToString()))
+                return "checked='checked'";
+            return "";
+        }
+
 
         public int FindMember()
         {
@@ -70,6 +79,8 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("phone", "7 or 10 digits");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
+            if (interests == null)
+                ModelState.AddModelError("interests", "Must check at least one interest");
         }
     }
 }

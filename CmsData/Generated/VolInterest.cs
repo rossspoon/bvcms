@@ -29,6 +29,8 @@ namespace CmsData
 		
 		private int? _OpportunityCode;
 		
+		private string _Question;
+		
    		
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
@@ -59,6 +61,9 @@ namespace CmsData
 		
 		partial void OnOpportunityCodeChanging(int? value);
 		partial void OnOpportunityCodeChanged();
+		
+		partial void OnQuestionChanging(string value);
+		partial void OnQuestionChanged();
 		
     #endregion
 		public VolInterest()
@@ -203,6 +208,28 @@ namespace CmsData
 					this._OpportunityCode = value;
 					this.SendPropertyChanged("OpportunityCode");
 					this.OnOpportunityCodeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="question", UpdateCheck=UpdateCheck.Never, Storage="_Question", DbType="varchar(50)")]
+		public string Question
+		{
+			get { return this._Question; }
+
+			set
+			{
+				if (this._Question != value)
+				{
+				
+                    this.OnQuestionChanging(value);
+					this.SendPropertyChanging();
+					this._Question = value;
+					this.SendPropertyChanged("Question");
+					this.OnQuestionChanged();
 				}
 
 			}

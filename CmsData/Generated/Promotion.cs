@@ -10,41 +10,27 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="dbo.Promotions")]
+	[Table(Name="dbo.Promotion")]
 	public partial class Promotion : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 	#region Private Fields
 		
-		private int _PromotionId;
+		private int _Id;
 		
-		private int _CreatedBy;
+		private int? _FromDivId;
 		
-		private DateTime _CreatedDate;
+		private int? _ToDivId;
 		
-		private bool _RecordStatus;
-		
-		private int _ChurchId;
-		
-		private DateTime? _PromotionDate;
-		
-		private DateTime? _OpenedDate;
-		
-		private DateTime? _CompletedDate;
-		
-		private string _PromotionName;
-		
-		private string _PromotionDescription;
-		
-		private int? _ModifiedBy;
-		
-		private DateTime? _ModifiedDate;
+		private string _Description;
 		
    		
-   		private EntitySet< PromotionControl> _PromotionControls;
-		
     	
+		private EntityRef< Division> _FromDivision;
+		
+		private EntityRef< Division> _ToDivision;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -52,48 +38,26 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnPromotionIdChanging(int value);
-		partial void OnPromotionIdChanged();
+		partial void OnIdChanging(int value);
+		partial void OnIdChanged();
 		
-		partial void OnCreatedByChanging(int value);
-		partial void OnCreatedByChanged();
+		partial void OnFromDivIdChanging(int? value);
+		partial void OnFromDivIdChanged();
 		
-		partial void OnCreatedDateChanging(DateTime value);
-		partial void OnCreatedDateChanged();
+		partial void OnToDivIdChanging(int? value);
+		partial void OnToDivIdChanged();
 		
-		partial void OnRecordStatusChanging(bool value);
-		partial void OnRecordStatusChanged();
-		
-		partial void OnChurchIdChanging(int value);
-		partial void OnChurchIdChanged();
-		
-		partial void OnPromotionDateChanging(DateTime? value);
-		partial void OnPromotionDateChanged();
-		
-		partial void OnOpenedDateChanging(DateTime? value);
-		partial void OnOpenedDateChanged();
-		
-		partial void OnCompletedDateChanging(DateTime? value);
-		partial void OnCompletedDateChanged();
-		
-		partial void OnPromotionNameChanging(string value);
-		partial void OnPromotionNameChanged();
-		
-		partial void OnPromotionDescriptionChanging(string value);
-		partial void OnPromotionDescriptionChanged();
-		
-		partial void OnModifiedByChanging(int? value);
-		partial void OnModifiedByChanged();
-		
-		partial void OnModifiedDateChanging(DateTime? value);
-		partial void OnModifiedDateChanged();
+		partial void OnDescriptionChanging(string value);
+		partial void OnDescriptionChanged();
 		
     #endregion
 		public Promotion()
 		{
 			
-			this._PromotionControls = new EntitySet< PromotionControl>(new Action< PromotionControl>(this.attach_PromotionControls), new Action< PromotionControl>(this.detach_PromotionControls)); 
 			
+			this._FromDivision = default(EntityRef< Division>); 
+			
+			this._ToDivision = default(EntityRef< Division>); 
 			
 			OnCreated();
 		}
@@ -101,21 +65,21 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="PromotionId", UpdateCheck=UpdateCheck.Never, Storage="_PromotionId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PromotionId
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
 		{
-			get { return this._PromotionId; }
+			get { return this._Id; }
 
 			set
 			{
-				if (this._PromotionId != value)
+				if (this._Id != value)
 				{
 				
-                    this.OnPromotionIdChanging(value);
+                    this.OnIdChanging(value);
 					this.SendPropertyChanging();
-					this._PromotionId = value;
-					this.SendPropertyChanged("PromotionId");
-					this.OnPromotionIdChanged();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 
 			}
@@ -123,21 +87,24 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="int NOT NULL")]
-		public int CreatedBy
+		[Column(Name="FromDivId", UpdateCheck=UpdateCheck.Never, Storage="_FromDivId", DbType="int")]
+		public int? FromDivId
 		{
-			get { return this._CreatedBy; }
+			get { return this._FromDivId; }
 
 			set
 			{
-				if (this._CreatedBy != value)
+				if (this._FromDivId != value)
 				{
 				
-                    this.OnCreatedByChanging(value);
+					if (this._FromDivision.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnFromDivIdChanging(value);
 					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
+					this._FromDivId = value;
+					this.SendPropertyChanged("FromDivId");
+					this.OnFromDivIdChanged();
 				}
 
 			}
@@ -145,21 +112,24 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime NOT NULL")]
-		public DateTime CreatedDate
+		[Column(Name="ToDivId", UpdateCheck=UpdateCheck.Never, Storage="_ToDivId", DbType="int")]
+		public int? ToDivId
 		{
-			get { return this._CreatedDate; }
+			get { return this._ToDivId; }
 
 			set
 			{
-				if (this._CreatedDate != value)
+				if (this._ToDivId != value)
 				{
 				
-                    this.OnCreatedDateChanging(value);
+					if (this._ToDivision.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnToDivIdChanging(value);
 					this.SendPropertyChanging();
-					this._CreatedDate = value;
-					this.SendPropertyChanged("CreatedDate");
-					this.OnCreatedDateChanged();
+					this._ToDivId = value;
+					this.SendPropertyChanged("ToDivId");
+					this.OnToDivIdChanged();
 				}
 
 			}
@@ -167,197 +137,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RecordStatus", UpdateCheck=UpdateCheck.Never, Storage="_RecordStatus", DbType="bit NOT NULL")]
-		public bool RecordStatus
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(200)")]
+		public string Description
 		{
-			get { return this._RecordStatus; }
+			get { return this._Description; }
 
 			set
 			{
-				if (this._RecordStatus != value)
+				if (this._Description != value)
 				{
 				
-                    this.OnRecordStatusChanging(value);
+                    this.OnDescriptionChanging(value);
 					this.SendPropertyChanging();
-					this._RecordStatus = value;
-					this.SendPropertyChanged("RecordStatus");
-					this.OnRecordStatusChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ChurchId", UpdateCheck=UpdateCheck.Never, Storage="_ChurchId", DbType="int NOT NULL")]
-		public int ChurchId
-		{
-			get { return this._ChurchId; }
-
-			set
-			{
-				if (this._ChurchId != value)
-				{
-				
-                    this.OnChurchIdChanging(value);
-					this.SendPropertyChanging();
-					this._ChurchId = value;
-					this.SendPropertyChanged("ChurchId");
-					this.OnChurchIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PromotionDate", UpdateCheck=UpdateCheck.Never, Storage="_PromotionDate", DbType="datetime")]
-		public DateTime? PromotionDate
-		{
-			get { return this._PromotionDate; }
-
-			set
-			{
-				if (this._PromotionDate != value)
-				{
-				
-                    this.OnPromotionDateChanging(value);
-					this.SendPropertyChanging();
-					this._PromotionDate = value;
-					this.SendPropertyChanged("PromotionDate");
-					this.OnPromotionDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OpenedDate", UpdateCheck=UpdateCheck.Never, Storage="_OpenedDate", DbType="datetime")]
-		public DateTime? OpenedDate
-		{
-			get { return this._OpenedDate; }
-
-			set
-			{
-				if (this._OpenedDate != value)
-				{
-				
-                    this.OnOpenedDateChanging(value);
-					this.SendPropertyChanging();
-					this._OpenedDate = value;
-					this.SendPropertyChanged("OpenedDate");
-					this.OnOpenedDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="CompletedDate", UpdateCheck=UpdateCheck.Never, Storage="_CompletedDate", DbType="datetime")]
-		public DateTime? CompletedDate
-		{
-			get { return this._CompletedDate; }
-
-			set
-			{
-				if (this._CompletedDate != value)
-				{
-				
-                    this.OnCompletedDateChanging(value);
-					this.SendPropertyChanging();
-					this._CompletedDate = value;
-					this.SendPropertyChanged("CompletedDate");
-					this.OnCompletedDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PromotionName", UpdateCheck=UpdateCheck.Never, Storage="_PromotionName", DbType="varchar(40) NOT NULL")]
-		public string PromotionName
-		{
-			get { return this._PromotionName; }
-
-			set
-			{
-				if (this._PromotionName != value)
-				{
-				
-                    this.OnPromotionNameChanging(value);
-					this.SendPropertyChanging();
-					this._PromotionName = value;
-					this.SendPropertyChanged("PromotionName");
-					this.OnPromotionNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PromotionDescription", UpdateCheck=UpdateCheck.Never, Storage="_PromotionDescription", DbType="varchar(256)")]
-		public string PromotionDescription
-		{
-			get { return this._PromotionDescription; }
-
-			set
-			{
-				if (this._PromotionDescription != value)
-				{
-				
-                    this.OnPromotionDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._PromotionDescription = value;
-					this.SendPropertyChanged("PromotionDescription");
-					this.OnPromotionDescriptionChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="int")]
-		public int? ModifiedBy
-		{
-			get { return this._ModifiedBy; }
-
-			set
-			{
-				if (this._ModifiedBy != value)
-				{
-				
-                    this.OnModifiedByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedDate", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedDate", DbType="datetime")]
-		public DateTime? ModifiedDate
-		{
-			get { return this._ModifiedDate; }
-
-			set
-			{
-				if (this._ModifiedDate != value)
-				{
-				
-                    this.OnModifiedDateChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedDate = value;
-					this.SendPropertyChanged("ModifiedDate");
-					this.OnModifiedDateChanged();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 
 			}
@@ -369,20 +163,94 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="PROMOTION_CONTROL_PROMO_FK", Storage="_PromotionControls", OtherKey="PromotionId")]
-   		public EntitySet< PromotionControl> PromotionControls
-   		{
-   		    get { return this._PromotionControls; }
-
-			set	{ this._PromotionControls.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
     	
+		[Association(Name="FromPromotions__FromDivision", Storage="_FromDivision", ThisKey="FromDivId", IsForeignKey=true)]
+		public Division FromDivision
+		{
+			get { return this._FromDivision.Entity; }
+
+			set
+			{
+				Division previousValue = this._FromDivision.Entity;
+				if (((previousValue != value) 
+							|| (this._FromDivision.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._FromDivision.Entity = null;
+						previousValue.FromPromotions.Remove(this);
+					}
+
+					this._FromDivision.Entity = value;
+					if (value != null)
+					{
+						value.FromPromotions.Add(this);
+						
+						this._FromDivId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._FromDivId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("FromDivision");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="ToPromotions__ToDivision", Storage="_ToDivision", ThisKey="ToDivId", IsForeignKey=true)]
+		public Division ToDivision
+		{
+			get { return this._ToDivision.Entity; }
+
+			set
+			{
+				Division previousValue = this._ToDivision.Entity;
+				if (((previousValue != value) 
+							|| (this._ToDivision.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ToDivision.Entity = null;
+						previousValue.ToPromotions.Remove(this);
+					}
+
+					this._ToDivision.Entity = value;
+					if (value != null)
+					{
+						value.ToPromotions.Add(this);
+						
+						this._ToDivId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._ToDivId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("ToDivision");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
@@ -400,19 +268,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_PromotionControls(PromotionControl entity)
-		{
-			this.SendPropertyChanging();
-			entity.Promotion = this;
-		}
-
-		private void detach_PromotionControls(PromotionControl entity)
-		{
-			this.SendPropertyChanging();
-			entity.Promotion = null;
-		}
-
-		
 	}
 
 }

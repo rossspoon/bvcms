@@ -39,10 +39,16 @@
                 Description
             </th>
             <th>
+                UrlKey
+            </th>
+            <th>
                 Email No Cva
             </th>
             <th>
                 Email Yes Cva
+            </th>
+            <th>
+                Extra Question
             </th>
             <th></th>
             <th></th>
@@ -57,12 +63,20 @@
                     class='clickEdit'><%=item.Description%></span>
             </td>
             <td>
+                <span id='<%="UrlKey." + item.Id %>' 
+                    class='clickEdit'><%=item.UrlKey%></span>
+            </td>
+            <td>
                 <span id='<%="EmailNoCva." + item.Id %>' 
                     class='clickEdit2'><%=item.EmailNoCva%></span>
             </td>
             <td>
                 <span id='<%="EmailYesCva." + item.Id %>' 
                     class='clickEdit2'><%=item.EmailYesCva%></span>
+            </td>
+            <td>
+                <span id='<%="Question." + item.Id %>' 
+                    class='clickEdit'><%=item.ExtraQuestion%></span>
             </td>
             <td>
                 <span id='<%="Email." + item.Id %>' 

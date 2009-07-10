@@ -97,7 +97,7 @@
                     <%--                        <tr>
                             <td>
                                 <cc1:DisplayHyperlink ID="DisplayHyperlink1" runat="server" BindingMember="EmailAddress"
-                                    BindingUrlFormat="mailto://{0}" BindingUrlMember="EmailAddress" BindingSource="person">[EmailAddress]</cc1:DisplayHyperlink>
+                                    BindingUrlFormat="mailto:{0}" BindingUrlMember="EmailAddress" BindingSource="person">[EmailAddress]</cc1:DisplayHyperlink>
                             </td>
                             <td>
                                 &nbsp;

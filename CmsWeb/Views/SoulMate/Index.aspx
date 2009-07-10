@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SoulMateModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3b.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SoulMateModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>SML Registration</title>
@@ -8,26 +8,6 @@
 
     <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
-        $(function() {
-            $("#first1").keypress(function(e) {
-                if (e.which == 126) {
-                    $("#first1").val('David');
-                    $("#lastname1").val('Carroll');
-                    $("#dob1").val('5/30/52');
-                    $("#phone1").val('7581862');
-                    $("#email1").val('davcar@pobox.com');
-                    $("#first2").val('Karen');
-                    $("#lastname2").val('Worrell');
-                    $("#dob2").val('8/16/52');
-                    $("#phone2").val('8332104');
-                    $("#email2").val('kworrell@bellevue.org');
-                    $("#Relation").val('4');
-                    return false;
-                }
-            });
-        });
-    </script>
 <% if(Model.shownew1)
    { %>
     <script type="text/javascript">
@@ -60,7 +40,6 @@
 <% } %>
     <h2>Register for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
 
-    <%= Html.ValidationSummary() %>
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
@@ -68,7 +47,7 @@
                 <col style="width: 13em; text-align:right" />
                 <col />
                 <col />
-                <tr><th colspan="2">His Info</th></tr>
+                <tr><th colspan="2">His Info</th><td><%= Html.ValidationMessage("findhim") %></td></tr>
                 <tr>
                     <td><label for="first1">First Name</label></td>
                     <td><%= Html.TextBox("first1") %></td>
@@ -122,7 +101,7 @@
                     <td></td>
                 </tr>
             <% } %>
-                <tr><th colspan="2">Her Info</th></tr>
+                <tr><th colspan="2">Her Info</th><td><%= Html.ValidationMessage("findher") %></td></tr>
                 <tr>
                     <td><label for="first2">First Name</label></td>
                     <td><%= Html.TextBox("first2") %></td>

@@ -67,7 +67,8 @@ namespace CMSWeb
                         VipWeek2 = OrgMember.VipWeek2,
                         VipWeek3 = OrgMember.VipWeek3,
                         VipWeek4 = OrgMember.VipWeek4,
-                        VipWeek5 = OrgMember.VipWeek5
+                        VipWeek5 = OrgMember.VipWeek5,
+                        Pending = Pending.Checked,
                     };
                     DbUtil.Db.EnrollmentTransactions.InsertOnSubmit(et);
                 }

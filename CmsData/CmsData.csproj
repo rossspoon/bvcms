@@ -230,8 +230,6 @@
     <Compile Include="Generated\PhonePreference.cs" />
     <Compile Include="Generated\PostalLookup.cs" />
     <Compile Include="Generated\Promotion.cs" />
-    <Compile Include="Generated\PromotionControl.cs" />
-    <Compile Include="Generated\PromotionRef.cs" />
     <Compile Include="Generated\QueryBuilderClause.cs" />
     <Compile Include="Generated\RelatedFamily.cs" />
     <Compile Include="Generated\StateLookup.cs" />

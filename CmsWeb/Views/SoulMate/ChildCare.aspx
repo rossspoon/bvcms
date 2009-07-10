@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SoulMateModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3b.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SoulMateModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>SML Registration</title>
@@ -7,7 +7,6 @@
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Childcare Registration for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
 
-    <%= Html.ValidationSummary() %>
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
@@ -24,7 +23,7 @@
                 <tr>
                     <td><label for="first1">First Name</label></td>
                     <td><%= Html.TextBox("first1") %></td>
-                    <td><%= Html.ValidationMessage("first1") %></td>
+                    <td><%= Html.ValidationMessage("first1") %><%= Html.ValidationMessage("findkid") %></td>
                 </tr>
                 <tr>
                     <td><label for="lastname1">Last Name</label></td>

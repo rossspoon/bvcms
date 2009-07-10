@@ -55,6 +55,8 @@ namespace CmsData
 		
 		private int? _EnrollmentTransactionId;
 		
+		private bool? _Pending;
+		
    		
    		private EntitySet< BadET> _BadETs;
 		
@@ -128,6 +130,9 @@ namespace CmsData
 		
 		partial void OnEnrollmentTransactionIdChanging(int? value);
 		partial void OnEnrollmentTransactionIdChanged();
+		
+		partial void OnPendingChanging(bool? value);
+		partial void OnPendingChanged();
 		
     #endregion
 		public EnrollmentTransaction()
@@ -568,6 +573,28 @@ namespace CmsData
 					this._EnrollmentTransactionId = value;
 					this.SendPropertyChanged("EnrollmentTransactionId");
 					this.OnEnrollmentTransactionIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Pending", UpdateCheck=UpdateCheck.Never, Storage="_Pending", DbType="bit")]
+		public bool? Pending
+		{
+			get { return this._Pending; }
+
+			set
+			{
+				if (this._Pending != value)
+				{
+				
+                    this.OnPendingChanging(value);
+					this.SendPropertyChanging();
+					this._Pending = value;
+					this.SendPropertyChanged("Pending");
+					this.OnPendingChanged();
 				}
 
 			}

@@ -90,7 +90,8 @@ namespace CmsData
                     VipWeek2 = VipWeek2,
                     VipWeek3 = VipWeek3,
                     VipWeek4 = VipWeek4,
-                    VipWeek5 = VipWeek5
+                    VipWeek5 = VipWeek5,
+                    Pending = Pending
                 };
                 Db.EnrollmentTransactions.InsertOnSubmit(et);
             }

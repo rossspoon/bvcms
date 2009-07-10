@@ -7,7 +7,7 @@
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Volunteer for <%=Model.Opportunity.Description %></h2>
 
-    <%= Html.ValidationSummary() %>
+    <%= Html.ValidationMessage("find") %>
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
@@ -42,14 +42,23 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td><label for="email">Interests</label></td>
+                    <td><label for="interests">Interests</label></td>
                     <td>
                     <% foreach (var i in Model.Opportunity.VolInterestCodes)
                        { %>
-                       <input type="checkbox" name="interests" value="<%=i.Id %>" /> <%=i.Description %><br />
+                       <input type="checkbox" name="interests" value="<%=i.Id %>" <%=Model.Checked(i.Id)%> /> <%=i.Description %><br />
                     <% } %>
                     </td>
+                    <td><%= Html.ValidationMessage("interests") %></td>
                 </tr>
+                <% if (Model.Opportunity.ExtraQuestion.HasValue())
+                   { %>
+                <tr>
+                    <td><%=Model.Opportunity.ExtraQuestion %></td>
+                    <td><%=Html.TextBox("question") %></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <% } %>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
                 </tr>

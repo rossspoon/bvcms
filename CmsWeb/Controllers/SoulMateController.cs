@@ -29,21 +29,21 @@ namespace CMSWeb.Controllers
             {
                 var count = m.FindMember1();
                 if (count > 1)
-                    ModelState.AddModelError("_FORM", "More than one match for him, sorry");
+                    ModelState.AddModelError("findhim", "More than one match for him, sorry");
                 else if (count == 0)
                     if (!m.shownew1)
                     {
-                        ModelState.AddModelError("_FORM", "Cannot find his church record.");
+                        ModelState.AddModelError("findhim", "Cannot find his church record.");
                         m.shownew1 = true;
                     }
 
                 count = m.FindMember2();
                 if (count > 1)
-                    ModelState.AddModelError("_FORM", "More than one match for her, sorry");
+                    ModelState.AddModelError("findher", "More than one match for her, sorry");
                 else if (count == 0)
                     if(!m.shownew2)
                     {
-                        ModelState.AddModelError("_FORM", "Cannot find her church record.");
+                        ModelState.AddModelError("findher", "Cannot find her church record.");
                         m.shownew2 = true;
                     }
             }
@@ -103,7 +103,7 @@ namespace CMSWeb.Controllers
                 count = m.FindMember(m.person2.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
             }
             if (count > 1)
-                ModelState.AddModelError("_FORM", "More than one match for child, sorry");
+                ModelState.AddModelError("findkid", "More than one match for child, sorry");
             if (c == null)
                 c = m.AddChild(p);
             m.EnrollInChildcare(c);

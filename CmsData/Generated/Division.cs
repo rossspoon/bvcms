@@ -28,6 +28,10 @@ namespace CmsData
    		
    		private EntitySet< DivOrg> _DivOrgs;
 		
+   		private EntitySet< Promotion> _FromPromotions;
+		
+   		private EntitySet< Promotion> _ToPromotions;
+		
     	
 		private EntityRef< Program> _Program;
 		
@@ -55,6 +59,10 @@ namespace CmsData
 		{
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
+			
+			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
+			
+			this._ToPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_ToPromotions), new Action< Promotion>(this.detach_ToPromotions)); 
 			
 			
 			this._Program = default(EntityRef< Program>); 
@@ -170,6 +178,26 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FromPromotions__FromDivision", Storage="_FromPromotions", OtherKey="FromDivId")]
+   		public EntitySet< Promotion> FromPromotions
+   		{
+   		    get { return this._FromPromotions; }
+
+			set	{ this._FromPromotions.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="ToPromotions__ToDivision", Storage="_ToPromotions", OtherKey="ToDivId")]
+   		public EntitySet< Promotion> ToPromotions
+   		{
+   		    get { return this._ToPromotions; }
+
+			set	{ this._ToPromotions.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -243,6 +271,32 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;
+		}
+
+		
+		private void attach_FromPromotions(Promotion entity)
+		{
+			this.SendPropertyChanging();
+			entity.FromDivision = this;
+		}
+
+		private void detach_FromPromotions(Promotion entity)
+		{
+			this.SendPropertyChanging();
+			entity.FromDivision = null;
+		}
+
+		
+		private void attach_ToPromotions(Promotion entity)
+		{
+			this.SendPropertyChanging();
+			entity.ToDivision = this;
+		}
+
+		private void detach_ToPromotions(Promotion entity)
+		{
+			this.SendPropertyChanging();
+			entity.ToDivision = null;
 		}
 
 		

@@ -383,6 +383,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\PromotionSetupController.cs" />
     <Compile Include="Controllers\SoulMateController.cs" />
     <Compile Include="Controllers\StepClassController.cs" />
     <Compile Include="Controllers\VolOpportunityController.cs" />
@@ -414,6 +415,8 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\PromoteInfo.cs" />
+    <Compile Include="Models\PromotionModel.cs" />
     <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VolunteerModel.cs" />
@@ -953,6 +956,7 @@
     <Content Include="Content\border.gif" />
     <Content Include="Content\btn0.png" />
     <Content Include="Content\content.css" />
+    <Content Include="Content\site3b.css" />
     <Content Include="Content\Site3.css" />
     <Content Include="Content\Crosses.png" />
     <Content Include="Content\dropdown.gif" />
@@ -1514,7 +1518,11 @@
     <None Include="fckeditor\fckeditor_php4.php" />
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
+    <Content Include="Views\Promotion\Columns.aspx" />
+    <Content Include="Views\Promotion\Index.aspx" />
+    <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Views\CodeValue\Index.aspx" />
+    <Content Include="Views\PromotionSetup\Index.aspx" />
     <Content Include="Views\Shared\Site3.Master" />
     <Content Include="Report\Reports.Master" />
     <Content Include="Report\BFCAvgWeeklyAttendanceRpt.aspx" />
@@ -1542,6 +1550,7 @@
     <Content Include="Views\StepClass\Step2Confirm.aspx" />
     <Content Include="Views\StepClass\Step1.aspx" />
     <Content Include="Views\StepClass\Step1Confirm.aspx" />
+    <Content Include="Views\Volunteer\Unknown.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />
     <Content Include="Views\VolOpportunity\Index.aspx" />
     <Content Include="Views\Program\Index.aspx" />

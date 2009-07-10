@@ -61,11 +61,17 @@ namespace CMSWeb.Controllers
                 case "Description":
                     o.Description = value;
                     break;
+                case "UrlKey":
+                    o.UrlKey = value;
+                    break;
                 case "EmailNoCva":
                     o.EmailNoCva = value;
                     break;
                 case "EmailYesCva":
                     o.EmailYesCva = value;
+                    break;
+                case "Question":
+                    o.ExtraQuestion = value;
                     break;
                 case "Email":
                     o.Email = value;

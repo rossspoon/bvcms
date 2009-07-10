@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
+using CmsData;
+using CMSWeb.Models;
+using UtilityExtensions;
+
+namespace CMSWeb.Controllers
+{
+    public class PromotionSetupController : Controller
+    {
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+            var m = DbUtil.Db.Promotions.AsEnumerable();
+            return View(m);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create()
+        {
+            var m = new Promotion();
+            DbUtil.Db.Promotions.InsertOnSubmit(m);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/PromotionSetup/");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Edit(string id, string value)
+        {
+            var iid = id.Substring(1).ToInt();
+            var c = new ContentResult();
+            c.Content = value;
+            var pro = DbUtil.Db.Promotions.SingleOrDefault(p => p.Id == iid);
+            if (pro == null)
+                return c;
+            pro.Description = value;
+            DbUtil.Db.SubmitChanges();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult EditDiv(string id, string value)
+        {
+            var iid = id.Substring(1).ToInt();
+            var pro = DbUtil.Db.Promotions.SingleOrDefault(m => m.Id == iid);
+            var fts = id.Substring(0, 1);
+            switch (fts)
+            {
+                case "f":
+                    pro.FromDivId = value.ToInt();
+                    break;
+                case "t":
+                    pro.ToDivId = value.ToInt();
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            var c = new ContentResult();
+            if (fts == "f")
+                c.Content = pro.FromDivision.Name;
+            else if (fts == "t")
+                c.Content = pro.ToDivision.Name;
+            return c;
+        }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public ContentResult EditSched(string id, string value)
+        //{
+        //    var iid = id.Substring(1).ToInt();
+        //    var pro = DbUtil.Db.Promotions.SingleOrDefault(m => m.Id == iid);
+        //    pro.ScheduleId = value.ToInt();
+        //    DbUtil.Db.SubmitChanges();
+        //    var c = new ContentResult();
+        //    c.Content = pro.WeeklySchedule.Description;
+        //    return c;
+        //}
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public EmptyResult Delete(string id)
+        {
+            var iid = id.Substring(1).ToInt();
+            var pro = DbUtil.Db.Promotions.SingleOrDefault(m => m.Id == iid);
+            if (pro == null)
+                return new EmptyResult();
+            DbUtil.Db.Promotions.DeleteOnSubmit(pro);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
+        }
+        public JsonResult DivisionCodes()
+        {
+            var q = from c in DbUtil.Db.Divisions
+                    select new
+                    {
+                        Code = c.Id.ToString(),
+                        Value = c.Name,
+                    };
+            return Json(q.ToDictionary(k => k.Code, v => v.Value));
+        }
+        //public JsonResult ScheduleCodes()
+        //{
+        //    var q = from c in DbUtil.Db.WeeklySchedules
+        //            select new
+        //            {
+        //                Code = c.Id.ToString(),
+        //                Value = c.Description,
+        //            };
+        //    return Json(q.ToDictionary(k => k.Code, v => v.Value));
+        //}
+    }
+}
