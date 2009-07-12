@@ -250,29 +250,34 @@
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Inactive-tab"><span>Inactive</span></a></li>
             <li><a href="#Pending-tab"><span>Pending</span></a></li>
+            <li><a href="#Priors-tab"><span>Previous</span></a></li>
             <li><a href="#Visitors-tab"><span>Visitors</span></a></li>
             <li><a href="#Schedule-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
         </ul>
         <div id="Members-tab" class="ui-tabs-hide">
-            <uc1:ExportToolBar ID="ExportToolBar1" runat="server" />
+            <uc1:ExportToolBar ID="MemberToolbar" runat="server" />
             <asp:DropDownList ID="GroupFilter" runat="server" DataSourceID="GroupData2" 
                 DataTextField="Name" DataValueField="Id"
                 AutoPostBack="True" OnSelectedIndexChanged="Group_SelectedIndexChanged" 
                 ondatabound="GroupFilter_DataBound">
             </asp:DropDownList>
-            <uc2:MemberGrid ID="MemberGrid1" runat="server" Active="1" Pending="0" />
+            <uc2:MemberGrid ID="Members" runat="server" Select="Active" />
         </div>
         <div id="Inactive-tab" class="ui-tabs-hide">
-            <uc1:ExportToolBar ID="ExportToolBar3" runat="server" />
-            <uc2:MemberGrid ID="MemberGrid2" runat="server" Active="0" Pending="0" />
+            <uc1:ExportToolBar ID="InactiveToolbar" runat="server" />
+            <uc2:MemberGrid ID="Inactives" runat="server" Select="Inactive" />
         </div>
         <div id="Pending-tab" class="ui-tabs-hide">
-            <uc1:ExportToolBar ID="ExportToolBar4" runat="server" />
-            <uc2:MemberGrid ID="MemberGrid3" runat="server" Active="1" Pending="1" />
+            <uc1:ExportToolBar ID="PendingToolbar" runat="server" />
+            <uc2:MemberGrid ID="Pendings" runat="server" Select="Pending" />
+        </div>
+        <div id="Priors-tab" class="ui-tabs-hide">
+            <uc1:ExportToolBar ID="PriorsToolbar" runat="server" />
+            <uc2:MemberGrid ID="Priors" runat="server" Select="Previous" />
         </div>
         <div id="Visitors-tab" class="ui-tabs-hide">
-            <uc1:ExportToolBar ID="ExportToolBar2" runat="server" />
+            <uc1:ExportToolBar ID="VisitorToolbar" runat="server" />
             &nbsp;Visitor Lookback Days:
             <asp:TextBox ID="VisitLookbackDays" runat="server" Width="34px"></asp:TextBox>
             <asp:LinkButton ID="SetDays" runat="server" OnClick="SetDays_Click">Set</asp:LinkButton>
@@ -280,7 +285,7 @@
             </div>
             <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <uc4:VisitorGrid ID="VisitorGrid1" runat="server" DataSourceID="VisitorData" />
+                    <uc4:VisitorGrid ID="Visitors" runat="server" DataSourceID="VisitorData" />
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

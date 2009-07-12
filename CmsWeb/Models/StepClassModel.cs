@@ -105,7 +105,7 @@ namespace CMSWeb.Models
                     meeting.OrganizationId,
                     person.PeopleId,
                     (int)OrganizationMember.MemberTypeCode.Member,
-                    DateTime.Today, null);
+                    DateTime.Today, null, false);
 
             var attend = DbUtil.Db.Attends.SingleOrDefault(a =>
                 a.OrganizationId == meeting.OrganizationId

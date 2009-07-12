@@ -89,6 +89,8 @@ namespace CmsData
     	
 		private EntityRef< Organization> _ParentOrg;
 		
+		private EntityRef< Division> _Division;
+		
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
 		private EntityRef< EntryPoint> _EntryPoint;
@@ -205,6 +207,8 @@ namespace CmsData
 			
 			this._ParentOrg = default(EntityRef< Organization>); 
 			
+			this._Division = default(EntityRef< Division>); 
+			
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
@@ -319,6 +323,9 @@ namespace CmsData
 			{
 				if (this._DivisionId != value)
 				{
+				
+					if (this._Division.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnDivisionIdChanging(value);
 					this.SendPropertyChanging();
@@ -929,6 +936,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("ParentOrg");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_Division", Storage="_Division", ThisKey="DivisionId", IsForeignKey=true)]
+		public Division Division
+		{
+			get { return this._Division.Entity; }
+
+			set
+			{
+				Division previousValue = this._Division.Entity;
+				if (((previousValue != value) 
+							|| (this._Division.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Division.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._Division.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._DivisionId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._DivisionId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Division");
 				}
 
 			}

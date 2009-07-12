@@ -20,29 +20,18 @@ namespace CMSWeb
     {
         public int OrgId { get; set; }
         public int GroupId { get; set; }
-        private int _Active = 1;
-        public int Active
-        {
-            get { return _Active; }
-            set { _Active = value; }
-        }
-        private int _Pending = 0;
-        public int Pending
-        {
-            get { return _Pending; }
-            set { _Pending = value; }
-        }
+        public CMSPresenter.GroupSelect Select { get; set; }
         public event EventHandler RebindMemberGrids;
         protected void Page_Load(object sender, EventArgs e)
         {
             pager.PageSize = Util.GetPageSizeCookie();
             pager2.PageSize = Util.GetPageSizeCookie();
-            AddMember.Visible = Page.User.IsInRole("Attendance");
-            UpdateMembers.Visible = Page.User.IsInRole("Attendance");
-            AddMember.NavigateUrl = "~/AddMemberDialog.aspx?id={0}&from={1}&TB_iframe=true&height=450&width=600"
-                .Fmt(OrgId, MemberPanel.ClientID);
+            AddMember.Visible = Page.User.IsInRole("Attendance") && Select!=GroupSelect.Previous;
+            UpdateMembers.Visible = AddMember.Visible;
+            AddMember.NavigateUrl = "~/AddMemberDialog.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+                .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
             UpdateMembers.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
-                .Fmt(OrgId, MemberPanel.ClientID, Pending == 1);
+                .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
             Page.ClientScript.RegisterClientScriptBlock(typeof(MemberGrid), "membergrid", script);
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)
                 if (Page.Request.Params["__EVENTTARGET"] == MemberPanel.ClientID)
@@ -73,16 +62,22 @@ namespace CMSWeb
                 link.NavigateUrl = "javascript:PageMethods.ToggleTag({0},'{1}',ToggleTagCallback)".Fmt(d.PeopleId, link.ClientID);
 
                 var mlink = e.Item.FindControl("MemberType") as HyperLink;
-                if (mlink != null)
-                    mlink.NavigateUrl = "~/EditMemberDialog.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
-                        .Fmt(OrgId, d.PeopleId, MemberPanel.ClientID);
+                if (mlink != null && r.DataItem is PersonMemberInfo)
+                {
+                    var mi = r.DataItem as PersonMemberInfo;
+                    if (mi.FromTab == GroupSelect.Previous)
+                        mlink.NavigateUrl = "~/AttendStrDetail.aspx?oid={0}&id={1}&TB_iframe=true&height=450&width=700"
+                            .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
+                    else
+                        mlink.NavigateUrl = "~/EditMemberDialog.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
+                            .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
+                }
             }
         }
 
         protected void MembersData_Selecting(object sender, ObjectDataSourceSelectingEventArgs e)
         {
-            e.InputParameters["Active"] = Active != 0;
-            e.InputParameters["Pending"] = Pending != 0;
+            e.InputParameters["Select"] = Select;
             e.InputParameters["GroupId"] = GroupId;
         }
 

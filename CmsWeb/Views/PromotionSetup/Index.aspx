@@ -47,7 +47,11 @@
        { %>
         <tr>
             <td>
-                <span id='n<%=item.Id %>' 
+                <span id='s<%=item.Id %>' 
+                    class='clickEdit'><%=item.Sort%></span>
+            </td>
+            <td>
+                <span id='d<%=item.Id %>' 
                     class='clickEdit'><%=item.Description%></span>
             </td>
             <td>
@@ -59,7 +63,7 @@
                     class='clickSelect'><%=item.ToDivId == null ? "click to set" : item.ToDivision.Name%></span>
             </td>
             <td>
-                <a id='d<%=item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
+                <a id='x<%=item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
             </td>
         </tr>
     <% } %>

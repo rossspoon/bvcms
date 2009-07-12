@@ -35,6 +35,8 @@ namespace CmsData
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
     	
+		private EntityRef< Person> _Person;
+		
 		private EntityRef< VolOpportunity> _VolOpportunity;
 		
 	#endregion
@@ -71,6 +73,8 @@ namespace CmsData
 			
 			this._VolInterestInterestCodes = new EntitySet< VolInterestInterestCode>(new Action< VolInterestInterestCode>(this.attach_VolInterestInterestCodes), new Action< VolInterestInterestCode>(this.detach_VolInterestInterestCodes)); 
 			
+			
+			this._Person = default(EntityRef< Person>); 
 			
 			this._VolOpportunity = default(EntityRef< VolOpportunity>); 
 			
@@ -111,6 +115,9 @@ namespace CmsData
 			{
 				if (this._PeopleId != value)
 				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
@@ -255,6 +262,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_VolInterest_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.VolInterests.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.VolInterests.Add(this);
+						
+						this._PeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._PeopleId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_VolInterest_VolOpportunity", Storage="_VolOpportunity", ThisKey="OpportunityCode", IsForeignKey=true)]
 		public VolOpportunity VolOpportunity
 		{

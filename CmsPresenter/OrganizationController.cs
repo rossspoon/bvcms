@@ -27,6 +27,13 @@ namespace CMSPresenter
         public string Name { get; set; }
         public string Value { get; set; }
     }
+    public enum GroupSelect
+    {
+        Active,
+        Inactive,
+        Pending,
+        Previous
+    }
     [DataObject]
     public class OrganizationController
     {
@@ -35,9 +42,24 @@ namespace CMSPresenter
         private int[] ChildSecurityRollSheets = new int[] { 4, 5, 6, 7 };
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, bool Active, bool Pending, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<PersonMemberInfo> OrgMembers(int OrganizationId, GroupSelect Select, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
+            bool Active = true;
+            bool Pending = false;
+            switch (Select)
+            {
+                case  GroupSelect.Inactive:
+                    Active = false;
+                    Pending = false;
+                    break;
+                case  GroupSelect.Pending:
+                    Active = true;
+                    Pending = true;
+                    break;
+                case GroupSelect.Previous:
+                    return PrevOrgMembers(OrganizationId, sortExpression, maximumRows, startRowIndex);
+            }
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == OrganizationId
                     where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId == 0
@@ -48,24 +70,27 @@ namespace CMSPresenter
                     select om;
             _count = q.Count();
             q = ApplySort(q, sortExpression);
-            var q2 = FetchPeopleList(q.Skip(startRowIndex).Take(maximumRows));
+            var q2 = FetchPeopleList(q.Skip(startRowIndex).Take(maximumRows), Select);
             return q2;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable PrevOrgMembers(int OrganizationId, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<PersonMemberInfo> PrevOrgMembers(int OrganizationId, string sortExpression, int maximumRows, int startRowIndex)
         {
             var q = from etd in DbUtil.Db.EnrollmentTransactions
+                    let mdt = DbUtil.Db.EnrollmentTransactions.Where(m => 
+                        m.PeopleId == etd.PeopleId 
+                        && m.OrganizationId == OrganizationId 
+                        &&  m.TransactionTypeId > 3 
+                        && m.TransactionStatus == false).Select(m => m.TransactionDate).Max()
                     where etd.TransactionStatus == false
+                    where etd.TransactionDate == mdt
                     where etd.OrganizationId == OrganizationId
                     where etd.TransactionTypeId >= 4
+                    where !etd.Person.OrganizationMembers.Any(om => om.OrganizationId == OrganizationId)
                     select etd;
-            var _countprev = q.Count();
-            //q = ApplyEnrollSort(q, sortExpression);
-
-            var q2 = from etd in q
-                     let ete = DbUtil.Db.EnrollmentTransactions.SingleOrDefault(ete =>
-                        ete.TransactionId == etd.EnrollmentTransactionId)
-                     select etd.Person;
+            _count = q.Count();
+            q = ApplySort(q, sortExpression);
+            var q2 = FetchPeopleList(q.Skip(startRowIndex).Take(maximumRows));
             return q2;
         }
         private int visitorCount;
@@ -84,7 +109,7 @@ namespace CMSPresenter
 
             return q2;
         }
-        public int Count(int OrganizationId, bool Active, bool Pending, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
+        public int Count(int OrganizationId, GroupSelect Select, int GroupId, string sortExpression, int maximumRows, int startRowIndex)
         {
             return _count;
         }
@@ -93,7 +118,7 @@ namespace CMSPresenter
             int PeopleId,
             int MemberTypeId,
             DateTime EnrollmentDate,
-            DateTime? InactiveDate
+            DateTime? InactiveDate, bool pending
         )
         {
             var Db = DbUtil.Db;
@@ -108,6 +133,7 @@ namespace CMSPresenter
                 EnrollmentDate = EnrollmentDate,
                 InactiveDate = InactiveDate,
                 CreatedDate = Util.Now,
+                Pending = pending,
             };
             var name = (from o in Db.Organizations
                         where o.OrganizationId == OrganizationId
@@ -123,6 +149,8 @@ namespace CMSPresenter
                 TransactionTypeId = 1, // join
                 CreatedBy = Util.UserId1,
                 CreatedDate = Util.Now,
+                Pending = pending,
+                AttendancePercentage = om.AttendPct
             };
             Db.OrganizationMembers.InsertOnSubmit(om);
             Db.EnrollmentTransactions.InsertOnSubmit(et);
@@ -166,7 +194,7 @@ namespace CMSPresenter
                    };
         }
 
-        public static IEnumerable<PersonMemberInfo> FetchPeopleList(IQueryable<OrganizationMember> query)
+        public static IEnumerable<PersonMemberInfo> FetchPeopleList(IQueryable<OrganizationMember> query, GroupSelect fromtab)
         {
             var tagownerid = Util.CurrentTagOwnerId;
             var q = from om in query
@@ -200,6 +228,46 @@ namespace CMSPresenter
                         AttendPct = om.AttendPct,
                         LastAttended = om.LastAttended,
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
+                        FromTab = fromtab,
+                        Joined = om.EnrollmentDate,
+                    };
+            return q;
+        }
+        public static IEnumerable<PersonMemberInfo> FetchPeopleList(IQueryable<EnrollmentTransaction> query)
+        {
+            var tagownerid = Util.CurrentTagOwnerId;
+            var q = from m in query
+                    let p = m.Person
+                    select new PersonMemberInfo
+                    {
+                        PeopleId = p.PeopleId,
+                        Name = p.Name,
+                        Name2 = p.Name2,
+                        //JoinDate = p.JoinDate,
+                        BirthDate = Util.FormatBirthday(
+                            p.BirthYear,
+                            p.BirthMonth,
+                            p.BirthDay),
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+                        PhonePref = p.PhonePrefId,
+                        HomePhone = p.HomePhone,
+                        CellPhone = p.CellPhone,
+                        WorkPhone = p.WorkPhone,
+                        MemberStatus = p.MemberStatus.Description,
+                        Email = p.EmailAddress,
+                        BFTeacher = p.BibleFellowshipTeacher,
+                        BFTeacherId = p.BibleFellowshipTeacherId,
+                        Age = p.Age.ToString(),
+                        MemberTypeCode = m.MemberType.Code,
+                        MemberType = m.MemberType.Description,
+                        MemberTypeId = m.MemberTypeId,
+                        AttendPct = m.AttendancePercentage,
+                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
+                        FromTab = GroupSelect.Previous,
+                        Joined = m.EnrollmentDate,
+                        Dropped = m.TransactionDate
                     };
             return q;
         }
@@ -258,6 +326,138 @@ namespace CMSPresenter
                 neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
             DbUtil.Db.SubmitChanges();
             return neworg;
+        }
+        public static IQueryable<EnrollmentTransaction> ApplySort(IQueryable<EnrollmentTransaction> query, string sort)
+        {
+            switch (sort)
+            {
+                case "MemberStatus":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.MemberStatus.Code,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select om;
+                    break;
+                case "MemberType":
+                    query = from om in query
+                            let p = om.Person
+                            orderby om.MemberType.Code,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select om;
+                    break;
+                case "Address":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.Family.StateCode,
+                            p.Family.CityName,
+                            p.Family.AddressLineOne,
+                            p.PeopleId
+                            select om;
+                    break;
+                case "BFTeacher":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BibleFellowshipTeacher,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select om;
+                    break;
+                case "AttendPct":
+                    query = from om in query
+                            orderby om.AttendancePercentage
+                            select om;
+                    break;
+                case "Age":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BirthYear, p.BirthMonth, p.BirthDay
+                            select om;
+                    break;
+                case "DOB":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BirthMonth, p.BirthDay,
+                            p.LastName, p.FirstName
+                            select om;
+                    break;
+                case "MemberStatus DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.MemberStatus.Code descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select om;
+                    break;
+                case "MemberType DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby om.MemberType.Code descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select om;
+                    break;
+                case "Address DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.Family.StateCode descending,
+                                   p.Family.CityName descending,
+                                   p.Family.AddressLineOne descending,
+                                   p.PeopleId descending
+                            select om;
+                    break;
+                case "BFTeacher DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BibleFellowshipTeacher descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select om;
+                    break;
+                case "AttendPct DESC":
+                    query = from om in query
+                            orderby om.AttendancePercentage descending
+                            select om;
+                    break;
+                case "Name DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.LastName descending,
+                            p.LastName descending,
+                            p.PeopleId descending
+                            select om;
+                    break;
+                case "DOB DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BirthMonth descending, p.BirthDay descending,
+                            p.LastName descending, p.FirstName descending
+                            select om;
+                    break;
+                case "Age DESC":
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.BirthYear descending, p.BirthMonth descending, p.BirthDay descending
+                            select om;
+                    break;
+                case "Name":
+                default:
+                    query = from om in query
+                            let p = om.Person
+                            orderby p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select om;
+                    break;
+            }
+            return query;
         }
         public static IQueryable<OrganizationMember> ApplySort(IQueryable<OrganizationMember> query, string sort)
         {

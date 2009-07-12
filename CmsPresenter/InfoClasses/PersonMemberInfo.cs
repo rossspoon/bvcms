@@ -13,7 +13,8 @@ namespace CMSPresenter
         public DateTime? InactiveDate { get; set; }
         public decimal? AttendPct { get; set; }
         public DateTime? LastAttended { get; set; }
-        //public string NameParent1 { get; set; }
-        //public string NameParent2 { get; set; }
+        public DateTime? Joined { get; set; }
+        public DateTime? Dropped { get; set; }
+        public GroupSelect FromTab { get; set; }
     }
 }

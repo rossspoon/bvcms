@@ -27,7 +27,7 @@ $.fieldValue2 = function(el) {
             }
         }
     }
-    else if (tag == 'input' && t == 'checkbox') {
+    else if (tag == 'input' && t == 'checkbox' && !el.value) {
         return el.checked;
     }
     return el.value;

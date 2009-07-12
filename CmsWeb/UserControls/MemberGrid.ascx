@@ -138,8 +138,7 @@ Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" T
     OnSelecting="MembersData_Selecting">
     <SelectParameters>
         <asp:QueryStringParameter Name="OrganizationId" QueryStringField="id" Type="Int32" />
-        <asp:Parameter Name="Active" Type="Boolean" />
-        <asp:Parameter Name="Pending" Type="Boolean" />
+        <asp:Parameter Name="Select" Type="Int32" />
         <asp:Parameter Name="GroupId" Type="Int32" />
         <asp:Parameter Name="sortExpression" Type="String" />
         <asp:Parameter Name="maximumRows" Type="Int32" />

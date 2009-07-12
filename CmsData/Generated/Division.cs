@@ -28,6 +28,8 @@ namespace CmsData
    		
    		private EntitySet< DivOrg> _DivOrgs;
 		
+   		private EntitySet< Organization> _Organizations;
+		
    		private EntitySet< Promotion> _FromPromotions;
 		
    		private EntitySet< Promotion> _ToPromotions;
@@ -59,6 +61,8 @@ namespace CmsData
 		{
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
+			
+			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
 			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
 			
@@ -178,6 +182,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Organizations_Division", Storage="_Organizations", OtherKey="DivisionId")]
+   		public EntitySet< Organization> Organizations
+   		{
+   		    get { return this._Organizations; }
+
+			set	{ this._Organizations.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FromPromotions__FromDivision", Storage="_FromPromotions", OtherKey="FromDivId")]
    		public EntitySet< Promotion> FromPromotions
    		{
@@ -268,6 +282,19 @@ namespace CmsData
 		}
 
 		private void detach_DivOrgs(DivOrg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = null;
+		}
+
+		
+		private void attach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = this;
+		}
+
+		private void detach_Organizations(Organization entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

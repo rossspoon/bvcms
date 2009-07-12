@@ -21,12 +21,15 @@ namespace CMSWeb
     public partial class AddMemberDialog : System.Web.UI.Page
     {
         public int? OrgId;
-
+        private bool? PendingMembers;
         private string from;
         protected void Page_Load(object sender, EventArgs e)
         {
             OrgId = Page.QueryString<int?>("id");
             from = Page.QueryString<string>("from");
+            PendingMembers = Page.QueryString<bool?>("pending");
+            if (!PendingMembers.HasValue)
+                PendingMembers = false;
             if (!OrgId.HasValue || !from.HasValue())
                 throw new Exception("Cannot visit AddMemberDialog this way");
             if (!IsPostBack)
@@ -66,7 +69,7 @@ namespace CMSWeb
             DateTime? enrollmentdate = EnrollmentDate.Text.ToDate();
             DateTime? inactivedate = InactiveDate.Text.ToDate();
             foreach (var pid in q)
-                OrganizationController.InsertOrgMembers(OrgId.Value, pid, membertype, enrollmentdate.Value, inactivedate);
+                OrganizationController.InsertOrgMembers(OrgId.Value, pid, membertype, enrollmentdate.Value, inactivedate, PendingMembers.Value);
             this.Page.ClientScript.RegisterStartupScript(typeof(AddMemberDialog),
                 "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }

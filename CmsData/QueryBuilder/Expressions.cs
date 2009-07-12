@@ -856,6 +856,25 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression PreviousCurrentOrg(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.EnrollmentTransactions.Any(m =>
+                        m.OrganizationId == Util.CurrentOrgId
+                        && m.TransactionTypeId > 3
+                        && m.TransactionStatus == false
+                        && (m.Pending ?? false) == false)
+                    && !p.OrganizationMembers.Any(m =>
+                        m.OrganizationId == Util.CurrentOrgId
+                        && (m.Pending ?? false) == false);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression IsCurrentPerson(
             ParameterExpression parm,
             CompareType op,

@@ -245,6 +245,8 @@ namespace CmsData
 		
 		private string _HomePhoneLU;
 		
+		private int? _HashNum;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -269,6 +271,8 @@ namespace CmsData
    		private EntitySet< User> _Users;
 		
    		private EntitySet< VBSApp> _VBSApps;
+		
+   		private EntitySet< VolInterest> _VolInterests;
 		
    		private EntitySet< Volunteer> _Volunteers;
 		
@@ -664,6 +668,9 @@ namespace CmsData
 		partial void OnHomePhoneLUChanging(string value);
 		partial void OnHomePhoneLUChanged();
 		
+		partial void OnHashNumChanging(int? value);
+		partial void OnHashNumChanged();
+		
     #endregion
 		public Person()
 		{
@@ -691,6 +698,8 @@ namespace CmsData
 			this._Users = new EntitySet< User>(new Action< User>(this.attach_Users), new Action< User>(this.detach_Users)); 
 			
 			this._VBSApps = new EntitySet< VBSApp>(new Action< VBSApp>(this.attach_VBSApps), new Action< VBSApp>(this.detach_VBSApps)); 
+			
+			this._VolInterests = new EntitySet< VolInterest>(new Action< VolInterest>(this.attach_VolInterests), new Action< VolInterest>(this.detach_VolInterests)); 
 			
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
@@ -3287,6 +3296,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
+		public int? HashNum
+		{
+			get { return this._HashNum; }
+
+			set
+			{
+				if (this._HashNum != value)
+				{
+				
+                    this.OnHashNumChanging(value);
+					this.SendPropertyChanging();
+					this._HashNum = value;
+					this.SendPropertyChanged("HashNum");
+					this.OnHashNumChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3407,6 +3438,16 @@ namespace CmsData
    		    get { return this._VBSApps; }
 
 			set	{ this._VBSApps.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_VolInterest_People", Storage="_VolInterests", OtherKey="PeopleId")]
+   		public EntitySet< VolInterest> VolInterests
+   		{
+   		    get { return this._VolInterests; }
+
+			set	{ this._VolInterests.Assign(value); }
 
    		}
 
@@ -4186,6 +4227,19 @@ namespace CmsData
 		}
 
 		private void detach_VBSApps(VBSApp entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_VolInterests(VolInterest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_VolInterests(VolInterest entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

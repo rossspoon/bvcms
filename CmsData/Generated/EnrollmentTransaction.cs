@@ -404,7 +404,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendancePercentage", UpdateCheck=UpdateCheck.Never, Storage="_AttendancePercentage", DbType="Decimal(5,3)")]
+		[Column(Name="AttendancePercentage", UpdateCheck=UpdateCheck.Never, Storage="_AttendancePercentage", DbType="real")]
 		public decimal? AttendancePercentage
 		{
 			get { return this._AttendancePercentage; }

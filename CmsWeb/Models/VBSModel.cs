@@ -154,7 +154,7 @@ namespace CMSWeb.Models
                     v.PeopleId.Value,
                     (int)OrganizationMember.MemberTypeCode.Member,
                     Util.Now,
-                    null);
+                    null, false);
                 var qme = from m in DbUtil.Db.Meetings
                           where m.OrganizationId == OrgId
                           orderby m.MeetingDate descending

@@ -25,6 +25,8 @@ namespace CmsData
 		
 		private string _Description;
 		
+		private string _Sort;
+		
    		
     	
 		private EntityRef< Division> _FromDivision;
@@ -49,6 +51,9 @@ namespace CmsData
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
+		
+		partial void OnSortChanging(string value);
+		partial void OnSortChanged();
 		
     #endregion
 		public Promotion()
@@ -152,6 +157,28 @@ namespace CmsData
 					this._Description = value;
 					this.SendPropertyChanged("Description");
 					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Sort", UpdateCheck=UpdateCheck.Never, Storage="_Sort", DbType="varchar(10)")]
+		public string Sort
+		{
+			get { return this._Sort; }
+
+			set
+			{
+				if (this._Sort != value)
+				{
+				
+                    this.OnSortChanging(value);
+					this.SendPropertyChanging();
+					this._Sort = value;
+					this.SendPropertyChanged("Sort");
+					this.OnSortChanged();
 				}
 
 			}

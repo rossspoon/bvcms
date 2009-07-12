@@ -51,5 +51,23 @@ namespace CustomControls
             base.AddAttributesToRender(writer);
             writer.AddAttribute("watintoken", Util.Now.Ticks.ToString());
         }
+        public override string SelectedValue
+        {
+            get
+            {
+                return base.SelectedValue;
+            }
+            set
+            {
+                try
+                {
+                    base.SelectedValue = value;
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            }
+        }
     }
 }

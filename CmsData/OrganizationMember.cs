@@ -18,7 +18,12 @@ namespace CmsData
         private const string STR_MeetingsToUpdate = "MeetingsToUpdate";
         public enum MemberTypeCode
         {
+            Administrator = 100,
+            President = 101,
+            Leader = 140,
+            AssistantLeader = 142,
             Teacher = 160,
+            AssistantTeacher = 161,
             Member = 220,
             InActive = 230,
             VisitingMember = 300,
@@ -91,7 +96,8 @@ namespace CmsData
                     VipWeek3 = VipWeek3,
                     VipWeek4 = VipWeek4,
                     VipWeek5 = VipWeek5,
-                    Pending = Pending
+                    Pending = Pending,
+                    AttendancePercentage = AttendPct
                 };
                 Db.EnrollmentTransactions.InsertOnSubmit(et);
             }

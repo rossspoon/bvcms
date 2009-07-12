@@ -27,14 +27,16 @@ namespace CMSWeb
         {
             base.OnInit(e);
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-            ExportToolBar1.queryId = qb.QueryId;
-            ExportToolBar1.OrganizationContext = true;
+            MemberToolbar.queryId = qb.QueryId;
+            MemberToolbar.OrganizationContext = true;
             qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
-            ExportToolBar2.queryId = qb.QueryId;
+            VisitorToolbar.queryId = qb.QueryId;
             qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
-            ExportToolBar3.queryId = qb.QueryId;
+            InactiveToolbar.queryId = qb.QueryId;
             qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
-            ExportToolBar4.queryId = qb.QueryId;
+            PendingToolbar.queryId = qb.QueryId;
+            qb = DbUtil.Db.QueryBuilderPreviousCurrentOrg();
+            PriorsToolbar.queryId = qb.QueryId;
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,49 +65,56 @@ namespace CMSWeb
             Session["ActiveOrganization"] = organization.OrganizationName;
             EditUpdateButton1.DataBind();
             RecentAttendRpt.NavigateUrl = "~/Report/PastAttendeeRpt.aspx?id=" + organization.OrganizationId;
-            ExportToolBar1.TaggedEvent += new EventHandler(ExportToolBar1_TaggedEvent);
-            ExportToolBar2.TaggedEvent += new EventHandler(ExportToolBar2_TaggedEvent);
-            ExportToolBar3.TaggedEvent += new EventHandler(ExportToolBar3_TaggedEvent);
-            ExportToolBar4.TaggedEvent += new EventHandler(ExportToolBar4_TaggedEvent);
-            MemberGrid1.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
-            MemberGrid2.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
-            MemberGrid3.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
-            VisitorGrid1.RebindMemberGrids += new EventHandler(MemberGrid_RebindMemberGrids);
-            MemberGrid1.OrgId = organization.OrganizationId;
-            MemberGrid1.GroupId = Util.CurrentGroupId;
-            MemberGrid2.OrgId = organization.OrganizationId;
-            MemberGrid3.OrgId = organization.OrganizationId;
+            MemberToolbar.TaggedEvent += new EventHandler(MemberToolbar_TaggedEvent);
+            VisitorToolbar.TaggedEvent += new EventHandler(VisitorToolbar_TaggedEvent);
+            InactiveToolbar.TaggedEvent += new EventHandler(InactiveToolbar_TaggedEvent);
+            PendingToolbar.TaggedEvent += new EventHandler(PendingToolbar_TaggedEvent);
+            PriorsToolbar.TaggedEvent += new EventHandler(PriorsToolbar_TaggedEvent);
+            Members.RebindMemberGrids += new EventHandler(RebindGrids);
+            Inactives.RebindMemberGrids += new EventHandler(RebindGrids);
+            Visitors.RebindMemberGrids += new EventHandler(RebindGrids);
+            Visitors.RebindMemberGrids += new EventHandler(RebindGrids);
+            Members.OrgId = organization.OrganizationId;
+            Members.GroupId = Util.CurrentGroupId;
+            Inactives.OrgId = organization.OrganizationId;
+            Pendings.OrgId = organization.OrganizationId;
+            Priors.OrgId = organization.OrganizationId;
             CloneOrg1.Visible = User.IsInRole("Edit");
             NewMeetingLink.Visible = User.IsInRole("Attendance");
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
             ManageGroups.Visible = User.IsInRole("ManageGroups");
         }
 
-        void MemberGrid_RebindMemberGrids(object sender, EventArgs e)
+        void RebindGrids(object sender, EventArgs e)
         {
-            MemberGrid1.DataBind();
-            MemberGrid2.DataBind();
-            MemberGrid3.DataBind();
-            VisitorGrid1.DataBind();
+            Members.DataBind();
+            Inactives.DataBind();
+            Pendings.DataBind();
+            Priors.DataBind();
+            Visitors.DataBind();
         }
 
-        void ExportToolBar2_TaggedEvent(object sender, EventArgs e)
+        void VisitorToolbar_TaggedEvent(object sender, EventArgs e)
         {
-            VisitorGrid1.DataBind();
+            Visitors.DataBind();
+        }
+        void PriorsToolbar_TaggedEvent(object sender, EventArgs e)
+        {
+            Priors.DataBind();
         }
 
-        void ExportToolBar3_TaggedEvent(object sender, EventArgs e)
+        void InactiveToolbar_TaggedEvent(object sender, EventArgs e)
         {
-            MemberGrid2.DataBind();
+            Inactives.DataBind();
         }
 
-        void ExportToolBar1_TaggedEvent(object sender, EventArgs e)
+        void MemberToolbar_TaggedEvent(object sender, EventArgs e)
         {
-            MemberGrid1.DataBind();
+            Members.DataBind();
         }
-        void ExportToolBar4_TaggedEvent(object sender, EventArgs e)
+        void PendingToolbar_TaggedEvent(object sender, EventArgs e)
         {
-            MemberGrid3.DataBind();
+            Pendings.DataBind();
         }
 
         protected void EditUpdateButton1_Click(object sender, EventArgs e)
@@ -155,7 +164,7 @@ namespace CMSWeb
         protected void SetDays_Click(object sender, EventArgs e)
         {
             Util.VisitLookbackDays = VisitLookbackDays.Text.ToInt();
-            VisitorGrid1.DataBind();
+            Visitors.DataBind();
             UpdatePanel2.Update();
         }
 
@@ -242,7 +251,7 @@ namespace CMSWeb
             DbUtil.Db.MemberTags.DeleteOnSubmit(group);
             DbUtil.Db.SubmitChanges();
             Groups.DataBind();
-            MemberGrid1.DataBind();
+            Members.DataBind();
             GroupFilter.DataBind();
         }
 
@@ -295,8 +304,8 @@ namespace CMSWeb
         protected void Group_SelectedIndexChanged(object sender, EventArgs e)
         {
             Util.CurrentGroupId = GroupFilter.SelectedValue.ToInt();
-            MemberGrid1.GroupId = Util.CurrentGroupId;
-            MemberGrid1.DataBind();
+            Members.GroupId = Util.CurrentGroupId;
+            Members.DataBind();
         }
         protected void Groups_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -36,7 +36,7 @@ namespace CMSPresenter
                     where om.EnrollmentDate <= Util.Now
                     orderby om.Person.Name2
                     select om;
-            var q2 = OrganizationController.FetchPeopleList(q);
+            var q2 = OrganizationController.FetchPeopleList(q, GroupSelect.Active);
             return q2;
         }
 

@@ -1103,12 +1103,6 @@ namespace CmsData
 
 	    }
 
-	    public Table< View.VolInterestView> ViewVolInterestViews
-	    {
-		    get { return this.GetTable< View.VolInterestView>(); }
-
-	    }
-
     #endregion
 	#region Table Functions
 		

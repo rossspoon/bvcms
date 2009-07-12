@@ -63,10 +63,16 @@ namespace UtilityExtensions
         }
         public static bool? ToBool2(this string s)
         {
-            bool? r = null;
             bool b;
-            if (bool.TryParse(s, out b))
-                r = b;
+            bool.TryParse(s, out b);
+            return b;
+        }
+        public static bool ToBool(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return false;
+            bool b;
+            bool.TryParse(s, out b);
             return b;
         }
         public static int? ToInt2(this object o)

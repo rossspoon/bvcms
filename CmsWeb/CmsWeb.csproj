@@ -383,6 +383,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\PromotionController.cs" />
+    <Compile Include="Controllers\VolunteersController.cs" />
     <Compile Include="Controllers\PromotionSetupController.cs" />
     <Compile Include="Controllers\SoulMateController.cs" />
     <Compile Include="Controllers\StepClassController.cs" />
@@ -430,6 +432,7 @@
     <Compile Include="Models\SearchPeopleModel.cs" />
     <Compile Include="Models\TaskInfo.cs" />
     <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="Models\VolunteersModel.cs" />
     <Compile Include="MovePersonDialog.aspx.cs">
       <DependentUpon>MovePersonDialog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -812,13 +815,6 @@
       <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="VolInterestView.aspx.cs">
-      <DependentUpon>VolInterestView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VolInterestView.aspx.designer.cs">
-      <DependentUpon>VolInterestView.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
@@ -951,6 +947,7 @@
     <Content Include="AddFamilyDialog.aspx" />
     <Content Include="AddFamilyMembersDialog.aspx" />
     <Content Include="AddVisitorDialog.aspx" />
+    <Content Include="Content\12-em-cross.png" />
     <Content Include="Content\arrows-ffffff.png" />
     <Content Include="Content\border-2.gif" />
     <Content Include="Content\border.gif" />
@@ -1518,7 +1515,7 @@
     <None Include="fckeditor\fckeditor_php4.php" />
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
-    <Content Include="Views\Promotion\Columns.aspx" />
+    <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\Promotion\Index.aspx" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Views\CodeValue\Index.aspx" />
@@ -1550,6 +1547,7 @@
     <Content Include="Views\StepClass\Step2Confirm.aspx" />
     <Content Include="Views\StepClass\Step1.aspx" />
     <Content Include="Views\StepClass\Step1Confirm.aspx" />
+    <Content Include="Views\Volunteers\Index.aspx" />
     <Content Include="Views\Volunteer\Unknown.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />
     <Content Include="Views\VolOpportunity\Index.aspx" />
@@ -1684,7 +1682,6 @@
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="UserControls\VisitorGrid.ascx" />
     <Content Include="UserControls\QuickSearchParameters.ascx" />
-    <Content Include="VolInterestView.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

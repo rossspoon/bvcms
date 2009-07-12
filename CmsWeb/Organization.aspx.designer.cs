@@ -230,13 +230,13 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.CustomValidator ValidateDelete;
         
         /// <summary>
-        /// ExportToolBar1 control.
+        /// MemberToolbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.ExportToolBar ExportToolBar1;
+        protected global::CMSWeb.ExportToolBar MemberToolbar;
         
         /// <summary>
         /// GroupFilter control.
@@ -248,58 +248,76 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.DropDownList GroupFilter;
         
         /// <summary>
-        /// MemberGrid1 control.
+        /// Members control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.MemberGrid MemberGrid1;
+        protected global::CMSWeb.MemberGrid Members;
         
         /// <summary>
-        /// ExportToolBar3 control.
+        /// InactiveToolbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.ExportToolBar ExportToolBar3;
+        protected global::CMSWeb.ExportToolBar InactiveToolbar;
         
         /// <summary>
-        /// MemberGrid2 control.
+        /// Inactives control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.MemberGrid MemberGrid2;
+        protected global::CMSWeb.MemberGrid Inactives;
         
         /// <summary>
-        /// ExportToolBar4 control.
+        /// PendingToolbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.ExportToolBar ExportToolBar4;
+        protected global::CMSWeb.ExportToolBar PendingToolbar;
         
         /// <summary>
-        /// MemberGrid3 control.
+        /// Pendings control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.MemberGrid MemberGrid3;
+        protected global::CMSWeb.MemberGrid Pendings;
         
         /// <summary>
-        /// ExportToolBar2 control.
+        /// PriorsToolbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.ExportToolBar ExportToolBar2;
+        protected global::CMSWeb.ExportToolBar PriorsToolbar;
+        
+        /// <summary>
+        /// Priors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSWeb.MemberGrid Priors;
+        
+        /// <summary>
+        /// VisitorToolbar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSWeb.ExportToolBar VisitorToolbar;
         
         /// <summary>
         /// VisitLookbackDays control.
@@ -329,13 +347,13 @@ namespace CMSWeb {
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
-        /// VisitorGrid1 control.
+        /// Visitors control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.UserControls.VisitorGrid VisitorGrid1;
+        protected global::CMSWeb.UserControls.VisitorGrid Visitors;
         
         /// <summary>
         /// ScheduleId control.

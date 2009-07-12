@@ -15,7 +15,7 @@ namespace CMSWeb.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var m = DbUtil.Db.Promotions.AsEnumerable();
+            var m = DbUtil.Db.Promotions.OrderBy(p => p.Sort).ThenBy(p => p.Description);
             return View(m);
         }
 
@@ -37,7 +37,15 @@ namespace CMSWeb.Controllers
             var pro = DbUtil.Db.Promotions.SingleOrDefault(p => p.Id == iid);
             if (pro == null)
                 return c;
-            pro.Description = value;
+            switch (id.Substring(0, 1))
+            {
+                case "d":
+                    pro.Description = value;
+                    break;
+                case "s":
+                    pro.Sort = value;
+                    break;
+            }
             DbUtil.Db.SubmitChanges();
             return c;
         }
@@ -90,6 +98,8 @@ namespace CMSWeb.Controllers
         public JsonResult DivisionCodes()
         {
             var q = from c in DbUtil.Db.Divisions
+                    orderby c.Name
+                    where c.DivOrgs.Any(od => od.Organization.DivOrgs.Any(od2 => od2.Division.Program.BFProgram == true))
                     select new
                     {
                         Code = c.Id.ToString(),

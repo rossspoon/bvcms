@@ -274,6 +274,10 @@ namespace CmsData
                     return Expressions.PendingCurrentOrg(parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.PreviousCurrentOrg:
+                    return Expressions.PreviousCurrentOrg(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 // R ----------------
                 case QueryType.RecentAttendType:
                     return Expressions.RecentAttendType(parm,

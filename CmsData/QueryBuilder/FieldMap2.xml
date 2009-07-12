@@ -274,6 +274,9 @@
     <Field Name="PendingCurrentOrg" Title="Pending in Current Organization" Type="Bit" DataValueField="IdCode">
       Selects everyone who is enrolled but pending in the last organization you worked with. (used internally, but you can too if it will help you)
     </Field>
+    <Field Name="PreviousCurrentOrg" Title="Previous Member in Current Organization" Type="Bit" DataValueField="IdCode">
+      Selects everyone who was a previous member (but not currently a member) of the last organization you worked with. (used internally, but you can too if it will help you)
+    </Field>
   </Category>
   <Category Title="Attendance">
     <Field Name="AttendMemberTypeAsOf" Title="Member Type Attended As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
