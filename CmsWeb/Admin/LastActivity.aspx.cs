@@ -18,18 +18,18 @@ namespace CMSWeb.Admin
             var dt = DateTime.Now;
             var q = from u in DbUtil.Db.Users
                     orderby u.LastActivityDate descending
-                    select new { u.Person.Name, u.LastActivityDate, u.Host, u.UserId };
+                    select new { u.Person.Name, u.LastActivityDate, u.Host, u.UserId, u.Username };
             var sb = new StringBuilder();
 
-            sb.AppendFormat("<tr><td>&nbsp;</td><td colspan=\"2\">{0}</td></tr>".Fmt(DateTime.Now));
+            sb.AppendFormat("<tr><td></td><td>&nbsp;</td><td colspan=\"2\">{0}</td></tr>".Fmt(DateTime.Now));
             var n = 0;
             foreach(var i in q)
             {
                 n += 1;
                 if (n < 40 || dt.Subtract(i.LastActivityDate.Value).TotalHours <= 24)
-                    sb.AppendFormat("<tr><td><a href='{3}'>{0}</a></td><td>{1}</td><td>{2}</td></tr>",
+                    sb.AppendFormat("<tr><td>{4}</td><td><a href='{3}'>{0}</a></td><td>{1}</td><td>{2}</td></tr>",
                         i.Name, i.LastActivityDate, i.Host,
-                        ResolveUrl("~/Admin/Activity.aspx?uid={0}".Fmt(i.UserId)));
+                        ResolveUrl("~/Admin/Activity.aspx?uid={0}".Fmt(i.UserId)), i.Username);
             }
             Label1.Text = "<a href=\"/\">home</a><table>" + sb.ToString() + "</table>";
         }

@@ -239,24 +239,32 @@ namespace CmsData
             var toperson = Db.People.Single(p => p.PeopleId == otherid);
             foreach (var om in this.OrganizationMembers)
             {
-                om.Organization.OrganizationMembers.Add(
-                    new OrganizationMember
-                    {
-                        CreatedBy = om.CreatedBy,
-                        CreatedDate = om.CreatedDate,
-                        EnrollmentDate = om.EnrollmentDate,
-                        InactiveDate = om.InactiveDate,
-                        MemberTypeId = om.MemberTypeId,
-                        ModifiedBy = Util.UserId1,
-                        ModifiedDate = DateTime.Now,
-                        PeopleId = otherid,
-                        VipWeek1 = om.VipWeek1,
-                        VipWeek2 = om.VipWeek2,
-                        VipWeek3 = om.VipWeek3,
-                        VipWeek4 = om.VipWeek4,
-                        VipWeek5 = om.VipWeek5,
-                    });
-                Db.OrganizationMembers.DeleteOnSubmit(om);
+                var om2 = Db.OrganizationMembers.SingleOrDefault(o => o.PeopleId == otherid && o.OrganizationId == om.OrganizationId);
+                if (om2 == null)
+                {
+                    om.Organization.OrganizationMembers.Add(
+                        new OrganizationMember
+                        {
+                            CreatedBy = om.CreatedBy,
+                            CreatedDate = om.CreatedDate,
+                            EnrollmentDate = om.EnrollmentDate,
+                            InactiveDate = om.InactiveDate,
+                            MemberTypeId = om.MemberTypeId,
+                            ModifiedBy = Util.UserId1,
+                            ModifiedDate = DateTime.Now,
+                            PeopleId = otherid,
+                            VipWeek1 = om.VipWeek1,
+                            VipWeek2 = om.VipWeek2,
+                            VipWeek3 = om.VipWeek3,
+                            VipWeek4 = om.VipWeek4,
+                            VipWeek5 = om.VipWeek5,
+                            AttendPct = om.AttendPct,
+                            AttendStr = om.AttendStr,
+                            LastAttended = om.LastAttended,
+                            Pending = om.Pending,
+                        });
+                    Db.OrganizationMembers.DeleteOnSubmit(om);
+                }
             }
             foreach (var et in this.EnrollmentTransactions)
                 et.PeopleId = otherid;

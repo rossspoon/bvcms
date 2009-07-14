@@ -6,6 +6,7 @@
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Childcare Registration for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
+    <p>Childcare is available for birth through 5th grade only.</p>
 
     <% using (Html.BeginForm()) { %>
         <div>

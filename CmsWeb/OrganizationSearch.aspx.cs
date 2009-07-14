@@ -139,7 +139,9 @@ namespace CMSWeb
 
             var a = Tags.SelectedValue.SplitStr(":");
             var progid = a[0].ToInt();
-            var divid = a[1].ToInt();
+            int divid = 0;
+            if (a.Length > 1)
+                divid = a[1].ToInt();
 
             if (div == null) // must be a new tag
             {

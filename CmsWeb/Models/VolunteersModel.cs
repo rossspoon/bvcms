@@ -68,6 +68,7 @@ namespace CMSWeb.Models
                     where i.OpportunityCode == OpportunityId
                     where InterestId == 0 || i.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Id == InterestId)
                     select i;
+
             count = q.Count();
             if (Dir == "asc")
                 switch (Sort)
@@ -77,6 +78,12 @@ namespace CMSWeb.Models
                         break;
                     case "Name":
                         q = q.OrderBy(i => i.Person.Name2);
+                        break;
+                    case "Application":
+                        q = from i in q
+                            let cva = i.Person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault()
+                            orderby (cva == null || cva.StatusId != 10) ? 0 : 1
+                            select i;
                         break;
                 }
             else
@@ -88,9 +95,16 @@ namespace CMSWeb.Models
                     case "Name":
                         q = q.OrderByDescending(i => i.Person.Name2);
                         break;
+                    case "Application":
+                        q = from i in q
+                            let cva = i.Person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault()
+                            orderby (cva == null || cva.StatusId != 10) ? 1 : 0
+                            select i;
+                        break;
                 }
 
             var q2 = from i in q
+                     let cva = i.Person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault()
                      select new VolunteerInterest
                      {
                          Id = i.Id,
@@ -102,7 +116,8 @@ namespace CMSWeb.Models
                          Interests = string.Join("; ",
                            i.VolInterestInterestCodes.Select(vi =>
                                vi.VolInterestCode.Description).ToArray()),
-                         Answer = i.Question
+                         Answer = i.Question,
+                         Application = (cva == null || cva.StatusId != 10) ? "no" : "yes"
                      };
 
             return q2.Skip(StartRow).Take(PageSize.Value);
@@ -156,5 +171,6 @@ namespace CMSWeb.Models
         public int OpportunityId { get; set; }
         public string Interests { get; set; }
         public string Answer { get; set; }
+        public string Application { get; set; }
     }
 }

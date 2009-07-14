@@ -131,6 +131,7 @@ namespace CMSWeb.Models
 
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivisionId == fromdiv && om.Organization.ScheduleId == ScheduleId
+                    where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.SingleOrDefault(op =>
                        op.Pending == true

@@ -197,7 +197,7 @@
             <ItemTemplate>
                 <asp:LinkButton ID="TagUntag" runat="server" CausesValidation="False" 
                     Text='<%# (bool)Eval("HasTag") ? "Remove" : "Add" %>' 
-                    ToolTip="Add to/Remove from Active Org Tag"></asp:LinkButton>
+                    ToolTip="Add to/Remove from Active Division"></asp:LinkButton>
             </ItemTemplate>
         </asp:TemplateField>
     </Columns>

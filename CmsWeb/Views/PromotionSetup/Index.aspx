@@ -32,6 +32,9 @@
     <table>
         <tr>
             <th>
+                Sort
+            </th>
+            <th>
                 Description
             </th>
             <th>

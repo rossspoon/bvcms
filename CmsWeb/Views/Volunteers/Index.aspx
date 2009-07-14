@@ -85,6 +85,8 @@
             <th><a href="#" class="sortable">Name</a></th>
             <th>Interests</th>
             <th>Question</th>
+            <th><a href="#" class="sortable">Application</a></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -97,6 +99,9 @@
             </td>
             <td><%=v.Interests%></td>
             <td><%=v.Answer%></td>
+            <td>
+            <%=v.Application %>
+            </td>
             <td>
                 <a id='d<%= v.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
             </td>

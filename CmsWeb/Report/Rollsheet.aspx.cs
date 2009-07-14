@@ -83,8 +83,14 @@ namespace CMSWeb.Reports
                 var mct = StartPageSet(o);
 
                 if (meeting != null)
-                    foreach (var a in meeting.Attends.Where(at => at.AttendanceFlag == true))
+                {
+                    var q = from at in meeting.Attends
+                            where at.AttendanceFlag == true
+                            orderby at.Person.Name2
+                            select at;
+                    foreach (var a in q)
                         AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, font);
+                }
                 else
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, group))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, font);
