@@ -130,13 +130,14 @@ namespace CMSWeb.Models
             var todiv = Promotion.ToDivId;
 
             var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.Organization.DivisionId == fromdiv && om.Organization.ScheduleId == ScheduleId
+                    where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
+                        && om.Organization.ScheduleId == ScheduleId
                     where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.SingleOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
-                       && op.Organization.DivisionId == todiv)
+                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
                     {
@@ -228,7 +229,7 @@ namespace CMSWeb.Models
                 var pc = (from om in DbUtil.Db.OrganizationMembers
                           where om.Pending == true
                             && om.PeopleId == pid
-                            && om.Organization.DivisionId == todiv
+                            && om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
                             && om.Organization.ScheduleId == ScheduleId
                           select om).SingleOrDefault();
                 if (pc != null && pc.OrganizationId != t.OrganizationId)
@@ -262,7 +263,8 @@ namespace CMSWeb.Models
         {
             var q = from s in DbUtil.Db.WeeklySchedules
                     where DbUtil.Db.Organizations.Any(o =>
-                        o.DivisionId == Promotion.FromDivId && o.ScheduleId == s.Id)
+                        o.DivOrgs.Any(dd => dd.DivId == Promotion.FromDivId)
+                        && o.ScheduleId == s.Id)
                     orderby s.MeetingTime
                     select new SelectListItem
                     {
@@ -280,7 +282,8 @@ namespace CMSWeb.Models
         {
             var todiv = Promotion.ToDivId;
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == todiv && o.ScheduleId == ScheduleId
+                    where o.DivOrgs.Any(dd => dd.DivId == todiv)
+                    && o.ScheduleId == ScheduleId
                     orderby o.OrganizationName
                     select new SelectListItem
                     {

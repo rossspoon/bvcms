@@ -183,6 +183,11 @@ namespace CMSWeb
             var divid = a[1].ToInt();
 
             var div = DbUtil.Db.Divisions.Single(d => d.Id == divid);
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivisionId == divid
+                    select o;
+            foreach (var o in q)
+                o.DivisionId = null;
             DbUtil.Db.DivOrgs.DeleteAllOnSubmit(div.DivOrgs);
             DbUtil.Db.Divisions.DeleteOnSubmit(div);
             DbUtil.Db.SubmitChanges();
@@ -200,14 +205,14 @@ namespace CMSWeb
         }
 
         [System.Web.Services.WebMethod]
-        public static string ToggleTag(int OrganizationId, int tagid, string controlid)
+        public static string ToggleTag(int OrganizationId, int tagid, string controlid, bool main)
         {
             if (tagid == 0)
                 return "";
             var Db = DbUtil.Db;
             var organization = Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrganizationId);
             var r = new ToggleTagReturn { ControlId = controlid };
-            r.HasTag = organization.ToggleTag(tagid);
+            r.HasTag = organization.ToggleTag(tagid, main);
             Db.SubmitChanges();
             var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
             var ms = new MemoryStream();
@@ -223,7 +228,7 @@ namespace CMSWeb
                 var d = e.Row.DataItem as OrganizationInfo;
                 b.Enabled = User.IsInRole("Edit");
                 if (b.Enabled)
-                    b.OnClientClick = "PageMethods.ToggleTag({0},{1},this.id,ToggleTagCallback); return false;"
+                    b.OnClientClick = "PageMethods.ToggleTag({0},{1},this.id,$('#maindiv').is(':checked'),ToggleTagCallback); return false;"
                         .Fmt(d.OrganizationId, OrganizationSearchController.TagSubDiv(Tags.SelectedValue));
                 //if (e.Row.RowIndex == 0)
                 //{

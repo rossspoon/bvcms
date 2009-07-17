@@ -10,12 +10,12 @@ using System.Configuration;
 namespace Forms.Controllers
 {
     [HandleError]
-    public class VBSController : Controller
+    public class VBSRegController : Controller
     {
-        public ActionResult Register()
+        public ActionResult Index()
         {
             ViewData["header"] = ConfigurationManager.AppSettings["vbsheader"];
-            var m = new Models.VBSModel();
+            var m = new Models.VBSRegModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -41,10 +41,6 @@ You will receive another email (with the room #) once your child has been assign
         public ActionResult Confirm()
         {
             return View();
-        }
-        public ActionResult Index()
-        {
-            return RedirectToAction("Register");
         }
     }
 }

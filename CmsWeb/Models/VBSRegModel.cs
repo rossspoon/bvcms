@@ -38,7 +38,7 @@ namespace Forms.Models
         int? parentvbs { get; set; }
         int? pubphoto { get; set; }
     }
-    public class VBSModel : IVBSFormBindable
+    public class VBSRegModel : IVBSFormBindable
     {
         public string first {get; set;}
         public string nickname {get; set;}

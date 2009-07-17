@@ -233,8 +233,6 @@ namespace CmsData
 		
 		private DateTime? _LastContact;
 		
-		private int? _BibleFellowshipClassId;
-		
 		private bool? _InBFClass;
 		
 		private int? _Grade;
@@ -244,6 +242,8 @@ namespace CmsData
 		private string _WorkPhoneLU;
 		
 		private string _HomePhoneLU;
+		
+		private int? _BibleFellowshipClassId;
 		
 		private int? _HashNum;
 		
@@ -650,9 +650,6 @@ namespace CmsData
 		partial void OnLastContactChanging(DateTime? value);
 		partial void OnLastContactChanged();
 		
-		partial void OnBibleFellowshipClassIdChanging(int? value);
-		partial void OnBibleFellowshipClassIdChanged();
-		
 		partial void OnInBFClassChanging(bool? value);
 		partial void OnInBFClassChanged();
 		
@@ -667,6 +664,9 @@ namespace CmsData
 		
 		partial void OnHomePhoneLUChanging(string value);
 		partial void OnHomePhoneLUChanged();
+		
+		partial void OnBibleFellowshipClassIdChanging(int? value);
+		partial void OnBibleFellowshipClassIdChanged();
 		
 		partial void OnHashNumChanging(int? value);
 		partial void OnHashNumChanged();
@@ -3164,28 +3164,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BibleFellowshipClassId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipClassId", DbType="int", IsDbGenerated=true)]
-		public int? BibleFellowshipClassId
-		{
-			get { return this._BibleFellowshipClassId; }
-
-			set
-			{
-				if (this._BibleFellowshipClassId != value)
-				{
-				
-                    this.OnBibleFellowshipClassIdChanging(value);
-					this.SendPropertyChanging();
-					this._BibleFellowshipClassId = value;
-					this.SendPropertyChanged("BibleFellowshipClassId");
-					this.OnBibleFellowshipClassIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="InBFClass", UpdateCheck=UpdateCheck.Never, Storage="_InBFClass", DbType="bit", IsDbGenerated=true)]
 		public bool? InBFClass
 		{
@@ -3289,6 +3267,28 @@ namespace CmsData
 					this._HomePhoneLU = value;
 					this.SendPropertyChanged("HomePhoneLU");
 					this.OnHomePhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BibleFellowshipClassId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipClassId", DbType="int", IsDbGenerated=true)]
+		public int? BibleFellowshipClassId
+		{
+			get { return this._BibleFellowshipClassId; }
+
+			set
+			{
+				if (this._BibleFellowshipClassId != value)
+				{
+				
+                    this.OnBibleFellowshipClassIdChanging(value);
+					this.SendPropertyChanging();
+					this._BibleFellowshipClassId = value;
+					this.SendPropertyChanged("BibleFellowshipClassId");
+					this.OnBibleFellowshipClassIdChanged();
 				}
 
 			}

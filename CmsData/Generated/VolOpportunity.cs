@@ -19,8 +19,6 @@ namespace CmsData
 		
 		private int _Id;
 		
-		private string _UrlKey;
-		
 		private string _Description;
 		
 		private string _EmailNoCva;
@@ -28,6 +26,8 @@ namespace CmsData
 		private string _EmailYesCva;
 		
 		private string _Email;
+		
+		private string _UrlKey;
 		
 		private string _ExtraQuestion;
 		
@@ -47,9 +47,6 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
-		partial void OnUrlKeyChanging(string value);
-		partial void OnUrlKeyChanged();
-		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
 		
@@ -61,6 +58,9 @@ namespace CmsData
 		
 		partial void OnEmailChanging(string value);
 		partial void OnEmailChanged();
+		
+		partial void OnUrlKeyChanging(string value);
+		partial void OnUrlKeyChanged();
 		
 		partial void OnExtraQuestionChanging(string value);
 		partial void OnExtraQuestionChanged();
@@ -95,28 +95,6 @@ namespace CmsData
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="UrlKey", UpdateCheck=UpdateCheck.Never, Storage="_UrlKey", DbType="varchar(15)")]
-		public string UrlKey
-		{
-			get { return this._UrlKey; }
-
-			set
-			{
-				if (this._UrlKey != value)
-				{
-				
-                    this.OnUrlKeyChanging(value);
-					this.SendPropertyChanging();
-					this._UrlKey = value;
-					this.SendPropertyChanged("UrlKey");
-					this.OnUrlKeyChanged();
 				}
 
 			}
@@ -205,6 +183,28 @@ namespace CmsData
 					this._Email = value;
 					this.SendPropertyChanged("Email");
 					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="UrlKey", UpdateCheck=UpdateCheck.Never, Storage="_UrlKey", DbType="varchar(15)")]
+		public string UrlKey
+		{
+			get { return this._UrlKey; }
+
+			set
+			{
+				if (this._UrlKey != value)
+				{
+				
+                    this.OnUrlKeyChanging(value);
+					this.SendPropertyChanging();
+					this._UrlKey = value;
+					this.SendPropertyChanged("UrlKey");
+					this.OnUrlKeyChanged();
 				}
 
 			}

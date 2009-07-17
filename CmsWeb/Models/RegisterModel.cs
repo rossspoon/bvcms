@@ -104,6 +104,8 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname", "last name required");
             if (!DateTime.TryParse(dob, out _dob))
                 ModelState.AddModelError("dob", "valid birth date required");
+            else if (_dob.Year <= DateTime.Now.Year)
+                ModelState.AddModelError("dob", "valid birth year required");
             if (!gender.HasValue)
                 ModelState.AddModelError("gender2", "gender required");
             if (!position.HasValue)

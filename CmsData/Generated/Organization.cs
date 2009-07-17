@@ -25,7 +25,7 @@ namespace CmsData
 		
 		private int _OrganizationStatusId;
 		
-		private int _DivisionId;
+		private int? _DivisionId;
 		
 		private int? _LeaderMemberTypeId;
 		
@@ -118,7 +118,7 @@ namespace CmsData
 		partial void OnOrganizationStatusIdChanging(int value);
 		partial void OnOrganizationStatusIdChanged();
 		
-		partial void OnDivisionIdChanging(int value);
+		partial void OnDivisionIdChanging(int? value);
 		partial void OnDivisionIdChanged();
 		
 		partial void OnLeaderMemberTypeIdChanging(int? value);
@@ -314,8 +314,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DivisionId", UpdateCheck=UpdateCheck.Never, Storage="_DivisionId", DbType="int NOT NULL")]
-		public int DivisionId
+		[Column(Name="DivisionId", UpdateCheck=UpdateCheck.Never, Storage="_DivisionId", DbType="int")]
+		public int? DivisionId
 		{
 			get { return this._DivisionId; }
 
@@ -973,7 +973,7 @@ namespace CmsData
 					else
 					{
 						
-						this._DivisionId = default(int);
+						this._DivisionId = default(int?);
 						
 					}
 

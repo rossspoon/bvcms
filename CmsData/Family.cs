@@ -38,7 +38,8 @@ namespace CmsData
         {
             get
             {
-                if (HeadOfHouseholdId.HasValue) return People.Single(p => p.PeopleId == HeadOfHouseholdId.Value).Name;
+                if (HeadOfHouseholdId.HasValue) 
+                    return DbUtil.Db.People.Single(p => p.PeopleId == HeadOfHouseholdId.Value).Name;
                 return "";
             }
         }
@@ -47,7 +48,8 @@ namespace CmsData
         {
             get
             {
-                if (HeadOfHouseholdSpouseId.HasValue) return People.Single(p => p.PeopleId == HeadOfHouseholdSpouseId.Value).Name;
+                if (HeadOfHouseholdSpouseId.HasValue) 
+                    return DbUtil.Db.People.Single(p => p.PeopleId == HeadOfHouseholdSpouseId.Value).Name;
                 return "";
             }
         }

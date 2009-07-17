@@ -127,6 +127,8 @@
                                     DataValueField="Value" AutoPostBack="True" OnSelectedIndexChanged="Tags_SelectedIndexChanged">
                                 </asp:DropDownList>
                                 &nbsp;
+                                <input type="checkbox" id="maindiv" /> Main Division
+                                &nbsp;
                                 <asp:LinkButton ID="DeleteTag" runat="server" OnClick="DeleteTag_Click">Delete Division</asp:LinkButton><br />
 								<asp:Label ID="progdivid" runat="server"></asp:Label>
                             </td>

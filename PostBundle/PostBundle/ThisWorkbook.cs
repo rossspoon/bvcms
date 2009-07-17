@@ -37,6 +37,7 @@ namespace PostBundle
         {
             ws = new CmsWs.cmsSoapClient();
 #if DEBUG
+            ws.Endpoint.Address = new EndpointAddress("http://bellevue03/cms.asmx");
 #else
             ws.Endpoint.Address = new EndpointAddress("http://bellevue03/cms.asmx");
 #endif

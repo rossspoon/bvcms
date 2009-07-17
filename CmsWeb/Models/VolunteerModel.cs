@@ -74,6 +74,8 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname", "last name required");
             if (!DateTime.TryParse(dob, out _dob))
                 ModelState.AddModelError("dob", "valid birth date required");
+            else if (_dob.Year <= DateTime.Now.Year)
+                ModelState.AddModelError("dob", "valid birth year required");
             var d = phone.GetDigits().Length;
             if (d != 7 && d != 10)
                 ModelState.AddModelError("phone", "7 or 10 digits");

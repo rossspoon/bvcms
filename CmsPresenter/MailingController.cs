@@ -321,6 +321,7 @@ namespace CMSPresenter
                      where p.DeceasedDate == null
                      where (p.BadAddressFlag == null || p.BadAddressFlag == false)
                      where p.DoNotMailFlag == false
+                     let hohemail = p.Family.HeadOfHousehold.EmailAddress
                      select new
                      {
                          LabelName = (p.PositionInFamilyId == 30 ? ("Parents Of " + p.Name) : p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name),
@@ -332,6 +333,11 @@ namespace CMSPresenter
                          City = p.PrimaryCity,
                          State = p.PrimaryState,
                          Zip = p.PrimaryZip,
+                         ParentEmail = (p.PositionInFamilyId == 30 ?
+                            (hohemail != null && hohemail != "" ?
+                                hohemail
+                                : p.Family.HeadOfHouseholdSpouse.EmailAddress)
+                            : p.EmailAddress)
                      };
             return q2.Take(maximumRows);
         }

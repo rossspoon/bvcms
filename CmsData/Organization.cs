@@ -105,15 +105,19 @@ namespace CmsData
                 _TagString = value;
             }
         }
-        public bool ToggleTag(int divid)
+        public bool ToggleTag(int divid, bool main)
         {
             var divorg = DivOrgs.SingleOrDefault(d => d.DivId == divid);
             if (divorg == null)
             {
                 DivOrgs.Add(new DivOrg { DivId = divid });
+                if (main)
+                    DivisionId = divid;
                 return true;
             }
             DivOrgs.Remove(divorg);
+            if (DivisionId == divid)
+                DivisionId = null;
             Db.DivOrgs.DeleteOnSubmit(divorg);
             return false;
         }
