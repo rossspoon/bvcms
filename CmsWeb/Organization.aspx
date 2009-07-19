@@ -122,14 +122,6 @@
                             </cc1:DisplayOrEditDropCheck>
                         </td>
                     </tr>
-                    <tr id="NewTagRow" runat="server">
-                        <th>
-                            New Division Tag:
-                        </th>
-                        <td>
-                            <asp:TextBox ID="NewTag" runat="server" Width="250px"></asp:TextBox>
-                        </td>
-                    </tr>
                     <tr>
                         <th>
                             Leader:

@@ -163,6 +163,9 @@
                             <asp:HyperLink ID="Settings" NavigateUrl="/Setting/"
                                 runat="server">Settings</asp:HyperLink></li>
                         <li>
+                            <asp:HyperLink ID="Recreation" NavigateUrl="/RecreationSetup/"
+                                runat="server">Recreation Setup</asp:HyperLink></li>
+                        <li>
                             <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
                                 runat="server">OrgMembersOnly</asp:HyperLink></li>
                         <li>

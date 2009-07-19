@@ -59,24 +59,6 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropCheck TagString;
         
         /// <summary>
-        /// NewTagRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow NewTagRow;
-        
-        /// <summary>
-        /// NewTag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox NewTag;
-        
-        /// <summary>
         /// LeaderName control.
         /// </summary>
         /// <remarks>

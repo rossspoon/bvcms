@@ -283,7 +283,8 @@ namespace CMSWeb.Models
             var todiv = Promotion.ToDivId;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == todiv)
-                    && o.ScheduleId == ScheduleId
+                    where o.ScheduleId == ScheduleId
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby o.OrganizationName
                     select new SelectListItem
                     {

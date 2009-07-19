@@ -121,15 +121,18 @@ namespace CMSWeb
         {
             if (EditUpdateButton1.Updating)
             {
-                if (NewTag.Text.HasValue())
-                    organization.TagString += ";" + NewTag.Text;
                 DbUtil.Db.SubmitChanges();
+                var divorg = organization.DivOrgs.SingleOrDefault(d => d.DivId == organization.DivisionId);
+                if (divorg == null && organization.DivisionId.HasValue)
+                {
+                    organization.DivOrgs.Add(new DivOrg { DivId = organization.DivisionId.Value });
+                    DbUtil.Db.SubmitChanges();
+                }
             }
         }
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            NewTagRow.Visible = EditUpdateButton1.Editing;
             VisitLookbackDays.Text = Util.VisitLookbackDays.ToString();
             if (organization.ScheduleId != null)
             {

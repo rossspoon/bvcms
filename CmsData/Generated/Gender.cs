@@ -26,6 +26,8 @@ namespace CmsData
    		
    		private EntitySet< Person> _People;
 		
+   		private EntitySet< Recreation> _Recreations;
+		
     	
 	#endregion
 	
@@ -48,6 +50,8 @@ namespace CmsData
 		{
 			
 			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
+			
+			this._Recreations = new EntitySet< Recreation>(new Action< Recreation>(this.attach_Recreations), new Action< Recreation>(this.detach_Recreations)); 
 			
 			
 			OnCreated();
@@ -136,6 +140,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Recreation_Gender", Storage="_Recreations", OtherKey="GenderId")]
+   		public EntitySet< Recreation> Recreations
+   		{
+   		    get { return this._Recreations; }
+
+			set	{ this._Recreations.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -164,6 +178,19 @@ namespace CmsData
 		}
 
 		private void detach_People(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.Gender = null;
+		}
+
+		
+		private void attach_Recreations(Recreation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Gender = this;
+		}
+
+		private void detach_Recreations(Recreation entity)
 		{
 			this.SendPropertyChanging();
 			entity.Gender = null;

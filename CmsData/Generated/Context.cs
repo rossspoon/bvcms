@@ -262,6 +262,10 @@ namespace CmsData
         partial void UpdateOrigin(Origin instance);
         partial void DeleteOrigin(Origin instance);
         
+        partial void InsertParticipant(Participant instance);
+        partial void UpdateParticipant(Participant instance);
+        partial void DeleteParticipant(Participant instance);
+        
         partial void InsertPerson(Person instance);
         partial void UpdatePerson(Person instance);
         partial void DeletePerson(Person instance);
@@ -293,6 +297,10 @@ namespace CmsData
         partial void InsertQueryBuilderClause(QueryBuilderClause instance);
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
         partial void DeleteQueryBuilderClause(QueryBuilderClause instance);
+        
+        partial void InsertRecreation(Recreation instance);
+        partial void UpdateRecreation(Recreation instance);
+        partial void DeleteRecreation(Recreation instance);
         
         partial void InsertRelatedFamily(RelatedFamily instance);
         partial void UpdateRelatedFamily(RelatedFamily instance);
@@ -818,6 +826,12 @@ namespace CmsData
 
 		}
 
+		public Table< Participant> Participants
+		{
+			get	{ return this.GetTable< Participant>(); }
+
+		}
+
 		public Table< Person> People
 		{
 			get	{ return this.GetTable< Person>(); }
@@ -863,6 +877,12 @@ namespace CmsData
 		public Table< QueryBuilderClause> QueryBuilderClauses
 		{
 			get	{ return this.GetTable< QueryBuilderClause>(); }
+
+		}
+
+		public Table< Recreation> Recreations
+		{
+			get	{ return this.GetTable< Recreation>(); }
 
 		}
 
@@ -1879,6 +1899,20 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.LeagueOrg", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? LeagueOrg(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "league", DbType="int")] int? league
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                league
                 ).ReturnValue));
 		}
 

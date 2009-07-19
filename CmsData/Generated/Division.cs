@@ -30,6 +30,10 @@ namespace CmsData
 		
    		private EntitySet< Organization> _Organizations;
 		
+   		private EntitySet< Participant> _Participants;
+		
+   		private EntitySet< Recreation> _Recreations;
+		
    		private EntitySet< Promotion> _FromPromotions;
 		
    		private EntitySet< Promotion> _ToPromotions;
@@ -63,6 +67,10 @@ namespace CmsData
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
 			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
+			
+			this._Participants = new EntitySet< Participant>(new Action< Participant>(this.attach_Participants), new Action< Participant>(this.detach_Participants)); 
+			
+			this._Recreations = new EntitySet< Recreation>(new Action< Recreation>(this.attach_Recreations), new Action< Recreation>(this.detach_Recreations)); 
 			
 			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
 			
@@ -192,6 +200,26 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Participant_Division", Storage="_Participants", OtherKey="DivId")]
+   		public EntitySet< Participant> Participants
+   		{
+   		    get { return this._Participants; }
+
+			set	{ this._Participants.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Recreation_Division", Storage="_Recreations", OtherKey="DivId")]
+   		public EntitySet< Recreation> Recreations
+   		{
+   		    get { return this._Recreations; }
+
+			set	{ this._Recreations.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FromPromotions__FromDivision", Storage="_FromPromotions", OtherKey="FromDivId")]
    		public EntitySet< Promotion> FromPromotions
    		{
@@ -295,6 +323,32 @@ namespace CmsData
 		}
 
 		private void detach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = null;
+		}
+
+		
+		private void attach_Participants(Participant entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = this;
+		}
+
+		private void detach_Participants(Participant entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = null;
+		}
+
+		
+		private void attach_Recreations(Recreation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = this;
+		}
+
+		private void detach_Recreations(Recreation entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

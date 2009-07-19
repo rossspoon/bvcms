@@ -6,8 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using System.Configuration;
+using UtilityExtensions;
 
-namespace Forms.Controllers
+namespace CMSWeb.Controllers
 {
     [HandleError]
     public class VBSRegController : Controller

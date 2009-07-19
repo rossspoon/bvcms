@@ -64,8 +64,14 @@ namespace CmsData
             if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now 
                 || (i.TrackAttendance && i.AttendCount == 0))
             {
+                var enrollid = Db.EnrollmentTransactions.Where(et =>
+                    et.PeopleId == PeopleId
+                    && et.OrganizationId == OrganizationId
+                    && et.EnrollmentDate == this.EnrollmentDate
+                    && et.TransactionTypeId == 1).Select(et => et.TransactionId).Single();
                 var qt = from et in Db.EnrollmentTransactions
                          where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
+                         where et.TransactionId >= enrollid
                          select et;
                 Db.EnrollmentTransactions.DeleteAllOnSubmit(qt);
                 var qa = from et in Db.Attends

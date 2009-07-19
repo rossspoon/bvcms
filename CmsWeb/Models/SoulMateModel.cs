@@ -9,6 +9,8 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Models
 {
@@ -156,10 +158,10 @@ namespace CMSWeb.Models
             last = last.Trim();
             var fone = Util.GetDigits(phone);
             var q = from p in DbUtil.Db.People
-                    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
-                            && (p.FirstName.StartsWith(first)
-                            || p.NickName.StartsWith(first)
-                            || p.MiddleName.StartsWith(first))
+                    where (p.LastName == last || p.MaidenName == last)
+                            && (p.FirstName == first
+                            || p.NickName == first
+                            || p.MiddleName == first)
                     where p.CellPhone.Contains(fone)
                             || p.WorkPhone.Contains(fone)
                             || p.Family.HomePhone.Contains(fone)
@@ -178,9 +180,11 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("first1", "first name required");
             if (!lastname1.HasValue())
                 ModelState.AddModelError("lastname1", "last name required");
+            else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
+                ModelState.AddModelError("lastname1", "Please use Proper Casing");
             if (!DateTime.TryParse(dob1, out _dob1))
                 ModelState.AddModelError("dob1", "valid birth date required");
-            else if (_dob1.Year <= DateTime.Now.Year)
+            else if (_dob1.Year == DateTime.Now.Year)
                 ModelState.AddModelError("dob1", "valid birth year required");
             var d = phone1.GetDigits().Length;
             if (d != 7 && d != 10)
@@ -203,9 +207,11 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("first2", "first name required");
             if (!lastname2.HasValue())
                 ModelState.AddModelError("lastname2", "last name required");
+            else if (lastname2.ToUpper() == lastname2 || lastname2.ToLower() == lastname2)
+                ModelState.AddModelError("lastname2", "Please use Proper Casing");
             if (!DateTime.TryParse(dob2, out _dob2))
                 ModelState.AddModelError("dob2", "valid birth date required");
-            else if (_dob2.Year <= DateTime.Now.Year)
+            else if (_dob2.Year == DateTime.Now.Year)
                 ModelState.AddModelError("dob2", "valid birth year required");
             d = phone2.GetDigits().Length;
             if (d != 7 && d != 10)
@@ -233,10 +239,13 @@ namespace CMSWeb.Models
                 modelState.AddModelError("first1", "first name required");
             if (!lastname1.HasValue())
                 modelState.AddModelError("lastname1", "last name required");
+            else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
+                modelState.AddModelError("lastname1", "Please use Proper Casing");
             if (!DateTime.TryParse(dob1, out _dob1))
                 modelState.AddModelError("dob1", "valid birth date required");
-            else if (_dob1.Year <= DateTime.Now.Year)
-                modelState.AddModelError("dob1", "valid birth year required");
+            if (!Regex.IsMatch(dob1, @"\d+[/-]\d+[/-]\d+"))
+                modelState.AddModelError("dob1", "valid date format required");
+
             if (!gender.HasValue)
                 modelState.AddModelError("gender2", "gender required");
             if (!ChildParent.HasValue)
@@ -363,7 +372,9 @@ namespace CMSWeb.Models
         internal Person AddPersonToPerson(Person p, string first, string last, string dob)
         {
             var np = Person.Add(p.Family, 10,
-                null, first, null, last, dob, true, p.GenderId == 1? 2 : 1, 0, null);
+                null, first, null, last, dob, true, p.GenderId == 1? 2 : 1,
+                    DbUtil.Settings("SmlOrigin").ToInt(), 
+                    DbUtil.Settings("SmlEntry").ToInt());
             DbUtil.Db.SubmitChanges();
             return np;
         }
@@ -376,19 +387,27 @@ namespace CMSWeb.Models
                 CityName = city,
                 StateCode = state,
                 ZipCode = zip,
-                HomePhone = phone,
+                HomePhone = phone.GetDigits(),
             };
-            var np = Person.Add(f, 10,
-                null, first, null, last, dob, married, gender, 
+            var np = Person.Add(f, 10, null, 
+                    first, 
+                    null, 
+                    last, 
+                    dob, married, gender, 
                     DbUtil.Settings("SmlOrigin").ToInt(), 
                     DbUtil.Settings("SmlEntry").ToInt());
+            np.HomePhone = phone.GetDigits();
+
             DbUtil.Db.SubmitChanges();
             return np;
         }
         public Person AddChild(Person p)
         {
-            var np = Person.Add(p.Family, 30,
-                null, first1, null, lastname1, dob1, false, gender.Value, 0, null);
+            var np = Person.Add(p.Family, 30, null, 
+                first1, 
+                null, 
+                lastname1, 
+                dob1, false, gender.Value, 0, null);
             DbUtil.Db.SubmitChanges();
             return np;
         }

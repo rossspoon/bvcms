@@ -97,8 +97,10 @@
     <Compile Include="Generated\JoinType.cs" />
     <Compile Include="Generated\MemberTag.cs" />
     <Compile Include="Generated\OrgMemMemTag.cs" />
+    <Compile Include="Generated\Participant.cs" />
     <Compile Include="Generated\Preference.cs" />
     <Compile Include="Generated\Program.cs" />
+    <Compile Include="Generated\Recreation.cs" />
     <Compile Include="Generated\Setting.cs" />
     <Compile Include="Generated\SoulMate.cs" />
     <Compile Include="Generated\TagShare.cs" />

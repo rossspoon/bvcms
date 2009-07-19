@@ -383,7 +383,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\RecreationController.cs" />
+    <Compile Include="Controllers\RecreationSetupController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
+    <Compile Include="Controllers\VBSRegController.cs" />
     <Compile Include="Controllers\VolunteersController.cs" />
     <Compile Include="Controllers\PromotionSetupController.cs" />
     <Compile Include="Controllers\SoulMateController.cs" />
@@ -417,10 +420,12 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Models\RecreationModel.cs" />
     <Compile Include="Models\PromoteInfo.cs" />
     <Compile Include="Models\PromotionModel.cs" />
     <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
+    <Compile Include="Models\VBSRegModel.cs" />
     <Compile Include="Models\VolunteerModel.cs" />
     <Compile Include="Models\QueryModel.cs" />
     <Compile Include="Models\PeopleInfo.cs" />
@@ -1515,6 +1520,10 @@
     <None Include="fckeditor\fckeditor_php4.php" />
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
+    <Content Include="Views\RecreationSetup\Index.aspx" />
+    <Content Include="Views\Recreation\Confirm.aspx" />
+    <Content Include="Views\Recreation\OtherInfo.aspx" />
+    <Content Include="Views\Recreation\Index.aspx" />
     <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\Promotion\Index.aspx" />
     <Content Include="Views\Shared\Site3b.Master" />
@@ -1547,6 +1556,8 @@
     <Content Include="Views\StepClass\Step2Confirm.aspx" />
     <Content Include="Views\StepClass\Step1.aspx" />
     <Content Include="Views\StepClass\Step1Confirm.aspx" />
+    <Content Include="Views\VBSReg\Confirm.aspx" />
+    <Content Include="Views\VBSReg\Index.aspx" />
     <Content Include="Views\Volunteers\Index.aspx" />
     <Content Include="Views\Volunteer\Unknown.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />

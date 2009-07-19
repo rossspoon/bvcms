@@ -7,8 +7,9 @@ using CmsData;
 using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
+using UtilityExtensions;
 
-namespace Forms.Models
+namespace CMSWeb.Models
 {
     public interface IVBSFormBindable
     {
@@ -85,18 +86,18 @@ namespace Forms.Models
             sb.AppendFormat("State:\t{0}\n", state);
             sb.AppendFormat("Zip:\t{0}\n", zip);
             sb.AppendFormat("Local:\t{0}\n", locaddr);
-            sb.AppendFormat("Phone:\t{0}\n", homephone.FmtFone());
+            //sb.AppendFormat("Phone:\t{0}\n", homephone.FmtFone());
 
             sb.AppendFormat("Parent:\t{0}\n", parent);
-            sb.AppendFormat("Cell:\t{0}\n", cell.FmtFone());
+            //sb.AppendFormat("Cell:\t{0}\n", cell.FmtFone());
             sb.AppendFormat("Email:\t{0}\n", email);
             sb.AppendFormat("Emerg Contact:\t{0}\n", emcontact);
-            sb.AppendFormat("Emerg Phone:\t{0}\n", emphone.FmtFone());
+            //sb.AppendFormat("Emerg Phone:\t{0}\n", emphone.FmtFone());
             sb.AppendFormat("Request:\t{0}\n", request);
             sb.AppendFormat("Medical:\t{0}\n", medical);
             sb.AppendFormat("Bellevue:\t{0}\n", bellevue);
             sb.AppendFormat("Bringer:\t{0}\n", bringer);
-			sb.AppendFormat("BringerPh:\t{0}\n", bringerphone.FmtFone());
+			//sb.AppendFormat("BringerPh:\t{0}\n", bringerphone.FmtFone());
 			sb.AppendFormat("WorksVBS:\t{0}\n", parentvbs == 1);
 			sb.AppendFormat("PubPhoto:\t{0}\n", pubphoto == 1);
             sb.AppendFormat("OtherChurch:\t{0}\n", otherchurch);
@@ -118,10 +119,10 @@ namespace Forms.Models
         {
             homephone = Util.GetDigits(homephone);
             var q = from p in Db.People
-                    where (p.LastName.StartsWith(lastname) || p.MaidenName.StartsWith(lastname))
-                            && (p.FirstName.StartsWith(first)
-                            || p.NickName.StartsWith(first)
-                            || p.MiddleName.StartsWith(first))
+                    where (p.LastName == lastname || p.MaidenName == lastname)
+                            && (p.FirstName == first
+                            || p.NickName == first
+                            || p.MiddleName == first)
                     where p.CellPhone.Contains(homephone)
                             || p.Family.HomePhone.Contains(homephone)
                             || p.WorkPhone.Contains(homephone)
@@ -151,6 +152,8 @@ namespace Forms.Models
         }
         public void ValidateModel(ModelStateDictionary ModelState)
         {
+            first = first.Trim();
+            lastname = lastname.Trim();
             if (!first.HasValue())
                 ModelState.AddModelError("first", "first name required");
             if (!lastname.HasValue())

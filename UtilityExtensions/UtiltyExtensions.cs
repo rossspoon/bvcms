@@ -172,6 +172,13 @@ namespace UtilityExtensions
                 age--;
             return age.ToString();
         }
+        public static int AgeAsOf(this DateTime bd, DateTime dt)
+        {
+            int age = dt.Year - bd.Year;
+            if (dt.Month < bd.Month || (dt.Month == bd.Month && dt.Day < bd.Day))
+                age--;
+            return age;
+        }
         public static DateTime Now
         {
             get { return DateTime.Now; }

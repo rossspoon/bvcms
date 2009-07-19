@@ -264,6 +264,8 @@ namespace CmsData
 		
    		private EntitySet< Contribution> _Contributions;
 		
+   		private EntitySet< Participant> _Participants;
+		
    		private EntitySet< TagShare> _TagShares;
 		
    		private EntitySet< TaskListOwner> _TaskListOwners;
@@ -690,6 +692,8 @@ namespace CmsData
 			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
+			
+			this._Participants = new EntitySet< Participant>(new Action< Participant>(this.attach_Participants), new Action< Participant>(this.detach_Participants)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -3402,6 +3406,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Participant_People", Storage="_Participants", OtherKey="PeopleId")]
+   		public EntitySet< Participant> Participants
+   		{
+   		    get { return this._Participants; }
+
+			set	{ this._Participants.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_TagShare_People", Storage="_TagShares", OtherKey="PeopleId")]
    		public EntitySet< TagShare> TagShares
    		{
@@ -4175,6 +4189,19 @@ namespace CmsData
 		}
 
 		private void detach_Contributions(Contribution entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_Participants(Participant entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_Participants(Participant entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
