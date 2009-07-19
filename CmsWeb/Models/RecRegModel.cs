@@ -27,7 +27,7 @@ namespace CMSWeb.Models
                 division = DbUtil.Db.Divisions.Single(d => d.Id == value);
             }
         }
-        public Participant registration { get; set; }
+        public RecReg registration { get; set; }
         public int? regid
         {
             get
@@ -36,7 +36,7 @@ namespace CMSWeb.Models
             }
             set
             {
-                registration = DbUtil.Db.Participants.Single(d => d.Id == value);
+                registration = DbUtil.Db.RecRegs.Single(d => d.Id == value);
                 participant = registration.Person;
                 OrgId = registration.OrgId;
                 divid = registration.DivId;

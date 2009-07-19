@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="dbo.Participant")]
-	public partial class Participant : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.RecReg")]
+	public partial class RecReg : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -103,7 +103,7 @@ namespace CmsData
 		partial void OnDivIdChanged();
 		
     #endregion
-		public Participant()
+		public RecReg()
 		{
 			
 			
@@ -459,13 +459,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._Division.Entity = null;
-						previousValue.Participants.Remove(this);
+						previousValue.RecRegs.Remove(this);
 					}
 
 					this._Division.Entity = value;
 					if (value != null)
 					{
-						value.Participants.Add(this);
+						value.RecRegs.Add(this);
 						
 						this._DivId = value.Id;
 						
@@ -501,13 +501,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._Organization.Entity = null;
-						previousValue.Participants.Remove(this);
+						previousValue.RecRegs.Remove(this);
 					}
 
 					this._Organization.Entity = value;
 					if (value != null)
 					{
-						value.Participants.Add(this);
+						value.RecRegs.Add(this);
 						
 						this._OrgId = value.OrganizationId;
 						
@@ -543,13 +543,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._Person.Entity = null;
-						previousValue.Participants.Remove(this);
+						previousValue.RecRegs.Remove(this);
 					}
 
 					this._Person.Entity = value;
 					if (value != null)
 					{
-						value.Participants.Add(this);
+						value.RecRegs.Add(this);
 						
 						this._PeopleId = value.PeopleId;
 						

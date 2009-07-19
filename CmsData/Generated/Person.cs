@@ -264,7 +264,7 @@ namespace CmsData
 		
    		private EntitySet< Contribution> _Contributions;
 		
-   		private EntitySet< Participant> _Participants;
+   		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< TagShare> _TagShares;
 		
@@ -693,7 +693,7 @@ namespace CmsData
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
 			
-			this._Participants = new EntitySet< Participant>(new Action< Participant>(this.attach_Participants), new Action< Participant>(this.detach_Participants)); 
+			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -3406,12 +3406,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Participant_People", Storage="_Participants", OtherKey="PeopleId")]
-   		public EntitySet< Participant> Participants
+   		[Association(Name="FK_Participant_People", Storage="_RecRegs", OtherKey="PeopleId")]
+   		public EntitySet< RecReg> RecRegs
    		{
-   		    get { return this._Participants; }
+   		    get { return this._RecRegs; }
 
-			set	{ this._Participants.Assign(value); }
+			set	{ this._RecRegs.Assign(value); }
 
    		}
 
@@ -4195,13 +4195,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_Participants(Participant entity)
+		private void attach_RecRegs(RecReg entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = this;
 		}
 
-		private void detach_Participants(Participant entity)
+		private void detach_RecRegs(RecReg entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

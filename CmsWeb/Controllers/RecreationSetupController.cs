@@ -15,6 +15,16 @@ namespace CMSWeb.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
+            if (DbUtil.Settings("RecreationProgramId") == string.Empty)
+                ModelState.AddModelError("_FORM", "RecreationProgramId required in Settings");
+            if (DbUtil.Settings("RecEntry") == string.Empty)
+                ModelState.AddModelError("_FORM", "RecEntry required in Settings");
+            if (DbUtil.Settings("RecOrigin") == string.Empty)
+                ModelState.AddModelError("_FORM", "RecOrigin required in Settings");
+
+            if (!ModelState.IsValid)
+                return View("Errors");
+
             var m = from r in DbUtil.Db.Recreations
                     orderby r.OrgId != null ? r.Organization.OrganizationName : ""
                     select r;

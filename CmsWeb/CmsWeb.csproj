@@ -383,9 +383,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
-    <Compile Include="Controllers\RecreationController.cs" />
     <Compile Include="Controllers\RecreationSetupController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
+    <Compile Include="Controllers\RecRegController.cs" />
     <Compile Include="Controllers\VBSRegController.cs" />
     <Compile Include="Controllers\VolunteersController.cs" />
     <Compile Include="Controllers\PromotionSetupController.cs" />
@@ -420,9 +420,9 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
-    <Compile Include="Models\RecreationModel.cs" />
     <Compile Include="Models\PromoteInfo.cs" />
     <Compile Include="Models\PromotionModel.cs" />
+    <Compile Include="Models\RecRegModel.cs" />
     <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VBSRegModel.cs" />
@@ -1521,11 +1521,12 @@
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
     <Content Include="Views\RecreationSetup\Index.aspx" />
-    <Content Include="Views\Recreation\Confirm.aspx" />
-    <Content Include="Views\Recreation\OtherInfo.aspx" />
-    <Content Include="Views\Recreation\Index.aspx" />
+    <Content Include="Views\RecreationSetup\Errors.aspx" />
     <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\Promotion\Index.aspx" />
+    <Content Include="Views\RecReg\Confirm.aspx" />
+    <Content Include="Views\RecReg\Index.aspx" />
+    <Content Include="Views\RecReg\OtherInfo.aspx" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Views\CodeValue\Index.aspx" />
     <Content Include="Views\PromotionSetup\Index.aspx" />

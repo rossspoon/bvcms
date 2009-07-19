@@ -39,13 +39,13 @@ namespace CMSWeb.Controllers
                 m.AddPerson();
             m.EnrollInOrg(m.participant);
 
-            var reg = DbUtil.Db.Participants.SingleOrDefault(r =>
+            var reg = DbUtil.Db.RecRegs.SingleOrDefault(r =>
                 r.PeopleId == m.participant.PeopleId
                 && r.DivId == m.divid
                 && r.OrgId == m.OrgId);
             if (reg == null)
             {
-                reg = new Participant
+                reg = new RecReg
                 {
                     PeopleId = m.participant.PeopleId,
                     UserInfo = "online",
@@ -53,7 +53,7 @@ namespace CMSWeb.Controllers
                     DivId = m.divid,
                     Uploaded = DateTime.Now,
                 };
-                DbUtil.Db.Participants.InsertOnSubmit(reg);
+                DbUtil.Db.RecRegs.InsertOnSubmit(reg);
                 DbUtil.Db.SubmitChanges();
             }
 
