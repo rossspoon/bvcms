@@ -135,7 +135,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Activity", UpdateCheck=UpdateCheck.Never, Storage="_Activity", DbType="varchar(100)")]
+		[Column(Name="Activity", UpdateCheck=UpdateCheck.Never, Storage="_Activity", DbType="varchar(200)")]
 		public string Activity
 		{
 			get { return this._Activity; }
@@ -157,7 +157,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(300)")]
+		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(400)")]
 		public string PageUrl
 		{
 			get { return this._PageUrl; }

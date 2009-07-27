@@ -127,5 +127,12 @@ namespace ImageData
             var a = q.First().Split(':');
             return a[1].Trim();
         }
+        public static string Content(int id)
+        {
+            var img = DbUtil.Db.Images.SingleOrDefault(i => i.Id == id);
+            if (img.Mimetype != "text/plain")
+                return null;
+            return System.Text.ASCIIEncoding.ASCII.GetString(img.Bits);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecreationModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Recreation Registration</title>
@@ -16,7 +16,7 @@
                 <col />
                 <tr>
                     <td><label for="shirtsize">ShirtSize</label></td>
-                    <td><%= Html.DropDownList("shirtsize", Model.ShirtSizes())%></td>
+                    <td><%= Html.DropDownList("shirtsize", CMSWeb.Models.RecRegModel.ShirtSizes())%></td>
                     <td><%= Html.ValidationMessage("shirtsize")%></td>
                 </tr>
                 <tr>
@@ -63,12 +63,12 @@
                     <td><%= Html.ValidationMessage("medical")%>Leave blank if none</td>
                 </tr>
                 <tr>
-                    <td><label for="mname">Mother's Name</label></td>
+                    <td><label for="mname">Mother's Name (first last)</label></td>
                     <td><%= Html.TextBox("mname")%></td>
                     <td><%= Html.ValidationMessage("mname")%></td>
                 </tr>
                 <tr>
-                    <td><label for="fname">Father's Name</label></td>
+                    <td><label for="fname">Father's Name (first last)</label></td>
                     <td><%= Html.TextBox("fname")%></td>
                     <td><%= Html.ValidationMessage("fname")%></td>
                 </tr>

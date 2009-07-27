@@ -158,10 +158,8 @@ namespace CMSWeb.Models
             last = last.Trim();
             var fone = Util.GetDigits(phone);
             var q = from p in DbUtil.Db.People
+                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
-                            && (p.FirstName == first
-                            || p.NickName == first
-                            || p.MiddleName == first)
                     where p.CellPhone.Contains(fone)
                             || p.WorkPhone.Contains(fone)
                             || p.Family.HomePhone.Contains(fone)
@@ -182,10 +180,8 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname1", "last name required");
             else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
                 ModelState.AddModelError("lastname1", "Please use Proper Casing");
-            if (!DateTime.TryParse(dob1, out _dob1))
+            if (!Util.DateValid(dob1, out _dob1))
                 ModelState.AddModelError("dob1", "valid birth date required");
-            else if (_dob1.Year == DateTime.Now.Year)
-                ModelState.AddModelError("dob1", "valid birth year required");
             var d = phone1.GetDigits().Length;
             if (d != 7 && d != 10)
                 ModelState.AddModelError("phone1", "7 or 10 digits");
@@ -209,10 +205,8 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname2", "last name required");
             else if (lastname2.ToUpper() == lastname2 || lastname2.ToLower() == lastname2)
                 ModelState.AddModelError("lastname2", "Please use Proper Casing");
-            if (!DateTime.TryParse(dob2, out _dob2))
+            if (!Util.DateValid(dob2, out _dob2))
                 ModelState.AddModelError("dob2", "valid birth date required");
-            else if (_dob2.Year == DateTime.Now.Year)
-                ModelState.AddModelError("dob2", "valid birth year required");
             d = phone2.GetDigits().Length;
             if (d != 7 && d != 10)
                 ModelState.AddModelError("phone2", "7 or 10 digits");
@@ -241,10 +235,8 @@ namespace CMSWeb.Models
                 modelState.AddModelError("lastname1", "last name required");
             else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
                 modelState.AddModelError("lastname1", "Please use Proper Casing");
-            if (!DateTime.TryParse(dob1, out _dob1))
+            if (!Util.DateValid(dob1, out _dob1))
                 modelState.AddModelError("dob1", "valid birth date required");
-            if (!Regex.IsMatch(dob1, @"\d+[/-]\d+[/-]\d+"))
-                modelState.AddModelError("dob1", "valid date format required");
 
             if (!gender.HasValue)
                 modelState.AddModelError("gender2", "gender required");

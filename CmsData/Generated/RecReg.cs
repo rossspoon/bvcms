@@ -35,7 +35,7 @@ namespace CmsData
 		
 		private string _ShirtSize;
 		
-		private DateTime? _FeePaid;
+		private bool? _FeePaid;
 		
 		private string _TransactionId;
 		
@@ -44,6 +44,32 @@ namespace CmsData
 		private int? _OrgId;
 		
 		private int? _DivId;
+		
+		private bool? _Expired;
+		
+		private string _Email;
+		
+		private string _MedicalDescription;
+		
+		private string _Fname;
+		
+		private string _Mname;
+		
+		private bool? _Coaching;
+		
+		private bool? _Member;
+		
+		private string _Emcontact;
+		
+		private string _Emphone;
+		
+		private string _Doctor;
+		
+		private string _Docphone;
+		
+		private string _Insurance;
+		
+		private string _Policy;
 		
    		
     	
@@ -87,7 +113,7 @@ namespace CmsData
 		partial void OnShirtSizeChanging(string value);
 		partial void OnShirtSizeChanged();
 		
-		partial void OnFeePaidChanging(DateTime? value);
+		partial void OnFeePaidChanging(bool? value);
 		partial void OnFeePaidChanged();
 		
 		partial void OnTransactionIdChanging(string value);
@@ -101,6 +127,45 @@ namespace CmsData
 		
 		partial void OnDivIdChanging(int? value);
 		partial void OnDivIdChanged();
+		
+		partial void OnExpiredChanging(bool? value);
+		partial void OnExpiredChanged();
+		
+		partial void OnEmailChanging(string value);
+		partial void OnEmailChanged();
+		
+		partial void OnMedicalDescriptionChanging(string value);
+		partial void OnMedicalDescriptionChanged();
+		
+		partial void OnFnameChanging(string value);
+		partial void OnFnameChanged();
+		
+		partial void OnMnameChanging(string value);
+		partial void OnMnameChanged();
+		
+		partial void OnCoachingChanging(bool? value);
+		partial void OnCoachingChanged();
+		
+		partial void OnMemberChanging(bool? value);
+		partial void OnMemberChanged();
+		
+		partial void OnEmcontactChanging(string value);
+		partial void OnEmcontactChanged();
+		
+		partial void OnEmphoneChanging(string value);
+		partial void OnEmphoneChanged();
+		
+		partial void OnDoctorChanging(string value);
+		partial void OnDoctorChanged();
+		
+		partial void OnDocphoneChanging(string value);
+		partial void OnDocphoneChanged();
+		
+		partial void OnInsuranceChanging(string value);
+		partial void OnInsuranceChanged();
+		
+		partial void OnPolicyChanging(string value);
+		partial void OnPolicyChanged();
 		
     #endregion
 		public RecReg()
@@ -320,8 +385,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FeePaid", UpdateCheck=UpdateCheck.Never, Storage="_FeePaid", DbType="datetime")]
-		public DateTime? FeePaid
+		[Column(Name="FeePaid", UpdateCheck=UpdateCheck.Never, Storage="_FeePaid", DbType="bit")]
+		public bool? FeePaid
 		{
 			get { return this._FeePaid; }
 
@@ -429,6 +494,292 @@ namespace CmsData
 					this._DivId = value;
 					this.SendPropertyChanged("DivId");
 					this.OnDivIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Expired", UpdateCheck=UpdateCheck.Never, Storage="_Expired", DbType="bit")]
+		public bool? Expired
+		{
+			get { return this._Expired; }
+
+			set
+			{
+				if (this._Expired != value)
+				{
+				
+                    this.OnExpiredChanging(value);
+					this.SendPropertyChanging();
+					this._Expired = value;
+					this.SendPropertyChanged("Expired");
+					this.OnExpiredChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(50)")]
+		public string Email
+		{
+			get { return this._Email; }
+
+			set
+			{
+				if (this._Email != value)
+				{
+				
+                    this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MedicalDescription", UpdateCheck=UpdateCheck.Never, Storage="_MedicalDescription", DbType="varchar(300)")]
+		public string MedicalDescription
+		{
+			get { return this._MedicalDescription; }
+
+			set
+			{
+				if (this._MedicalDescription != value)
+				{
+				
+                    this.OnMedicalDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._MedicalDescription = value;
+					this.SendPropertyChanged("MedicalDescription");
+					this.OnMedicalDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="fname", UpdateCheck=UpdateCheck.Never, Storage="_Fname", DbType="varchar(50)")]
+		public string Fname
+		{
+			get { return this._Fname; }
+
+			set
+			{
+				if (this._Fname != value)
+				{
+				
+                    this.OnFnameChanging(value);
+					this.SendPropertyChanging();
+					this._Fname = value;
+					this.SendPropertyChanged("Fname");
+					this.OnFnameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="mname", UpdateCheck=UpdateCheck.Never, Storage="_Mname", DbType="varchar(50)")]
+		public string Mname
+		{
+			get { return this._Mname; }
+
+			set
+			{
+				if (this._Mname != value)
+				{
+				
+                    this.OnMnameChanging(value);
+					this.SendPropertyChanging();
+					this._Mname = value;
+					this.SendPropertyChanged("Mname");
+					this.OnMnameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="coaching", UpdateCheck=UpdateCheck.Never, Storage="_Coaching", DbType="bit")]
+		public bool? Coaching
+		{
+			get { return this._Coaching; }
+
+			set
+			{
+				if (this._Coaching != value)
+				{
+				
+                    this.OnCoachingChanging(value);
+					this.SendPropertyChanging();
+					this._Coaching = value;
+					this.SendPropertyChanged("Coaching");
+					this.OnCoachingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="member", UpdateCheck=UpdateCheck.Never, Storage="_Member", DbType="bit")]
+		public bool? Member
+		{
+			get { return this._Member; }
+
+			set
+			{
+				if (this._Member != value)
+				{
+				
+                    this.OnMemberChanging(value);
+					this.SendPropertyChanging();
+					this._Member = value;
+					this.SendPropertyChanged("Member");
+					this.OnMemberChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="emcontact", UpdateCheck=UpdateCheck.Never, Storage="_Emcontact", DbType="varchar(50)")]
+		public string Emcontact
+		{
+			get { return this._Emcontact; }
+
+			set
+			{
+				if (this._Emcontact != value)
+				{
+				
+                    this.OnEmcontactChanging(value);
+					this.SendPropertyChanging();
+					this._Emcontact = value;
+					this.SendPropertyChanged("Emcontact");
+					this.OnEmcontactChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="emphone", UpdateCheck=UpdateCheck.Never, Storage="_Emphone", DbType="varchar(15)")]
+		public string Emphone
+		{
+			get { return this._Emphone; }
+
+			set
+			{
+				if (this._Emphone != value)
+				{
+				
+                    this.OnEmphoneChanging(value);
+					this.SendPropertyChanging();
+					this._Emphone = value;
+					this.SendPropertyChanged("Emphone");
+					this.OnEmphoneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="doctor", UpdateCheck=UpdateCheck.Never, Storage="_Doctor", DbType="varchar(50)")]
+		public string Doctor
+		{
+			get { return this._Doctor; }
+
+			set
+			{
+				if (this._Doctor != value)
+				{
+				
+                    this.OnDoctorChanging(value);
+					this.SendPropertyChanging();
+					this._Doctor = value;
+					this.SendPropertyChanged("Doctor");
+					this.OnDoctorChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="docphone", UpdateCheck=UpdateCheck.Never, Storage="_Docphone", DbType="varchar(15)")]
+		public string Docphone
+		{
+			get { return this._Docphone; }
+
+			set
+			{
+				if (this._Docphone != value)
+				{
+				
+                    this.OnDocphoneChanging(value);
+					this.SendPropertyChanging();
+					this._Docphone = value;
+					this.SendPropertyChanged("Docphone");
+					this.OnDocphoneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="insurance", UpdateCheck=UpdateCheck.Never, Storage="_Insurance", DbType="varchar(50)")]
+		public string Insurance
+		{
+			get { return this._Insurance; }
+
+			set
+			{
+				if (this._Insurance != value)
+				{
+				
+                    this.OnInsuranceChanging(value);
+					this.SendPropertyChanging();
+					this._Insurance = value;
+					this.SendPropertyChanged("Insurance");
+					this.OnInsuranceChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="policy", UpdateCheck=UpdateCheck.Never, Storage="_Policy", DbType="varchar(20)")]
+		public string Policy
+		{
+			get { return this._Policy; }
+
+			set
+			{
+				if (this._Policy != value)
+				{
+				
+                    this.OnPolicyChanging(value);
+					this.SendPropertyChanging();
+					this._Policy = value;
+					this.SendPropertyChanged("Policy");
+					this.OnPolicyChanged();
 				}
 
 			}

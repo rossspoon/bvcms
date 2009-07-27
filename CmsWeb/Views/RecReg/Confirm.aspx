@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
 	<title>Received</title>
@@ -8,8 +8,9 @@
 
     <h2>Recreation Registration Received</h2>
     <p>
-        Thank you for registering your child.  You should receive a confirmation email shortly.
+        Thank you for registering <%=Model.participant.Name %> in <%=Model.division.Name %>, <%=Model.organization.OrganizationName %>.  
+        You should receive a confirmation email shortly.
     </p>
-    <a href="/Recreation/">Register another child</a>
+    <a href="/RecReg/Index/<%=Model.division.Id %>">Register another person in this league</a>
 
 </asp:Content>

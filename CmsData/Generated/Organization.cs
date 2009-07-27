@@ -51,6 +51,10 @@ namespace CmsData
 		
 		private string _OrganizationName;
 		
+		private bool? _ClassFilled;
+		
+		private int? _OnLineCatalogSort;
+		
 		private int? _ModifiedBy;
 		
 		private DateTime? _ModifiedDate;
@@ -86,7 +90,7 @@ namespace CmsData
 		
    		private EntitySet< RecReg> _RecRegs;
 		
-   		private EntitySet< Recreation> _Recreations;
+   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -161,6 +165,12 @@ namespace CmsData
 		partial void OnOrganizationNameChanging(string value);
 		partial void OnOrganizationNameChanged();
 		
+		partial void OnClassFilledChanging(bool? value);
+		partial void OnClassFilledChanged();
+		
+		partial void OnOnLineCatalogSortChanging(int? value);
+		partial void OnOnLineCatalogSortChanged();
+		
 		partial void OnModifiedByChanging(int? value);
 		partial void OnModifiedByChanged();
 		
@@ -208,7 +218,7 @@ namespace CmsData
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
-			this._Recreations = new EntitySet< Recreation>(new Action< Recreation>(this.attach_Recreations), new Action< Recreation>(this.detach_Recreations)); 
+			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -614,6 +624,50 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ClassFilled", UpdateCheck=UpdateCheck.Never, Storage="_ClassFilled", DbType="bit")]
+		public bool? ClassFilled
+		{
+			get { return this._ClassFilled; }
+
+			set
+			{
+				if (this._ClassFilled != value)
+				{
+				
+                    this.OnClassFilledChanging(value);
+					this.SendPropertyChanging();
+					this._ClassFilled = value;
+					this.SendPropertyChanged("ClassFilled");
+					this.OnClassFilledChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OnLineCatalogSort", UpdateCheck=UpdateCheck.Never, Storage="_OnLineCatalogSort", DbType="int")]
+		public int? OnLineCatalogSort
+		{
+			get { return this._OnLineCatalogSort; }
+
+			set
+			{
+				if (this._OnLineCatalogSort != value)
+				{
+				
+                    this.OnOnLineCatalogSortChanging(value);
+					this.SendPropertyChanging();
+					this._OnLineCatalogSort = value;
+					this.SendPropertyChanged("OnLineCatalogSort");
+					this.OnOnLineCatalogSortChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="int")]
 		public int? ModifiedBy
 		{
@@ -905,12 +959,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Recreation_Organizations", Storage="_Recreations", OtherKey="OrgId")]
-   		public EntitySet< Recreation> Recreations
+   		[Association(Name="FK_Recreation_Organizations", Storage="_RecAgeDivisions", OtherKey="OrgId")]
+   		public EntitySet< RecAgeDivision> RecAgeDivisions
    		{
-   		    get { return this._Recreations; }
+   		    get { return this._RecAgeDivisions; }
 
-			set	{ this._Recreations.Assign(value); }
+			set	{ this._RecAgeDivisions.Assign(value); }
 
    		}
 
@@ -1302,13 +1356,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_Recreations(Recreation entity)
+		private void attach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = this;
 		}
 
-		private void detach_Recreations(Recreation entity)
+		private void detach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

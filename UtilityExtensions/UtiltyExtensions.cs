@@ -304,6 +304,24 @@ namespace UtilityExtensions
             t.Insert(5, "-");
             return t.ToString();
         }
+        public static string Zip5(this string zip)
+        {
+            if (!zip.HasValue())
+                return "";
+            var t = zip.GetDigits();
+            if (t.Length > 5)
+                return t.Substring(0,5);
+            return t;
+        }
+        public static bool DateValid(string dt, out DateTime dt2)
+        {
+            dt2 = DateTime.MinValue;
+            if (Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z"))
+                if (DateTime.TryParse(dt, out dt2))
+                    return true;
+            return false;
+        }
+
 
         public static string FmtAttendStr(this string attendstr)
         {
@@ -311,11 +329,32 @@ namespace UtilityExtensions
                 return " ";
             return attendstr;
         }
+        private const string STR_Host = "HostString";
+        public static string Host
+        {
+            get
+            {
+                string host = string.Empty;
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_Host] != null)
+                            host = HttpContext.Current.Session[STR_Host].ToString();
+                if (host.HasValue())
+                    return host;
+                return HttpContext.Current.Request.Url.Authority;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_Host] = value;
+            }
+        }
+
         public static string ConnectionString
         {
             get
             {
-                var host = HttpContext.Current.Request.Url.Authority;
+                var host = Host;
                 if (ConfigurationManager.ConnectionStrings[host].IsNotNull())
                     return ConfigurationManager.ConnectionStrings[host].ConnectionString;
                 else

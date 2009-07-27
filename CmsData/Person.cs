@@ -359,7 +359,7 @@ namespace CmsData
                 }
             return Add(fam, position, tag, First, null, Last, dob, Married, gender, originId, EntryPointId);
         }
-        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
+        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId)
         {
             var p = new Person();
             DbUtil.Db.People.InsertOnSubmit(p);
@@ -376,8 +376,7 @@ namespace CmsData
             p.GenderId = gender;
             if (p.GenderId == 99)
                 p.GenderId = 0;
-            if (Married)
-                p.MaritalStatusId = (int)Person.MaritalStatusCode.Married;
+            p.MaritalStatusId = MarriedCode;
 
             DateTime dt;
             if (DateTime.TryParse(dob, out dt))
@@ -390,13 +389,17 @@ namespace CmsData
 
             p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
             fam.People.Add(p);
-            if(tag != null)
+            if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
             var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
             tag2.PersonTags.Add(new TagPerson { Person = p });
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             return p;
+        }
+        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
+        {
+            return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
         }
 
         #region Tags

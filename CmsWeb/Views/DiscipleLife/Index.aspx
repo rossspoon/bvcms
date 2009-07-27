@@ -1,0 +1,97 @@
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.DiscipleLifeModel>" %>
+
+<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
+    <title>DiscipleLife Registration</title>
+</asp:Content>
+
+<asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <h2>Register for <%=Model.division.Name %></h2>
+    <% using (Html.BeginForm()) { %>
+        <div>
+            <fieldset>
+                <table style="empty-cells:show">
+                <col style="width: 13em; text-align:right" />
+                <col />
+                <col />
+                <% if (Model.FilledClasses().Count() > 0)
+                   { %>
+                <tr>
+                    <td><span style="color:Red">Filled Classes</span></td>
+                    <td>
+                    <% foreach (var c in Model.FilledClasses())
+                       { %>
+                       <%= c%><br />
+                    <% } %>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <% } %>
+                <tr>
+                    <td><label for="OrgId">Class</label></td>
+                    <td><%= Html.DropDownList("OrgId", Model.Classes()) %></td>
+                    <td><%= Html.ValidationMessage("OrgId") %></td>
+                </tr>
+                <tr>
+                    <td><label for="first">First Name</label></td>
+                    <td><%= Html.TextBox("first") %></td>
+                    <td><%= Html.ValidationMessage("first") %><%= Html.ValidationMessage("find") %></td>
+                </tr>
+                <tr>
+                    <td><label for="last">Last Name</label></td>
+                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.ValidationMessage("last") %></td>
+                </tr>
+                 <tr>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><%= Html.TextBox("dob") %></td>
+                    <td><%= Html.ValidationMessage("dob") %></td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td><%= Html.TextBox("phone")%></td>
+                    <td><%= Html.ValidationMessage("phone")%></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Contact Email</label></td>
+                    <td><%= Html.TextBox("email") %></td>
+                    <td><%= Html.ValidationMessage("email") %></td>
+                </tr>
+            <% if (Model.shownew)
+               { %>
+               <tr><th colspan="3"><span style="color:Red">Please provide additional information</span><%=Html.Hidden("shownew") %></th></tr>
+                 <tr>
+                    <td><label for="gender">Gender</label></td>
+                    <td><%= Html.RadioButton("gender", 1) %> Male
+                    <%= Html.RadioButton("gender", 2) %> Female</td>
+                    <td><%= Html.ValidationMessage("gender2") %></td>
+                </tr>
+                <tr>
+                    <td><label for="addr">Address</label></td>
+                    <td><%= Html.TextBox("addr")%></td>
+                    <td><%= Html.ValidationMessage("addr")%></td>
+                </tr>
+                <tr>
+                    <td><label for="city">City</label></td>
+                    <td><%= Html.TextBox("city")%></td>
+                    <td><%= Html.ValidationMessage("city")%></td>
+                </tr>
+                <tr>
+                    <td><label for="state">State</label></td>
+                    <td><%= Html.DropDownList("state", Model.StateList())%></td>
+                    <td><%= Html.ValidationMessage("state")%></td>
+                </tr>
+                <tr>
+                    <td><label for="zip">Zip</label></td>
+                    <td><%= Html.TextBox("zip")%></td>
+                    <td><%= Html.ValidationMessage("zip")%></td>
+                </tr>
+                <% } %>
+                <tr>
+                    <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
+                </tr>
+                </table>
+            </fieldset>
+        </div>
+    <% } %>
+
+</asp:Content>

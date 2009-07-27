@@ -68,6 +68,9 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -383,6 +386,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
+    <Compile Include="Controllers\DiscipleLifeController.cs" />
+    <Compile Include="Controllers\RecreationController.cs" />
     <Compile Include="Controllers\RecreationSetupController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RecRegController.cs" />
@@ -420,6 +425,11 @@
       <DependentUpon>EditMembersDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="IScanUpload.cs" />
+    <Compile Include="Models\DiscipleLifeModel.cs" />
+    <Compile Include="Models\RecDetailModel.cs" />
+    <Compile Include="Models\ParticipantInfo.cs" />
+    <Compile Include="Models\RecreationModel.cs" />
     <Compile Include="Models\PromoteInfo.cs" />
     <Compile Include="Models\PromotionModel.cs" />
     <Compile Include="Models\RecRegModel.cs" />
@@ -675,6 +685,9 @@
     <Compile Include="Report\RosterReport.aspx.designer.cs">
       <DependentUpon>RosterReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ScanUpload.svc.cs">
+      <DependentUpon>ScanUpload.svc</DependentUpon>
+    </Compile>
     <Compile Include="SearchDialog.aspx.cs">
       <DependentUpon>SearchDialog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -819,6 +832,13 @@
     <Compile Include="UserControls\QuickSearchParameters.ascx.cs">
       <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1520,11 +1540,18 @@
     <None Include="fckeditor\fckeditor_php4.php" />
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
+    <Content Include="ScanUpload.svc" />
+    <Content Include="Views\DiscipleLife\Confirm.aspx" />
+    <Content Include="Views\DiscipleLife\Index.aspx" />
     <Content Include="Views\RecreationSetup\Index.aspx" />
     <Content Include="Views\RecreationSetup\Errors.aspx" />
     <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\Promotion\Index.aspx" />
+    <Content Include="Views\Recreation\Detail.aspx" />
+    <Content Include="Views\Recreation\Index.aspx" />
+    <Content Include="Views\Recreation\List.ascx" />
     <Content Include="Views\RecReg\Confirm.aspx" />
+    <Content Include="Views\RecReg\Payment.aspx" />
     <Content Include="Views\RecReg\Index.aspx" />
     <Content Include="Views\RecReg\OtherInfo.aspx" />
     <Content Include="Views\Shared\Site3b.Master" />
@@ -1694,6 +1721,7 @@
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="UserControls\VisitorGrid.ascx" />
     <Content Include="UserControls\QuickSearchParameters.ascx" />
+    <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

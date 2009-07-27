@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td><label for="first1">First Name</label></td>
-                    <td><%= Html.TextBox("first1") %></td>
+                    <td><%= Html.TextBox("first1", Model.first1) %></td>
                     <td><%= Html.ValidationMessage("first1") %><%= Html.ValidationMessage("findkid") %></td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td><label for="dob1">Date of Birth</label></td>
-                    <td><%= Html.TextBox("dob1") %></td>
+                    <td><%= Html.TextBox("dob1", Model.dob1) %></td>
                     <td><%= Html.ValidationMessage("dob1") %></td>
                 </tr>
 

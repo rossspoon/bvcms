@@ -15,7 +15,7 @@ namespace CMSWeb.Controllers
     {
         public ActionResult Index()
         {
-            ViewData["header"] = ConfigurationManager.AppSettings["vbsheader"];
+            ViewData["header"] = DbUtil.Settings("vbsheader");
             var m = new Models.VBSRegModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -25,7 +25,7 @@ namespace CMSWeb.Controllers
             if (ModelState.IsValid)
             {
                 m.SaveVBSApp();
-                HomeController.Email(ConfigurationManager.AppSettings["vbsmail"], 
+                HomeController.Email(DbUtil.Settings("vbsmail"), 
                     m.parent, m.email, "VBS Registration", 
 @"<p>Thank you for registering your child.
 You will receive another email (with the room #) once your child has been assigned to a class.</p>

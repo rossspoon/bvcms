@@ -159,7 +159,7 @@ namespace CMSWeb.Reports
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.ScheduleId == schedule || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                    where o.OrganizationName.Contains(name) || name == "" || name == null
+                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo
                     {

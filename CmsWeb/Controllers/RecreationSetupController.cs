@@ -25,7 +25,7 @@ namespace CMSWeb.Controllers
             if (!ModelState.IsValid)
                 return View("Errors");
 
-            var m = from r in DbUtil.Db.Recreations
+            var m = from r in DbUtil.Db.RecAgeDivisions
                     orderby r.OrgId != null ? r.Organization.OrganizationName : ""
                     select r;
             return View(m);
@@ -34,8 +34,8 @@ namespace CMSWeb.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create()
         {
-            var m = new CmsData.Recreation();
-            DbUtil.Db.Recreations.InsertOnSubmit(m);
+            var m = new RecAgeDivision();
+            DbUtil.Db.RecAgeDivisions.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
             return Redirect("/RecreationSetup/");
         }
@@ -46,7 +46,7 @@ namespace CMSWeb.Controllers
             var iid = id.Substring(1).ToInt();
             var c = new ContentResult();
             c.Content = value;
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(p => p.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(p => p.Id == iid);
             if (rec == null)
                 return c;
             switch (id.Substring(0, 1))
@@ -72,7 +72,7 @@ namespace CMSWeb.Controllers
         public ContentResult EditDiv(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(m => m.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
             rec.DivId = value.ToInt();
             rec.OrgId = null;
             DbUtil.Db.SubmitChanges();
@@ -82,7 +82,7 @@ namespace CMSWeb.Controllers
         public ContentResult EditOrg(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(m => m.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
             rec.OrgId = value.ToInt();
             DbUtil.Db.SubmitChanges();
             return Content(rec.Organization.OrganizationName);
@@ -91,7 +91,7 @@ namespace CMSWeb.Controllers
         public ContentResult EditGender(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(m => m.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
             rec.GenderId = value.ToInt();
             DbUtil.Db.SubmitChanges();
             return Content(rec.Gender.Description);
@@ -101,10 +101,10 @@ namespace CMSWeb.Controllers
         public EmptyResult Delete(string id)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(m => m.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
             if (rec == null)
                 return new EmptyResult();
-            DbUtil.Db.Recreations.DeleteOnSubmit(rec);
+            DbUtil.Db.RecAgeDivisions.DeleteOnSubmit(rec);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
@@ -124,7 +124,7 @@ namespace CMSWeb.Controllers
         public JsonResult Organizations(string id)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.Recreations.SingleOrDefault(m => m.Id == iid);
+            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
             var q = from c in DbUtil.Db.Organizations
                     orderby c.OrganizationName
                     where c.DivOrgs.Any(od => od.DivId == rec.DivId)

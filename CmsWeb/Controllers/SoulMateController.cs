@@ -107,7 +107,7 @@ namespace CMSWeb.Controllers
             if (c == null)
                 c = m.AddChild(p);
             m.EnrollInChildcare(c);
-            return View(m);
+            return RedirectToAction("ChildCare", new { id = id });
         }
         public JsonResult CityState(string id)
         {

@@ -60,7 +60,7 @@ namespace CMSWeb.Controllers
         {
             var InDebug = false;
 #if DEBUG
-            InDebug = true;
+            InDebug = false;
 #endif
             if (InDebug)
                 return;

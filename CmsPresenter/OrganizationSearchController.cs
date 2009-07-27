@@ -75,7 +75,7 @@ namespace CMSPresenter
             return count;
         }
 
-        public IEnumerable<OrganizationInfo> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId, DateTime MeetingDate)
+        public IEnumerable<OrganizationInfo> FetchOrganizationExcelList0(string Name, int DivId, int SchedId, int StatusId, DateTime MeetingDate)
         {
             var q = from o in Db.Organizations select o;
             q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId);
@@ -87,7 +87,6 @@ namespace CMSPresenter
                          OrganizationStatus = o.OrganizationStatusId,
                          OrganizationName = o.OrganizationName,
                          LeaderName = o.LeaderName,
-                         LeaderId = o.LeaderId,
                          MemberCount = o.OrganizationMembers.Count(),
                          AttendanceTrackingLevel = dict[o.AttendTrkLevelId].Value,
                          DivisionName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
@@ -95,24 +94,47 @@ namespace CMSPresenter
                          LastMeetingDate = o.LastMeetingDate.FormatDate(),
                          Schedule = o.WeeklySchedule.Description,
                          Location = o.Location,
+                         DivisionId = o.DivisionId,
+                         LeaderId = o.LeaderId,
                          VisitorCount = (from p in Db.People
-                            where p.Attends.Any(a => 
-                                a.AttendanceFlag == true
-                                && !p.OrganizationMembers.Any(om => om.OrganizationId == o.OrganizationId)
-                                && AttendController.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
-                                && a.OrganizationId == o.OrganizationId
-                                && a.MeetingDate <= MeetingDate
-                                && a.MeetingDate >= LookbackDt)
-                                select p).Count(),
+                                         where p.Attends.Any(a =>
+                                             a.AttendanceFlag == true
+                                             && !p.OrganizationMembers.Any(om => om.OrganizationId == o.OrganizationId)
+                                             && AttendController.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+                                             && a.OrganizationId == o.OrganizationId
+                                             && a.MeetingDate <= MeetingDate
+                                             && a.MeetingDate >= LookbackDt)
+                                         select p).Count(),
                      };
             return q2;
         }
-        public IEnumerable<OrganizationInfo> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId)
+        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId, DateTime MeetingDate)
+        {
+            var q = from o in Db.Organizations select o;
+            q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId);
+            var q2 = from o in q
+                     let LookbackDt = MeetingDate.AddDays(-7 * o.RollSheetVisitorWks ?? 3)
+                     select new OrganizationInfoExcel
+                     {
+                         OrgId = o.OrganizationId,
+                         Status = o.OrganizationStatus.Description,
+                         Name = o.OrganizationName,
+                         Leader = o.LeaderName,
+                         Members = o.OrganizationMembers.Count(),
+                         Tracking = dict[o.AttendTrkLevelId].Value,
+                         Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
+                         FirstMeeting = o.FirstMeetingDate.FormatDate(),
+                         Schedule = o.WeeklySchedule.Description,
+                         Location = o.Location,
+                     };
+            return q2;
+        }
+        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId)
         {
             return FetchOrganizationExcelList(Name, DivId, SchedId, StatusId, Util.Now.Date);
         }
 
-            #region Search and Sort
+        #region Search and Sort
         public static IQueryable<Organization> ApplySearch(IQueryable<Organization> query, string NameSearch, int ProgId, int DivId, int scheduleid, int statusid)
         {
             if (NameSearch.HasValue())

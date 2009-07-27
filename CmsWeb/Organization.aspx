@@ -304,6 +304,22 @@
                 </tr>
                 <tr>
                     <td>
+                        <cc1:DisplayOrEditCheckbox ID="ClassFilled" runat="server" BindingSource="organization"
+                            Text="Class Filled" TextIfChecked="Class is filled, no more enrollments" BindingMode="TwoWay"
+                            TextIfNotChecked="Class is still accepting enrollments" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Online Catalog Sort:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="OnLineCatalogSort" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" Width="50px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         &#160;&nbsp
                     </td>
                 </tr>

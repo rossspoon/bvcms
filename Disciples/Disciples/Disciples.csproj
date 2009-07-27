@@ -1251,6 +1251,11 @@
     <Content Include="WebService1.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\books.xml" />
+    <Content Include="App_GlobalResources\Resource1.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

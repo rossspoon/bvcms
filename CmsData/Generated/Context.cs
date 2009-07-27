@@ -294,9 +294,9 @@ namespace CmsData
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
         partial void DeleteQueryBuilderClause(QueryBuilderClause instance);
         
-        partial void InsertRecreation(Recreation instance);
-        partial void UpdateRecreation(Recreation instance);
-        partial void DeleteRecreation(Recreation instance);
+        partial void InsertRecAgeDivision(RecAgeDivision instance);
+        partial void UpdateRecAgeDivision(RecAgeDivision instance);
+        partial void DeleteRecAgeDivision(RecAgeDivision instance);
         
         partial void InsertRecReg(RecReg instance);
         partial void UpdateRecReg(RecReg instance);
@@ -874,9 +874,9 @@ namespace CmsData
 
 		}
 
-		public Table< Recreation> Recreations
+		public Table< RecAgeDivision> RecAgeDivisions
 		{
-			get	{ return this.GetTable< Recreation>(); }
+			get	{ return this.GetTable< RecAgeDivision>(); }
 
 		}
 
@@ -1596,18 +1596,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? BibleFellowshipClassId2(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.PrimaryResCode", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? PrimaryResCode(
@@ -1623,6 +1611,18 @@ namespace CmsData
 		[Function(Name="dbo.EntryPointId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? EntryPointId(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? BibleFellowshipClassId2(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
 		{
@@ -1899,20 +1899,6 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.LeagueOrg", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? LeagueOrg(
-            [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "league", DbType="int")] int? league
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid,
-                league
                 ).ReturnValue));
 		}
 

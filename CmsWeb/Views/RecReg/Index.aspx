@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecreationModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Recreation Registration</title>
@@ -40,16 +40,18 @@
                     <td><%= Html.ValidationMessage("gender2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="email1">Contact Email (adult)</label></td>
+                    <td><label for="email">Contact Email (adult)</label></td>
                     <td><%= Html.TextBox("email") %></td>
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
             <% if (Model.shownew)
                { %>
+               <tr><th colspan="3">Please provide address</th></tr>
                 <tr>
-                    <td><label for="address">Address</label></td>
-                    <td><%= Html.TextBox("address")%></td>
-                    <td><%= Html.ValidationMessage("address")%></td>
+                    <td><%=Html.Hidden("shownew") %>
+                    <label for="addr">Address</label></td>
+                    <td><%= Html.TextBox("addr")%></td>
+                    <td><%= Html.ValidationMessage("addr")%></td>
                 </tr>
                 <tr>
                     <td><label for="city">City</label></td>

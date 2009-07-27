@@ -133,6 +133,7 @@
                 </tr>
             <% if (Model.shownew2)
                { %>
+               <tr><th colspan="3">Please provide address</th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew2") %>
                     <label for="addr2">Address</label></td>

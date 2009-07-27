@@ -99,7 +99,7 @@
     <Compile Include="Generated\OrgMemMemTag.cs" />
     <Compile Include="Generated\Preference.cs" />
     <Compile Include="Generated\Program.cs" />
-    <Compile Include="Generated\Recreation.cs" />
+    <Compile Include="Generated\RecAgeDivision.cs" />
     <Compile Include="Generated\RecReg.cs" />
     <Compile Include="Generated\Setting.cs" />
     <Compile Include="Generated\SoulMate.cs" />

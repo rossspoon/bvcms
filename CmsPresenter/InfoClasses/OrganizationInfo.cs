@@ -24,4 +24,17 @@ namespace CMSPresenter
         public bool HasTag { get; set; }
         public int? VisitorCount { get; set; }
     }
+    public class OrganizationInfoExcel
+    {
+        public int OrgId { get; set; }
+        public string Status { get; set; }
+        public string Name { get; set; }
+        public string Leader { get; set; }
+        public int Members { get; set; }
+        public string Tracking { get; set; }
+        public string Division { get; set; }
+        public string FirstMeeting { get; set; }
+        public string Schedule { get; set; }
+        public string Location { get; set; }
+    }
 }

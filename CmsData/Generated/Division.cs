@@ -32,7 +32,7 @@ namespace CmsData
 		
    		private EntitySet< RecReg> _RecRegs;
 		
-   		private EntitySet< Recreation> _Recreations;
+   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
 		
    		private EntitySet< Promotion> _FromPromotions;
 		
@@ -70,7 +70,7 @@ namespace CmsData
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
-			this._Recreations = new EntitySet< Recreation>(new Action< Recreation>(this.attach_Recreations), new Action< Recreation>(this.detach_Recreations)); 
+			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
 			
 			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
 			
@@ -210,12 +210,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Recreation_Division", Storage="_Recreations", OtherKey="DivId")]
-   		public EntitySet< Recreation> Recreations
+   		[Association(Name="FK_Recreation_Division", Storage="_RecAgeDivisions", OtherKey="DivId")]
+   		public EntitySet< RecAgeDivision> RecAgeDivisions
    		{
-   		    get { return this._Recreations; }
+   		    get { return this._RecAgeDivisions; }
 
-			set	{ this._Recreations.Assign(value); }
+			set	{ this._RecAgeDivisions.Assign(value); }
 
    		}
 
@@ -342,13 +342,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_Recreations(Recreation entity)
+		private void attach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = this;
 		}
 
-		private void detach_Recreations(Recreation entity)
+		private void detach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

@@ -26,7 +26,7 @@ namespace CmsData
    		
    		private EntitySet< Person> _People;
 		
-   		private EntitySet< Recreation> _Recreations;
+   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
 		
     	
 	#endregion
@@ -51,7 +51,7 @@ namespace CmsData
 			
 			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
-			this._Recreations = new EntitySet< Recreation>(new Action< Recreation>(this.attach_Recreations), new Action< Recreation>(this.detach_Recreations)); 
+			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
 			
 			
 			OnCreated();
@@ -140,12 +140,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Recreation_Gender", Storage="_Recreations", OtherKey="GenderId")]
-   		public EntitySet< Recreation> Recreations
+   		[Association(Name="FK_Recreation_Gender", Storage="_RecAgeDivisions", OtherKey="GenderId")]
+   		public EntitySet< RecAgeDivision> RecAgeDivisions
    		{
-   		    get { return this._Recreations; }
+   		    get { return this._RecAgeDivisions; }
 
-			set	{ this._Recreations.Assign(value); }
+			set	{ this._RecAgeDivisions.Assign(value); }
 
    		}
 
@@ -184,13 +184,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_Recreations(Recreation entity)
+		private void attach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Gender = this;
 		}
 
-		private void detach_Recreations(Recreation entity)
+		private void detach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Gender = null;

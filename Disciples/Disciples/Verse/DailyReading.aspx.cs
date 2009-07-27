@@ -99,7 +99,7 @@ public class Readings : Control
             writer.Write("<a href='DailyReading.aspx?day={0}' title='make this the current day'"
                 + " style='font-size: 7pt'>current</a>", day.Subtract(Start).Days);
             if (day <= DateTime.Today && day >= first)
-                writer.Write(" <a href='http://dailyaudiobible.dreamhosters.com/mp3/{0:MMMMdd-yyyy}.mp3' "
+                writer.Write(" <a href='http://podcast.dailyaudiobible.com/mp3/{0:MMMMdd-yyyy}.mp3' "
                 + "style='font-size: 7pt'>listen</a>", day);
             writer.WriteLine("</td>");
             for (int i = 0; i < 4; i++)

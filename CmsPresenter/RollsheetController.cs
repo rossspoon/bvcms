@@ -19,7 +19,7 @@ namespace CMSPresenter
     {
         public IEnumerable<OrganizationInfo> FetchOrgsList(string name, int DivId, int SchedId, int StatusId)
         {
-            return (new OrganizationSearchController().FetchOrganizationExcelList(name, DivId, SchedId, StatusId));
+            return (new OrganizationSearchController().FetchOrganizationExcelList0(name, DivId, SchedId, StatusId, Util.Now.Date));
         }
 
         public IEnumerable<OrganizationInfo> FetchOrgsList(int oid, DateTime MeetingDate)

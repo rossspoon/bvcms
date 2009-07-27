@@ -356,6 +356,24 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditCheckbox AllowAttendOverlap;
         
         /// <summary>
+        /// ClassFilled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditCheckbox ClassFilled;
+        
+        /// <summary>
+        /// OnLineCatalogSort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText OnLineCatalogSort;
+        
+        /// <summary>
         /// FirstMeetingDate control.
         /// </summary>
         /// <remarks>

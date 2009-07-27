@@ -158,8 +158,9 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("first", "first name required");
             if (!lastname.HasValue())
                 ModelState.AddModelError("lastname", "last name required");
-            if (!DateTime.TryParse(dob, out _dob))
+            if (!Util.DateValid(dob, out _dob))
                 ModelState.AddModelError("dob", "valid birth date required");
+
             if (!gender.HasValue)
                 ModelState.AddModelError("gender2", "gender required");
             if (grade == "0")
