@@ -61,6 +61,7 @@ namespace CMSWeb.Models
         private DateTime _dob1;
         public DateTime DOB1 { get { return _dob1; } }
         public string phone1 { get; set; }
+        public string homecell1 { get; set; }
         public string email1 { get; set; }
         public bool preferredEmail1 { get; set; }
         public bool shownew1 { get; set; }
@@ -81,6 +82,7 @@ namespace CMSWeb.Models
         private DateTime _dob2;
         public DateTime DOB2 { get { return _dob2; } }
         public string phone2 { get; set; }
+        public string homecell2 { get; set; }
         public string email2 { get; set; }
         public bool preferredEmail2 { get; set; }
         public bool shownew2 { get; set; }
@@ -185,6 +187,8 @@ namespace CMSWeb.Models
             var d = phone1.GetDigits().Length;
             if (d != 7 && d != 10)
                 ModelState.AddModelError("phone1", "7 or 10 digits");
+            else if (!homecell1.HasValue())
+                ModelState.AddModelError("phone1", "pick a phone type");
             if (!email1.HasValue() || !Util.ValidEmail(email1))
                 ModelState.AddModelError("email1", "Please specify a valid email address.");
             if (shownew1)
@@ -210,6 +214,8 @@ namespace CMSWeb.Models
             d = phone2.GetDigits().Length;
             if (d != 7 && d != 10)
                 ModelState.AddModelError("phone2", "7 or 10 digits");
+            else if (!homecell2.HasValue())
+                ModelState.AddModelError("phone2", "pick a phone type");
             if (!email2.HasValue() || !Util.ValidEmail(email2))
                 ModelState.AddModelError("email2", "Please specify a valid email address.");
             if (shownew2)
@@ -223,7 +229,10 @@ namespace CMSWeb.Models
                 if (!state2.HasValue())
                     ModelState.AddModelError("state2", "need state");
             }
-
+            if (Relation > 0 && Relation < 3 
+                && homecell1 == "h" && homecell2 == "h" 
+                && phone1.GetDigits() != phone2.GetDigits())
+                ModelState.AddModelError("phone2", "Home phones cannot be different");
             if (Relation == 0)
                 ModelState.AddModelError("Relation", "Please select a relationship");
         }
@@ -252,6 +261,7 @@ namespace CMSWeb.Models
                 new SelectListItem { Value="2", Text="Married 5 years or more" },
                 new SelectListItem { Value="3", Text="Engaged" },
                 new SelectListItem { Value="4", Text="Might as well be married" },
+                new SelectListItem { Value="5", Text="Seriously dating" },
             };
         }
         public IEnumerable<SelectListItem> Parents()
@@ -343,35 +353,44 @@ namespace CMSWeb.Models
             if (person1 != null && person2 != null)
                 return;
             if (married && person1 != null && person2 == null)
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
             else if (married && person1 == null && person2 != null)
-                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1);
+                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1, phone1, homecell1);
             else if (married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, married);
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
             }
             else if (!married && person1 != null && person2 == null)
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, false);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, false);
             else if (!married && person1 == null && person2 != null)
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, false);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, false);
             else if (!married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, married);
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, married);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, married);
             }
         }
-        internal Person AddPersonToPerson(Person p, string first, string last, string dob)
+        internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell)
         {
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1? 2 : 1,
                     DbUtil.Settings("SmlOrigin").ToInt(), 
                     DbUtil.Settings("SmlEntry").ToInt());
+            switch (homecell)
+            {
+                case "h":
+                    p.Family.HomePhone = phone.GetDigits();
+                    break;
+                case "c":
+                    np.CellPhone = phone.GetDigits();
+                    break;
+            }
             DbUtil.Db.SubmitChanges();
             return np;
         }
         internal Person AddPerson(int gender, string first, string last, string dob, 
-            string addr, string city, string state, string zip, string phone, bool married)
+            string addr, string city, string state, string zip, string phone, string homecell, bool married)
         {
             var f = new Family
             {
@@ -379,8 +398,8 @@ namespace CMSWeb.Models
                 CityName = city,
                 StateCode = state,
                 ZipCode = zip,
-                HomePhone = phone.GetDigits(),
             };
+            
             var np = Person.Add(f, 10, null, 
                     first, 
                     null, 
@@ -388,7 +407,15 @@ namespace CMSWeb.Models
                     dob, married, gender, 
                     DbUtil.Settings("SmlOrigin").ToInt(), 
                     DbUtil.Settings("SmlEntry").ToInt());
-            np.HomePhone = phone.GetDigits();
+            switch (homecell)
+            {
+                case "h":
+                    f.HomePhone = phone.GetDigits();
+                    break;
+                case "c":
+                    np.CellPhone = phone.GetDigits();
+                    break;
+            }
 
             DbUtil.Db.SubmitChanges();
             return np;

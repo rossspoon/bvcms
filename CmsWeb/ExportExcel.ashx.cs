@@ -91,6 +91,12 @@ namespace CMSWeb
                 case "Organization":
                     d = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
                     break;
+                case "Promotion":
+                    d = InvolvementController.PromoList(qid.Value, maxExcelRows);
+                    break;
+                case "SML":
+                    d = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
+                    break;
             }
             var dg = new DataGrid();
             dg.EnableViewState = false;

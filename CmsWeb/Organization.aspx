@@ -28,7 +28,7 @@
             var t = $.cookie('maintab3');
             if (t) {
                 $maintabs.tabs('select', parseInt(t));
-                if (t == "4")
+                if (t == "6")
                     $get('<%=ShowMeetings.ClientID%>').click();
             }
             $("#main-tab > ul > li > a").click(function() {

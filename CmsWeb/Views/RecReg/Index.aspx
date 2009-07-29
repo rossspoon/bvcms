@@ -1,10 +1,25 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Recreation Registration</title>
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+<% if(Model.shownew)
+   { %>
+    <script type="text/javascript">
+        $(function() {
+            $("#zip").change(function() {
+                $.post('/RecReg/CityState/' + $(this).val(), null, function(ret) {
+                    if (ret) {
+                        $('#state').val(ret.state);
+                        $('#city').val(ret.city);
+                    }
+                }, 'json');
+            });
+        });
+    </script>
+<% } %>
     <h2>Register for <%=Model.division.Name %></h2>
     <% using (Html.BeginForm()) { %>
         <div>
@@ -29,7 +44,7 @@
                     <td><%= Html.ValidationMessage("dob") %></td>
                 </tr>
                 <tr>
-                    <td><label for="phone">Phone (adult)</label></td>
+                    <td><label for="phone">Phone</label></td>
                     <td><%= Html.TextBox("phone")%></td>
                     <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
@@ -40,7 +55,7 @@
                     <td><%= Html.ValidationMessage("gender2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="email">Contact Email (adult)</label></td>
+                    <td><label for="email">Contact Email</label></td>
                     <td><%= Html.TextBox("email") %></td>
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
@@ -54,19 +69,19 @@
                     <td><%= Html.ValidationMessage("addr")%></td>
                 </tr>
                 <tr>
+                    <td><label for="zip">Zip</label></td>
+                    <td><%= Html.TextBox("zip")%></td>
+                    <td><%= Html.ValidationMessage("zip")%></td>
+                </tr>
+                <tr>
                     <td><label for="city">City</label></td>
                     <td><%= Html.TextBox("city")%></td>
                     <td><%= Html.ValidationMessage("city")%></td>
                 </tr>
                 <tr>
                     <td><label for="state">State</label></td>
-                    <td><%= Html.DropDownList("state", Model.StateList())%></td>
-                    <td><%= Html.ValidationMessage("state")%></td>
-                </tr>
-                <tr>
-                    <td><label for="zip">Zip</label></td>
-                    <td><%= Html.TextBox("zip")%></td>
-                    <td><%= Html.ValidationMessage("zip")%></td>
+                    <td><%=Html.TextBox("state")%></td>
+                    <td></td>
                 </tr>
                 <% } %>
                 <tr>

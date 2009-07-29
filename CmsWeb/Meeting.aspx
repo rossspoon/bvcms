@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Meeting.aspx.cs"
-    Inherits="CMSWeb.Meeting" Title="Meeting" %>
+﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master"
+    AutoEventWireup="true" CodeBehind="Meeting.aspx.cs" Inherits="CMSWeb.Meeting"
+    Title="Meeting" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
 
     <script type="text/javascript">
         var $editing;
@@ -53,8 +53,12 @@
             if (err)
                 alert(err);
             else
-            	$('#<%= AddedSelectedVisitors.ClientID %>').click();
+                $('#<%= AddedSelectedVisitors.ClientID %>').click();
         }
+        function ChangeMeetingDate() {
+            $find('<%=MeetingPopup.ClientID%>').show();
+        }
+
     </script>
 
     <table class="PersonHead" border="0">
@@ -67,6 +71,9 @@
             <td>
                 <cc1:DisplayLabel ID="MeetingDateHeader" runat="server" BindingMember="MeetingDate"
                     BindingSource="meeting"></cc1:DisplayLabel>
+                <asp:LinkButton ID="MeetingDateChange" runat="server" ToolTip="change meeting date and time" OnClientClick="ChangeMeetingDate();return false;"
+                        Text="e" />
+
             </td>
         </tr>
     </table>
@@ -80,12 +87,10 @@
                         </th>
                         <td valign="bottom" rowspan="6">
                             <asp:HyperLink ID="MeetingSummaryLink" runat="server" Target="_blank">
-                                <asp:Image ID="Image2" ImageUrl="~/images/pdficon_small.gif"
-                                    runat="server" />
+                                <asp:Image ID="Image2" ImageUrl="~/images/pdficon_small.gif" runat="server" />
                                 Attendance Summary Report</asp:HyperLink><br />
                             <asp:HyperLink ID="MeetingAttendanceLink" runat="server" Target="_blank">
-                                <asp:Image ID="Image1" ImageUrl="~/images/pdficon_small.gif"
-                                    runat="server" />
+                                <asp:Image ID="Image1" ImageUrl="~/images/pdficon_small.gif" runat="server" />
                                 Attendee Report</asp:HyperLink>
                         </td>
                     </tr>
@@ -145,9 +150,9 @@
         </tr>
     </table>
     <cc1:EditUpdateButton ID="EditUpdateButton1" runat="server" OnClick="EditUpdateButton1_Click"
-        CheckRole="false" />    
-    <asp:TextBox ID="TextBox1" runat="server" onkeypress="return ToggleAttendee(event,value)" ></asp:TextBox>
-<br />
+        CheckRole="false" />
+    <asp:TextBox ID="TextBox1" runat="server" onkeypress="return ToggleAttendee(event,value)"></asp:TextBox>
+    <br />
     <asp:Label ID="AlreadyAttendErrors" runat="server" Font-Bold="False" ForeColor="Red"
         Text="Label" Visible="False"></asp:Label>
     <br />
@@ -161,7 +166,7 @@
         <ItemTemplate>
             <tr style="">
                 <td>
-                    <asp:CheckBox ID="ck" pid='<%# Eval("PeopleId") %>' runat="server" Checked='<%# (bool)Eval("AttendFlag") %>' 
+                    <asp:CheckBox ID="ck" pid='<%# Eval("PeopleId") %>' runat="server" Checked='<%# (bool)Eval("AttendFlag") %>'
                         Visible='<%# ShowAttendanceFlag1.Value == "True" %>'></asp:CheckBox>
                 </td>
                 <td>
@@ -217,9 +222,52 @@
     </asp:ListView>
     <asp:HyperLink ID="rollsheetlink" Target="_blank" runat="server">Meeting Rollsheet of Attendees</asp:HyperLink>
     <br />
-    <asp:ObjectDataSource ID="AttendData" runat="server" SelectCountMethod="Count"
-        SelectMethod="Attendees" TypeName="CMSPresenter.AttendController"
-        OnSelected="AttendData_Selected">
+    <asp:Button ID="TriggerMeetingPopup2" Style="display: none" runat="server"></asp:Button>
+    <asp:Panel ID="MeetingInputPanel" runat="server" CssClass="modalDiv" Style="display: none">
+        <table>
+            <tr>
+                <th colspan="2" style="font-size: larger; font-weight: bold">
+                    Please select a meeting date and time:
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Meeting Date:
+                </th>
+                <td>
+                    <asp:TextBox ID="MeetingDate" runat="server"></asp:TextBox>
+                    <cc2:CalendarExtender ID="MeetingDateExtender" runat="server" TargetControlID="MeetingDate">
+                    </cc2:CalendarExtender>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Meeting Time:
+                </th>
+                <td>
+                    <asp:TextBox ID="MeetingTime" runat="server" ToolTip="Time in Format hh:mm am or pm"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="MeetingTimeValidator" runat="server" ErrorMessage="Invalid time: Use format hh:mm am or pm."
+                        ControlToValidate="MeetingTime" ValidationExpression="^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$"
+                        SetFocusOnError="True" ValidationGroup="MeetingValidatorGroup"></asp:RegularExpressionValidator>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td class="footer">
+                    <asp:LinkButton ID="ChangeMeeting" runat="server" CausesValidation="false" Text="Change Meeting Time"
+                        OnClick="ChangeMeetingDate" ValidationGroup="MeetingValidatorGroup" />
+                    <asp:LinkButton ID="MeetingCancel" runat="server" CausesValidation="false" Text="Cancel" />
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    <cc2:ModalPopupExtender ID="MeetingPopup" runat="server" TargetControlID="TriggerMeetingPopup2"
+        PopupControlID="MeetingInputPanel" CancelControlID="MeetingCancel" DropShadow="true"
+        BackgroundCssClass="modalBackground">
+    </cc2:ModalPopupExtender>
+    <asp:ObjectDataSource ID="AttendData" runat="server" SelectCountMethod="Count" SelectMethod="Attendees"
+        TypeName="CMSPresenter.AttendController" OnSelected="AttendData_Selected">
         <SelectParameters>
             <asp:QueryStringParameter Name="meetid" QueryStringField="id" Type="Int32" />
             <asp:ControlParameter Name="inEditMode" ControlID="ShowAttendanceFlag1" PropertyName="Value"

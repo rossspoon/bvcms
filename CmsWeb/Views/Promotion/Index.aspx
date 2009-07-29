@@ -134,7 +134,7 @@
         <tr>
             <th><a href="#" class="sortable">Mixed</a></th>
             <th><a href="#" class="sortable">Gender</a></th>
-            <th colspan="2"><a href="#" class="sortable">Attendence</a></th>
+            <th colspan="2"><a href="#" class="sortable">Attendance</a></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th><a href="#" class="sortable">CurrentClass</a></th>
             <th><a href="#" class="sortable">PendingClass</a></th>

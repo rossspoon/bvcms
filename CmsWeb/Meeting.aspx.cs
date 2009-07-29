@@ -187,5 +187,16 @@ namespace CMSWeb
 			}
 			Response.Redirect("~/Meeting.aspx?edit=1&id=" + newMtg.MeetingId);
 		}
-	}
+        protected void ChangeMeetingDate(object sender, EventArgs e)
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(MeetingDate.Text + " " + MeetingTime.Text, out dt))
+                return;
+
+            foreach (var a in meeting.Attends)
+                a.MeetingDate = dt;
+            meeting.MeetingDate = dt;
+            DbUtil.Db.SubmitChanges();
+        }
+    }
 }

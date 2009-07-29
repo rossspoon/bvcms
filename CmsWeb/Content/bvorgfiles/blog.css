@@ -1,0 +1,222 @@
+/* Blog CSS Document */
+
+/*
+TO CHANGE BLOG COLORS:
+
+CHOOSE COLORS, 
+1. TWO DARK HUES 
+2. TWO SLIGHTLY DARKER HUES (TO SERVE AS A BORDER)
+3. ONE LIGHT HUE
+4. ONE SLIGHTLY DARKER HUE THAN THE LIGHT HUE (TO SERVE AS A BORDER)
+
+CURRENT:
+1. #86221B -DARK RED HUE
+2. #990000 -SLIGHTLY DARKER HUE THAN THE DARK RED
+3. #555555 -DARK GRAY HUE
+4. #333333 -SLIGHTLY DARKER HUE THAN THE DARK GRAY
+5. #E9E9E9 -LIGHT GRAY HUE
+6. #DDDDDD -SLIGHTLY DARKER HUE THAN THE LIGHT GRAY
+
+FIND AND REPLACE THOSE SIX COLORS WITH YOUR OWN PALETTE.
+
+*/
+
+#RSS{
+  background: #86221B;
+  border: 1px solid #990000;
+  padding: 5px;
+  color: white;
+}
+
+#RSS .subscribe_rss{
+  display: block;
+  background: url(background_blog_rss.gif) no-repeat 0px 3px;
+  padding: 0px 0px 0px 32px;
+}
+
+#RSS .subscribe_rss a{
+  color: #F7DBE3;
+}
+
+#RSS .link{
+  display: block;
+  font-weight: bold;
+  margin: 5px 0px 0px;
+}
+
+#RSS .link input{
+  font: 11px Arial, Helvetica, sans-serif;
+  color: #666666;
+  padding: 2px 4px;
+  border: 1px solid #990000;
+  width: 420px;
+}
+
+#author{
+  background: #E9E9E9;
+  padding: 5px;
+  margin: 5px 0px 10px;
+  border: 1px solid #DDDDDD;
+}
+
+#author .name{
+  font-weight: bold;
+}
+
+#author .image{
+  padding: 3px;
+  background: white;
+  border: 1px solid #CCC;
+}
+
+#article_menu{
+  float: left;
+  margin: 0px 20px 0px 0px;
+  width: 160px;
+}
+
+#article_menu h3{
+  font: bold 14px Arial, Helvetica, sans-serif;
+  text-transform: none;
+  padding: 3px 0px;
+  margin: 0px;
+}
+
+#comments h3{
+  font: bold 14px Arial, Helvetica, sans-serif;
+  text-transform: none;
+  margin: 10px 0px 0px;
+}
+
+#post h2{
+  margin: 0px 0px 5px;
+}
+
+#article_menu .article_grouping{
+  float: left;
+  width: 160px;
+  padding: 0px 0px 10px;
+  margin: 0px 0px 10px;
+}
+
+#article_menu .article_grouping ul{
+  float: left;
+  width: 160px;
+  margin: 0px;
+  padding: 0px;
+}
+
+#article_menu .article_grouping ul li{
+  list-style: none;
+  background: none;
+  border-bottom: 1px solid #DDDDDD;
+  padding: 0px;
+}
+
+#article_menu .article_grouping ul li a{
+  padding: 1px 5px;
+  display: block;
+}
+
+#article_menu .article_grouping ul li a:hover{
+  background: #86221B;
+  color: white;
+}
+
+#post,
+#articles{
+  float: left;
+  width: 520px;
+}
+
+#articles .article{
+  padding: 15px 0px;
+  border-bottom: 3px #DDDDDD double;
+}
+
+#post .article{
+  padding: 0px 0px 15px;
+  border-bottom: 3px #DDDDDD double;
+}
+
+.article .date{
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.article .title{
+  font: bold 15px Arial, Helvetica, sans-serif;
+  color: #86221B;
+  display: block;
+  padding: 0px 0px 5px;
+}
+
+.article img{
+  display: block;
+  padding: 5px 0px;
+}
+
+.article .body{
+  padding: 5px 10px;
+  margin: 0px 0px 5px;
+  display: block;
+}
+
+.article .footer{
+  background: #E9E9E9;
+  padding: 3px 5px;
+  border: 1px solid #DDDDDD;
+}
+
+.comment{
+  padding: 10px 0px;
+  border-bottom: 3px #DDDDDD double;
+}
+
+.comment .date{
+  font-weight: bold;
+  color: #86221B;
+  padding: 0px 0px 3px 20px;
+  background: url(background_blog_comments.gif) no-repeat 3px 3px;
+}
+
+.comment .body{
+  background: white;
+  padding: 5px 10px;
+  margin: 0px 0px 5px;
+  display: block;
+  border: 1px solid #DDDDDD;
+}
+
+#post .file,
+#articles .article .footer .file{
+  display: inline;
+  background: url(background_blog_file.gif) no-repeat 0px 1px;
+  padding: 0px 0px 0px 17px;
+}
+
+#articles .article .footer .comments{
+  display: inline;
+  background: url(background_blog_comments.gif) no-repeat 0px 1px;
+  padding: 0px 0px 0px 17px;
+}
+
+#post #news_link,
+#articles .view_all{
+  margin: 5px 0px;
+}
+
+#post #news_link a,
+#articles .view_all a{
+  background: #555555;
+  border: 1px solid #333333;
+  padding: 1px 5px;
+  color: white;
+  display: block;
+}
+
+#post #news_link a:hover,
+#articles .view_all a:hover{
+  background: #86221B;
+  border: 1px solid #990000;
+}

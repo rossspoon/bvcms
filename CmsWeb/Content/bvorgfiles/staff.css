@@ -1,0 +1,143 @@
+/*Staff CSS Document */
+
+/*STAFF*/
+
+#staff{
+  width: 600px;
+  /*height: expression(eval(document.getElementById('content_narrow').clientHeight));*/
+  min-height: 700px;
+  
+  color: #000000;
+  
+}
+
+* html #staff{
+  height: 700px;
+}
+
+#staff_menu{
+  height: 190px;
+  width: 588px;
+  border: 1px solid #333;
+  border-bottom: 5px solid #47500F;
+  padding: 5px 5px 5px;
+  background: #EFE7C5;
+
+}
+
+#staff_pics{
+  width: 500px;
+  height: 155px;
+  overflow: auto;
+  position: absolute;
+}
+
+#staff_pics ul{
+  padding: 0px;
+  margin: 0px;
+}
+
+#staff_pics ul li{
+  list-style: none;
+  display: block;
+  /*display: block;*/
+  background: none;
+  padding: 0px;
+  margin: 0px;
+  width: 73px;
+  height: 130px;
+  float: left;
+  font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+  letter-spacing: -1px;
+  text-align: center;
+  color: #5A6327;
+}
+
+#staff_pics ul li:hover{
+  color: #6E150F;
+}
+
+#staff_pics ul li:hover img{
+  border: 1px solid #7B3741;
+}
+
+#staff_name{
+  font-size: 12px;
+  height: 15px;
+  padding: 4px 3px 15px;
+  color: #6E150F;
+}
+
+#staff_menu img{
+  cursor: pointer;
+  border: 1px solid #D8D0AE;
+  padding: 3px;
+  background: white;
+  height: 88px;
+  width: 70px;
+  display: block;
+  margin: 0px 3px 4px 0px;
+}
+
+#staff_details{
+  float: left;
+  width: 210px;
+  padding: 0px 0px 10px 20px;
+  border-bottom: 1px solid #D8D0AE;
+  
+}
+
+#staff_details img{
+  margin: 0px 0px 10px 0px;
+  padding: 4px;
+  border: 1px solid #1D5180;
+  background: white;
+}
+/*
+#staff_details ul,
+#staff_details ul li{
+  background: none;
+  margin: 0px;
+  padding: 0px;
+}
+*/
+
+#staff_details dl{
+  margin: 0px;
+  padding: 0px;
+}
+
+#staff_details dt{
+  float: left;
+  color: #000;
+  font-style: italic;
+}
+
+#staff_details dd{
+  margin: 0px 0px 0px 15px;
+}
+
+#staff_details em{
+  color: #1E463D;
+}
+
+#staff_bio{
+  float: left;
+  width: 335px;
+  margin: 0px 0px 10px 10px;
+  padding: 0px 0px 10px 10px;
+  line-height: 18px;
+  overflow-y: auto;
+  /*border-bottom: 5px solid #D8D0AE;*/
+  /*height: expression(eval(document.getElementById('staff_details').clientHeight-13));*/
+}
+
+#staff_bio p{
+  margin: 0px 0px 15px;
+}
+
+.staff_title{
+  color: #47500F;
+}
+
+/*END STAFF*/

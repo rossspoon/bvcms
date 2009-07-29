@@ -33,7 +33,7 @@ namespace CMSWeb.Controllers
                 else if (count == 0)
                     if (!m.shownew1)
                     {
-                        ModelState.AddModelError("findhim", "Cannot find his church record.");
+                        ModelState.AddModelError("findhim", "Cannot find his record.");
                         m.shownew1 = true;
                     }
 
@@ -43,7 +43,7 @@ namespace CMSWeb.Controllers
                 else if (count == 0)
                     if(!m.shownew2)
                     {
-                        ModelState.AddModelError("findher", "Cannot find her church record.");
+                        ModelState.AddModelError("findher", "Cannot find her record.");
                         m.shownew2 = true;
                     }
             }
@@ -75,6 +75,8 @@ namespace CMSWeb.Controllers
             else
                 sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
+            SendStaffEmail(m.person1, m.email1, m.preferredEmail1, m.meeting);
+            SendStaffEmail(m.person2, m.email2, m.preferredEmail2, m.meeting);
             if (m.childcaremeeting != null)
                 return RedirectToAction("ChildCare", new { id = sm.Id });
             return RedirectToAction("Confirm", new { id = sm.Id });
@@ -116,6 +118,7 @@ namespace CMSWeb.Controllers
                 return Json(null);
             return Json( new { city = z.City, state = z.State });
         }
+
         public ActionResult Confirm(int id)
         {
             var m = new Models.SoulMateModel(id);
@@ -124,6 +127,14 @@ namespace CMSWeb.Controllers
             return View(m);
         }
 
+        private static void SendStaffEmail(Person p, string email, bool preferred, CmsData.Meeting meeting)
+        {
+            HomeController.Email(email,
+                                "", DbUtil.Settings("SmlMail"), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
+@"{0}({1}) registered for {3} for the following date:</p>
+<p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
+            p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
+        }
         private void SendEmail(Person p, string email, bool preferred, 
             CmsData.Meeting meeting, IEnumerable<ChildItem> children)
         {
@@ -132,7 +143,7 @@ namespace CMSWeb.Controllers
                 HomeController.Email(DbUtil.Settings("SmlMail"),
                                 p.Name, p.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
-<p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
+		<p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
                 p.EmailAddress = email;
                 DbUtil.Db.SubmitChanges();
             }
@@ -153,11 +164,6 @@ namespace CMSWeb.Controllers
 <p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(
             p.PreferredName, meeting.MeetingDate, meeting.Organization.OrganizationName,
             sb.ToString()));
-            HomeController.Email(email,
-                                "", DbUtil.Settings("SmlMail"), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
-@"{0}({1}) registered for {3} for the following date:</p>
-<p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
-            p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
         }
     }
 }

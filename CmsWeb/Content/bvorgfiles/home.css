@@ -1,0 +1,198 @@
+/* Home CSS Document */
+
+#container.home{
+  float: left;
+  width: 960px;
+  background: url(background_home.png) left bottom no-repeat;
+}
+
+#home{
+  float: left;
+  width: 960px;
+  background: url(background_home_top.png) no-repeat;
+}
+
+#left{
+  float: left;
+  width: 285px;
+}
+
+#left #coming_events{
+  float: left;
+  width: 285px;
+}
+
+#left #headlines{
+  float: left;
+  width: 285px;
+}
+
+#left #learn{
+  float: left;
+  width: 285px;
+}
+
+#left #coming_events .name,
+#left #headlines .name,
+#left #learn .name{
+  float: left;
+  width: 265px;
+  margin: 5px 0px 0px 5px;
+  padding: 0px 0px 0px 5px;
+  display: inline;
+}
+
+#left #coming_events .name{
+  background:url(background_coming_events.png) no-repeat;
+}
+
+#left #headlines .name{
+  background:url(background_headlines.png) no-repeat;
+}
+
+#left #learn .name{
+  background:url(background_learn.png) no-repeat;
+}
+
+#left #coming_events ul,
+#left #headlines ul,
+#left #learn ul{
+  float: left;
+  width: 255px;
+  margin: 0px;
+  padding: 5px 0px 5px 20px;
+}
+
+#left #coming_events ul li,
+#left #headlines ul li,
+#left #learn ul li{
+  float: left;
+  width: 245px;
+  list-style: none;
+  margin: 0px;
+  padding: 5px;
+  font: 15px Arial, Helvetica, sans-serif;
+  border-bottom: 1px solid #819DB2;
+}
+
+#left #coming_events ul li a,
+#left #headlines ul li a,
+#left #learn ul li a{
+  color: #353535;
+}
+
+#left #coming_events ul li.last,
+#left #headlines ul li.last,
+#left #learn ul li.last{
+  border: none;
+}
+
+#left #random10{
+  float: left;
+  width: 285px;
+  margin: 35px 0px 0px;
+}
+
+#right{
+  float: left;
+  width: 675px;
+}
+
+#right .links{
+  float: left;
+  width: 175px;
+  margin: 10px 0px 0px;
+}
+
+#right .links ul{
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}
+
+#right .links ul li{
+  float: left;
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+#right #features{
+  float: left;
+  width: 482px;
+  margin: 0px 0px 0px -9px;
+  display: inline;
+}
+
+#right #bottom{
+  float: left;
+  width: 675px;
+  margin: 15px 0px 0px;
+}
+
+#bottom #watch_listen{
+  float: left;
+  width: 310px;
+  height: 115px;
+  padding: 60px 0px 0px;
+  color: #BA5733;
+  background: url(background_watch_listen.jpg) no-repeat;
+}
+
+#bottom #watch_listen ul li{
+  color: #BA5733;
+  font-size: 14px;
+  padding: 2px 0px;
+}
+
+#bottom #watch_listen ul li a{
+  color: #BA5733;
+}
+
+#bottom .container{
+  float: left;
+  width: 310px;
+} 
+
+#bottom .container #bbc_downloads{
+  float: left;
+  width: 210px;
+  height: 60px;
+  padding: 50px 90px 0px 10px;
+  margin: 10px 0px 0px;
+  background: url(background_downloads.jpg) no-repeat;
+  color: #555555;
+  font-size: 11px;
+}
+
+#bottom .container #bbc_downloads a,
+#bottom .container #bbc_downloads a:hover{
+  color: #555555;
+  text-decoration: underline;
+}
+
+#bottom #buttons{
+  float: left;
+  width: 300px;
+  margin: 0px 0px 0px 10px;
+  display: inline;
+}
+
+#bottom #buttons ul{
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}
+
+#bottom #buttons ul li{
+  float: left;
+  list-style: none;
+  padding: 0px 0px 10px;
+  margin: 0px;
+}
+
+#bottom #buttons ul li a{
+  float: left;
+  padding: 0px;
+  margin: 0px;
+}

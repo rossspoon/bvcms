@@ -820,7 +820,8 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
-                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId == 0)
+                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroupId != -1)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));

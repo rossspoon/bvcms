@@ -29,7 +29,7 @@ namespace CMSWeb.Controllers
                 else if (count == 0)
                     if (!m.shownew)
                     {
-                        ModelState.AddModelError("find", "Cannot find church record.");
+                        ModelState.AddModelError("find", "Cannot find a record.");
                         m.shownew = true;
                     }
             }

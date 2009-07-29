@@ -1,10 +1,11 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Recreation Registration</title>
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+<% var IsAdult = Model.IsAdult(); %>
     <h2>Register for <%=Model.division.Name %></h2>
     <% using (Html.BeginForm()) 
     { %>
@@ -56,10 +57,12 @@
                     <td><%= Html.ValidationMessage("docphone")%></td>
                 </tr>
 
+<% if (IsAdult)
+   { %>
                 <tr>
                     <td><label for="medical">Allergies or<br />
                            Medical Problems</label></td>
-                    <td><%= Html.TextArea("medical") %></td>
+                    <td><%= Html.TextArea("medical")%></td>
                     <td><%= Html.ValidationMessage("medical")%>Leave blank if none</td>
                 </tr>
                 <tr>
@@ -72,6 +75,7 @@
                     <td><%= Html.TextBox("fname")%></td>
                     <td><%= Html.ValidationMessage("fname")%></td>
                 </tr>
+<% } %>
                  <tr>
                     <td><label for="coaching">Interested in Coaching?</label></td>
                     <td><%= Html.RadioButton("coaching", 1) %> Yes
@@ -79,7 +83,7 @@
                     <td><%= Html.ValidationMessage("coaching2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="church">Parent's Church</label></td>
+                    <td><label for="church"><%= IsAdult ? "Parent's Church" : "Church" %></label></td>
                     <td><%= Html.CheckBox("member") %> Member of Bellevue<br />
                     <%= Html.CheckBox("otherchurch") %> Active in another Local Church</td>
                     <td><%= Html.ValidationMessage("member")%></td>

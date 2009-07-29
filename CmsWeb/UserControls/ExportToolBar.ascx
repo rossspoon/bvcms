@@ -102,6 +102,16 @@
                     runat="server">
                     <asp:Image ID="Image21" ImageUrl="~/images/Excel.png" runat="server" />
                     Member Export</asp:HyperLink></li>
+            <li id="SmlItem" runat="server">
+                <asp:HyperLink ID="SmlLink" ToolTip="Includes Soulmate Live info"
+                    runat="server">
+                    <asp:Image ID="Image22" ImageUrl="~/images/Excel.png" runat="server" />
+                    Soulmate Export</asp:HyperLink></li>
+            <li id="PromoItem" runat="server">
+                <asp:HyperLink ID="PromoLink" ToolTip="Just for Promotion Mail Merge"
+                    runat="server">
+                    <asp:Image ID="Image23" ImageUrl="~/images/Excel.png" runat="server" />
+                    Promotion Export</asp:HyperLink></li>
         </ul>
     </li>
 </ul>

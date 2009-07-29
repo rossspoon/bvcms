@@ -1,0 +1,100 @@
+/* CSS Document */
+
+.amount,
+.designation,
+.frequency,
+.credit,
+.bank,
+.account{
+  width: 100%;
+}
+
+#login dl,
+.amount dl,
+.designation dl,
+.frequency dl,
+.credit dl,
+.bank dl,
+.account dl{
+  padding: 0px;
+  margin: 0px;
+}
+
+#login dt,
+.amount dt,
+.designation dt,
+.frequency dt,
+.credit dt,
+.bank dt,
+.account dt,
+.honor dt{
+  clear: both;
+  float: left;
+  width: 150px;
+}
+
+#login dd,
+.amount dd,
+.designation dd,
+.frequency dd,
+.credit dd,
+.bank dd,
+.account dd,
+.honor dd{
+  margin: 0px 0px 0px 175px;
+  font-size: 9px;
+}
+
+.phone .AreaCode, 
+.phone .Exchange{
+  width: 20px;
+}
+
+.phone .Number{
+  width: 25px;
+}
+
+#donations input{
+  font: 11px Arial, Helvetica, sans-serif;
+}
+
+.required{
+  font-weight: bold;
+  background: url(required.gif) no-repeat left top;
+  padding: 0px 0px 0px 15px;
+}
+
+dt{
+  padding: 0px 0px 0px 15px;
+}
+
+.card_expdate_month,
+.card_expdate_year,
+.address_state,
+.address_country{
+  font-size: 11px;
+}	
+
+#buttons, #cancel{
+  width: 90%;
+  float: left;
+}
+
+#buttons ul, 
+#cancel ul{
+  float: left;
+  margin: 0px;
+  padding: 0px;
+}
+
+#buttons ul li, 
+#cancel ul li{
+  float:left;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+select{
+  font-size: 11px;
+}

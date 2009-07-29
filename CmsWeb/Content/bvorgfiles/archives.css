@@ -1,0 +1,250 @@
+.media{
+  clear: both;
+}
+
+#content_wide #content_text a.detail{
+  font-weight: normal;
+}
+
+.series_table h3{
+  text-transform: none;
+  color: black;
+}
+
+.series_table{
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0px;
+  clear: both;
+}
+
+.archive_message dl dd a{
+  margin-right: 20px;
+}
+
+.archive_series .image{
+  width: auto;
+  height: auto;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  background: none;
+}
+
+.series_table td dl{
+  width: 100%;
+  clear: both;
+  float: left;
+  margin: 0px;
+  padding: 5px 5px 10px 5px;
+}
+
+.series_table td dl dt{
+  float: left;
+  height: auto;
+}
+
+.series_table td dl dt img{
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.series_table td dl dd{
+  float: left;
+  width: auto;
+  margin: 0px;
+  padding: 0px 5px 0px 0px;
+}
+
+.series_table td dl dd h3{
+  margin: 0px;
+  padding: 0px 0px;
+}
+
+.series_table td dl dd p{
+  margin: 0px;
+  padding: 0px;
+}
+
+dl.image dd{ /* !!!!!!!!!!!!!!!!!!!!!!!!width dependent !!!!!!!!!!!!!!!!! */
+  width: 361px;
+}
+tr.showTable td,
+tr.hideTable td{
+  padding: 0px;
+}
+
+tr.showTable div span,
+tr.hideTable div span{
+  display: block;
+  width: 100%;
+  background: #ccc;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 0px;
+}
+
+tr.showTable div span:hover,
+tr.showTable div span.hover{
+  background: #666666;
+  color: white;
+}
+
+.series_table tr.showTable div.hide{
+  display: none;
+}
+
+.series_table tr.hideTable div.show{
+  display: none;
+}
+
+table.series_list{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.series_list tr{
+  background: #F2F2F2;
+  vertical-align: top;
+}
+
+table.series_list tr.message{
+  padding: 5px 0px;
+}
+
+table.series_list tr.message td{
+  border-top: 1px solid white;
+}
+
+table.series_list td.message_id{
+  width: 5%;
+  font-weight: bold;
+}
+
+table.series_list td.message_title{
+  width: 35%;
+  font-weight: bold;
+}
+
+table.series_list td.message_date{
+  width: 20%;
+    word-wrap: break-word;
+	font-weight: bold;
+}
+
+table.series_list td.message_listen{
+  width: 20%;
+}
+
+table.series_list td.message_download{
+  width: 20%;
+  text-align: right;
+}
+
+#content_wide dl.series_details dt ul,
+#content_wide dl.series_details dd ul{
+  margin: 0px;
+  list-style: none;
+  list-style-image: none;
+  padding: 0px;
+  width: 100px;
+}
+
+table.series_list ul li,
+dl.series_details dt ul li,
+dl.series_details dd ul li{ /* width dependent */
+  padding-left: 10px;
+  background: url(li.gif) no-repeat 0px 3px;
+  width: 90px;
+}
+
+dl.series_details dt{ /* width dependent */
+  width: 100px; 
+  float: left;
+  height: auto;
+  margin-right: 8px;
+}
+
+dl.series_details dd{ /* width dependent */
+  width: 361px;
+  float: left;
+}
+
+dl.series_details dt strong{
+  display: block;
+  padding-top: 5px;
+}
+
+dl.message_links dt{
+  float: left;
+  width: 45%;
+  border: none;
+}
+
+dl.message_links dd{
+  float: left;
+  width: 45%;
+}
+
+dl.message_links dt ul li,
+dl.message_links dd ul li{ /* width dependent */
+  width: 120px;
+}
+
+dl.message_links strong{
+  color: #5f5f5f;
+}
+
+.featured_series p{
+  color: white;
+}
+
+.featured_series .series_list td{
+  background: #ddd;
+  font-weight: bold;
+}
+
+.featured_series img{
+  border: 1px solid white;
+}
+
+.featured_series .series_table dl.image{
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+.featured_series .series_table dl.image dd{
+  width: 265px;
+}
+
+.featured_series .series_table table.series_list{
+  width: 98%;
+  margin: 0px 1%;
+}
+
+.featured_series .series_table table.series_list td.message_id{
+  width: 5%;
+  font-weight: bold;
+}
+
+.featured_series .series_table table.series_list td.message_title{
+  width: 45%;
+  font-weight: bold;
+}
+
+.featured_series .series_table table.series_list td.message_date{
+  width: 15%;
+    word-wrap: break-word;
+	font-weight: bold;
+}
+
+.featured_series .series_table table.series_list td.message_listen{
+  width: 20%;
+}
+
+.featured_series .series_table table.series_list td.message_download{
+  width: 15%;
+  text-align: right;
+}

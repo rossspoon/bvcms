@@ -30,10 +30,17 @@
             $("#zip2").change(function() {
                 $.post('/SoulMate/CityState/' + $(this).val(), null, function(ret) {
                     if (ret) {
-                        $('#state2').text(ret.state);
-                        $('#city2').text(ret.city);
+                        $('#state2').val(ret.state);
+                        $('#city2').val(ret.city);
                     }
                 }, 'json');
+            });
+            $('#same').click(function() {
+                $('#addr2').val($('#addr1').val());
+                $('#state2').val($('#state1').val());
+                $('#city2').val($('#city1').val());
+                $('#zip2').val($('#zip1').val());
+                return false;
             });
         });
     </script>    
@@ -64,8 +71,10 @@
                     <td><%= Html.ValidationMessage("dob1") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone1">Phone #</label></td>
-                    <td><%= Html.TextBox("phone1")%></td>
+                    <td><label for="phone1">Phone #</label></td>
+                    <td><%= Html.TextBox("phone1")%>
+                    <%= Html.RadioButton("homecell1", "h") %> Home
+                    <%= Html.RadioButton("homecell1", "c") %> Cell</td>
                     <td><%= Html.ValidationMessage("phone1")%></td>
                 </tr>
                 <tr>
@@ -79,6 +88,7 @@
                 </tr>
             <% if (Model.shownew1)
                { %>
+               <tr><th colspan="3"><span style="color:Red">Please provide address</span></th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew1") %>
                     <label for="addr1">Address</label></td>
@@ -118,8 +128,10 @@
                     <td><%= Html.ValidationMessage("dob2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone2">Phone #</label></td>
-                    <td><%= Html.TextBox("phone2")%></td>
+                    <td><label for="phone2">Phone #</label></td>
+                    <td><%= Html.TextBox("phone2")%>
+                    <%= Html.RadioButton("homecell2", "h") %> Home
+                    <%= Html.RadioButton("homecell2", "c") %> Cell</td>
                     <td><%= Html.ValidationMessage("phone2")%></td>
                 </tr>
                 <tr>
@@ -133,7 +145,8 @@
                 </tr>
             <% if (Model.shownew2)
                { %>
-               <tr><th colspan="3">Please provide address</th></tr>
+               <tr><th colspan="3"><span style="color:Red">Please provide address</span>
+               <a id="same" href="#">same</a></th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew2") %>
                     <label for="addr2">Address</label></td>

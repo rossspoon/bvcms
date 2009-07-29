@@ -137,7 +137,8 @@ namespace CMSWeb.Models
                     let pc = DbUtil.Db.OrganizationMembers.SingleOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
-                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
+                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
+                       && op.Organization.ScheduleId == ScheduleId)
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
                     {
@@ -175,7 +176,7 @@ namespace CMSWeb.Models
                     case "PendingClass":
                         q = q.OrderBy(i => i.PendingOrgName);
                         break;
-                    case "Attendence":
+                    case "Attendance":
                         q = q.OrderBy(i => i.AttendPct);
                         break;
                     case "Gender":
@@ -202,7 +203,7 @@ namespace CMSWeb.Models
                     case "PendingClass":
                         q = q.OrderByDescending(i => i.PendingOrgName);
                         break;
-                    case "Attendence":
+                    case "Attendance":
                         q = q.OrderByDescending(i => i.AttendPct);
                         break;
                     case "Gender":

@@ -238,6 +238,28 @@ namespace CMSWeb.Models
                 }
             }
         }
+        public bool IsAdult()
+        {
+            var q = from r in DbUtil.Db.RecAgeDivisions
+                    where r.DivId == divid
+                    where r.GenderId == participant.GenderId || r.GenderId == 0
+                    select new RecItem
+                    {
+                        OrgId = r.OrgId,
+                        StartAge = r.StartAge,
+                        EndAge = r.EndAge,
+                        AgeDate = r.AgeDate
+                    };
+            var list = q.ToList();
+            var bd = participant.GetBirthdate().Value;
+            var q2 = from r in list
+                     let age = bd.AgeAsOf(r.agedate)
+                     where age >= r.StartAge && age <= r.EndAge
+                     where age > 18
+                     select r;
+            var rec = q2.SingleOrDefault();
+            return rec != null;
+        }
         internal int GetOrgId()
         {
             var q = from r in DbUtil.Db.RecAgeDivisions
@@ -260,16 +282,6 @@ namespace CMSWeb.Models
             if (rec == null)
                 return 0;
             return rec.OrgId.Value;
-        }
-        public IEnumerable<SelectListItem> StateList()
-        {
-            var q = from r in DbUtil.Db.StateLookups
-                    select new SelectListItem
-                    {
-                        Text = r.StateCode,
-                        Selected = r.StateCode == "TN",
-                    };
-            return q;
         }
         public static IEnumerable<SelectListItem> ShirtSizes()
         {

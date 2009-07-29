@@ -8,9 +8,30 @@
     <h2>Childcare Registration for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
     <p>Childcare is available for birth through 5th grade only.</p>
 
-    <% using (Html.BeginForm()) { %>
         <div>
-            <fieldset>
+            <% if (Model.Children().Count() > 0)
+               { %>
+            <h2>Children Registered</h2>
+            <table>
+            <tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Gender</th></tr>
+                <% foreach (var c in Model.Children())
+                   { %>
+            <tr><td><%=c.Name%></td><td><%=c.Birthday%></td><td><%=c.Age%></td><td><%=c.Gender%></td></tr>
+                <% } %>
+            </table>
+            <h3>Register another child below or Complete your registration if finished</h3>
+            <% }
+               else
+               { %>
+            <h3>Register your child below or Complete your registration if finished</h3>
+            <% } %>
+            <form action="/SoulMate/Confirm/<%=Model.SoulMateId %>" method="post">
+            <%=Html.SubmitButton("confirm", "Complete Registration") %>
+            </form>
+        </div>
+        <div>
+     <% using (Html.BeginForm()) { %>
+           <fieldset>
                 <table style="empty-cells:show">
                 <col style="width: 13em; text-align:right" />
                 <col />
@@ -49,15 +70,6 @@
                 </table>
             </fieldset>
             
-            <h2>Children Registered</h2>
-            <table>
-            <tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Gender</th></tr>
-                <% foreach (var c in Model.Children())
-                   { %>
-            <tr><td><%=c.Name %></td><td><%=c.Birthday %></td><td><%=c.Age %></td><td><%=c.Gender %></td></tr>
-                <% } %>
-            </table>
-            <h3><%=Html.ActionLink("Confirm your registration here", "Confirm", new { id = Model.SoulMateId })%></h3>
             <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp") %></p>
         </div>
     <% } %>

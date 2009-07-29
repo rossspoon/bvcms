@@ -106,6 +106,13 @@ namespace CMSWeb.Controllers
             else
                 return RedirectToAction("Payment", new { id = m.regid });
         }
+        public JsonResult CityState(string id)
+        {
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
+            if (z == null)
+                return Json(null);
+            return Json(new { city = z.City, state = z.State });
+        }
         public ActionResult Payment(int id)
         {
             var m = new RecRegModel { regid = id };

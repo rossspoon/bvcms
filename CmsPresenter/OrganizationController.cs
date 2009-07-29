@@ -62,7 +62,8 @@ namespace CMSPresenter
             }
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == OrganizationId
-                    where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId == 0
+                    where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId <= 0
+                    where om.OrgMemMemTags.Count() == 0 || GroupId != -1
                     where (Active && om.MemberTypeId != inactive)
                         || (!Active && om.MemberTypeId == inactive)
                     where (Pending && om.Pending == true)
@@ -757,6 +758,7 @@ namespace CMSPresenter
         public IEnumerable<MemberTag> FetchMemberGroups2(int oid)
         {
             var list = FetchMemberGroups(oid).ToList();
+            list.Insert(0, new MemberTag { Id = -1, Name = "(not assigned)" });
             list.Insert(0, new MemberTag { Id = 0, Name = "(not specified)" });
             return list;
         }
