@@ -316,6 +316,12 @@ namespace CmsData
             }
             foreach (var f in this.VBSApps)
                 f.PeopleId = otherid;
+            foreach (var sm in this.HisSoulMates)
+                sm.HimId = otherid;
+            foreach (var sm in this.HerSoulMates)
+                sm.HerId = otherid;
+            foreach (var rec in this.RecRegs)
+                rec.PeopleId = otherid;
         }
         public bool PurgePerson()
         {
@@ -383,7 +389,7 @@ namespace CmsData
             {
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;
-                if (Regex.IsMatch(dob, @"\d+/\d+/\d+"))
+                if (Regex.IsMatch(dob, @"\d+[-/]\d+[-/]\d+"))
                     p.BirthYear = dt.Year;
             }
 

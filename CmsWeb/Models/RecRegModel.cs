@@ -27,6 +27,16 @@ namespace CMSWeb.Models
                 division = DbUtil.Db.Divisions.Single(d => d.Id == value);
             }
         }
+        private RecAgeDivision _RecAgeDiv;
+        public RecAgeDivision RecAgeDiv
+        {
+            get
+            {
+                if (_RecAgeDiv == null)
+                    _RecAgeDiv = GetRecAgeDivision();
+                return _RecAgeDiv;
+            }
+        }
         public RecReg registration { get; set; }
         public int? regid
         {
@@ -100,6 +110,14 @@ namespace CMSWeb.Models
         public bool member { get; set; }
         public bool otherchurch { get; set; }
         public int? coaching { get; set; }
+        public decimal? Amount
+        {
+            get
+            {
+                var dt = DateTime.Parse(RecAgeDiv.ExpirationDt);
+                return RecAgeDiv.Fee + (dt < DateTime.Now ? RecAgeDiv.ExtraFee : 0);
+            }
+        }
 
         public int TransactionId { get; set; }
 
@@ -177,15 +195,15 @@ namespace CMSWeb.Models
             if (shirtsize == "0")
                 modelState.AddModelError("shirtsize", "please select a shirt size");
 
-            if (!mname.HasValue() && !fname.HasValue())
+            if (!IsAdult() && !mname.HasValue() && !fname.HasValue())
                 modelState.AddModelError("fname", "please provide either mother or father name");
         }
 
         internal bool EnrollInOrg(Person person)
         {
-            var oid = GetOrgId();
-            if (oid == 0)
+            if (RecAgeDiv == null)
                 return false;
+            var oid = RecAgeDiv.OrgId;
             OrgId = oid;
             var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                 om.OrganizationId == OrgId && om.PeopleId == person.PeopleId);
@@ -215,41 +233,12 @@ namespace CMSWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-        private class RecItem
-        {
-            public int? StartAge { get; set; }
-            public int? EndAge { get; set; }
-            public int? OrgId { get; set; }
-            public string AgeDate { get; set; }
-            public DateTime agedate
-            { 
-                get 
-                { 
-                    var dt = new DateTime[3];
-                    dt[0] = DateTime.Parse(AgeDate);
-                    dt[1] = dt[0].AddYears(1);
-                    dt[2] = dt[0].AddYears(-1);
-                    var now = DateTime.Now;
-                    var q = from d in dt
-                            orderby Math.Abs(d.Subtract(now).TotalDays)
-                            select d;
-                    var r = q.First();
-                    return r;
-                }
-            }
-        }
         public bool IsAdult()
         {
             var q = from r in DbUtil.Db.RecAgeDivisions
                     where r.DivId == divid
                     where r.GenderId == participant.GenderId || r.GenderId == 0
-                    select new RecItem
-                    {
-                        OrgId = r.OrgId,
-                        StartAge = r.StartAge,
-                        EndAge = r.EndAge,
-                        AgeDate = r.AgeDate
-                    };
+                    select r;
             var list = q.ToList();
             var bd = participant.GetBirthdate().Value;
             var q2 = from r in list
@@ -260,28 +249,19 @@ namespace CMSWeb.Models
             var rec = q2.SingleOrDefault();
             return rec != null;
         }
-        internal int GetOrgId()
+        internal RecAgeDivision GetRecAgeDivision()
         {
             var q = from r in DbUtil.Db.RecAgeDivisions
                     where r.DivId == divid
                     where r.GenderId == participant.GenderId || r.GenderId == 0
-                    select new RecItem
-                    { 
-                        OrgId = r.OrgId, 
-                        StartAge = r.StartAge,
-                        EndAge = r.EndAge, 
-                        AgeDate = r.AgeDate 
-                    };
+                    select r;
             var list = q.ToList();
             var bd = participant.GetBirthdate().Value;
             var q2 = from r in list
                      let age = bd.AgeAsOf(r.agedate)
                      where age >= r.StartAge && age <= r.EndAge
                      select r;
-            var rec = q2.SingleOrDefault();
-            if (rec == null)
-                return 0;
-            return rec.OrgId.Value;
+            return q2.SingleOrDefault();
         }
         public static IEnumerable<SelectListItem> ShirtSizes()
         {

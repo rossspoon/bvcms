@@ -15,7 +15,7 @@ namespace CMSWeb.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var m = DbUtil.Db.Promotions.OrderBy(p => p.Sort).ThenBy(p => p.Description);
+            var m = new PromotionSetupModel();
             return View(m);
         }
 
@@ -72,18 +72,6 @@ namespace CMSWeb.Controllers
                 c.Content = pro.ToDivision.Name;
             return c;
         }
-        //[AcceptVerbs(HttpVerbs.Post)]
-        //public ContentResult EditSched(string id, string value)
-        //{
-        //    var iid = id.Substring(1).ToInt();
-        //    var pro = DbUtil.Db.Promotions.SingleOrDefault(m => m.Id == iid);
-        //    pro.ScheduleId = value.ToInt();
-        //    DbUtil.Db.SubmitChanges();
-        //    var c = new ContentResult();
-        //    c.Content = pro.WeeklySchedule.Description;
-        //    return c;
-        //}
-
         [AcceptVerbs(HttpVerbs.Post)]
         public EmptyResult Delete(string id)
         {
@@ -95,11 +83,11 @@ namespace CMSWeb.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
-        public JsonResult DivisionCodes()
+        public JsonResult DivisionCodes(int id)
         {
             var q = from c in DbUtil.Db.Divisions
                     orderby c.Name
-                    where c.DivOrgs.Any(od => od.Organization.DivOrgs.Any(od2 => od2.Division.Program.BFProgram == true))
+                    where c.DivOrgs.Any(od => od.Organization.DivOrgs.Any(od2 => od2.Division.ProgId == id))
                     select new
                     {
                         Code = c.Id.ToString(),
@@ -107,15 +95,5 @@ namespace CMSWeb.Controllers
                     };
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
-        //public JsonResult ScheduleCodes()
-        //{
-        //    var q = from c in DbUtil.Db.WeeklySchedules
-        //            select new
-        //            {
-        //                Code = c.Id.ToString(),
-        //                Value = c.Description,
-        //            };
-        //    return Json(q.ToDictionary(k => k.Code, v => v.Value));
-        //}
     }
 }

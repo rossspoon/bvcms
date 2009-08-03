@@ -101,6 +101,11 @@ namespace CMSWeb.Controllers
             m.registration.IsDocument = true;
             DbUtil.Db.SubmitChanges();
 
+            HomeController.Email(m.registration.Email,
+                    "", DbUtil.Settings("RecMail"), "{0} Registration".Fmt(m.division.Name),
+@"{0}({1}) has registered for {2}: {3} (check cms to confirm feepaid)</p>".Fmt(
+m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
+
             if (m.registration.FeePaid ?? false)
                 return RedirectToAction("Confirm", new { id = m.regid });
             else
@@ -119,13 +124,13 @@ namespace CMSWeb.Controllers
 
             return View(m);
         }
-        public ActionResult Confirm(int id, int? TransactionID)
+        public ActionResult Confirm(int id, string TransactionID)
         {
             var m = new RecRegModel { regid = id };
-            if (TransactionID.HasValue)
+            if (TransactionID.HasValue())
             {
                 m.registration.FeePaid = true;
-                m.registration.TransactionId = TransactionID.ToString();
+                m.registration.TransactionId = TransactionID;
                 DbUtil.Db.SubmitChanges();
             }
 
@@ -140,10 +145,6 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
 ".Fmt(m.division.Name, m.organization.OrganizationName, 
     ImageData.Image.Content(m.registration.ImgId.Value)));
 
-            HomeController.Email(m.registration.Email,
-                    "", DbUtil.Settings("RecMail"), "{0} Registration".Fmt(m.division.Name),
-@"{0}({1}) has registered for {2}: {3}</p>".Fmt(
-m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
 
             return View(m);
         }

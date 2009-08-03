@@ -134,7 +134,7 @@ namespace CMSWeb.Models
                         && om.Organization.ScheduleId == ScheduleId
                     where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
-                    let pc = DbUtil.Db.OrganizationMembers.SingleOrDefault(op =>
+                    let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
@@ -227,13 +227,13 @@ namespace CMSWeb.Models
 
             foreach (var pid in selected)
             {
-                var pc = (from om in DbUtil.Db.OrganizationMembers
+                var q = from om in DbUtil.Db.OrganizationMembers
                           where om.Pending == true
-                            && om.PeopleId == pid
-                            && om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                            && om.Organization.ScheduleId == ScheduleId
-                          select om).SingleOrDefault();
-                if (pc != null && pc.OrganizationId != t.OrganizationId)
+                          where om.PeopleId == pid
+                          where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
+                          where om.Organization.ScheduleId == ScheduleId
+                          select om;
+                foreach(var pc in q)
                 {
                     pc.Drop();
                     DbUtil.Db.SubmitChanges();

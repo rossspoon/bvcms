@@ -31,6 +31,12 @@ namespace CmsData
 		
 		private int? _GenderId;
 		
+		private decimal? _Fee;
+		
+		private decimal? _ExtraFee;
+		
+		private string _ExpirationDt;
+		
    		
     	
 		private EntityRef< Division> _Division;
@@ -66,6 +72,15 @@ namespace CmsData
 		
 		partial void OnGenderIdChanging(int? value);
 		partial void OnGenderIdChanged();
+		
+		partial void OnFeeChanging(decimal? value);
+		partial void OnFeeChanged();
+		
+		partial void OnExtraFeeChanging(decimal? value);
+		partial void OnExtraFeeChanged();
+		
+		partial void OnExpirationDtChanging(string value);
+		partial void OnExpirationDtChanged();
 		
     #endregion
 		public RecAgeDivision()
@@ -240,6 +255,72 @@ namespace CmsData
 					this._GenderId = value;
 					this.SendPropertyChanged("GenderId");
 					this.OnGenderIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Fee", UpdateCheck=UpdateCheck.Never, Storage="_Fee", DbType="money")]
+		public decimal? Fee
+		{
+			get { return this._Fee; }
+
+			set
+			{
+				if (this._Fee != value)
+				{
+				
+                    this.OnFeeChanging(value);
+					this.SendPropertyChanging();
+					this._Fee = value;
+					this.SendPropertyChanged("Fee");
+					this.OnFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraFee", UpdateCheck=UpdateCheck.Never, Storage="_ExtraFee", DbType="money")]
+		public decimal? ExtraFee
+		{
+			get { return this._ExtraFee; }
+
+			set
+			{
+				if (this._ExtraFee != value)
+				{
+				
+                    this.OnExtraFeeChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraFee = value;
+					this.SendPropertyChanged("ExtraFee");
+					this.OnExtraFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExpirationDt", UpdateCheck=UpdateCheck.Never, Storage="_ExpirationDt", DbType="varchar(50)")]
+		public string ExpirationDt
+		{
+			get { return this._ExpirationDt; }
+
+			set
+			{
+				if (this._ExpirationDt != value)
+				{
+				
+                    this.OnExpirationDtChanging(value);
+					this.SendPropertyChanging();
+					this._ExpirationDt = value;
+					this.SendPropertyChanged("ExpirationDt");
+					this.OnExpirationDtChanged();
 				}
 
 			}

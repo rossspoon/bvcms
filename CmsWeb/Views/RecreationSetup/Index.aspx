@@ -68,6 +68,15 @@
             <th>
                 Gender
             </th>
+            <th>
+                Fee
+            </th>
+            <th>
+                ExtraFee
+            </th>
+            <th>
+                ExpirationDt
+            </th>
             <th></th>
         </tr>
 
@@ -97,6 +106,18 @@
             <td>
                 <span id='g<%=item.Id %>'
                     class='clickSelectGender'><%=item.GenderId == null ? "click to set" : item.Gender.Description%></span>
+            </td>
+            <td>
+                <span id='f<%=item.Id %>' 
+                    class='clickEdit'><%=item.Fee%></span>
+            </td>
+            <td>
+                <span id='p<%=item.Id %>' 
+                    class='clickEdit'><%=item.ExtraFee%></span>
+            </td>
+            <td>
+                <span id='z<%=item.Id %>' 
+                    class='clickEdit'><%=item.ExpirationDt%></span>
             </td>
             <td>
                 <a id='x<%=item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>

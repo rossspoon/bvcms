@@ -64,6 +64,18 @@ namespace CMSWeb.Controllers
                 case "e":
                     rec.EndAge = value.ToInt();
                     break;
+                case "f":
+                    rec.Fee = Decimal.Parse(value);
+                    break;
+                case "p":
+                    rec.ExtraFee = Decimal.Parse(value);
+                    break;
+                case "z":
+                    if (DateTime.TryParse(value, out dt))
+                        rec.ExpirationDt = dt.ToString("M/d");
+                    else
+                        rec.ExpirationDt = null;
+                    break;
             }
             DbUtil.Db.SubmitChanges();
             return c;

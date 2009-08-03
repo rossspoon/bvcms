@@ -51,10 +51,6 @@ namespace CmsData
 		
 		private string _OrganizationName;
 		
-		private bool? _ClassFilled;
-		
-		private int? _OnLineCatalogSort;
-		
 		private int? _ModifiedBy;
 		
 		private DateTime? _ModifiedDate;
@@ -67,11 +63,17 @@ namespace CmsData
 		
 		private bool _AllowAttendOverlap;
 		
+		private string _PendingLoc;
+		
 		private int? _MemberCount;
 		
 		private int? _LeaderId;
 		
 		private string _LeaderName;
+		
+		private bool? _ClassFilled;
+		
+		private int? _OnLineCatalogSort;
 		
    		
    		private EntitySet< Organization> _ChildOrgs;
@@ -165,12 +167,6 @@ namespace CmsData
 		partial void OnOrganizationNameChanging(string value);
 		partial void OnOrganizationNameChanged();
 		
-		partial void OnClassFilledChanging(bool? value);
-		partial void OnClassFilledChanged();
-		
-		partial void OnOnLineCatalogSortChanging(int? value);
-		partial void OnOnLineCatalogSortChanged();
-		
 		partial void OnModifiedByChanging(int? value);
 		partial void OnModifiedByChanged();
 		
@@ -189,6 +185,9 @@ namespace CmsData
 		partial void OnAllowAttendOverlapChanging(bool value);
 		partial void OnAllowAttendOverlapChanged();
 		
+		partial void OnPendingLocChanging(string value);
+		partial void OnPendingLocChanged();
+		
 		partial void OnMemberCountChanging(int? value);
 		partial void OnMemberCountChanged();
 		
@@ -197,6 +196,12 @@ namespace CmsData
 		
 		partial void OnLeaderNameChanging(string value);
 		partial void OnLeaderNameChanged();
+		
+		partial void OnClassFilledChanging(bool? value);
+		partial void OnClassFilledChanged();
+		
+		partial void OnOnLineCatalogSortChanging(int? value);
+		partial void OnOnLineCatalogSortChanged();
 		
     #endregion
 		public Organization()
@@ -624,50 +629,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ClassFilled", UpdateCheck=UpdateCheck.Never, Storage="_ClassFilled", DbType="bit")]
-		public bool? ClassFilled
-		{
-			get { return this._ClassFilled; }
-
-			set
-			{
-				if (this._ClassFilled != value)
-				{
-				
-                    this.OnClassFilledChanging(value);
-					this.SendPropertyChanging();
-					this._ClassFilled = value;
-					this.SendPropertyChanged("ClassFilled");
-					this.OnClassFilledChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OnLineCatalogSort", UpdateCheck=UpdateCheck.Never, Storage="_OnLineCatalogSort", DbType="int")]
-		public int? OnLineCatalogSort
-		{
-			get { return this._OnLineCatalogSort; }
-
-			set
-			{
-				if (this._OnLineCatalogSort != value)
-				{
-				
-                    this.OnOnLineCatalogSortChanging(value);
-					this.SendPropertyChanging();
-					this._OnLineCatalogSort = value;
-					this.SendPropertyChanged("OnLineCatalogSort");
-					this.OnOnLineCatalogSortChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="int")]
 		public int? ModifiedBy
 		{
@@ -809,6 +770,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="PendingLoc", UpdateCheck=UpdateCheck.Never, Storage="_PendingLoc", DbType="varchar(40)")]
+		public string PendingLoc
+		{
+			get { return this._PendingLoc; }
+
+			set
+			{
+				if (this._PendingLoc != value)
+				{
+				
+                    this.OnPendingLocChanging(value);
+					this.SendPropertyChanging();
+					this._PendingLoc = value;
+					this.SendPropertyChanged("PendingLoc");
+					this.OnPendingLocChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
 		public int? MemberCount
 		{
@@ -868,6 +851,50 @@ namespace CmsData
 					this._LeaderName = value;
 					this.SendPropertyChanged("LeaderName");
 					this.OnLeaderNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ClassFilled", UpdateCheck=UpdateCheck.Never, Storage="_ClassFilled", DbType="bit")]
+		public bool? ClassFilled
+		{
+			get { return this._ClassFilled; }
+
+			set
+			{
+				if (this._ClassFilled != value)
+				{
+				
+                    this.OnClassFilledChanging(value);
+					this.SendPropertyChanging();
+					this._ClassFilled = value;
+					this.SendPropertyChanged("ClassFilled");
+					this.OnClassFilledChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OnLineCatalogSort", UpdateCheck=UpdateCheck.Never, Storage="_OnLineCatalogSort", DbType="int")]
+		public int? OnLineCatalogSort
+		{
+			get { return this._OnLineCatalogSort; }
+
+			set
+			{
+				if (this._OnLineCatalogSort != value)
+				{
+				
+                    this.OnOnLineCatalogSortChanging(value);
+					this.SendPropertyChanging();
+					this._OnLineCatalogSort = value;
+					this.SendPropertyChanged("OnLineCatalogSort");
+					this.OnOnLineCatalogSortChanged();
 				}
 
 			}

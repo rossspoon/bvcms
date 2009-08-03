@@ -2,6 +2,7 @@
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Recreation Registration</title>
+    <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">

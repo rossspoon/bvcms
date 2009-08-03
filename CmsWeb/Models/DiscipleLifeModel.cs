@@ -186,12 +186,31 @@ namespace CMSWeb.Models
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
-                        Text = "{0}:{1}, {2} [{3:M/d}-{4:M/d}]".Fmt(
-                            o.OrganizationName, o.LeaderName, o.Location, o.FirstMeetingDate, o.LastMeetingDate)
+                        Text = ClassName(o)
                     };
             var list = q.ToList();
+            if (list.Count == 1)
+                return list;
             list.Insert(0, new SelectListItem { Text = "(select a class)", Value = "0" });
             return list;
+        }
+        private static string ClassName(CmsData.Organization o)
+        {
+            var lead = o.LeaderName;
+            if (lead.HasValue())
+                lead = ": " + lead;
+            var loc = o.Location;
+            if (loc.HasValue())
+                loc = " ({0})".Fmt(loc);
+            var dt1 = o.FirstMeetingDate;
+            var dt2 = o.LastMeetingDate;
+            var dt = "";
+            if (dt1.HasValue && dt2.HasValue)
+                dt = ", {0:MMM d}-{1:MMM d}".Fmt(dt1, dt2);
+            else if (dt1.HasValue)
+                dt = ", {0:MMM d}".Fmt(dt1);
+
+            return o.OrganizationName + lead + dt + loc;
         }
         public IEnumerable<String> FilledClasses()
         {
@@ -200,8 +219,7 @@ namespace CMSWeb.Models
                     where o.OnLineCatalogSort != null
                     where (o.ClassFilled ?? false) == true
                     orderby o.OnLineCatalogSort
-                    select "{0}:{1}, {2} [{3:M/d}-{4:M/d}]".Fmt(
-                            o.OrganizationName, o.LeaderName, o.Location, o.FirstMeetingDate, o.LastMeetingDate);
+                    select ClassName(o);
             return q;
         }
     }

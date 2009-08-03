@@ -210,7 +210,6 @@ namespace CMSPresenter
         }
         public static IEnumerable PromoList(int queryid, int maximumRows)
         {
-
             var Db = DbUtil.Db;
             var qB = Db.LoadQueryById(queryid);
             var q = Db.People.Where(qB.Predicate());
@@ -230,6 +229,7 @@ namespace CMSPresenter
                          Email = p.EmailAddress,
                          MemberType = bfm.MemberType.Description,
                          Location = bfm.Organization.Location,
+                         PendingLoc = bfm.Organization.PendingLoc,
                          Leader = bfm.Organization.LeaderName,
                          OrgName = bfm.Organization.OrganizationName,
                          Schedule = bfm.Organization.WeeklySchedule.MeetingTime,

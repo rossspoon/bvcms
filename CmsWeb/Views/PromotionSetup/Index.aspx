@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<CmsData.Promotion>>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PromotionSetupModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
@@ -13,7 +13,11 @@
             });
             $(".clickSelect").editable("/PromotionSetup/EditDiv/", {
                 indicator: '<img src="/images/loading.gif">',
+                loadtype: 'post',
                 loadurl: "/PromotionSetup/DivisionCodes/",
+                loaddata: function() {
+                    return { id: $('#Programs').val() };
+                },
                 type: "select",
                 submit: "OK",
                 style: 'display: inline'
@@ -28,6 +32,7 @@
         });
     </script>
     <h2>Promotion Setup</h2>
+    <%= Html.DropDownList("Programs", Model.Programs()) %>
 
     <table>
         <tr>
@@ -46,7 +51,7 @@
             <th></th>
         </tr>
 
-    <% foreach (var item in Model) 
+    <% foreach (var item in Model.Promotions()) 
        { %>
         <tr>
             <td>

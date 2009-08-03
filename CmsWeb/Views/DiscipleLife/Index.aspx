@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.DiscipleLifeModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.DiscipleLifeModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>DiscipleLife Registration</title>
+	<title><%=Model.division.Name %> Registration</title>
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -28,7 +28,15 @@
                 <% } %>
                 <tr>
                     <td><label for="OrgId">Class</label></td>
-                    <td><%= Html.DropDownList("OrgId", Model.Classes()) %></td>
+<% if (Model.Classes().Count() > 1)
+   { %>
+                    <td><%= Html.DropDownList("OrgId", Model.Classes())%></td>
+<% }
+   else
+   { %>
+                    <td><%=Model.Classes().Single().Text%>
+                    <%= Html.Hidden("OrgId", Model.Classes().Single().Value)%></td>
+<% } %>
                     <td><%= Html.ValidationMessage("OrgId") %></td>
                 </tr>
                 <tr>

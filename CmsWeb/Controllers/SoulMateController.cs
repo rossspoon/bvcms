@@ -9,6 +9,7 @@ using System.Configuration;
 using CMSWeb.Models;
 using UtilityExtensions;
 using System.Text;
+using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
@@ -75,8 +76,9 @@ namespace CMSWeb.Controllers
             else
                 sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
-            SendStaffEmail(m.person1, m.email1, m.preferredEmail1, m.meeting);
-            SendStaffEmail(m.person2, m.email2, m.preferredEmail2, m.meeting);
+            var smtp = new SmtpClient();
+            SendStaffEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.meeting);
+            SendStaffEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.meeting);
             if (m.childcaremeeting != null)
                 return RedirectToAction("ChildCare", new { id = sm.Id });
             return RedirectToAction("Confirm", new { id = sm.Id });
@@ -84,8 +86,12 @@ namespace CMSWeb.Controllers
         public ActionResult ChildCare(int id)
         {
             var m = new Models.SoulMateModel(id);
-            if (Request.HttpMethod.ToUpper() == "GET")
-                return View(m);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddChild(int id)
+        {
+            var m = new Models.SoulMateModel(id);
 
             UpdateModel(m);
             m.ValidateChild(ModelState);
@@ -122,25 +128,28 @@ namespace CMSWeb.Controllers
         public ActionResult Confirm(int id)
         {
             var m = new Models.SoulMateModel(id);
-            SendEmail(m.person1, m.email1, m.preferredEmail1, m.meeting, m.Children(m.person1));
-            SendEmail(m.person2, m.email2, m.preferredEmail2, m.meeting, m.Children(m.person2));
+            var smtp = new SmtpClient();
+            SendEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.meeting, m.Children(m.person1));
+            SendEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.meeting, m.Children(m.person2));
             return View(m);
         }
 
-        private static void SendStaffEmail(Person p, string email, bool preferred, CmsData.Meeting meeting)
+        private static void SendStaffEmail(SmtpClient smtp, Person p, string email, bool preferred, CmsData.Meeting meeting)
         {
-            HomeController.Email(email,
+            HomeController.Email(smtp, email,
                                 "", DbUtil.Settings("SmlMail"), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"{0}({1}) registered for {3} for the following date:</p>
 <p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
             p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
         }
-        private void SendEmail(Person p, string email, bool preferred, 
+
+
+        private void SendEmail(SmtpClient smtp, Person p, string email, bool preferred, 
             CmsData.Meeting meeting, IEnumerable<ChildItem> children)
         {
             if (p.EmailAddress != email && preferred)
             {
-                HomeController.Email(DbUtil.Settings("SmlMail"),
+                HomeController.Email(smtp, DbUtil.Settings("SmlMail"),
                                 p.Name, p.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
 		<p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
@@ -158,7 +167,7 @@ namespace CMSWeb.Controllers
                 }
                 sb.AppendLine("</table>");
             }
-            HomeController.Email(DbUtil.Settings("SmlMail"),
+            HomeController.Email(smtp, DbUtil.Settings("SmlMail"),
                                 p.Name, email, "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Event for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(

@@ -426,6 +426,7 @@
     </Compile>
     <Compile Include="Code\ViewExtensions.cs" />
     <Compile Include="IScanUpload.cs" />
+    <Compile Include="Models\PromotionSetupModel.cs" />
     <Compile Include="Models\DiscipleLifeModel.cs" />
     <Compile Include="Models\RecDetailModel.cs" />
     <Compile Include="Models\ParticipantInfo.cs" />

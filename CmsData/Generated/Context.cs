@@ -1596,6 +1596,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? BibleFellowshipClassId2(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.PrimaryResCode", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? PrimaryResCode(
@@ -1611,18 +1623,6 @@ namespace CmsData
 		[Function(Name="dbo.EntryPointId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? EntryPointId(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? BibleFellowshipClassId2(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
 		{

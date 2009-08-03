@@ -28,6 +28,7 @@
                     <label>
                         FeePaid:
                         <%=Html.CheckBox("FeePaid", d.FeePaid)%></label>
+                        (<%=d.TransactionID %>)
                 </td>
                 <td>
                     <label>
@@ -40,7 +41,7 @@
             </tr>
             <tr>
                 <td>
-                    &nbsp;
+                    Email: <a href="mailto:<%=d.Email%>"><%=d.Email%></a>
                 </td>
                 <td colspan="3">
                     <label>
@@ -61,7 +62,7 @@
     <div>
         <% if (d.IsDocument)
            { %>
-        <iframe width="750" height="440" src='/Image.ashx?id=<%=d.ImgId %>'></iframe>
+           <%=ImageData.Image.Content(d.ImgId) %>
         <% }
            else
            { %>

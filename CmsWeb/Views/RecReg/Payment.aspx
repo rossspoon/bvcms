@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RecRegModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-	<title>Received</title>
+	<title>Recreation Registration</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -14,9 +14,10 @@
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID", DbUtil.Settings("ServiceUOrgID")) %>
     <%=Html.Hidden("OrgAccountID", DbUtil.Settings("ServiceUOrgAccountID")) %>
-    <%=Html.Hidden("Amount", 25) %>
+    <%=Html.Hidden("Amount", Model.Amount) %>
     <%=Html.Hidden("PostbackURL", "http://" + Request.Url.Authority + "/RecReg/Confirm/" + Model.regid) %>
-    <%=Html.Hidden("NameOnAccount", Model.fname.HasValue() ? Model.fname : Model.mname) %>
+    <%=Html.Hidden("NameOnAccount", Model.registration.Fname.HasValue() ? 
+        Model.registration.Fname : Model.registration.Mname) %>
     <%=Html.Hidden("Address", Model.participant.PrimaryAddress) %>
     <%=Html.Hidden("City", Model.participant.PrimaryCity) %>
     <%=Html.Hidden("State", Model.participant.PrimaryState) %>

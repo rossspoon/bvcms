@@ -419,6 +419,16 @@
                             BindingMember="GradeRangeStart" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        Pending Location:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="PendingLoc" runat="server" BindingSource="organization">
+                        &nbsp;
+                        </cc1:DisplayOrEditText>
+                    </td>
+                </tr>
             </table>
             <table class="Design2">
             </table>

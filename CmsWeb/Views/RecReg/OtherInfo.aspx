@@ -57,7 +57,7 @@
                     <td><%= Html.ValidationMessage("docphone")%></td>
                 </tr>
 
-<% if (IsAdult)
+<% if (!IsAdult)
    { %>
                 <tr>
                     <td><label for="medical">Allergies or<br />
@@ -83,7 +83,7 @@
                     <td><%= Html.ValidationMessage("coaching2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="church"><%= IsAdult ? "Parent's Church" : "Church" %></label></td>
+                    <td><label for="church"><%= !IsAdult ? "Parent's Church" : "Church" %></label></td>
                     <td><%= Html.CheckBox("member") %> Member of Bellevue<br />
                     <%= Html.CheckBox("otherchurch") %> Active in another Local Church</td>
                     <td><%= Html.ValidationMessage("member")%></td>

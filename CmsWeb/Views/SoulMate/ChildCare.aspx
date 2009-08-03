@@ -30,7 +30,7 @@
             </form>
         </div>
         <div>
-     <% using (Html.BeginForm()) { %>
+     <form action="/SoulMate/AddChild/<%=Model.SoulMateId %>" method="post">
            <fieldset>
                 <table style="empty-cells:show">
                 <col style="width: 13em; text-align:right" />
@@ -72,5 +72,5 @@
             
             <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp") %></p>
         </div>
-    <% } %>
+    </form>
 </asp:Content>

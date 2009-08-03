@@ -33,8 +33,10 @@ namespace CMSWeb
             VisitorToolbar.queryId = qb.QueryId;
             qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
             InactiveToolbar.queryId = qb.QueryId;
+            InactiveToolbar.OrganizationContext = true;
             qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
             PendingToolbar.queryId = qb.QueryId;
+            PendingToolbar.OrganizationContext = true;
             qb = DbUtil.Db.QueryBuilderPreviousCurrentOrg();
             PriorsToolbar.queryId = qb.QueryId;
         }

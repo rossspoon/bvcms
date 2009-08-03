@@ -65,6 +65,16 @@ namespace CMSWeb.Controllers
             if (InDebug)
                 return;
             var smtp = new SmtpClient();
+            Email(smtp, from, name, addr, subject, message);
+        }
+        public static void Email(SmtpClient smtp, string from, string name, string addr, string subject, string message)
+        {
+            var InDebug = false;
+#if DEBUG
+            InDebug = false;
+#endif
+            if (InDebug)
+                return;
             var fr = new MailAddress(from);
             var ma = Util.TryGetMailAddress(addr, name);
             if (ma == null)

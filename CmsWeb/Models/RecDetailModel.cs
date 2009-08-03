@@ -71,5 +71,13 @@ namespace CMSWeb.Models
         {
             get { return recreg.ImgId ?? 0; }
         }
+        public string Email
+        {
+            get { return recreg.Email; }
+        }
+        public string TransactionID
+        {
+            get { return recreg.TransactionId; }
+        }
     }
 }
