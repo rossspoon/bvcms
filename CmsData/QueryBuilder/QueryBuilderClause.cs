@@ -300,8 +300,8 @@ namespace CmsData
             CodeIdValue = from.CodeIdValue;
             StartDate = from.StartDate;
             EndDate = from.EndDate;
-            DivOrg = from.DivOrg;
-            SubDivOrg = from.SubDivOrg;
+            Program = from.Program;
+            Division = from.Division;
             Organization = from.Organization;
             Days = from.Days;
             Quarters = from.Quarters;

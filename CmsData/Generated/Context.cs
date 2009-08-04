@@ -1914,6 +1914,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.OrganizationMemberCount2", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? OrganizationMemberCount2(
+            [Parameter(Name = "oid", DbType="int")] int? oid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.UName2", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string UName2(

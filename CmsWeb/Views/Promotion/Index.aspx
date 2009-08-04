@@ -126,7 +126,6 @@
        <%=Html.CheckBox("NormalMembersOnly")%> Exclude Teachers<br />
        Target Class: <%=Html.DropDownList("TargetClassId", Model.TargetClasses()) %>
        <%=Html.SubmitButton("submit", "Assign to Class") %>
-    </div>
     <%=Html.Hidden("Sort", Model.Sort) %>
     <%=Html.Hidden("Dir", Model.Dir) %>
     <table id="Promotions">
@@ -145,13 +144,11 @@
         <% Html.RenderPartial("List", Model); %>
         </tbody>
     </table>
-<%--    <div id="OrgChooser" style="width: 366px;height:138px">
-        <table>
-        <tr><td>Division</td><td><%=Html.DropDownList("Divs", Model.FetchDivisions()) %></td></tr>
-        <tr><td>Organization</td><td><select id="Orgs"></select></td></tr>
-        <tr><td colspan="2" align="right"><input type="button" id="selectorg" value="OK" /></td></tr>
-        </table>
-    </div>
---%>
+    </form>
+    
+    <form id="form1" method="post" action="/Promotion/EasyButton">
+    <%=Html.Hidden("PromotionId")%>
+    <input name="easybutton" type="image" align="top" src="/Content/Easy.gif" style="vertical-align:bottom;width: 41px; height: 41px" value="easybutton" /></div>Assigns 
+    Promotions 
     </form>
 </asp:Content>

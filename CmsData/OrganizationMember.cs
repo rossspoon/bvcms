@@ -58,17 +58,18 @@ namespace CmsData
                     {
                         FirstMeetingDt = o.FirstMeetingDate,
                         AttendCount = count,
-                        TrackAttendance = o.AttendTrkLevelId == 20
+                        TrackAttendance = o.AttendTrkLevelId == 20,
+                        MeetingCt = o.Meetings.Count()
                     };
             var i = q.Single();
-            if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now 
-                || (i.TrackAttendance && i.AttendCount == 0))
+            if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now
+            || (DateTime.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0))
             {
                 var enrollid = Db.EnrollmentTransactions.Where(et =>
                     et.PeopleId == PeopleId
                     && et.OrganizationId == OrganizationId
                     && et.EnrollmentDate == this.EnrollmentDate
-                    && et.TransactionTypeId == 1).Select(et => et.TransactionId).Single();
+                    && et.TransactionTypeId == 1).Select(et => et.TransactionId).SingleOrDefault();
                 var qt = from et in Db.EnrollmentTransactions
                          where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
                          where et.TransactionId >= enrollid

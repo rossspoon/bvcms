@@ -55,15 +55,15 @@ namespace CmsData
             {
                 case QueryType.AttendPct:
                     return Expressions.AttendPct(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                decimal.Parse(c.TextValue));
                 case QueryType.AttendPctHistory:
                     return Expressions.AttendPctHistory(parm, c.GetDataContext() as CMSDataContext,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.StartDate,
                                c.EndDate,
@@ -71,8 +71,8 @@ namespace CmsData
                                decimal.Parse(c.TextValue));
                 case QueryType.AttendCntHistory:
                     return Expressions.AttendCntHistory(parm, c.GetDataContext() as CMSDataContext,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.StartDate,
                                c.EndDate,
@@ -82,8 +82,8 @@ namespace CmsData
                     return Expressions.AttendanceTypeAsOf(parm,
                                c.StartDate,
                                c.EndDate,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
@@ -91,8 +91,8 @@ namespace CmsData
                     return Expressions.AttendMemberTypeAsOf(parm, c.GetDataContext() as CMSDataContext,
                                c.StartDate,
                                c.EndDate,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                string.Join(",",c.CodeStrIds));
@@ -119,6 +119,8 @@ namespace CmsData
                     return Expressions.FamHasPrimAdultChurchMemb(parm, CompType, c.CodeIds == "1");
                 case QueryType.FamilyHasChildren:
                     return Expressions.FamilyHasChildren(parm, CompType, c.CodeIds == "1");
+                case QueryType.FamilyHasChildrenAged:
+                    return Expressions.FamilyHasChildrenAged(parm, c.Age.ToInt(), CompType, c.CodeIds == "1");
                 // H --------------------
                 case QueryType.HasCurrentTag:
                     return Expressions.HasCurrentTag(parm,
@@ -173,15 +175,15 @@ namespace CmsData
                                c.CodeIds == "1");
                 case QueryType.IsMemberOf:
                     return Expressions.IsMemberOf(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.IsInactiveMemberOf:
                     return Expressions.IsInactiveMemberOf(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");
@@ -202,15 +204,15 @@ namespace CmsData
                 // M -------------------
                 case QueryType.MembOfOrgWithSched:
                     return Expressions.MembOfOrgWithSched(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.MemberTypeCodes:
                     return Expressions.MemberTypeIds(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.Schedule,
                                CompType,
@@ -219,16 +221,16 @@ namespace CmsData
                     return Expressions.MemberTypeAsOf(parm,
                                c.StartDate,
                                c.EndDate,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
                 // N -------------------
                 case QueryType.NumberOfMemberships:
                     return Expressions.NumberOfMemberships(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.Schedule,
                                CompType,
@@ -236,36 +238,36 @@ namespace CmsData
                 // O --------------------------
                 case QueryType.OrgMemberCreatedDate:
                     return Expressions.OrgMemberCreatedDate(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.DateValue);
                 case QueryType.OrgInactiveDate:
                     return Expressions.OrgInactiveDate(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.DateValue);
                 case QueryType.OrgJoinDateCompare:
                     return Expressions.OrgJoinDateCompare(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIdValue);
                 case QueryType.OrgJoinDateDaysAgo:
                     return Expressions.OrgJoinDateDaysAgo(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.OrgJoinDate:
                     return Expressions.OrgJoinDate(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.StartDate);
@@ -281,24 +283,24 @@ namespace CmsData
                 // R ----------------
                 case QueryType.RecentAttendType:
                     return Expressions.RecentAttendType(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.Days,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.RecentAttendCount:
                     return Expressions.RecentAttendCount(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentAttendMemberType:
                     return Expressions.RecentAttendMemberType(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                c.Days,
                                CompType,
@@ -312,8 +314,8 @@ namespace CmsData
                                c.CodeIds == "1");
                 case QueryType.SmallGroup:
                     return Expressions.SmallGroup(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType, c.TextValue);
 
@@ -354,8 +356,8 @@ namespace CmsData
                 // W ----------------------
                 case QueryType.WorksVolunteerWeek:
                     return Expressions.WorksVolunteerWeek(parm,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.Quarters);
@@ -364,8 +366,8 @@ namespace CmsData
                                c.GetDataContext() as CMSDataContext,
                                c.StartDate,
                                c.EndDate,
-                               c.DivOrg,
-                               c.SubDivOrg,
+                               c.Program,
+                               c.Division,
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");

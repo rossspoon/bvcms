@@ -65,8 +65,6 @@ namespace CmsData
 		
 		private string _PendingLoc;
 		
-		private int? _MemberCount;
-		
 		private int? _LeaderId;
 		
 		private string _LeaderName;
@@ -74,6 +72,8 @@ namespace CmsData
 		private bool? _ClassFilled;
 		
 		private int? _OnLineCatalogSort;
+		
+		private int? _MemberCount;
 		
    		
    		private EntitySet< Organization> _ChildOrgs;
@@ -188,9 +188,6 @@ namespace CmsData
 		partial void OnPendingLocChanging(string value);
 		partial void OnPendingLocChanged();
 		
-		partial void OnMemberCountChanging(int? value);
-		partial void OnMemberCountChanged();
-		
 		partial void OnLeaderIdChanging(int? value);
 		partial void OnLeaderIdChanged();
 		
@@ -202,6 +199,9 @@ namespace CmsData
 		
 		partial void OnOnLineCatalogSortChanging(int? value);
 		partial void OnOnLineCatalogSortChanged();
+		
+		partial void OnMemberCountChanging(int? value);
+		partial void OnMemberCountChanged();
 		
     #endregion
 		public Organization()
@@ -792,28 +792,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
-		public int? MemberCount
-		{
-			get { return this._MemberCount; }
-
-			set
-			{
-				if (this._MemberCount != value)
-				{
-				
-                    this.OnMemberCountChanging(value);
-					this.SendPropertyChanging();
-					this._MemberCount = value;
-					this.SendPropertyChanged("MemberCount");
-					this.OnMemberCountChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="LeaderId", UpdateCheck=UpdateCheck.Never, Storage="_LeaderId", DbType="int", IsDbGenerated=true)]
 		public int? LeaderId
 		{
@@ -895,6 +873,28 @@ namespace CmsData
 					this._OnLineCatalogSort = value;
 					this.SendPropertyChanged("OnLineCatalogSort");
 					this.OnOnLineCatalogSortChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
+		public int? MemberCount
+		{
+			get { return this._MemberCount; }
+
+			set
+			{
+				if (this._MemberCount != value)
+				{
+				
+                    this.OnMemberCountChanging(value);
+					this.SendPropertyChanging();
+					this._MemberCount = value;
+					this.SendPropertyChanged("MemberCount");
+					this.OnMemberCountChanged();
 				}
 
 			}

@@ -49,6 +49,7 @@ namespace CMSWeb.Controllers
             m.CodeValue = "";
             m.CodeValues = new string[0];
             m.Days = "";
+            m.Age = "";
             m.Program = 0;
             m.Quarters = "";
             m.Week = "";
@@ -214,6 +215,8 @@ namespace CMSWeb.Controllers
             int i;
             if (m.DaysVisible && !int.TryParse(m.Days, out i))
                 m.Errors.Add("Days", "must be integer");
+            if (m.AgeVisible && !int.TryParse(m.Age, out i))
+                m.Errors.Add("Age", "must be integer");
 
             if (m.WeekVisible)
             {

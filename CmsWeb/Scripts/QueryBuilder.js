@@ -352,6 +352,7 @@ function UpdateView(vs) {
     $('#SavedQueryDesc').val(vs.SavedQueryDesc);
     $('#Schedule').val(vs.Schedule);
     $('#Days').val(vs.Days);
+    $('#Age').val(vs.Age);
     $('#Week').val(vs.Week);
     $('#Quarters').val(vs.Quarters);
     $('#StartDate').val(vs.StartDate);
@@ -368,6 +369,7 @@ function UpdateView(vs) {
     $('#StartDiv').showhide(vs.StartDateVisible);
     $('#OrgDiv').showhide(vs.OrganizationVisible);
     $('#DaysDiv').showhide(vs.DaysVisible);
+    $('#AgeDiv').showhide(vs.AgeVisible);
     $('#WeekDiv').showhide(vs.WeekVisible);
     $('#SavedQueryDiv').showhide(vs.SavedQueryVisible);
     $('#QuartersDiv').showhide(vs.QuartersVisible);

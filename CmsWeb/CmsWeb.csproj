@@ -979,6 +979,7 @@
     <Content Include="Content\border.gif" />
     <Content Include="Content\btn0.png" />
     <Content Include="Content\content.css" />
+    <Content Include="Content\Easy.gif" />
     <Content Include="Content\site3b.css" />
     <Content Include="Content\Site3.css" />
     <Content Include="Content\Crosses.png" />

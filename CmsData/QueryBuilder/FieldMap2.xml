@@ -57,6 +57,9 @@
     <Field Name="FamilyHasChildren" Title="Family Has Children" Type="Bit" DataValueField="IdCode">
       A member of the family is 12 or under
     </Field>
+    <Field Name="FamilyHasChildrenAged" Title="Family Has Children Aged" DisplayAs="ChildrenAged&lt;={0}" Type="Bit" Params="Age" DataValueField="IdCode">
+      A member of the family is specified age or under
+    </Field>
     <Field Name="IsHeadOfHousehold" Title="Is Head of Household" Type="Bit" DataValueField="IdCode">
       This person is the head of the family household
     </Field>
@@ -206,45 +209,45 @@
     <Field Name="InBFClass" Title="In Bible Fellowship" Type="Bit" DataValueField="IdCode">
       Currently enrolled in a Bible Fellowship Class
     </Field>
-    <Field Name="IsMemberOf" Type="Bit" DisplayAs="IsMember({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+    <Field Name="IsMemberOf" Type="Bit" DisplayAs="IsMember({0}, {1}, {2})" Params="Program,Division,Organization" DataValueField="IdCode">
       Selects members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
     </Field>
-    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Select members of an organization by their member type within a specified Program, Program/Division, or Program/Division/Organization. 
     </Field>
-    <Field Name="MemberTypeAsOf" Title="Member Type As Of" Type="Code" DisplayAs="MemberTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="MemberTypeAsOf" Title="Member Type As Of" Type="Code" DisplayAs="MemberTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Selects specified member types of organization(s) as of a date range. Specify a date range, or just a starting date (through current). Then specify the Program or Program/Division or Program/Division/Organization, then specify one or more member types.
     </Field>
-    <Field Name="MembOfOrgWithSched" Title="Member Of Org With Schedule" Type="Code" DisplayAs="MembOfOrgWithSched({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataSource="Schedules" DataValueField="IdCode">
+    <Field Name="MembOfOrgWithSched" Title="Member Of Org With Schedule" Type="Code" DisplayAs="MembOfOrgWithSched({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="Schedules" DataValueField="IdCode">
       Selects members of organizations which meet according to one or more specified schedules.
     </Field>
-    <Field Name="IsInactiveMemberOf" Type="Bit" DisplayAs="IsInactiveMember({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+    <Field Name="IsInactiveMemberOf" Type="Bit" DisplayAs="IsInactiveMember({0}, {1}, {2})" Params="Program,Division,Organization" DataValueField="IdCode">
       Selects inactive members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
     </Field>
-    <Field Name="WasMemberAsOf" Type="Bit" DisplayAs="WasMemberAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+    <Field Name="WasMemberAsOf" Type="Bit" DisplayAs="WasMemberAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataValueField="IdCode">
       Select members based on a date range that they were enrolled in that Program; Program/Division; or Program/Division/ Organization
     </Field>
-    <Field Name="OrgJoinDate" Title="Org Enrollment Date" Type="Bit" DisplayAs="OrgJoinDate({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,StartDate" >
+    <Field Name="OrgJoinDate" Title="Org Enrollment Date" Type="Bit" DisplayAs="OrgJoinDate({0}, {1}, {2}, {3})" Params="Program,Division,Organization,StartDate" >
       Selects members of an organization by the date they joined the organization
     </Field>
-    <Field Name="OrgJoinDateDaysAgo" Title="Organization Join Date Days Ago" Type="Integer" DisplayAs="OrgJoinDateDaysAgo({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
+    <Field Name="OrgJoinDateDaysAgo" Title="Organization Join Date Days Ago" Type="Integer" DisplayAs="OrgJoinDateDaysAgo({0}, {1}, {2})" Params="Program,Division,Organization">
       Selects members of an organization who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. Enter the number of days to compare with on the right side.
     </Field>
-    <Field Name="OrgInactiveDate" Title="Org Inactive Date" Type="Date" DisplayAs="OrgInactiveDate({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" >
+    <Field Name="OrgInactiveDate" Title="Org Inactive Date" Type="Date" DisplayAs="OrgInactiveDate({0}, {1}, {2})" Params="Program,Division,Organization" >
       Selects members of an organization by date they become inactive.
       Note, you must specify the organization to get definitive results
     </Field>
-    <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization" DataSource="DateFields" DataValueField="Code">
+    <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="DateFields" DataValueField="Code">
       Selects members of an organization where the date they joined the organization is compared with another system date such as Church Join Date (less than, greater than etc..)
     </Field>
-    <Field Name="OrgMemberCreatedDate" Title="Org Member Created Date" Type="Date" DisplayAs="OrgMemberCreatedDate({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
+    <Field Name="OrgMemberCreatedDate" Title="Org Member Created Date" Type="Date" DisplayAs="OrgMemberCreatedDate({0}, {1}, {2})" Params="Program,Division,Organization">
       Select members of an organization by the date on which their organization membership record was created. Specify the Program or Program/Division or Program/Division/Organization.
       Todo: explain how unknown dates work
     </Field>
     <Field Name="BibleFellowshipTeacher" Title="Bible Fellowship Teacher" Type="String">
       Name of Bible Fellowship Teacher
     </Field>
-    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
+    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
       Person is in a small group named such
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
@@ -259,10 +262,10 @@
     <Field Name="VolunteerProcessedDateMonthsAgo" Title="Volunteer Approved months ago" Type="NullInteger">
       Indicate number of months ago volunteer application was approved
     </Field>
-    <Field Name="WorksVolunteerWeek" Title="Works VIP Week(1,2,3,4,5)" Type="Bit" DisplayAs="WorksVIPWeek({0}, {1}, {2}, {3})" Params="Week,DivOrg,SubDivOrg,Organization" DataValueField="IdCode">
+    <Field Name="WorksVolunteerWeek" Title="Works VIP Week(1,2,3,4,5)" Type="Bit" DisplayAs="WorksVIPWeek({0}, {1}, {2}, {3})" Params="Week,Program,Division,Organization" DataValueField="IdCode">
       Selects Volunteers in Preschool based on the week of the month they serve (1,2,3,4,5)
     </Field>
-    <Field Name="NumberOfMemberships" Title="Number of Memberships" Type="NullInteger" DisplayAs="NumMemberships({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Schedule">
+    <Field Name="NumberOfMemberships" Title="Number of Memberships" Type="NullInteger" DisplayAs="NumMemberships({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Schedule">
       Has a number of memberships in a prog, div, org, sched
     </Field>
     <Field Name="InCurrentOrg" Title="In Current Organization" Type="Bit" DataValueField="IdCode">
@@ -279,30 +282,30 @@
     </Field>
   </Category>
   <Category Title="Attendance">
-    <Field Name="AttendMemberTypeAsOf" Title="Member Type Attended As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="AttendMemberTypeAsOf" Title="Member Type Attended As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Selects members of a Program, Program/Division or Program/Division/Organization by their member type and by a date range in which they attended
     </Field>
-    <Field Name="RecentAttendMemberType" Title="Recent Attended Member Type" Type="Code" DisplayAs="RecentAttendMemberType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="RecentAttendMemberType" Title="Recent Attended Member Type" Type="Code" DisplayAs="RecentAttendMemberType({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Selects members based on member type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-    <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,DivOrg,SubDivOrg,Organization" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
+    <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
-    <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
+    <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-    <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="DivOrg,SubDivOrg,Organization">
+    <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="Program,Division,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
     </Field>
-    <Field Name="AttendPctHistory" Title="Attendance % History" Type="Number" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="DivOrg,SubDivOrg,Organization,StartDate,EndDate">
+    <Field Name="AttendPctHistory" Title="Attendance % History" Type="Number" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
       Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This query runs very slow.
     </Field>
-    <Field Name="AttendCntHistory" Title="Attendance Count History" Type="Integer" DisplayAs="AttendCntHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="DivOrg,SubDivOrg,Organization,StartDate,EndDate">
+    <Field Name="AttendCntHistory" Title="Attendance Count History" Type="Integer" DisplayAs="AttendCntHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
       Selects attendees based on an attendance count within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This condition runs faster than the Attendance % History condition
     </Field>
-    <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3})" Params="DivOrg,SubDivOrg,Organization,Days">
+    <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
     <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">

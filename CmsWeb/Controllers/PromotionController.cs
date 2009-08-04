@@ -27,6 +27,15 @@ namespace CMSWeb.Controllers
             m.AssignPending();
             return RedirectToAction("Index");
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EasyButton()
+        {
+            var m = new PromotionModel();
+            UpdateModel(m);
+            if (m.ScheduleId == 0)
+                m.Promote();
+            return RedirectToAction("Index");
+        }
         public ActionResult List()
         {
             var m = new PromotionModel();

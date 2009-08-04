@@ -37,13 +37,15 @@ namespace CmsData
 		
 		private DateTime? _EndDate;
 		
-		private int _DivOrg;
+		private int _Program;
 		
-		private int _SubDivOrg;
+		private int _Division;
 		
 		private int _Organization;
 		
 		private int _Days;
+		
+		private int? _Age;
 		
 		private string _SavedBy;
 		
@@ -104,17 +106,20 @@ namespace CmsData
 		partial void OnEndDateChanging(DateTime? value);
 		partial void OnEndDateChanged();
 		
-		partial void OnDivOrgChanging(int value);
-		partial void OnDivOrgChanged();
+		partial void OnProgramChanging(int value);
+		partial void OnProgramChanged();
 		
-		partial void OnSubDivOrgChanging(int value);
-		partial void OnSubDivOrgChanged();
+		partial void OnDivisionChanging(int value);
+		partial void OnDivisionChanged();
 		
 		partial void OnOrganizationChanging(int value);
 		partial void OnOrganizationChanged();
 		
 		partial void OnDaysChanging(int value);
 		partial void OnDaysChanged();
+		
+		partial void OnAgeChanging(int? value);
+		partial void OnAgeChanged();
 		
 		partial void OnSavedByChanging(string value);
 		partial void OnSavedByChanged();
@@ -378,21 +383,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DivOrg", UpdateCheck=UpdateCheck.Never, Storage="_DivOrg", DbType="int NOT NULL")]
-		public int DivOrg
+		[Column(Name="Program", UpdateCheck=UpdateCheck.Never, Storage="_Program", DbType="int NOT NULL")]
+		public int Program
 		{
-			get { return this._DivOrg; }
+			get { return this._Program; }
 
 			set
 			{
-				if (this._DivOrg != value)
+				if (this._Program != value)
 				{
 				
-                    this.OnDivOrgChanging(value);
+                    this.OnProgramChanging(value);
 					this.SendPropertyChanging();
-					this._DivOrg = value;
-					this.SendPropertyChanged("DivOrg");
-					this.OnDivOrgChanged();
+					this._Program = value;
+					this.SendPropertyChanged("Program");
+					this.OnProgramChanged();
 				}
 
 			}
@@ -400,21 +405,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SubDivOrg", UpdateCheck=UpdateCheck.Never, Storage="_SubDivOrg", DbType="int NOT NULL")]
-		public int SubDivOrg
+		[Column(Name="Division", UpdateCheck=UpdateCheck.Never, Storage="_Division", DbType="int NOT NULL")]
+		public int Division
 		{
-			get { return this._SubDivOrg; }
+			get { return this._Division; }
 
 			set
 			{
-				if (this._SubDivOrg != value)
+				if (this._Division != value)
 				{
 				
-                    this.OnSubDivOrgChanging(value);
+                    this.OnDivisionChanging(value);
 					this.SendPropertyChanging();
-					this._SubDivOrg = value;
-					this.SendPropertyChanged("SubDivOrg");
-					this.OnSubDivOrgChanged();
+					this._Division = value;
+					this.SendPropertyChanged("Division");
+					this.OnDivisionChanged();
 				}
 
 			}
@@ -459,6 +464,28 @@ namespace CmsData
 					this._Days = value;
 					this.SendPropertyChanged("Days");
 					this.OnDaysChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Age", UpdateCheck=UpdateCheck.Never, Storage="_Age", DbType="int")]
+		public int? Age
+		{
+			get { return this._Age; }
+
+			set
+			{
+				if (this._Age != value)
+				{
+				
+                    this.OnAgeChanging(value);
+					this.SendPropertyChanging();
+					this._Age = value;
+					this.SendPropertyChanged("Age");
+					this.OnAgeChanged();
 				}
 
 			}

@@ -744,6 +744,19 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression FamilyHasChildrenAged(
+            ParameterExpression parm,
+            int age,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.Family.People.Any(m => m.Age <= age);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression HasRelatedFamily(
             ParameterExpression parm,
             CompareType op,

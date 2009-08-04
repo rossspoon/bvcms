@@ -25,6 +25,7 @@ namespace CMSWeb.Models
         int? Organization { get; set; }
         int? Schedule { get; set; }
         string Days { get; set; }
+        string Age { get; set; }
         string Week { get; set; }
         string Quarters { get; set; }
         string StartDate { get; set; }
@@ -118,6 +119,7 @@ namespace CMSWeb.Models
         public bool OrganizationVisible { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool DaysVisible { get; set; }
+        public bool AgeVisible { get; set; }
         public bool WeekVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
         public bool QuartersVisible { get; set; }
@@ -134,6 +136,7 @@ namespace CMSWeb.Models
         public int? Organization { get; set; }
         public int? Schedule { get; set; }
         public string Days { get; set; }
+        public string Age { get; set; }
         public string Week { get; set; }
         public string Quarters { get; set; }
         public string StartDate { get; set; }
@@ -187,11 +190,12 @@ namespace CMSWeb.Models
             CodeData = null;
             ConditionName = ConditionName;
             CompareData = Comparisons().ToList();
-            DivisionVisible = fieldMap.HasParam("SubDivOrg");
-            ProgramVisible = fieldMap.HasParam("DivOrg");
+            DivisionVisible = fieldMap.HasParam("Division");
+            ProgramVisible = fieldMap.HasParam("Program");
             OrganizationVisible = fieldMap.HasParam("Organization");
             ScheduleVisible = fieldMap.HasParam("Schedule");
             DaysVisible = fieldMap.HasParam("Days");
+            AgeVisible = fieldMap.HasParam("Age");
             WeekVisible = fieldMap.HasParam("Week");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
@@ -318,13 +322,14 @@ namespace CMSWeb.Models
                         c.CodeIdValue = CodeValue;
                     break;
             }
-            c.DivOrg = Program ?? 0;
-            c.SubDivOrg = Division ?? 0;
+            c.Program = Program ?? 0;
+            c.Division = Division ?? 0;
             c.Organization = Organization ?? 0;
             c.Schedule = Schedule ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
+            c.Age = Age.ToInt();
             c.Quarters = Quarters;
             if (Tags != null)
                 c.Tags = string.Join(";", Tags);
@@ -370,9 +375,9 @@ namespace CMSWeb.Models
                     }
                     break;
             }
-            Program = c.DivOrg;
+            Program = c.Program;
             DivisionData = Divisions(Program).ToList();
-            Division = c.SubDivOrg;
+            Division = c.Division;
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
             Schedule = c.Schedule;
@@ -383,6 +388,7 @@ namespace CMSWeb.Models
             AddEnabled = !c.IsFirst;
             RemoveEnabled = !c.IsFirst;
             Days = c.Days.ToString();
+            Age = c.Age.ToString();
             Quarters = c.Quarters;
             if (TagsVisible)
             {

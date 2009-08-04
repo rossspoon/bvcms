@@ -41,6 +41,7 @@ namespace CmsData
         EntryPointId,
         EnvelopeOptionsId,
         FamilyHasChildren,
+        FamilyHasChildrenAged,
         FamHasPrimAdultChurchMemb,
         FirstName,
         GenderId,

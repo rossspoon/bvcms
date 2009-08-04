@@ -29,67 +29,73 @@
                     </td>
                 </tr>
                 <tr id="DaysDiv" style="display:none">
-                    <td>Days:</td>
+                    <td align="right">Days:</td>
                     <td>
                         <%=Html.TextBoxClass("Days", "validate") %>
                     </td>
                 </tr>
+                <tr id="AgeDiv" style="display:none">
+                    <td align="right">Age Less or Equal:</td>
+                    <td>
+                        <%=Html.TextBoxClass("Age", "validate") %>
+                    </td>
+                </tr>
                 <tr id="WeekDiv" style="display:none">
-                    <td>Week:</td>
+                    <td align="right">Week:</td>
                     <td>
                         <%=Html.TextBoxClass("Week", "validate") %>
                     </td>
                 </tr>
                 <tr id="QuartersDiv" style="display:none">
-                    <td>Quarters:</td>
+                    <td align="right">Quarters:</td>
                     <td>
                         <%=Html.TextBoxClass("Quarters", "validate") %>
                     </td>
                 </tr>
                 <tr id="TagsDiv" style="display:none">
-                    <td>Tags:</td>
+                    <td align="right">Tags:</td>
                     <td>
                         <span id="tagvalues" style="display:none"></span>
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
-                    <td>Saved Query:</td>
+                    <td align="right">Saved Query:</td>
                     <td>
                         <%=Html.DropDownList("SavedQueryDesc", Model.SavedQueries())%>
                     </td>
                 </tr>
                 <tr id="StartDiv" style="display:none">
-                    <td>Start Date:</td>
+                    <td align="right">Start Date:</td>
                     <td>
                         <%=Html.TextBoxClass("StartDate", "datepicker validate") %>
                     </td>
                 </tr>
                 <tr id="EndDiv" style="display:none">
-                    <td>End Date:</td>
+                    <td align="right">End Date:</td>
                     <td>
                         <%=Html.TextBoxClass("EndDate", "datepicker validate") %>
                     </td>
                 </tr>
                 <tr id="ProgDiv" style="display:none">
-                    <td>Program:</td>
+                    <td align="right">Program:</td>
                     <td>
                         <%=Html.DropDownList("Program", Model.Programs()) %>
                     </td>
                 </tr>
                 <tr id="DivDiv" style="display:none">
-                    <td>Division:</td>
+                    <td align="right">Division:</td>
                     <td>
                         <select id="Division" ></select>
                     </td>
                 </tr>
                 <tr id="OrgDiv" style="display:none">
-                    <td>Organization:</td>
+                    <td align="right">Organization:</td>
                     <td>
                         <select id="Organization" ></select>
                     </td>
                 </tr>
                 <tr id="SchedDiv" style="display:none">
-                    <td>Schedule:</td>
+                    <td align="right">Schedule:</td>
                     <td>
                         <%=Html.DropDownList("Schedule", Model.Schedules()) %>
                     </td>

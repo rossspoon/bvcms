@@ -523,7 +523,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(50)")]
+		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(80)")]
 		public string Email
 		{
 			get { return this._Email; }
@@ -567,7 +567,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="fname", UpdateCheck=UpdateCheck.Never, Storage="_Fname", DbType="varchar(50)")]
+		[Column(Name="fname", UpdateCheck=UpdateCheck.Never, Storage="_Fname", DbType="varchar(80)")]
 		public string Fname
 		{
 			get { return this._Fname; }
@@ -589,7 +589,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="mname", UpdateCheck=UpdateCheck.Never, Storage="_Mname", DbType="varchar(50)")]
+		[Column(Name="mname", UpdateCheck=UpdateCheck.Never, Storage="_Mname", DbType="varchar(80)")]
 		public string Mname
 		{
 			get { return this._Mname; }
@@ -655,7 +655,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="emcontact", UpdateCheck=UpdateCheck.Never, Storage="_Emcontact", DbType="varchar(50)")]
+		[Column(Name="emcontact", UpdateCheck=UpdateCheck.Never, Storage="_Emcontact", DbType="varchar(100)")]
 		public string Emcontact
 		{
 			get { return this._Emcontact; }
@@ -699,7 +699,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="doctor", UpdateCheck=UpdateCheck.Never, Storage="_Doctor", DbType="varchar(50)")]
+		[Column(Name="doctor", UpdateCheck=UpdateCheck.Never, Storage="_Doctor", DbType="varchar(100)")]
 		public string Doctor
 		{
 			get { return this._Doctor; }
@@ -743,7 +743,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="insurance", UpdateCheck=UpdateCheck.Never, Storage="_Insurance", DbType="varchar(50)")]
+		[Column(Name="insurance", UpdateCheck=UpdateCheck.Never, Storage="_Insurance", DbType="varchar(100)")]
 		public string Insurance
 		{
 			get { return this._Insurance; }
@@ -765,7 +765,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="policy", UpdateCheck=UpdateCheck.Never, Storage="_Policy", DbType="varchar(20)")]
+		[Column(Name="policy", UpdateCheck=UpdateCheck.Never, Storage="_Policy", DbType="varchar(100)")]
 		public string Policy
 		{
 			get { return this._Policy; }

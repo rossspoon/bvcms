@@ -228,23 +228,52 @@ namespace CMSWeb.Models
             foreach (var pid in selected)
             {
                 var q = from om in DbUtil.Db.OrganizationMembers
-                          where om.Pending == true
-                          where om.PeopleId == pid
-                          where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                          where om.Organization.ScheduleId == ScheduleId
-                          select om;
-                foreach(var pc in q)
+                        where om.Pending == true
+                        where om.PeopleId == pid
+                        where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
+                        where om.Organization.ScheduleId == ScheduleId
+                        select om;
+                foreach (var pc in q)
                 {
                     pc.Drop();
                     DbUtil.Db.SubmitChanges();
                 }
                 OrganizationController.InsertOrgMembers(
-                    t.OrganizationId, 
-                    pid, 
-                    (int)OrganizationMember.MemberTypeCode.Member, 
-                    DateTime.Now, 
-                    null, 
+                    t.OrganizationId,
+                    pid,
+                    (int)OrganizationMember.MemberTypeCode.Member,
+                    DateTime.Now,
+                    null,
                     true);
+            }
+        }
+        public void Promote()
+        {
+            var fromdiv = Promotion.FromDivId;
+            var todiv = Promotion.ToDivId;
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
+                    where om.Organization.ScheduleId == ScheduleId
+                    where (om.Pending ?? false) == false
+                    where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                    let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
+                       op.Pending == true
+                       && op.PeopleId == om.PeopleId
+                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
+                    where pc != null
+                    select new { om, pc };
+            var list = new Dictionary<int, CmsData.Organization>();
+            foreach (var i in q)
+            {
+                i.om.Drop();
+                DbUtil.Db.SubmitChanges();
+                i.pc.Pending = false;
+                DbUtil.Db.SubmitChanges();
+                list[i.pc.OrganizationId] = i.pc.Organization;
+            }
+            foreach(var o in list.Values)
+            {
+                
             }
         }
         public IEnumerable<SelectListItem> Promotions()
