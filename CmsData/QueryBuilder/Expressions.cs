@@ -98,6 +98,7 @@ namespace CmsData
                     et.TransactionTypeId <= 3 // things that start a change
                     && et.TransactionStatus == false
                     && et.TransactionDate <= enddt // transaction starts <= looked for end
+                    && (et.Pending ?? false) == false
                     && (et.NextTranChangeDate ?? Util.Now) >= startdt // transaction ends >= looked for start
                     && (et.OrganizationId == orgid || orgid == 0)
                     && (et.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
@@ -127,6 +128,7 @@ namespace CmsData
                     && et.TransactionStatus == false
                     && from <= (et.NextTranChangeDate ?? Util.Now) // where it ends
                     && et.TransactionDate <= to // where it begins
+                    && (et.Pending ?? false) == false
                     && ids.Contains(et.MemberTypeId)  // what it's type was during that time
                     && (et.OrganizationId == org || org == 0)
                     && (et.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
@@ -645,7 +647,8 @@ namespace CmsData
                     m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     && (m.OrganizationId == org || org == 0)
                     && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -677,7 +680,8 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                    m.Organization.DivOrgs.Any(t => t.Division.ProgId == DbUtil.BFClassOrgTagId));
+                    m.Organization.DivOrgs.Any(t => t.Division.ProgId == DbUtil.BFClassOrgTagId)
+                    && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

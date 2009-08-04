@@ -40,7 +40,7 @@ namespace CMSPresenter
                         OrganizationName = o.OrganizationName,
                         LeaderName = o.LeaderName,
                         LeaderId = o.LeaderId,
-                        MemberCount = o.OrganizationMembers.Count(),
+                        MemberCount = o.MemberCount,
                         AttendanceTrackingLevel = dict[o.AttendTrkLevelId].Value,
                         DivisionId = o.Division.Id,
                         DivisionName = o.Division.Name,
@@ -87,7 +87,7 @@ namespace CMSPresenter
                          OrganizationStatus = o.OrganizationStatusId,
                          OrganizationName = o.OrganizationName,
                          LeaderName = o.LeaderName,
-                         MemberCount = o.OrganizationMembers.Count(),
+                         MemberCount = o.MemberCount,
                          AttendanceTrackingLevel = dict[o.AttendTrkLevelId].Value,
                          DivisionName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
@@ -120,7 +120,7 @@ namespace CMSPresenter
                          Status = o.OrganizationStatus.Description,
                          Name = o.OrganizationName,
                          Leader = o.LeaderName,
-                         Members = o.OrganizationMembers.Count(),
+                         Members = o.MemberCount ?? 0,
                          Tracking = dict[o.AttendTrkLevelId].Value,
                          Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
@@ -201,7 +201,7 @@ namespace CMSPresenter
                     break;
                 case "MemberCount":
                     query = from o in query
-                            orderby o.OrganizationMembers.Count(),
+                            orderby o.MemberCount,
                             o.OrganizationName
                             select o;
                     break;
@@ -241,7 +241,7 @@ namespace CMSPresenter
                     break;
                 case "MemberCount DESC":
                     query = from o in query
-                            orderby o.OrganizationMembers.Count() descending,
+                            orderby o.MemberCount descending,
                             o.OrganizationName descending
                             select o;
                     break;
