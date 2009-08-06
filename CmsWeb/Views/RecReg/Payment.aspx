@@ -15,7 +15,7 @@
     <%=Html.Hidden("OrgID", DbUtil.Settings("ServiceUOrgID")) %>
     <%=Html.Hidden("OrgAccountID", DbUtil.Settings("ServiceUOrgAccountID")) %>
     <%=Html.Hidden("Amount", Model.Amount) %>
-    <%=Html.Hidden("PostbackURL", "http://" + Request.Url.Authority + "/RecReg/Confirm/" + Model.regid) %>
+    <%=Html.Hidden("PostbackURL", Request.Url.Scheme + "://" + Request.Url.Authority + "/RecReg/Confirm/" + Model.regid) %>
     <%=Html.Hidden("NameOnAccount", Model.registration.Fname.HasValue() ? 
         Model.registration.Fname : Model.registration.Mname) %>
     <%=Html.Hidden("Address", Model.participant.PrimaryAddress) %>

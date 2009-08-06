@@ -42,24 +42,6 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td><label for="interests">Interests</label></td>
-                    <td>
-                    <% foreach (var i in Model.Opportunity.VolInterestCodes)
-                       { %>
-                       <input type="checkbox" name="interests" value="<%=i.Id %>" <%=Model.Checked(i.Id)%> /> <%=i.Description %><br />
-                    <% } %>
-                    </td>
-                    <td><%= Html.ValidationMessage("interests") %></td>
-                </tr>
-                <% if (Model.Opportunity.ExtraQuestion.HasValue())
-                   { %>
-                <tr>
-                    <td><%=Model.Opportunity.ExtraQuestion %></td>
-                    <td><%=Html.TextBox("question") %></td>
-                    <td>&nbsp;</td>
-                </tr>
-                <% } %>
-                <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
                 </tr>
                 </table>

@@ -215,6 +215,7 @@ namespace CMSPresenter
             var q = Db.People.Where(qB.Predicate());
             var q2 = from p in q
                      let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let tm = bfm.Organization.WeeklySchedule.MeetingTime
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -232,7 +233,7 @@ namespace CMSPresenter
                          PendingLoc = bfm.Organization.PendingLoc,
                          Leader = bfm.Organization.LeaderName,
                          OrgName = bfm.Organization.OrganizationName,
-                         Schedule = bfm.Organization.WeeklySchedule.MeetingTime,
+                         Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
                      };
             return q2.Take(maximumRows);
         }

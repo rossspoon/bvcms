@@ -146,6 +146,7 @@
     </table>
     </form>
     
+    <a href="/Promotion/Export/<%=Model.PromotionId %>">Promotion Export</a>
     <form id="form1" method="post" action="/Promotion/EasyButton">
     <%=Html.Hidden("PromotionId")%>
     <input name="easybutton" type="image" align="top" src="/Content/Easy.gif" style="vertical-align:bottom;width: 41px; height: 41px" value="easybutton" /></div>Assigns 

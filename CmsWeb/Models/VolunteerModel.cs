@@ -26,6 +26,23 @@ namespace CMSWeb.Models
                 Opportunity = DbUtil.Db.VolOpportunities.Single(o => o.Id == value);
             }
         }
+        internal VolInterest VolInterest;
+        public int VolInterestId
+        {
+            get
+            {
+                return VolInterest.Id;
+            }
+            set
+            {
+                VolInterest = DbUtil.Db.VolInterests.SingleOrDefault(vi => vi.Id == value);
+                interests = VolInterest.VolInterestInterestCodes.Select(vi =>
+                               vi.VolInterestCode.Id.ToString()).ToArray();
+                OpportunityId = VolInterest.VolOpportunity.Id;
+                person = VolInterest.Person;
+                question = VolInterest.Question;
+            }
+        }
         public VolOpportunity Opportunity;
         public string first {get; set;}
         public string lastname {get; set;}
@@ -80,6 +97,9 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("phone", "7 or 10 digits");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
+        }
+        public void ValidateModel2(ModelStateDictionary ModelState)
+        {
             if (interests == null)
                 ModelState.AddModelError("interests", "Must check at least one interest");
         }

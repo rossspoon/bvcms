@@ -93,7 +93,7 @@
         <% foreach (var v in Model.FetchVolunteers())
            { %>
         <tr>
-            <td><%="{0:MM-dd-yy HH:mm}".Fmt(v.Created)%></td>
+            <td><a href="/Volunteer/PickList/<%=v.Id %>"><%="{0:MM-dd-yy HH:mm}".Fmt(v.Created)%></a></td>
             <td>
                 <a href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
             </td>

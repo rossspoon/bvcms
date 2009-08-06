@@ -127,7 +127,7 @@ namespace CMSWeb.Models
                 {
                     var q = from m in DbUtil.Db.Meetings
                             where m.Organization.OrganizationId == DbUtil.Settings("SmlGroupId").ToInt()
-                            where m.MeetingDate > DateTime.Now.AddDays(3)
+                            where m.MeetingDate > DateTime.Now
                             orderby m.MeetingDate ascending
                             select m;
                     _meeting = q.FirstOrDefault();

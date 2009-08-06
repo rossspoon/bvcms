@@ -1645,6 +1645,7 @@
     <Content Include="Views\VBSReg\Confirm.aspx" />
     <Content Include="Views\VBSReg\Index.aspx" />
     <Content Include="Views\Volunteers\Index.aspx" />
+    <Content Include="Views\Volunteer\PickList.aspx" />
     <Content Include="Views\Volunteer\Unknown.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />
     <Content Include="Views\VolOpportunity\Index.aspx" />
@@ -1725,7 +1726,6 @@
     <Content Include="Views\VBS\OrgOptions.ascx" />
     <Content Include="Views\Volunteer\Confirm.aspx" />
     <Content Include="Views\Volunteer\Index.aspx" />
-    <Content Include="Views\Volunteer\Login.aspx" />
     <Content Include="Views\Web.config" />
     <Content Include="Content\js\MicrosoftAjax.debug.js" />
     <Content Include="Content\js\MicrosoftAjax.js" />
