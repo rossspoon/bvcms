@@ -19,7 +19,6 @@ namespace CmsData
         public StatusCode StatusEnum
         {
             get { return (StatusCode)StatusId; }
-            set { StatusId = (int)value; }
         }
         public string AboutName { get { return AboutWho == null ? "" : AboutWho.Name; } }
         partial void OnCreated()
@@ -49,7 +48,7 @@ namespace CmsData
                 CoOwnerId = coownerid,
                 CoListId = Task.GetRequiredTaskList("InBox", coownerid).Id,
                 WhoId = newpersonid,
-                StatusEnum = Task.StatusCode.Active,
+                StatusId = (int)Task.StatusCode.Active,
             };
             Db.Tasks.InsertOnSubmit(task);
             Db.SubmitChanges();

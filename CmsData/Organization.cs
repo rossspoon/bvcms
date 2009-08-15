@@ -21,11 +21,6 @@ namespace CmsData
             Active = 30,
             Inactive = 40,
         }
-        public OrgStatusCode OrgStatusEnum
-        {
-            get { return (OrgStatusCode)OrganizationStatusId; }
-            set { OrganizationStatusId = (int)value; }
-        }
 
         public static string FormatOrgName(string name, string leader, string loc)
         {

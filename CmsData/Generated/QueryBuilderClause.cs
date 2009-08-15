@@ -45,8 +45,6 @@ namespace CmsData
 		
 		private int _Days;
 		
-		private int? _Age;
-		
 		private string _SavedBy;
 		
 		private string _Description;
@@ -62,6 +60,8 @@ namespace CmsData
 		private string _Tags;
 		
 		private int _Schedule;
+		
+		private int? _Age;
 		
    		
    		private EntitySet< QueryBuilderClause> _Clauses;
@@ -118,9 +118,6 @@ namespace CmsData
 		partial void OnDaysChanging(int value);
 		partial void OnDaysChanged();
 		
-		partial void OnAgeChanging(int? value);
-		partial void OnAgeChanged();
-		
 		partial void OnSavedByChanging(string value);
 		partial void OnSavedByChanged();
 		
@@ -144,6 +141,9 @@ namespace CmsData
 		
 		partial void OnScheduleChanging(int value);
 		partial void OnScheduleChanged();
+		
+		partial void OnAgeChanging(int? value);
+		partial void OnAgeChanged();
 		
     #endregion
 		public QueryBuilderClause()
@@ -471,28 +471,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Age", UpdateCheck=UpdateCheck.Never, Storage="_Age", DbType="int")]
-		public int? Age
-		{
-			get { return this._Age; }
-
-			set
-			{
-				if (this._Age != value)
-				{
-				
-                    this.OnAgeChanging(value);
-					this.SendPropertyChanging();
-					this._Age = value;
-					this.SendPropertyChanged("Age");
-					this.OnAgeChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SavedBy", UpdateCheck=UpdateCheck.Never, Storage="_SavedBy", DbType="varchar(50)")]
 		public string SavedBy
 		{
@@ -662,6 +640,28 @@ namespace CmsData
 					this._Schedule = value;
 					this.SendPropertyChanged("Schedule");
 					this.OnScheduleChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Age", UpdateCheck=UpdateCheck.Never, Storage="_Age", DbType="int")]
+		public int? Age
+		{
+			get { return this._Age; }
+
+			set
+			{
+				if (this._Age != value)
+				{
+				
+                    this.OnAgeChanging(value);
+					this.SendPropertyChanging();
+					this._Age = value;
+					this.SendPropertyChanged("Age");
+					this.OnAgeChanged();
 				}
 
 			}

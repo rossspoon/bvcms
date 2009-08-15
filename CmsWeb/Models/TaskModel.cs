@@ -500,7 +500,7 @@ namespace CMSWeb.Models
             c.contactees.Add(new Contactee { PeopleId = task.WhoId.Value });
             c.contactsMakers.Add(new Contactor { PeopleId = PeopleId });
             task.CompletedContact = c;
-            task.StatusEnum = Task.StatusCode.Complete;
+            task.StatusId = (int)Task.StatusCode.Complete;
             if (task.CoOwnerId == PeopleId)
                 notify.EmailNotification(task.CoOwner, task.Owner,
                         "Task Completed with a Contact by " + task.CoOwner.Name,
@@ -517,7 +517,7 @@ namespace CMSWeb.Models
         public void AcceptTask(int id, ITaskNotify notify)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
-            task.StatusEnum = Task.StatusCode.Active;
+            task.StatusId = (int)Task.StatusCode.Active;
             DbUtil.Db.SubmitChanges();
             notify.EmailNotification(task.CoOwner, task.Owner,
                 "Task Accepted from " + task.CoOwner.Name,
@@ -534,7 +534,7 @@ namespace CMSWeb.Models
             if (toid == Util.UserPeopleId.Value)
                 return; // cannot delegate to self
             var task = DbUtil.Db.Tasks.Single(t => t.Id == taskid);
-            task.StatusEnum = Task.StatusCode.Pending;
+            task.StatusId = (int)Task.StatusCode.Pending;
             task.CoOwnerId = toid;
 
             // if the owner's list is shared by the coowner
@@ -683,7 +683,7 @@ namespace CMSWeb.Models
                 ListId = listid,
                 Description = text,
                 OwnerId = pid,
-                StatusEnum = Task.StatusCode.Active,
+                StatusId = (int)Task.StatusCode.Active,
             };
             DbUtil.Db.Tasks.InsertOnSubmit(task);
             DbUtil.Db.SubmitChanges();
@@ -776,7 +776,7 @@ namespace CMSWeb.Models
                 CoOwnerId = coownerid,
                 CoListId = InBoxId(coownerid),
                 WhoId = newpersonid,
-                StatusEnum = Task.StatusCode.Active,
+                StatusId = (int)Task.StatusCode.Active,
             };
             Db.Tasks.InsertOnSubmit(task);
             Db.SubmitChanges();

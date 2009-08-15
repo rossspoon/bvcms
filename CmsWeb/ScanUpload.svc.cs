@@ -5,10 +5,13 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using CmsData;
+using System.ServiceModel.Activation;
 
 namespace CMSWeb
 {
     // NOTE: If you change the class name "ScanUpload" here, you must also update the reference to "ScanUpload" in Web.config.
+    [ServiceBehavior]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class ScanUpload : IScanUpload
     {
         public void UploadVBSApp(int? PeopleId, string UserInfo, int TypeId, string mimetype, byte[] bits)

@@ -100,13 +100,17 @@ namespace CMSWeb.Controllers
 
             var cva = m.person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault();
             DbUtil.Db.SubmitChanges();
-            var em = new Emailer(m.Opportunity.Email);
-            if (cva != null && cva.StatusId == 10)
-                em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
-            else
-                em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
-
-            return RedirectToAction("Confirm");
+            if (DateTime.Now.Subtract(m.VolInterest.Created.Value).TotalMinutes < 30)
+            {
+                var em = new Emailer(m.Opportunity.Email);
+                if (cva != null && cva.StatusId == 10)
+                    em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
+                else
+                    em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
+                return RedirectToAction("Confirm");
+            }
+            ViewData["saved"] = "Changes Saved";
+            return View(m);
         }
         public ActionResult Confirm()
         {

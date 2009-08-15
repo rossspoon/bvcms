@@ -59,16 +59,6 @@
                 o.$this.dialog("close");
             });
             $(".add", o.$this).click(o.AddNew);
-            var opts = {
-                track: true,
-                delay: 0,
-                showURL: false,
-                showBody: " - ",
-                fade: 250
-            };
-            $('.add', o.$this).tooltip(opts);
-            $('.select', o.$this).tooltip(opts);
-            $('.namecol', o.$this).tooltip(opts);
             o.DisplaySelect();
         };
         o.$this = $(this[0]);

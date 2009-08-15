@@ -12,6 +12,7 @@ using CmsData;
 using System.ComponentModel;
 using System.Collections;
 using System.Text;
+using System.Web;
 
 namespace CMSPresenter
 {
@@ -734,8 +735,8 @@ namespace CMSPresenter
                     foreach (var mt in q2)
                     {
                         string orgname = Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
-                        sb.AppendFormat("<a href='https://cms.bellevue.org/Meeting.aspx?id={0}'>{1} - {2}</a><br/>\n",
-                            mt.MeetingId, orgname, mt.MeetingDate);
+                        sb.AppendFormat("<a href='{0}/Meeting.aspx?id={1}'>{2} - {3}</a><br/>\n",
+                            DbUtil.TaskHost, mt.MeetingId, orgname, mt.MeetingDate);
                         sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:M/d/yy h:mmtt}</td></tr>\n",
                             person.Name, orgname, mt.MeetingDate);
                     }

@@ -5,6 +5,8 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+<script>
+</script>
     <h2>Volunteer for <%=Model.Opportunity.Description %></h2>
 
     <% using (Html.BeginForm()) { %>
@@ -21,7 +23,7 @@
                     <td>
                     <% foreach (var i in Model.Opportunity.VolInterestCodes)
                        { %>
-                       <input type="checkbox" name="interests" value="<%=i.Id %>" <%=Model.Checked(i.Id)%> /> <%=i.Description %><br />
+                       <input type="checkbox" class="ckinterest" name="interests" value="<%=i.Id %>" <%=Model.Checked(i.Id)%> /> <%=i.Description %><br />
                     <% } %>
                     </td>
                     <td><%= Html.ValidationMessage("interests") %></td>
@@ -35,7 +37,8 @@
                 </tr>
                 <% } %>
                 <tr>
-                    <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
+                    <td>&nbsp;</td><td><input type="submit" value="Submit" /><br />
+                    <span style="color:Green;font-weight:bold"><%=ViewData["saved"] %></span></td>
                 </tr>
                 </table>
             </fieldset>

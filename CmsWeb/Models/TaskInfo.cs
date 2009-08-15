@@ -103,8 +103,8 @@ namespace CMSWeb.Models
         {
             get
             {
-                return "mailto:{0}?subject={1}&body=https://cms.bellevue.org/Tasks.aspx?id={2}#select"
-                .Fmt(OwnerEmail, Description, Id);
+                return "mailto:{0}?subject={1}&body={3}/Tasks.aspx?id={2}#select"
+                .Fmt(OwnerEmail, Description, Id, DbUtil.TaskHost);
             }
         }
         public bool ForceCompleteWContact { get; set; }

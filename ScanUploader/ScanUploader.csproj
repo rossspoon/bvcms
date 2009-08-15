@@ -89,12 +89,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\cmsws\WebService.wsdl" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Service References\cmsweb\Reference.cs">
+    <Compile Include="Service References\cmsws\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -103,29 +104,34 @@
     <Compile Include="TwainLib.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\cmsweb\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\cmsweb\configuration.svcinfo" />
-    <None Include="Service References\cmsweb\configuration91.svcinfo" />
-    <None Include="Service References\cmsweb\cms.disco" />
-    <None Include="Service References\cmsweb\cms.wsdl" />
-    <None Include="Service References\cmsweb\ScanUploader.cmsweb.BundleDetail.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\cmsweb\ScanUploader.cmsweb.BundleResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\cmsweb\ScanUploader.cmsweb.PersonResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\cmsweb\" />
+    <WCFMetadataStorage Include="Service References\cmsws\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\cmsws\WebService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\cmsws\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\cmsws\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\cmsws\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\cmsws\ScanUploader.cmsws.BundleDetail.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\cmsws\ScanUploader.cmsws.BundleResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\cmsws\ScanUploader.cmsws.PersonResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

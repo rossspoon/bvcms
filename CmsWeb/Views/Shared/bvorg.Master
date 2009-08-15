@@ -3,7 +3,7 @@
  <html>
    <head>
      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-     <link href="/content/bvorgfiles/style.css" rel="stylesheet" type="text/css" />
+     <link href="/content/bvorgfiles/style.css?v=2" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="TitleContent" runat="server">
      <title>Step 1 Class Online Registration (Member Development)</title>
         <title></title>
@@ -64,7 +64,7 @@ text-transform: none;
    <body>
      <div class="frame">
  <div id="header">
-   <div id="logo"><a href="www.bellevue.org"><img src="/content/bvorgfiles/logo.png"></a></div>
+   <div id="logo"><a href="http://www.bellevue.org"><img src="/content/bvorgfiles/logo.png"></a></div>
 	  <div id="nav">
 	  </div><!--/nav-->
  </div><!--/header-->

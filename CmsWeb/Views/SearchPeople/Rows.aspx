@@ -6,9 +6,12 @@
 <% foreach (var c in ViewData.Model.PeopleList())
    { %>
 <tr>
-    <td><a id='s<%=c.PeopleId%>' href="#" class='select' title="Select this person">select</a><a id='a<%=c.PeopleId%>' href="#" class='add' title="Add new person - to this person's family">add</a></td>
-    <td class="namecol" title='<%=c.ToolTip%>'><%=c.Name%></td>
-    <td><%=c.Address%></td>
+    <td><a id='s<%=c.PeopleId%>' title="Select this person" href="#" class='select'>select</a>
+    <a id='a<%=c.PeopleId%>' title="Add new person
+    to this person's family" href="#" class='add' title="">add</a>
+    </td>
+    <td><span class="namecol" title="<%=c.ToolTip %>"><%=c.Name%></span></td>
+        <td><%=c.Address%></td>
     <td><%=c.CityStateZip%></td>
     <td><%=c.Age%></td>
 </tr>

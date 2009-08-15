@@ -140,6 +140,9 @@ namespace CMSWeb.Models
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
                        && op.Organization.ScheduleId == ScheduleId)
+                    let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 =>
+                        om2.Pending == true
+                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
                     {
@@ -158,7 +161,7 @@ namespace CMSWeb.Models
                         Gender = om.Person.GenderId == 1 ? "M" : "F",
                         PendingClassId = pc == null ? (int?)null : pc.OrganizationId,
                         PendingOrgName = pc == null ? "" : pc.Organization.OrganizationName,
-                        PendingLeader = pc == null ? "" : pc.Organization.LeaderName,
+                        PendingLeader = pc == null ? "" : (pt != null ? pt.Person.Name : pc.Organization.LeaderName),
                         PendingLoc = pc == null ? "" : pc.Organization.Location,
                         Hash = om.Person.HashNum.Value,
                     };
@@ -248,35 +251,6 @@ namespace CMSWeb.Models
                     true);
             }
         }
-        public void Promote()
-        {
-            var fromdiv = Promotion.FromDivId;
-            var todiv = Promotion.ToDivId;
-            var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
-                    where om.Organization.ScheduleId == ScheduleId
-                    where (om.Pending ?? false) == false
-                    where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
-                    let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
-                       op.Pending == true
-                       && op.PeopleId == om.PeopleId
-                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
-                    where pc != null
-                    select new { om, pc };
-            var list = new Dictionary<int, CmsData.Organization>();
-            foreach (var i in q)
-            {
-                i.om.Drop();
-                DbUtil.Db.SubmitChanges();
-                i.pc.Pending = false;
-                DbUtil.Db.SubmitChanges();
-                list[i.pc.OrganizationId] = i.pc.Organization;
-            }
-            foreach(var o in list.Values)
-            {
-                
-            }
-        }
         public IEnumerable Export()
         {
             var fromdiv = Promotion.FromDivId;
@@ -289,29 +263,31 @@ namespace CMSWeb.Models
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
-                    let tm = om.Organization.WeeklySchedule.MeetingTime
+                    let tm = pc.Organization.WeeklySchedule.MeetingTime
+                    let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 => 
+                        om2.Pending == true 
+                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
                     where pc != null
-                     select new
-                     {
-                         PeopleId = om.PeopleId,
-                         Title = om.Person.TitleCode,
-                         FirstName = om.Person.NickName == null ? om.Person.FirstName : om.Person.NickName,
-                         LastName = om.Person.LastName,
-                         Address = om.Person.PrimaryAddress,
-                         Address2 = om.Person.PrimaryAddress2,
-                         City = om.Person.PrimaryCity,
-                         State = om.Person.PrimaryState,
-                         Zip = om.Person.PrimaryZip.FmtZip(),
-                         Email = om.Person.EmailAddress,
-                         MemberType = om.MemberType.Description,
-                         Parent = om.Person.Family.HeadOfHousehold.Name,
-                         Parent2 = om.Person.Family.HeadOfHouseholdSpouse.Name,
-                         Location = om.Organization.Location,
-                         PendingLoc = om.Organization.PendingLoc,
-                         Leader = om.Organization.LeaderName,
-                         OrgName = om.Organization.OrganizationName,
-                         Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
-                     };
+                    select new
+                    {
+                        PeopleId = om.PeopleId,
+                        Title = om.Person.TitleCode,
+                        FirstName = om.Person.NickName == null ? om.Person.FirstName : om.Person.NickName,
+                        LastName = om.Person.LastName,
+                        Address = om.Person.PrimaryAddress,
+                        Address2 = om.Person.PrimaryAddress2,
+                        City = om.Person.PrimaryCity,
+                        State = om.Person.PrimaryState,
+                        Zip = om.Person.PrimaryZip.FmtZip(),
+                        Email = om.Person.EmailAddress,
+                        MemberType = om.MemberType.Description,
+                        Parent = om.Person.Family.HeadOfHousehold.Name,
+                        Parent2 = om.Person.Family.HeadOfHouseholdSpouse.Name,
+                        Location = string.IsNullOrEmpty(pc.Organization.PendingLoc) ? pc.Organization.Location : pc.Organization.PendingLoc,
+                        Leader = pt != null ? pt.Person.Name : pc.Organization.LeaderName,
+                        OrgName = pc.Organization.OrganizationName,
+                        Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
+                    };
             return q;
         }
         public IEnumerable<SelectListItem> Promotions()
@@ -354,9 +330,12 @@ namespace CMSWeb.Models
                     where o.ScheduleId == ScheduleId
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby o.OrganizationName
+                    let pt = o.OrganizationMembers.FirstOrDefault(om2 =>
+                        om2.Pending == true
+                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
                     select new SelectListItem
                     {
-                        Text = o.FullName,
+                        Text = CmsData.Organization.FormatOrgName(o.OrganizationName, pt != null ? pt.Person.Name : o.LeaderName, o.Location),
                         Value = o.OrganizationId.ToString(),
                     };
             return q;

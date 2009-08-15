@@ -16,7 +16,9 @@
         <asp:Login ID="Login1" runat="server" BackColor="#EFF3FB" BorderColor="#B5C7DE" BorderPadding="4"
             BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="1em" ForeColor="#333333"
             DisplayRememberMe="False" TitleText="Log In to CMS" OnLoggedIn="Login1_LoggedIn"
-            OnLoginError="Login1_LoginError" OnAuthenticate="Login1_Authenticate">
+            OnLoginError="Login1_LoginError" OnAuthenticate="Login1_Authenticate" 
+            PasswordRecoveryText="forgot password?" 
+            PasswordRecoveryUrl="/Account/ForgotPassword">
             <TextBoxStyle Font-Size="0.8em" />
             <LoginButtonStyle BackColor="White" BorderColor="#507CD1" BorderStyle="Solid" BorderWidth="1px"
                 Font-Names="Verdana" Font-Size="0.8em" ForeColor="#284E98" />

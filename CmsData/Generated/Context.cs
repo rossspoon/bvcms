@@ -190,6 +190,10 @@ namespace CmsData
         partial void UpdateJoinType(JoinType instance);
         partial void DeleteJoinType(JoinType instance);
         
+        partial void InsertLoveRespect(LoveRespect instance);
+        partial void UpdateLoveRespect(LoveRespect instance);
+        partial void DeleteLoveRespect(LoveRespect instance);
+        
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
@@ -413,6 +417,10 @@ namespace CmsData
         partial void InsertWeeklySchedule(WeeklySchedule instance);
         partial void UpdateWeeklySchedule(WeeklySchedule instance);
         partial void DeleteWeeklySchedule(WeeklySchedule instance);
+        
+        partial void InsertWord(Word instance);
+        partial void UpdateWord(Word instance);
+        partial void DeleteWord(Word instance);
         
         partial void InsertZipCode(ZipCode instance);
         partial void UpdateZipCode(ZipCode instance);
@@ -715,6 +723,12 @@ namespace CmsData
 		public Table< JoinType> JoinTypes
 		{
 			get	{ return this.GetTable< JoinType>(); }
+
+		}
+
+		public Table< LoveRespect> LoveRespects
+		{
+			get	{ return this.GetTable< LoveRespect>(); }
 
 		}
 
@@ -1051,6 +1065,12 @@ namespace CmsData
 		public Table< WeeklySchedule> WeeklySchedules
 		{
 			get	{ return this.GetTable< WeeklySchedule>(); }
+
+		}
+
+		public Table< Word> Words
+		{
+			get	{ return this.GetTable< Word>(); }
 
 		}
 
@@ -1902,18 +1922,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.SchoolGrade", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? SchoolGrade(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.OrganizationMemberCount2", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? OrganizationMemberCount2(
@@ -1923,6 +1931,18 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 oid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.SchoolGrade", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? SchoolGrade(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
                 ).ReturnValue));
 		}
 

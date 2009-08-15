@@ -32,11 +32,6 @@ namespace CmsData
             VIP = 700,
             Drop = -1,
         }
-        public MemberTypeCode MemberTypeEnum
-        {
-            get { return (MemberTypeCode)MemberTypeId; }
-            set { MemberTypeId = (int)value; }
-        }
         private CMSDataContext _Db;
         public CMSDataContext Db
         {
@@ -62,8 +57,7 @@ namespace CmsData
                         MeetingCt = o.Meetings.Count()
                     };
             var i = q.Single();
-            if ((i.FirstMeetingDt ?? DateTime.MinValue) > Util.Now
-            || (DateTime.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0))
+            if (DateTime.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
             {
                 var enrollid = Db.EnrollmentTransactions.Where(et =>
                     et.PeopleId == PeopleId

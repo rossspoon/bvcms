@@ -63,7 +63,7 @@ namespace CmsData
 		
 		private bool _AllowAttendOverlap;
 		
-		private string _PendingLoc;
+		private int? _MemberCount;
 		
 		private int? _LeaderId;
 		
@@ -73,7 +73,7 @@ namespace CmsData
 		
 		private int? _OnLineCatalogSort;
 		
-		private int? _MemberCount;
+		private string _PendingLoc;
 		
    		
    		private EntitySet< Organization> _ChildOrgs;
@@ -85,6 +85,8 @@ namespace CmsData
    		private EntitySet< BadET> _BadETs;
 		
    		private EntitySet< DivOrg> _DivOrgs;
+		
+   		private EntitySet< LoveRespect> _LoveRespects;
 		
    		private EntitySet< Meeting> _Meetings;
 		
@@ -185,8 +187,8 @@ namespace CmsData
 		partial void OnAllowAttendOverlapChanging(bool value);
 		partial void OnAllowAttendOverlapChanged();
 		
-		partial void OnPendingLocChanging(string value);
-		partial void OnPendingLocChanged();
+		partial void OnMemberCountChanging(int? value);
+		partial void OnMemberCountChanged();
 		
 		partial void OnLeaderIdChanging(int? value);
 		partial void OnLeaderIdChanged();
@@ -200,8 +202,8 @@ namespace CmsData
 		partial void OnOnLineCatalogSortChanging(int? value);
 		partial void OnOnLineCatalogSortChanged();
 		
-		partial void OnMemberCountChanging(int? value);
-		partial void OnMemberCountChanged();
+		partial void OnPendingLocChanging(string value);
+		partial void OnPendingLocChanged();
 		
     #endregion
 		public Organization()
@@ -216,6 +218,8 @@ namespace CmsData
 			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
+			
+			this._LoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_LoveRespects), new Action< LoveRespect>(this.detach_LoveRespects)); 
 			
 			this._Meetings = new EntitySet< Meeting>(new Action< Meeting>(this.attach_Meetings), new Action< Meeting>(this.detach_Meetings)); 
 			
@@ -770,21 +774,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PendingLoc", UpdateCheck=UpdateCheck.Never, Storage="_PendingLoc", DbType="varchar(40)")]
-		public string PendingLoc
+		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
+		public int? MemberCount
 		{
-			get { return this._PendingLoc; }
+			get { return this._MemberCount; }
 
 			set
 			{
-				if (this._PendingLoc != value)
+				if (this._MemberCount != value)
 				{
 				
-                    this.OnPendingLocChanging(value);
+                    this.OnMemberCountChanging(value);
 					this.SendPropertyChanging();
-					this._PendingLoc = value;
-					this.SendPropertyChanged("PendingLoc");
-					this.OnPendingLocChanged();
+					this._MemberCount = value;
+					this.SendPropertyChanged("MemberCount");
+					this.OnMemberCountChanged();
 				}
 
 			}
@@ -880,21 +884,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
-		public int? MemberCount
+		[Column(Name="PendingLoc", UpdateCheck=UpdateCheck.Never, Storage="_PendingLoc", DbType="varchar(40)")]
+		public string PendingLoc
 		{
-			get { return this._MemberCount; }
+			get { return this._PendingLoc; }
 
 			set
 			{
-				if (this._MemberCount != value)
+				if (this._PendingLoc != value)
 				{
 				
-                    this.OnMemberCountChanging(value);
+                    this.OnPendingLocChanging(value);
 					this.SendPropertyChanging();
-					this._MemberCount = value;
-					this.SendPropertyChanged("MemberCount");
-					this.OnMemberCountChanged();
+					this._PendingLoc = value;
+					this.SendPropertyChanged("PendingLoc");
+					this.OnPendingLocChanged();
 				}
 
 			}
@@ -952,6 +956,16 @@ namespace CmsData
    		    get { return this._DivOrgs; }
 
 			set	{ this._DivOrgs.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_LoveRespect_Organizations", Storage="_LoveRespects", OtherKey="OrgId")]
+   		public EntitySet< LoveRespect> LoveRespects
+   		{
+   		    get { return this._LoveRespects; }
+
+			set	{ this._LoveRespects.Assign(value); }
 
    		}
 
@@ -1338,6 +1352,19 @@ namespace CmsData
 		}
 
 		private void detach_DivOrgs(DivOrg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+
+		
+		private void attach_LoveRespects(LoveRespect entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+
+		private void detach_LoveRespects(LoveRespect entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

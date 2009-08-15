@@ -15,7 +15,7 @@ Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" T
         </asp:DataPager>
         <div class="members">
             <asp:ListView ID="MemberGrid1" runat="server" DataSourceID="MembersData" DataKeyNames="PeopleId"
-                OnItemDataBound="MemberGrid1_ItemDataBound">
+                OnItemDataBound="MemberGrid1_ItemDataBound" EnableViewState="false">
                 <LayoutTemplate>
                     <table id="itemPlaceholderContainer" runat="server" border="0" style="border: solid 1 black">
                         <tr>
@@ -135,7 +135,7 @@ Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" T
 </asp:UpdatePanel>
 <asp:ObjectDataSource ID="MembersData" runat="server" EnablePaging="True" SelectCountMethod="Count"
     SelectMethod="OrgMembers" TypeName="CMSPresenter.OrganizationController" SortParameterName="sortExpression"
-    OnSelecting="MembersData_Selecting">
+    OnSelecting="MembersData_Selecting" EnableViewState="false">
     <SelectParameters>
         <asp:QueryStringParameter Name="OrganizationId" QueryStringField="id" Type="Int32" />
         <asp:Parameter Name="Select" Type="Int32" />

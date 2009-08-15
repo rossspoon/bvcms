@@ -1,5 +1,11 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecreationModel>" %>
-<% foreach (var r in Model.FetchParticipants())
+<% IEnumerable<CMSWeb.Models.ParticipantInfo> participants;
+   if ((Model.LeagueId ?? 0) == 0)
+       participants = Model.FetchParticipants0();
+   else
+       participants = Model.FetchParticipants();
+    %>
+<% foreach (var r in participants)
    { %>
 <tr>
     <td><input name="selected" type="checkbox" <%=r.Checked %> value="<%=r.PeopleId%>" class="check" /></td>

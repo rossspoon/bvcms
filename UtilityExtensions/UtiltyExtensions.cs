@@ -157,6 +157,10 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+        public static string FormatDateTm(this DateTime dt)
+        {
+            return dt.ToString("M/d/yy H:mm");
+        }
         public static bool DateTryParse(this string date, out DateTime dt)
         {
             return DateTime.TryParse(date, out dt);
@@ -637,7 +641,8 @@ namespace UtilityExtensions
                 return null;
             s = HttpContext.Current.Server.HtmlEncode(s);
 
-            s = Regex.Replace(s, "(http://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$2</a>", RegexOptions.Singleline);
+            s = Regex.Replace(s, "(http://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
+            s = Regex.Replace(s, "(https://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
             s = HtmlFormat(s, "\\*\\*\\*", "u");
             s = HtmlFormat(s, "\\*\\*", "b");
             s = HtmlFormat(s, "\\*", "i");
@@ -646,7 +651,7 @@ namespace UtilityExtensions
             s = Regex.Replace(s, "&gt;&gt;&gt;(?:\r\n)?(.*?)(?:\r\n)?&lt;&lt;&lt;(?:\r\n)?",
                 "<p style='margin-left:.5in'>$1</p>", RegexOptions.Singleline);
             s = s.Replace(System.Environment.NewLine, "\n");
-            return s.Replace("\n", "<br/>");
+            return s.Replace("\n", "<br/>\n");
         }
 
         private static string HtmlFormat(string s, string lookfor, string htmlcode)

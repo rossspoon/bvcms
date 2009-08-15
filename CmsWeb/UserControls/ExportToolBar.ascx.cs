@@ -46,12 +46,14 @@ namespace CMSWeb
             ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Church&");
             MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Organization&");
             SmlLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=SML&");
+            LRLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=LR&");
             PromoLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Promotion&");
             TagAddLabel.Text = Single ? "Add" : "Add All";
             TagRemoveLabel.Text = Single? "Remove" : "Remove All";
             RollsheetItem.Visible = OrganizationContext;
             MemberItem.Visible = OrganizationContext;
             SmlItem.Visible = OrganizationContext;
+            LRItem.Visible = OrganizationContext;
             PromoItem.Visible = OrganizationContext;
         }
         private string GoTo(string function, string target)

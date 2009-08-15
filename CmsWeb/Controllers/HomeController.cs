@@ -81,7 +81,7 @@ namespace CMSWeb.Controllers
                 return;
             var msg = new MailMessage(fr, ma);
             msg.Subject = subject;
-            msg.Body = message;
+            msg.Body = "<html><body>\n" + message + "\n</body></html>\n";
             msg.IsBodyHtml = true;
             smtp.Send(msg);
         }

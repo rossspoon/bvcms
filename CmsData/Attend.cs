@@ -22,21 +22,11 @@ namespace CmsData
             Homebound = 100,
             OtherClass = 110,
         };
-        public AttendTypeCode AttendTypeEnum
-        {
-            get { return (AttendTypeCode)AttendanceTypeId; }
-            set { AttendanceTypeId = (int)value; }
-        }
         public enum MemberTypeCode
         {
             VisitingMember = 300,
             Visitor = 310,
             InServiceMember = 500,
-        }
-        public MemberTypeCode MemberTypeEnum
-        {
-            get { return (MemberTypeCode)MemberTypeId; }
-            set { MemberTypeId = (int)value; }
         }
     }
 }

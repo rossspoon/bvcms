@@ -33,6 +33,24 @@ namespace CMSWeb.Controllers
             UpdateModel(m);
             return PartialView("List", m);
         }
+        public ActionResult SearchPeople(int? id)
+        {
+            var m = new Models.SearchPeopleModel();
+            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            if (id.HasValue)
+            {
+                m.Page = id;
+                return PartialView("SearchPeopleRows", m);
+            }
+            return PartialView(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult Assign(int Id, int PeopleId)
+        {
+            var m = new RecDetailModel(Id);
+            m.AssignPerson(PeopleId);
+            return Json(new { pid = PeopleId.ToString(), name = m.Name });
+        }
         public ActionResult Detail(int id)
         {
             var m = new RecDetailModel(id);
@@ -51,8 +69,20 @@ namespace CMSWeb.Controllers
         {
             var m = new RecDetailModel(Id);
             UpdateModel(m);
+            if (m.League > 0 && !m.recreg.OrgId.HasValue && m.recreg.PeopleId.HasValue)
+                m.EnrollInOrg();
+            if (m.League == 0)
+                m.League = null;
             DbUtil.Db.SubmitChanges();
             return new RedirectResult("/Recreation/Detail/" + Id);
         }
-   }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Delete(int rid)
+        {
+            var m = new Models.RecreationModel();
+            m.DeleteRecReg(rid);
+            return Redirect("/Recreation/");
+        }
+
+    }
 }

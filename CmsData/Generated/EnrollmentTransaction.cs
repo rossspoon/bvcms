@@ -58,8 +58,6 @@ namespace CmsData
 		private bool? _Pending;
 		
    		
-   		private EntitySet< BadET> _BadETs;
-		
     	
 		private EntityRef< Organization> _Organization;
 		
@@ -137,8 +135,6 @@ namespace CmsData
     #endregion
 		public EnrollmentTransaction()
 		{
-			
-			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
 			
 			
 			this._Organization = default(EntityRef< Organization>); 
@@ -606,16 +602,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_BadET_EnrollmentTransaction", Storage="_BadETs", OtherKey="TranId")]
-   		public EntitySet< BadET> BadETs
-   		{
-   		    get { return this._BadETs; }
-
-			set	{ this._BadETs.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -763,19 +749,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.EnrollmentTransaction = this;
-		}
-
-		private void detach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.EnrollmentTransaction = null;
-		}
-
-		
 	}
 
 }

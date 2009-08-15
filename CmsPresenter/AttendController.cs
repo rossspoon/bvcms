@@ -314,8 +314,8 @@ namespace CMSPresenter
                 {
                     if (attended)
                     {
-                        Attendance.MemberTypeEnum = Attend.MemberTypeCode.VisitingMember;
-                        Attendance.AttendTypeEnum = Attend.AttendTypeCode.VisitingMember;
+                        Attendance.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
                     }
                     if (BFCAttendance == null)
                         BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
@@ -331,11 +331,11 @@ namespace CMSPresenter
                 }
                 else // not a member of another class (visitor)
                 {
-                    Attendance.MemberTypeEnum = Attend.MemberTypeCode.Visitor;
+                    Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
                     if (o.IsRecentVisitor.Value)
-                        Attendance.AttendTypeEnum = Attend.AttendTypeCode.RecentVisitor;
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
                     else
-                        Attendance.AttendTypeEnum = Attend.AttendTypeCode.NewVisitor;
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
                 }
             }
             try

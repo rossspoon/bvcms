@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanUploader", "ScanUploader.csproj", "{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ScanUploaderSetup", "..\ScanUploaderSetup\ScanUploaderSetup.vdproj", "{7E812BFB-6B4E-4072-B707-B855F01A5F4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E812BFB-6B4E-4072-B707-B855F01A5F4A}.Debug|Any CPU.ActiveCfg = Debug
+		{7E812BFB-6B4E-4072-B707-B855F01A5F4A}.Debug|Any CPU.Build.0 = Debug
+		{7E812BFB-6B4E-4072-B707-B855F01A5F4A}.Release|Any CPU.ActiveCfg = Release
+		{7E812BFB-6B4E-4072-B707-B855F01A5F4A}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

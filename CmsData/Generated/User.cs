@@ -69,6 +69,8 @@ namespace CmsData
 		
 		private string _Name2;
 		
+		private Guid? _ResetPasswordCode;
+		
    		
    		private EntitySet< ActivityLog> _ActivityLogs;
 		
@@ -169,6 +171,9 @@ namespace CmsData
 		
 		partial void OnName2Changing(string value);
 		partial void OnName2Changed();
+		
+		partial void OnResetPasswordCodeChanging(Guid? value);
+		partial void OnResetPasswordCodeChanged();
 		
     #endregion
 		public User()
@@ -763,6 +768,28 @@ namespace CmsData
 					this._Name2 = value;
 					this.SendPropertyChanged("Name2");
 					this.OnName2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ResetPasswordCode", UpdateCheck=UpdateCheck.Never, Storage="_ResetPasswordCode", DbType="uniqueidentifier")]
+		public Guid? ResetPasswordCode
+		{
+			get { return this._ResetPasswordCode; }
+
+			set
+			{
+				if (this._ResetPasswordCode != value)
+				{
+				
+                    this.OnResetPasswordCodeChanging(value);
+					this.SendPropertyChanging();
+					this._ResetPasswordCode = value;
+					this.SendPropertyChanged("ResetPasswordCode");
+					this.OnResetPasswordCodeChanged();
 				}
 
 			}

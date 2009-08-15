@@ -390,7 +390,7 @@ namespace CMSWeb.Models
         {
             get
             {
-                return "ID: {0} - Mobile Phone: {1} - Work Phone: {2} - Home Phone: {3} - BirthDate: {4:d} - Join Date: {5:d} - Status: {6}"
+                return "ID: {0} \nMobile Phone: {1} \nWork Phone: {2} \nHome Phone: {3} \nBirthDate: {4:d} \nJoin Date: {5:d} \nStatus: {6}"
                     .Fmt(PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus);
             }
         }

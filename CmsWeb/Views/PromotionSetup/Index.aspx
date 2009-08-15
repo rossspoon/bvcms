@@ -29,6 +29,13 @@
                     });
                 return false;
             });
+            $("a.promote").click(function(ev) {
+                if (confirm("are you sure?"))
+                    $.post("/PromotionSetup/Promote/" + $(this).attr("id"), null, function(ret) {
+                        window.location = "/PromotionSetup/";
+                    });
+                return false;
+            });
         });
     </script>
     <h2>Promotion Setup</h2>
@@ -48,6 +55,7 @@
             <th>
                 To Division
             </th>
+            <th>Easy Button</th>
             <th></th>
         </tr>
 
@@ -69,6 +77,11 @@
             <td>
                 <span id='t<%=item.Id %>' 
                     class='clickSelect'><%=item.ToDivId == null ? "click to set" : item.ToDivision.Name%></span>
+            </td>
+            <td>
+                <% if (Model.CanPromote(item.Id))
+                   { %><a id='p<%=item.Id %>'  href="#" class="promote">promote</a>
+                <% } %>
             </td>
             <td>
                 <a id='x<%=item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>

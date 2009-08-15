@@ -280,7 +280,11 @@ namespace CmsData
 		
    		private EntitySet< VolunteerForm> _VolunteerForms;
 		
+   		private EntitySet< LoveRespect> _HerLoveRespects;
+		
    		private EntitySet< SoulMate> _HerSoulMates;
+		
+   		private EntitySet< LoveRespect> _HisLoveRespects;
 		
    		private EntitySet< SoulMate> _HisSoulMates;
 		
@@ -709,7 +713,11 @@ namespace CmsData
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
 			
+			this._HerLoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_HerLoveRespects), new Action< LoveRespect>(this.detach_HerLoveRespects)); 
+			
 			this._HerSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HerSoulMates), new Action< SoulMate>(this.detach_HerSoulMates)); 
+			
+			this._HisLoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_HisLoveRespects), new Action< LoveRespect>(this.detach_HisLoveRespects)); 
 			
 			this._HisSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HisSoulMates), new Action< SoulMate>(this.detach_HisSoulMates)); 
 			
@@ -3486,12 +3494,32 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="HerLoveRespects__Her", Storage="_HerLoveRespects", OtherKey="HerId")]
+   		public EntitySet< LoveRespect> HerLoveRespects
+   		{
+   		    get { return this._HerLoveRespects; }
+
+			set	{ this._HerLoveRespects.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="HerSoulMates__Her", Storage="_HerSoulMates", OtherKey="HerId")]
    		public EntitySet< SoulMate> HerSoulMates
    		{
    		    get { return this._HerSoulMates; }
 
 			set	{ this._HerSoulMates.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="HisLoveRespects__Him", Storage="_HisLoveRespects", OtherKey="HimId")]
+   		public EntitySet< LoveRespect> HisLoveRespects
+   		{
+   		    get { return this._HisLoveRespects; }
+
+			set	{ this._HisLoveRespects.Assign(value); }
 
    		}
 
@@ -4299,6 +4327,19 @@ namespace CmsData
 		}
 
 		
+		private void attach_HerLoveRespects(LoveRespect entity)
+		{
+			this.SendPropertyChanging();
+			entity.Her = this;
+		}
+
+		private void detach_HerLoveRespects(LoveRespect entity)
+		{
+			this.SendPropertyChanging();
+			entity.Her = null;
+		}
+
+		
 		private void attach_HerSoulMates(SoulMate entity)
 		{
 			this.SendPropertyChanging();
@@ -4309,6 +4350,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Her = null;
+		}
+
+		
+		private void attach_HisLoveRespects(LoveRespect entity)
+		{
+			this.SendPropertyChanging();
+			entity.Him = this;
+		}
+
+		private void detach_HisLoveRespects(LoveRespect entity)
+		{
+			this.SendPropertyChanging();
+			entity.Him = null;
 		}
 
 		

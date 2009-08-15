@@ -77,7 +77,7 @@ public static class ViewExtensions
         if (Protocol == null || Protocol == "0")
             Protocol = "http://";
         else
-            Protocol = "https://";
+            Protocol = "http://";
 
         string appPath = pg.ViewContext.HttpContext.Request.ApplicationPath;
         if (appPath == "/")

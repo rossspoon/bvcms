@@ -169,7 +169,7 @@
   <wsdl:message name="UploadBundleServiceAuthHeader">
     <wsdl:part name="ServiceAuthHeader" element="tns:ServiceAuthHeader" />
   </wsdl:message>
-  <wsdl:portType name="cmsSoap">
+  <wsdl:portType name="WebServiceSoap">
     <wsdl:operation name="UploadImage">
       <wsdl:input message="tns:UploadImageSoapIn" />
       <wsdl:output message="tns:UploadImageSoapOut" />
@@ -191,7 +191,7 @@
       <wsdl:output message="tns:UploadBundleSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="cmsSoap" type="tns:cmsSoap">
+  <wsdl:binding name="WebServiceSoap" type="tns:WebServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="UploadImage">
       <soap:operation soapAction="http://tempuri.org/UploadImage" style="document" />
@@ -244,7 +244,7 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="cmsSoap12" type="tns:cmsSoap">
+  <wsdl:binding name="WebServiceSoap12" type="tns:WebServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="UploadImage">
       <soap12:operation soapAction="http://tempuri.org/UploadImage" style="document" />
@@ -297,12 +297,12 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="cms">
-    <wsdl:port name="cmsSoap" binding="tns:cmsSoap">
-      <soap:address location="http://localhost:54428/cms.asmx" />
+  <wsdl:service name="WebService">
+    <wsdl:port name="WebServiceSoap" binding="tns:WebServiceSoap">
+      <soap:address location="http://localhost:58724/WebService.asmx" />
     </wsdl:port>
-    <wsdl:port name="cmsSoap12" binding="tns:cmsSoap12">
-      <soap12:address location="http://localhost:54428/cms.asmx" />
+    <wsdl:port name="WebServiceSoap12" binding="tns:WebServiceSoap12">
+      <soap12:address location="http://localhost:58724/WebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

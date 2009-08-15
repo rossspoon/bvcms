@@ -31,8 +31,6 @@ namespace CmsData
 		
    		
     	
-		private EntityRef< EnrollmentTransaction> _EnrollmentTransaction;
-		
 		private EntityRef< Organization> _Organization;
 		
 		private EntityRef< Person> _Person;
@@ -66,8 +64,6 @@ namespace CmsData
 		public BadET()
 		{
 			
-			
-			this._EnrollmentTransaction = default(EntityRef< EnrollmentTransaction>); 
 			
 			this._Organization = default(EntityRef< Organization>); 
 			
@@ -161,9 +157,6 @@ namespace CmsData
 				if (this._TranId != value)
 				{
 				
-					if (this._EnrollmentTransaction.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnTranIdChanging(value);
 					this.SendPropertyChanging();
 					this._TranId = value;
@@ -228,48 +221,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_BadET_EnrollmentTransaction", Storage="_EnrollmentTransaction", ThisKey="TranId", IsForeignKey=true)]
-		public EnrollmentTransaction EnrollmentTransaction
-		{
-			get { return this._EnrollmentTransaction.Entity; }
-
-			set
-			{
-				EnrollmentTransaction previousValue = this._EnrollmentTransaction.Entity;
-				if (((previousValue != value) 
-							|| (this._EnrollmentTransaction.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._EnrollmentTransaction.Entity = null;
-						previousValue.BadETs.Remove(this);
-					}
-
-					this._EnrollmentTransaction.Entity = value;
-					if (value != null)
-					{
-						value.BadETs.Add(this);
-						
-						this._TranId = value.TransactionId;
-						
-					}
-
-					else
-					{
-						
-						this._TranId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("EnrollmentTransaction");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FK_BadET_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
 		public Organization Organization
 		{

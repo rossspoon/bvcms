@@ -116,7 +116,7 @@ namespace CMSWeb
                 SourceContactId = contact.ContactId,
                 Description = "Follow up",
                 ListId = Models.TaskModel.InBoxId(uid),
-                StatusEnum = Task.StatusCode.Active,
+                StatusId = (int)Task.StatusCode.Active,
                 Project = contact.MinistryId == null ? null : contact.Ministry.MinistryName,
             };
             DbUtil.Db.Tasks.InsertOnSubmit(task);

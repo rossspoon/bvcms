@@ -95,5 +95,15 @@ namespace CMSWeb.Controllers
                     };
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Promote(string id)
+        {
+            var iid = id.Substring(1).ToInt();
+            var m = new PromotionSetupModel();
+            UpdateModel(m);
+            m.Promote(iid);
+            return RedirectToAction("Index");
+        }
+
     }
 }

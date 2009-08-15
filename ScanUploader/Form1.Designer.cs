@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.UserInfo = new System.Windows.Forms.ToolStripTextBox();
             this.SelectScanner = new System.Windows.Forms.ToolStripButton();
             this.ConfigScanner = new System.Windows.Forms.ToolStripButton();
             this.AcquireImage = new System.Windows.Forms.ToolStripButton();
@@ -38,7 +39,7 @@
             this.volunteerAppToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Search = new System.Windows.Forms.ToolStripButton();
             this.PeopleId = new System.Windows.Forms.ToolStripLabel();
-            this.UserInfo = new System.Windows.Forms.ToolStripTextBox();
+            this.recRegToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,6 +58,11 @@
             this.toolStrip1.Size = new System.Drawing.Size(685, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // UserInfo
+            // 
+            this.UserInfo.Name = "UserInfo";
+            this.UserInfo.Size = new System.Drawing.Size(100, 25);
             // 
             // SelectScanner
             // 
@@ -89,6 +95,7 @@
             // 
             this.TypeImage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.vBSRegistrationToolStripMenuItem,
+            this.recRegToolStripMenuItem,
             this.volunteerAppToolStripMenuItem});
             this.TypeImage.Image = ((System.Drawing.Image)(resources.GetObject("TypeImage.Image")));
             this.TypeImage.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -99,15 +106,17 @@
             // vBSRegistrationToolStripMenuItem
             // 
             this.vBSRegistrationToolStripMenuItem.Name = "vBSRegistrationToolStripMenuItem";
-            this.vBSRegistrationToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.vBSRegistrationToolStripMenuItem.Text = "VBS Registration";
+            this.vBSRegistrationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.vBSRegistrationToolStripMenuItem.Tag = "1";
+            this.vBSRegistrationToolStripMenuItem.Text = "VBSReg";
             this.vBSRegistrationToolStripMenuItem.Click += new System.EventHandler(this.vBSRegistrationToolStripMenuItem_Click);
             // 
             // volunteerAppToolStripMenuItem
             // 
             this.volunteerAppToolStripMenuItem.Name = "volunteerAppToolStripMenuItem";
-            this.volunteerAppToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.volunteerAppToolStripMenuItem.Text = "Volunteer App";
+            this.volunteerAppToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.volunteerAppToolStripMenuItem.Tag = "3";
+            this.volunteerAppToolStripMenuItem.Text = "VolApp";
             this.volunteerAppToolStripMenuItem.Click += new System.EventHandler(this.volunteerAppToolStripMenuItem_Click);
             // 
             // Search
@@ -125,10 +134,13 @@
             this.PeopleId.Size = new System.Drawing.Size(53, 22);
             this.PeopleId.Text = "PeopleId";
             // 
-            // UserInfo
+            // recRegToolStripMenuItem
             // 
-            this.UserInfo.Name = "UserInfo";
-            this.UserInfo.Size = new System.Drawing.Size(100, 25);
+            this.recRegToolStripMenuItem.Name = "recRegToolStripMenuItem";
+            this.recRegToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.recRegToolStripMenuItem.Tag = "2";
+            this.recRegToolStripMenuItem.Text = "RecReg";
+            this.recRegToolStripMenuItem.Click += new System.EventHandler(this.recRegToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -159,6 +171,7 @@
         private System.Windows.Forms.ToolStripButton Search;
         private System.Windows.Forms.ToolStripLabel PeopleId;
         private System.Windows.Forms.ToolStripTextBox UserInfo;
+        private System.Windows.Forms.ToolStripMenuItem recRegToolStripMenuItem;
     }
 }
 

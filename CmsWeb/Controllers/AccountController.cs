@@ -7,6 +7,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
+using CmsData;
+using UtilityExtensions;
+using CMSPresenter;
+using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
@@ -78,7 +82,7 @@ namespace CMSWeb.Controllers
 
             FormsAuth.SignOut();
 
-            return RedirectToRoute("Default");
+            return Redirect("/");
         }
 
         public ActionResult Register()
@@ -113,6 +117,97 @@ namespace CMSWeb.Controllers
 
             // If we got this far, something failed, redisplay form
             return View();
+        }
+
+
+        public ActionResult ForgotPassword(string username, string dob)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View();
+
+            if (!username.HasValue())
+                ModelState.AddModelError("username", "user name required");
+            DateTime bd;
+            if (!Util.DateValid(dob, out bd))
+                ModelState.AddModelError("dob", "valid birth date required");
+            if (!ModelState.IsValid)
+                return View();
+
+            var user = DbUtil.Db.Users.SingleOrDefault(u =>
+                u.Username == username
+                && u.Person.BirthDay == bd.Day
+                && u.Person.BirthMonth == bd.Month
+                && u.Person.BirthYear == bd.Year);
+            var smtp = new SmtpClient();
+            if (user != null)
+            {
+                user.ResetPasswordCode = Guid.NewGuid();
+                var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt( 
+                    Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
+                HomeController.Email(smtp, DbUtil.SystemEmailAddress, user.Name, user.EmailAddress, 
+                    "bvcms password reset link",
+                    @"Hi {0},
+<p>You recently requested a new password.  To reset your password, follow the link below:<br />
+<a href=""{1}"">{1}</a></p>
+<p>If you did not request a new password, please disregard this message.</p>
+<p>Thanks,<br />
+The bvCMS Team</p>
+".Fmt(user.Name,link));
+                DbUtil.Db.SubmitChanges();
+                HomeController.Email(smtp, DbUtil.SystemEmailAddress, null, DbUtil.Settings("AdminMail"),
+                    "bvcms user: {0} forgot password".Fmt(user.Name), "no content");
+            }
+            else
+                HomeController.Email(smtp, DbUtil.SystemEmailAddress, null, DbUtil.Settings("AdminMail"),
+    "bvcms unknown user: {0} forgot password".Fmt(username), "no content");
+
+            return RedirectToAction("RequestPassword");
+
+        }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult RequestPassword()
+        {
+            return View();
+        }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ResetPassword(Guid id)
+        {
+            var user = DbUtil.Db.Users.SingleOrDefault(u => u.ResetPasswordCode == id);
+            if (user == null)
+                return Content("Invalid code");
+
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var mu = CMSMembershipProvider.provider.GetUser(user.Username, false);
+            mu.UnlockUser();
+            var newpassword = FetchPassword(new Random());
+            mu.ChangePassword(mu.ResetPassword(), newpassword);
+            CMSMembershipProvider.provider.AdminOverride = false;
+
+            user.ResetPasswordCode = null;
+            DbUtil.Db.SubmitChanges();
+
+            var em = new Emailer();
+            em.LoadAddress(user.EmailAddress, user.Name);
+            em.NotifyEmail("bvcms new password",
+                @"Hi {0},
+<p>Your new password is {1}</p>
+<p>If you did not request a new password, please notify us ASAP.</p>
+<p>Thanks,<br />
+The bvCMS Team</p>
+".Fmt(user.Name, newpassword));
+
+            return View();
+        }
+        private string FetchPassword(Random rnd)
+        {
+            var n = DbUtil.Db.Words.Select(w => w.WordX).Count();
+            var r1 = rnd.Next(1, n);
+            var r2 = rnd.Next(1, n);
+            var q = from w in DbUtil.Db.Words
+                    where w.N == r1 || w.N == r2
+                    select w.WordX;
+            var a = q.ToArray();
+            return a[0] + "." + a[1];
         }
 
         [Authorize]
@@ -348,5 +443,15 @@ namespace CMSWeb.Controllers
             MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
             return currentUser.ChangePassword(oldPassword, newPassword);
         }
+        private string FetchUsername(string first, string last)
+        {
+            var username = first.ToLower() + last.ToLower()[0];
+            var uname = username;
+            var i = 1;
+            while (DbUtil.Db.Users.SingleOrDefault(u => u.Username == uname) != null)
+                uname = username + i++;
+            return uname;
+        }
+
     }
 }

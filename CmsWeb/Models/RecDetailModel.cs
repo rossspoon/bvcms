@@ -11,12 +11,13 @@ using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using CMSPresenter;
 
 namespace CMSWeb.Models
 {
     public class RecDetailModel
     {
-        private RecReg recreg;
+        internal RecReg recreg;
         public RecDetailModel(int id)
         {
             recreg = DbUtil.Db.RecRegs.SingleOrDefault(v => v.Id == id);
@@ -42,6 +43,17 @@ namespace CMSWeb.Models
         {
             get { return recreg.ShirtSize; }
             set { recreg.ShirtSize = value; }
+        }
+        public int? League
+        {
+            get
+            {
+                return recreg.DivId ?? 0;
+            }
+            set
+            {
+                recreg.DivId = value;
+            }
         }
         public bool FeePaid
         {
@@ -79,5 +91,93 @@ namespace CMSWeb.Models
         {
             get { return recreg.TransactionId; }
         }
+        internal RecAgeDivision GetRecAgeDivision(int divid)
+        {
+            var q = from r in DbUtil.Db.RecAgeDivisions
+                    where r.DivId == divid
+                    where r.GenderId == recreg.Person.GenderId || r.GenderId == 0
+                    select r;
+            var list = q.ToList();
+            var bd = recreg.Person.GetBirthdate().Value;
+            var q2 = from r in list
+                     let age = bd.AgeAsOf(r.agedate)
+                     where age >= r.StartAge && age <= r.EndAge
+                     select r;
+            return q2.SingleOrDefault();
+        }
+        public int? AgeDivId { get; set; }
+        internal void AssignPerson(int pid)
+        {
+            if (PeopleId != pid)
+            {
+                if (PeopleId.HasValue && AgeDivId.HasValue)
+                {
+                    var q = from om in DbUtil.Db.OrganizationMembers
+                            where om.PeopleId == PeopleId && om.OrganizationId == AgeDivId
+                            select om;
+                    var member = q.SingleOrDefault();
+                    if (member != null)
+                        member.Drop();
+                }
+                recreg.PeopleId = pid;
+                DbUtil.Db.SubmitChanges();
+                OrganizationMember.UpdateMeetingsToUpdate();
+            }
+        }
+        public IEnumerable<SelectListItem> Leagues()
+        {
+            var q = from d in DbUtil.Db.Divisions
+                    where d.RecAgeDivisions.Count() > 0
+                    orderby d.Name
+                    select new SelectListItem
+                    {
+                        Text = d.Name,
+                        Value = d.Id.ToString(),
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(Select League)", Value = "0", Selected = true });
+            return list;
+        }
+        private RecAgeDivision _RecAgeDiv;
+        public RecAgeDivision RecAgeDiv
+        {
+            get
+            {
+                if (_RecAgeDiv == null)
+                    _RecAgeDiv = GetRecAgeDivision(League.Value);
+                return _RecAgeDiv;
+            }
+        }
+        internal bool EnrollInOrg()
+        {
+            if (RecAgeDiv == null || !recreg.PeopleId.HasValue)
+                return false;
+            var oid = RecAgeDiv.OrgId;
+            OrgId = oid;
+            recreg.OrgId = oid;
+            DbUtil.Db.SubmitChanges();
+            var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
+                om.OrganizationId == OrgId && om.PeopleId == recreg.PeopleId);
+            if (member == null)
+                OrganizationController.InsertOrgMembers(
+                    OrgId.Value,
+                    recreg.PeopleId.Value,
+                    (int)OrganizationMember.MemberTypeCode.Member,
+                    DateTime.Today, null, false);
+            return true;
+        }
+        public CmsData.Organization organization { get; set; }
+        public int? OrgId
+        {
+            get
+            {
+                return organization.OrganizationId;
+            }
+            set
+            {
+                organization = DbUtil.Db.Organizations.Single(o => o.OrganizationId == value);
+            }
+        }
+
     }
 }

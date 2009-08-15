@@ -219,6 +219,35 @@ namespace CMSWeb.Models
                 }
             return q;
         }
+        public IEnumerable<ParticipantInfo> FetchParticipants0()
+        {
+            var q = from recreg in DbUtil.Db.RecRegs
+                    where (recreg.DivId ?? 0) == 0
+                    where (recreg.Expired ?? false) == false
+                    select new ParticipantInfo
+                    {
+                        IsSelected = selected.Contains(recreg.PeopleId ?? 0),
+                        PeopleId = recreg.PeopleId,
+                        Id = recreg.Id,
+                        Hash = 0,
+                        Uploaded = recreg.Uploaded.Value
+                    };
+            if (Dir == "asc")
+                switch (Sort)
+                {
+                    case "Uploaded":
+                        q = q.OrderBy(i => i.Uploaded);
+                        break;
+                }
+            else
+                switch (Sort)
+                {
+                    case "Uploaded":
+                        q = q.OrderByDescending(i => i.Uploaded);
+                        break;
+                }
+            return q;
+        }
 
         public void AssignToTeam()
         {
@@ -286,6 +315,18 @@ namespace CMSWeb.Models
                         Text = mt.Name,
                     };
             return q;
+        }
+        public void DeleteRecReg(int id)
+        {
+            var r = DbUtil.Db.RecRegs.Single(vb => vb.Id == id);
+            var img = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == r.ImgId);
+            DbUtil.Db.RecRegs.DeleteOnSubmit(r);
+            DbUtil.Db.SubmitChanges();
+            if (img != null)
+            {
+                ImageData.DbUtil.Db.Images.DeleteOnSubmit(img);
+                ImageData.DbUtil.Db.SubmitChanges();
+            }
         }
     }
 }

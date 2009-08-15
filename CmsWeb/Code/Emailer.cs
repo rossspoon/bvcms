@@ -92,7 +92,7 @@ namespace CMSWeb
                 var msg = new MailMessage(From, a);
                 msg.ReplyTo = ReplyTo;
                 msg.Subject = Subject;
-                msg.Body = Message;
+                msg.Body = "<html><body>\n" + Message + "\n</body></html>\n";
                 msg.IsBodyHtml = true;
                 if (i % 20 == 0)
                     smtp = new SmtpClient();
@@ -135,7 +135,8 @@ namespace CMSWeb
                     var b = Message.Replace("{name}", p.Name);
                     b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
                     b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                    msg.Body = b;
+                    msg.Body = "<html><body>\n" + b + "\n</body></html>\n";
+
                     if (a != null)
                         msg.Attachments.Add(a);
 
@@ -174,7 +175,7 @@ namespace CMSWeb
                 var b = Message.Replace("{name}", p.Name);
                 b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
                 b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                msg.Body = b;
+                msg.Body = "<html><body>\n" + b + "\n</body></html>\n";
                 msg.IsBodyHtml = true;
                 smtp.Send(msg);
             }

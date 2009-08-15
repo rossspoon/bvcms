@@ -102,6 +102,11 @@
                     runat="server">
                     <asp:Image ID="Image21" ImageUrl="~/images/Excel.png" runat="server" />
                     Member Export</asp:HyperLink></li>
+            <li id="LRItem" runat="server">
+                <asp:HyperLink ID="LRLink" ToolTip="Includes LoveRespect info"
+                    runat="server">
+                    <asp:Image ID="Image24" ImageUrl="~/images/Excel.png" runat="server" />
+                    LoveResp Export</asp:HyperLink></li>
             <li id="SmlItem" runat="server">
                 <asp:HyperLink ID="SmlLink" ToolTip="Includes Soulmate Live info"
                     runat="server">

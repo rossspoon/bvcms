@@ -110,7 +110,7 @@ namespace CMSWeb2
         protected void Application_Error(object sender, EventArgs e)
         {
             var err = Server.GetLastError();
-            if ((HttpContext.Current != null) && User.IsInRole("Developer") && Util.UserName.ToLower() != "karenw")
+            if ((HttpContext.Current != null) && User.IsInRole("Developer"))
             {
                 Response.Clear();
                 Response.Write("<h3>{0}</h3>\n".Fmt(err.Message));

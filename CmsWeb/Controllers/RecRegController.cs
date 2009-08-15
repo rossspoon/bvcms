@@ -13,8 +13,10 @@ namespace CMSWeb.Controllers
 {
     public class RecRegController : Controller
     {
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
+            if (!id.HasValue)
+                return View("NoLeague");
             var m = new RecRegModel { divid = id };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -67,8 +69,10 @@ namespace CMSWeb.Controllers
                 return RedirectToAction("Confirm", new { id = reg.Id });
             return RedirectToAction("OtherInfo", new { id = reg.Id });
         }
-        public ActionResult OtherInfo(int id)
+        public ActionResult OtherInfo(int? id)
         {
+            if (!id.HasValue)
+                return View("Unknown");
             var m = new RecRegModel { regid = id };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -118,14 +122,18 @@ m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.Orga
                 return Json(null);
             return Json(new { city = z.City, state = z.State });
         }
-        public ActionResult Payment(int id)
+        public ActionResult Payment(int? id)
         {
+            if (!id.HasValue)
+                return View("Unknown");
             var m = new RecRegModel { regid = id };
 
             return View(m);
         }
-        public ActionResult Confirm(int id, string TransactionID)
+        public ActionResult Confirm(int? id, string TransactionID)
         {
+            if (!id.HasValue)
+                return View("Unknown");
             var m = new RecRegModel { regid = id };
             if (TransactionID.HasValue())
             {
@@ -138,12 +146,12 @@ m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.Orga
     "", m.registration.Email, "Recreation Registration",
 @"<p>Thank you for registering for {0}: {1}
 You will receive another email with team information once they have been established.</p>
-<p>You will need to download the <a href=""https://cms.bellevue.org/Upload/MedicalRelease.pdf"">Medical Relase Form</a>, 
+<p>You will need to download the <a href=""{3}/Upload/MedicalRelease.pdf"">Medical Relase Form</a>, 
 print, sign, and return it to the Recreation Ministry in order to complete your registration.</p>
 <p>We have the following information:
 {2}
 ".Fmt(m.division.Name, m.organization.OrganizationName, 
-    ImageData.Image.Content(m.registration.ImgId.Value)));
+    ImageData.Image.Content(m.registration.ImgId.Value), DbUtil.TaskHost));
 
 
             return View(m);
