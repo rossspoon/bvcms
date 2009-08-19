@@ -131,6 +131,7 @@ namespace CMSWeb.Models
             };
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            p.EmailAddress = email;
             DbUtil.Db.SubmitChanges();
             return p;
         }
@@ -139,6 +140,7 @@ namespace CMSWeb.Models
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            RecRegModel.FixTitle(p);
             DbUtil.Db.SubmitChanges();
         }
     }

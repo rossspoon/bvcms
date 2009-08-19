@@ -353,25 +353,25 @@ namespace CMSWeb.Models
             if (person1 != null && person2 != null)
                 return;
             if (married && person1 != null && person2 == null)
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2, email2);
             else if (married && person1 == null && person2 != null)
-                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1, phone1, homecell1);
+                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1, phone1, homecell1, email1);
             else if (married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married, email1);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2, email2);
             }
             else if (!married && person1 != null && person2 == null)
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, false);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, false, email2);
             else if (!married && person1 == null && person2 != null)
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, false);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, false, email1);
             else if (!married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, married);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married, email1);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, married, email2);
             }
         }
-        internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell)
+        internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell, string email)
         {
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1? 2 : 1,
@@ -386,11 +386,13 @@ namespace CMSWeb.Models
                     np.CellPhone = phone.GetDigits();
                     break;
             }
+            np.EmailAddress = email;
+            RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;
         }
         internal Person AddPerson(int gender, string first, string last, string dob, 
-            string addr, string city, string state, string zip, string phone, string homecell, bool married)
+            string addr, string city, string state, string zip, string phone, string homecell, bool married, string email)
         {
             var f = new Family
             {
@@ -416,6 +418,8 @@ namespace CMSWeb.Models
                     np.CellPhone = phone.GetDigits();
                     break;
             }
+            np.EmailAddress = email;
+            RecRegModel.FixTitle(np);
 
             DbUtil.Db.SubmitChanges();
             return np;

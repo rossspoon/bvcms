@@ -139,6 +139,8 @@ namespace CMSWeb.Models
                 null, first, null, last, dob, false, gender.Value, 
                     DbUtil.Settings("DiscLifeOrigin").ToInt(), 
                     DbUtil.Settings("DiscLifeEntry").ToInt());
+            person.EmailAddress = email;
+            RecRegModel.FixTitle(person);
             DbUtil.Db.SubmitChanges();
         }
 

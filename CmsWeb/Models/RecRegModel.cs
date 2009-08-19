@@ -230,7 +230,19 @@ namespace CMSWeb.Models
                 null, first, null, last, dob, false, gender.Value, 
                     DbUtil.Settings("RecOrigin").ToInt(), 
                     DbUtil.Settings("RecEntry").ToInt());
+            participant.EmailAddress = email;
+            FixTitle(participant);
             DbUtil.Db.SubmitChanges();
+        }
+        public static void FixTitle(Person p)
+        {
+            if (p.GenderId == 1)
+                p.TitleCode = "Mr.";
+            else if (p.GenderId == 2)
+                if (p.MaritalStatusId == 20)
+                    p.TitleCode = "Mrs.";
+                else
+                    p.TitleCode = "Ms.";
         }
 
         public bool IsAdult()

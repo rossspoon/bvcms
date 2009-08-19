@@ -72,7 +72,8 @@ namespace CMSWeb.Controllers
                     HisEmailPreferred = m.preferredEmail1,
                     Relationship = m.Relation,
                     OrgId = m.OrgId,
-                    Created = DateTime.Now
+                    Created = DateTime.Now,
+                    PreferNight = m.night
                 };
                 DbUtil.Db.LoveRespects.InsertOnSubmit(lr);
             }
@@ -80,10 +81,14 @@ namespace CMSWeb.Controllers
                 lr.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
             var smtp = new SmtpClient();
-            SendStaffEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.organization, m.NightWord());
-            SendStaffEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.organization, m.NightWord());
-            SendEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.phone1, m.homecell1, m.MaritalStatus, m.organization);
-            SendEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.phone2, m.homecell2, m.MaritalStatus, m.organization);
+            SendStaffEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.organization, 
+                LoveRespectModel.NightWord(m.night));
+            SendStaffEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.organization, 
+                LoveRespectModel.NightWord(m.night));
+            SendEmail(smtp, m.person1, m.email1, m.preferredEmail1, 
+                m.phone1, m.homecell1, m.MaritalStatus, m.organization, m.night.Value);
+            SendEmail(smtp, m.person2, m.email2, m.preferredEmail2, 
+                m.phone2, m.homecell2, m.MaritalStatus, m.organization, m.night.Value);
             return RedirectToAction("Confirm");
         }
         public ActionResult Other()
@@ -123,7 +128,7 @@ namespace CMSWeb.Controllers
         }
 
         private void SendEmail(SmtpClient smtp, Person p, string email, bool preferred, 
-            string phone, string homecell, int married, CmsData.Organization org)
+            string phone, string homecell, int married, CmsData.Organization org, int night)
         {
             var sb = new StringBuilder();
             var oldaddress = "";
@@ -164,11 +169,18 @@ namespace CMSWeb.Controllers
             }
             DbUtil.Db.SubmitChanges();
 
-            HomeController.Email(smtp, DbUtil.Settings("LRMail"),
-                                p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
-@"Hi {0},<p>Thank you for registering. You are now enrolled for {3} starting the following date:</p>
+            if (night == 3)
+                HomeController.Email(smtp, DbUtil.Settings("LRMail"),
+                                    p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
+    @"Hi {0},<p>Thank you for registering. You are now enrolled for {3} starting the following date:</p>
 <p>{1:ddd MMM d}, {2:yyyy h:mm tt} </p>".Fmt(
-            p.PreferredName, org.FirstMeetingDate, org.WeeklySchedule.MeetingTime, org.OrganizationName));
+                    p.PreferredName, org.FirstMeetingDate, org.WeeklySchedule.MeetingTime, org.OrganizationName));
+            else
+                HomeController.Email(smtp, DbUtil.Settings("LRMail"),
+                                p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
+@"Hi {0},<p>Thank you for registering for a Love and Respect small group. 
+Someone will be in contact with you as soon as we form groups.</p>".Fmt(
+                p.PreferredName));
         }
 
 

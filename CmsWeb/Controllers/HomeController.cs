@@ -82,6 +82,7 @@ namespace CMSWeb.Controllers
             var msg = new MailMessage(fr, ma);
             msg.Subject = subject;
             msg.Body = "<html><body>\n" + message + "\n</body></html>\n";
+            msg.BodyEncoding = System.Text.Encoding.UTF8;
             msg.IsBodyHtml = true;
             smtp.Send(msg);
         }

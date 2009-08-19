@@ -129,6 +129,7 @@ namespace CMSPresenter
                         DropDate = etd.TransactionDate,
                         MemberType = etd.MemberType.Description,
                         DivisionName = div.Program.Name + "/" + div.Name,
+                        AttendPct = etd.AttendancePercentage
                     };
             return q2.Skip(startRowIndex).Take(maximumRows);
         }

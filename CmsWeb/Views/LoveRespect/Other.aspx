@@ -49,7 +49,7 @@
                 <col />
                 <tr>
                     <td><label for="night">Preferred Night</label></td>
-                    <td><%= Html.DropDownList("night", Model.Nights()) %></td>
+                    <td><%= Html.DropDownList("night", CMSWeb.Models.LoveRespectModel.Nights()) %></td>
                     <td><%= Html.ValidationMessage("night") %></td>
                 </tr>
                 <tr>
@@ -157,7 +157,7 @@
                 <tr><th colspan="2">Relationship</th></tr>
                 <tr>
                     <td><label for="Relation">Relationship</label></td>
-                    <td><%=Html.DropDownList("Relation", Model.Relations()) %></td>
+                    <td><%=Html.DropDownList("Relation", CMSWeb.Models.LoveRespectModel.Relations()) %></td>
                     <td><%= Html.ValidationMessage("Relation")%></td>
                 </tr>
                 

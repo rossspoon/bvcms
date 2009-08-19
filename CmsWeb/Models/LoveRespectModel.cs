@@ -208,7 +208,7 @@ namespace CMSWeb.Models
             if (Relation == 0)
                 ModelState.AddModelError("Relation", "Please select a relationship");
         }
-        public IEnumerable<SelectListItem> Relations()
+        public static IEnumerable<SelectListItem> Relations()
         {
             return new List<SelectListItem> 
             {
@@ -229,7 +229,7 @@ namespace CMSWeb.Models
                 return 10;
             }
         }
-        public IEnumerable<SelectListItem> Nights()
+        public static IEnumerable<SelectListItem> Nights()
         {
             return new List<SelectListItem> 
             {
@@ -239,7 +239,7 @@ namespace CMSWeb.Models
                 new SelectListItem { Value="3", Text="Wednesday" },
                 new SelectListItem { Value="4", Text="Thursday" },
                 new SelectListItem { Value="5", Text="Friday" },
-                new SelectListItem { Value="5", Text="Saturday" },
+                new SelectListItem { Value="6", Text="Saturday" },
             };
         }
         internal void EnrollInClass(Person person)
@@ -261,25 +261,25 @@ namespace CMSWeb.Models
             if (person1 != null && person2 != null)
                 return;
             if (married && person1 != null && person2 == null)
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2, email2);
             else if (married && person1 == null && person2 != null)
-                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1, phone1, homecell1);
+                _Person1 = AddPersonToPerson(person2, first1, lastname1, dob1, phone1, homecell1, email1);
             else if (married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
-                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married, email1);
+                _Person2 = AddPersonToPerson(person1, first2, lastname2, dob2, phone2, homecell2, email2);
             }
             else if (!married && person1 != null && person2 == null)
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, false);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, false, email2);
             else if (!married && person1 == null && person2 != null)
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, false);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, false, email1);
             else if (!married && person1 == null && person2 == null)
             {
-                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married);
-                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, married);
+                _Person1 = AddPerson(1, first1, lastname1, dob1, addr1, city1, state1, zip1, phone1, homecell1, married, email1);
+                _Person2 = AddPerson(2, first2, lastname2, dob2, addr2, city2, state2, zip2, phone2, homecell2, married, email2);
             }
         }
-        internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell)
+        internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell, string email)
         {
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1 ? 2 : 1,
@@ -294,11 +294,13 @@ namespace CMSWeb.Models
                     np.CellPhone = phone.GetDigits();
                     break;
             }
+            np.EmailAddress = email;
+            RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;
         }
         internal Person AddPerson(int gender, string first, string last, string dob,
-            string addr, string city, string state, string zip, string phone, string homecell, bool married)
+            string addr, string city, string state, string zip, string phone, string homecell, bool married, string email)
         {
             var f = new Family
             {
@@ -324,7 +326,8 @@ namespace CMSWeb.Models
                     np.CellPhone = phone.GetDigits();
                     break;
             }
-
+            np.EmailAddress = email;
+            RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;
         }
@@ -332,7 +335,7 @@ namespace CMSWeb.Models
         {
             var sb = new StringBuilder();
             sb.Append("<table>");
-            sb.AppendFormat("<tr><td>Preferred night:</td><td>{0}</td></tr>\n", NightWord());
+            sb.AppendFormat("<tr><td>Preferred night:</td><td>{0}</td></tr>\n", NightWord(night));
             sb.AppendFormat("<tr><td>Church Location:</td><td>{0}</td></tr>\n", location);
             sb.Append("<tr><th>---------</th></tr>\n");
 
@@ -362,25 +365,63 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Email:</td><td>{0}</td></tr>\n", email2);
             sb.Append("<tr><th>---------</th></tr>\n");
 
-            sb.AppendFormat("<tr><td>Relationship:</td><td>{0}</td></tr>\n", RelationDesc());
+            sb.AppendFormat("<tr><td>Relationship:</td><td>{0}</td></tr>\n", RelationDesc(Relation));
             sb.Append("</table>");
 
             return sb.ToString();
         }
-        public string NightWord()
+        public static string NightWord(int? d)
         {
             var q = from i in Nights()
-                    where i.Value == night.ToString()
+                    where i.Value == d.ToString()
                     select i.Text;
             return q.SingleOrDefault();
         }
-        public string RelationDesc()
+        public static string RelationDesc(int? rel)
         {
             var q = from i in Relations()
-                    where i.Value == Relation.ToString()
+                    where i.Value == rel.ToString()
                     select i.Text;
             return q.SingleOrDefault();
         }
-
+        public static System.Collections.IEnumerable LoveRespectList(int queryid, int maximumRows)
+        {
+            var Db = DbUtil.Db;
+            var qB = Db.LoadQueryById(queryid);
+            var q = Db.People.Where(qB.Predicate());
+            var q2 = from p in q
+                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let lr2 = p.HerLoveRespects.OrderByDescending(sm => sm.Created).FirstOrDefault()
+                     let lr1 = p.HisLoveRespects.OrderByDescending(sm => sm.Created).FirstOrDefault()
+                     let loverespect = lr1 != null ? lr1 : lr2 != null ? lr2 : null
+                     orderby loverespect.Id, p.FamilyId, p.GenderId
+                     select new
+                     {
+                         LoveRespectId = loverespect != null ? (int?)loverespect.Id : null,
+                         Relationship = loverespect != null? RelationDesc(loverespect.Relationship) : "",
+                         Night = NightWord(loverespect.PreferNight),
+                         Married = p.MaritalStatus.Description,
+                         PeopleId = p.PeopleId,
+                         Title = p.TitleCode,
+                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         LastName = p.LastName,
+                         Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
+                         City = p.PrimaryCity,
+                         State = p.PrimaryState,
+                         Zip = p.PrimaryZip.FmtZip(),
+                         Email = p.EmailAddress,
+                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                         EnrollDate = bfm.EnrollmentDate.FormatDate(),
+                         RegDate = loverespect != null? loverespect.Created.FormatDateTm() : "",
+                         HomePhone = p.HomePhone.FmtFone(),
+                         CellPhone = p.CellPhone.FmtFone(),
+                         WorkPhone = p.WorkPhone.FmtFone(),
+                         MemberStatus = p.MemberStatus.Description,
+                         Age = p.Age.ToString(),
+                         MemberType = bfm.MemberType.Description,
+                     };
+            return q2.Take(maximumRows);
+        }
     }
 }
