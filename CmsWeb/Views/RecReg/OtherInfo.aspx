@@ -93,7 +93,22 @@
                 </tr>
                 </table>
             </fieldset>
-        </div>
+        </div>       
+        <%= Html.Hidden("peopleid", Model.peopleid) %>
+        <%= Html.Hidden("divid", Model.divid) %>
+        <%= Html.Hidden("orgid", Model.orgid) %>
+        <%= Html.Hidden("first", Model.first) %> 
+        <%= Html.Hidden("last", Model.last) %> 
+        <%= Html.Hidden("dob", Model.dob) %> 
+        <%= Html.Hidden("phone", Model.phone) %> 
+        <%= Html.Hidden("homecell", Model.homecell) %> 
+        <%= Html.Hidden("gender", Model.gender) %> 
+        <%= Html.Hidden("email", Model.email) %> 
+        <%= Html.Hidden("shownew", Model.shownew) %> 
+        <%= Html.Hidden("addr", Model.addr) %> 
+        <%= Html.Hidden("zip", Model.zip) %> 
+        <%= Html.Hidden("city", Model.city) %> 
+        <%= Html.Hidden("state", Model.state) %> 
     <% } %>
 
 </asp:Content>

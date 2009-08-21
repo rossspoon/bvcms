@@ -26,7 +26,6 @@ namespace CMSWeb.Models
         public string state { get; set; }
         public string zip {get; set;}
         public string homephone {get; set;}
-        public string workphone { get; set; }
         public string cellphone { get; set; }
         public string email { get; set; }
         public int? position { get; set; }
@@ -35,22 +34,23 @@ namespace CMSWeb.Models
         public string PrepareSummaryText()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("First:\t{0}\n", first);
-            sb.AppendFormat("Nick:\t{0}\n", nickname);
-            sb.AppendFormat("Last:\t{0}\n", lastname);
-            sb.AppendFormat("DOB:\t{0:d}\n", DOB);
-            sb.AppendFormat("Gender:\t{0}\n", gender == 1 ? "M" : "F");
-            sb.AppendFormat("Maried:\t{0}\n", married);
-            sb.AppendFormat("Position:\t{0}\n", position == 10 ? "Primary" : position == 20 ? "Secondary" : "Child");
-            sb.AppendFormat("Addr1:\t{0}\n", address1);
-            sb.AppendFormat("Addr2:\t{0}\n", address2);
-            sb.AppendFormat("City:\t{0}\n", city);
-            sb.AppendFormat("State:\t{0}\n", state);
-            sb.AppendFormat("Zip:\t{0}\n", zip);
-            sb.AppendFormat("HomePhone:\t{0}\n", homephone.FmtFone());
-            sb.AppendFormat("WorkPhone:\t{0}\n", workphone.FmtFone());
-            sb.AppendFormat("CellPhone:\t{0}\n", cellphone.FmtFone());
-            sb.AppendFormat("Email:\t{0}\n", email);
+            sb.Append("<table>\n");
+            sb.AppendFormat("<tr><td>First</td><td>{0}</td></tr>\n", first);
+            sb.AppendFormat("<tr><td>Nick</td><td>{0}</td></tr>\n", nickname);
+            sb.AppendFormat("<tr><td>Last</td><td>{0}</td></tr>\n", lastname);
+            sb.AppendFormat("<tr><td>DOB</td><td>{0:d}</td></tr>\n", DOB);
+            sb.AppendFormat("<tr><td>Gender</td><td>{0}</td></tr>\n", gender == 1 ? "M" : "F");
+            sb.AppendFormat("<tr><td>Maried</td><td>{0}</td></tr>\n", married);
+            sb.AppendFormat("<tr><td>Position</td><td>{0}</td></tr>\n", position == 10 ? "Primary" : position == 20 ? "Secondary" : "Child");
+            sb.AppendFormat("<tr><td>Addr1</td><td>{0}</td></tr>\n", address1);
+            sb.AppendFormat("<tr><td>Addr2</td><td>{0}</td></tr>\n", address2);
+            sb.AppendFormat("<tr><td>City</td><td>{0}</td></tr>\n", city);
+            sb.AppendFormat("<tr><td>State</td><td>{0}</td></tr>\n", state);
+            sb.AppendFormat("<tr><td>Zip</td><td>{0}</td></tr>\n", zip);
+            sb.AppendFormat("<tr><td>HomePhone</td><td>{0}</td></tr>\n", homephone.FmtFone());
+            sb.AppendFormat("<tr><td>CellPhone</td><td>{0}</td></tr>\n", cellphone.FmtFone());
+            sb.AppendFormat("<tr><td>Email</td><td>{0}</td></tr>\n", email);
+            sb.Append("</table>\n");
 
             return sb.ToString();
         }
@@ -67,20 +67,27 @@ namespace CMSWeb.Models
         }
         public IQueryable<CmsData.Person> FindMember()
         {
+            first = first.Trim();
+            lastname = lastname.Trim();
             homephone = Util.GetDigits(homephone);
             var q = from p in DbUtil.Db.People
-                    where (p.LastName.StartsWith(lastname) || p.MaidenName.StartsWith(lastname))
-                            && (p.FirstName.StartsWith(first)
-                            || p.NickName.StartsWith(first)
-                            || p.MiddleName.StartsWith(first))
+                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
+                    where (p.LastName == lastname || p.MaidenName == lastname)
+                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
+                    where p.GenderId == gender
+                    select p;
+            var count = q.Count();
+            if (count > 1)
+                q = from p in q
                     where p.CellPhone.Contains(homephone)
-                            || p.WorkPhone.Contains(workphone)
+                            || p.WorkPhone.Contains(homephone)
                             || p.Family.HomePhone.Contains(homephone)
                             || p.CellPhone.Contains(cellphone)
                             || p.WorkPhone.Contains(cellphone)
                             || p.Family.HomePhone.Contains(cellphone)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
                     select p;
+            count = q.Count();
+
             return q;
         }
 
@@ -93,7 +100,7 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("city", "city required");
             if (!zip.HasValue())
                 ModelState.AddModelError("zip", "zip required");
-            if (!(homephone.HasValue() || cellphone.HasValue() || workphone.HasValue()))
+            if (!(homephone.HasValue() || cellphone.HasValue()))
                 ModelState.AddModelError("phone", "need at least one phone #");
         }
         public void ValidateModel2(ModelStateDictionary ModelState)
@@ -112,10 +119,8 @@ namespace CMSWeb.Models
             var d = cellphone.GetDigits().Length;
             if (cellphone.HasValue() && (d != 7 && d != 10))
                 ModelState.AddModelError("cellphone", "7 or 10 digits");
-            d = workphone.GetDigits().Length;
-            if (workphone.HasValue() && (d != 7 && d != 10))
-                ModelState.AddModelError("workphone", "7 or 10 digits");
-            if (email.HasValue() && !Util.ValidEmail(email))
+            if ((((string)HttpContext.Current.Session["email"]).HasValue() == false || email.HasValue()) 
+                    && !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
         }
         public Person SaveFirstPerson()
@@ -127,10 +132,11 @@ namespace CMSWeb.Models
                  CityName = city,
                  StateCode = state,
                  ZipCode = zip,
-                 HomePhone = homephone,
+                 HomePhone = homephone.GetDigits(),
             };
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email;
             DbUtil.Db.SubmitChanges();
             return p;
@@ -140,6 +146,8 @@ namespace CMSWeb.Models
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var p = Person.Add(f, position.Value, 
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            p.CellPhone = cellphone.GetDigits();
+            p.EmailAddress = email;
             RecRegModel.FixTitle(p);
             DbUtil.Db.SubmitChanges();
         }

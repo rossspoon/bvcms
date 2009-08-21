@@ -13,18 +13,18 @@ using CMSPresenter;
 
 namespace CMSWeb.Models
 {
+    [Serializable]
     public class RecRegModel
     {
-        public Division division { get; set; }
-        public int? divid
+        private Division _division { get; set; }
+        public int? divid { get; set; }
+        public Division division
         {
             get
             {
-                return division.Id;
-            }
-            set
-            {
-                division = DbUtil.Db.Divisions.Single(d => d.Id == value);
+                if (_division == null)
+                    _division = DbUtil.Db.Divisions.SingleOrDefault(d => d.Id == divid);
+                return _division;
             }
         }
         private RecAgeDivision _RecAgeDiv;
@@ -37,56 +37,79 @@ namespace CMSWeb.Models
                 return _RecAgeDiv;
             }
         }
-        public RecReg registration { get; set; }
-        public int? regid
-        {
+        public int? regid { get; set; }
+        private RecReg _registration;
+                public RecReg registration 
+{
             get
             {
-                return registration.Id;
-            }
-            set
-            {
-                registration = DbUtil.Db.RecRegs.Single(d => d.Id == value);
-                participant = registration.Person;
-                OrgId = registration.OrgId;
-                divid = registration.DivId;
-                if (participant.PeopleId != participant.Family.HeadOfHouseholdId 
-                    && participant.Family.HeadOfHouseholdId != null)
+                if (_registration == null)
                 {
-                    var p1 = participant.Family.HeadOfHousehold;
-                    if (p1.GenderId == 1)
-                        fname = p1.Name;
-                    else
-                        mname = p1.Name;
-                    var p2 = participant.Family.HeadOfHouseholdSpouse;
-                    if (p2 != null)
-                        if (p2.GenderId == 2)
-                            mname = p2.Name;
-                        else
-                            fname = p2.Name;
+                    _registration = DbUtil.Db.RecRegs.Single(d => d.Id == regid);
+                    peopleid = registration.PeopleId;
+                    orgid = _registration.OrgId;
+                    divid = _registration.DivId;
                 }
+                return _registration;
             }
         }
-        public CmsData.Organization organization { get; set; }
-        public int? OrgId
+        public int? orgid { get; set; }
+        private CmsData.Organization _organization;
+        public CmsData.Organization organization 
         {
             get
             {
-                return organization.OrganizationId;
-            }
-            set
-            {
-                organization = DbUtil.Db.Organizations.Single(o => o.OrganizationId == value);
+                if(_organization == null)
+                    _organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == orgid);
+                return _organization;
             }
         }
 
+        public int? peopleid { get; set; }
+        private Person _Participant;
+        public Person participant
+        {
+            get
+            {
+                if (_Participant == null && peopleid.HasValue)
+                {
+                    _Participant = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == peopleid);
+                    if (_Participant != null && _Participant.PeopleId != _Participant.Family.HeadOfHouseholdId
+                        && _Participant.Family.HeadOfHouseholdId != null)
+                    {
+                        var p1 = _Participant.Family.HeadOfHousehold;
+                        if (p1.GenderId == 1)
+                            fname = p1.Name;
+                        else
+                            mname = p1.Name;
+                        var p2 = _Participant.Family.HeadOfHouseholdSpouse;
+                        if (p2 != null)
+                            if (p2.GenderId == 2)
+                                mname = p2.Name;
+                            else
+                                fname = p2.Name;
+                    }
+                }
+                return _Participant;
+            }
+        }
         public int? gender { get; set; }
         public string first { get; set; }
         public string last { get; set; }
         public string dob { get; set; }
-        private DateTime birthday;
+        private DateTime _Birthday;
+        private DateTime birthday
+        {
+            get
+            {
+                if (_Birthday == DateTime.MinValue)
+                    Util.DateValid(dob, out _Birthday);
+                return _Birthday;
+            }
+        }
 
         public string phone { get; set; }
+        public string homecell { get; set; }
         public string email { get; set; }
         public bool preferredEmail { get; set; }
         public bool shownew { get; set; }
@@ -94,7 +117,6 @@ namespace CMSWeb.Models
         public string zip { get; set; }
         public string city { get; set; }
         public string state { get; set; }
-        public Person participant { get; set; }
 
         public string shirtsize { get; set; }
         public string emcontact { get; set; }
@@ -123,21 +145,27 @@ namespace CMSWeb.Models
 
         public int FindMember()
         {
-            participant = DbUtil.Db.People.SingleOrDefault(pp => pp.PeopleId == first.Substring(1).ToInt());
-            if (participant != null)
-                return 1;
+            first = first.Trim();
+            last = last.Trim();
             var fone = Util.GetDigits(phone);
             var q = from p in DbUtil.Db.People
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
-                    where p.Family.People.Any(pp => pp.CellPhone.Contains(fone) || p.WorkPhone.Contains(fone)) || p.Family.HomePhone.Contains(fone)
                     where p.BirthDay == birthday.Day && p.BirthMonth == birthday.Month && p.BirthYear == birthday.Year
                     where p.GenderId == gender
                     select p;
             var count = q.Count();
-            participant = null;
+            if (count > 1)
+                q = from p in q
+                    where p.CellPhone.Contains(fone)
+                            || p.WorkPhone.Contains(fone)
+                            || p.Family.HomePhone.Contains(fone)
+                    select p;
+            count = q.Count();
+
+            peopleid = null;
             if (count == 1)
-                participant = q.Single();
+                peopleid = q.Select(p => p.PeopleId).Single();
             return count;
         }
 
@@ -152,7 +180,7 @@ namespace CMSWeb.Models
                 modelState.AddModelError("first", "first name required");
             if (!last.HasValue())
                 modelState.AddModelError("last", "last name required");
-            if (!Util.DateValid(dob, out birthday))
+            if (birthday.Equals(DateTime.MinValue))
                 modelState.AddModelError("dob", "valid birth date required");
 
             var d = phone.GetDigits().Length;
@@ -173,7 +201,8 @@ namespace CMSWeb.Models
                 if (!state.HasValue())
                     modelState.AddModelError("state", "need state");
             }
-
+            if (GetRecAgeDivision() == null)
+                modelState.AddModelError("find", "Sorry, cannot find an appropriate age division");
         }
         public void ValidateModel2(ModelStateDictionary modelState)
         {
@@ -204,12 +233,12 @@ namespace CMSWeb.Models
             if (RecAgeDiv == null)
                 return false;
             var oid = RecAgeDiv.OrgId;
-            OrgId = oid;
+            orgid = oid;
             var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
-                om.OrganizationId == OrgId && om.PeopleId == person.PeopleId);
+                om.OrganizationId == orgid && om.PeopleId == person.PeopleId);
             if (member == null)
                 OrganizationController.InsertOrgMembers(
-                    OrgId.Value,
+                    orgid.Value,
                     person.PeopleId,
                     (int)OrganizationMember.MemberTypeCode.Member,
                     DateTime.Today, null, false);
@@ -224,13 +253,22 @@ namespace CMSWeb.Models
                 CityName = city,
                 StateCode = state,
                 ZipCode = zip,
-                HomePhone = phone,
             };
-            participant = Person.Add(f, 30,
-                null, first, null, last, dob, false, gender.Value, 
+            _Participant = Person.Add(f, 30,
+                null, first, null, last, dob, false, gender.Value,
                     DbUtil.Settings("RecOrigin").ToInt(), 
                     DbUtil.Settings("RecEntry").ToInt());
+            peopleid = participant.PeopleId;
             participant.EmailAddress = email;
+            switch (homecell)
+            {
+                case "h":
+                    f.HomePhone = phone.GetDigits();
+                    break;
+                case "c":
+                    participant.CellPhone = phone.GetDigits();
+                    break;
+            }
             FixTitle(participant);
             DbUtil.Db.SubmitChanges();
         }
@@ -249,12 +287,11 @@ namespace CMSWeb.Models
         {
             var q = from r in DbUtil.Db.RecAgeDivisions
                     where r.DivId == divid
-                    where r.GenderId == participant.GenderId || r.GenderId == 0
+                    where r.GenderId == gender || r.GenderId == 0
                     select r;
             var list = q.ToList();
-            var bd = participant.GetBirthdate().Value;
             var q2 = from r in list
-                     let age = bd.AgeAsOf(r.agedate)
+                     let age = birthday.AgeAsOf(r.agedate)
                      where age >= r.StartAge && age <= r.EndAge
                      where age > 18
                      select r;
@@ -265,12 +302,11 @@ namespace CMSWeb.Models
         {
             var q = from r in DbUtil.Db.RecAgeDivisions
                     where r.DivId == divid
-                    where r.GenderId == participant.GenderId || r.GenderId == 0
+                    where r.GenderId == gender || r.GenderId == 0
                     select r;
             var list = q.ToList();
-            var bd = participant.GetBirthdate().Value;
             var q2 = from r in list
-                     let age = bd.AgeAsOf(r.agedate)
+                     let age = birthday.AgeAsOf(r.agedate)
                      where age >= r.StartAge && age <= r.EndAge
                      select r;
             return q2.SingleOrDefault();
@@ -295,7 +331,7 @@ namespace CMSWeb.Models
             sb.Append("<table>");
             sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", participant.NickName.HasValue()? participant.NickName : participant.FirstName);
             sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", participant.LastName);
-            sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", registration.ShirtSize);
+            sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", shirtsize);
 
             sb.AppendFormat("<tr><td>DOB:</td><td>{0:d}</td></tr>\n", participant.DOB);
             sb.AppendFormat("<tr><td>Gender:</td><td>{0}</td></tr>\n", participant.GenderId == 1 ? "M" : "F");
@@ -306,21 +342,21 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Home Phone:</td><td>{0}</td></tr>\n", participant.Family.HomePhone.FmtFone());
             sb.AppendFormat("<tr><td>Cell Phone:</td><td>{0}</td></tr>\n", participant.CellPhone.FmtFone());
 
-            sb.AppendFormat("<tr><td>Email:</td><td>{0}</td></tr>\n", registration.Email);
-            sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", registration.Emcontact);
-            sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", registration.Emphone.FmtFone());
-            sb.AppendFormat("<tr><td>Physician Name:</td><td>{0}</td></tr>\n", registration.Doctor);
-            sb.AppendFormat("<tr><td>Physician Phone:</td><td>{0}</td></tr>\n", registration.Docphone.FmtFone());
-            sb.AppendFormat("<tr><td>Insurance Carrier:</td><td>{0}</td></tr>\n", registration.Insurance);
-            sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", registration.Policy);
-            sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", registration.Request);
-            sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", registration.MedicalDescription);
-            sb.AppendFormat("<tr><td>Member:</td><td>{0}</td></tr>\n", registration.Member);
-            sb.AppendFormat("<tr><td>OtherChurch:</td><td>{0}</td></tr>\n", registration.ActiveInAnotherChurch);
+            sb.AppendFormat("<tr><td>Email:</td><td>{0}</td></tr>\n", email);
+            sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", emcontact);
+            sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", emphone.FmtFone());
+            sb.AppendFormat("<tr><td>Physician Name:</td><td>{0}</td></tr>\n", doctor);
+            sb.AppendFormat("<tr><td>Physician Phone:</td><td>{0}</td></tr>\n", docphone.FmtFone());
+            sb.AppendFormat("<tr><td>Insurance Carrier:</td><td>{0}</td></tr>\n", insurance);
+            sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", policy);
+            sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", request);
+            sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", medical);
+            sb.AppendFormat("<tr><td>Member:</td><td>{0}</td></tr>\n", member);
+            sb.AppendFormat("<tr><td>OtherChurch:</td><td>{0}</td></tr>\n", otherchurch);
 
-            sb.AppendFormat("<tr><td>Mother's name:</td><td>{0}</td></tr>\n", registration.Mname);
-            sb.AppendFormat("<tr><td>Father's name:</td><td>{0}</td></tr>\n", registration.Fname);
-            sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", registration.Coaching);
+            sb.AppendFormat("<tr><td>Mother's name:</td><td>{0}</td></tr>\n", mname);
+            sb.AppendFormat("<tr><td>Father's name:</td><td>{0}</td></tr>\n", fname);
+            sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", coaching);
 
             sb.Append("</table>");
 

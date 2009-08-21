@@ -44,8 +44,8 @@
                 </tr>
                 <tr>
                     <td><label for="position">Position in Family</label></td>
-                    <td><%= Html.RadioButton("position", 10) %> Primary Adult
-                    <%= Html.RadioButton("position", 20) %> Secondary Adult
+                    <td><%= Html.RadioButton("position", 10) %> Primary Adult<br />
+                    <%= Html.RadioButton("position", 20) %> Secondary Adult<br />
                     <%= Html.RadioButton("position", 30) %> Child
                     <td><%= Html.ValidationMessage("position2") %><br />
                     (Husband and wife should both be primary)</td>
@@ -60,11 +60,6 @@
                     <td><label for="cellphone">Cell Phone</label></td>
                     <td><%= Html.TextBox("cellphone") %></td>
                     <td><%= Html.ValidationMessage("cellphone") %></td>
-                </tr>
-                <tr>
-                    <td><label for="workphone">Work Phone</label></td>
-                    <td><%= Html.TextBox("workphone") %></td>
-                    <td><%= Html.ValidationMessage("workphone")%></td>
                 </tr>
                 <tr>
                     <td><label for="email">Email</label></td>

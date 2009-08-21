@@ -47,7 +47,9 @@
                 <tr>
                     <td><label for="phone">Phone</label></td>
                     <td><%= Html.TextBox("phone")%></td>
-                    <td><%= Html.ValidationMessage("phone")%></td>
+                    <td><%= Html.RadioButton("homecell", "h") %> Home<br />
+                    <%= Html.RadioButton("homecell", "c") %> Cell
+                    <%= Html.ValidationMessage("phone")%></td>
                 </tr>
                  <tr>
                     <td><label for="gender">Participant Gender</label></td>
@@ -62,7 +64,7 @@
                 </tr>
             <% if (Model.shownew)
                { %>
-               <tr><th colspan="3">Please provide address</th></tr>
+               <tr><th colspan="3"><span style="color:Red">Please provide address</span></th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew") %>
                     <label for="addr">Address</label></td>

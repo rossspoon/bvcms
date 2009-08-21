@@ -46,10 +46,12 @@ namespace CMSWeb.Models
         private DateTime birthday;
 
         public string phone { get; set; }
+        public string homecell { get; set; }
         public string email { get; set; }
         public bool preferredEmail { get; set; }
         public bool shownew { get; set; }
         public int? gender { get; set; }
+        public int? married { get; set; }
         public string addr { get; set; }
         public string zip { get; set; }
         public string city { get; set; }
@@ -59,21 +61,30 @@ namespace CMSWeb.Models
 
         public int FindMember()
         {
-            person = DbUtil.Db.People.SingleOrDefault(pp => pp.PeopleId == first.Substring(1).ToInt());
-            if (person != null)
-                return 1;
             var fone = Util.GetDigits(phone);
+
+            first = first.Trim();
+            last = last.Trim();
             var q = from p in DbUtil.Db.People
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
-                    where p.Family.People.Any(pp => pp.CellPhone.Contains(fone) || p.WorkPhone.Contains(fone)) || p.Family.HomePhone.Contains(fone)
                     where p.BirthDay == birthday.Day && p.BirthMonth == birthday.Month && p.BirthYear == birthday.Year
+                    where p.GenderId == gender
                     select p;
             var count = q.Count();
+            if (count > 1)
+                q = from p in q
+                    where p.CellPhone.Contains(fone)
+                            || p.WorkPhone.Contains(fone)
+                            || p.Family.HomePhone.Contains(fone)
+                    select p;
+            count = q.Count();
+
             person = null;
             if (count == 1)
                 person = q.Single();
             return count;
+
         }
 
         public void ValidateModel(ModelStateDictionary modelState)
@@ -101,6 +112,8 @@ namespace CMSWeb.Models
             {
                 if (!gender.HasValue)
                     modelState.AddModelError("gender2", "gender required");
+                if (!married.HasValue)
+                    modelState.AddModelError("married2", "marital status required");
                 if (!addr.HasValue())
                     modelState.AddModelError("addr", "need address");
                 if (zip.GetDigits().Length != 5)
@@ -133,12 +146,20 @@ namespace CMSWeb.Models
                 CityName = city,
                 StateCode = state,
                 ZipCode = zip,
-                HomePhone = phone,
             };
             person = Person.Add(f, 30,
-                null, first, null, last, dob, false, gender.Value, 
+                null, first, null, last, dob, married == 2, gender.Value, 
                     DbUtil.Settings("DiscLifeOrigin").ToInt(), 
                     DbUtil.Settings("DiscLifeEntry").ToInt());
+            switch (homecell)
+            {
+                case "h":
+                    f.HomePhone = phone.GetDigits();
+                    break;
+                case "c":
+                    person.CellPhone = phone.GetDigits();
+                    break;
+            }
             person.EmailAddress = email;
             RecRegModel.FixTitle(person);
             DbUtil.Db.SubmitChanges();
@@ -223,6 +244,18 @@ namespace CMSWeb.Models
                     orderby o.OnLineCatalogSort
                     select ClassName(o);
             return q;
+        }
+        public static IEnumerable<SelectListItem> MaritalStatuses()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Value="0", Text="(choose)" },
+                new SelectListItem { Value="10", Text="Single" },
+                new SelectListItem { Value="20", Text="Married" },
+                new SelectListItem { Value="30", Text="Separated" },
+                new SelectListItem { Value="40", Text="Divorced" },
+                new SelectListItem { Value="50", Text="Widowed" },
+            };
         }
     }
 }

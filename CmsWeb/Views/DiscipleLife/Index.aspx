@@ -5,6 +5,22 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
+<% if(Model.shownew)
+   { %>
+    <script type="text/javascript">
+        $(function() {
+            $("#zip").change(function() {
+                $.post('/RecReg/CityState/' + $(this).val(), null, function(ret) {
+                    if (ret) {
+                        $('#state').val(ret.state);
+                        $('#city').val(ret.city);
+                    }
+                }, 'json');
+            });
+        });
+    </script>
+<% } %>
     <h2>Register for <%=Model.division.Name %></h2>
     <% using (Html.BeginForm()) { %>
         <div>
@@ -30,11 +46,11 @@
                     <td><label for="OrgId">Class</label></td>
 <% if (Model.Classes().Count() > 1)
    { %>
-                    <td><%= Html.DropDownList("OrgId", Model.Classes())%></td>
+                    <td colspan="2"><%= Html.DropDownList("OrgId", Model.Classes())%></td>
 <% }
    else
    { %>
-                    <td><%=Model.Classes().Single().Text%>
+                    <td colspan="2"><%=Model.Classes().Single().Text%>
                     <%= Html.Hidden("OrgId", Model.Classes().Single().Value)%></td>
 <% } %>
                     <td><%= Html.ValidationMessage("OrgId") %></td>
@@ -57,6 +73,8 @@
                 <tr>
                     <td><label for="phone">Phone</label></td>
                     <td><%= Html.TextBox("phone")%></td>
+                    <td align="left"><%= Html.RadioButton("homecell", "h") %> Home<br />
+                    <%= Html.RadioButton("homecell", "c") %> Cell</td>
                     <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
@@ -73,10 +91,21 @@
                     <%= Html.RadioButton("gender", 2) %> Female</td>
                     <td><%= Html.ValidationMessage("gender2") %></td>
                 </tr>
+                 <tr>
+                    <td><label for="married">Marital Status</label></td>
+                    <td><%= Html.RadioButton("single", 1) %> Single
+                    <%= Html.RadioButton("married", 2) %> Married</td>
+                    <td><%= Html.ValidationMessage("married2") %></td>
+                </tr>
                 <tr>
                     <td><label for="addr">Address</label></td>
                     <td><%= Html.TextBox("addr")%></td>
                     <td><%= Html.ValidationMessage("addr")%></td>
+                </tr>
+                <tr>
+                    <td><label for="zip">Zip</label></td>
+                    <td><%= Html.TextBox("zip")%></td>
+                    <td><%= Html.ValidationMessage("zip")%></td>
                 </tr>
                 <tr>
                     <td><label for="city">City</label></td>
@@ -87,11 +116,6 @@
                     <td><label for="state">State</label></td>
                     <td><%= Html.DropDownList("state", Model.StateList())%></td>
                     <td><%= Html.ValidationMessage("state")%></td>
-                </tr>
-                <tr>
-                    <td><label for="zip">Zip</label></td>
-                    <td><%= Html.TextBox("zip")%></td>
-                    <td><%= Html.ValidationMessage("zip")%></td>
                 </tr>
                 <% } %>
                 <tr>

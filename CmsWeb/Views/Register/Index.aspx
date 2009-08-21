@@ -5,6 +5,18 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(function() {
+            $("#zip").change(function() {
+                $.post('/RecReg/CityState/' + $(this).val(), null, function(ret) {
+                    if (ret) {
+                        $('#state').val(ret.state);
+                        $('#city').val(ret.city);
+                    }
+                }, 'json');
+            });
+        });
+    </script>
     <h2>Church Database Registration</h2>
     <p>
         Use the form below to register in our Church Database. 
@@ -50,8 +62,8 @@
                 </tr>
                 <tr>
                     <td><label for="position">Position in Family</label></td>
-                    <td><%= Html.RadioButton("position", 10) %> Primary Adult
-                    <%= Html.RadioButton("position", 20) %> Secondary Adult
+                    <td><%= Html.RadioButton("position", 10) %> Primary Adult<br />
+                    <%= Html.RadioButton("position", 20) %> Secondary Adult<br />
                     <%= Html.RadioButton("position", 30) %> Child
                     <td><%= Html.ValidationMessage("position2") %>
                     (Husband and wife should both be primary)</td>
@@ -67,6 +79,11 @@
                     <td><%= Html.ValidationMessage("address2") %></td>
                 </tr>
                 <tr>
+                    <td><label for="zip">Zip</label></td>
+                    <td><%= Html.TextBox("zip") %></td>
+                    <td><%= Html.ValidationMessage("zip") %></td>
+                </tr>
+                <tr>
                     <td><label for="city">City</label></td>
                     <td><%= Html.TextBox("city") %></td>
                     <td><%= Html.ValidationMessage("city") %></td>
@@ -75,11 +92,6 @@
                     <td><label for="state">State</label></td>
                     <td><%= Html.DropDownList("state", ViewData.Model.StateList()) %></td>
                     <td><%= Html.ValidationMessage("state") %></td>
-                </tr>
-                <tr>
-                    <td><label for="zip">Zip</label></td>
-                    <td><%= Html.TextBox("zip") %></td>
-                    <td><%= Html.ValidationMessage("zip") %></td>
                 </tr>
                 <tr>
                     <td><label for="homephone">Home Phone</label></td>
@@ -91,11 +103,6 @@
                     <td><label for="cellphone">Cell Phone</label></td>
                     <td><%= Html.TextBox("cellphone") %></td>
                     <td><%= Html.ValidationMessage("cellphone") %></td>
-                </tr>
-                <tr>
-                    <td><label for="workphone">Work Phone</label></td>
-                    <td><%= Html.TextBox("workphone") %></td>
-                    <td><%= Html.ValidationMessage("workphone")%></td>
                 </tr>
                 <tr>
                     <td><label for="email">Email</label></td>

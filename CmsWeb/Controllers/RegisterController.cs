@@ -19,6 +19,12 @@ namespace CMSWeb.Controllers
             ViewData["header"] = DbUtil.Settings("RegHeader");
             ViewData["logoimg"] = DbUtil.Settings("RegLogo");
         }
+        
+        public ActionResult Inside()
+        {
+            Session["auth"] = "true";
+            return RedirectToAction("Index");
+        }
         public ActionResult Index()
         {
             if (Session["auth"] == null || (string)Session["auth"] != "true")
@@ -32,8 +38,14 @@ namespace CMSWeb.Controllers
             if (ModelState.IsValid)
             {
                 var p = m.SaveFirstPerson() as Person;
+                if (!p.EmailAddress.HasValue())
+                    p.EmailAddress = (string)Session["email"];
+
                 Session["familyid"] = p.FamilyId;
                 Session["lastname"] = p.LastName;
+                Session["name"] = p.Name;
+                if (string.IsNullOrEmpty((string)Session["email"])) 
+                    Session["email"] = p.EmailAddress;
                 EmailUser(m);
                 return RedirectToAction("Confirm");
             }

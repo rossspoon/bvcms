@@ -37,98 +37,97 @@ namespace CMSWeb.Controllers
             }
             if (!ModelState.IsValid)
                 return View(m);
+
+            TempData["model"] = m;
+            return RedirectToAction("OtherInfo");
+
+        }
+        public ActionResult OtherInfo()
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                if (!TempData.ContainsKey("model"))
+                    return View("Unknown");
+                var tm = TempData["model"] as RecRegModel;
+                return View(tm);
+            }
+
+            var m = new RecRegModel();
+            UpdateModel(m);
+
+            m.ValidateModel2(ModelState);
+            if (!ModelState.IsValid)
+                return View(m);
+
+            // At this point, we have good data from the first two pages in m
+
             if (m.participant == null)
                 m.AddPerson();
-            if (!m.EnrollInOrg(m.participant))
-            {
-                ModelState.AddModelError("find", "Sorry, cannot find an appropriate age division");
-                return View(m);
-            }
+            m.EnrollInOrg(m.participant);
 
             var reg = DbUtil.Db.RecRegs.SingleOrDefault(r =>
                 r.PeopleId == m.participant.PeopleId
                 && (r.Expired ?? false) == false
-                && r.OrgId == m.OrgId);
+                && r.OrgId == m.orgid);
+
             if (reg == null)
             {
                 reg = new RecReg
                 {
                     PeopleId = m.participant.PeopleId,
                     UserInfo = "online",
-                    OrgId = m.OrgId,
+                    OrgId = m.orgid,
                     DivId = m.divid,
                     Uploaded = DateTime.Now,
                     Email = m.email,
                     FeePaid = false,
                 };
                 DbUtil.Db.RecRegs.InsertOnSubmit(reg);
-                DbUtil.Db.SubmitChanges();
             }
 
-            if(!m.last.HasValue())
-                return RedirectToAction("Confirm", new { id = reg.Id });
-            return RedirectToAction("OtherInfo", new { id = reg.Id });
-        }
-        public ActionResult OtherInfo(int? id)
-        {
-            if (!id.HasValue)
-                return View("Unknown");
-            var m = new RecRegModel { regid = id };
-            if (Request.HttpMethod.ToUpper() == "GET")
-                return View(m);
-
-            UpdateModel(m);
-            m.ValidateModel2(ModelState);
-            if (!ModelState.IsValid)
-                return View(m);
-
-            m.registration.Request = m.request;
-            m.registration.ShirtSize = m.shirtsize;
-            m.registration.ActiveInAnotherChurch = m.otherchurch;
-            m.registration.MedAllergy = m.medical.HasValue();
-            m.registration.Member = m.member;
-            m.registration.Mname = m.mname;
-            m.registration.Fname = m.fname;
-            m.registration.Emcontact = m.emcontact;
-            m.registration.Emphone = m.emphone;
-            m.registration.Docphone = m.docphone;
-            m.registration.Doctor = m.doctor;
-            m.registration.Coaching = m.coaching > 0;
-            m.registration.Insurance = m.insurance;
-            m.registration.Policy = m.policy;
-            m.registration.MedicalDescription = m.medical;
+            reg.Request = m.request;
+            reg.ShirtSize = m.shirtsize;
+            reg.ActiveInAnotherChurch = m.otherchurch;
+            reg.MedAllergy = m.medical.HasValue();
+            reg.Member = m.member;
+            reg.Mname = m.mname;
+            reg.Fname = m.fname;
+            reg.Emcontact = m.emcontact;
+            reg.Emphone = m.emphone;
+            reg.Docphone = m.docphone;
+            reg.Doctor = m.doctor;
+            reg.Coaching = m.coaching > 0;
+            reg.Insurance = m.insurance;
+            reg.Policy = m.policy;
+            reg.MedicalDescription = m.medical;
 
             var t = m.PrepareSummaryText();
             var bits = System.Text.ASCIIEncoding.ASCII.GetBytes(t);
             var i = ImageData.Image.NewTextFromBits(bits);
-            m.registration.ImgId = i.Id;
-            m.registration.IsDocument = true;
+            reg.ImgId = i.Id;
+            reg.IsDocument = true;
             DbUtil.Db.SubmitChanges();
+            m.regid = reg.Id;
 
-            HomeController.Email(m.registration.Email,
+            HomeController.Email(m.email,
                     "", DbUtil.Settings("RecMail"), "{0} Registration".Fmt(m.division.Name),
 @"{0}({1}) has registered for {2}: {3} (check cms to confirm feepaid)</p>".Fmt(
 m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
 
-            if (m.registration.FeePaid ?? false)
-                return RedirectToAction("Confirm", new { id = m.regid });
+            if ((reg.FeePaid ?? false) == true)
+                return RedirectToAction("Confirm", new { id = reg.Id });
             else
-                return RedirectToAction("Payment", new { id = m.regid });
+            {
+                TempData["model"] = m;
+                return RedirectToAction("Payment");
+            }
         }
-        public JsonResult CityState(string id)
+        public ActionResult Payment()
         {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City, state = z.State });
-        }
-        public ActionResult Payment(int? id)
-        {
-            if (!id.HasValue)
+            if (!TempData.ContainsKey("model"))
                 return View("Unknown");
-            var m = new RecRegModel { regid = id };
-
-            return View(m);
+            var tm = TempData["model"] as RecRegModel;
+            return View(tm);
         }
         public ActionResult Confirm(int? id, string TransactionID)
         {
@@ -150,11 +149,17 @@ You will receive another email with team information once they have been establi
 print, sign, and return it to the Recreation Ministry in order to complete your registration.</p>
 <p>We have the following information:
 {2}
-".Fmt(m.division.Name, m.organization.OrganizationName, 
+".Fmt(m.division.Name, m.organization.OrganizationName,
     ImageData.Image.Content(m.registration.ImgId.Value), DbUtil.TaskHost));
 
-
             return View(m);
+        }
+        public JsonResult CityState(string id)
+        {
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
+            if (z == null)
+                return Json(null);
+            return Json(new { city = z.City, state = z.State });
         }
     }
 }
