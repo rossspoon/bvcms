@@ -24,7 +24,7 @@ namespace CMSWeb.Models
             }
             set
             {
-                division = DbUtil.Db.Divisions.Single(d => d.Id == value);
+                division = DbUtil.Db.Divisions.SingleOrDefault(d => d.Id == value);
             }
         }
         public CmsData.Organization organization { get; set; }
@@ -69,7 +69,6 @@ namespace CMSWeb.Models
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
                     where p.BirthDay == birthday.Day && p.BirthMonth == birthday.Month && p.BirthYear == birthday.Year
-                    where p.GenderId == gender
                     select p;
             var count = q.Count();
             if (count > 1)
@@ -106,6 +105,8 @@ namespace CMSWeb.Models
             var d = phone.GetDigits().Length;
             if (d != 7 && d != 10)
                 modelState.AddModelError("phone", "7 or 10 digits");
+            else if (!homecell.HasValue())
+                modelState.AddModelError("phone", "Home or Cell required");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 modelState.AddModelError("email", "Please specify a valid email address.");
             if (shownew)

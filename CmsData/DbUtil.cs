@@ -74,12 +74,12 @@ namespace CmsData
         }
         public static string Header()
         {
-            var list = HttpContext.Current.Cache["Settings"] as Dictionary<string, string>;
+            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
             if (list == null)
             {
 
             }
-            var hc = HttpContext.Current.Cache["header"] as string;
+            var hc = HttpContext.Current.Cache[Util.Host + "header"] as string;
             if (hc == null)
             {
                 var h = Db.Contents.SingleOrDefault(c => c.Name == "Header");
@@ -95,7 +95,7 @@ namespace CmsData
     <h2 id='CommonHeaderSubTitle'>Feed My Sheep</h2>
 </div>
 ";
-                HttpContext.Current.Cache["header"] = hc;
+                HttpContext.Current.Cache[Util.Host + "header"] = hc;
             }
             return hc;
         }
@@ -103,11 +103,11 @@ namespace CmsData
         {
             if (HttpContext.Current == null)
                 return "";
-            var list = HttpContext.Current.Cache["Settings"] as Dictionary<string, string>;
+            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
             if (list == null)
             {
                 list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX);
-                HttpContext.Current.Cache["Settings"] = list;
+                HttpContext.Current.Cache[Util.Host + "Settings"] = list;
             }
             if (list.ContainsKey(name))
                 return list[name];

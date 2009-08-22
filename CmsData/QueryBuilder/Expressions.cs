@@ -687,6 +687,21 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression RecFeePaid(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> hasreg = p => p.RecRegs.Count() > 0;
+            Expression<Func<Person, bool>> pred = p =>
+                    p.RecRegs.Any(r => r.FeePaid == true);
+            Expression expr1 = Expression.Convert(Expression.Invoke(hasreg, parm), typeof(bool));
+            Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+
+            if (!(op == CompareType.Equal && tf))
+                expr2 = Expression.Not(expr2);
+            return Expression.And(expr1, expr2);
+        }
         internal static Expression VBSActiveOtherChurch(
             ParameterExpression parm,
             CompareType op,

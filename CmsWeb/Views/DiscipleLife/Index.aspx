@@ -42,18 +42,18 @@
                 </tr>
                 <tr><td>&nbsp;</td></tr>
                 <% } %>
-                <tr>
-                    <td><label for="OrgId">Class</label></td>
+                <tr><td colspan="3">
 <% if (Model.Classes().Count() > 1)
    { %>
-                    <td colspan="2"><%= Html.DropDownList("OrgId", Model.Classes())%></td>
+                    <%= Html.DropDownList("OrgId", Model.Classes())%>
 <% }
    else
    { %>
-                    <td colspan="2"><%=Model.Classes().Single().Text%>
-                    <%= Html.Hidden("OrgId", Model.Classes().Single().Value)%></td>
+                    <%=Model.Classes().Single().Text%>
+                    <%= Html.Hidden("OrgId", Model.Classes().Single().Value)%>
 <% } %>
-                    <td><%= Html.ValidationMessage("OrgId") %></td>
+                    <%= Html.ValidationMessage("OrgId") %>
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="first">First Name</label></td>
@@ -73,9 +73,9 @@
                 <tr>
                     <td><label for="phone">Phone</label></td>
                     <td><%= Html.TextBox("phone")%></td>
-                    <td align="left"><%= Html.RadioButton("homecell", "h") %> Home<br />
-                    <%= Html.RadioButton("homecell", "c") %> Cell</td>
-                    <td><%= Html.ValidationMessage("phone")%></td>
+                    <td><%= Html.RadioButton("homecell", "h") %>&nbsp;Home<br />
+                    <%= Html.RadioButton("homecell", "c") %>&nbsp;Cell
+                    <%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
                     <td><label for="email">Contact Email</label></td>
@@ -93,7 +93,7 @@
                 </tr>
                  <tr>
                     <td><label for="married">Marital Status</label></td>
-                    <td><%= Html.RadioButton("single", 1) %> Single
+                    <td><%= Html.RadioButton("married", 1) %> Single
                     <%= Html.RadioButton("married", 2) %> Married</td>
                     <td><%= Html.ValidationMessage("married2") %></td>
                 </tr>

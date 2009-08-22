@@ -104,6 +104,7 @@ namespace CmsData
         RecentAttendCount,
         RecentAttendMemberType,
         RecentAttendType,
+        RecFeePaid,
         SavedQuery,
         SchoolOther,
         SmallGroup,

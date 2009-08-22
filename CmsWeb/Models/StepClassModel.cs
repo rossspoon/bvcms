@@ -83,7 +83,7 @@ namespace CMSWeb.Models
         {
             var q = from m in DbUtil.Db.Meetings
                     where m.Organization.OrganizationName == name
-                    where m.MeetingDate > DateTime.Now.AddDays(4)
+                    where m.MeetingDate > DateTime.Now.AddDays(6)
                     orderby m.MeetingDate ascending
                     select new { Dt = m.MeetingDate.Value, Id = m.MeetingId.ToString() };
             var q2 = from m in q.ToList()

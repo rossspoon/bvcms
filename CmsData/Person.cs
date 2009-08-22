@@ -397,8 +397,11 @@ namespace CmsData
             fam.People.Add(p);
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
-            var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-            tag2.PersonTags.Add(new TagPerson { Person = p });
+            if (Util.UserPeopleId.HasValue)
+            {
+                var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+                tag2.PersonTags.Add(new TagPerson { Person = p });
+            }
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             return p;

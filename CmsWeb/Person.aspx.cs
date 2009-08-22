@@ -558,6 +558,16 @@ namespace CMSWeb
                         break;
                 }
             }
+            if (DiscoveryClassStatusID.HadBeenChanged 
+                && person.DiscoveryClassStatusId == (int)Person.DiscoveryClassStatusCode.Attended)
+            {
+                var q = from om in DbUtil.Db.OrganizationMembers
+                        where om.PeopleId == person.PeopleId
+                        where om.Organization.OrganizationName == "Step 1"
+                        select om;
+                foreach (var om in q)
+                    om.Drop();
+            }
         }
         private void DropMembership()
         {

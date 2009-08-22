@@ -13,9 +13,11 @@ namespace CMSWeb.Controllers
 {
     public class DiscipleLifeController : Controller
     {
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
             var m = new DiscipleLifeModel { divid = id };
+            if (m.division == null)
+                return Content("No division Found");
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 

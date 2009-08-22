@@ -305,6 +305,10 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecFeePaid:
+                    return Expressions.RecFeePaid(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 // S -------------------------
                 case QueryType.SavedQuery:
                     return Expressions.SavedQuery(parm,
