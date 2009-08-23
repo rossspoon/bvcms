@@ -193,10 +193,10 @@ namespace CMSWeb
         {
             try
             {
-                ReplyTo = new MailAddress(from.Users.First().EmailAddress, from.Name);
+                ReplyTo = new MailAddress(from.EmailAddress, from.Name);
                 From = new MailAddress(DbUtil.SystemEmailAddress, from.Name);
                 Addresses.Clear();
-                var To = LoadAddress(to.Users.First().EmailAddress, to.Name);
+                var To = LoadAddress(to.EmailAddress, to.Name);
                 if (To == null)
                     return;
                 if (From.Host == ReplyTo.Host || From.Host == To.Host)

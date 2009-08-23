@@ -570,11 +570,11 @@ namespace CMSPresenter
                     select new CodeValueItem
                     {
                         Id = u.Boss.UserId,
-                        Code = u.Boss.EmailAddress,
+                        Code = u.Boss.Person.EmailAddress,
                         Value = u.Boss.Username
                     };
             var list = q.ToList();
-            list.Insert(0, new CodeValueItem { Id = user.UserId, Code = user.EmailAddress, Value = user.Name2 });
+            list.Insert(0, new CodeValueItem { Id = user.UserId, Code = user.Person.EmailAddress, Value = user.Name2 });
             return list;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]

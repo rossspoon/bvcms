@@ -52,7 +52,7 @@ namespace CMSPresenter
                 CMSMembershipProvider.provider.AdminOverride = false;
             }
             user.Username = Username;
-            user.EmailAddress = EmailAddress;
+            user.Person.EmailAddress = EmailAddress;
             user.IsApproved = IsApproved;
             user.MustChangePassword = MustChangePassword;
             if (user.IsLockedOut ^ IsLockedOut)

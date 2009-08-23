@@ -310,7 +310,17 @@ namespace CMSPresenter
             }
             else // not a member of this class 
             {
-                if (BFCMember != null) // member of another class (visiting member)
+                if (BFCMember == null)
+                // not a member of another class (visitor)
+                {
+                    Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
+                    if (o.IsRecentVisitor.Value)
+                        Attendance.AttendanceTypeId = 50;//(int)Attend.AttendTypeCode.RecentVisitor;
+                    else
+                        Attendance.AttendanceTypeId = 60;//(int)Attend.AttendTypeCode.NewVisitor;
+                }
+                else
+                // member of another class (visiting member)
                 {
                     if (attended)
                     {
@@ -328,14 +338,6 @@ namespace CMSPresenter
                         BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
 
                     OtherMeetings.Add(BFCAttendance);
-                }
-                else // not a member of another class (visitor)
-                {
-                    Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
-                    if (o.IsRecentVisitor.Value)
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
-                    else
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
                 }
             }
             try

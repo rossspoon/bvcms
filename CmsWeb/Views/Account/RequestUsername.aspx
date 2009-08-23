@@ -1,12 +1,12 @@
 ﻿<%@Language="C#" MasterPageFile="~/Views/Shared/Site3.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="changePasswordSuccessHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>Password Reset</title>
+    <title>Username Request</title>
 </asp:Content>
 
 <asp:Content ID="changePasswordSuccessContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Password Reset Notice Sent</h2>
+    <h2>Username Request</h2>
     <p>
-        You should receive an email shortly with a link to reset your password if you gave us your correct username and birthday.
+        You should receive an email shortly with your username if you gave us your correct email and birthday.
     </p>
 </asp:Content>

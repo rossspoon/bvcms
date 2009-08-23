@@ -20,6 +20,8 @@ namespace CMSWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Url.Scheme == "http" && Request.Url.Authority == "cms.bellevue.org")
+                Response.Redirect("https://cms.bellevue.org/Login.aspx?" + Request.QueryString);
             var terms = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == "TermsOfUse");
             if (terms != null)
                 TermsLabel.Text = terms.Body;
@@ -59,7 +61,7 @@ By logging in below, you agree that you understand this purpose and will abide b
             var user = Membership.GetUser(Login1.UserName);
             var em = new Emailer();
             foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                em.LoadAddress(u.EmailAddress, u.Name);
+                em.LoadAddress(u.Person.EmailAddress, u.Name);
 
             if (user == null)
             {
@@ -109,7 +111,7 @@ By logging in below, you agree that you understand this purpose and will abide b
             if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
                 foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                    em.LoadAddress(u.EmailAddress, u.Name);
+                    em.LoadAddress(u.Person.EmailAddress, u.Name);
                 em.NotifyEmail("user loggedin without a role",
                     string.Format("{0} visited site at {1} but does not have Staff role",
                         name, DateTime.Now));
@@ -118,8 +120,9 @@ By logging in below, you agree that you understand this purpose and will abide b
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
             {
                 foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                    em.LoadAddress(u.EmailAddress, u.Name);
-                em.NotifyEmail("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, HttpContext.Current.Request.UserHostAddress));
+                    em.LoadAddress(u.Person.EmailAddress, u.Name);
+                em.NotifyEmail("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, 
+                    HttpContext.Current.Request.UserHostAddress));
                 HttpContext.Current.Response.Redirect("NoRemoteAccess.htm");
             }
         }
@@ -141,7 +144,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                     e.Authenticated = true;
                     var em = new Emailer();
                     foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                        em.LoadAddress(u.EmailAddress, u.Name);
+                        em.LoadAddress(u.Person.EmailAddress, u.Name);
                     em.NotifyEmail("{0} is being impersonated".Fmt(Login1.UserName), DateTime.Now.ToString());
                 }
                 else

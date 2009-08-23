@@ -241,7 +241,7 @@ namespace CMSPresenter
                 {
                     PeopleId = pid,
                     Username = username,
-                    EmailAddress = email,
+                    //EmailAddress = email,
                     Password = EncodePassword(password),
                     PasswordQuestion = passwordQuestion,
                     PasswordAnswer = EncodePassword(passwordAnswer),
@@ -286,7 +286,7 @@ namespace CMSPresenter
                 var user = new User
                 {
                     PeopleId = PeopleId,
-                    EmailAddress = email,
+                    //EmailAddress = email,
                     Username = username,
                     Password = EncodePassword(password),
                     IsApproved = isApproved,
@@ -415,7 +415,7 @@ namespace CMSPresenter
             return new MembershipUser(this.Name,
             u.Username,
             u.UserId,
-            u.EmailAddress,
+            u.Person.EmailAddress,
             u.PasswordQuestion,
             u.Comment,
             u.IsApproved,
@@ -443,7 +443,7 @@ namespace CMSPresenter
         public override string GetUserNameByEmail(string email)
         {
             var Db = new CMSDataContext(Util.ConnectionString);
-            return Db.Users.Single(u => u.EmailAddress == email).Username;
+            return Db.Users.Single(u => u.Person.EmailAddress == email).Username;
         }
 
         public override string ResetPassword(string username, string answer)
@@ -494,7 +494,7 @@ namespace CMSPresenter
             var Db = new CMSDataContext(Util.ConnectionString);
             var u = Db.Users.SingleOrDefault(us => us.Username == user.UserName);
             u.IsApproved = user.IsApproved;
-            u.EmailAddress = user.Email;
+            //u.Person.EmailAddress = user.Email;
             u.Comment = user.Comment;
             Db.SubmitChanges();
         }
@@ -663,11 +663,11 @@ namespace CMSPresenter
             bool right = emailToMatch.EndsWith("%");
             emailToMatch = emailToMatch.Trim('%');
             if (left && right)
-                q = q.Where(u => u.EmailAddress.Contains(emailToMatch));
+                q = q.Where(u => u.Person.EmailAddress.Contains(emailToMatch));
             else if (left)
-                q = q.Where(u => u.EmailAddress.EndsWith(emailToMatch));
+                q = q.Where(u => u.Person.EmailAddress.EndsWith(emailToMatch));
             else if (right)
-                q = q.Where(u => u.EmailAddress.StartsWith(emailToMatch));
+                q = q.Where(u => u.Person.EmailAddress.StartsWith(emailToMatch));
 
             totalRecords = q.Count();
             q = q.OrderBy(u => u.Username).Skip(pageIndex * pageSize).Take(pageSize);

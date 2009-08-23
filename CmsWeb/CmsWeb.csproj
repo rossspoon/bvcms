@@ -1794,6 +1794,8 @@
     <None Include="fckeditor\fckutils.cfm" />
     <Content Include="Report\MemberReport.aspx" />
     <Content Include="ScanUpload.svc" />
+    <Content Include="Views\Account\RequestUsername.aspx" />
+    <Content Include="Views\Account\ForgotUsername.aspx" />
     <Content Include="Views\Account\ResetPassword.aspx" />
     <Content Include="Views\Account\RequestPassword.aspx" />
     <Content Include="Views\Account\ForgotPassword.aspx" />
