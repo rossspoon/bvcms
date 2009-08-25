@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using BitFactory.Logging;
+using System.Web;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -27,6 +31,13 @@ namespace CmsData
             VisitingMember = 300,
             Visitor = 310,
             InServiceMember = 500,
+        }
+        partial void OnValidate(System.Data.Linq.ChangeAction action)
+        {
+            var path = HttpContext.Current.Items["atpath"].ToInt();
+                if (MemberTypeId == 310 && AttendanceTypeId != 50 && AttendanceTypeId != 60)
+                    Util.Logger.LogStatus("Attendance Oddity({0}, {1}, {2})\n\n--Stacktrace\n{3}".Fmt(
+                        MemberTypeId, AttendanceTypeId, path, System.Environment.StackTrace));
         }
     }
 }

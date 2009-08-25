@@ -14,6 +14,8 @@ using System.Data.Linq.Mapping;
 using System.Collections;
 using System.Web.SessionState;
 using System.Xml.Linq;
+using BitFactory.Logging;
+using System.Net.Mail;
 
 namespace CMSWeb2
 {
@@ -22,8 +24,14 @@ namespace CMSWeb2
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        private static CompositeLogger logger = new CompositeLogger();
+        public static CompositeLogger Logger
+        {
+            get { return logger; }
+        }
         protected void Application_Start()
         {
+            InitLogger();
             RegisterRoutes(RouteTable.Routes);
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
@@ -99,6 +107,10 @@ namespace CMSWeb2
         {
             StartSession();
         }
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            Util.Logger = Logger;
+        }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)
@@ -109,31 +121,41 @@ namespace CMSWeb2
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var err = Server.GetLastError();
-            if ((HttpContext.Current != null) && User.IsInRole("Developer"))
-            {
-                Response.Clear();
-                Response.Write("<h3>{0}</h3>\n".Fmt(err.Message));
-                Response.Write("<div style='font-family:Courier New'>\n{0}\n</div>".Fmt(err.ToString().Replace("\n", "<br/>\n")));
-                Server.ClearError();
-            }
-            else
-            {
-                Emailer em = null;
-                var u = Membership.GetUser(User.Identity.Name);
-                if (u != null && u.Email.HasValue())
-                    em = new Emailer(u.Email, u.UserName);
-                else
-                    em = new Emailer();
-                foreach (var name in Roles.GetUsersInRole("Developer"))
-                {
-                    var d = Membership.GetUser(name);
-                    em.LoadAddress(d.Email, name);
-                }
-                em.NotifyEmail("CMS2 error for user: " + User.Identity.Name,
-                    "<h3>{0}</h3>\n<div style='font-family:Courier New'>\n{1}\n</div>"
-                    .Fmt(err.Message, err.ToString().Replace("\n", "<br/>\n")));
-            }
+            var ex = Server.GetLastError();
+            var u = DbUtil.Db.CurrentUser;
+            var email = "";
+            if (u != null)
+                email = u.EmailAddress;
+            Logger.LogError("Error--" + Request.Url.Authority + " " + Util.UserName, "\n" + email + " ({0}, {1})\n".Fmt(u.UserId, u.Name) + ex.ToString());
         }
+        private void InitLogger()
+        {
+            //  create the email logger
+            Logger emailLogger = new EmailLogger( new SmtpClient(),
+                 DbUtil.SystemEmailAddress,
+                 "david@davidcarroll.name");
+            emailLogger.SeverityThreshold = LogSeverity.Status;
+
+            // create the file logger
+            Logger fileLogger = new FileLogger(
+                 Server.MapPath("/logfile.log"));
+            fileLogger.SeverityThreshold = LogSeverity.Status;
+
+            //// create a socket logger - wrapped in an insistent logger
+            //Logger socketLogger = new SerialSocketLogger(
+            //     "<IP address of my home machine>",
+            //     12345 /* pick a port number */ );
+            //socketLogger = new InsistentLogger(
+            //     socketLogger,
+            //     200, /* retain 200 log entries in memory */
+            //     3600 /* retry a failed socket every hour */ );
+
+            // add the loggers to the main composite logger
+            Logger.AddLogger("Email", emailLogger);
+            Logger.AddLogger("File", fileLogger);
+            //Logger.AddLogger("Socket", socketLogger);
+
+        }
+
     }
 }

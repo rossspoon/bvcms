@@ -158,9 +158,10 @@ namespace CMSWeb.Controllers
             return Json(m.SavedQueries());
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SaveQuery(string SavedQueryDesc, bool IsPublic)
+        public ActionResult SaveQuery()
         {
-            var m = new QueryModel { SavedQueryDesc = SavedQueryDesc, IsPublic = IsPublic };
+            var m = new QueryModel();
+            UpdateModel(m);
             m.LoadScratchPad();
             m.SaveQuery();
             var c = new ContentResult();

@@ -286,7 +286,6 @@ namespace CMSPresenter
                 var user = new User
                 {
                     PeopleId = PeopleId,
-                    //EmailAddress = email,
                     Username = username,
                     Password = EncodePassword(password),
                     IsApproved = isApproved,

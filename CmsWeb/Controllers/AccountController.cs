@@ -77,6 +77,25 @@ namespace CMSWeb.Controllers
             }
         }
 
+        public ActionResult AddUser(int id)
+        {
+            if (!User.IsInRole("Admin"))
+                return Content("unauthorized");
+            var p = DbUtil.Db.People.Single(pe => pe.PeopleId == id);
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var newpassword = FetchPassword(new Random());
+            var user = CMSMembershipProvider.provider.NewUser(
+                MembershipService.FetchUsername(p.FirstName, p.LastName),
+                newpassword,
+                null,
+                true,
+                id);
+            CMSMembershipProvider.provider.AdminOverride = false;
+            user.MustChangePassword = false;
+            DbUtil.Db.Users.InsertOnSubmit(user);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Admin/Users.aspx?created=1");
+        }
         public ActionResult LogOff()
         {
 
@@ -304,13 +323,13 @@ The bvCMS Team</p>
             return View();
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (filterContext.HttpContext.User.Identity is WindowsIdentity)
-            {
-                throw new InvalidOperationException("Windows authentication is not supported.");
-            }
-        }
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    if (filterContext.HttpContext.User.Identity is WindowsIdentity)
+        //    {
+        //        throw new InvalidOperationException("Windows authentication is not supported.");
+        //    }
+        //}
 
         #region Validation Methods
 
@@ -448,6 +467,7 @@ The bvCMS Team</p>
         bool ValidateUser(string userName, string password);
         MembershipCreateStatus CreateUser(string userName, string password, string email);
         bool ChangePassword(string userName, string oldPassword, string newPassword);
+        string FetchUsername(string first, string last);
     }
 
     public class AccountMembershipService : IMembershipService
@@ -489,7 +509,7 @@ The bvCMS Team</p>
             MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
             return currentUser.ChangePassword(oldPassword, newPassword);
         }
-        private string FetchUsername(string first, string last)
+        public string FetchUsername(string first, string last)
         {
             var username = first.ToLower() + last.ToLower()[0];
             var uname = username;

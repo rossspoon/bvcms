@@ -21,7 +21,10 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.Url.Scheme == "http" && Request.Url.Authority == "cms.bellevue.org")
-                Response.Redirect("https://cms.bellevue.org/Login.aspx?" + Request.QueryString);
+                if (Request.QueryString.Count > 0)
+                    Response.Redirect("https://cms.bellevue.org/Login.aspx?" + Request.QueryString);
+                else
+                    Response.Redirect("https://cms.bellevue.org/Login.aspx");
             var terms = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == "TermsOfUse");
             if (terms != null)
                 TermsLabel.Text = terms.Body;

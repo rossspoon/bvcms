@@ -39,7 +39,7 @@ namespace CMSPresenter
         }
 
         [DataObjectMethod(DataObjectMethodType.Update, true)]
-        public void Update(bool IsApproved, bool MustChangePassword, bool IsLockedOut, int PeopleId, string EmailAddress, string Username, string PasswordSetOnly, int UserId)
+        public void Update(bool IsApproved, bool MustChangePassword, bool IsLockedOut, int PeopleId, string Username, string PasswordSetOnly, int UserId)
         {
             var user = Db.Users.Single(u => u.UserId == UserId);
             if (PasswordSetOnly.HasValue())
@@ -52,7 +52,6 @@ namespace CMSPresenter
                 CMSMembershipProvider.provider.AdminOverride = false;
             }
             user.Username = Username;
-            user.Person.EmailAddress = EmailAddress;
             user.IsApproved = IsApproved;
             user.MustChangePassword = MustChangePassword;
             if (user.IsLockedOut ^ IsLockedOut)
@@ -61,25 +60,6 @@ namespace CMSPresenter
             if (PeopleId > 0)
                 user.PeopleId = PeopleId;
             Db.SubmitChanges();
-        }
-        [DataObjectMethod(DataObjectMethodType.Insert, true)]
-        public void Insert(bool IsApproved, bool MustChangePassword, bool IsLockedOut, int PeopleId, string EmailAddress, string Username, string PasswordSetOnly)
-        {
-            int? pid = null;
-            if (PeopleId > 0)
-                pid = PeopleId;
-
-            CMSMembershipProvider.provider.AdminOverride = true;
-            var user = CMSMembershipProvider.provider.NewUser(
-                Username,
-                PasswordSetOnly,
-                EmailAddress,
-                IsApproved,
-                pid);
-            CMSMembershipProvider.provider.AdminOverride = false;
-            user.MustChangePassword = MustChangePassword;
-            DbUtil.Db.Users.InsertOnSubmit(user);
-            DbUtil.Db.SubmitChanges();
         }
 
         private int count;

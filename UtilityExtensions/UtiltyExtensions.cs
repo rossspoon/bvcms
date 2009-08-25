@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Net.Mail;
+using BitFactory.Logging;
 
 namespace UtilityExtensions
 {
@@ -763,6 +764,17 @@ namespace UtilityExtensions
             catch
             {
                 return false;
+            }
+        }
+        public static CompositeLogger Logger
+        {
+            get
+            {
+                return HttpContext.Current.Items["Logger"] as CompositeLogger;
+            }
+            set
+            {
+                HttpContext.Current.Items["Logger"] = value;
             }
         }
     }

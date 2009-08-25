@@ -1946,6 +1946,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.UEmail", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string UEmail(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((String)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.UName2", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string UName2(

@@ -15,6 +15,7 @@ using System.Transactions;
 using CMSPresenter.InfoClasses;
 using System.Data.Linq;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace CMSPresenter
 {
@@ -216,6 +217,7 @@ namespace CMSPresenter
         public string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
             var OtherMeetings = new List<Attend>();
+            var path = 0;
 
             var r = DbUtil.Db.AttendMeetingInfo(MeetingId, PeopleId);
 
@@ -251,12 +253,14 @@ namespace CMSPresenter
                     Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                 else
                     Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
+                path = 1;
             }
             else if (o.IsOffSite == true && attended == false)
             {
                 Attendance.OtherAttends = 1;
                 Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
                 Attendance.MemberTypeId = o.MemberTypeId.Value;
+                path = 2;
             }
             else if (o.MemberTypeId.HasValue) // member of this class
             {
@@ -283,6 +287,7 @@ namespace CMSPresenter
                             BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         else
                             BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
+                        path = 3;
                     }
                     else if (BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
                     {
@@ -290,6 +295,7 @@ namespace CMSPresenter
                             BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.InService;
                         else
                             BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
+                        path = 4;
                     }
                     OtherMeetings.Add(BFCAttendance);
                 }
@@ -306,6 +312,7 @@ namespace CMSPresenter
                         OtherMeetings.Add(a);
                     }
                     Attendance.OtherAttends = VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
+                    path = 6;
                 }
             }
             else // not a member of this class 
@@ -315,9 +322,10 @@ namespace CMSPresenter
                 {
                     Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
                     if (o.IsRecentVisitor.Value)
-                        Attendance.AttendanceTypeId = 50;//(int)Attend.AttendTypeCode.RecentVisitor;
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
                     else
-                        Attendance.AttendanceTypeId = 60;//(int)Attend.AttendTypeCode.NewVisitor;
+                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
+                    path = 7;
                 }
                 else
                 // member of another class (visiting member)
@@ -336,12 +344,14 @@ namespace CMSPresenter
                         BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
                     else
                         BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
+                    path = 8;
 
                     OtherMeetings.Add(BFCAttendance);
                 }
             }
             try
             {
+                HttpContext.Current.Items["atpath"] = path;
                 DbUtil.Db.SubmitChanges();
             }
             catch (SqlException ex)

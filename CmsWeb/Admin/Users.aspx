@@ -36,9 +36,8 @@
                 </Fields>
             </asp:DataPager>
             <asp:ListView ID="ListView1" runat="server" DataKeyNames="UserId" DataSourceID="ObjectDataSourceMembershipUser"
-                InsertItemPosition="LastItem" OnItemCommand="ListView1_ItemCommand" OnItemDeleted="ListView1_ItemDeleted"
-                OnPagePropertiesChanging="ListView1_PagePropertiesChanging" OnSorting="ListView1_Sorting"
-                OnItemCreated="ListView1_ItemCreated">
+                OnItemCommand="ListView1_ItemCommand" OnItemDeleted="ListView1_ItemDeleted"
+                OnPagePropertiesChanging="ListView1_PagePropertiesChanging" OnSorting="ListView1_Sorting">
                 <ItemTemplate>
                     <tr style="background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>">
                         <td>
@@ -85,64 +84,6 @@
                         </tr>
                     </table>
                 </EmptyDataTemplate>
-                <InsertItemTemplate>
-                    <tr id="Tr2" runat="server" style="">
-                        <th>
-                        </th>
-                        <th>
-                            User
-                        </th>
-                        <th>
-                        </th>
-                        <th>
-                            Appr
-                        </th>
-                        <th>
-                            Pwd
-                        </th>
-                        <th>
-                            Lock
-                        </th>
-                        <th>
-                        </th>
-                        <th>
-                        </th>
-                        <th>
-                        </th>
-                    </tr>
-                    <tr style="">
-                        <td>
-                            <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" />
-                            <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
-                        </td>
-                        <td colspan="2">
-                            <asp:TextBox ID="UsernameTextBox" runat="server" Text='<%# Bind("Username") %>' />
-                        </td>
-                        <td>
-                            <asp:CheckBox ID="ApprovedCheckBox" runat="server" Checked='<%# Bind("IsApproved") %>' />
-                        </td>
-                        <td>
-                            <asp:CheckBox ID="ChgPwdCheckBox" runat="server" Checked='<%# Bind("MustChangePassword") %>' />
-                        </td>
-                        <td>
-                            <asp:CheckBox ID="LockedCheckBox" runat="server" Checked='<%# Bind("IsLockedOut") %>' />
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td colspan="8">
-                            Email:<asp:TextBox ID="EmailAddressTextBox" runat="server" Text='<%# Bind("EmailAddress") %>'></asp:TextBox>
-                            Password:<asp:TextBox ID="PasswordTextBox" runat="server" Text='<%# Bind("PasswordSetOnly") %>'></asp:TextBox>
-                        </td>
-                    </tr>
-                </InsertItemTemplate>
                 <LayoutTemplate>
                     <table id="itemPlaceholderContainer" runat="server" border="0" style="">
                         <tr runat="server" style="">
@@ -217,7 +158,6 @@
                         <td>
                         </td>
                         <td colspan="8">
-                            Email:<asp:TextBox ID="EmailAddressTextBox" runat="server" Text='<%# Bind("EmailAddress") %>'></asp:TextBox>
                             Password:<asp:TextBox ID="PasswordTextBox" runat="server" Text='<%# Bind("PasswordSetOnly") %>'></asp:TextBox>
                             PeopleId:<asp:TextBox ID="PeopleIdTextBox" runat="server" Text='<%# Bind("PeopleId") %>'></asp:TextBox>
                             <a href="javascript:showDialog('<%= AddSelectedPerson.ClientID %>')">search</a>
@@ -254,7 +194,8 @@
                             <asp:CheckBox ID="OnlineCheckBox" runat="server" Checked='<%# Eval("IsOnLine") %>'
                                 Enabled="false" />
                         </td>
-                        <td>
+                        <td><asp:HyperLink ID="EmailAddressLink" runat="server" NavigateUrl='<%# "mailto:" + Eval("Name") + "<" + Eval("EmailAddress") + ">" %>'
+                                Text='<%# Eval("EmailAddress") %>' />
                         </td>
                         <td>
                             <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:MM/dd/yy h:mm t}") %>' />
@@ -264,9 +205,6 @@
                         <td>
                         </td>
                         <td colspan="8">
-                            Email:<asp:HyperLink ID="EmailAddressLink" runat="server" NavigateUrl='<%# "mailto:" + Eval("Name") + "<" + Eval("EmailAddress") + ">" %>'
-                                Text='<%# Eval("EmailAddress") %>' /> 
-                            <br />
                             <asp:CheckBoxList ID="Roles" runat="server" DataTextField="RoleName" DataValueField="UserName"
                                 DataSourceID="RoleData" OnDataBound="RolesCheckBoxList_DataBound" AutoPostBack="true"
                                 OnSelectedIndexChanged="RolesCheckBoxList_SelectedIndexChanged">
@@ -305,7 +243,6 @@
             <asp:Parameter Name="MustChangePassword" Type="Boolean" />
             <asp:Parameter Name="IsLockedOut" Type="Boolean" />
             <asp:Parameter Name="PeopleId" Type="Int32" />
-            <asp:Parameter Name="EmailAddress" Type="String" />
             <asp:Parameter Name="Username" Type="String" />
             <asp:Parameter Name="PasswordSetOnly" Type="String" />
             <asp:Parameter Name="UserId" Type="Int32" />
@@ -317,16 +254,7 @@
             <asp:Parameter Name="startIndex" Type="Int32" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
         </SelectParameters>
-        <InsertParameters>
-            <asp:Parameter Name="IsApproved" Type="Boolean" />
-            <asp:Parameter Name="MustChangePassword" Type="Boolean" />
-            <asp:Parameter Name="IsLockedOut" Type="Boolean" />
-            <asp:Parameter Name="PeopleId" Type="Int32" />
-            <asp:Parameter Name="EmailAddress" Type="String" />
-            <asp:Parameter Name="Username" Type="String" />
-            <asp:Parameter Name="PasswordSetOnly" Type="String" />
-        </InsertParameters>
-    </asp:ObjectDataSource>
+   </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="RoleData" runat="server" SelectMethod="GetRoles" TypeName="CMSPresenter.RoleController">
     </asp:ObjectDataSource>
     <asp:Panel runat="server" ID="Panel1" CssClass="modalPopup SearchDialog" Style="display: none">

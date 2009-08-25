@@ -206,7 +206,7 @@
         Query Description:
         <%=Html.TextBox("SaveQueryDesc") %>
         &nbsp;
-        <%=Html.CheckBox("IsPublic") %> Is Public
+        <input id="IsPublic" type="checkbox"/> Is Public
         <span class="footer">
             <a id="SaveQuery" href="#">Save</a>
         </span>

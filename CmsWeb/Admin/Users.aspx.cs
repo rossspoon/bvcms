@@ -25,13 +25,13 @@ namespace CMSWeb.Admin
         {
             pager1.PageSize = Util.GetPageSizeCookie();
             pager2.PageSize = Util.GetPageSizeCookie();
-        }
-
-        protected void ListView1_ItemCreated(object sender, ListViewItemEventArgs e)
-        {
-                //var r = e.Item as ListViewDataItem;
-                //var d = r.DataItem as User;
-                //if ((selectedId.HasValue && d.Id == selectedId.Value) || r.DisplayIndex == TaskList.SelectedIndex)
+            if (!Page.IsPostBack && this.QueryString<int>("created") > 0)
+            {
+                ListView1.Sort("CreationDate", SortDirection.Descending);
+                TextBox1.Text = string.Empty;
+                ListView1.DataBind();
+                ListView1.SelectedIndex = 0;
+            }
         }
 
         protected void ButtonCreateNewRole_Click(object sender, EventArgs e)

@@ -89,7 +89,7 @@ $(function() {
         $('#SaveQueryDiv').dialog("close");
         $.post("/QueryBuilder/SaveQuery/", {
             SavedQueryDesc: $('#SaveQueryDesc').val(),
-            IsPublic: $('#IsPublic').val()
+            IsPublic: $('#IsPublic').is(':checked')
         }, function(ret) {
             $("#Description").text(ret);
         });
