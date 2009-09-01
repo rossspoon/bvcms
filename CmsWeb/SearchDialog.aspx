@@ -71,6 +71,8 @@
                     Type="Int32" />
                 <asp:ControlParameter ControlID="Parameters" Name="orgid" PropertyName="OrgId"
                     Type="Int32" />
+                <asp:ControlParameter ControlID="Parameters" Name="campus" PropertyName="Campus"
+                    Type="Int32" />
                     <asp:ControlParameter ControlID="UsersOnly" Name="usersonly" PropertyName="Value" Type="Boolean" />
             </SelectParameters>
         </asp:ObjectDataSource>

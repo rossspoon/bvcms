@@ -247,6 +247,7 @@ namespace CMSWeb.Models
 
         internal void AddPerson()
         {
+            var org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == RecAgeDiv.OrgId);
             var f = new Family
             {
                 AddressLineOne = addr,
@@ -258,8 +259,12 @@ namespace CMSWeb.Models
                 null, first, null, last, dob, false, gender.Value,
                     DbUtil.Settings("RecOrigin").ToInt(), 
                     DbUtil.Settings("RecEntry").ToInt());
+            participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
+            if (participant.Age >= 18)
+                participant.PositionInFamilyId = 10;
             peopleid = participant.PeopleId;
             participant.EmailAddress = email;
+            participant.CampusId = org.CampusId;
             switch (homecell)
             {
                 case "h":
@@ -344,9 +349,9 @@ namespace CMSWeb.Models
 
             sb.AppendFormat("<tr><td>Email:</td><td>{0}</td></tr>\n", email);
             sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", emcontact);
-            sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", emphone.FmtFone());
+            sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", emphone);
             sb.AppendFormat("<tr><td>Physician Name:</td><td>{0}</td></tr>\n", doctor);
-            sb.AppendFormat("<tr><td>Physician Phone:</td><td>{0}</td></tr>\n", docphone.FmtFone());
+            sb.AppendFormat("<tr><td>Physician Phone:</td><td>{0}</td></tr>\n", docphone);
             sb.AppendFormat("<tr><td>Insurance Carrier:</td><td>{0}</td></tr>\n", insurance);
             sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", policy);
             sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", request);

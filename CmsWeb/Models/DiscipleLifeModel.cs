@@ -141,6 +141,8 @@ namespace CMSWeb.Models
 
         internal void AddPerson()
         {
+            var org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrgId);
+
             var f = new Family
             {
                 AddressLineOne = addr,
@@ -148,7 +150,10 @@ namespace CMSWeb.Models
                 StateCode = state,
                 ZipCode = zip,
             };
-            person = Person.Add(f, 30,
+            var pos = 30;
+            if (married == 2 || dob.Age().ToInt() >= 18)
+                pos = 10;
+            person = Person.Add(f, pos,
                 null, first, null, last, dob, married == 2, gender.Value, 
                     DbUtil.Settings("DiscLifeOrigin").ToInt(), 
                     DbUtil.Settings("DiscLifeEntry").ToInt());
@@ -162,6 +167,7 @@ namespace CMSWeb.Models
                     break;
             }
             person.EmailAddress = email;
+            person.CampusId = org.CampusId;
             RecRegModel.FixTitle(person);
             DbUtil.Db.SubmitChanges();
         }

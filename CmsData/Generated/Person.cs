@@ -21,7 +21,7 @@ namespace CmsData
 		
 		private int _CreatedBy;
 		
-		private DateTime _CreatedDate;
+		private DateTime? _CreatedDate;
 		
 		private int _DropCodeId;
 		
@@ -217,19 +217,13 @@ namespace CmsData
 		
 		private string _PrimaryAddress2;
 		
-		private string _Name;
-		
 		private int? _PrimaryResCode;
 		
 		private int? _PrimaryBadAddrFlag;
 		
 		private string _BibleFellowshipTeacher;
 		
-		private string _PreferredName;
-		
 		private int? _BibleFellowshipTeacherId;
-		
-		private string _Name2;
 		
 		private DateTime? _LastContact;
 		
@@ -245,7 +239,15 @@ namespace CmsData
 		
 		private int? _BibleFellowshipClassId;
 		
+		private string _Name;
+		
+		private string _PreferredName;
+		
+		private string _Name2;
+		
 		private int? _HashNum;
+		
+		private int? _CampusId;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -315,6 +317,8 @@ namespace CmsData
 		
 		private EntityRef< JoinType> _JoinType;
 		
+		private EntityRef< MainCampu> _MainCampu;
+		
 		private EntityRef< MaritalStatus> _MaritalStatus;
 		
 		private EntityRef< MemberStatus> _MemberStatus;
@@ -338,7 +342,7 @@ namespace CmsData
 		partial void OnCreatedByChanging(int value);
 		partial void OnCreatedByChanged();
 		
-		partial void OnCreatedDateChanging(DateTime value);
+		partial void OnCreatedDateChanging(DateTime? value);
 		partial void OnCreatedDateChanged();
 		
 		partial void OnDropCodeIdChanging(int value);
@@ -632,9 +636,6 @@ namespace CmsData
 		partial void OnPrimaryAddress2Changing(string value);
 		partial void OnPrimaryAddress2Changed();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
-		
 		partial void OnPrimaryResCodeChanging(int? value);
 		partial void OnPrimaryResCodeChanged();
 		
@@ -644,14 +645,8 @@ namespace CmsData
 		partial void OnBibleFellowshipTeacherChanging(string value);
 		partial void OnBibleFellowshipTeacherChanged();
 		
-		partial void OnPreferredNameChanging(string value);
-		partial void OnPreferredNameChanged();
-		
 		partial void OnBibleFellowshipTeacherIdChanging(int? value);
 		partial void OnBibleFellowshipTeacherIdChanged();
-		
-		partial void OnName2Changing(string value);
-		partial void OnName2Changed();
 		
 		partial void OnLastContactChanging(DateTime? value);
 		partial void OnLastContactChanged();
@@ -674,8 +669,20 @@ namespace CmsData
 		partial void OnBibleFellowshipClassIdChanging(int? value);
 		partial void OnBibleFellowshipClassIdChanged();
 		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
+		
+		partial void OnPreferredNameChanging(string value);
+		partial void OnPreferredNameChanged();
+		
+		partial void OnName2Changing(string value);
+		partial void OnName2Changed();
+		
 		partial void OnHashNumChanging(int? value);
 		partial void OnHashNumChanged();
+		
+		partial void OnCampusIdChanging(int? value);
+		partial void OnCampusIdChanged();
 		
     #endregion
 		public Person()
@@ -748,6 +755,8 @@ namespace CmsData
 			
 			this._JoinType = default(EntityRef< JoinType>); 
 			
+			this._MainCampu = default(EntityRef< MainCampu>); 
+			
 			this._MaritalStatus = default(EntityRef< MaritalStatus>); 
 			
 			this._MemberStatus = default(EntityRef< MemberStatus>); 
@@ -808,8 +817,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime NOT NULL")]
-		public DateTime CreatedDate
+		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime")]
+		public DateTime? CreatedDate
 		{
 			get { return this._CreatedDate; }
 
@@ -1875,7 +1884,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(15) NOT NULL")]
+		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(25) NOT NULL")]
 		public string FirstName
 		{
 			get { return this._FirstName; }
@@ -1941,7 +1950,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(20) NOT NULL")]
+		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(30) NOT NULL")]
 		public string LastName
 		{
 			get { return this._LastName; }
@@ -3000,28 +3009,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(36)", IsDbGenerated=true)]
-		public string Name
-		{
-			get { return this._Name; }
-
-			set
-			{
-				if (this._Name != value)
-				{
-				
-                    this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PrimaryResCode", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryResCode", DbType="int", IsDbGenerated=true)]
 		public int? PrimaryResCode
 		{
@@ -3088,28 +3075,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(16)", IsDbGenerated=true)]
-		public string PreferredName
-		{
-			get { return this._PreferredName; }
-
-			set
-			{
-				if (this._PreferredName != value)
-				{
-				
-                    this.OnPreferredNameChanging(value);
-					this.SendPropertyChanging();
-					this._PreferredName = value;
-					this.SendPropertyChanged("PreferredName");
-					this.OnPreferredNameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="BibleFellowshipTeacherId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacherId", DbType="int", IsDbGenerated=true)]
 		public int? BibleFellowshipTeacherId
 		{
@@ -3125,28 +3090,6 @@ namespace CmsData
 					this._BibleFellowshipTeacherId = value;
 					this.SendPropertyChanged("BibleFellowshipTeacherId");
 					this.OnBibleFellowshipTeacherIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(37)", IsDbGenerated=true)]
-		public string Name2
-		{
-			get { return this._Name2; }
-
-			set
-			{
-				if (this._Name2 != value)
-				{
-				
-                    this.OnName2Changing(value);
-					this.SendPropertyChanging();
-					this._Name2 = value;
-					this.SendPropertyChanged("Name2");
-					this.OnName2Changed();
 				}
 
 			}
@@ -3308,6 +3251,72 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(56)", IsDbGenerated=true)]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(26)", IsDbGenerated=true)]
+		public string PreferredName
+		{
+			get { return this._PreferredName; }
+
+			set
+			{
+				if (this._PreferredName != value)
+				{
+				
+                    this.OnPreferredNameChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredName = value;
+					this.SendPropertyChanged("PreferredName");
+					this.OnPreferredNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(57)", IsDbGenerated=true)]
+		public string Name2
+		{
+			get { return this._Name2; }
+
+			set
+			{
+				if (this._Name2 != value)
+				{
+				
+                    this.OnName2Changing(value);
+					this.SendPropertyChanging();
+					this._Name2 = value;
+					this.SendPropertyChanged("Name2");
+					this.OnName2Changed();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
 		public int? HashNum
 		{
@@ -3323,6 +3332,31 @@ namespace CmsData
 					this._HashNum = value;
 					this.SendPropertyChanged("HashNum");
 					this.OnHashNumChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CampusId", UpdateCheck=UpdateCheck.Never, Storage="_CampusId", DbType="int")]
+		public int? CampusId
+		{
+			get { return this._CampusId; }
+
+			set
+			{
+				if (this._CampusId != value)
+				{
+				
+					if (this._MainCampu.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnCampusIdChanging(value);
+					this.SendPropertyChanging();
+					this._CampusId = value;
+					this.SendPropertyChanged("CampusId");
+					this.OnCampusIdChanged();
 				}
 
 			}
@@ -3885,6 +3919,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("JoinType");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_MainCampus", Storage="_MainCampu", ThisKey="CampusId", IsForeignKey=true)]
+		public MainCampu MainCampu
+		{
+			get { return this._MainCampu.Entity; }
+
+			set
+			{
+				MainCampu previousValue = this._MainCampu.Entity;
+				if (((previousValue != value) 
+							|| (this._MainCampu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._MainCampu.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._MainCampu.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._CampusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._CampusId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("MainCampu");
 				}
 
 			}

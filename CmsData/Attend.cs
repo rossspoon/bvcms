@@ -6,6 +6,7 @@ using System.Diagnostics;
 using BitFactory.Logging;
 using System.Web;
 using UtilityExtensions;
+using System.IO;
 
 namespace CmsData
 {
@@ -34,10 +35,14 @@ namespace CmsData
         }
         partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
-            var path = HttpContext.Current.Items["atpath"].ToInt();
-                if (MemberTypeId == 310 && AttendanceTypeId != 50 && AttendanceTypeId != 60)
-                    Util.Logger.LogStatus("Attendance Oddity({0}, {1}, {2})\n\n--Stacktrace\n{3}".Fmt(
-                        MemberTypeId, AttendanceTypeId, path, System.Environment.StackTrace));
+            var o = HttpContext.Current.Items["attendinfo"] as CMSDataContext.AttendMeetingInfo1;
+            if (MemberTypeId == 310 && AttendanceTypeId != 50 && AttendanceTypeId != 60)
+            {
+                var tw = new StringWriter();
+                ObjectDumper.Write(o, 1, tw);
+                Util.Logger.LogStatus("Attendance Oddity({0}, {1}, {2})\n\n--ObjectDump\n{3}".Fmt(
+                        MemberTypeId, AttendanceTypeId, o.path, tw.ToString() ));
+            }
         }
     }
 }

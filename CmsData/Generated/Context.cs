@@ -194,6 +194,10 @@ namespace CmsData
         partial void UpdateLoveRespect(LoveRespect instance);
         partial void DeleteLoveRespect(LoveRespect instance);
         
+        partial void InsertMainCampu(MainCampu instance);
+        partial void UpdateMainCampu(MainCampu instance);
+        partial void DeleteMainCampu(MainCampu instance);
+        
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
@@ -729,6 +733,12 @@ namespace CmsData
 		public Table< LoveRespect> LoveRespects
 		{
 			get	{ return this.GetTable< LoveRespect>(); }
+
+		}
+
+		public Table< MainCampu> MainCampus
+		{
+			get	{ return this.GetTable< MainCampu>(); }
 
 		}
 

@@ -20,16 +20,16 @@ namespace CMSWeb.Controllers
             ViewData["logoimg"] = DbUtil.Settings("RegLogo");
         }
         
-        public ActionResult Inside()
+        public ActionResult Inside(int? campus)
         {
             Session["auth"] = "true";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { campus = campus });
         }
-        public ActionResult Index()
+        public ActionResult Index(int? campus)
         {
             if (Session["auth"] == null || (string)Session["auth"] != "true")
-                return RedirectToAction("Login");
-            var m = new Models.RegisterModel();
+                return RedirectToAction("Login", new { campus = campus });
+            var m = new Models.RegisterModel { campusid = campus };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -78,7 +78,7 @@ namespace CMSWeb.Controllers
         {
             return View();
         }
-        public ActionResult Login(string name, string password, string email)
+        public ActionResult Login(string name, string password, string email, int? campus)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View();

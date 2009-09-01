@@ -24,7 +24,8 @@
     <%=Html.Hidden("PostalCode", Model.participant.PrimaryZip.Zip5()) %>
     <%=Html.Hidden("Phone", Model.participant.Family.HomePhone.FmtFone()) %>
     <%=Html.Hidden("Email", Model.registration.Email) %>
-    <%=Html.Hidden("Misc1", Model.division.Name) %>
+    <%=Html.Hidden("Misc1", Model.participant.Name) %>
+    <%=Html.Hidden("Misc2", Model.division.Name) %>
     <%=Html.SubmitButton("Submit", "Next") %>
     </form>
 

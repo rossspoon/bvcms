@@ -21,7 +21,7 @@ namespace CmsData
 		
 		private int _CreatedBy;
 		
-		private DateTime _CreatedDate;
+		private DateTime? _CreatedDate;
 		
 		private bool _RecordStatus;
 		
@@ -108,7 +108,7 @@ namespace CmsData
 		partial void OnCreatedByChanging(int value);
 		partial void OnCreatedByChanged();
 		
-		partial void OnCreatedDateChanging(DateTime value);
+		partial void OnCreatedDateChanging(DateTime? value);
 		partial void OnCreatedDateChanged();
 		
 		partial void OnRecordStatusChanging(bool value);
@@ -266,8 +266,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime NOT NULL")]
-		public DateTime CreatedDate
+		[Column(Name="CreatedDate", UpdateCheck=UpdateCheck.Never, Storage="_CreatedDate", DbType="datetime")]
+		public DateTime? CreatedDate
 		{
 			get { return this._CreatedDate; }
 

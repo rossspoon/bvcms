@@ -204,6 +204,7 @@ namespace CMSPresenter
                          AttendPct = bfm.AttendPct.ToString(),
                          AttendStr = bfm.AttendStr,
                          MemberType = bfm.MemberType.Description,
+                         MemberInfo = bfm.UserData,
                          Groups = string.Join(",", bfm.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray())
                      };
             return q2.Take(maximumRows);

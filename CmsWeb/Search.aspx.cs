@@ -24,6 +24,7 @@ namespace CMSWeb
             public int Membership { get; set; }
             public string Communication { get; set; }
             public string Address { get; set; }
+            public int Campus { get; set; }
         }
         bool AutoNavigateOn1 = false;
         protected override void OnInit(EventArgs e)
@@ -54,6 +55,7 @@ namespace CMSWeb
                     Parameters.Member = ps.Membership;
                     Parameters.Comm = ps.Communication;
                     Parameters.Addr = ps.Address;
+                    Parameters.Campus = ps.Campus;
                     PersonGrid1.Visible = true;
                 }
             Parameters.SearchButtonClicked += new EventHandler(SearchButton_Click);
@@ -75,6 +77,7 @@ namespace CMSWeb
                 Membership = Parameters.Member,
                 Communication = Parameters.Comm,
                 Address = Parameters.Addr,
+                Campus = Parameters.Campus
             };
         }
 

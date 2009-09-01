@@ -127,6 +127,19 @@ namespace ImageData
             var a = q.First().Split(':');
             return a[1].Trim();
         }
+        public bool InterestedInCoaching() // special function
+        {
+            if (Mimetype != "text/plain")
+                return false;
+            var t = System.Text.ASCIIEncoding.ASCII.GetString(Bits);
+            var q = from li in t.SplitStr("\r\n")
+                    where li.StartsWith("Coaching:")
+                    select li;
+            if (q.Count() == 0)
+                return false;
+            var a = q.First().Split(':');
+            return a[1].Trim() == "1" || a[1].ToLower() == "true";
+        }
         public static string Content(int id)
         {
             var img = DbUtil.Db.Images.SingleOrDefault(i => i.Id == id);

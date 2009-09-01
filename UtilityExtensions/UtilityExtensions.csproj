@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenericConfigCollection.cs" />
+    <Compile Include="ObjectDumper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="UtiltyExtensions.cs" />

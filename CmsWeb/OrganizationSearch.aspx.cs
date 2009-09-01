@@ -57,8 +57,11 @@ namespace CMSWeb
             var col = OrganizationGrid.Columns[OrganizationGrid.Columns.Count - 1];
             col.Visible = ManageOrgTags.Visible;
             RollsheetRpt.Enabled = User.IsInRole("Attendance");
-            MeetingsLink.NavigateUrl = "~/Meetings.aspx?progid={0}&divid={1}&schedid={2}&name={3}"
-                .Fmt(0, OrgDivisions.SelectedValue, Schedule.SelectedValue.ToInt(), Server.UrlEncode(NameSearch.Text));
+            MeetingsLink.NavigateUrl = "~/Meetings.aspx?progid={0}&divid={1}&schedid={2}&campusid={3}&name={4}"
+                .Fmt(0, OrgDivisions.SelectedValue, 
+                Schedule.SelectedValue.ToInt(), 
+                Campus.SelectedValue.ToInt(), 
+                Server.UrlEncode(NameSearch.Text));
             MeetingsLink.Visible = RollsheetRpt.Visible;
         }
 
@@ -112,7 +115,7 @@ namespace CMSWeb
             var d = ctl.FetchOrganizationExcelList(NameSearch.Text,
                 OrgDivisions.SelectedValue.ToInt(),
                 Schedule.SelectedValue.ToInt(),
-                Status.SelectedValue.ToInt());
+                Status.SelectedValue.ToInt(), Campus.SelectedValue.ToInt());
             var dg = new DataGrid();
             dg.DataSource = d;
             dg.DataBind();

@@ -43,6 +43,7 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
         TagSearch.SelectedIndex = 0;
         CommunicationSearch.Text = "";
         DOBSearch.Text = "";
+        CampusSearch.SelectedIndex = 0;
         OnClearButtonClicked(e);
     }
     public virtual void OnClearButtonClicked(EventArgs e)
@@ -99,6 +100,11 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
     {
         get { return MemberSearch.SelectedValue.ToInt(); }
         set { MemberSearch.SelectedValue = value.ToString(); }
+    }
+    public int Campus
+    {
+        get { return CampusSearch.SelectedValue.ToInt(); }
+        set { CampusSearch.SelectedValue = value.ToString(); }
     }
 
     public int Tag

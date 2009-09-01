@@ -75,6 +75,12 @@
                 </td>
             </tr>
             <tr>
+            <td>Extra Member Info:</td>
+                <td>
+                <cc1:DisplayOrEditText ID="UserData" BindingSource="OrgMember" runat="server" ></cc1:DisplayOrEditText>
+                </td>
+            </tr>
+            <tr>
             <td></td>
                 <td>
                     <cc1:EditUpdateButton ID="EditUpdateButton1" runat="server" 

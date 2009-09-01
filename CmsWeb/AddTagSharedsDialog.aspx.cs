@@ -33,7 +33,7 @@ namespace CMSWeb
                 foreach (var ts in tag.TagShares)
                     t.PersonTags.Add(new TagPerson { PeopleId = ts.PeopleId });
                 DbUtil.Db.SubmitChanges();
-                ListView1.DataSource = ctl.FetchSearchList(null, null, null, 0, 0, null, -1, 0, true);
+                ListView1.DataSource = ctl.FetchSearchList(null, null, null, 0, 0, null, -1, 0, 0, true);
                 ListView1.DataBind();
             }
             if (Util.UserPeopleId == Util.CurrentTagOwnerId)

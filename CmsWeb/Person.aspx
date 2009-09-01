@@ -479,6 +479,18 @@
                         <table class="Design2">
                             <tr>
                                 <th>
+                                    Campus:
+                                </th>
+                                <td>
+                                    <cc1:DisplayOrEditDropDown ID="CampusId" runat="server" BindingMode="TwoWay"
+                                        BindingSource="person" DataTextField="Value" DataValueField="Id" Width="150px"
+                                        DataSourceID="ODS_Campus"
+                                        MakeDefault0="True">
+                                    </cc1:DisplayOrEditDropDown>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
                                     Member Status:
                                 </th>
                                 <td>
@@ -1195,7 +1207,7 @@
                                 </th>
                                 <td>
                                     <cc1:DisplayOrEditCheckbox ID="MemberAnyChurchFlag0" runat="server" BindingSource="person"
-                                        BindingMember="MemberAnyChurch" BindingMode="TwoWay" TextIfChecked="Yes" TextIfNotChecked="No" />
+                                        BindingMember="MemberAnyChurch" BindingMode="TwoWay" />
                                 </td>
                             </tr>
                         </table>
@@ -1207,7 +1219,7 @@
                             <tr>
                                 <td>
                                     <cc1:DisplayOrEditCheckbox ID="ChristAsSaviorFlag0" runat="server" BindingSource="person"
-                                        BindingMember="ChristAsSavior" BindingMode="TwoWay" TextIfChecked="Yes" TextIfNotChecked="No" />
+                                        BindingMember="ChristAsSavior" BindingMode="TwoWay" />
                                 </td>
                                 <th>
                                     Prayed for Christ as Savior
@@ -1216,7 +1228,7 @@
                             <tr>
                                 <td>
                                     <cc1:DisplayOrEditCheckbox ID="PleaseVisitFlag0" runat="server" BindingSource="person"
-                                        BindingMember="PleaseVisit" BindingMode="TwoWay" TextIfChecked="Yes" TextIfNotChecked="No" />
+                                        BindingMember="PleaseVisit" BindingMode="TwoWay" />
                                 </td>
                                 <th>
                                     Would like someone to visit
@@ -1225,8 +1237,7 @@
                             <tr>
                                 <td>
                                     <cc1:DisplayOrEditCheckbox ID="InterestedInJoiningFlag0" runat="server" BindingSource="person"
-                                        BindingMember="InterestedInJoining" BindingMode="TwoWay" TextIfChecked="Yes"
-                                        TextIfNotChecked="No" />
+                                        BindingMember="InterestedInJoining" BindingMode="TwoWay" />
                                 </td>
                                 <th>
                                     Interested in joining Bellevue
@@ -1235,8 +1246,7 @@
                             <tr>
                                 <td>
                                     <cc1:DisplayOrEditCheckbox ID="InfoBecomeAChristianFlag0" runat="server" BindingSource="person"
-                                        BindingMember="InfoBecomeAChristian" BindingMode="TwoWay" TextIfChecked="Yes"
-                                        TextIfNotChecked="No" />
+                                        BindingMember="InfoBecomeAChristian" BindingMode="TwoWay" />
                                 </td>
                                 <th>
                                     Would like to know how to become a Christian
@@ -1433,5 +1443,7 @@
     <asp:ObjectDataSource ID="ODSDiscoveryClassStatusID" runat="server" SelectMethod="DiscoveryClassStatusCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSLetterStatusId" runat="server" SelectMethod="LetterStatusCodes"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_Campus" runat="server" SelectMethod="AllCampuses0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 </asp:Content>

@@ -61,6 +61,7 @@ namespace CMSPresenter
                         p.Attends.Any(a =>
                             a.AttendanceFlag != false
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
+                            && a.MeetingDate >= a.Organization.FirstMeetingDate
                             && a.OrganizationId == meeting.OrganizationId
                             && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
@@ -122,6 +123,7 @@ namespace CMSPresenter
                         p.Attends.Any(a =>
                             a.AttendanceFlag != false
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
+                            && a.MeetingDate >= a.Organization.FirstMeetingDate
                             && a.OrganizationId == meeting.OrganizationId
                             && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
@@ -217,149 +219,140 @@ namespace CMSPresenter
         public string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
             var OtherMeetings = new List<Attend>();
-            var path = 0;
 
-            var r = DbUtil.Db.AttendMeetingInfo(MeetingId, PeopleId);
+            var o = DbUtil.Db.AttendMeetingInfo0(MeetingId, PeopleId);
 
-            var o = r.GetResult<CMSDataContext.AttendMeetingInfo2>().First();
-            var Attendance = r.GetResult<Attend>().FirstOrDefault();
-            var Meeting = r.GetResult<Meeting>().First();
-            var VIPAttendance = r.GetResult<Attend>().ToList();
-            var BFCMember = r.GetResult<OrganizationMember>().FirstOrDefault();
-            var BFCAttendance = r.GetResult<Attend>().FirstOrDefault();
-            var BFCMeeting = r.GetResult<Meeting>().FirstOrDefault();
+            if (o.info.AttendedElsewhere > 0 && attended)
+                return "{0}({1}) already attended elsewhere".Fmt(o.info.Name, PeopleId);
 
-            if (o.AttendedElsewhere > 0 && attended)
-                return "{0}({1}) already attended elsewhere".Fmt(o.Name, PeopleId);
-
-            if (Attendance == null)
+            if (o.Attendance == null)
             {
-                Attendance = new Attend
+                o.Attendance = new Attend
                 {
-                    OrganizationId = Meeting.OrganizationId,
+                    OrganizationId = o.Meeting.OrganizationId,
                     PeopleId = PeopleId,
-                    MeetingDate = Meeting.MeetingDate.Value,
+                    MeetingDate = o.Meeting.MeetingDate.Value,
                     CreatedDate = DateTime.Now,
                     CreatedBy = Util.UserId1,
                 };
-                Meeting.Attends.Add(Attendance);
+                o.Meeting.Attends.Add(o.Attendance);
             }
-            Attendance.AttendanceFlag = attended;
+            o.Attendance.AttendanceFlag = attended;
 
-            if (Meeting.GroupMeetingFlag && o.MemberTypeId.HasValue)
+            if (o.Meeting.GroupMeetingFlag && o.info.MemberTypeId.HasValue)
             {
-                Attendance.MemberTypeId = o.MemberTypeId.Value;
-                if (VIPAttendance.Count > 0 && VIPAttendance.Any(a => a.AttendanceFlag == true))
-                    Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
+                if (o.VIPAttendance.Count > 0 && o.VIPAttendance.Any(a => a.AttendanceFlag == true))
+                    o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                 else
-                    Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
-                path = 1;
+                    o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
+                o.path = 1;
             }
-            else if (o.IsOffSite == true && attended == false)
+            else if (o.info.IsOffSite == true && attended == false)
             {
-                Attendance.OtherAttends = 1;
-                Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
-                Attendance.MemberTypeId = o.MemberTypeId.Value;
-                path = 2;
+                o.Attendance.OtherAttends = 1;
+                o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
+                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
+                o.path = 2;
             }
-            else if (o.MemberTypeId.HasValue) // member of this class
+            else if (o.info.MemberTypeId.HasValue) // member of this class
             {
-                Attendance.MemberTypeId = o.MemberTypeId.Value;
-                Attendance.AttendanceTypeId = GetAttendType(Attendance.AttendanceFlag, Attendance.MemberTypeId, null);
-                Attendance.BFCAttendance = Attendance.OrganizationId == o.BFClassId;
+                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
+                o.Attendance.AttendanceTypeId = GetAttendType(o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);
+                o.Attendance.BFCAttendance = o.Attendance.OrganizationId == o.info.BFClassId;
 
-                if (BFCMember != null && (attended || BFCAttendance != null)) // related BFC
+                if (o.BFCMember != null && (attended || o.BFCAttendance != null)) // related BFC
                 {
                     /* At this point I am recording attendance for a vip class 
                      * or for a class where I am doing InService (long term) teaching
                      * And now I am looking at the BFClass where I am a regular member or an InService Member
                      * I don't need to be here if I am reversing my attendance and there is no BFCAttendance to fix
                      */
-                    if (BFCAttendance == null)
-                        BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
+                    if (o.BFCAttendance == null)
+                        o.BFCAttendance = CreateOtherAttend(o.Meeting, o.BFCMember);
 
-                    BFCAttendance.OtherAttends = attended ? 1 : 0;
-                    Attendance.OtherAttends = BFCAttendance.AttendanceFlag ? 1 : 0;
+                    o.BFCAttendance.OtherAttends = attended ? 1 : 0;
+                    o.Attendance.OtherAttends = o.BFCAttendance.AttendanceFlag ? 1 : 0;
 
-                    if (o.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP)
+                    if (o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP)
                     {
-                        if (BFCAttendance.OtherAttends > 0)
-                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                        if (o.BFCAttendance.OtherAttends > 0)
+                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         else
-                            BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
-                        path = 3;
+                            o.BFCAttendance.AttendanceTypeId = GetAttendType(o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
+                        o.path = 3;
                     }
-                    else if (BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
+                    else if (o.BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
                     {
-                        if (BFCAttendance.OtherAttends > 0)
-                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.InService;
+                        if (o.BFCAttendance.OtherAttends > 0)
+                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.InService;
                         else
-                            BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
-                        path = 4;
+                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
+                        o.path = 4;
                     }
-                    OtherMeetings.Add(BFCAttendance);
+                    OtherMeetings.Add(o.BFCAttendance);
                 }
-                else if (VIPAttendance.Count > 0) // need to indicate BFCAttendance or not
+                else if (o.VIPAttendance.Count > 0) // need to indicate BFCAttendance or not
                 {
                     /* At this point I am recording attendance for a BFClass
                      * And now I am looking at the one or more VIP classes where I a sometimes volunteer
                      */
-                    foreach (var a in VIPAttendance)
+                    foreach (var a in o.VIPAttendance)
                     {
                         a.OtherAttends = attended ? 1 : 0;
                         if (a.AttendanceFlag == true)
-                            Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                            o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         OtherMeetings.Add(a);
                     }
-                    Attendance.OtherAttends = VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
-                    path = 6;
+                    o.Attendance.OtherAttends = o.VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
+                    o.path = 6;
                 }
             }
             else // not a member of this class 
             {
-                if (BFCMember == null)
+                if (o.BFCMember == null)
                 // not a member of another class (visitor)
                 {
-                    Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
-                    if (o.IsRecentVisitor.Value)
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
+                    o.Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
+                    if (o.info.IsRecentVisitor.Value)
+                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
                     else
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
-                    path = 7;
+                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
+                    o.path = 7;
                 }
                 else
                 // member of another class (visiting member)
                 {
                     if (attended)
                     {
-                        Attendance.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
-                        Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
+                        o.Attendance.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
+                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
                     }
-                    if (BFCAttendance == null)
-                        BFCAttendance = CreateOtherAttend(Meeting, BFCMember);
+                    if (o.BFCAttendance == null)
+                        o.BFCAttendance = CreateOtherAttend(o.Meeting, o.BFCMember);
 
-                    BFCAttendance.OtherAttends = attended ? 1 : 0;
+                    o.BFCAttendance.OtherAttends = attended ? 1 : 0;
 
-                    if (BFCAttendance.OtherAttends > 0)
-                        BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
+                    if (o.BFCAttendance.OtherAttends > 0)
+                        o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
                     else
-                        BFCAttendance.AttendanceTypeId = GetAttendType(BFCAttendance.AttendanceFlag, BFCMember.MemberTypeId, BFCMeeting);
-                    path = 8;
+                        o.BFCAttendance.AttendanceTypeId = GetAttendType(o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
+                    o.path = 8;
 
-                    OtherMeetings.Add(BFCAttendance);
+                    OtherMeetings.Add(o.BFCAttendance);
                 }
             }
             try
             {
-                HttpContext.Current.Items["atpath"] = path;
+                HttpContext.Current.Items["attendinfo"] = o;
                 DbUtil.Db.SubmitChanges();
             }
             catch (SqlException ex)
             {
-                throw new Exception("Error recording attendance pid={0},dt={1}".Fmt(PeopleId, Meeting.MeetingDate), ex);
+                throw new Exception("Error recording attendance pid={0},dt={1}".Fmt(PeopleId, o.Meeting.MeetingDate), ex);
             }
 
-            DbUtil.Db.UpdateAttendStr(Meeting.OrganizationId, PeopleId);
+            DbUtil.Db.UpdateAttendStr(o.Meeting.OrganizationId, PeopleId);
             foreach(var m in OtherMeetings)
             {
                 DbUtil.Db.UpdateAttendStr(m.OrganizationId, PeopleId);

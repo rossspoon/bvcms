@@ -94,8 +94,43 @@ namespace CMSWeb.Controllers
             user.MustChangePassword = false;
             DbUtil.Db.Users.InsertOnSubmit(user);
             DbUtil.Db.SubmitChanges();
-            return Redirect("/Admin/Users.aspx?created=1");
+            ViewData["newpassword"] = newpassword;
+            return View(user);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SendNewUserEmail(int userid, string newpassword)
+        {
+            if (!User.IsInRole("Admin"))
+                return Content("unauthorized");
+
+            var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
+            var smtp = new SmtpClient();
+                HomeController.Email(smtp, DbUtil.SystemEmailAddress, user.Name, user.Person.EmailAddress,
+                    "New user welcome",
+                    @"Hi {0},
+<p>You have a new account on our Church Management System which you can access at the following link:<br />
+<a href=""{1}"">{1}</a></p>
+<table>
+<tr><td>Username:</td><td><b>{2}</b></td></tr>
+<tr><td>Password:</td><td><b>{3}</b></td></tr>
+</table>
+<p>Please visit <a href=""{1}/Display/Page/Welcome"">this welcome page</a> for more information</p>
+<p>Thanks,<br />
+The bvCMS Team</p>
+".Fmt(user.Name, DbUtil.Settings("DefaultHost"), user.Username, newpassword));
+            return Redirect("/Admin/Users.aspx?create=1");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UsersPage(string newpassword)
+        {
+            if (!User.IsInRole("Admin"))
+                return Content("unauthorized");
+
+            Session[UserController.STR_ShowPassword] = newpassword;
+            return Redirect("/Admin/Users.aspx?create=1");
+        }
+
+
         public ActionResult LogOff()
         {
 
@@ -249,11 +284,11 @@ The bvCMS Team</p>
             CMSMembershipProvider.provider.AdminOverride = false;
 
             user.ResetPasswordCode = null;
+            
             DbUtil.Db.SubmitChanges();
-
-            var em = new Emailer();
-            em.LoadAddress(user.Person.EmailAddress, user.Name);
-            em.NotifyEmail("bvcms new password",
+            var smtp = new SmtpClient();
+            HomeController.Email(smtp, DbUtil.SystemEmailAddress, user.Name, user.Person.EmailAddress, 
+                "bvcms new password",
                 @"Hi {0},
 <p>Your new password is {1}</p>
 <p>If you did not request a new password, please notify us ASAP.</p>

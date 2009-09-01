@@ -110,6 +110,7 @@ namespace CMSWeb
                         Parameters.DOB,
                         Parameters.Gender,
                         Parameters.OrgId,
+                        Parameters.Campus,
                         false);
             Tag tag = null;
             if (SelectAll.Checked)

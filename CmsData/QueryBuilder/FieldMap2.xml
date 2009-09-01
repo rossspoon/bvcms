@@ -66,8 +66,8 @@
     <Field Name="HasRelatedFamily" Title="Has Related Family" Type="Bit" DataValueField="IdCode">
       Indication of whether this person's family is related to another family
     </Field>
-    <Field Name="WeddingDate"  Title="Wedding Date" Type="Date">
-      Todo: explain how unknown dates work
+    <Field Name="WeddingDate"  Title="Wedding Date" Type="StringEqual">
+      Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
     </Field>
     <Field Name="EmailAddress"  Title="Email" Type="String">
     </Field>
@@ -124,8 +124,14 @@
     <Field Name="PrimaryAddress2" Title="Address line two" Type="String">
       Searches by second line of primary address
     </Field>
-    <Field Name="HomePhone" Title="Phone" Type="String">
+    <Field Name="HomePhone" Type="String">
       Searches by home phone.
+    </Field>
+    <Field Name="CellPhone" Type="String">
+      Searches by cell phone.
+    </Field>
+    <Field Name="WorkPhone" Type="String">
+      Searches by work phone.
     </Field>
     <Field Name="DoNotCallFlag" Title="Do Not Call" Type="Bit" DataValueField="IdCode">
       Person has asked not be contacted by telephone.
@@ -143,6 +149,9 @@
   <Category Title="Church Status">
     <Field Name="MemberStatusId" Title="Church Member Status" Type="Code" DisplayAs="ChurchMemberStatus" DataSource="MemberStatusCodes" DataValueField="IdCode">
       Codes for church membership status: Previous, Pending, Member, Non-member
+    </Field>
+    <Field Name="CampusId" Title="Campus" Type="Code" DataSource="AllCampuses0" DataValueField="IdCode">
+      Codes Main Campus
     </Field>
     <Field Name="DecisionDate" Title="Decision Date" Type="Date">
       Date indivdual made a decision to join the church.
@@ -354,6 +363,9 @@
 		</Field>
     <Field Name="CreatedBy" Title="Record Created By User" Type="String">
       Record Created By User
+    </Field>
+    <Field Name="CreatedDate" Title="Record Created On Date" Type="Date">
+      Record Created On Date
     </Field>
     <Field Name="BadET" Title="Bad Enrollment Transaction" Type="Code" DataSource="BadETCodes" DataValueField="IdCode">
       Two drops in a row (55), Two Enrollments in a row (11), or a missing drop (10)

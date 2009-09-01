@@ -291,11 +291,11 @@
             <asp:Parameter Name="startRowIndex" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSMinistryId" runat="server" SelectMethod="Ministries"
+    <asp:ObjectDataSource ID="ODSMinistryId" runat="server" SelectMethod="Ministries0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes"
+    <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
+    <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
 </asp:Content>

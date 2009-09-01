@@ -281,6 +281,8 @@ namespace CMSWeb.Models
         }
         internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell, string email)
         {
+            var org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrgId);
+
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1 ? 2 : 1,
                     DbUtil.Settings("SmlOrigin").ToInt(),
@@ -295,6 +297,7 @@ namespace CMSWeb.Models
                     break;
             }
             np.EmailAddress = email;
+            np.CampusId = org.CampusId;
             RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;

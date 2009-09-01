@@ -75,6 +75,12 @@ namespace CmsData
 		
 		private string _PendingLoc;
 		
+		private bool? _CanSelfCheckin;
+		
+		private int? _NumCheckInLabels;
+		
+		private int? _CampusId;
+		
    		
    		private EntitySet< Organization> _ChildOrgs;
 		
@@ -102,6 +108,8 @@ namespace CmsData
 		private EntityRef< Organization> _ParentOrg;
 		
 		private EntityRef< Division> _Division;
+		
+		private EntityRef< MainCampu> _MainCampu;
 		
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
@@ -205,6 +213,15 @@ namespace CmsData
 		partial void OnPendingLocChanging(string value);
 		partial void OnPendingLocChanged();
 		
+		partial void OnCanSelfCheckinChanging(bool? value);
+		partial void OnCanSelfCheckinChanged();
+		
+		partial void OnNumCheckInLabelsChanging(int? value);
+		partial void OnNumCheckInLabelsChanged();
+		
+		partial void OnCampusIdChanging(int? value);
+		partial void OnCampusIdChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -235,6 +252,8 @@ namespace CmsData
 			this._ParentOrg = default(EntityRef< Organization>); 
 			
 			this._Division = default(EntityRef< Division>); 
+			
+			this._MainCampu = default(EntityRef< MainCampu>); 
 			
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
@@ -906,6 +925,75 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="CanSelfCheckin", UpdateCheck=UpdateCheck.Never, Storage="_CanSelfCheckin", DbType="bit")]
+		public bool? CanSelfCheckin
+		{
+			get { return this._CanSelfCheckin; }
+
+			set
+			{
+				if (this._CanSelfCheckin != value)
+				{
+				
+                    this.OnCanSelfCheckinChanging(value);
+					this.SendPropertyChanging();
+					this._CanSelfCheckin = value;
+					this.SendPropertyChanged("CanSelfCheckin");
+					this.OnCanSelfCheckinChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NumCheckInLabels", UpdateCheck=UpdateCheck.Never, Storage="_NumCheckInLabels", DbType="int")]
+		public int? NumCheckInLabels
+		{
+			get { return this._NumCheckInLabels; }
+
+			set
+			{
+				if (this._NumCheckInLabels != value)
+				{
+				
+                    this.OnNumCheckInLabelsChanging(value);
+					this.SendPropertyChanging();
+					this._NumCheckInLabels = value;
+					this.SendPropertyChanged("NumCheckInLabels");
+					this.OnNumCheckInLabelsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CampusId", UpdateCheck=UpdateCheck.Never, Storage="_CampusId", DbType="int")]
+		public int? CampusId
+		{
+			get { return this._CampusId; }
+
+			set
+			{
+				if (this._CampusId != value)
+				{
+				
+					if (this._MainCampu.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnCampusIdChanging(value);
+					this.SendPropertyChanging();
+					this._CampusId = value;
+					this.SendPropertyChanged("CampusId");
+					this.OnCampusIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1101,6 +1189,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Division");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_MainCampus", Storage="_MainCampu", ThisKey="CampusId", IsForeignKey=true)]
+		public MainCampu MainCampu
+		{
+			get { return this._MainCampu.Entity; }
+
+			set
+			{
+				MainCampu previousValue = this._MainCampu.Entity;
+				if (((previousValue != value) 
+							|| (this._MainCampu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._MainCampu.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._MainCampu.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._CampusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._CampusId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("MainCampu");
 				}
 
 			}

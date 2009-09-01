@@ -93,9 +93,9 @@ namespace CMSPresenter
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<TaggedPersonInfo> FetchPeopleList(int startRowIndex, int maximumRows, string sortExpression,
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
-            var query = ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, usersonly);
+            var query = ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly);
             count = query.Count();
             if (TagTypeId == DbUtil.TagTypeId_AddSelected)
             {
@@ -110,7 +110,7 @@ namespace CMSPresenter
         }
 
         public int Count(int startRowIndex, int maximumRows, string sortExpression,
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
             return count;
         }
@@ -129,7 +129,7 @@ namespace CMSPresenter
 
         }
         public static IQueryable<Person> ApplySearch(
-            string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
+            string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
             var query = DbUtil.Db.People.Select(p => p);
             if (Util.OrgMembersOnly)
@@ -205,6 +205,8 @@ namespace CMSPresenter
             }
             if (orgid > 0)
                 query = query.Where(p => p.OrganizationMembers.Any(om => om.OrganizationId == orgid));
+            if (campus > 0)
+                query = query.Where(p => p.CampusId == campus);
             if (gender != 99)
                 query = query.Where(p => p.GenderId == gender);
 

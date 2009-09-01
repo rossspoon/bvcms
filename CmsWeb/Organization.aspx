@@ -149,6 +149,18 @@
                 <table class="Design2">
                     <tr>
                         <th>
+                            Campus:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="CampusId" runat="server" BindingMode="TwoWay"
+                                BindingSource="organization" DataTextField="Value" DataValueField="Id" Width="150px"
+                                DataSourceID="ODS_Campus"
+                                MakeDefault0="True">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             Status:
                         </th>
                         <td>
@@ -166,9 +178,8 @@
                         <td>
                             <cc1:DisplayOrEditDropDown ID="LeaderMemberTypeId" runat="server" BindingMode="TwoWay"
                                 BindingSource="organization" DataTextField="Value" MakeDefault0="True" DataValueField="Id"
-                                Width="150px" BindingMember="LeaderMemberTypeId" AppendDataBoundItems="true"
+                                Width="150px" BindingMember="LeaderMemberTypeId"
                                 DataSourceID="ODS_LeaderMemberTypeId">
-                                <asp:ListItem Value="0">(not specified)</asp:ListItem>
                             </cc1:DisplayOrEditDropDown>
                         </td>
                     </tr>
@@ -290,8 +301,7 @@
                     <td>
                         <cc1:DisplayOrEditDropDown ID="ScheduleId" runat="server" BindingMode="TwoWay" BindingSource="organization"
                             DataTextField="Value" DataValueField="Id" MakeDefault0="True" Width="350px" BindingMember="ScheduleId"
-                            DataSourceID="ODS_ScheduleId" AppendDataBoundItems="True">
-                            <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                            DataSourceID="ODS_ScheduleId">
                         </cc1:DisplayOrEditDropDown>
                     </td>
                 </tr>
@@ -321,6 +331,23 @@
                 <tr>
                     <td>
                         &#160;&nbsp
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <cc1:DisplayOrEditCheckbox ID="CanSelfCheckIn" runat="server" BindingSource="organization"
+                            Text="Self Check-in Allowed" TextIfChecked="Self Check-in Allowed" BindingMode="TwoWay"
+                            TextIfNotChecked="Self Check-in Not Allowed" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Number of CheckIn Labels:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="NumCheckInLabels" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False"
+                            Width="135px"></cc1:DisplayOrEditText>
                     </td>
                 </tr>
                 <tr>
@@ -562,13 +589,15 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_Divisions" runat="server" SelectMethod="AllOrgDivTags"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_Campus" runat="server" SelectMethod="AllCampuses0"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_OrganizationStatusId" runat="server" SelectMethod="OrganizationStatusCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_OrganizationTypeId" runat="server" SelectMethod="OrganizationTypes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_ScheduleId" runat="server" SelectMethod="Schedules"
+    <asp:ObjectDataSource ID="ODS_ScheduleId" runat="server" SelectMethod="Schedules0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes2"
+    <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_SecurityTypeId" runat="server" SelectMethod="SecurityTypeCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

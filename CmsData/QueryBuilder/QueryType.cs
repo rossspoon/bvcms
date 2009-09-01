@@ -20,11 +20,14 @@ namespace CmsData
         BaptismTypeId,
         BibleFellowshipTeacher,
         Birthday,
+        CampusId,
+        CellPhone,
         ChristAsSavior,
-        DaysSinceContact,
         ContributionOptionsId,
         ContributionsStatement,
         CreatedBy,
+        CreatedDate,
+        DaysSinceContact,
         DaysTillBirthday,
         DeceasedDate,
         DecisionDate,
@@ -120,5 +123,6 @@ namespace CmsData
         WasMemberAsOf,
         WeddingDate,
         WorksVolunteerWeek,
+        WorkPhone,
     }
 }

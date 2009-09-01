@@ -125,8 +125,13 @@ namespace CMSWeb2
             var u = DbUtil.Db.CurrentUser;
             var email = "";
             if (u != null)
+            {
                 email = u.EmailAddress;
-            Logger.LogError("Error--" + Request.Url.Authority + " " + Util.UserName, "\n" + email + " ({0}, {1})\n".Fmt(u.UserId, u.Name) + ex.ToString());
+                Logger.LogError("Error--" + Request.Url.Authority + " " + Util.UserName, "\n" + email + " ({0}, {1})\n".Fmt(u.UserId, u.Name) + ex.ToString());
+            }
+            else
+                Logger.LogError("Error--" + Request.Url.Authority + " anonymous\n" + ex.ToString());
+
         }
         private void InitLogger()
         {

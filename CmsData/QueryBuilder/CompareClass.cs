@@ -102,6 +102,10 @@ namespace CmsData
                 case QueryType.BadET:
                     return Expressions.BadET(parm, CompType, c.CodeIntIds);
                 // C ------------------------
+                case QueryType.CampusId:
+                    return Expressions.CampusId(parm,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.CreatedBy:
                     return Expressions.CreatedBy(parm, c.GetDataContext() as CMSDataContext, 
                         CompType, c.TextValue);
@@ -375,6 +379,8 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.WeddingDate:
+                    return Expressions.WeddingDate(parm, CompType, c.TextValue);
                 default:
                     if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
                         return Expressions.CompareConstant(parm,

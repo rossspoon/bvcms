@@ -57,12 +57,12 @@
                 </tr>
                 <tr>
                     <td><label for="first">First Name</label></td>
-                    <td><%= Html.TextBox("first") %></td>
+                    <td><%= Html.TextBox("first", Model.first, new { maxlength = 25 })%></td>
                     <td><%= Html.ValidationMessage("first") %><%= Html.ValidationMessage("find") %></td>
                 </tr>
                 <tr>
                     <td><label for="last">Last Name</label></td>
-                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.TextBox("last", Model.last, new { maxlength = 30 })%></td>
                     <td><%= Html.ValidationMessage("last") %></td>
                 </tr>
                  <tr>
@@ -79,7 +79,7 @@
                 </tr>
                 <tr>
                     <td><label for="email">Contact Email</label></td>
-                    <td><%= Html.TextBox("email") %></td>
+                    <td><%= Html.TextBox("email", Model.email, new { maxlength = 50 })%></td>
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
             <% if (Model.shownew)
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <td><label for="addr">Address</label></td>
-                    <td><%= Html.TextBox("addr")%></td>
+                    <td><%= Html.TextBox("addr", Model.addr, new { maxlength = 40 })%></td>
                     <td><%= Html.ValidationMessage("addr")%></td>
                 </tr>
                 <tr>
@@ -109,7 +109,7 @@
                 </tr>
                 <tr>
                     <td><label for="city">City</label></td>
-                    <td><%= Html.TextBox("city")%></td>
+                    <td><%= Html.TextBox("city", Model.city, new { maxlength = 20 })%></td>
                     <td><%= Html.ValidationMessage("city")%></td>
                 </tr>
                 <tr>

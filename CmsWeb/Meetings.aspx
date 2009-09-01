@@ -76,6 +76,7 @@
             <asp:QueryStringParameter QueryStringField="progid" Name="ProgId" Type="Int32" DefaultValue="0" />
             <asp:QueryStringParameter QueryStringField="divid" Name="DivId" Type="Int32" DefaultValue="0" />
             <asp:QueryStringParameter QueryStringField="schedid" Name="SchedId" Type="Int32" DefaultValue="0" />
+            <asp:QueryStringParameter QueryStringField="campusid" Name="CampusId" Type="Int32" DefaultValue="0" />
         </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>

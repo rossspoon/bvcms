@@ -1053,6 +1053,7 @@
     <Content Include="Content\Easy.gif" />
     <Content Include="Content\edgechurch.png" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\grace.png" />
     <Content Include="Content\header-gradient.png" />
     <Content Include="Content\images\222222_11x11_icon_arrows_leftright.gif" />
     <Content Include="Content\images\222222_11x11_icon_arrows_updown.gif" />
@@ -1796,6 +1797,7 @@
     <None Include="fckeditor\fckutils.cfm" />
     <Content Include="Report\MemberReport.aspx" />
     <Content Include="ScanUpload.svc" />
+    <Content Include="Views\Account\AddUser.aspx" />
     <Content Include="Views\Account\RequestUsername.aspx" />
     <Content Include="Views\Account\ForgotUsername.aspx" />
     <Content Include="Views\Account\ResetPassword.aspx" />
@@ -1861,10 +1863,9 @@
     <Content Include="Views\Shared\Site2.Master" />
     <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
-    <Content Include="Views\CheckIn\Children.aspx" />
+    <Content Include="Views\CheckIn\Match.aspx" />
     <Content Include="Views\CheckIn\Keyboard.ascx" />
     <Content Include="Views\CheckIn\Index.aspx" />
-    <Content Include="Views\CheckIn\Match.aspx" />
     <Content Include="Views\Fund\FundType.ascx" />
     <Content Include="Views\Fund\FundStatus.ascx" />
     <Content Include="Views\MetroZip\Index.aspx" />

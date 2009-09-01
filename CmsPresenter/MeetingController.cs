@@ -55,11 +55,11 @@ namespace CMSPresenter
             q2 = q2.Skip(startRowIndex).Take(maximumRows);
             return q2;
         }
-        public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId)
+        public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId, int CampusId)
         {
             var name = HttpContext.Current.Server.UrlDecode(Name);
             var q = DbUtil.Db.Organizations.Select(o => o);
-            q = OrganizationSearchController.ApplySearch(q, name, ProgId, DivId, SchedId, (int)Organization.OrgStatusCode.Active);
+            q = OrganizationSearchController.ApplySearch(q, name, ProgId, DivId, SchedId, (int)Organization.OrgStatusCode.Active, CampusId);
             var q2 = from o in q
                      where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr

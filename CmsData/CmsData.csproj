@@ -80,6 +80,7 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="Generated\LoveRespect.cs" />
+    <Compile Include="Generated\MainCampu.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="RecAgeDivision.cs" />
     <Compile Include="Generated\ActivityLog.cs" />

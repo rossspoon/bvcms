@@ -55,13 +55,14 @@ namespace CmsData
                 }
             }
         }
-        public string PasswordSetOnly
-        {
-            get { return ""; }
-            set
-            {
-            }
-        }
+        public string PasswordSetOnly { get; set; }
+        //public string PasswordSetOnly
+        //{
+        //    get { return ""; }
+        //    set
+        //    {
+        //    }
+        //}
         
         
     }

@@ -29,6 +29,7 @@ namespace CMSPresenter
             // get list of people who have attended an event for this organization (including visitors)
             var pids = from a in Db.Attends
                        where a.Meeting.OrganizationId == orgid
+                       where a.MeetingDate >= a.Organization.FirstMeetingDate
                        where a.AttendanceFlag == true
                        group a.PeopleId by a.PeopleId into g
                        select g.Key;

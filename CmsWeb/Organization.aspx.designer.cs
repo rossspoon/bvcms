@@ -77,6 +77,15 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditText Location;
         
         /// <summary>
+        /// CampusId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditDropDown CampusId;
+        
+        /// <summary>
         /// OrganizationStatusId control.
         /// </summary>
         /// <remarks>
@@ -372,6 +381,24 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CustomControls.DisplayOrEditText OnLineCatalogSort;
+        
+        /// <summary>
+        /// CanSelfCheckIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditCheckbox CanSelfCheckIn;
+        
+        /// <summary>
+        /// NumCheckInLabels control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText NumCheckInLabels;
         
         /// <summary>
         /// FirstMeetingDate control.
@@ -696,6 +723,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ODS_Divisions;
+        
+        /// <summary>
+        /// ODS_Campus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_Campus;
         
         /// <summary>
         /// ODS_OrganizationStatusId control.

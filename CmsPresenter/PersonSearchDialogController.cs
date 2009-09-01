@@ -56,6 +56,7 @@ namespace CMSPresenter
         string Addr {get; set;}
         int Gender {get; set;}
         int Member {get; set;}
+        int Campus { get; set; }
         int Tag {get; set;}
     }
     [DataObject]
@@ -71,18 +72,18 @@ namespace CMSPresenter
 
         public IEnumerable<PersonDialogSearchInfo> FetchSearchList(SearchParameters p, bool usersonly)
         {
-            return FetchSearchList(p.Name, p.Comm, p.Addr, p.Member, p.Tag, p.DOB, p.Gender, p.OrgId, usersonly);
+            return FetchSearchList(p.Name, p.Comm, p.Addr, p.Member, p.Tag, p.DOB, p.Gender, p.OrgId, p.Campus, usersonly);
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<PersonDialogSearchInfo> FetchSearchList(
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             var n = t.People().Count();
             var list = FetchPeopleList(t.People()).ToList();
             var ids = list.Select(p => p.PeopleId).ToArray();
 
-            var query = PersonSearchController.ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, usersonly);
+            var query = PersonSearchController.ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly);
             query = query.Where(p => !ids.Contains(p.PeopleId));
             int maxitems = 100;
             list.AddRange(FetchPeopleList(query).Take(maxitems));
@@ -175,7 +176,7 @@ namespace CMSPresenter
             return q;
         }
         public int Count(
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
             return count;
         }

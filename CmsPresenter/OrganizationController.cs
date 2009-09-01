@@ -50,11 +50,11 @@ namespace CMSPresenter
             bool Pending = false;
             switch (Select)
             {
-                case  GroupSelect.Inactive:
+                case GroupSelect.Inactive:
                     Active = false;
                     Pending = false;
                     break;
-                case  GroupSelect.Pending:
+                case GroupSelect.Pending:
                     Active = true;
                     Pending = true;
                     break;
@@ -79,10 +79,10 @@ namespace CMSPresenter
         public IEnumerable<PersonMemberInfo> PrevOrgMembers(int OrganizationId, string sortExpression, int maximumRows, int startRowIndex)
         {
             var q = from etd in DbUtil.Db.EnrollmentTransactions
-                    let mdt = DbUtil.Db.EnrollmentTransactions.Where(m => 
-                        m.PeopleId == etd.PeopleId 
-                        && m.OrganizationId == OrganizationId 
-                        &&  m.TransactionTypeId > 3 
+                    let mdt = DbUtil.Db.EnrollmentTransactions.Where(m =>
+                        m.PeopleId == etd.PeopleId
+                        && m.OrganizationId == OrganizationId
+                        && m.TransactionTypeId > 3
                         && m.TransactionStatus == false).Select(m => m.TransactionDate).Max()
                     where etd.TransactionStatus == false
                     where etd.TransactionDate == mdt
@@ -322,6 +322,12 @@ namespace CMSPresenter
                 SecurityTypeId = org.SecurityTypeId,
                 EntryPointId = org.EntryPointId,
                 OrganizationStatusId = org.OrganizationStatusId,
+                AllowAttendOverlap = org.AllowAttendOverlap,
+                AttendClassificationId = org.AttendClassificationId,
+                CanSelfCheckin = org.CanSelfCheckin,
+                GradeRangeStart = org.GradeRangeStart,
+                GradeRangeEnd = org.GradeRangeEnd,
+                NumCheckInLabels = org.NumCheckInLabels,
             };
             DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in org.DivOrgs)

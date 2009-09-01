@@ -73,7 +73,7 @@
                             <th>
                                 Name:
                             </th>
-                            <td>
+                            <td colspan="3">
                                 <asp:TextBox ID="NameSearch" runat="server" ToolTip="OrganizationId, Location or part of Name (organization, leader, division)"></asp:TextBox>
                             </td>
                         </tr>
@@ -81,7 +81,7 @@
                             <th>
                                 Division:
                             </th>
-                            <td>
+                            <td colspan="3">
                                 <cc1:DropDownCC ID="OrgDivisions" runat="server" DataTextField="Value" DataSourceID="OrgTagData"
                                     DataValueField="Id">
                                 </cc1:DropDownCC>
@@ -91,10 +91,9 @@
                             <th>
                                 Schedule:
                             </th>
-                            <td>
+                            <td colspan="3">
                                 <cc1:DropDownCC ID="Schedule" runat="server" DataTextField="Value" DataSourceID="ScheduleData"
-                                    DataValueField="Id" AppendDataBoundItems="True">
-                                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                                    DataValueField="Id">
                                 </cc1:DropDownCC>
                             </td>
                         </tr>
@@ -104,8 +103,17 @@
                             </th>
                             <td>
                                 <cc1:DropDownCC ID="Status" runat="server" DataTextField="Value" DataSourceID="OrganizationStatusData"
-                                    DataValueField="Id" AppendDataBoundItems="True">
-                                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                                    DataValueField="Id">
+                                </cc1:DropDownCC>
+                            </td>
+                            <th>
+                                Campus:
+                            </th>
+                            <td>
+                                <cc1:DropDownCC ID="Campus" runat="server"
+                                    DataTextField="Value" DataValueField="Id" Width="150px"
+                                    DataSourceID="ODS_Campus"
+                                    MakeDefault0="True">
                                 </cc1:DropDownCC>
                             </td>
                         </tr>
@@ -260,18 +268,20 @@
                 Type="Int32" />
             <asp:ControlParameter ControlID="Status" Name="statusid" PropertyName="SelectedValue"
                 Type="Int32" />
+            <asp:ControlParameter ControlID="Campus" Name="campusid" PropertyName="SelectedValue"
+                Type="Int32" />
             <asp:ControlParameter ControlID="Tags" Name="tagid" 
                 PropertyName="SelectedValue" Type="string" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="OrgTagData" runat="server" SelectMethod="AllOrgDivTags"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ScheduleData" runat="server" SelectMethod="Schedules" TypeName="CMSPresenter.CodeValueController">
+    <asp:ObjectDataSource ID="ScheduleData" runat="server" SelectMethod="Schedules0" TypeName="CMSPresenter.CodeValueController">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="OrgTagData2" runat="server" SelectMethod="AllOrgDivTags2"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="Schedules" TypeName="CMSPresenter.CodeValueController">
-    </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="OrganizationStatusData" runat="server" SelectMethod="OrganizationStatusCodes"
+    <asp:ObjectDataSource ID="OrganizationStatusData" runat="server" SelectMethod="OrganizationStatusCodes0"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_Campus" runat="server" SelectMethod="AllCampuses0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 </asp:Content>

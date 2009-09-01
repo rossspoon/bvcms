@@ -61,24 +61,25 @@ namespace CMSPresenter
             int OrgSubDivId,
             int scheduleid,
             int statusid,
+            int campusid,
             string tagid)
         {
             var query = from o in Db.Organizations select o;
-            query = ApplySearch(query, NameSearch, 0, OrgSubDivId, scheduleid, statusid);
+            query = ApplySearch(query, NameSearch, 0, OrgSubDivId, scheduleid, statusid, campusid);
             count = query.Count();
             query = ApplySort(query, sortExpression).Skip(startRowIndex).Take(maximumRows);
             return FetchOrganizationList(query, tagid);
         }
 
-        public int Count(int startRowIndex, int maximumRows, string sortExpression, string NameSearch, int OrgSubDivId, int scheduleid, int statusid, string tagid)
+        public int Count(int startRowIndex, int maximumRows, string sortExpression, string NameSearch, int OrgSubDivId, int scheduleid, int statusid, int campusid, string tagid)
         {
             return count;
         }
 
-        public IEnumerable<OrganizationInfo> FetchOrganizationExcelList0(string Name, int DivId, int SchedId, int StatusId, DateTime MeetingDate)
+        public IEnumerable<OrganizationInfo> FetchOrganizationExcelList0(string Name, int DivId, int SchedId, int StatusId, int campusid, DateTime MeetingDate)
         {
             var q = from o in Db.Organizations select o;
-            q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId);
+            q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId, campusid);
             var q2 = from o in q
                      let LookbackDt = MeetingDate.AddDays(-7 * o.RollSheetVisitorWks ?? 3)
                      select new OrganizationInfo
@@ -108,10 +109,10 @@ namespace CMSPresenter
                      };
             return q2;
         }
-        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId, DateTime MeetingDate)
+        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId, int campusid, DateTime MeetingDate)
         {
             var q = from o in Db.Organizations select o;
-            q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId);
+            q = ApplySearch(q, Name, 0, DivId, SchedId, StatusId, campusid);
             var q2 = from o in q
                      let LookbackDt = MeetingDate.AddDays(-7 * o.RollSheetVisitorWks ?? 3)
                      select new OrganizationInfoExcel
@@ -129,13 +130,13 @@ namespace CMSPresenter
                      };
             return q2;
         }
-        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId)
+        public IEnumerable<OrganizationInfoExcel> FetchOrganizationExcelList(string Name, int DivId, int SchedId, int StatusId, int CampusId)
         {
-            return FetchOrganizationExcelList(Name, DivId, SchedId, StatusId, Util.Now.Date);
+            return FetchOrganizationExcelList(Name, DivId, SchedId, StatusId, CampusId, Util.Now.Date);
         }
 
         #region Search and Sort
-        public static IQueryable<Organization> ApplySearch(IQueryable<Organization> query, string NameSearch, int ProgId, int DivId, int scheduleid, int statusid)
+        public static IQueryable<Organization> ApplySearch(IQueryable<Organization> query, string NameSearch, int ProgId, int DivId, int scheduleid, int statusid, int campusid)
         {
             if (NameSearch.HasValue())
             {
@@ -168,6 +169,11 @@ namespace CMSPresenter
             if (statusid > 0)
                 query = from o in query
                         where o.OrganizationStatusId == statusid
+                        select o;
+
+            if (campusid > 0)
+                query = from o in query
+                        where o.CampusId == campusid
                         select o;
 
             return query;

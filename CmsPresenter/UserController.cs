@@ -11,12 +11,14 @@ using System.ComponentModel;
 using UtilityExtensions;
 using System.Linq;
 using CmsData;
+using System.Web;
 
 namespace CMSPresenter
 {
     [DataObject(true)]
     public class UserController
     {
+        public const string STR_ShowPassword = "UsersShowPasswordOnce";
         private CMSDataContext Db;
         public UserController()
         {
@@ -129,9 +131,11 @@ namespace CMSPresenter
                     q = q.OrderByDescending(u => u.MustChangePassword);
                     break;
             }
-            q = q.Skip(startIndex).Take(maximumRows);
+            var list = q.Skip(startIndex).Take(maximumRows).ToList();
+            if (HttpContext.Current.Session[STR_ShowPassword] != null)
+                list[0].PasswordSetOnly = HttpContext.Current.Session[STR_ShowPassword].ToString();
 
-            return q;
+            return list;
         }
     }
 }

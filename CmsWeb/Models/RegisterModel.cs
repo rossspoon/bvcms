@@ -30,6 +30,7 @@ namespace CMSWeb.Models
         public string email { get; set; }
         public int? position { get; set; }
         public bool married { get; set; }
+        public int? campusid { get; set; }
 
         public string PrepareSummaryText()
         {
@@ -138,6 +139,7 @@ namespace CMSWeb.Models
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email;
+            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
             return p;
         }
@@ -148,6 +150,7 @@ namespace CMSWeb.Models
                 null, first, nickname, lastname, dob, married, gender.Value, 0, null);
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email;
+            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             RecRegModel.FixTitle(p);
             DbUtil.Db.SubmitChanges();
         }

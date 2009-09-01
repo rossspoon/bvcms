@@ -15,6 +15,7 @@ using System.Web;
 using System.Data.Linq.Mapping;
 using System.Data.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace CmsData
 {
@@ -46,8 +47,8 @@ namespace CmsData
             //    this.Audit<EnrollmentTransaction>(et => et.TransactionId);
             //    this.Audit<NewContact>(c => c.ContactId);
 
-                AuditUtility.ProcessInserts(GetChangeSet().Inserts);
-                AuditUtility.ProcessUpdates(GetChangeSet().Updates);
+            AuditUtility.ProcessInserts(GetChangeSet().Inserts);
+            AuditUtility.ProcessUpdates(GetChangeSet().Updates);
             //}
 
             //base.SubmitChanges(failureMode);
@@ -317,15 +318,15 @@ namespace CmsData
             var q = from p in People
                     where p.OrganizationMembers.Any(m =>
                         OrganizationMembers.Any(um =>
-                            (um.Organization.SecurityTypeId != 3 
-                                || um.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher) 
+                            (um.Organization.SecurityTypeId != 3
+                                || um.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
                              && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgMembersOnly);
 
             // members of my family
             q = from p in People
-                where p.FamilyId == CurrentUser.Person.FamilyId 
+                where p.FamilyId == CurrentUser.Person.FamilyId
                 select p;
             TagAll(q, tag);
 
@@ -365,6 +366,18 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid, pid);
             return ((int)(result.ReturnValue));
         }
+        public class AttendMeetingInfo1
+        {
+            public AttendMeetingInfo2 info;
+            public Attend AttendanceOrg;
+            public Attend Attendance;
+            public Meeting Meeting;
+            public List<Attend> VIPAttendance;
+            public OrganizationMember BFCMember;
+            public Attend BFCAttendance;
+            public Meeting BFCMeeting;
+            public int path;
+        }
         public class AttendMeetingInfo2
         {
             public int? AttendedElsewhere { get; set; }
@@ -378,7 +391,7 @@ namespace CmsData
             public int? BFClassId { get; set; }
         }
 
-        [Function(Name= "dbo.AttendMeetingInfo")]
+        [Function(Name = "dbo.AttendMeetingInfo")]
         [ResultType(typeof(AttendMeetingInfo2))]
         [ResultType(typeof(Attend))] // Attendance
         [ResultType(typeof(Meeting))] // Meeting Attended
@@ -388,8 +401,40 @@ namespace CmsData
         [ResultType(typeof(Meeting))] // BFC Meeting Attended
         public IMultipleResults AttendMeetingInfo(int MeetingId, int PeopleId)
         {
-            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),MeetingId, PeopleId);
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), MeetingId, PeopleId);
             return (IMultipleResults)result.ReturnValue;
+        }
+        public AttendMeetingInfo1 AttendMeetingInfo0(int MeetingId, int PeopleId)
+        {
+            var r = AttendMeetingInfo(MeetingId, PeopleId);
+            var o = new AttendMeetingInfo1();
+            o.info = r.GetResult<CMSDataContext.AttendMeetingInfo2>().First();
+            o.Attendance = r.GetResult<Attend>().FirstOrDefault();
+            if (o.Attendance != null)
+            {
+                o.AttendanceOrg = new Attend
+                {
+                    AttendanceFlag = o.Attendance.AttendanceFlag,
+                    AttendanceTypeId = o.Attendance.AttendanceTypeId,
+                    AttendId = o.Attendance.AttendId,
+                    CreatedBy = o.Attendance.CreatedBy,
+                    CreatedDate = o.Attendance.CreatedDate,
+                    EffAttendFlag = o.Attendance.EffAttendFlag,
+                    MeetingDate = o.Attendance.MeetingDate,
+                    MeetingId = o.Attendance.MeetingId,
+                    MemberTypeId = o.Attendance.MemberTypeId,
+                    OrganizationId = o.Attendance.OrganizationId,
+                    OtherOrgId = o.Attendance.OtherOrgId,
+                    PeopleId = o.Attendance.PeopleId,
+                };
+            }
+
+            o.Meeting = r.GetResult<Meeting>().First();
+            o.VIPAttendance = r.GetResult<Attend>().ToList();
+            o.BFCMember = r.GetResult<OrganizationMember>().FirstOrDefault();
+            o.BFCAttendance = r.GetResult<Attend>().FirstOrDefault();
+            o.BFCMeeting = r.GetResult<Meeting>().FirstOrDefault();
+            return o;
         }
         public string UserPreference(string pref)
         {
@@ -410,7 +455,7 @@ namespace CmsData
                 p.ValueX = value.ToString();
             else
             {
-                p = new Preference { UserId = Util.UserId1, PreferenceX=pref, ValueX = value.ToString() };
+                p = new Preference { UserId = Util.UserId1, PreferenceX = pref, ValueX = value.ToString() };
                 DbUtil.Db.Preferences.InsertOnSubmit(p);
             }
             HttpContext.Current.Session["pref-" + pref] = p.ValueX;
@@ -457,7 +502,7 @@ namespace CmsData
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
-            
+
         }
     }
 }

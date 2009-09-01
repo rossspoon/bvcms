@@ -23,7 +23,7 @@ namespace CMSPresenter
             string tag)
         {
             var tid = tag.Split(',')[0].ToInt();
-            var query = ApplySearch(null, null, null, 0, tid, null, 99, 0, false);
+            var query = ApplySearch(null, null, null, 0, tid, null, 99, 0, 0, false);
             count = query.Count();
             query = ApplySort(query, sortExpression)
                 .Skip(startRowIndex).Take(maximumRows);

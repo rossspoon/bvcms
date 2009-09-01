@@ -16,9 +16,8 @@ namespace CmsCheckin
 {
     public partial class Form1 : Form
     {
-        Match match;
         PhoneNumber phone;
-        Children children;
+        Attendees attendees;
         public Form1()
         {
             InitializeComponent();
@@ -27,38 +26,18 @@ namespace CmsCheckin
         void phone_Go(object sender, EventArgs<string> e)
         {
             phone.Visible = false;
-            match = new Match();
-            this.Controls.Add(match);
-            match.Left = (this.Width / 2) - (match.Width / 2);
-            match.Top = 0;
-            match.Search(e.Value);
-            match.GoBack += new EventHandler(m_Done);
-            match.Go += new EventHandler<EventArgs<int>>(match_Go);
+            attendees = new Attendees();
+            this.Controls.Add(attendees);
+            attendees.Left = (this.Width / 2) - (attendees.Width / 2);
+            attendees.Top = 0;
+            attendees.FindAttendees(e.Value);
+            attendees.Go += new EventHandler(attendees_Go);
         }
 
-        void match_Go(object sender, EventArgs<int> e)
+        void attendees_GoBack(object sender, EventArgs e)
         {
-            match.Visible = false;
-            children = new Children();
-            this.Controls.Add(children);
-            children.Left = (this.Width / 2) - (children.Width / 2);
-            children.Top = 0;
-            children.FindChildren(e.Value);
-            children.GoBack += new EventHandler(children_GoBack);
-            children.Go += new EventHandler<EventArgs<List<ChildLabel>>>(children_Go);
-        }
-
-        void children_GoBack(object sender, EventArgs e)
-        {
-            this.Controls.Remove(children);
-            children = null;
-            match.Visible = true;
-        }
-
-        void m_Done(object sender, EventArgs e)
-        {
-            this.Controls.Remove(match);
-            match = null;
+            this.Controls.Remove(attendees);
+            attendees = null;
             phone.Visible = true;
         }
 
@@ -77,74 +56,14 @@ namespace CmsCheckin
             this.Resize += new EventHandler(Form1_Resize);
         }
 
-        string printer = "Datamax E-4203";
-
-        List<ChildLabel> labels;
-        DateTime time;
-
-        void children_Go(object sender, EventArgs<List<ChildLabel>> e)
+        void attendees_Go(object sender, EventArgs e)
         {
-            labels = e.Value;
-            time = DateTime.Now;
-
-            foreach (var c in labels)
-            {
-                PrintLabel(c);
-                PrintLabel(c);
-                if (c.Extra)
-                    PrintLabel(c);
-            }
-            var ms = new MemoryStream();
-            var st = new StreamWriter(ms);
-            st.WriteLine("\x02L");
-            st.WriteLine("H07");
-            st.WriteLine("D11");
-            st.WriteLine("E");
-            st.Flush();
-            ms.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, ms);
-            st.Close();
-
-            foreach (var c in labels)
-                RecordAttend(c);
-
-            this.Controls.Remove(children);
-            children = null;
+            this.Controls.Remove(attendees);
+            attendees = null;
             phone.Visible = true;
             phone.textBox1.Text = String.Empty;
         }
 
-        private void PrintLabel(ChildLabel c)
-        {
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02O0130");
-            sw.WriteLine("\x02L");
-            sw.WriteLine("H07");
-            sw.WriteLine("D11");
-            sw.WriteLine("191100500400015" + c.Name);
-            sw.WriteLine("191100300200015" + " (" + c.PeopleId + " " + c.Gender + ")  " + time.ToString("M/d/yy HHmmss"));
-            //sw.WriteLine("191100300100015" + c.Class);
-            sw.WriteLine("E");
-            sw.Flush();
-
-            memStrm.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, memStrm);
-            sw.Close();
-        }
-        private void RecordAttend(ChildLabel c)
-        {
-            if (c.OrgId == 0)
-                return;
-            var wc = new WebClient();
-            var coll = new NameValueCollection();
-            coll.Add("PeopleId", c.PeopleId.ToString());
-            coll.Add("OrgId", c.OrgId.ToString());
-            var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]), 
-                "Checkin/RecordAttend/");
-            var resp = wc.UploadValues(url, "POST", coll);
-            var s = Encoding.ASCII.GetString(resp);
-        }
 
             //try
             //{

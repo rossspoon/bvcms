@@ -53,6 +53,8 @@ namespace CmsData
 		
 		private bool? _Pending;
 		
+		private string _UserData;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -123,6 +125,9 @@ namespace CmsData
 		
 		partial void OnPendingChanging(bool? value);
 		partial void OnPendingChanged();
+		
+		partial void OnUserDataChanging(string value);
+		partial void OnUserDataChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -541,6 +546,28 @@ namespace CmsData
 					this._Pending = value;
 					this.SendPropertyChanged("Pending");
 					this.OnPendingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="UserData", UpdateCheck=UpdateCheck.Never, Storage="_UserData", DbType="varchar(50)")]
+		public string UserData
+		{
+			get { return this._UserData; }
+
+			set
+			{
+				if (this._UserData != value)
+				{
+				
+                    this.OnUserDataChanging(value);
+					this.SendPropertyChanging();
+					this._UserData = value;
+					this.SendPropertyChanged("UserData");
+					this.OnUserDataChanged();
 				}
 
 			}

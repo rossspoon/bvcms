@@ -50,11 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Children.cs">
+    <Compile Include="Attendees.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Children.Designer.cs">
-      <DependentUpon>Children.cs</DependentUpon>
+    <Compile Include="Attendees.Designer.cs">
+      <DependentUpon>Attendees.cs</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Form1.cs">
@@ -62,12 +62,6 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Match.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Match.Designer.cs">
-      <DependentUpon>Match.cs</DependentUpon>
     </Compile>
     <Compile Include="PhoneNumber.cs">
       <SubType>UserControl</SubType>
@@ -77,14 +71,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Children.resx">
-      <DependentUpon>Children.cs</DependentUpon>
+    <EmbeddedResource Include="Attendees.resx">
+      <DependentUpon>Attendees.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Match.resx">
-      <DependentUpon>Match.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PhoneNumber.resx">
       <DependentUpon>PhoneNumber.cs</DependentUpon>

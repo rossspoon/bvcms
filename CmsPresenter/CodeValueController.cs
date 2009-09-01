@@ -477,6 +477,11 @@ namespace CMSPresenter
             list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });
             return list;
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> Ministries0()
+        {
+            return Ministries().AddNotSpecified();
+        }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> ContactReasonCodes()
@@ -498,7 +503,11 @@ namespace CMSPresenter
             }
             return list;
         }
-
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> ContactReasonCodes0()
+        {
+            return ContactReasonCodes().AddNotSpecified();
+        }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> ContactTypeCodes()
         {
@@ -518,6 +527,11 @@ namespace CMSPresenter
                 HttpRuntime.Cache[NAME] = list;
             }
             return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> ContactTypeCodes0()
+        {
+            return ContactTypeCodes().AddNotSpecified();
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
@@ -717,6 +731,32 @@ namespace CMSPresenter
             return list;
         }
 
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> AllCampuses()
+        {
+            const string NAME = "AllCampuses";
+            var list = HttpRuntime.Cache[NAME] as List<CodeValueItem>;
+            if (list == null)
+            {
+                var q = from c in DbUtil.Db.MainCampus
+                        select new CodeValueItem
+                        {
+                            Id = c.Id,
+                            Code = c.Id.ToString(),
+                            Value = c.Campus,
+                        };
+                list = q.ToList();
+                HttpRuntime.Cache[NAME] = list;
+            }
+            return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> AllCampuses0()
+        {
+            return AllCampuses().AddNotSpecified();
+        }
+
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> OrganizationStatusCodes()
         {
@@ -736,7 +776,11 @@ namespace CMSPresenter
             }
             return list;
         }
-
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> OrganizationStatusCodes0()
+        {
+            return OrganizationStatusCodes().AddNotSpecified();
+        }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public static List<CodeValueItem> ResidentCodesWithZero()
         {
@@ -912,6 +956,11 @@ namespace CMSPresenter
             }
             return list;
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> MemberStatusCodes0()
+        {
+            return MemberStatusCodes().AddNotSpecified();
+        }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> Schedules()
@@ -932,7 +981,11 @@ namespace CMSPresenter
             }
             return list;
         }
-
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<CodeValueItem> Schedules0()
+        {
+            return Schedules().AddNotSpecified();
+        }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<CodeValueItem> UserRoles()
         {
@@ -988,6 +1041,13 @@ namespace CMSPresenter
                 list = q.ToList();
                 HttpRuntime.Cache[NAME] = list;
             }
+            return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public static List<MemberTypeItem> MemberTypeCodes0()
+        {
+            var list = MemberTypeCodes2().ToList();
+            list.Insert(0, new MemberTypeItem { Id = 0, Value = "(not specified)" });
             return list;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
@@ -1216,6 +1276,19 @@ namespace CMSPresenter
         public IEnumerable<CodeValueItem> Organizations(int SubDivId)
         {
             return top.Union(GetOrganizationList(SubDivId));
+        }
+    }
+    public static class CodeValue
+    {
+        public static List<CodeValueItem> AddNotSpecified(this IEnumerable<CodeValueItem> q)
+        {
+            return q.AddNotSpecified(0);
+        }
+        public static List<CodeValueItem> AddNotSpecified(this IEnumerable<CodeValueItem> q, int value)
+        {
+            var list = q.ToList();
+            list.Insert(0, new CodeValueItem { Id = value, Value = "(not specified)" });
+            return list;
         }
     }
 }

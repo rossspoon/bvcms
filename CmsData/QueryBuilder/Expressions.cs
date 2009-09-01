@@ -247,6 +247,7 @@ namespace CmsData
                 p.Attends.Any(a =>
                     a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
+                    && a.MeetingDate >= a.Organization.FirstMeetingDate
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Util.CurrentOrgId
                     );
@@ -476,6 +477,32 @@ namespace CmsData
                         pred = p => p.BirthMonth == y;
                     else
                         pred = p => p.BirthYear == y;
+            }
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression WeddingDate(
+            ParameterExpression parm,
+            CompareType op,
+            string wed)
+        {
+            Expression<Func<Person, bool>> pred = p => false; // default
+            DateTime dt;
+            if (DateTime.TryParse(wed, out dt))
+                if (Regex.IsMatch(wed, @"\d+/\d+/\d+"))
+                    pred = p => p.WeddingDate == dt;
+                else
+                    pred = p => p.WeddingDate.Value.Day == dt.Day && p.WeddingDate.Value.Month == dt.Month;
+            else
+            {
+                int y;
+                if (int.TryParse(wed, out y))
+                    if (y <= 12 && y > 0)
+                        pred = p => p.WeddingDate.Value.Month == y;
+                    else
+                        pred = p => p.WeddingDate.Value.Year == y;
             }
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -944,6 +971,17 @@ namespace CmsData
                     || (v.Children && ids.Contains(20))
                     || (v.Leader && ids.Contains(30)))
                 || (p.Volunteers.Count() == 0 && ids.Contains(0));
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression CampusId(ParameterExpression parm,
+            CompareType op,
+            int[] ids)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                ids.Contains(p.CampusId.Value);
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);

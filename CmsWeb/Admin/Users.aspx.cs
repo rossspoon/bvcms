@@ -25,13 +25,20 @@ namespace CMSWeb.Admin
         {
             pager1.PageSize = Util.GetPageSizeCookie();
             pager2.PageSize = Util.GetPageSizeCookie();
-            if (!Page.IsPostBack && this.QueryString<int>("created") > 0)
+            if (!Page.IsPostBack && this.QueryString<int>("create") > 0)
             {
                 ListView1.Sort("CreationDate", SortDirection.Descending);
                 TextBox1.Text = string.Empty;
                 ListView1.DataBind();
                 ListView1.SelectedIndex = 0;
+                if (Session[UserController.STR_ShowPassword] != null)
+                    ListView1.EditIndex = 0;
             }
+        }
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            Session.Remove(UserController.STR_ShowPassword);
         }
 
         protected void ButtonCreateNewRole_Click(object sender, EventArgs e)

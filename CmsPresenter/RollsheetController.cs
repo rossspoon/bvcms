@@ -17,9 +17,9 @@ namespace CMSPresenter
 {
     public class RollsheetController
     {
-        public IEnumerable<OrganizationInfo> FetchOrgsList(string name, int DivId, int SchedId, int StatusId)
+        public IEnumerable<OrganizationInfo> FetchOrgsList(string name, int DivId, int SchedId, int StatusId, int CampusId)
         {
-            return (new OrganizationSearchController().FetchOrganizationExcelList0(name, DivId, SchedId, StatusId, Util.Now.Date));
+            return (new OrganizationSearchController().FetchOrganizationExcelList0(name, DivId, SchedId, StatusId, CampusId, Util.Now.Date));
         }
 
         public IEnumerable<OrganizationInfo> FetchOrgsList(int oid, DateTime MeetingDate)
