@@ -43,6 +43,10 @@
             }, "json");
             return false;
         };
+        o.ClearForm = function(ev) {
+            $('#searchform .clearable').clearFields();
+            return false;
+        };
         o.DisplaySelect = function() {
             if ($("#AddToExisting").attr("checked")) {
                 $(".select", o.$this).hide();
@@ -63,6 +67,10 @@
         };
         o.$this = $(this[0]);
         o.qs = "";
+        if (o.entrypoint)
+            o.qs = o.qs.appendQuery("entrypoint=" + o.entrypoint);
+        if (o.origin)
+            o.qs = o.qs.appendQuery("origin=" + o.origin);
         if (o.multi)
             o.qs = o.qs.appendQuery("select=2");
         this.load("/SearchPeople/", o.qs, function() {
@@ -70,6 +78,7 @@
             $("#people", o.$this).SearchPeoplePager();
             o.BindSelect();
             $("#AddNew", o.$this).click(o.AddNew);
+            $("#ClearForm", o.$this).click(o.ClearForm);
             $("#AddToExisting", o.$this).change(o.DisplaySelect);
             $('a.sortable', o.$this).click(o.SortClicked);
             $('#Search', o.$this).click(o.SearchClicked);

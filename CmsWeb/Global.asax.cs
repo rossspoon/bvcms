@@ -14,8 +14,9 @@ using System.Data.Linq.Mapping;
 using System.Collections;
 using System.Web.SessionState;
 using System.Xml.Linq;
-using BitFactory.Logging;
 using System.Net.Mail;
+using System.Web.Configuration;
+using CMSPresenter;
 
 namespace CMSWeb2
 {
@@ -24,14 +25,8 @@ namespace CMSWeb2
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static CompositeLogger logger = new CompositeLogger();
-        public static CompositeLogger Logger
-        {
-            get { return logger; }
-        }
         protected void Application_Start()
         {
-            InitLogger();
             RegisterRoutes(RouteTable.Routes);
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
@@ -107,10 +102,9 @@ namespace CMSWeb2
         {
             StartSession();
         }
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            Util.Logger = Logger;
-        }
+        //protected void Application_BeginRequest(object sender, EventArgs e)
+        //{
+        //}
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)
@@ -123,44 +117,23 @@ namespace CMSWeb2
         {
             var ex = Server.GetLastError();
             var u = DbUtil.Db.CurrentUser;
-            var email = "";
+            var smtp = new SmtpClient();
+            var msg = new MailMessage();
+            msg.Subject = "bvcms error on " + Request.Url.Authority;
             if (u != null)
             {
-                email = u.EmailAddress;
-                Logger.LogError("Error--" + Request.Url.Authority + " " + Util.UserName, "\n" + email + " ({0}, {1})\n".Fmt(u.UserId, u.Name) + ex.ToString());
+                msg.From = new MailAddress(u.EmailAddress, u.Name);
+                msg.Body = "\n{0} ({1}, {2})\n".Fmt(u.EmailAddress, u.UserId, u.Name) + ex.ToString();
             }
             else
-                Logger.LogError("Error--" + Request.Url.Authority + " anonymous\n" + ex.ToString());
+            {
+                msg.From = new MailAddress(WebConfigurationManager.AppSettings["sysfromemail"]);
+                msg.Body = ex.ToString();
+            }
+            foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
+                msg.To.Add(new MailAddress(a.Person.EmailAddress, a.Name));
+            smtp.Send(msg);
 
         }
-        private void InitLogger()
-        {
-            //  create the email logger
-            Logger emailLogger = new EmailLogger( new SmtpClient(),
-                 DbUtil.SystemEmailAddress,
-                 "david@davidcarroll.name");
-            emailLogger.SeverityThreshold = LogSeverity.Status;
-
-            // create the file logger
-            Logger fileLogger = new FileLogger(
-                 Server.MapPath("/logfile.log"));
-            fileLogger.SeverityThreshold = LogSeverity.Status;
-
-            //// create a socket logger - wrapped in an insistent logger
-            //Logger socketLogger = new SerialSocketLogger(
-            //     "<IP address of my home machine>",
-            //     12345 /* pick a port number */ );
-            //socketLogger = new InsistentLogger(
-            //     socketLogger,
-            //     200, /* retain 200 log entries in memory */
-            //     3600 /* retry a failed socket every hour */ );
-
-            // add the loggers to the main composite logger
-            Logger.AddLogger("Email", emailLogger);
-            Logger.AddLogger("File", fileLogger);
-            //Logger.AddLogger("Socket", socketLogger);
-
-        }
-
     }
 }

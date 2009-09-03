@@ -19,6 +19,9 @@
                             $('#' + id).text(ret.pid);
                             $("#namelink").replaceWith("<a id='namelink' href='/Person.aspx?id=" + ret.pid + "'>" + ret.name + "</a>");
                         }, "json");
+                    }, {
+                        origin: 70, // enrollment
+                        entrypoint: 50 // activities
                     });
                     return false;
                 });
@@ -59,20 +62,21 @@
                 <td colspan="2">
                     Email: <a href="mailto:<%=d.Email%>"><%=d.Email%></a>
                 </td>
-                <td colspan="3">
+                <td colspan="3" valign="top">
                     <label>
                         ShirtSize:
                         <%=Html.DropDownList("ShirtSize", CMSWeb.Models.RecRegModel.ShirtSizes())%></label>
+                    <label>League: <%=Html.DropDownList("League", Model.Leagues()) %></label>
                     <label>
                         Teammate Request:
                         <%=Html.TextBox("Request", d.Request)%></label>
-                    <label>League: <%=Html.DropDownList("League", Model.Leagues()) %></label>
                 </td>
             </tr>
-            <tr><td colspan="4"></td><td>
+            <tr><td colspan="4" align="right"><%=Model.AgeDiv %></td><td>
                     <% if (User.IsInRole("Edit"))
                        { %>
                     <input type="submit" name="Submit" value="Submit" />
+                    <span style="color:Red"><%=Html.ValidationMessage("person") %></span>
                     <% } %>
             </td></tr>
         </table>

@@ -125,7 +125,7 @@ namespace CMSWeb.Controllers
         public ActionResult SearchPeople(int? id)
         {
             var m = new SearchPeopleModel();
-            UpdateModel<ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
             if (id.HasValue)
             {
                 m.Page = id;

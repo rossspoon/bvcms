@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
@@ -122,6 +123,21 @@ namespace CMSWeb.Models
             set { _Dir = value; }
         }
 
+        public IEnumerable<RecReg> FetchWannabeCoaches()
+        {
+            var q = from r in DbUtil.Db.RecRegs
+                    where r.IsDocument.Value
+                    select r;
+            var list = q.ToList();
+            var list2 = new List<RecReg>();
+            foreach (var r in list)
+            {
+                var i = ImageData.DbUtil.Db.Images.Single(im => im.Id == r.ImgId);
+                if (i.InterestedInCoaching())
+                    list2.Add(r);
+            }
+            return list2;
+        }
         public IEnumerable<ParticipantInfo> FetchParticipants()
         {
             var q = from om in DbUtil.Db.OrganizationMembers
@@ -230,7 +246,13 @@ namespace CMSWeb.Models
                         PeopleId = recreg.PeopleId,
                         Id = recreg.Id,
                         Hash = 0,
-                        Uploaded = recreg.Uploaded.Value
+                        Uploaded = recreg.Uploaded.Value,
+                        Name = recreg.PeopleId.HasValue? recreg.Person.Name : "",
+                        Request = recreg.Request,
+                        ShirtSize = recreg.ShirtSize,
+                         FeePaid = recreg.FeePaid ?? false,
+                          
+                        
                     };
             if (Dir == "asc")
                 switch (Sort)

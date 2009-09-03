@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using BitFactory.Logging;
 using System.Web;
 using UtilityExtensions;
 using System.IO;
+using System.Net.Mail;
+using System.Web.Configuration;
 
 namespace CmsData
 {
@@ -40,8 +41,15 @@ namespace CmsData
             {
                 var tw = new StringWriter();
                 ObjectDumper.Write(o, 1, tw);
-                Util.Logger.LogStatus("Attendance Oddity({0}, {1}, {2})\n\n--ObjectDump\n{3}".Fmt(
-                        MemberTypeId, AttendanceTypeId, o.path, tw.ToString() ));
+                var smtp = new SmtpClient();
+                var u = DbUtil.Db.CurrentUser;
+                var email = u.EmailAddress;
+                var from = new MailAddress(u.EmailAddress, u.Name);
+                var to = new MailAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
+                var msg = new MailMessage(from, to);
+                msg.Subject = "Attendance Oddity({0}, {1}, {2})".Fmt(MemberTypeId, AttendanceTypeId, o.path);
+                msg.Body = "\n{0} ({1}, {2})\n".Fmt(u.EmailAddress, u.UserId, u.Name) + tw.ToString();
+                smtp.Send(msg);
             }
         }
     }

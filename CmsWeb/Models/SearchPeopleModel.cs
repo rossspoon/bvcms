@@ -17,22 +17,7 @@ using System.Threading;
 
 namespace CMSWeb.Models
 {
-    public interface ISearchPeopleFormBindable
-    {
-        int? OrgId { get; set; }
-        string Name { get; set; }
-        string Communication { get; set; }
-        string Address { get; set; }
-        string DateOfBirth { get; set; }
-        int? TagId { get; set; }
-        int? MemberStatusId { get; set; }
-        int? GenderId { get; set; }
-        bool AddToExisting { get; set; }
-        int? ExistingFamilyMember { get; set; }
-        string Sort { get; set; }
-        int? PageSize { get; set; }
-    }
-    public class SearchPeopleModel : ISearchPeopleFormBindable
+    public class SearchPeopleModel
     {
         public int? OrgId { get; set; }
         public string Name { get; set; }
@@ -44,6 +29,8 @@ namespace CMSWeb.Models
         public int? GenderId { get; set; }
         public bool AddToExisting { get; set; }
         public int? ExistingFamilyMember { get; set; }
+        public int? EntryPoint { get; set; }
+        public int? Origin { get; set; }
 
         public string Sort { get; set; }
         private int? _Page;
@@ -291,6 +278,8 @@ namespace CMSWeb.Models
         {
             var Db = DbUtil.Db;
             var p = new Person { AddressTypeId = 10 };
+            p.EntryPointId = EntryPoint;
+            p.OriginId = Origin;
             Db.People.InsertOnSubmit(p);
             DateTime bdt;
             if (DateTime.TryParse(DateOfBirth, out bdt))
@@ -349,6 +338,7 @@ namespace CMSWeb.Models
             var tag = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
             tag.PersonTags.Add(new TagPerson { Person = p });
 
+            RecRegModel.FixTitle(p);
             Db.SubmitChanges();
             TaskModel.AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
             return p.PeopleId;

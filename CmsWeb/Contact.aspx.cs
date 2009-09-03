@@ -30,7 +30,7 @@ namespace CMSWeb
 
         public bool CanEdit()
         {
-            return !User.IsInRole("OrgMembersOnly");
+            return true;
         }
         public Task task;
 

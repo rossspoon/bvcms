@@ -5,6 +5,7 @@ using System.IO;
 using Drawing = System.Drawing;
 using System.Drawing.Imaging;
 using UtilityExtensions;
+using System.Text.RegularExpressions;
 
 namespace ImageData
 {
@@ -133,12 +134,12 @@ namespace ImageData
                 return false;
             var t = System.Text.ASCIIEncoding.ASCII.GetString(Bits);
             var q = from li in t.SplitStr("\r\n")
-                    where li.StartsWith("Coaching:")
+                    where li.StartsWith("<tr><td>Coaching:")
                     select li;
             if (q.Count() == 0)
                 return false;
-            var a = q.First().Split(':');
-            return a[1].Trim() == "1" || a[1].ToLower() == "true";
+            var s = q.First();
+            return Regex.IsMatch(s, @"\A(?:<tr><td>.*</td><td>(1|true)</td></tr>)\Z", RegexOptions.IgnoreCase);
         }
         public static string Content(int id)
         {

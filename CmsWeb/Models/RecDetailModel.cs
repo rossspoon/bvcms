@@ -93,6 +93,8 @@ namespace CMSWeb.Models
         }
         internal RecAgeDivision GetRecAgeDivision(int divid)
         {
+            if (!recreg.PeopleId.HasValue)
+                return null;
             var q = from r in DbUtil.Db.RecAgeDivisions
                     where r.DivId == divid
                     where r.GenderId == recreg.Person.GenderId || r.GenderId == 0
@@ -104,6 +106,15 @@ namespace CMSWeb.Models
                      where age >= r.StartAge && age <= r.EndAge
                      select r;
             return q2.SingleOrDefault();
+        }
+        public string AgeDiv
+        {
+            get
+            {
+                if (RecAgeDiv == null)
+                    return "";
+                return RecAgeDiv.Organization.OrganizationName;
+            }
         }
         public int? AgeDivId { get; set; }
         internal void AssignPerson(int pid)

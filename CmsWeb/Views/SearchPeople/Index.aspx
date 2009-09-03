@@ -1,15 +1,12 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SearchPeopleModel>" %>
 <form id="searchform" method="post">
+<%=Html.Hidden("entrypoint", Model.Origin) %>
+<%=Html.Hidden("origin", Model.EntryPoint) %>
 <div>
-<script type="text/javascript">
-    function ClearForm() {
-        $('#searchform.clearable').clearFields();
-    }
-</script>
 <table class="modalPopup">
     <tr style="font-size: small">
         <td colspan="2">
-            <a href="javascript:ClearForm()">clear</a>
+            <a id="ClearForm" href="#">clear</a>
         </td>
         <th>OrgId:</th>
         <td>

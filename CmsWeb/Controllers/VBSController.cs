@@ -25,7 +25,7 @@ namespace CMSWeb.Controllers
         public ActionResult SearchPeople(int? id)
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
             if (id.HasValue)
             {
                 m.Page = id;

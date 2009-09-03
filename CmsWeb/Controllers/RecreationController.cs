@@ -36,7 +36,7 @@ namespace CMSWeb.Controllers
         public ActionResult SearchPeople(int? id)
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
             if (id.HasValue)
             {
                 m.Page = id;
@@ -69,6 +69,11 @@ namespace CMSWeb.Controllers
         {
             var m = new RecDetailModel(Id);
             UpdateModel(m);
+            if (!m.recreg.PeopleId.HasValue || m.recreg.Person.GenderId == 0 || !m.recreg.Person.GetBirthdate().HasValue)
+            {
+                ModelState.AddModelError("person", "Missing data on participant");
+                return View("Detail", m);
+            }
             if (m.League > 0 && !m.recreg.OrgId.HasValue && m.recreg.PeopleId.HasValue)
                 m.EnrollInOrg();
             if (m.League == 0)
@@ -83,6 +88,11 @@ namespace CMSWeb.Controllers
             m.DeleteRecReg(rid);
             return Redirect("/Recreation/");
         }
-
+        public ActionResult Coaches()
+        {
+            var m = new RecreationModel();
+            UpdateModel(m);
+            return View(m);
+        }
     }
 }

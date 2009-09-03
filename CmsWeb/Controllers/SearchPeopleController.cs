@@ -17,16 +17,20 @@ namespace CMSWeb.Controllers
 {
     public class SearchPeopleController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int? origin, int? entrypoint)
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
+            if (origin.HasValue)
+                m.Origin = origin;
+            if (entrypoint.HasValue)
+                m.EntryPoint = entrypoint;
             return View(m);
         }
         public ActionResult Rows(int id)
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
             m.Page = id;
             return PartialView(m);
         }
@@ -34,7 +38,7 @@ namespace CMSWeb.Controllers
         public JsonResult AddNew()
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel<Models.ISearchPeopleFormBindable>(m);
+            UpdateModel(m);
             var err = m.ValidateAddNew();
             if (err.HasValue())
                 return Json(new { err = err });
