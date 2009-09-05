@@ -1811,6 +1811,7 @@
     <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\Promotion\Index.aspx" />
     <Content Include="Views\Recreation\Coaches.aspx" />
+    <Content Include="Views\Recreation\All.aspx" />
     <Content Include="Views\Recreation\Detail.aspx" />
     <Content Include="Views\Recreation\Index.aspx" />
     <Content Include="Views\Recreation\List.ascx" />

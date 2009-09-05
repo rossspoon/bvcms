@@ -88,19 +88,18 @@ namespace CMSWeb2
                 new { controller = "Home", action = "Index", id = "" });
         }
 
-        public static void StartSession()
+        protected void Session_Start(object sender, EventArgs e)
         {
             if (Util.UserId == 0 && Util.UserName.HasValue())
             {
-                var u = DbUtil.Db.Users.Single(us => us.Username == Util.UserName);
-                Util.UserId = u.UserId;
-                Util.UserPeopleId = u.PeopleId;
+                var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == Util.UserName);
+                if (u != null)
+                {
+                    Util.UserId = u.UserId;
+                    Util.UserPeopleId = u.PeopleId;
+                }
             }
             Util.SessionStarting = true;
-        }
-        protected void Session_Start(object sender, EventArgs e)
-        {
-            StartSession();
         }
         //protected void Application_BeginRequest(object sender, EventArgs e)
         //{
@@ -116,6 +115,18 @@ namespace CMSWeb2
         protected void Application_Error(object sender, EventArgs e)
         {
             var ex = Server.GetLastError();
+            var InDebug = false;
+#if DEBUG
+            InDebug = true;
+#endif
+            if (InDebug)
+            {
+                Response.Write("<html><body><pre>\n");
+                Response.Write(ex.ToString());
+                Response.Write("</pre></body></html>\n");
+                Server.ClearError();
+                return;
+            }
             var u = DbUtil.Db.CurrentUser;
             var smtp = new SmtpClient();
             var msg = new MailMessage();
@@ -133,7 +144,6 @@ namespace CMSWeb2
             foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
                 msg.To.Add(new MailAddress(a.Person.EmailAddress, a.Name));
             smtp.Send(msg);
-
         }
     }
 }

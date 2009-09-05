@@ -387,6 +387,7 @@ namespace CMSWeb.Models
                     break;
             }
             np.EmailAddress = email;
+            np.CampusId = meeting.Organization.CampusId;
             RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;
@@ -419,6 +420,7 @@ namespace CMSWeb.Models
                     break;
             }
             np.EmailAddress = email;
+            np.CampusId = meeting.Organization.CampusId;
             RecRegModel.FixTitle(np);
 
             DbUtil.Db.SubmitChanges();
@@ -431,6 +433,7 @@ namespace CMSWeb.Models
                 null, 
                 lastname1, 
                 dob1, false, gender.Value, 0, null);
+            np.CampusId = meeting.Organization.CampusId;
             DbUtil.Db.SubmitChanges();
             return np;
         }

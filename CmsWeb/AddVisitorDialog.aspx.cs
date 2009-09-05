@@ -78,16 +78,16 @@ namespace CMSWeb
             }
             else
             {
-                var entrypoint = (from m in DbUtil.Db.Meetings
+                var org = (from m in DbUtil.Db.Meetings
                                   where m.MeetingId == MeetingId
-                                  select m.Organization.EntryPointId).First();
+                                  select m.Organization).First();
                 CustomValidator1.IsValid = PersonSearchDialogController
                     .AddNewPerson(Parameters.Name,
                                    Parameters.DOB,
                                    FamilyOption.SelectedValue,
                                    Parameters.Gender,
                                    (int)Person.OriginCode.Visit,
-                                   entrypoint);
+                                   org.EntryPointId, org.CampusId);
             }
             if (!CustomValidator1.IsValid)
                 return;

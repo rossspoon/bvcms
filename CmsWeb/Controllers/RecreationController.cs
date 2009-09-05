@@ -94,5 +94,14 @@ namespace CMSWeb.Controllers
             UpdateModel(m);
             return View(m);
         }
+        public ActionResult All(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no league id");
+            var m = new RecreationModel();
+            m.LeagueId = id;
+            UpdateModel(m);
+            return View(m);
+        }
     }
 }

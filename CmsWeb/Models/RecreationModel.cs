@@ -167,6 +167,93 @@ namespace CMSWeb.Models
                         Hash = om.Person.HashNum.Value,
                         Uploaded = recreg.Uploaded.Value
                     };
+            q = ApplySort(q);
+            return q;
+        }
+        public IEnumerable<ParticipantInfo> FetchAll()
+        {
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    where om.Organization.DivOrgs.Any(di => di.DivId == LeagueId)
+                    let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith("TM:")) > 0
+                    let recreg = om.Person.RecRegs.Where(r =>
+                        r.OrgId == om.OrganizationId && (r.Expired ?? false) == false)
+                        .OrderByDescending(r => r.Uploaded).FirstOrDefault()
+                    where recreg != null
+                    select new ParticipantInfo
+                    {
+                        PeopleId = om.PeopleId,
+                        OrgId = om.OrganizationId,
+                        Name = om.Person.Name,
+                        Name2 = om.Person.Name2,
+                        BDay = om.Person.BirthDay,
+                        BMon = om.Person.BirthMonth,
+                        BYear = om.Person.BirthYear,
+                        MemberType = om.MemberType.Description,
+                        TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith("TM:")).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
+                        Id = recreg.Id,
+                        FeePaid = recreg.FeePaid ?? false,
+                        Request = recreg.Request,
+                        ShirtSize = recreg.ShirtSize,
+                        Hash = om.Person.HashNum.Value,
+                        Uploaded = recreg.Uploaded.Value
+                    };
+            q = ApplySort(q);
+            return q;
+        }
+        public IEnumerable<SelectListItem> ShirtSizes()
+        {
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    where om.Organization.DivOrgs.Any(di => di.DivId == LeagueId)
+                    let recreg = om.Person.RecRegs.Where(r =>
+                        r.OrgId == om.OrganizationId && (r.Expired ?? false) == false)
+                        .OrderByDescending(r => r.Uploaded).FirstOrDefault()
+                    where recreg != null
+                    group om by recreg.ShirtSize into g
+                    select new SelectListItem
+                    {
+                        Text = g.Key,
+                        Value = g.Count().ToString()
+                    };
+            return q;
+        }
+        public IEnumerable<ParticipantInfo> FetchParticipants0()
+        {
+            var q = from recreg in DbUtil.Db.RecRegs
+                    where (recreg.DivId ?? 0) == 0
+                    where (recreg.Expired ?? false) == false
+                    select new ParticipantInfo
+                    {
+                        IsSelected = selected.Contains(recreg.PeopleId ?? 0),
+                        PeopleId = recreg.PeopleId,
+                        Id = recreg.Id,
+                        Hash = 0,
+                        Uploaded = recreg.Uploaded.Value,
+                        Name = recreg.PeopleId.HasValue? recreg.Person.Name : "",
+                        Request = recreg.Request,
+                        ShirtSize = recreg.ShirtSize,
+                         FeePaid = recreg.FeePaid ?? false,
+                          
+                        
+                    };
+            if (Dir == "asc")
+                switch (Sort)
+                {
+                    case "Uploaded":
+                        q = q.OrderBy(i => i.Uploaded);
+                        break;
+                }
+            else
+                switch (Sort)
+                {
+                    case "Uploaded":
+                        q = q.OrderByDescending(i => i.Uploaded);
+                        break;
+                }
+            return q;
+        }
+
+        private IQueryable<ParticipantInfo> ApplySort(IQueryable<ParticipantInfo> q)
+        {
             if (Dir == "asc")
                 switch (Sort)
                 {
@@ -235,42 +322,6 @@ namespace CMSWeb.Models
                 }
             return q;
         }
-        public IEnumerable<ParticipantInfo> FetchParticipants0()
-        {
-            var q = from recreg in DbUtil.Db.RecRegs
-                    where (recreg.DivId ?? 0) == 0
-                    where (recreg.Expired ?? false) == false
-                    select new ParticipantInfo
-                    {
-                        IsSelected = selected.Contains(recreg.PeopleId ?? 0),
-                        PeopleId = recreg.PeopleId,
-                        Id = recreg.Id,
-                        Hash = 0,
-                        Uploaded = recreg.Uploaded.Value,
-                        Name = recreg.PeopleId.HasValue? recreg.Person.Name : "",
-                        Request = recreg.Request,
-                        ShirtSize = recreg.ShirtSize,
-                         FeePaid = recreg.FeePaid ?? false,
-                          
-                        
-                    };
-            if (Dir == "asc")
-                switch (Sort)
-                {
-                    case "Uploaded":
-                        q = q.OrderBy(i => i.Uploaded);
-                        break;
-                }
-            else
-                switch (Sort)
-                {
-                    case "Uploaded":
-                        q = q.OrderByDescending(i => i.Uploaded);
-                        break;
-                }
-            return q;
-        }
-
         public void AssignToTeam()
         {
             foreach (var pid in selected)

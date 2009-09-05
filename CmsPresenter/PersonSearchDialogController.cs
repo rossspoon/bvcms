@@ -191,7 +191,7 @@ namespace CMSPresenter
         {
             return (AddFamilyType)Enum.Parse(typeof(AddFamilyType), value.ToString());
         }
-        public static bool AddNewPerson(string name, string dob, int FamilyId, int GenderId, int OriginId, int? EntryPointId)
+        public static bool AddNewPerson(string name, string dob, int FamilyId, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
         {
             var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == FamilyId);
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
@@ -201,11 +201,11 @@ namespace CMSPresenter
             Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
-        public static bool AddNewPerson(string name, string dob, string selectedValue, int GenderId, int OriginId, int? EntryPointId)
+        public static bool AddNewPerson(string name, string dob, string selectedValue, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
         {
-            return AddNewPerson(name, dob, ParseFamilyType(selectedValue), GenderId, OriginId, EntryPointId);
+            return AddNewPerson(name, dob, ParseFamilyType(selectedValue), GenderId, OriginId, EntryPointId, CampusId);
         }
-        public static bool AddNewPerson(string potentialName, string dob, AddFamilyType famtype, int GenderId, int OriginId, int? EntryPointId)
+        public static bool AddNewPerson(string potentialName, string dob, AddFamilyType famtype, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
         {
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
 
@@ -242,9 +242,11 @@ namespace CMSPresenter
             {
                 p1 = Person.Add(fam, position, tag, name, dob, true, 1, OriginId, EntryPointId); // male
                 p2 = Person.Add(fam, position, tag, name, dob, true, 2, OriginId, EntryPointId); // female
+                p2.CampusId = CampusId;
             }
             else
                 p1 = Person.Add(fam, position, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+            p1.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p1.PeopleId);
             if (p2 != null)

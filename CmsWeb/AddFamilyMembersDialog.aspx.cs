@@ -86,13 +86,14 @@ namespace CMSWeb
                 CustomValidator1.IsValid = false;
             else
             {
+                var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
                 CustomValidator1.IsValid = PersonSearchDialogController
                     .AddNewPerson(Parameters.Name,
                                    Parameters.DOB,
                                    FamilyId,
                                    Parameters.Gender,
                                    (int)Person.OriginCode.NewFamilyMember,
-                                   null);
+                                   null, f.HeadOfHousehold.CampusId);
             }
 
             if (!CustomValidator1.IsValid)

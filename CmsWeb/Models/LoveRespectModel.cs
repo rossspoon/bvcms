@@ -305,6 +305,8 @@ namespace CMSWeb.Models
         internal Person AddPerson(int gender, string first, string last, string dob,
             string addr, string city, string state, string zip, string phone, string homecell, bool married, string email)
         {
+            var org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrgId);
+
             var f = new Family
             {
                 AddressLineOne = addr,
@@ -331,6 +333,7 @@ namespace CMSWeb.Models
             }
             np.EmailAddress = email;
             RecRegModel.FixTitle(np);
+            np.CampusId = org.CampusId;
             DbUtil.Db.SubmitChanges();
             return np;
         }

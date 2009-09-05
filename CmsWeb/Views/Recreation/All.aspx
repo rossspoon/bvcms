@@ -13,10 +13,6 @@
     <script type="text/javascript">
         $(function() {
             $('#LeagueId').change(RefreshPage);
-            $('#AgeDivId').change(RefreshPage);
-            $('#FilterUnassigned').click(RefreshPage);
-            $('#NormalMembersOnly').click(RefreshPage);
-            $('input.check').click(UpdateTotals);
             $('#Participants > thead a.sortable').click(function(ev) {
                 var newsort = $(this).text();
                 var oldsort = $("#Sort").val();
@@ -26,60 +22,37 @@
                     $("#Dir").val('desc');
                 else
                     $("#Dir").val('asc');
-                RefreshList();
-            });
-            $('#total').text($('.check').length);
-            UpdateTotals();
-            $("#seeall").click(function(ev) {
-                $.navigate("/Recreation/All/" + $('#LeagueId').val());
-            });
-            $("a.createdetail").click(function(ev) {
-                $.post("/Recreation/Create/" + $(this).attr("pid"), { oid: $(this).attr("oid") }, function(ret) {
-                    window.location = "/Recreation/Detail/" + ret.id;
-                }, "json");
-                return false;
+                RefreshPage();
             });
         });
         function RefreshPage() {
             var q = $('#form').formSerialize();
-            $.navigate("/Recreation/Index", q);
+            $.navigate("/Recreation/All/" + $('#LeagueId').val(),q);
         }
-        function RefreshList() {
-            var q = $('#form').formSerialize();
-            $.post('/Recreation/List/', q, function(ret) {
-                $('#Participants > tbody').html(ret);
-                $('input.check').click(UpdateTotals);
-            });
-        }
-        function UpdateTotals() {
-            $('#ttotal').text($('.check:checked').length);
-        }
-        $(function() {
-
-        });
     </script>
-    
-    <form id="form" method="post" action="/Recreation/AssignToTeam">
+    <form id="form">
     <div class="modalPopup">
        League: <%=Html.DropDownList("LeagueId", Model.Leagues())%>
-       <a href="#" id="seeall">see all</a>
-       Age Division: <%=Html.DropDownList("AgeDivId", Model.AgeDivisions())%>&nbsp;&nbsp;&nbsp;
-       <%=Html.CheckBox("FilterUnassigned") %> Unassigned Only
-       <%=Html.CheckBox("NormalMembersOnly")%> Exclude Teachers<br />
-       Target Team: <%=Html.DropDownList("TargetTeamName", Model.TargetTeams())%>
-       <%=Html.SubmitButton("submit", "Assign to Team") %>
-       <% if((Model.AgeDivId ?? 0) > 0)
-          { %>
-       <%=Html.HyperLink("/Organization.aspx?id=" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>
-       <% } %>
     </div>
     <%=Html.Hidden("Sort", Model.Sort) %>
     <%=Html.Hidden("Dir", Model.Dir) %>
-    League Total: <span id="total"></span> | TeamTotal: <span id="ttotal"></span>
+    </form>
+<h2>Shirt Sizes</h2>
+    <table id="ShirtSizes">
+<% foreach (var r in Model.ShirtSizes())
+   { %>
+        <tr>
+            <td><%=r.Text%></td>
+            <td><%=r.Value%></td>
+        </tr>
+<% } %>
+    </table>
+
+
+<h2>Participants</h2>
     <table id="Participants">
         <thead>
         <tr>
-            <th><a href="#" class="sortable">Mixed</a></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th><a href="#" class="sortable">Type</a></th>
             <th><a href="#" class="sortable">Team</a></th>
@@ -91,8 +64,19 @@
         </tr>
         </thead>
         <tbody>
-        <% Html.RenderPartial("List", Model); %>
+<% foreach (var r in Model.FetchAll())
+   { %>
+        <tr>
+            <td><a href="/Person.aspx?id=<%=r.PeopleId %>"><%=r.Name%></a></td>
+            <td><%=r.MemberType %></td>
+            <td><%=r.TeamName%></td>
+            <td><%=r.Birthday%></td>
+            <td><%=r.ShirtSize%></td>
+            <td><%=r.FeePaid%></td>
+            <td><%=r.Request%></td>
+            <td><a href="/Recreation/Detail/<%=r.Id%>"><%=r.Uploaded.Value.ToString("M/d H:mm") %></a></td>
+        </tr>
+<% } %>
         </tbody>
     </table>
-    </form>
 </asp:Content>

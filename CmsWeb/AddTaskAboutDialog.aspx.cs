@@ -62,7 +62,7 @@ namespace CMSWeb
                         FamilyOption.SelectedValue, 
                         Parameters.Gender, 
                         (int)Person.OriginCode.Request,
-                        null);
+                        null, DbUtil.Settings("DefaultCampusId").ToInt2());
             if (!CustomValidator1.IsValid)
                 return;
             var p = SearchDialog.SelectedPeople().First();

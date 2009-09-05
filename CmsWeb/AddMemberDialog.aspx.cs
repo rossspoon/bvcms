@@ -83,14 +83,14 @@ namespace CMSWeb
             }
             else
             {
-                var entrypoint = DbUtil.Db.Organizations.Single(o => o.OrganizationId == OrgId).EntryPointId;
+                var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == OrgId);
                 CustomValidator1.IsValid = PersonSearchDialogController
                     .AddNewPerson(Parameters.Name,
                                    Parameters.DOB,
                                    FamilyOption.SelectedValue,
                                    Parameters.Gender,
                                    (int)Person.OriginCode.Enrollment,
-                                   entrypoint);
+                                   org.EntryPointId, org.CampusId);
             }
             if (!CustomValidator1.IsValid)
                 return;
