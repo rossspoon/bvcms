@@ -337,8 +337,7 @@ namespace CMSWeb.Models
             p.MemberStatusId = 50; // JustAdded
             var tag = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
             tag.PersonTags.Add(new TagPerson { Person = p });
-
-            RecRegModel.FixTitle(p);
+            p.FixTitle();
             Db.SubmitChanges();
             TaskModel.AddNewPersonTask(DbUtil.NewPeopleManagerId, Util.UserPeopleId.Value, p.PeopleId);
             return p.PeopleId;

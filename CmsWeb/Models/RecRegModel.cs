@@ -274,20 +274,8 @@ namespace CMSWeb.Models
                     participant.CellPhone = phone.GetDigits();
                     break;
             }
-            FixTitle(participant);
             DbUtil.Db.SubmitChanges();
         }
-        public static void FixTitle(Person p)
-        {
-            if (p.GenderId == 1)
-                p.TitleCode = "Mr.";
-            else if (p.GenderId == 2)
-                if (p.MaritalStatusId == 20)
-                    p.TitleCode = "Mrs.";
-                else
-                    p.TitleCode = "Ms.";
-        }
-
         public bool IsAdult()
         {
             var q = from r in DbUtil.Db.RecAgeDivisions

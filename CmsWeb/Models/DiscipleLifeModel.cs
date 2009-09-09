@@ -168,7 +168,6 @@ namespace CMSWeb.Models
             }
             person.EmailAddress = email;
             person.CampusId = org.CampusId;
-            RecRegModel.FixTitle(person);
             DbUtil.Db.SubmitChanges();
         }
 

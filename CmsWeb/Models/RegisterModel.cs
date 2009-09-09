@@ -151,7 +151,6 @@ namespace CMSWeb.Models
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email;
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
-            RecRegModel.FixTitle(p);
             DbUtil.Db.SubmitChanges();
         }
     }

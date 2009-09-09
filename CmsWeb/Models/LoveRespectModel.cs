@@ -298,7 +298,6 @@ namespace CMSWeb.Models
             }
             np.EmailAddress = email;
             np.CampusId = org.CampusId;
-            RecRegModel.FixTitle(np);
             DbUtil.Db.SubmitChanges();
             return np;
         }
@@ -332,7 +331,6 @@ namespace CMSWeb.Models
                     break;
             }
             np.EmailAddress = email;
-            RecRegModel.FixTitle(np);
             np.CampusId = org.CampusId;
             DbUtil.Db.SubmitChanges();
             return np;

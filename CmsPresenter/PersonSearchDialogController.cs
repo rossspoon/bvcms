@@ -197,6 +197,7 @@ namespace CMSPresenter
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             var p = Person.Add(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
+            p.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;

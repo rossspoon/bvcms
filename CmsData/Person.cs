@@ -404,11 +404,22 @@ namespace CmsData
             }
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
+            p.FixTitle();
             return p;
         }
         public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
         {
             return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
+        }
+        public void FixTitle()
+        {
+            if (GenderId == 1)
+                TitleCode = "Mr.";
+            else if (GenderId == 2)
+                if (MaritalStatusId == 20)
+                    TitleCode = "Mrs.";
+                else
+                    TitleCode = "Ms.";
         }
 
         #region Tags
