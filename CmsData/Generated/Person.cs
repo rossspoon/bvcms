@@ -235,8 +235,6 @@ namespace CmsData
 		
 		private string _WorkPhoneLU;
 		
-		private string _HomePhoneLU;
-		
 		private int? _BibleFellowshipClassId;
 		
 		private string _Name;
@@ -662,9 +660,6 @@ namespace CmsData
 		
 		partial void OnWorkPhoneLUChanging(string value);
 		partial void OnWorkPhoneLUChanged();
-		
-		partial void OnHomePhoneLUChanging(string value);
-		partial void OnHomePhoneLUChanged();
 		
 		partial void OnBibleFellowshipClassIdChanging(int? value);
 		partial void OnBibleFellowshipClassIdChanged();
@@ -3200,28 +3195,6 @@ namespace CmsData
 					this._WorkPhoneLU = value;
 					this.SendPropertyChanged("WorkPhoneLU");
 					this.OnWorkPhoneLUChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="HomePhoneLU", UpdateCheck=UpdateCheck.Never, Storage="_HomePhoneLU", DbType="char(7)")]
-		public string HomePhoneLU
-		{
-			get { return this._HomePhoneLU; }
-
-			set
-			{
-				if (this._HomePhoneLU != value)
-				{
-				
-                    this.OnHomePhoneLUChanging(value);
-					this.SendPropertyChanging();
-					this._HomePhoneLU = value;
-					this.SendPropertyChanged("HomePhoneLU");
-					this.OnHomePhoneLUChanged();
 				}
 
 			}

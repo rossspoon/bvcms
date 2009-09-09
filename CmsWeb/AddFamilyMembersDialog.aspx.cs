@@ -58,7 +58,9 @@ namespace CMSWeb
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             foreach (var p in SearchDialog.SelectedPeople())
             {
-                if (f.People.Count(per => per.PositionInFamilyId == 10) < 2)
+                if (p.Age < 18)
+                    p.PositionInFamilyId = 30;
+                else if (f.People.Count(per => per.PositionInFamilyId == 10) < 2)
                     p.PositionInFamilyId = 10;
                 else
                     p.PositionInFamilyId = 20;

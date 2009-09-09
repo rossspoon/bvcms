@@ -313,6 +313,10 @@ namespace CmsData
                     return Expressions.RecFeePaid(parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.RecActiveOtherChurch:
+                    return Expressions.RecActiveOtherChurch(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 // S -------------------------
                 case QueryType.SavedQuery:
                     return Expressions.SavedQuery(parm,

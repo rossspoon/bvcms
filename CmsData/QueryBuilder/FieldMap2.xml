@@ -340,6 +340,9 @@
     <Field Name="RecFeePaid" Title="Rec Fee Paid" Type="Bit" DataValueField="IdCode">
       Selects only those whose fee is paid (or not).
     </Field>
+    <Field Name="RecActiveOtherChurch" Title="Rec Other Church" Type="Bit" DataValueField="IdCode">
+      Selects only those Rec children who have applications and indicated active in another church or not.
+    </Field>
     <Field Name="VBSActiveOtherChurch" Title="VBS Other Church" Type="Bit" DataValueField="IdCode">
 			Selects only those VBS children who have applications and indicated active in another church or not.
 		</Field>

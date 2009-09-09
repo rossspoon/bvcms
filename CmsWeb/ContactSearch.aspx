@@ -138,6 +138,6 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ReasonListData" runat="server" SelectMethod="ContactReasonCodes" TypeName="CMSPresenter.CodeValueController">
     </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="MinistryListData" runat="server" SelectMethod="Ministries" TypeName="CMSPresenter.CodeValueController">
+    <asp:ObjectDataSource ID="MinistryListData" runat="server" SelectMethod="Ministries0" TypeName="CMSPresenter.CodeValueController">
     </asp:ObjectDataSource>
 </asp:Content>

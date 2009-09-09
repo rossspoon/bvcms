@@ -37,7 +37,7 @@ namespace CmsData
         partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             var o = HttpContext.Current.Items["attendinfo"] as CMSDataContext.AttendMeetingInfo1;
-            if (MemberTypeId == 310 && AttendanceTypeId != 50 && AttendanceTypeId != 60)
+            if (MemberTypeId == 310 && AttendanceTypeId != 40 && AttendanceTypeId != 50 && AttendanceTypeId != 60 && AttendanceTypeId != 110)
             {
                 var tw = new StringWriter();
                 ObjectDumper.Write(o, 1, tw);
