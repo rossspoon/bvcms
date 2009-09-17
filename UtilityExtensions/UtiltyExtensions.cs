@@ -218,11 +218,12 @@ namespace UtilityExtensions
         }
         public static string FmtFone(this string phone)
         {
-            if (!phone.HasValue())
+            var ph = phone.GetDigits();
+            if (!ph.HasValue())
                 return "";
-            string ext = phone.Substring(phone.LastIndexOfAny("1234567890 -().".ToCharArray()) + 1);
+            string ext = ph.Substring(ph.LastIndexOfAny("1234567890 -().".ToCharArray()) + 1);
             List<string> tok = new List<string>();
-            StringBuilder fone = new StringBuilder(phone.Substring(0, phone.Length - ext.Length));
+            StringBuilder fone = new StringBuilder(ph.Substring(0, ph.Length - ext.Length));
             fone.Replace("-", " ");
             fone.Replace("(", " ");
             fone.Replace(")", " ");

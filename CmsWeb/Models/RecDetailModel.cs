@@ -100,7 +100,8 @@ namespace CMSWeb.Models
                     where r.GenderId == recreg.Person.GenderId || r.GenderId == 0
                     select r;
             var list = q.ToList();
-            var bd = recreg.Person.GetBirthdate().Value;
+            var bd0 = recreg.Person.GetBirthdate();
+            var bd = bd0.HasValue ? bd0.Value : DateTime.MinValue;
             var q2 = from r in list
                      let age = bd.AgeAsOf(r.agedate)
                      where age >= r.StartAge && age <= r.EndAge

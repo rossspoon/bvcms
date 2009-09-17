@@ -293,9 +293,9 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSMinistryId" runat="server" SelectMethod="Ministries0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes0"
+    <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes0"
+    <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
 </asp:Content>

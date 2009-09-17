@@ -31,7 +31,7 @@ namespace CMSWeb
             if (Qb == null)
                 Response.EndShowMessage("query not found");
             var q = DbUtil.Db.People.Where(Qb.Predicate());
-            q = q.Where(p => p.EmailAddress != null);
+            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
             Count.Text = q.Count().ToString();
             if (!Page.IsPostBack)
             {
@@ -46,7 +46,7 @@ namespace CMSWeb
             DbUtil.LogActivity("Emailing people");
             var Qb = Db.LoadQueryById(this.QueryString<int>("id"));
             var q = Db.People.Where(Qb.Predicate());
-            q = q.Where(p => p.EmailAddress != null);
+            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
             var em = new Emailer(EmailFrom.SelectedValue, EmailFrom.Text);
             em.SendPeopleEmail(q, SubjectLine.Text, Util.SafeFormat(EmailBody.Text), FileUpload1);
             Label1.Visible = true;

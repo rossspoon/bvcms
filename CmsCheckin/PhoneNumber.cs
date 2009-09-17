@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace CmsCheckin
 {
@@ -19,14 +20,40 @@ namespace CmsCheckin
         {
             var b = sender as Button;
             var d = b.Name.Substring(6);
-            var t = textBox1.Text;
-            if (t.Length < 8)
-                if (t.Length == 3)
-                    textBox1.Text = t + '-' + d;
-                else
-                    textBox1.Text = t + d;
+            var t = GetDigits(textBox1.Text);
+            if (t.Length < 10)
+                t += d;
+            textBox1.Text = FmtFone(t);
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
+        }
+        public string GetDigits(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return "";
+            var digits = new StringBuilder();
+            foreach (var c in s.ToCharArray())
+                if (Char.IsDigit(c))
+                    digits.Append(c);
+            return digits.ToString();
+        }
+        public bool AllDigits(string str)
+        {
+            Regex patt = new Regex("[^0-9]");
+            return !(patt.IsMatch(str));
+        }
+        public string FmtFone(string phone)
+        {
+            var ph = GetDigits(phone);
+            if (string.IsNullOrEmpty(ph))
+                return "";
+            var t = new StringBuilder(ph);
+
+            if (ph.Length >= 4)
+                t.Insert(3, "-");
+            if (ph.Length >= 8)
+                t.Insert(7, "-");
+            return t.ToString();
         }
 
         private void PhoneNumber_Load(object sender, EventArgs e)
@@ -53,13 +80,11 @@ namespace CmsCheckin
         private void buttonbs_Click(object sender, EventArgs e)
         {
             var b = sender as Button;
-            var t = textBox1.Text;
+            var t = GetDigits(textBox1.Text);
             var len = t.Length - 1;
-            if (len == 4)
-                len--;
             if (len < 0)
                 len = 0;
-            textBox1.Text = t.Substring(0, len);
+            textBox1.Text = FmtFone(t.Substring(0, len));
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
         }

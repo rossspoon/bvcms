@@ -18,6 +18,7 @@ namespace CMSWeb.Admin
             var dt = DateTime.Now;
             var q = from u in DbUtil.Db.Users
                     orderby u.LastActivityDate descending
+                    where u.LastActivityDate != null
                     select new { u.Person.Name, u.LastActivityDate, u.Host, u.UserId, u.Username };
             var sb = new StringBuilder();
 

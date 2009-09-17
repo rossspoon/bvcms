@@ -23,11 +23,6 @@
                     <td><%= Html.ValidationMessage("first") %></td>
                 </tr>
                 <tr>
-                    <td><label for="nickname">Goes By Name</label></td>
-                    <td><%= Html.TextBox("nickname") %></td>
-                    <td><%= Html.ValidationMessage("nickname") %></td>
-                </tr>
-                <tr>
                     <td><label for="lastname">Last Name</label></td>
                     <td><%= Html.TextBox("lastname") %></td>
                     <td><%= Html.ValidationMessage("lastname") %></td>
@@ -38,19 +33,11 @@
                     <td><%= Html.ValidationMessage("dob") %>(like 5/15/64)</td>
                 </tr>
                 <tr>
-                    <td><label for="married">Marital Status</label></td>
-                    <td><%= Html.DropDownList("married", Model.MaritalStatus())%></td>
-                    <td><%= Html.ValidationMessage("married")%></td>
+                    <td><label for="gender">Married</label></td>
+                    <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
+                    <td><%= Html.ValidationMessage("married2") %></td>
                 </tr>
                 <tr>
-                    <td><label for="position">Position in Family</label></td>
-                    <td><%= Html.RadioButton("position", 10) %> Primary Adult<br />
-                    <%= Html.RadioButton("position", 20) %> Secondary Adult<br />
-                    <%= Html.RadioButton("position", 30) %> Child
-                    <td><%= Html.ValidationMessage("position2") %><br />
-                    (Husband and wife should both be primary)</td>
-                </tr>
-                 <tr>
                     <td><label for="gender">Gender</label></td>
                     <td><%= Html.RadioButton("gender", 1) %> Male
                     <%= Html.RadioButton("gender", 2) %> Female
@@ -65,6 +52,11 @@
                     <td><label for="email">Email</label></td>
                     <td><%= Html.TextBox("email") %></td>
                     <td><%= Html.ValidationMessage("email") %></td>
+                </tr>
+                <tr>
+                    <td><label for="state">Visiting Where</label></td>
+                    <td><%= Html.DropDownList("org", Model.OrgList())%></td>
+                    <td><%= Html.ValidationMessage("org") %></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Register" /></td>

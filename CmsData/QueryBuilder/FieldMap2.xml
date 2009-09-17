@@ -81,6 +81,9 @@
     <Field Name="OriginId" Title="Record Origin" Type="Code" DataSource="Origins" DataValueField="IdCode">
       Record Originated from what source?
     </Field>
+    <Field Name="InterestPointId" Title="Interest Point" Type="Code" DataSource="InterestPoints" DataValueField="IdCode">
+      How did you hear about us?
+    </Field>
     <Field Name="MemberAnyChurch" Title="Member of Any Church" Type="NullBit" DataValueField="IdCode">
       From decision card indicating membership in another church.
       May be unknown (null)

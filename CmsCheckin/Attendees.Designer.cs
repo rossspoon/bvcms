@@ -40,7 +40,7 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(584, 714);
+            this.Print.Location = new System.Drawing.Point(584, 699);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(437, 54);
             this.Print.TabIndex = 10;

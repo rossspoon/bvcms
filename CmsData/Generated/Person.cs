@@ -247,6 +247,8 @@ namespace CmsData
 		
 		private int? _CampusId;
 		
+		private string _CellPhoneAC;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -678,6 +680,9 @@ namespace CmsData
 		
 		partial void OnCampusIdChanging(int? value);
 		partial void OnCampusIdChanged();
+		
+		partial void OnCellPhoneACChanging(string value);
+		partial void OnCellPhoneACChanged();
 		
     #endregion
 		public Person()
@@ -3330,6 +3335,28 @@ namespace CmsData
 					this._CampusId = value;
 					this.SendPropertyChanged("CampusId");
 					this.OnCampusIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CellPhoneAC", UpdateCheck=UpdateCheck.Never, Storage="_CellPhoneAC", DbType="char(3)")]
+		public string CellPhoneAC
+		{
+			get { return this._CellPhoneAC; }
+
+			set
+			{
+				if (this._CellPhoneAC != value)
+				{
+				
+                    this.OnCellPhoneACChanging(value);
+					this.SendPropertyChanging();
+					this._CellPhoneAC = value;
+					this.SendPropertyChanged("CellPhoneAC");
+					this.OnCellPhoneACChanged();
 				}
 
 			}

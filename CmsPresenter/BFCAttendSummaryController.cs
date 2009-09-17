@@ -65,7 +65,7 @@ namespace CMSPresenter
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate.Value.Date == sunday.Date
-                     group m by new { div.SortOrder, m.MeetingDate } into g
+                     group m by new { SortOrder = div.SortOrder ?? div.Id, m.MeetingDate } into g
                      select new
                      {
                          g.Key.SortOrder,
@@ -75,8 +75,7 @@ namespace CMSPresenter
             var qlist = q2.ToList();
 
             var qSortOrderName = from i in DbUtil.Db.Divisions
-                                 where i.SortOrder != null
-                                 select new { i.SortOrder, i.Name };
+                                 select new { SortOrder = i.SortOrder ?? i.Id, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);
 
             // division rows
@@ -84,7 +83,7 @@ namespace CMSPresenter
                         group m by new { m.SortOrder } into g
                         select new BFCAttendSummaryInfo
                         {
-                            Order = g.Key.SortOrder ?? 0,
+                            Order = g.Key.SortOrder,
                             Name = namelist[g.Key.SortOrder].Name,
                             Class = "",
                             Cnt800 = qlist.Where(m => m.DateHour.TimeOfDay == t800 && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
@@ -121,13 +120,25 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<BFCAvgAttendSummaryInfo> BFCAvgWeeklyAttendanceSummary(DateTime fromDate, DateTime toDate)
         {
+            //var q2 = from m in DbUtil.Db.Meetings
+            //         let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
+            //         where div.ProgId == dbUtilBFClassOrgTagId
+            //         where m.NumPresent > 0
+            //         where m.MeetingDate.Value.Date == sunday.Date
+            //         group m by new { SortOrder = div.SortOrder ?? div.Id, m.MeetingDate } into g
+            //         select new
+            //         {
+            //             g.Key.SortOrder,
+            //             DateHour = g.Key.MeetingDate.Value,
+            //             Count = g.Sum(m => m.NumPresent),
+            //         };
             // all the matching meeting division/date/hour counts for the date range
             var q2 = from m in DbUtil.Db.Meetings
                      let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate >= fromDate && m.MeetingDate < toDate.AddDays(1)
-                     group m by new { div.SortOrder, m.MeetingDate } into g
+                     group m by new { SortOrder = div.SortOrder ?? div.Id, m.MeetingDate } into g
                      select new
                      {
                          g.Key.SortOrder,
@@ -171,8 +182,7 @@ namespace CMSPresenter
                         select g.Sum(m => m.Count);
 
             var qSortOrderName = from i in DbUtil.Db.Divisions
-                                 where i.SortOrder != null
-                                 select new { i.SortOrder, i.Name };
+                                 select new { SortOrder = i.SortOrder ?? i.Id, i.Name };
             var namelist = qSortOrderName.ToDictionary(i => i.SortOrder);
 
             // division rows
@@ -180,7 +190,7 @@ namespace CMSPresenter
                         group m by new { m.SortOrder } into g
                         select new BFCAvgAttendSummaryInfo
                         {
-                            Order = g.Key.SortOrder ?? 0,
+                            Order = g.Key.SortOrder,
                             Name = namelist[g.Key.SortOrder].Name,
                             Class = "",
                             Avg800 = g.Where(m => m.TimeOfDay == t800 && m.SortOrder == g.Key.SortOrder).Average(m => (double?)m.Count),

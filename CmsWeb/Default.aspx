@@ -87,15 +87,21 @@
                         <tr>
                             <td>
                                 <div style="overflow: auto; height: 105px;">
-                                    <asp:GridView ID="grdMyInvolvement" runat="server" AutoGenerateColumns="False" DataSourceID="dsMyInvolvement"
-                                        SkinID="GridViewSkin" AllowPaging="true" AllowSorting="true" Visible="true" EmptyDataText="No Current Enrollments Found."
-                                        ShowHeader="false" ShowFooter="false">
+                                     <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" ShowHeader="False"
+                                        SkinID="GridViewSkin">
                                         <Columns>
-                                            <asp:TemplateField SortExpression="Name">
-                                                <ItemTemplate>
-                                                    <asp:HyperLink ID="OrgLink" runat="server" NavigateUrl='<%# Eval("Id", "~/Organization.aspx?id={0}") %>'
-                                                        Text='<%# Eval("Name") %>'></asp:HyperLink></ItemTemplate>
-                                            </asp:TemplateField>
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person.aspx?id={0}"
+                                                DataTextField="Name" DataTextFormatString="{0}" />
+                                            <asp:BoundField DataField="Birthday" DataFormatString="{0:MMM dd}" />
+                                        </Columns>
+                                    </asp:GridView>
+
+                                    <asp:GridView ID="grdMyInvolvement" runat="server" AutoGenerateColumns="False"
+                                        SkinID="GridViewSkin" EmptyDataText="No Current Enrollments Found."
+                                        ShowHeader="false">
+                                        <Columns>
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Organization.aspx?id={0}"
+                                                DataTextField="Name" DataTextFormatString="{0}" />                                          
                                             <asp:BoundField DataField="MemberType" />
                                         </Columns>
                                     </asp:GridView>
@@ -171,16 +177,6 @@
             </tr>
         </table>
     </div>
-    <asp:ObjectDataSource ID="dsMyInvolvement" runat="server" SelectMethod="EnrollData"
-        TypeName="CMSPresenter.PersonController" EnablePaging="true" SortParameterName="sortExpression"
-        SelectCountMethod="EnrollDataCount">
-        <SelectParameters>
-            <asp:Parameter Name="pid" Type="Int32" />
-            <asp:Parameter Name="sortExpression" Type="String" DefaultValue="Organization" />
-            <asp:Parameter Name="maximumRows" Type="Int32" />
-            <asp:Parameter Name="startRowIndex" Type="Int32" />
-        </SelectParameters>
-    </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" DeleteMethod="DeleteTask"
         OldValuesParameterFormatString="original_{0}" SelectMethod="FetchContactTasks"
         TypeName="CMSWeb.Models.TaskModel" UpdateMethod="UpdateTask">

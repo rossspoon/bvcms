@@ -105,11 +105,11 @@ namespace CMSWeb
             ContributionsLink.NavigateUrl = "~/Contributions/Years.aspx?id={0}".Fmt(person.PeopleId);
             ContributionsLink.Visible = User.IsInRole("Finance");
 
-            var vbs = person.VBSApps.OrderByDescending(v => v.Uploaded).FirstOrDefault();
-            if (vbs != null)
+            var recreg = person.RecRegs.OrderByDescending(v => v.Uploaded).FirstOrDefault();
+            if (recreg != null)
             {
-                VBSFormLink.NavigateUrl = "/VBS/Detail/{0}".Fmt(vbs.Id);
-                VBSFormLink.Visible = User.IsInRole("Attendance");
+                RecFormLink.NavigateUrl = "/Recreation/Detail/{0}".Fmt(recreg.Id);
+                RecFormLink.Visible = User.IsInRole("Attendance");
             }
 
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)

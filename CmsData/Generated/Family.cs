@@ -83,6 +83,8 @@ namespace CmsData
 		
 		private string _HomePhoneLU;
 		
+		private string _HomePhoneAC;
+		
    		
    		private EntitySet< Person> _People;
 		
@@ -200,6 +202,9 @@ namespace CmsData
 		
 		partial void OnHomePhoneLUChanging(string value);
 		partial void OnHomePhoneLUChanged();
+		
+		partial void OnHomePhoneACChanging(string value);
+		partial void OnHomePhoneACChanged();
 		
     #endregion
 		public Family()
@@ -947,6 +952,28 @@ namespace CmsData
 					this._HomePhoneLU = value;
 					this.SendPropertyChanged("HomePhoneLU");
 					this.OnHomePhoneLUChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="HomePhoneAC", UpdateCheck=UpdateCheck.Never, Storage="_HomePhoneAC", DbType="char(3)")]
+		public string HomePhoneAC
+		{
+			get { return this._HomePhoneAC; }
+
+			set
+			{
+				if (this._HomePhoneAC != value)
+				{
+				
+                    this.OnHomePhoneACChanging(value);
+					this.SendPropertyChanging();
+					this._HomePhoneAC = value;
+					this.SendPropertyChanged("HomePhoneAC");
+					this.OnHomePhoneACChanged();
 				}
 
 			}

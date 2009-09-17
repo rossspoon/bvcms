@@ -70,6 +70,7 @@ namespace CmsData
         IsMemberOf,
         IsUser,
         InterestedInJoining,
+        InterestPointId,
         JoinDate,
         JoinCodeId,
         LastName,

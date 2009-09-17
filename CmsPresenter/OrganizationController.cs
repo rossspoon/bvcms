@@ -328,6 +328,8 @@ namespace CMSPresenter
                 GradeRangeStart = org.GradeRangeStart,
                 GradeRangeEnd = org.GradeRangeEnd,
                 NumCheckInLabels = org.NumCheckInLabels,
+                CampusId = org.CampusId,
+                FirstMeetingDate = org.FirstMeetingDate,
             };
             DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in org.DivOrgs)

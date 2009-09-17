@@ -145,7 +145,7 @@ m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.Orga
     "", m.registration.Email, "Recreation Registration",
 @"<p>Thank you for registering for {0}: {1}
 You will receive another email with team information once they have been established.</p>
-<p>You will need to download the <a href=""{3}/Upload/MedicalRelease.pdf"">Medical Relase Form</a>, 
+<p>You will need to download the <a href=""{3}/Upload/MedicalRelease.pdf"">Medical Release Form</a>, 
 print, sign, and return it to the Recreation Ministry in order to complete your registration.</p>
 <p>We have the following information:
 {2}

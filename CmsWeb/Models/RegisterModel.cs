@@ -28,9 +28,9 @@ namespace CMSWeb.Models
         public string homephone {get; set;}
         public string cellphone { get; set; }
         public string email { get; set; }
-        public int? position { get; set; }
-        public bool married { get; set; }
+        public int? married { get; set; }
         public int? campusid { get; set; }
+        public int? org { get; set; }
 
         public string PrepareSummaryText()
         {
@@ -42,7 +42,6 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>DOB</td><td>{0:d}</td></tr>\n", DOB);
             sb.AppendFormat("<tr><td>Gender</td><td>{0}</td></tr>\n", gender == 1 ? "M" : "F");
             sb.AppendFormat("<tr><td>Maried</td><td>{0}</td></tr>\n", married);
-            sb.AppendFormat("<tr><td>Position</td><td>{0}</td></tr>\n", position == 10 ? "Primary" : position == 20 ? "Secondary" : "Child");
             sb.AppendFormat("<tr><td>Addr1</td><td>{0}</td></tr>\n", address1);
             sb.AppendFormat("<tr><td>Addr2</td><td>{0}</td></tr>\n", address2);
             sb.AppendFormat("<tr><td>City</td><td>{0}</td></tr>\n", city);
@@ -56,6 +55,18 @@ namespace CMSWeb.Models
             return sb.ToString();
         }
 
+        public IEnumerable<SelectListItem> MaritalStatus()
+        {
+            return new List<SelectListItem> 
+            {
+                new SelectListItem { Value="0", Text="(not specified)" },
+                new SelectListItem { Value="10", Text="Single" },
+                new SelectListItem { Value="20", Text="Married" },
+                new SelectListItem { Value="30", Text="Separated" },
+                new SelectListItem { Value="40", Text="Divorced" },
+                new SelectListItem { Value="50", Text="Widowed" },
+            };
+        }
         public IEnumerable<SelectListItem> StateList()
         {
             var q = from r in DbUtil.Db.StateLookups
@@ -65,6 +76,22 @@ namespace CMSWeb.Models
                         Selected = r.StateCode == "TN",
                     };
             return q;
+        }
+        public IEnumerable<SelectListItem> OrgList()
+        {
+            var q = from o in DbUtil.Db.Organizations
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where campusid == null || campusid == o.CampusId
+                    where o.WeeklySchedule.Day == 0
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select new SelectListItem
+                    {
+                        Text = o.OrganizationName,
+                        Value = o.OrganizationId.ToString()
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
         }
         public IQueryable<CmsData.Person> FindMember()
         {
@@ -103,6 +130,9 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("zip", "zip required");
             if (!(homephone.HasValue() || cellphone.HasValue()))
                 ModelState.AddModelError("phone", "need at least one phone #");
+            if ((married ?? 0) == 0)
+                ModelState.AddModelError("married2", "select marital status");
+
         }
         public void ValidateModel2(ModelStateDictionary ModelState)
         {
@@ -115,14 +145,13 @@ namespace CMSWeb.Models
 
             if (!gender.HasValue)
                 ModelState.AddModelError("gender2", "gender required");
-            if (!position.HasValue)
-                ModelState.AddModelError("position2", "position required");
             var d = cellphone.GetDigits().Length;
             if (cellphone.HasValue() && (d != 7 && d != 10))
                 ModelState.AddModelError("cellphone", "7 or 10 digits");
-            if ((((string)HttpContext.Current.Session["email"]).HasValue() == false || email.HasValue()) 
-                    && !Util.ValidEmail(email))
+            if (!Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
+            if (org == 0)
+                ModelState.AddModelError("org", "Please choose an organization");
         }
         public Person SaveFirstPerson()
         {
@@ -135,23 +164,70 @@ namespace CMSWeb.Models
                  ZipCode = zip,
                  HomePhone = homephone.GetDigits(),
             };
-            var p = Person.Add(f, position.Value, 
-                null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            var p = Person.Add(f, 10, 
+                null, first, nickname, lastname, dob, false, gender.Value, 0, null);
+            var age = p.GetAge();
+            var pos = 10;
+            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
+                pos = 30;
+            p.PositionInFamilyId = pos;
+            p.MaritalStatusId = married.Value;
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email;
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
+            RecordAttend(p.PeopleId, org.Value);
             return p;
         }
-        public void SavePerson(int FamilyId)
+        public Person SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
-            var p = Person.Add(f, position.Value, 
-                null, first, nickname, lastname, dob, married, gender.Value, 0, null);
+            var p = Person.Add(f, 10, 
+                null, first, nickname, lastname, dob, false, gender.Value, 0, null);
+            var age = p.GetAge();
+            var pos = 10;
+            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
+                pos = 30;
+            p.PositionInFamilyId = pos;
+
             p.CellPhone = cellphone.GetDigits();
+            p.MaritalStatusId = married.Value;
             p.EmailAddress = email;
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
+            RecordAttend(p.PeopleId, org.Value);
+            return p;
+        }
+        public void RecordAttend(int PeopleId, int OrgId)
+        {
+            var ret = (from o in DbUtil.Db.Organizations
+                       where o.OrganizationId == OrgId
+                       select new { o.WeeklySchedule, o.Location }).Single();
+            var dt = Util.Now.Date;
+            dt = dt.Add(ret.WeeklySchedule.MeetingTime.TimeOfDay);
+
+            var meeting = (from m in DbUtil.Db.Meetings
+                           where m.OrganizationId == OrgId
+                           where m.MeetingDate == dt
+                           select m).SingleOrDefault();
+
+            if (meeting == null)
+            {
+                meeting = new CmsData.Meeting
+                {
+                    OrganizationId = OrgId,
+                    MeetingDate = dt,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = Util.UserId1,
+                    GroupMeetingFlag = false,
+                    Location = ret.Location,
+                };
+                DbUtil.Db.Meetings.InsertOnSubmit(meeting);
+                DbUtil.Db.SubmitChanges();
+            }
+            var ctl = new CMSPresenter.AttendController();
+            ctl.RecordAttendance(PeopleId, meeting.MeetingId, true);
+            DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
         }
     }
 }

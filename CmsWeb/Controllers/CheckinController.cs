@@ -16,13 +16,20 @@ namespace CMSWeb.Controllers
 
         public ActionResult Match(string id)
         {
-            var ph = Util.GetDigits(id).PadRight(7, '0');
+            var ph = Util.GetDigits(id).PadLeft(10,'0');
+            var p7 = ph.Substring(3);
+            var ac = ph.Substring(0, 3);
             var q1 = from f in DbUtil.Db.Families
-                     where f.HomePhoneLU.StartsWith(ph)
-                        || f.HeadOfHousehold.CellPhoneLU.StartsWith(ph)
-                        || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(ph)
-                     select f.FamilyId;
-            var famid = q1.FirstOrDefault();
+                     where f.HomePhoneLU.StartsWith(p7)
+                        || f.HeadOfHousehold.CellPhoneLU.StartsWith(p7)
+                        || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(p7)
+                     select new { f.FamilyId, f.HomePhoneAC } ;
+            var matches = q1.ToList();
+            int? famid = null;
+            if (matches.Count > 1)
+                matches = matches.Where(m => m.HomePhoneAC == ac).ToList();
+            if (matches.Count == 1)
+                famid = matches[0].FamilyId;
 
             var now = DateTime.Now;
 

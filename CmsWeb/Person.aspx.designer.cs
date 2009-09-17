@@ -149,13 +149,13 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink ContributionsLink;
         
         /// <summary>
-        /// VBSFormLink control.
+        /// RecFormLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink VBSFormLink;
+        protected global::System.Web.UI.WebControls.HyperLink RecFormLink;
         
         /// <summary>
         /// EditUpdateButton1 control.

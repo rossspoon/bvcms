@@ -143,17 +143,17 @@ namespace CmsData
             Divorced = 40,
             Widowed = 50,
         }
-/* Origins
-10		Visit						Worship or BFClass Visit
-30		Referral					see Request
-40		Request						Task, use this for Referral too
-50		Deacon Telephone			Contact, type = phoned in
-60		Survey (EE)					Contact, EE
-70		Enrollment					Member of org
-80		Membership Decision			Contact, Type=Worship Visit
-90		Contribution				-1 peopleid in Excel with Name?
-98		Other						Task, use task description
-*/
+        /* Origins
+        10		Visit						Worship or BFClass Visit
+        30		Referral					see Request
+        40		Request						Task, use this for Referral too
+        50		Deacon Telephone			Contact, type = phoned in
+        60		Survey (EE)					Contact, EE
+        70		Enrollment					Member of org
+        80		Membership Decision			Contact, Type=Worship Visit
+        90		Contribution				-1 peopleid in Excel with Name?
+        98		Other						Task, use task description
+        */
         public string CityStateZip
         {
             get { return Util.FormatCSZ4(PrimaryCity, PrimaryState, PrimaryZip); }
@@ -210,7 +210,15 @@ namespace CmsData
                 return dt;
             return null;
         }
-
+        public int GetAge()
+        {
+            int years;
+            var dt = GetBirthdate().Value;
+            years = DateTime.Now.Year - dt.Year;
+            if (DateTime.Now.Month < dt.Month || (DateTime.Now.Month == dt.Month && DateTime.Now.Day < dt.Day))
+                years--;
+            return years;
+        }
         private CMSDataContext _Db;
         public CMSDataContext Db
         {

@@ -15,6 +15,8 @@ using System.Linq;
 using CMSPresenter;
 using System.IO;
 using System.Web.UI.WebControls;
+using System.Text;
+using System.Web.Configuration;
 
 namespace CMSWeb
 {
@@ -43,23 +45,17 @@ namespace CMSWeb
 
         public Emailer(string fromaddr, string fromname)
         {
-            ReplyTo = new MailAddress(fromaddr, fromname);
-            From = new MailAddress(DbUtil.SystemEmailAddress, fromname);
-            if (From.Host == ReplyTo.Host)
-            {
-                From = ReplyTo;
-                ReplyTo = null;
-            }
+            //ReplyTo = new MailAddress(fromaddr, fromname);
+            From = new MailAddress(fromaddr, fromname);
+            //if (From.Host == ReplyTo.Host)
+            //    From = ReplyTo;
         }
         public Emailer(string fromaddr)
         {
-            ReplyTo = new MailAddress(fromaddr);
-            From = new MailAddress(DbUtil.SystemEmailAddress);
-            if (From.Host == ReplyTo.Host)
-            {
-                From = ReplyTo;
-                ReplyTo = null;
-            }
+            //ReplyTo = new MailAddress(fromaddr);
+            From = new MailAddress(fromaddr);
+            //if (From.Host == ReplyTo.Host)
+            //    From = ReplyTo;
         }
         public Emailer()
         {
@@ -120,6 +116,7 @@ namespace CMSWeb
             if (attach.FileName.HasValue())
                 a = new Attachment(attach.FileContent, attach.FileName);
 
+            var sb = new StringBuilder();
             SmtpClient smtp = null;
             var i = 0;
             foreach (var p in people)
@@ -145,11 +142,11 @@ namespace CMSWeb
                         smtp = new SmtpClient();
                     i++;
                     smtp.Send(msg);
+                    sb.AppendFormat("\"{1}\" &lt;{0}&gt; ({2})<br />\n".Fmt(p.EmailAddress, p.Name, p.PeopleId));
                 }
                 catch (Exception ex)
                 {
-                    var f = new MailAddress(DbUtil.SystemEmailAddress);
-                    var msg = new MailMessage(f, From);
+                    var msg = new MailMessage(From, From);
                     msg.Subject = ex.Message;
                     msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
                     msg.IsBodyHtml = true;
@@ -159,6 +156,21 @@ namespace CMSWeb
                     smtp.Send(msg);
                 }
             }
+            sb.Append("<br />\n");
+            sb.Append(Message);
+            smtp = new SmtpClient();
+
+            var mr = new MailMessage(From, From);
+            mr.Subject = "sent emails";
+            mr.Body = sb.ToString();
+            mr.IsBodyHtml = true;
+            smtp.Send(mr);
+
+            mr = new MailMessage(From, new MailAddress(WebConfigurationManager.AppSettings["senderrorsto"]));
+            mr.Subject = "sent emails";
+            mr.Body = sb.ToString();
+            mr.IsBodyHtml = true;
+            smtp.Send(mr);
         }
         public void SendPersonEmail(Person p, string subject, string message)
         {
@@ -170,7 +182,6 @@ namespace CMSWeb
             {
                 var to = new MailAddress(p.EmailAddress, p.Name);
                 var msg = new MailMessage(From, to);
-                msg.ReplyTo = ReplyTo;
                 msg.Subject = Subject;
                 var b = Message.Replace("{name}", p.Name);
                 b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
@@ -181,8 +192,7 @@ namespace CMSWeb
             }
             catch (Exception ex)
             {
-                var f = new MailAddress(DbUtil.SystemEmailAddress);
-                var msg = new MailMessage(f, From);
+                var msg = new MailMessage(From, From);
                 msg.Subject = ex.Message;
                 msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
                 msg.IsBodyHtml = true;
@@ -193,17 +203,11 @@ namespace CMSWeb
         {
             try
             {
-                ReplyTo = new MailAddress(from.EmailAddress, from.Name);
-                From = new MailAddress(DbUtil.SystemEmailAddress, from.Name);
+                From = new MailAddress(from.EmailAddress, from.Name);
                 Addresses.Clear();
                 var To = LoadAddress(to.EmailAddress, to.Name);
                 if (To == null)
                     return;
-                if (From.Host == ReplyTo.Host || From.Host == To.Host)
-                {
-                    From = ReplyTo;
-                    ReplyTo = null;
-                }
                 NotifyEmail(subject, message);
             }
             catch

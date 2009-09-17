@@ -10,7 +10,7 @@
     <p>
         Thank you for registering.  You should receive a confirmation email shortly.
     </p>
-    <p><a href="/Register/Form2/">Register another family member</a></p>
-    <p><a href="/Register/">New Registration</a></p>
+    <p><a href="/Register/Visit2/">Register another family member</a></p>
+    <p><a href="/Register/Visit/<%=Session["campus"] %>">New Registration</a></p>
 
 </asp:Content>

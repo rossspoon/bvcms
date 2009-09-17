@@ -1286,8 +1286,6 @@ namespace CMSPresenter
         public static List<CodeValueItem> AddNotSpecified(this IEnumerable<CodeValueItem> q, int value)
         {
             var list = q.ToList();
-            if (list.First().Id == 0)
-                return list;
             list.Insert(0, new CodeValueItem { Id = value, Value = "(not specified)" });
             return list;
         }

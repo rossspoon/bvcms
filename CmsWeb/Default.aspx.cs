@@ -50,14 +50,22 @@ namespace CMSWeb
             var u = DbUtil.Db.Users.SingleOrDefault(us => us.UserId == Util.UserId);
             if (u == null)
                 return;
-            dsMyInvolvement.SelectParameters.Clear();
+
             if (u.PeopleId.HasValue)
             {
-                dsMyInvolvement.SelectParameters.Add("pid", u.PeopleId.Value.ToString());
-                dsMyInvolvement.SelectParameters.Add("sortExpression", "Organization");
-                dsMyInvolvement.SelectParameters.Add("maximumRows", "99999");
-                dsMyInvolvement.SelectParameters.Add("startRowIndex", "0");
+                var q = from om in DbUtil.Db.OrganizationMembers
+                        where om.PeopleId == u.PeopleId
+                        where (om.Pending ?? false) == false
+                        where !(om.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                        select new 
+                        { 
+                            Name = om.Organization.OrganizationName, 
+                            MemberType = om.MemberType.Description,
+                            Id = om.OrganizationId
+                        };
+                grdMyInvolvement.DataSource = q;
                 grdMyInvolvement.DataBind();
+                grdMyInvolvement.Visible = true;
             }
             else
                 grdMyInvolvement.Visible = false;

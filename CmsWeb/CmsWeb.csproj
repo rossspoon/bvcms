@@ -1821,6 +1821,9 @@
     <Content Include="Views\RecReg\Payment.aspx" />
     <Content Include="Views\RecReg\Index.aspx" />
     <Content Include="Views\RecReg\OtherInfo.aspx" />
+    <Content Include="Views\Register\ConfirmVisit.aspx" />
+    <Content Include="Views\Register\Visit2.aspx" />
+    <Content Include="Views\Register\Visit.aspx" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Views\CodeValue\Index.aspx" />
     <Content Include="Views\PromotionSetup\Index.aspx" />

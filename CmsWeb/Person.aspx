@@ -249,7 +249,7 @@
                             </td>
                             <td>
                                 <asp:HyperLink ID="ContributionsLink" runat="server">Contributions</asp:HyperLink>
-                                <asp:HyperLink ID="VBSFormLink" runat="server" Visible="false">VBS Form</asp:HyperLink>
+                                <asp:HyperLink ID="RecFormLink" runat="server" Visible="false">Rec Form</asp:HyperLink>
                             </td>
                         </tr>
                         <tr>
