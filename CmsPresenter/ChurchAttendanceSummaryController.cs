@@ -37,6 +37,7 @@ namespace CMSPresenter
             public DateTime MeetingDate { get; set; }
             public int NumPresent { get; set; }
             public int NumVisitors { get; set; }
+            public string Name { get; set; }
             public int ProgramId { get; set; }
         }
         private List<MeetInfo> qlist;
@@ -51,6 +52,7 @@ namespace CMSPresenter
                     {
                         OrganizationId = m.OrganizationId,
                         MeetingDate = m.MeetingDate.Value,
+                        Name = m.Organization.OrganizationName,
                         NumPresent = m.NumPresent,
                         NumVisitors = m.NumNewVisit + m.NumRepeatVst,
                         ProgramId = m.Organization.DivOrgs.First(t => t.Division.Program.Name != DbUtil.MiscTagsString).Division.ProgId.Value
@@ -60,10 +62,13 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<AttendanceSummaryInfo> AttendanceSummary(DateTime sunday)
         {
+            var sunday1200 = sunday.AddHours(12);
             LoadMeetings(sunday);
 
             var q1 = from m in qlist
+                     where m.MeetingDate < sunday1200
                      where MorningWorship.Contains(m.OrganizationId) || ExtendedSessions.Contains(m.OrganizationId)
+                         || ChoirTags.Contains(m.ProgramId)
                      group m.NumPresent by true into g
                      select new AttendanceSummaryInfo
                      {

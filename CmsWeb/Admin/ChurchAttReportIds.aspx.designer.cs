@@ -8,36 +8,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb {
+namespace CMSWeb.Admin {
     
     
-    public partial class UserArea {
+    public partial class ChurchAttReportIds {
         
         /// <summary>
-        /// LoginView1 control.
+        /// DynamicDataManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LoginView LoginView1;
+        protected global::System.Web.DynamicData.DynamicDataManager DynamicDataManager1;
         
         /// <summary>
-        /// TagLink control.
+        /// GridView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink TagLink;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
-        /// HiddenField1 control.
+        /// LinqDataSource1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
+        protected global::System.Web.UI.WebControls.LinqDataSource LinqDataSource1;
     }
 }

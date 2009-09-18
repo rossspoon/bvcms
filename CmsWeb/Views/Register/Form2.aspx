@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td><label for="email">Email</label></td>
-                    <td><%= Html.TextBox("email") %></td>
+                    <td><%= Html.TextBox("email", Model.email) %></td>
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>

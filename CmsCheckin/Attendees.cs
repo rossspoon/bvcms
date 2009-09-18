@@ -69,7 +69,7 @@ namespace CmsCheckin
             wids[1] = 65;
             foreach (var e in x.Descendants("attendee").Take(10))
             {
-                var name = string.Format("{0} ({1})", e.Attribute("name").Value, e.Attribute("age").Value);
+                var name = e.Attribute("name").Value;
                 var n = 2;
                 wids[n] = Math.Max(wids[n], (int)g.MeasureString(name, font).Width); n++;
                 wids[n] = Math.Max(wids[n], (int)g.MeasureString(e.Attribute("org").Value, font).Width); n++;

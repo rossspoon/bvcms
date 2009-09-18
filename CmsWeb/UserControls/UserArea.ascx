@@ -11,7 +11,8 @@
         <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ChangePassword.aspx"
             EnableViewState="False">Change Password</asp:HyperLink>
         |
-        <asp:LoginStatus ID="LoginStatus1" runat="server" EnableViewState="False" />
+        <asp:LoginStatus ID="LoginStatus1" runat="server" EnableViewState="False" 
+            onloggingout="LoginStatus1_LoggingOut" />
     </LoggedInTemplate>
 </asp:LoginView>
 <div>

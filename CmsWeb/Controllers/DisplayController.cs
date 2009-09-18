@@ -20,7 +20,7 @@ namespace CMSWeb.Controllers
     {
         public ActionResult Menu()
         {
-            var menu = DbUtil.Db.Contents.SingleOrDefault(m => m.Title == "menu");
+            var menu = DbUtil.Db.Contents.SingleOrDefault(m => m.Name == "menu");
             var c = new ContentResult();
             if (menu != null)
                 c.Content = menu.Body;

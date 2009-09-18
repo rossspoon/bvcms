@@ -26,5 +26,9 @@ namespace CMSWeb
             TagLink.Text = Util.CurrentTagName;
         }
 
+        protected void LoginStatus1_LoggingOut(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)
+        {
+            Session.Abandon();
+        }
    }
 }

@@ -35,6 +35,7 @@ namespace CMSPresenter
             public int OrganizationId { get; set; }
             public int NumPresent { get; set; }
             public DateTime MeetingDate { get; set; }
+            public string Name { get; set; }
             public int ProgramId { get; set; }
         }
         private List<MeetInfo> qlist;
@@ -49,6 +50,7 @@ namespace CMSPresenter
                     select new MeetInfo
                     {
                         OrganizationId = m.OrganizationId,
+                        Name = m.Organization.OrganizationName,
                         NumPresent = m.NumPresent,
                         MeetingDate = m.MeetingDate.Value,
                         ProgramId = m.Organization.DivOrgs.First(t => t.Division.Program.Name != misctag).Division.ProgId.Value
@@ -97,6 +99,31 @@ namespace CMSPresenter
             }
 
             return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable ChurchAttendanceDetail(DateTime sunday)
+        {
+            var sunday1200 = sunday.AddHours(12);
+            LoadMeetings(sunday);
+
+            var q2 = from m in qlist
+                     where m.MeetingDate < sunday1200
+                     where MorningWorship.Contains(m.OrganizationId)
+                         || ExtendedSessions.Contains(m.OrganizationId)
+                         || ChoirTags.Contains(m.ProgramId)
+                     let m1 = ExtendedSessions.Contains(m.OrganizationId) ? "dExtended Session" :
+                        m.ProgramId == VocalTagId ? "bChoir" :
+                        m.ProgramId == OrchestraTagId ? "cOrchestra" :
+                        "a" + m.MeetingDate.TimeOfDay.Hours.ToString().PadLeft(2, ' ') + ":" + m.MeetingDate.Minute.ToString().PadLeft(2, '0') + " AM"
+                     orderby m1
+                     select new
+                     {
+                         Row = m1,
+                         Name = m.Name,
+                         Count = m.NumPresent,
+                     };
+            var list = q2.ToList();
+            return q2;
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]

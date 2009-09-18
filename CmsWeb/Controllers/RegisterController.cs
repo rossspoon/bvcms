@@ -42,7 +42,7 @@ namespace CMSWeb.Controllers
                 Session["familyid"] = p.FamilyId;
                 Session["lastname"] = p.LastName;
                 Session["name"] = p.Name;
-                EmailUser(m, p);
+                EmailRegister(m, p);
                 return RedirectToAction("Confirm");
             }
             return View(m);
@@ -65,7 +65,7 @@ namespace CMSWeb.Controllers
             if (ModelState.IsValid)
             {
                 var p = m.SavePerson((int)Session["familyid"]);
-                EmailUser(m, p);
+                EmailRegister(m, p);
                 return RedirectToAction("Confirm");
             }
             return View(m);
@@ -86,7 +86,8 @@ namespace CMSWeb.Controllers
                 Session["lastname"] = p.LastName;
                 Session["name"] = p.Name;
                 Session["campus"] = id;
-                EmailUser(m, p);
+                Session["email"] = p.EmailAddress;
+                EmailVisit(m, p);
                 return RedirectToAction("ConfirmVisit");
             }
             return View("Visit", m);
@@ -95,7 +96,7 @@ namespace CMSWeb.Controllers
         {
             if (Session["familyid"] == null)
                 return RedirectToAction("Visit");
-            var m = new Models.RegisterModel { campusid = (int?)Session["campus"] };
+            var m = new Models.RegisterModel { campusid = (int?)Session["campus"], email = Session["email"].ToString() };
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 m.lastname = (string)Session["lastname"];
@@ -107,7 +108,7 @@ namespace CMSWeb.Controllers
             if (ModelState.IsValid)
             {
                 var p = m.SavePerson((int)Session["familyid"]);
-                EmailUser(m, p);
+                EmailVisit(m, p);
                 return RedirectToAction("ConfirmVisit");
             }
             return View(m);
@@ -143,15 +144,39 @@ namespace CMSWeb.Controllers
             ModelState.AddModelError("auth", "incorrect password");
             return View();
         }
-        private void EmailUser(RegisterModel m, Person p)
+
+        private void EmailRegister(RegisterModel m, Person p)
         {
-            HomeController.Email(DbUtil.Settings("RegMail"),
-                                p.Name,p.EmailAddress, "Church Registration",
-@"<p>Thank you for helping us build our Church Database.</p>
-<p>We have the following information:
-<pre>
-{0}
-</pre>".Fmt(m.PrepareSummaryText()));
+            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "RegisterMessage");
+            if (c == null)
+            {
+                c = new Content();
+                c.Body = "<p>Thank you for helping us build our Church Database.</p>";
+                c.Title = "Church Database Registration";
+            }
+            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
+
+            HomeController.Email(DbUtil.Settings("RegMail"), p.Name, p.EmailAddress, c.Title, c.Body);
+        }
+
+        private void EmailVisit(RegisterModel m, Person p)
+        {
+            string email = DbUtil.Settings("VisitMail-" + Session["campus"]);
+            if (email == "VisitMail-")
+                email = DbUtil.Settings("RegMail");
+
+            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "VisitMessage-" + Session["campus"]);
+            if (c == null)
+            {
+                c = new Content();
+                c.Body = "<p>Hi {first},</p><p>Thank you for visiting us.</p>";
+                c.Title = "Church Database Registration";
+            }
+            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            c.Body = c.Body.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
+
+            HomeController.Email(email, p.Name, p.EmailAddress, c.Title, c.Body);
         }
     }
 }

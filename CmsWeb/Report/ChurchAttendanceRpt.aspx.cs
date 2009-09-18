@@ -30,6 +30,8 @@ namespace CMSWeb.Reports
             }
             var reportDate = dt.AddDays(-(int)dt.DayOfWeek); //Sunday Date equal/before date selected
             SundayDate.Text = reportDate.ToString("d");
+            WorshipLink.NavigateUrl = "~/Report/WorshipDetail.aspx?dt=" + reportDate.Ticks;
+            WorshipLink.Target = "_blank";
         }
 
         protected void ODS_ObjectCreating(object sender, ObjectDataSourceEventArgs e)

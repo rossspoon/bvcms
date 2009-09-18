@@ -78,6 +78,9 @@
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -126,12 +129,26 @@
     <Compile Include="Admin\Audit.aspx.designer.cs">
       <DependentUpon>Audit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ChurchAttReportIds.aspx.cs">
+      <DependentUpon>ChurchAttReportIds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ChurchAttReportIds.aspx.designer.cs">
+      <DependentUpon>ChurchAttReportIds.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ClearCache.aspx.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\ClearCache.aspx.designer.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UsersEmailFor.aspx.cs">
+      <DependentUpon>UsersEmailFor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UsersEmailFor.aspx.designer.cs">
+      <DependentUpon>UsersEmailFor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\DeleteSpecialTags.aspx.cs">
       <DependentUpon>DeleteSpecialTags.aspx</DependentUpon>
@@ -411,6 +428,34 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\VBSController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.cs">
+      <DependentUpon>DateCalendar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.designer.cs">
+      <DependentUpon>DateCalendar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.cs">
+      <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.designer.cs">
+      <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\Text.ascx.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\Text.ascx.designer.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.cs">
+      <DependentUpon>Text_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.designer.cs">
+      <DependentUpon>Text_Edit.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EnrollmentControlReport.aspx.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -695,6 +740,13 @@
     <Compile Include="Report\RosterReport.aspx.designer.cs">
       <DependentUpon>RosterReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\WorshipDetail.aspx.cs">
+      <DependentUpon>WorshipDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\WorshipDetail.aspx.designer.cs">
+      <DependentUpon>WorshipDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ScanUpload.svc.cs">
       <DependentUpon>ScanUpload.svc</DependentUpon>
     </Compile>
@@ -922,7 +974,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
+    <Content Include="Admin\ChurchAttReportIds.aspx" />
     <Content Include="Admin\ClearCache.aspx" />
+    <Content Include="Admin\UsersEmailFor.aspx" />
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\OneTimeETStudy.aspx" />
@@ -1047,7 +1101,6 @@
     <Content Include="Content\Crosses.png" />
     <Content Include="Content\dropdown.gif" />
     <Content Include="Content\dropdown_active.gif" />
-    <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\Easy.gif" />
     <Content Include="Content\edgechurch.png" />
     <Content Include="Content\favicon.ico" />
@@ -1269,6 +1322,10 @@
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="AddTagSharedsDialog.aspx" />
+    <Content Include="DynamicData\FieldTemplates\DateCalendar.ascx" />
+    <Content Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx" />
+    <Content Include="DynamicData\FieldTemplates\Text.ascx" />
+    <Content Include="DynamicData\FieldTemplates\Text_Edit.ascx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="EditMembersDialog.aspx" />
     <Content Include="favicon.ico" />
@@ -1794,6 +1851,7 @@
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
     <Content Include="Report\MemberReport.aspx" />
+    <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="ScanUpload.svc" />
     <Content Include="Views\Account\AddUser.aspx" />
     <Content Include="Views\Account\RequestUsername.aspx" />

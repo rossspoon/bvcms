@@ -32,15 +32,11 @@
         <table align="center">
             <tr>
                 <td valign="top">
+                    <asp:HyperLink ID="WorshipLink" Text="Worship" runat="server" CssClass="headerrow"></asp:HyperLink>
                     <asp:ListView ID="ChurchAttendance" runat="server" DataSourceID="dsChurchAttendance">
                         <LayoutTemplate>
                             <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
                                 style="width: 250px">
-                                <tr class="headerrow">
-                                    <th colspan="2">
-                                        Worship
-                                    </th>
-                                </tr>
                                 <tr id="itemPlaceholder" runat="server">
                                 </tr>
                             </table>

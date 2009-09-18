@@ -146,8 +146,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                 {
                     e.Authenticated = true;
                     var em = new Emailer();
-                    foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Developer"))
-                        em.LoadAddress(u.Person.EmailAddress, u.Name);
+                    em.LoadAddress(WebConfigurationManager.AppSettings["senderrorsto"], null);
                     em.NotifyEmail("{0} is being impersonated".Fmt(Login1.UserName), DateTime.Now.ToString());
                 }
                 else

@@ -130,9 +130,6 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("zip", "zip required");
             if (!(homephone.HasValue() || cellphone.HasValue()))
                 ModelState.AddModelError("phone", "need at least one phone #");
-            if ((married ?? 0) == 0)
-                ModelState.AddModelError("married2", "select marital status");
-
         }
         public void ValidateModel2(ModelStateDictionary ModelState)
         {
@@ -145,6 +142,8 @@ namespace CMSWeb.Models
 
             if (!gender.HasValue)
                 ModelState.AddModelError("gender2", "gender required");
+            if ((married ?? 0) == 0)
+                ModelState.AddModelError("married2", "select marital status");
             var d = cellphone.GetDigits().Length;
             if (cellphone.HasValue() && (d != 7 && d != 10))
                 ModelState.AddModelError("cellphone", "7 or 10 digits");
@@ -173,7 +172,7 @@ namespace CMSWeb.Models
             p.PositionInFamilyId = pos;
             p.MaritalStatusId = married.Value;
             p.CellPhone = cellphone.GetDigits();
-            p.EmailAddress = email;
+            p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
             RecordAttend(p.PeopleId, org.Value);
@@ -192,7 +191,8 @@ namespace CMSWeb.Models
 
             p.CellPhone = cellphone.GetDigits();
             p.MaritalStatusId = married.Value;
-            p.EmailAddress = email;
+            if (email != HttpContext.Current.Session["email"].ToString())
+                p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
             RecordAttend(p.PeopleId, org.Value);

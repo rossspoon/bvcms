@@ -28,6 +28,8 @@ namespace CMSWeb2
         protected void Application_Start()
         {
             RegisterRoutes(RouteTable.Routes);
+            var model = new System.Web.DynamicData.MetaModel();
+            model.RegisterContext(typeof(CMSDataContext), new ContextConfiguration() { ScaffoldAllTables = false });
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
         public static void RegisterRoutes(RouteCollection routes)
