@@ -431,30 +431,38 @@
     <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.cs">
       <DependentUpon>DateCalendar.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.designer.cs">
       <DependentUpon>DateCalendar.ascx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.cs">
       <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.designer.cs">
       <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Text.ascx.cs">
       <DependentUpon>Text.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Text.ascx.designer.cs">
       <DependentUpon>Text.ascx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.cs">
       <DependentUpon>Text_Edit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.designer.cs">
       <DependentUpon>Text_Edit.ascx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EnrollmentControlReport.aspx.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
@@ -1322,10 +1330,18 @@
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="AddTagSharedsDialog.aspx" />
-    <Content Include="DynamicData\FieldTemplates\DateCalendar.ascx" />
-    <Content Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx" />
-    <Content Include="DynamicData\FieldTemplates\Text.ascx" />
-    <Content Include="DynamicData\FieldTemplates\Text_Edit.ascx" />
+    <Content Include="DynamicData\FieldTemplates\DateCalendar.ascx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DynamicData\FieldTemplates\Text.ascx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DynamicData\FieldTemplates\Text_Edit.ascx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="EditMembersDialog.aspx" />
     <Content Include="favicon.ico" />

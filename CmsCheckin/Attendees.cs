@@ -126,7 +126,6 @@ namespace CmsCheckin
                 var c = new AttendLabel
                 {
                     Name = e.Attribute("name").Value,
-                    Age = Convert.ToInt32(e.Attribute("age").Value),
                     Birthday = e.Attribute("bday").Value,
                     Gender = e.Attribute("gender").Value,
                     PeopleId = Convert.ToInt32(e.Attribute("id").Value),
@@ -145,7 +144,7 @@ namespace CmsCheckin
                 name.Font = font;
                 name.Location = new Point(cols[col++], top + (row * 50));
                 name.AutoSize = true;
-                name.Text = string.Format("{0} ({1})", e.Attribute("name").Value, e.Attribute("age").Value);
+                name.Text = e.Attribute("name").Value;
                 name.TextAlign = ContentAlignment.MiddleLeft;
                 this.Controls.Add(name);
 
@@ -263,7 +262,6 @@ namespace CmsCheckin
         public string Name { get; set; }
         public int PeopleId { get; set; }
         public string Birthday { get; set; }
-        public int Age { get; set; }
         public string Gender { get; set; }
         public string Class { get; set; }
         public int OrgId { get; set; }
