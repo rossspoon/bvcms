@@ -195,7 +195,6 @@
         <div class="sidetitle">Links</div>
         <%=Html.Hidden("curpage", ViewData["page"])%>
         <div id="navcontainer" class="side">
-        <%Html.RenderAction<CMSWeb.Controllers.DisplayController>(m => m.Menu()); %>
         </div>
         <asp:ContentPlaceHolder ID="SideArea" runat="server">
         </asp:ContentPlaceHolder>

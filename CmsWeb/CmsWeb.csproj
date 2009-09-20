@@ -4,8 +4,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7A59CC27-D949-4A7F-BC63-E5371FBD1785}</ProjectGuid>
-    <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{FC942D51-94B5-456B-9683-0BA000A1EAF4}</ProjectGuid>
+    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CMSWeb</RootNamespace>
@@ -30,32 +30,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit, Version=3.0.20820.16598, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL" />
     <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d" />
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
-    <Reference Include="Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -68,40 +54,18 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Abstractions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.DynamicData">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Routing.dll</HintPath>
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -109,9 +73,66 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="AddContacteeDialog.aspx.cs">
+      <DependentUpon>AddContacteeDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddContacteeDialog.aspx.designer.cs">
+      <DependentUpon>AddContacteeDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddContactorDialog.aspx.cs">
+      <DependentUpon>AddContactorDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddContactorDialog.aspx.designer.cs">
+      <DependentUpon>AddContactorDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddFamilyDialog.aspx.cs">
+      <DependentUpon>AddFamilyDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddFamilyDialog.aspx.designer.cs">
+      <DependentUpon>AddFamilyDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddFamilyMembersDialog.aspx.cs">
+      <DependentUpon>AddFamilyMembersDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddFamilyMembersDialog.aspx.designer.cs">
+      <DependentUpon>AddFamilyMembersDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddMemberDialog.aspx.cs">
+      <DependentUpon>AddMemberDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddMemberDialog.aspx.designer.cs">
+      <DependentUpon>AddMemberDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddTagSharedsDialog.aspx.cs">
+      <DependentUpon>AddTagSharedsDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddTagSharedsDialog.aspx.designer.cs">
+      <DependentUpon>AddTagSharedsDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddTaskAboutDialog.aspx.cs">
+      <DependentUpon>AddTaskAboutDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddTaskAboutDialog.aspx.designer.cs">
+      <DependentUpon>AddTaskAboutDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddTaskDelegateDialog.aspx.cs">
+      <DependentUpon>AddTaskDelegateDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddTaskDelegateDialog.aspx.designer.cs">
+      <DependentUpon>AddTaskDelegateDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddVisitorDialog.aspx.cs">
+      <DependentUpon>AddVisitorDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="AddVisitorDialog.aspx.designer.cs">
       <DependentUpon>AddVisitorDialog.aspx</DependentUpon>
     </Compile>
@@ -129,26 +150,12 @@
     <Compile Include="Admin\Audit.aspx.designer.cs">
       <DependentUpon>Audit.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ChurchAttReportIds.aspx.cs">
-      <DependentUpon>ChurchAttReportIds.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\ChurchAttReportIds.aspx.designer.cs">
-      <DependentUpon>ChurchAttReportIds.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\ClearCache.aspx.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\ClearCache.aspx.designer.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\UsersEmailFor.aspx.cs">
-      <DependentUpon>UsersEmailFor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\UsersEmailFor.aspx.designer.cs">
-      <DependentUpon>UsersEmailFor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\DeleteSpecialTags.aspx.cs">
       <DependentUpon>DeleteSpecialTags.aspx</DependentUpon>
@@ -216,6 +223,13 @@
     <Compile Include="AppReview\FormImage.aspx.designer.cs">
       <DependentUpon>FormImage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AppReview\VolunteerApp.aspx.cs">
+      <DependentUpon>VolunteerApp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppReview\VolunteerApp.aspx.designer.cs">
+      <DependentUpon>VolunteerApp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AttendStrDetail.aspx.cs">
       <DependentUpon>AttendStrDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -233,21 +247,93 @@
     <Compile Include="bulkmail.ashx.cs">
       <DependentUpon>bulkmail.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Code\Emailer.cs">
-      <SubType>Code</SubType>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Code\Geocode.cs">
-      <SubType>Code</SubType>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Code\Emailer.cs" />
+    <Compile Include="Code\Geocode.cs" />
     <Compile Include="Code\IMetaWebLog.cs" />
-    <Compile Include="Code\JSMin.cs" />
-    <Compile Include="Code\ScriptCombiner.cs" />
+    <Compile Include="Code\ViewExtensions.cs" />
+    <Compile Include="Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContactSearch.aspx.cs">
+      <DependentUpon>ContactSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContactSearch.aspx.designer.cs">
+      <DependentUpon>ContactSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ContactSearchDialog.aspx.cs">
+      <DependentUpon>ContactSearchDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContactSearchDialog.aspx.designer.cs">
+      <DependentUpon>ContactSearchDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\All.aspx.cs">
+      <DependentUpon>All.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\All.aspx.designer.cs">
+      <DependentUpon>All.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Bundle.aspx.cs">
+      <DependentUpon>Bundle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Bundle.aspx.designer.cs">
+      <DependentUpon>Bundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Bundles.aspx.cs">
+      <DependentUpon>Bundles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Bundles.aspx.designer.cs">
+      <DependentUpon>Bundles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Deposit.aspx.cs">
+      <DependentUpon>Deposit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Deposit.aspx.designer.cs">
+      <DependentUpon>Deposit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contributions\GLExtract.aspx.cs">
       <DependentUpon>GLExtract.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contributions\GLExtract.aspx.designer.cs">
       <DependentUpon>GLExtract.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Individual.aspx.cs">
+      <DependentUpon>Individual.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Individual.aspx.designer.cs">
+      <DependentUpon>Individual.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.cs">
+      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.designer.cs">
+      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.cs">
+      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.designer.cs">
+      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Reports\JournalDetails.aspx.cs">
       <DependentUpon>JournalDetails.aspx</DependentUpon>
@@ -284,55 +370,6 @@
     <Compile Include="Contributions\Reports\TotalsByFundRange.aspx.designer.cs">
       <DependentUpon>TotalsByFundRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contributions\Bundle.aspx.cs">
-      <DependentUpon>Bundle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Bundle.aspx.designer.cs">
-      <DependentUpon>Bundle.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Bundles.aspx.cs">
-      <DependentUpon>Bundles.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Bundles.aspx.designer.cs">
-      <DependentUpon>Bundles.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\All.aspx.cs">
-      <DependentUpon>All.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\All.aspx.designer.cs">
-      <DependentUpon>All.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.cs">
-      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.designer.cs">
-      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Deposit.aspx.cs">
-      <DependentUpon>Deposit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Deposit.aspx.designer.cs">
-      <DependentUpon>Deposit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Individual.aspx.cs">
-      <DependentUpon>Individual.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Individual.aspx.designer.cs">
-      <DependentUpon>Individual.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.cs">
-      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.designer.cs">
-      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Contributions\Years.aspx.cs">
       <DependentUpon>Years.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -340,176 +377,30 @@
     <Compile Include="Contributions\Years.aspx.designer.cs">
       <DependentUpon>Years.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AddMemberDialog.aspx.cs">
-      <DependentUpon>AddMemberDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddMemberDialog.aspx.designer.cs">
-      <DependentUpon>AddMemberDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddContactorDialog.aspx.cs">
-      <DependentUpon>AddContactorDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddContactorDialog.aspx.designer.cs">
-      <DependentUpon>AddContactorDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddContacteeDialog.aspx.cs">
-      <DependentUpon>AddContacteeDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddContacteeDialog.aspx.designer.cs">
-      <DependentUpon>AddContacteeDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddTaskAboutDialog.aspx.cs">
-      <DependentUpon>AddTaskAboutDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddTaskAboutDialog.aspx.designer.cs">
-      <DependentUpon>AddTaskAboutDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddTaskDelegateDialog.aspx.cs">
-      <DependentUpon>AddTaskDelegateDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddTaskDelegateDialog.aspx.designer.cs">
-      <DependentUpon>AddTaskDelegateDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddFamilyDialog.aspx.cs">
-      <DependentUpon>AddFamilyDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddFamilyDialog.aspx.designer.cs">
-      <DependentUpon>AddFamilyDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddFamilyMembersDialog.aspx.cs">
-      <DependentUpon>AddFamilyMembersDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddFamilyMembersDialog.aspx.designer.cs">
-      <DependentUpon>AddFamilyMembersDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AddVisitorDialog.aspx.cs">
-      <DependentUpon>AddVisitorDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddTagSharedsDialog.aspx.cs">
-      <DependentUpon>AddTagSharedsDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddTagSharedsDialog.aspx.designer.cs">
-      <DependentUpon>AddTagSharedsDialog.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CheckinController.cs" />
-    <Compile Include="Controllers\LoveRespectController.cs" />
     <Compile Include="Controllers\DiscipleLifeController.cs" />
-    <Compile Include="Controllers\RecreationController.cs" />
-    <Compile Include="Controllers\RecreationSetupController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoveRespectController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
-    <Compile Include="Controllers\RecRegController.cs" />
-    <Compile Include="Controllers\VBSRegController.cs" />
-    <Compile Include="Controllers\VolunteersController.cs" />
-    <Compile Include="Controllers\PromotionSetupController.cs" />
-    <Compile Include="Controllers\SoulMateController.cs" />
-    <Compile Include="Controllers\StepClassController.cs" />
-    <Compile Include="Controllers\VolOpportunityController.cs" />
-    <Compile Include="Controllers\VolunteerController.cs" />
-    <Compile Include="Controllers\ProgramController.cs" />
-    <Compile Include="Controllers\SettingController.cs" />
-    <Compile Include="Controllers\MetroZipController.cs" />
-    <Compile Include="Controllers\MinistryController.cs" />
-    <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\QueryBuilderController.cs" />
-    <Compile Include="Controllers\DisplayController.cs" />
+    <Compile Include="Controllers\RecreationController.cs" />
+    <Compile Include="Controllers\RecRegController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\SearchPeopleController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\VBSController.cs" />
+    <Compile Include="Controllers\SoulMateController.cs" />
+    <Compile Include="Controllers\StepClassController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
-    <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.cs">
-      <DependentUpon>DateCalendar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\DateCalendar.ascx.designer.cs">
-      <DependentUpon>DateCalendar.ascx</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.cs">
-      <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx.designer.cs">
-      <DependentUpon>DateCalendar_Edit.ascx</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\Text.ascx.cs">
-      <DependentUpon>Text.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\Text.ascx.designer.cs">
-      <DependentUpon>Text.ascx</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.cs">
-      <DependentUpon>Text_Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="DynamicData\FieldTemplates\Text_Edit.ascx.designer.cs">
-      <DependentUpon>Text_Edit.ascx</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="EnrollmentControlReport.aspx.cs">
-      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
+    <Compile Include="Controllers\VBSController.cs" />
+    <Compile Include="Controllers\VBSRegController.cs" />
+    <Compile Include="Controllers\VolunteerController.cs" />
+    <Compile Include="Controllers\VolunteersController.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EnrollmentControlReport.aspx.designer.cs">
-      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EditMembersDialog.aspx.cs">
-      <DependentUpon>EditMembersDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditMembersDialog.aspx.designer.cs">
-      <DependentUpon>EditMembersDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Code\ViewExtensions.cs" />
-    <Compile Include="IScanUpload.cs" />
-    <Compile Include="Models\LoveRespectModel.cs" />
-    <Compile Include="Models\PromotionSetupModel.cs" />
-    <Compile Include="Models\DiscipleLifeModel.cs" />
-    <Compile Include="Models\RecDetailModel.cs" />
-    <Compile Include="Models\ParticipantInfo.cs" />
-    <Compile Include="Models\RecreationModel.cs" />
-    <Compile Include="Models\PromoteInfo.cs" />
-    <Compile Include="Models\PromotionModel.cs" />
-    <Compile Include="Models\RecRegModel.cs" />
-    <Compile Include="Models\SoulMateModel.cs" />
-    <Compile Include="Models\StepClassModel.cs" />
-    <Compile Include="Models\VBSRegModel.cs" />
-    <Compile Include="Models\VolunteerModel.cs" />
-    <Compile Include="Models\QueryModel.cs" />
-    <Compile Include="Models\PeopleInfo.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
-    <Compile Include="Models\VBSDetailModel.cs" />
-    <Compile Include="Models\VBSModel.cs" />
-    <Compile Include="Models\PagerModel.cs" />
-    <Compile Include="Models\SearchContactModel.cs" />
-    <Compile Include="Models\SearchPeopleModel.cs" />
-    <Compile Include="Models\TaskInfo.cs" />
-    <Compile Include="Models\TaskModel.cs" />
-    <Compile Include="Models\VolunteersModel.cs" />
-    <Compile Include="MovePersonDialog.aspx.cs">
-      <DependentUpon>MovePersonDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MovePersonDialog.aspx.designer.cs">
-      <DependentUpon>MovePersonDialog.aspx</DependentUpon>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditMemberDialog.aspx.cs">
       <DependentUpon>EditMemberDialog.aspx</DependentUpon>
@@ -518,6 +409,13 @@
     <Compile Include="EditMemberDialog.aspx.designer.cs">
       <DependentUpon>EditMemberDialog.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EditMembersDialog.aspx.cs">
+      <DependentUpon>EditMembersDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditMembersDialog.aspx.designer.cs">
+      <DependentUpon>EditMembersDialog.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -525,46 +423,19 @@
     <Compile Include="EmailAttendanceNotices.aspx.designer.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Meetings.aspx.cs">
-      <DependentUpon>Meetings.aspx</DependentUpon>
+    <Compile Include="EmailPeople.aspx.cs">
+      <DependentUpon>EmailPeople.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Meetings.aspx.designer.cs">
-      <DependentUpon>Meetings.aspx</DependentUpon>
+    <Compile Include="EmailPeople.aspx.designer.cs">
+      <DependentUpon>EmailPeople.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Organization.aspx.designer.cs">
-      <DependentUpon>Organization.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Person.aspx.designer.cs">
-      <DependentUpon>Person.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PurgeProgress.aspx.cs">
-      <DependentUpon>PurgeProgress.aspx</DependentUpon>
+    <Compile Include="EnrollmentControlReport.aspx.cs">
+      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PurgeProgress.aspx.designer.cs">
-      <DependentUpon>PurgeProgress.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ContactSearch.aspx.cs">
-      <DependentUpon>ContactSearch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ContactSearch.aspx.designer.cs">
-      <DependentUpon>ContactSearch.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ContactSearchDialog.aspx.cs">
-      <DependentUpon>ContactSearchDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ContactSearchDialog.aspx.designer.cs">
-      <DependentUpon>ContactSearchDialog.aspx</DependentUpon>
+    <Compile Include="EnrollmentControlReport.aspx.designer.cs">
+      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="ExportExcel.ashx.cs">
       <DependentUpon>ExportExcel.ashx</DependentUpon>
@@ -576,36 +447,25 @@
     <Compile Include="Family.aspx.designer.cs">
       <DependentUpon>Family.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Image.ashx.cs">
-      <DependentUpon>Image.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="MyTags.aspx.cs">
-      <DependentUpon>MyTags.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MyTags.aspx.designer.cs">
-      <DependentUpon>MyTags.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ChangePassword.aspx.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ChangePassword.aspx.designer.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EmailPeople.aspx.cs">
-      <DependentUpon>EmailPeople.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EmailPeople.aspx.designer.cs">
-      <DependentUpon>EmailPeople.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ForceError.aspx.cs">
       <DependentUpon>ForceError.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ForceError.aspx.designer.cs">
       <DependentUpon>ForceError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Image.ashx.cs">
+      <DependentUpon>Image.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Meeting.aspx.cs">
       <DependentUpon>Meeting.aspx</DependentUpon>
@@ -614,12 +474,67 @@
     <Compile Include="Meeting.aspx.designer.cs">
       <DependentUpon>Meeting.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Meetings.aspx.cs">
+      <DependentUpon>Meetings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Meetings.aspx.designer.cs">
+      <DependentUpon>Meetings.aspx</DependentUpon>
+    </Compile>
     <Compile Include="MemberMap.aspx.cs">
       <DependentUpon>MemberMap.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MemberMap.aspx.designer.cs">
       <DependentUpon>MemberMap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DiscipleLifeModel.cs" />
+    <Compile Include="Models\LoveRespectModel.cs" />
+    <Compile Include="Models\PagerModel.cs" />
+    <Compile Include="Models\ParticipantInfo.cs" />
+    <Compile Include="Models\PeopleInfo.cs" />
+    <Compile Include="Models\PromoteInfo.cs" />
+    <Compile Include="Models\PromotionModel.cs" />
+    <Compile Include="Models\QueryModel.cs" />
+    <Compile Include="Models\RecDetailModel.cs" />
+    <Compile Include="Models\RecreationModel.cs" />
+    <Compile Include="Models\RecRegModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\SearchContactModel.cs" />
+    <Compile Include="Models\SearchPeopleModel.cs" />
+    <Compile Include="Models\SoulMateModel.cs" />
+    <Compile Include="Models\StepClassModel.cs" />
+    <Compile Include="Models\TaskInfo.cs" />
+    <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="Models\VBSDetailModel.cs" />
+    <Compile Include="Models\VBSModel.cs" />
+    <Compile Include="Models\VBSRegModel.cs" />
+    <Compile Include="Models\VolunteerModel.cs" />
+    <Compile Include="Models\VolunteersModel.cs" />
+    <Compile Include="MovePersonDialog.aspx.cs">
+      <DependentUpon>MovePersonDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MovePersonDialog.aspx.designer.cs">
+      <DependentUpon>MovePersonDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyTags.aspx.cs">
+      <DependentUpon>MyTags.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyTags.aspx.designer.cs">
+      <DependentUpon>MyTags.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Organization.aspx.cs">
+      <DependentUpon>Organization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Organization.aspx.designer.cs">
+      <DependentUpon>Organization.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationSearch.aspx.cs">
+      <DependentUpon>OrganizationSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="OrganizationSearch.aspx.designer.cs">
       <DependentUpon>OrganizationSearch.aspx</DependentUpon>
@@ -628,7 +543,17 @@
       <DependentUpon>Person.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Person.aspx.designer.cs">
+      <DependentUpon>Person.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurgeProgress.aspx.cs">
+      <DependentUpon>PurgeProgress.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PurgeProgress.aspx.designer.cs">
+      <DependentUpon>PurgeProgress.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\BFCAvgWeeklyAttendanceRpt.aspx.cs">
       <DependentUpon>BFCAvgWeeklyAttendanceRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -663,10 +588,6 @@
     </Compile>
     <Compile Include="Report\ChurchAttendanceSummaryRpt.aspx.designer.cs">
       <DependentUpon>ChurchAttendanceSummaryRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\MemberReport.aspx.cs">
-      <DependentUpon>MemberReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
@@ -709,6 +630,10 @@
     </Compile>
     <Compile Include="Report\MeetingSummaryRpt.aspx.designer.cs">
       <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\MemberReport.aspx.cs">
+      <DependentUpon>MemberReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Report\MemberReport.aspx.designer.cs">
       <DependentUpon>MemberReport.aspx</DependentUpon>
@@ -755,43 +680,6 @@
     <Compile Include="Report\WorshipDetail.aspx.designer.cs">
       <DependentUpon>WorshipDetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScanUpload.svc.cs">
-      <DependentUpon>ScanUpload.svc</DependentUpon>
-    </Compile>
-    <Compile Include="SearchDialog.aspx.cs">
-      <DependentUpon>SearchDialog.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SearchDialog.aspx.designer.cs">
-      <DependentUpon>SearchDialog.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ExportToolBar.ascx.cs">
-      <DependentUpon>ExportToolBar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\ExportToolBar.ascx.designer.cs">
-      <DependentUpon>ExportToolBar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\GridPager.ascx.cs">
-      <DependentUpon>GridPager.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\GridPager.ascx.designer.cs">
-      <DependentUpon>GridPager.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\MemberGrid.ascx.designer.cs">
-      <DependentUpon>MemberGrid.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\QueryConditions.ascx.cs">
-      <DependentUpon>QueryConditions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\QueryConditions.ascx.designer.cs">
-      <DependentUpon>QueryConditions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\QuickSearchParameters.ascx.designer.cs">
-      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
-    </Compile>
     <Compile Include="SavedQueries.aspx.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -799,32 +687,6 @@
     <Compile Include="SavedQueries.aspx.designer.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Organization.aspx.cs">
-      <DependentUpon>Organization.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationSearch.aspx.cs">
-      <DependentUpon>OrganizationSearch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SavedQuery.aspx.cs">
       <DependentUpon>SavedQuery.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -838,6 +700,13 @@
     </Compile>
     <Compile Include="Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchDialog.aspx.cs">
+      <DependentUpon>SearchDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchDialog.aspx.designer.cs">
+      <DependentUpon>SearchDialog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
@@ -860,6 +729,20 @@
     <Compile Include="UserControls\Address.ascx.designer.cs">
       <DependentUpon>Address.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ExportToolBar.ascx.cs">
+      <DependentUpon>ExportToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ExportToolBar.ascx.designer.cs">
+      <DependentUpon>ExportToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GridPager.ascx.cs">
+      <DependentUpon>GridPager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\GridPager.ascx.designer.cs">
+      <DependentUpon>GridPager.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\MeetingGrid.ascx.cs">
       <DependentUpon>MeetingGrid.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -871,12 +754,29 @@
       <DependentUpon>MemberGrid.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UserControls\MemberGrid.ascx.designer.cs">
+      <DependentUpon>MemberGrid.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\PersonGrid.ascx.cs">
       <DependentUpon>PersonGrid.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserControls\PersonGrid.ascx.designer.cs">
       <DependentUpon>PersonGrid.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\QueryConditions.ascx.cs">
+      <DependentUpon>QueryConditions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\QueryConditions.ascx.designer.cs">
+      <DependentUpon>QueryConditions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\QuickSearchParameters.ascx.cs">
+      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\QuickSearchParameters.ascx.designer.cs">
+      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UserArea.ascx.cs">
       <DependentUpon>UserArea.ascx</DependentUpon>
@@ -885,13 +785,6 @@
     <Compile Include="UserControls\UserArea.ascx.designer.cs">
       <DependentUpon>UserArea.ascx</DependentUpon>
     </Compile>
-    <Compile Include="AppReview\VolunteerApp.aspx.cs">
-      <DependentUpon>VolunteerApp.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppReview\VolunteerApp.aspx.designer.cs">
-      <DependentUpon>VolunteerApp.aspx</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\VisitorGrid.ascx.cs">
       <DependentUpon>VisitorGrid.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -899,115 +792,83 @@
     <Compile Include="UserControls\VisitorGrid.ascx.designer.cs">
       <DependentUpon>VisitorGrid.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\QuickSearchParameters.ascx.cs">
-      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="WebService.asmx.cs">
       <DependentUpon>WebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AccessDenied.htm" />
+    <Content Include="AddContacteeDialog.aspx" />
+    <Content Include="AddContactorDialog.aspx" />
+    <Content Include="AddFamilyDialog.aspx" />
+    <Content Include="AddFamilyMembersDialog.aspx" />
+    <Content Include="AddMemberDialog.aspx" />
+    <Content Include="AddTagSharedsDialog.aspx" />
+    <Content Include="AddTaskAboutDialog.aspx" />
+    <Content Include="AddTaskDelegateDialog.aspx" />
+    <Content Include="AddVisitorDialog.aspx" />
+    <Content Include="App_Offline1.htm" />
+    <Content Include="AttendStrDetail.aspx" />
+    <Content Include="BadEts.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="Search.aspx" />
-    <Content Include="Site.Master" />
-    <Content Include="images\individual.gif" />
-    <Content Include="images\tags.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CmsData\CmsData.csproj">
-      <Project>{98AEE43C-4226-49E7-BD46-C1A85467ECED}</Project>
-      <Name>CmsData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CMSPresenter\CMSPresenter.csproj">
-      <Project>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</Project>
-      <Name>CMSPresenter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ImageData\ImageData.csproj">
-      <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>
-      <Name>ImageData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
-      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
-      <Name>UtilityExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WebControls\CustomControls.csproj">
-      <Project>{E6957022-E83C-4FE9-94FC-6E9F8ADEB68C}</Project>
-      <Name>CustomControls</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Organization.aspx" />
+    <Content Include="UploadPicture.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Views\Web.config" />
+    <Content Include="WebService.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin\Audit.aspx" />
-    <Content Include="Admin\Users.aspx" />
-    <Content Include="images\BulkMailing.png" />
-    <Content Include="images\Excel.png" />
-    <Content Include="images\Mail.png" />
-    <Content Include="images\Report.png" />
-    <Content Include="images\Tag.png" />
-    <Content Include="App_Themes\Minimal\Skin1.skin" />
-    <Content Include="MyTags.aspx" />
-    <Content Include="images\1pix.gif" />
-    <Content Include="images\EmptyMap.png" />
-    <Content Include="images\headerimage.jpg" />
-    <Content Include="images\DownRight.gif" />
-    <Content Include="images\arrow_left.gif" />
-    <Content Include="images\arrow_right2.gif" />
-    <Content Include="images\unknown.jpg" />
-    <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="bulkmail.ashx" />
     <Content Include="ChangePassword.aspx" />
-    <Content Include="Meeting.aspx" />
-    <Content Include="MemberMap.aspx" />
-    <Content Include="Login.aspx" />
-    <Content Include="OrganizationSearch.aspx" />
-    <Content Include="UploadPicture.aspx" />
-    <Content Include="UserControls\Address.ascx" />
-    <Content Include="UserControls\MeetingGrid.ascx" />
-    <Content Include="UserControls\MemberGrid.ascx" />
-    <Content Include="UserControls\PersonGrid.ascx" />
-    <Content Include="UserControls\UserArea.ascx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="ContactSearch.aspx" />
+    <Content Include="ContactSearchDialog.aspx" />
+    <Content Include="EditMemberDialog.aspx" />
+    <Content Include="EditMembersDialog.aspx" />
+    <Content Include="EmailAttendanceNotices.aspx" />
+    <Content Include="EmailPeople.aspx" />
+    <Content Include="EnrollmentControlReport.aspx" />
+    <Content Include="Error.htm" />
+    <Content Include="Family.aspx" />
+    <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Content Include="ExportExcel.ashx" />
+    <Content Include="ForceError.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="Meeting.aspx" />
+    <Content Include="Meetings.aspx" />
+    <Content Include="MemberMap.aspx" />
+    <Content Include="MovePersonDialog.aspx" />
+    <Content Include="MyTags.aspx" />
+    <Content Include="NoRemoteAccess.htm" />
+    <Content Include="Organization.aspx" />
+    <Content Include="OrganizationSearch.aspx" />
+    <Content Include="Person.aspx" />
+    <Content Include="PurgeProgress.aspx" />
+    <Content Include="SavedQueries.aspx" />
+    <Content Include="SavedQuery.aspx" />
+    <Content Include="Search.aspx" />
+    <Content Include="SearchDialog.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
-    <Content Include="Admin\ChurchAttReportIds.aspx" />
+    <Content Include="Admin\Audit.aspx" />
     <Content Include="Admin\ClearCache.aspx" />
-    <Content Include="Admin\UsersEmailFor.aspx" />
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\OneTimeETStudy.aspx" />
     <Content Include="Admin\SessionState.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
     <Content Include="Admin\UrgentMessage.aspx" />
+    <Content Include="Admin\Users.aspx" />
     <Content Include="Admin\VBSMed.aspx" />
-    <Content Include="Admin\Web.config" />
-    <Content Include="AccessDenied.htm" />
     <Content Include="AppReview\FormImage.aspx" />
-    <Content Include="App_Data\ImageDb.mdf">
-    </Content>
-    <Content Include="App_Data\ImageDb_log.ldf">
-      <DependentUpon>ImageDb.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\StarterDb.mdf">
-    </Content>
-    <Content Include="App_Data\StarterDb_log.ldf">
-      <DependentUpon>StarterDb.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Offline1.htm" />
+    <Content Include="AppReview\VolunteerApp.aspx" />
     <Content Include="App_Themes\Minimal\Common2.css" />
-    <Content Include="AddMemberDialog.aspx" />
+    <Content Include="App_Themes\Standard\arrows-ffffff.png" />
     <Content Include="App_Themes\Standard\header-gradient.png" />
     <Content Include="App_Themes\Standard\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="App_Themes\Standard\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1025,22 +886,18 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\loading.gif" />
     <Content Include="App_Themes\Standard\navigation-shadow.png" />
+    <Content Include="App_Themes\Standard\shadow.png" />
     <Content Include="App_Themes\Standard\style2.css" />
+    <Content Include="App_Themes\Standard\superfish.css" />
+    <Content Include="App_Themes\Standard\supertabfish.css" />
+    <Content Include="App_Themes\Standard\thickbox.css" />
+    <Content Include="App_Themes\tabber.css" />
     <Content Include="App_Themes\ui.datepicker.css" />
-    <Content Include="AttendStrDetail.aspx" />
-    <Content Include="BadEts.aspx" />
     <Content Include="Binaries\AjaxControlToolkit.dll" />
     <Content Include="Binaries\CookComputing.XmlRpc.dll" />
     <Content Include="Binaries\itextsharp.dll" />
     <Content Include="Binaries\Microsoft.Web.Mvc.dll" />
     <Content Include="Binaries\RouteDebug.dll" />
-    <Content Include="AddContactorDialog.aspx" />
-    <Content Include="AddContacteeDialog.aspx" />
-    <Content Include="AddTaskAboutDialog.aspx" />
-    <Content Include="AddTaskDelegateDialog.aspx" />
-    <Content Include="AddFamilyDialog.aspx" />
-    <Content Include="AddFamilyMembersDialog.aspx" />
-    <Content Include="AddVisitorDialog.aspx" />
     <Content Include="Content\12-em-cross.png" />
     <Content Include="Content\arrows-ffffff.png" />
     <Content Include="Content\black.png" />
@@ -1214,7 +1071,6 @@
     <Content Include="Content\navigation-shadow.png" />
     <Content Include="Content\pager.css" />
     <Content Include="Content\shadow.png" />
-    <Content Include="Content\Site.css" />
     <Content Include="Content\Site2.css" />
     <Content Include="Content\Site3.css" />
     <Content Include="Content\site3b.css" />
@@ -1229,122 +1085,19 @@
     <Content Include="Content\white_arrow.png" />
     <Content Include="Content\white_arrow_big.png" />
     <Content Include="Content\white_big.png" />
-    <Content Include="Contributions\Content\12-em-cross.png" />
-    <Content Include="Contributions\Content\arrows-ffffff.png" />
-    <Content Include="Contributions\Content\border-2.gif" />
-    <Content Include="Contributions\Content\border.gif" />
-    <Content Include="Contributions\Content\btn0.png" />
-    <Content Include="Contributions\Content\content.css" />
-    <Content Include="Contributions\Content\Easy.gif" />
-    <Content Include="Contributions\Content\site3b.css" />
-    <Content Include="Contributions\Content\Site3.css" />
-    <Content Include="Contributions\Content\Crosses.png" />
-    <Content Include="Contributions\Content\dropdown.gif" />
-    <Content Include="Contributions\Content\dropdown_active.gif" />
-    <Content Include="Contributions\Content\dropdown_hover.gif" />
-    <Content Include="Contributions\Content\favicon.ico" />
-    <Content Include="Contributions\Content\header-gradient.png" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_arrows_updown.gif" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_doc.gif" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_minus.gif" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_plus.gif" />
-    <Content Include="Contributions\Content\images\222222_11x11_icon_resize_se.gif" />
-    <Content Include="Contributions\Content\images\222222_7x7_arrow_down.gif" />
-    <Content Include="Contributions\Content\images\222222_7x7_arrow_left.gif" />
-    <Content Include="Contributions\Content\images\222222_7x7_arrow_right.gif" />
-    <Content Include="Contributions\Content\images\222222_7x7_arrow_up.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_arrows_updown.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_close.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_doc.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_folder_closed.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_folder_open.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_minus.gif" />
-    <Content Include="Contributions\Content\images\454545_11x11_icon_plus.gif" />
-    <Content Include="Contributions\Content\images\454545_7x7_arrow_down.gif" />
-    <Content Include="Contributions\Content\images\454545_7x7_arrow_left.gif" />
-    <Content Include="Contributions\Content\images\454545_7x7_arrow_right.gif" />
-    <Content Include="Contributions\Content\images\454545_7x7_arrow_up.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_arrows_updown.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_close.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_doc.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_folder_closed.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_folder_open.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_minus.gif" />
-    <Content Include="Contributions\Content\images\888888_11x11_icon_plus.gif" />
-    <Content Include="Contributions\Content\images\888888_7x7_arrow_down.gif" />
-    <Content Include="Contributions\Content\images\888888_7x7_arrow_left.gif" />
-    <Content Include="Contributions\Content\images\888888_7x7_arrow_right.gif" />
-    <Content Include="Contributions\Content\images\888888_7x7_arrow_up.gif" />
-    <Content Include="Contributions\Content\images\dadada_40x100_textures_02_glass_75.png" />
-    <Content Include="Contributions\Content\images\e6e6e6_40x100_textures_02_glass_75.png" />
-    <Content Include="Contributions\Content\images\ffffff_40x100_textures_01_flat_75.png" />
-    <Content Include="Contributions\Content\images\ffffff_40x100_textures_02_glass_65.png" />
-    <Content Include="Contributions\Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Contributions\Content\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_75_ffffff_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Contributions\Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Contributions\Content\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
-    <Content Include="Contributions\Content\images\ui-icons_222222_256x240.png" />
-    <Content Include="Contributions\Content\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Contributions\Content\images\ui-icons_454545_256x240.png" />
-    <Content Include="Contributions\Content\images\ui-icons_888888_256x240.png" />
-    <Content Include="Contributions\Content\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Contributions\Content\jqModal.css" />
-    <Content Include="Contributions\Content\jquery-ui-1.7.2.custom.css" />
-    <Content Include="Contributions\Content\jquery.contextMenu.css" />
-    <Content Include="Contributions\Content\jquery.tooltip.css" />
-    <Content Include="Contributions\Content\jqueryMultiSelect.css" />
-    <Content Include="Contributions\Content\js\simpletabs.js" />
-    <Content Include="Contributions\Content\js\jquery-1.3.2.min.js" />
-    <Content Include="Contributions\Content\js\jquery-ui-1.7.2.custom.min.js" />
-    <Content Include="Contributions\Content\js\jquery.contextMenu.js" />
-    <Content Include="Contributions\Content\js\jquery.FCKEditor.js" />
-    <Content Include="Contributions\Content\js\jquery.FCKEditor.pack.js" />
-    <Content Include="Contributions\Content\js\jquery.jeditable.mini.js" />
-    <Content Include="Contributions\Content\js\jquery.MetaData.js" />
-    <Content Include="Contributions\Content\js\jqueryMultiSelect.js" />
-    <Content Include="Contributions\Content\loading.gif" />
-    <Content Include="Contributions\Content\navigation-shadow.png" />
-    <Content Include="Contributions\Content\shadow.png" />
-    <Content Include="Contributions\Content\Site.css" />
-    <Content Include="Contributions\Content\Site2.css" />
-    <Content Include="Contributions\Content\style.css" />
-    <Content Include="Contributions\Content\pager.css" />
-    <Content Include="Contributions\Content\superfish.css" />
-    <Content Include="Contributions\Content\supertabfish.css" />
-    <Content Include="Contributions\Content\tab.png" />
-    <Content Include="Contributions\Content\thickbox.css" />
-    <Content Include="Contributions\Content\tbsep.gif" />
-    <Content Include="Contributions\Content\touch.css" />
+    <Content Include="Contributions\All.aspx" />
+    <Content Include="Contributions\Bundle.aspx" />
+    <Content Include="Contributions\Bundles.aspx" />
+    <Content Include="Contributions\Deposit.aspx" />
     <Content Include="Contributions\GLExtract.aspx" />
+    <Content Include="Contributions\Individual.aspx" />
+    <Content Include="Contributions\Reports\ContributionStatementExtract.aspx" />
+    <Content Include="Contributions\Reports\ContributionStatementRpt.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
     <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
-    <Content Include="AddTagSharedsDialog.aspx" />
-    <Content Include="DynamicData\FieldTemplates\DateCalendar.ascx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DynamicData\FieldTemplates\DateCalendar_Edit.ascx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DynamicData\FieldTemplates\Text.ascx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DynamicData\FieldTemplates\Text_Edit.ascx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="EnrollmentControlReport.aspx" />
-    <Content Include="EditMembersDialog.aspx" />
-    <Content Include="favicon.ico" />
+    <Content Include="Contributions\Years.aspx" />
     <Content Include="fckeditor\editor\css\behaviors\disablehandles.htc" />
     <Content Include="fckeditor\editor\css\behaviors\showtableborders.htc" />
     <Content Include="fckeditor\editor\css\fck_editorarea.css" />
@@ -1759,100 +1512,99 @@
     <Content Include="fckeditor\_upgrade.html" />
     <Content Include="fckeditor\_whatsnew.html" />
     <Content Include="fckeditor\_whatsnew_history.html" />
+    <Content Include="Image.ashx" />
+    <Content Include="images\1pix.gif" />
     <Content Include="images\adobe.png" />
     <Content Include="images\ajax-loader.gif" />
+    <Content Include="images\arrow_left.gif" />
+    <Content Include="images\arrow_right2.gif" />
+    <Content Include="images\BulkMailing.png" />
     <Content Include="images\delete.gif" />
+    <Content Include="images\DownRight.gif" />
+    <Content Include="images\EmptyMap.png" />
+    <Content Include="images\Excel.png" />
+    <Content Include="images\headerimage.jpg" />
     <Content Include="images\help_out.gif" />
+    <Content Include="images\individual.gif" />
     <Content Include="images\loading.gif" />
+    <Content Include="images\Mail.png" />
     <Content Include="images\minus.png" />
+    <Content Include="images\NewBellevue.jpg" />
     <Content Include="images\pdficon_small.gif" />
     <Content Include="images\plus.png" />
+    <Content Include="images\Report.png" />
     <Content Include="images\Run.png" />
+    <Content Include="images\Tag.png" />
+    <Content Include="images\tags.png" />
+    <Content Include="images\unknown.jpg" />
     <Content Include="images\work.gif" />
-    <Content Include="MovePersonDialog.aspx" />
-    <Content Include="EditMemberDialog.aspx" />
-    <Content Include="EmailAttendanceNotices.aspx" />
-    <Content Include="Contributions\Reports\ContributionStatementRpt.aspx" />
-    <Content Include="App_Themes\Standard\shadow.png" />
-    <Content Include="App_Themes\Standard\arrows-ffffff.png" />
-    <Content Include="App_Themes\Standard\supertabfish.css" />
-    <Content Include="App_Themes\Standard\thickbox.css" />
-    <Content Include="App_Themes\tabber.css" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc" />
-    <Content Include="AppReview\Web.config" />
+    <Content Include="Report\BFCAvgWeeklyAttendanceRpt.aspx" />
+    <Content Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx" />
+    <Content Include="Report\ChoirMeeting.aspx" />
+    <Content Include="Report\ChurchAttendanceRpt.aspx" />
+    <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
+    <Content Include="Report\DecisionSummary.aspx" />
+    <Content Include="Report\EnrollmentControl.aspx" />
+    <Content Include="Report\InReachRpt.aspx" />
+    <Content Include="Report\LabelsRpt.aspx" />
+    <Content Include="Report\MeetingAttendanceRpt.aspx" />
+    <Content Include="Report\MeetingSummaryRpt.aspx" />
+    <Content Include="Report\MemberReport.aspx" />
+    <Content Include="Report\PastAttendeeRpt.aspx" />
+    <Content Include="Report\ProspectCardsRpt.aspx" />
+    <Content Include="Report\Rollsheet.aspx" />
+    <Content Include="Report\RosterReport.aspx" />
+    <Content Include="Report\WorshipDetail.aspx" />
+    <Content Include="Site.Master" />
+    <Content Include="UserControls\Address.ascx" />
+    <Content Include="UserControls\ExportToolBar.ascx" />
+    <Content Include="UserControls\GridPager.ascx" />
+    <Content Include="UserControls\MeetingGrid.ascx" />
+    <Content Include="UserControls\MemberGrid.ascx" />
+    <Content Include="UserControls\PersonGrid.ascx" />
+    <Content Include="UserControls\QueryConditions.ascx" />
+    <Content Include="UserControls\QuickSearchParameters.ascx" />
+    <Content Include="UserControls\UserArea.ascx" />
+    <Content Include="UserControls\VisitorGrid.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CmsData\CmsData.csproj">
+      <Project>{98AEE43C-4226-49E7-BD46-C1A85467ECED}</Project>
+      <Name>CmsData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CmsPresenter\CmsPresenter.csproj">
+      <Project>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</Project>
+      <Name>CmsPresenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CMSWebSetup\CMSWebSetup.csproj">
+      <Project>{7B604DAA-9D8D-4E4E-8BE6-4107ED717456}</Project>
+      <Name>CMSWebSetup</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageData\ImageData.csproj">
+      <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>
+      <Name>ImageData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebControls\CustomControls.csproj">
+      <Project>{E6957022-E83C-4FE9-94FC-6E9F8ADEB68C}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
-    <Content Include="Contributions\Bundle.aspx" />
-    <Content Include="Contributions\Bundles.aspx" />
-    <Content Include="Contributions\All.aspx" />
-    <Content Include="Contributions\Reports\ContributionStatementExtract.aspx" />
-    <Content Include="Contributions\Deposit.aspx" />
-    <Content Include="Contributions\Individual.aspx" />
-    <Content Include="Contributions\Years.aspx" />
-    <Content Include="Meetings.aspx" />
-    <None Include="Views\Shared\bvorg.Master" />
-    <Content Include="Contributions\Content\bvorgfiles\archives.css" />
-    <Content Include="Contributions\Content\bvorgfiles\background_blog_comments.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_blog_file.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_blog_rss.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_body.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_coming_events.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_container.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_container_ftr.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_container_ftr_full.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_container_hdr.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_content_full.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\background_downloads.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\background_footer.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_footer_home.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_headlines.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_home.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_home_top.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_html.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\background_learn.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_name.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_search.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_selected.png" />
-    <Content Include="Contributions\Content\bvorgfiles\background_tag.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\background_watch_listen.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\bg_cluster_parent.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\bg_cluster_parent_open.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\blog.css" />
-    <Content Include="Contributions\Content\bvorgfiles\buttonSkin.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\buttonSkinRed.jpg" />
-    <Content Include="Contributions\Content\bvorgfiles\checkBoxBackground.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\donation.css" />
-    <Content Include="Contributions\Content\bvorgfiles\eventpop.css" />
-    <Content Include="Contributions\Content\bvorgfiles\forms.css" />
-    <Content Include="Contributions\Content\bvorgfiles\form_button.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\go.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\greenBackground.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\home.css" />
-    <Content Include="Contributions\Content\bvorgfiles\layout.css" />
-    <Content Include="Contributions\Content\bvorgfiles\li.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\lightGreyBackground.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\logo.png" />
-    <Content Include="Contributions\Content\bvorgfiles\nav.css" />
-    <Content Include="Contributions\Content\bvorgfiles\print.css" />
-    <Content Include="Contributions\Content\bvorgfiles\radioButtonBackground.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\replaceActiveX.js" />
-    <Content Include="Contributions\Content\bvorgfiles\required-1.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\required.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\sidenav.css" />
-    <Content Include="Contributions\Content\bvorgfiles\staff.css" />
-    <Content Include="Contributions\Content\bvorgfiles\style.css" />
-    <Content Include="Contributions\Content\bvorgfiles\textFieldBackground.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\textFieldBorder.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\textFieldBorder250.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\textFieldBorder50.gif" />
-    <Content Include="Contributions\Content\bvorgfiles\twitter_logo_icon.png" />
-    <Content Include="PurgeProgress.aspx" />
-    <Content Include="Config\smtp.config" />
+    <Content Include="Admin\Web.config" />
+    <Content Include="AppReview\Web.config" />
+    <Content Include="App_Themes\Minimal\Skin1.skin" />
+    <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Config\Authentication.config" />
-    <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\ConnectionStrings.config" />
+    <Content Include="Config\CustomErrors.config" />
+    <Content Include="Config\smtp.config" />
+    <Content Include="Contributions\Reports\Reports.Master" />
+    <Content Include="Contributions\Web.config" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.cfm" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.php" />
     <None Include="fckeditor\editor\dialog\fck_spellerpages\spellerpages\server-scripts\spellchecker.pl" />
@@ -1866,141 +1618,87 @@
     <None Include="fckeditor\fckeditor_php4.php" />
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
-    <Content Include="Report\MemberReport.aspx" />
-    <Content Include="Report\WorshipDetail.aspx" />
-    <Content Include="ScanUpload.svc" />
-    <Content Include="Views\Account\AddUser.aspx" />
-    <Content Include="Views\Account\RequestUsername.aspx" />
-    <Content Include="Views\Account\ForgotUsername.aspx" />
-    <Content Include="Views\Account\ResetPassword.aspx" />
-    <Content Include="Views\Account\RequestPassword.aspx" />
-    <Content Include="Views\Account\ForgotPassword.aspx" />
-    <Content Include="Views\LoveRespect\Confirm.aspx" />
-    <Content Include="Views\LoveRespect\Other.aspx" />
-    <Content Include="Views\LoveRespect\Index.aspx" />
-    <Content Include="Views\DiscipleLife\Confirm.aspx" />
-    <Content Include="Views\DiscipleLife\Index.aspx" />
-    <Content Include="Views\RecreationSetup\Index.aspx" />
-    <Content Include="Views\RecreationSetup\Errors.aspx" />
-    <Content Include="Views\Promotion\List.ascx" />
-    <Content Include="Views\Promotion\Index.aspx" />
-    <Content Include="Views\Recreation\Coaches.aspx" />
-    <Content Include="Views\Recreation\All.aspx" />
-    <Content Include="Views\Recreation\Detail.aspx" />
-    <Content Include="Views\Recreation\Index.aspx" />
-    <Content Include="Views\Recreation\List.ascx" />
-    <Content Include="Views\RecReg\Unknown.aspx" />
-    <Content Include="Views\RecReg\NoLeague.aspx" />
-    <Content Include="Views\RecReg\Confirm.aspx" />
-    <Content Include="Views\RecReg\Payment.aspx" />
-    <Content Include="Views\RecReg\Index.aspx" />
-    <Content Include="Views\RecReg\OtherInfo.aspx" />
-    <Content Include="Views\Register\ConfirmVisit.aspx" />
-    <Content Include="Views\Register\Visit2.aspx" />
-    <Content Include="Views\Register\Visit.aspx" />
-    <Content Include="Views\Shared\Site3b.Master" />
-    <Content Include="Views\CodeValue\Index.aspx" />
-    <Content Include="Views\PromotionSetup\Index.aspx" />
-    <Content Include="Views\Shared\Site3.Master" />
-    <Content Include="Report\Reports.Master" />
-    <Content Include="Report\BFCAvgWeeklyAttendanceRpt.aspx" />
-    <Content Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx" />
-    <Content Include="Report\ChoirMeeting.aspx" />
-    <Content Include="Report\ChurchAttendanceRpt.aspx" />
-    <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
-    <Content Include="Report\DecisionSummary.aspx" />
-    <Content Include="Report\EnrollmentControl.aspx" />
-    <Content Include="Report\InReachRpt.aspx" />
-    <Content Include="Report\LabelsRpt.aspx" />
-    <Content Include="Report\MeetingAttendanceRpt.aspx" />
-    <Content Include="Report\MeetingSummaryRpt.aspx" />
-    <Content Include="Report\PastAttendeeRpt.aspx" />
-    <Content Include="Report\ProspectCardsRpt.aspx" />
-    <Content Include="Report\Rollsheet.aspx" />
-    <Content Include="Report\RosterReport.aspx" />
-    <Content Include="Views\SoulMate\CheckBack.aspx" />
-    <Content Include="Views\SoulMate\ChildCare.aspx" />
-    <Content Include="Views\SoulMate\Index.aspx" />
-    <Content Include="Views\SoulMate\Confirm.aspx" />
-    <Content Include="Views\StepClass\Step3Confirm.aspx" />
-    <Content Include="Views\StepClass\Step3.aspx" />
-    <Content Include="Views\StepClass\Step2.aspx" />
-    <Content Include="Views\StepClass\Step2Confirm.aspx" />
-    <Content Include="Views\StepClass\Step1.aspx" />
-    <Content Include="Views\StepClass\Step1Confirm.aspx" />
-    <Content Include="Views\VBSReg\Confirm.aspx" />
-    <Content Include="Views\VBSReg\Index.aspx" />
-    <Content Include="Views\Volunteers\Index.aspx" />
-    <Content Include="Views\Volunteer\PickList.aspx" />
-    <Content Include="Views\Volunteer\Unknown.aspx" />
-    <Content Include="Views\VolOpportunity\Codes.aspx" />
-    <Content Include="Views\VolOpportunity\Index.aspx" />
-    <Content Include="Views\Program\Index.aspx" />
-    <Content Include="Views\Setting\Index.aspx" />
+    <Content Include="Views\CheckIn\Multiple.aspx" />
+    <Content Include="Views\Shared\bvorg.Master" />
+    <Content Include="Views\Shared\Content.Master" />
+    <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Shared\Site2.Master" />
+    <Content Include="Views\Shared\Site3.Master" />
+    <Content Include="Views\Shared\Site3b.Master" />
+    <Content Include="Report\Reports.Master" />
+    <Content Include="Scripts\ExportToolBar.js" />
     <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
-    <Content Include="Views\CheckIn\Match.aspx" />
-    <Content Include="Views\CheckIn\Keyboard.ascx" />
+    <Content Include="Scripts\SearchPeople.js" />
+    <Content Include="Scripts\Task.js" />
+    <Content Include="Scripts\Vbs.js" />
+    <Content Include="StaffOnly\Web.config" />
+    <Content Include="Views\Account\AddUser.aspx" />
+    <Content Include="Views\Account\ChangePassword.aspx" />
+    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Views\Account\ForgotPassword.aspx" />
+    <Content Include="Views\Account\ForgotUsername.aspx" />
+    <Content Include="Views\Account\LogOn.aspx" />
+    <Content Include="Views\Account\Register.aspx" />
+    <Content Include="Views\Account\RequestPassword.aspx" />
+    <Content Include="Views\Account\RequestUsername.aspx" />
+    <Content Include="Views\Account\ResetPassword.aspx" />
     <Content Include="Views\CheckIn\Index.aspx" />
-    <Content Include="Views\Fund\FundType.ascx" />
-    <Content Include="Views\Fund\FundStatus.ascx" />
-    <Content Include="Views\MetroZip\Index.aspx" />
-    <Content Include="Views\Ministry\Index.aspx" />
-    <Content Include="Views\Fund\Edit.aspx" />
-    <Content Include="Views\Fund\Index.aspx" />
-    <Content Include="Views\Display\EditPage.aspx" />
+    <Content Include="Views\CheckIn\Keyboard.ascx" />
+    <Content Include="Views\CheckIn\Family.aspx" />
+    <Content Include="Views\DiscipleLife\Confirm.aspx" />
+    <Content Include="Views\DiscipleLife\Index.aspx" />
+    <Content Include="Views\Home\About.aspx" />
+    <Content Include="Views\LoveRespect\Confirm.aspx" />
+    <Content Include="Views\LoveRespect\Index.aspx" />
+    <Content Include="Views\LoveRespect\Other.aspx" />
+    <Content Include="Views\Promotion\Index.aspx" />
+    <Content Include="Views\Promotion\List.ascx" />
     <Content Include="Views\QueryBuilder\Conditions.ascx" />
     <Content Include="Views\QueryBuilder\Main.aspx" />
     <Content Include="Views\QueryBuilder\Results.aspx" />
     <Content Include="Views\QueryBuilder\TryConditions.ascx" />
+    <Content Include="Views\Recreation\All.aspx" />
+    <Content Include="Views\Recreation\Coaches.aspx" />
+    <Content Include="Views\Recreation\Detail.aspx" />
+    <Content Include="Views\Recreation\Index.aspx" />
+    <Content Include="Views\Recreation\List.ascx" />
+    <Content Include="Views\RecReg\Confirm.aspx" />
+    <Content Include="Views\RecReg\Index.aspx" />
+    <Content Include="Views\RecReg\NoLeague.aspx" />
+    <Content Include="Views\RecReg\OtherInfo.aspx" />
+    <Content Include="Views\RecReg\Payment.aspx" />
+    <Content Include="Views\RecReg\Unknown.aspx" />
     <Content Include="Views\Register\Confirm.aspx" />
-    <Content Include="Views\Register\Index.aspx" />
+    <Content Include="Views\Register\ConfirmVisit.aspx" />
     <Content Include="Views\Register\Form2.aspx" />
+    <Content Include="Views\Register\Index.aspx" />
     <Content Include="Views\Register\Login.aspx" />
-    <Content Include="Views\Shared\Content.Master" />
-    <Content Include="Contributions\Content\js\jquery.confirm-1.2.js" />
-    <Content Include="Contributions\Content\js\jquery.dimensions.js" />
-    <Content Include="Contributions\Content\js\jquery.dimensions.min.js" />
-    <Content Include="Contributions\Content\js\jquery.tooltip.js" />
-    <Content Include="Contributions\Content\js\jquery.tooltip.min.js" />
-    <Content Include="Scripts\SearchPeople.js" />
-    <Content Include="Contributions\Content\js\jquery.form2.js" />
-    <Content Include="Scripts\ExportToolBar.js" />
-    <Content Include="Contributions\Content\js\hoverIntent.js" />
-    <Content Include="Contributions\Content\js\jqModal.js" />
-    <Content Include="Contributions\Content\js\jQuery-cookie.js" />
-    <Content Include="Contributions\Content\js\jquery.base64.js" />
-    <Content Include="Contributions\Content\js\jquery.bgiframe.min.js" />
-    <Content Include="Contributions\Content\js\jquery.blockUI.js" />
-    <Content Include="Contributions\Content\js\jquery.form.js" />
-    <Content Include="Contributions\Content\js\jquery.history.js" />
-    <Content Include="Contributions\Content\js\jquery.jeditable.js" />
-    <Content Include="Contributions\Content\js\jquery.pagination.js" />
-    <Content Include="Contributions\Content\js\jquery.validate.js" />
-    <Content Include="Contributions\Content\js\jquery.validate.pack.js" />
-    <Content Include="Contributions\Content\js\json.js" />
-    <Content Include="Contributions\Content\js\superfish.js" />
-    <Content Include="Contributions\Content\js\supersubs.js" />
-    <Content Include="Scripts\Task.js" />
-    <Content Include="Contributions\Content\js\thickbox-compressed.js" />
-    <Content Include="Contributions\Content\js\thickbox.js" />
-    <Content Include="Scripts\Vbs.js" />
-    <Content Include="Views\Display\Page.aspx" />
-    <Content Include="Views\Shared\ExportToolBar.ascx" />
-    <Content Include="Views\VBS\Detail.aspx" />
-    <Content Include="Views\VBS\Index.aspx" />
+    <Content Include="Views\Register\Visit.aspx" />
+    <Content Include="Views\Register\Visit2.aspx" />
     <Content Include="Views\SearchPeople\Index.aspx" />
     <Content Include="Views\SearchPeople\Rows.aspx" />
+    <Content Include="Views\Shared\Error.aspx" />
+    <Content Include="Views\Shared\ExportToolBar.ascx" />
+    <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Pager.aspx" />
-    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\SoulMate\CheckBack.aspx" />
+    <Content Include="Views\SoulMate\ChildCare.aspx" />
+    <Content Include="Views\SoulMate\Confirm.aspx" />
+    <Content Include="Views\SoulMate\Index.aspx" />
+    <Content Include="Views\StepClass\Step1.aspx" />
+    <Content Include="Views\StepClass\Step1Confirm.aspx" />
+    <Content Include="Views\StepClass\Step2.aspx" />
+    <Content Include="Views\StepClass\Step2Confirm.aspx" />
+    <Content Include="Views\StepClass\Step3.aspx" />
+    <Content Include="Views\StepClass\Step3Confirm.aspx" />
+    <Content Include="Views\Task\Columns.aspx" />
+    <Content Include="Views\Task\Detail.aspx" />
     <Content Include="Views\Task\Detail2.aspx" />
     <Content Include="Views\Task\Edit.aspx" />
-    <Content Include="Views\Task\Rows.aspx" />
-    <Content Include="Views\Task\Detail.aspx" />
     <Content Include="Views\Task\List.aspx" />
-    <Content Include="Views\Task\Columns.aspx" />
     <Content Include="Views\Task\Row.aspx" />
+    <Content Include="Views\Task\Rows.aspx" />
     <Content Include="Views\Task\SearchContact.aspx" />
     <Content Include="Views\Task\SearchContactRows.aspx" />
     <Content Include="Views\Task\SearchPeople.aspx" />
@@ -2008,29 +1706,22 @@
     <Content Include="Views\Task\Tabs.aspx" />
     <Content Include="Views\Task\TabsOptions.aspx" />
     <Content Include="Views\Task\TabsOptionsRows.aspx" />
+    <Content Include="Views\VBSReg\Confirm.aspx" />
+    <Content Include="Views\VBSReg\Index.aspx" />
+    <Content Include="Views\VBS\Detail.aspx" />
+    <Content Include="Views\VBS\Index.aspx" />
     <Content Include="Views\VBS\OrgOptions.ascx" />
+    <Content Include="Views\Volunteers\Index.aspx" />
     <Content Include="Views\Volunteer\Confirm.aspx" />
     <Content Include="Views\Volunteer\Index.aspx" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Contributions\Content\js\MicrosoftAjax.debug.js" />
-    <Content Include="Contributions\Content\js\MicrosoftAjax.js" />
-    <Content Include="Contributions\Content\js\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Contributions\Content\js\MicrosoftMvcAjax.js" />
-    <Content Include="StaffOnly\Web.config" />
-    <Content Include="Contributions\Reports\Reports.Master" />
-    <Content Include="Contributions\Web.config" />
-    <Content Include="App_Themes\Standard\superfish.css" />
-    <Content Include="Contact.aspx" />
-    <Content Include="ContactSearch.aspx" />
-    <Content Include="ContactSearchDialog.aspx" />
-    <Content Include="images\NewBellevue.jpg" />
-    <Content Include="NoRemoteAccess.htm" />
-    <Content Include="Image.ashx" />
-    <Content Include="ExportExcel.ashx" />
-    <Content Include="EmailPeople.aspx" />
-    <Content Include="Error.htm" />
-    <Content Include="Family.aspx" />
-    <Content Include="ForceError.aspx" />
+    <Content Include="Views\Volunteer\PickList.aspx" />
+    <Content Include="Views\Volunteer\Unknown.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc" />
+    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc" />
+    <EmbeddedResource Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc" />
+    <EmbeddedResource Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\AttendanceSummarySubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\ContactNotesSubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\ContactSummarySubReport.rdlc" />
@@ -2047,27 +1738,6 @@
     <EmbeddedResource Include="Report\rdlc\RollsheetRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailSubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailVisitorSubRpt.rdlc" />
-    <Content Include="Person.aspx" />
-    <Content Include="SavedQueries.aspx" />
-    <Content Include="SavedQuery.aspx" />
-    <Content Include="SearchDialog.aspx" />
-    <Content Include="UserControls\ExportToolBar.ascx" />
-    <Content Include="AppReview\VolunteerApp.aspx" />
-    <Content Include="UserControls\GridPager.ascx" />
-    <Content Include="UserControls\QueryConditions.ascx" />
-    <Content Include="Views\Account\ChangePassword.aspx" />
-    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
-    <Content Include="Views\Account\LogOn.aspx" />
-    <Content Include="Views\Account\Register.aspx" />
-    <Content Include="Views\Home\About.aspx" />
-    <Content Include="Views\Shared\Error.aspx" />
-    <Content Include="Views\Shared\LogOnUserControl.ascx" />
-    <Content Include="UserControls\VisitorGrid.ascx" />
-    <Content Include="UserControls\QuickSearchParameters.ascx" />
-    <Content Include="WebService.asmx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -2075,7 +1745,19 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target> -->
-  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+  <UsingTask TaskName="Microsoft.Web.Mvc.Build.CreateAreaManifest" AssemblyName="Microsoft.Web.Mvc.Build, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  <UsingTask TaskName="Microsoft.Web.Mvc.Build.CopyAreaManifests" AssemblyName="Microsoft.Web.Mvc.Build, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  <Target Name="AfterBuild" DependsOnTargets="AfterBuildCompiler">
+    <PropertyGroup>
+      <AreasManifestDir>$(ProjectDir)\..\Manifests</AreasManifestDir>
+    </PropertyGroup>
+    <!-- If this is an area child project, uncomment the following line:
+    <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Child" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
+    -->
+    <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Parent" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
+    <CopyAreaManifests ManifestPath="$(AreasManifestDir)" CrossCopy="false" RenameViews="true" />
+  </Target>
+  <Target Name="AfterBuildCompiler" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
   </Target>
   <ProjectExtensions>
@@ -2086,7 +1768,8 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>58724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://vista-mac/</IISUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

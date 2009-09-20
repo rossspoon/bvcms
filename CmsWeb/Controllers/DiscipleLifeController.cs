@@ -55,7 +55,7 @@ namespace CMSWeb.Controllers
             if (!email.HasValue())
                 email = DbUtil.Settings("DiscLifeMail");
             HomeController.Email(email, m.person.Name, m.email, c.Title, c.Body);
-            HomeController.Email(m.email, m.person.Name, email, "{0} Registration".Fmt(m.division.Name),            
+            HomeController.Email(m.email, "", email, "{0} Registration".Fmt(m.division.Name),            
                 "{0}({1}) has registered for {2}: {3}</p>".Fmt(
                     m.person.Name, m.person.PeopleId, m.division.Name, m.organization.OrganizationName));
 

@@ -27,10 +27,11 @@ namespace CMSWeb2
     {
         protected void Application_Start()
         {
+            //ViewEngines.Engines.Clear();
+            //ViewEngines.Engines.Add(new AreaViewEngine());
             RegisterRoutes(RouteTable.Routes);
-            var model = new System.Web.DynamicData.MetaModel();
-            model.RegisterContext(typeof(CMSDataContext), new ContextConfiguration() { ScaffoldAllTables = false });
-            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+            //var model = new System.Web.DynamicData.MetaModel();
+            //model.RegisterContext(typeof(CMSDataContext), new ContextConfiguration() { ScaffoldAllTables = false });
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -61,33 +62,43 @@ namespace CMSWeb2
 
             routes.RouteExistingFiles = true;
 
-            routes.MapRoute("Cache",
-                "cache/{action}/{key}/{version}",
-                new { controller = "Cache", action = "Content", key = "", version = "" });
-            routes.MapRoute("Task",
-                "Task/{action}/{id}",
-                new { controller = "Task", action = "List", id = "" });
-            routes.MapRoute("QB",
+            CMSWebSetup.Routes.RegisterRoutes(routes);
+
+            routes.MapAreaRoute("Task", "Task_Default", 
+                "Task/{action}/{id}", 
+                new { controller = "Task", action = "List", id = "" },
+                new string[] {"CMSWeb.Controllers"}
+                );
+            routes.MapAreaRoute("QueryBuilder", "QueryBuilder_Default", 
                 "QueryBuilder/{action}/{id}",
-                new { controller = "QueryBuilder", action = "Main", id = "" });
-            routes.MapRoute("Display",
-                "Display/{action}/{page}",
-                new { controller = "Display", action = "Page", page = "" });
-            routes.MapRoute("StepClass",
+                new { controller = "QueryBuilder", action = "Main", id = "" },
+                new string[] { "CMSWeb.Controllers" }
+                );
+            routes.MapAreaRoute("StepClass", "StepClass_Default", 
                 "StepClass/{action}",
-                new { controller = "StepClass", action = "Step1" });
-            routes.MapRoute("VolunteerConfirm",
-                "Volunteer/Confirm",
-                new { controller = "Volunteer", action = "confirm", id = "" });
-            routes.MapRoute("VolunteerHome",
+                new { controller = "StepClass", action = "Step1", id = "" },
+                new string[] { "CMSWeb.Controllers" }
+                );
+            routes.MapAreaRoute("VolunteereConfirm", "VolunteereConfirm_Default", 
+                "Volunteere/Confirm",
+                new { controller = "Volunteer", action = "confirm", id = "" },
+                new string[] { "CMSWeb.Controllers" }
+                );
+            routes.MapAreaRoute("Volunteer", "Volunteer_Default", 
                 "Volunteer/{id}",
-                new { controller = "Volunteer", action = "Start", id = "" });
-            routes.MapRoute("TaskDetailRow",
+                new { controller = "Task", action = "Start", id = "" },
+                new string[] { "CMSWeb.Controllers" }
+                );
+            routes.MapAreaRoute("TaskDetail", "TaskDetail_Default", 
                 "Task/Detail/{id}/Row/{rowid}",
-                new { controller = "Task", action = "Detail", id = "" });
-            routes.MapRoute("Default",
-                "{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = "" });
+                new { controller = "Task", action = "Detail", id = "" },
+                new string[] { "CMSWeb.Controllers" }
+                );
+            routes.MapAreaRoute("Main", "Main_Default", "{controller}/{action}/{id}",
+                new { controller = "Home", action = "Index", id = "" },
+                new string[] { "CMSWeb.Controllers" });
+            
+            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -119,7 +130,7 @@ namespace CMSWeb2
             var ex = Server.GetLastError();
             var InDebug = false;
 #if DEBUG
-            InDebug = true;
+            InDebug = false;
 #endif
             if (InDebug)
             {

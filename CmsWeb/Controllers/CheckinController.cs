@@ -16,26 +16,33 @@ namespace CMSWeb.Controllers
 
         public ActionResult Match(string id)
         {
-            var ph = Util.GetDigits(id).PadLeft(10,'0');
+            var ph = Util.GetDigits(id).PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
             var q1 = from f in DbUtil.Db.Families
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.HeadOfHousehold.CellPhoneLU.StartsWith(p7)
                         || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(p7)
-                     select new { f.FamilyId, f.HomePhoneAC } ;
+                     select new Family 
+                     { 
+                         FamilyId = f.FamilyId, 
+                         AreaCode = f.HomePhoneAC, 
+                         Name = f.HeadOfHousehold.Name 
+                     };
             var matches = q1.ToList();
-            int? famid = null;
             if (matches.Count > 1)
-                matches = matches.Where(m => m.HomePhoneAC == ac).ToList();
+                matches = matches.Where(m => m.AreaCode == ac || ac == "000").ToList();
             if (matches.Count == 1)
-                famid = matches[0].FamilyId;
-
+                return Family(matches[0].FamilyId);
+            return View("Multiple", matches);
+        }
+        public ActionResult Family(int id)
+        {
             var now = DateTime.Now;
 
             var q2 = from om in DbUtil.Db.OrganizationMembers
                      where om.Organization.CanSelfCheckin.Value
-                     where om.Person.FamilyId == famid
+                     where om.Person.FamilyId == id
                      //where now.TimeOfDay > om.Organization.WeeklySchedule.MeetingTime.AddDays(-1).TimeOfDay
                      //where now.TimeOfDay < om.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
                      select new
@@ -60,7 +67,7 @@ namespace CMSWeb.Controllers
 
             var threeweeksago = DateTime.Now.AddDays(-27);
             var q3 = from a in DbUtil.Db.Attends
-                     where a.Person.FamilyId == famid
+                     where a.Person.FamilyId == id
                      where a.Organization.CanSelfCheckin.Value
                      //where now.TimeOfDay > a.Organization.WeeklySchedule.MeetingTime.AddHours(-1).TimeOfDay
                      //where now.TimeOfDay < a.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
@@ -88,7 +95,7 @@ namespace CMSWeb.Controllers
                 });
             var pids = list.Select(i => i.Id).ToArray();
             var q4 = from p in DbUtil.Db.People
-                     where p.FamilyId == famid
+                     where p.FamilyId == id
                      where !pids.Contains(p.PeopleId)
                      select p;
             foreach (var i in q4)
@@ -104,7 +111,7 @@ namespace CMSWeb.Controllers
                 });
             var list2 = list.OrderByDescending(a => a.Age);
 
-            return View(list2);
+            return View("Family", list2);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present)
@@ -154,5 +161,11 @@ namespace CMSWeb.Controllers
         public string Gender { get; set; }
         public int Age { get; set; }
         public int NumLabels { get; set; }
+    }
+    public class Family
+    {
+        public int FamilyId { get; set; }
+        public string Name { get; set; }
+        public string AreaCode { get; set; }
     }
 }

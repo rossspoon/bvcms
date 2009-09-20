@@ -175,7 +175,8 @@ namespace CMSWeb.Models
             p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
-            RecordAttend(p.PeopleId, org.Value);
+            if (org.HasValue)
+                RecordAttend(p.PeopleId, org.Value);
             return p;
         }
         public Person SavePerson(int FamilyId)
@@ -195,7 +196,8 @@ namespace CMSWeb.Models
                 p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();
-            RecordAttend(p.PeopleId, org.Value);
+            if (org.HasValue)
+                RecordAttend(p.PeopleId, org.Value);
             return p;
         }
         public void RecordAttend(int PeopleId, int OrgId)

@@ -77,10 +77,9 @@ namespace CMSWeb.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AddUser(int id)
         {
-            if (!User.IsInRole("Admin"))
-                return Content("unauthorized");
             var p = DbUtil.Db.People.Single(pe => pe.PeopleId == id);
             CMSMembershipProvider.provider.AdminOverride = true;
             var newpassword = FetchPassword(new Random());
@@ -97,12 +96,10 @@ namespace CMSWeb.Controllers
             ViewData["newpassword"] = newpassword;
             return View(user);
         }
+        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SendNewUserEmail(int userid, string newpassword)
         {
-            if (!User.IsInRole("Admin"))
-                return Content("unauthorized");
-
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
             var smtp = new SmtpClient();
                 HomeController.Email(smtp, DbUtil.SystemEmailAddress, user.Name, user.Person.EmailAddress,
@@ -120,6 +117,7 @@ The bvCMS Team</p>
 ".Fmt(user.Name, DbUtil.Settings("DefaultHost"), user.Username, newpassword));
             return Redirect("/Admin/Users.aspx?create=1");
         }
+        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UsersPage(string newpassword)
         {

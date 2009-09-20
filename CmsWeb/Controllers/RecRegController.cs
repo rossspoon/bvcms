@@ -159,7 +159,7 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
             if (z == null)
                 return Json(null);
-            return Json(new { city = z.City, state = z.State });
+            return Json(new { city = z.City.Trim(), state = z.State });
         }
     }
 }
