@@ -52,8 +52,8 @@ namespace CMSWeb
             trAddressLineTwo.Visible = family.AddressLineTwo.HasValue();
 
             EditUpdateButton1.DataBind();
-            AddMembers2.NavigateUrl = "~/AddFamilyMembersDialog.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(family.FamilyId);
-            AddRelatedFamily2.NavigateUrl = "~/AddFamilyDialog.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(family.FamilyId);
+            AddMembers2.NavigateUrl = "~/Dialog/AddFamilyMembers.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(family.FamilyId);
+            AddRelatedFamily2.NavigateUrl = "~/Dialog/AddFamily.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(family.FamilyId);
         }
 
         protected void GridView1_RowDataBound(object sender, System.Web.UI.WebControls.GridViewRowEventArgs e)

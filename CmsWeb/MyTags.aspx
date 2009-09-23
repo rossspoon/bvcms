@@ -59,7 +59,7 @@
                 <th>
                 </th>
                 <td>
-                    <asp:HyperLink nodisable="true" runat="server" ID="ShareLink" class="thickbox2" NavigateUrl="~/AddTagSharedsDialog.aspx?TB_iframe=true&height=450&width=600"></asp:HyperLink>
+                    <asp:HyperLink nodisable="true" runat="server" ID="ShareLink" class="thickbox2" NavigateUrl="~/Dialog/AddTagShareds.aspx?TB_iframe=true&height=450&width=600"></asp:HyperLink>
                 </td>
                 <td>
                 </td>

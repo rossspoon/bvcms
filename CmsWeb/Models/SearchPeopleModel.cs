@@ -346,8 +346,8 @@ namespace CMSWeb.Models
         public string ValidateAddNew()
         {
             DateTime dt;
-            if (DateOfBirth.HasValue() && !DateTime.TryParse(DateOfBirth, out dt))
-                return "need empty or valid birthday";
+            if (Util.DateValid(DateOfBirth, out dt))
+                return "need valid birthday";
             string first, last;
             NameSplit(Name, out first, out last);
             if (!first.HasValue() || !last.HasValue())

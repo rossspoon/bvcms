@@ -318,7 +318,7 @@ namespace CMSWeb
         }
         private void UpdateGroupsUrl()
         {
-            UpdateGroup.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&group={1}&TB_iframe=true&height=450&width=600"
+            UpdateGroup.NavigateUrl = "~/Dialog/EditMembers.aspx?id={0}&group={1}&TB_iframe=true&height=450&width=600"
                             .Fmt(organization.OrganizationId, Groups.SelectedValue);
             if (Groups.SelectedItem != null)
             {

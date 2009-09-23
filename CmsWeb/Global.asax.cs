@@ -47,6 +47,7 @@ namespace CMSWeb2
             routes.IgnoreRoute("CustomErrors/{*pathInfo}");
             routes.IgnoreRoute("Contributions/{*pathInfo}");
             routes.IgnoreRoute("Report/{*pathInfo}");
+            routes.IgnoreRoute("Dialog/{*pathInfo}");
             routes.IgnoreRoute("fckeditor/{*pathInfo}");
             routes.IgnoreRoute("StaffOnly/{*pathInfo}");
             routes.IgnoreRoute("images/{*pathInfo}");

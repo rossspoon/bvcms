@@ -16,7 +16,7 @@ namespace CmsCheckin
 {
     public partial class Attendees : UserControl
     {
-        public event EventHandler Go;
+        public event EventHandler GoBack;
         public Attendees()
         {
             InitializeComponent();
@@ -26,32 +26,10 @@ namespace CmsCheckin
         DateTime time;
         bool printed;
 
-        public string GetDigits(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            var digits = new StringBuilder();
-            foreach (var c in s.ToCharArray())
-                if (Char.IsDigit(c))
-                    digits.Append(c);
-            return digits.ToString();
-        }
-        public void FindAttendees(string phone)
+        public void FindAttendees(XDocument x)
         {
             time = DateTime.Now;
 
-            var wc = new WebClient();
-            var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]), 
-                "Checkin/Match/" + GetDigits(phone));
-            this.Cursor = Cursors.WaitCursor;
-
-            //var coll = new NameValueCollection();
-            //var resp = wc.UploadValues(url, "POST", coll);
-            //var str = Encoding.ASCII.GetString(resp);
-            var str = wc.DownloadString(url);
-
-            this.Cursor = Cursors.Default;
-            var x = XDocument.Parse(str);
             var font = new Font("Verdana", 14F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             var g = this.CreateGraphics();
             if (x.Descendants("attendee").Count() == 0)
@@ -67,7 +45,8 @@ namespace CmsCheckin
             var wids = new int[6];
             wids[0] = 65;
             wids[1] = 65;
-            foreach (var e in x.Descendants("attendee").Take(10))
+            const int MaxRows = 13;
+            foreach (var e in x.Descendants("attendee").Take(MaxRows))
             {
                 var name = e.Attribute("name").Value;
                 var n = 2;
@@ -114,7 +93,7 @@ namespace CmsCheckin
             hextra.Text = "Labels";
             this.Controls.Add(hextra);
 
-            foreach (var e in x.Descendants("attendee").Take(13))
+            foreach (var e in x.Descendants("attendee").Take(MaxRows))
             {
                 col = 0;
 
@@ -217,7 +196,7 @@ namespace CmsCheckin
                 RawPrinterHelper.SendDocToPrinter(printer, ms);
                 st.Close();
             }
-            Go(sender, e);
+            GoBack(sender, e);
         }
         private void RecordAttend(AttendLabel c, bool present)
         {

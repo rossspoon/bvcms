@@ -124,7 +124,7 @@ namespace CMSWeb.Admin
         }
         protected void AddSelectedPerson_Click(object sender, EventArgs e)
         {
-            var p = SearchDialog.SelectedPeople().First();
+            var p = CMSWeb.Dialog.Search.SelectedPeople().First();
             var UserId = ListView1.SelectedValue.ToInt();
             var user = DbUtil.Db.Users.Single(u => u.UserId == UserId);
             var lvi = ListView1.Items[ListView1.SelectedIndex] as ListViewItem;

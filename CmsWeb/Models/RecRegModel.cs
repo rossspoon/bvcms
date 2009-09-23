@@ -17,14 +17,37 @@ namespace CMSWeb.Models
     public class RecRegModel
     {
         private Division _division { get; set; }
+        public bool? _filled;
         public int? divid { get; set; }
         public Division division
         {
             get
             {
                 if (_division == null)
+                {
                     _division = DbUtil.Db.Divisions.SingleOrDefault(d => d.Id == divid);
+                }
                 return _division;
+            }
+        }
+        public bool filled
+        {
+            get
+            {
+                if (!_filled.HasValue)
+                {
+                    var id = division.Id;
+                    _filled = DbUtil.Db.Organizations.Any(o => 
+                        o.DivOrgs.Any(od => od.DivId == id) && o.ClassFilled == true);
+                }
+                return _filled.Value;
+            }
+        }
+        public string disabled
+        {
+            get
+            {
+                return filled? "disabled = \"disabled\"" : "";
             }
         }
         private RecAgeDivision _RecAgeDiv;

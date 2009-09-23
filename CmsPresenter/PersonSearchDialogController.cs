@@ -191,22 +191,44 @@ namespace CMSPresenter
         {
             return (AddFamilyType)Enum.Parse(typeof(AddFamilyType), value.ToString());
         }
-        public static bool AddNewPerson(string name, string dob, int FamilyId, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
+        public static bool AddNewPerson(string name, 
+            string dob, 
+            int FamilyId, 
+            int GenderId, 
+            int OriginId, 
+            int? EntryPointId, 
+            int? CampusId, 
+            string phone)
         {
             var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == FamilyId);
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             var p = Person.Add(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
             p.CampusId = CampusId;
+            p.CellPhone = phone;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
-        public static bool AddNewPerson(string name, string dob, string selectedValue, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
+        public static bool AddNewPerson(string name, 
+            string dob, 
+            string selectedValue, 
+            int GenderId, 
+            int OriginId, 
+            int? EntryPointId, 
+            int? CampusId, 
+            string phone, string addr)
         {
-            return AddNewPerson(name, dob, ParseFamilyType(selectedValue), GenderId, OriginId, EntryPointId, CampusId);
+            return AddNewPerson(name, dob, ParseFamilyType(selectedValue), GenderId, OriginId, EntryPointId, CampusId, phone, addr);
         }
-        public static bool AddNewPerson(string potentialName, string dob, AddFamilyType famtype, int GenderId, int OriginId, int? EntryPointId, int? CampusId)
+        public static bool AddNewPerson(string potentialName, 
+            string dob, 
+            AddFamilyType famtype, 
+            int GenderId, 
+            int OriginId, 
+            int? EntryPointId, 
+            int? CampusId, 
+            string phone, string addr)
         {
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
 
@@ -235,6 +257,16 @@ namespace CMSPresenter
             {
                 fam = new Family();
                 DbUtil.Db.Families.InsertOnSubmit(fam);
+                fam.HomePhone = phone.GetDigits();
+                if (addr.HasValue())
+                {
+                    var m = PersonSearchController.AddrRegex.Match(addr);
+                    fam.AddressLineOne = m.Groups["addr"].Value;
+                    fam.CityName = m.Groups["city"].Value;
+                    fam.StateCode = m.Groups["state"].Value;
+                    fam.ZipCode = m.Groups["zip"].Value;
+                }
+
                 position = 10; // primary adult
             }
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
@@ -247,6 +279,8 @@ namespace CMSPresenter
             }
             else
                 p1 = Person.Add(fam, position, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+            if (famtype == AddFamilyType.ExistingFamily)
+                p1.CellPhone = phone.GetDigits();
             p1.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p1.PeopleId);

@@ -162,7 +162,7 @@ namespace CMSWeb.Controllers
         private void EmailVisit(RegisterModel m, Person p)
         {
             string email = DbUtil.Settings("VisitMail-" + Session["campus"]);
-            if (email == "VisitMail-")
+            if (!email.HasValue())
                 email = DbUtil.Settings("RegMail");
 
             var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "VisitMessage-" + Session["campus"]);

@@ -59,7 +59,7 @@ namespace CMSWebSetup.Controllers
                 ViewData["html"] = content.Body;
                 ViewData["title"] = content.Title;
             }
-            ViewData["page"] = id;
+            ViewData["id"] = id;
             return View();
         }
         [ValidateInput(false)]
@@ -76,7 +76,7 @@ namespace CMSWebSetup.Controllers
             content.Body = html;
             content.Title = title;
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Page", "Display", new { page = id });
+            return RedirectToAction("Page", "Display", new { id = id });
         }
     }
 }

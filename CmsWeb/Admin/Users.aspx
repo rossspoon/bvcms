@@ -16,9 +16,9 @@
         function showDialog(parentButtonId) {
             var modalPopupBehaviorCtrl = $find('<%= searchpopup.ClientID %>');
             modalPopupBehaviorCtrl.show();
-            $get('<%= sd.ClientID %>').src = "../SearchDialog.aspx?selectSingle=1&parentButton=" + parentButtonId;
+            $get('<%= sd.ClientID %>').src = "/Dialog/Search.aspx?selectSingle=1&parentButton=" + parentButtonId;
         }
-        function AddSelected(parentButtonId) // called by SearchDialog.aspx inside iframe
+        function AddSelected(parentButtonId) // called by Search.aspx inside iframe
         {
             $get(parentButtonId).click();
         }

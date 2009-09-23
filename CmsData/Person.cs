@@ -347,9 +347,9 @@ namespace CmsData
         {
             get { return DeceasedDate.HasValue; }
         }
-        private static void NameSplit(string name, out string First, out string Last)
+        public static void NameSplit(string name, out string First, out string Last)
         {
-            var a = name.Split(' ');
+            var a = name.Trim().Split(' ');
             First = "";
             if (a.Length > 1)
             {

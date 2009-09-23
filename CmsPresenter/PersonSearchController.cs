@@ -128,6 +128,9 @@ namespace CMSPresenter
                 Last = a[0];
 
         }
+        public static Regex AddrRegex = new Regex(
+        @"\A(?<addr>.*);\s*(?<city>.*),\s+(?<state>[A-Z]*)\s+(?<zip>\d{5}(-\d{4})?)\z");
+
         public static IQueryable<Person> ApplySearch(
             string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
         {
@@ -162,6 +165,11 @@ namespace CMSPresenter
             }
             if (addr.IsNotNull())
             {
+                if (PersonSearchController.AddrRegex.IsMatch(addr))
+                {
+                    var m = PersonSearchController.AddrRegex.Match(addr);
+                    addr = m.Groups["addr"].Value;
+                }
                 addr = addr.Trim();
                 if (addr.HasValue())
                     query = from p in query

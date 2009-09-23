@@ -15,6 +15,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text.RegularExpressions;
 
 public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchParameters
 {
@@ -50,6 +51,25 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
     {
         if (ClearButtonClicked != null)
             ClearButtonClicked(null, e);
+    }
+    public void ValidateAddNew(ref CustomValidator c, bool addrOK)
+    {
+        string First, Last;
+        DateTime dt;
+        CmsData.Person.NameSplit(Name, out First, out Last);
+        c.IsValid = false;
+        if (!First.HasValue() || !Last.HasValue())
+            c.ErrorMessage = "Must have a first and last name when adding";
+        else if (!Util.DateValid(DOB, out dt))
+            c.ErrorMessage = "Must have a valid birthday when adding";
+        else if (Gender == 99)
+            c.ErrorMessage = "Must have a gender when adding";
+        else if (addrOK && Addr.HasValue() && !PersonSearchController.AddrRegex.IsMatch(Addr))
+            c.ErrorMessage = "Address needs to be formatted as: number street; city, state zip";
+        else if (Comm.HasValue() && Comm.GetDigits() == Comm.FmtFone())
+            c.ErrorMessage = "need valid phone number (7 or 10 digits)";
+        else
+            c.IsValid = true;
     }
 
 

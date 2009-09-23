@@ -15,7 +15,7 @@
 <div class="blogbody">
 <h2 class="title"><%=ViewData["title"]%></h2>
 <hr />
-<%=Html.Hidden("page")%>
+<%=Html.Hidden("id")%>
 <div>Title: <%=Html.TextBox("title")%></div>
 <%=Html.TextArea("html")%>
 <input type="submit" value="Post" />

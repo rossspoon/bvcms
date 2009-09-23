@@ -32,11 +32,17 @@ namespace CMSWeb.Controllers
             var matches = q1.ToList();
             if (matches.Count > 1)
                 matches = matches.Where(m => m.AreaCode == ac || ac == "000").ToList();
+            if (matches.Count == 0)
+                return ShowFamily(0); // not found
             if (matches.Count == 1)
-                return Family(matches[0].FamilyId);
+                return ShowFamily(matches[0].FamilyId);
             return View("Multiple", matches);
         }
         public ActionResult Family(int id)
+        {
+            return ShowFamily(id);
+        }
+        public ActionResult ShowFamily(int id)
         {
             var now = DateTime.Now;
 

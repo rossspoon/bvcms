@@ -74,7 +74,7 @@ namespace CMSWeb
 		protected void UpdateFieldVisibility()
 		{
 			AddVisitorLink.Visible = User.IsInRole("Attendance");
-			AddVisitorLink.NavigateUrl = "~/AddVisitorDialog.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(meeting.MeetingId);
+			AddVisitorLink.NavigateUrl = "~/Dialog/AddVisitor.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(meeting.MeetingId);
 
 			TR_NumMembers.Visible = !meeting.GroupMeetingFlag;
 			NumMembers.Visible = !meeting.GroupMeetingFlag;

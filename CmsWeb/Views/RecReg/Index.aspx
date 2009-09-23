@@ -21,7 +21,14 @@
         });
     </script>
 <% } %>
-    <h2>Register for <%=Model.division.Name %></h2>
+    <% if (Model.filled)
+       { %>
+    <h2><%=Model.division.Name%> is Filled, Sorry</h2>
+    <% }
+       else
+       { %>
+    <h2>Register for <%=Model.division.Name%></h2>
+    <% } %>
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
@@ -88,7 +95,7 @@
                 </tr>
                 <% } %>
                 <tr>
-                    <td>&nbsp;</td><td><input type="submit" value="Next Page" /></td>
+                    <td>&nbsp;</td><td><input <%=Model.disabled %> type="submit" value="Next Page" /></td>
                 </tr>
                 </table>
             </fieldset>

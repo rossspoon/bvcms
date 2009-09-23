@@ -28,9 +28,9 @@ namespace CMSWeb
             pager2.PageSize = Util.GetPageSizeCookie();
             AddMember.Visible = Page.User.IsInRole("Attendance") && Select!=GroupSelect.Previous;
             UpdateMembers.Visible = AddMember.Visible;
-            AddMember.NavigateUrl = "~/AddMemberDialog.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+            AddMember.NavigateUrl = "~/Dialog/AddMember.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
                 .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
-            UpdateMembers.NavigateUrl = "~/EditMembersDialog.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+            UpdateMembers.NavigateUrl = "~/Dialog/EditMembers.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
                 .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
             Page.ClientScript.RegisterClientScriptBlock(typeof(MemberGrid), "membergrid", script);
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)
@@ -69,7 +69,7 @@ namespace CMSWeb
                         mlink.NavigateUrl = "~/AttendStrDetail.aspx?oid={0}&id={1}&TB_iframe=true&height=450&width=700"
                             .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
                     else
-                        mlink.NavigateUrl = "~/EditMemberDialog.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
+                        mlink.NavigateUrl = "~/Dialog/EditMember.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
                             .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
                 }
             }

@@ -117,7 +117,7 @@ namespace CMSWeb
                     if (Page.Request.Params["__EVENTARGUMENT"] == "RebindMemberGrids")
                         RebindMemberGrids();
 
-            movestuff.NavigateUrl = "~/MovePersonDialog.aspx?id={0}&TB_iframe=true&height=450&width=600"
+            movestuff.NavigateUrl = "~/Dialog/MovePerson.aspx?id={0}&TB_iframe=true&height=450&width=600"
                 .Fmt(person.PeopleId);
             movestuff.Visible = User.IsInRole("Admin");
             var otherid = this.QueryString<int?>("goback");
@@ -348,7 +348,7 @@ namespace CMSWeb
             var d = e.Row.DataItem as PersonController.OrganizationView;
             var mlink = e.Row.FindControl("MemberLink") as HyperLink;
             if (mlink != null)
-                mlink.NavigateUrl = "~/EditMemberDialog.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
+                mlink.NavigateUrl = "~/Dialog/EditMember.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
                     .Fmt(d.Id, person.PeopleId, UpdatePanel1.ClientID);
         }
         protected void PrevEnroll_RowDataBound(object sender, GridViewRowEventArgs e)

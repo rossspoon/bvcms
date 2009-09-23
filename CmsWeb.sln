@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWebSetup", "CMSWebSetup\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWeb", "CMSWeb\CMSWeb.csproj", "{FC942D51-94B5-456B-9683-0BA000A1EAF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsCheckin", "CmsCheckin\CmsCheckin.csproj", "{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,18 @@ Global
 		{FC942D51-94B5-456B-9683-0BA000A1EAF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC942D51-94B5-456B-9683-0BA000A1EAF4}.Release|Itanium.ActiveCfg = Release|Any CPU
 		{FC942D51-94B5-456B-9683-0BA000A1EAF4}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Debug|Itanium.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Default|Itanium.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Default|x86.ActiveCfg = Debug|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|Itanium.ActiveCfg = Release|Any CPU
+		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -142,6 +142,14 @@
                                             AssociatedRowId="TR_NumNewVisit" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th>
+                                        Group Meeting:
+                                    </th>
+                                    <td>
+                                        <cc1:DisplayOrEditCheckbox ID="GroupMeetingFlag" runat="server" BindingSource="meeting" BindingMode="TwoWay" />
+                                    </td>
+                                </tr>
                             </table>
                         </td>
                     </tr>
