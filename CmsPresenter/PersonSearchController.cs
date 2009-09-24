@@ -93,9 +93,9 @@ namespace CMSPresenter
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<TaggedPersonInfo> FetchPeopleList(int startRowIndex, int maximumRows, string sortExpression,
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
-            var query = ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly);
+            var query = ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly, marital);
             count = query.Count();
             if (TagTypeId == DbUtil.TagTypeId_AddSelected)
             {
@@ -110,7 +110,7 @@ namespace CMSPresenter
         }
 
         public int Count(int startRowIndex, int maximumRows, string sortExpression,
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             return count;
         }
@@ -132,7 +132,7 @@ namespace CMSPresenter
         @"\A(?<addr>.*);\s*(?<city>.*),\s+(?<state>[A-Z]*)\s+(?<zip>\d{5}(-\d{4})?)\z");
 
         public static IQueryable<Person> ApplySearch(
-            string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
+            string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             var query = DbUtil.Db.People.Select(p => p);
             if (Util.OrgMembersOnly)
@@ -217,6 +217,8 @@ namespace CMSPresenter
                 query = query.Where(p => p.CampusId == campus);
             if (gender != 99)
                 query = query.Where(p => p.GenderId == gender);
+            if (marital > 0)
+                query = query.Where(p => p.MaritalStatusId == marital);
 
             return query;
         }

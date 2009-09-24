@@ -25,7 +25,7 @@
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
         <user:QuickSearchParameters ID="Parameters" runat="server" />
         <div id="AddNewSection" runat="server">
-            <asp:Button ID="AddNew1" runat="server" Text="Add New Person" OnClick="AddNew1_Click" />
+            <asp:Button ID="AddNew1" runat="server" Text="Add New Person" Enabled="false" OnClick="AddNew1_Click" />
             <cc2:ConfirmButtonExtender ID="AddNew1_ConfirmButtonExtender" runat="server" 
                 ConfirmText="Are you sure you want to add a new person?" Enabled="True" TargetControlID="AddNew1">
             </cc2:ConfirmButtonExtender>

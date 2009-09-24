@@ -37,7 +37,7 @@ namespace CMSPresenter
         {
             get { return string.Join(",", _Groups.ToArray()); }
         }
-        
+
         public string ToolTip
         {
             get
@@ -49,15 +49,16 @@ namespace CMSPresenter
     }
     public interface SearchParameters
     {
-        string DOB {get; set;}
-        string Comm {get; set;}
-        int OrgId {get; set;}
-        string Name {get; set;}
-        string Addr {get; set;}
-        int Gender {get; set;}
-        int Member {get; set;}
+        string DOB { get; set; }
+        string Comm { get; set; }
+        int OrgId { get; set; }
+        string Name { get; set; }
+        string Addr { get; set; }
+        int Gender { get; set; }
+        int Member { get; set; }
         int Campus { get; set; }
-        int Tag {get; set;}
+        int Tag { get; set; }
+        int Married { get; set; }
     }
     [DataObject]
     public class PersonSearchDialogController
@@ -72,25 +73,25 @@ namespace CMSPresenter
 
         public IEnumerable<PersonDialogSearchInfo> FetchSearchList(SearchParameters p, bool usersonly)
         {
-            return FetchSearchList(p.Name, p.Comm, p.Addr, p.Member, p.Tag, p.DOB, p.Gender, p.OrgId, p.Campus, usersonly);
+            return FetchSearchList(p.Name, p.Comm, p.Addr, p.Member, p.Tag, p.DOB, p.Gender, p.OrgId, p.Campus, usersonly, p.Married);
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<PersonDialogSearchInfo> FetchSearchList(
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             var n = t.People().Count();
             var list = FetchPeopleList(t.People()).ToList();
             var ids = list.Select(p => p.PeopleId).ToArray();
 
-            var query = PersonSearchController.ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly);
+            var query = PersonSearchController.ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly, marital);
             query = query.Where(p => !ids.Contains(p.PeopleId));
             int maxitems = 100;
             list.AddRange(FetchPeopleList(query).Take(maxitems));
             maxitems += n;
             n += query.Count();
             if (n > maxitems)
-                list.Add(new PersonDialogSearchInfo { Name = "(showing top {1} of {0:N0}".Fmt(n,maxitems) });
+                list.Add(new PersonDialogSearchInfo { Name = "(showing top {1} of {0:N0}".Fmt(n, maxitems) });
             return list;
         }
         public int count;
@@ -98,7 +99,7 @@ namespace CMSPresenter
         public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList(int startRowIndex, int maximumRows, string sortExpression,
             int memtype, int tag, DateTime? inactivedt, int orgid, bool noinactive, bool pending)
         {
-//'MemberData' could not find a non-generic method 'FetchOrgMemberList' that has parameters: 
+            //'MemberData' could not find a non-generic method 'FetchOrgMemberList' that has parameters: 
             //startRowIndex, maximumRows, sortExpression, 
             //memtype, tag, inactive, orgid, noinactive."
 
@@ -112,7 +113,7 @@ namespace CMSPresenter
         {
             return count;
         }
-        public static IQueryable<OrganizationMember> SearchMembers(int memtype, int tag, 
+        public static IQueryable<OrganizationMember> SearchMembers(int memtype, int tag,
             DateTime? inactive, int orgid, bool? noinactive, bool pending)
         {
             var q0 = from om in DbUtil.Db.OrganizationMembers
@@ -176,7 +177,7 @@ namespace CMSPresenter
             return q;
         }
         public int Count(
-            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly)
+            string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             return count;
         }
@@ -191,44 +192,46 @@ namespace CMSPresenter
         {
             return (AddFamilyType)Enum.Parse(typeof(AddFamilyType), value.ToString());
         }
-        public static bool AddNewPerson(string name, 
-            string dob, 
-            int FamilyId, 
-            int GenderId, 
-            int OriginId, 
-            int? EntryPointId, 
-            int? CampusId, 
-            string phone)
+        public static bool AddNewPerson(string name,
+            string dob,
+            int FamilyId,
+            int GenderId,
+            int OriginId,
+            int? EntryPointId,
+            int? CampusId,
+            string phone, int MaritalStatusId)
         {
             var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == FamilyId);
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             var p = Person.Add(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
             p.CampusId = CampusId;
+            p.MaritalStatusId = MaritalStatusId;
             p.CellPhone = phone;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
-        public static bool AddNewPerson(string name, 
-            string dob, 
-            string selectedValue, 
-            int GenderId, 
-            int OriginId, 
-            int? EntryPointId, 
-            int? CampusId, 
-            string phone, string addr)
+        public static bool AddNewPerson(string name,
+            string dob,
+            string selectedValue,
+            int GenderId,
+            int OriginId,
+            int? EntryPointId,
+            int? CampusId,
+            string phone, string addr, int MaritalStatusId)
         {
-            return AddNewPerson(name, dob, ParseFamilyType(selectedValue), GenderId, OriginId, EntryPointId, CampusId, phone, addr);
+            return AddNewPerson(name, dob, ParseFamilyType(selectedValue),
+                GenderId, OriginId, EntryPointId, CampusId, phone, addr, MaritalStatusId);
         }
-        public static bool AddNewPerson(string potentialName, 
-            string dob, 
-            AddFamilyType famtype, 
+        private static bool AddNewPerson(string potentialName, 
+            string dob,
+            AddFamilyType famtype,
             int GenderId, 
             int OriginId, 
             int? EntryPointId, 
             int? CampusId, 
-            string phone, string addr)
+            string phone, string addr, int MaritalStatusId)
         {
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
 
@@ -239,17 +242,13 @@ namespace CMSPresenter
                 name = famtype == AddFamilyType.Couple ? "NewCouple" : "NewPerson";
 
             Family fam;
-            int position;
+            var PrimaryCount = 0;
             if (famtype == AddFamilyType.ExistingFamily)
             {
                 if (tag.People().Count() != 1)
                     return false;
                 fam = tag.People().First().Family;
-                var cnt = fam.People.Where(c => c.PositionInFamilyId == 10).Count();
-                if (cnt < 2) // room for primary adult?
-                    position = 10; // primary adult
-                else
-                    position = 30; // child
+                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == 10).Count();
                 if (name.StartsWith("New"))
                     name = fam.People.First().LastName;
             }
@@ -266,19 +265,27 @@ namespace CMSPresenter
                     fam.StateCode = m.Groups["state"].Value;
                     fam.ZipCode = m.Groups["zip"].Value;
                 }
-
-                position = 10; // primary adult
             }
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             Person p1, p2 = null;
             if (famtype == AddFamilyType.Couple)
             {
-                p1 = Person.Add(fam, position, tag, name, dob, true, 1, OriginId, EntryPointId); // male
-                p2 = Person.Add(fam, position, tag, name, dob, true, 2, OriginId, EntryPointId); // female
+                p1 = Person.Add(fam, 10, tag, name, dob, true, 1, OriginId, EntryPointId); // male
+                p1.MaritalStatusId = MaritalStatusId;
+                p2 = Person.Add(fam, 10, tag, name, dob, true, 2, OriginId, EntryPointId); // female
+                p2.MaritalStatusId = MaritalStatusId;
                 p2.CampusId = CampusId;
             }
             else
-                p1 = Person.Add(fam, position, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+            {
+                p1 = Person.Add(fam, 10, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+                var age = p1.GetAge();
+                p1.MaritalStatusId = MaritalStatusId;
+                if (PrimaryCount == 2)
+                    p1.PositionInFamilyId = 20;
+                if (age < 18 && p1.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
+                    p1.PositionInFamilyId = 30;
+            }
             if (famtype == AddFamilyType.ExistingFamily)
                 p1.CellPhone = phone.GetDigits();
             p1.CampusId = CampusId;
@@ -288,5 +295,17 @@ namespace CMSPresenter
                 Task.AddNewPerson(Util.UserPeopleId.Value, p2.PeopleId);
             return true;
         }
+        public static bool CheckFamilySelected(string selectedValue)
+        {
+            if (!selectedValue.HasValue())
+                return true;
+            var famtype = ParseFamilyType(selectedValue);
+            var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
+            if (famtype == AddFamilyType.ExistingFamily)
+                if (tag.People().Count() != 1)
+                    return false;
+            return true;
+        }
+
     }
 }

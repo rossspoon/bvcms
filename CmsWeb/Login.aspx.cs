@@ -20,11 +20,13 @@ namespace CMSWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // just something special for Bellevue
             if (Request.Url.Scheme == "http" && Request.Url.Authority == "cms.bellevue.org")
                 if (Request.QueryString.Count > 0)
                     Response.Redirect("https://cms.bellevue.org/Login.aspx?" + Request.QueryString);
                 else
                     Response.Redirect("https://cms.bellevue.org/Login.aspx");
+
             var terms = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == "TermsOfUse");
             if (terms != null)
                 TermsLabel.Text = terms.Body;
@@ -43,10 +45,6 @@ By logging in below, you agree that you understand this purpose and will abide b
         protected void Login1_LoggedIn(object sender, EventArgs e)
         {
             var user = Membership.GetUser(Login1.UserName);
-            //if (user.LastPasswordChangedDate
-            //        .AddDays(WebConfigurationManager.AppSettings["ChangePasswordDays"].ToInt())
-            //        < Util.Now)
-            //    CMSMembershipProvider.provider.UserMustChangePassword = true;
             var u = DbUtil.Db.Users.Single(us => us.Username == Login1.UserName);
             Util.UserId = u.UserId;
             Util.UserPeopleId = u.PeopleId;
@@ -54,9 +52,6 @@ By logging in below, you agree that you understand this purpose and will abide b
                 Response.Redirect("~/ChangePassword.aspx");
             Util.FormsBasedAuthentication = true;
             CheckStaffRole(Login1.UserName);
-            //EventLog.WriteEntry("LoginLog",
-            //    "logged in",
-            //    EventLogEntryType.Information);
         }
 
         protected void Login1_LoginError(object sender, EventArgs e)
@@ -67,50 +62,21 @@ By logging in below, you agree that you understand this purpose and will abide b
                 em.LoadAddress(u.Person.EmailAddress, u.Name);
 
             if (user == null)
-            {
-                //EventLog.WriteEntry("LoginLog",
-                //    "non-user",
-                //    EventLogEntryType.Information);
                 em.NotifyEmail("attempt to login by non-user on " + Request.Url.Authority,
-                    "{0} tried to login at {1} but is not a user"
-                        .Fmt(Login1.UserName, DateTime.Now));
-            }
+                        "{0} tried to login at {1} but is not a user"
+                            .Fmt(Login1.UserName, DateTime.Now));
             else if (user.IsLockedOut)
-            {
-                //EventLog.WriteEntry("LoginLog",
-                //    "locked out",
-                //    EventLogEntryType.Information);
                 em.NotifyEmail("user locked out on " + Request.Url.Authority,
-                    "{0} tried to login at {1} but is locked out"
-                        .Fmt(user.UserName, DateTime.Now));
-            }
+                        "{0} tried to login at {1} but is locked out"
+                            .Fmt(user.UserName, DateTime.Now));
             else if (!user.IsApproved)
-            {
-                //EventLog.WriteEntry("LoginLog",
-                //    "unapproved",
-                //    EventLogEntryType.Information);
                 em.NotifyEmail("unapproved user logging in on " + Request.Url.Authority,
-                    "{0} tried to login at {1} but is not approved"
-                        .Fmt(user.UserName, DateTime.Now));
-            }
-            //else
-            //    EventLog.WriteEntry("LoginLog",
-            //        "other error",
-            //        EventLogEntryType.Information);
-
+                        "{0} tried to login at {1} but is not approved"
+                            .Fmt(user.UserName, DateTime.Now));
         }
         public static void CheckStaffRole(string name)
         {
             var em = new Emailer();
-            //if (!name.HasValue())
-            //{
-            //  foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-            //    em.LoadAddress(u.EmailAddress, u.Name);
-            //    em.NotifyEmail("unknown user attempted to log in",
-            //        string.Format("someone without a name visited site at {0}",
-            //            DateTime.Now));
-            //    HttpContext.Current.Response.Redirect("AccessDenied.htm");
-            //} else
             if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
                 foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
@@ -150,12 +116,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                     em.NotifyEmail("{0} is being impersonated".Fmt(Login1.UserName), DateTime.Now.ToString());
                 }
                 else
-                {
                     e.Authenticated = CMSMembershipProvider.provider.ValidateUser(Login1.UserName, Login1.Password);
-                    //EventLog.WriteEntry("LoginLog",
-                    //    "{0} {1} {2}".Fmt(Login1.UserName, Login1.Password, e.Authenticated),
-                    //    EventLogEntryType.Information);
-                }
             }
         }
     }

@@ -42,19 +42,11 @@
                     <td><%= Html.DropDownList("married", Model.MaritalStatus())%></td>
                     <td><%= Html.ValidationMessage("married")%></td>
                 </tr>
-                <tr>
-                    <td><label for="position">Position in Family</label></td>
-                    <td><%= Html.RadioButton("position", 10) %> Primary Adult<br />
-                    <%= Html.RadioButton("position", 20) %> Secondary Adult<br />
-                    <%= Html.RadioButton("position", 30) %> Child
-                    <td><%= Html.ValidationMessage("position2") %><br />
-                    (Husband and wife should both be primary)</td>
-                </tr>
                  <tr>
                     <td><label for="gender">Gender</label></td>
                     <td><%= Html.RadioButton("gender", 1) %> Male
                     <%= Html.RadioButton("gender", 2) %> Female
-                    <td><%= Html.ValidationMessage("gender2") %></td>
+                    <td><%= Html.ValidationMessage("gender") %></td>
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>

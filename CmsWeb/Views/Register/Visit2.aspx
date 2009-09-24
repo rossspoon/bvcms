@@ -35,13 +35,13 @@
                 <tr>
                     <td><label for="gender">Married</label></td>
                     <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
-                    <td><%= Html.ValidationMessage("married2") %></td>
+                    <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
                 <tr>
                     <td><label for="gender">Gender</label></td>
                     <td><%= Html.RadioButton("gender", 1) %> Male
                     <%= Html.RadioButton("gender", 2) %> Female
-                    <td><%= Html.ValidationMessage("gender2") %></td>
+                    <td><%= Html.ValidationMessage("gender") %></td>
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>

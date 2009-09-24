@@ -108,6 +108,7 @@ namespace CmsData
         RecentAttendCount,
         RecentAttendMemberType,
         RecentAttendType,
+        RecentContactType,
         RecFeePaid,
         RecActiveOtherChurch,
         SavedQuery,

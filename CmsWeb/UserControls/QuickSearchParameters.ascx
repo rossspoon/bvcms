@@ -6,10 +6,13 @@
             <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
         </td>
         <th>
-            OrgId:
+            Campus:
         </th>
-        <td colspan="3">
-            <asp:TextBox ID="OrgIdSearch" runat="server" Width="90px" ToolTip="Organization Id"></asp:TextBox>
+        <td colspan="2" nowrap="nowrap">
+            <asp:DropDownList ID="CampusSearch" runat="server"
+                DataTextField="Value" DataValueField="Id" Width="150px"
+                DataSourceID="ODS_Campus">
+            </asp:DropDownList>
         </td>
     </tr>
     <tr>
@@ -22,9 +25,9 @@
         <th>
             Tags:
         </th>
-        <td colspan="3">
+        <td colspan="2">
             <asp:DropDownList ID="TagSearch" runat="server" DataTextField="Value" DataValueField="Id"
-                DataSourceID="UserTags">
+                DataSourceID="UserTags" style="width: 240px">
             </asp:DropDownList>
         </td>
     </tr>
@@ -43,15 +46,7 @@
                 DataTextField="Value" DataValueField="Id">
             </asp:DropDownList>
         </td>
-        <th>
-            Campus:
-        </th>
-        <td>
-            <asp:DropDownList ID="CampusSearch" runat="server"
-                DataTextField="Value" DataValueField="Id" Width="150px"
-                DataSourceID="ODS_Campus">
-            </asp:DropDownList>
-        </td>
+        <th align="left">OrgId</th>
     </tr>
     <tr>
         <th>
@@ -64,10 +59,13 @@
         <th>
             Gender:
         </th>
-        <td colspan="3">
+        <td>
             <asp:DropDownList ID="GenderSearch" runat="server" DataSourceID="GenderCodes" DataTextField="Value"
                 DataValueField="Id">
             </asp:DropDownList>
+        </td>
+        <td>
+            <asp:TextBox ID="OrgIdSearch" runat="server" Width="50px" ToolTip="Organization Id"></asp:TextBox>
         </td>
     </tr>
     <tr>
@@ -78,9 +76,15 @@
             <asp:TextBox ID="DOBSearch" runat="server" Width="190px" ToolTip="YYYY or MM or MM/DD or MM/DD/YY">
             </asp:TextBox>
         </td>
-        <td colspan="4" align="center">
+        <th>
+            Married:
+        </th>
+        <td> <asp:DropDownList ID="MarriedSearch" runat="server" DataSourceID="MaritalCodes" DataTextField="Value"
+             DataValueField="Id"></asp:DropDownList>
+        </td>
+        <td>
             <asp:Button ID="SearchButton" runat="server" Text="Search" OnClick="SearchButton_Click"
-                TabIndex="6" Width="114px" />
+                TabIndex="6" />
         </td>
     </tr>
 </table>
@@ -91,4 +95,6 @@
 <asp:ObjectDataSource ID="GenderCodes" runat="server" SelectMethod="GenderCodesWithUnspecified"
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ODS_Campus" runat="server" SelectMethod="AllCampuses0"
+    TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+<asp:ObjectDataSource ID="MaritalCodes" runat="server" SelectMethod="MaritalStatusCodes0"
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

@@ -273,7 +273,7 @@
                 </td>
                 <td class="style1">
                 </td>
-                <td valign="top" nowrap="nowrap">
+                <td valign="top">
                     <asp:HyperLink ID="FamilyLink" Text="Family Members" runat="server" Font-Bold="true"
                         Style="line-height: 2"></asp:HyperLink>
                     <asp:GridView ID="FamilyGrid" runat="server" AutoGenerateColumns="False" DataSourceID="ODSFamily"
@@ -1240,7 +1240,7 @@
                                         BindingMember="InterestedInJoining" BindingMode="TwoWay" />
                                 </td>
                                 <th>
-                                    Interested in joining Bellevue
+                                    Interested in joining Church
                                 </th>
                             </tr>
                             <tr>

@@ -53,7 +53,7 @@ namespace CMSPresenter
                         BFCStatus = "",
                         Comment = p.Comments,
                         ChristAsSavior = p.ChristAsSavior ? "Prayed to receive Christ as Savior" : "",
-                        InterestedInJoining = p.InterestedInJoining ? "Interested in joining Bellevue" : "",
+                        InterestedInJoining = p.InterestedInJoining ? "Interested in joining Church" : "",
                         PleaseVisit = p.PleaseVisit ? "Requests a visit" : "",
                         InfoBecomeAChristian = p.InfoBecomeAChristian ? "Interested in becoming a Christian" : "",
                         CellPhone = p.CellPhone,

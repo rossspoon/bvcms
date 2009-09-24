@@ -49,7 +49,7 @@ namespace CMSWeb.Dialog
             if (e.CommandName == "select1")
             {
                 FamilyController.AddRelatedFamily(FamilyId, e.CommandArgument.ToInt());
-                Page.ClientScript.RegisterStartupScript(typeof(AddTaskAbout), "closeThickBox", "self.parent.AddSelected();", true);
+                Page.ClientScript.RegisterStartupScript(typeof(AddFamily), "closeThickBox", "self.parent.AddSelected();", true);
             }
         }
     }

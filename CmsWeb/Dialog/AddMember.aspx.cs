@@ -40,7 +40,6 @@ namespace CMSWeb.Dialog
             }
             Parameters.SearchButtonClicked += new EventHandler(SearchButton_Click);
             Parameters.ClearButtonClicked += new EventHandler(Parameters_ClearButtonClicked);
-            AddNew1.Enabled = User.IsInRole("Edit");
         }
 
         void Parameters_ClearButtonClicked(object sender, EventArgs e)
@@ -54,6 +53,7 @@ namespace CMSWeb.Dialog
             var ctl = new PersonSearchDialogController();
             ListView1.DataSource = ctl.FetchSearchList(Parameters, false);
             ListView1.DataBind();
+            AddNew1.Enabled = User.IsInRole("Edit");
         }
 
         [System.Web.Services.WebMethod]
@@ -77,7 +77,7 @@ namespace CMSWeb.Dialog
         {
             bool AddressOK = FamilyOption.SelectedValue.ToInt()
                 != (int)PersonSearchDialogController.AddFamilyType.ExistingFamily;
-            Parameters.ValidateAddNew(ref CustomValidator1, AddressOK);
+            Parameters.ValidateAddNew(ref CustomValidator1, AddressOK, FamilyOption.SelectedValue);
             if (CustomValidator1.IsValid)
             {
                 var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == OrgId);
@@ -87,7 +87,9 @@ namespace CMSWeb.Dialog
                                    FamilyOption.SelectedValue,
                                    Parameters.Gender,
                                    (int)Person.OriginCode.Enrollment,
-                                   org.EntryPointId, org.CampusId, Parameters.Comm, Parameters.Addr);
+                                   org.EntryPointId, org.CampusId, 
+                                   Parameters.Comm, Parameters.Addr, 
+                                   Parameters.Married);
                 CustomValidator1.ErrorMessage = "must select family to add to";
             }
             if (!CustomValidator1.IsValid)
@@ -109,7 +111,7 @@ namespace CMSWeb.Dialog
                         Parameters.Gender,
                         Parameters.OrgId,
                         Parameters.Campus,
-                        false);
+                        false, Parameters.Married);
             Tag tag = null;
             if (SelectAll.Checked)
                 tag = DbUtil.Db.PopulateSpecialTag(q, DbUtil.TagTypeId_AddSelected);

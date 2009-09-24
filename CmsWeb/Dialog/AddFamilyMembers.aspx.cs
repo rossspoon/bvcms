@@ -31,7 +31,6 @@ namespace CMSWeb.Dialog
                 PersonSearchDialogController.ResetSearchTags();
             Parameters.SearchButtonClicked += new EventHandler(SearchButton_Click);
             Parameters.ClearButtonClicked += new EventHandler(Parameters_ClearButtonClicked);
-            AddNew1.Enabled = User.IsInRole("Edit");
         }
 
         void Parameters_ClearButtonClicked(object sender, EventArgs e)
@@ -45,6 +44,7 @@ namespace CMSWeb.Dialog
             var ctl = new PersonSearchDialogController();
             ListView1.DataSource = ctl.FetchSearchList(Parameters, false);
             ListView1.DataBind();
+            AddNew1.Enabled = User.IsInRole("Edit");
         }
 
         [System.Web.Services.WebMethod]
@@ -84,7 +84,7 @@ namespace CMSWeb.Dialog
         }
         protected void AddNew1_Click(object sender, EventArgs e)
         {
-            Parameters.ValidateAddNew(ref CustomValidator1, false);
+            Parameters.ValidateAddNew(ref CustomValidator1, false, "");
             if (CustomValidator1.IsValid)
             {
                 var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
@@ -94,7 +94,8 @@ namespace CMSWeb.Dialog
                                    FamilyId,
                                    Parameters.Gender,
                                    (int)Person.OriginCode.NewFamilyMember,
-                                   null, f.HeadOfHousehold.CampusId, Parameters.Comm);
+                                   null, f.HeadOfHousehold.CampusId, 
+                                   Parameters.Comm, Parameters.Married);
                 CustomValidator1.ErrorMessage = "must select family to add to";
             }
             if (!CustomValidator1.IsValid)

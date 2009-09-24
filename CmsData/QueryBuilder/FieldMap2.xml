@@ -92,7 +92,10 @@
 			Selects people based on number of days since last contacted.
 			Only selects those with any contact
 		</Field>
-		<Field Name="HasContacts" Title="Has Contacts" Type="Bit" DataValueField="IdCode">
+    <Field Name="RecentContactType" Title="Recent Contact Type" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="ContactTypeCodes" DataValueField="IdCode">
+      Selects people based on an contact type looking back a specified number of days.
+    </Field>
+    <Field Name="HasContacts" Title="Has Contacts" Type="Bit" DataValueField="IdCode">
 			Selects people who have had any contacts or not
 		</Field>
     <Field Name="ChristAsSavior" Title="Professed Christ as Savior" Type="Bit" DataValueField="IdCode">
@@ -171,7 +174,7 @@
       Codes to indicate method of joining
     </Field>
     <Field Name="OtherPreviousChurch" Title="Former Church" Type="String">
-      Church before joining Bellevue
+      Church before joining Us
     </Field>
     <Field Name="DropDate" Title="Drop Date" Type="Date">
       Date individual is dropped from church membership role.
@@ -181,7 +184,7 @@
       Codes to indicate reason for dropping record from church membership: Duplicate, Administrative, Deceased, Another SB Church, Request, Another Denomination
     </Field>
     <Field Name="OtherNewChurch" Title="New Church" Type="String">
-      Destination Church after leaving Bellevue
+      Destination Church after leaving Us
     </Field>
     <Field Name="DiscoveryClassDate" Title="Step 1 Date" Type="Date">
       Todo: explain how unknown dates work

@@ -37,12 +37,20 @@ namespace CMSWeb.Controllers
             m.ValidateModel1(ModelState);
             if (ModelState.IsValid)
             {
-                var p = m.SaveFirstPerson();
+                var count = m.FindMember();
+                if (count >= 1)
+                    ModelState.AddModelError("first", "Already Registered");
+                return View(m);
+            }
 
-                Session["familyid"] = p.FamilyId;
-                Session["lastname"] = p.LastName;
-                Session["name"] = p.Name;
-                EmailRegister(m, p);
+            if (ModelState.IsValid)
+            {
+                m.SaveFirstPerson();
+
+                Session["familyid"] = m.person.FamilyId;
+                Session["lastname"] = m.person.LastName;
+                Session["name"] = m.person.Name;
+                EmailRegister(m);
                 return RedirectToAction("Confirm");
             }
             return View(m);
@@ -64,8 +72,15 @@ namespace CMSWeb.Controllers
             m.ValidateModel2(ModelState);
             if (ModelState.IsValid)
             {
-                var p = m.SavePerson((int)Session["familyid"]);
-                EmailRegister(m, p);
+                var count = m.FindMember();
+                if (count >= 1)
+                    ModelState.AddModelError("first", "Already Registered");
+                return View(m);
+            }
+            if (ModelState.IsValid)
+            {
+                m.SavePerson(m.person.FamilyId);
+                EmailRegister(m);
                 return RedirectToAction("Confirm");
             }
             return View(m);
@@ -77,17 +92,33 @@ namespace CMSWeb.Controllers
                 return View(m);
 
             UpdateModel(m);
+            if (m.FindFamily() == 1)
+            {
+                Session["familyid"] = m.HeadOfHousehold.FamilyId;
+                Session["lastname"] = m.HeadOfHousehold.LastName;
+                Session["name"] = m.HeadOfHousehold.Name;
+                Session["campus"] = id;
+                Session["email"] = m.HeadOfHousehold.EmailAddress;
+                return RedirectToAction("Visit2");
+            }
             m.ValidateModel1(ModelState);
             if (ModelState.IsValid)
             {
-                var p = m.SaveFirstPerson() as Person;
+                var count = m.FindMember();
+                if (count >= 1)
+                    ModelState.AddModelError("first", "Already Registered");
+                return View(m);
+            }
+            if (ModelState.IsValid)
+            {
+                m.SaveFirstPerson();
 
-                Session["familyid"] = p.FamilyId;
-                Session["lastname"] = p.LastName;
-                Session["name"] = p.Name;
+                Session["familyid"] = m.person.FamilyId;
+                Session["lastname"] = m.person.LastName;
+                Session["name"] = m.person.Name;
                 Session["campus"] = id;
-                Session["email"] = p.EmailAddress;
-                EmailVisit(m, p);
+                Session["email"] = m.person.EmailAddress;
+                EmailVisit(m);
                 return RedirectToAction("ConfirmVisit");
             }
             return View("Visit", m);
@@ -107,8 +138,15 @@ namespace CMSWeb.Controllers
             m.ValidateModel2(ModelState);
             if (ModelState.IsValid)
             {
-                var p = m.SavePerson((int)Session["familyid"]);
-                EmailVisit(m, p);
+                var count = m.FindMember();
+                if (count >= 1)
+                    ModelState.AddModelError("first", "Already Registered");
+                return View(m);
+            }
+            if (ModelState.IsValid)
+            {
+                m.SavePerson(m.person.FamilyId);
+                EmailVisit(m);
                 return RedirectToAction("ConfirmVisit");
             }
             return View(m);
@@ -145,7 +183,7 @@ namespace CMSWeb.Controllers
             return View();
         }
 
-        private void EmailRegister(RegisterModel m, Person p)
+        private void EmailRegister(RegisterModel m)
         {
             var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "RegisterMessage");
             if (c == null)
@@ -156,10 +194,10 @@ namespace CMSWeb.Controllers
             }
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
-            HomeController.Email(DbUtil.Settings("RegMail"), p.Name, p.EmailAddress, c.Title, c.Body);
+            HomeController.Email(DbUtil.Settings("RegMail"), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
         }
 
-        private void EmailVisit(RegisterModel m, Person p)
+        private void EmailVisit(RegisterModel m)
         {
             string email = DbUtil.Settings("VisitMail-" + Session["campus"]);
             if (!email.HasValue())
@@ -172,6 +210,7 @@ namespace CMSWeb.Controllers
                 c.Body = "<p>Hi {first},</p><p>Thank you for visiting us.</p>";
                 c.Title = "Church Database Registration";
             }
+            var p = m.person;
             c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
             c.Body = c.Body.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());

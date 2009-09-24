@@ -98,12 +98,12 @@ Hi {first},
 I could call you by your whole name like this: {name}.
 
 *This is italics*, **this is bold** and ***this is underlined***
-This is a hyperlink: http://disciples.bellevue.org
+This is a hyperlink: http://www.twitter.com
 &gt;&gt;&gt;
 This is indented (like a block quote)
 And so is this. (the trick is the pointy brackets)
 &lt;&lt;&lt;
-This text: "Goto Bellevue" = "www.bellevue.org" is a hyperlink too.
+This text: "Goto Google" = "www.google.com" is a hyperlink too.
 -David
 </pre>
                 </div>
@@ -116,12 +116,12 @@ This text: "Goto Bellevue" = "www.bellevue.org" is a hyperlink too.
                         I could call you by your whole name like this: David Carroll.<br />
                         <br />
                         <i>This is italics</i>, <b>this is bold</b> and <u>this is underlined</u><br />
-                        This is a hyperlink: <a href="http://disciples.bellevue.org" target="_new">disciples.bellevue.org</a></p>
+                        This is a hyperlink: <a href="http://www.twiter.com" target="_new">www.twitter.com</a></p>
                     <blockquote>
                         This is indented (like a block quote)<br />
                         And so is this. (the trick is the pointy brackets)</blockquote>
                     <p>
-                        This text: <a href="http://www.bellevue.org" target="_new">Goto Bellevue</a> is
+                        This text: <a href="http://www.google.com" target="_new">Goto Google</a> is
                         a hyperlink too.<br />
                         -David</p>
                 </div>

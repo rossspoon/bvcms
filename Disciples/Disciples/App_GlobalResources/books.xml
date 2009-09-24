@@ -34,6 +34,7 @@
   </book>
   <book id="7" name="Judges">
     <abbr>Jg</abbr>
+    <abbr>Jud</abbr>
     <abbr>Judg</abbr>
   </book>
   <book id="8" name="Ruth">
@@ -51,18 +52,22 @@
   <book id="11" name="1 Kings">
     <abbr>1K</abbr>
     <abbr>1Kin</abbr>
+    <abbr>1King</abbr>
   </book>
   <book id="12" name="2 Kings">
     <abbr>2K</abbr>
     <abbr>2Kin</abbr>
+    <abbr>2King</abbr>
   </book>
   <book id="13" name="1 Chronicles">
     <abbr>1Ch</abbr>
     <abbr>1Chr</abbr>
+    <abbr>1Chron</abbr>
   </book>
   <book id="14" name="2 Chronicles">
     <abbr>2Ch</abbr>
     <abbr>2Chr</abbr>
+    <abbr>2Chron</abbr>
   </book>
   <book id="15" name="Ezra">
     <abbr>Ezr</abbr>
@@ -110,6 +115,7 @@
   <book id="26" name="Ezekiel">
     <abbr>Eze</abbr>
     <abbr>Ezk</abbr>
+    <abbr>Ezek</abbr>
   </book>
   <book id="27" name="Daniel">
     <abbr>Da</abbr>
@@ -129,10 +135,12 @@
   </book>
   <book id="31" name="Obadiah">
     <abbr>Ob</abbr>
+    <abbr>Oba</abbr>
     <abbr>Obad</abbr>
   </book>
   <book id="32" name="Jonah">
     <abbr>Jon</abbr>
+    <abbr>Jonah</abbr>
   </book>
   <book id="33" name="Micah">
     <abbr>Mi</abbr>
@@ -141,18 +149,22 @@
   <book id="34" name="Nahum">
     <abbr>Na</abbr>
     <abbr>Nah</abbr>
+    <abbr>Nahum</abbr>
   </book>
   <book id="35" name="Habakkuk">
     <abbr>Hab</abbr>
+    <abbr>Habakkuk</abbr>
   </book>
   <book id="36" name="Zephaniah">
     <abbr>Zep</abbr>
     <abbr>Zp</abbr>
     <abbr>Zeph</abbr>
+    <abbr>Zephaniah</abbr>
   </book>
   <book id="37" name="Haggai">
     <abbr>Hag</abbr>
     <abbr>Hg</abbr>
+    <abbr>Haggai</abbr>
   </book>
   <book id="38" name="Zechariah">
     <abbr>Zc</abbr>
@@ -162,6 +174,7 @@
   <book id="39" name="Malachi">
     <abbr>Mal</abbr>
     <abbr>Ml</abbr>
+    <abbr>Malachi</abbr>
   </book>
   <book id="40" name="Matthew">
     <abbr>Matt</abbr>
@@ -202,38 +215,47 @@
   <book id="49" name="Ephesians">
     <abbr>Ep</abbr>
     <abbr>Eph</abbr>
+    <abbr>Ephesians</abbr>
   </book>
   <book id="50" name="Philippians">
     <abbr>Ph</abbr>
     <abbr>Phil</abbr>
+    <abbr>Philippians</abbr>
   </book>
   <book id="51" name="Colossians">
     <abbr>Col</abbr>
+    <abbr>Colossians</abbr>
   </book>
   <book id="52" name="1 Thessalonians">
     <abbr>1Th</abbr>
     <abbr>1The</abbr>
+    <abbr>1Thess</abbr>
   </book>
   <book id="53" name="2 Thessalonians">
     <abbr>2Th</abbr>
     <abbr>2The</abbr>
+    <abbr>2Thess</abbr>
   </book>
   <book id="54" name="1 Timothy">
     <abbr>1T</abbr>
     <abbr>1Tim</abbr>
+    <abbr>1 Timothy</abbr>
   </book>
   <book id="55" name="2 Timothy">
     <abbr>2T</abbr>
     <abbr>2Tim</abbr>
+    <abbr>2 Timothy</abbr>
   </book>
   <book id="56" name="Titus">
     <abbr>T</abbr>
     <abbr>Tit</abbr>
+    <abbr>Titus</abbr>
   </book>
   <book id="57" name="Philemon">
     <abbr>Philem</abbr>
     <abbr>Phlm</abbr>
     <abbr>Phm</abbr>
+    <abbr>Philemon</abbr>
   </book>
   <book id="58" name="Hebrews">
     <abbr>He</abbr>
@@ -242,28 +264,34 @@
   <book id="59" name="James">
     <abbr>Ja</abbr>
     <abbr>Jam</abbr>
+    <abbr>James</abbr>
   </book>
   <book id="60" name="1 Peter">
     <abbr>1P</abbr>
     <abbr>1Pe</abbr>
     <abbr>1Pet</abbr>
+    <abbr>1 Peter</abbr>
   </book>
   <book id="61" name="2 Peter">
     <abbr>2P</abbr>
     <abbr>2Pe</abbr>
     <abbr>2Pet</abbr>
+    <abbr>2 Peter</abbr>
   </book>
   <book id="62" name="1 John">
     <abbr>1J</abbr>
     <abbr>1Jn</abbr>
+    <abbr>1 John</abbr>
   </book>
   <book id="63" name="2 John">
     <abbr>2J</abbr>
     <abbr>2Jn</abbr>
+    <abbr>2 John</abbr>
   </book>
   <book id="64" name="3 John">
     <abbr>3J</abbr>
     <abbr>3Jn</abbr>
+    <abbr>3 John</abbr>
   </book>
   <book id="65" name="Jude">
     <abbr>Ju</abbr>

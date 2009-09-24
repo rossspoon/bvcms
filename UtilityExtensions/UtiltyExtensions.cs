@@ -321,6 +321,8 @@ namespace UtilityExtensions
         public static bool DateValid(string dt, out DateTime dt2)
         {
             dt2 = DateTime.MinValue;
+            if (!dt.HasValue())
+                return false;
             if (Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z"))
                 if (DateTime.TryParse(dt, out dt2))
                     return true;

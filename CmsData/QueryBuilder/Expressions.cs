@@ -190,6 +190,22 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression RecentContactType(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int[] ids)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred = p =>
+                p.contactsHad.Any(a => a.contact.ContactDate >= mindt
+                    && ids.Contains(a.contact.ContactTypeId));
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+
         internal static Expression RecentAttendCount(
             ParameterExpression parm,
             int? progid,

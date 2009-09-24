@@ -45,6 +45,7 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
         CommunicationSearch.Text = "";
         DOBSearch.Text = "";
         CampusSearch.SelectedIndex = 0;
+        MarriedSearch.SelectedIndex = 0;
         OnClearButtonClicked(e);
     }
     public virtual void OnClearButtonClicked(EventArgs e)
@@ -52,59 +53,54 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
         if (ClearButtonClicked != null)
             ClearButtonClicked(null, e);
     }
-    public void ValidateAddNew(ref CustomValidator c, bool addrOK)
+    public void ValidateAddNew(ref CustomValidator c, bool addrOK, string FamilyOption)
     {
         string First, Last;
         DateTime dt;
         CmsData.Person.NameSplit(Name, out First, out Last);
         c.IsValid = false;
-        if (!First.HasValue() || !Last.HasValue())
+        if (!PersonSearchDialogController.CheckFamilySelected(FamilyOption))
+            c.ErrorMessage = "Must select a family first";
+        else if (!First.HasValue() || !Last.HasValue())
             c.ErrorMessage = "Must have a first and last name when adding";
         else if (!Util.DateValid(DOB, out dt))
             c.ErrorMessage = "Must have a valid birthday when adding";
         else if (Gender == 99)
             c.ErrorMessage = "Must have a gender when adding";
         else if (addrOK && Addr.HasValue() && !PersonSearchController.AddrRegex.IsMatch(Addr))
-            c.ErrorMessage = "Address needs to be formatted as: number street; city, state zip";
+            c.ErrorMessage = "Address needs to be formatted as: number street; city, state zip when adding";
         else if (Comm.HasValue() && Comm.GetDigits() == Comm.FmtFone())
-            c.ErrorMessage = "need valid phone number (7 or 10 digits)";
+            c.ErrorMessage = "need valid phone number (7 or 10 digits) when adding";
+        else if (Married == 0)
+            c.ErrorMessage = "need marital status when adding";
         else
             c.IsValid = true;
     }
-
-
-    #region SearchParameters Members
-
     public string DOB
     {
         get { return DOBSearch.Text; }
         set { DOBSearch.Text = value; }
     }
-
     public string Comm
     {
         get { return CommunicationSearch.Text; }
         set { CommunicationSearch.Text = value; }
     }
-
     public int OrgId
     {
         get { return OrgIdSearch.Text.ToInt(); }
         set { OrgIdSearch.Text = value.ToString(); }
     }
-
     public string Name
     {
         get { return NameSearch.Text; }
         set { NameSearch.Text = value; }
     }
-
     public string Addr
     {
         get { return AddressSearch.Text; }
         set { AddressSearch.Text = value; }
     }
-
     public int Gender
     {
         get
@@ -115,7 +111,6 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
         }
         set { GenderSearch.SelectedValue = value.ToString(); }
     }
-
     public int Member
     {
         get { return MemberSearch.SelectedValue.ToInt(); }
@@ -126,7 +121,11 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
         get { return CampusSearch.SelectedValue.ToInt(); }
         set { CampusSearch.SelectedValue = value.ToString(); }
     }
-
+    public int Married
+    {
+        get { return MarriedSearch.SelectedValue.ToInt(); }
+        set { MarriedSearch.SelectedValue = value.ToString(); }
+    }
     public int Tag
     {
         get { return TagSearch.SelectedValue.ToInt(); }
@@ -137,6 +136,4 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
                 item.Selected = true;
         }
     }
-
-    #endregion
 }

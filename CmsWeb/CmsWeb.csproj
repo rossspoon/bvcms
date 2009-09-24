@@ -115,20 +115,6 @@
     <Compile Include="Dialog\AddTagShareds.aspx.designer.cs">
       <DependentUpon>AddTagShareds.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\AddTaskAbout.aspx.cs">
-      <DependentUpon>AddTaskAbout.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddTaskAbout.aspx.designer.cs">
-      <DependentUpon>AddTaskAbout.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddTaskDelegate.aspx.cs">
-      <DependentUpon>AddTaskDelegate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddTaskDelegate.aspx.designer.cs">
-      <DependentUpon>AddTaskDelegate.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Dialog\AddVisitor.aspx.cs">
       <DependentUpon>AddVisitor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -805,8 +791,6 @@
     <Content Include="Dialog\AddFamilyMembers.aspx" />
     <Content Include="Dialog\AddMember.aspx" />
     <Content Include="Dialog\AddTagShareds.aspx" />
-    <Content Include="Dialog\AddTaskAbout.aspx" />
-    <Content Include="Dialog\AddTaskDelegate.aspx" />
     <Content Include="Dialog\AddVisitor.aspx" />
     <Content Include="App_Offline1.htm" />
     <Content Include="AttendStrDetail.aspx" />

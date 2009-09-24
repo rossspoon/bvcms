@@ -31,6 +31,22 @@ namespace CMSWeb.Models
         public int? married { get; set; }
         public int? campusid { get; set; }
         public int? org { get; set; }
+        private Person _person;
+        public Person person
+        {
+            get
+            {
+                return _person;
+            }
+        }
+        private Person _headofhousehold;
+        public Person HeadOfHousehold
+        {
+            get
+            {
+                return _headofhousehold;
+            }
+        }
 
         public string PrepareSummaryText()
         {
@@ -93,30 +109,52 @@ namespace CMSWeb.Models
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
-        public IQueryable<CmsData.Person> FindMember()
+        public int FindMember()
         {
             first = first.Trim();
             lastname = lastname.Trim();
             homephone = Util.GetDigits(homephone);
+            cellphone = cellphone.GetDigits();
             var q = from p in DbUtil.Db.People
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == lastname || p.MaidenName == lastname)
                     where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    where p.GenderId == gender
+                    where p.CellPhone.Contains(homephone)
+                            || p.Family.HomePhone.Contains(homephone)
+                            || p.Family.HomePhone.Contains(cellphone)
                     select p;
             var count = q.Count();
             if (count > 1)
                 q = from p in q
-                    where p.CellPhone.Contains(homephone)
-                            || p.WorkPhone.Contains(homephone)
-                            || p.Family.HomePhone.Contains(homephone)
-                            || p.CellPhone.Contains(cellphone)
-                            || p.WorkPhone.Contains(cellphone)
-                            || p.Family.HomePhone.Contains(cellphone)
                     select p;
             count = q.Count();
 
-            return q;
+            _person = null;
+            if (count == 1)
+                _person = q.Single();
+            return count;
+        }
+        public int FindFamily()
+        {
+            var ph = Util.GetDigits(homephone).PadLeft(10, '0');
+            var p7 = ph.Substring(3);
+            var ac = ph.Substring(0, 3);
+
+            if (lastname.HasValue())
+                lastname = lastname.Trim();
+            var q = from f in DbUtil.Db.Families
+                    where f.HeadOfHousehold.LastName == lastname
+                    where f.People.Any(p => p.CellPhoneLU == p7)
+                            || f.HomePhoneLU == p7
+                    select f.HeadOfHousehold;
+            var count = q.Count();
+            _headofhousehold = null;
+            if (count >= 1)
+            {
+                _headofhousehold = q.First();
+                return 1;
+            }
+            return 0;
         }
 
         public void ValidateModel1(ModelStateDictionary ModelState)
@@ -141,18 +179,21 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("dob", "valid birth date required");
 
             if (!gender.HasValue)
-                ModelState.AddModelError("gender2", "gender required");
+                ModelState.AddModelError("gender", "gender required");
             if ((married ?? 0) == 0)
-                ModelState.AddModelError("married2", "select marital status");
+                ModelState.AddModelError("married", "select marital status");
             var d = cellphone.GetDigits().Length;
-            if (cellphone.HasValue() && (d != 7 && d != 10))
-                ModelState.AddModelError("cellphone", "7 or 10 digits");
+            if (cellphone.HasValue() && d != 10)
+                ModelState.AddModelError("cellphone", "need 10 digits");
+            d = homephone.GetDigits().Length;
+            if (homephone.HasValue() && d != 10)
+                ModelState.AddModelError("homephone", "need 10 digits");
             if (!Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (org == 0)
                 ModelState.AddModelError("org", "Please choose an organization");
         }
-        public Person SaveFirstPerson()
+        public void SaveFirstPerson()
         {
             var f = new Family
             {
@@ -177,9 +218,9 @@ namespace CMSWeb.Models
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);
-            return p;
+            _person = p;
         }
-        public Person SavePerson(int FamilyId)
+        public void SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var p = Person.Add(f, 10, 
@@ -198,7 +239,7 @@ namespace CMSWeb.Models
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);
-            return p;
+            _person = p;
         }
         public void RecordAttend(int PeopleId, int OrgId)
         {

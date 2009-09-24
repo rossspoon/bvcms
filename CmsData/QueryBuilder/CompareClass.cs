@@ -293,6 +293,11 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecentContactType:
+                    return Expressions.RecentContactType(parm,
+                               c.Days,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.RecentAttendCount:
                     return Expressions.RecentAttendCount(parm,
                                c.Program,

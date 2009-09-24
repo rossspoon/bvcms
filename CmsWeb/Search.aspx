@@ -34,6 +34,8 @@
             <asp:ControlParameter ControlID="Parameters" Name="orgid" PropertyName="OrgId" Type="Int32" />
             <asp:ControlParameter ControlID="Parameters" Name="campus" PropertyName="Campus" Type="Int32" />
             <asp:Parameter Name="usersonly" Type="Boolean" DefaultValue="false" />
+            <asp:ControlParameter ControlID="Parameters" Name="marital" PropertyName="Married"
+                    Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>
