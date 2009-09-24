@@ -637,9 +637,9 @@ namespace CMSPresenter
             return list;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<CodeValueItem> MaritalStatusCodes0()
+        public List<CodeValueItem> MaritalStatusCodes99()
         {
-            return MaritalStatusCodes().AddNotSpecified();
+            return MaritalStatusCodes().AddNotSpecified(99);
         }
 
         private static CodeValueItem[] top = 

@@ -61,7 +61,7 @@
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Register" /></td>
                 </tr>
-                <tr><td colspan="3"><a href="/Register/">new registration</a></td></tr>
+                <tr><td colspan="3"><a href="/Register/Visit/<%=Model.campusid %>">new registration</a></td></tr>
                 </table>
             </fieldset>
         </div>

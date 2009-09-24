@@ -217,7 +217,7 @@ namespace CMSPresenter
                 query = query.Where(p => p.CampusId == campus);
             if (gender != 99)
                 query = query.Where(p => p.GenderId == gender);
-            if (marital > 0)
+            if (marital != 99)
                 query = query.Where(p => p.MaritalStatusId == marital);
 
             return query;

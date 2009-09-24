@@ -19,7 +19,8 @@
     </script>
     <h2>Church Visit Registration</h2>
     <p>
-        Use the form below to register a visit in our Church Database. 
+        Use the form below to register a visit in our Church Database.<br />
+        <a href='/Register/Add/<%=Model.campusid %>'>Add to an existing family</a>
     </p>
 
     <% using (Html.BeginForm()) { %>

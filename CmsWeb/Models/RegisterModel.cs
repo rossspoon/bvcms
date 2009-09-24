@@ -193,6 +193,14 @@ namespace CMSWeb.Models
             if (org == 0)
                 ModelState.AddModelError("org", "Please choose an organization");
         }
+        public void ValidateModel3(ModelStateDictionary ModelState)
+        {
+            if (!lastname.HasValue())
+                ModelState.AddModelError("lastname", "last name required");
+            var d = homephone.GetDigits().Length;
+            if (d != 10)
+                ModelState.AddModelError("homephone", "need 10 digits");
+        }
         public void SaveFirstPerson()
         {
             var f = new Family

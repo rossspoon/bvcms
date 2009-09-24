@@ -96,5 +96,5 @@
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ODS_Campus" runat="server" SelectMethod="AllCampuses0"
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-<asp:ObjectDataSource ID="MaritalCodes" runat="server" SelectMethod="MaritalStatusCodes0"
+<asp:ObjectDataSource ID="MaritalCodes" runat="server" SelectMethod="MaritalStatusCodes99"
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

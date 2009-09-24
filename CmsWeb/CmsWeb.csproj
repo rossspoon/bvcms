@@ -1603,6 +1603,7 @@
     <None Include="fckeditor\fckeditor_php5.php" />
     <None Include="fckeditor\fckutils.cfm" />
     <Content Include="Views\CheckIn\Multiple.aspx" />
+    <Content Include="Views\Register\Add.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Site.Master" />

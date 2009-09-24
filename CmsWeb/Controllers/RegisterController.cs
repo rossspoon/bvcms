@@ -74,12 +74,14 @@ namespace CMSWeb.Controllers
             {
                 var count = m.FindMember();
                 if (count >= 1)
+                {
                     ModelState.AddModelError("first", "Already Registered");
-                return View(m);
+                    return View(m);
+                }
             }
             if (ModelState.IsValid)
             {
-                m.SavePerson(m.person.FamilyId);
+                m.SavePerson(Session["familyid"].ToInt());
                 EmailRegister(m);
                 return RedirectToAction("Confirm");
             }
@@ -123,6 +125,28 @@ namespace CMSWeb.Controllers
             }
             return View("Visit", m);
         }
+        public ActionResult Add(int? id)
+        {
+            var m = new Models.RegisterModel { campusid = id };
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View(m);
+
+            UpdateModel(m);
+            m.ValidateModel3(ModelState);
+            if (!ModelState.IsValid)
+                return View(m);
+            if (m.FindFamily() == 1)
+            {
+                Session["familyid"] = m.HeadOfHousehold.FamilyId;
+                Session["lastname"] = m.HeadOfHousehold.LastName;
+                Session["name"] = m.HeadOfHousehold.Name;
+                Session["campus"] = m.campusid;
+                Session["email"] = m.HeadOfHousehold.EmailAddress;
+                return RedirectToAction("Visit2");
+            }
+            ModelState.AddModelError("lastname", "Family not found");
+            return View(m);
+        }
         public ActionResult Visit2()
         {
             if (Session["familyid"] == null)
@@ -140,12 +164,14 @@ namespace CMSWeb.Controllers
             {
                 var count = m.FindMember();
                 if (count >= 1)
+                {
                     ModelState.AddModelError("first", "Already Registered");
-                return View(m);
+                    return View(m);
+                }
             }
             if (ModelState.IsValid)
             {
-                m.SavePerson(m.person.FamilyId);
+                m.SavePerson(Session["familyid"].ToInt());
                 EmailVisit(m);
                 return RedirectToAction("ConfirmVisit");
             }
