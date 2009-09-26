@@ -63,6 +63,8 @@ namespace CMSWeb2
 
             routes.RouteExistingFiles = true;
 
+            CMSWebCommon.Routes.RegisterRoutes(routes);
+            CMSRegCustom.Routes.RegisterRoutes(routes);
             CMSWebSetup.Routes.RegisterRoutes(routes);
 
             routes.MapAreaRoute("Task", "Task_Default", 

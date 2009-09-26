@@ -109,8 +109,8 @@ namespace CMSWeb.Controllers
             DbUtil.Db.SubmitChanges();
             m.regid = reg.Id;
 
-            HomeController.Email(m.email,
-                    "", DbUtil.Settings("RecMail"), "{0} Registration".Fmt(m.division.Name),
+            Util.Email2(m.email,
+                    DbUtil.Settings("RecMail"), "{0} Registration".Fmt(m.division.Name),
 @"{0}({1}) has registered for {2}: {3} (check cms to confirm feepaid)</p>".Fmt(
 m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
 
@@ -141,7 +141,7 @@ m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.Orga
                 DbUtil.Db.SubmitChanges();
             }
 
-            HomeController.Email(DbUtil.Settings("RecMail"),
+            Util.Email(DbUtil.Settings("RecMail"),
     "", m.registration.Email, "Recreation Registration",
 @"<p>Thank you for registering for {0}: {1}
 You will receive another email with team information once they have been established.</p>

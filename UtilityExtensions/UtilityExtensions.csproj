@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Emailer.cs" />
     <Compile Include="GenericConfigCollection.cs" />
     <Compile Include="ObjectDumper.cs" />
     <Compile Include="StringExtensions.cs" />

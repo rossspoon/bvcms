@@ -4,15 +4,11 @@
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
-
         <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-
         <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
-
         <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-
         <script src="/Scripts/Task.js" type="text/javascript"></script>
-
+        <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     </div>
     <form id="form" action="/Task/List" method="get">
     <%=Html.Hidden("SortTask")%>
@@ -113,5 +109,7 @@
 <%=Html.Hidden("Sort",Model.Sort)%>
     </form>
     <div id="dialogbox" title="Search Contacts" style="width: 560px; overflow: scroll">
+    </div>
+    <div id="SearchPeopleDialog" title="Search People" style="width: 560px; overflow: scroll">
     </div>
 </asp:Content>

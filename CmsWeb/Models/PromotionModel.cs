@@ -242,7 +242,7 @@ namespace CMSWeb.Models
                     pc.Drop();
                     DbUtil.Db.SubmitChanges();
                 }
-                OrganizationController.InsertOrgMembers(
+                OrganizationMember.InsertOrgMembers(
                     t.OrganizationId,
                     pid,
                     (int)OrganizationMember.MemberTypeCode.Member,

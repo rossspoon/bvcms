@@ -98,7 +98,7 @@ namespace CMSWeb
                     d = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
                     break;
                 case "LR":
-                    d = CMSWeb.Models.LoveRespectModel.LoveRespectList(qid.Value, maxExcelRows);
+                    d = CMSRegCustom.Models.LoveRespectModel.LoveRespectList(qid.Value, maxExcelRows);
                     break;
             }
             var dg = new DataGrid();

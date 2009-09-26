@@ -62,7 +62,7 @@ namespace CMSWeb.UserControls
             {
                 var pid = e.CommandArgument.ToInt();
                 var orgid = Page.QueryString<int>("id");
-                OrganizationController.InsertOrgMembers(orgid, pid, 
+                OrganizationMember.InsertOrgMembers(orgid, pid, 
                     (int)OrganizationMember.MemberTypeCode.Member, Util.Now.Date, null, false);
                 if (RebindMemberGrids != null)
                     RebindMemberGrids(this, e);

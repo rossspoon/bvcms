@@ -56,36 +56,6 @@ namespace CMSWeb.Controllers
    //         res.Content = "<html><body>done</body></html>";
    //         return res;
    //     }
-        public static void Email(string from, string name, string addr, string subject, string message)
-        {
-            var InDebug = false;
-#if DEBUG
-            InDebug = false;
-#endif
-            if (InDebug)
-                return;
-            var smtp = new SmtpClient();
-            Email(smtp, from, name, addr, subject, message);
-        }
-        public static void Email(SmtpClient smtp, string from, string name, string addr, string subject, string message)
-        {
-            var InDebug = false;
-#if DEBUG
-            InDebug = true;
-#endif
-            if (InDebug)
-                return;
-            var fr = new MailAddress(from);
-            var ma = Util.TryGetMailAddress(addr, name);
-            if (ma == null)
-                return;
-            var msg = new MailMessage(fr, ma);
-            msg.Subject = subject;
-            msg.Body = "<html><body>\n" + message + "\n</body></html>\n";
-            msg.BodyEncoding = System.Text.Encoding.UTF8;
-            msg.IsBodyHtml = true;
-            smtp.Send(msg);
-        }
     }
 }
 

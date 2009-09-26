@@ -30,7 +30,7 @@ namespace CMSWeb
             get
             {
                 if (_From == null)
-                    _From = new MailAddress(DbUtil.SystemEmailAddress);
+                    _From = Util.FirstAddress(DbUtil.SystemEmailAddress);
                 return _From;
             }
             set
@@ -123,7 +123,7 @@ namespace CMSWeb
             {
                 if (!p.EmailAddress.HasValue())
                     continue;
-                try
+                if(Util.ValidEmail(p.EmailAddress))
                 {
                     var to = new MailAddress(p.EmailAddress, p.Name);
                     var msg = new MailMessage(From, to);
@@ -144,10 +144,10 @@ namespace CMSWeb
                     smtp.Send(msg);
                     sb.AppendFormat("\"{1}\" &lt;{0}&gt; ({2})<br />\n".Fmt(p.EmailAddress, p.Name, p.PeopleId));
                 }
-                catch (Exception ex)
+                else
                 {
                     var msg = new MailMessage(From, From);
-                    msg.Subject = ex.Message;
+                    msg.Subject = "not a valid email address";
                     msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
                     msg.IsBodyHtml = true;
                     if (i % 20 == 0)
@@ -166,7 +166,9 @@ namespace CMSWeb
             mr.IsBodyHtml = true;
             smtp.Send(mr);
 
-            mr = new MailMessage(From, new MailAddress(WebConfigurationManager.AppSettings["senderrorsto"]));
+            mr = new MailMessage();
+            mr.From = From;
+            mr.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
             mr.Subject = "sent emails";
             mr.Body = sb.ToString();
             mr.IsBodyHtml = true;
@@ -178,7 +180,7 @@ namespace CMSWeb
             Message = message;
 
             var smtp = new SmtpClient();
-            try
+            if(Util.ValidEmail(p.EmailAddress))
             {
                 var to = new MailAddress(p.EmailAddress, p.Name);
                 var msg = new MailMessage(From, to);
@@ -190,10 +192,10 @@ namespace CMSWeb
                 msg.IsBodyHtml = true;
                 smtp.Send(msg);
             }
-            catch (Exception ex)
+            else
             {
                 var msg = new MailMessage(From, From);
-                msg.Subject = ex.Message;
+                msg.Subject = "bad email address";
                 msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
                 msg.IsBodyHtml = true;
                 smtp.Send(msg);

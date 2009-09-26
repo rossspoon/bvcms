@@ -88,8 +88,7 @@ namespace CMSWeb
 		{
 			if (EditUpdateButton1.Updating)
 			{
-				var ctl = new AttendController();
-				var rollsheet = ctl.RollSheetAttendees(meeting.MeetingId).ToList();
+				var rollsheet = AttendController.RollSheetAttendees(meeting.MeetingId).ToList();
 				var attended = from i in ListView1.Items
 							   let ck = i.FindControl("ck") as CheckBox
 							   where ck.Checked
@@ -109,7 +108,7 @@ namespace CMSWeb
 				var errors = new List<string>();
 				foreach (var a in qlist)
 				{
-					var s = ctl.RecordAttendance(a.PeopleId, meeting.MeetingId, a.attended);
+					var s = Attend.RecordAttendance(a.PeopleId, meeting.MeetingId, a.attended);
 					if (s.HasValue())
 						errors.Add(s);
 				}
@@ -121,8 +120,7 @@ namespace CMSWeb
 					AlreadyAttendErrors.Text = sb.ToString();
 					AlreadyAttendErrors.Visible = true;
 				}
-				if (meeting.GroupMeetingFlag)
-					DbUtil.Db.SubmitChanges();
+        		DbUtil.Db.SubmitChanges();
 				DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
 				DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, meeting);
 				if (meeting.NumPresent > 1000)

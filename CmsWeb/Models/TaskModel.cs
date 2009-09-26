@@ -323,9 +323,35 @@ namespace CMSWeb.Models
                             TaskLink(task.Description, task.Id), task.AboutName, sb.ToString()));
             }
         }
+        public class TasksAbout
+        {
+            public string Desc { get; set; }
+            public string AssignedTo { get; set; }
+            public DateTime AssignedDt { get; set; }
+            public string link { get; set; }
+        }
+        public IEnumerable<TasksAbout> TasksAboutList(int pid)
+        {
+            var q2 = from t in DbUtil.Db.Tasks
+                     where t.StatusId != (int)Task.StatusCode.Complete
+                     where t.WhoId == pid
+                     select new TasksAbout
+                     {
+                         Desc = t.Description,
+                         AssignedTo = t.CoOwnerId != null? t.CoOwner.Name : t.Owner.Name,
+                         AssignedDt = t.CreatedOn,
+                         link = TaskLink0(t.Id)
+                     };
+            return q2;
+        }
+
+        private static string TaskLink0(int id)
+        {
+            return "/Task/List/{0}#detail".Fmt(id);
+        }
         private static string TaskLink(string text, int id)
         {
-            return "<a href='{0}/Task/List/{1}#detail'>{2}</a>".Fmt(DbUtil.TaskHost, id, text);
+            return "<a href='{0}{1}'>{2}</a>".Fmt(DbUtil.TaskHost, TaskLink0(id), text);
         }
 
         public static void ChangeTask(StringBuilder sb, Task task, string field, object value)
@@ -764,25 +790,6 @@ namespace CMSWeb.Models
         {
             foreach (var id in list)
                 ArchiveTask(id, notify);
-        }
-        public static void AddNewPersonTask(int ownerid, int coownerid, int newpersonid)
-        {
-            var Db = DbUtil.Db;
-            var task = new Task
-            {
-                ListId = InBoxId(ownerid),
-                OwnerId = ownerid,
-                Description = "New Person Data Entry",
-                CoOwnerId = coownerid,
-                CoListId = InBoxId(coownerid),
-                WhoId = newpersonid,
-                StatusId = (int)Task.StatusCode.Active,
-            };
-            Db.Tasks.InsertOnSubmit(task);
-            Db.SubmitChanges();
-            //notify.EmailNotification(task.CoOwner, task.Owner,
-            //     "New Person Added by " + task.CoOwner.Name,
-            //     TaskLink(task.Description, task.Id) + "<br/>\n" + task.AboutName);
         }
         public string MyListId()
         {

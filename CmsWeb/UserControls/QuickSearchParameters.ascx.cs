@@ -63,16 +63,16 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
             c.ErrorMessage = "Must select a family first";
         else if (!First.HasValue() || !Last.HasValue())
             c.ErrorMessage = "Must have a first and last name when adding";
-        else if (!Util.DateValid(DOB, out dt))
-            c.ErrorMessage = "Must have a valid birthday when adding";
+        else if (DOB != "na" && !Util.DateValid(DOB, out dt))
+            c.ErrorMessage = "Must have a valid birthday when adding or \"na\"";
         else if (Gender == 99)
             c.ErrorMessage = "Must have a gender when adding";
         else if (addrOK && Addr.HasValue() && !PersonSearchController.AddrRegex.IsMatch(Addr))
             c.ErrorMessage = "Address needs to be formatted as: number street; city, state zip when adding";
         else if (Comm.HasValue() && Comm.GetDigits() == Comm.FmtFone())
             c.ErrorMessage = "need valid phone number (7 or 10 digits) when adding";
-        else if (Married == 0)
-            c.ErrorMessage = "need marital status when adding";
+        else if (Married == 99)
+            c.ErrorMessage = "need to choose a marital status";
         else
             c.IsValid = true;
     }

@@ -147,8 +147,7 @@ namespace CMSWeb.Controllers
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
             }
-            var ctl = new CMSPresenter.AttendController();
-            ctl.RecordAttendance(PeopleId, meeting.MeetingId, Present);
+            Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
 
             var r = new ContentResult();

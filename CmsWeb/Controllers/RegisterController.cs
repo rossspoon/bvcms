@@ -8,6 +8,7 @@ using CmsData;
 using System.Configuration;
 using CMSWeb.Models;
 using UtilityExtensions;
+using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
@@ -39,8 +40,10 @@ namespace CMSWeb.Controllers
             {
                 var count = m.FindMember();
                 if (count >= 1)
+                {
                     ModelState.AddModelError("first", "Already Registered");
-                return View(m);
+                    return View(m);
+                }
             }
 
             if (ModelState.IsValid)
@@ -108,8 +111,10 @@ namespace CMSWeb.Controllers
             {
                 var count = m.FindMember();
                 if (count >= 1)
+                {
                     ModelState.AddModelError("first", "Already Registered");
-                return View(m);
+                    return View(m);
+                }
             }
             if (ModelState.IsValid)
             {
@@ -220,7 +225,10 @@ namespace CMSWeb.Controllers
             }
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
-            HomeController.Email(DbUtil.Settings("RegMail"), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
+            var smtp = new SmtpClient();
+            Util.Email(smtp, DbUtil.Settings("RegMail"), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
+            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail"), "new registration in cms", 
+                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
         private void EmailVisit(RegisterModel m)
@@ -241,7 +249,10 @@ namespace CMSWeb.Controllers
             c.Body = c.Body.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
-            HomeController.Email(email, p.Name, p.EmailAddress, c.Title, c.Body);
+            var smtp = new SmtpClient();
+            Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
+            Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms",
+                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
     }
 }

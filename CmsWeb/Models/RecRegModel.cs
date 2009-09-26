@@ -260,7 +260,7 @@ namespace CMSWeb.Models
             var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                 om.OrganizationId == orgid && om.PeopleId == person.PeopleId);
             if (member == null)
-                OrganizationController.InsertOrgMembers(
+                OrganizationMember.InsertOrgMembers(
                     orgid.Value,
                     person.PeopleId,
                     (int)OrganizationMember.MemberTypeCode.Member,

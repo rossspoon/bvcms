@@ -1193,6 +1193,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.GridView ContactsMadeGrid;
         
         /// <summary>
+        /// PendingContacts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView PendingContacts;
+        
+        /// <summary>
         /// ContactedListGrid control.
         /// </summary>
         /// <remarks>
@@ -1290,6 +1299,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ContactedList;
+        
+        /// <summary>
+        /// TaskList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource TaskList;
         
         /// <summary>
         /// ContactsMadeList control.

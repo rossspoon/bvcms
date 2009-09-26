@@ -271,9 +271,9 @@ namespace CMSPresenter
             if (famtype == AddFamilyType.Couple)
             {
                 p1 = Person.Add(fam, 10, tag, name, dob, true, 1, OriginId, EntryPointId); // male
-                p1.MaritalStatusId = MaritalStatusId;
+                p1.MaritalStatusId = (int)Person.MaritalStatusCode.Married;
                 p2 = Person.Add(fam, 10, tag, name, dob, true, 2, OriginId, EntryPointId); // female
-                p2.MaritalStatusId = MaritalStatusId;
+                p2.MaritalStatusId = (int)Person.MaritalStatusCode.Married; ;
                 p2.CampusId = CampusId;
             }
             else

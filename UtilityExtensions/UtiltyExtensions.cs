@@ -746,27 +746,15 @@ namespace UtilityExtensions
         }
         public static MailAddress TryGetMailAddress(string address, string name)
         {
-            try
-            {
-                var m = new MailAddress(address, name);
-                return m;
-            }
-            catch
-            {
+            if (ValidEmail(address))
+                return new MailAddress(address, name);
+            else
                 return null;
-            }
         }
         public static bool ValidEmail(string email)
         {
-            try
-            {
-                var a = new MailAddress(email);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var re = new Regex(@"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
+            return re.IsMatch(email);
         }
     }
     public class EventArg<T> : EventArgs

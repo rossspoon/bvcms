@@ -52,20 +52,23 @@ namespace CMSWeb.Models
         {
             var sb = new StringBuilder();
             sb.Append("<table>\n");
-            sb.AppendFormat("<tr><td>First</td><td>{0}</td></tr>\n", first);
-            sb.AppendFormat("<tr><td>Nick</td><td>{0}</td></tr>\n", nickname);
-            sb.AppendFormat("<tr><td>Last</td><td>{0}</td></tr>\n", lastname);
-            sb.AppendFormat("<tr><td>DOB</td><td>{0:d}</td></tr>\n", DOB);
-            sb.AppendFormat("<tr><td>Gender</td><td>{0}</td></tr>\n", gender == 1 ? "M" : "F");
-            sb.AppendFormat("<tr><td>Maried</td><td>{0}</td></tr>\n", married);
-            sb.AppendFormat("<tr><td>Addr1</td><td>{0}</td></tr>\n", address1);
-            sb.AppendFormat("<tr><td>Addr2</td><td>{0}</td></tr>\n", address2);
-            sb.AppendFormat("<tr><td>City</td><td>{0}</td></tr>\n", city);
-            sb.AppendFormat("<tr><td>State</td><td>{0}</td></tr>\n", state);
-            sb.AppendFormat("<tr><td>Zip</td><td>{0}</td></tr>\n", zip);
-            sb.AppendFormat("<tr><td>HomePhone</td><td>{0}</td></tr>\n", homephone.FmtFone());
-            sb.AppendFormat("<tr><td>CellPhone</td><td>{0}</td></tr>\n", cellphone.FmtFone());
-            sb.AppendFormat("<tr><td>Email</td><td>{0}</td></tr>\n", email);
+            sb.AppendFormat("<tr><td>First</td><td>{0}</td></tr>\n", person.FirstName);
+            sb.AppendFormat("<tr><td>Nick</td><td>{0}</td></tr>\n", person.NickName);
+            sb.AppendFormat("<tr><td>Last</td><td>{0}</td></tr>\n", person.LastName);
+            sb.AppendFormat("<tr><td>DOB</td><td>{0:d}</td></tr>\n", person.GetBirthdate().Value);
+            sb.AppendFormat("<tr><td>Gender</td><td>{0}</td></tr>\n", person.GenderId == 1 ? "M" : "F");
+            var MarStatus = (from ms in MaritalStatus()
+                             where ms.Value == person.MaritalStatusId.ToString()
+                             select ms.Text).Single();
+            sb.AppendFormat("<tr><td>Marital Status</td><td>{0}</td></tr>\n", MarStatus);
+            sb.AppendFormat("<tr><td>Addr1</td><td>{0}</td></tr>\n", person.PrimaryAddress);
+            sb.AppendFormat("<tr><td>Addr2</td><td>{0}</td></tr>\n", person.PrimaryAddress2);
+            sb.AppendFormat("<tr><td>City</td><td>{0}</td></tr>\n", person.PrimaryCity);
+            sb.AppendFormat("<tr><td>State</td><td>{0}</td></tr>\n", person.StateCode);
+            sb.AppendFormat("<tr><td>Zip</td><td>{0}</td></tr>\n", person.ZipCode.FmtZip());
+            sb.AppendFormat("<tr><td>HomePhone</td><td>{0}</td></tr>\n", person.HomePhone.FmtFone());
+            sb.AppendFormat("<tr><td>CellPhone</td><td>{0}</td></tr>\n", person.CellPhone.FmtFone());
+            sb.AppendFormat("<tr><td>Email</td><td>{0}</td></tr>\n", person.EmailAddress);
             sb.Append("</table>\n");
 
             return sb.ToString();
@@ -276,8 +279,7 @@ namespace CMSWeb.Models
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
             }
-            var ctl = new CMSPresenter.AttendController();
-            ctl.RecordAttendance(PeopleId, meeting.MeetingId, true);
+            Attend.RecordAttendance(PeopleId, meeting.MeetingId, true);
             DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
         }
     }

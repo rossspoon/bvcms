@@ -213,7 +213,10 @@ namespace CmsData
         public int GetAge()
         {
             int years;
-            var dt = GetBirthdate().Value;
+            var dt0 = GetBirthdate();
+            if (!dt0.HasValue)
+                return -1;
+            var dt = dt0.Value;
             years = DateTime.Now.Year - dt.Year;
             if (DateTime.Now.Month < dt.Month || (DateTime.Now.Month == dt.Month && DateTime.Now.Day < dt.Day))
                 years--;

@@ -55,10 +55,9 @@ namespace CMSWeb.Dialog
         protected void AddSelectedVisitors_Click(object sender, EventArgs e)
         {
             string addSelected = "self.parent.AddSelected();";
-            var ctl = new AttendController();
             foreach (var p in Search.SelectedPeople())
             {
-                var r = ctl.RecordAttendance(p.PeopleId, MeetingId, true);
+                var r = Attend.RecordAttendance(p.PeopleId, MeetingId, true);
                 if (r.HasValue())
                 {
                     addSelected = "self.parent.AddSelected('{0}');".Fmt(r);

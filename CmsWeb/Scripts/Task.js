@@ -1,5 +1,6 @@
 ﻿$(function() {
     SearchClicked = RefreshList;
+    $('#SearchPeopleDialog').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     $('#tabs').tabs();
     $("#tabs > ul > li > a").click(function() {
         var x = $(this).attr("href").substring(1);
@@ -10,7 +11,7 @@
     StripeList();
     var c = $.cookie("tasklast");
     $('#tasks > thead a.sortable').click(function(ev) {
-        $("#tasks #Sort").val($(this).text());
+        $("#Sort").val($(this).text());
         RefreshList();
     });
 });
@@ -125,12 +126,14 @@ function ShowDetail(id) {
             $('#r' + drid).html(a[0]);
             $('#r' + drid).removeClass("detailrow");
             $('#r' + id).addClass("detailrow").html(a[1]);
+            BindSearchPeople();
         });
     }
     else {
         $.post('/Task/Detail/' + id, function(ret) {
             $('#r' + id).addClass("detailrow");
             $('#r' + id).html(ret);
+            BindSearchPeople();
         });
     }
 }
@@ -200,25 +203,6 @@ function SearchContacts() {
     });
     $('#dialogbox').dialog("open");
 }
-function SearchPeople(SelectFunc) {
-    SelectPerson = SelectFunc;
-    SearchClicked = SearchPeopleClicked;
-    ChangePage = ChangePeoplePage;
-    $('#dialogbox').dialog("option", "title", "Select Person");
-    $('#dialogbox').load("/Task/SearchPeople/", null, function() {
-        queryString = $('#searchform').formSerialize2();
-        $("#people").initPager();
-        $('#people > thead a.sortable').click(function(ev) {
-            $("#people #Sort").val($(ev.target).text());
-            queryString = $('#searchform').formSerialize2();
-            $.post('/Task/SearchPeople/0', queryString, function(ret) {
-                $('#people > tbody').html(ret).ready(function() { $("#people").initPager(); });
-            });
-            return false;
-        });
-    });
-    $('#dialogbox').dialog("open");
-}
 function AddSourceContact(contactid) {
     var taskid = $('#TaskId').val();
     $.post('/Task/AddSourceContact/' + taskid + "?contactid=" + contactid, null, function(ret) {
@@ -232,21 +216,32 @@ function CompleteWithContact() {
         window.location = "/Contact.aspx?edit=1&id=" + ret.ContactId;
     }, "json");
 }
+function BindSearchPeople() {
+    $('#changeowner').click(function(ev) {
+        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
+            ActOnPerson('/Task/ChangeOwner/', peopleid);
+        });
+        return false;
+    });
+    $('#delegate').click(function(ev) {
+        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
+            ActOnPerson('/Task/Delegate/', peopleid);
+        });
+        return false;
+    });
+    $('#changeabout').click(function(ev) {
+        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
+            ActOnPerson('/Task/ChangeAbout/', peopleid);
+        });
+        return false;
+    });
+}
 function ActOnPerson(action, peopleid) {
     var taskid = $('#TaskId').val();
     $.post(action + taskid + "?peopleid=" + peopleid, null, function(ret) {
         $('#r' + taskid).html(ret);
     });
     $('#dialogbox').dialog("close");
-}
-function ChangeOwnerPerson(peopleid) {
-    ActOnPerson('/Task/ChangeOwner/', peopleid);
-}
-function AddDelegatePerson(peopleid) {
-    ActOnPerson('/Task/Delegate/', peopleid);
-}
-function AddAboutPerson(peopleid) {
-    ActOnPerson('/Task/ChangeAbout/', peopleid);
 }
 function ChangeContactPage(page, pager) {
     $.post('/Task/SearchContact/' + page, queryString, function(ret) {
@@ -255,7 +250,7 @@ function ChangeContactPage(page, pager) {
     return false;
 }
 function ChangePeoplePage(page, pager) {
-    $.post('/Task/SearchPeople/' + page, queryString, function(ret) {
+    $.post('/SearchPeople/' + page, queryString, function(ret) {
         $('#people > tbody').html(ret);
     });
     return false;
@@ -277,13 +272,6 @@ function SearchContactClicked() {
     queryString = $('#searchform').formSerialize2();
     $.post('/Task/SearchContact/0', queryString, function(ret) {
         $('#contacts > tbody').html(ret).ready(function() { $("#contacts").initPager(); });
-    });
-    return false;
-}
-function SearchPeopleClicked() {
-    queryString = $('#searchform').formSerialize2();
-    $.post('/Task/SearchPeople/0', queryString, function(ret) {
-        $('#people > tbody').html(ret).ready(function() { $("#people").initPager(); });
     });
     return false;
 }

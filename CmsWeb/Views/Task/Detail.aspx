@@ -25,9 +25,9 @@
             <th>Owner</th>
             <td>
                 <%=Html.HyperLink(Model.TaskEmail, Model.Owner)%>
-                <% if (Model.IsOwner) 
+                <% if (Model.IsOwner)
                    { %>
-                <%=Html.HyperLink("#", "(transfer)", "SearchPeople(ChangeOwnerPerson);return false")%>
+                <a id="changeowner" href="#">(transfer)</a>
                 <% } %>
             </td>
         </tr>
@@ -40,7 +40,7 @@
                 <% } 
                    if (Model.IsOwner) 
                    { %>
-                <%=Html.HyperLink("#", Model.ChangeCoOwner, "SearchPeople(AddDelegatePerson);return false")%>
+                <a id="delegate" href="#"><%=Model.ChangeCoOwner%></a>
                 <% } %>
             </td>
         </tr>
@@ -98,7 +98,7 @@
                 <% } 
                    if (Model.IsAnOwner)
                    { %>
-                <%=Html.HyperLink("#", Model.ChangeWho, "SearchPeople(AddAboutPerson);return false")%>
+                <a id="changeabout" href="#"><%=Model.ChangeWho %></a>
                 <% }
                    if (Model.WhoId.HasValue)
                    { %>

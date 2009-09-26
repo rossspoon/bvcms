@@ -82,7 +82,7 @@ namespace CmsData
 
                 foreach (var s in q)
                 {
-                    var div = Db.Divisions.SingleOrDefault(d => d.Name == s);
+                    var div = Db.Divisions.FirstOrDefault(d => d.Name == s);
                     if (div == null)
                     {
                         div = new Division { Name = s };

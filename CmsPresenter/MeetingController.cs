@@ -285,10 +285,9 @@ namespace CMSPresenter
             var list = q.ToList();
 
             var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == MeetingId);
-            var attendcontrol = new AttendController();
             foreach (var a in attendees)
                 if (a.AttendanceFlag == true)
-                    attendcontrol.RecordAttendance(a.PeopleId, MeetingId, false);
+                    Attend.RecordAttendance(a.PeopleId, MeetingId, false);
             DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
             DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
             DbUtil.Db.Meetings.DeleteOnSubmit(meeting);

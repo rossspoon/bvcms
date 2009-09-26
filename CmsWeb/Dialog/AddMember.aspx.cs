@@ -69,7 +69,7 @@ namespace CMSWeb.Dialog
             DateTime? enrollmentdate = EnrollmentDate.Text.ToDate();
             DateTime? inactivedate = InactiveDate.Text.ToDate();
             foreach (var pid in q)
-                OrganizationController.InsertOrgMembers(OrgId.Value, pid, membertype, enrollmentdate.Value, inactivedate, PendingMembers.Value);
+                OrganizationMember.InsertOrgMembers(OrgId.Value, pid, membertype, enrollmentdate.Value, inactivedate, PendingMembers.Value);
             this.Page.ClientScript.RegisterStartupScript(typeof(AddMember),
                 "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }

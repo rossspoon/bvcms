@@ -102,11 +102,13 @@ namespace CMSWeb.Controllers
             DbUtil.Db.SubmitChanges();
             if (DateTime.Now.Subtract(m.VolInterest.Created.Value).TotalMinutes < 30)
             {
-                var em = new Emailer(m.Opportunity.Email);
+                string body;
                 if (cva != null && cva.StatusId == 10)
-                    em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
+                    body = m.Opportunity.EmailYesCva;
                 else
-                    em.SendPersonEmail(m.person, m.Opportunity.Description, Util.SafeFormat(m.Opportunity.EmailYesCva));
+                    body = m.Opportunity.EmailNoCva;
+                Util.Email(m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
+                     m.Opportunity.Description, Util.SafeFormat(body));
                 return RedirectToAction("Confirm");
             }
             ViewData["saved"] = "Changes Saved";

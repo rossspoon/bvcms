@@ -193,7 +193,7 @@ namespace CMSPresenter
                 query = from p in query
                         where p.Tags.Any(t => t.Id == tag)
                         select p;
-            if (dob.HasValue())
+            if (dob.HasValue() && dob != "na")
             {
                 DateTime dt;
                 if (DateTime.TryParse(dob, out dt))

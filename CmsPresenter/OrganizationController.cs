@@ -115,50 +115,6 @@ namespace CMSPresenter
         {
             return _count;
         }
-        public static void InsertOrgMembers
-        (int OrganizationId,
-            int PeopleId,
-            int MemberTypeId,
-            DateTime EnrollmentDate,
-            DateTime? InactiveDate, bool pending
-        )
-        {
-            var Db = DbUtil.Db;
-            var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
-            if (m != null)
-                return;
-            var om = new OrganizationMember
-            {
-                OrganizationId = OrganizationId,
-                PeopleId = PeopleId,
-                MemberTypeId = MemberTypeId,
-                EnrollmentDate = EnrollmentDate,
-                InactiveDate = InactiveDate,
-                CreatedDate = Util.Now,
-                Pending = pending,
-            };
-            var name = (from o in Db.Organizations
-                        where o.OrganizationId == OrganizationId
-                        select o.OrganizationName).Single();
-            var et = new EnrollmentTransaction
-            {
-                OrganizationId = om.OrganizationId,
-                PeopleId = om.PeopleId,
-                MemberTypeId = om.MemberTypeId,
-                OrganizationName = name,
-                TransactionDate = Util.Now,
-                EnrollmentDate = om.EnrollmentDate,
-                TransactionTypeId = 1, // join
-                CreatedBy = Util.UserId1,
-                CreatedDate = Util.Now,
-                Pending = pending,
-                AttendancePercentage = om.AttendPct
-            };
-            Db.OrganizationMembers.InsertOnSubmit(om);
-            Db.EnrollmentTransactions.InsertOnSubmit(et);
-            Db.SubmitChanges();
-            Db.UpdateSchoolGrade(PeopleId);
-        }
 
         public IEnumerable<OrganizationInfo> GetOrganizationInfo(int orgid)
         {

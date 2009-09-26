@@ -1305,6 +1305,20 @@
                     <td>
                     </td>
                     <td style="vertical-align: top">
+                        <asp:GridView ID="PendingContacts" runat="server" SkinID="GridViewSkin"
+                            AutoGenerateColumns="False" DataSourceID="TaskList"
+                            EmptyDataText="No Tasks Found.">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Task">
+                                    <ItemTemplate>
+                                        <asp:HyperLink ID="TaskLink" runat="server" NavigateUrl='<%# Eval("link") %>'
+                                            Text='<%# Eval("Desc") %>'></asp:HyperLink>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="AssignedDt" HeaderText="Date" DataFormatString="{0:d}" />
+                                <asp:BoundField DataField="AssignedTo" HeaderText="Assigned To" />
+                            </Columns>
+                        </asp:GridView>
                         <asp:GridView ID="ContactedListGrid" runat="server" AllowPaging="True" SkinID="GridViewSkin"
                             AllowSorting="True" AutoGenerateColumns="False" DataSourceID="ContactedList"
                             PageSize="10" EmptyDataText="No Contacts Found.">
@@ -1399,6 +1413,12 @@
             <asp:Parameter Name="sortExpression" Type="String" DefaultValue="Date DESC" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="TaskList" runat="server" EnablePaging="False"
+        SelectMethod="TasksAboutList" TypeName="CMSWeb.Models.TaskModel">
+        <SelectParameters>
+            <asp:SessionParameter Name="pid" SessionField="ActivePersonId" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ContactsMadeList" runat="server" EnablePaging="True" SelectCountMethod="ContactsMadeCount"

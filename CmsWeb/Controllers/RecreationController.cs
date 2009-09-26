@@ -35,7 +35,7 @@ namespace CMSWeb.Controllers
         }
         public ActionResult SearchPeople(int? id)
         {
-            var m = new Models.SearchPeopleModel();
+            var m = new CMSWebCommon.Models.SearchPeopleModel();
             UpdateModel(m);
             if (id.HasValue)
             {

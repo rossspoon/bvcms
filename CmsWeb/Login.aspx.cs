@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using CMSPresenter;
 using CmsData;
+using CMSWeb.Controllers;
+using System.Text;
 
 namespace CMSWeb
 {
@@ -57,40 +59,31 @@ By logging in below, you agree that you understand this purpose and will abide b
         protected void Login1_LoginError(object sender, EventArgs e)
         {
             var user = Membership.GetUser(Login1.UserName);
-            var em = new Emailer();
-            foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                em.LoadAddress(u.Person.EmailAddress, u.Name);
-
             if (user == null)
-                em.NotifyEmail("attempt to login by non-user on " + Request.Url.Authority,
+                NotifyAdmins("attempt to login by non-user on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is not a user"
                             .Fmt(Login1.UserName, DateTime.Now));
             else if (user.IsLockedOut)
-                em.NotifyEmail("user locked out on " + Request.Url.Authority,
+                NotifyAdmins("user locked out on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is locked out"
                             .Fmt(user.UserName, DateTime.Now));
             else if (!user.IsApproved)
-                em.NotifyEmail("unapproved user logging in on " + Request.Url.Authority,
+                NotifyAdmins("unapproved user logging in on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is not approved"
                             .Fmt(user.UserName, DateTime.Now));
         }
         public static void CheckStaffRole(string name)
         {
-            var em = new Emailer();
             if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
-                foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                    em.LoadAddress(u.Person.EmailAddress, u.Name);
-                em.NotifyEmail("user loggedin without a role",
+                NotifyAdmins("user loggedin without a role",
                     string.Format("{0} visited site at {1} but does not have Staff role",
                         name, DateTime.Now));
                 HttpContext.Current.Response.Redirect("AccessDenied.htm");
             }
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
             {
-                foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-                    em.LoadAddress(u.Person.EmailAddress, u.Name);
-                em.NotifyEmail("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, 
+                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, 
                     HttpContext.Current.Request.UserHostAddress));
                 HttpContext.Current.Response.Redirect("NoRemoteAccess.htm");
             }
@@ -111,13 +104,29 @@ By logging in below, you agree that you understand this purpose and will abide b
                 if (Login1.Password == DbUtil.Settings("ImpersonatePassword"))
                 {
                     e.Authenticated = true;
-                    var em = new Emailer();
-                    em.LoadAddress(WebConfigurationManager.AppSettings["senderrorsto"], null);
-                    em.NotifyEmail("{0} is being impersonated".Fmt(Login1.UserName), DateTime.Now.ToString());
+                    Notify(WebConfigurationManager.AppSettings["senderrorsto"], 
+                        "{0} is being impersonated".Fmt(Login1.UserName), 
+                        DateTime.Now.ToString());
                 }
                 else
                     e.Authenticated = CMSMembershipProvider.provider.ValidateUser(Login1.UserName, Login1.Password);
             }
+        }
+        private static void Notify(string to, string subject, string message)
+        {
+            Util.Email2(Util.FirstAddress(DbUtil.SystemEmailAddress).Address,
+                                    to, subject, message);
+        }
+        private static void NotifyAdmins(string subject, string message)
+        {
+            var sb = new StringBuilder();
+            foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
+            {
+                if (sb.Length > 0)
+                    sb.Append(",");
+                sb.AppendFormat("{0} <{1}>", u.Person.Name, u.Person.EmailAddress);
+            }
+            Notify(sb.ToString(), subject, message);
         }
     }
 }
