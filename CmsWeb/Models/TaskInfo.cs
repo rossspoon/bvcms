@@ -103,7 +103,7 @@ namespace CMSWeb.Models
         {
             get
             {
-                return "mailto:{0}?subject={1}&body={3}/Tasks.aspx?id={2}#select"
+                return "mailto:{0}?subject={1}&body={3}/Task/List/{2}#detail#select"
                 .Fmt(OwnerEmail, Description, Id, DbUtil.TaskHost);
             }
         }
