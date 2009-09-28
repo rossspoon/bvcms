@@ -605,12 +605,12 @@
     <Compile Include="Report\MeetingSummaryRpt.aspx.designer.cs">
       <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\MemberReport.aspx.cs">
-      <DependentUpon>MemberReport.aspx</DependentUpon>
+    <Compile Include="Report\ContactReport.aspx.cs">
+      <DependentUpon>ContactReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Report\MemberReport.aspx.designer.cs">
-      <DependentUpon>MemberReport.aspx</DependentUpon>
+    <Compile Include="Report\ContactReport.aspx.designer.cs">
+      <DependentUpon>ContactReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\PastAttendeeRpt.aspx.cs">
       <DependentUpon>PastAttendeeRpt.aspx</DependentUpon>
@@ -1518,7 +1518,7 @@
     <Content Include="Report\LabelsRpt.aspx" />
     <Content Include="Report\MeetingAttendanceRpt.aspx" />
     <Content Include="Report\MeetingSummaryRpt.aspx" />
-    <Content Include="Report\MemberReport.aspx" />
+    <Content Include="Report\ContactReport.aspx" />
     <Content Include="Report\PastAttendeeRpt.aspx" />
     <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\Rollsheet.aspx" />

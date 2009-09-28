@@ -5,21 +5,10 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
 using UtilityExtensions;
 using CMSPresenter;
 using CmsData;
-using System.Diagnostics;
 using System.Threading;
 
 namespace CMSWeb
@@ -39,7 +28,7 @@ namespace CMSWeb
             BulkMailLink.NavigateUrl = Popup("bulkmail.ashx?");
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
-            ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/MemberReport.aspx?");
+            ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/ContactReport.aspx?");
             ChoirLink.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");
