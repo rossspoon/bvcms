@@ -31,6 +31,7 @@
                 </table>
             </fieldset>
         </div>
+        <p><a href="/Register/Visit/<%=Session["campus"] %>">New Registration</a></p>
         <%=Html.Hidden("campusid", Model.campusid) %>
     <% } %>
 </asp:Content>

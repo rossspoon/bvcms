@@ -33,7 +33,7 @@
                     <td><%= Html.ValidationMessage("dob") %>(like 5/15/64)</td>
                 </tr>
                 <tr>
-                    <td><label for="gender">Married</label></td>
+                    <td><label for="married">Married</label></td>
                     <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
                     <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
@@ -54,7 +54,7 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td><label for="state">Visiting Where</label></td>
+                    <td><label for="org">Visiting Where</label></td>
                     <td><%= Html.DropDownList("org", Model.OrgList())%></td>
                     <td><%= Html.ValidationMessage("org") %></td>
                 </tr>

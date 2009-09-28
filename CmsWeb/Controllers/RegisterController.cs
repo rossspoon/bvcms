@@ -92,6 +92,7 @@ namespace CMSWeb.Controllers
         }
         public ActionResult Visit(int? id)
         {
+            Session["campus"] = id;
             var m = new Models.RegisterModel { campusid = id };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -102,7 +103,6 @@ namespace CMSWeb.Controllers
                 Session["familyid"] = m.HeadOfHousehold.FamilyId;
                 Session["lastname"] = m.HeadOfHousehold.LastName;
                 Session["name"] = m.HeadOfHousehold.Name;
-                Session["campus"] = id;
                 Session["email"] = m.HeadOfHousehold.EmailAddress;
                 return RedirectToAction("Visit2");
             }
@@ -123,7 +123,6 @@ namespace CMSWeb.Controllers
                 Session["familyid"] = m.person.FamilyId;
                 Session["lastname"] = m.person.LastName;
                 Session["name"] = m.person.Name;
-                Session["campus"] = id;
                 Session["email"] = m.person.EmailAddress;
                 EmailVisit(m);
                 return RedirectToAction("ConfirmVisit");
@@ -132,6 +131,8 @@ namespace CMSWeb.Controllers
         }
         public ActionResult Add(int? id)
         {
+
+            Session["campus"] = id;
             var m = new Models.RegisterModel { campusid = id };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -145,7 +146,6 @@ namespace CMSWeb.Controllers
                 Session["familyid"] = m.HeadOfHousehold.FamilyId;
                 Session["lastname"] = m.HeadOfHousehold.LastName;
                 Session["name"] = m.HeadOfHousehold.Name;
-                Session["campus"] = m.campusid;
                 Session["email"] = m.HeadOfHousehold.EmailAddress;
                 return RedirectToAction("Visit2");
             }

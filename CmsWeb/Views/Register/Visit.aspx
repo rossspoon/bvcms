@@ -52,7 +52,7 @@
                     <td><%= Html.ValidationMessage("gender") %></td>
                 </tr>
                 <tr>
-                    <td><label for="gender">Married</label></td>
+                    <td><label for="married">Married</label></td>
                     <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
                     <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
@@ -62,7 +62,7 @@
                     <td><%= Html.ValidationMessage("address1") %></td>
                 </tr>
                 <tr>
-                    <td><label for="address">Address Line 2</label></td>
+                    <td><label for="address2">Address Line 2</label></td>
                     <td><%= Html.TextBox("address2") %></td>
                     <td><%= Html.ValidationMessage("address2") %></td>
                 </tr>
@@ -85,7 +85,7 @@
                     <td><label for="homephone">Home Phone</label></td>
                     <td><%= Html.TextBox("homephone")%></td>
                     <td><%= Html.ValidationMessage("homephone")%>
-                    <%= Html.ValidationMessage("phone")%></td>
+                    <%= Html.ValidationMessage("homephone")%></td>
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>
@@ -98,7 +98,7 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td><label for="state">Visiting Where</label></td>
+                    <td><label for="org">Visiting Where</label></td>
                     <td><%= Html.DropDownList("org", Model.OrgList())%></td>
                     <td><%= Html.ValidationMessage("org") %></td>
                 </tr>

@@ -39,6 +39,7 @@ namespace CMSWeb
             BulkMailLink.NavigateUrl = Popup("bulkmail.ashx?");
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
+            ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/MemberReport.aspx?");
             ChoirLink.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");

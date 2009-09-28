@@ -27,11 +27,7 @@ namespace CMSWeb2
     {
         protected void Application_Start()
         {
-            //ViewEngines.Engines.Clear();
-            //ViewEngines.Engines.Add(new AreaViewEngine());
             RegisterRoutes(RouteTable.Routes);
-            //var model = new System.Web.DynamicData.MetaModel();
-            //model.RegisterContext(typeof(CMSDataContext), new ContextConfiguration() { ScaffoldAllTables = false });
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -57,7 +53,6 @@ namespace CMSWeb2
             routes.IgnoreRoute("Upload/{*pathInfo}");
             routes.IgnoreRoute("{myWebPage}.htm");
             routes.IgnoreRoute("{myReport}.rdlc");
-            routes.IgnoreRoute("ttt/{*pathInfo}");
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.js");
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.css");
 
@@ -67,41 +62,20 @@ namespace CMSWeb2
             CMSRegCustom.Routes.RegisterRoutes(routes);
             CMSWebSetup.Routes.RegisterRoutes(routes);
 
-            routes.MapAreaRoute("Task", "Task_Default", 
-                "Task/{action}/{id}", 
-                new { controller = "Task", action = "List", id = "" },
-                new string[] {"CMSWeb.Controllers"}
-                );
-            routes.MapAreaRoute("QueryBuilder", "QueryBuilder_Default", 
-                "QueryBuilder/{action}/{id}",
-                new { controller = "QueryBuilder", action = "Main", id = "" },
-                new string[] { "CMSWeb.Controllers" }
-                );
-            routes.MapAreaRoute("StepClass", "StepClass_Default", 
-                "StepClass/{action}",
-                new { controller = "StepClass", action = "Step1", id = "" },
-                new string[] { "CMSWeb.Controllers" }
-                );
-            routes.MapAreaRoute("VolunteereConfirm", "VolunteereConfirm_Default", 
-                "Volunteere/Confirm",
-                new { controller = "Volunteer", action = "confirm", id = "" },
-                new string[] { "CMSWeb.Controllers" }
-                );
-            routes.MapAreaRoute("Volunteer", "Volunteer_Default", 
-                "Volunteer/{id}",
-                new { controller = "Task", action = "Start", id = "" },
-                new string[] { "CMSWeb.Controllers" }
-                );
-            routes.MapAreaRoute("TaskDetail", "TaskDetail_Default", 
-                "Task/Detail/{id}/Row/{rowid}",
-                new { controller = "Task", action = "Detail", id = "" },
-                new string[] { "CMSWeb.Controllers" }
-                );
-            routes.MapAreaRoute("Main", "Main_Default", "{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = "" },
-                new string[] { "CMSWeb.Controllers" });
+            AddRoute(routes, "Task", "Task", "Task/{action}/{id}", "List");
+            AddRoute(routes, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
+            AddRoute(routes, "QueryBuilder", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");
+            AddRoute(routes, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
+            AddRoute(routes, "Volunteer", "Volunteer", "Volunteer/{id}", "Start");
+            AddRoute(routes, "Default", "Home", "{controller}/{action}/{id}", "Index");
             
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+        }
+        private static void AddRoute(RouteCollection routes, string name, string controller, string path, string action)
+        {
+            routes.MapAreaRoute("Main", name, path, 
+                new { controller = controller, action = action, id = "" },
+                new string[] { "CMSWeb.Controllers" });
         }
 
         protected void Session_Start(object sender, EventArgs e)

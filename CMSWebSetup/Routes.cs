@@ -7,16 +7,22 @@ namespace CMSWebSetup
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            //routes.MapAreaRoute("CMSWebSetup", "Display_Default",
-            //    "CMSWebSetup/Display/{action}/{page}",
-            //    new { controller = "Display", action = "Page", id = "" },
-            //    new string[] { "CMSWebSetup.Controllers" }
-            //    );
-            routes.MapAreaRoute("CMSWebSetup", "Setup_Default",
-                "{controller}/{action}/{id}",
-                new { controller = "Home2", action = "Index", id = "" },
-                new string[] { "CMSWebSetup.Controllers" }
-            );
+            routes.AddRoute("Display");
+            routes.AddRoute("Fund");
+            routes.AddRoute("MetroZip");
+            routes.AddRoute("Ministry");
+            routes.AddRoute("Program");
+            routes.AddRoute("PromotionSetup");
+            routes.AddRoute("RecreationSetup");
+            routes.AddRoute("Setting");
+            routes.AddRoute("UsersCanEmailFor");
+            routes.AddRoute("VolOpportunity");
+        }
+        private static void AddRoute(this RouteCollection routes, string controller)
+        {
+            routes.MapAreaRoute("CMSWebSetup", controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" },
+                new string[] { "CMSWebSetup.Controllers" });
         }
     }
 }

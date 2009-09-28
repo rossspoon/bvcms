@@ -7,11 +7,18 @@ namespace CMSRegCustom
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.MapAreaRoute("CMSRegCustom", "RegCustom_Default",
-                "{controller}/{action}/{id}",
-                new { controller = "RegCustomHome", action = "Index", id = "" },
-                new string[] { "CMSRegCustom.Controllers" }
-            );
+            routes.AddRoute("DiscipleLife");
+            routes.AddRoute("LoveRespect");
+            routes.AddRoute("SoulMate");
+            routes.AddRoute("StepClass");
+            routes.AddRoute("VBS");
+            routes.AddRoute("VBSReg");
+        }
+        private static void AddRoute(this RouteCollection routes, string controller)
+        {
+            routes.MapAreaRoute("CMSRegCustom", controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" },
+                new string[] { "CMSRegCustom.Controllers" });
         }
     }
 }

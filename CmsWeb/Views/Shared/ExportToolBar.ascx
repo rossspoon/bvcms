@@ -45,6 +45,9 @@
             <li><a href='/Report/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
                 Choir Attendance Labels</a></li>
+            <li><a href='/Report/ContactReport.aspx?id=<%=ViewData["queryid"]%>' 
+                target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
+                Contact Report</a></li>
         </ul>
     </li>
     <li class="headlink"><a href='#'><img src="/images/Tag.png" />

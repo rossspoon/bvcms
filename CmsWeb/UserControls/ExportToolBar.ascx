@@ -64,6 +64,11 @@
                     runat="server">
                     <asp:Image ID="Image19" ImageUrl="~/images/Excel.png" runat="server" />
                     Other Churches</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="ContactsLink" ToolTip="For Robo-calling contacts"
+                    runat="server">
+                    <asp:Image ID="Image25" ImageUrl="~/images/Report.png" runat="server" />
+                    Contact Report</asp:HyperLink></li>
         </ul>
     </li>
     <li class="headlink"><a href="#">
