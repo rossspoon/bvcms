@@ -13,6 +13,7 @@ namespace CMSRegCustom
             routes.AddRoute("StepClass");
             routes.AddRoute("VBS");
             routes.AddRoute("VBSReg");
+            routes.AddRoute("MOBS");
         }
         private static void AddRoute(this RouteCollection routes, string controller)
         {

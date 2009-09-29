@@ -230,6 +230,10 @@ namespace CmsData
         partial void UpdateMinistry(Ministry instance);
         partial void DeleteMinistry(Ministry instance);
         
+        partial void InsertMOBSReg(MOBSReg instance);
+        partial void UpdateMOBSReg(MOBSReg instance);
+        partial void DeleteMOBSReg(MOBSReg instance);
+        
         partial void InsertNameSuffix(NameSuffix instance);
         partial void UpdateNameSuffix(NameSuffix instance);
         partial void DeleteNameSuffix(NameSuffix instance);
@@ -787,6 +791,12 @@ namespace CmsData
 		public Table< Ministry> Ministries
 		{
 			get	{ return this.GetTable< Ministry>(); }
+
+		}
+
+		public Table< MOBSReg> MOBSRegs
+		{
+			get	{ return this.GetTable< MOBSReg>(); }
 
 		}
 

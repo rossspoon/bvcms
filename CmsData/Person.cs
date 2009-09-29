@@ -427,7 +427,7 @@ namespace CmsData
             if (GenderId == 1)
                 TitleCode = "Mr.";
             else if (GenderId == 2)
-                if (MaritalStatusId == 20)
+                if (MaritalStatusId == 20 || MaritalStatusId == 50)
                     TitleCode = "Mrs.";
                 else
                     TitleCode = "Ms.";

@@ -55,7 +55,8 @@ namespace BellevueTeachers
             NewMenu(MainMenu, "Podcasting", "/Podcast/");
 
             m = NewTopMenu(MainMenu, "Bible Tools", "#");
-            NewMenu(m, "Daily Reading Plan", "/Verse/DailyReading.aspx");
+            NewMenu(m, "One Year Bible Plan (mix)", "/Verse/DailyReading.aspx");
+            NewMenu(m, "Chronological Reading Plan", "/Verse/DailyReadingChron.aspx");
             if (Page.User.Identity.IsAuthenticated)
                 NewMenu(m, "Verse Memory", "/Verse/");
             else

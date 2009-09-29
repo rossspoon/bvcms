@@ -10,7 +10,7 @@
 
 
 
-public partial class Verse_DailyReading {
+public partial class Verse_DailyReadingChron {
     
     /// <summary>
     /// HyperLink1 control.

@@ -107,7 +107,7 @@ namespace CMSWeb2
             var ex = Server.GetLastError();
             var InDebug = false;
 #if DEBUG
-            InDebug = false;
+            InDebug = true;
 #endif
             if (InDebug)
             {

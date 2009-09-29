@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Mail;
+using System.Web.Configuration;
 
 namespace UtilityExtensions
 {
@@ -42,6 +43,8 @@ namespace UtilityExtensions
             var fr = FirstAddress(from);
             var msg = new MailMessage();
             msg.From = fr;
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             msg.To.Add(addrs);
             msg.Subject = subject;
             msg.Body = "<html><body>\n" + message + "\n</body></html>\n";

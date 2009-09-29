@@ -260,6 +260,8 @@ namespace CmsData
 		
    		private EntitySet< Family> _FamiliesHeaded2;
 		
+   		private EntitySet< MOBSReg> _MOBSRegs;
+		
    		private EntitySet< Attend> _Attends;
 		
    		private EntitySet< BadET> _BadETs;
@@ -697,6 +699,8 @@ namespace CmsData
 			this._FamiliesHeaded = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded), new Action< Family>(this.detach_FamiliesHeaded)); 
 			
 			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
+			
+			this._MOBSRegs = new EntitySet< MOBSReg>(new Action< MOBSReg>(this.attach_MOBSRegs), new Action< MOBSReg>(this.detach_MOBSRegs)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
@@ -3418,6 +3422,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Attender_People", Storage="_MOBSRegs", OtherKey="PeopleId")]
+   		public EntitySet< MOBSReg> MOBSRegs
+   		{
+   		    get { return this._MOBSRegs; }
+
+			set	{ this._MOBSRegs.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
    		public EntitySet< Attend> Attends
    		{
@@ -4257,6 +4271,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.HeadOfHouseholdSpouse = null;
+		}
+
+		
+		private void attach_MOBSRegs(MOBSReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_MOBSRegs(MOBSReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
 		}
 
 		

@@ -65,6 +65,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MOBSController.cs" />
     <Compile Include="Controllers\RegCustomHomeController.cs" />
     <Compile Include="Controllers\DiscipleLifeController.cs" />
     <Compile Include="Controllers\LoveRespectController.cs" />
@@ -78,6 +79,7 @@
     </Compile>
     <Compile Include="Models\DiscipleLifeModel.cs" />
     <Compile Include="Models\LoveRespectModel.cs" />
+    <Compile Include="Models\MOBSModel.cs" />
     <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VBSDetailModel.cs" />
@@ -93,6 +95,10 @@
     <Content Include="Views\LoveRespect\Confirm.aspx" />
     <Content Include="Views\LoveRespect\Index.aspx" />
     <Content Include="Views\LoveRespect\Other.aspx" />
+    <Content Include="Views\MOBS\Confirm.aspx" />
+    <Content Include="Views\MOBS\Index.aspx" />
+    <Content Include="Views\MOBS\Payment.aspx" />
+    <Content Include="Views\MOBS\Unknown.aspx" />
     <Content Include="Views\SoulMate\CheckBack.aspx" />
     <Content Include="Views\SoulMate\ChildCare.aspx" />
     <Content Include="Views\SoulMate\Confirm.aspx" />

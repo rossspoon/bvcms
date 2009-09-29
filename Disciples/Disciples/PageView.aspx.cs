@@ -15,6 +15,14 @@ namespace BellevueTeachers
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                this.Title = "Unauthorized page";
+                Literal1.Text = "You must be registered and logged in to view this content.";
+                Admin.Visible = false;
+                ToggleEditor(false);
+                return;
+            }
             Admin.Visible = User.IsInRole("Administrator");
             string pageUrl = Request.QueryString<string>("p");
             if (pageUrl != "newpage.aspx")
@@ -34,7 +42,7 @@ namespace BellevueTeachers
                 }
                 ToggleEditor(false);
             }
-            else
+            else if (Admin.Visible)
             {
                 SetupNewPage();
                 this.Title = "Create a New Page";

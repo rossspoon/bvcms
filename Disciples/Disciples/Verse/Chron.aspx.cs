@@ -16,7 +16,12 @@ namespace BellevueTeachers.Verse
             var dt = new DateTime(2008, 12, 31);
             var xdoc = XDocument.Parse(Resources.Resource1.Chron);
             var q = from p in xdoc.Descendants("read")
-                    select new { Date = dt.AddDays(p.Attribute("day").ToInt()), Verse = p.Attribute("verses")};
+                    orderby p.Attribute("day").Value.ToInt()
+                    select new 
+                    { 
+                        Date = dt.AddDays(p.Attribute("day").Value.ToInt()).ToShortDateString(), 
+                        Verse = p.Attribute("verses").Value
+                    };
             GridView1.DataSource = q;
             GridView1.DataBind();
         }

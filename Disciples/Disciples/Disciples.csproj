@@ -762,6 +762,13 @@
     <Compile Include="Verse\Chron.aspx.designer.cs">
       <DependentUpon>Chron.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Verse\DailyReadingChron.aspx.cs">
+      <DependentUpon>DailyReadingChron.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verse\DailyReadingChron.aspx.designer.cs">
+      <DependentUpon>DailyReadingChron.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebService1.asmx.cs">
       <DependentUpon>WebService1.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1269,6 +1276,7 @@
       <LastGenOutput>Resource1.designer.cs</LastGenOutput>
     </Content>
     <Content Include="Verse\Chron.aspx" />
+    <Content Include="Verse\DailyReadingChron.aspx" />
     <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

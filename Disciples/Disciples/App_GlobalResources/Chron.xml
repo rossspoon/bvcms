@@ -1,367 +1,368 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Chron>
-<read day="1" verses="Gen 1-3" />
-<read day="2" verses="Gen 4-7" />
-<read day="3" verses="Gen 8-11" />
-<read day="4" verses="Job 1-5" />
-<read day="5" verses="Job 6-9" />
-<read day="6" verses="Job 10-13" />
-<read day="7" verses="Job 14-16" />
-<read day="8" verses="Job 17-20" />
-<read day="9" verses="Job 21-23" />
-<read day="10" verses="Job 24-28" />
-<read day="11" verses="Job 29-31" />
-<read day="12" verses="Job 32-34" />
-<read day="13" verses="Job 35-37" />
-<read day="14" verses="Job 38-39" />
-<read day="15" verses="Job 40-42" />
-<read day="16" verses="Gen 12-15" />
-<read day="17" verses="Gen 16-18" />
-<read day="18" verses="Gen 19-21" />
-<read day="19" verses="Gen 22-24" />
-<read day="20" verses="Gen 25-26" />
-<read day="21" verses="Gen 27-29" />
-<read day="22" verses="Gen 30-31" />
-<read day="23" verses="Gen 32-34" />
-<read day="24" verses="Gen 35-37" />
-<read day="25" verses="Gen 38-40" />
-<read day="26" verses="Gen 41-42" />
-<read day="27" verses="Gen 43-45" />
-<read day="28" verses="Gen 46-47" />
-<read day="29" verses="Gen 48-50" />
-<read day="30" verses="Ex 1-3" />
-<read day="31" verses="Ex 4-6" />
-<read day="32" verses="Ex 7-9" />
-<read day="33" verses="Ex 10-12" />
-<read day="34" verses="Ex 13-15" />
-<read day="35" verses="Ex 16-18" />
-<read day="36" verses="Ex 19-21" />
-<read day="37" verses="Ex 22-24" />
-<read day="38" verses="Ex 25-27" />
-<read day="39" verses="Ex 28-29" />
-<read day="40" verses="Ex 30-32" />
-<read day="41" verses="Ex 33-35" />
-<read day="42" verses="Ex 36-38" />
-<read day="43" verses="Ex 39-40" />
-<read day="44" verses="Lev 1-4" />
-<read day="45" verses="Lev 5-7" />
-<read day="46" verses="Lev 8-10" />
-<read day="47" verses="Lev 11-13" />
-<read day="48" verses="Lev 14-15" />
-<read day="49" verses="Lev 16-18" />
-<read day="50" verses="Lev 19-21" />
-<read day="51" verses="Lev 22-23" />
-<read day="52" verses="Lev 24-25" />
-<read day="53" verses="Lev 26-27" />
-<read day="54" verses="Num 1-2" />
-<read day="55" verses="Num 3-4" />
-<read day="56" verses="Num 5-6" />
-<read day="57" verses="Num 7" />
-<read day="58" verses="Num 8-10" />
-<read day="59" verses="Num 11-13" />
-<read day="60" verses="Num 14-15; Ps 90" />
-<read day="61" verses="Num 16-17" />
-<read day="62" verses="Num 18-20" />
-<read day="63" verses="Num 21-22" />
-<read day="64" verses="Num 23-25" />
-<read day="65" verses="Num 26-27" />
-<read day="66" verses="Num 28-30" />
-<read day="67" verses="Num 31-32" />
-<read day="68" verses="Num 33-34" />
-<read day="69" verses="Num 35-36" />
-<read day="70" verses="Deut 1-2" />
-<read day="71" verses="Deut 3-4" />
-<read day="72" verses="Deut 5-7" />
-<read day="73" verses="Deut 8-10" />
-<read day="74" verses="Deut 11-13" />
-<read day="75" verses="Deut 14-16" />
-<read day="76" verses="Deut 17-20" />
-<read day="77" verses="Deut 21-23" />
-<read day="78" verses="Deut 24-27" />
-<read day="79" verses="Deut 28-29" />
-<read day="80" verses="Deut 30-31" />
-<read day="81" verses="Deut 32-34; Ps 91" />
-<read day="82" verses="Josh 1-4" />
-<read day="83" verses="Josh 5-8" />
-<read day="84" verses="Josh 9-11" />
-<read day="85" verses="Josh 12-15" />
-<read day="86" verses="Josh 16-18" />
-<read day="87" verses="Josh 19-21" />
-<read day="88" verses="Josh 22-24" />
-<read day="89" verses="Jud 1-2" />
-<read day="90" verses="Jud 3-5" />
-<read day="91" verses="Jud 6-7" />
-<read day="92" verses="Jud 8-9" />
-<read day="93" verses="Jud 10-12" />
-<read day="94" verses="Jud 13-15" />
-<read day="95" verses="Jud 16-18" />
-<read day="96" verses="Jud 19-21" />
-<read day="97" verses="Ruth" />
-<read day="98" verses="1Sam 1-3" />
-<read day="99" verses="1Sam 4-8" />
-<read day="100" verses="1Sam 9-12" />
-<read day="101" verses="1Sam 13-14" />
-<read day="102" verses="1Sam 15-17" />
-<read day="103" verses="1Sam 18-20; Ps 11;Ps 59" />
-<read day="104" verses="1Sam 21-24" />
-<read day="105" verses="Ps 7;Ps 27;Ps 31;Ps 34;Ps 52" />
-<read day="106" verses="Ps 56;Ps 120;Ps 140-142" />
-<read day="107" verses="1Sam 25-27" />
-<read day="108" verses="Ps 17;Ps 35;Ps 54;Ps 63" />
-<read day="109" verses="1Sam 28-31; Ps18" />
-<read day="110" verses="Ps 121;Ps 123-125;Ps 128-130" />
-<read day="111" verses="2Sam 1-4" />
-<read day="112" verses="Ps 6;Ps 8-10;Ps 14;Ps 16;Ps 19;Ps 21" />
-<read day="113" verses="1Chron 1-2" />
-<read day="114" verses="Ps 43-45;Ps 49;Ps 84-85;Ps 87" />
-<read day="115" verses="1Chron 3-5" />
-<read day="116" verses="Ps 73;Ps 77-78" />
-<read day="117" verses="1Chron 6" />
-<read day="118" verses="Ps 81;Ps 88;Ps 92-93" />
-<read day="119" verses="1Chron 7-10" />
-<read day="120" verses="Ps 102-104" />
-<read day="121" verses="2Sam 5:1-10; 1Chron 11-12" />
-<read day="122" verses="Ps 133" />
-<read day="123" verses="Ps 106-107" />
-<read day="124" verses="2Sam 5:11-6:23; 1Chron 13-16" />
-<read day="125" verses="Ps 1-2;Ps 15;Ps 22-24;Ps 47;Ps 68" />
-<read day="126" verses="Ps 89;Ps 96;Ps 100-101;Ps 105;Ps 132" />
-<read day="127" verses="2Sam 7; 1Chron 17" />
-<read day="128" verses="Ps 25;Ps 29;Ps 33;Ps 36;Ps 39" />
-<read day="129" verses="2Sam 8-9; 1Chron 18" />
-<read day="130" verses="Ps 50;Ps 53;Ps 60;Ps 75" />
-<read day="131" verses="2Sam10; 1Chron 19; Ps 20" />
-<read day="132" verses="Ps 65-67;Ps 69-70" />
-<read day="133" verses="2Sam 11-12; 1Chron 20" />
-<read day="134" verses="Ps 32;Ps 51;Ps 86;Ps 122" />
-<read day="135" verses="2Sam 13-15" />
-<read day="136" verses="Ps 3-4;Ps 12-13;Ps 28;Ps 55" />
-<read day="137" verses="2Sam 16-18" />
-<read day="138" verses="Ps 26;Ps 40;Ps 58;Ps 61-62;Ps 64" />
-<read day="139" verses="2Sam 19-21" />
-<read day="130" verses="Ps 5;Ps 38;Ps 41-42" />
-<read day="131" verses="2Sam 22-23; Ps 57" />
-<read day="132" verses="Ps 95;Ps 97-99" />
-<read day="133" verses="2Sam 24; 1Chron 21-22; Ps 30" />
-<read day="134" verses="Ps 108-110" />
-<read day="135" verses="1Chron 23-25" />
-<read day="136" verses="Ps 131;Ps 138-139;Ps 143-145" />
-<read day="137" verses="1Chron 26-29; Ps 127" />
-<read day="138" verses="Ps 111-118" />
-<read day="139" verses="1King 1-2; Ps 37;Ps 71;Ps 94" />
-<read day="140" verses="Ps 119:1-88" />
-<read day="141" verses="1King 3-4; 2Chron 1; Ps 72" />
-<read day="142" verses="Ps 119:89-176" />
-<read day="143" verses="Solomon" />
-<read day="144" verses="Prov 1-3" />
-<read day="145" verses="Prov 4-6" />
-<read day="146" verses="Prov 7-9" />
-<read day="147" verses="Prov 10-12" />
-<read day="148" verses="Prov 13-15" />
-<read day="149" verses="Prov 16-18" />
-<read day="150" verses="Prov 19-21" />
-<read day="151" verses="Prov 22-24" />
-<read day="152" verses="1King 5-6; 2Chron 2-3" />
-<read day="153" verses="1King 7; 2Chron 4" />
-<read day="154" verses="1King 8; 2Chron 5" />
-<read day="155" verses="2Chron 6-7; Ps 136" />
-<read day="156" verses="Ps 134;Ps 146-150" />
-<read day="157" verses="1King 9; 2Chron 8" />
-<read day="158" verses="Prov 25-26" />
-<read day="159" verses="Prov 27-29" />
-<read day="160" verses="Ecc 1-6" />
-<read day="161" verses="Ecc 7-12" />
-<read day="162" verses="1King 10-11; 2Chron 9" />
-<read day="163" verses="Prov 30-31" />
-<read day="164" verses="1King 12-14" />
-<read day="165" verses="2Chron 10-12" />
-<read day="166" verses="1King 15:1-24; 2Chron 13-16" />
-<read day="167" verses="1King 15:25-16:34; 2Chron 17" />
-<read day="168" verses="1King 17-19" />
-<read day="169" verses="1King 20-21" />
-<read day="170" verses="1King 22; 2Chron 18" />
-<read day="171" verses="2Chron 19-23" />
-<read day="172" verses="Oba; Ps 82-83" />
-<read day="173" verses="2King 1-4" />
-<read day="174" verses="2King 5-8" />
-<read day="175" verses="2King 9-11" />
-<read day="176" verses="2King 12-13; 2Chron 24" />
-<read day="177" verses="2King 14; 2Chron 25" />
-<read day="178" verses="Jonah" />
-<read day="179" verses="2King 15; 2Chron 26" />
-<read day="180" verses="Is 1-4" />
-<read day="181" verses="Is 5-8" />
-<read day="182" verses="Amos 1-5" />
-<read day="183" verses="Amos 6-9" />
-<read day="184" verses="2Chron 27; Is 9-12" />
-<read day="185" verses="Micah" />
-<read day="186" verses="2Chron 28; 2King 16-17" />
-<read day="187" verses="Is 13-17" />
-<read day="188" verses="Is 18-22" />
-<read day="189" verses="Is 23-27" />
-<read day="190" verses="2King 18:1-8; 2Chron 29-31; Ps 48" />
-<read day="191" verses="Hos 1-7" />
-<read day="192" verses="Hos 8-14" />
-<read day="193" verses="Is 28-30" />
-<read day="194" verses="Is 31-34" />
-<read day="195" verses="Is 35-36" />
-<read day="196" verses="Is 37-39; Ps 76" />
-<read day="197" verses="Is 40-43" />
-<read day="198" verses="Is 44-48" />
-<read day="199" verses="2King 18:9-19:37; Ps 46;Ps 80;Ps 135" />
-<read day="200" verses="Is 49-53" />
-<read day="201" verses="Is 54-58" />
-<read day="202" verses="Is 59-63" />
-<read day="203" verses="Is 64-66" />
-<read day="204" verses="2King 20-21" />
-<read day="205" verses="2Chron 32-33" />
-<read day="206" verses="Nahum" />
-<read day="207" verses="2King 22-23; 2Chron 34-35" />
-<read day="208" verses="Zephaniah" />
-<read day="209" verses="Jer 1-3" />
-<read day="210" verses="Jer 4-6" />
-<read day="211" verses="Jer 7-9" />
-<read day="212" verses="Jer 10-13" />
-<read day="213" verses="Jer 14-17" />
-<read day="214" verses="Jer 18-22" />
-<read day="215" verses="Jer 23-25" />
-<read day="216" verses="Jer 26-29" />
-<read day="217" verses="Jer 30-31" />
-<read day="218" verses="Jer 32-34" />
-<read day="219" verses="Jer 35-37" />
-<read day="220" verses="Jer 38-40; Ps 74;Ps 79" />
-<read day="221" verses="2King 24-25; 2Chron 36" />
-<read day="222" verses="Habakkuk" />
-<read day="223" verses="Jer 41-45" />
-<read day="224" verses="Jer 46-48" />
-<read day="225" verses="Jer 49-50" />
-<read day="226" verses="Jer 51-52" />
-<read day="227" verses="Lam 1:1-3:36" />
-<read day="228" verses="Lam 3:37-5:22" />
-<read day="229" verses="Ezek 1-4" />
-<read day="230" verses="Ezek 5-8" />
-<read day="231" verses="Ezek 9-12" />
-<read day="232" verses="Ezek 13-15" />
-<read day="233" verses="Ezek 16-17" />
-<read day="234" verses="Ezek 20-21" />
-<read day="235" verses="Ezek 22-23" />
-<read day="236" verses="Ezek 24-27" />
-<read day="237" verses="Ezek 28-31" />
-<read day="238" verses="Ezek 32-34" />
-<read day="239" verses="Ezek 35-37" />
-<read day="240" verses="Ezek 38-39" />
-<read day="241" verses="Ezek 40-41" />
-<read day="242" verses="Ezek 42-43" />
-<read day="243" verses="Ezek 44-45" />
-<read day="244" verses="Ezek 46-48" />
-<read day="245" verses="Joel" />
-<read day="246" verses="Dan 1-3" />
-<read day="247" verses="Dan 4-6" />
-<read day="248" verses="Dan 7-9" />
-<read day="249" verses="Dan 10-12" />
-<read day="250" verses="Ezra 1-3" />
-<read day="251" verses="Ezra 4-6; Ps 137" />
-<read day="252" verses="Haggai" />
-<read day="253" verses="Zech 1-7" />
-<read day="254" verses="Zech 8-14" />
-<read day="255" verses="Est 1-5" />
-<read day="256" verses="Est 6-10" />
-<read day="257" verses="Ezra 7-10" />
-<read day="258" verses="Neh 1-5" />
-<read day="259" verses="Neh 6-7" />
-<read day="260" verses="Neh 8-10" />
-<read day="261" verses="Neh 11-13; Ps 126" />
-<read day="262" verses="Malachi" />
-<read day="263" verses="Luke 1; John 1:1-14" />
-<read day="264" verses="Matt 1; Luke 2:1-38" />
-<read day="265" verses="Matt 2; Luke 2:39-52" />
-<read day="266" verses="Matt 3; Mark 1; Luke 3" />
-<read day="267" verses="Matt 4; Luke 4-5; John 1:15-51" />
-<read day="268" verses="John 2-4" />
-<read day="269" verses="Mark 2" />
-<read day="270" verses="John 5" />
-<read day="271" verses="Matt 12:1-21; Mark 3; Luke 6" />
-<read day="272" verses="Matt 5-7" />
-<read day="273" verses="Matt 8:1-13; Luke 7" />
-<read day="274" verses="Matt 11" />
-<read day="275" verses="Matt 12:22-50; Luke 11" />
-<read day="276" verses="Matt 13; Luke 8" />
-<read day="277" verses="Matt 8:14-34; Mark 4-5" />
-<read day="278" verses="Matt 9-10" />
-<read day="279" verses="Matt 14; Mark 6; Luke 9:1-17" />
-<read day="280" verses="John 6" />
-<read day="281" verses="Matt 15; Mark 7" />
-<read day="282" verses="Matt 16; Mark 8; Luke 9:18-27" />
-<read day="283" verses="Matt 17; Mark 9; Luke 9:28-62" />
-<read day="284" verses="Matt 18" />
-<read day="285" verses="John 7-8" />
-<read day="286" verses="John 9:1-10:21" />
-<read day="287" verses="Luke 10-11; John 10:22-42" />
-<read day="288" verses="Luke 12-13" />
-<read day="289" verses="Luke 14-15" />
-<read day="290" verses="Luke 16-17:10" />
-<read day="291" verses="John 11" />
-<read day="292" verses="Luke 17:11-18:14" />
-<read day="293" verses="Matt 19; Mark 10" />
-<read day="294" verses="Matt 20-21" />
-<read day="295" verses="Luke 18:15-19:48" />
-<read day="296" verses="Mark 11; John 12" />
-<read day="297" verses="Matt 22; Mark 12" />
-<read day="298" verses="Matt 23; Luke 20-21" />
-<read day="299" verses="Mark 13" />
-<read day="300" verses="Matt 24" />
-<read day="301" verses="Matt 25" />
-<read day="302" verses="Matt 26; Mark 14" />
-<read day="303" verses="Luke 22; John 13" />
-<read day="304" verses="John 14-17" />
-<read day="305" verses="Matt 27; Mark 15" />
-<read day="306" verses="Luke 23; John 18-19" />
-<read day="307" verses="Matt 28; Mark 16" />
-<read day="308" verses="Luke 24; John 20-21" />
-<read day="309" verses="Acts 1-3" />
-<read day="310" verses="Acts 4-6" />
-<read day="311" verses="Acts 7-8" />
-<read day="312" verses="Acts 9-10" />
-<read day="313" verses="Acts 11-12" />
-<read day="314" verses="Acts 13-14" />
-<read day="315" verses="James" />
-<read day="316" verses="Acts 15-16" />
-<read day="317" verses="Gal 1-3" />
-<read day="318" verses="Gal 4-6" />
-<read day="319" verses="Acts 17-18:18" />
-<read day="320" verses="1Thess; 2Thess" />
-<read day="321" verses="Acts 18:19-19:41" />
-<read day="322" verses="1Cor 1-4" />
-<read day="323" verses="1Cor 5-8" />
-<read day="324" verses="1Cor 9-11" />
-<read day="325" verses="1Cor 12-14" />
-<read day="326" verses="1Cor 15-16" />
-<read day="327" verses="2Cor 1-4" />
-<read day="328" verses="2Cor 5-9" />
-<read day="329" verses="2Cor 10-13" />
-<read day="330" verses="Acts 20:1-3; Rom 1-3" />
-<read day="331" verses="Rom 4-7" />
-<read day="332" verses="Rom 8-10" />
-<read day="333" verses="Rom 11-13" />
-<read day="334" verses="Rom 14-16" />
-<read day="335" verses="Acts 20:4-23:35" />
-<read day="336" verses="Acts 24-26" />
-<read day="337" verses="Acts 27-28" />
-<read day="338" verses="Colossians; Philemon" />
-<read day="339" verses="Ephesians" />
-<read day="340" verses="Philippians" />
-<read day="341" verses="1 Timothy" />
-<read day="342" verses="Titus" />
-<read day="343" verses="1 Peter" />
-<read day="344" verses="Heb 1-6" />
-<read day="345" verses="Heb 7-10" />
-<read day="346" verses="Heb 11-13" />
-<read day="347" verses="2 Timothy" />
-<read day="348" verses="2 Peter; Jude" />
-<read day="349" verses="1 John" />
-<read day="350" verses="2 John;3 John" />
-<read day="351" verses="Rev 1-5" />
-<read day="352" verses="Rev 6-11" />
-<read day="353" verses="Rev 12-18" />
-<read day="354" verses="Rev 19-22" />
+  <read day="1" verses="Gen 1-3" />
+  <read day="2" verses="Gen 4-7" />
+  <read day="3" verses="Gen 8-11" />
+  <read day="4" verses="Job 1-5" />
+  <read day="5" verses="Job 6-9" />
+  <read day="6" verses="Job 10-13" />
+  <read day="7" verses="Job 14-16" />
+  <read day="8" verses="Job 17-20" />
+  <read day="9" verses="Job 21-23" />
+  <read day="10" verses="Job 24-28" />
+  <read day="11" verses="Job 29-31" />
+  <read day="12" verses="Job 32-34" />
+  <read day="13" verses="Job 35-37" />
+  <read day="14" verses="Job 38-39" />
+  <read day="15" verses="Job 40-42" />
+  <read day="16" verses="Gen 12-15" />
+  <read day="17" verses="Gen 16-18" />
+  <read day="18" verses="Gen 19-21" />
+  <read day="19" verses="Gen 22-24" />
+  <read day="20" verses="Gen 25-26" />
+  <read day="21" verses="Gen 27-29" />
+  <read day="22" verses="Gen 30-31" />
+  <read day="23" verses="Gen 32-34" />
+  <read day="24" verses="Gen 35-37" />
+  <read day="25" verses="Gen 38-40" />
+  <read day="26" verses="Gen 41-42" />
+  <read day="27" verses="Gen 43-45" />
+  <read day="28" verses="Gen 46-47" />
+  <read day="29" verses="Gen 48-50" />
+  <read day="30" verses="Ex 1-3" />
+  <read day="31" verses="Ex 4-6" />
+  <read day="32" verses="Ex 7-9" />
+  <read day="33" verses="Ex 10-12" />
+  <read day="34" verses="Ex 13-15" />
+  <read day="35" verses="Ex 16-18" />
+  <read day="36" verses="Ex 19-21" />
+  <read day="37" verses="Ex 22-24" />
+  <read day="38" verses="Ex 25-27" />
+  <read day="39" verses="Ex 28-29" />
+  <read day="40" verses="Ex 30-32" />
+  <read day="41" verses="Ex 33-35" />
+  <read day="42" verses="Ex 36-38" />
+  <read day="43" verses="Ex 39-40" />
+  <read day="44" verses="Lev 1-4" />
+  <read day="45" verses="Lev 5-7" />
+  <read day="46" verses="Lev 8-10" />
+  <read day="47" verses="Lev 11-13" />
+  <read day="48" verses="Lev 14-15" />
+  <read day="49" verses="Lev 16-18" />
+  <read day="50" verses="Lev 19-21" />
+  <read day="51" verses="Lev 22-23" />
+  <read day="52" verses="Lev 24-25" />
+  <read day="53" verses="Lev 26-27" />
+  <read day="54" verses="Num 1-2" />
+  <read day="55" verses="Num 3-4" />
+  <read day="56" verses="Num 5-6" />
+  <read day="57" verses="Num 7" />
+  <read day="58" verses="Num 8-10" />
+  <read day="59" verses="Num 11-13" />
+  <read day="60" verses="Num 14-15; Ps 90" />
+  <read day="61" verses="Num 16-17" />
+  <read day="62" verses="Num 18-20" />
+  <read day="63" verses="Num 21-22" />
+  <read day="64" verses="Num 23-25" />
+  <read day="65" verses="Num 26-27" />
+  <read day="66" verses="Num 28-30" />
+  <read day="67" verses="Num 31-32" />
+  <read day="68" verses="Num 33-34" />
+  <read day="69" verses="Num 35-36" />
+  <read day="70" verses="Deut 1-2" />
+  <read day="71" verses="Deut 3-4" />
+  <read day="72" verses="Deut 5-7" />
+  <read day="73" verses="Deut 8-10" />
+  <read day="74" verses="Deut 11-13" />
+  <read day="75" verses="Deut 14-16" />
+  <read day="76" verses="Deut 17-20" />
+  <read day="77" verses="Deut 21-23" />
+  <read day="78" verses="Deut 24-27" />
+  <read day="79" verses="Deut 28-29" />
+  <read day="80" verses="Deut 30-31" />
+  <read day="81" verses="Deut 32-34; Ps 91" />
+  <read day="82" verses="Josh 1-4" />
+  <read day="83" verses="Josh 5-8" />
+  <read day="84" verses="Josh 9-11" />
+  <read day="85" verses="Josh 12-15" />
+  <read day="86" verses="Josh 16-18" />
+  <read day="87" verses="Josh 19-21" />
+  <read day="88" verses="Josh 22-24" />
+  <read day="89" verses="Jud 1-2" />
+  <read day="90" verses="Jud 3-5" />
+  <read day="91" verses="Jud 6-7" />
+  <read day="92" verses="Jud 8-9" />
+  <read day="93" verses="Jud 10-12" />
+  <read day="94" verses="Jud 13-15" />
+  <read day="95" verses="Jud 16-18" />
+  <read day="96" verses="Jud 19-21" />
+  <read day="97" verses="Ruth" />
+  <read day="98" verses="1Sam 1-3" />
+  <read day="99" verses="1Sam 4-8" />
+  <read day="100" verses="1Sam 9-12" />
+  <read day="101" verses="1Sam 13-14" />
+  <read day="102" verses="1Sam 15-17" />
+  <read day="103" verses="1Sam 18-20; Ps 11;Ps 59" />
+  <read day="104" verses="1Sam 21-24" />
+  <read day="105" verses="Ps 7;Ps 27;Ps 31;Ps 34;Ps 52" />
+  <read day="106" verses="Ps 56;Ps 120;Ps 140-142" />
+  <read day="107" verses="1Sam 25-27" />
+  <read day="108" verses="Ps 17;Ps 35;Ps 54;Ps 63" />
+  <read day="109" verses="1Sam 28-31; Ps18" />
+  <read day="110" verses="Ps 121;Ps 123-125;Ps 128-130" />
+  <read day="111" verses="2Sam 1-4" />
+  <read day="112" verses="Ps 6;Ps 8-10;Ps 14;Ps 16;Ps 19;Ps 21" />
+  <read day="113" verses="1Chron 1-2" />
+  <read day="114" verses="Ps 43-45;Ps 49;Ps 84-85;Ps 87" />
+  <read day="115" verses="1Chron 3-5" />
+  <read day="116" verses="Ps 73;Ps 77-78" />
+  <read day="117" verses="1Chron 6" />
+  <read day="118" verses="Ps 81;Ps 88;Ps 92-93" />
+  <read day="119" verses="1Chron 7-10" />
+  <read day="120" verses="Ps 102-104" />
+  <read day="121" verses="2Sam 5:1-10; 1Chron 11-12" />
+  <read day="122" verses="Ps 133" />
+  <read day="123" verses="Ps 106-107" />
+  <read day="124" verses="2Sam 5:11-6:23; 1Chron 13-16" />
+  <read day="125" verses="Ps 1-2;Ps 15;Ps 22-24;Ps 47;Ps 68" />
+  <read day="126" verses="Ps 89;Ps 96;Ps 100-101;Ps 105;Ps 132" />
+  <read day="127" verses="2Sam 7; 1Chron 17" />
+  <read day="128" verses="Ps 25;Ps 29;Ps 33;Ps 36;Ps 39" />
+  <read day="129" verses="2Sam 8-9; 1Chron 18" />
+  <read day="130" verses="Ps 50;Ps 53;Ps 60;Ps 75" />
+  <read day="131" verses="2Sam 10; 1Chron 19; Ps 20" />
+  <read day="132" verses="Ps 65-67;Ps 69-70" />
+  <read day="133" verses="2Sam 11-12; 1Chron 20" />
+  <read day="134" verses="Ps 32;Ps 51;Ps 86;Ps 122" />
+  <read day="135" verses="2Sam 13-15" />
+  <read day="136" verses="Ps 3-4;Ps 12-13;Ps 28;Ps 55" />
+  <read day="137" verses="2Sam 16-18" />
+  <read day="138" verses="Ps 26;Ps 40;Ps 58;Ps 61-62;Ps 64" />
+  <read day="139" verses="2Sam 19-21" />
+  <read day="140" verses="Ps 5;Ps 38;Ps 41-42" />
+  <read day="141" verses="2Sam 22-23; Ps 57" />
+  <read day="142" verses="Ps 95;Ps 97-99" />
+  <read day="143" verses="2Sam 24; 1Chron 21-22; Ps 30" />
+  <read day="144" verses="Ps 108-110" />
+  <read day="145" verses="1Chron 23-25" />
+  <read day="146" verses="Ps 131;Ps 138-139;Ps 143-145" />
+  <read day="147" verses="1Chron 26-29; Ps 127" />
+  <read day="148" verses="Ps 111-118" />
+  <read day="149" verses="1King 1-2; Ps 37;Ps 71;Ps 94" />
+  <read day="150" verses="Ps 119:1-88" />
+  <read day="151" verses="1King 3-4; 2Chron 1; Ps 72" />
+  <read day="152" verses="Ps 119:89-176" />
+  <read day="153" verses="Solomon" />
+  <read day="154" verses="Prov 1-3" />
+  <read day="155" verses="Prov 4-6" />
+  <read day="156" verses="Prov 7-9" />
+  <read day="157" verses="Prov 10-12" />
+  <read day="158" verses="Prov 13-15" />
+  <read day="159" verses="Prov 16-18" />
+  <read day="160" verses="Prov 19-21" />
+  <read day="161" verses="Prov 22-24" />
+  <read day="162" verses="1King 5-6; 2Chron 2-3" />
+  <read day="163" verses="1King 7; 2Chron 4" />
+  <read day="164" verses="1King 8; 2Chron 5" />
+  <read day="165" verses="2Chron 6-7; Ps 136" />
+  <read day="166" verses="Ps 134;Ps 146-150" />
+  <read day="167" verses="1King 9; 2Chron 8" />
+  <read day="168" verses="Prov 25-26" />
+  <read day="169" verses="Prov 27-29" />
+  <read day="170" verses="Ecc 1-6" />
+  <read day="171" verses="Ecc 7-12" />
+  <read day="172" verses="1King 10-11; 2Chron 9" />
+  <read day="173" verses="Prov 30-31" />
+  <read day="174" verses="1King 12-14" />
+  <read day="175" verses="2Chron 10-12" />
+  <read day="176" verses="1King 15:1-24; 2Chron 13-16" />
+  <read day="177" verses="1King 15:25-16:34; 2Chron 17" />
+  <read day="178" verses="1King 17-19" />
+  <read day="179" verses="1King 20-21" />
+  <read day="180" verses="1King 22; 2Chron 18" />
+  <read day="181" verses="2Chron 19-23" />
+  <read day="182" verses="Oba; Ps 82-83" />
+  <read day="183" verses="2King 1-4" />
+  <read day="184" verses="2King 5-8" />
+  <read day="185" verses="2King 9-11" />
+  <read day="186" verses="2King 12-13; 2Chron 24" />
+  <read day="187" verses="2King 14; 2Chron 25" />
+  <read day="188" verses="Jonah" />
+  <read day="189" verses="2King 15; 2Chron 26" />
+  <read day="190" verses="Is 1-4" />
+  <read day="191" verses="Is 5-8" />
+  <read day="192" verses="Amos 1-5" />
+  <read day="193" verses="Amos 6-9" />
+  <read day="194" verses="2Chron 27; Is 9-12" />
+  <read day="195" verses="Micah" />
+  <read day="196" verses="2Chron 28; 2King 16-17" />
+  <read day="197" verses="Is 13-17" />
+  <read day="198" verses="Is 18-22" />
+  <read day="199" verses="Is 23-27" />
+  <read day="100" verses="2King 18:1-8; 2Chron 29-31; Ps 48" />
+  <read day="201" verses="Hos 1-7" />
+  <read day="202" verses="Hos 8-14" />
+  <read day="203" verses="Is 28-30" />
+  <read day="204" verses="Is 31-34" />
+  <read day="205" verses="Is 35-36" />
+  <read day="206" verses="Is 37-39; Ps 76" />
+  <read day="207" verses="Is 40-43" />
+  <read day="208" verses="Is 44-48" />
+  <read day="209" verses="2King 18:9-19:37; Ps 46;Ps 80;Ps 135" />
+  <read day="200" verses="Is 49-53" />
+  <read day="211" verses="Is 54-58" />
+  <read day="212" verses="Is 59-63" />
+  <read day="213" verses="Is 64-66" />
+  <read day="214" verses="2King 20-21" />
+  <read day="215" verses="2Chron 32-33" />
+  <read day="216" verses="Nahum" />
+  <read day="217" verses="2King 22-23; 2Chron 34-35" />
+  <read day="218" verses="Zephaniah" />
+  <read day="219" verses="Jer 1-3" />
+  <read day="210" verses="Jer 4-6" />
+  <read day="221" verses="Jer 7-9" />
+  <read day="222" verses="Jer 10-13" />
+  <read day="223" verses="Jer 14-17" />
+  <read day="224" verses="Jer 18-22" />
+  <read day="225" verses="Jer 23-25" />
+  <read day="226" verses="Jer 26-29" />
+  <read day="227" verses="Jer 30-31" />
+  <read day="228" verses="Jer 32-34" />
+  <read day="229" verses="Jer 35-37" />
+  <read day="220" verses="Jer 38-40; Ps 74;Ps 79" />
+  <read day="231" verses="2King 24-25; 2Chron 36" />
+  <read day="232" verses="Habakkuk" />
+  <read day="233" verses="Jer 41-45" />
+  <read day="234" verses="Jer 46-48" />
+  <read day="235" verses="Jer 49-50" />
+  <read day="236" verses="Jer 51-52" />
+  <read day="237" verses="Lam 1:1-3:36" />
+  <read day="238" verses="Lam 3:37-5:22" />
+  <read day="239" verses="Ezek 1-4" />
+  <read day="230" verses="Ezek 5-8" />
+  <read day="241" verses="Ezek 9-12" />
+  <read day="242" verses="Ezek 13-15" />
+  <read day="243" verses="Ezek 16-17" />
+  <read day="244" verses="Ezek 18-19" />
+  <read day="245" verses="Ezek 20-21" />
+  <read day="246" verses="Ezek 22-23" />
+  <read day="247" verses="Ezek 24-27" />
+  <read day="248" verses="Ezek 28-31" />
+  <read day="249" verses="Ezek 32-34" />
+  <read day="240" verses="Ezek 35-37" />
+  <read day="251" verses="Ezek 38-39" />
+  <read day="252" verses="Ezek 40-41" />
+  <read day="253" verses="Ezek 42-43" />
+  <read day="254" verses="Ezek 44-45" />
+  <read day="255" verses="Ezek 46-48" />
+  <read day="256" verses="Joel" />
+  <read day="257" verses="Dan 1-3" />
+  <read day="258" verses="Dan 4-6" />
+  <read day="259" verses="Dan 7-9" />
+  <read day="250" verses="Dan 10-12" />
+  <read day="261" verses="Ezra 1-3" />
+  <read day="262" verses="Ezra 4-6; Ps 137" />
+  <read day="263" verses="Haggai" />
+  <read day="264" verses="Zech 1-7" />
+  <read day="265" verses="Zech 8-14" />
+  <read day="266" verses="Est 1-5" />
+  <read day="267" verses="Est 6-10" />
+  <read day="268" verses="Ezra 7-10" />
+  <read day="269" verses="Neh 1-5" />
+  <read day="260" verses="Neh 6-7" />
+  <read day="271" verses="Neh 8-10" />
+  <read day="272" verses="Neh 11-13; Ps 126" />
+  <read day="273" verses="Malachi" />
+  <read day="274" verses="Luke 1; John 1:1-14" />
+  <read day="275" verses="Matt 1; Luke 2:1-38" />
+  <read day="276" verses="Matt 2; Luke 2:39-52" />
+  <read day="277" verses="Matt 3; Mark 1; Luke 3" />
+  <read day="278" verses="Matt 4; Luke 4-5; John 1:15-51" />
+  <read day="279" verses="John 2-4" />
+  <read day="270" verses="Mark 2" />
+  <read day="281" verses="John 5" />
+  <read day="282" verses="Matt 12:1-21; Mark 3; Luke 6" />
+  <read day="283" verses="Matt 5-7" />
+  <read day="284" verses="Matt 8:1-13; Luke 7" />
+  <read day="285" verses="Matt 11" />
+  <read day="286" verses="Matt 12:22-50; Luke 11" />
+  <read day="287" verses="Matt 13; Luke 8" />
+  <read day="288" verses="Matt 8:14-34; Mark 4-5" />
+  <read day="289" verses="Matt 9-10" />
+  <read day="280" verses="Matt 14; Mark 6; Luke 9:1-17" />
+  <read day="291" verses="John 6" />
+  <read day="292" verses="Matt 15; Mark 7" />
+  <read day="293" verses="Matt 16; Mark 8; Luke 9:18-27" />
+  <read day="294" verses="Matt 17; Mark 9; Luke 9:28-62" />
+  <read day="295" verses="Matt 18" />
+  <read day="296" verses="John 7-8" />
+  <read day="297" verses="John 9:1-10:21" />
+  <read day="298" verses="Luke 10-11; John 10:22-42" />
+  <read day="299" verses="Luke 12-13" />
+  <read day="300" verses="Luke 14-15" />
+  <read day="301" verses="Luke 16-17:10" />
+  <read day="302" verses="John 11" />
+  <read day="303" verses="Luke 17:11-18:14" />
+  <read day="304" verses="Matt 19; Mark 10" />
+  <read day="305" verses="Matt 20-21" />
+  <read day="306" verses="Luke 18:15-19:48" />
+  <read day="307" verses="Mark 11; John 12" />
+  <read day="308" verses="Matt 22; Mark 12" />
+  <read day="309" verses="Matt 23; Luke 20-21" />
+  <read day="310" verses="Mark 13" />
+  <read day="311" verses="Matt 24" />
+  <read day="312" verses="Matt 25" />
+  <read day="313" verses="Matt 26; Mark 14" />
+  <read day="314" verses="Luke 22; John 13" />
+  <read day="315" verses="John 14-17" />
+  <read day="316" verses="Matt 27; Mark 15" />
+  <read day="317" verses="Luke 23; John 18-19" />
+  <read day="318" verses="Matt 28; Mark 16" />
+  <read day="319" verses="Luke 24; John 20-21" />
+  <read day="320" verses="Acts 1-3" />
+  <read day="321" verses="Acts 4-6" />
+  <read day="322" verses="Acts 7-8" />
+  <read day="323" verses="Acts 9-10" />
+  <read day="324" verses="Acts 11-12" />
+  <read day="325" verses="Acts 13-14" />
+  <read day="326" verses="James" />
+  <read day="327" verses="Acts 15-16" />
+  <read day="328" verses="Gal 1-3" />
+  <read day="329" verses="Gal 4-6" />
+  <read day="330" verses="Acts 17-18:18" />
+  <read day="331" verses="1Thess; 2Thess" />
+  <read day="332" verses="Acts 18:19-19:41" />
+  <read day="333" verses="1Cor 1-4" />
+  <read day="334" verses="1Cor 5-8" />
+  <read day="335" verses="1Cor 9-11" />
+  <read day="336" verses="1Cor 12-14" />
+  <read day="337" verses="1Cor 15-16" />
+  <read day="338" verses="2Cor 1-4" />
+  <read day="339" verses="2Cor 5-9" />
+  <read day="340" verses="2Cor 10-13" />
+  <read day="341" verses="Acts 20:1-3; Rom 1-3" />
+  <read day="342" verses="Rom 4-7" />
+  <read day="343" verses="Rom 8-10" />
+  <read day="344" verses="Rom 11-13" />
+  <read day="345" verses="Rom 14-16" />
+  <read day="346" verses="Acts 20:4-23:35" />
+  <read day="347" verses="Acts 24-26" />
+  <read day="348" verses="Acts 27-28" />
+  <read day="349" verses="Colossians; Philemon" />
+  <read day="350" verses="Ephesians" />
+  <read day="351" verses="Philippians" />
+  <read day="352" verses="1 Timothy" />
+  <read day="353" verses="Titus" />
+  <read day="354" verses="1 Peter" />
+  <read day="355" verses="Heb 1-6" />
+  <read day="356" verses="Heb 7-10" />
+  <read day="357" verses="Heb 11-13" />
+  <read day="358" verses="2 Timothy" />
+  <read day="359" verses="2 Peter; Jude" />
+  <read day="360" verses="1 John" />
+  <read day="361" verses="2 John;3 John" />
+  <read day="362" verses="Rev 1-5" />
+  <read day="363" verses="Rev 6-11" />
+  <read day="364" verses="Rev 12-18" />
+  <read day="365" verses="Rev 19-22" />
 </Chron>

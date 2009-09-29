@@ -62,8 +62,8 @@ namespace CMSWeb.Models
         }
         public int? regid { get; set; }
         private RecReg _registration;
-                public RecReg registration 
-{
+        public RecReg registration 
+        {
             get
             {
                 if (_registration == null)
