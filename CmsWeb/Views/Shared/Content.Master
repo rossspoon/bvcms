@@ -46,10 +46,6 @@
             }
             return true;
         }
-        $(document).ready(function() {
-            var page = $("#curpage").val();
-            $('li#' + page).addClass("active");
-        }); 
     </script>
 </div>
 <div>

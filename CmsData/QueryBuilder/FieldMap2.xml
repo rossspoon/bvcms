@@ -92,6 +92,9 @@
 			Selects people based on number of days since last contacted.
 			Only selects those with any contact
 		</Field>
+    <Field Name="RecentContactMinistry" Title="Recent Contact Ministry" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="Ministries" DataValueField="IdCode">
+      Selects people based on an contact Ministry type looking back a specified number of days.
+    </Field>
     <Field Name="RecentContactType" Title="Recent Contact Type" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="ContactTypeCodes" DataValueField="IdCode">
       Selects people based on an contact type looking back a specified number of days.
     </Field>
@@ -326,7 +329,10 @@
     <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
       Selects everyone who has visited the last organization you worked with within the days specified. (used internally, but you can too if it will help you)
     </Field>
-    <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
+    <Field Name="KidsRecentAttendCount" Title="Kids Recent Attendance Count" Type="Integer" DisplayAs="KidsRecentAttendCount({0})" Params="Days">
+      Selects people based on their kids attendance count for anything looking back a specified number of days.
+    </Field>
+      <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
       Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.
     </Field>-->
   </Category>

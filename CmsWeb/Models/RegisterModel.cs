@@ -244,7 +244,7 @@ namespace CMSWeb.Models
 
             p.CellPhone = cellphone.GetDigits();
             p.MaritalStatusId = married.Value;
-            if (email != HttpContext.Current.Session["email"].ToString())
+            if (email != (string)HttpContext.Current.Session["email"])
                 p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
             DbUtil.Db.SubmitChanges();

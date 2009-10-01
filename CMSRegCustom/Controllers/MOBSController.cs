@@ -51,11 +51,11 @@ namespace CMSRegCustom.Controllers
                     PeopleId = m.person.PeopleId,
                     MeetingId = m.meeting.MeetingId,
                     Created = DateTime.Now,
-                    Email = m.email,
-                    FeePaid = false,
                 };
                 DbUtil.Db.MOBSRegs.InsertOnSubmit(reg);
             }
+            reg.Email = m.email;
+            reg.NumTickets = m.tickets;
 
             DbUtil.Db.SubmitChanges();
 
@@ -80,16 +80,32 @@ m.person.Name, m.peopleid, m.MeetingTime));
             if (!id.HasValue)
                 return View("Unknown");
             var m = new MOBSModel { regid = id };
-            if (TransactionID.HasValue())
+            if (!TransactionID.HasValue())
+                return Content("error no transaction");
+
+            m.registration.FeePaid = true;
+            m.registration.TransactionId = TransactionID;
+            DbUtil.Db.SubmitChanges();
+
+            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "MOBSMessage");
+            if (c == null)
             {
-                m.registration.FeePaid = true;
-                m.registration.TransactionId = TransactionID;
-                DbUtil.Db.SubmitChanges();
+                c = new Content();
+                c.Body = 
+@"<p>Hi {first},</p><p>Thank you for registering for a MOBS event on {date} at {time}.</p>
+<p>You purchased {tickets} tickets for a total cost of {amount}</p>";
+                c.Title = "MOBS Event Registration";
             }
+            var p = m.person;
+            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            c.Body = c.Body.Replace("{tickets}", m.tickets.ToString());
+            c.Body = c.Body.Replace("{amount}", m.Amount.ToString("C"));
+            c.Body = c.Body.Replace("{date}", m.meeting.MeetingDate.Value.ToShortDateString());
+            c.Body = c.Body.Replace("{time}", m.meeting.MeetingDate.Value.ToShortTimeString());
+            c.Body = c.Body.Replace("{when}", m.MeetingTime);
 
             Util.Email(DbUtil.Settings("MOBSMail"),
-    "", m.registration.Email, "MOBS Event Registration",
-@"<p>Thank you for registering for a MOBS event on {0:d}".Fmt(m.meeting.MeetingDate));
+                 m.person.Name, m.registration.Email, c.Title, c.Body);
             return View(m);
         }
         public JsonResult CityState(string id)
@@ -98,6 +114,12 @@ m.person.Name, m.peopleid, m.MeetingTime));
             if (z == null)
                 return Json(null);
             return Json(new { city = z.City.Trim(), state = z.State });
+        }
+        [Authorize]
+        public ActionResult Registrations()
+        {
+            var m = new MOBSModel();
+            return View(m.Attendees());
         }
     }
 }

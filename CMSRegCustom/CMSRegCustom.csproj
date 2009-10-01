@@ -99,6 +99,7 @@
     <Content Include="Views\MOBS\Index.aspx" />
     <Content Include="Views\MOBS\Payment.aspx" />
     <Content Include="Views\MOBS\Unknown.aspx" />
+    <Content Include="Views\MOBS\Registrations.aspx" />
     <Content Include="Views\SoulMate\CheckBack.aspx" />
     <Content Include="Views\SoulMate\ChildCare.aspx" />
     <Content Include="Views\SoulMate\Confirm.aspx" />

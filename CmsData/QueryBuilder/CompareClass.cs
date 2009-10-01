@@ -204,7 +204,12 @@ namespace CmsData
                     return Expressions.IsHeadOfHousehold(parm,
                                CompType,
                                c.CodeIds == "1");
-                // L -------------------
+                // K -------------------
+                case QueryType.KidsRecentAttendCount:
+                    return Expressions.KidsRecentAttendCount(parm,
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
                 // M -------------------
                 case QueryType.MembOfOrgWithSched:
                     return Expressions.MembOfOrgWithSched(parm,
@@ -290,6 +295,11 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+                               c.Days,
+                               CompType,
+                               c.CodeIntIds);
+                case QueryType.RecentContactMinistry:
+                    return Expressions.RecentContactMinistry(parm,
                                c.Days,
                                CompType,
                                c.CodeIntIds);

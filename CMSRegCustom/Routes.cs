@@ -1,19 +1,25 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace CMSWebCommon
+namespace CMSRegCustom
 {
     public static class Routes
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.AddRoute("SearchPeople");
+            routes.AddRoute("DiscipleLife");
+            routes.AddRoute("LoveRespect");
+            routes.AddRoute("SoulMate");
+            routes.AddRoute("StepClass");
+            routes.AddRoute("VBS");
+            routes.AddRoute("VBSReg");
+            routes.AddRoute("MOBS");
         }
         private static void AddRoute(this RouteCollection routes, string controller)
         {
-            routes.MapAreaRoute("CMSWebCommon", controller, controller + "/{action}/{id}",
+            routes.MapAreaRoute("CMSRegCustom", controller, controller + "/{action}/{id}",
                 new { controller = controller, action = "Index", id = "" },
-                new string[] { "CMSWebCommon.Controllers" });
+                new string[] { "CMSRegCustom.Controllers" });
         }
     }
 }

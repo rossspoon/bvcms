@@ -60,6 +60,8 @@ namespace UtilityExtensions
         }
         public static MailAddress FirstAddress(string addrs)
         {
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",");
             return new MailAddress(a[0]);
         }

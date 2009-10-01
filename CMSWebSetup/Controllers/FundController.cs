@@ -9,9 +9,9 @@ using UtilityExtensions;
 
 namespace CMSWebSetup.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FundController : Controller
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = DbUtil.Db.ContributionFunds.AsEnumerable();

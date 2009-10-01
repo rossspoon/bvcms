@@ -12,6 +12,7 @@ namespace CMSWebSetup
             routes.AddRoute("MetroZip");
             routes.AddRoute("Ministry");
             routes.AddRoute("Program");
+            routes.AddRoute("Lookup");
             routes.AddRoute("PromotionSetup");
             routes.AddRoute("RecreationSetup");
             routes.AddRoute("Setting");

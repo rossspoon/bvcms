@@ -5,11 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
-<script src="/Content/js/jquery.MetaData.js" type="text/javascript"></script>
-<script src="/Content/js/jquery.FCKEditor.pack.js" type="text/javascript"></script>
-<script type="text/javascript">
-    $(function() { $('#html').fck({ path: '/fckeditor/' }); });
-</script>
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
 <% using (Html.BeginForm("UpdatePage", "Display", FormMethod.Post))
    { %>
 <div class="blogbody">
@@ -17,7 +13,7 @@
 <hr />
 <%=Html.Hidden("id")%>
 <div>Title: <%=Html.TextBox("title")%></div>
-<%=Html.TextArea("html")%>
+<%=Html.TextArea("html", new { @class="ckeditor" })%>
 <input type="submit" value="Post" />
 </div>
 <% } %>

@@ -21,15 +21,6 @@ namespace CMSWeb.Reports
 {
     public partial class ContactReport : System.Web.UI.Page
     {
-        public class MemberInfo
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Organization { get; set; }
-            public string Location { get; set; }
-            public string MemberType { get; set; }
-        }
-
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8, new GrayColor(50));
@@ -132,12 +123,21 @@ namespace CMSWeb.Reports
             var cts = ctl.ContactTypeCodes();
             ph = new Phrase();
             ph.Add(new Chunk(p.MemberStatus.Description, font));
-            foreach(var c in p.contactsHad)
+
+            var contactcell = new PdfPCell();
+            var cq = from ce in DbUtil.Db.Contactees
+                    where ce.PeopleId == p.PeopleId
+                    orderby ce.contact.ContactDate descending
+                    select new
+                    {
+                        contact = ce.contact,
+                        madeby = ce.contact.contactsMakers.FirstOrDefault().person,
+                    };
+            foreach(var c in cq)
             {
-                var ctor = c.contact.contactsMakers.FirstOrDefault();
                 var name = "unknown";
-                if (ctor != null)
-                    name = ctor.person.Name;
+                if (c.madeby != null)
+                    name = c.madeby.Name;
                 ph.Add(new Chunk("\n-----------------\n{0:d}: {1} by {2}\n".Fmt(
                     c.contact.ContactDate,
                     cts.Single(ct => ct.Id == c.contact.ContactTypeId).Value,

@@ -75,6 +75,8 @@ namespace CMSWeb.Dialog
                     f = DbUtil.Db.Families.SingleOrDefault(fam => fam.FamilyId == fid);
                     if (f != null)
                     {
+                        DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(f.RelatedFamilies1);
+                        DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(f.RelatedFamilies2);
                         DbUtil.Db.Families.DeleteOnSubmit(f);
                         DbUtil.Db.SubmitChanges();
                     }

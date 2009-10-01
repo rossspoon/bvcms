@@ -23,7 +23,11 @@ namespace CMSRegCustom.Models
         {
             get
             {
-                return 6 * tickets;
+                decimal cost;
+                if (decimal.TryParse((string)DbUtil.Settings("MOBSTicketCost"), out cost))
+                    return cost * tickets;
+                else
+                    return 6 * tickets;
             }
         }
         public int tickets { get; set; }
@@ -99,6 +103,8 @@ namespace CMSRegCustom.Models
                 registration = DbUtil.Db.MOBSRegs.Single(d => d.Id == value);
                 peopleid = registration.PeopleId;
                 meetingid = registration.MeetingId;
+                tickets = registration.NumTickets;
+                email = registration.Email;
             }
         }
 
@@ -132,7 +138,6 @@ namespace CMSRegCustom.Models
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
                     where p.BirthDay == birthday.Day && p.BirthMonth == birthday.Month && p.BirthYear == birthday.Year
-                    where p.GenderId == 1
                     select p;
             var count = q.Count();
             if (count > 1)
@@ -213,5 +218,30 @@ namespace CMSRegCustom.Models
         {
             Attend.RecordAttendance(peopleid.Value, meeting.MeetingId, true);
         }
+        public IEnumerable<Attendee> Attendees()
+        {
+            var q = from a in meeting.Attends
+                    where a.AttendanceFlag == true
+                    join r in DbUtil.Db.MOBSRegs 
+                        on new { a.PeopleId, a.MeetingId }
+                        equals new { PeopleId = r.PeopleId.Value, MeetingId = r.MeetingId.Value }
+                    select new Attendee
+                    {
+                        PeopleId = a.PeopleId,
+                        Name = a.Person.Name,
+                        RegisteredOn = r.Created.Value,
+                        Tickets = r.NumTickets,
+                        TransactionId = r.TransactionId,
+                    };
+            return q;
+        }
+    }
+    public class Attendee
+    {
+        public int PeopleId { get; set; }
+        public string Name { get; set; }
+        public int Tickets { get; set; }
+        public string TransactionId { get; set; }
+        public DateTime RegisteredOn { get; set; }
     }
 }

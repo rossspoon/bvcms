@@ -206,6 +206,22 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression RecentContactMinistry(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int[] ids)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred = p =>
+                p.contactsHad.Any(a => a.contact.ContactDate >= mindt
+                    && ids.Contains(a.contact.MinistryId.Value));
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+
         internal static Expression RecentAttendCount(
             ParameterExpression parm,
             int? progid,
@@ -223,6 +239,20 @@ namespace CmsData
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
                     );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression KidsRecentAttendCount(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int cnt)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, int>> pred = p =>
+                p.Family.People.Where(k => k.PositionInFamilyId == 30).Max(k =>
+                    k.Attends.Count(a => a.AttendanceFlag == true && a.MeetingDate >= mindt));
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
