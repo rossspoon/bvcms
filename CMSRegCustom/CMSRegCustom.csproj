@@ -93,6 +93,7 @@
     <Content Include="Views\DiscipleLife\Confirm.aspx" />
     <Content Include="Views\DiscipleLife\Index.aspx" />
     <Content Include="Views\LoveRespect\Confirm.aspx" />
+    <Content Include="Views\LoveRespect\Index0.aspx" />
     <Content Include="Views\LoveRespect\Index.aspx" />
     <Content Include="Views\LoveRespect\Other.aspx" />
     <Content Include="Views\MOBS\Confirm.aspx" />
