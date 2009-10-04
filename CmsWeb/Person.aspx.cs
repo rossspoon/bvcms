@@ -68,7 +68,7 @@ namespace CMSWeb
 
             DeletePerson.Visible = User.IsInRole("Admin");
 
-            Picture.ImageUrl = "~/Image.ashx?portrait=1&id=" + (person.PictureId == null ? 0 : person.Picture.SmallId.Value);
+            Picture.ImageUrl = "~/Image.aspx?portrait=1&id=" + (person.PictureId == null ? 0 : person.Picture.SmallId.Value);
             Picture.NavigateUrl = "~/UploadPicture.aspx?id=" + person.PeopleId;
 
             FamilyLink.NavigateUrl = "~/Family.aspx?id=" + person.FamilyId;

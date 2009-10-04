@@ -15,6 +15,7 @@
                     }
                 }, 'json');
             });
+            $('input:text:first').focus();
         });
     </script>
     <h2>Church Visit Registration</h2>
@@ -43,17 +44,20 @@
                 <tr>
                     <td><label for="dob">Date of Birth</label></td>
                     <td><%= Html.TextBox("dob") %></td>
-                    <td>(m/d/yy)<%= Html.ValidationMessage("dob") %></td>
+                    <td>(m/d/yy or mmddyy)<%= Html.ValidationMessage("dob") %></td>
                 </tr>
                 <tr>
                     <td><label for="gender">Gender</label></td>
-                    <td><%= Html.RadioButton("gender", 1) %> Male
-                    <%= Html.RadioButton("gender", 2) %> Female
+                    <td>
+                    <%= Html.RadioButton("gender", 1, new { accesskey="m" })%> <u>M</u>ale 
+                    <%= Html.RadioButton("gender", 2, new { accesskey = "f" })%> <u>F</u>emale </td>
                     <td><%= Html.ValidationMessage("gender") %></td>
                 </tr>
                 <tr>
                     <td><label for="married">Married</label></td>
-                    <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
+                    <td>
+                    <%= Html.RadioButton("married", 10, new { accesskey = "s" })%> <u>S</u>ingle
+                    <%= Html.RadioButton("married", 20, new { accesskey = "a" })%> M<u>a</u>rried</td>
                     <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
                 <tr>
@@ -103,7 +107,15 @@
                     <td><%= Html.ValidationMessage("org") %></td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td><td><input type="submit" value="Register" /></td>
+                    <td>&nbsp;</td><td>
+                    <input type="submit" name="submit" value="Register" />
+            <% if (Model.existingfamily ?? false)
+               { %>
+                    <%=Html.Hidden("existingfamily", true) %>
+                    <input type="submit" name="submit" value="Add to Existing Family" />
+            <% } %>
+                    </td>
+                    <td><%= Html.ValidationMessage("existing") %></td>
                 </tr>
                 </table>
             </fieldset>

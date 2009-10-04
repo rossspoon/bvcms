@@ -58,7 +58,7 @@
         onitemdatabound="DataList1_ItemDataBound" 
         onitemcommand="DataList1_ItemCommand">
         <ItemTemplate>
-            <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl='<%# Eval("ThumbId", "~/Image.ashx?id={0}") %>'
+            <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl='<%# Eval("ThumbId", "~/Image.aspx?id={0}") %>'
                 NavigateUrl='<%# Eval("Id", "~/AppReview/FormImage.aspx?id={0}") %>' ToolTip='<%# Eval("AppDate", "Uploaded: {0}") %>'
                 BorderStyle="Solid" BorderWidth="1px"></asp:HyperLink><br />
             <asp:LinkButton ID="delete" CommandName="delete" CommandArgument='<%# Eval("Id") %>' runat="server">delete</asp:LinkButton>

@@ -41,10 +41,6 @@ namespace CMSWeb.Reports
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Clear();
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "filename=foo.pdf");
-
             int? org = null;
             int? group = null;
             if (this.QueryString<string>("org") == "curr")
@@ -59,17 +55,6 @@ namespace CMSWeb.Reports
 
             var mid = this.QueryString<int?>("meetingid");
 
-            doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
-            var w = PdfWriter.GetInstance(doc, Response.OutputStream);
-            w.PageEvent = pageEvents;
-            doc.Open();
-
-            box = new PdfPCell();
-            box.Border = PdfPCell.NO_BORDER;
-            box.CellEvent = new CellEvent();
-
-            var ctl = new RollsheetController();
-            dc = w.DirectContent;
 
             CmsData.Meeting meeting = null;
             if (mid.HasValue)
@@ -78,7 +63,29 @@ namespace CMSWeb.Reports
                 dt = meeting.MeetingDate;
                 org = meeting.OrganizationId;
             }
-            foreach (var o in list(org, group, div, schedule, name))
+            var list1 = list(org, group, div, schedule, name);
+            if (list1.Count() == 0)
+            {
+                Response.Write("no data found");
+                return;
+            }
+
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "filename=foo.pdf");
+
+            doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
+            var w = PdfWriter.GetInstance(doc, Response.OutputStream);
+            w.PageEvent = pageEvents;
+            doc.Open();
+            dc = w.DirectContent;
+
+            box = new PdfPCell();
+            box.Border = PdfPCell.NO_BORDER;
+            box.CellEvent = new CellEvent();
+
+            var ctl = new RollsheetController();
+            foreach (var o in list1)
             {
                 var mct = StartPageSet(o);
 

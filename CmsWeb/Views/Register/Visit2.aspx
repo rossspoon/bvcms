@@ -5,6 +5,11 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(function() {
+            $('input:text:first').focus();
+        });
+    </script>
     <h2>Church Database Registration</h2>
     <p>
         Use the form below to register another person in your family for our Church Database. 
@@ -30,18 +35,21 @@
                  <tr>
                     <td><label for="dob">Date of Birth</label></td>
                     <td><%= Html.TextBox("dob") %></td>
-                    <td><%= Html.ValidationMessage("dob") %>(like 5/15/64)</td>
-                </tr>
-                <tr>
-                    <td><label for="married">Married</label></td>
-                    <td><%= Html.RadioButton("married", 10) %> Single <%= Html.RadioButton("married", 20) %> Married</td>
-                    <td><%= Html.ValidationMessage("married") %></td>
+                    <td><%= Html.ValidationMessage("dob") %>(m/d/yy or mmddyy)</td>
                 </tr>
                 <tr>
                     <td><label for="gender">Gender</label></td>
-                    <td><%= Html.RadioButton("gender", 1) %> Male
-                    <%= Html.RadioButton("gender", 2) %> Female
+                    <td>
+                    <%= Html.RadioButton("gender", 1, new { accesskey="m" })%> <u>M</u>ale 
+                    <%= Html.RadioButton("gender", 2, new { accesskey = "f" })%> <u>F</u>emale </td>
                     <td><%= Html.ValidationMessage("gender") %></td>
+                </tr>
+                <tr>
+                    <td><label for="married">Married</label></td>
+                    <td>
+                    <%= Html.RadioButton("married", 10, new { accesskey = "s" })%> <u>S</u>ingle
+                    <%= Html.RadioButton("married", 20, new { accesskey = "a" })%> M<u>a</u>rried</td>
+                    <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>

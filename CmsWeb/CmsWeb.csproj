@@ -73,6 +73,13 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkMail.aspx.cs">
+      <DependentUpon>BulkMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BulkMail.aspx.designer.cs">
+      <DependentUpon>BulkMail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -226,9 +233,6 @@
     </Compile>
     <Compile Include="BadEts.aspx.designer.cs">
       <DependentUpon>BadEts.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="bulkmail.ashx.cs">
-      <DependentUpon>bulkmail.ashx</DependentUpon>
     </Compile>
     <Compile Include="ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
@@ -422,8 +426,12 @@
     <Compile Include="EnrollmentControlReport.aspx.designer.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ExportExcel.ashx.cs">
-      <DependentUpon>ExportExcel.ashx</DependentUpon>
+    <Compile Include="ExportExcel.aspx.cs">
+      <DependentUpon>ExportExcel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExportExcel.aspx.designer.cs">
+      <DependentUpon>ExportExcel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Family.aspx.cs">
       <DependentUpon>Family.aspx</DependentUpon>
@@ -442,8 +450,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Image.ashx.cs">
-      <DependentUpon>Image.ashx</DependentUpon>
+    <Compile Include="Image.aspx.cs">
+      <DependentUpon>Image.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Image.aspx.designer.cs">
+      <DependentUpon>Image.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -789,7 +801,6 @@
     <Content Include="WebService.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bulkmail.ashx" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="ContactSearch.aspx" />
@@ -804,7 +815,6 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ExportExcel.ashx" />
     <Content Include="ForceError.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Meeting.aspx" />
@@ -1067,7 +1077,6 @@
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="Contributions\Years.aspx" />
-    <Content Include="Image.ashx" />
     <Content Include="images\1pix.gif" />
     <Content Include="images\adobe.png" />
     <Content Include="images\ajax-loader.gif" />
@@ -1162,6 +1171,7 @@
     <Content Include="AppReview\Web.config" />
     <Content Include="App_Themes\Minimal\Skin1.skin" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
+    <Content Include="BulkMail.aspx" />
     <Content Include="ckeditor\CHANGES.html" />
     <Content Include="ckeditor\ckeditor.js" />
     <Content Include="ckeditor\ckeditor_basic.js" />
@@ -1832,6 +1842,8 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
+    <Content Include="ExportExcel.aspx" />
+    <Content Include="Image.aspx" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
     <Content Include="Views\CheckIn\Multiple.aspx" />

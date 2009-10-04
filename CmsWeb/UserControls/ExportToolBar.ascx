@@ -140,7 +140,8 @@
                 </asp:RadioButtonList>
             </td>
             <td>
-                <asp:CheckBox ID="UseTitle" runat="server" Text="Use Titles" />
+                <asp:CheckBox ID="UseTitle" runat="server" Text="Use Titles" /><br />
+                <asp:CheckBox ID="WebView" runat="server" Text="Web View (experimental)" />
             </td>
         </tr>
         <tr>

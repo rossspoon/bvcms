@@ -13,10 +13,10 @@
             <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Labels (pdf for label printer)"><img src="/images/tags.png" /> 
                 Labels</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="For mail merge"><img src="/images/Excel.png" /> 
                 Excel</a></li>
-            <li><a href='/bulkmail.ashx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+            <li><a href='/bulkmail.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Comma separated values text file, opens in excel, for bulk mailings"><img src="/images/Excel.png" /> 
                 Bulk (csv)</a></li>
         </ul>
@@ -30,16 +30,16 @@
             <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach Form</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Involvement' 
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Attend' 
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
                 Attendance</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Children' 
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Children' 
                 target="_blank" title="Contains emergency contact, who brought child info"><img src="/images/Excel.png" />
                 Children</a></li>
-            <li><a href='/ExportExcel.ashx?id=<%=ViewData["queryid"]%>&format=Church' 
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Church' 
                 target="_blank" title="Contains other Church Info"><img src="/images/Excel.png" />
                 Other Church</a></li>
             <li><a href='/Report/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 

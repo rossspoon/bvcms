@@ -396,7 +396,13 @@ namespace CmsData
             p.MaritalStatusId = MarriedCode;
 
             DateTime dt;
-            if (DateTime.TryParse(dob, out dt))
+            if (Util.DateValid(dob, out dt))
+            {
+                p.BirthDay = dt.Day;
+                p.BirthMonth = dt.Month;
+                p.BirthYear = dt.Year;
+            }
+            else if (DateTime.TryParse(dob, out dt))
             {
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;

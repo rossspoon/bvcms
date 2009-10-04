@@ -97,14 +97,14 @@ namespace CMSWeb
                 var d = e.Item.DataItem as VolunteerAppController.AppInfo;
                 if (d.IsDocument.HasValue && d.IsDocument.Value)
                 {
-                    link.NavigateUrl = "~/Image.ashx?id={0}".Fmt(d.Docid);
+                    link.NavigateUrl = "~/Image.aspx?id={0}".Fmt(d.Docid);
                     link.ImageUrl = "~/images/adobe.png";
                     link.Target = "docpage";
                 }
                 else
                 {
                     link.NavigateUrl = "~/AppReview/FormImage.aspx?id={0}".Fmt(d.Id);
-                    link.ImageUrl = "~/Image.ashx?id={0}".Fmt(d.ThumbId);
+                    link.ImageUrl = "~/Image.aspx?id={0}".Fmt(d.ThumbId);
                 }
             }
 

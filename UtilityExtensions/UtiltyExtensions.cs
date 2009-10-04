@@ -326,6 +326,11 @@ namespace UtilityExtensions
             if (Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z"))
                 if (DateTime.TryParse(dt, out dt2))
                     return true;
+            if (!Regex.IsMatch(dt, @"\A(?:\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[0-9]{2})\Z"))
+                return false;
+            var s = dt.Substring(0, 2) + "/" + dt.Substring(2, 2) + "/" + dt.Substring(4, 2);
+            if (DateTime.TryParse(s, out dt2))
+                return true;
             return false;
         }
 
@@ -753,6 +758,8 @@ namespace UtilityExtensions
         }
         public static bool ValidEmail(string email)
         {
+            if (!email.HasValue())
+                return false;
             var re = new Regex(@"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
             return re.IsMatch(email);
         }

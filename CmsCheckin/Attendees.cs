@@ -30,40 +30,45 @@ namespace CmsCheckin
         {
             time = DateTime.Now;
 
+            var hasprinter = RawPrinterHelper.HasPrinter(printer);
+
             var font = new Font("Verdana", 14F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            var labfont = new Font("Verdana", 15F, ((FontStyle)((FontStyle.Italic | FontStyle.Underline))), GraphicsUnit.Point, ((byte)(0)));
+            var pfont = new Font("Verdana", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))); 
             var g = this.CreateGraphics();
             if (x.Descendants("attendee").Count() == 0)
             {
                 var lab = new Label();
-                lab.Font = new Font("Verdana", 24F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                lab.Font = new Font("Verdana", 18F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
                 lab.Location = new Point(15, 200);
                 lab.AutoSize = true;
                 lab.Text = "Not Found";
                 this.Controls.Add(lab);
                 return;
             }
-            var wids = new int[6];
-            wids[0] = 65;
-            wids[1] = 65;
+            var wids = new int[4];
+            wids[0] = (int)g.MeasureString("Present", font).Width;
+            var sep = 15;
             const int MaxRows = 13;
             foreach (var e in x.Descendants("attendee").Take(MaxRows))
             {
                 var name = e.Attribute("name").Value;
-                var n = 2;
-                wids[n] = Math.Max(wids[n], (int)g.MeasureString(name, font).Width); n++;
-                wids[n] = Math.Max(wids[n], (int)g.MeasureString(e.Attribute("org").Value, font).Width); n++;
-                wids[n] = 15;
+                var org = e.Attribute("org").Value;
+                wids[1] = Math.Max(wids[1], (int)g.MeasureString(name, font).Width);
+                wids[2] = Math.Max(wids[2], (int)g.MeasureString(org, font).Width); 
             }
             var cols = new int[5];
-            cols[0] = 15;
+            cols[0] = sep;
             for (var i = 1; i < 4; i++)
-                cols[i] = cols[i - 1] + 15 + wids[i];
-            var top = 60;
+                cols[i] = cols[i - 1] + sep + wids[i - 1];
+            var rowheight = 50;
+            var top = 50;
+            var buttonheight = 45;
+            var buttonwidth = 65;
             var row = 0;
             var col = 0;
 
-            var labfont = new Font("Verdana", 15F, ((FontStyle)((FontStyle.Italic | FontStyle.Underline))), GraphicsUnit.Point, ((byte)(0)));
-            var labtop = top - 50;
+            var labtop = top - rowheight;
 
             var hpresent = new Label();
             hpresent.AutoSize = true;
@@ -83,7 +88,7 @@ namespace CmsCheckin
             hclass.AutoSize = true;
             hclass.Font = labfont;
             hclass.Location = new Point(cols[col++], labtop);
-            hclass.Text = "Class";
+            hclass.Text = "Meeting";
             this.Controls.Add(hclass);
 
             var hextra = new Label();
@@ -99,8 +104,8 @@ namespace CmsCheckin
 
                 var ab = new Button();
                 ab.BackColor = SystemColors.ControlLight;
-                ab.Font = new Font("Wingdings", 32.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(2)));
-                ab.Location = new Point(cols[col++], top + (row * 50) - 5);
+                ab.Font = new Font("Wingdings", 28, FontStyle.Regular, GraphicsUnit.Point, ((byte)(2)));
+                ab.Location = new Point(cols[col++], top + (row * rowheight) - 5);
                 ab.Name = "attend" + row;
                 var c = new AttendLabel
                 {
@@ -113,7 +118,7 @@ namespace CmsCheckin
                     NumLabels = Convert.ToInt32(e.Attribute("numlabels").Value)
                 };
                 ab.Tag = c;
-                ab.Size = new Size(65, 45);
+                ab.Size = new Size(buttonwidth, buttonheight);
                 ab.TextAlign = ContentAlignment.TopCenter;
                 ab.UseVisualStyleBackColor = false;
                 this.Controls.Add(ab);
@@ -121,7 +126,7 @@ namespace CmsCheckin
 
                 var name = new Label();
                 name.Font = font;
-                name.Location = new Point(cols[col++], top + (row * 50));
+                name.Location = new Point(cols[col++], top + (row * rowheight));
                 name.AutoSize = true;
                 name.Text = e.Attribute("name").Value;
                 name.TextAlign = ContentAlignment.MiddleLeft;
@@ -129,7 +134,7 @@ namespace CmsCheckin
 
                 var org = new Label();
                 org.Font = font;
-                org.Location = new Point(cols[col++], top + (row * 50));
+                org.Location = new Point(cols[col++], top + (row * rowheight));
                 org.AutoSize = true;
                 org.Text = e.Attribute("org").Value;
                 org.TextAlign = ContentAlignment.MiddleLeft;
@@ -137,16 +142,17 @@ namespace CmsCheckin
 
                 var eb = new Button();
                 eb.BackColor = Color.FloralWhite;
-                eb.Font = font;
-                eb.Location = new Point(cols[col++], top + (row * 50) - 5);
+                eb.Font = pfont;
+                eb.Location = new Point(cols[col++], top + (row * rowheight) - 5);
                 eb.Name = "print" + row;
                 eb.Text = "Print";
                 eb.Tag = row;
-                eb.Size = new Size(65, 45);
+                eb.Size = new Size(buttonwidth, buttonheight);
                 eb.TextAlign = ContentAlignment.TopCenter;
                 eb.UseVisualStyleBackColor = false;
                 this.Controls.Add(eb);
-                eb.Click += new EventHandler(eb_Click);
+                if (hasprinter)
+                    eb.Click += new EventHandler(eb_Click);
 
                 row++;
             }

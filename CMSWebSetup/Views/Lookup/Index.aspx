@@ -56,7 +56,7 @@
        { %>
     <%=Html.Hidden("type", ViewData["type"]) %>
     <p>
-        New Setting: <input type="text" name="pk" />
+        New Id: <input type="text" name="pk" />
         <input type="submit" value="Create" />
     </p>
     <% } %>

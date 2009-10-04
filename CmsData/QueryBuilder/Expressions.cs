@@ -293,7 +293,7 @@ namespace CmsData
                 p.Attends.Any(a =>
                     a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
-                    && a.MeetingDate >= a.Organization.FirstMeetingDate
+                    && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Util.CurrentOrgId
                     );

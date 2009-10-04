@@ -147,5 +147,15 @@ namespace CmsCheckin
             Marshal.FreeCoTaskMem(pUnmanagedBytes);
             return bSuccess;
         }
+        public static bool HasPrinter(string szPrinterName)
+        {
+            IntPtr hPrinter = new IntPtr(0);
+            if (OpenPrinter(szPrinterName.Normalize(), out hPrinter, IntPtr.Zero))
+            {
+                ClosePrinter(hPrinter);
+                return true;
+            }
+            return false;
+        }
     }
 }

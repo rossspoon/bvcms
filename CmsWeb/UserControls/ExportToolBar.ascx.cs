@@ -24,20 +24,20 @@ namespace CMSWeb
         {
             EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
             LabelsLink.NavigateUrl = Popup("Report/LabelsRpt.aspx?");
-            ExcelLink.NavigateUrl = Popup("ExportExcel.ashx?");
-            BulkMailLink.NavigateUrl = Popup("bulkmail.ashx?");
+            ExcelLink.NavigateUrl = Popup("ExportExcel.aspx?");
+            BulkMailLink.NavigateUrl = Popup("bulkmail.aspx?");
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
             ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/ContactReport.aspx?");
             ChoirLink.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
-            InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Involvement&");
-            AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Attend&");
-            ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Children&");
-            ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Church&");
-            MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Organization&");
-            SmlLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=SML&");
-            LRLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=LR&");
-            PromoLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.ashx?format=Promotion&");
+            InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Involvement&");
+            AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Attend&");
+            ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Children&");
+            ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Church&");
+            MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Organization&");
+            SmlLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=SML&");
+            LRLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=LR&");
+            PromoLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Promotion&");
             TagAddLabel.Text = Single ? "Add" : "Add All";
             TagRemoveLabel.Text = Single? "Remove" : "Remove All";
             RollsheetItem.Visible = OrganizationContext;
@@ -53,7 +53,7 @@ namespace CMSWeb
         private string Popup(string target)
         {
             return "javascript:TBshowPopup('" + Page.ResolveUrl("~/" + target)
-                + "',{0},'{1}','{2}','{3}')".Fmt(queryId, UseTitle.ClientID, Option.UniqueID, Panel1_ModalPopupExtender.ClientID);
+                + "',{0},'{1}','{2}','{3}','{4}')".Fmt(queryId, UseTitle.ClientID, Option.UniqueID, WebView.UniqueID, Panel1_ModalPopupExtender.ClientID);
         }
         public event EventHandler TaggedEvent;
 

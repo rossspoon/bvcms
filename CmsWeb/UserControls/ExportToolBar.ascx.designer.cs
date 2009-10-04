@@ -518,6 +518,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.CheckBox UseTitle;
         
         /// <summary>
+        /// WebView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox WebView;
+        
+        /// <summary>
         /// cmdOK control.
         /// </summary>
         /// <remarks>

@@ -20,7 +20,7 @@ namespace CMSWeb.Controllers
             ViewData["header"] = DbUtil.Settings("RegHeader");
             ViewData["logoimg"] = DbUtil.Settings("RegLogo");
         }
-        
+
         public ActionResult Inside(int? campus)
         {
             Session["auth"] = "true";
@@ -90,7 +90,7 @@ namespace CMSWeb.Controllers
             }
             return View(m);
         }
-        public ActionResult Visit(int? id)
+        public ActionResult Visit(int? id, string submit)
         {
             Session["campus"] = id;
             var m = new Models.RegisterModel { campusid = id };
@@ -98,24 +98,37 @@ namespace CMSWeb.Controllers
                 return View(m);
 
             UpdateModel(m);
-            if (m.FindFamily() == 1)
-            {
-                Session["familyid"] = m.HeadOfHousehold.FamilyId;
-                Session["lastname"] = m.HeadOfHousehold.LastName;
-                Session["name"] = m.HeadOfHousehold.Name;
-                Session["email"] = m.HeadOfHousehold.EmailAddress;
-                return RedirectToAction("Visit2");
-            }
             m.ValidateModel1(ModelState);
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(m);
+            bool foundFamily = m.FindFamily() == 1;
+            if (m.existingfamily ?? false)
             {
-                var count = m.FindMember();
-                if (count >= 1)
+                if (!foundFamily)
                 {
-                    ModelState.AddModelError("first", "Already Registered");
+                    m.existingfamily = false;
+                    ModelState.AddModelError("existing", "could not find family");
                     return View(m);
                 }
+                if (submit.StartsWith("Add"))
+                {
+                    m.SavePerson(m.HeadOfHousehold.FamilyId);
+                    Session["familyid"] = m.HeadOfHousehold.FamilyId;
+                    Session["lastname"] = m.HeadOfHousehold.LastName;
+                    Session["name"] = m.HeadOfHousehold.Name;
+                    Session["email"] = m.HeadOfHousehold.EmailAddress;
+                    return RedirectToAction("ConfirmVisit");
+                }
             }
+            else if (foundFamily)
+            {
+                m.existingfamily = true;
+                ModelState.AddModelError("submit", "existing family found");
+                return View(m);
+            }
+            if (ModelState.IsValid)
+                if (m.FindMember() >= 1)
+                    ModelState.AddModelError("first", "Already Registered");
             if (ModelState.IsValid)
             {
                 m.SaveFirstPerson();
@@ -127,7 +140,7 @@ namespace CMSWeb.Controllers
                 EmailVisit(m);
                 return RedirectToAction("ConfirmVisit");
             }
-            return View("Visit", m);
+            return View(m);
         }
         public ActionResult Add(int? id)
         {
@@ -156,7 +169,7 @@ namespace CMSWeb.Controllers
         {
             if (Session["familyid"] == null)
                 return RedirectToAction("Visit");
-            var m = new Models.RegisterModel { campusid = (int?)Session["campus"], email = Session["email"].ToString() };
+            var m = new Models.RegisterModel { campusid = (int?)Session["campus"], email = (string)Session["email"] };
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 m.lastname = (string)Session["lastname"];
@@ -227,7 +240,7 @@ namespace CMSWeb.Controllers
 
             var smtp = new SmtpClient();
             Util.Email(smtp, DbUtil.Settings("RegMail"), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail"), "new registration in cms", 
+            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail"), "new registration in cms",
                 "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 

@@ -89,7 +89,7 @@
         <% }
            else
            { %>
-        <img alt='RecImage' src='/Image.ashx?id=<%=d.ImgId %>' />
+        <img alt='RecImage' src='/Image.aspx?id=<%=d.ImgId %>' />
         <% } %>
     </div>
     <form action="/Recreation/Delete" method="post">

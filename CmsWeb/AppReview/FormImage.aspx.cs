@@ -30,7 +30,7 @@ namespace CMSWeb
 
         protected override void OnPreRender(EventArgs e)
         {
-            const string getimage = "~/Image.ashx?id=";
+            const string getimage = "~/Image.aspx?id=";
             base.OnPreRender(e);
             switch (HiddenField1.Value)
             {

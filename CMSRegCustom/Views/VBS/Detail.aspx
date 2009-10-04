@@ -57,11 +57,11 @@
 <div>
     <% if (d.IsDocument)
        { %>
-    <iframe width="750" height="440" src='/Image.ashx?id=<%=d.ImgId %>'></iframe>
+    <iframe width="750" height="440" src='/Image.aspx?id=<%=d.ImgId %>'></iframe>
     <% }
        else
        { %>
-    <img alt='VBSAppImage' src='/Image.ashx?id=<%=d.ImgId %>' />
+    <img alt='VBSAppImage' src='/Image.aspx?id=<%=d.ImgId %>' />
     <% } %>
 </div>
 <form action="/VBS/Delete" method="post">

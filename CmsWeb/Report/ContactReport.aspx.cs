@@ -16,14 +16,17 @@ using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Reports
 {
     public partial class ContactReport : System.Web.UI.Page
     {
+        private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8, new GrayColor(50));
+        private Font xsmallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7, new GrayColor(50));
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
@@ -43,9 +46,9 @@ namespace CMSWeb.Reports
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
             w.PageEvent = pageEvents;
             doc.Open();
+            dc = w.DirectContent;
 
             var ctl = new RollsheetController();
-            dc = w.DirectContent;
 
             StartPageSet();
             if (qid.HasValue) // print using a query
@@ -68,23 +71,43 @@ namespace CMSWeb.Reports
             Response.End();
         }
 
+        float[] w = new float[] { 40 + 70 + 80, 40 + 130 };
+        float[] w2 = new float[] { 40, 70, 80 };
+        float[] w3 = new float[] { 40, 130 };
+        int border = PdfPCell.NO_BORDER; //PdfPCell.BOX;
+
         private void StartPageSet()
         {
-            var w = new float[] { 40, 70, 80, 40, 130 };
-
             t = new PdfPTable(w);
-
             t.WidthPercentage = 100;
-            t.DefaultCell.Border = PdfPCell.NO_BORDER;
+            t.DefaultCell.Border = border;
             t.DefaultCell.Padding = 5;
+            t.HeaderRows = 1;
             pageEvents.StartPageSet("Contact Report: {0:d}".Fmt(dt));
 
-            t.AddCell(new Phrase("\nPerson", boldfont));
-            t.AddCell(new Phrase("\nAddress", boldfont));
-            t.AddCell(new Phrase("Phone\nEmail", boldfont));
-            t.AddCell(new Phrase("Birthday\nAttends", boldfont));
-            t.AddCell(new Phrase("Member Status\nContacts", boldfont));
+            var t2 = new PdfPTable(w2);
+            t2.WidthPercentage = 100;
+            t2.DefaultCell.Border = border;
+            t2.DefaultCell.Padding = 5;
+            t2.AddCell(new Phrase("\nPerson", boldfont));
+            t2.AddCell(new Phrase("\nAddress", boldfont));
+            t2.AddCell(new Phrase("Phone\nEmail", boldfont));
+            var c = new PdfPCell(t.DefaultCell);
+            c.AddElement(t2);
+            c.Padding = 0;
+            t.AddCell(c);
 
+            var t3 = new PdfPTable(w3);
+            t3.WidthPercentage = 100;
+            t3.DefaultCell.Border = border;
+            t3.DefaultCell.Padding = 5;
+            t3.DefaultCell.PaddingBottom = 0;
+            t3.AddCell(new Phrase("\nBirthday", boldfont));
+            t3.AddCell(new Phrase("\nMember Status", boldfont));
+            c = new PdfPCell(t.DefaultCell);
+            c.Padding = 0;
+            c.AddElement(t3);
+            t.AddCell(c);
         }
         private void AddRow(Person p)
         {
@@ -92,59 +115,56 @@ namespace CMSWeb.Reports
                 t.DefaultCell.BackgroundColor = new GrayColor(240);
             else
                 t.DefaultCell.BackgroundColor = Color.WHITE;
-            var ph = new Phrase(p.Name + "\n", font);
-            ph.Add(new Chunk("  ({0})".Fmt(p.PeopleId), smallfont));
-            t.AddCell(ph);
 
+            var t2 = new PdfPTable(w2);
+            t2.WidthPercentage = 100;
+            t2.DefaultCell.Border = border;
+            t2.DefaultCell.Padding = 5;
+            var name = new Phrase(p.Name + "\n", font);
+            name.Add(new Chunk("  ({0})".Fmt(p.PeopleId), smallfont));
+            t2.AddCell(name);
             var addr = new StringBuilder(p.PrimaryAddress);
             AddLine(addr, p.PrimaryAddress2);
             AddLine(addr, "{0}, {1} {2}".Fmt(p.PrimaryCity, p.PrimaryState, p.PrimaryZip.FmtZip()));
-            t.AddCell(new Phrase(addr.ToString(), font));
-
+            t2.AddCell(new Phrase(addr.ToString(), font));
             var phones = new StringBuilder();
             AddPhone(phones, p.HomePhone, "h ");
             AddPhone(phones, p.CellPhone, "c ");
             AddPhone(phones, p.WorkPhone, "w ");
             AddLine(phones, p.EmailAddress);
-            t.AddCell(new Phrase(phones.ToString(), font));
+            t2.AddCell(new Phrase(phones.ToString(), font));
+            var c = new PdfPCell(t.DefaultCell);
+            c.AddElement(GetAttendance(p));
+            c.Colspan = 3;
+            t2.AddCell(c);
+            c = new PdfPCell(t.DefaultCell);
+            c.Padding = 0;
+            c.AddElement(t2);
+            t.AddCell(c);
 
-            var q = from a in p.Attends
-                    where a.AttendanceFlag == true
-                    orderby a.MeetingDate descending
-                    select a.MeetingDate;
-            var attends = q.Take(3);
-            ph = new Phrase();
-            ph.Add(new Chunk(p.DOB, font));
-            foreach(var dt in attends)
-                ph.Add(new Chunk("\n{0:d}".Fmt(dt), smallfont));
-            t.AddCell(ph);
-
-            var ctl = new CMSPresenter.CodeValueController();
-            var cts = ctl.ContactTypeCodes();
-            ph = new Phrase();
-            ph.Add(new Chunk(p.MemberStatus.Description, font));
-
-            var contactcell = new PdfPCell();
-            var cq = from ce in DbUtil.Db.Contactees
-                    where ce.PeopleId == p.PeopleId
-                    orderby ce.contact.ContactDate descending
-                    select new
-                    {
-                        contact = ce.contact,
-                        madeby = ce.contact.contactsMakers.FirstOrDefault().person,
-                    };
-            foreach(var c in cq)
+            var t3 = new PdfPTable(w3);
+            t3.WidthPercentage = 100;
+            t3.DefaultCell.Border = border;
+            t3.DefaultCell.Padding = 5;
+            t3.DefaultCell.PaddingBottom = 0;
+            t3.AddCell(new Phrase(p.DOB, font));
+            t3.AddCell(new Phrase(p.MemberStatus.Description));
+            var contacts = GetContacts(p);
+            if (contacts.Items.Count > 0)
             {
-                var name = "unknown";
-                if (c.madeby != null)
-                    name = c.madeby.Name;
-                ph.Add(new Chunk("\n-----------------\n{0:d}: {1} by {2}\n".Fmt(
-                    c.contact.ContactDate,
-                    cts.Single(ct => ct.Id == c.contact.ContactTypeId).Value,
-                    name), smallfont));
-                ph.Add(new Chunk(c.contact.Comments, font));
+                c = new PdfPCell(t.DefaultCell);
+                c.Colspan = 2;
+                c.AddElement(new Chunk("Contacts", boldfont));
+                t3.AddCell(c);
+                c = new PdfPCell(t.DefaultCell);
+                c.Colspan = 2;
+                c.AddElement(contacts);
+                t3.AddCell(c);
             }
-            t.AddCell(ph);
+            c = new PdfPCell(t.DefaultCell);
+            c.Padding = 0;
+            c.AddElement(t3);
+            t.AddCell(c);
         }
         private void AddLine(StringBuilder sb, string value)
         {
@@ -172,6 +192,81 @@ namespace CMSWeb.Reports
             }
         }
 
+        private Paragraph GetAttendance(Person p)
+        {
+            var q = from a in p.Attends
+                    where a.AttendanceFlag == true
+                    orderby a.MeetingDate.Date descending
+                    group a by a.MeetingDate.Date into g
+                    select g.Key;
+            var list = q.ToList();
+
+            var attstr = new StringBuilder("\n");
+            var dt = DateTime.Now;
+            var yearago = dt.AddYears(-1);
+            while (dt > yearago)
+            {
+                var dt2 = dt.AddDays(-7);
+                var indicator = ".";
+                foreach (var d in list)
+                {
+                    if (d < dt2)
+                        break;
+                    if (d <= dt)
+                    {
+                        indicator = "P";
+                        break;
+                    }
+                }
+                attstr.Insert(0, indicator);
+                dt = dt2;
+            }
+            var ph = new Paragraph(attstr.ToString(), monofont);
+            ph.SetLeading(0, 1.2f);
+
+            attstr = new StringBuilder();
+            foreach (var d in list.Take(8))
+                attstr.Insert(0, "{0:M/d/yy}  ".Fmt(d));
+            if (list.Count > 8)
+            {
+                attstr.Insert(0, "...  ");
+                var q2 = q.OrderBy(d => d).Take(Math.Min(list.Count - 8, 3));
+                foreach (var d in q2.OrderByDescending(d => d))
+                    attstr.Insert(0, "{0:M/d/yy}  ".Fmt(d));
+            }
+            ph.Add(new Chunk(attstr.ToString(), smallfont));
+            return ph;
+        }
+        private List GetContacts(Person p)
+        {
+            var ctl = new CMSPresenter.CodeValueController();
+            var cts = ctl.ContactTypeCodes();
+
+            var cq = from ce in DbUtil.Db.Contactees
+                     where ce.PeopleId == p.PeopleId
+                     orderby ce.contact.ContactDate descending
+                     select new
+                     {
+                         contact = ce.contact,
+                         madeby = ce.contact.contactsMakers.FirstOrDefault().person,
+                     };
+            var list = new iTextSharp.text.List(false, 10);
+            list.ListSymbol = new Chunk("\u2022", font);
+            foreach (var pc in cq)
+            {
+                var cname = "unknown";
+                if (pc.madeby != null)
+                    cname = pc.madeby.Name;
+                string ctype = cts.Single(ct => ct.Id == pc.contact.ContactTypeId).Value;
+                string comments = null;
+                if (pc.contact.Comments.HasValue())
+                    comments = pc.contact.Comments.Replace("\r\n\r\n", "\r\n");
+                string s = "{0:d}: {1} by {2}\n{3}".Fmt(
+                        pc.contact.ContactDate, ctype, cname, comments);
+                list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
+            }
+            return list;
+        }
         class PageEvent : PdfPageEventHelper
         {
             private PdfTemplate npages;
@@ -180,7 +275,6 @@ namespace CMSWeb.Reports
             private PdfContentByte dc;
             private BaseFont font;
             private string HeadText;
-            private string HeadText2;
 
             public override void OnOpenDocument(PdfWriter writer, Document document)
             {
@@ -223,11 +317,11 @@ namespace CMSWeb.Reports
                 dc.SetTextMatrix(30, document.PageSize.Height - 30);
                 dc.ShowText(text);
                 dc.EndText();
-                dc.BeginText();
-                dc.SetFontAndSize(font, HeadFontSize);
-                dc.SetTextMatrix(30, document.PageSize.Height - 30 - (HeadFontSize * 1.5f));
-                dc.ShowText(HeadText2);
-                dc.EndText();
+                //dc.BeginText();
+                //dc.SetFontAndSize(font, HeadFontSize);
+                //dc.SetTextMatrix(30, document.PageSize.Height - 30 - (HeadFontSize * 1.5f));
+                //dc.ShowText(HeadText2);
+                //dc.EndText();
 
                 //---Column 1
                 text = "Page " + (writer.PageNumber + 1) + " of ";

@@ -31,6 +31,18 @@ namespace CMSWeb.Models
         public int? married { get; set; }
         public int? campusid { get; set; }
         public int? org { get; set; }
+        private bool? _Existingfamily;
+        public bool? existingfamily
+        {
+            get
+            {
+                return _Existingfamily;
+            }
+            set
+            {
+                _Existingfamily = value;
+            }
+        }
         private Person _person;
         public Person person
         {
