@@ -3,27 +3,30 @@ using System.Web.Routing;
 
 namespace CMSWebSetup
 {
-    public static class Routes
+    public class Routes : AreaRegistration
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public override string AreaName
         {
-            routes.AddRoute("Display");
-            routes.AddRoute("Fund");
-            routes.AddRoute("MetroZip");
-            routes.AddRoute("Ministry");
-            routes.AddRoute("Program");
-            routes.AddRoute("Lookup");
-            routes.AddRoute("PromotionSetup");
-            routes.AddRoute("RecreationSetup");
-            routes.AddRoute("Setting");
-            routes.AddRoute("UsersCanEmailFor");
-            routes.AddRoute("VolOpportunity");
+            get { return "CMSWebSetup"; }
         }
-        private static void AddRoute(this RouteCollection routes, string controller)
+        public override void RegisterArea(AreaRegistrationContext context)
         {
-            routes.MapAreaRoute("CMSWebSetup", controller, controller + "/{action}/{id}",
-                new { controller = controller, action = "Index", id = "" },
-                new string[] { "CMSWebSetup.Controllers" });
+            AddRoute(context, "Display");
+            AddRoute(context, "Fund");
+            AddRoute(context, "MetroZip");
+            AddRoute(context, "Ministry");
+            AddRoute(context, "Program");
+            AddRoute(context, "Lookup");
+            AddRoute(context, "PromotionSetup");
+            AddRoute(context, "RecreationSetup");
+            AddRoute(context, "Setting");
+            AddRoute(context, "UsersCanEmailFor");
+            AddRoute(context, "VolOpportunity");
+        }
+        private void AddRoute(AreaRegistrationContext context, string controller)
+        {
+            context.MapRoute(controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
         }
     }
 }

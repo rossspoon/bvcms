@@ -3,23 +3,26 @@ using System.Web.Routing;
 
 namespace CMSRegCustom
 {
-    public static class Routes
+    public class Routes : AreaRegistration
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public override string AreaName
         {
-            routes.AddRoute("DiscipleLife");
-            routes.AddRoute("LoveRespect");
-            routes.AddRoute("SoulMate");
-            routes.AddRoute("StepClass");
-            routes.AddRoute("VBS");
-            routes.AddRoute("VBSReg");
-            routes.AddRoute("MOBS");
+            get { return "CMSRegCustom"; }
         }
-        private static void AddRoute(this RouteCollection routes, string controller)
+        public override void RegisterArea(AreaRegistrationContext context)
         {
-            routes.MapAreaRoute("CMSRegCustom", controller, controller + "/{action}/{id}",
-                new { controller = controller, action = "Index", id = "" },
-                new string[] { "CMSRegCustom.Controllers" });
+           AddRoute(context, "DiscipleLife");
+           AddRoute(context, "LoveRespect");
+           AddRoute(context, "SoulMate");
+           AddRoute(context, "StepClass");
+           AddRoute(context, "VBS");
+           AddRoute(context, "VBSReg");
+           AddRoute(context, "MOBS");
+        }
+        private void AddRoute(AreaRegistrationContext context, string controller)
+        {
+            context.MapRoute(controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
         }
     }
 }

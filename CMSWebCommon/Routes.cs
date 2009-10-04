@@ -3,17 +3,21 @@ using System.Web.Routing;
 
 namespace CMSWebCommon
 {
-    public static class Routes
+    public class Routes : AreaRegistration
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public override string AreaName
         {
-            routes.AddRoute("SearchPeople");
+            get { return "CMSWebCommon"; }
         }
-        private static void AddRoute(this RouteCollection routes, string controller)
+        public override void RegisterArea(AreaRegistrationContext context)
         {
-            routes.MapAreaRoute("CMSWebCommon", controller, controller + "/{action}/{id}",
-                new { controller = controller, action = "Index", id = "" },
-                new string[] { "CMSWebCommon.Controllers" });
+            AddRoute(context, "SearchPeople");
+        }
+        private void AddRoute(AreaRegistrationContext context, string controller)
+        {
+            context.MapRoute(controller, 
+                controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
         }
     }
 }

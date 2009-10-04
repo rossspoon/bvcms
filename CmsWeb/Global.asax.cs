@@ -58,9 +58,7 @@ namespace CMSWeb2
 
             routes.RouteExistingFiles = true;
 
-            CMSWebCommon.Routes.RegisterRoutes(routes);
-            CMSRegCustom.Routes.RegisterRoutes(routes);
-            CMSWebSetup.Routes.RegisterRoutes(routes);
+            AreaRegistration.RegisterAllAreas();
 
             AddRoute(routes, "Task", "Task", "Task/{action}/{id}", "List");
             AddRoute(routes, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
@@ -73,9 +71,8 @@ namespace CMSWeb2
         }
         private static void AddRoute(RouteCollection routes, string name, string controller, string path, string action)
         {
-            routes.MapAreaRoute("Main", name, path, 
-                new { controller = controller, action = action, id = "" },
-                new string[] { "CMSWeb.Controllers" });
+            routes.MapRoute(name, path, 
+                new { controller = controller, action = action, id = "" });
         }
 
         protected void Session_Start(object sender, EventArgs e)

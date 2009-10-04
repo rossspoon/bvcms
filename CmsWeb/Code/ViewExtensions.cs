@@ -155,12 +155,12 @@ public static class ViewExtensions
             return null;
         return helper.HyperLink(link, text, onclick, htmlAttributes);
     }
-    public static string ActionLinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
-    {
-        if (!condition)
-            return null;
-        return helper.ActionLink(linkText, controllerName, routeValues, htmlAttributes);
-    }
+    //public static string ActionLinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
+    //{
+    //    if (!condition)
+    //        return null;
+    //    return helper.ActionLink(linkText, controllerName, routeValues, htmlAttributes);
+    //}
     public static string SpanIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string text, object htmlAttributes)
     {
         if (!condition)
