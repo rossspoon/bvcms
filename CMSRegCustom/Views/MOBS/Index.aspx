@@ -82,7 +82,7 @@
                 </tr>
                 <% } %>
                 <tr>
-                    <td><label for="tickets"># <%=DbUtil.Settings("MOBSWhat") %></label></td>
+                    <td><label for="tickets"># <%=DbUtil.Settings("MOBSWhat", "Tickets") %></label></td>
                     <td><%= Html.TextBox("tickets", Model.tickets, new { maxlength = 2 })%></td>
                     <td><%= Html.ValidationMessage("tickets") %></td>
                 </tr>

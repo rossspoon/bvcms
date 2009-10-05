@@ -189,7 +189,7 @@
                 </tr>
                 </table>
             </fieldset>
-            <p>If you are having difficulty registering online, <%=DbUtil.Settings("LRHelp") %></p>
+            <p>If you are having difficulty registering online, <%=DbUtil.Settings("LRHelp", "[create LRHelp setting]") %></p>
         </div>
     <% } %>
 </asp:Content>

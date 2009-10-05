@@ -70,7 +70,7 @@
                 </table>
             </fieldset>
             
-            <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp") %></p>
+            <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp", "[create SmlHelp setting]") %></p>
         </div>
     </form>
 </asp:Content>
