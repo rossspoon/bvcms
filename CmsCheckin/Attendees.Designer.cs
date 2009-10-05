@@ -41,20 +41,21 @@
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
             this.Print.Location = new System.Drawing.Point(418, 674);
-            this.Print.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(583, 66);
             this.Print.TabIndex = 10;
             this.Print.Text = "Return to Phone Number";
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.GoBack_Click);
+            this.Print.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AttendeeKeyPress);
             // 
             // Attendees
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.Print);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Attendees";
             this.Size = new System.Drawing.Size(1024, 768);
             this.ResumeLayout(false);

@@ -159,6 +159,7 @@ namespace CMSWeb.Models
                         BMon = om.Person.BirthMonth,
                         BYear = om.Person.BirthYear,
                         MemberType = om.MemberType.Description,
+                        MemberStatus = om.Person.MemberStatus.Description,
                         TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith("TM:")).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
                         Id = recreg.Id,
                         FeePaid = recreg.FeePaid ?? false,
@@ -189,6 +190,7 @@ namespace CMSWeb.Models
                         BMon = om.Person.BirthMonth,
                         BYear = om.Person.BirthYear,
                         MemberType = om.MemberType.Description,
+                        MemberStatus = om.Person.MemberStatus.Description,
                         TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith("TM:")).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
                         Id = recreg.Id,
                         FeePaid = recreg.FeePaid ?? false,
@@ -286,6 +288,9 @@ namespace CMSWeb.Models
                     case "Type":
                         q = q.OrderBy(i => i.MemberType);
                         break;
+                    case "Church":
+                        q = q.OrderBy(i => i.MemberStatus);
+                        break;
                 }
             else
                 switch (Sort)
@@ -318,6 +323,9 @@ namespace CMSWeb.Models
                         break;
                     case "Type":
                         q = q.OrderByDescending(i => i.MemberType);
+                        break;
+                    case "Church":
+                        q = q.OrderByDescending(i => i.MemberStatus);
                         break;
                 }
             return q;

@@ -52,8 +52,8 @@ namespace CMSRegCustom.Models
             get
             {
                 if (night == 3)
-                    return DbUtil.Settings("LRWedOrgId").ToInt();
-                return DbUtil.Settings("LROthOrgId").ToInt();
+                    return DbUtil.Settings("LRWedOrgId", "0").ToInt();
+                return DbUtil.Settings("LROthOrgId", "0").ToInt();
             }
         }
         public CmsData.Organization organization
@@ -284,8 +284,8 @@ namespace CMSRegCustom.Models
 
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1 ? 2 : 1,
-                    DbUtil.Settings("SmlOrigin").ToInt(),
-                    DbUtil.Settings("SmlEntry").ToInt());
+                    DbUtil.Settings("SmlOrigin", "0").ToInt(),
+                    DbUtil.Settings("SmlEntry", "0").ToInt());
             switch (homecell)
             {
                 case "h":
@@ -318,8 +318,8 @@ namespace CMSRegCustom.Models
                     null,
                     last,
                     dob, married, gender,
-                    DbUtil.Settings("SmlOrigin").ToInt(),
-                    DbUtil.Settings("SmlEntry").ToInt());
+                    DbUtil.Settings("SmlOrigin", "0").ToInt(),
+                    DbUtil.Settings("SmlEntry", "0").ToInt());
             switch (homecell)
             {
                 case "h":

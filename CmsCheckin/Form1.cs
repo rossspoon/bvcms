@@ -41,7 +41,8 @@ namespace CmsCheckin
 
             var wc = new WebClient();
             var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]),
-                "Checkin/Match/" + GetDigits(e.Value));
+                string.Format("Checkin/Match/{0}{1}", 
+                GetDigits(e.Value), Program.CampusArg));
             this.Cursor = Cursors.WaitCursor;
             var str = wc.DownloadString(url);
             this.Cursor = Cursors.Default;
@@ -76,7 +77,8 @@ namespace CmsCheckin
 
             var wc = new WebClient();
             var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]),
-                "Checkin/Family/" + e.Value);
+                string.Format("Checkin/Family/{0}{1}", 
+                e.Value, Program.CampusArg));
             this.Cursor = Cursors.WaitCursor;
             var str = wc.DownloadString(url);
             this.Cursor = Cursors.Default;
@@ -112,6 +114,7 @@ namespace CmsCheckin
             attendees = null;
             phone.Visible = true;
             phone.textBox1.Text = String.Empty;
+            phone.textBox1.Focus();
         }
         void families_GoBack(object sender, EventArgs e)
         {
@@ -119,6 +122,7 @@ namespace CmsCheckin
             families = null;
             phone.Visible = true;
             phone.textBox1.Text = String.Empty;
+            phone.textBox1.Focus();
         }
 
 

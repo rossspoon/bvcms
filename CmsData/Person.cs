@@ -340,7 +340,7 @@ namespace CmsData
             {
                 Db.PurgePerson(PeopleId);
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

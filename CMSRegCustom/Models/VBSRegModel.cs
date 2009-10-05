@@ -111,7 +111,7 @@ namespace CMSRegCustom.Models
                     select new SelectListItem
                     {
                         Text = r.StateCode,
-                        Selected = r.StateCode == "TN",
+                        Selected = r.StateCode == DbUtil.Settings("DefaultState", "TN"),
                     };
             return q;
         }

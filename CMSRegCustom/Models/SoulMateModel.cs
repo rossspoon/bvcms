@@ -109,7 +109,7 @@ namespace CMSRegCustom.Models
                 if (_ChildCareMeeting == null)
                 {
                     var q = from m in DbUtil.Db.Meetings
-                            where m.Organization.OrganizationId == DbUtil.Settings("SmlChildcareId").ToInt()
+                            where m.Organization.OrganizationId == DbUtil.Settings("SmlChildcareId", "0").ToInt()
                             where m.MeetingDate == meeting.MeetingDate
                             select m;
                     _ChildCareMeeting = q.FirstOrDefault();
@@ -125,7 +125,7 @@ namespace CMSRegCustom.Models
                 if (_meeting == null)
                 {
                     var q = from m in DbUtil.Db.Meetings
-                            where m.Organization.OrganizationId == DbUtil.Settings("SmlGroupId").ToInt()
+                            where m.Organization.OrganizationId == DbUtil.Settings("SmlGroupId", "0").ToInt()
                             where m.MeetingDate > DateTime.Now
                             orderby m.MeetingDate ascending
                             select m;
@@ -372,8 +372,8 @@ namespace CMSRegCustom.Models
         {
             var np = Person.Add(p.Family, 10,
                 null, first, null, last, dob, true, p.GenderId == 1? 2 : 1,
-                    DbUtil.Settings("SmlOrigin").ToInt(), 
-                    DbUtil.Settings("SmlEntry").ToInt());
+                    DbUtil.Settings("SmlOrigin", "0").ToInt(), 
+                    DbUtil.Settings("SmlEntry", "0").ToInt());
             switch (homecell)
             {
                 case "h":
@@ -404,8 +404,8 @@ namespace CMSRegCustom.Models
                     null, 
                     last, 
                     dob, married, gender, 
-                    DbUtil.Settings("SmlOrigin").ToInt(), 
-                    DbUtil.Settings("SmlEntry").ToInt());
+                    DbUtil.Settings("SmlOrigin", "0").ToInt(), 
+                    DbUtil.Settings("SmlEntry", "0").ToInt());
             switch (homecell)
             {
                 case "h":

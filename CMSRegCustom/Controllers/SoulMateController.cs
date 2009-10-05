@@ -137,7 +137,7 @@ namespace CMSRegCustom.Controllers
         private static void SendStaffEmail(SmtpClient smtp, Person p, string email, bool preferred, CmsData.Meeting meeting)
         {
             Util.Email2(smtp, email,
-                                DbUtil.Settings("SmlMail"), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
+                                DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"{0}({1}) registered for {3} for the following date:</p>
 <p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
             p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
@@ -149,7 +149,7 @@ namespace CMSRegCustom.Controllers
         {
             if (p.EmailAddress != email && preferred)
             {
-                Util.Email(smtp, DbUtil.Settings("SmlMail"),
+                Util.Email(smtp, DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
                                 p.Name, p.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
 		<p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
@@ -167,7 +167,7 @@ namespace CMSRegCustom.Controllers
                 }
                 sb.AppendLine("</table>");
             }
-            Util.Email(smtp, DbUtil.Settings("SmlMail"),
+            Util.Email(smtp, DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
                                 p.Name, email, "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Event for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(

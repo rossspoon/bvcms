@@ -24,7 +24,7 @@ namespace CMSRegCustom.Models
             get
             {
                 decimal cost;
-                if (decimal.TryParse((string)DbUtil.Settings("MOBSTicketCost"), out cost))
+                if (decimal.TryParse((string)DbUtil.Settings("MOBSTicketCost", "6"), out cost))
                     return cost * tickets;
                 else
                     return 6 * tickets;
@@ -195,11 +195,11 @@ namespace CMSRegCustom.Models
             };
             var p = Person.Add(f, 30,
                 null, first, null, last, dob, false, 1,
-                    DbUtil.Settings("RecOrigin").ToInt(),
-                    DbUtil.Settings("RecEntry").ToInt());
+                    DbUtil.Settings("RecOrigin", "0").ToInt(),
+                    DbUtil.Settings("RecEntry", "0").ToInt());
             p.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
             p.EmailAddress = email;
-            p.CampusId = DbUtil.Settings("DefaultCampusId").ToInt2();
+            p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)
                 p.PositionInFamilyId = 10;
             switch (homecell)

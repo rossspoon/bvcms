@@ -107,9 +107,9 @@ namespace CmsData
     	
 		private EntityRef< Organization> _ParentOrg;
 		
-		private EntityRef< Division> _Division;
+		private EntityRef< Campu> _Campu;
 		
-		private EntityRef< MainCampu> _MainCampu;
+		private EntityRef< Division> _Division;
 		
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
@@ -251,9 +251,9 @@ namespace CmsData
 			
 			this._ParentOrg = default(EntityRef< Organization>); 
 			
-			this._Division = default(EntityRef< Division>); 
+			this._Campu = default(EntityRef< Campu>); 
 			
-			this._MainCampu = default(EntityRef< MainCampu>); 
+			this._Division = default(EntityRef< Division>); 
 			
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
@@ -979,7 +979,7 @@ namespace CmsData
 				if (this._CampusId != value)
 				{
 				
-					if (this._MainCampu.HasLoadedOrAssignedValue)
+					if (this._Campu.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnCampusIdChanging(value);
@@ -1154,6 +1154,48 @@ namespace CmsData
 		}
 
 		
+		[Association(Name="FK_Organizations_Campus", Storage="_Campu", ThisKey="CampusId", IsForeignKey=true)]
+		public Campu Campu
+		{
+			get { return this._Campu.Entity; }
+
+			set
+			{
+				Campu previousValue = this._Campu.Entity;
+				if (((previousValue != value) 
+							|| (this._Campu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Campu.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._Campu.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._CampusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._CampusId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Campu");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_Organizations_Division", Storage="_Division", ThisKey="DivisionId", IsForeignKey=true)]
 		public Division Division
 		{
@@ -1189,48 +1231,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Division");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Organizations_MainCampus", Storage="_MainCampu", ThisKey="CampusId", IsForeignKey=true)]
-		public MainCampu MainCampu
-		{
-			get { return this._MainCampu.Entity; }
-
-			set
-			{
-				MainCampu previousValue = this._MainCampu.Entity;
-				if (((previousValue != value) 
-							|| (this._MainCampu.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._MainCampu.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._MainCampu.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._CampusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._CampusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("MainCampu");
 				}
 
 			}

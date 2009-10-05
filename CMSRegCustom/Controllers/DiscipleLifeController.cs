@@ -51,9 +51,9 @@ namespace CMSRegCustom.Controllers
             c.Body = c.Body.Replace("{first}", m.person.NickName.HasValue() ? m.person.NickName : m.person.FirstName);
             c.Body = c.Body.Replace("{orgname}", m.organization.OrganizationName);
 
-            string email = DbUtil.Settings("DiscLifeMail-" + id);
+            string email = DbUtil.Settings("DiscLifeMail-" + id, DbUtil.SystemEmailAddress);
             if (!email.HasValue())
-                email = DbUtil.Settings("DiscLifeMail");
+                email = DbUtil.Settings("DiscLifeMail", DbUtil.SystemEmailAddress);
             Util.Email(email, m.person.Name, m.email, c.Title, c.Body);
             Util.Email2(m.email, email, "{0} Registration".Fmt(m.division.Name),            
                 "{0}({1}) has registered for {2}: {3}</p>".Fmt(

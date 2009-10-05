@@ -72,9 +72,9 @@ namespace CMSWeb
         }
         private void BindNews()
         {
-            var feedurl = DbUtil.Settings("BlogFeedUrl");
+            var feedurl = DbUtil.Settings("BlogFeedUrl", "http://feeds2.feedburner.com/Bvcms-Blog");
 
-            BlogLink.NavigateUrl = DbUtil.Settings("BlogAppUrl");
+            BlogLink.NavigateUrl = DbUtil.Settings("BlogAppUrl", "http://www.bvcms.com/blog/");
 
             var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);

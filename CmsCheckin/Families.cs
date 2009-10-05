@@ -21,6 +21,9 @@ namespace CmsCheckin
         }
         public void ShowFamilies(XDocument x)
         {
+            Print.Focus();
+            Print.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
+
             var font = new Font("Verdana", 14F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             var g = this.CreateGraphics();
             var row = 0;
@@ -40,6 +43,7 @@ namespace CmsCheckin
                 ab.Text = e.Attribute("name").Value;
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
+                ab.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
 
                 row++;
             }
@@ -53,6 +57,11 @@ namespace CmsCheckin
         private void GoBack_Click(object sender, EventArgs e)
         {
             GoBack(sender, e);
+        }
+        private void FamilyKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 27)
+                GoBack(sender, e);
         }
     }
 }

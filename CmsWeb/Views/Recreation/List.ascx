@@ -11,6 +11,7 @@
     <td><input name="selected" type="checkbox" <%=r.Checked %> value="<%=r.PeopleId%>" class="check" /></td>
     <td><a href="/Person.aspx?id=<%=r.PeopleId %>"><%=r.Name%></a></td>
     <td><%=r.MemberType %></td>
+    <td><%=r.MemberStatus %></td>
     <td><%=r.TeamName%></td>
     <td><%=r.Birthday%></td>
     <td><%=r.ShirtSize%></td>

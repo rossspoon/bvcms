@@ -104,7 +104,7 @@ namespace CMSWeb.Models
                     select new SelectListItem
                     {
                         Text = r.StateCode,
-                        Selected = r.StateCode == "TN",
+                        Selected = r.StateCode == DbUtil.Settings("DefaultState", "TN"),
                     };
             return q;
         }
@@ -237,7 +237,7 @@ namespace CMSWeb.Models
             p.MaritalStatusId = married.Value;
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email.Trim();
-            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
+            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);
@@ -258,7 +258,7 @@ namespace CMSWeb.Models
             p.MaritalStatusId = married.Value;
             if (email != (string)HttpContext.Current.Session["email"])
                 p.EmailAddress = email.Trim();
-            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId").ToInt2();
+            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);

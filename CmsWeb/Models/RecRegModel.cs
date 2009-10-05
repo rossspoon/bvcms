@@ -280,8 +280,8 @@ namespace CMSWeb.Models
             };
             _Participant = Person.Add(f, 30,
                 null, first, null, last, dob, false, gender.Value,
-                    DbUtil.Settings("RecOrigin").ToInt(), 
-                    DbUtil.Settings("RecEntry").ToInt());
+                    DbUtil.Settings("RecOrigin", "0").ToInt(), 
+                    DbUtil.Settings("RecEntry", "0").ToInt());
             participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
             if (participant.Age >= 18)
                 participant.PositionInFamilyId = 10;

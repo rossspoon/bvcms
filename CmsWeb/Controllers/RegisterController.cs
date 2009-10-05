@@ -17,8 +17,8 @@ namespace CMSWeb.Controllers
     {
         public RegisterController()
         {
-            ViewData["header"] = DbUtil.Settings("RegHeader");
-            ViewData["logoimg"] = DbUtil.Settings("RegLogo");
+            ViewData["header"] = DbUtil.Settings("RegHeader", "change RegHeader setting");
+            ViewData["logoimg"] = DbUtil.Settings("RegLogo", "/Content/Crosses.png");
         }
 
         public ActionResult Inside(int? campus)
@@ -215,7 +215,7 @@ namespace CMSWeb.Controllers
             if (!Util.ValidEmail(email))
                 ModelState.AddModelError("email", "valid registration email required");
             if (ModelState.IsValid)
-                if (password == DbUtil.Settings("RegPassword"))
+                if (password == DbUtil.Settings("RegPassword", "fgsltw"))
                 {
                     Session["name"] = name;
                     Session["email"] = email;
@@ -239,16 +239,16 @@ namespace CMSWeb.Controllers
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
             var smtp = new SmtpClient();
-            Util.Email(smtp, DbUtil.Settings("RegMail"), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail"), "new registration in cms",
+            Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
+            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), "new registration in cms",
                 "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
         private void EmailVisit(RegisterModel m)
         {
-            string email = DbUtil.Settings("VisitMail-" + Session["campus"]);
+            string email = DbUtil.Settings("VisitMail-" + Session["campus"], DbUtil.SystemEmailAddress);
             if (!email.HasValue())
-                email = DbUtil.Settings("RegMail");
+                email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
 
             var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "VisitMessage-" + Session["campus"]);
             if (c == null)

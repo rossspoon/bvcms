@@ -33,7 +33,7 @@ namespace CmsData
             get
             {
                 if (_LogFile == null)
-                    _LogFile = DbUtil.Settings("LinqLogFile");
+                    _LogFile = DbUtil.Settings("LinqLogFile", null);
                 return _LogFile;
             }
         }

@@ -154,8 +154,8 @@ namespace CMSRegCustom.Models
                 pos = 10;
             person = Person.Add(f, pos,
                 null, first, null, last, dob, married == 2, gender.Value, 
-                    DbUtil.Settings("DiscLifeOrigin").ToInt(), 
-                    DbUtil.Settings("DiscLifeEntry").ToInt());
+                    DbUtil.Settings("DiscLifeOrigin", "0").ToInt(), 
+                    DbUtil.Settings("DiscLifeEntry", "0").ToInt());
             switch (homecell)
             {
                 case "h":
@@ -199,7 +199,7 @@ namespace CMSRegCustom.Models
                     select new SelectListItem
                     {
                         Text = r.StateCode,
-                        Selected = r.StateCode == "TN",
+                        Selected = r.StateCode == DbUtil.Settings("DefaultState", "TN"),
                     };
             return q;
         }

@@ -39,7 +39,6 @@ namespace CMSWeb
             }
         }
 
-        private MailAddress ReplyTo;
         private List<MailAddress> Addresses = new List<MailAddress>();
         private IEnumerable<Person> people;
 
@@ -86,7 +85,6 @@ namespace CMSWeb
             foreach (var a in Addresses)
             {
                 var msg = new MailMessage(From, a);
-                msg.ReplyTo = ReplyTo;
                 msg.Subject = Subject;
                 msg.Body = "<html><body>\n" + Message + "\n</body></html>\n";
                 msg.IsBodyHtml = true;
@@ -127,7 +125,6 @@ namespace CMSWeb
                 {
                     var to = new MailAddress(p.EmailAddress, p.Name);
                     var msg = new MailMessage(From, to);
-                    msg.ReplyTo = ReplyTo;
                     msg.Subject = Subject;
                     var b = Message.Replace("{name}", p.Name);
                     b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);

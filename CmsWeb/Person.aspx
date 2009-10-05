@@ -445,7 +445,7 @@
                                     Grade:
                                 </th>
                                 <td id="Td1" runat="server">
-                                    <cc1:DisplayOrEditText ID="Grade" runat="server" BindingMode="OneWay" BindingSource="person"
+                                    <cc1:DisplayOrEditText ID="Grade" runat="server" BindingMode="TwoWay" BindingSource="person"
                                         Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
                                 </td>
                             </tr>

@@ -82,6 +82,7 @@
             <th><a href="#" class="sortable">Mixed</a></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th><a href="#" class="sortable">Type</a></th>
+            <th><a href="#" class="sortable">Church</a></th>
             <th><a href="#" class="sortable">Team</a></th>
             <th><a href="#" class="sortable">Birthday</a></th>
             <th><a href="#" class="sortable">ShirtSize</a></th>

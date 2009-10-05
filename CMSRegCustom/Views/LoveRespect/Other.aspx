@@ -166,7 +166,7 @@
                 </tr>
                 </table>
             </fieldset>
-            <p>If you are having difficulty registering online, <%=CmsData.DbUtil.Settings("LRHelp") %></p>
+            <p>If you are having difficulty registering online, <%=CmsData.DbUtil.Settings("LRHelp", "change LRHelp setting") %></p>
         </div>
     <% } %>
 </asp:Content>

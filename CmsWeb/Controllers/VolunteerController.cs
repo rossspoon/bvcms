@@ -16,8 +16,8 @@ namespace CMSWeb.Controllers
     {
         public VolunteerController()
         {
-            ViewData["header"] = DbUtil.Settings("VolHeader");
-            ViewData["logoimg"] = DbUtil.Settings("VolLogo");
+            ViewData["header"] = DbUtil.Settings("VolHeader", "change VolHeader setting");
+            ViewData["logoimg"] = DbUtil.Settings("VolLogo", "/Content/Crosses.png");
         }
         public ActionResult Start(string id)
         {

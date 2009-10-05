@@ -33,6 +33,10 @@ namespace CmsData
 		
 		private string _Email;
 		
+		private string _Phone;
+		
+		private string _Homecell;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -69,6 +73,12 @@ namespace CmsData
 		
 		partial void OnEmailChanging(string value);
 		partial void OnEmailChanged();
+		
+		partial void OnPhoneChanging(string value);
+		partial void OnPhoneChanged();
+		
+		partial void OnHomecellChanging(string value);
+		partial void OnHomecellChanged();
 		
     #endregion
 		public MOBSReg()
@@ -260,6 +270,50 @@ namespace CmsData
 					this._Email = value;
 					this.SendPropertyChanged("Email");
 					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="varchar(10)")]
+		public string Phone
+		{
+			get { return this._Phone; }
+
+			set
+			{
+				if (this._Phone != value)
+				{
+				
+                    this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="homecell", UpdateCheck=UpdateCheck.Never, Storage="_Homecell", DbType="char(1)")]
+		public string Homecell
+		{
+			get { return this._Homecell; }
+
+			set
+			{
+				if (this._Homecell != value)
+				{
+				
+                    this.OnHomecellChanging(value);
+					this.SendPropertyChanging();
+					this._Homecell = value;
+					this.SendPropertyChanged("Homecell");
+					this.OnHomecellChanged();
 				}
 
 			}

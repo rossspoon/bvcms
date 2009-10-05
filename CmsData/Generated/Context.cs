@@ -82,6 +82,10 @@ namespace CmsData
         partial void UpdateBundleStatusType(BundleStatusType instance);
         partial void DeleteBundleStatusType(BundleStatusType instance);
         
+        partial void InsertCampu(Campu instance);
+        partial void UpdateCampu(Campu instance);
+        partial void DeleteCampu(Campu instance);
+        
         partial void InsertChurchAttReportId(ChurchAttReportId instance);
         partial void UpdateChurchAttReportId(ChurchAttReportId instance);
         partial void DeleteChurchAttReportId(ChurchAttReportId instance);
@@ -193,10 +197,6 @@ namespace CmsData
         partial void InsertLoveRespect(LoveRespect instance);
         partial void UpdateLoveRespect(LoveRespect instance);
         partial void DeleteLoveRespect(LoveRespect instance);
-        
-        partial void InsertMainCampu(MainCampu instance);
-        partial void UpdateMainCampu(MainCampu instance);
-        partial void DeleteMainCampu(MainCampu instance);
         
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
@@ -572,6 +572,12 @@ namespace CmsData
 
 		}
 
+		public Table< Campu> Campus
+		{
+			get	{ return this.GetTable< Campu>(); }
+
+		}
+
 		public Table< ChurchAttReportId> ChurchAttReportIds
 		{
 			get	{ return this.GetTable< ChurchAttReportId>(); }
@@ -737,12 +743,6 @@ namespace CmsData
 		public Table< LoveRespect> LoveRespects
 		{
 			get	{ return this.GetTable< LoveRespect>(); }
-
-		}
-
-		public Table< MainCampu> MainCampus
-		{
-			get	{ return this.GetTable< MainCampu>(); }
 
 		}
 

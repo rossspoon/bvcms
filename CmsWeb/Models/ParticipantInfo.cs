@@ -19,6 +19,7 @@ namespace CMSWeb.Models
         public string Name { get; set; }
         public string Name2 { get; set; }
         public string MemberType { get; set; }
+        public string MemberStatus { get; set; }
         public string TeamName { get; set; }
         public bool FeePaid { get; set; }
         public string Request { get; set; }

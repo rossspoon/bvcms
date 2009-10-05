@@ -114,7 +114,7 @@ namespace CMSWeb.Controllers
 <p>Please visit <a href=""{1}/Display/Page/Welcome"">this welcome page</a> for more information</p>
 <p>Thanks,<br />
 The bvCMS Team</p>
-".Fmt(user.Name, DbUtil.Settings("DefaultHost"), user.Username, newpassword));
+".Fmt(user.Name, DbUtil.Settings("DefaultHost", Util.Host), user.Username, newpassword));
             return Redirect("/Admin/Users.aspx?create=1");
         }
         [Authorize(Roles = "Admin")]
@@ -203,11 +203,11 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, user.Username));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail"),
+                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
                     "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
             }
             if (q.Count() == 0)
-                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail"),
+                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
     "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
 
             return RedirectToAction("RequestUsername");
@@ -247,11 +247,11 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name,link));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail"),
+                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
                     "bvcms user: {0} forgot password".Fmt(user.Name), "no content");
             }
             else
-                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail"),
+                Util.Email2(smtp, DbUtil.SystemEmailAddress, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
     "bvcms unknown user: {0} forgot password".Fmt(username), "no content");
 
             return RedirectToAction("RequestPassword");

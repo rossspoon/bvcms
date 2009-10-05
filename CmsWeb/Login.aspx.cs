@@ -101,7 +101,7 @@ By logging in below, you agree that you understand this purpose and will abide b
             }
             else
             {
-                if (Login1.Password == DbUtil.Settings("ImpersonatePassword"))
+                if (Login1.Password == DbUtil.Settings("ImpersonatePassword", null))
                 {
                     e.Authenticated = true;
                     Notify(WebConfigurationManager.AppSettings["senderrorsto"], 

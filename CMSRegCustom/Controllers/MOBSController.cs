@@ -60,7 +60,7 @@ namespace CMSRegCustom.Controllers
             DbUtil.Db.SubmitChanges();
 
             Util.Email2(m.email,
-                    DbUtil.Settings("MOBSMail"), "MOBS Registration",
+                    DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress), "MOBS Registration",
 @"{0}({1}) has registered for MOBS event on {2} (check cms to confirm feepaid)</p>".Fmt(
 m.person.Name, m.peopleid, m.MeetingTime));
 
@@ -104,7 +104,7 @@ m.person.Name, m.peopleid, m.MeetingTime));
             c.Body = c.Body.Replace("{time}", m.meeting.MeetingDate.Value.ToShortTimeString());
             c.Body = c.Body.Replace("{when}", m.MeetingTime);
 
-            Util.Email(DbUtil.Settings("MOBSMail"),
+            Util.Email(DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress),
                  m.person.Name, m.registration.Email, c.Title, c.Body);
             return View(m);
         }

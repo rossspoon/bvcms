@@ -133,13 +133,6 @@
     <Compile Include="Admin\Activity.aspx.designer.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Audit.aspx.cs">
-      <DependentUpon>Audit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Audit.aspx.designer.cs">
-      <DependentUpon>Audit.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\ClearCache.aspx.cs">
       <DependentUpon>ClearCache.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -834,7 +827,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
-    <Content Include="Admin\Audit.aspx" />
     <Content Include="Admin\ClearCache.aspx" />
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />

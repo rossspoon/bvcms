@@ -14,11 +14,11 @@ namespace CMSWebSetup.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            if (DbUtil.Settings("RecreationProgramId") == string.Empty)
+            if (DbUtil.Settings("RecreationProgramId", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecreationProgramId required in Settings");
-            if (DbUtil.Settings("RecEntry") == string.Empty)
+            if (DbUtil.Settings("RecEntry", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecEntry required in Settings");
-            if (DbUtil.Settings("RecOrigin") == string.Empty)
+            if (DbUtil.Settings("RecOrigin", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecOrigin required in Settings");
 
             if (!ModelState.IsValid)
@@ -123,7 +123,7 @@ namespace CMSWebSetup.Controllers
         {
             var q = from c in DbUtil.Db.Divisions
                     orderby c.Name
-                    where c.ProgId == DbUtil.Settings("RecreationProgramId").ToInt()
+                    where c.ProgId == DbUtil.Settings("RecreationProgramId", "0").ToInt()
                     select new
                     {
                         Code = c.Id.ToString(),

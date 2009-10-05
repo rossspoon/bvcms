@@ -28,6 +28,7 @@ namespace CmsCheckin
 
         public void FindAttendees(XDocument x)
         {
+            Print.Focus();
             time = DateTime.Now;
 
             var hasprinter = RawPrinterHelper.HasPrinter(printer);
@@ -123,6 +124,7 @@ namespace CmsCheckin
                 ab.UseVisualStyleBackColor = false;
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
+                ab.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
 
                 var name = new Label();
                 name.Font = font;
@@ -152,7 +154,10 @@ namespace CmsCheckin
                 eb.UseVisualStyleBackColor = false;
                 this.Controls.Add(eb);
                 if (hasprinter)
+                {
                     eb.Click += new EventHandler(eb_Click);
+                    eb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
+                }
 
                 row++;
             }
@@ -189,6 +194,11 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
+            PrintBlankLabel();
+            GoBack(sender, e);
+        }
+        private void PrintBlankLabel()
+        {
             if (printed)
             {
                 var ms = new MemoryStream();
@@ -202,7 +212,6 @@ namespace CmsCheckin
                 RawPrinterHelper.SendDocToPrinter(printer, ms);
                 st.Close();
             }
-            GoBack(sender, e);
         }
         private void RecordAttend(AttendLabel c, bool present)
         {
@@ -241,6 +250,14 @@ namespace CmsCheckin
             sw.Close();
         }
 
+        private void AttendeeKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 27)
+            {
+                PrintBlankLabel();
+                GoBack(sender, e);
+            }
+        }
     }
     public class AttendLabel
     {

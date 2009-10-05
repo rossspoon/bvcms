@@ -8,8 +8,8 @@
     <ProjectGuid>{98AEE43C-4226-49E7-BD46-C1A85467ECED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CMSModel</RootNamespace>
-    <AssemblyName>CMSModel</AssemblyName>
+    <RootNamespace>CmsData</RootNamespace>
+    <AssemblyName>CmsData</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -75,10 +75,20 @@
     <Compile Include="BundleHeader.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
+    <Compile Include="Generated\Campu.cs" />
     <Compile Include="Generated\LoveRespect.cs" />
-    <Compile Include="Generated\MainCampu.cs" />
     <Compile Include="Generated\MOBSReg.cs" />
     <Compile Include="Generated\Word.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RecAgeDivision.cs" />
     <Compile Include="Generated\ActivityLog.cs" />
     <Compile Include="Generated\AttendanceClassification.cs" />
@@ -140,11 +150,6 @@
     <Compile Include="ITaskNotify.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="OrganizationMember.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Task.cs" />
     <Compile Include="Generated\Task.cs" />
     <Compile Include="IAuditable.cs" />
@@ -185,11 +190,6 @@
     <Compile Include="Generated\Tag.cs" />
     <Compile Include="Generated\TagPerson.cs" />
     <Compile Include="Generated\TagType.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="QueryBuilder\CompareType.cs" />
     <Compile Include="QueryBuilder\CompareClass.cs" />
     <Compile Include="QueryBuilder\Expressions.cs" />
@@ -252,17 +252,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="QueryBuilder\FieldMap2.xml" />
@@ -276,6 +269,12 @@
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
       <Name>UtilityExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

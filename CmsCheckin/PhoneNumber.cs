@@ -19,13 +19,8 @@ namespace CmsCheckin
         void buttonclick(object sender, EventArgs e)
         {
             var b = sender as Button;
-            var d = b.Name.Substring(6);
-            var t = GetDigits(textBox1.Text);
-            if (t.Length < 10)
-                t += d;
-            textBox1.Text = FmtFone(t);
-            textBox1.Focus();
-            textBox1.Select(textBox1.Text.Length, 0);
+            var d = b.Name[6];
+            KeyStroke(d);
         }
         public string GetDigits(string s)
         {
@@ -80,6 +75,30 @@ namespace CmsCheckin
         private void buttonbs_Click(object sender, EventArgs e)
         {
             var b = sender as Button;
+            BackSpace();
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\b')
+                BackSpace();
+            else if(e.KeyChar >= '0' && e.KeyChar <= '9')
+                KeyStroke(e.KeyChar);
+            else if(e.KeyChar == '\r')
+                Go(sender, new EventArgs<string>(textBox1.Text));
+            e.Handled = true;
+        }
+        private void KeyStroke(char d)
+        {
+            var t = GetDigits(textBox1.Text);
+            if (t.Length < 10)
+                t += d;
+            textBox1.Text = FmtFone(t);
+            textBox1.Focus();
+            textBox1.Select(textBox1.Text.Length, 0);
+        }
+        private void BackSpace()
+        {
             var t = GetDigits(textBox1.Text);
             var len = t.Length - 1;
             if (len < 0)

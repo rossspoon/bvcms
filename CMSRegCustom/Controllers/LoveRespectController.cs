@@ -122,7 +122,7 @@ namespace CMSRegCustom.Controllers
         private static void SendStaffEmail(SmtpClient smtp, Person p, string email, bool preferred, CmsData.Organization org, string night)
         {
             Util.Email2(smtp, email,
-                                DbUtil.Settings("LRMail"), "{0} Registration".Fmt(org.OrganizationName),
+                                DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(org.OrganizationName),
 @"{0}({1}) registered for {2} (night: {3})</p>".Fmt(
             p.Name, p.PeopleId, org.OrganizationName, night));
         }
@@ -163,20 +163,20 @@ namespace CMSRegCustom.Controllers
             if (sb.Length > 0)
             {
                 ChangeMail(smtp, p.EmailAddress, org, p, sb.ToString());
-                ChangeMail(smtp, DbUtil.Settings("LRMail"), org, p, sb.ToString());
+                ChangeMail(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), org, p, sb.ToString());
                 if (oldaddress.HasValue())
                     ChangeMail(smtp, oldaddress, org, p, sb.ToString());
             }
             DbUtil.Db.SubmitChanges();
 
             if (night == 3)
-                Util.Email(smtp, DbUtil.Settings("LRMail"),
+                Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                     p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
     @"Hi {0},<p>Thank you for registering. You are now enrolled for {3} starting the following date:</p>
 <p>{1:ddd MMM d}, {2:yyyy h:mm tt} </p>".Fmt(
                     p.PreferredName, org.FirstMeetingDate, org.WeeklySchedule.MeetingTime, org.OrganizationName));
             else
-                Util.Email(smtp, DbUtil.Settings("LRMail"),
+                Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                 p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
 @"Hi {0},<p>Thank you for registering for a Love and Respect small group. 
 Someone will be in contact with you as soon as we form groups.</p>".Fmt(
@@ -186,7 +186,7 @@ Someone will be in contact with you as soon as we form groups.</p>".Fmt(
 
         private void ChangeMail(SmtpClient smtp, string email, CmsData.Organization org, Person p, string changes)
         {
-            Util.Email(smtp, DbUtil.Settings("LRMail"),
+            Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                             p.Name, email, "Changes on church record",
 @"{0} just registered on Bellevue for {1}.</p>
 <p>{2}</p>
@@ -197,8 +197,8 @@ Someone will be in contact with you as soon as we form groups.</p>".Fmt(
 
         private static void SendStaffEmailOth(SmtpClient smtp, LoveRespectModel m)
         {
-            Util.Email(smtp, DbUtil.Settings("LRMail"),
-                                "", DbUtil.Settings("LRMail"), "Love Respect Other Church Registration",
+            Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
+                                "", DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), "Love Respect Other Church Registration",
 @"We received the following registration:
 {0}
 ".Fmt(m.PrepareSummaryText()));
@@ -206,11 +206,11 @@ Someone will be in contact with you as soon as we form groups.</p>".Fmt(
 
         private void SendEmailOth(SmtpClient smtp, LoveRespectModel m)
         {
-            Util.Email(smtp, DbUtil.Settings("LRMail"),
+            Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                 "", m.email1, "Love & Respect Small Group Registration",
 @"Hi {0},<p>Thank you for registering. Someone will be in contact with you.</p>".Fmt(
             m.first1));
-            Util.Email(smtp, DbUtil.Settings("LRMail"),
+            Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                 "", m.email2, "Love & Respect Small Group Registration",
 @"Hi {0},<p>Thank you for registering. Someone will be in contact with you.</p>".Fmt(
             m.first2));

@@ -307,6 +307,8 @@ namespace CmsData
     	
 		private EntityRef< BaptismType> _BaptismType;
 		
+		private EntityRef< Campu> _Campu;
+		
 		private EntityRef< DecisionType> _DecisionType;
 		
 		private EntityRef< DropType> _DropType;
@@ -318,8 +320,6 @@ namespace CmsData
 		private EntityRef< Gender> _Gender;
 		
 		private EntityRef< JoinType> _JoinType;
-		
-		private EntityRef< MainCampu> _MainCampu;
 		
 		private EntityRef< MaritalStatus> _MaritalStatus;
 		
@@ -747,6 +747,8 @@ namespace CmsData
 			
 			this._BaptismType = default(EntityRef< BaptismType>); 
 			
+			this._Campu = default(EntityRef< Campu>); 
+			
 			this._DecisionType = default(EntityRef< DecisionType>); 
 			
 			this._DropType = default(EntityRef< DropType>); 
@@ -758,8 +760,6 @@ namespace CmsData
 			this._Gender = default(EntityRef< Gender>); 
 			
 			this._JoinType = default(EntityRef< JoinType>); 
-			
-			this._MainCampu = default(EntityRef< MainCampu>); 
 			
 			this._MaritalStatus = default(EntityRef< MaritalStatus>); 
 			
@@ -3331,7 +3331,7 @@ namespace CmsData
 				if (this._CampusId != value)
 				{
 				
-					if (this._MainCampu.HasLoadedOrAssignedValue)
+					if (this._Campu.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnCampusIdChanging(value);
@@ -3688,6 +3688,48 @@ namespace CmsData
 		}
 
 		
+		[Association(Name="FK_People_Campus", Storage="_Campu", ThisKey="CampusId", IsForeignKey=true)]
+		public Campu Campu
+		{
+			get { return this._Campu.Entity; }
+
+			set
+			{
+				Campu previousValue = this._Campu.Entity;
+				if (((previousValue != value) 
+							|| (this._Campu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Campu.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._Campu.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._CampusId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._CampusId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Campu");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_People_DecisionType", Storage="_DecisionType", ThisKey="DecisionTypeId", IsForeignKey=true)]
 		public DecisionType DecisionType
 		{
@@ -3933,48 +3975,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("JoinType");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_People_MainCampus", Storage="_MainCampu", ThisKey="CampusId", IsForeignKey=true)]
-		public MainCampu MainCampu
-		{
-			get { return this._MainCampu.Entity; }
-
-			set
-			{
-				MainCampu previousValue = this._MainCampu.Entity;
-				if (((previousValue != value) 
-							|| (this._MainCampu.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._MainCampu.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._MainCampu.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._CampusId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._CampusId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("MainCampu");
 				}
 
 			}

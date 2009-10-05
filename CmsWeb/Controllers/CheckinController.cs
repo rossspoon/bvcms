@@ -14,7 +14,7 @@ namespace CMSWeb.Controllers
         //
         // GET: /Checkin/
 
-        public ActionResult Match(string id)
+        public ActionResult Match(string id, int? campus)
         {
             var ph = Util.GetDigits(id).PadLeft(10, '0');
             var p7 = ph.Substring(3);
@@ -33,21 +33,22 @@ namespace CMSWeb.Controllers
             if (matches.Count > 1)
                 matches = matches.Where(m => m.AreaCode == ac || ac == "000").ToList();
             if (matches.Count == 0)
-                return ShowFamily(0); // not found
+                return ShowFamily(0, 0); // not found
             if (matches.Count == 1)
-                return ShowFamily(matches[0].FamilyId);
+                return ShowFamily(matches[0].FamilyId, campus);
             return View("Multiple", matches);
         }
-        public ActionResult Family(int id)
+        public ActionResult Family(int id, int? campus)
         {
-            return ShowFamily(id);
+            return ShowFamily(id, campus);
         }
-        public ActionResult ShowFamily(int id)
+        public ActionResult ShowFamily(int id, int? campus)
         {
             var now = DateTime.Now;
 
             var q2 = from om in DbUtil.Db.OrganizationMembers
                      where om.Organization.CanSelfCheckin.Value
+                     where om.Organization.CampusId == campus || campus == null
                      where om.Person.FamilyId == id
                      //where now.TimeOfDay > om.Organization.WeeklySchedule.MeetingTime.AddDays(-1).TimeOfDay
                      //where now.TimeOfDay < om.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
@@ -75,6 +76,7 @@ namespace CMSWeb.Controllers
             var q3 = from a in DbUtil.Db.Attends
                      where a.Person.FamilyId == id
                      where a.Organization.CanSelfCheckin.Value
+                     where a.Organization.CampusId == campus || campus == null
                      //where now.TimeOfDay > a.Organization.WeeklySchedule.MeetingTime.AddHours(-1).TimeOfDay
                      //where now.TimeOfDay < a.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
                      where a.AttendanceFlag && a.MeetingDate > threeweeksago

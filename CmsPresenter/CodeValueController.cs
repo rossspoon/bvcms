@@ -746,7 +746,6 @@ namespace CMSPresenter
             return list;
         }
 
-
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> AllCampuses()
         {
@@ -754,12 +753,12 @@ namespace CMSPresenter
             var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
-                var q = from c in DbUtil.Db.MainCampus
+                var q = from c in DbUtil.Db.Campus
                         select new CodeValueItem
                         {
                             Id = c.Id,
-                            Code = c.Id.ToString(),
-                            Value = c.Campus,
+                            Code = c.Code,
+                            Value = c.Description,
                         };
                 list = q.ToList();
                 HttpRuntime.Cache[Util.Host + NAME] = list;

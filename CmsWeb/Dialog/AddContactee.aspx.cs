@@ -92,7 +92,7 @@ namespace CMSWeb.Dialog
                                    FamilyOption.SelectedValue, 
                                    Parameters.Gender, 
                                    OrginId,
-                                   null, DbUtil.Settings("DefaultCampusId").ToInt2(), 
+                                   null, DbUtil.Settings("DefaultCampusId", "0").ToInt2(), 
                                    Parameters.Comm, Parameters.Addr, Parameters.Married);
                 CustomValidator1.ErrorMessage = "must select family to add to";
             }

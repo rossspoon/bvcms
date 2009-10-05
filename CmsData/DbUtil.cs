@@ -74,11 +74,6 @@ namespace CmsData
         }
         public static string Header()
         {
-            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
-            if (list == null)
-            {
-
-            }
             var hc = HttpContext.Current.Cache[Util.Host + "header"] as string;
             if (hc == null)
             {
@@ -99,7 +94,7 @@ namespace CmsData
             }
             return hc;
         }
-        public static string Settings(string name)
+        public static string Settings(string name, string defaultvalue)
         {
             if (HttpContext.Current == null)
                 return "";
@@ -111,13 +106,15 @@ namespace CmsData
             }
             if (list.ContainsKey(name))
                 return list[name];
+            if (defaultvalue.HasValue())
+                return defaultvalue;
             return string.Empty;
         }
-        public static int BFClassOrgTagId { get { return Settings("BFClassOrgTagId").ToInt(); } }
-        public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId").ToInt(); } }
-        public static string SystemEmailAddress { get { return Settings("SystemEmailAddress"); } }
-        public static string TaskHost { get { return Settings("DefaultHost"); } }
-        public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole") == "true"; } }
+        public static int BFClassOrgTagId { get { return Settings("BFClassOrgTagId", "").ToInt(); } }
+        public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
+        public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
+        public static string TaskHost { get { return Settings("DefaultHost", ""); } }
+        public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole", "") == "true"; } }
 
         public const string MiscTagsString = "Misc Tags";
         public const int TagTypeId_Personal = 1;

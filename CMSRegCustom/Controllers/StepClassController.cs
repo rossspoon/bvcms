@@ -17,7 +17,7 @@ namespace CMSRegCustom.Controllers
         public StepClassController()
         {
             ViewData["header"] = "Step Class Registration";
-            ViewData["logoimg"] = DbUtil.Settings("VolLogo");
+            ViewData["logoimg"] = DbUtil.Settings("VolLogo", "/Content/crosses.png");
         }
         public ActionResult Step1()
         {
@@ -125,7 +125,7 @@ namespace CMSRegCustom.Controllers
         {
             if (m.person.EmailAddress != m.email && m.preferredEmail)
             {
-                Util.Email(DbUtil.Settings("StepMail"),
+                Util.Email(DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress),
                                 m.person.Name, m.person.EmailAddress, "Your email has been changed",
 @"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
 <p>If this was not you, please contact us ASAP.</p>".Fmt(
@@ -133,13 +133,13 @@ namespace CMSRegCustom.Controllers
                 m.person.EmailAddress = m.email;
                 DbUtil.Db.SubmitChanges();
             }
-            Util.Email(DbUtil.Settings("StepMail"),
+            Util.Email(DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress),
                                 m.person.Name, m.email, "Step Class Registration",
 @"Hi {0},<p>Thank you for registering. You are now enrolled in the {2} Class for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} to {3:h:mm tt}</p>".Fmt(
             m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
             Util.Email2(m.email,
-                                DbUtil.Settings("StepMail"), "Step Class Registration",
+                                DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress), "Step Class Registration",
 @"{0}({1}) registered in the {3} Class for the following date:</p>
 <p>{2:ddd MMM d, yyyy h:mm tt} to {4:h:mm tt}</p>".Fmt(
             m.person.Name, m.person.PeopleId, m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));

@@ -99,7 +99,7 @@ namespace CMSWeb
         }
         private static int maxExcelRows
         {
-            get { return DbUtil.Settings("MaxExcelRows").ToInt(); }
+            get { return DbUtil.Settings("MaxExcelRows", "10000").ToInt(); }
         }
     }
 }
