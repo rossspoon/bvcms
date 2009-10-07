@@ -15,7 +15,8 @@
         $("#cmdOK").click(function() {
             var url = ev.target.href
                 + "&titles=" + $('#UseTitle').val()
-                + "&format=" + $('input[name=addressedto]:checked').val();
+                + "&format=" + $('input[name=addressedto]:checked').val()
+                + "&web=" + $('#WebView').val();
             $("#ChooseLabelType").dialog("close");
             window.open(url, "_blank");
         });

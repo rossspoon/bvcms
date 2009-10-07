@@ -278,13 +278,13 @@ namespace CMSWeb.Models
                 StateCode = state,
                 ZipCode = zip,
             };
-            _Participant = Person.Add(f, 30,
+            _Participant = Person.Add(f, (int)Family.PositionInFamily.Child,
                 null, first, null, last, dob, false, gender.Value,
                     DbUtil.Settings("RecOrigin", "0").ToInt(), 
                     DbUtil.Settings("RecEntry", "0").ToInt());
             participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
             if (participant.Age >= 18)
-                participant.PositionInFamilyId = 10;
+                participant.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             peopleid = participant.PeopleId;
             participant.EmailAddress = email;
             participant.CampusId = org.CampusId;

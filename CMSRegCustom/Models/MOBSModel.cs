@@ -201,7 +201,7 @@ namespace CMSRegCustom.Models
             p.EmailAddress = email;
             p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)
-                p.PositionInFamilyId = 10;
+                p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
             {
                 case "h":

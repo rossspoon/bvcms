@@ -502,12 +502,6 @@ namespace CmsData
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
-
-        }
-        [Function(Name = "dbo.OneHeadOfHouseholdIsMember", IsComposable = true)]
-        public bool? OneHeadOfHouseholdIsMember([Parameter(DbType = "Int")] int? fid)
-        {
-            return ((bool?)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), fid).ReturnValue));
         }
     }
 }

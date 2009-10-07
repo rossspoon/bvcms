@@ -33,7 +33,6 @@
                 runat="server">
                 <asp:ListItem Value="0" Selected="True">Existing Family</asp:ListItem>
                 <asp:ListItem Value="1">New Family</asp:ListItem>
-                <asp:ListItem Value="2">Couple</asp:ListItem>
             </asp:RadioButtonList>
             <br />
             <asp:DropDownList ID="MemberType" runat="server" DataSourceID="MemberTypeData" DataTextField="Value"

@@ -62,10 +62,6 @@ namespace CmsData
         partial void UpdateBaptismType(BaptismType instance);
         partial void DeleteBaptismType(BaptismType instance);
         
-        partial void InsertBFCStatus(BFCStatus instance);
-        partial void UpdateBFCStatus(BFCStatus instance);
-        partial void DeleteBFCStatus(BFCStatus instance);
-        
         partial void InsertBundleDetail(BundleDetail instance);
         partial void UpdateBundleDetail(BundleDetail instance);
         partial void DeleteBundleDetail(BundleDetail instance);
@@ -539,12 +535,6 @@ namespace CmsData
 		public Table< BaptismType> BaptismTypes
 		{
 			get	{ return this.GetTable< BaptismType>(); }
-
-		}
-
-		public Table< BFCStatus> BFCStatuses
-		{
-			get	{ return this.GetTable< BFCStatus>(); }
 
 		}
 
@@ -1274,6 +1264,18 @@ namespace CmsData
     #endregion
 	#region Scalar Functions
 		
+		[Function(Name="dbo.OneHeadOfHouseholdIsMember", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? OneHeadOfHouseholdIsMember(
+            [Parameter(Name = "fid", DbType="int")] int? fid
+            )
+		{
+			return ((Boolean)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.AttendStr_3", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string AttendStr3(

@@ -370,7 +370,7 @@ namespace CMSRegCustom.Models
         }
         internal Person AddPersonToPerson(Person p, string first, string last, string dob, string phone, string homecell, string email)
         {
-            var np = Person.Add(p.Family, 10,
+            var np = Person.Add(p.Family, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, null, last, dob, true, p.GenderId == 1? 2 : 1,
                     DbUtil.Settings("SmlOrigin", "0").ToInt(), 
                     DbUtil.Settings("SmlEntry", "0").ToInt());
@@ -398,8 +398,8 @@ namespace CMSRegCustom.Models
                 StateCode = state,
                 ZipCode = zip,
             };
-            
-            var np = Person.Add(f, 10, null, 
+
+            var np = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, null, 
                     first, 
                     null, 
                     last, 

@@ -8,14 +8,6 @@ namespace CmsData
 {
     public partial class Organization
     {
-        public enum AttendanceClassificationCode
-        {
-            Normal = 0,
-            InService = 1,
-            Offsite = 2,
-            Baptism = 3,
-            Step1Class = 4
-        }
         public enum OrgStatusCode
         {
             Active = 30,

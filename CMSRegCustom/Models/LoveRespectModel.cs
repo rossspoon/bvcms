@@ -282,7 +282,7 @@ namespace CMSRegCustom.Models
         {
             var org = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrgId);
 
-            var np = Person.Add(p.Family, 10,
+            var np = Person.Add(p.Family, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, null, last, dob, true, p.GenderId == 1 ? 2 : 1,
                     DbUtil.Settings("SmlOrigin", "0").ToInt(),
                     DbUtil.Settings("SmlEntry", "0").ToInt());
@@ -313,7 +313,7 @@ namespace CMSRegCustom.Models
                 ZipCode = zip,
             };
 
-            var np = Person.Add(f, 10, null,
+            var np = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, null,
                     first,
                     null,
                     last,

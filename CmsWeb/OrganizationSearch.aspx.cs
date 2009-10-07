@@ -194,6 +194,8 @@ namespace CMSWeb
             DbUtil.Db.DivOrgs.DeleteAllOnSubmit(div.DivOrgs);
             DbUtil.Db.Divisions.DeleteOnSubmit(div);
             DbUtil.Db.SubmitChanges();
+            if (OrgDivisions.SelectedValue.ToInt() == divid)
+                OrgDivisions.SelectedIndex = 0;
             OrgDivisions.DataBind();
             Tags.DataBind();
         }
@@ -201,9 +203,12 @@ namespace CMSWeb
         protected void Tags_SelectedIndexChanged(object sender, EventArgs e)
         {
             var a = Tags.SelectedValue.SplitStr(":");
-            var progid = a[0].ToInt();
-            var divid = a[1].ToInt();
-            progdivid.Text = "prog: {0}, div: {1}".Fmt(progid, divid);
+            if(a.Length == 2)
+            {
+                var progid = a[0].ToInt();
+                var divid = a[1].ToInt();
+                progdivid.Text = "prog: {0}, div: {1}".Fmt(progid, divid);
+            }
             OrganizationGrid.DataBind();
         }
 

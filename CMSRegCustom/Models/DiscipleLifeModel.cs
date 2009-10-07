@@ -151,7 +151,7 @@ namespace CMSRegCustom.Models
             };
             var pos = 30;
             if (married == 2 || dob.Age().ToInt() >= 18)
-                pos = 10;
+                pos = (int)Family.PositionInFamily.PrimaryAdult;
             person = Person.Add(f, pos,
                 null, first, null, last, dob, married == 2, gender.Value, 
                     DbUtil.Settings("DiscLifeOrigin", "0").ToInt(), 

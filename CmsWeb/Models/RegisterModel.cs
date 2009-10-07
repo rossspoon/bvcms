@@ -76,9 +76,9 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Addr1</td><td>{0}</td></tr>\n", person.PrimaryAddress);
             sb.AppendFormat("<tr><td>Addr2</td><td>{0}</td></tr>\n", person.PrimaryAddress2);
             sb.AppendFormat("<tr><td>City</td><td>{0}</td></tr>\n", person.PrimaryCity);
-            sb.AppendFormat("<tr><td>State</td><td>{0}</td></tr>\n", person.StateCode);
-            sb.AppendFormat("<tr><td>Zip</td><td>{0}</td></tr>\n", person.ZipCode.FmtZip());
-            sb.AppendFormat("<tr><td>HomePhone</td><td>{0}</td></tr>\n", person.HomePhone.FmtFone());
+            sb.AppendFormat("<tr><td>State</td><td>{0}</td></tr>\n", person.PrimaryState);
+            sb.AppendFormat("<tr><td>Zip</td><td>{0}</td></tr>\n", person.PrimaryZip.FmtZip());
+            sb.AppendFormat("<tr><td>HomePhone</td><td>{0}</td></tr>\n", person.Family.HomePhone.FmtFone());
             sb.AppendFormat("<tr><td>CellPhone</td><td>{0}</td></tr>\n", person.CellPhone.FmtFone());
             sb.AppendFormat("<tr><td>Email</td><td>{0}</td></tr>\n", person.EmailAddress);
             sb.Append("</table>\n");
@@ -227,12 +227,12 @@ namespace CMSWeb.Models
                  ZipCode = zip,
                  HomePhone = homephone.GetDigits(),
             };
-            var p = Person.Add(f, 10, 
+            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
                 null, first, nickname, lastname, dob, false, gender.Value, 0, null);
             var age = p.GetAge();
-            var pos = 10;
+            var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                pos = 30;
+                pos = (int)Family.PositionInFamily.Child;
             p.PositionInFamilyId = pos;
             p.MaritalStatusId = married.Value;
             p.CellPhone = cellphone.GetDigits();
@@ -246,12 +246,12 @@ namespace CMSWeb.Models
         public void SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
-            var p = Person.Add(f, 10, 
+            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
                 null, first, nickname, lastname, dob, false, gender.Value, 0, null);
             var age = p.GetAge();
-            var pos = 10;
+            var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                pos = 30;
+                pos = (int)Family.PositionInFamily.Child;
             p.PositionInFamilyId = pos;
 
             p.CellPhone = cellphone.GetDigits();

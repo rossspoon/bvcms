@@ -1125,7 +1125,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Family.People.Any(m =>
-                    m.PositionInFamilyId == 10 // primary adult
+                    m.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
                     && m.MemberStatusId == 10 // church member
                     //&& m.PeopleId != p.PeopleId // someone else in family
                     );

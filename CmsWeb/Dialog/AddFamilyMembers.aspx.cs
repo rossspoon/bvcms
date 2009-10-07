@@ -59,11 +59,12 @@ namespace CMSWeb.Dialog
             foreach (var p in Search.SelectedPeople())
             {
                 if (p.Age < 18)
-                    p.PositionInFamilyId = 30;
-                else if (f.People.Count(per => per.PositionInFamilyId == 10) < 2)
-                    p.PositionInFamilyId = 10;
+                    p.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+                else if (f.People.Count(per => 
+                    per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult) < 2)
+                    p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
                 else
-                    p.PositionInFamilyId = 20;
+                    p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
                 fids.Add(p.FamilyId);
                 p.FamilyId = FamilyId;
             }

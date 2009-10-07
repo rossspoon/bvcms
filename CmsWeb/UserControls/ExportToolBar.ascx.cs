@@ -23,9 +23,9 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
-            LabelsLink.NavigateUrl = Popup("Report/LabelsRpt.aspx?");
-            ExcelLink.NavigateUrl = Popup("ExportExcel.aspx?");
-            BulkMailLink.NavigateUrl = Popup("bulkmail.aspx?");
+            LabelsLink.NavigateUrl = "/Report/LabelsRpt.aspx?id=" + queryId;
+            ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;
+            BulkMailLink.NavigateUrl = "/bulkmail.aspx?" + queryId;
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
             ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/ContactReport.aspx?");
@@ -49,11 +49,6 @@ namespace CMSWeb
         private string GoTo(string function, string target)
         {
             return "javascript:TB" + function + "('" + Page.ResolveUrl("~/{0}id={1}')".Fmt(target, queryId));
-        }
-        private string Popup(string target)
-        {
-            return "javascript:TBshowPopup('" + Page.ResolveUrl("~/" + target)
-                + "',{0},'{1}','{2}','{3}','{4}')".Fmt(queryId, UseTitle.ClientID, Option.UniqueID, WebView.UniqueID, Panel1_ModalPopupExtender.ClientID);
         }
         public event EventHandler TaggedEvent;
 

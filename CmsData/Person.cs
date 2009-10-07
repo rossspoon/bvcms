@@ -23,25 +23,6 @@ namespace CmsData
 {
     public partial class Person : IAuditable
     {
-        public enum EntryPointCode
-        {
-            BibleFellowship = 10,
-            Enrollment = 15,
-            Worship = 20,
-            Christmas = 30,
-            Easter = 40,
-            Activities = 50,
-            VBS = 60,
-            Music = 70,
-            Fall = 80,
-            SoulMateLive = 82,
-            Other = 98,
-        }
-        public OriginCode EntryPointEnum
-        {
-            get { return (OriginCode)EntryPointId; }
-            set { EntryPointId = (int)value; }
-        }
         public enum OriginCode
         {
             Visit = 10,
@@ -51,11 +32,6 @@ namespace CmsData
             Enrollment = 70,
             Contribution = 90,
             NewFamilyMember = 100,
-        }
-        public OriginCode OriginEnum
-        {
-            get { return (OriginCode)OriginId; }
-            set { OriginId = (int)value; }
         }
         public enum DecisionCode
         {

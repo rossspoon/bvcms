@@ -186,7 +186,6 @@ namespace CMSPresenter
         {
             ExistingFamily = 0,
             NewFamily = 1,
-            Couple = 2,
         }
         private static AddFamilyType ParseFamilyType(object value)
         {
@@ -239,7 +238,7 @@ namespace CMSPresenter
             if (potentialName.HasValue())
                 name = potentialName.Trim();
             else
-                name = famtype == AddFamilyType.Couple ? "NewCouple" : "NewPerson";
+                name = "New Person";
 
             Family fam;
             var PrimaryCount = 0;
@@ -248,11 +247,11 @@ namespace CMSPresenter
                 if (tag.People().Count() != 1)
                     return false;
                 fam = tag.People().First().Family;
-                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == 10).Count();
+                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
                 if (name.StartsWith("New"))
                     name = fam.People.First().LastName;
             }
-            else // new couple or single family
+            else // new single family
             {
                 fam = new Family();
                 DbUtil.Db.Families.InsertOnSubmit(fam);
@@ -267,32 +266,20 @@ namespace CMSPresenter
                 }
             }
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
-            Person p1, p2 = null;
-            if (famtype == AddFamilyType.Couple)
-            {
-                p1 = Person.Add(fam, 10, tag, name, dob, true, 1, OriginId, EntryPointId); // male
-                p1.MaritalStatusId = (int)Person.MaritalStatusCode.Married;
-                p2 = Person.Add(fam, 10, tag, name, dob, true, 2, OriginId, EntryPointId); // female
-                p2.MaritalStatusId = (int)Person.MaritalStatusCode.Married; ;
-                p2.CampusId = CampusId;
-            }
-            else
-            {
-                p1 = Person.Add(fam, 10, tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
-                var age = p1.GetAge();
-                p1.MaritalStatusId = MaritalStatusId;
-                if (PrimaryCount == 2)
-                    p1.PositionInFamilyId = 20;
-                if (age < 18 && p1.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                    p1.PositionInFamilyId = 30;
-            }
+            Person p1;
+            p1 = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult, 
+                tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
+            var age = p1.GetAge();
+            p1.MaritalStatusId = MaritalStatusId;
+            if (PrimaryCount == 2)
+                p1.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+            if (age < 18 && p1.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
+                p1.PositionInFamilyId = (int)Family.PositionInFamily.Child;
             if (famtype == AddFamilyType.ExistingFamily)
                 p1.CellPhone = phone.GetDigits();
             p1.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p1.PeopleId);
-            if (p2 != null)
-                Task.AddNewPerson(Util.UserPeopleId.Value, p2.PeopleId);
             return true;
         }
         public static bool CheckFamilySelected(string selectedValue)

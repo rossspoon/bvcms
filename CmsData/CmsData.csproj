@@ -206,7 +206,6 @@
     <Compile Include="Generated\Application.cs" />
     <Compile Include="Generated\ApplicationPrereq.cs" />
     <Compile Include="Generated\AttendType.cs" />
-    <Compile Include="Generated\BFCStatus.cs" />
     <Compile Include="Generated\BundleDetail.cs" />
     <Compile Include="Generated\BundleHeader.cs" />
     <Compile Include="Generated\ContactPreference.cs" />

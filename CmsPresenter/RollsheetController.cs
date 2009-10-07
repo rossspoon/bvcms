@@ -95,7 +95,9 @@ namespace CMSPresenter
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == Util.CurrentTagOwnerId),
                         NameParent1 = f.HohName,
-                        NameParent2 = p.Family.People.Where(x => x.FamilyPosition.Id == 10 & x.PeopleId != f.HeadOfHouseholdId).FirstOrDefault().Name,
+                        NameParent2 = p.Family.People.Where(x => 
+                            x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult 
+                            && x.PeopleId != f.HeadOfHouseholdId).FirstOrDefault().Name,
                     };
 
 

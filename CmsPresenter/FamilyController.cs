@@ -66,8 +66,9 @@ namespace CMSPresenter
          public void UpdateFamilyMember(int PeopleId, int PositionInFamilyId)
          {
              var p = DbUtil.Db.People.Single(a => a.PeopleId == PeopleId);
-             var c = DbUtil.Db.People.Count(a => a.FamilyId == p.FamilyId && a.PositionInFamilyId == 10);
-             if (!(PositionInFamilyId == 10 && c > 1))
+             var c = DbUtil.Db.People.Count(a => a.FamilyId == p.FamilyId 
+                 && a.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult);
+             if (!(PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult && c > 1))
              {
                 p.PositionInFamilyId = PositionInFamilyId;
                 DbUtil.Db.SubmitChanges();

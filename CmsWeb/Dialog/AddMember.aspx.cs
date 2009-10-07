@@ -36,7 +36,7 @@ namespace CMSWeb.Dialog
             {
                 PersonSearchDialogController.ResetSearchTags();
                 EnrollmentDate.Text = Util.Now.Date.ToShortDateString();
-                MemberType.SelectedValue = "220";
+                MemberType.SelectedValue = ((int)OrganizationMember.MemberTypeCode.Member).ToString();
             }
             Parameters.SearchButtonClicked += new EventHandler(SearchButton_Click);
             Parameters.ClearButtonClicked += new EventHandler(Parameters_ClearButtonClicked);

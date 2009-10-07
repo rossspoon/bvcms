@@ -37,7 +37,7 @@ namespace CMSWeb.Dialog
             GroupMode = GroupId.HasValue;
             if (!IsPostBack)
             {
-                MemberType.SelectedValue = "220";
+                MemberType.SelectedValue = ((int)OrganizationMember.MemberTypeCode.Member).ToString();
                 PersonSearchDialogController.ResetSearchTags();
             }
             SetMembers();

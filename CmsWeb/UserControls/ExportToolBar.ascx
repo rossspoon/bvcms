@@ -19,15 +19,15 @@
         Export</a>
         <ul>
             <li>
-                <asp:HyperLink ID="LabelsLink" ToolTip="Labels (pdf for label printer)" runat="server">
+                <asp:HyperLink ID="LabelsLink" class="ChooseLabelType" ToolTip="Labels (pdf for label printer)" runat="server">
                     <asp:Image ID="Image14" ImageUrl="~/images/tags.png" runat="server" />
                     Labels</asp:HyperLink></li>
             <li>
-                <asp:HyperLink ID="ExcelLink" ToolTip="For mail merge" runat="server">
+                <asp:HyperLink ID="ExcelLink" class="ChooseLabelType" ToolTip="For mail merge" runat="server">
                     <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel</asp:HyperLink></li>
             <li>
-                <asp:HyperLink ID="BulkMailLink" ToolTip="Comma separated values text file, opens in excel, for bulk mailings"
+                <asp:HyperLink ID="BulkMailLink" class="ChooseLabelType" ToolTip="Comma separated values text file, opens in excel, for bulk mailings"
                     runat="server">
                     <asp:Image ID="Image7" ImageUrl="~/images/Excel.png" runat="server" />
                     Bulk (csv)</asp:HyperLink></li>
@@ -125,35 +125,3 @@
         </ul>
     </li>
 </ul>
-<asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" Style="display: none;
-    width: 350px; padding: 10px">
-    <table>
-        <tr>
-            <td style="margin: 3px; border: solid thin black">
-                <asp:RadioButtonList ID="Option" runat="server">
-                    <asp:ListItem ToolTip="Addressed to individuals" Value="Individual" Selected="True">Individual</asp:ListItem>
-                    <asp:ListItem ToolTip="Addressed as a family when there are children" Value="Family">Family</asp:ListItem>
-                    <asp:ListItem ToolTip="Addressed to a couple, if both are in selection" Value="CouplesBoth">Couples (both)</asp:ListItem>
-                    <asp:ListItem ToolTip="Addressed to a couple, even if both are not in selection"
-                        Value="CouplesEither">Couples (either)</asp:ListItem>
-                    <asp:ListItem ToolTip="Addressed to parents or parent" Value="ParentsOf">Parents Of</asp:ListItem>
-                </asp:RadioButtonList>
-            </td>
-            <td>
-                <asp:CheckBox ID="UseTitle" runat="server" Text="Use Titles" /><br />
-                <asp:CheckBox ID="WebView" runat="server" Text="Web View (experimental)" />
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <asp:Button ID="cmdOK" OnClientClick="TBExportGo()" runat="server" Text="OK" />
-                <asp:Button ID="cmdClose" runat="server" Text="Cancel" />
-            </td>
-        </tr>
-    </table>
-</asp:Panel>
-<asp:Button runat="server" ID="hiddenTargetControlForModalPopup" Style="display: none" />
-<cc1:ModalPopupExtender ID="Panel1_ModalPopupExtender" runat="server" Enabled="True"
-    TargetControlID="hiddenTargetControlForModalPopup" BackgroundCssClass="modalBackground"
-    PopupControlID="Panel1" CancelControlID="cmdClose" OkControlID="cmdOK">
-</cc1:ModalPopupExtender>

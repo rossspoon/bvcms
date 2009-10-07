@@ -20,8 +20,10 @@ namespace CMSWeb
             var useweb = Request.QueryString["web"];
 
             if (useweb != "true")
+            {
                 r.ContentType = "application/vnd.ms-excel";
-            r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
+                r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
+            }
             string header =
 @"<html xmlns:x=""urn:schemas-microsoft-com:office:excel"">
 <head>

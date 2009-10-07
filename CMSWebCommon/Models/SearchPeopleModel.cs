@@ -304,14 +304,15 @@ namespace CMSWebCommon.Models
                     return null;
                 if (p.PositionInFamilyId == 0)
                 {
-                    var cnt = p.Family.People.Where(c => c.PositionInFamilyId == 10).Count();
+                    var cnt = p.Family.People.Where(c => 
+                        c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
                     if (cnt < 2) // room for primary adult?
-                        p.PositionInFamilyId = 10;
+                        p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
                     else
-                        p.PositionInFamilyId = 20;
+                        p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
                 }
             }
-            else // new couple or single family
+            else // new single family
             {
                 p.Family = new Family();
                 p.Family.HomePhone = Communication.GetDigits();
@@ -324,7 +325,7 @@ namespace CMSWebCommon.Models
                     p.Family.ZipCode = m.Groups["zip"].Value;
                 }
                 if (p.PositionInFamilyId == 0)
-                    p.PositionInFamilyId = 10;
+                    p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             }
             string First, Last;
             NameSplit(Name, out First, out Last);
@@ -334,7 +335,7 @@ namespace CMSWebCommon.Models
             if (p.GenderId == 99)
                 p.GenderId = 0;
 
-            p.MemberStatusId = 50; // JustAdded
+            p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
             var tag = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
             tag.PersonTags.Add(new TagPerson { Person = p });
             p.FixTitle();
