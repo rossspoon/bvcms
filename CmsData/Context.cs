@@ -445,7 +445,9 @@ namespace CmsData
             var cp = HttpContext.Current.Session["pref-" + pref];
             if (cp != null)
                 return cp.ToString();
-            var p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
+            Preference p = null;
+            if(CurrentUser != null)
+                p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
             return p != null ? p.ValueX : def;
         }
         public void SetUserPreference(string pref, object value)

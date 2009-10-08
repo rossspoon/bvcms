@@ -43,10 +43,13 @@ namespace CMSRegCustom.Models
         {
             get
             {
+                var orgid = DbUtil.Settings("MOBSOrgId", "0").ToInt();
+                if (orgid == 0)
+                    orgid = DbUtil.Db.Organizations.Where(o => o.OrganizationName.Contains("MOBS")).Select(o => o.OrganizationId).Single();
                 if (_meeting == null)
                 {
                     var q = from m in DbUtil.Db.Meetings
-                            where m.Organization.OrganizationName.Contains("MOBS")
+                            where m.Organization.OrganizationId == orgid
                             where m.MeetingDate > DateTime.Now.AddHours(6)
                             orderby m.MeetingDate
                             select m;
@@ -84,11 +87,11 @@ namespace CMSRegCustom.Models
             get
             {
                 if (meeting == null)
-                    return "No MOBS Events upcoming";
+                    return "No Events upcoming";
                 else if (filled)
-                    return "MOBS Event is Filled, Sorry";
+                    return "Event is Filled, Sorry";
                 else
-                    return "Register for MOBS Event on {0}".Fmt(MeetingTime);
+                    return "Register for {0} Event on {1}".Fmt(meeting.Organization.OrganizationName, MeetingTime);
             }
         }
         internal MOBSReg registration;

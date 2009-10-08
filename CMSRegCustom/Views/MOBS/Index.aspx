@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSRegCustom.Models.MOBSModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>MOBS Event Registration</title>
+    <title>Event Registration</title>
     <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 </asp:Content>
 

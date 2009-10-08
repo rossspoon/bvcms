@@ -51,7 +51,7 @@ namespace CmsData
                             orderby d.Division.Name
                             select d.Division.Name;
                     foreach (var name in q)
-                        sb.Append(name + ";");
+                        sb.Append(name + ",");
                     if (sb.Length > 0)
                         sb.Remove(sb.Length - 1, 1);
                     _TagString = sb.ToString();
@@ -60,7 +60,7 @@ namespace CmsData
             }
             set
             {
-                var a = value.Split(';');
+                var a = value.Split(',');
                 var qdelete = from d in DivOrgs
                               where !a.Contains(d.Division.Name)
                               select d;
@@ -109,22 +109,6 @@ namespace CmsData
             return false;
         }
 
-        public List<string> TagPickList()
-        {
-            var q1 = from d in Db.DivOrgs
-                      where d.OrgId == OrganizationId
-                      orderby d.Division.Name
-                      select d.Division.Name;
-            var q2 = from p in Db.Programs
-                      from d in p.Divisions
-                      where !q1.Contains(d.Name)
-                      orderby d.Name
-                      select d.Name;
-                      
-            var list = q1.ToList();
-            list.AddRange(q2);
-            return list;
-        }
         public bool PurgeOrg()
         {
             try

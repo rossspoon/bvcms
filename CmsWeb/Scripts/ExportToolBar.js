@@ -1,12 +1,6 @@
 ﻿$(document).ready(function() {
-    $(document).ready(function() {
-        $("ul.sf-menu").supersubs({
-            minWidth: 8,
-            maxWidth: 27,
-            extraWidth: 1,
-            autoArrows: false
-        }).superfish();
-        $("ul.sf-tab").superfish();
+    $("ul.sf-tab").superfish({
+        autoArrows: false
     });
     $("#ChooseLabelType").dialog({
         overlay: { background: "#000", opacity: 0.3 },
@@ -28,24 +22,6 @@
         });
         return false;
     });
-}); 
+});
 
-function EnterSubmit(e, myform) {
-    var key = window.event ? e.keyCode : e.which;
-    if (key == 13) {
-        var s = $get('<%=SearchText.ClientID%>');
-        if (s.value != "Quick Search")
-            window.location = '<%=ResolveUrl("~/Search.aspx?name=")%>' + s.value;
-    }
-    else
-        return true;
-}
-function TBNewWindow(url)
-{
-    window.open(url, "_blank");
-}
-function TBNavWindow(url)
-{
-    window.open(url, "_self");
-}
 

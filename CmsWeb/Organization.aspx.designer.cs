@@ -50,13 +50,22 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropDown DivisionId;
         
         /// <summary>
-        /// TagString control.
+        /// MultiDivisions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropCheck TagString;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow MultiDivisions;
+        
+        /// <summary>
+        /// TagStringOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater TagStringOptions;
         
         /// <summary>
         /// LeaderName control.

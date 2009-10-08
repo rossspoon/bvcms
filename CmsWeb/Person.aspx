@@ -30,9 +30,9 @@
             decisiondt = $get('<%=DecisionTypeId.ClientID%>');
 
             $("#member-tab").tabs();
-            var $maintabs = $("#main-tab").tabs();
             $("#enrollment-tab").tabs();
             var $addrtabs = $("#address-tab").tabs();
+            var $maintabs = $("#main-tab").tabs();
 
             var t = $.cookie('maintab');
             if (t && t != "2") // exclude enrollment
@@ -295,8 +295,8 @@
     </div>
     <asp:TextBox ID="HiddenAddress" runat="server" Style="display: none" TextMode="MultiLine"
         Rows="5"></asp:TextBox>
-    <div id="main-tab">
-        <ul>
+    <div id="main-tab" class="ui-tabs">
+        <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
@@ -304,349 +304,340 @@
             <li><a href="#growth-tab"><span>Growth</span></a></li>
             <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
         </ul>
-        <div id="basic-tab" class="ui-tabs-hide">
-            <table>
-                <tr>
-                    <td valign="top">
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                    Goes By:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="Nickname" runat="server" BindingMember="Nickname" BindingMode="TwoWay"
-                                        BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Title:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDropDown ID="TitleCode" runat="server" BindingMember="TitleCode"
-                                        BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Code"
-                                        Width="150px" MakeDefault0="False" DataSourceID="ODSTitleCode" ChangedStatus="False">
-                                    </cc1:DisplayOrEditDropDown>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    First:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="FirstName" runat="server" BindingMember="FirstName" BindingMode="TwoWay"
-                                        BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Middle:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="MiddleName" runat="server" BindingMember="MiddleName"
-                                        BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Last:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="LastName" runat="server" BindingMember="LastName" BindingMode="TwoWay"
-                                        BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Suffix:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="SuffixCode" runat="server" BindingMember="SuffixCode"
-                                        BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Former:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="MaidenName" runat="server" BindingMember="MaidenName"
-                                        BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Gender:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDropDown ID="GenderId" runat="server" BindingMember="GenderId"
-                                        BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
-                                        MakeDefault0="False" Width="150px" DataSourceID="ODSGenderId" ChangedStatus="False">
-                                    </cc1:DisplayOrEditDropDown>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                    </td>
-                    <td valign="top">
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                    Home Phone:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditMaskedText ID="HomePhone" runat="server" BindingMember="HomePhone"
-                                        BindingMode="TwoWay" BindingSource="person.Family" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Cell Phone:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditMaskedText ID="CellPhone" runat="server" BindingMember="CellPhone"
-                                        BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Work Phone:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditMaskedText ID="WorkPhone" runat="server" BindingMember="WorkPhone"
-                                        BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Email:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="Email" runat="server" BindingMember="EmailAddress" BindingMode="TwoWay"
-                                        BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr id="trSchool" runat="server">
-                                <th runat="server">
-                                    School:
-                                </th>
-                                <td runat="server">
-                                    <cc1:DisplayOrEditText ID="SchoolOther" runat="server" BindingMode="TwoWay" BindingSource="person"
-                                        Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                    <cc2:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="SchoolOther"
-                                        ServiceMethod="GetSchoolCompletionList" BehaviorID="autoComplete4" CompletionSetCount="10"
-                                        MinimumPrefixLength="2" CompletionInterval="100" CompletionListCssClass="autocomplete_list"
-                                        CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlighted_listitem" />
-                                </td>
-                            </tr>
-                            <tr id="tr1" runat="server">
-                                <th id="Th1" runat="server">
-                                    Grade:
-                                </th>
-                                <td id="Td1" runat="server">
-                                    <cc1:DisplayOrEditText ID="Grade" runat="server" BindingMode="TwoWay" BindingSource="person"
-                                        Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr id="trEmployer" runat="server">
-                                <th runat="server">
-                                    Employer:
-                                </th>
-                                <td runat="server">
-                                    <cc1:DisplayOrEditText ID="EmployerOther" runat="server" BindingMode="TwoWay" BindingSource="person"
-                                        Width="135px" BindingMember="EmployerOther" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                    <cc2:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="EmployerOther"
-                                        ServiceMethod="GetEmployerCompletionList" BehaviorID="autoComplete3" CompletionSetCount="10"
-                                        MinimumPrefixLength="2" CompletionInterval="100" CompletionListCssClass="autocomplete_list"
-                                        CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlighted_listitem" />
-                                </td>
-                            </tr>
-                            <tr id="trOccupation" runat="server">
-                                <th runat="server">
-                                    Occupation:
-                                </th>
-                                <td runat="server">
-                                    <cc1:DisplayOrEditText ID="OccupationOther" runat="server" BindingMode="TwoWay" BindingSource="person"
-                                        Width="135px" BindingMember="OccupationOther" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                    </td>
-                    <td valign="top">
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                    Campus:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDropDown ID="CampusId" runat="server" BindingMode="TwoWay"
-                                        BindingSource="person" DataTextField="Value" DataValueField="Id" Width="150px"
-                                        DataSourceID="ODS_Campus"
-                                        MakeDefault0="True">
-                                    </cc1:DisplayOrEditDropDown>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Member Status:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDropDown ID="MemberStatusId0" runat="server" BindingMember="MemberStatusId"
-                                        BindingMode="OneWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
-                                        MakeDefault0="False" Width="150px" DataSourceID="ODSMemberStatusId" ChangedStatus="False"
-                                        EditRole="Membership">
-                                    </cc1:DisplayOrEditDropDown>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Joined:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDate ID="JoinDate0" runat="server" BindingMember="JoinDate" BindingMode="OneWay"
-                                        BindingSource="person" ChangedStatus="False" EditRole="Membership"></cc1:DisplayOrEditDate>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Marital Status:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDropDown ID="MaritalStatusId" runat="server" BindingMember="MaritalStatusId"
-                                        BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
-                                        MakeDefault0="False" Width="150px" DataSourceID="ODSMaritalStatusId" ChangedStatus="False">
-                                    </cc1:DisplayOrEditDropDown>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Spouse:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText ID="DisplayOrEditText" runat="server" BindingMember="SpouseName"
-                                        BindingMode="OneWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Wedding Date:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDate BindingMode="TwoWay" runat="server" ID="WeddingDate" BindingSource="person"
-                                        Width="135px"></cc1:DisplayOrEditDate>
-                                    <cc2:CalendarExtender ID="WeddingDate_CalendarExtender" runat="server" Enabled="True"
-                                        TargetControlID="WeddingDate">
-                                    </cc2:CalendarExtender>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Birthday:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditText BindingMode="TwoWay" runat="server" ID="DOB" BindingSource="person"
-                                        ToolTip="YYYY or MM or MM/DD or MM/DD/YY" BindingMember="DOB" ChangedStatus="False"
-                                        Width="135px"></cc1:DisplayOrEditText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Deceased:
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditDate ID="DeceasedDate3" BindingSource="person" BindingMember="DeceasedDate"
-                                        Width="135px" runat="server"></cc1:DisplayOrEditDate>
-                                    <cc2:CalendarExtender ID="DeceasedDate3_CalendarExtender" runat="server" Enabled="True"
-                                        TargetControlID="DeceasedDate3">
-                                    </cc2:CalendarExtender>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    Age:
-                                </th>
-                                <td>
-                                    <cc1:DisplayLabel ID="Age" runat="server" BindingSource="person" BindingMember="Age"
-                                        BindingMode="OneWay" ChangedStatus="False" />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                    </td>
-                    <td valign="top">
-                        <table class="Design2">
-                            <tr>
-                                <th>
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditCheckbox ID="DoNotCallFlag0" runat="server" BindingMember="DoNotCallFlag"
-                                        BindingSource="person" Text="Do Not Call" TextIfChecked="Do Not Call" BindingMode="TwoWay"
-                                        ChangedStatus="False" TextIfNotChecked="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditCheckbox ID="DoNoVisitFlag0" runat="server" BindingMember="DoNotVisitFlag"
-                                        BindingSource="person" Text="Do Not Visit" TextIfChecked="Do Not Visit" BindingMode="TwoWay"
-                                        ChangedStatus="False" TextIfNotChecked="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                </th>
-                                <td>
-                                    <cc1:DisplayOrEditCheckbox ID="DoNotMailFlag0" runat="server" BindingMember="DoNotMailFlag"
-                                        BindingSource="person" Text="Do Not Mail" TextIfChecked="Do Not Mail" BindingMode="TwoWay"
-                                        ChangedStatus="False" TextIfNotChecked="" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    &nbsp;
-                                </th>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+        <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
+            <div style="float:left">
+                <table class="Design2">
+                    <tr>
+                        <th>
+                            Goes By:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="Nickname" runat="server" BindingMember="Nickname" BindingMode="TwoWay"
+                                BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Title:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="TitleCode" runat="server" BindingMember="TitleCode"
+                                BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Code"
+                                Width="150px" MakeDefault0="False" DataSourceID="ODSTitleCode" ChangedStatus="False">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            First:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="FirstName" runat="server" BindingMember="FirstName" BindingMode="TwoWay"
+                                BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Middle:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="MiddleName" runat="server" BindingMember="MiddleName"
+                                BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Last:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="LastName" runat="server" BindingMember="LastName" BindingMode="TwoWay"
+                                BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Suffix:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="SuffixCode" runat="server" BindingMember="SuffixCode"
+                                BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Former:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="MaidenName" runat="server" BindingMember="MaidenName"
+                                BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Gender:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="GenderId" runat="server" BindingMember="GenderId"
+                                BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
+                                MakeDefault0="False" Width="150px" DataSourceID="ODSGenderId" ChangedStatus="False">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float:left">
+                <table class="Design2">
+                    <tr>
+                        <th>
+                            Home Phone:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditMaskedText ID="HomePhone" runat="server" BindingMember="HomePhone"
+                                BindingMode="TwoWay" BindingSource="person.Family" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Cell Phone:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditMaskedText ID="CellPhone" runat="server" BindingMember="CellPhone"
+                                BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Work Phone:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditMaskedText ID="WorkPhone" runat="server" BindingMember="WorkPhone"
+                                BindingMode="TwoWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditMaskedText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Email:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="Email" runat="server" BindingMember="EmailAddress" BindingMode="TwoWay"
+                                BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr id="trSchool" runat="server">
+                        <th runat="server">
+                            School:
+                        </th>
+                        <td runat="server">
+                            <cc1:DisplayOrEditText ID="SchoolOther" runat="server" BindingMode="TwoWay" BindingSource="person"
+                                Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                            <cc2:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="SchoolOther"
+                                ServiceMethod="GetSchoolCompletionList" BehaviorID="autoComplete4" CompletionSetCount="10"
+                                MinimumPrefixLength="2" CompletionInterval="100" CompletionListCssClass="autocomplete_list"
+                                CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlighted_listitem" />
+                        </td>
+                    </tr>
+                    <tr id="tr1" runat="server">
+                        <th id="Th1" runat="server">
+                            Grade:
+                        </th>
+                        <td id="Td1" runat="server">
+                            <cc1:DisplayOrEditText ID="Grade" runat="server" BindingMode="TwoWay" BindingSource="person"
+                                Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr id="trEmployer" runat="server">
+                        <th runat="server">
+                            Employer:
+                        </th>
+                        <td runat="server">
+                            <cc1:DisplayOrEditText ID="EmployerOther" runat="server" BindingMode="TwoWay" BindingSource="person"
+                                Width="135px" BindingMember="EmployerOther" ChangedStatus="False"></cc1:DisplayOrEditText>
+                            <cc2:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="EmployerOther"
+                                ServiceMethod="GetEmployerCompletionList" BehaviorID="autoComplete3" CompletionSetCount="10"
+                                MinimumPrefixLength="2" CompletionInterval="100" CompletionListCssClass="autocomplete_list"
+                                CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlighted_listitem" />
+                        </td>
+                    </tr>
+                    <tr id="trOccupation" runat="server">
+                        <th runat="server">
+                            Occupation:
+                        </th>
+                        <td runat="server">
+                            <cc1:DisplayOrEditText ID="OccupationOther" runat="server" BindingMode="TwoWay" BindingSource="person"
+                                Width="135px" BindingMember="OccupationOther" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float:left">
+                <table class="Design2">
+                    <tr>
+                        <th>
+                            Campus:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="CampusId" runat="server" BindingMode="TwoWay"
+                                BindingSource="person" DataTextField="Value" DataValueField="Id" Width="150px"
+                                DataSourceID="ODS_Campus"
+                                MakeDefault0="True">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Member Status:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="MemberStatusId0" runat="server" BindingMember="MemberStatusId"
+                                BindingMode="OneWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
+                                MakeDefault0="False" Width="150px" DataSourceID="ODSMemberStatusId" ChangedStatus="False"
+                                EditRole="Membership">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Joined:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDate ID="JoinDate0" runat="server" BindingMember="JoinDate" BindingMode="OneWay"
+                                BindingSource="person" ChangedStatus="False" EditRole="Membership"></cc1:DisplayOrEditDate>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Marital Status:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDropDown ID="MaritalStatusId" runat="server" BindingMember="MaritalStatusId"
+                                BindingMode="TwoWay" BindingSource="person" DataTextField="Value" DataValueField="Id"
+                                MakeDefault0="False" Width="150px" DataSourceID="ODSMaritalStatusId" ChangedStatus="False">
+                            </cc1:DisplayOrEditDropDown>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Spouse:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="DisplayOrEditText" runat="server" BindingMember="SpouseName"
+                                BindingMode="OneWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Wedding Date:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDate BindingMode="TwoWay" runat="server" ID="WeddingDate" BindingSource="person"
+                                Width="135px"></cc1:DisplayOrEditDate>
+                            <cc2:CalendarExtender ID="WeddingDate_CalendarExtender" runat="server" Enabled="True"
+                                TargetControlID="WeddingDate">
+                            </cc2:CalendarExtender>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Birthday:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText BindingMode="TwoWay" runat="server" ID="DOB" BindingSource="person"
+                                ToolTip="YYYY or MM or MM/DD or MM/DD/YY" BindingMember="DOB" ChangedStatus="False"
+                                Width="135px"></cc1:DisplayOrEditText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Deceased:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditDate ID="DeceasedDate3" BindingSource="person" BindingMember="DeceasedDate"
+                                Width="135px" runat="server"></cc1:DisplayOrEditDate>
+                            <cc2:CalendarExtender ID="DeceasedDate3_CalendarExtender" runat="server" Enabled="True"
+                                TargetControlID="DeceasedDate3">
+                            </cc2:CalendarExtender>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Age:
+                        </th>
+                        <td>
+                            <cc1:DisplayLabel ID="Age" runat="server" BindingSource="person" BindingMember="Age"
+                                BindingMode="OneWay" ChangedStatus="False" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float:left">
+                <table class="Design2">
+                    <tr>
+                        <th>
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditCheckbox ID="DoNotCallFlag0" runat="server" BindingMember="DoNotCallFlag"
+                                BindingSource="person" Text="Do Not Call" TextIfChecked="Do Not Call" BindingMode="TwoWay"
+                                ChangedStatus="False" TextIfNotChecked="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditCheckbox ID="DoNoVisitFlag0" runat="server" BindingMember="DoNotVisitFlag"
+                                BindingSource="person" Text="Do Not Visit" TextIfChecked="Do Not Visit" BindingMode="TwoWay"
+                                ChangedStatus="False" TextIfNotChecked="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditCheckbox ID="DoNotMailFlag0" runat="server" BindingMember="DoNotMailFlag"
+                                BindingSource="person" Text="Do Not Mail" TextIfChecked="Do Not Mail" BindingMode="TwoWay"
+                                ChangedStatus="False" TextIfNotChecked="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            &nbsp;
+                        </th>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear:both"></div>
         </div>
-        <div id="address-tab" class="ui-tabs-hide ui-tabs">
-            <ul>
+        <div id="address-tab" class="ui-tabs-hide ui-tabs-panel">
+            <ul class="ui-tabs-nav">
                 <li><a href="#personal1-tab"><span>Personal</span></a></li>
                 <li><a href="#personal2-tab"><span>Personal Alternate</span></a></li>
                 <li><a href="#family1-tab"><span>Family</span></a></li>
                 <li><a href="#family2-tab"><span>Family Alternate</span></a></li>
             </ul>
-            <div id="personal1-tab" class="ui-tabs-hide">
+            <div id="personal1-tab" class="ui-tabs-hide ui-tabs-panel">
                 <uc1:address ID="PersonPrimaryAddr" runat="server" AddressType="Personal" />
             </div>
-            <div id="personal2-tab" class="ui-tabs-hide">
+            <div id="personal2-tab" class="ui-tabs-hide ui-tabs-panel">
                 <uc1:address ID="PersonAltAddr" runat="server" AddressType="PersonalAlternate" />
             </div>
-            <div id="family1-tab" class="ui-tabs-hide">
+            <div id="family1-tab" class="ui-tabs-hide ui-tabs-panel">
                 <uc1:address ID="FamilyPrimaryAddr" runat="server" AddressType="Family" />
             </div>
-            <div id="family2-tab" class="ui-tabs-hide">
+            <div id="family2-tab" class="ui-tabs-hide ui-tabs-panel">
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="enrollment-tab" class="ui-tabs-hide ui-tabs">
-            <ul>
+        <div id="enrollment-tab" class="ui-tabs-hide ui-tabs-panel">
+            <ul class="ui-tabs-nav">
                 <li><a href="#current-tab"><span>Current</span></a></li>
                 <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
                 <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
             </ul>
-            <div id="current-tab" class="ui-tabs-hide">
+            <div id="current-tab" class="ui-tabs-hide ui-tabs-panel">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="EnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="EnrollData"
@@ -686,7 +677,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="previous-tab" class="ui-tabs-hide">
+            <div id="previous-tab" class="ui-tabs-hide ui-tabs-panel">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PrevEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PreviousEnrollData"
@@ -727,7 +718,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="pending-tab" class="ui-tabs-hide">
+            <div id="pending-tab" class="ui-tabs-hide ui-tabs-panel">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="PendingEnrollGrid" runat="server" AutoGenerateColumns="False" DataSourceID="PendingEnrollData"
@@ -758,7 +749,7 @@
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
-            <div id="attendance-tab" class="ui-tabs-hide">
+            <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:GridView ID="AttendGrid" runat="server" AllowPaging="True" SkinID="GridViewSkin"
@@ -788,12 +779,12 @@
                 </asp:UpdatePanel>
             </div>
         </div>
-        <div id="member-tab" class="ui-tabs-hide ui-tabs">
-            <ul>
+        <div id="member-tab" class="ui-tabs-hide ui-tabs-panel">
+            <ul class="ui-tabs-nav">
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
-            <div id="membersum-tab" class="ui-tabs-hide">
+            <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1110,7 +1101,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="membernotes-tab" class="ui-tabs-hide">
+            <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <table>
                     <tr>
                         <td valign="top">
@@ -1163,7 +1154,7 @@
                 </table>
             </div>
         </div>
-        <div id="growth-tab" class="ui-tabs-hide">
+        <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
             <table>
                 <tr>
                     <td valign="top" style="border-style: groove; border-width: thin;">
@@ -1337,7 +1328,7 @@
                 </tr>
             </table>
         </div>
-        <div id="volunteer-tab" class="ui-tabs-hide">
+        <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
             <table class="Design2" style="border-style: groove; border-width: thin;">
                 <tr>
                     <th>

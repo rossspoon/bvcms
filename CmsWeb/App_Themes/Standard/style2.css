@@ -199,16 +199,14 @@ a:hover
 }
 
 table.Design2 th {
-    border: solid 1px #EEEEEE;
+    /*border: solid 1px #EEEEEE;*/
     text-align: left;
     font-weight: lighter;
     color: #4B4B4B;
-    font-size: 85%;
+    /*font-size: 85%;*/
     background-color: #EFF3FB;
     empty-cells : show;
 }
-
-
 .modalBackground 
 {
     background-color:Gray;

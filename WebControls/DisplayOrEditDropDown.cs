@@ -65,7 +65,7 @@ namespace CustomControls
                 const string STR_style = "style";
                 if (Attributes[STR_style].HasValue())
                     writer.AddAttribute(HtmlTextWriterAttribute.Style, Attributes[STR_style]);
-                writer.RenderBeginTag(HtmlTextWriterTag.Label);
+                writer.RenderBeginTag(HtmlTextWriterTag.Span);
                 if (DisplayMode == DisplayModes.Code)
                     writer.Write(SelectedValue);
                 else

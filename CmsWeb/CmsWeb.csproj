@@ -1000,7 +1000,6 @@
     <Content Include="Content\jquery-ui-1.7.2.custom.css" />
     <Content Include="Content\jquery.contextMenu.css" />
     <Content Include="Content\jquery.tooltip.css" />
-    <Content Include="Content\jqueryMultiSelect.css" />
     <Content Include="Content\js\hoverIntent.js" />
     <Content Include="Content\js\jqModal.js" />
     <Content Include="Content\js\jquery-1.3.2.min.js" />
@@ -1027,7 +1026,6 @@
     <Content Include="Content\js\jquery.tooltip.min.js" />
     <Content Include="Content\js\jquery.validate.js" />
     <Content Include="Content\js\jquery.validate.pack.js" />
-    <Content Include="Content\js\jqueryMultiSelect.js" />
     <Content Include="Content\js\json.js" />
     <Content Include="Content\js\MicrosoftAjax.debug.js" />
     <Content Include="Content\js\MicrosoftAjax.js" />
@@ -1829,6 +1827,9 @@
     <Content Include="Config\ConnectionStrings.config" />
     <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\smtp.config" />
+    <Content Include="Content\dropdown_hover.gif" />
+    <Content Include="Content\jquery.multiSelect.css" />
+    <Content Include="Content\js\jquery.multiSelect.js" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
     <None Include="ckeditor\.htaccess" />

@@ -12,12 +12,13 @@ namespace CMSWeb.Reports
 {
     public partial class BFCAvgWeeklyAttendanceRpt : System.Web.UI.Page
     {
+        DateTime fdt, tdt;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
                 DbUtil.LogActivity("Viewing Weekly Attendance Rpt");
-            var fdt = DateTime.MinValue;
-            var tdt = DateTime.MinValue;
+            fdt = DateTime.MinValue;
+            tdt = DateTime.MinValue;
             if (IsPostBack)
             {
                 DateTime.TryParse(FromDate.Text, out fdt);
@@ -34,10 +35,21 @@ namespace CMSWeb.Reports
             }
             FromDate.Text = fdt.ToString("d");
             ToDate.Text = tdt.ToString("d");
+            if (User.IsInRole("Admin"))
+                TestButton.Visible = true;
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ListView1.DataBind();
+        }
+
+        protected void TestButton_Click(object sender, EventArgs e)
+        {
+            ListView1.DataBind();
+            var bfc = new CMSPresenter.BFCAttendSummaryController();
+            TestGrid.DataSource = bfc.CheckAverages(fdt, tdt);
+            TestGrid.DataBind();
+            TestGrid.Visible = true;
         }
     }
 }

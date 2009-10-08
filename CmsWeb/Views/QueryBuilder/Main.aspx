@@ -1,12 +1,12 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.QueryModel>" %>
 
 <asp:Content ID="indexHead" ContentPlaceHolderID="head" runat="server">
-    <link href="/Content/jqueryMultiSelect.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 <div>
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jqueryMultiSelect.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.contextMenu.js" type="text/javascript"></script>
     <script src="/Scripts/QueryBuilder.js" type="text/javascript"></script>
     <script src="/Scripts/ExportToolbar2.js" type="text/javascript"></script>

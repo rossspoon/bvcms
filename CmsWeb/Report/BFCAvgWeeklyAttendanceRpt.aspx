@@ -48,6 +48,9 @@
                 <td>
                     <asp:Button ID="btnSubmit" ToolTip="Press to run report" CausesValidation="true"
                         runat="server" Text="Run" CssClass="noPrint" ValidationGroup="vgDates" OnClick="btnSubmit_Click" />
+                    <asp:Button ID="TestButton" ToolTip="Press to run verification" CausesValidation="true"
+                        runat="server" Text="Run Test" CssClass="noPrint" 
+                        ValidationGroup="vgDates" onclick="TestButton_Click" />
                 </td>
             </tr>
         </table>
@@ -118,6 +121,7 @@
             </EmptyDataTemplate>
         </asp:ListView>
     </div>
+    <div><asp:DataGrid ID="TestGrid" runat="server"></asp:DataGrid></div>
     <asp:ObjectDataSource ID="dsBFCWeeklyAttendance" runat="server" SelectMethod="BFCAvgWeeklyAttendanceSummary"
         TypeName="CMSPresenter.BFCAttendSummaryController">
         <SelectParameters>

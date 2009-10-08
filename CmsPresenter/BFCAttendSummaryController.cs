@@ -134,7 +134,7 @@ namespace CMSPresenter
             //         };
             // all the matching meeting division/date/hour counts for the date range
             var q2 = from m in DbUtil.Db.Meetings
-                     let div = m.Organization.DivOrgs.First(t => t.Division.ProgId != MiscTags).Division
+                     let div = m.Organization.Division
                      where div.ProgId == dbUtilBFClassOrgTagId
                      where m.NumPresent > 0
                      where m.MeetingDate >= fromDate && m.MeetingDate < toDate.AddDays(1)
@@ -213,6 +213,25 @@ namespace CMSPresenter
                          };
             // all rows sorted
             return qRows.Union(qTotal).OrderBy(m => m.Order);
+        }
+        public IEnumerable CheckAverages(DateTime fromDate, DateTime toDate)
+        {
+            var q2 = from m in DbUtil.Db.Meetings
+                     let div = m.Organization.Division
+                     where div.ProgId == dbUtilBFClassOrgTagId
+                     where m.NumPresent > 0
+                     where m.MeetingDate >= fromDate && m.MeetingDate < toDate.AddDays(1)
+                     group m by new { div, m.MeetingDate } into g
+                     select new
+                     {
+                         SortOrder = g.Key.div.SortOrder ?? g.Key.div.Id,
+                         Name = g.Key.div.Name,
+                         Date = g.Key.MeetingDate.Value.Date.ToShortDateString(),
+                         Hour = g.Key.MeetingDate.Value.TimeOfDay.Hours,
+                         Minute = g.Key.MeetingDate.Value.TimeOfDay.Minutes,
+                         Count = g.Sum(m => m.NumPresent),
+                     };
+            return q2;
         }
     }
 }

@@ -92,9 +92,9 @@ m.person.Name, m.peopleid, m.MeetingTime));
             {
                 c = new Content();
                 c.Body = 
-@"<p>Hi {first},</p><p>Thank you for registering for a MOBS event on {date} at {time}.</p>
+@"<p>Hi {first},</p><p>Thank you for registering for a {description} event on {date} at {time}.</p>
 <p>You purchased {tickets} tickets for a total cost of {amount}</p>";
-                c.Title = "MOBS Event Registration";
+                c.Title = "Event Registration";
             }
             var p = m.person;
             c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
@@ -103,6 +103,7 @@ m.person.Name, m.peopleid, m.MeetingTime));
             c.Body = c.Body.Replace("{date}", m.meeting.MeetingDate.Value.ToShortDateString());
             c.Body = c.Body.Replace("{time}", m.meeting.MeetingDate.Value.ToShortTimeString());
             c.Body = c.Body.Replace("{when}", m.MeetingTime);
+            c.Body = c.Body.Replace("{description}", m.Description);
 
             Util.Email(DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress),
                  m.person.Name, m.registration.Email, c.Title, c.Body);

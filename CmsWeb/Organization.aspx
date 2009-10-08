@@ -8,9 +8,11 @@
 <%@ Register Src="UserControls/ExportToolBar.ascx" TagName="ExportToolBar" TagPrefix="uc1" %>
 <%@ Register Src="UserControls/VisitorGrid.ascx" TagName="VisitorGrid" TagPrefix="uc4" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+    <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             if ('<%=EditUpdateButton1.Editing?"true":"false"%>' == 'true') {
@@ -39,6 +41,7 @@
                 if (!$get('<%=MeetingGrid1.GridClientID%>'))
                     $get('<%=ShowMeetings.ClientID%>').click();
             });
+            $("#TagString").multiSelect();
         });
         function pageLoad(sender, args) {
             if (args.get_isPartialLoad()) {
@@ -112,14 +115,18 @@
                             </cc1:DisplayOrEditDropDown>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="MultiDivisions" runat="server">
                         <th>
                             Divisions:
                         </th>
                         <td>
-                            <cc1:DisplayOrEditDropCheck ID="TagString" runat="server" BindingMode="TwoWay" BindingSource="organization"
-                                BindingMember="TagString" Width="250px">
-                            </cc1:DisplayOrEditDropCheck>
+                        <select id="TagString" name="TagString" multiple="multiple" size="5">
+                        <asp:Repeater ID="TagStringOptions" runat="server">
+                        <ItemTemplate>
+                            <option <%# (bool)Eval("Selected") ? "selected=selected" : "" %> value='<%# Eval("Text") %>'><%# Eval("Text") %></option>
+                        </ItemTemplate>
+                        </asp:Repeater>
+				        </select>
                         </td>
                     </tr>
                     <tr>

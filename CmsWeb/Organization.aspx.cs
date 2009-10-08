@@ -16,6 +16,8 @@ using CmsData;
 using System.Text;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace CMSWeb
 {
@@ -56,11 +58,13 @@ namespace CMSWeb
             if (!Page.IsPostBack)
                 DbUtil.LogActivity("Viewing Organization ({0})".Fmt(organization.FullName));
 
-            if (TagString.Editing)
+            MultiDivisions.Visible = EditUpdateButton1.Editing;
+            if (MultiDivisions.Visible)
             {
-                TagString.DataSource = organization.TagPickList();
-                TagString.DataBindList();
+                TagStringOptions.DataSource = DivisionPickList(organization.OrganizationId);
+                TagStringOptions.DataBind();
             }
+
             if (Util.CurrentOrgId != organization.OrganizationId)
                 Util.CurrentGroupId = 0;
             Util.CurrentOrgId = organization.OrganizationId;
@@ -123,6 +127,7 @@ namespace CMSWeb
         {
             if (EditUpdateButton1.Updating)
             {
+                organization.TagString = Request.Form["TagString"];
                 DbUtil.Db.SubmitChanges();
                 var divorg = organization.DivOrgs.SingleOrDefault(d => d.DivId == organization.DivisionId);
                 if (divorg == null && organization.DivisionId.HasValue)
@@ -180,7 +185,7 @@ namespace CMSWeb
                 return;
             var mt = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingDate == dt
                     && m.OrganizationId == organization.OrganizationId);
-            
+
             if (mt != null)
                 return;
 
@@ -263,13 +268,13 @@ namespace CMSWeb
         protected void MakeNewGroup_Click(object sender, EventArgs e)
         {
             var Db = DbUtil.Db;
-            var group = Db.MemberTags.SingleOrDefault(g => 
+            var group = Db.MemberTags.SingleOrDefault(g =>
                 g.Name == GroupName.Text && g.OrgId == organization.OrganizationId);
             if (group == null) // must be a new group
             {
-                group = new MemberTag 
-                { 
-                    Name = GroupName.Text, 
+                group = new MemberTag
+                {
+                    Name = GroupName.Text,
                     OrgId = organization.OrganizationId
                 };
                 Db.MemberTags.InsertOnSubmit(group);
@@ -295,7 +300,7 @@ namespace CMSWeb
             if (groupid == 0)
                 return "";
             var Db = DbUtil.Db;
-            var member = Db.OrganizationMembers.SingleOrDefault(m => 
+            var member = Db.OrganizationMembers.SingleOrDefault(m =>
                 m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             var r = new ToggleTagReturn { ControlId = controlid };
             r.HasTag = member.ToggleGroup(groupid);
@@ -340,6 +345,21 @@ namespace CMSWeb
             if (v == null)
                 Util.CurrentGroupId = 0;
             GroupFilter.SelectedValue = Util.CurrentGroupId.ToString();
+        }
+        public List<SelectListItem> DivisionPickList(int OrganizationId)
+        {
+            var q1 = from d in DbUtil.Db.DivOrgs
+                     where d.OrgId == OrganizationId
+                     orderby d.Division.Name
+                     select d.Division.Name;
+            var q2 = from p in DbUtil.Db.Programs
+                     from d in p.Divisions
+                     where !q1.Contains(d.Name)
+                     orderby d.Name
+                     select d.Name;
+            var list = q1.Select(name => new SelectListItem { Text = name, Selected = true }).ToList();
+            list.AddRange(q2.Select(name => new SelectListItem { Text = name }).ToList());
+            return list;
         }
     }
 }
