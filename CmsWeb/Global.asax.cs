@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CmsData;
 using UtilityExtensions;
-using System.Configuration;
 using CMSWeb;
-using System.Web.Security;
-using System.Web.DynamicData;
-using System.Data.Linq.Mapping;
-using System.Collections;
-using System.Web.SessionState;
-using System.Xml.Linq;
 using System.Net.Mail;
 using System.Web.Configuration;
 using CMSPresenter;
@@ -88,9 +80,6 @@ namespace CMSWeb2
             }
             Util.SessionStarting = true;
         }
-        //protected void Application_BeginRequest(object sender, EventArgs e)
-        //{
-        //}
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)
@@ -101,19 +90,12 @@ namespace CMSWeb2
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var ex = Server.GetLastError();
-            var InDebug = false;
+            var debug = true;
 #if DEBUG
-            InDebug = true;
-#endif
-            if (InDebug)
-            {
-                Response.Write("<html><body><pre>\n");
-                Response.Write(ex.ToString());
-                Response.Write("</pre></body></html>\n");
-                Server.ClearError();
+            if(debug)
                 return;
-            }
+#endif
+            var ex = Server.GetLastError();
             var u = DbUtil.Db.CurrentUser;
             var smtp = new SmtpClient();
             var msg = new MailMessage();

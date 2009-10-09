@@ -68,28 +68,3 @@
         </ul>
     </li>
 </ul>
-<div id="ChooseLabelType" class="modalPopup" style="width: 400px; padding: 10px">
-    <table>
-        <tr>
-            <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
-                <%=Html.RadioButton("addressedto", "Individual", true, 
-                    new { title = "Addressed to individuals" })%> Individual<br />
-                <%=Html.RadioButton("addressedto", "Family",
-                    new { title = "Addressed as a family when there are children" })%> Family<br />
-                <%=Html.RadioButton("addressedto", "CouplesBoth", 
-                    new { title = "Addressed to a couple, if both are in selection" })%> Couples (both)<br />
-                <%=Html.RadioButton("addressedto", "CouplesEither", 
-                    new { title = "Addressed to a couple, if one or both are in selection" })%> Couples (either)<br />
-                <%=Html.RadioButton("addressedto", "ParentsOf", 
-                    new { title = "Addressed to parents or parent" })%> Parents Of
-            </td>
-            <td><%=Html.CheckBox("UseTitle") %> Use Titles<br />
-            <%=Html.CheckBox("WebView") %> Web View (experimental)</td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <input id="cmdOK" type="button" value="OK" />
-            </td>
-        </tr>
-    </table>
-</div>

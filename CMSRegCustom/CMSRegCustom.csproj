@@ -90,6 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Views\DiscipleBooks\Confirm.aspx" />
+    <Content Include="Views\DiscipleBooks\Index.aspx" />
+    <Content Include="Views\DiscipleBooks\Payment.aspx" />
+    <Content Include="Views\DiscipleBooks\Registrations.aspx" />
+    <Content Include="Views\DiscipleBooks\Unknown.aspx" />
     <Content Include="Views\DiscipleLife\Confirm.aspx" />
     <Content Include="Views\DiscipleLife\Index.aspx" />
     <Content Include="Views\LoveRespect\Confirm.aspx" />

@@ -1828,8 +1828,12 @@
     <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\smtp.config" />
     <Content Include="Content\dropdown_hover.gif" />
+    <Content Include="Content\fg.menu.css" />
     <Content Include="Content\jquery.multiSelect.css" />
+    <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />
+    <Content Include="Content\spinner_bar.gif" />
+    <Content Include="Content\Stylesheet1.css" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
     <None Include="ckeditor\.htaccess" />
@@ -1837,6 +1841,7 @@
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
+    <Content Include="index.htm" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
     <Content Include="Views\CheckIn\Multiple.aspx" />

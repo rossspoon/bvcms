@@ -32,7 +32,7 @@
 
     </table>
 
-    <% using (Html.BeginForm()) {%>
+    <% using (Html.BeginForm("Create", "UsersCanEmailFor")) {%>
 
         <fieldset>
             <legend>Fields</legend>

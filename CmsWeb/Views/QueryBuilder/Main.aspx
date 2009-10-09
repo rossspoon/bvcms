@@ -9,7 +9,6 @@
     <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.contextMenu.js" type="text/javascript"></script>
     <script src="/Scripts/QueryBuilder.js" type="text/javascript"></script>
-    <script src="/Scripts/ExportToolbar2.js" type="text/javascript"></script>
 </div>
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <h3 id="Description"><%=Model.Description %></h3>

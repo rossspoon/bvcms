@@ -14,6 +14,7 @@
         $("#Sort").val($(this).text());
         RefreshList();
     });
+    BindSearchPeople();
 });
 function RefreshList() {
     var q = $('#form').formSerialize2();

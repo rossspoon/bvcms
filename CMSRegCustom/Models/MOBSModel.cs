@@ -9,6 +9,7 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
+using System.Drawing;
 
 namespace CMSRegCustom.Models
 {
@@ -37,6 +38,24 @@ namespace CMSRegCustom.Models
         public string email { get; set; }
         public bool preferredEmail { get; set; }
         public string TransactionId { get; set; }
+        public string ServiceUOrgID
+        {
+            get
+            {
+                if ((string)HttpContext.Current.Session["test"] == "1")
+                    return DbUtil.Settings("ServiceUOrgIDTest", "0");
+                return DbUtil.Settings("ServiceUOrgID", "0");
+            }
+        }
+        public string ServiceUOrgAccountID
+        {
+            get
+            {
+                if ((string)HttpContext.Current.Session["test"] == "1")
+                    return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
+                return DbUtil.Settings("ServiceUOrgAccountID", "0");
+            }
+        }
 
         private Meeting _meeting;
         public Meeting meeting

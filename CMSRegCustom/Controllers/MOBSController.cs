@@ -13,8 +13,10 @@ namespace CMSRegCustom.Controllers
 {
     public class MOBSController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int? test)
         {
+            if (test.HasValue && test > 0)
+                Session["test"] = "1";
             var m = new MOBSModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -103,7 +105,7 @@ m.person.Name, m.peopleid, m.MeetingTime));
             c.Body = c.Body.Replace("{date}", m.meeting.MeetingDate.Value.ToShortDateString());
             c.Body = c.Body.Replace("{time}", m.meeting.MeetingDate.Value.ToShortTimeString());
             c.Body = c.Body.Replace("{when}", m.MeetingTime);
-            c.Body = c.Body.Replace("{description}", m.Description);
+            c.Body = c.Body.Replace("{description}", m.meeting.Organization.OrganizationName);
 
             Util.Email(DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress),
                  m.person.Name, m.registration.Email, c.Title, c.Body);

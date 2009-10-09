@@ -1,8 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Content.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="aboutTitle" ContentPlaceHolderID="TitleContent" runat="server">
-    <%=ViewData["page"]%>
-</asp:Content>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
 <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
