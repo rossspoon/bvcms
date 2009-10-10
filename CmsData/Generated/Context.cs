@@ -326,6 +326,14 @@ namespace CmsData
         partial void UpdateRssFeed(RssFeed instance);
         partial void DeleteRssFeed(RssFeed instance);
         
+        partial void InsertSaleItem(SaleItem instance);
+        partial void UpdateSaleItem(SaleItem instance);
+        partial void DeleteSaleItem(SaleItem instance);
+        
+        partial void InsertSaleTransaction(SaleTransaction instance);
+        partial void UpdateSaleTransaction(SaleTransaction instance);
+        partial void DeleteSaleTransaction(SaleTransaction instance);
+        
         partial void InsertSetting(Setting instance);
         partial void UpdateSetting(Setting instance);
         partial void DeleteSetting(Setting instance);
@@ -934,6 +942,18 @@ namespace CmsData
 
 		}
 
+		public Table< SaleItem> SaleItems
+		{
+			get	{ return this.GetTable< SaleItem>(); }
+
+		}
+
+		public Table< SaleTransaction> SaleTransactions
+		{
+			get	{ return this.GetTable< SaleTransaction>(); }
+
+		}
+
 		public Table< Setting> Settings
 		{
 			get	{ return this.GetTable< Setting>(); }
@@ -1264,18 +1284,6 @@ namespace CmsData
     #endregion
 	#region Scalar Functions
 		
-		[Function(Name="dbo.OneHeadOfHouseholdIsMember", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? OneHeadOfHouseholdIsMember(
-            [Parameter(Name = "fid", DbType="int")] int? fid
-            )
-		{
-			return ((Boolean)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                fid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.AttendStr_3", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string AttendStr3(
@@ -1989,6 +1997,18 @@ namespace CmsData
 			return ((String)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.OneHeadOfHouseholdIsMember", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? OneHeadOfHouseholdIsMember(
+            [Parameter(Name = "fid", DbType="int")] int? fid
+            )
+		{
+			return ((Boolean)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fid
                 ).ReturnValue));
 		}
 

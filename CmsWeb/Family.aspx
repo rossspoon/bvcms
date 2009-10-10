@@ -144,12 +144,12 @@
         </tr>
     </table>
     <div id="main-tab" class='ui-tabs'>
-        <ul>
+        <ul class="ui-tabs-nav">
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Address-tab"><span>Addresses</span></a></li>
             <li><a href="#Relations-tab"><span>Family Relations</span></a></li>
         </ul>
-        <div id="Members-tab" class="ui-tabs-hide">
+        <div id="Members-tab" class="ui-tabs-panel ui-tabs-hide">
             <table>
                 <tr>
                     <td>
@@ -229,7 +229,7 @@
                 </tr>
             </table>
         </div>
-        <div id="Address-tab" class="ui-tabs-hide ui-tabs">
+        <div id="Address-tab" class="ui-tabs-panel ui-tabs-hide">
             <ul>
                 <li><a href="#Family1-tab"><span>Family</span></a></li>
                 <li><a href="#Family2-tab"><span>Family Alternate</span></a></li>
@@ -241,7 +241,7 @@
                 <uc1:address ID="FamilyAltAddr" runat="server" AddressType="FamilyAlternate" />
             </div>
         </div>
-        <div id="Relations-tab" class="ui-tabs-hide">
+        <div id="Relations-tab" class="ui-tabs-panel ui-tabs-hide">
             <table>
                 <tr>
                     <td>

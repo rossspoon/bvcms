@@ -103,10 +103,15 @@ namespace CMSWeb.Controllers
             if (DateTime.Now.Subtract(m.VolInterest.Created.Value).TotalMinutes < 30)
             {
                 string body;
-                if (cva != null && cva.StatusId == 10)
-                    body = m.Opportunity.EmailYesCva;
+                if ((cva != null && cva.StatusId == 10) || !m.Opportunity.EmailNoCva.HasValue())
+                    body = m.Opportunity.EmailYesCva; // Yes, have CVA already
                 else
                     body = m.Opportunity.EmailNoCva;
+                var p = m.person;
+                body = body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+                body += "<p>You have indicated following interests: <pre>\n{0}\n</pre></p>".Fmt(
+                    m.PrepareSummaryText());
+
                 Util.Email(m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
                      m.Opportunity.Description, Util.SafeFormat(body));
                 return RedirectToAction("Confirm");

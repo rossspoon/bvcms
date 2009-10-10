@@ -103,5 +103,9 @@ namespace CMSWeb.Models
             if (interests == null)
                 ModelState.AddModelError("interests", "Must check at least one interest");
         }
+        public string PrepareSummaryText()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

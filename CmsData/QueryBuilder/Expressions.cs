@@ -746,6 +746,25 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression IsPendingMemberOf(
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                    (m.Pending ?? false) == true
+                    && (m.OrganizationId == org || org == 0)
+                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
+                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression InBFClass(
             ParameterExpression parm,
             CompareType op,

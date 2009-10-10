@@ -18,6 +18,12 @@
                 <col />
                 <col />
                 <tr><td colspan="3">Volunteer Interests for <%=Model.person.Name %></td></tr>
+                <% if (false && Model.Opportunity.ExtraQuestion.HasValue())
+                   { %>
+                <tr>
+                    <td colspan="3"><%=Model.Opportunity.ExtraQuestion %></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td><label for="interests">Interests</label></td>
                     <td>

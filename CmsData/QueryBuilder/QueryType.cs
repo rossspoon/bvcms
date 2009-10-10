@@ -67,6 +67,7 @@ namespace CmsData
         IsCurrentPerson,
         IsHeadOfHousehold,
         IsInactiveMemberOf,
+        IsPendingMemberOf,
         IsMemberOf,
         IsUser,
         InterestedInJoining,

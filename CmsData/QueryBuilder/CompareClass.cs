@@ -191,6 +191,13 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.IsPendingMemberOf:
+                    return Expressions.IsPendingMemberOf(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.InBFClass:
                     return Expressions.InBFClass(parm,
                                CompType,

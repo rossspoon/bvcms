@@ -256,7 +256,7 @@
         OnClientClick="return confirm('Are you sure you want to delete?')" OnClick="DeleteOrg_Click" />
     <asp:CustomValidator ID="ValidateDelete" runat="server" Display="Dynamic" ErrorMessage="Too many relationships remain"></asp:CustomValidator>
     <div id="main-tab" class="ui-tabs">
-        <ul>
+        <ul class="ui-tabs-nav">
             <li><a href="#Members-tab"><span>Members</span></a></li>
             <li><a href="#Inactive-tab"><span>Inactive</span></a></li>
             <li><a href="#Pending-tab"><span>Pending</span></a></li>
@@ -265,7 +265,7 @@
             <li><a href="#Schedule-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
         </ul>
-        <div id="Members-tab" class="ui-tabs-hide">
+        <div id="Members-tab" class="ui-tabs-panel ui-tabs-hide">
             <uc1:ExportToolBar ID="MemberToolbar" runat="server" />
             <asp:DropDownList ID="GroupFilter" runat="server" DataSourceID="GroupData2" 
                 DataTextField="Name" DataValueField="Id"
@@ -274,19 +274,19 @@
             </asp:DropDownList>
             <uc2:MemberGrid ID="Members" runat="server" Select="Active" />
         </div>
-        <div id="Inactive-tab" class="ui-tabs-hide">
+        <div id="Inactive-tab" class="ui-tabs-panel ui-tabs-hide">
             <uc1:ExportToolBar ID="InactiveToolbar" runat="server" />
             <uc2:MemberGrid ID="Inactives" runat="server" Select="Inactive" />
         </div>
-        <div id="Pending-tab" class="ui-tabs-hide">
+        <div id="Pending-tab" class="ui-tabs-panel ui-tabs-hide">
             <uc1:ExportToolBar ID="PendingToolbar" runat="server" />
             <uc2:MemberGrid ID="Pendings" runat="server" Select="Pending" />
         </div>
-        <div id="Priors-tab" class="ui-tabs-hide">
+        <div id="Priors-tab" class="ui-tabs-panel ui-tabs-hide">
             <uc1:ExportToolBar ID="PriorsToolbar" runat="server" />
             <uc2:MemberGrid ID="Priors" runat="server" Select="Previous" />
         </div>
-        <div id="Visitors-tab" class="ui-tabs-hide">
+        <div id="Visitors-tab" class="ui-tabs-panel ui-tabs-hide">
             <uc1:ExportToolBar ID="VisitorToolbar" runat="server" />
             &nbsp;Visitor Lookback Days:
             <asp:TextBox ID="VisitLookbackDays" runat="server" Width="34px"></asp:TextBox>
@@ -299,7 +299,7 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <div id="Schedule-tab" class="ui-tabs-hide">
+        <div id="Schedule-tab" class="ui-tabs-panel ui-tabs-hide">
             <table class="Design2">
                 <tr>
                     <th>
@@ -464,10 +464,8 @@
                     </td>
                 </tr>
             </table>
-            <table class="Design2">
-            </table>
         </div>
-        <div id="Meetings-tab" class="ui-tabs-hide">
+        <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
             <asp:UpdatePanel ID="MeetingsPanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:LinkButton ID="NewMeetingLink" runat="server" OnClientClick="OpenNewMeeting();return false;"

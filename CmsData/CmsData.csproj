@@ -78,6 +78,8 @@
     <Compile Include="Generated\Campu.cs" />
     <Compile Include="Generated\LoveRespect.cs" />
     <Compile Include="Generated\MOBSReg.cs" />
+    <Compile Include="Generated\SaleItem.cs" />
+    <Compile Include="Generated\SaleTransaction.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

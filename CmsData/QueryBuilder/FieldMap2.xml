@@ -239,6 +239,9 @@
     <Field Name="MembOfOrgWithSched" Title="Member Of Org With Schedule" Type="Code" DisplayAs="MembOfOrgWithSched({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="Schedules" DataValueField="IdCode">
       Selects members of organizations which meet according to one or more specified schedules.
     </Field>
+    <Field Name="IsPendingMemberOf" Type="Bit" DisplayAs="IsPendingMember({0}, {1}, {2})" Params="Program,Division,Organization" DataValueField="IdCode">
+      Selects pending members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
+    </Field>
     <Field Name="IsInactiveMemberOf" Type="Bit" DisplayAs="IsInactiveMember({0}, {1}, {2})" Params="Program,Division,Organization" DataValueField="IdCode">
       Selects inactive members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
     </Field>

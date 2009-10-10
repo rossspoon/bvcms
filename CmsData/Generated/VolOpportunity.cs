@@ -31,6 +31,12 @@ namespace CmsData
 		
 		private string _ExtraQuestion;
 		
+		private string _ExtraInstructions;
+		
+		private int? _MaxChecks;
+		
+		private string _HelpMessage;
+		
    		
    		private EntitySet< VolInterest> _VolInterests;
 		
@@ -64,6 +70,15 @@ namespace CmsData
 		
 		partial void OnExtraQuestionChanging(string value);
 		partial void OnExtraQuestionChanged();
+		
+		partial void OnExtraInstructionsChanging(string value);
+		partial void OnExtraInstructionsChanged();
+		
+		partial void OnMaxChecksChanging(int? value);
+		partial void OnMaxChecksChanged();
+		
+		partial void OnHelpMessageChanging(string value);
+		partial void OnHelpMessageChanged();
 		
     #endregion
 		public VolOpportunity()
@@ -227,6 +242,72 @@ namespace CmsData
 					this._ExtraQuestion = value;
 					this.SendPropertyChanged("ExtraQuestion");
 					this.OnExtraQuestionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraInstructions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraInstructions", DbType="varchar(200)")]
+		public string ExtraInstructions
+		{
+			get { return this._ExtraInstructions; }
+
+			set
+			{
+				if (this._ExtraInstructions != value)
+				{
+				
+                    this.OnExtraInstructionsChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraInstructions = value;
+					this.SendPropertyChanged("ExtraInstructions");
+					this.OnExtraInstructionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MaxChecks", UpdateCheck=UpdateCheck.Never, Storage="_MaxChecks", DbType="int")]
+		public int? MaxChecks
+		{
+			get { return this._MaxChecks; }
+
+			set
+			{
+				if (this._MaxChecks != value)
+				{
+				
+                    this.OnMaxChecksChanging(value);
+					this.SendPropertyChanging();
+					this._MaxChecks = value;
+					this.SendPropertyChanged("MaxChecks");
+					this.OnMaxChecksChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="HelpMessage", UpdateCheck=UpdateCheck.Never, Storage="_HelpMessage", DbType="varchar(80)")]
+		public string HelpMessage
+		{
+			get { return this._HelpMessage; }
+
+			set
+			{
+				if (this._HelpMessage != value)
+				{
+				
+                    this.OnHelpMessageChanging(value);
+					this.SendPropertyChanging();
+					this._HelpMessage = value;
+					this.SendPropertyChanged("HelpMessage");
+					this.OnHelpMessageChanged();
 				}
 
 			}
