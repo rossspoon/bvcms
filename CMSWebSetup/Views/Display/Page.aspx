@@ -1,12 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Content.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="aboutTitle" ContentPlaceHolderID="TitleContent" runat="server">
-    <%=ViewData["id"]%>
-</asp:Content>
-
-<asp:Content ID="Content4" ContentPlaceHolderID="HeaderLinks" runat="server">
-<%--    <% Html.RenderAction<CMSWebSetup.Controllers.DisplayController>(c => c.RsdLink()); %>
---%></asp:Content>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="blogbody">

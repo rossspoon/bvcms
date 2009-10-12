@@ -119,6 +119,7 @@
                 </tr>
                 </table>
             </fieldset>
+    <p><a href="/Register/Visit/<%=Session["campus"] %>">New Registration</a></p>
         </div>
     <% } %>
 </asp:Content>

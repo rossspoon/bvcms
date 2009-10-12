@@ -87,11 +87,6 @@ namespace CMSRegCustom.Models
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            if (first.StartsWith("p") && first.Substring(1).ToInt() > 0 && !last.HasValue())
-                return;
-
-            first = first.Trim();
-            last = last.Trim();
             if (OrgId == 0)
                 modelState.AddModelError("OrgId", "must select a class");
             if (!first.HasValue())

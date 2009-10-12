@@ -100,8 +100,8 @@ namespace CMSWeb.Controllers
 
             var cva = m.person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault();
             DbUtil.Db.SubmitChanges();
-            if (DateTime.Now.Subtract(m.VolInterest.Created.Value).TotalMinutes < 30)
-            {
+            //if (DateTime.Now.Subtract(m.VolInterest.Created.Value).TotalMinutes < 30)
+            //{
                 string body;
                 if ((cva != null && cva.StatusId == 10) || !m.Opportunity.EmailNoCva.HasValue())
                     body = m.Opportunity.EmailYesCva; // Yes, have CVA already
@@ -109,15 +109,16 @@ namespace CMSWeb.Controllers
                     body = m.Opportunity.EmailNoCva;
                 var p = m.person;
                 body = body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                body += "<p>You have indicated following interests: <pre>\n{0}\n</pre></p>".Fmt(
+                Util.SafeFormat(body);
+                body += "<p>You have indicated following interests:\n{0}</p>".Fmt(
                     m.PrepareSummaryText());
 
                 Util.Email(m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
-                     m.Opportunity.Description, Util.SafeFormat(body));
+                     m.Opportunity.Description, body);
                 return RedirectToAction("Confirm");
-            }
-            ViewData["saved"] = "Changes Saved";
-            return View(m);
+            //}
+            //ViewData["saved"] = "Changes Saved";
+            //return View(m);
         }
         public ActionResult Confirm()
         {

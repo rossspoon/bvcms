@@ -5,6 +5,11 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(function() {
+            $('a:first').focus();
+        });
+    </script>
 
     <h2>Church Database Registration Received</h2>
     <p>

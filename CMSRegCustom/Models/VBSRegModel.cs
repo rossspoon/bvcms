@@ -152,8 +152,6 @@ namespace CMSRegCustom.Models
         }
         public void ValidateModel(ModelStateDictionary ModelState)
         {
-            first = first.Trim();
-            lastname = lastname.Trim();
             if (!first.HasValue())
                 ModelState.AddModelError("first", "first name required");
             if (!lastname.HasValue())

@@ -81,6 +81,8 @@ namespace CmsData
 		
 		private int? _CampusId;
 		
+		private bool? _AllowNonCampusCheckIn;
+		
    		
    		private EntitySet< Organization> _ChildOrgs;
 		
@@ -221,6 +223,9 @@ namespace CmsData
 		
 		partial void OnCampusIdChanging(int? value);
 		partial void OnCampusIdChanged();
+		
+		partial void OnAllowNonCampusCheckInChanging(bool? value);
+		partial void OnAllowNonCampusCheckInChanged();
 		
     #endregion
 		public Organization()
@@ -987,6 +992,28 @@ namespace CmsData
 					this._CampusId = value;
 					this.SendPropertyChanged("CampusId");
 					this.OnCampusIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AllowNonCampusCheckIn", UpdateCheck=UpdateCheck.Never, Storage="_AllowNonCampusCheckIn", DbType="bit")]
+		public bool? AllowNonCampusCheckIn
+		{
+			get { return this._AllowNonCampusCheckIn; }
+
+			set
+			{
+				if (this._AllowNonCampusCheckIn != value)
+				{
+				
+                    this.OnAllowNonCampusCheckInChanging(value);
+					this.SendPropertyChanging();
+					this._AllowNonCampusCheckIn = value;
+					this.SendPropertyChanged("AllowNonCampusCheckIn");
+					this.OnAllowNonCampusCheckInChanged();
 				}
 
 			}

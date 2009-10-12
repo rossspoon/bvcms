@@ -9,8 +9,8 @@ using System.Web.Security;
 using System.Web.UI;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Net.Mail;
+using CMSPresenter;
 
 namespace CMSWeb.Controllers
 {
@@ -30,7 +30,7 @@ namespace CMSWeb.Controllers
         // This constructor is not used by the MVC framework but is instead provided for ease
         // of unit testing this type. See the comments at the end of this file for more
         // information.
-        public AccountController(IFormsAuthentication formsAuth, IMembershipService service)
+        public AccountController(IFormsAuthentication formsAuth, CmsData.IMembershipService service)
         {
             FormsAuth = formsAuth ?? new FormsAuthenticationService();
             MembershipService = service ?? new AccountMembershipService();
@@ -82,7 +82,7 @@ namespace CMSWeb.Controllers
         {
             var p = DbUtil.Db.People.Single(pe => pe.PeopleId == id);
             CMSMembershipProvider.provider.AdminOverride = true;
-            var newpassword = FetchPassword(new Random());
+            var newpassword = MembershipService.FetchPassword();
             var user = CMSMembershipProvider.provider.NewUser(
                 MembershipService.FetchUsername(p.FirstName, p.LastName),
                 newpassword,
@@ -277,7 +277,7 @@ The bvCMS Team</p>
             CMSMembershipProvider.provider.AdminOverride = true;
             var mu = CMSMembershipProvider.provider.GetUser(user.Username, false);
             mu.UnlockUser();
-            var newpassword = FetchPassword(new Random());
+            var newpassword = MembershipService.FetchPassword();
             mu.ChangePassword(mu.ResetPassword(), newpassword);
             CMSMembershipProvider.provider.AdminOverride = false;
 
@@ -296,18 +296,6 @@ The bvCMS Team</p>
 
             return View();
         }
-        private string FetchPassword(Random rnd)
-        {
-            var n = DbUtil.Db.Words.Select(w => w.WordX).Count();
-            var r1 = rnd.Next(1, n);
-            var r2 = rnd.Next(1, n);
-            var q = from w in DbUtil.Db.Words
-                    where w.N == r1 || w.N == r2
-                    select w.WordX;
-            var a = q.ToArray();
-            return a[0] + "." + a[1];
-        }
-
         [Authorize]
         public ActionResult ChangePassword()
         {
@@ -491,66 +479,5 @@ The bvCMS Team</p>
         {
             FormsAuthentication.SignOut();
         }
-    }
-
-    public interface IMembershipService
-    {
-        int MinPasswordLength { get; }
-
-        bool ValidateUser(string userName, string password);
-        MembershipCreateStatus CreateUser(string userName, string password, string email);
-        bool ChangePassword(string userName, string oldPassword, string newPassword);
-        string FetchUsername(string first, string last);
-    }
-
-    public class AccountMembershipService : IMembershipService
-    {
-        private MembershipProvider _provider;
-
-        public AccountMembershipService()
-            : this(null)
-        {
-        }
-
-        public AccountMembershipService(MembershipProvider provider)
-        {
-            _provider = provider ?? Membership.Provider;
-        }
-
-        public int MinPasswordLength
-        {
-            get
-            {
-                return _provider.MinRequiredPasswordLength;
-            }
-        }
-
-        public bool ValidateUser(string userName, string password)
-        {
-            return _provider.ValidateUser(userName, password);
-        }
-
-        public MembershipCreateStatus CreateUser(string userName, string password, string email)
-        {
-            MembershipCreateStatus status;
-            _provider.CreateUser(userName, password, email, null, null, true, null, out status);
-            return status;
-        }
-
-        public bool ChangePassword(string userName, string oldPassword, string newPassword)
-        {
-            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
-            return currentUser.ChangePassword(oldPassword, newPassword);
-        }
-        public string FetchUsername(string first, string last)
-        {
-            var username = first.ToLower() + last.ToLower()[0];
-            var uname = username;
-            var i = 1;
-            while (DbUtil.Db.Users.SingleOrDefault(u => u.Username == uname) != null)
-                uname = username + i++;
-            return uname;
-        }
-
     }
 }

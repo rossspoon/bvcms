@@ -72,8 +72,17 @@ namespace CMSWebSetup.Controllers
                 case "Question":
                     o.ExtraQuestion = value;
                     break;
+                case "Instructions":
+                    o.ExtraInstructions = value;
+                    break;
                 case "Email":
                     o.Email = value;
+                    break;
+                case "MaxChecks":
+                    if (value.HasValue())
+                        o.MaxChecks = value.ToInt();
+                    else
+                        o.MaxChecks = null;
                     break;
             }
             DbUtil.Db.SubmitChanges();

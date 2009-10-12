@@ -138,8 +138,6 @@
     <Compile Include="CodeValueController.cs" />
     <Compile Include="IQueryView.cs" />
     <Compile Include="ProspectController.cs" />
-    <Compile Include="Providers\CMSMembershipProvider.cs" />
-    <Compile Include="Providers\CMSRoleProvider.cs" />
     <Compile Include="QueryController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />

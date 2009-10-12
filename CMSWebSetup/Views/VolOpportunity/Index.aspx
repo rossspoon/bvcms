@@ -42,14 +42,17 @@
                 UrlKey
             </th>
             <th>
-                Email No Cva
+                Email Yes Cva
             </th>
             <th>
-                Email Yes Cva
+                Email No Cva
             </th>
             <th>
                 Extra Question
             </th>
+            <th>Instructions</th>
+            <th>Email</th>
+            <th>MaxChecks</th>
             <th></th>
             <th></th>
         </tr>
@@ -67,20 +70,28 @@
                     class='clickEdit'><%=item.UrlKey%></span>
             </td>
             <td>
-                <span id='<%="EmailNoCva." + item.Id %>' 
-                    class='clickEdit2'><%=item.EmailNoCva%></span>
-            </td>
-            <td>
                 <span id='<%="EmailYesCva." + item.Id %>' 
                     class='clickEdit2'><%=item.EmailYesCva%></span>
+            </td>
+            <td>
+                <span id='<%="EmailNoCva." + item.Id %>' 
+                    class='clickEdit2'><%=item.EmailNoCva%></span>
             </td>
             <td>
                 <span id='<%="Question." + item.Id %>' 
                     class='clickEdit'><%=item.ExtraQuestion%></span>
             </td>
             <td>
+                <span id='<%="Instructions." + item.Id %>' 
+                    class='clickEdit'><%=item.ExtraInstructions%></span>
+            </td>
+            <td>
                 <span id='<%="Email." + item.Id %>' 
                     class='clickEdit'><%=item.Email%></span>
+            </td>
+            <td>
+                <span id='<%="MaxChecks." + item.Id %>' 
+                    class='clickEdit'><%=item.MaxChecks%></span>
             </td>
             <td>
                 <a href="/VolOpportunity/Codes/<%=item.Id %>">Interest Codes</a>

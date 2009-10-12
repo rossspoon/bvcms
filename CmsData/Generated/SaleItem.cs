@@ -21,13 +21,21 @@ namespace CmsData
 		
 		private string _Description;
 		
-		private decimal? _Price;
+		private decimal _Price;
 		
 		private bool? _Available;
 		
 		private string _Url;
 		
+		private int? _MaxItems;
+		
+		private int? _DefaultItems;
+		
+		private string _Email;
+		
    		
+   		private EntitySet< SaleTransaction> _SaleTransactions;
+		
     	
 	#endregion
 	
@@ -42,7 +50,7 @@ namespace CmsData
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
 		
-		partial void OnPriceChanging(decimal? value);
+		partial void OnPriceChanging(decimal value);
 		partial void OnPriceChanged();
 		
 		partial void OnAvailableChanging(bool? value);
@@ -51,9 +59,20 @@ namespace CmsData
 		partial void OnUrlChanging(string value);
 		partial void OnUrlChanged();
 		
+		partial void OnMaxItemsChanging(int? value);
+		partial void OnMaxItemsChanged();
+		
+		partial void OnDefaultItemsChanging(int? value);
+		partial void OnDefaultItemsChanged();
+		
+		partial void OnEmailChanging(string value);
+		partial void OnEmailChanged();
+		
     #endregion
 		public SaleItem()
 		{
+			
+			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
 			
 			OnCreated();
@@ -106,8 +125,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Price", UpdateCheck=UpdateCheck.Never, Storage="_Price", DbType="money")]
-		public decimal? Price
+		[Column(Name="Price", UpdateCheck=UpdateCheck.Never, Storage="_Price", DbType="money NOT NULL")]
+		public decimal Price
 		{
 			get { return this._Price; }
 
@@ -150,7 +169,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="URL", UpdateCheck=UpdateCheck.Never, Storage="_Url", DbType="varchar(50)")]
+		[Column(Name="URL", UpdateCheck=UpdateCheck.Never, Storage="_Url", DbType="varchar(150)")]
 		public string Url
 		{
 			get { return this._Url; }
@@ -172,10 +191,86 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="MaxItems", UpdateCheck=UpdateCheck.Never, Storage="_MaxItems", DbType="int")]
+		public int? MaxItems
+		{
+			get { return this._MaxItems; }
+
+			set
+			{
+				if (this._MaxItems != value)
+				{
+				
+                    this.OnMaxItemsChanging(value);
+					this.SendPropertyChanging();
+					this._MaxItems = value;
+					this.SendPropertyChanged("MaxItems");
+					this.OnMaxItemsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DefaultItems", UpdateCheck=UpdateCheck.Never, Storage="_DefaultItems", DbType="int")]
+		public int? DefaultItems
+		{
+			get { return this._DefaultItems; }
+
+			set
+			{
+				if (this._DefaultItems != value)
+				{
+				
+                    this.OnDefaultItemsChanging(value);
+					this.SendPropertyChanging();
+					this._DefaultItems = value;
+					this.SendPropertyChanged("DefaultItems");
+					this.OnDefaultItemsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(50)")]
+		public string Email
+		{
+			get { return this._Email; }
+
+			set
+			{
+				if (this._Email != value)
+				{
+				
+                    this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_SaleTransaction_SaleItem", Storage="_SaleTransactions", OtherKey="ItemId")]
+   		public EntitySet< SaleTransaction> SaleTransactions
+   		{
+   		    get { return this._SaleTransactions; }
+
+			set	{ this._SaleTransactions.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -197,6 +292,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_SaleTransactions(SaleTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.SaleItem = this;
+		}
+
+		private void detach_SaleTransactions(SaleTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.SaleItem = null;
+		}
+
+		
 	}
 
 }

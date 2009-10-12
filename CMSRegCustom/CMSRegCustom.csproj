@@ -65,6 +65,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\MOBSController.cs" />
     <Compile Include="Controllers\RegCustomHomeController.cs" />
     <Compile Include="Controllers\DiscipleLifeController.cs" />
@@ -77,6 +78,7 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Models\SalesModel.cs" />
     <Compile Include="Models\DiscipleLifeModel.cs" />
     <Compile Include="Models\LoveRespectModel.cs" />
     <Compile Include="Models\MOBSModel.cs" />
@@ -90,11 +92,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="Views\DiscipleBooks\Confirm.aspx" />
-    <Content Include="Views\DiscipleBooks\Index.aspx" />
-    <Content Include="Views\DiscipleBooks\Payment.aspx" />
-    <Content Include="Views\DiscipleBooks\Registrations.aspx" />
-    <Content Include="Views\DiscipleBooks\Unknown.aspx" />
+    <Content Include="Views\Sales\Login.aspx" />
+    <Content Include="Views\Sales\Download.aspx" />
+    <Content Include="Views\Sales\Items.aspx" />
+    <Content Include="Views\Sales\Confirm.aspx" />
+    <Content Include="Views\Sales\Item.aspx" />
+    <Content Include="Views\Sales\Payment.aspx" />
+    <Content Include="Views\Sales\Transactions.aspx" />
+    <Content Include="Views\Sales\Unknown.aspx" />
     <Content Include="Views\DiscipleLife\Confirm.aspx" />
     <Content Include="Views\DiscipleLife\Index.aspx" />
     <Content Include="Views\LoveRespect\Confirm.aspx" />

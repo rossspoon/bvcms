@@ -348,6 +348,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        <cc1:DisplayOrEditCheckbox ID="AllowNonCampusCheckIn" runat="server" BindingSource="organization"
+                            Text="Non Campus Self Check-in Allowed" TextIfChecked="Non-Campus Check-in Allowed" BindingMode="TwoWay"
+                            TextIfNotChecked="Non-Campus Check-in Not Allowed" />
+                    </td>
+                </tr>
+                <tr>
                     <th>
                         Number of CheckIn Labels:
                     </th>

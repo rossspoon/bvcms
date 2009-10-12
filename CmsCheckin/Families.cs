@@ -35,7 +35,7 @@ namespace CmsCheckin
                 var ab = new Button();
                 ab.BackColor = SystemColors.ControlLight;
                 ab.Font = labfont;
-                ab.Location = new Point(130, 60 + (row * 50));
+                ab.Location = new Point(230, 100 + (row * 50));
                 ab.Tag = int.Parse(e.Attribute("id").Value);
                 ab.Size = new Size(400, 45);
                 ab.TextAlign = ContentAlignment.TopCenter;

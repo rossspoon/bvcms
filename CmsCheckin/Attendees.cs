@@ -40,7 +40,7 @@ namespace CmsCheckin
             if (x.Descendants("attendee").Count() == 0)
             {
                 var lab = new Label();
-                lab.Font = new Font("Verdana", 18F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+                lab.Font = labfont;
                 lab.Location = new Point(15, 200);
                 lab.AutoSize = true;
                 lab.Text = "Not Found";

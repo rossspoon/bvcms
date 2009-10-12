@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Security;
 using UtilityExtensions;
-using CMSPresenter;
+using CmsData;
 
 namespace CMSWeb
 {

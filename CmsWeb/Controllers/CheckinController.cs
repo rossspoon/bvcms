@@ -11,9 +11,6 @@ namespace CMSWeb.Controllers
 {
     public class CheckinController : Controller
     {
-        //
-        // GET: /Checkin/
-
         public ActionResult Match(string id, int? campus)
         {
             var ph = Util.GetDigits(id).PadLeft(10, '0');
@@ -106,17 +103,39 @@ namespace CMSWeb.Controllers
                      where p.FamilyId == id
                      where !pids.Contains(p.PeopleId)
                      select p;
-            foreach (var i in q4)
+            const string PleaseVisit = "Please visit Welcome Center";
+            var VisitorOrgName = PleaseVisit;
+            var VisitorOrgId = 0;
+            if (campus.HasValue)
+            {
+                var qv = from o in DbUtil.Db.Organizations
+                         where o.CampusId == campus
+                         where o.CanSelfCheckin == true
+                         where o.AllowNonCampusCheckIn == true
+                         select o;
+
+                var vo = qv.FirstOrDefault();
+                if (vo != null)
+                {
+                    VisitorOrgName = vo.OrganizationName;
+                    VisitorOrgId = vo.OrganizationId;
+                }
+            }
+            foreach (var p in q4)
+            {
+                bool oldervisitor = p.CampusId != campus && p.Age > 12;
                 list.Add(new Attendee
                 {
-                    Id = i.PeopleId,
-                    Name = i.Name,
-                    Birthday = Util.FormatBirthday(i.BirthYear, i.BirthMonth, i.BirthDay),
-                    Class = "Please visit Welcome Center",
-                    Age = i.Age ?? 0,
-                    Gender = i.Gender.Code,
+                    Id = p.PeopleId,
+                    Name = p.Name,
+                    Birthday = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                    Class = oldervisitor ? VisitorOrgName : PleaseVisit,
+                    OrgId = oldervisitor ? VisitorOrgId : 0,
+                    Age = p.Age ?? 0,
+                    Gender = p.Gender.Code,
                     NumLabels = 1
                 });
+            }
             var list2 = list.OrderByDescending(a => a.Age);
 
             return View("Family", list2);
@@ -168,6 +187,7 @@ namespace CMSWeb.Controllers
         public string Gender { get; set; }
         public int Age { get; set; }
         public int NumLabels { get; set; }
+        public int? CampusId { get; set; }
     }
     public class Family
     {

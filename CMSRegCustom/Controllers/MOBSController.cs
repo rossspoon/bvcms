@@ -44,7 +44,8 @@ namespace CMSRegCustom.Controllers
 
             var reg = DbUtil.Db.MOBSRegs.SingleOrDefault(r =>
                 r.PeopleId == m.person.PeopleId
-                && r.MeetingId == m.meeting.MeetingId);
+                && r.MeetingId == m.meeting.MeetingId
+                && r.TransactionId == null);
 
             if (reg == null)
             {
@@ -52,10 +53,10 @@ namespace CMSRegCustom.Controllers
                 {
                     PeopleId = m.person.PeopleId,
                     MeetingId = m.meeting.MeetingId,
-                    Created = DateTime.Now,
                 };
                 DbUtil.Db.MOBSRegs.InsertOnSubmit(reg);
             }
+            reg.Created = DateTime.Now;
             reg.Email = m.email;
             reg.NumTickets = m.tickets;
 

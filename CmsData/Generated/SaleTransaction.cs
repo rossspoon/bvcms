@@ -19,22 +19,32 @@ namespace CmsData
 		
 		private int _Id;
 		
-		private DateTime? _SaleDate;
+		private DateTime _SaleDate;
 		
-		private decimal? _Amount;
+		private decimal _Amount;
 		
 		private string _TransactionId;
 		
-		private int? _PeopleId;
+		private int _PeopleId;
 		
 		private string _Username;
 		
 		private string _Password;
 		
-		private int? _ItemId;
+		private int _ItemId;
+		
+		private int _Quantity;
+		
+		private string _EmailAddress;
+		
+		private string _ItemDescription;
 		
    		
     	
+		private EntityRef< Person> _Person;
+		
+		private EntityRef< SaleItem> _SaleItem;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -45,16 +55,16 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
-		partial void OnSaleDateChanging(DateTime? value);
+		partial void OnSaleDateChanging(DateTime value);
 		partial void OnSaleDateChanged();
 		
-		partial void OnAmountChanging(decimal? value);
+		partial void OnAmountChanging(decimal value);
 		partial void OnAmountChanged();
 		
 		partial void OnTransactionIdChanging(string value);
 		partial void OnTransactionIdChanged();
 		
-		partial void OnPeopleIdChanging(int? value);
+		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
 		
 		partial void OnUsernameChanging(string value);
@@ -63,13 +73,26 @@ namespace CmsData
 		partial void OnPasswordChanging(string value);
 		partial void OnPasswordChanged();
 		
-		partial void OnItemIdChanging(int? value);
+		partial void OnItemIdChanging(int value);
 		partial void OnItemIdChanged();
+		
+		partial void OnQuantityChanging(int value);
+		partial void OnQuantityChanged();
+		
+		partial void OnEmailAddressChanging(string value);
+		partial void OnEmailAddressChanged();
+		
+		partial void OnItemDescriptionChanging(string value);
+		partial void OnItemDescriptionChanged();
 		
     #endregion
 		public SaleTransaction()
 		{
 			
+			
+			this._Person = default(EntityRef< Person>); 
+			
+			this._SaleItem = default(EntityRef< SaleItem>); 
 			
 			OnCreated();
 		}
@@ -99,8 +122,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SaleDate", UpdateCheck=UpdateCheck.Never, Storage="_SaleDate", DbType="datetime")]
-		public DateTime? SaleDate
+		[Column(Name="SaleDate", UpdateCheck=UpdateCheck.Never, Storage="_SaleDate", DbType="datetime NOT NULL")]
+		public DateTime SaleDate
 		{
 			get { return this._SaleDate; }
 
@@ -121,8 +144,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Amount", UpdateCheck=UpdateCheck.Never, Storage="_Amount", DbType="money")]
-		public decimal? Amount
+		[Column(Name="Amount", UpdateCheck=UpdateCheck.Never, Storage="_Amount", DbType="money NOT NULL")]
+		public decimal Amount
 		{
 			get { return this._Amount; }
 
@@ -165,8 +188,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int")]
-		public int? PeopleId
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL")]
+		public int PeopleId
 		{
 			get { return this._PeopleId; }
 
@@ -174,6 +197,9 @@ namespace CmsData
 			{
 				if (this._PeopleId != value)
 				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
@@ -231,8 +257,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ItemId", UpdateCheck=UpdateCheck.Never, Storage="_ItemId", DbType="int")]
-		public int? ItemId
+		[Column(Name="ItemId", UpdateCheck=UpdateCheck.Never, Storage="_ItemId", DbType="int NOT NULL")]
+		public int ItemId
 		{
 			get { return this._ItemId; }
 
@@ -241,11 +267,80 @@ namespace CmsData
 				if (this._ItemId != value)
 				{
 				
+					if (this._SaleItem.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnItemIdChanging(value);
 					this.SendPropertyChanging();
 					this._ItemId = value;
 					this.SendPropertyChanged("ItemId");
 					this.OnItemIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Quantity", UpdateCheck=UpdateCheck.Never, Storage="_Quantity", DbType="int NOT NULL")]
+		public int Quantity
+		{
+			get { return this._Quantity; }
+
+			set
+			{
+				if (this._Quantity != value)
+				{
+				
+                    this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailAddress", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress", DbType="varchar(50) NOT NULL")]
+		public string EmailAddress
+		{
+			get { return this._EmailAddress; }
+
+			set
+			{
+				if (this._EmailAddress != value)
+				{
+				
+                    this.OnEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddress = value;
+					this.SendPropertyChanged("EmailAddress");
+					this.OnEmailAddressChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ItemDescription", UpdateCheck=UpdateCheck.Never, Storage="_ItemDescription", DbType="varchar(50) NOT NULL")]
+		public string ItemDescription
+		{
+			get { return this._ItemDescription; }
+
+			set
+			{
+				if (this._ItemDescription != value)
+				{
+				
+                    this.OnItemDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._ItemDescription = value;
+					this.SendPropertyChanged("ItemDescription");
+					this.OnItemDescriptionChanged();
 				}
 
 			}
@@ -261,6 +356,90 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_SaleTransaction_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.SaleTransactions.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.SaleTransactions.Add(this);
+						
+						this._PeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._PeopleId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_SaleTransaction_SaleItem", Storage="_SaleItem", ThisKey="ItemId", IsForeignKey=true)]
+		public SaleItem SaleItem
+		{
+			get { return this._SaleItem.Entity; }
+
+			set
+			{
+				SaleItem previousValue = this._SaleItem.Entity;
+				if (((previousValue != value) 
+							|| (this._SaleItem.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._SaleItem.Entity = null;
+						previousValue.SaleTransactions.Remove(this);
+					}
+
+					this._SaleItem.Entity = value;
+					if (value != null)
+					{
+						value.SaleTransactions.Add(this);
+						
+						this._ItemId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._ItemId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("SaleItem");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

@@ -194,11 +194,6 @@ namespace CMSWeb.Models
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            if (first.StartsWith("p") && first.Substring(1).ToInt() > 0 && !last.HasValue())
-                return;
-
-            first = first.Trim();
-            last = last.Trim();
             if (!first.HasValue())
                 modelState.AddModelError("first", "first name required");
             if (!last.HasValue())

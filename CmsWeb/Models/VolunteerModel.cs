@@ -83,8 +83,6 @@ namespace CMSWeb.Models
 
         public void ValidateModel(ModelStateDictionary ModelState)
         {
-            first = first.Trim();
-            lastname = lastname.Trim();
             if (!first.HasValue())
                 ModelState.AddModelError("first", "first name required");
             if (!lastname.HasValue())
@@ -102,10 +100,19 @@ namespace CMSWeb.Models
         {
             if (interests == null)
                 ModelState.AddModelError("interests", "Must check at least one interest");
+            else if (Opportunity.MaxChecks.HasValue && interests.Length > Opportunity.MaxChecks)
+                ModelState.AddModelError("interests", "Please check a maximum of {0} interests".Fmt(Opportunity.MaxChecks));
         }
         public string PrepareSummaryText()
         {
-            throw new NotImplementedException();
+            var q = from vi in VolInterest.VolInterestInterestCodes
+                    select vi.VolInterestCode.Description;
+            var sb = new StringBuilder("<blockquote>\n");
+            foreach (var i in q)
+                sb.AppendFormat("{0}</br>\n", i);
+            sb.Append("</blockquote>\n");
+            return sb.ToString();
+
         }
     }
 }

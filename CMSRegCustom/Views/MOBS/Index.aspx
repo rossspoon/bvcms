@@ -11,7 +11,7 @@
     <script type="text/javascript">
         $(function() {
             $("#zip").change(function() {
-                $.post('/MOBS/CityState/' + $(this).val(), null, function(ret) {
+                $.post('/RecReg/CityState/' + $(this).val(), null, function(ret) {
                     if (ret) {
                         $('#state').val(ret.state);
                         $('#city').val(ret.city);

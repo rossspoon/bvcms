@@ -270,6 +270,8 @@ namespace CmsData
 		
    		private EntitySet< RecReg> _RecRegs;
 		
+   		private EntitySet< SaleTransaction> _SaleTransactions;
+		
    		private EntitySet< TagShare> _TagShares;
 		
    		private EntitySet< TaskListOwner> _TaskListOwners;
@@ -709,6 +711,8 @@ namespace CmsData
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
+			
+			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -3472,6 +3476,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_SaleTransaction_People", Storage="_SaleTransactions", OtherKey="PeopleId")]
+   		public EntitySet< SaleTransaction> SaleTransactions
+   		{
+   		    get { return this._SaleTransactions; }
+
+			set	{ this._SaleTransactions.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_TagShare_People", Storage="_TagShares", OtherKey="PeopleId")]
    		public EntitySet< TagShare> TagShares
    		{
@@ -4333,6 +4347,19 @@ namespace CmsData
 		}
 
 		private void detach_RecRegs(RecReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_SaleTransactions(SaleTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_SaleTransactions(SaleTransaction entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

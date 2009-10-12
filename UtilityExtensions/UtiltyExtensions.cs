@@ -124,6 +124,8 @@ namespace UtilityExtensions
         }
         public static bool HasValue(this string s)
         {
+            if (s != null)
+                s = s.Trim();
             return !string.IsNullOrEmpty(s);
         }
         public static string Fmt(this string fmt, params object[] p)

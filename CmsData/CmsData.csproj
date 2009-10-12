@@ -73,6 +73,8 @@
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
     <Compile Include="AuditUtility.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="CMSMembershipProvider.cs" />
+    <Compile Include="CMSRoleProvider.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="Generated\Campu.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Generated\SaleItem.cs" />
     <Compile Include="Generated\SaleTransaction.cs" />
     <Compile Include="Generated\Word.cs" />
+    <Compile Include="MembershipService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
