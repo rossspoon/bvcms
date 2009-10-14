@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DiscData;
 using CustomControls;
+using UtilityExtensions;
 
 public partial class Verse_Default : System.Web.UI.Page
 {
@@ -11,7 +12,7 @@ public partial class Verse_Default : System.Web.UI.Page
     protected override void OnInit(EventArgs e)
     {
         Category.PostDataLoaded += new EventHandler(Category_PostDataLoaded);
-        user = Util.CurrentUser.Username;
+        user = DbUtil.Db.CurrentUser.Username;
         BindCategories();
         base.OnInit(e);
     }
@@ -62,7 +63,7 @@ public partial class Verse_Default : System.Web.UI.Page
 
     public bool IsOwner
     {
-        get { return cat.CreatedBy == Util.CurrentUser.UserId || user == "admin"; }
+        get { return cat.CreatedBy == DbUtil.Db.CurrentUser.UserId || user == "admin"; }
     }
 
     protected void Category_SelectedIndexChanged(object sender, EventArgs e)

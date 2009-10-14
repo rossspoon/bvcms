@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Security;
 using System.Linq;
 using System.Web.UI.WebControls;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -21,7 +22,7 @@ namespace BellevueTeachers
             }
             else
             {
-                var u = Util.CurrentUser;
+                var u = DbUtil.Db.CurrentUser;
                 Panel1.Visible = false;
                 var gc = Group.FetchUserGroups();
 

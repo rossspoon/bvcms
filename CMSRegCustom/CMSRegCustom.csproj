@@ -65,6 +65,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\GODisciplesController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\MOBSController.cs" />
     <Compile Include="Controllers\RegCustomHomeController.cs" />
@@ -78,6 +79,7 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Models\GODisciplesModel.cs" />
     <Compile Include="Models\SalesModel.cs" />
     <Compile Include="Models\DiscipleLifeModel.cs" />
     <Compile Include="Models\LoveRespectModel.cs" />
@@ -92,6 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Views\GODisciples\Confirm.aspx" />
+    <Content Include="Views\GODisciples\Signup.aspx" />
     <Content Include="Views\Sales\Login.aspx" />
     <Content Include="Views\Sales\Download.aspx" />
     <Content Include="Views\Sales\Items.aspx" />
@@ -138,6 +142,10 @@
     <ProjectReference Include="..\CMSWebCommon\CMSWebCommon.csproj">
       <Project>{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}</Project>
       <Name>CMSWebCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DisciplesData\DisciplesData.csproj">
+      <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
+      <Name>DisciplesData</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageData\ImageData.csproj">
       <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>

@@ -7,16 +7,17 @@ using System.Threading;
 using System.Linq;
 using System.Web.Security;
 using System.Text;
+using UtilityExtensions;
 
 namespace DiscData
 {
     public partial class BlogPost
     {
-        public Dictionary<string, BlogCategory> GetBlogCategories()
+        public Dictionary<string, BlogCategoryXref> GetBlogCategories()
         {
-            var d = new Dictionary<string, BlogCategory>();
-            foreach (BlogCategory bc in this.BlogCategories)
-                d.Add(bc.Category, bc);
+            var d = new Dictionary<string, BlogCategoryXref>();
+            foreach (var bc in this.BlogCategoryXrefs)
+                d.Add(bc.Category.Name, bc);
             return d;
         }
         public static BlogPost LoadFromId(int id)
@@ -35,9 +36,15 @@ namespace DiscData
         }
         public void AddCategory(string Category)
         {
-            var bc = new BlogCategory();
-            bc.Category = Category;
-            BlogCategories.Add(bc);
+            var cat = DbUtil.Db.Categories.Single(ca => ca.Name == Category);
+            if (cat == null)
+            {
+                cat = new Category { Name = Category };
+                DbUtil.Db.Categories.InsertOnSubmit(cat);
+                DbUtil.Db.SubmitChanges();
+            }
+            var bc = new BlogCategoryXref { CatId = cat.Id };
+            BlogCategoryXrefs.Add(bc);
         }
         partial void OnEntryDateChanging(DateTime? value)
         {
@@ -114,7 +121,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
             var u = HttpContext.Current.Items[loc] as User;
             if (u == null)
             {
-                u = Util.GetUser(posterid);
+                u = DbUtil.Db.GetUser(posterid);
                 HttpContext.Current.Items[loc] = u;
             }
             return u;
@@ -157,7 +164,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
         {
             var bc = new BlogComment();
             bc.Comment = text;
-            bc.PosterId = Util.CurrentUser.UserId;
+            bc.PosterId = DbUtil.Db.CurrentUser.UserId;
             bc.DatePosted = DateTime.Now;
             BlogComments.Add(bc);
             return bc;
@@ -195,7 +202,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
             DateTime dtnow = DateTime.Now;
             var q = from p in DbUtil.Db.BlogPosts
                     where p.BlogId == BlogId && p.EntryDate < dtnow
-                    where (category == "" || p.BlogCategories.Any(bc => bc.Category == category))
+                    where (category == "" || p.BlogCategoryXrefs.Any(bc => bc.Category.Name == category))
                     orderby p.EntryDate descending
                     select p;
             var c = q.Count();

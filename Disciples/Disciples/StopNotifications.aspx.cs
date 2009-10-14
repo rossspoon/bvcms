@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DiscData;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -13,7 +14,7 @@ namespace BellevueTeachers
         protected void Page_Load(object sender, EventArgs e)
         {
             var u = Request.QueryString<string>("user");
-            var user = Util.GetUser(u);
+            var user = DbUtil.Db.GetUser(u);
             var id = Request.QueryString<int>("blog");
             var b = DiscData.Blog.LoadById(id);
             //var Profile = new WebProfile().GetProfile(u);

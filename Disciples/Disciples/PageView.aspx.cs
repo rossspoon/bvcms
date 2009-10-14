@@ -6,6 +6,7 @@ using System.Web.UI.HtmlControls;
 using System.Text.RegularExpressions;
 using DiscData;
 using System.IO;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -67,7 +68,7 @@ namespace BellevueTeachers
             editorTitle.Text = "Edit " + thisPage.Title;
             lnkEdit.Enabled = false;
             txtTitle.Text = thisPage.Title;
-            Body.Value = thisPage.Body;
+            Body2.Text = thisPage.Body;
             btnDelete.Attributes.Add("onclick", "return CheckDelete();");
         }
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -77,7 +78,7 @@ namespace BellevueTeachers
         protected void btnSave_Click(object sender, EventArgs e)
         {
             thisPage.Title = txtTitle.Text;
-            thisPage.Body = Body.Value;
+            thisPage.Body = Body2.Text;
 
             bool haveError = false;
             try

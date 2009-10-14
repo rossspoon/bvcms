@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Web.Security;
 using System.Linq;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -12,7 +13,7 @@ namespace DiscData
     {
         public bool IsOwner
         {
-            get { return this.CreatedBy == Util.CurrentUser.UserId; }
+            get { return this.CreatedBy == DbUtil.Db.CurrentUser.UserId; }
         }
         public bool IsRead(User user)
         {
@@ -58,7 +59,7 @@ namespace DiscData
             foreach (var fn in ForumNotifications)
                 if (!list.ContainsKey(fn.UserId))
                 {
-                    var u = Util.GetUser(fn.UserId);
+                    var u = DbUtil.Db.GetUser(fn.UserId);
                     list.Add(fn.UserId, new MailAddress(u.EmailAddress,
                         u.FirstName + " " + u.LastName));
                 }

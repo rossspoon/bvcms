@@ -29,42 +29,14 @@ namespace CMSRegCustom.Controllers
 
             UpdateModel(m);
             m.ValidateModel(ModelState);
-            if (ModelState.IsValid)
-            {
-                var count = m.FindMember();
-                if (count > 1)
-                    ModelState.AddModelError("find", "More than one match, sorry");
-                else if (count == 0)
-                    if (!m.shownew)
-                    {
-                        ModelState.AddModelError("find", "Cannot find church record.");
-                        m.shownew = true;
-                    }
-            }
             if (!ModelState.IsValid)
                 return View(m);
 
             if (m.person == null)
                 m.AddPerson();
 
-            var transaction = new SaleTransaction
-            {
-                PeopleId = m.person.PeopleId,
-                SaleDate = DateTime.Now,
-                ItemId = m.saleitem.Id,
-                ItemDescription = m.saleitem.Description,
-                Quantity = m.quantity,
-                Amount = m.amount,
-                EmailAddress = m.email,
-            };
-            DbUtil.Db.SaleTransactions.InsertOnSubmit(transaction);
-
-            DbUtil.Db.SubmitChanges();
-
-            Util.Email2(m.email,
-                    m.saleitem.Email, "Puchased Item",
-@"{0}({1}) has purchased {2} {3} (check cms to confirm feepaid)</p>".Fmt(
-m.person.Name, m.peopleid, m.quantity, m.Description));
+            var transaction = m.CreateNewTransaction();
+            m.SendNotice();
 
             TempData["tranid"] = transaction.Id;
             return RedirectToAction("Payment");
@@ -89,12 +61,12 @@ m.person.Name, m.peopleid, m.quantity, m.Description));
             DbUtil.Db.SubmitChanges();
 
             var p = m.person;
-            var svc = new AccountMembershipService();
-            m.transaction.Username = svc.FetchUsernameNoCheck(m.person.FirstName, m.person.LastName);
-            m.transaction.Password = svc.FetchPassword();
+            m.transaction.Username = MembershipService.FetchUsernameNoCheck(
+                m.person.FirstName, m.person.LastName);
+            m.transaction.Password = MembershipService.FetchPassword();
             DbUtil.Db.SubmitChanges();
 
-            var c = DbUtil.Db.Contents.Single(cc => cc.Name == "SaleMessage-" + m.saleitem.Id);
+            var c = DbUtil.Content("SaleMessage-" + m.saleitem.Id);
             c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
             c.Body = c.Body.Replace("{quantity}", m.transaction.Quantity.ToString());
             c.Body = c.Body.Replace("{amount}", m.transaction.Amount.ToString("C"));
@@ -135,6 +107,18 @@ m.person.Name, m.peopleid, m.quantity, m.Description));
             DbUtil.Db.SaleItems.InsertOnSubmit(o);
             DbUtil.Db.SubmitChanges();
             return Redirect("/Sales/Items/");
+        }
+        [Authorize(Roles = "Admin")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public EmptyResult ItemDelete(string id)
+        {
+            id = id.Substring(1);
+            var o = DbUtil.Db.SaleItems.SingleOrDefault(si => si.Id == id.ToInt());
+            if (o == null)
+                return new EmptyResult();
+            DbUtil.Db.SaleItems.DeleteOnSubmit(o);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
         }
         [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
@@ -188,7 +172,7 @@ m.person.Name, m.peopleid, m.quantity, m.Description));
                 ModelState.AddModelError("login", "username or password incorrect or not found");
                 return View("Login");
             }
-            var c = DbUtil.Db.Contents.Single(cc => cc.Name == "SaleDownload-" + id);
+            var c = DbUtil.Content("SaleDownload-" + id);
             ViewData["content"] = c.Body;
             ViewData["title"] = c.Title;
             return View();

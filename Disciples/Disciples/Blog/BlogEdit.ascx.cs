@@ -5,6 +5,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Threading;
+using UtilityExtensions;
 
 public partial class BlogEdit : System.Web.UI.UserControl
 {
@@ -24,7 +25,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
             Blog = value.BlogCached;
             if (!Page.IsPostBack)
             {
-                PostText.Value = value.Post;
+                PostText2.Text = value.Post;
                 BlogTitle.Text = value.Title;
                 EntryDate.Text = value.EntryDate.Value.ToString("M/d/yy h:mm tt");
             }
@@ -54,24 +55,24 @@ public partial class BlogEdit : System.Web.UI.UserControl
     protected void Save_Click(object sender, EventArgs e)
     {
         if (Post == null)
-            Post = Blog.NewPost(BlogTitle.Text, PostText.Value);
+            Post = Blog.NewPost(BlogTitle.Text, PostText2.Text);
         else
         {
             Post.Title = BlogTitle.Text;
             Post.EntryDate = DateTime.Parse(EntryDate.Text);
-            Post.Post = PostText.Value;
+            Post.Post = PostText2.Text;
         }
 
         var postCategories = Post.GetBlogCategories();
         foreach (ListItem li in CheckBoxList1.Items)
         {
-            BlogCategory bc = null;
+            BlogCategoryXref bc = null;
             if (postCategories.ContainsKey(li.Text))
                 bc = postCategories[li.Text];
             if (bc == null && li.Selected)
                 Post.AddCategory(li.Text);
             else if (bc != null && !li.Selected)
-                DbUtil.Db.BlogCategories.DeleteOnSubmit(bc);
+                DbUtil.Db.BlogCategoryXrefs.DeleteOnSubmit(bc);
         }
         if (TextBox2.Text.HasValue())
             Post.AddCategory(TextBox2.Text);
@@ -84,8 +85,8 @@ public partial class BlogEdit : System.Web.UI.UserControl
     protected void CheckBoxList1_DataBound(object sender, EventArgs e)
     {
         if (Post != null)
-            foreach (var bc in Post.BlogCategories)
-                CheckBoxList1.Items.FindByText(bc.Category).Selected = true;
+            foreach (var bc in Post.BlogCategoryXrefs)
+                CheckBoxList1.Items.FindByText(bc.Category.Name).Selected = true;
     }
     protected void Cancel_Click(object sender, EventArgs e)
     {
@@ -93,7 +94,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
     }
     protected void Delete_Click(object sender, EventArgs e)
     {
-        DbUtil.Db.BlogCategories.DeleteAllOnSubmit(Post.BlogCategories);
+        DbUtil.Db.BlogCategoryXrefs.DeleteAllOnSubmit(Post.BlogCategoryXrefs);
         DbUtil.Db.PodCasts.DeleteAllOnSubmit(Post.PodCasts);
         DbUtil.Db.BlogPosts.DeleteOnSubmit(Post);
         DbUtil.Db.SubmitChanges();

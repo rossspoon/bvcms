@@ -16,12 +16,12 @@ public partial class Podcast_Default : System.Web.UI.Page
     }
     public string ITunesLink(object userid)
     {
-        string r = "itpc://" + HttpContext.Current.Request.Url.Authority + Util.ResolveUrl(string.Format("~/podcast/feed/{0}.aspx", userid));
+        string r = "itpc://" + HttpContext.Current.Request.Url.Authority + VirtualPathUtility.ToAbsolute(string.Format("~/podcast/feed/{0}.aspx", userid));
         return r;
     }
     public string RssLink(object userid)
     {
-        string r = "http://" + HttpContext.Current.Request.Url.Authority + Util.ResolveUrl(string.Format("~/podcast/feed/{0}.aspx", userid));
+        string r = "http://" + HttpContext.Current.Request.Url.Authority + VirtualPathUtility.ToAbsolute(string.Format("~/podcast/feed/{0}.aspx", userid));
         return r;
     }
 }

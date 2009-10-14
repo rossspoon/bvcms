@@ -29,7 +29,7 @@ namespace CMSWeb
                 else
                     Response.Redirect("https://cms.bellevue.org/Login.aspx");
 
-            var terms = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == "TermsOfUse");
+            var terms = DbUtil.Content("TermsOfUse");
             if (terms != null)
                 TermsLabel.Text = terms.Body;
             else

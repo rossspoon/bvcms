@@ -269,16 +269,16 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
-      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
-      <Name>UtilityExtensions</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

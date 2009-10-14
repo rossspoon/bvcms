@@ -7,12 +7,13 @@ using DiscData;
 using BellevueTeachers;
 using System.Text;
 using System.Linq;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
     public partial class ProfileEdit : System.Web.UI.Page
     {
-        User mu = Util.CurrentUser;
+        User mu = DbUtil.Db.CurrentUser;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)

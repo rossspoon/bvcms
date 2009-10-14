@@ -233,8 +233,7 @@ namespace CMSWeb
 
         protected void CloneOrg_Click(object sender, EventArgs e)
         {
-            var oc = new OrganizationController();
-            var neworg = oc.CloneOrg(organization.OrganizationId);
+            var neworg = organization.CloneOrg();
             DbUtil.LogActivity("Cloning new org from {0}".Fmt(organization.FullName));
             Response.Redirect("~/Organization.aspx?id=" + neworg.OrganizationId);
         }

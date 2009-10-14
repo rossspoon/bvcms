@@ -13,7 +13,6 @@ namespace CmsData
             Active = 30,
             Inactive = 40,
         }
-
         public static string FormatOrgName(string name, string leader, string loc)
         {
             if (loc.HasValue())
@@ -36,8 +35,6 @@ namespace CmsData
                 return _Db;
             }
         }
-
-        #region Tags
 
         private string _TagString;
         public string TagString
@@ -121,6 +118,34 @@ namespace CmsData
             }
             return true;
         }
-        #endregion
+        public Organization CloneOrg()
+        {
+            var neworg = new Organization
+            {
+                AttendTrkLevelId = AttendTrkLevelId,
+                CreatedDate = DateTime.Now,
+                CreatedBy = Util.UserId1,
+                DivisionId = DivisionId,
+                LeaderMemberTypeId = LeaderMemberTypeId,
+                OrganizationName = OrganizationName + " (copy)",
+                ScheduleId = ScheduleId,
+                SecurityTypeId = SecurityTypeId,
+                EntryPointId = EntryPointId,
+                OrganizationStatusId = OrganizationStatusId,
+                AllowAttendOverlap = AllowAttendOverlap,
+                AttendClassificationId = AttendClassificationId,
+                CanSelfCheckin = CanSelfCheckin,
+                GradeRangeStart = GradeRangeStart,
+                GradeRangeEnd = GradeRangeEnd,
+                NumCheckInLabels = NumCheckInLabels,
+                CampusId = CampusId,
+                FirstMeetingDate = FirstMeetingDate,
+            };
+            DbUtil.Db.Organizations.InsertOnSubmit(neworg);
+            foreach (var div in DivOrgs)
+                neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
+            DbUtil.Db.SubmitChanges();
+            return neworg;
+        }
     }
 }

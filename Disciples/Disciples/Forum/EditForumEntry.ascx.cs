@@ -4,6 +4,7 @@ using DiscData;
 using System.Net.Mail;
 using System.Threading;
 using System.Collections.Generic;
+using UtilityExtensions;
 
 public partial class EditForumEntry : System.Web.UI.UserControl
 {
@@ -25,7 +26,7 @@ public partial class EditForumEntry : System.Web.UI.UserControl
             Label1.Text = "Editing Entry in: " + f.Description;
             if (!Page.IsPostBack)
             {
-                EntryText.Value = value.Entry;
+                EntryText2.Text = value.Entry;
                 EntryTitle.Text = value.Title;
             }
         }
@@ -68,14 +69,14 @@ public partial class EditForumEntry : System.Web.UI.UserControl
     protected void Save_Click(object sender, EventArgs e)
     {
         if (Reply != null)
-            Entry = Reply.NewReply(EntryTitle.Text, EntryText.Value);
+            Entry = Reply.NewReply(EntryTitle.Text, EntryText2.Text);
         else if (Forum != null)
-            Entry = Forum.NewEntry(EntryTitle.Text, EntryText.Value);
+            Entry = Forum.NewEntry(EntryTitle.Text, EntryText2.Text);
         else if (Entry != null)
         {
             Entry.Title = EntryTitle.Text;
-            Entry.Entry = EntryText.Value;
-            Entry.CreatedBy = Util.CurrentUser.UserId;
+            Entry.Entry = EntryText2.Text;
+            Entry.CreatedBy = DbUtil.Db.CurrentUser.UserId;
             Entry.CreatedOn = DateTime.Now;
             DbUtil.Db.SubmitChanges();
         }
@@ -94,7 +95,7 @@ public partial class EditForumEntry : System.Web.UI.UserControl
     {
         var smtp = new SmtpClient();
         var from = new MailAddress("bbcms01@bellevue.org");
-        var subject = "New Message: " + Entry.Title + ", From: " + Util.CurrentUser.Username;
+        var subject = "New Message: " + Entry.Title + ", From: " + DbUtil.Db.CurrentUser.Username;
         var body = string.Format(
             "<br><br>--<br>View this message online at: <a href=\"{0}\">{0}</a><br>--<br>", returnloc); ;
         foreach (var a in addresses)

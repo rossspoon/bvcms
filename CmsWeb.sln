@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSRegCustom", "CMSRegCusto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWebCommon", "CMSWebCommon\CMSWebCommon.csproj", "{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisciplesData", "DisciplesData\DisciplesData.csproj", "{687619FB-F4C1-42B3-9A33-4BD19390723F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,18 @@ Global
 		{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}.Release|Itanium.ActiveCfg = Release|Any CPU
 		{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}.Release|x86.ActiveCfg = Release|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|Itanium.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Default|Itanium.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Default|x86.ActiveCfg = Debug|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Itanium.ActiveCfg = Release|Any CPU
+		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

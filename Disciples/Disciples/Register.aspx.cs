@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Net.Mail;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -45,7 +46,7 @@ namespace BellevueTeachers
             //add the profile
             if (status == MembershipCreateStatus.Success)
             {
-                var u = Util.GetUser(txtLogin.Text);
+                var u = DbUtil.Db.GetUser(txtLogin.Text);
                 u.FirstName = txtFirst.Text;
                 u.LastName = txtLast.Text;
                 u.DefaultGroup = "";

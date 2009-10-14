@@ -28,7 +28,7 @@ namespace DiscData
         }
         public string GetBlogText()
         {
-            var u = Util.GetUser(UserId);
+            var u = DbUtil.Db.GetUser(UserId);
             return string.Format(@"<strong>{0} {1} on {2}</strong>
 <div>{3}</div>
 <div>Listen:<object id=""audioplayer{5}"" type=""application/x-shockwave-flash"" height=""24"" width=""290"" data=""player.swf"">

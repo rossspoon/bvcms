@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Web;
 using System.Linq;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -72,12 +73,12 @@ namespace DiscData
                     existingUrls++;
                     p.PageUrl = p.PageUrl.Replace(".aspx", "_{0}.aspx".Fmt(existingUrls));
                 }
-                p.CreatedById = Util.CurrentUser.UserId;
+                p.CreatedById = DbUtil.Db.CurrentUser.UserId;
                 p.CreatedOn = DateTime.Now;
             }
             else
             {
-                p.ModifiedById = Util.CurrentUser.UserId;
+                p.ModifiedById = DbUtil.Db.CurrentUser.UserId;
                 p.ModifiedOn = DateTime.Now;
             }
             DbUtil.Db.SubmitChanges();

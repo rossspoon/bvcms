@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using DiscData;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -21,7 +22,7 @@ namespace BellevueTeachers
         {
             if (key != "0KHHQHA7QMNGE4XM4ER2")
                 return "NOT AUTH";
-            var author = Util.GetUser(Author);
+            var author = DbUtil.Db.GetUser(Author);
             var podcast = PodCast.Post(author, Title, Description, pubDate, S3Name, length);
             DbUtil.Db.SubmitChanges();
             podcast.BlogPost.NotifyEmail(false);
@@ -58,7 +59,7 @@ namespace BellevueTeachers
             foreach (var postsfor in q)
             {
                 a.Add(postsfor);
-                var pc = Util.GetUser(postsfor);
+                var pc = DbUtil.Db.GetUser(postsfor);
                 a.Add(pc.FirstName + " " + pc.LastName);
             }
             return a;

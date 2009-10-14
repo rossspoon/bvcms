@@ -81,8 +81,8 @@ namespace BellevueTeachers
             if (!Page.IsPostBack)
             {
                 var pv = new PageVisit();
-                if (Util.CurrentUser.UserId>0)
-                    pv.UserId = Util.CurrentUser.UserId;
+                if (DbUtil.Db.CurrentUser.UserId > 0)
+                    pv.UserId = DbUtil.Db.CurrentUser.UserId;
                 var dtnow = DateTime.Now;
                 pv.VisitTime = dtnow;
                 pv.PageUrl = Request.Url.PathAndQuery;

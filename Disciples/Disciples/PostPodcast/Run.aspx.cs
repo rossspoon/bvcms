@@ -9,7 +9,7 @@ public partial class PostPodcast_Run : System.Web.UI.Page
     {
         var tok = new TemporaryToken();
         tok.Id = Guid.NewGuid();
-        tok.CreatedBy = Util.CurrentUser.UserId;
+        tok.CreatedBy = DbUtil.Db.CurrentUser.UserId;
         tok.CreatedOn = DateTime.Now;
         DbUtil.Db.TemporaryTokens.InsertOnSubmit(tok);
         DbUtil.Db.SubmitChanges();

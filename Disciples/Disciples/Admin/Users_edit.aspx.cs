@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 using DiscData;
 using System.Linq;
 using BellevueTeachers;
+using UtilityExtensions;
 
 public partial class admin_user_edit : System.Web.UI.Page
 {
@@ -28,8 +29,8 @@ public partial class admin_user_edit : System.Web.UI.Page
         }
         else
         {
-            Group.ContextUser = Util.GetUser(userName);
-            mu = Util.GetUser(userName);
+            Group.ContextUser = DbUtil.Db.GetUser(userName);
+            mu = DbUtil.Db.GetUser(userName);
         }
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -39,7 +40,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             if (isEditMode)
             {
                 UserID.Text = mu.Username;
-                UserID.Enabled = false;
+                //UserID.Enabled = false;
 
                 FirstName.Text = mu.FirstName;
                 LastName.Text = mu.LastName;
@@ -133,6 +134,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             return;
         try
         {
+            mu.Username = UserID.Text;
             mu.EmailAddress = Email.Text;
             mu.IsApproved = ActiveUser.Checked;
             UpdateProfile();

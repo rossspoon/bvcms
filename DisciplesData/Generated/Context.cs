@@ -22,9 +22,9 @@ namespace DiscData
         partial void UpdateBlog(Blog instance);
         partial void DeleteBlog(Blog instance);
         
-        partial void InsertBlogCategory(BlogCategory instance);
-        partial void UpdateBlogCategory(BlogCategory instance);
-        partial void DeleteBlogCategory(BlogCategory instance);
+        partial void InsertBlogCategoryXref(BlogCategoryXref instance);
+        partial void UpdateBlogCategoryXref(BlogCategoryXref instance);
+        partial void DeleteBlogCategoryXref(BlogCategoryXref instance);
         
         partial void InsertBlogComment(BlogComment instance);
         partial void UpdateBlogComment(BlogComment instance);
@@ -37,6 +37,10 @@ namespace DiscData
         partial void InsertBlogPost(BlogPost instance);
         partial void UpdateBlogPost(BlogPost instance);
         partial void DeleteBlogPost(BlogPost instance);
+        
+        partial void InsertCategory(Category instance);
+        partial void UpdateCategory(Category instance);
+        partial void DeleteCategory(Category instance);
         
         partial void InsertContent(Content instance);
         partial void UpdateContent(Content instance);
@@ -182,9 +186,9 @@ namespace DiscData
 
 		}
 
-		public Table< BlogCategory> BlogCategories
+		public Table< BlogCategoryXref> BlogCategoryXrefs
 		{
-			get	{ return this.GetTable< BlogCategory>(); }
+			get	{ return this.GetTable< BlogCategoryXref>(); }
 
 		}
 
@@ -203,6 +207,12 @@ namespace DiscData
 		public Table< BlogPost> BlogPosts
 		{
 			get	{ return this.GetTable< BlogPost>(); }
+
+		}
+
+		public Table< Category> Categories
+		{
+			get	{ return this.GetTable< Category>(); }
 
 		}
 

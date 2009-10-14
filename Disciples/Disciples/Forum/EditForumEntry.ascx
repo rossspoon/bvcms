@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="True" Inherits="EditForumEntry" CodeBehind="EditForumEntry.ascx.cs" %>
-<%@ Register Assembly="FredCK.FCKeditorV2" Namespace="FredCK.FCKeditorV2" TagPrefix="fck" %>
 <asp:Literal ID="Literal1" runat="server" Visible="false">
 <link href="../App_Themes/Default/forum.css" rel="stylesheet" type="text/css" />
 <link href="../App_Themes/Default/Common.css" rel="stylesheet" type="text/css" />
@@ -31,7 +30,7 @@
             Entry:
         </td>
         <td>
-            <fck:FCKeditor id="EntryText" BasePath="~/FCKeditor/" runat="server"  Height="500" Width="700"/>
+            <asp:TextBox ID="EntryText2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
       </td>
     </tr>
     <tr>

@@ -77,7 +77,7 @@ namespace CmsData
             var hc = HttpContext.Current.Cache[Util.Host + "header"] as string;
             if (hc == null)
             {
-                var h = Db.Contents.SingleOrDefault(c => c.Name == "Header");
+                var h = Content("Header");
                 if (h != null)
                     hc = h.Body;
                 else
@@ -93,6 +93,10 @@ namespace CmsData
                 HttpContext.Current.Cache[Util.Host + "header"] = hc;
             }
             return hc;
+        }
+        public static Content Content(string name)
+        {
+            return DbUtil.Db.Contents.SingleOrDefault(c => c.Name == name); 
         }
         public static string Settings(string name, string defaultvalue)
         {

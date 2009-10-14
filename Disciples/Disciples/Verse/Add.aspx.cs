@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using DiscData;
+using UtilityExtensions;
 
 public partial class Add : System.Web.UI.Page
 {
@@ -34,7 +35,7 @@ public partial class Add : System.Web.UI.Page
         {
             if (v.Id <= 0)
             {
-                v.CreatedBy = Util.CurrentUser.UserId;
+                v.CreatedBy = DbUtil.Db.CurrentUser.UserId;
                 v.CreatedOn = DateTime.Now;
             }
             cat.AddVerse(v);

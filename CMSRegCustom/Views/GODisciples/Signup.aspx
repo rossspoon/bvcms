@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSRegCustom.Models.SalesModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSRegCustom.Models.GODisciplesModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>Resource Purchase</title>
+    <title><%=ViewData["title"] %></title>
     <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 </asp:Content>
 
@@ -21,8 +21,8 @@
         });
     </script>
 <% } %>
-    <h2><%=Model.Description %></h2>
-    <% using (Html.BeginForm()) { %>
+    <h2><%=ViewData["title"] %></h2>
+    <% using (Html.BeginForm(Model.action, "GODisciples")) { %>
         <div>
             <fieldset>
                 <table style="empty-cells:show">
@@ -82,12 +82,7 @@
                 </tr>
                 <% } %>
                 <tr>
-                    <td><label for="quantity">Quantity</label></td>
-                    <td><%= Html.TextBox("quantity", Model.quantity, new { maxlength = 2 })%></td>
-                    <td><%= Html.ValidationMessage("quantity") %></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td><td><input <%=Model.disabled %> type="submit" value="Submit" /></td>
+                    <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>
                 </tr>
                 </table>
             </fieldset>

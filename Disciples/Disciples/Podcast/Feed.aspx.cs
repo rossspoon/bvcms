@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using DiscData;
 using System.Linq;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -14,7 +15,7 @@ namespace BellevueTeachers
         {
             base.OnLoad(e);
             string u = Request.QueryString<string>("u");
-            var podcaster = Util.GetUser(u);
+            var podcaster = DbUtil.Db.GetUser(u);
 
             Response.ClearContent();
             Response.ContentEncoding = Encoding.UTF8;
@@ -69,7 +70,7 @@ namespace BellevueTeachers
                 w.WriteElementString("description", p.Description);
                 w.WriteElementString("link", "http://{0}/blog/podcast/{1}.aspx"
                     .Fmt(Request.Url.Authority, p.PostId));
-                var pc = Util.GetUser(p.UserId);
+                var pc = DbUtil.Db.GetUser(p.UserId);
 
                 w.WriteElementString("author", pc.FirstName + ' ' + pc.LastName);
                 w.WriteElementString("pubDate", p.PubDate.Value.ToString("r"));

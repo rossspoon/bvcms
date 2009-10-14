@@ -1,6 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="BellevueTeachers.PageView"
-    Title="Resource Page" CodeBehind="PageView.aspx.cs" %>
-<%@ Register Assembly="FredCK.FCKeditorV2" Namespace="FredCK.FCKeditorV2" TagPrefix="fck" %>
+    Title="Resource Page" validateRequest="false" CodeBehind="PageView.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
       <div id="main" class="wide">
@@ -63,8 +62,7 @@
             </p>
             <p>
                 <b>Body</b><br />
-                <fck:FCKeditor id="Body" BasePath="~/FCKeditor/" runat="server" Height="500"
-                    Width="700" />
+                <asp:TextBox ID="Body2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="700" Width="700" ></asp:TextBox>
             </p>
             <p>
                 <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />

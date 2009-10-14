@@ -22,18 +22,13 @@ namespace CMSWeb.Controllers
         // This constructor is used by the MVC framework to instantiate the controller using
         // the default forms authentication and membership providers.
 
-        public AccountController()
-            : this(null, null)
-        {
-        }
-
         // This constructor is not used by the MVC framework but is instead provided for ease
         // of unit testing this type. See the comments at the end of this file for more
         // information.
-        public AccountController(IFormsAuthentication formsAuth, CmsData.IMembershipService service)
+        public AccountController()
         {
-            FormsAuth = formsAuth ?? new FormsAuthenticationService();
-            MembershipService = service ?? new AccountMembershipService();
+            FormsAuth = new FormsAuthenticationService();
+            MembershipService = new MembershipService();
         }
 
         public IFormsAuthentication FormsAuth
@@ -42,7 +37,7 @@ namespace CMSWeb.Controllers
             private set;
         }
 
-        public IMembershipService MembershipService
+        public MembershipService MembershipService
         {
             get;
             private set;
@@ -379,17 +374,11 @@ The bvCMS Team</p>
         private bool ValidateLogOn(string userName, string password)
         {
             if (String.IsNullOrEmpty(userName))
-            {
                 ModelState.AddModelError("username", "You must specify a username.");
-            }
             if (String.IsNullOrEmpty(password))
-            {
                 ModelState.AddModelError("password", "You must specify a password.");
-            }
             if (!MembershipService.ValidateUser(userName, password))
-            {
                 ModelState.AddModelError("_FORM", "The username or password provided is incorrect.");
-            }
 
             return ModelState.IsValid;
         }

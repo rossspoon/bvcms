@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Net.Mail;
 using System.Web.Security;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -42,7 +43,7 @@ namespace DiscData
         }
         public bool IsPoster
         {
-            get { return PosterId == Util.CurrentUser.UserId; }
+            get { return PosterId == DbUtil.Db.CurrentUser.UserId; }
         }
         public bool CanEdit
         {

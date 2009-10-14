@@ -1,6 +1,7 @@
 using System;
 using DiscData;
 using System.Web;
+using UtilityExtensions;
 
 public partial class CMSParagraph : System.Web.UI.Page
 {
@@ -19,7 +20,7 @@ public partial class CMSParagraph : System.Web.UI.Page
             {
                 Content text = ContentService.GetContent(ContentId.Value);
                 if (text.Body != null)
-                    txtContent.Value = text.Body;
+                    txtContent2.Text = text.Body;
                 TextBox1.Text = text.Title;
             }
         }
@@ -40,7 +41,7 @@ public partial class CMSParagraph : System.Web.UI.Page
             text.ModifiedBy = HttpContext.Current.User.Identity.Name;
             text.ModifiedOn = DateTime.Now;
         }
-        text.Body = txtContent.Value;
+        text.Body = txtContent2.Text;
         text.Title = TextBox1.Text;
         DbUtil.Db.SubmitChanges();
         ResultMessage1.ShowSuccess("Content Saved");

@@ -178,6 +178,18 @@ namespace CMSRegCustom.Models
                 if (!state.HasValue())
                     modelState.AddModelError("state", "need state");
             }
+            if(modelState.IsValid)
+            {
+                var count = FindMember();
+                if (count > 1)
+                    modelState.AddModelError("find", "More than one match, sorry");
+                else if (count == 0)
+                    if (!shownew)
+                    {
+                        modelState.AddModelError("find", "Cannot find church record.");
+                        shownew = true;
+                    }
+            }
         }
         internal void AddPerson()
         {
@@ -222,6 +234,29 @@ namespace CMSRegCustom.Models
                     orderby a.Id descending
                     select a;
             return q;
+        }
+        public SaleTransaction CreateNewTransaction()
+        {
+            var transaction = new SaleTransaction
+            {
+                PeopleId = person.PeopleId,
+                SaleDate = DateTime.Now,
+                ItemId = saleitem.Id,
+                ItemDescription = saleitem.Description,
+                Quantity = quantity,
+                Amount = amount,
+                EmailAddress = email,
+            };
+            DbUtil.Db.SaleTransactions.InsertOnSubmit(transaction);
+
+            DbUtil.Db.SubmitChanges();
+            return transaction;
+        }
+        public void SendNotice()
+        {
+            Util.Email2(email, saleitem.Email, "Puchased Item",
+            @"{0}({1}) has purchased {2} {3} (check cms to confirm feepaid)</p>".Fmt(
+            person.Name, peopleid, quantity, Description));
         }
     }
 }

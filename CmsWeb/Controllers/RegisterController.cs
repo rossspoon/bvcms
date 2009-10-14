@@ -229,7 +229,7 @@ namespace CMSWeb.Controllers
 
         private void EmailRegister(RegisterModel m)
         {
-            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "RegisterMessage");
+            var c = DbUtil.Content("RegisterMessage");
             if (c == null)
             {
                 c = new Content();
@@ -250,7 +250,7 @@ namespace CMSWeb.Controllers
             if (!email.HasValue())
                 email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
 
-            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "VisitMessage-" + Session["campus"]);
+            var c = DbUtil.Content("VisitMessage-" + Session["campus"]);
             if (c == null)
             {
                 c = new Content();

@@ -19,6 +19,7 @@ namespace CMSRegCustom
            AddRoute(context, "VBSReg");
            AddRoute(context, "MOBS");
            AddRoute(context, "Sales");
+           AddRoute(context, "GODisciples");
         }
         private void AddRoute(AreaRegistrationContext context, string controller)
         {

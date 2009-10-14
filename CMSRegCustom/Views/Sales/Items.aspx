@@ -10,16 +10,6 @@
                 style: 'display: inline',
                 width: '200px'
             });
-            $(".clickEdit2").editable("/Sales/ItemEdit/", {
-                type: "textarea",
-                indicator: "<img src='/images/loading.gif'>",
-                tooltip: "Click to edit...",
-                style: 'display: inline',
-                width: '300px',
-                height: '200px',
-                submit: 'OK',
-                cancel: 'cancel'
-            });
             $("a.delete").click(function(ev) {
                 if (confirm("are you sure?"))
                     $.post("/Sales/ItemDelete/" + $(this).attr("id"), null, function(ret) {

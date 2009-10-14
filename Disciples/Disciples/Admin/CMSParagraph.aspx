@@ -1,10 +1,9 @@
 <%@ Page ValidateRequest="false" Language="C#" AutoEventWireup="True" Inherits="CMSParagraph"
     CodeBehind="CMSParagraph.aspx.cs" %>
-<%@ Register Assembly="FredCK.FCKeditorV2" Namespace="FredCK.FCKeditorV2" TagPrefix="fck" %>
-
 <%@ OutputCache NoStore="true" Location="None" %>
 <html>
 <head runat="server">
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -14,7 +13,7 @@
             <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
         </div>
         <div>
-            <fck:FCKeditor id="txtContent" BasePath="~/FCKeditor/" runat="server"  Height="500" Width="700"/>
+            <asp:TextBox ID="txtContent2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="600" Width="700" ></asp:TextBox>
         </div>
         <div>
             <cms:ResultMessage ID="ResultMessage1" runat="server" />

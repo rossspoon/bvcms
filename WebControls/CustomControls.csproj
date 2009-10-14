@@ -105,14 +105,14 @@
     <Compile Include="CustomControlsUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="icon.bmp" />
+    <EmbeddedResource Include="multiselect.js" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
       <Name>UtilityExtensions</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="icon.bmp" />
-    <EmbeddedResource Include="multiselect.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

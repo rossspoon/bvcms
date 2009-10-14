@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Net.Mail;
+using System.Web.UI;
 
 namespace UtilityExtensions
 {
@@ -23,8 +24,12 @@ namespace UtilityExtensions
 
         public static T QueryString<T>(this System.Web.UI.Page page, string param)
         {
-            if (HttpContext.Current.Request.QueryString[param].HasValue())
-                return (T)HttpContext.Current.Request[param].ChangeType(typeof(T));
+            return QueryString<T>(HttpContext.Current.Request, param);
+        }
+        public static T QueryString<T>(this System.Web.HttpRequest req, string param)
+        {
+            if (req.QueryString[param].IsNotNull())
+                return (T)req.QueryString[param].ChangeType(typeof(T));
             return default(T);
         }
         public static object ChangeType(this object value, Type type)
@@ -765,6 +770,36 @@ namespace UtilityExtensions
             var re = new Regex(@"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
             return re.IsMatch(email);
         }
+        public static bool IsLocalNetworkRequest
+        {
+            get
+            {
+                if (HttpContext.Current != null)
+                {
+                    if (HttpContext.Current.Request.IsLocal)
+                        return true;
+                    string hostPrefix = HttpContext.Current.Request.UserHostAddress;
+                    string[] ipClass = hostPrefix.Split(new char[] { '.' });
+                    int classA = Convert.ToInt16(ipClass[0]);
+                    int classB = Convert.ToInt16(ipClass[1]);
+                    if (classA == 10 || classA == 127)
+                        return true;
+                    else if (classA == 192 && classB == 168)
+                        return true;
+                    else if (classA == 172 && (classB > 15 && classB < 33))
+                        return true;
+                    return false;
+                }
+                return false;
+            }
+        }
+        public static void IncludeScript(Control head, string url)
+        {
+            url = head.ResolveUrl(url);
+            head.Controls.Add(new LiteralControl("<script type='text/javascript' src='"
+                + url + "'></script>"));
+        }
+
     }
     public class EventArg<T> : EventArgs
     {

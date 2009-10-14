@@ -61,9 +61,12 @@
     <Compile Include="BVMembershipProvider.cs" />
     <Compile Include="BVRoleProvider.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="DbUtil.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumEntry.cs" />
+    <Compile Include="Generated\BlogCategoryXref.cs" />
+    <Compile Include="Generated\Category.cs" />
     <Compile Include="Generated\PendingNotification.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="Group.cs" />
@@ -77,13 +80,11 @@
     </Compile>
     <Compile Include="Role.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Util.cs" />
     <Compile Include="Verse.cs" />
     <Compile Include="VerseCategory.cs" />
     <Compile Include="VerseCategoryXref.cs" />
     <Compile Include="VerseSummaryController.cs" />
     <Compile Include="Generated\Blog.cs" />
-    <Compile Include="Generated\BlogCategory.cs" />
     <Compile Include="Generated\BlogComment.cs" />
     <Compile Include="Generated\BlogNotify.cs" />
     <Compile Include="Generated\BlogPost.cs" />
@@ -132,6 +133,12 @@
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

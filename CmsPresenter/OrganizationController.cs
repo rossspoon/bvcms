@@ -263,36 +263,6 @@ namespace CMSPresenter
             return q;
         }
 
-        public Organization CloneOrg(int orgid)
-        {
-            var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
-            var neworg = new Organization
-            {
-                AttendTrkLevelId = org.AttendTrkLevelId,
-                CreatedDate = DateTime.Now,
-                CreatedBy = Util.UserId1,
-                DivisionId = org.DivisionId,
-                LeaderMemberTypeId = org.LeaderMemberTypeId,
-                OrganizationName = org.OrganizationName + " (copy)",
-                ScheduleId = org.ScheduleId,
-                SecurityTypeId = org.SecurityTypeId,
-                EntryPointId = org.EntryPointId,
-                OrganizationStatusId = org.OrganizationStatusId,
-                AllowAttendOverlap = org.AllowAttendOverlap,
-                AttendClassificationId = org.AttendClassificationId,
-                CanSelfCheckin = org.CanSelfCheckin,
-                GradeRangeStart = org.GradeRangeStart,
-                GradeRangeEnd = org.GradeRangeEnd,
-                NumCheckInLabels = org.NumCheckInLabels,
-                CampusId = org.CampusId,
-                FirstMeetingDate = org.FirstMeetingDate,
-            };
-            DbUtil.Db.Organizations.InsertOnSubmit(neworg);
-            foreach (var div in org.DivOrgs)
-                neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
-            DbUtil.Db.SubmitChanges();
-            return neworg;
-        }
         public static IQueryable<EnrollmentTransaction> ApplySort(IQueryable<EnrollmentTransaction> query, string sort)
         {
             switch (sort)

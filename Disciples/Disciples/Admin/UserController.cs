@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using DiscData;
 using DiscData.View;
+using UtilityExtensions;
+using System.Configuration;
 
 [DataObject(true)]
 public class UserController
@@ -12,7 +14,7 @@ public class UserController
     private DiscDataContext Db;
     public UserController()
     {
-        Db = new DiscDataContext(Util.ConnectionString);
+        Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
     }
 
     [DataObjectMethod(DataObjectMethodType.Update, true)]
@@ -55,8 +57,8 @@ public class UserController
             pid);
         BVMembershipProvider.provider.AdminOverride = false;
         user.MustChangePassword = MustChangePassword;
-        DbUtil.Db.Users.InsertOnSubmit(user);
-        DbUtil.Db.SubmitChanges();
+        Db.Users.InsertOnSubmit(user);
+        Db.SubmitChanges();
     }
 
     private int count;

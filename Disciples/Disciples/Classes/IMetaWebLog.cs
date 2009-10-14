@@ -80,6 +80,15 @@ namespace MetaWebLogAPI
         public string url;
     }
 
+    public struct NewCategory
+    {
+        public string name;
+        public string slug;
+        public int parent_id;
+        public string description;
+    }
+    
+
     public interface IMetaWeblog
     {
         [XmlRpcMethod("metaWeblog.editPost", Description = "Updates and existing post to a designated blog "

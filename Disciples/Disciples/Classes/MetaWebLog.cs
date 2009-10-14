@@ -6,15 +6,15 @@ using MetaWebLogAPI;
 using System.Web.Security;
 using DiscData;
 using System.Linq;
-using CookComputing.XmlRpc;
+using UtilityExtensions;
 
-public class MetaWebLog : XmlRpcService, IMetaWeblog
+public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
 {
 
     private bool Authenticate(int groupid, string username, string password)
     {
         var g = Group.LoadById(groupid);
-        var user = Util.GetUser(username);
+        var user = DbUtil.Db.GetUser(username);
         return Membership.ValidateUser(username, password) && g.IsUserBlogger(user);
     }
 
@@ -22,7 +22,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
     public BlogInfo[] getUsersBlogs(string appKey, string username, string password)
     {
         if (!Membership.ValidateUser(username, password))
-            throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+            throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
         var list = from b in Blog.GetBlogsForPoster(username)
                    select new BlogInfo
                    {
@@ -48,12 +48,12 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
                 p.EnclosureUrl = post.enclosure.url;
                 p.EnclosureLength = post.enclosure.length;
                 p.EnclosureType = post.enclosure.type;
-                DbUtil.Db.BlogCategories.DeleteAllOnSubmit(p.BlogCategories);
+                DbUtil.Db.BlogCategoryXrefs.DeleteAllOnSubmit(p.BlogCategoryXrefs);
                 foreach (var c in post.categories)
                 {
-                    var bc = new BlogCategory();
-                    bc.Category = c;
-                    p.BlogCategories.Add(bc);
+                    var cat = DbUtil.Db.Categories.Single(ca => ca.Name == c);
+                    var bc = new BlogCategoryXref { CatId = cat.Id };
+                    p.BlogCategoryXrefs.Add(bc);
                 }
                 DbUtil.Db.SubmitChanges();
                 //Pinger.NotifyWeb();
@@ -62,9 +62,9 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
         }
         catch (Exception ex)
         {
-            throw new XmlRpcFaultException(0, ex.Message);
+            throw new CookComputing.XmlRpc.XmlRpcFaultException(0, ex.Message);
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
 
     public CategoryInfo[] getCategories(object blogid, string username, string password)
@@ -84,7 +84,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
                 };
             return q.ToArray();
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
 
     public Post getPost(string postid, string username, string password)
@@ -94,7 +94,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
         if (Authenticate(p.Blog.GroupId.Value, username, password))
         {
             Post post = new Post();
-            post.categories = p.BlogCategories.Select(c => c.Category).ToArray();
+            post.categories = p.BlogCategoryXrefs.Select(c => c.Category.Name).ToArray();
             post.dateCreated = p.EntryDate.Value;
             post.description = p.Post;
             post.link = apppath + "/Blog/" + p.Id + ".aspx";
@@ -111,7 +111,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
             }
             return post;
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
 
     public Post[] getRecentPosts(object blogid, string username, string password, int numberOfPosts)
@@ -124,7 +124,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
                     orderby p.EntryDate descending
                     select new Post
                     {
-                        categories = p.BlogCategories.Select(c => c.Category).ToArray(),
+                        categories = p.BlogCategoryXrefs.Select(c => c.Category.Name).ToArray(),
                         userid = p.User.Username,
                         dateCreated = p.EntryDate.Value,
                         description = p.Post,
@@ -134,7 +134,7 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
                         title = p.Title,
                         enclosure = PostEnclosure(p)
                     }).ToArray();
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
     private Enclosure PostEnclosure(BlogPost p)
     {
@@ -165,16 +165,16 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
             if (post.categories != null)
                 foreach (string s in post.categories)
                 {
-                    var bc = new BlogCategory();
-                    bc.Category = s;
-                    p.BlogCategories.Add(bc);
+                    var cat = DbUtil.Db.Categories.Single(ca => ca.Name == s);
+                    var bc = new BlogCategoryXref { CatId = cat.Id };
+                    p.BlogCategoryXrefs.Add(bc);
                 }
             DbUtil.Db.SubmitChanges();
             if (!p.Title.StartsWith("Temporary Post Used For Style Detection"))
                 p.NotifyEmail(false);
             return p.Id.ToString();
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
     public MediaObjectUrl newMediaObject(string blogid, string username, string password, MediaObject mediaobject)
     {
@@ -186,10 +186,10 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
             File.WriteAllBytes(filename, mediaobject.bits);
             MediaObjectUrl ret = new MediaObjectUrl();
-            ret.url = "http://" + HttpContext.Current.Request.Url.Authority + Util.ResolveUrl("~/pictures/" + mediaobject.name);
+            ret.url = "http://" + HttpContext.Current.Request.Url.Authority + VirtualPathUtility.ToAbsolute("~/pictures/" + mediaobject.name);
             return ret;
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
 
     public bool deletePost(string appKey, string postid, string username, string password, bool publish)
@@ -202,7 +202,20 @@ public class MetaWebLog : XmlRpcService, IMetaWeblog
             DbUtil.Db.SubmitChanges();
             return true;
         }
-        throw new XmlRpcFaultException(0, "Invalid credentials. Access denied");
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
+    }
+
+    public int newCategory(object blogid, string username, string password, NewCategory newcat)
+    {
+        var b = Blog.LoadById(blogid.ToInt());
+        if (Authenticate(b.GroupId.Value, username, password))
+        {
+            var bc = new DiscData.Category { Name = newcat.name };
+            DbUtil.Db.Categories.InsertOnSubmit(bc);
+            DbUtil.Db.SubmitChanges();
+            return bc.Id;
+        }
+        throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
 
     #endregion

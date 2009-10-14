@@ -1142,6 +1142,10 @@
       <Project>{7B604DAA-9D8D-4E4E-8BE6-4107ED717456}</Project>
       <Name>CMSWebSetup</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DisciplesData\DisciplesData.csproj">
+      <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
+      <Name>DisciplesData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ImageData\ImageData.csproj">
       <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>
       <Name>ImageData</Name>

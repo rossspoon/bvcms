@@ -90,7 +90,7 @@ m.person.Name, m.peopleid, m.MeetingTime));
             m.registration.TransactionId = TransactionID;
             DbUtil.Db.SubmitChanges();
 
-            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "MOBSMessage");
+            var c = DbUtil.Content("MOBSMessage");
             if (c == null)
             {
                 c = new Content();

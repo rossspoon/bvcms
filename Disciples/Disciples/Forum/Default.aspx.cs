@@ -1,6 +1,7 @@
 using System;
 using DiscData;
 using System.Linq;
+using UtilityExtensions;
 
 public partial class Forum_Default : System.Web.UI.Page
 {
@@ -28,7 +29,7 @@ public partial class Forum_Default : System.Web.UI.Page
         f.Description = TextBox2.Text;
         var g = Group.LoadById(DropDownCC1.SelectedValue.ToInt());
         g.Forums.Add(f);
-        f.CreatedBy = Util.CurrentUser.UserId;
+        f.CreatedBy = DbUtil.Db.CurrentUser.UserId;
         f.CreatedOn = DateTime.Now;
         DbUtil.Db.SubmitChanges();
         Panel1.Visible = false;

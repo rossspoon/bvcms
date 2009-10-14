@@ -1,5 +1,6 @@
 using System;
 using DiscData;
+using UtilityExtensions;
 
 public partial class Forum_Edit : System.Web.UI.Page
 {

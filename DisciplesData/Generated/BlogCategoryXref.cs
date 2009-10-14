@@ -10,20 +10,22 @@ using System.ComponentModel;
 
 namespace DiscData
 {
-	[Table(Name="dbo.BlogCategory")]
-	public partial class BlogCategory : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.BlogCategoryXref")]
+	public partial class BlogCategoryXref : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 	#region Private Fields
 		
-		private string _Category;
+		private int _CatId;
 		
 		private int _BlogPostId;
 		
    		
     	
 		private EntityRef< BlogPost> _BlogPost;
+		
+		private EntityRef< Category> _Category;
 		
 	#endregion
 	
@@ -32,18 +34,20 @@ namespace DiscData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnCategoryChanging(string value);
-		partial void OnCategoryChanged();
+		partial void OnCatIdChanging(int value);
+		partial void OnCatIdChanged();
 		
 		partial void OnBlogPostIdChanging(int value);
 		partial void OnBlogPostIdChanged();
 		
     #endregion
-		public BlogCategory()
+		public BlogCategoryXref()
 		{
 			
 			
 			this._BlogPost = default(EntityRef< BlogPost>); 
+			
+			this._Category = default(EntityRef< Category>); 
 			
 			OnCreated();
 		}
@@ -51,21 +55,24 @@ namespace DiscData
 		
     #region Columns
 		
-		[Column(Name="Category", UpdateCheck=UpdateCheck.Never, Storage="_Category", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
-		public string Category
+		[Column(Name="CatId", UpdateCheck=UpdateCheck.Never, Storage="_CatId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int CatId
 		{
-			get { return this._Category; }
+			get { return this._CatId; }
 
 			set
 			{
-				if (this._Category != value)
+				if (this._CatId != value)
 				{
 				
-                    this.OnCategoryChanging(value);
+					if (this._Category.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnCatIdChanging(value);
 					this.SendPropertyChanging();
-					this._Category = value;
-					this.SendPropertyChanged("Category");
-					this.OnCategoryChanged();
+					this._CatId = value;
+					this.SendPropertyChanged("CatId");
+					this.OnCatIdChanged();
 				}
 
 			}
@@ -106,7 +113,7 @@ namespace DiscData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_BlogCategory_Blog", Storage="_BlogPost", ThisKey="BlogPostId", IsForeignKey=true)]
+		[Association(Name="FK_BlogCategoryXref_BlogPost", Storage="_BlogPost", ThisKey="BlogPostId", IsForeignKey=true)]
 		public BlogPost BlogPost
 		{
 			get { return this._BlogPost.Entity; }
@@ -121,13 +128,13 @@ namespace DiscData
 					if (previousValue != null)
 					{
 						this._BlogPost.Entity = null;
-						previousValue.BlogCategories.Remove(this);
+						previousValue.BlogCategoryXrefs.Remove(this);
 					}
 
 					this._BlogPost.Entity = value;
 					if (value != null)
 					{
-						value.BlogCategories.Add(this);
+						value.BlogCategoryXrefs.Add(this);
 						
 						this._BlogPostId = value.Id;
 						
@@ -141,6 +148,48 @@ namespace DiscData
 					}
 
 					this.SendPropertyChanged("BlogPost");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_BlogCategoryXref_Category", Storage="_Category", ThisKey="CatId", IsForeignKey=true)]
+		public Category Category
+		{
+			get { return this._Category.Entity; }
+
+			set
+			{
+				Category previousValue = this._Category.Entity;
+				if (((previousValue != value) 
+							|| (this._Category.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Category.Entity = null;
+						previousValue.BlogCategoryXrefs.Remove(this);
+					}
+
+					this._Category.Entity = value;
+					if (value != null)
+					{
+						value.BlogCategoryXrefs.Add(this);
+						
+						this._CatId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._CatId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Category");
 				}
 
 			}

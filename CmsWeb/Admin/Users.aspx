@@ -158,7 +158,7 @@
                         <td>
                         </td>
                         <td colspan="8">
-                            Password:<asp:TextBox ID="PasswordTextBox" runat="server" Text='<%# Bind("PasswordSetOnly") %>'></asp:TextBox>
+                            Password:<asp:TextBox ID="PasswordTextBox" TextMode="Password" runat="server" Text='<%# Bind("PasswordSetOnly") %>'></asp:TextBox>
                             PeopleId:<asp:TextBox ID="PeopleIdTextBox" runat="server" Text='<%# Bind("PeopleId") %>'></asp:TextBox>
                             <a href="javascript:showDialog('<%= AddSelectedPerson.ClientID %>')">search</a>
                         </td>

@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using DiscData;
 using System.Text.RegularExpressions;
 using System.Linq;
+using UtilityExtensions;
 
 public partial class Forum_Thread : System.Web.UI.Page
 {
@@ -52,7 +53,7 @@ public partial class Forum_Thread : System.Web.UI.Page
     private TreeNode NewTreeNode(ForumEntry r)
     {
         TreeNode cn = new TreeNode();
-        SetText(cn, r.IsRead(Util.CurrentUser) ? SetTextParam.Read : SetTextParam.UnRead, r.Title, r.User);
+        SetText(cn, r.IsRead(DbUtil.Db.CurrentUser) ? SetTextParam.Read : SetTextParam.UnRead, r.Title, r.User);
         cn.Value = r.Id.ToString();
         if (selected == r.Id)
             cn.Select();
@@ -92,7 +93,7 @@ public partial class Forum_Thread : System.Web.UI.Page
         ForumEntryDisplay1.Entry = e;
         Reply.NavigateUrl = "/Forum/Edit.aspx?reply=true&id={0}".Fmt(e.Id);
         Edit.NavigateUrl = "/Forum/Edit.aspx?id={0}".Fmt(e.Id);
-        e.ShowAsRead(Util.CurrentUser);
+        e.ShowAsRead(DbUtil.Db.CurrentUser);
         SetText(tree.SelectedNode, SetTextParam.Current, e.Title, e.User);
         ViewState["lastseen"] = tree.SelectedNode.ValuePath;
         Edit.Visible = e.IsOwner || e.Forum.IsAdmin || User.IsInRole("Administrator");

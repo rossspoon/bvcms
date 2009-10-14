@@ -10,7 +10,7 @@ using System.Net.Mail;
 using System.Web.Configuration;
 using CMSPresenter;
 
-namespace CMSWeb2
+namespace CMSWeb
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801

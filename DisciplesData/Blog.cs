@@ -61,12 +61,12 @@ namespace DiscData
         public BlogPost NewPost(string title, string entry)
         {
             DateTime dt = DateTime.Now;
-            return NewPost(title, entry, Util.CurrentUser.Username, dt);
+            return NewPost(title, entry, DbUtil.Db.CurrentUser.Username, dt);
         }
         public BlogPost NewPost(string title, string entry, string user, DateTime dt)
         {
             var b = new BlogPost();
-            var u = Util.GetUser(user);
+            var u = DbUtil.Db.GetUser(user);
             b.EntryDate = dt;
             b.Post = entry;
             b.PosterId = u.UserId;
@@ -127,7 +127,7 @@ namespace DiscData
     {
         internal static string user
         {
-            get { return Util.CurrentUser.Username; }
+            get { return DbUtil.Db.CurrentUser.Username; }
         }
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<Blog> FetchAllForUser()

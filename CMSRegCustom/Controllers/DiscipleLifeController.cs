@@ -41,7 +41,7 @@ namespace CMSRegCustom.Controllers
                 m.AddPerson();
             m.EnrollInOrg(m.person);
 
-            var c = DbUtil.Db.Contents.SingleOrDefault(ms => ms.Name == "DiscLifeMessage-" + id);
+            var c = DbUtil.Content("DiscLifeMessage-" + id);
             if (c == null)
             {
                 c = new Content();

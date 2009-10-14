@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using DiscData;
 using System.Web.Services;
 using System.Text;
+using UtilityExtensions;
 
 namespace BellevueTeachers.BlogPost
 {

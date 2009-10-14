@@ -42,7 +42,7 @@ namespace DiscData
 		private int? _PosterId;
 		
    		
-   		private EntitySet< BlogCategory> _BlogCategories;
+   		private EntitySet< BlogCategoryXref> _BlogCategoryXrefs;
 		
    		private EntitySet< BlogComment> _BlogComments;
 		
@@ -100,7 +100,7 @@ namespace DiscData
 		public BlogPost()
 		{
 			
-			this._BlogCategories = new EntitySet< BlogCategory>(new Action< BlogCategory>(this.attach_BlogCategories), new Action< BlogCategory>(this.detach_BlogCategories)); 
+			this._BlogCategoryXrefs = new EntitySet< BlogCategoryXref>(new Action< BlogCategoryXref>(this.attach_BlogCategoryXrefs), new Action< BlogCategoryXref>(this.detach_BlogCategoryXrefs)); 
 			
 			this._BlogComments = new EntitySet< BlogComment>(new Action< BlogComment>(this.attach_BlogComments), new Action< BlogComment>(this.detach_BlogComments)); 
 			
@@ -391,12 +391,12 @@ namespace DiscData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_BlogCategory_Blog", Storage="_BlogCategories", OtherKey="BlogPostId")]
-   		public EntitySet< BlogCategory> BlogCategories
+   		[Association(Name="FK_BlogCategoryXref_BlogPost", Storage="_BlogCategoryXrefs", OtherKey="BlogPostId")]
+   		public EntitySet< BlogCategoryXref> BlogCategoryXrefs
    		{
-   		    get { return this._BlogCategories; }
+   		    get { return this._BlogCategoryXrefs; }
 
-			set	{ this._BlogCategories.Assign(value); }
+			set	{ this._BlogCategoryXrefs.Assign(value); }
 
    		}
 
@@ -526,13 +526,13 @@ namespace DiscData
 		}
 
    		
-		private void attach_BlogCategories(BlogCategory entity)
+		private void attach_BlogCategoryXrefs(BlogCategoryXref entity)
 		{
 			this.SendPropertyChanging();
 			entity.BlogPost = this;
 		}
 
-		private void detach_BlogCategories(BlogCategory entity)
+		private void detach_BlogCategoryXrefs(BlogCategoryXref entity)
 		{
 			this.SendPropertyChanging();
 			entity.BlogPost = null;

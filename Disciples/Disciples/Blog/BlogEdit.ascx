@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="True" Inherits="BlogEdit" CodeBehind="BlogEdit.ascx.cs" %>
-<%@ Register Assembly="FredCK.FCKeditorV2" Namespace="FredCK.FCKeditorV2" TagPrefix="fck" %>
 <asp:Literal ID="Literal1" runat="server" Visible="false">
 <link href="../App_Themes/Default/blog.css" rel="stylesheet" type="text/css" />
 <link href="../App_Themes/Default/Common.css" rel="stylesheet" type="text/css" />
@@ -25,8 +24,7 @@
     </p>
     <p>
         <b>Body</b><br />
-        <fck:FCKeditor ID="PostText" BasePath="~/FCKeditor/" runat="server" Height="500"
-            Width="700" />
+            <asp:TextBox ID="PostText2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
     </p>
     <p>
         <asp:Button ID="Save" runat="server" Text="Save" EnableViewState="False" OnClick="Save_Click" />

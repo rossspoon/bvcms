@@ -54,7 +54,7 @@ namespace CMSWebSetup.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult EditPage(string id)
         {
-            var content = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == id);
+            var content = DbUtil.Content(id);
             if (content != null)
             {
                 ViewData["html"] = content.Body;
@@ -68,7 +68,7 @@ namespace CMSWebSetup.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdatePage(string id, string title, string html)
         {
-            var content = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == id);
+            var content = DbUtil.Content(id);
             if (content == null)
             {
                 content = new CmsData.Content { Name = id };

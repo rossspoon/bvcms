@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Security;
 using System.Net.Mail;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -24,7 +25,7 @@ namespace DiscData
                 if (HttpContext.Current.Items.Contains(CONTEXTUSER))
                     return HttpContext.Current.Items[CONTEXTUSER] as User;
                 else
-                    return Util.CurrentUser;
+                    return DbUtil.Db.CurrentUser;
             }
             set
             {
@@ -41,7 +42,7 @@ namespace DiscData
         }
         public static Group LoadByName(string name)
         {
-            return DbUtil.Db.Groups.SingleOrDefault(m => m.Name == name);
+            return DbUtil.Db.Groups.FirstOrDefault(m => m.Name == name);
         }
         public static Group LoadByRole(string role)
         {
@@ -261,7 +262,7 @@ namespace DiscData
         {
             var smtp = new SmtpClient();
             var n = 0;
-            var u = Util.GetUser(newuserid);
+            var u = DbUtil.Db.GetUser(newuserid);
             var subject = "New user in Group: " + Name;
             var body = "<br>--<br>{0}, {1} {2} is a new user in group={3} with id={4} and birthday={5:d}.<br>--<br>"
                     .Fmt(u.EmailAddress, u.FirstName, u.LastName, Name, newuserid, u.BirthDay);
@@ -326,7 +327,7 @@ namespace DiscData
         [DataObjectMethod(DataObjectMethodType.Delete, true)]
         public void DeleteGroup(string Name)
         {
-            var group = DbUtil.Db.Groups.SingleOrDefault(g => g.Name == Name);
+            var group = DbUtil.Db.Groups.FirstOrDefault(g => g.Name == Name);
             group.DeleteWithRoleOnSubmit();
             DbUtil.Db.SubmitChanges();
         }
