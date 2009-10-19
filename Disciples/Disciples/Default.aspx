@@ -10,8 +10,8 @@
             <cms:Paragraph ID="defaultTop" EnableViewState="false" runat="server" />
             <asp:Panel ID="Panel1" runat="server">
                 <asp:Login ID="Login1" runat="server" LoginButtonText="Sign In" PasswordLabelText="Password"
-                    TitleText="Sign In" UserNameLabelText="User Name" EnableViewState="False" 
-                    RememberMeSet="True" onauthenticate="Login1_Authenticate">
+                    TitleText="Sign In" RememberMeSet="True" UserNameLabelText="User Name" EnableViewState="False" 
+                     onauthenticate="Login1_Authenticate">
                     <TextBoxStyle CssClass="CommonTextBig" />
                     <LoginButtonStyle CssClass="CommonTextButton Big" />
                     <TitleTextStyle CssClass="CommonMessageTitle" />

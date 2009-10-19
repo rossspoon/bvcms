@@ -223,7 +223,7 @@ namespace CMSWeb
                 Checked = PreferredAddressControl.SelectedValue == s ? "checked" : "";
                 Disabled = PreferredAddressControl.Editing ? "" : "disabled";
                 OnChange = PreferredAddressControl.Editing ? "onchange=\"prefchange('{0}', '{1}')\""
-                    .Fmt(PreferredAddressControl.UniqueID, AddressIndex) : "";
+                    .Fmt(PreferredAddressControl.ClientID, AddressIndex) : "";
             }
             else
                 trPreferredAddress.Visible = false;

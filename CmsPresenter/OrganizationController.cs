@@ -644,6 +644,7 @@ namespace CMSPresenter
                     where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0
                     where m.Organization.Meetings.Any(meeting => meeting.MeetingDate.Value.Date == date.Date)
+                    where m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     let u = m.Person.Users.FirstOrDefault()
                     where u != null
                     group m by m.PeopleId into g

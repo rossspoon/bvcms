@@ -12,17 +12,6 @@
         <b>Entry Date</b><br />
         <asp:TextBox ID="EntryDate" runat="server"></asp:TextBox></p>
     <p>
-        <b>Categories<br />
-        </b>
-        <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="ObjectDataSource1"
-            DataTextField="Category" DataValueField="Category" OnDataBound="CheckBoxList1_DataBound">
-        </asp:CheckBoxList>
-        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>&nbsp;<span style="font-size: 8pt">
-            (new category)</span><asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
-                OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategorySummary"
-                TypeName="DiscData.BlogCategoryController"></asp:ObjectDataSource>
-    </p>
-    <p>
         <b>Body</b><br />
             <asp:TextBox ID="PostText2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
     </p>
@@ -31,5 +20,17 @@
         <asp:Button ID="Delete" runat="server" OnClick="Delete_Click" Text="Delete" />&nbsp;<asp:Button
             ID="Cancel" runat="server" Text="Cancel" OnClick="Cancel_Click" />&nbsp;<asp:CheckBox
                 ID="NotifyByEmail" runat="server" Checked="True" Text="Notify By Email" />
+    </p>
+    <p>
+        <b>Categories<br />
+        </b>
+        <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="ObjectDataSource1"
+            DataTextField="Category" DataValueField="Category" OnDataBound="CheckBoxList1_DataBound">
+        </asp:CheckBoxList>
+        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>&nbsp;<span style="font-size: 8pt">
+            (new category)</span>
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
+                OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategorySummary"
+                TypeName="DiscData.BlogCategoryController"></asp:ObjectDataSource>
     </p>
 </div>

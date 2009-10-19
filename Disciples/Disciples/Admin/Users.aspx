@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="Admin_admin_users" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
+<%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -14,7 +15,14 @@
     <asp:HyperLink ID="HyperLink1" NavigateUrl="~/" runat="server">HomePage</asp:HyperLink>
             <asp:TextBox runat="server" ID="TextBox1" BorderStyle="Solid" />
             <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" /><br />
-            <asp:ListView ID="ListView1" runat="server" DataKeyNames="UserId" DataSourceID="ObjectDataSourceMembershipUser"
+    <br />
+    <asp:DataPager ID="pager1" runat="server" PagedControlID="ListView1">
+        <Fields>
+            <cc1:PagerField NextPageImageUrl="~/images/arrow_right2.gif" PreviousPageImageUrl="~/images/arrow_left.gif">
+            </cc1:PagerField>
+        </Fields>
+    </asp:DataPager>
+    <asp:ListView ID="ListView1" runat="server" DataKeyNames="UserId" DataSourceID="ObjectDataSourceMembershipUser"
                 OnItemCommand="ListView1_ItemCommand" OnItemDeleted="ListView1_ItemDeleted"
                 OnPagePropertiesChanging="ListView1_PagePropertiesChanging" OnSorting="ListView1_Sorting"
                 >
@@ -104,11 +112,16 @@
                     </table>
                 </LayoutTemplate>
             </asp:ListView>
+    <asp:DataPager ID="pager2" runat="server" PagedControlID="ListView1">
+        <Fields>
+            <cc1:PagerField NextPageImageUrl="~/images/arrow_right2.gif" PreviousPageImageUrl="~/images/arrow_left.gif" />
+        </Fields>
+    </asp:DataPager>
     <asp:HyperLink ID="HyperLink3" NavigateUrl="~/Admin/Users_edit.aspx" runat="server">New User</asp:HyperLink>
     <asp:ObjectDataSource ID="ObjectDataSourceMembershipUser" runat="server"
         SelectMethod="GetUsers" TypeName="UserController"
         SortParameterName="sortExpression"
-        EnableViewState="False">
+        EnableViewState="False" EnablePaging="True" SelectCountMethod="Count" StartRowIndexParameterName="startIndex">
         <SelectParameters>
             <asp:ControlParameter ControlID="TextBox1" Name="name" Type="String" />
             <asp:Parameter Name="sortExpression" Type="String" />

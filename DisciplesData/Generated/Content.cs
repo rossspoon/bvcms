@@ -27,11 +27,7 @@ namespace DiscData
 		
 		private DateTime? _CreatedOn;
 		
-		private string _CreatedBy;
-		
-		private DateTime? _ModifiedOn;
-		
-		private string _ModifiedBy;
+		private int? _CreatedById;
 		
    		
    		private EntitySet< Group> _Groups;
@@ -59,14 +55,8 @@ namespace DiscData
 		partial void OnCreatedOnChanging(DateTime? value);
 		partial void OnCreatedOnChanged();
 		
-		partial void OnCreatedByChanging(string value);
-		partial void OnCreatedByChanged();
-		
-		partial void OnModifiedOnChanging(DateTime? value);
-		partial void OnModifiedOnChanged();
-		
-		partial void OnModifiedByChanging(string value);
-		partial void OnModifiedByChanged();
+		partial void OnCreatedByIdChanging(int? value);
+		partial void OnCreatedByIdChanged();
 		
     #endregion
 		public Content()
@@ -191,65 +181,21 @@ namespace DiscData
 		}
 
 		
-		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="nvarchar(50)")]
-		public string CreatedBy
+		[Column(Name="CreatedById", UpdateCheck=UpdateCheck.Never, Storage="_CreatedById", DbType="int")]
+		public int? CreatedById
 		{
-			get { return this._CreatedBy; }
+			get { return this._CreatedById; }
 
 			set
 			{
-				if (this._CreatedBy != value)
+				if (this._CreatedById != value)
 				{
 				
-                    this.OnCreatedByChanging(value);
+                    this.OnCreatedByIdChanging(value);
 					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedOn", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedOn", DbType="datetime")]
-		public DateTime? ModifiedOn
-		{
-			get { return this._ModifiedOn; }
-
-			set
-			{
-				if (this._ModifiedOn != value)
-				{
-				
-                    this.OnModifiedOnChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedOn = value;
-					this.SendPropertyChanged("ModifiedOn");
-					this.OnModifiedOnChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="nvarchar(50)")]
-		public string ModifiedBy
-		{
-			get { return this._ModifiedBy; }
-
-			set
-			{
-				if (this._ModifiedBy != value)
-				{
-				
-                    this.OnModifiedByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
+					this._CreatedById = value;
+					this.SendPropertyChanged("CreatedById");
+					this.OnCreatedByIdChanged();
 				}
 
 			}

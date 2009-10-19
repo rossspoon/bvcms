@@ -80,6 +80,18 @@
                     <td><%=Html.TextBox("state")%></td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td><label for="gender">Gender</label></td>
+                    <td><%= Html.RadioButton("gender", 1) %> Male
+                    <%= Html.RadioButton("gender", 2) %> Female</td>
+                    <td><%= Html.ValidationMessage("gender") %></td>
+                </tr>
+                <tr>
+                    <td><label for="gender">Marital Status</label></td>
+                    <td><%= Html.RadioButton("married", 20) %> Married
+                    <%= Html.RadioButton("married", 10) %> Single</td>
+                    <td><%= Html.ValidationMessage("married") %></td>
+                </tr>
                 <% } %>
                 <tr>
                     <td><label for="quantity">Quantity</label></td>

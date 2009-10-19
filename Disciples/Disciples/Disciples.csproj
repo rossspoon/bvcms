@@ -141,9 +141,6 @@
       <DependentUpon>Users_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Users_edit.aspx.designer.cs">
-      <DependentUpon>Users_edit.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Agreement.aspx.cs">
       <DependentUpon>Agreement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -638,6 +635,9 @@
     <Compile Include="Admin\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Users_edit.aspx.designer.cs">
+      <DependentUpon>Users_edit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Resource1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -816,7 +816,7 @@
     <Content Include="images\blogo.jpg" />
     <Content Include="images\Crosses.png" />
     <Content Include="js\addresses.js" />
-    <Content Include="App_Themes\Default\meyerweb.css" />
+    <Content Include="App_Themes\Default\meyerweb2.css" />
     <Content Include="App_Themes\Other\print.css" />
     <Content Include="App_Themes\Other\skel.css" />
     <Content Include="App_Themes\Other\theme.css" />
@@ -1520,6 +1520,10 @@
     <Content Include="ckeditor\_tests\_assets\sample.txt" />
     <Content Include="ckeditor\_tests\_assets\sample.xml" />
     <Content Include="ckeditor\_tests\_assets\sample_xml.txt" />
+    <Content Include="images\arrow_left.gif" />
+    <Content Include="images\arrow_right2.gif" />
+    <Content Include="js\jquery.corners.js" />
+    <Content Include="js\newExcanvas.js" />
     <Content Include="Verse\Chron.aspx" />
     <Content Include="Verse\DailyReadingChron.aspx" />
     <EmbeddedResource Include="Resources.resx">

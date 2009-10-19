@@ -476,7 +476,7 @@ namespace DiscData
             u.Comment = user.Comment;
             Db.SubmitChanges();
         }
-
+ 
         public override bool ValidateUser(string username, string password)
         {
             var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);

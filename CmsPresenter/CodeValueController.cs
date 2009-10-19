@@ -588,16 +588,16 @@ namespace CMSPresenter
                     select new CodeValueItem
                     {
                         Id = u.Boss.UserId,
-                        Code = u.Boss.Person.EmailAddress,
-                        Value = u.Boss.Username
+                        Code = u.Boss.EmailAddress,
+                        Value = u.Boss.Name
                     };
             var list = q.ToList();
             if (user != null)
                 list.Insert(0, new CodeValueItem 
                 { 
                     Id = user.UserId, 
-                    Code = user.Person.EmailAddress, 
-                    Value = user.Name2 
+                    Code = user.EmailAddress, 
+                    Value = user.Name 
                 });
             return list;
         }

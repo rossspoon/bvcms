@@ -17,6 +17,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using System.Text;
 using System.Web.Configuration;
+using System.Net.Mime;
 
 namespace CMSWeb
 {
@@ -86,7 +87,7 @@ namespace CMSWeb
             {
                 var msg = new MailMessage(From, a);
                 msg.Subject = Subject;
-                msg.Body = "<html><body>\n" + Message + "\n</body></html>\n";
+                msg.Body = "<html>\r\n" + Message + "\r\n</html>";
                 msg.IsBodyHtml = true;
                 if (i % 20 == 0)
                     smtp = new SmtpClient();
@@ -117,50 +118,71 @@ namespace CMSWeb
             var sb = new StringBuilder();
             SmtpClient smtp = null;
             var i = 0;
+
+            var bhtml = "<html>\r\n" + Util.SafeFormat(Message) + "\r\n</html>";
+
             foreach (var p in people)
             {
                 if (!p.EmailAddress.HasValue())
                     continue;
-                if(Util.ValidEmail(p.EmailAddress))
+                if (Util.ValidEmail(p.EmailAddress))
                 {
                     var to = new MailAddress(p.EmailAddress, p.Name);
                     var msg = new MailMessage(From, to);
                     msg.Subject = Subject;
-                    var b = Message.Replace("{name}", p.Name);
-                    b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                    b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                    msg.Body = "<html><body>\n" + b + "\n</body></html>\n";
+
+                    string firstnick = p.NickName.HasValue() ? p.NickName : p.FirstName;
+
+                    var text = Message;
+                    text = text.Replace("{name}", p.Name);
+                    text = text.Replace("{first}", firstnick);
+                    text = text.Replace("{firstname}", firstnick);
+                    msg.Body = text;
+
+                    var html = bhtml;
+                    html = html.Replace("{name}", p.Name);
+                    html = html.Replace("{first}", firstnick);
+                    html = html.Replace("{firstname}", firstnick);
+
+                    var bytes = Encoding.UTF8.GetBytes(html);
+                    var htmlStream = new MemoryStream(bytes);
+                    var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
+                    htmlView.TransferEncoding = TransferEncoding.SevenBit;
+                    msg.AlternateViews.Add(htmlView);
 
                     if (a != null)
                         msg.Attachments.Add(a);
 
-                    msg.IsBodyHtml = true;
                     if (i % 20 == 0)
                         smtp = new SmtpClient();
                     i++;
                     smtp.Send(msg);
-                    sb.AppendFormat("\"{1}\" &lt;{0}&gt; ({2})<br />\n".Fmt(p.EmailAddress, p.Name, p.PeopleId));
+                    htmlView.Dispose();
+                    htmlStream.Dispose();
+                    sb.AppendFormat("\"{0}\" <{1}> ({2})\r\n".Fmt(p.Name, p.EmailAddress, p.PeopleId));
                 }
                 else
                 {
                     var msg = new MailMessage(From, From);
                     msg.Subject = "not a valid email address";
-                    msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
-                    msg.IsBodyHtml = true;
+                    msg.Body = "Addressed to: " + p.EmailAddress + "\r\n"
+                        + "Name: " + p.Name + "\r\n\r\n"
+                        + Message.Replace("{name}", p.Name).Replace("{first}", p.NickName ?? p.FirstName);
+                    msg.IsBodyHtml = false;
                     if (i % 20 == 0)
                         smtp = new SmtpClient();
                     i++;
                     smtp.Send(msg);
                 }
             }
-            sb.Append("<br />\n");
+            sb.Append("\r\n");
             sb.Append(Message);
             smtp = new SmtpClient();
 
             var mr = new MailMessage(From, From);
             mr.Subject = "sent emails";
             mr.Body = sb.ToString();
-            mr.IsBodyHtml = true;
+            mr.IsBodyHtml = false;
             smtp.Send(mr);
 
             mr = new MailMessage();
@@ -168,35 +190,8 @@ namespace CMSWeb
             mr.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
             mr.Subject = "sent emails";
             mr.Body = sb.ToString();
-            mr.IsBodyHtml = true;
+            mr.IsBodyHtml = false;
             smtp.Send(mr);
-        }
-        public void SendPersonEmail(Person p, string subject, string message)
-        {
-            Subject = subject;
-            Message = message;
-
-            var smtp = new SmtpClient();
-            if(Util.ValidEmail(p.EmailAddress))
-            {
-                var to = new MailAddress(p.EmailAddress, p.Name);
-                var msg = new MailMessage(From, to);
-                msg.Subject = Subject;
-                var b = Message.Replace("{name}", p.Name);
-                b = b.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                b = b.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-                msg.Body = "<html><body>\n" + b + "\n</body></html>\n";
-                msg.IsBodyHtml = true;
-                smtp.Send(msg);
-            }
-            else
-            {
-                var msg = new MailMessage(From, From);
-                msg.Subject = "bad email address";
-                msg.Body = "Addressed to: \"" + p.EmailAddress + "\"<br/>" + "Name: " + p.Name + "<br/><br/>" + Message.Replace("{name}", p.Name).Replace("{firstname}", p.NickName ?? p.FirstName);
-                msg.IsBodyHtml = true;
-                smtp.Send(msg);
-            }
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {

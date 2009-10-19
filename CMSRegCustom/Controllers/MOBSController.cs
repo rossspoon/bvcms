@@ -64,12 +64,11 @@ namespace CMSRegCustom.Controllers
 
             Util.Email2(m.email,
                     DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress), "MOBS Registration",
-@"{0}({1}) has registered for MOBS event on {2} (check cms to confirm feepaid)</p>".Fmt(
+"{0}({1}) has registered for MOBS event on {2}\r\n(check cms to confirm feepaid)".Fmt(
 m.person.Name, m.peopleid, m.MeetingTime));
 
             TempData["regid"] = reg.Id;
             return RedirectToAction("Payment");
-
         }
         public ActionResult Payment()
         {

@@ -138,8 +138,8 @@ namespace CMSRegCustom.Controllers
         {
             Util.Email2(smtp, email,
                                 DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
-@"{0}({1}) registered for {3} for the following date:</p>
-<p>{2:ddd MMM d, yyyy h:mm tt}</p>".Fmt(
+@"{0}({1}) registered for {3} for the following date:
+{2:ddd MMM d, yyyy h:mm tt}".Fmt(
             p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
         }
 

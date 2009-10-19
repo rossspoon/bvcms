@@ -140,8 +140,8 @@ namespace CMSRegCustom.Controllers
             m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
             Util.Email2(m.email,
                                 DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress), "Step Class Registration",
-@"{0}({1}) registered in the {3} Class for the following date:</p>
-<p>{2:ddd MMM d, yyyy h:mm tt} to {4:h:mm tt}</p>".Fmt(
+@"{0}({1}) registered in the {3} Class for the following date:
+{2:ddd MMM d, yyyy h:mm tt} to {4:h:mm tt}".Fmt(
             m.person.Name, m.person.PeopleId, m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
         }
     }

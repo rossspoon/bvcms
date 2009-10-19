@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSRegCustom.Models.GODisciplesModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title><%=ViewData["title"] %></title>
+    <title><%=ViewData["header"] %></title>
     <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 </asp:Content>
 
@@ -21,7 +21,7 @@
         });
     </script>
 <% } %>
-    <h2><%=ViewData["title"] %></h2>
+    <h2><%=Model.GroupDescription %></h2>
     <% using (Html.BeginForm(Model.action, "GODisciples")) { %>
         <div>
             <fieldset>
@@ -42,7 +42,7 @@
                  <tr>
                     <td><label for="dob">Date of Birth</label></td>
                     <td><%= Html.TextBox("dob") %></td>
-                    <td><%= Html.ValidationMessage("dob") %></td>
+                    <td>(m/d/yy or mmddyy) <%= Html.ValidationMessage("dob") %></td>
                 </tr>
                 <tr>
                     <td><label for="phone">Phone</label></td>
@@ -54,7 +54,8 @@
                 <tr>
                     <td><label for="email">Contact Email</label></td>
                     <td><%= Html.TextBox("email", Model.email, new { maxlength = 50 })%></td>
-                    <td><%= Html.ValidationMessage("email") %></td>
+                    <td><%= Html.CheckBox("preferredemail") %> preferred email
+                    <%= Html.ValidationMessage("email") %></td>
                 </tr>
             <% if (Model.shownew)
                { %>
@@ -79,6 +80,18 @@
                     <td><label for="state">State</label></td>
                     <td><%=Html.TextBox("state")%></td>
                     <td></td>
+                </tr>
+                <tr>
+                    <td><label for="gender">Gender</label></td>
+                    <td><%= Html.RadioButton("gender", 1) %> Male
+                    <%= Html.RadioButton("gender", 2) %> Female</td>
+                    <td><%= Html.ValidationMessage("gender") %></td>
+                </tr>
+                <tr>
+                    <td><label for="gender">Marital Status</label></td>
+                    <td><%= Html.RadioButton("married", 20) %> Married
+                    <%= Html.RadioButton("married", 10) %> Single</td>
+                    <td><%= Html.ValidationMessage("married") %></td>
                 </tr>
                 <% } %>
                 <tr>

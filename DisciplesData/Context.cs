@@ -22,7 +22,7 @@ namespace DiscData
         }
         public User GetUser(string username)
         {
-            return Users.SingleOrDefault(u => u.Username == username);
+            return Users.FirstOrDefault(u => u.Username == username);
         }
         public User GetUser(int? id)
         {

@@ -25,12 +25,12 @@ namespace BellevueTeachers
                 var u = DbUtil.Db.CurrentUser;
                 Panel1.Visible = false;
                 var gc = Group.FetchUserGroups();
-
                 if (!u.DefaultGroup.HasValue() && gc.Count() > 0)
                 {
                     u.DefaultGroup = gc.First().Name;
                     DbUtil.Db.SubmitChanges();
                 }
+
                 string groupname = Request.QueryString<string>("group");
                 Group g;
                 switch (groupname)
@@ -53,7 +53,7 @@ namespace BellevueTeachers
                         if (g != null && (User.IsInRole("Administrator") || g.IsMember || g.IsAdmin))
                         {
                             defaultTop.Content = g.WelcomeText;
-                            if (g.IsAdmin || g.IsBlogger)
+                            if (User.IsInRole("Administrator") || g.IsAdmin || g.IsBlogger)
                                 defaultTop.CanEdit = true;
                         }
                         else if (Group.FetchUserGroups().Count() > 0)

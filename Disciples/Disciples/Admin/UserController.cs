@@ -120,7 +120,7 @@ public class UserController
                 q = q.OrderByDescending(u => u.MustChangePassword);
                 break;
         }
-        //q = q.Skip(startIndex).Take(maximumRows);
+        q = q.Skip(startIndex).Take(maximumRows);
 
         return q;
     }

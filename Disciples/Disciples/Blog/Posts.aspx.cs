@@ -16,7 +16,7 @@ public partial class Blog_Posts : System.Web.UI.Page
             category = a[1];
         blog = Blog.LoadByName(name);
         Archives1.blog = blog;
-        if (blog == null || (!blog.IsMember && !blog.IsPublic))
+        if (blog == null || !User.IsInRole("Administrator") && !blog.IsMember && !blog.IsPublic)
             Response.Redirect("/");
         AddEntry.NavigateUrl = "/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;

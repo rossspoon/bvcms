@@ -48,10 +48,10 @@ namespace BellevueTeachers
                     list.Add(u.lowUser, u);
                 }
             }
-            using (var cn = new SqlConnection(ConfigurationManager.ConnectionStrings["BTea"].ConnectionString))
+            using (var cn = new SqlConnection(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString))
             {
                 cn.Open();
-                var cmd = new SqlCommand("select username from aspnet_Users where IsAnonymous = 0", cn);
+                var cmd = new SqlCommand("select username from Users", cn);
                 var rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {

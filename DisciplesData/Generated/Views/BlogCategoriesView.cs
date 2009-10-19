@@ -27,7 +27,7 @@ namespace DiscData.View
 
 		
 		
-		[Column(Name="Category", Storage="_Category", DbType="nvarchar(50) NOT NULL")]
+		[Column(Name="Category", Storage="_Category", DbType="varchar(50)")]
 		public string Category
 		{
 			get

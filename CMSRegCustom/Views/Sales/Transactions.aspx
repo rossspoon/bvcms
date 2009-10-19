@@ -13,6 +13,9 @@
                 Quantity
             </th>
             <th>
+                Amount
+            </th>
+            <th>
                 Description
             </th>
             <th>
@@ -20,6 +23,12 @@
             </th>
             <th>
                 RegisteredOn
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Password
             </th>
         </tr>
 
@@ -43,6 +52,10 @@
             </td>
             <td>
                 <%= Html.Encode(String.Format("{0:ddd MMM d hh:mm}", item.SaleDate)) %>
+            </td>
+            <td><%=item.Username %>
+            </td>
+            <td><%=item.Password %>
             </td>
         </tr>
     

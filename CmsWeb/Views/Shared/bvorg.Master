@@ -60,6 +60,7 @@ text-transform: none;
   font-weight: bold;
 }
       </style>
+    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
    </head>
    <body>
      <div class="frame">

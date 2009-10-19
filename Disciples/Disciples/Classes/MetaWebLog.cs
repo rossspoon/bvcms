@@ -10,7 +10,6 @@ using UtilityExtensions;
 
 public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
 {
-
     private bool Authenticate(int groupid, string username, string password)
     {
         var g = Group.LoadById(groupid);
@@ -18,7 +17,6 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
         return Membership.ValidateUser(username, password) && g.IsUserBlogger(user);
     }
 
-    #region IMetaWeblog Members
     public BlogInfo[] getUsersBlogs(string appKey, string username, string password)
     {
         if (!Membership.ValidateUser(username, password))
@@ -155,7 +153,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
         if (Authenticate(b.GroupId.Value, username, password))
         {
             if (post.dateCreated < DateTime.Today.AddYears(-5))
-                post.dateCreated = DateTime.UtcNow;
+                post.dateCreated = DateTime.Now;
             else
                 post.dateCreated = post.dateCreated.ToLocalTime();
             BlogPost p = b.NewPost(post.title, post.description, username, post.dateCreated);
@@ -217,6 +215,4 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
         }
         throw new CookComputing.XmlRpc.XmlRpcFaultException(0, "Invalid credentials. Access denied");
     }
-
-    #endregion
 }

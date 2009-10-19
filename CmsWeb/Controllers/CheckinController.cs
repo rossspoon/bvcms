@@ -47,6 +47,7 @@ namespace CMSWeb.Controllers
                      where om.Organization.CanSelfCheckin.Value
                      where om.Organization.CampusId == campus || campus == null
                      where om.Person.FamilyId == id
+                     where om.Person.DeceasedDate == null
                      //where now.TimeOfDay > om.Organization.WeeklySchedule.MeetingTime.AddDays(-1).TimeOfDay
                      //where now.TimeOfDay < om.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
                      select new

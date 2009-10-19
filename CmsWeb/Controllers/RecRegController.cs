@@ -111,7 +111,7 @@ namespace CMSWeb.Controllers
 
             Util.Email2(m.email,
                     DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(m.division.Name),
-@"{0}({1}) has registered for {2}: {3} (check cms to confirm feepaid)</p>".Fmt(
+"{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)".Fmt(
 m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
 
             if ((reg.FeePaid ?? false) == true)

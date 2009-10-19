@@ -86,10 +86,6 @@ namespace DiscData
         partial void UpdatePendingNotification(PendingNotification instance);
         partial void DeletePendingNotification(PendingNotification instance);
         
-        partial void InsertPersonalPage(PersonalPage instance);
-        partial void UpdatePersonalPage(PersonalPage instance);
-        partial void DeletePersonalPage(PersonalPage instance);
-        
         partial void InsertPodCast(PodCast instance);
         partial void UpdatePodCast(PodCast instance);
         partial void DeletePodCast(PodCast instance);
@@ -133,10 +129,6 @@ namespace DiscData
         partial void InsertVerseCategoryXref(VerseCategoryXref instance);
         partial void UpdateVerseCategoryXref(VerseCategoryXref instance);
         partial void DeleteVerseCategoryXref(VerseCategoryXref instance);
-        
-        partial void InsertWall(Wall instance);
-        partial void UpdateWall(Wall instance);
-        partial void DeleteWall(Wall instance);
         
         partial void InsertWord(Word instance);
         partial void UpdateWord(Word instance);
@@ -282,12 +274,6 @@ namespace DiscData
 
 		}
 
-		public Table< PersonalPage> PersonalPages
-		{
-			get	{ return this.GetTable< PersonalPage>(); }
-
-		}
-
 		public Table< PodCast> PodCasts
 		{
 			get	{ return this.GetTable< PodCast>(); }
@@ -351,12 +337,6 @@ namespace DiscData
 		public Table< VerseCategoryXref> VerseCategoryXrefs
 		{
 			get	{ return this.GetTable< VerseCategoryXref>(); }
-
-		}
-
-		public Table< Wall> Walls
-		{
-			get	{ return this.GetTable< Wall>(); }
 
 		}
 

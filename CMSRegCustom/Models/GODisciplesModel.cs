@@ -43,11 +43,12 @@ namespace CMSRegCustom.Models
         public string last { get; set; }
         public string dob { get; set; }
         public int? gender { get; set; }
+        public int? married { get; set; }
         public DateTime birthday;
         public string phone { get; set; }
         public string homecell { get; set; }
         public string email { get; set; }
-        public bool preferredEmail { get; set; }
+        public bool preferredemail { get; set; }
 
         public bool shownew { get; set; }
         public string addr { get; set; }
@@ -59,6 +60,16 @@ namespace CMSRegCustom.Models
         private Organization neworg;
         private Organization leaderorg;
         private DiscData.Group discorg;
+        public string GroupDescription
+        {
+            get
+            {
+                if (neworg == null)
+                    return "GO Disciples Leaders";
+                else
+                    return "GO Disciples, " + neworg.OrganizationName;
+            }
+        }
         public string MemberSignupUrl
         {
             get
@@ -121,6 +132,8 @@ namespace CMSRegCustom.Models
             {
                 if (!gender.HasValue)
                     modelState.AddModelError("gender", "gender required");
+                if (!married.HasValue)
+                    modelState.AddModelError("married", "marital status required");
                 if (!addr.HasValue())
                     modelState.AddModelError("addr", "need address");
                 if (zip.GetDigits().Length != 5)
@@ -141,9 +154,11 @@ namespace CMSRegCustom.Models
                         modelState.AddModelError("find", "Cannot find church record.");
                         shownew = true;
                     }
+                    else
+                        AddPerson();
             }
         }
-        internal void AddPerson()
+        private void AddPerson()
         {
             var f = new Family
             {
@@ -153,7 +168,7 @@ namespace CMSRegCustom.Models
                 ZipCode = zip,
             };
             var p = Person.Add(f, 30,
-                null, first.Trim(), null, last.Trim(), dob, false, 1,
+                null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
                     DbUtil.Settings("GODisciplesOrigin", "0").ToInt(),
                     DbUtil.Settings("GODisciplesEntry", "0").ToInt());
             p.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
@@ -178,57 +193,79 @@ namespace CMSRegCustom.Models
             MakeUserOnCms();
             MakeDiscUser();
 
-            // make a group on disciples with a unique name
-
-            var startname = "{0} {1} Group".Fmt(person.FirstName, person.LastName);
-            var groupname = startname;
-            var i = 1;
-            while (DiscData.Group.LoadByName(groupname) != null
-                && DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationName == groupname) != null)
-                groupname = startname + " " + i++;
-
-            DiscData.Group.InsertWithRolesOnSubmit(groupname);
-            DiscData.DbUtil.Db.SubmitChanges();
+            var groupname = "{0} {1} Group".Fmt(
+                person.NickName.HasValue() ? person.NickName : person.FirstName,
+                person.LastName);
             var g = DiscData.Group.LoadByName(groupname);
+            if (!DiscData.Group.IsUserAdmin(discuser, groupname))
+            {
+                // make a group on disciples with a unique name
+                var startname = groupname;
+                var i = 1;
+                while (DiscData.Group.LoadByName(groupname) != null
+                    || DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationName == groupname) != null)
+                    groupname = startname + " " + i++;
+                DiscData.Group.InsertWithRolesOnSubmit(groupname);
+                DiscData.DbUtil.Db.SubmitChanges();
+                g = DiscData.Group.LoadByName(groupname);
+
+                // add Welcome Text
+                var cw = DbUtil.Content("GODisciplesGroupWelcome");
+                if (cw != null)
+                {
+                    g.WelcomeText.Title = cw.Title.Replace("{name}", groupname);
+                    g.WelcomeText.Body = cw.Body.Replace("{leader}", person.Name);
+                }
+                discuser.ForceLogin = true;
+                DiscData.DbUtil.Db.SubmitChanges();
+
+                // make a blog on disciples
+                var b = new DiscData.Blog();
+                b.Title = groupname + " Blog";
+                b.Name = b.Title.Replace(" ", "");
+                b.Description = DbUtil.Settings("GODisciplesBlogDescription", "A Small Group Discussion");
+                b.GroupId = g.Id;
+                DiscData.DbUtil.Db.Blogs.InsertOnSubmit(b);
+                DiscData.DbUtil.Db.SubmitChanges();
+
+                // make a new first post on blog
+                var firstpost = DbUtil.Content("GODisciplesFirstPost");
+                var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, DateTime.Now);
+                var cat = DiscData.DbUtil.Db.Categories.Single(ca => ca.Name == "Discipleship");
+                var bc = new DiscData.BlogCategoryXref { CatId = cat.Id };
+                p.BlogCategoryXrefs.Add(bc);
+                DiscData.DbUtil.Db.SubmitChanges();
+
+                // create a new cms org
+                neworg = leaderorg.CloneOrg();
+                neworg.OrganizationName = groupname;
+                DbUtil.Db.SubmitChanges();
+            }
+            else
+            {
+                leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
+                    o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
+                neworg = DbUtil.Db.Organizations.SingleOrDefault(o =>
+                    o.OrganizationName == groupname);
+            }
+
+
             g.SetAdmin(discuser, true);
             g.SetBlogger(discuser, true);
             g.SetMember(discuser, true);
-            DiscData.DbUtil.Db.SubmitChanges();
 
             var leaderg = DiscData.Group.LoadByName(DbUtil.Settings("GoDisciplesLeadersGroup", "GO Disciples Leaders"));
+            leaderg.SetMember(discuser, true);
+            discuser.DefaultGroup = leaderg.Name;
 
-
-            // add Welcome Text
-            var cw = DbUtil.Content("GODisciplesGroupWelcome");
-            if (cw != null)
-            {
-                g.WelcomeText.Title = cw.Title.Replace("{name}", groupname);
-                g.WelcomeText.Body = cw.Body.Replace("{leader}", person.Name);
-            }
-
-            // make a blog on disciples
-            var b = new DiscData.Blog();
-            b.Title = groupname + " Blog";
-            b.Name = b.Title.Replace(" ", "");
-            b.Description = DbUtil.Settings("GODisciplesBlogDescription", "A Small Group Discussion");
-            b.GroupId = g.Id;
-            DiscData.DbUtil.Db.Blogs.InsertOnSubmit(b);
             DiscData.DbUtil.Db.SubmitChanges();
-
-            // create a new cms org
-            leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
-                o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
-
-            neworg = leaderorg.CloneOrg();
-            neworg.OrganizationName = groupname;
-            DbUtil.Db.SubmitChanges();
 
             // make member of leaders
             OrganizationMember.InsertOrgMembers(leaderorg.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member,
                 DateTime.Now, null, false);
 
-            // make leader of own new group
+            // make leader of own new org
             OrganizationMember.InsertOrgMembers(neworg.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Leader,
                 DateTime.Now, null, false);
@@ -241,6 +278,8 @@ namespace CMSRegCustom.Models
             MakeDiscUser();
             var g = DiscData.Group.LoadByName(neworg.OrganizationName);
             g.SetMember(discuser, true);
+            discuser.DefaultGroup = g.Name;
+            discuser.ForceLogin = true;
             DiscData.DbUtil.Db.SubmitChanges();
         }
         private string _username;
@@ -248,7 +287,7 @@ namespace CMSRegCustom.Models
         {
             get
             {
-                if(_username == null)
+                if (_username == null)
                 {
                     var q = from u in DbUtil.Db.Users
                             where u.PeopleId == person.PeopleId
@@ -272,10 +311,10 @@ namespace CMSRegCustom.Models
                 if (_password == null)
                 {
                     var q = from u in DiscData.DbUtil.Db.Users
-                             where u.PeopleId == person.PeopleId
-                             orderby u.LastActivityDate descending
-                             select u;
-                    var dser = q.SingleOrDefault();
+                            where u.PeopleId == person.PeopleId
+                            orderby u.LastActivityDate descending
+                            select u;
+                    var dser = q.FirstOrDefault();
                     if (dser != null && Membership.Provider.ValidateUser(username, dser.Password))
                         _password = dser.Password;
                     else
@@ -287,7 +326,8 @@ namespace CMSRegCustom.Models
         private void MakeDiscUser()
         {
             bool userexists;
-            do {
+            do
+            {
                 var q3 = from u in DiscData.DbUtil.Db.Users
                          where u.Username == username
                          where u.PeopleId != person.PeopleId
@@ -310,63 +350,123 @@ namespace CMSRegCustom.Models
                 discuser.Username = username; // force username to be this name
             }
             else
+            {
                 discuser = DiscData.BVMembershipProvider.MakeNewUser(
                     username, password, email,
                     true, person.PeopleId);
-
+                discuser = DiscData.DbUtil.Db.Users.Single(u => u.UserId == discuser.UserId);
+                discuser.FirstName = person.FirstName;
+                discuser.LastName = person.LastName;
+                discuser.BirthDay = person.GetBirthdate();
+            }
             DiscData.DbUtil.Db.SubmitChanges();
         }
         private void MakeUserOnCms()
         {
+            const string STR_Attendance = "Attendance";
+            const string STR_Staff = "Staff";
             var user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
             if (user != null)
+            {
                 MembershipService.ChangePassword(username, password);
+                user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
+                var roles = user.Roles.ToList();
+                if (!roles.Contains(STR_Attendance))
+                    roles.Add(STR_Attendance);
+                if (!roles.Contains(STR_Staff))
+                    roles.Add(STR_Staff);
+                user.Roles = roles.ToArray();
+            }
             else
+            {
                 user = MembershipService.CreateUser(person.PeopleId, username, password);
+                user.Roles = new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff };
+            }
+            DbUtil.Db.SubmitChanges();
         }
         public void EmailLeaderNotices()
         {
-            string email = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
             var c = DbUtil.Content("GODisciplesLeaderConfirm");
             if (c == null)
                 return;
             var p = person;
-            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-            c.Body = c.Body.Replace("{username}", discuser.Username);
-            c.Body = c.Body.Replace("{password}", discuser.Password);
-            c.Body = c.Body.Replace("{groupname}", neworg.OrganizationName);
-            c.Body = c.Body.Replace("{membersignupurl}", MemberSignupUrl);
-            c.Body = c.Body.Replace("{cmsorgpageurl}", CmsOrgPageUrl);
-            c.Body = c.Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            c.Body = c.Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
+            var Body = c.Body;
+            Body = Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            Body = Body.Replace("{username}", discuser.Username);
+            Body = Body.Replace("{password}", discuser.Password);
+            Body = Body.Replace("{groupname}", neworg.OrganizationName);
+            Body = Body.Replace("{membersignupurl}", MemberSignupUrl);
+            Body = Body.Replace("{cmsorgpageurl}", CmsOrgPageUrl);
+            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
 
             var smtp = new SmtpClient();
-            Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, p.EmailAddress, email, "new GO leader registration in cms",
-                "{0}({1}) joined {2}<br/>\nand has his own {3}".Fmt(
-                p.Name, p.PeopleId, leaderorg.OrganizationName, neworg.OrganizationName));
+            Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);
+            Util.Email2(smtp, email, adminmail, "new GO leader registration in cms",
+                "{0}({1},{2}) joined {3}\r\nand has {4} own {5}".Fmt(
+                p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName,
+                p.GenderId == 2 ? "her" : "his",
+                neworg.OrganizationName));
+
+            UpdateEmailPhone(smtp, adminmail, p);
         }
         public void EmailMemberNotices()
         {
-            string email = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
             var c = DbUtil.Content("GODisciplesConfirm");
             if (c == null)
                 return;
             var p = person;
-            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-            c.Body = c.Body.Replace("{username}", discuser.Username);
-            c.Body = c.Body.Replace("{password}", discuser.Password);
-            c.Body = c.Body.Replace("{groupname}", neworg.OrganizationName);
-            c.Body = c.Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            c.Body = c.Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
+            var Body = c.Body;
+            Body = Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            Body = Body.Replace("{username}", discuser.Username);
+            Body = Body.Replace("{password}", discuser.Password);
+            Body = Body.Replace("{groupname}", neworg.OrganizationName);
+            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
 
             var smtp = new SmtpClient();
-            Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, p.EmailAddress, email, "new GO disciple registration in cms",
-                "{0}({1}) joined {2}".Fmt(p.Name, p.PeopleId, neworg.OrganizationName));
-            var leader = DbUtil.Db.People.Single(l => l.PeopleId == neworg.LeaderId);
-            Util.Email2(smtp, p.EmailAddress, leader.EmailAddress, "new GO disciple registration",
-                "{0}({1}) joined {2}".Fmt(p.Name, p.PeopleId, neworg.OrganizationName));
+            Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);
+            Util.Email2(smtp, email, adminmail, "new GO disciple registration in cms",
+                "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            var q = from om in neworg.OrganizationMembers
+                    where om.MemberTypeId == neworg.LeaderMemberTypeId
+                    select om.Person;
+            var leader = q.FirstOrDefault();
+            if (leader != null)
+                Util.Email2(smtp, email, leader.EmailAddress, "new GO disciple registration",
+                    "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            UpdateEmailPhone(smtp, adminmail, p);
+        }
+        private void UpdateEmailPhone(SmtpClient smtp, string adminmail, Person p)
+        {
+            if (email != p.EmailAddress && preferredemail)
+            {
+                const string subject = "updated email address";
+                const string message =
+@"We have updated your email address from {0} to {1}.<br />
+If this is not correct, please reply and let us know.";
+
+                Util.Email(smtp, adminmail, p.Name, email, subject,
+                    message.Fmt(p.EmailAddress, email));
+                Util.Email(smtp, adminmail, p.Name, p.EmailAddress, subject,
+                    message.Fmt(p.EmailAddress, email));
+                p.EmailAddress = email;
+            }
+            if (homecell == "c" && !p.CellPhone.EndsWith(phone.GetDigits()))
+            {
+                const string subject = "updated cell phone";
+                const string message =
+@"We have updated your cell phone from {0} to {1}.<br />
+If this is not correct, please reply and let us know.";
+                var oldphone = p.CellPhone.FmtFone();
+                if (oldphone.HasValue())
+                    Util.Email(smtp, adminmail, p.Name, p.EmailAddress, subject,
+                        message.Fmt(oldphone, phone.FmtFone()));
+                p.CellPhone = phone;
+            }
+            DbUtil.Db.SubmitChanges();
         }
     }
 }

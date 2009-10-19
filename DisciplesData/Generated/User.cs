@@ -77,6 +77,8 @@ namespace DiscData
 		
 		private bool? _NotifyEnabled;
 		
+		private bool? _ForceLogin;
+		
    		
    		private EntitySet< Page> _CreatedPages;
 		
@@ -105,8 +107,6 @@ namespace DiscData
    		private EntitySet< TemporaryToken> _TemporaryTokens;
 		
    		private EntitySet< UserRole> _UserRoles;
-		
-   		private EntitySet< Verse> _Verses;
 		
    		private EntitySet< VerseCategory> _VerseCategories;
 		
@@ -210,6 +210,9 @@ namespace DiscData
 		partial void OnNotifyEnabledChanging(bool? value);
 		partial void OnNotifyEnabledChanged();
 		
+		partial void OnForceLoginChanging(bool? value);
+		partial void OnForceLoginChanged();
+		
     #endregion
 		public User()
 		{
@@ -241,8 +244,6 @@ namespace DiscData
 			this._TemporaryTokens = new EntitySet< TemporaryToken>(new Action< TemporaryToken>(this.attach_TemporaryTokens), new Action< TemporaryToken>(this.detach_TemporaryTokens)); 
 			
 			this._UserRoles = new EntitySet< UserRole>(new Action< UserRole>(this.attach_UserRoles), new Action< UserRole>(this.detach_UserRoles)); 
-			
-			this._Verses = new EntitySet< Verse>(new Action< Verse>(this.attach_Verses), new Action< Verse>(this.detach_Verses)); 
 			
 			this._VerseCategories = new EntitySet< VerseCategory>(new Action< VerseCategory>(this.attach_VerseCategories), new Action< VerseCategory>(this.detach_VerseCategories)); 
 			
@@ -915,6 +916,28 @@ namespace DiscData
 		}
 
 		
+		[Column(Name="ForceLogin", UpdateCheck=UpdateCheck.Never, Storage="_ForceLogin", DbType="bit")]
+		public bool? ForceLogin
+		{
+			get { return this._ForceLogin; }
+
+			set
+			{
+				if (this._ForceLogin != value)
+				{
+				
+                    this.OnForceLoginChanging(value);
+					this.SendPropertyChanging();
+					this._ForceLogin = value;
+					this.SendPropertyChanged("ForceLogin");
+					this.OnForceLoginChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1055,16 +1078,6 @@ namespace DiscData
    		    get { return this._UserRoles; }
 
 			set	{ this._UserRoles.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_Verse_Users", Storage="_Verses", OtherKey="CreatedBy")]
-   		public EntitySet< Verse> Verses
-   		{
-   		    get { return this._Verses; }
-
-			set	{ this._Verses.Assign(value); }
 
    		}
 
@@ -1286,19 +1299,6 @@ namespace DiscData
 		}
 
 		private void detach_UserRoles(UserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-
-		
-		private void attach_Verses(Verse entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-
-		private void detach_Verses(Verse entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;

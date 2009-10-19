@@ -79,11 +79,11 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <asp:Label ID="lblNewPassword" runat="server" AssociatedControlID="NewPassword" Text="New Password: " />
+                                            <asp:Label ID="lblNewPassword" runat="server" AssociatedControlID="pw" Text="New Password: " />
                                         </td>
                                         <td>
-                                            <asp:TextBox runat="server" ID="NewPassword" TextMode="Password" MaxLength="50" TabIndex="103"
-                                                Columns="20" />&nbsp;
+                                            <asp:TextBox runat="server" ID="pw" TextMode="Password" MaxLength="50" TabIndex="103"
+                                                Columns="20" autocomplete="off" />&nbsp;
                                         </td>
                                     </tr>
                                     <tr>

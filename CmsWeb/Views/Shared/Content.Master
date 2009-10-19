@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
-    <link rel="shortcut icon" href="/Content/favicon.ico" />
+    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />

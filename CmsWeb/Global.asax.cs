@@ -28,7 +28,7 @@ namespace CMSWeb
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.asmx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.js/{*pathInfo}");
-            routes.IgnoreRoute("{name}.ico");
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.IgnoreRoute("{name}.png");
             routes.IgnoreRoute("Admin/{*pathInfo}");
             routes.IgnoreRoute("AppReview/{*pathInfo}");

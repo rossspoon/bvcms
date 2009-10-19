@@ -664,9 +664,9 @@ namespace UtilityExtensions
             s = Regex.Replace(s, @"&quot;(.*?)&quot;\s*=\s*&quot;(.*?)&quot;",
                 "<a target=\"_new\" href=\"http://$2\">$1</a>", RegexOptions.Singleline);
             s = Regex.Replace(s, "&gt;&gt;&gt;(?:\r\n)?(.*?)(?:\r\n)?&lt;&lt;&lt;(?:\r\n)?",
-                "<p style='margin-left:.5in'>$1</p>", RegexOptions.Singleline);
+                "<blockquote>$1</blockquote>", RegexOptions.Singleline);
             s = s.Replace(System.Environment.NewLine, "\n");
-            return s.Replace("\n", "<br/>\n");
+            return s.Replace("\n", "<br>\r\n");
         }
 
         private static string HtmlFormat(string s, string lookfor, string htmlcode)

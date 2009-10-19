@@ -20,10 +20,11 @@ namespace CMSRegCustom.Models
         {
             
         }
+        public bool testing { get; set; }
         public int? itemid { get; set; }
         public decimal amount
         {
-            get { return saleitem.Price * quantity; }
+            get { return saleitem.Price * (testing ? 1 : quantity); }
         }
         public int quantity { get; set; }
         public int? peopleid { get; set; }
@@ -36,7 +37,7 @@ namespace CMSRegCustom.Models
         {
             get
             {
-                if ((string)HttpContext.Current.Session["test"] == "1")
+                if (testing)
                     return DbUtil.Settings("ServiceUOrgIDTest", "0");
                 return DbUtil.Settings("ServiceUOrgID", "0");
             }
@@ -45,7 +46,7 @@ namespace CMSRegCustom.Models
         {
             get
             {
-                if ((string)HttpContext.Current.Session["test"] == "1")
+                if (testing)
                     return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
                 return DbUtil.Settings("ServiceUOrgAccountID", "0");
             }
@@ -118,6 +119,7 @@ namespace CMSRegCustom.Models
         public string last { get; set; }
         public string dob { get; set; }
         public int? gender { get; set; }
+        public int? married { get; set; }
         public DateTime birthday;
 
         public bool shownew { get; set; }
@@ -169,6 +171,8 @@ namespace CMSRegCustom.Models
             {
                 if (!gender.HasValue)
                     modelState.AddModelError("gender", "gender required");
+                if (!married.HasValue)
+                    modelState.AddModelError("married", "marital status required");
                 if (!addr.HasValue())
                     modelState.AddModelError("addr", "need address");
                 if (zip.GetDigits().Length != 5)
@@ -189,6 +193,8 @@ namespace CMSRegCustom.Models
                         modelState.AddModelError("find", "Cannot find church record.");
                         shownew = true;
                     }
+                    else
+                        AddPerson();
             }
         }
         internal void AddPerson()
@@ -201,7 +207,7 @@ namespace CMSRegCustom.Models
                 ZipCode = zip,
             };
             var p = Person.Add(f, 30,
-                null, first.Trim(), null, last.Trim(), dob, false, 1,
+                null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
                     DbUtil.Settings("SaleOrigin", "0").ToInt(),
                     DbUtil.Settings("SaleEntry", "0").ToInt());
             p.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
@@ -243,7 +249,7 @@ namespace CMSRegCustom.Models
                 SaleDate = DateTime.Now,
                 ItemId = saleitem.Id,
                 ItemDescription = saleitem.Description,
-                Quantity = quantity,
+                Quantity = testing ? 1 : quantity,
                 Amount = amount,
                 EmailAddress = email,
             };
@@ -254,8 +260,8 @@ namespace CMSRegCustom.Models
         }
         public void SendNotice()
         {
-            Util.Email2(email, saleitem.Email, "Puchased Item",
-            @"{0}({1}) has purchased {2} {3} (check cms to confirm feepaid)</p>".Fmt(
+            Util.Email2(email, saleitem.Email, "Purchased Item",
+            "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(
             person.Name, peopleid, quantity, Description));
         }
     }

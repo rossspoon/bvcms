@@ -27,7 +27,7 @@ namespace UtilityExtensions
                 return;
             var msg = new MailMessage(fr, ma);
             msg.Subject = subject;
-            msg.Body = "<html><body>\n" + message + "\n</body></html>\n";
+            msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
             msg.BodyEncoding = System.Text.Encoding.UTF8;
             msg.IsBodyHtml = true;
             var InDebug = false;
@@ -47,9 +47,9 @@ namespace UtilityExtensions
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             msg.To.Add(addrs);
             msg.Subject = subject;
-            msg.Body = "<html><body>\n" + message + "\n</body></html>\n";
+            msg.Body = message;
             msg.BodyEncoding = System.Text.Encoding.UTF8;
-            msg.IsBodyHtml = true;
+            msg.IsBodyHtml = false;
             var InDebug = false;
 #if DEBUG
             InDebug = true;

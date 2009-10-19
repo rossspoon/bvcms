@@ -9,6 +9,10 @@ namespace DiscData
 {
     public class BVRoleProvider : RoleProvider
     {
+        public static BVRoleProvider provider
+        {
+            get { return Roles.Provider as BVRoleProvider; }
+        }
         public override string ApplicationName { get { return "disciples"; } set { } }
         public override void Initialize(string name, NameValueCollection config)
         {

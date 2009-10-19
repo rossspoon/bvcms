@@ -33,13 +33,8 @@ public partial class CMSParagraph : System.Web.UI.Page
         {
             text = new Content();
             DbUtil.Db.Contents.InsertOnSubmit(text);
-            text.CreatedBy = HttpContext.Current.User.Identity.Name;
+            text.CreatedById = DbUtil.Db.CurrentUser.UserId;
             text.CreatedOn = DateTime.Now;
-        }
-        else
-        {
-            text.ModifiedBy = HttpContext.Current.User.Identity.Name;
-            text.ModifiedOn = DateTime.Now;
         }
         text.Body = txtContent2.Text;
         text.Title = TextBox1.Text;

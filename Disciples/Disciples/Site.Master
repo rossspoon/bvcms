@@ -17,15 +17,14 @@
     <script src="/js/jquery.corner.js" type="text/javascript"></script>
     <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
     <script type="text/javascript">
-    $(document).ready(function(){ 
-        $("ul.sf-menu").supersubs({ 
-            minWidth:    8,
-            maxWidth:    27,
-            extraWidth:  1
-        }).superfish();
-    }); 
-    $(document).ready(function(){ 
-        $("#extra.front .panel").corner(); }); 
+        $(document).ready(function() {
+            $("ul.sf-menu").supersubs({
+                minWidth: 8,
+                maxWidth: 27,
+                extraWidth: 1
+            }).superfish();
+            $("#extra.front .panel").corner();
+        }); 
     </script>
 
 </head>

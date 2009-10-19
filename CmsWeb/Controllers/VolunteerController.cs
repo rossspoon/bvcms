@@ -41,13 +41,6 @@ namespace CMSWeb.Controllers
                     ModelState.AddModelError("find", "More than one match, sorry");
                 else if (count == 0)
                     ModelState.AddModelError("find", "Cannot find your church record");
-                else
-                {
-                    if (m.person.MemberStatusId != 10)
-                        ModelState.AddModelError("find", "You must be a member of the church");
-                    else if (m.person.Age < 16)
-                        ModelState.AddModelError("find", "You must be a at least 16");
-                }
             }
             if (!ModelState.IsValid)
                 return View(m);

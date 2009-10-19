@@ -40,18 +40,13 @@ namespace DiscData
         public IEnumerable<Forum> FetchAllForUser()
         {
             var list = Group.FetchIdsForUser();
-            if (user == "admin")
-                return DbUtil.Db.Forums.AsEnumerable();
-            else
-                return DbUtil.Db.Forums.Where(f => list.Contains(f.GroupId.Value));
+            return DbUtil.Db.Forums.Where(f => list.Contains(f.GroupId.Value));
         }
         [DataObjectMethod(DataObjectMethodType.Update, true)]
         public void Update(int Id, string Description)
         {
             var f = Forum.LoadFromId(Id);
             f.Description = Description;
-            f.ModifiedBy = user;
-            f.ModifiedOn = DateTime.Now;
             DbUtil.Db.SubmitChanges();
         }
         [DataObjectMethod(DataObjectMethodType.Delete, true)]

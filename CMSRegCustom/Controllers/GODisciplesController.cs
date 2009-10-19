@@ -21,7 +21,7 @@ namespace CMSRegCustom.Controllers
         }
         public ActionResult Leader()
         {
-            ViewData["title"] = DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Leader Registration";
+            ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Leader");
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
@@ -34,12 +34,11 @@ namespace CMSRegCustom.Controllers
             m.PerformLeaderSetup();
             m.EmailLeaderNotices();
 
-            TempData["orgid"] = m.neworgid;
-            return RedirectToAction("Confirm");
+            return RedirectToAction("Confirm", new { id = m.neworgid });
         }
         public ActionResult Disciple(int id)
         {
-            ViewData["title"] = DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration";
+            ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Disciple", id);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
@@ -52,15 +51,18 @@ namespace CMSRegCustom.Controllers
             m.PerformMemberSetup();
             m.EmailMemberNotices();
 
-            TempData["orgid"] = m.neworgid;
-            return RedirectToAction("Confirm");
+            return RedirectToAction("Confirm", new { id = m.neworgid });
         }
-        public ActionResult Confirm()
+        public ActionResult Confirm(int id)
         {
-            var id = TempData["orgid"].ToInt();
             var m = new GODisciplesModel("Confirm", id);
-            ViewData["title"] = DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration Successful";
+            ViewData["header"] = Header + " Successful";
             return View(m);
+        }
+
+        private string Header
+        {
+            get { return DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration"; }
         }
     }
 }

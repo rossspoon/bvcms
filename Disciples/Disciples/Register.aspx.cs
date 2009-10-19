@@ -25,18 +25,18 @@ namespace BellevueTeachers
             if (!Page.IsValid)
                 return;
 
-            //// check for duplicate in CMS
-            //using (var cn = new SqlConnection(ConfigurationManager.ConnectionStrings["CMS"].ConnectionString))
-            //{
-            //    cn.Open();
-            //    var cmd = new SqlCommand("select count(*) from dbo.Users where username = @username", cn);
-            //    cmd.Parameters.AddWithValue("@username", txtLogin.Text);
-            //    if (cmd.ExecuteScalar().ToInt() > 0)
-            //    {
-            //        usernameValidator.IsValid = false;
-            //        return;
-            //    }
-            //}
+            // check for duplicate in CMS
+            using (var cn = new SqlConnection(ConfigurationManager.ConnectionStrings["CMS"].ConnectionString))
+            {
+                cn.Open();
+                var cmd = new SqlCommand("select count(*) from dbo.Users where username = @username", cn);
+                cmd.Parameters.AddWithValue("@username", txtLogin.Text);
+                if (cmd.ExecuteScalar().ToInt() > 0)
+                {
+                    usernameValidator.IsValid = false;
+                    return;
+                }
+            }
 
             //register them
 

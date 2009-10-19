@@ -8,6 +8,31 @@
     <script type="text/javascript">
         $(function() {
             $('input:text:first').focus();
+            $('#dob').change(function() {
+                var bd = $(this).val();
+                if (bd.length == 6)
+                    bd = bd.substr(0, 1) + '/' + bd.substr(2, 3) + '/' + bd.substr(4, 5);
+                else
+                    bd = bd.replace("-", "/");
+                var d = bd.split("/");
+                var y = parseInt(d[2]);
+                if (y < 30)
+                    y += 2000;
+                if (y < 100)
+                    y += 1900;
+                var bday = new Date(y, d[0] - 1, d[1]);
+                var by = bday.getFullYear();
+                var bm = bday.getMonth();
+                var bd = bday.getDate();
+                var age = 0;
+                var today = new Date();
+                while (bday <= today) {
+                    bday = new Date(by + age, bm, bd);
+                    age++;
+                }
+                age -= 2;
+                $('#age').text(age);
+            });
         });
     </script>
     <h2>Church Database Registration</h2>
@@ -34,7 +59,7 @@
                 </tr>
                  <tr>
                     <td><label for="dob">Date of Birth</label></td>
-                    <td><%= Html.TextBox("dob") %></td>
+                    <td><%= Html.TextBox("dob") %> <span id="age"></span></td>
                     <td><%= Html.ValidationMessage("dob") %>(m/d/yy or mmddyy)</td>
                 </tr>
                 <tr>

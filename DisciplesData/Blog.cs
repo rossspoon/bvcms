@@ -33,7 +33,7 @@ namespace DiscData
         }
         public bool IsAdmin
         {
-            get { return CachedGroup.IsAdmin; }
+            get { return CachedGroup.IsAdmin || HttpContext.Current.User.IsInRole("Administrator"); }
         }
         public bool IsMember
         {
@@ -56,7 +56,11 @@ namespace DiscData
         }
         public bool CanDelete
         {
-            get { return IsAdmin && !HasPosts; }
+            get
+            {
+                return (HttpContext.Current.User.IsInRole("Administrator") 
+                    || IsAdmin) && !HasPosts;
+            }
         }
         public BlogPost NewPost(string title, string entry)
         {
@@ -133,10 +137,14 @@ namespace DiscData
         public IEnumerable<Blog> FetchAllForUser()
         {
             var list = Group.FetchIdsForUser();
-            if (user == "admin")
+            return DbUtil.Db.Blogs.Where(b => list.Contains(b.GroupId.Value) || (b.IsPublic && !b.NotOnMenu));
+        }
+        public IEnumerable<Blog> FetchAllForUser2()
+        {
+            if (HttpContext.Current.User.IsInRole("Administrator"))
                 return DbUtil.Db.Blogs;
-            else
-                return DbUtil.Db.Blogs.Where(b => list.Contains(b.GroupId.Value) || (b.IsPublic && !b.NotOnMenu));
+            var list = Group.FetchIdsForUser();
+            return DbUtil.Db.Blogs.Where(b => list.Contains(b.GroupId.Value) || (b.IsPublic && !b.NotOnMenu));
         }
         [DataObjectMethod(DataObjectMethodType.Update, true)]
         public void Update(int Id, string Description, string Name, string Title, bool IsPublic)

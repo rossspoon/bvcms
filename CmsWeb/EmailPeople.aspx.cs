@@ -47,8 +47,8 @@ namespace CMSWeb
             var Qb = Db.LoadQueryById(this.QueryString<int>("id"));
             var q = Db.People.Where(Qb.Predicate());
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
-            var em = new Emailer(EmailFrom.SelectedValue, EmailFrom.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, Util.SafeFormat(EmailBody.Text), FileUpload1);
+            var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
+            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1);
             Label1.Visible = true;
             SendEmail.Enabled = false;
         }
@@ -57,8 +57,8 @@ namespace CMSWeb
             var Db = DbUtil.Db;
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
-            var em = new Emailer(EmailFrom.SelectedValue, EmailFrom.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, Util.SafeFormat(EmailBody.Text), FileUpload1);
+            var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
+            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1);
         }
     }
 }

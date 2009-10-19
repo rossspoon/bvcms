@@ -83,6 +83,13 @@ public partial class admin_user_edit : System.Web.UI.Page
             DbUtil.Db.UserRoles.DeleteAllOnSubmit(mu.UserRoles);
             DbUtil.Db.PendingNotifications.DeleteAllOnSubmit(mu.PendingNotifications);
             DbUtil.Db.Users.DeleteOnSubmit(mu);
+
+            var q = from x in DbUtil.Db.VerseCategoryXrefs
+                    where x.VerseCategory.CreatedBy == mu.UserId
+                    select x;
+            DbUtil.Db.VerseCategoryXrefs.DeleteAllOnSubmit(q);
+            DbUtil.Db.VerseCategories.DeleteAllOnSubmit(mu.VerseCategories);
+
             DbUtil.Db.SubmitChanges();
             Response.Redirect("/Admin/Users.aspx");
         }
@@ -147,12 +154,12 @@ public partial class admin_user_edit : System.Web.UI.Page
 
             DbUtil.Db.SubmitChanges();
             UpdateRoleMembership();
-            if (NewPassword.Text.HasValue())
+            if (pw.Text.HasValue())
             {
                 BVMembershipProvider.provider.AdminOverride = true;
                 var u = BVMembershipProvider.provider.GetUser(mu.Username, false);
                 u.UnlockUser();
-                u.ChangePassword(u.ResetPassword(), NewPassword.Text);
+                u.ChangePassword(u.ResetPassword(), pw.Text);
                 BVMembershipProvider.provider.AdminOverride = false;
             }
             SetResultMessage("User details has been successfully updated.");
@@ -169,7 +176,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             return;
         try
         {
-            mu = BVMembershipProvider.provider.NewUser(UserID.Text, NewPassword.Text, Email.Text, ActiveUser.Checked, null);
+            mu = BVMembershipProvider.provider.NewUser(UserID.Text, pw.Text, Email.Text, ActiveUser.Checked, null);
             if (mu != null && mu.Username.HasValue())
             {
                 mu.PasswordQuestion = "what is 1+1?";

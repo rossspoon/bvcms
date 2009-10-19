@@ -75,7 +75,7 @@ namespace BellevueTeachers
                     NewMenu(m, "Groups", "/Admin/Roles.aspx");
                     NewMenu(m, "Pages", "/Admin/CMSPageList.aspx");
                     NewMenu(m, "Registration", "/Register.aspx");
-                    NewMenu(m, "BatchJob", "/Admin/BatchJob.aspx");
+                    //NewMenu(m, "BatchJob", "/Admin/BatchJob.aspx");
                 }
             }
             if (!Page.IsPostBack)

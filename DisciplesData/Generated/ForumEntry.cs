@@ -35,10 +35,6 @@ namespace DiscData
 		
 		private DateTime? _CreatedOn;
 		
-		private DateTime? _ModifiedOn;
-		
-		private string _ModifiedBy;
-		
 		private int? _CreatedBy;
 		
    		
@@ -92,12 +88,6 @@ namespace DiscData
 		
 		partial void OnCreatedOnChanging(DateTime? value);
 		partial void OnCreatedOnChanged();
-		
-		partial void OnModifiedOnChanging(DateTime? value);
-		partial void OnModifiedOnChanged();
-		
-		partial void OnModifiedByChanging(string value);
-		partial void OnModifiedByChanged();
 		
 		partial void OnCreatedByChanging(int? value);
 		partial void OnCreatedByChanged();
@@ -329,50 +319,6 @@ namespace DiscData
 					this._CreatedOn = value;
 					this.SendPropertyChanged("CreatedOn");
 					this.OnCreatedOnChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedOn", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedOn", DbType="datetime")]
-		public DateTime? ModifiedOn
-		{
-			get { return this._ModifiedOn; }
-
-			set
-			{
-				if (this._ModifiedOn != value)
-				{
-				
-                    this.OnModifiedOnChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedOn = value;
-					this.SendPropertyChanged("ModifiedOn");
-					this.OnModifiedOnChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="nvarchar(50)")]
-		public string ModifiedBy
-		{
-			get { return this._ModifiedBy; }
-
-			set
-			{
-				if (this._ModifiedBy != value)
-				{
-				
-                    this.OnModifiedByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
 				}
 
 			}

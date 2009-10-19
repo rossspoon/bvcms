@@ -118,13 +118,25 @@ namespace DiscData
                     select ru;
             return q.SingleOrDefault();
         }
+        public static bool IsUserAdmin(User user, string group)
+        {
+            var g = LoadByName(group);
+            if (g == null)
+                return false;
+            var q = from ru in DbUtil.Db.UserRoles
+                    where ru.UserId == user.UserId && ru.Role.RoleName == ADMIN
+                    where ru.Role.GroupId == g.Id
+                    select ru;
+            return q.SingleOrDefault() != null;
+        }
         public static Content GetNewWelcome()
         {
             var w = ContentService.GetContent("default2_welcome");
             var welcome = new Content();
             welcome.Body = w.Body;
             welcome.ContentName = "groupwelcometext";
-            welcome.CreatedBy = HttpContext.Current.User.Identity.Name;
+            if (DbUtil.Db.CurrentUser != null)
+                welcome.CreatedById = DbUtil.Db.CurrentUser.UserId;
             welcome.CreatedOn = DateTime.Now;
             welcome.Title = w.Title;
             DbUtil.Db.Contents.InsertOnSubmit(welcome);
@@ -206,8 +218,8 @@ namespace DiscData
             string role = GroupPostfix(gtype);
             bool isadmin = HttpContext.Current.User.IsInRole("Administrator");
             return from g in DbUtil.Db.Groups
-                   where isadmin
-                       || g.Roles.Any(r => r.RoleName == role
+                   where //isadmin || 
+                        g.Roles.Any(r => r.RoleName == role
                            && r.UserRoles.Any(ur => ur.UserId == ContextUser.UserId))
                    select g;
         }
