@@ -288,6 +288,7 @@ function Update() {
     var qs = $("#Edit").formSerialize2();
     $.post('/Task/Update/' + id, qs, function(ret) {
         $('#r' + id).html(ret);
+        BindSearchPeople();
     }, "html");
     return false;
 }

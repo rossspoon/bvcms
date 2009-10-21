@@ -73,6 +73,7 @@ namespace CMSWeb.Controllers
             var threeweeksago = DateTime.Now.AddDays(-27);
             var q3 = from a in DbUtil.Db.Attends
                      where a.Person.FamilyId == id
+                     where a.Person.DeceasedDate == null
                      where a.Organization.CanSelfCheckin.Value
                      where a.Organization.CampusId == campus || campus == null
                      //where now.TimeOfDay > a.Organization.WeeklySchedule.MeetingTime.AddHours(-1).TimeOfDay
@@ -102,6 +103,7 @@ namespace CMSWeb.Controllers
             var pids = list.Select(i => i.Id).ToArray();
             var q4 = from p in DbUtil.Db.People
                      where p.FamilyId == id
+                     where p.DeceasedDate == null
                      where !pids.Contains(p.PeopleId)
                      select p;
             const string PleaseVisit = "Please visit Welcome Center";

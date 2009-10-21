@@ -237,6 +237,8 @@ namespace CMSRegCustom.Models
                 DiscData.DbUtil.Db.SubmitChanges();
 
                 // create a new cms org
+                leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
+                    o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
                 neworg = leaderorg.CloneOrg();
                 neworg.OrganizationName = groupname;
                 DbUtil.Db.SubmitChanges();
