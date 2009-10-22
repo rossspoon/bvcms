@@ -9,6 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
+        <p>See <a href="http://www.bvcms.com/Blog/Post/588">this post</a> for more information about uploading a picture.</p>
         <div>
             <asp:HyperLink ID="HyperLink2" runat="server" ForeColor="Red"></asp:HyperLink>
         </div>

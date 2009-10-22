@@ -67,5 +67,10 @@ namespace CMSWeb
             var s = HiddenField1.Value;
             HiddenField1.Value = s == "small" ? "medium" : s == "medium" ? "large" : "small";
         }
+        protected override void OnError(EventArgs e)
+        {
+            Server.ClearError();
+            Util.EndShowMessage(Response, "Image file too large or invalid", "/", "click here");
+        }
     }
 }

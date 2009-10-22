@@ -235,6 +235,7 @@ namespace CMSWeb.Models
                 pos = (int)Family.PositionInFamily.Child;
             p.PositionInFamilyId = pos;
             p.MaritalStatusId = married.Value;
+            p.FixTitle();
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
@@ -256,6 +257,7 @@ namespace CMSWeb.Models
 
             p.CellPhone = cellphone.GetDigits();
             p.MaritalStatusId = married.Value;
+            p.FixTitle();
             if (email != (string)HttpContext.Current.Session["email"])
                 p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();

@@ -210,7 +210,6 @@ namespace CMSRegCustom.Models
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
                     DbUtil.Settings("SaleOrigin", "0").ToInt(),
                     DbUtil.Settings("SaleEntry", "0").ToInt());
-            p.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
             p.EmailAddress = email;
             p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)

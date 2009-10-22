@@ -218,6 +218,7 @@ namespace CMSRegCustom.Models
                     DbUtil.Settings("RecOrigin", "0").ToInt(),
                     DbUtil.Settings("RecEntry", "0").ToInt());
             p.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
+            p.FixTitle();
             p.EmailAddress = email;
             p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)

@@ -278,6 +278,7 @@ namespace CMSWeb.Models
                     DbUtil.Settings("RecOrigin", "0").ToInt(), 
                     DbUtil.Settings("RecEntry", "0").ToInt());
             participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
+            participant.FixTitle();
             if (participant.Age >= 18)
                 participant.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             peopleid = participant.PeopleId;

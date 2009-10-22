@@ -206,6 +206,7 @@ namespace CMSPresenter
             var p = Person.Add(f, 20, tag, name, dob, false, GenderId, OriginId, EntryPointId);
             p.CampusId = CampusId;
             p.MaritalStatusId = MaritalStatusId;
+            p.FixTitle();
             p.CellPhone = phone;
             DbUtil.Db.SubmitChanges();
             Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
@@ -271,6 +272,7 @@ namespace CMSPresenter
                 tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
             var age = p1.GetAge();
             p1.MaritalStatusId = MaritalStatusId;
+            p1.FixTitle();
             if (PrimaryCount == 2)
                 p1.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
             if (age < 18 && p1.MaritalStatusId == (int)Person.MaritalStatusCode.Single)

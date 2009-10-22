@@ -159,6 +159,7 @@ namespace CMSRegCustom.Controllers
             {
                 sb.AppendFormat("We have updated your marital status.<br />\n");
                 p.MaritalStatusId = married;
+                p.FixTitle();
             }
             if (sb.Length > 0)
             {

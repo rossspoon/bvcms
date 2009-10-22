@@ -158,8 +158,9 @@ function SetComplete(id) {
     return false;
 }
 function Accept(id) {
-    $.post('/Task/Accept/'+id, null, function(ret) {
+    $.post('/Task/Accept/' + id, null, function(ret) {
         $('#r' + id).html(ret);
+        BindSearchPeople();
     });
     return false;
 }
@@ -208,6 +209,7 @@ function AddSourceContact(contactid) {
     var taskid = $('#TaskId').val();
     $.post('/Task/AddSourceContact/' + taskid + "?contactid=" + contactid, null, function(ret) {
         $('#r' + taskid).html(ret);
+        BindSearchPeople();
     });
     $('#dialogbox').dialog("close");
 }
@@ -241,6 +243,7 @@ function ActOnPerson(action, peopleid) {
     var taskid = $('#TaskId').val();
     $.post(action + taskid + "?peopleid=" + peopleid, null, function(ret) {
         $('#r' + taskid).html(ret);
+        BindSearchPeople();
     });
     $('#dialogbox').dialog("close");
 }

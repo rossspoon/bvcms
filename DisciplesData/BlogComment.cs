@@ -24,16 +24,14 @@ namespace DiscData
         {
             get
             {
-                var u = BlogPost.getUser(PosterId);
-                return u.FirstName + " " + u.LastName;
+                return BlogPost.User.Name;
             }
         }
         public string PosterEmail
         {
             get
             {
-                var u = BlogPost.getUser(PosterId);
-                return u.EmailAddress;
+                return BlogPost.User.EmailAddress;
             }
         }
         public int CommentNumber { get; set; }
@@ -54,8 +52,10 @@ namespace DiscData
             var returnloc = "http://{0}/Blog/{1}.aspx".Fmt(HttpContext.Current.Request.Url.Authority, BlogPost.Id);
             var smtp = new SmtpClient();
             var n = 0;
+            var stopemail = "http://{0}/StopNotifications.aspx?blog={1}&user="
+                .Fmt(HttpContext.Current.Request.Url.Authority, this.BlogPost.BlogCached.Id);
             var from = new MailAddress("bbcms01@bellevue.org");
-            var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, User.Username);
+            var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, BlogPost.User.Username);
             var reply = new MailAddress(PosterEmail);
             foreach (var i in BlogPost.BlogCached.GetNotificationList())
             {
@@ -65,13 +65,21 @@ namespace DiscData
                 var msg = new MailMessage(from, ma);
                 msg.ReplyTo = reply;
                 msg.Subject = subject;
-                msg.Body = "<br>--<br>View this comment online at: <a href=\"{0}?user={1}#comments\">{0}</a><br>--<br>"
-                    .Fmt(returnloc, i.Key);
+                msg.Body = @"<br>--<br>View this comment online at: <a href=""{0}?user={1}#comments"">{0}</a>
+<br>--<br>
+Click <a href=""{2}"">here</a> to stop receiving notifications"
+                        .Fmt(returnloc, i.Key, stopemail + i.Value.User);
                 msg.IsBodyHtml = true;
                 if (n % 20 == 0)
                     smtp = new SmtpClient();
+      
                 n++;
-                smtp.Send(msg);
+                var debug = false;
+#if DEBUG
+                debug = true;
+#endif
+                if (!debug)
+                    smtp.Send(msg);
             }
         }
 
