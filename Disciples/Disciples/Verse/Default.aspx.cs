@@ -23,14 +23,14 @@ public partial class Verse_Default : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "/Verse/");
+        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "~/Verse/");
         if (cat == null)
             cat = VerseCategory.LoadById(Category.SelectedValue.ToInt());
     }
     protected override void OnPreRender(EventArgs e)
     {
-        AddVerse.NavigateUrl = "/Verse/Add.aspx?id=" + Category.SelectedValue;
-        SelectVerses.NavigateUrl = "/Verse/All.aspx?cat=" + Category.SelectedValue;
+        AddVerse.NavigateUrl = "~/Verse/Add.aspx?id=" + Category.SelectedValue;
+        SelectVerses.NavigateUrl = "~/Verse/All.aspx?cat=" + Category.SelectedValue;
         bool owner = IsOwner;
         SelectVerses.Enabled = owner;
         AddVerse.Enabled = owner;

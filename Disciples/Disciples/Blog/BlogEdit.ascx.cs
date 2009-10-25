@@ -44,7 +44,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
     private void CheckMembership(Blog b)
     {
         if (b == null || (!b.IsMember && !Page.User.IsInRole("Administrator")))
-            Response.Redirect("/");
+            Response.Redirect("~/");
     }
     protected override void OnLoad(EventArgs e)
     {
@@ -77,7 +77,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
         if (TextBox2.Text.HasValue())
             Post.AddCategory(TextBox2.Text);
         DbUtil.Db.SubmitChanges();
-        string returnloc2 = "/Blog/{0}.aspx".Fmt(Post.Id);
+        string returnloc2 = "~/Blog/{0}.aspx".Fmt(Post.Id);
         if(NotifyByEmail.Checked)
             Post.NotifyEmail(false);
         Response.Redirect(returnloc2);
@@ -90,7 +90,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
     }
     protected void Cancel_Click(object sender, EventArgs e)
     {
-        Response.Redirect("/Blog/{0}.aspx".Fmt(Blog.Name));
+        Response.Redirect("~/Blog/{0}.aspx".Fmt(Blog.Name));
     }
     protected void Delete_Click(object sender, EventArgs e)
     {
@@ -98,6 +98,6 @@ public partial class BlogEdit : System.Web.UI.UserControl
         DbUtil.Db.PodCasts.DeleteAllOnSubmit(Post.PodCasts);
         DbUtil.Db.BlogPosts.DeleteOnSubmit(Post);
         DbUtil.Db.SubmitChanges();
-        Response.Redirect("/Blog/{0}.aspx".Fmt(Blog.Name));
+        Response.Redirect("~/Blog/{0}.aspx".Fmt(Blog.Name));
     }
 }

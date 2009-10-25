@@ -28,7 +28,7 @@ namespace BellevueTeachers
                     u.ForceLogin = false;
                     DbUtil.Db.SubmitChanges();
                     FormsAuthentication.SignOut();
-                    Response.Redirect("/");
+                    Response.Redirect("~/");
                 }
             }
         }

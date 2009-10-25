@@ -24,14 +24,16 @@ namespace DiscData
         {
             get
             {
-                return BlogPost.User.Name;
+                var u = BlogPost.getUser(PosterId);
+                return u.FirstName + " " + u.LastName;
             }
         }
         public string PosterEmail
         {
             get
             {
-                return BlogPost.User.EmailAddress;
+                var u = BlogPost.getUser(PosterId);
+                return u.EmailAddress;
             }
         }
         public int CommentNumber { get; set; }
@@ -55,7 +57,7 @@ namespace DiscData
             var stopemail = "http://{0}/StopNotifications.aspx?blog={1}&user="
                 .Fmt(HttpContext.Current.Request.Url.Authority, this.BlogPost.BlogCached.Id);
             var from = new MailAddress("bbcms01@bellevue.org");
-            var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, BlogPost.User.Username);
+            var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, User.Username);
             var reply = new MailAddress(PosterEmail);
             foreach (var i in BlogPost.BlogCached.GetNotificationList())
             {

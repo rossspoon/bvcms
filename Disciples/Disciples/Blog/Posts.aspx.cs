@@ -17,19 +17,19 @@ public partial class Blog_Posts : System.Web.UI.Page
         blog = Blog.LoadByName(name);
         Archives1.blog = blog;
         if (blog == null || !User.IsInRole("Administrator") && !blog.IsMember && !blog.IsPublic)
-            Response.Redirect("/");
-        AddEntry.NavigateUrl = "/Blog/New.aspx?id=" + blog.Id;
+            Response.Redirect("~/");
+        AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
 
 
         Title = blog.Title;
         var site = Master as BellevueTeachers.Site;
         site.HeadTitleText = blog.Title;
-        site.HeadTitleLink = "/Blog/{0}.aspx".Fmt(blog.Name);
+        site.HeadTitleLink = "~/Blog/{0}.aspx".Fmt(blog.Name);
         site.HeadBylineText = blog.Description;
 
-        site.AddCrumb("Blogs", "/Blog/");
-        site.AddCrumb("Blog", "/Blog/{0}.aspx", blog.Name);
+        site.AddCrumb("Blogs", "~/Blog/");
+        site.AddCrumb("Blog", "~/Blog/{0}.aspx", blog.Name);
         int? p = Request.QueryString<int?>("page");
         if (!p.HasValue)
             p = 1;
@@ -52,7 +52,7 @@ public partial class Blog_Posts : System.Web.UI.Page
             Posts.DataBind();
             PostsOnPage.DataBind();
 
-            const string STR_Blogaspxpage = "/Blog/{0}.aspx?page={1}";
+            const string STR_Blogaspxpage = "~/Blog/{0}.aspx?page={1}";
             CategoryPaging2.Visible = category.HasValue();
             if (CategoryPaging2.Visible)
                 PageOf.Text = "Page {0} of {1} in the {2} category".Fmt(p, tcount, category);

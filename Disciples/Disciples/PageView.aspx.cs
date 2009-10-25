@@ -48,6 +48,17 @@ namespace BellevueTeachers
                 SetupNewPage();
                 this.Title = "Create a New Page";
             }
+            EditorScript.Text =
+@"
+<script type=""text/javascript"">
+    $(function() {{
+        CKEDITOR.replace('{0}', {{
+            filebrowserUploadUrl: '{1}',
+            filebrowserImageUploadUrl: '{1}'
+        }});
+    }});
+</script>".Fmt(Body2.UniqueID, Util.ResolveUrl("~/CKUpload.ashx"));
+
         }
         void SetupNewPage()
         {
@@ -60,6 +71,7 @@ namespace BellevueTeachers
         {
             pnlEdit.Visible = showIt;
             pnlPublic.Visible = !showIt;
+            EditorScript.Visible = showIt;
         }
 
         protected void lnkEdit_Click(object sender, EventArgs e)
@@ -107,7 +119,7 @@ namespace BellevueTeachers
                 ToggleEditor(true);
             }
             if (!haveError)
-                Response.Redirect("/admin/cmspagelist.aspx");
+                Response.Redirect("~/admin/cmspagelist.aspx");
         }
     }
 

@@ -31,7 +31,7 @@ namespace CMSWeb
             get
             {
                 if (_From == null)
-                    _From = Util.FirstAddress(DbUtil.SystemEmailAddress);
+                    _From = Util.FirstAddress(DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress));
                 return _From;
             }
             set

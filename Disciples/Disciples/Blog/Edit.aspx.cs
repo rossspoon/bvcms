@@ -10,14 +10,14 @@ public partial class Blog_Edit : System.Web.UI.Page
     {
         int? id = Request.QueryString<int?>("id");
         if (!id.HasValue)
-            Response.Redirect("/");
+            Response.Redirect("~/");
         var post = BlogPost.LoadFromId(id.Value);
 
         EditBlogPost.Post = post;
 
-        EditBlogPost.CancelUrl = "/Blog/{0}.aspx".Fmt(post.Id);
+        EditBlogPost.CancelUrl = "~/Blog/{0}.aspx".Fmt(post.Id);
 
-        ((BellevueTeachers.Site)Master).AddCrumb("Blog", "/Blog/{0}.aspx", post.BlogCached.Name)
+        ((BellevueTeachers.Site)Master).AddCrumb("Blog", "~/Blog/{0}.aspx", post.BlogCached.Name)
           .Add("Post", EditBlogPost.CancelUrl);
     }
     

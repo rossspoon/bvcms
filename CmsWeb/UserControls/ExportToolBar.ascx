@@ -98,7 +98,7 @@
                 <asp:HyperLink ID="ChoirLink" ToolTip="Labels for Choir Attendance"
                     runat="server">
                     <asp:Image ID="Image18" ImageUrl="~/images/tags.png" runat="server" />
-                    Choir Labels</asp:HyperLink></li>
+                    Sheet Labels</asp:HyperLink></li>
             <li id="RollsheetItem" runat="server">
                 <a title="Rollsheet Report" href="#" onclick="OpenRollsheet();return false;">
                     <asp:Image ID="Image20" ImageUrl="~/images/tags.png" runat="server" />Rollsheet Report</a></li>

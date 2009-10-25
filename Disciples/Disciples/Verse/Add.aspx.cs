@@ -10,7 +10,7 @@ public partial class Add : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         cat = VerseCategory.LoadById(Request.QueryString<int>("id"));
-        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "/Verse/Default.aspx?cat={0}", cat.Id)
+        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "~/Verse/Default.aspx?cat={0}", cat.Id)
             .Add("Add Verse");
 
         if (!Page.IsPostBack)
@@ -44,7 +44,7 @@ public partial class Add : System.Web.UI.Page
             cookie.Value = Version.SelectedValue;
             cookie.Expires = DateTime.MaxValue;
             Response.AppendCookie(cookie);
-            Response.Redirect("/Verse/Default.aspx?cat=" + cat.Id);
+            Response.Redirect("~/Verse/Default.aspx?cat=" + cat.Id);
         }
     }
     protected void Version_SelectedIndexChanged(object sender, EventArgs e)
@@ -65,6 +65,6 @@ public partial class Add : System.Web.UI.Page
     }
     protected void Cancel_Click(object sender, EventArgs e)
     {
-        Response.Redirect("/Verse/Default.aspx?cat=" + cat.Id, true);
+        Response.Redirect("~/Verse/Default.aspx?cat=" + cat.Id, true);
     }
 }

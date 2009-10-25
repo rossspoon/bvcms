@@ -246,7 +246,7 @@ namespace CMSWeb.Controllers
 
         private void EmailVisit(RegisterModel m)
         {
-            string email = DbUtil.Settings("VisitMail-" + Session["campus"], DbUtil.SystemEmailAddress);
+            string email = DbUtil.Settings("VisitMail-" + Session["campus"], "");
             if (!email.HasValue())
                 email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
 

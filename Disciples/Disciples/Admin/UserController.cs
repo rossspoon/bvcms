@@ -14,7 +14,7 @@ public class UserController
     private DiscDataContext Db;
     public UserController()
     {
-        Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+        Db = new DiscDataContext(Util.ConnectionStringDisc);
     }
 
     [DataObjectMethod(DataObjectMethodType.Update, true)]

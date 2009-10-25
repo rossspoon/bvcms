@@ -20,7 +20,7 @@ public partial class EditComment : System.Web.UI.Page
     {
         comment = BlogComment.LoadById(Request.QueryString<int>("id"));
         if (DbUtil.Db.CurrentUser.UserId != comment.BlogPost.PosterId && !Roles.IsUserInRole("Administrator"))
-            Response.Redirect("/");
+            Response.Redirect("~/");
         if (!Page.IsPostBack)
         {
             PreviewComment.Text = Util.SafeFormat(comment.Comment);
@@ -37,12 +37,12 @@ public partial class EditComment : System.Web.UI.Page
     {
         comment.Comment = Comments.Text;
         DbUtil.Db.SubmitChanges();
-        Response.Redirect("/Blog/{0}.aspx#comments".Fmt(comment.BlogPostId));
+        Response.Redirect("~/Blog/{0}.aspx#comments".Fmt(comment.BlogPostId));
     }
 
     protected void Delete_Click(object sender, EventArgs e)
     {
-        string page = "/Blog/{0}.aspx#comments".Fmt(comment.BlogPostId);
+        string page = "~/Blog/{0}.aspx#comments".Fmt(comment.BlogPostId);
         DbUtil.Db.BlogComments.DeleteOnSubmit(comment);
         DbUtil.Db.SubmitChanges();
         Response.Redirect(page);

@@ -3,7 +3,9 @@
 <%@ OutputCache NoStore="true" Location="None" %>
 <html>
 <head runat="server">
-<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+<asp:Literal ID="Literal1" runat="server">
+</asp:Literal>
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -13,7 +15,7 @@
             <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
         </div>
         <div>
-            <asp:TextBox ID="txtContent2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="600" Width="700" ></asp:TextBox>
+            <asp:TextBox ID="txtContent2" runat="server" TextMode="MultiLine" Height="600" Width="700" ></asp:TextBox>
         </div>
         <div>
             <cms:ResultMessage ID="ResultMessage1" runat="server" />

@@ -16,8 +16,8 @@ public partial class Category : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         UserId.Value = User.Identity.Name;
-        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "/Verse/Default.aspx")
-            .Add("Categories", "/Verse/Category.aspx");
+        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "~/Verse/Default.aspx")
+            .Add("Categories", "~/Verse/Category.aspx");
     }
 
     protected internal void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)

@@ -26,7 +26,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
                    {
                        blogid = b.Id.ToString(),
                        blogName = b.Name,
-                       url = HttpContext.Current.Request.ApplicationPath + "/Blog/Default.aspx"
+                       url = Util.ResolveUrl("~/Blog/Default.aspx")
                    };
         return list.ToArray();
     }
@@ -69,7 +69,6 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
     {
         if (Membership.ValidateUser(username, password))
         {
-            string apppath = HttpContext.Current.Request.ApplicationPath;
             var q = from v in DbUtil.Db.ViewBlogCategoriesViews
                     let _cat = v.Category.Replace(" ", "_")
                     select new CategoryInfo
@@ -77,8 +76,8 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
                     categoryid = v.N.ToString(),
                     title = v.Category,
                     description = v.Category,
-                    htmlUrl = apppath + "/Blog/" + _cat + ".aspx",
-                    rssUrl = apppath + "/Blog/Feed/" + _cat + ".aspx"
+                    htmlUrl = Util.ResolveUrl("~/Blog/" + _cat + ".aspx"),
+                    rssUrl = Util.ResolveUrl("~/Blog/Feed/" + _cat + ".aspx")
                 };
             return q.ToArray();
         }
@@ -88,14 +87,13 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
     public Post getPost(string postid, string username, string password)
     {
         var p = BlogPost.LoadFromId(int.Parse(postid));
-        string apppath = HttpContext.Current.Request.ApplicationPath;
         if (Authenticate(p.Blog.GroupId.Value, username, password))
         {
             Post post = new Post();
             post.categories = p.BlogCategoryXrefs.Select(c => c.Category.Name).ToArray();
             post.dateCreated = p.EntryDate.Value;
             post.description = p.Post;
-            post.link = apppath + "/Blog/" + p.Id + ".aspx";
+            post.link = Util.ResolveUrl("~/Blog/" + p.Id + ".aspx");
             post.permalink = post.link;
             post.postid = p.Id.ToString();
             post.userid = p.User.Username;
@@ -115,10 +113,9 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
     public Post[] getRecentPosts(object blogid, string username, string password, int numberOfPosts)
     {
         var b = Blog.LoadById(blogid.ToInt());
-        string apppath = HttpContext.Current.Request.ApplicationPath;
         if (Authenticate(b.GroupId.Value, username, password))
             return (from p in b.BlogPosts
-                    let lnk = "{0}/Blog/{1}.aspx".Fmt(apppath, p.Id)
+                    let lnk = Util.ResolveUrl("~/Blog/{0}.aspx".Fmt(p.Id))
                     orderby p.EntryDate descending
                     select new Post
                     {

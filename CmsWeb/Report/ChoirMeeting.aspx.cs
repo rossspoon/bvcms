@@ -87,22 +87,37 @@ namespace CMSWeb.Reports
             var img = bc.CreateImageWithBarcode(dc, null, null);
             var p1 = new Phrase();
             p1.Add(new Chunk(img, 0, 0));
-            p1.Add(new Phrase("\n\n" + fname + " " + lname, smallfont));
+            p1.Add(new Phrase("\n\n" + fname + " " + lname + " (" + pid + ")", smallfont));
             var c = new PdfPCell( p1);
             c.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
             c.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
             c.Border = PdfPCell.NO_BORDER;
             c.FixedHeight = H * 72f;
 
-            var t2 = new PdfPTable(1);
+            var t2 = new PdfPTable(2);
             t2.WidthPercentage = 100f;
             t2.DefaultCell.Border = PdfPCell.NO_BORDER;
-            t2.AddCell(new Phrase(fname, font));
-            t2.AddCell(new Phrase(lname, font));
-            var pcell = new PdfPCell(new Phrase(phone.FmtFone(), smallfont));
+
+            var cc = new PdfPCell(new Phrase(fname, font));
+            cc.Border = PdfPCell.NO_BORDER;
+            cc.Colspan = 2;
+            t2.AddCell(cc);
+
+            cc = new PdfPCell(new Phrase(lname, font));
+            cc.Border = PdfPCell.NO_BORDER;
+            cc.Colspan = 2;
+            t2.AddCell(cc);
+
+            var pcell = new PdfPCell(new Phrase(pid.ToString(), smallfont));
+            pcell.Border = PdfPCell.NO_BORDER;
+            pcell.HorizontalAlignment = Element.ALIGN_LEFT;
+            t2.AddCell(pcell);
+
+            pcell = new PdfPCell(new Phrase(phone.FmtFone(), smallfont));
             pcell.Border = PdfPCell.NO_BORDER;
             pcell.HorizontalAlignment = Element.ALIGN_RIGHT;
             t2.AddCell(pcell);
+
             var cell = new PdfPCell(t2);
             cell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
             cell.PaddingLeft = 8f;

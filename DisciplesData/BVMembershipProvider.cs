@@ -143,7 +143,7 @@ namespace DiscData
         public bool AdminOverride = false;
         public override bool ChangePassword(string username, string oldPwd, string newPwd)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             if (!ValidateUser(username, oldPwd))
                 return false;
             var args = new ValidatePasswordEventArgs(username, newPwd, true);
@@ -181,7 +181,7 @@ namespace DiscData
                       string newPwdQuestion,
                       string newPwdAnswer)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             if (!ValidateUser(username, password))
                 return false;
             var user = Db.Users.Single(u => u.Username == username);
@@ -200,7 +200,7 @@ namespace DiscData
                  object providerUserKey,
                  out MembershipCreateStatus status)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var args = new ValidatePasswordEventArgs(username, password, true);
             OnValidatingPassword(args);
             if (args.Cancel)
@@ -284,14 +284,14 @@ namespace DiscData
                 FailedPasswordAnswerAttemptCount = 0,
                 FailedPasswordAnswerAttemptWindowStart = createDate,
             };
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             Db.Users.InsertOnSubmit(user);
             Db.SubmitChanges();
             return user;
         }
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var user = Db.Users.SingleOrDefault(u => u.Username == username);
             Db.UserRoles.DeleteAllOnSubmit(user.UserRoles);
             Db.Users.DeleteOnSubmit(user);
@@ -301,7 +301,7 @@ namespace DiscData
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var users = new MembershipUserCollection();
             var q = Db.Users.AsQueryable();
             totalRecords = q.Count();
@@ -313,7 +313,7 @@ namespace DiscData
 
         public override int GetNumberOfUsersOnline()
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
             var compareTime = DateTime.Now.Subtract(onlineSpan);
             return Db.Users.Count(u => u.LastActivityDate > compareTime);
@@ -321,7 +321,7 @@ namespace DiscData
 
         public override string GetPassword(string username, string answer)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             if (!EnablePasswordRetrieval)
                 throw new ProviderException("Password Retrieval Not Enabled.");
 
@@ -349,7 +349,7 @@ namespace DiscData
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var u = Db.Users.SingleOrDefault(user => user.Username == username);
             if (u != null)
             {
@@ -370,7 +370,7 @@ namespace DiscData
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var u = Db.Users.SingleOrDefault(user =>
                 user.UserId == providerUserKey.ToInt());
             if (u != null)
@@ -408,7 +408,7 @@ namespace DiscData
         }
         public override bool UnlockUser(string username)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var u = Db.Users.SingleOrDefault(user => user.Username == username);
             if (u != null)
             {
@@ -421,13 +421,13 @@ namespace DiscData
 
         public override string GetUserNameByEmail(string email)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             return Db.Users.Single(u => u.EmailAddress == email).Username;
         }
 
         public override string ResetPassword(string username, string answer)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             if (!EnablePasswordReset)
                 throw new NotSupportedException("Password reset is not enabled.");
 
@@ -469,7 +469,7 @@ namespace DiscData
 
         public override void UpdateUser(MembershipUser user)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var u = Db.Users.SingleOrDefault(us => us.Username == user.UserName);
             u.IsApproved = user.IsApproved;
             u.EmailAddress = user.Email;
@@ -479,7 +479,7 @@ namespace DiscData
  
         public override bool ValidateUser(string username, string password)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var user = Db.Users.SingleOrDefault(u => u.Username == username);
             if (user == null)
                 return false;
@@ -496,7 +496,7 @@ namespace DiscData
 
         private void UpdateFailureCount(User user, string failureType)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             DateTime windowStart = new DateTime();
             int failureCount = 0;
             if (failureType == "password")
@@ -607,7 +607,7 @@ namespace DiscData
 
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var users = new MembershipUserCollection();
             var q = from u in Db.Users select u;
 
@@ -630,7 +630,7 @@ namespace DiscData
 
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var users = new MembershipUserCollection();
             var q = from u in Db.Users select u;
 
@@ -652,7 +652,7 @@ namespace DiscData
         }
         public void MustChangePassword(User user, bool tf)
         {
-            var Db = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             user.MustChangePassword = tf;
             Db.SubmitChanges();
         }

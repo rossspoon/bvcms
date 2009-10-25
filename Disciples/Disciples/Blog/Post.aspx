@@ -29,7 +29,7 @@
                                     <li class="time">
                                         <%# Eval("DatePosted","{0:HHmm}") %></li>
                                     <li>
-                                        <asp:HyperLink ID="EditComment" runat="server" NavigateUrl='<%# Eval("Id","/Blog/EditComment.aspx?id={0}") %>' Visible='<%# Eval("CanEdit") %>'
+                                        <asp:HyperLink ID="EditComment" runat="server" NavigateUrl='<%# Eval("Id","~/Blog/EditComment.aspx?id={0}") %>' Visible='<%# Eval("CanEdit") %>'
                                             EnableViewState="False">Edit</asp:HyperLink></li>
                                 </ul>
                                 <div class="text">

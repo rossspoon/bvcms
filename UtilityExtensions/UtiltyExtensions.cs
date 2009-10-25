@@ -16,6 +16,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using System.Net.Mail;
 using System.Web.UI;
+using System.Data.SqlClient;
 
 namespace UtilityExtensions
 {
@@ -373,34 +374,42 @@ namespace UtilityExtensions
         {
             get
             {
-                var host = Host;
-                if (ConfigurationManager.ConnectionStrings[host].IsNotNull())
-                    return ConfigurationManager.ConnectionStrings[host].ConnectionString;
-                else
+                var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+                if (cs == null)
                     return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
+
+                var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+                var a = Host.Split('.');
+                cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
+                return cb.ConnectionString;
             }
         }
         public static string ConnectionStringImage
         {
             get
             {
-                var host = HttpContext.Current.Request.Url.Authority + ".image";
-                if (ConfigurationManager.ConnectionStrings[host].IsNotNull())
-                    return ConfigurationManager.ConnectionStrings[host].ConnectionString;
-                else
+                var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+                if (cs == null)
                     return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
+
+                var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+                var a = Host.Split('.');
+                cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
+                return cb.ConnectionString;
             }
         }
-        public static string ConnectionStringTest
+        public static string ConnectionStringDisc
         {
             get
             {
-                string cms = "CMS2Test";
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session["CMS2Test"] != null)
-                            cms = HttpContext.Current.Session["CMS2Test"] as string;
-                return ConfigurationManager.ConnectionStrings[cms].ConnectionString;
+                var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+                if (cs == null)
+                    return ConfigurationManager.ConnectionStrings["Disc"].ConnectionString;
+
+                var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+                var a = Host.Split('.');
+                cb.InitialCatalog = "CMS_{0}_disc".Fmt(a[0]);
+                return cb.ConnectionString;
             }
         }
         public static string UserName
@@ -799,7 +808,30 @@ namespace UtilityExtensions
             head.Controls.Add(new LiteralControl("<script type='text/javascript' src='"
                 + url + "'></script>"));
         }
-
+        public static string ResolveUrl(string originalUrl)
+        {
+            if (originalUrl == null)
+                return null;
+            if (originalUrl.IndexOf("://") != -1)
+                return originalUrl;
+            if (originalUrl.StartsWith("~"))
+                return VirtualPathUtility.ToAbsolute(originalUrl);
+            return originalUrl;
+        }
+        public static string ResolveServerUrl(string serverUrl, bool forceHttps)
+        {
+            if (serverUrl.IndexOf("://") > -1)
+                return serverUrl;
+            var newUrl = ResolveUrl(serverUrl);
+            var originalUri = HttpContext.Current.Request.Url;
+            newUrl = (forceHttps ? "https" : originalUri.Scheme) +
+                     "://" + originalUri.Authority + newUrl;
+            return newUrl;
+        }
+        public static string ResolveServerUrl(string serverUrl)
+        {
+            return ResolveServerUrl(serverUrl, false);
+        }
     }
     public class EventArg<T> : EventArgs
     {

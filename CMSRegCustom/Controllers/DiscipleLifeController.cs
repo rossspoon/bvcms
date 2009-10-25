@@ -52,7 +52,7 @@ namespace CMSRegCustom.Controllers
             Body = Body.Replace("{first}", m.person.NickName.HasValue() ? m.person.NickName : m.person.FirstName);
             Body = Body.Replace("{orgname}", m.organization.OrganizationName);
 
-            string email = DbUtil.Settings("DiscLifeMail-" + id, DbUtil.SystemEmailAddress);
+            string email = DbUtil.Settings("DiscLifeMail-" + id, "");
             if (!email.HasValue())
                 email = DbUtil.Settings("DiscLifeMail", DbUtil.SystemEmailAddress);
             Util.Email(email, m.person.Name, m.email, c.Title, Body);

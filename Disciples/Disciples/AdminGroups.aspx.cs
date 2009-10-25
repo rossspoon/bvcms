@@ -10,7 +10,7 @@ public partial class AdminGroups : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Group.FetchAdminGroups().Count() == 0)
-            Response.Redirect("/Default.aspx");
+            Response.Redirect("~/Default.aspx");
         HiddenField1.Value = User.Identity.Name;
     }
     public void EnabledChanged(object sender, EventArgs e)
@@ -40,10 +40,10 @@ public partial class AdminGroups : System.Web.UI.Page
     }
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        HyperLink1.NavigateUrl = "/Default.aspx?group=" + DropDownList1.SelectedValue;
+        HyperLink1.NavigateUrl = "~/Default.aspx?group=" + DropDownList1.SelectedValue;
     }
     protected void DropDownList1_DataBound(object sender, EventArgs e)
     {
-        HyperLink1.NavigateUrl = "/Default.aspx?group=" + DropDownList1.SelectedValue;
+        HyperLink1.NavigateUrl = "~/Default.aspx?group=" + DropDownList1.SelectedValue;
     }
 }

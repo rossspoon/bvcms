@@ -2,6 +2,8 @@
     Title="Resource Page" validateRequest="false" CodeBehind="PageView.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
+<asp:Literal ID="EditorScript" runat="server">
+</asp:Literal>
       <div id="main" class="wide">
   <asp:Panel ID="pnlPublic" runat="server" EnableViewState="false">
         <asp:Panel ID="Admin" runat="server" EnableViewState="false" CssClass="adminpanel">
@@ -62,7 +64,7 @@
             </p>
             <p>
                 <b>Body</b><br />
-                <asp:TextBox ID="Body2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="700" Width="700" ></asp:TextBox>
+                <asp:TextBox ID="Body2" runat="server" TextMode="MultiLine" Height="700" Width="700" ></asp:TextBox>
             </p>
             <p>
                 <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />

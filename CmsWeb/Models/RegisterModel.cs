@@ -113,6 +113,7 @@ namespace CMSWeb.Models
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
+                    where o.CanSelfCheckin == true
                     where o.WeeklySchedule.Day == 0
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem

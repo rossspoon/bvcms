@@ -11,7 +11,7 @@ public partial class Admin_CMSPageList : System.Web.UI.Page
         {
             var p = ContentService.GetPage(pageID.Value);
             if (p != null)
-                Response.Redirect("/view/" + p.PageUrl);
+                Response.Redirect("~/view/" + p.PageUrl);
         }
     }
 }

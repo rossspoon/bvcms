@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -25,7 +26,7 @@ namespace DiscData
             get
             {
                 if (InternalDataContext == null)
-                    InternalDataContext = new DiscDataContext(ConfigurationManager.ConnectionStrings["Disc"].ConnectionString);
+                    InternalDataContext = new DiscDataContext(Util.ConnectionStringDisc);
                 return InternalDataContext;
             }
             set

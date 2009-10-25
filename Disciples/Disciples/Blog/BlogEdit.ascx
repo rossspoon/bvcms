@@ -3,6 +3,14 @@
 <link href="../App_Themes/Default/blog.css" rel="stylesheet" type="text/css" />
 <link href="../App_Themes/Default/Common.css" rel="stylesheet" type="text/css" />
 </asp:Literal>
+<script type="text/javascript">
+    $(function() {
+        CKEDITOR.replace('<%=PostText2.UniqueID%>', {
+        filebrowserUploadUrl: '<%=Util.ResolveUrl("~/CKUpload.ashx") %>',
+            filebrowserImageUploadUrl: '<%=Util.ResolveUrl("~/CKUpload.ashx") %>'
+        });
+    });
+</script>
 <div>
     <p>
         <b>Title</b><br />
@@ -13,7 +21,7 @@
         <asp:TextBox ID="EntryDate" runat="server"></asp:TextBox></p>
     <p>
         <b>Body</b><br />
-            <asp:TextBox ID="PostText2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
+            <asp:TextBox ID="PostText2" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
     </p>
     <p>
         <asp:Button ID="Save" runat="server" Text="Save" EnableViewState="False" OnClick="Save_Click" />

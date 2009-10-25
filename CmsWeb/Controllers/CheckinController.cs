@@ -13,6 +13,14 @@ namespace CMSWeb.Controllers
     {
         public ActionResult Match(string id, int? campus)
         {
+            var seconds = 10;
+            Response.Cache.SetExpires(DateTime.Now.AddSeconds(seconds));
+            Response.Cache.SetMaxAge(new TimeSpan(0, 0, seconds));
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+            Response.Cache.SetValidUntilExpires(true);
+            Response.Cache.SetSlidingExpiration(true);
+            Response.Cache.SetETagFromFileDependencies();
+
             var ph = Util.GetDigits(id).PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
@@ -20,11 +28,11 @@ namespace CMSWeb.Controllers
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.HeadOfHousehold.CellPhoneLU.StartsWith(p7)
                         || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(p7)
-                     select new Family 
-                     { 
-                         FamilyId = f.FamilyId, 
-                         AreaCode = f.HomePhoneAC, 
-                         Name = f.HeadOfHousehold.Name 
+                     select new Family
+                     {
+                         FamilyId = f.FamilyId,
+                         AreaCode = f.HomePhoneAC,
+                         Name = f.HeadOfHousehold.Name
                      };
             var matches = q1.ToList();
             if (matches.Count > 1)
@@ -42,21 +50,60 @@ namespace CMSWeb.Controllers
         public ActionResult ShowFamily(int id, int? campus)
         {
             var now = DateTime.Now;
-
-            var q2 = from om in DbUtil.Db.OrganizationMembers
-                     where om.Organization.CanSelfCheckin.Value
-                     where om.Organization.CampusId == campus || campus == null
-                     where om.Person.FamilyId == id
-                     where om.Person.DeceasedDate == null
-                     //where now.TimeOfDay > om.Organization.WeeklySchedule.MeetingTime.AddDays(-1).TimeOfDay
-                     //where now.TimeOfDay < om.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
-                     select new
-                     {
-                         om.Organization,
-                         om.Person,
-                     };
+            var day = (int)now.DayOfWeek;
+            // get org members first
+            var members =
+                from om in DbUtil.Db.OrganizationMembers
+                let meeting = om.Organization.Meetings.OrderByDescending(m => m.MeetingDate).FirstOrDefault()
+                let sday = om.Organization.WeeklySchedule == null ? -1 : om.Organization.WeeklySchedule.Day
+                where om.Organization.CanSelfCheckin.Value
+                where om.Organization.CampusId == campus || campus == null
+                where om.Person.FamilyId == id
+                where om.Person.DeceasedDate == null
+                where (day == sday)
+                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == day)
+                select new
+                {
+                    om.Organization,
+                    om.Person,
+                };
             var list = new List<Attendee>();
-            foreach (var i in q2)
+            foreach (var i in members)
+                list.Add(new Attendee
+                {
+                    Id = i.Person.PeopleId,
+                    Name = i.Person.Name,
+                    Birthday = Util.FormatBirthday(i.Person.BirthYear, i.Person.BirthMonth, i.Person.BirthDay),
+                    Class = i.Organization.FullName,
+                    OrgId = i.Organization.OrganizationId,
+                    Location = i.Organization.Location,
+                    Age = i.Person.Age ?? 0,
+                    Gender = i.Person.Gender.Code,
+                    NumLabels = i.Organization.NumCheckInLabels ?? 1,
+                });
+
+            // now get recent visitors
+            var threeweeksago = DateTime.Now.AddDays(-27);
+            var visitors =
+                from a in DbUtil.Db.Attends
+                let meeting = a.Organization.Meetings.OrderByDescending(m => m.MeetingDate).FirstOrDefault()
+                let sday = a.Organization.WeeklySchedule.Day
+                where a.Person.FamilyId == id
+                where a.Person.DeceasedDate == null
+                where a.Organization.CanSelfCheckin.Value
+                where a.Organization.CampusId == campus || campus == null
+                where a.AttendanceFlag && a.MeetingDate > threeweeksago
+                where a.MemberTypeId == (int)Attend.MemberTypeCode.Visitor
+                where day == sday
+                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == day)
+                group a by new { a.Person, a.Organization } into g
+                let a = g.OrderByDescending(a => a.MeetingDate).First()
+                select new
+                {
+                    a.Person,
+                    a.Organization
+                };
+            foreach (var i in visitors)
                 list.Add(new Attendee
                 {
                     Id = i.Person.PeopleId,
@@ -70,53 +117,25 @@ namespace CMSWeb.Controllers
                     NumLabels = i.Organization.NumCheckInLabels ?? 1
                 });
 
-            var threeweeksago = DateTime.Now.AddDays(-27);
-            var q3 = from a in DbUtil.Db.Attends
-                     where a.Person.FamilyId == id
-                     where a.Person.DeceasedDate == null
-                     where a.Organization.CanSelfCheckin.Value
-                     where a.Organization.CampusId == campus || campus == null
-                     //where now.TimeOfDay > a.Organization.WeeklySchedule.MeetingTime.AddHours(-1).TimeOfDay
-                     //where now.TimeOfDay < a.Organization.WeeklySchedule.MeetingTime.AddHours(1).TimeOfDay
-                     where a.AttendanceFlag && a.MeetingDate > threeweeksago
-                     where a.MemberTypeId == (int)Attend.MemberTypeCode.Visitor
-                     group a by new { a.Person, a.Organization } into g
-                     let a = g.OrderByDescending(a => a.MeetingDate).First()
-                     select new
-                     {
-                         a.Person,
-                         a.Organization
-                     };
-            foreach (var i in q3)
-                list.Add(new Attendee
-                {
-                    Id = i.Person.PeopleId,
-                    Name = i.Person.Name,
-                    Birthday = Util.FormatBirthday(i.Person.BirthYear, i.Person.BirthMonth, i.Person.BirthDay),
-                    Class = i.Organization.FullName,
-                    OrgId = i.Organization.OrganizationId,
-                    Location = i.Organization.Location,
-                    Age = i.Person.Age ?? 0,
-                    Gender = i.Person.Gender.Code,
-                    NumLabels = i.Organization.NumCheckInLabels ?? 1
-                });
             var pids = list.Select(i => i.Id).ToArray();
-            var q4 = from p in DbUtil.Db.People
-                     where p.FamilyId == id
-                     where p.DeceasedDate == null
-                     where !pids.Contains(p.PeopleId)
-                     select p;
+            // now get rest of family
+            var otherfamily = from p in DbUtil.Db.People
+                              where p.FamilyId == id
+                              where p.DeceasedDate == null
+                              where !pids.Contains(p.PeopleId)
+                              select p;
             const string PleaseVisit = "Please visit Welcome Center";
             var VisitorOrgName = PleaseVisit;
             var VisitorOrgId = 0;
             if (campus.HasValue)
             {
+                // find a org on campus that allows an older, new visitor to check in to
                 var qv = from o in DbUtil.Db.Organizations
                          where o.CampusId == campus
                          where o.CanSelfCheckin == true
                          where o.AllowNonCampusCheckIn == true
+                         where o.WeeklySchedule.Day == day
                          select o;
-
                 var vo = qv.FirstOrDefault();
                 if (vo != null)
                 {
@@ -124,7 +143,7 @@ namespace CMSWeb.Controllers
                     VisitorOrgId = vo.OrganizationId;
                 }
             }
-            foreach (var p in q4)
+            foreach (var p in otherfamily)
             {
                 bool oldervisitor = p.CampusId != campus && p.Age > 12;
                 list.Add(new Attendee
@@ -149,20 +168,33 @@ namespace CMSWeb.Controllers
             var ret = (from o in DbUtil.Db.Organizations
                        where o.OrganizationId == OrgId
                        select new { o.WeeklySchedule, o.Location }).Single();
-            var dt = Util.Now.Date;
-            dt = dt.Add(ret.WeeklySchedule.MeetingTime.TimeOfDay);
+            var prevMidnight = Util.Now.Date;
+            var ninetyMinutesAgo = Util.Now.AddMinutes(-90);
+            var nextMidnight = prevMidnight.AddDays(1);
 
+            // try to find a meeting today that started no more than 90 minutes ago
             var meeting = (from m in DbUtil.Db.Meetings
                            where m.OrganizationId == OrgId
-                           where m.MeetingDate == dt
-                           select m).SingleOrDefault();
+                           where m.MeetingDate >= ninetyMinutesAgo
+                           where m.MeetingDate < nextMidnight
+                           orderby m.MeetingDate
+                           select m).FirstOrDefault();
+            
+            // try to find a meeting that started anytime today
+            if (meeting == null)
+                meeting = (from m in DbUtil.Db.Meetings
+                           where m.OrganizationId == OrgId
+                           where m.MeetingDate >= prevMidnight
+                           where m.MeetingDate < nextMidnight
+                           orderby m.MeetingDate
+                           select m).FirstOrDefault();
 
             if (meeting == null)
             {
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = OrgId,
-                    MeetingDate = dt,
+                    MeetingDate = prevMidnight,
                     CreatedDate = DateTime.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,

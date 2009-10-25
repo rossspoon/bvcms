@@ -20,11 +20,11 @@ public partial class Blog_Post : System.Web.UI.Page
         blog = Item1.BlogPost.BlogCached;
         Archives1.blog = blog;
         site.HeadTitleText = blog.Title;
-        site.HeadTitleLink = "/Blog/{0}.aspx".Fmt(blog.Name);
+        site.HeadTitleLink = "~/Blog/{0}.aspx".Fmt(blog.Name);
         site.HeadBylineText = blog.Description;
 
-        site.AddCrumb("Blogs", "/Blog/")
-            .Add(blog.Name, "/Blog/{0}.aspx", blog.Name);
+        site.AddCrumb("Blogs", "~/Blog/")
+            .Add(blog.Name, "~/Blog/{0}.aspx", blog.Name);
         postcomment.Disabled = !User.Identity.IsAuthenticated;
         PreviewArea.Visible = false;
 
@@ -32,7 +32,7 @@ public partial class Blog_Post : System.Web.UI.Page
         NextListItem.Visible = nextpost != null;
         if (NextListItem.Visible)
         {
-            NextEntry.NavigateUrl = "/Blog/{0}.aspx".Fmt(nextpost.Id);
+            NextEntry.NavigateUrl = "~/Blog/{0}.aspx".Fmt(nextpost.Id);
             NextEntry.Text = nextpost.Title;
         }
 
@@ -40,11 +40,11 @@ public partial class Blog_Post : System.Web.UI.Page
         PrevListItem.Visible = prevpost != null;
         if (PrevListItem.Visible)
         {
-            PrevEntry.NavigateUrl = "/Blog/{0}.aspx".Fmt(prevpost.Id);
+            PrevEntry.NavigateUrl = "~/Blog/{0}.aspx".Fmt(prevpost.Id);
             PrevEntry.Text = prevpost.Title;
         }
 
-        AddEntry.NavigateUrl = "/Blog/New.aspx?id=" + blog.Id;
+        AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
         CanEditComments = blog.IsBlogger || Roles.IsUserInRole("Administrator");
     }

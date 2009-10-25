@@ -618,7 +618,7 @@
     <Content Include="Blog\Post.aspx" />
     <Content Include="Blog\Posts.aspx" />
     <Content Include="Blog\RecentPosts.ascx" />
-    <Content Include="connectionStrings.config" />
+    <Content Include="Config\connectionStrings.config" />
     <Content Include="BlogPost\MetaWebLogApi.ashx" />
     <Compile Include="Admin\Role_edit.aspx.cs">
       <DependentUpon>Role_edit.aspx</DependentUpon>
@@ -690,6 +690,9 @@
     </Compile>
     <Compile Include="Blog\New.aspx.designer.cs">
       <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CKUpload.ashx.cs">
+      <DependentUpon>CKUpload.ashx</DependentUpon>
     </Compile>
     <Compile Include="Classes\MyMembershipProvider.cs" />
     <Compile Include="Classes\Styles.cs" />
@@ -773,6 +776,8 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
+    <Content Include="CKUpload.ashx" />
+    <Content Include="Config\smtp.config" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\CookComputing.XmlRpc.dll.deploy" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\PostPodcast.application" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\PostPodcast.exe.config.deploy" />

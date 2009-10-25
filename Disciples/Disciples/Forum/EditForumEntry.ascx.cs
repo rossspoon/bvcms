@@ -62,7 +62,7 @@ public partial class EditForumEntry : System.Web.UI.UserControl
     private void CheckMembership(Forum f)
     {
         if (f==null || !f.IsMember)
-            Response.Redirect("/");
+            Response.Redirect("~/");
     }
     private string returnloc;
     private ICollection<MailAddress> addresses;
@@ -80,9 +80,9 @@ public partial class EditForumEntry : System.Web.UI.UserControl
             Entry.CreatedOn = DateTime.Now;
             DbUtil.Db.SubmitChanges();
         }
-        string returnloc2 = "/Forum/Thread/{0}.aspx?selected={1}"
+        string returnloc2 = "~/Forum/Thread/{0}.aspx?selected={1}"
             .Fmt(Entry.ThreadId, Entry.Id);
-        returnloc = "http://{0}{1}".Fmt(Request.Url.Authority, returnloc2);
+        returnloc = Util.ResolveServerUrl(returnloc2);
         addresses = Entry.ThreadPost.GetNotificationList();
         ThreadPool.QueueUserWorkItem(new WaitCallback(SendEmails));
         Response.Redirect(returnloc2);

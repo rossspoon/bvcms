@@ -9,12 +9,12 @@
         DataSourceID="LinqDataSource1">
         <Columns>
             <asp:HyperLinkField DataNavigateUrlFields="PageId" 
-                DataNavigateUrlFormatString="/Admin/cmspagelist.aspx?id={0}" 
+                DataNavigateUrlFormatString="~/Admin/cmspagelist.aspx?id={0}" 
                 DataTextField="PageId" HeaderText="ID" />
             <asp:BoundField DataField="Title" HeaderText="Title" ReadOnly="True" 
                 SortExpression="Title" />
             <asp:HyperLinkField DataNavigateUrlFields="PageId" 
-                DataNavigateUrlFormatString="/Admin/cmspagelist.aspx?id={0}" 
+                DataNavigateUrlFormatString="~/Admin/cmspagelist.aspx?id={0}" 
                 DataTextField="PageUrl" HeaderText="Url" />
         </Columns>
     </asp:GridView>

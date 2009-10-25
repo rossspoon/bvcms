@@ -16,8 +16,8 @@ public partial class Forum_Thread : System.Web.UI.Page
         if (entry == null || !entry.Forum.IsMember)
             Response.Redirect("/");
 
-        ((BellevueTeachers.Site)Master).AddCrumb("Topics", "/Forum/{0}.aspx", entry.ForumId)
-            .Add("Thread", "/Forum/Thread/{0}.aspx", threadid);
+        ((BellevueTeachers.Site)Master).AddCrumb("Topics", "~/Forum/{0}.aspx", entry.ForumId)
+            .Add("Thread", "~/Forum/Thread/{0}.aspx", threadid);
 
         selected = Request.QueryString<int?>("selected");
         if (!selected.HasValue)
@@ -91,8 +91,8 @@ public partial class Forum_Thread : System.Web.UI.Page
             tree.Nodes[0].Select();
         var e = ForumEntry.LoadById(tree.SelectedNode.Value.ToInt());
         ForumEntryDisplay1.Entry = e;
-        Reply.NavigateUrl = "/Forum/Edit.aspx?reply=true&id={0}".Fmt(e.Id);
-        Edit.NavigateUrl = "/Forum/Edit.aspx?id={0}".Fmt(e.Id);
+        Reply.NavigateUrl = "~/Forum/Edit.aspx?reply=true&id={0}".Fmt(e.Id);
+        Edit.NavigateUrl = "~/Forum/Edit.aspx?id={0}".Fmt(e.Id);
         e.ShowAsRead(DbUtil.Db.CurrentUser);
         SetText(tree.SelectedNode, SetTextParam.Current, e.Title, e.User);
         ViewState["lastseen"] = tree.SelectedNode.ValuePath;

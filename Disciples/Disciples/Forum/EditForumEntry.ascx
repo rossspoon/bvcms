@@ -3,6 +3,14 @@
 <link href="../App_Themes/Default/forum.css" rel="stylesheet" type="text/css" />
 <link href="../App_Themes/Default/Common.css" rel="stylesheet" type="text/css" />
 </asp:Literal>
+<script type="text/javascript">
+    $(function() {
+        CKEDITOR.replace('<%=EntryText2.UniqueID%>', {
+        filebrowserUploadUrl: '<%=Util.ResolveUrl("~/CKUpload.ashx") %>',
+            filebrowserImageUploadUrl: '<%=Util.ResolveUrl("~/CKUpload.ashx") %>'
+        });
+    });
+</script>
 <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 100%">
     <tr>
         <td colspan="2">
@@ -30,7 +38,7 @@
             Entry:
         </td>
         <td>
-            <asp:TextBox ID="EntryText2" CssClass="ckeditor" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
+            <asp:TextBox ID="EntryText2" runat="server" TextMode="MultiLine" Height="500" Width="700" ></asp:TextBox>
       </td>
     </tr>
     <tr>

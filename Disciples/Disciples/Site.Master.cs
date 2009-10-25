@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Web.Security;
+using UtilityExtensions;
 
 namespace BellevueTeachers
 {
@@ -37,45 +38,45 @@ namespace BellevueTeachers
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            NewMenu(MainMenu, HomeMenuText, "/");
+            NewMenu(MainMenu, HomeMenuText, "~/");
 
             HtmlGenericControl m;
-            m = NewTopMenu(MainMenu, "Blogs", "/Blog/");
+            m = NewTopMenu(MainMenu, "Blogs", "~/Blog/");
             foreach (DiscData.Blog b in new BlogController().FetchAllForUser())
-                NewMenu(m, b.Title, "/Blog/" + b.Name + ".aspx");
+                NewMenu(m, b.Title, "~/Blog/" + b.Name + ".aspx");
 
             //var fc = new ForumController();
             //if (fc.FetchAllForUser().Count() > 0)
             //{
-            //    m = NewTopMenu(MainMenu, "Forums", "/Forum/");
+            //    m = NewTopMenu(MainMenu, "Forums", "~/Forum/");
             //    foreach (Forum f in fc.FetchAllForUser())
-            //        NewMenu(m, f.Description, "/Forum/" + f.Id.ToString() + ".aspx");
+            //        NewMenu(m, f.Description, "~/Forum/" + f.Id.ToString() + ".aspx");
             //}
 
-            NewMenu(MainMenu, "Podcasting", "/Podcast/");
+            NewMenu(MainMenu, "Podcasting", "~/Podcast/");
 
             m = NewTopMenu(MainMenu, "Bible Tools", "#");
-            NewMenu(m, "One Year Bible Plan (mix)", "/Verse/DailyReading.aspx");
-            NewMenu(m, "Chronological Reading Plan", "/Verse/DailyReadingChron.aspx");
+            NewMenu(m, "One Year Bible Plan (mix)", "~/Verse/DailyReading.aspx");
+            NewMenu(m, "Chronological Reading Plan", "~/Verse/DailyReadingChron.aspx");
             if (Page.User.Identity.IsAuthenticated)
-                NewMenu(m, "Verse Memory", "/Verse/");
+                NewMenu(m, "Verse Memory", "~/Verse/");
             else
-                NewMenu(m, "Verse Memory (login or join to see this)", "/Verse/");
+                NewMenu(m, "Verse Memory (login or join to see this)", "~/Verse/");
 
-            NewMenu(MainMenu, "Resources", "/view/resources.aspx");
+            NewMenu(MainMenu, "Resources", "~/view/resources.aspx");
 
             if (Group.FetchAdminGroups().Count() > 0 || Page.User.IsInRole("Administrator"))
             {
-                m = NewTopMenu(MainMenu, "Admin", "/AdminGroups.aspx");
+                m = NewTopMenu(MainMenu, "Admin", "~/AdminGroups.aspx");
                 if (Page.User.IsInRole("Administrator"))
                 {
-                    NewMenu(m, "History", "/Admin/History.aspx");
-                    NewMenu(m, "Users", "/Admin/Users.aspx");
-                    NewMenu(m, "Scaffold", "/Admin/Scaffold.aspx");
-                    NewMenu(m, "Groups", "/Admin/Roles.aspx");
-                    NewMenu(m, "Pages", "/Admin/CMSPageList.aspx");
-                    NewMenu(m, "Registration", "/Register.aspx");
-                    //NewMenu(m, "BatchJob", "/Admin/BatchJob.aspx");
+                    NewMenu(m, "History", "~/Admin/History.aspx");
+                    NewMenu(m, "Users", "~/Admin/Users.aspx");
+                    NewMenu(m, "Scaffold", "~/Admin/Scaffold.aspx");
+                    NewMenu(m, "Groups", "~/Admin/Roles.aspx");
+                    NewMenu(m, "Pages", "~/Admin/CMSPageList.aspx");
+                    NewMenu(m, "Registration", "~/Register.aspx");
+                    //NewMenu(m, "BatchJob", "~/Admin/BatchJob.aspx");
                 }
             }
             if (!Page.IsPostBack)
@@ -96,7 +97,7 @@ namespace BellevueTeachers
         {
             var li = new HtmlGenericControl("li");
             var a = new HtmlAnchor();
-            a.HRef = NavigateUrl;
+            a.HRef = Util.ResolveUrl(NavigateUrl);
             a.InnerText = Text;
             li.Controls.Add(a);
             menu.Controls.Add(li);

@@ -91,7 +91,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             DbUtil.Db.VerseCategories.DeleteAllOnSubmit(mu.VerseCategories);
 
             DbUtil.Db.SubmitChanges();
-            Response.Redirect("/Admin/Users.aspx");
+            Response.Redirect("~/Admin/Users.aspx");
         }
         catch (Exception ex)
         {

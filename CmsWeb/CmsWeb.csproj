@@ -568,6 +568,13 @@
     <Compile Include="Report\ChurchAttendanceSummaryRpt.aspx.designer.cs">
       <DependentUpon>ChurchAttendanceSummaryRpt.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\AttendanceReport.aspx.cs">
+      <DependentUpon>AttendanceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\AttendanceReport.aspx.designer.cs">
+      <DependentUpon>AttendanceReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1846,6 +1853,7 @@
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
     <Content Include="index.htm" />
+    <Content Include="Report\AttendanceReport.aspx" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
     <Content Include="Views\CheckIn\Multiple.aspx" />
@@ -1943,6 +1951,9 @@
     <EmbeddedResource Include="Report\rdlc\RollsheetRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailSubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailVisitorSubRpt.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

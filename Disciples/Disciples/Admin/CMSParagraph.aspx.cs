@@ -13,6 +13,20 @@ public partial class CMSParagraph : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        Literal1.Text = 
+@"
+<script src=""{0}"" type=""text/javascript""></script>
+<script src=""{1}"" type=""text/javascript""></script>
+<script type=""text/javascript"">
+    $(function() {{
+        CKEDITOR.replace('{2}', {{
+            filebrowserUploadUrl: '{3}',
+            filebrowserImageUploadUrl: '{3}'
+        }});
+    }});
+</script>".Fmt(Util.ResolveUrl("~/js/jquery-1.2.6.js"), Util.ResolveUrl("~/ckeditor/ckeditor.js"),
+          txtContent2.UniqueID, Util.ResolveUrl("~/CKUpload.ashx"));
+
         ContentId = Request.QueryString<int?>("id");
         if (!Page.IsPostBack)
         {

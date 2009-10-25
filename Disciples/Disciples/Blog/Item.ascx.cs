@@ -29,8 +29,8 @@ public partial class Blog_Item : System.Web.UI.UserControl
     {
         if (post == null)
             return;
-        PermaLink = "/Blog/{0}.aspx".Fmt(post.Id);
-        BlogLink0 = "/Blog/{0}".Fmt(post.BlogCached.Name);
+        PermaLink = "~/Blog/{0}.aspx".Fmt(post.Id);
+        BlogLink0 = "~/Blog/{0}".Fmt(post.BlogCached.Name);
         BlogLink = BlogLink0 + ".aspx";
     }
     protected override void OnPreRender(EventArgs e)
@@ -40,9 +40,9 @@ public partial class Blog_Item : System.Web.UI.UserControl
                 (!Page.User.IsInRole("Administrator") 
                 && !post.BlogCached.IsMember 
                 && !post.BlogCached.IsPublic))
-            Response.Redirect("/");
+            Response.Redirect("~/");
 
-        Edit.NavigateUrl = "/Blog/Edit.aspx?id=" + post.Id;
+        Edit.NavigateUrl = "~/Blog/Edit.aspx?id=" + post.Id;
         Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("Administrator");
         CategoryList.DataSource = BlogCategoryController.GetCategoryListFromCache(post.Id);
         CategoryList.DataBind();

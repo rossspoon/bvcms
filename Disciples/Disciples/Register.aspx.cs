@@ -26,7 +26,7 @@ namespace BellevueTeachers
                 return;
 
             // check for duplicate in CMS
-            using (var cn = new SqlConnection(ConfigurationManager.ConnectionStrings["CMS"].ConnectionString))
+            using (var cn = new SqlConnection(Util.ConnectionStringDisc))
             {
                 cn.Open();
                 var cmd = new SqlCommand("select count(*) from dbo.Users where username = @username", cn);
@@ -79,7 +79,7 @@ namespace BellevueTeachers
                 if (fromPage.HasValue() && !fromPage.ToLower().Contains("register.aspx"))
                     Response.Redirect(fromPage);
                 else
-                    Response.Redirect("/default.aspx");
+                    Response.Redirect("~/default.aspx");
             }
             else
             {

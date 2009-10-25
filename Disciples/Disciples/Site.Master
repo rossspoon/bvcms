@@ -5,17 +5,25 @@
 <head id="Head1" runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title></title>
-    <script src="/js/modal/common.js" type="text/javascript"></script>
-    <script src="/js/modal/subModal.js" type="text/javascript"></script>
-    <script src="/js/audio-player.js" type="text/javascript"></script>
-    <script src="/js/wasp.js" type="text/javascript"></script>
-    <script src="/js/jquery-1.2.6.js" type="text/javascript"></script>
-    <script src="/js/superfish.js" type="text/javascript"></script>
-    <script src="/js/supersubs.js" type="text/javascript"></script>
-    <script src="/js/jquery.bgiframe.min.js" type="text/javascript"></script>
-    <script src="/js/hoverIntent.js" type="text/javascript"></script>
-    <script src="/js/jquery.corner.js" type="text/javascript"></script>
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+</head>
+<body>
+    <form id="form2" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+        <Scripts>
+            <asp:ScriptReference Path="~/js/jquery-1.2.6.js" />
+            <asp:ScriptReference Path="~/js/modal/common.js" />
+            <asp:ScriptReference Path="~/js/modal/subModal.js" />
+            <asp:ScriptReference Path="~/js/audio-player.js" />
+            <asp:ScriptReference Path="~/js/wasp.js" />
+            <asp:ScriptReference Path="~/js/jquery-1.2.6.js" />
+            <asp:ScriptReference Path="~/js/superfish.js" />
+            <asp:ScriptReference Path="~/js/supersubs.js" />
+            <asp:ScriptReference Path="~/js/jquery.bgiframe.min.js" />
+            <asp:ScriptReference Path="~/js/hoverIntent.js" />
+            <asp:ScriptReference Path="~/js/jquery.corner.js" />
+            <asp:ScriptReference Path="~/ckeditor/ckeditor.js" />
+        </Scripts>
+    </asp:ScriptManager>
     <script type="text/javascript">
         $(document).ready(function() {
             $("ul.sf-menu").supersubs({
@@ -26,20 +34,14 @@
             $("#extra.front .panel").corner();
         }); 
     </script>
-
-</head>
-<body>
-    <form id="form2" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
     <div id="sitemast">
         <div id="headerimage">
             <a href="/">
-                <img src="/images/Crosses.png" /></a>
+                <asp:Image ID="Image1" ImageUrl="~/images/Crosses.png" runat="server" /></a>
         </div>
         <div id="headertitle">
             <h1>
-                <asp:HyperLink ID="HeadTitle" runat="server" NavigateUrl="/" EnableViewState="false">Bellevue Disciples</asp:HyperLink></h1>
+                <asp:HyperLink ID="HeadTitle" runat="server" NavigateUrl="~/" EnableViewState="false">Bellevue Disciples</asp:HyperLink></h1>
                 <div>
                     <asp:Label ID="HeadByline" runat="server" EnableViewState="false" Text="Discipleship, Community, Fellowship, Information"></asp:Label></div>
         </div>
@@ -47,13 +49,14 @@
             <div id="CSHeaderUserWelcome">
                 <asp:LoginView ID="LoginView1" runat="server">
                     <AnonymousTemplate>
-                        <a href="/default.aspx#login">Login</a> | <a href="/register.aspx">Register</a>
+                        <asp:HyperLink ID="HyperLink2" NavigateUrl="~/default.aspx#login" runat="server">Login</asp:HyperLink>
+                        | <asp:HyperLink ID="HyperLink3" NavigateUrl="~/register.aspx" runat="server">Register</asp:HyperLink>
                     </AnonymousTemplate>
                     <LoggedInTemplate>
                         Hi
                         <asp:LoginName ID="LoginName1" runat="server" EnableViewState="False" />
                         |
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="/ProfileEdit.aspx" EnableViewState="False">Edit Profile</asp:HyperLink>
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ProfileEdit.aspx" EnableViewState="False">Edit Profile</asp:HyperLink>
                         |
                         <asp:LoginStatus ID="LoginStatus1" runat="server" EnableViewState="false" LogoutAction="RedirectToLoginPage" />
                     </LoggedInTemplate>

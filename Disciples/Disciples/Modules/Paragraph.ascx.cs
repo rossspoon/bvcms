@@ -45,7 +45,7 @@ namespace BellevueTeachers.Modules
             {
                 Panel1.CssClass = "contentboxadmin";
                 string dblclick = string.Format("showPopWin('{0}?id={1}', 800, 650, null);",
-                    Page.ResolveClientUrl("/admin/CMSParagraph.aspx"), Content.ContentID);
+                    Page.ResolveClientUrl("~/admin/CMSParagraph.aspx"), Content.ContentID);
                 Panel1.Attributes.Add("ondblclick", dblclick);
                 Panel1.Attributes.Add("onmouseover", "this.className='contentboxhover'");
                 Panel1.Attributes.Add("onmouseout", "this.className='contentboxadmin'");
