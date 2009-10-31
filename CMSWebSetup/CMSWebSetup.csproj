@@ -111,6 +111,10 @@
       <Project>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</Project>
       <Name>CmsPresenter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CMSWebCommon\CMSWebCommon.csproj">
+      <Project>{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}</Project>
+      <Name>CMSWebCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
       <Name>UtilityExtensions</Name>

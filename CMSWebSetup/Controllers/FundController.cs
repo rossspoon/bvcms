@@ -10,7 +10,7 @@ using UtilityExtensions;
 namespace CMSWebSetup.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class FundController : Controller
+    public class FundController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

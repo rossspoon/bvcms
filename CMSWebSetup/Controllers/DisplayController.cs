@@ -16,7 +16,7 @@ namespace CMSWebSetup.Controllers
 {
     [HandleError]
     [Authorize(Roles = "Admin")]
-    public class DisplayController : Controller
+    public class DisplayController : CMSWebCommon.Controllers.CmsController
     {
         //public ActionResult Menu()
         //{

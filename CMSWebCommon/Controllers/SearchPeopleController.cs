@@ -15,7 +15,7 @@ using UtilityExtensions;
 
 namespace CMSWebCommon.Controllers
 {
-    public class SearchPeopleController : Controller
+    public class SearchPeopleController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index(int? origin, int? entrypoint)
         {

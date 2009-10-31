@@ -781,7 +781,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AccessDenied.htm" />
+    <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Dialog\AddContactee.aspx" />
     <Content Include="Dialog\AddContactor.aspx" />
     <Content Include="Dialog\AddFamily.aspx" />
@@ -810,7 +810,7 @@
     <Content Include="EmailAttendanceNotices.aspx" />
     <Content Include="EmailPeople.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
-    <Content Include="Error.htm" />
+    <Content Include="Errors\Error.htm" />
     <Content Include="Family.aspx" />
     <Content Include="favicon.ico" />
   </ItemGroup>
@@ -1850,6 +1850,7 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
+    <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
     <Content Include="index.htm" />

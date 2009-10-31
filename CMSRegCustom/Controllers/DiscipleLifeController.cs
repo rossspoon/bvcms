@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace CMSRegCustom.Controllers
 {
-    public class DiscipleLifeController : Controller
+    public class DiscipleLifeController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index(int? id)
         {

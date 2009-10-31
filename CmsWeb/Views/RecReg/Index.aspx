@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td><label for="state">State</label></td>
-                    <td><%=Html.TextBox("state")%></td>
+                    <td><%= Html.DropDownList("state", CMSWeb.Models.RegisterModel.StateList()) %></td>
                     <td></td>
                 </tr>
                 <% } %>

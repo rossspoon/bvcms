@@ -99,13 +99,14 @@ namespace CMSWeb.Models
                 new SelectListItem { Value="50", Text="Widowed" },
             };
         }
-        public IEnumerable<SelectListItem> StateList()
+        public static IEnumerable<SelectListItem> StateList()
         {
+            string defstate = DbUtil.Settings("DefaultState", "TN");
             var q = from r in DbUtil.Db.StateLookups
                     select new SelectListItem
                     {
                         Text = r.StateCode,
-                        Selected = r.StateCode == DbUtil.Settings("DefaultState", "TN"),
+                        Selected = r.StateCode == defstate,
                     };
             return q;
         }
@@ -120,13 +121,14 @@ namespace CMSWeb.Models
                     {
                         o.OrganizationName,
                         o.OrganizationId,
-                        MeetingTime = (DateTime?)o.WeeklySchedule.MeetingTime
+                        MeetingTime = (DateTime?)o.WeeklySchedule.MeetingTime,
+                        MeetingDay = o.WeeklySchedule.Day,
                     };
             var list = new List<SelectListItem>();
             foreach (var i in q)
             {
                 var meeting = CMSWeb.Controllers.CheckinController.GetMeeting(
-                    i.OrganizationId, i.MeetingTime, thisday);
+                    i.OrganizationId, i.MeetingTime, i.MeetingDay, thisday);
                 if (meeting == null)
                     continue;
                 list.Add(new SelectListItem

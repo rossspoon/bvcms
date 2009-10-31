@@ -10,7 +10,7 @@ using UtilityExtensions;
 
 namespace CMSWeb.Controllers
 {
-    public class RecreationController : Controller
+    public class RecreationController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

@@ -18,7 +18,7 @@ using CmsData;
 
 namespace CMSWeb.Controllers
 {
-    public class VolunteersController : Controller
+    public class VolunteersController : CMSWebCommon.Controllers.CmsController
     {
         public VolunteersController()
         {

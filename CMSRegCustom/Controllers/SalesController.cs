@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace CMSRegCustom.Controllers
 {
-    public class SalesController : Controller
+    public class SalesController : CMSWebCommon.Controllers.CmsController
     {
         public SalesController()
         {

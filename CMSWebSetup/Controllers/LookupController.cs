@@ -10,7 +10,7 @@ using UtilityExtensions;
 namespace CMSWebSetup.Controllers
 {
     [Authorize(Roles="Developer")]
-    public class LookupController : Controller
+    public class LookupController : CMSWebCommon.Controllers.CmsController
     {
         public class Row
         {

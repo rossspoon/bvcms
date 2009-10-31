@@ -8,7 +8,7 @@
 
     <h2>Payment Processing</h2>
     <p>
-        You will now be redirected to ServiceU.com to process your credit card payment of $25.00.
+        You will now be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
         After you are finished there, you will be redirected back here to get your confirmation.
     </p>
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">

@@ -10,7 +10,7 @@ using CMSWebSetup.Models;
 
 namespace CMSWebSetup.Controllers
 {
-    public class PromotionSetupController : Controller
+    public class PromotionSetupController : CMSWebCommon.Controllers.CmsController
     {
         [Authorize(Roles = "Admin")]
         public ActionResult Index()

@@ -14,7 +14,7 @@ using System.Net.Mail;
 namespace CMSRegCustom.Controllers
 {
     [HandleError]
-    public class LoveRespectController : Controller
+    public class LoveRespectController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

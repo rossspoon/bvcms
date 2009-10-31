@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace CMSWeb.Controllers
 {
-    public class RecRegController : Controller
+    public class RecRegController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index(int? id)
         {

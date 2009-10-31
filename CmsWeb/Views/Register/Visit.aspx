@@ -107,7 +107,7 @@
                 </tr>
                 <tr>
                     <td><label for="state">State</label></td>
-                    <td><%= Html.DropDownList("state", Model.StateList()) %></td>
+                    <td><%= Html.DropDownList("state", CMSWeb.Models.RegisterModel.StateList()) %></td>
                     <td><%= Html.ValidationMessage("state") %></td>
                 </tr>
                 <tr>

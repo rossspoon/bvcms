@@ -11,7 +11,7 @@ using UtilityExtensions;
 namespace CMSWebSetup.Controllers
 {
     [HandleError]
-    public class VolOpportunityController : Controller
+    public class VolOpportunityController : CMSWebCommon.Controllers.CmsController
     {
         [Authorize(Roles = "Admin")]
         public ActionResult Index()

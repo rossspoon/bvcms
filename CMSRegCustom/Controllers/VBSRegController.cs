@@ -11,7 +11,7 @@ using UtilityExtensions;
 namespace CMSRegCustom.Controllers
 {
     [HandleError]
-    public class VBSRegController : Controller
+    public class VBSRegController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

@@ -12,7 +12,7 @@ using UtilityExtensions;
 namespace CMSWeb.Controllers
 {
     [HandleError]
-    public class VolunteerController : Controller
+    public class VolunteerController : CMSWebCommon.Controllers.CmsController
     {
         public VolunteerController()
         {

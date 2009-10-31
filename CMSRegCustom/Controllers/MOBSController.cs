@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace CMSRegCustom.Controllers
 {
-    public class MOBSController : Controller
+    public class MOBSController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index(int? test)
         {

@@ -61,6 +61,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CmsController.cs" />
     <Compile Include="Controllers\CommonHomeController.cs" />
     <Compile Include="Controllers\SearchPeopleController.cs" />
     <Compile Include="Default.aspx.cs">

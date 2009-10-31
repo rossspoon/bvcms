@@ -17,7 +17,7 @@ namespace CMSWeb.Controllers
 {
 
     [HandleError]
-    public class AccountController : Controller
+    public class AccountController : CMSWebCommon.Controllers.CmsController
     {
 
         // This constructor is used by the MVC framework to instantiate the controller using

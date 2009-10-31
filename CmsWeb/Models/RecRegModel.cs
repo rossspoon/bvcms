@@ -174,12 +174,12 @@ namespace CMSWeb.Models
         public bool member { get; set; }
         public bool otherchurch { get; set; }
         public int? coaching { get; set; }
-        public decimal? Amount
+        public decimal Amount
         {
             get
             {
                 var dt = DateTime.Parse(RecAgeDiv.ExpirationDt);
-                return RecAgeDiv.Fee + (dt < DateTime.Now ? RecAgeDiv.ExtraFee : 0);
+                return RecAgeDiv.Fee.Value + (dt < DateTime.Now ? (RecAgeDiv.ExtraFee ?? 0) : 0);
             }
         }
 

@@ -10,7 +10,7 @@ using UtilityExtensions;
 namespace CMSWebSetup.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class MetroZipController : Controller
+    public class MetroZipController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

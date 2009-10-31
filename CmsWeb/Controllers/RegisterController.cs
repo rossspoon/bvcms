@@ -13,7 +13,7 @@ using System.Net.Mail;
 namespace CMSWeb.Controllers
 {
     [HandleError]
-    public class RegisterController : Controller
+    public class RegisterController : CMSWebCommon.Controllers.CmsController
     {
         public RegisterController()
         {

@@ -41,6 +41,7 @@ namespace CMSWeb
             routes.IgnoreRoute("images/{*pathInfo}");
             routes.IgnoreRoute("App_Themes/{*pathInfo}");
             routes.IgnoreRoute("Content/{*pathInfo}");
+            routes.IgnoreRoute("Errors/{*pathInfo}");
             routes.IgnoreRoute("Scripts/{*pathInfo}");
             routes.IgnoreRoute("Upload/{*pathInfo}");
             routes.IgnoreRoute("{myWebPage}.htm");

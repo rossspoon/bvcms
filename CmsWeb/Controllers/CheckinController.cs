@@ -9,7 +9,7 @@ using UtilityExtensions;
 
 namespace CMSWeb.Controllers
 {
-    public class CheckinController : Controller
+    public class CheckinController : CMSWebCommon.Controllers.CmsController
     {
         public int? thisday { get; set; }
 
@@ -75,7 +75,7 @@ namespace CMSWeb.Controllers
             foreach (var i in members)
             {
                 var meeting = GetMeeting(i.Organization.OrganizationId, 
-                    i.Organization.WeeklySchedule.MeetingTime, thisday);
+                    i.Organization.WeeklySchedule.MeetingTime, i.Organization.WeeklySchedule.Day, thisday);
                 list.Add(new Attendee
                 {
                     Id = i.Person.PeopleId,
@@ -115,7 +115,7 @@ namespace CMSWeb.Controllers
             foreach (var i in visitors)
             {
                 var meeting = GetMeeting(i.Organization.OrganizationId, 
-                    i.Organization.WeeklySchedule.MeetingTime, thisday);
+                    i.Organization.WeeklySchedule.MeetingTime, i.Organization.WeeklySchedule.Day, thisday);
                 list.Add(new Attendee
                 {
                     Id = i.Person.PeopleId,
@@ -181,8 +181,8 @@ namespace CMSWeb.Controllers
         {
             var info = (from o in DbUtil.Db.Organizations
                        where o.OrganizationId == OrgId
-                       select new { o.WeeklySchedule.MeetingTime, o.Location }).Single();
-            var meeting = GetMeeting(OrgId, info.MeetingTime, thisday);
+                       select new { o.WeeklySchedule.MeetingTime, o.WeeklySchedule.Day, o.Location }).Single();
+            var meeting = GetMeeting(OrgId, info.MeetingTime, info.Day, thisday);
             if (meeting == null || meeting.OrganizationId == 0)
             {
                 meeting = new CmsData.Meeting
@@ -204,10 +204,10 @@ namespace CMSWeb.Controllers
             r.Content = "success";
             return r;
         }
-        internal static CmsData.Meeting GetMeeting(int OrgId, DateTime? DefaultHour, int? day)
+        internal static CmsData.Meeting GetMeeting(int OrgId, DateTime? DefaultHour, int DefaultDay, int? thisday)
         {
-            if (!day.HasValue)
-                day = (int)DateTime.Now.DayOfWeek;
+            if (!thisday.HasValue)
+                thisday = (int)DateTime.Now.DayOfWeek;
             var prevMidnight = Util.Now.Date;
             var ninetyMinutesAgo = Util.Now.AddMinutes(-90);
             var nextMidnight = prevMidnight.AddDays(1);
@@ -229,7 +229,7 @@ namespace CMSWeb.Controllers
                            orderby m.MeetingDate
                            select m).FirstOrDefault();
             if (meeting == null && DefaultHour.HasValue 
-                    && (int)DefaultHour.Value.DayOfWeek == (int)DateTime.Now.DayOfWeek)
+                    && DefaultDay == thisday)
                 meeting = new CmsData.Meeting 
                     { MeetingDate = Util.Now.Date.Add(DefaultHour.Value.TimeOfDay) };
             return meeting;

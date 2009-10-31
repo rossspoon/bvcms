@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace CMSWebCommon.Controllers
 {
     [HandleError]
-    public class CommonHomeController : Controller
+    public class CommonHomeController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {

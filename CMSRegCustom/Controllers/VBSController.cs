@@ -14,7 +14,7 @@ using CmsData;
 
 namespace CMSRegCustom.Controllers
 {
-    public class VBSController : Controller
+    public class VBSController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()
         {
