@@ -19,14 +19,29 @@ namespace CMSRegCustom.Controllers
         {
             ViewData["logoimg"] = DbUtil.Settings("GoDisciplesLogo", "/Content/Crosses.png");
         }
-        public ActionResult Leader()
+        public ActionResult Index()
+        {
+            ViewData["header"] = Header;
+            var c = DbUtil.Content("GODisciplesIndex");
+            if (c == null)
+                return Content("Sorry, this is not a valid registration URL");
+            ViewData["content"] = c.Body;
+            return View();
+        }
+        public ActionResult Leader(int? id)
         {
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Leader");
+            if (id.HasValue)
+                m.campus = id;
+            else
+                m.campus = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
 
             UpdateModel(m);
+
             m.ValidateModel(ModelState);
             if (!ModelState.IsValid)
                 return View("Signup", m);

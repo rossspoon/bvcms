@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 
-namespace Utility
+namespace UtilityExtensions
 {
     [ConfigurationCollection(typeof(ConfigurationElement))]
     public class ConfigurationElementCollection<T> : ConfigurationElementCollection where T : ConfigurationElement, new()

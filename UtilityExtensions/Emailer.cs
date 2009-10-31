@@ -26,6 +26,8 @@ namespace UtilityExtensions
             if (ma == null)
                 return;
             var msg = new MailMessage(fr, ma);
+            //msg.From = new MailAddress("");
+            //msg.Sender = new MailAddress("");
             msg.Subject = subject;
             msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
             msg.BodyEncoding = System.Text.Encoding.UTF8;
@@ -64,6 +66,27 @@ namespace UtilityExtensions
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",");
             return new MailAddress(a[0]);
+        }
+        public static void Email3(SmtpClient smtp, string from, string name, string addr, string subject, string message)
+        {
+            var fr = FirstAddress(from);
+            var ma = Util.TryGetMailAddress(addr, name);
+            if (ma == null)
+                return;
+            var msg = new MailMessage(fr, ma);
+            msg.From = fr;
+            msg.Sender = new MailAddress("bbcms01@bellevue.org");
+            msg.Subject = subject;
+            msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
+            msg.BodyEncoding = System.Text.Encoding.UTF8;
+            msg.IsBodyHtml = true;
+            var InDebug = false;
+#if DEBUG
+            InDebug = false;
+#endif
+            if (InDebug)
+                return;
+            smtp.Send(msg);
         }
     }
 }

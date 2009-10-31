@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
-    Inherits="Podcast_Default" Title="Bellevue Teacher Podcasts" Codebehind="Default.aspx.cs" %>
+    Inherits="Podcast_Default" Title="GO Disciples Podcasts" Codebehind="Default.aspx.cs" %>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
     <div id="main"><asp:GridView ID="GridView1" runat="server" EnableViewState="false" AutoGenerateColumns="False"
         DataSourceID="ObjectDataSource1" SkinID="subsonicSkin">

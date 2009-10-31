@@ -10,7 +10,7 @@ public partial class Blog_Post : System.Web.UI.Page
     public bool CanEditComments;
     protected void Page_Load(object sender, EventArgs e)
     {
-        var site = Master as BellevueTeachers.Site;
+        var site = Master as Disciples.Site;
 
         Item1.PostId = Request.QueryString["id"];
         if (Item1.BlogPost == null)

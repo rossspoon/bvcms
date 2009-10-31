@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BellevueTeachers.Verse {
+namespace Disciples.Verse {
     
     
     public partial class Chron {

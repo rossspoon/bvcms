@@ -11,6 +11,6 @@ public partial class NewEntry : System.Web.UI.Page
             Response.Redirect("/");
         EditForumEntry1.Forum = Forum.LoadFromId(id.Value);
         EditForumEntry1.CancelUrl = "~/Forum/{0}.aspx".Fmt(id);
-        ((BellevueTeachers.Site)Master).AddCrumb("Topics", EditForumEntry1.CancelUrl);
+        ((Disciples.Site)Master).AddCrumb("Topics", EditForumEntry1.CancelUrl);
     }
 }

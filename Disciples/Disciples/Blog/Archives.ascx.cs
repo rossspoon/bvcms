@@ -12,7 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using DiscData;
 
-namespace BellevueTeachers.Blog
+namespace Disciples.Blog
 {
     public partial class Archives : System.Web.UI.UserControl
     {

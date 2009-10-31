@@ -9,7 +9,7 @@ using System.Web;
 using System.Net.Mail;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class Register : System.Web.UI.Page
     {

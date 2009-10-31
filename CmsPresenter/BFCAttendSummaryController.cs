@@ -54,6 +54,12 @@ namespace CMSPresenter
                 get { return _Cnt1100; }
                 set { _Cnt1100 = value == 0 ? null : value; }
             }
+            private int? _CntOth;
+            public int? CntOth
+            {
+                get { return _CntOth; }
+                set { _CntOth = value == 0 ? null : value; }
+            }
             public int? Total { get; set; }
             public string Class { get; set; }
         }
@@ -89,6 +95,10 @@ namespace CMSPresenter
                             Cnt800 = qlist.Where(m => m.DateHour.TimeOfDay == t800 && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
                             Cnt930 = qlist.Where(m => m.DateHour.TimeOfDay == t930 && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
                             Cnt1100 = qlist.Where(m => m.DateHour.TimeOfDay == t1100 && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
+                            CntOth = qlist.Where(m => m.DateHour.TimeOfDay != t800
+                                && m.DateHour.TimeOfDay != t930
+                                && m.DateHour.TimeOfDay != t1100
+                                && m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
                             Total = qlist.Where(m => m.SortOrder == g.Key.SortOrder).Sum(m => m.Count),
                         };
             // total row
@@ -102,6 +112,9 @@ namespace CMSPresenter
                              Cnt800 = g.Where(m => m.DateHour.TimeOfDay == t800).Sum(m => m.Count),
                              Cnt930 = g.Where(m => m.DateHour.TimeOfDay == t930).Sum(m => m.Count),
                              Cnt1100 = g.Where(m => m.DateHour.TimeOfDay == t1100).Sum(m => m.Count),
+                             CntOth = qlist.Where(m => m.DateHour.TimeOfDay != t800
+                                 && m.DateHour.TimeOfDay != t930
+                                 && m.DateHour.TimeOfDay != t1100).Sum(m => m.Count),
                              Total = g.Sum(m => m.Count)
                          };
             // all rows sorted

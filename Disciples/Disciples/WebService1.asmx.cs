@@ -6,7 +6,7 @@ using System.Web.Services;
 using DiscData;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

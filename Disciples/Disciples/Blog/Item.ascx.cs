@@ -29,8 +29,8 @@ public partial class Blog_Item : System.Web.UI.UserControl
     {
         if (post == null)
             return;
-        PermaLink = "~/Blog/{0}.aspx".Fmt(post.Id);
-        BlogLink0 = "~/Blog/{0}".Fmt(post.BlogCached.Name);
+        PermaLink = Util.ResolveServerUrl("~/Blog/{0}.aspx".Fmt(post.Id));
+        BlogLink0 = Util.ResolveServerUrl("~/Blog/{0}".Fmt(post.BlogCached.Name));
         BlogLink = BlogLink0 + ".aspx";
     }
     protected override void OnPreRender(EventArgs e)

@@ -146,9 +146,9 @@ function Deselect() {
     return false;
 }
 function SetPriority(id, priority) {
-    $.getJSON('/Task/Priority/'+id+'?priority='+priority, null, function(ret) {
+    $.post('/Task/Priority/' + id + '?priority=' + priority, null, function(ret) {
         $('#Priority').text(ret.Priority);
-    });
+    }, "json");
     return false;
 }
 function SetComplete(id) {

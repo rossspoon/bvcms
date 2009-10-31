@@ -45,6 +45,9 @@
                         <th id="Th4" align="right" runat="server">
                             11:00
                         </th>
+                        <th id="Th6" align="right" runat="server">
+                            Other
+                        </th>
                         <th id="Th5" align="right" runat="server">
                             Total
                         </th>
@@ -66,6 +69,9 @@
                     </td>
                     <td align="right">
                         <asp:Label ID="count3Label" runat="server" Text='<%# Eval("Cnt1100", "{0:n0}") %>' />
+                    </td>
+                    <td align="right">
+                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("CntOth", "{0:n0}") %>' />
                     </td>
                     <td align="right">
                         <asp:Label ID="totalLabel" runat="server" Text='<%# Eval("Total", "{0:n0}") %>' />

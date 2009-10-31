@@ -45,15 +45,14 @@
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(583, 66);
             this.Print.TabIndex = 10;
-            this.Print.Text = "Return to Phone Number";
+            this.Print.Text = "Print All Labels";
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.GoBack_Click);
             this.Print.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AttendeeKeyPress);
             // 
             // Attendees
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.Print);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Attendees";

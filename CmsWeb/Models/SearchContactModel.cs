@@ -211,7 +211,9 @@ namespace CMSWeb.Models
                         Value = c.Id.ToString(),
                         Text = c.Description
                     };
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public IEnumerable<SelectListItem> ReasonTypeCodes()
         {
@@ -222,7 +224,9 @@ namespace CMSWeb.Models
                         Value = c.Id.ToString(),
                         Text = c.Description
                     };
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public List<SelectListItem> Ministries()
         {

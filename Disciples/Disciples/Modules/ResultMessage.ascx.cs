@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BellevueTeachers.Modules
+namespace Disciples.Modules
 {
     public partial class ResultMessage : System.Web.UI.UserControl
     {

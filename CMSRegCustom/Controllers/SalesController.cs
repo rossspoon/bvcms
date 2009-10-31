@@ -18,7 +18,7 @@ namespace CMSRegCustom.Controllers
             ViewData["header"] = "Purchase Item";
             ViewData["logoimg"] = "/Content/Crosses.png";
         }
-        public ActionResult Item(int id, int? test)
+        public ActionResult Item(int id)
         {
             var m = new SalesModel(id);
             ViewData["header"] = "Purchase " + m.saleitem.Description;

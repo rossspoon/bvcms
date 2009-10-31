@@ -10,7 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using DiscData;
 using System.Linq;
-using BellevueTeachers;
+using Disciples;
 using UtilityExtensions;
 
 public partial class admin_user_edit : System.Web.UI.Page

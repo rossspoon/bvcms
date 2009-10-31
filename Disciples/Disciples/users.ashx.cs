@@ -6,7 +6,7 @@ using System.Web.Services;
 using System.Data.SqlClient;
 using System.Configuration;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     /// <summary>
     /// Summary description for $codebehindclassname$

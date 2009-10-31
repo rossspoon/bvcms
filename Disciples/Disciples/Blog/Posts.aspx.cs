@@ -23,7 +23,7 @@ public partial class Blog_Posts : System.Web.UI.Page
 
 
         Title = blog.Title;
-        var site = Master as BellevueTeachers.Site;
+        var site = Master as Disciples.Site;
         site.HeadTitleText = blog.Title;
         site.HeadTitleLink = "~/Blog/{0}.aspx".Fmt(blog.Name);
         site.HeadBylineText = blog.Description;

@@ -23,7 +23,7 @@ public partial class All : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         cat = VerseCategory.LoadById(Request.QueryString<int>("cat"));
-        var site = (BellevueTeachers.Site)Page.Master;
+        var site = (Disciples.Site)Page.Master;
 
         site.AddCrumb("Verses", "~/Verse/Default.aspx?cat={0}", cat.Id)
             .Add("Select Verses");

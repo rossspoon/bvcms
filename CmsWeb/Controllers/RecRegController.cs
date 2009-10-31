@@ -100,6 +100,7 @@ namespace CMSWeb.Controllers
             reg.Insurance = m.insurance;
             reg.Policy = m.policy;
             reg.MedicalDescription = m.medical;
+            m.testing = (reg.Doctor == "test");
 
             var t = m.PrepareSummaryText();
             var bits = System.Text.ASCIIEncoding.ASCII.GetBytes(t);

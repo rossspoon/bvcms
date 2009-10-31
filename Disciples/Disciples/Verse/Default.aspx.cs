@@ -23,7 +23,7 @@ public partial class Verse_Default : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "~/Verse/");
+        ((Disciples.Site)Master).AddCrumb("Verses", "~/Verse/");
         if (cat == null)
             cat = VerseCategory.LoadById(Category.SelectedValue.ToInt());
     }

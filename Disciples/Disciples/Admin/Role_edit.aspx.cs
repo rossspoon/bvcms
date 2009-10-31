@@ -8,7 +8,7 @@ using DiscData;
 using System.Web.Security;
 using UtilityExtensions;
 
-namespace BellevueTeachers.Admin
+namespace Disciples.Admin
 {
     public partial class Role_edit : System.Web.UI.Page
     {

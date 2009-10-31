@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Default"
-    Title="Bellevue Teacher Blogs" CodeBehind="Default.aspx.cs" %>
+    Title="GO Disciples Blogs" CodeBehind="Default.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
     <div id="main">

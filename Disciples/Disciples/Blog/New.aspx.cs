@@ -14,7 +14,7 @@ public partial class Blog_New : System.Web.UI.Page
 
         BlogEdit1.CancelUrl = "~/Blog/{0}.aspx".Fmt(BlogEdit1.Blog.Name);
 
-        ((BellevueTeachers.Site)Master).AddCrumb("Blog", BlogEdit1.CancelUrl);
+        ((Disciples.Site)Master).AddCrumb("Blog", BlogEdit1.CancelUrl);
 
     }
 }

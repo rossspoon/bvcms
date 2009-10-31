@@ -10,7 +10,7 @@ public partial class Add : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         cat = VerseCategory.LoadById(Request.QueryString<int>("id"));
-        ((BellevueTeachers.Site)Master).AddCrumb("Verses", "~/Verse/Default.aspx?cat={0}", cat.Id)
+        ((Disciples.Site)Master).AddCrumb("Verses", "~/Verse/Default.aspx?cat={0}", cat.Id)
             .Add("Add Verse");
 
         if (!Page.IsPostBack)

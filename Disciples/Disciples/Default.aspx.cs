@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class _Default : System.Web.UI.Page
     {

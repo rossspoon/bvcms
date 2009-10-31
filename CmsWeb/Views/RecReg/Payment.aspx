@@ -12,8 +12,8 @@
         After you are finished there, you will be redirected back here to get your confirmation.
     </p>
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
-    <%=Html.Hidden("OrgID", DbUtil.Settings("ServiceUOrgID","0")) %>
-    <%=Html.Hidden("OrgAccountID", DbUtil.Settings("ServiceUOrgAccountID","0")) %>
+    <%=Html.Hidden("OrgID", Model.ServiceUOrgID) %>
+    <%=Html.Hidden("OrgAccountID", Model.ServiceUOrgAccountID) %>
     <%=Html.Hidden("Amount", Model.Amount) %>
     <%=Html.Hidden("PostbackURL", Request.Url.Scheme + "://" + Request.Url.Authority + "/RecReg/Confirm/" + Model.regid) %>
     <%=Html.Hidden("NameOnAccount", Model.registration.Fname.HasValue() ? 

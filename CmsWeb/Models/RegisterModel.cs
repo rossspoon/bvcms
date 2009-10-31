@@ -13,6 +13,7 @@ namespace CMSWeb.Models
 {
     public class RegisterModel
     {
+        public int? thisday { get; set; }
         public string first {get; set;}
         public string nickname {get; set;}
         public string lastname {get; set;}
@@ -114,14 +115,26 @@ namespace CMSWeb.Models
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
                     where o.CanSelfCheckin == true
-                    where o.WeeklySchedule.Day == 0
                     orderby o.OnLineCatalogSort, o.OrganizationName
-                    select new SelectListItem
+                    select new
                     {
-                        Text = o.OrganizationName,
-                        Value = o.OrganizationId.ToString()
+                        o.OrganizationName,
+                        o.OrganizationId,
+                        MeetingTime = (DateTime?)o.WeeklySchedule.MeetingTime
                     };
-            var list = q.ToList();
+            var list = new List<SelectListItem>();
+            foreach (var i in q)
+            {
+                var meeting = CMSWeb.Controllers.CheckinController.GetMeeting(
+                    i.OrganizationId, i.MeetingTime, thisday);
+                if (meeting == null)
+                    continue;
+                list.Add(new SelectListItem
+                {
+                    Text = "{0} ({1:h:mm})".Fmt(i.OrganizationName, meeting.MeetingDate),
+                    Value = i.OrganizationId.ToString(),
+                });
+            }
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
@@ -229,7 +242,8 @@ namespace CMSWeb.Models
                  HomePhone = homephone.GetDigits(),
             };
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
-                null, first, nickname, lastname, dob, false, gender.Value, 0, null);
+                null, first, nickname, lastname, dob, false, gender.Value, 
+                DbUtil.Settings("RegOrigin", "0").ToInt(), null);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
@@ -259,8 +273,12 @@ namespace CMSWeb.Models
             p.CellPhone = cellphone.GetDigits();
             p.MaritalStatusId = married.Value;
             p.FixTitle();
-            if (email != (string)HttpContext.Current.Session["email"])
-                p.EmailAddress = email.Trim();
+            p.CellPhone = cellphone.GetDigits();
+            email = email.Trim();
+            if (email.HasValue())
+                p.EmailAddress = email;
+            else
+                p.EmailAddress = (string)HttpContext.Current.Session["email"];
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)

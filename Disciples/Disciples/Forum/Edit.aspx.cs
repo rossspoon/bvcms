@@ -19,7 +19,7 @@ public partial class Forum_Edit : System.Web.UI.Page
         EditForumEntry1.CancelUrl = "~/Forum/Thread/{0}.aspx?selected={1}"
             .Fmt(entry.ThreadId, entry.Id);
 
-        ((BellevueTeachers.Site)Master).AddCrumb("Topics", "~/Forum/{0}.aspx", entry.ForumId)
+        ((Disciples.Site)Master).AddCrumb("Topics", "~/Forum/{0}.aspx", entry.ForumId)
           .Add("Thread", EditForumEntry1.CancelUrl);
     }
 }

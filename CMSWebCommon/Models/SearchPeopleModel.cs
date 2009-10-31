@@ -252,7 +252,9 @@ namespace CMSWebCommon.Models
                          Text = op.Name + ":" + t.Name
                      };
             var q = q1.Union(q2);
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public IEnumerable<SelectListItem> MemberStatusCodes()
         {
@@ -262,8 +264,11 @@ namespace CMSWebCommon.Models
                         Value = ms.Id.ToString(),
                         Text = ms.Description
                     };
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
+
         public IEnumerable<SelectListItem> GenderCodes()
         {
             var q = from ms in DbUtil.Db.Genders
@@ -272,7 +277,9 @@ namespace CMSWebCommon.Models
                         Value = ms.Id.ToString(),
                         Text = ms.Description
                     };
-            return q.WithNotSpecified("99");
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "99", Text = "(not specified)" });
+            return list;
         }
         public int? AddNewPerson()
         {

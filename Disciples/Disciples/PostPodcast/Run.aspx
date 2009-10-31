@@ -124,7 +124,7 @@ FONT.key {font-weight: bold; color: darkgreen}
         </tr>
     </table>
     <form id="Form1" runat="server">
-        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx">Bellevue Disciples Homepage</asp:HyperLink><br />
+        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx">GO Disciples Homepage</asp:HyperLink><br />
         <br />
         <asp:LoginStatus ID="LoginStatus1" runat="server" />
     </form>

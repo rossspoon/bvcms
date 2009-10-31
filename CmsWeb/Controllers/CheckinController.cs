@@ -11,8 +11,12 @@ namespace CMSWeb.Controllers
 {
     public class CheckinController : Controller
     {
-        public ActionResult Match(string id, int? campus)
+        public int? thisday { get; set; }
+
+        public ActionResult Match(string id, int? campus, int? thisday)
         {
+            this.thisday = thisday.Value;
+
             var seconds = 10;
             Response.Cache.SetExpires(DateTime.Now.AddSeconds(seconds));
             Response.Cache.SetMaxAge(new TimeSpan(0, 0, seconds));
@@ -25,6 +29,7 @@ namespace CMSWeb.Controllers
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
             var q1 = from f in DbUtil.Db.Families
+                     where f.HeadOfHousehold.DeceasedDate == null
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.HeadOfHousehold.CellPhoneLU.StartsWith(p7)
                         || f.HeadOfHouseholdSpouse.CellPhoneLU.StartsWith(p7)
@@ -50,7 +55,6 @@ namespace CMSWeb.Controllers
         public ActionResult ShowFamily(int id, int? campus)
         {
             var now = DateTime.Now;
-            var day = (int)now.DayOfWeek;
             // get org members first
             var members =
                 from om in DbUtil.Db.OrganizationMembers
@@ -60,8 +64,8 @@ namespace CMSWeb.Controllers
                 where om.Organization.CampusId == campus || campus == null
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
-                where (day == sday)
-                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == day)
+                where (thisday == sday)
+                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == thisday)
                 select new
                 {
                     om.Organization,
@@ -69,6 +73,9 @@ namespace CMSWeb.Controllers
                 };
             var list = new List<Attendee>();
             foreach (var i in members)
+            {
+                var meeting = GetMeeting(i.Organization.OrganizationId, 
+                    i.Organization.WeeklySchedule.MeetingTime, thisday);
                 list.Add(new Attendee
                 {
                     Id = i.Person.PeopleId,
@@ -80,7 +87,9 @@ namespace CMSWeb.Controllers
                     Age = i.Person.Age ?? 0,
                     Gender = i.Person.Gender.Code,
                     NumLabels = i.Organization.NumCheckInLabels ?? 1,
+                    Hour = meeting == null ? null : meeting.MeetingDate
                 });
+            }
 
             // now get recent visitors
             var threeweeksago = DateTime.Now.AddDays(-27);
@@ -94,8 +103,8 @@ namespace CMSWeb.Controllers
                 where a.Organization.CampusId == campus || campus == null
                 where a.AttendanceFlag && a.MeetingDate > threeweeksago
                 where a.MemberTypeId == (int)Attend.MemberTypeCode.Visitor
-                where day == sday
-                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == day)
+                where thisday == sday
+                   || (meeting != null && (int)meeting.MeetingDate.Value.DayOfWeek == thisday)
                 group a by new { a.Person, a.Organization } into g
                 let a = g.OrderByDescending(a => a.MeetingDate).First()
                 select new
@@ -104,6 +113,9 @@ namespace CMSWeb.Controllers
                     a.Organization
                 };
             foreach (var i in visitors)
+            {
+                var meeting = GetMeeting(i.Organization.OrganizationId, 
+                    i.Organization.WeeklySchedule.MeetingTime, thisday);
                 list.Add(new Attendee
                 {
                     Id = i.Person.PeopleId,
@@ -114,8 +126,10 @@ namespace CMSWeb.Controllers
                     Location = i.Organization.Location,
                     Age = i.Person.Age ?? 0,
                     Gender = i.Person.Gender.Code,
-                    NumLabels = i.Organization.NumCheckInLabels ?? 1
+                    NumLabels = i.Organization.NumCheckInLabels ?? 1,
+                    Hour = meeting == null ? null : meeting.MeetingDate
                 });
+            }
 
             var pids = list.Select(i => i.Id).ToArray();
             // now get rest of family
@@ -124,7 +138,7 @@ namespace CMSWeb.Controllers
                               where p.DeceasedDate == null
                               where !pids.Contains(p.PeopleId)
                               select p;
-            const string PleaseVisit = "Please visit Welcome Center";
+            const string PleaseVisit = "No self check-in meetings available";
             var VisitorOrgName = PleaseVisit;
             var VisitorOrgId = 0;
             if (campus.HasValue)
@@ -134,7 +148,7 @@ namespace CMSWeb.Controllers
                          where o.CampusId == campus
                          where o.CanSelfCheckin == true
                          where o.AllowNonCampusCheckIn == true
-                         where o.WeeklySchedule.Day == day
+                         where o.WeeklySchedule.Day == thisday
                          select o;
                 var vo = qv.FirstOrDefault();
                 if (vo != null)
@@ -165,40 +179,20 @@ namespace CMSWeb.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present)
         {
-            var ret = (from o in DbUtil.Db.Organizations
+            var info = (from o in DbUtil.Db.Organizations
                        where o.OrganizationId == OrgId
-                       select new { o.WeeklySchedule, o.Location }).Single();
-            var prevMidnight = Util.Now.Date;
-            var ninetyMinutesAgo = Util.Now.AddMinutes(-90);
-            var nextMidnight = prevMidnight.AddDays(1);
-
-            // try to find a meeting today that started no more than 90 minutes ago
-            var meeting = (from m in DbUtil.Db.Meetings
-                           where m.OrganizationId == OrgId
-                           where m.MeetingDate >= ninetyMinutesAgo
-                           where m.MeetingDate < nextMidnight
-                           orderby m.MeetingDate
-                           select m).FirstOrDefault();
-            
-            // try to find a meeting that started anytime today
-            if (meeting == null)
-                meeting = (from m in DbUtil.Db.Meetings
-                           where m.OrganizationId == OrgId
-                           where m.MeetingDate >= prevMidnight
-                           where m.MeetingDate < nextMidnight
-                           orderby m.MeetingDate
-                           select m).FirstOrDefault();
-
-            if (meeting == null)
+                       select new { o.WeeklySchedule.MeetingTime, o.Location }).Single();
+            var meeting = GetMeeting(OrgId, info.MeetingTime, thisday);
+            if (meeting == null || meeting.OrganizationId == 0)
             {
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = OrgId,
-                    MeetingDate = prevMidnight,
+                    MeetingDate = Util.Now.Date.Add(info.MeetingTime.TimeOfDay),
                     CreatedDate = DateTime.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
-                    Location = ret.Location,
+                    Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
@@ -210,6 +204,36 @@ namespace CMSWeb.Controllers
             r.Content = "success";
             return r;
         }
+        internal static CmsData.Meeting GetMeeting(int OrgId, DateTime? DefaultHour, int? day)
+        {
+            if (!day.HasValue)
+                day = (int)DateTime.Now.DayOfWeek;
+            var prevMidnight = Util.Now.Date;
+            var ninetyMinutesAgo = Util.Now.AddMinutes(-90);
+            var nextMidnight = prevMidnight.AddDays(1);
+
+            // try to find a meeting today that started no more than 90 minutes ago
+            var meeting = (from m in DbUtil.Db.Meetings
+                           where m.OrganizationId == OrgId
+                           where m.MeetingDate >= ninetyMinutesAgo
+                           where m.MeetingDate < nextMidnight
+                           orderby m.MeetingDate
+                           select m).FirstOrDefault();
+
+            // try to find a meeting that started anytime today
+            if (meeting == null)
+                meeting = (from m in DbUtil.Db.Meetings
+                           where m.OrganizationId == OrgId
+                           where m.MeetingDate >= prevMidnight
+                           where m.MeetingDate < nextMidnight
+                           orderby m.MeetingDate
+                           select m).FirstOrDefault();
+            if (meeting == null && DefaultHour.HasValue 
+                    && (int)DefaultHour.Value.DayOfWeek == (int)DateTime.Now.DayOfWeek)
+                meeting = new CmsData.Meeting 
+                    { MeetingDate = Util.Now.Date.Add(DefaultHour.Value.TimeOfDay) };
+            return meeting;
+        }
     }
     public class Attendee
     {
@@ -217,12 +241,31 @@ namespace CMSWeb.Controllers
         public string Name { get; set; }
         public string Birthday { get; set; }
         public string Class { get; set; }
+        public DateTime? Hour { get; set; }
         public int OrgId { get; set; }
         public string Location { get; set; }
         public string Gender { get; set; }
         public int Age { get; set; }
         public int NumLabels { get; set; }
         public int? CampusId { get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                if (Age <= 18)
+                    return "{0} ({1})".Fmt(Name, Age);
+                return Name;
+            }
+        }
+        public string DisplayClass
+        {
+            get
+            {
+                if (Hour.HasValue)
+                    return "{0} ({1:h:mm})".Fmt(Class, Hour);
+                return Class;
+            }
+        }
     }
     public class Family
     {

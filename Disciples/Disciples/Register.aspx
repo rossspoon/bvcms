@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="BellevueTeachers.Register"
-    EnableViewState="false" Title="Bellevue Disciples Registration" CodeBehind="Register.aspx.cs" %>
+<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Disciples.Register"
+    EnableViewState="false" Title="GO Disciples Registration" CodeBehind="Register.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
 

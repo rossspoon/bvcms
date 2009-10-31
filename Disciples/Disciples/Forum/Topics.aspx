@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
-    Inherits="Forum_Topics" Title="Bellevue Teacher Forum Topics" Codebehind="Topics.aspx.cs" %>
+    Inherits="Forum_Topics" Title="GO Disciples Forum Topics" Codebehind="Topics.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
     <asp:HyperLink ID="AddEntry" runat="server" NavigateUrl="~/Forum/Edit.aspx" EnableViewState="false"

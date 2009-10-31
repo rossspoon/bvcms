@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using DiscData;
+using UtilityExtensions;
 
-namespace BellevueTeachers.Modules
+namespace Disciples.Modules
 {
     public partial class Paragraph : System.Web.UI.UserControl
     {
@@ -34,7 +35,7 @@ namespace BellevueTeachers.Modules
             if (ContentName != string.Empty)
             {
                 if (Content != null)
-                    Literal1.Text = Content.Body;
+                    Literal1.Text = Content.Body.Replace("\"~/", "\"{0}/".Fmt(Util.AppRoot));
                 if (Content != null && Literal1.Text == string.Empty)
                     Literal1.Text = "Double click to add text...";
             }

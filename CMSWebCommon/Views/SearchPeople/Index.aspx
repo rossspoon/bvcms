@@ -65,7 +65,7 @@
                 <table>
                 <tr>
                     <td id="NumItems"></td>
-                    <td><%=Html.DropDownList("PageSize", Util.PageSizes())%></td>
+                    <td><%=Html.DropDownList("PageSize", Html.PageSizes())%></td>
                     <td class="pagination"></td>
                 </tr>
                 </table>

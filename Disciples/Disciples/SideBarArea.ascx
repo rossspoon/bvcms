@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SideBarArea.ascx.cs" Inherits="BellevueTeachers.SideBarArea" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="SideBarArea.ascx.cs" Inherits="Disciples.SideBarArea" %>
 <div class="CommonSidebarArea">
     <div class="CommonSidebarInnerArea">
         <h4 class="CommonSidebarHeader">

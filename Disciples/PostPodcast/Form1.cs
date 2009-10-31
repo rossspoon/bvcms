@@ -34,7 +34,6 @@ namespace PostPodcast
             getGuid();
             if (!IsDev)
                 ws.Url = "http://disciples.bellevue.org/Webservice1.asmx";
-                //ws.Url = "http://localhost:53135/BellevueTeachers/Webservice1.asmx";
 
             time[] ta = new time[] { 
                 new time(8,0), new time(9, 30),new time(11, 0),

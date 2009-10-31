@@ -64,9 +64,9 @@ namespace DiscData
         public void NotifyEmail(bool notifyAnyway)
         {
             //if (notifyAnyway || (!PostedRecently && !NotifyLater))
-            var returnloc = "http://{0}/Blog/{1}.aspx".Fmt(HttpContext.Current.Request.Url.Authority, Id);
-            var stopemail = "http://{0}/StopNotifications.aspx?blog={1}&user="
-                .Fmt(HttpContext.Current.Request.Url.Authority, BlogCached.Id);
+            var returnloc = Util.ResolveServerUrl("~/Blog/{0}.aspx".Fmt(Id));
+            var stopemail = Util.ResolveServerUrl("~/StopNotifications.aspx") + "?blog={0}&user="
+                .Fmt(BlogCached.Id);
             var smtp = new SmtpClient();
             var n = 0;
             var from = new MailAddress("bbcms01@bellevue.org");

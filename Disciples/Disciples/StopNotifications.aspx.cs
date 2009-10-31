@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using DiscData;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class StopNotifications : System.Web.UI.Page
     {

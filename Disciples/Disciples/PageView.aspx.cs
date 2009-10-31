@@ -8,7 +8,7 @@ using DiscData;
 using System.IO;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class PageView : System.Web.UI.Page
     {
@@ -32,7 +32,7 @@ namespace BellevueTeachers
                 {
                     thisPage = ContentService.GetPage(pageUrl);
                     this.Title = thisPage.Title;
-                    Literal1.Text = thisPage.Body;
+                    Literal1.Text = thisPage.Body.Replace("\"~/", "\"{0}".Fmt(Util.AppRoot));
                 }
                 catch
                 {

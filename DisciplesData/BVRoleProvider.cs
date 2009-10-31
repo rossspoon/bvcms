@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -13,7 +14,7 @@ namespace DiscData
         {
             get { return Roles.Provider as BVRoleProvider; }
         }
-        public override string ApplicationName { get { return "disciples"; } set { } }
+        public override string ApplicationName { get { return "cms"; } set { } }
         public override void Initialize(string name, NameValueCollection config)
         {
             if (config == null)
@@ -31,7 +32,7 @@ namespace DiscData
 
         public override void AddUsersToRoles(string[] usernames, string[] rolenames)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var qu = Db.Users.Where(u => usernames.Contains(u.Username));
             var qr = Db.Roles.Where(r => rolenames.Contains(r.RoleName));
             foreach (var user in qu)
@@ -48,7 +49,7 @@ namespace DiscData
 
         public override bool DeleteRole(string rolename, bool throwOnPopulatedRole)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var role = Db.Roles.Single(r => r.RoleName == rolename);
             Db.UserRoles.DeleteAllOnSubmit(role.UserRoles);
             Db.Roles.DeleteOnSubmit(role);
@@ -58,7 +59,7 @@ namespace DiscData
 
         public override string[] GetAllRoles()
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             return Db.Roles.Select(r => r.RoleName).ToArray();
         }
 
@@ -80,7 +81,7 @@ namespace DiscData
 
         public override string[] GetUsersInRole(string rolename)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var q = from u in Db.Users
                     where u.UserRoles.Any(ur => ur.Role.RoleName == rolename)
                     select u.Username;
@@ -89,7 +90,7 @@ namespace DiscData
 
         public override bool IsUserInRole(string username, string rolename)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var q = from ur in Db.UserRoles
                     where rolename == ur.Role.RoleName
                     where username == ur.User.Username
@@ -99,7 +100,7 @@ namespace DiscData
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] rolenames)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var q = from ur in Db.UserRoles
                     where rolenames.Contains(ur.Role.RoleName) && usernames.Contains(ur.User.Username)
                     select ur;
@@ -109,13 +110,13 @@ namespace DiscData
 
         public override bool RoleExists(string rolename)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             return Db.Roles.Count(r => r.RoleName == rolename) > 0;
         }
 
         public override string[] FindUsersInRole(string rolename, string usernameToMatch)
         {
-            var Db = DbUtil.Db;
+            var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var q = from u in Db.Users
                     where u.UserRoles.Any(ur => ur.Role.RoleName == rolename)
                     select u;

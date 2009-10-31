@@ -90,10 +90,10 @@ namespace CMSWeb.Controllers
             }
             return View(m);
         }
-        public ActionResult Visit(int? id, string submit)
+        public ActionResult Visit(int? id, string submit, int? thisday)
         {
             Session["campus"] = id;
-            var m = new Models.RegisterModel { campusid = id };
+            var m = new Models.RegisterModel { campusid = id, thisday = thisday };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -144,7 +144,6 @@ namespace CMSWeb.Controllers
         }
         public ActionResult Add(int? id)
         {
-
             Session["campus"] = id;
             var m = new Models.RegisterModel { campusid = id };
             if (Request.HttpMethod.ToUpper() == "GET")

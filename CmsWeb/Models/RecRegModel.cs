@@ -16,6 +16,25 @@ namespace CMSWeb.Models
     [Serializable]
     public class RecRegModel
     {
+        public bool testing { get; set; }
+        public string ServiceUOrgID
+        {
+            get
+            {
+                if (testing)
+                    return DbUtil.Settings("ServiceUOrgIDTest", "0");
+                return DbUtil.Settings("ServiceUOrgID", "0");
+            }
+        }
+        public string ServiceUOrgAccountID
+        {
+            get
+            {
+                if (testing)
+                    return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
+                return DbUtil.Settings("ServiceUOrgAccountID", "0");
+            }
+        }
         private Division _division { get; set; }
         public bool? _filled;
         public int? divid { get; set; }

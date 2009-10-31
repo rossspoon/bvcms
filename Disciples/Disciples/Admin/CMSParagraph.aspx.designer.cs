@@ -55,7 +55,7 @@ public partial class CMSParagraph {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::BellevueTeachers.Modules.ResultMessage ResultMessage1;
+    protected global::Disciples.Modules.ResultMessage ResultMessage1;
     
     /// <summary>
     /// btnSave control.

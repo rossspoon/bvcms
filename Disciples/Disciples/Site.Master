@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="True" CodeBehind="Site.Master.cs" Inherits="BellevueTeachers.Site" %>
+<%@ Master Language="C#" AutoEventWireup="True" CodeBehind="Site.Master.cs" Inherits="Disciples.Site" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,7 +41,7 @@
         </div>
         <div id="headertitle">
             <h1>
-                <asp:HyperLink ID="HeadTitle" runat="server" NavigateUrl="~/" EnableViewState="false">Bellevue Disciples</asp:HyperLink></h1>
+                <asp:HyperLink ID="HeadTitle" runat="server" NavigateUrl="~/" EnableViewState="false">GO Disciples</asp:HyperLink></h1>
                 <div>
                     <asp:Label ID="HeadByline" runat="server" EnableViewState="false" Text="Discipleship, Community, Fellowship, Information"></asp:Label></div>
         </div>

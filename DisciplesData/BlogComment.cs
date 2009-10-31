@@ -51,11 +51,11 @@ namespace DiscData
         }
         public void NotifyEmail()
         {
-            var returnloc = "http://{0}/Blog/{1}.aspx".Fmt(HttpContext.Current.Request.Url.Authority, BlogPost.Id);
+            var returnloc = Util.ResolveServerUrl("~/Blog/{0}.aspx".Fmt(BlogPost.Id));
             var smtp = new SmtpClient();
             var n = 0;
-            var stopemail = "http://{0}/StopNotifications.aspx?blog={1}&user="
-                .Fmt(HttpContext.Current.Request.Url.Authority, this.BlogPost.BlogCached.Id);
+            var stopemail = Util.ResolveServerUrl("~/StopNotifications.aspx") + "?blog={0}&user="
+                .Fmt(this.BlogPost.BlogCached.Id);
             var from = new MailAddress("bbcms01@bellevue.org");
             var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, User.Username);
             var reply = new MailAddress(PosterEmail);

@@ -16,6 +16,7 @@ namespace CMSRegCustom.Models
     public class GODisciplesModel
     {
         public string action { get; set; }
+        internal int? campus;
 
         public GODisciplesModel(string action)
         {
@@ -24,8 +25,9 @@ namespace CMSRegCustom.Models
         public GODisciplesModel(string action, int id)
             : this(action)
         {
-            neworg = DbUtil.Db.Organizations.SingleOrDefault(o =>
-                o.OrganizationId == id);
+            neworg = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == id);
+            if(neworg != null)
+                campus = neworg.CampusId;
         }
         public int neworgid { get { return neworg.OrganizationId; } }
         public int? peopleid { get; set; }
@@ -172,7 +174,7 @@ namespace CMSRegCustom.Models
                     DbUtil.Settings("GODisciplesOrigin", "0").ToInt(),
                     DbUtil.Settings("GODisciplesEntry", "0").ToInt());
             p.EmailAddress = email;
-            p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            p.CampusId = campus;
             if (p.Age >= 18)
                 p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
@@ -191,6 +193,8 @@ namespace CMSRegCustom.Models
         {
             MakeUserOnCms();
             MakeDiscUser();
+            if (!person.EmailAddress.HasValue())
+                person.EmailAddress = email;
 
             var groupname = "{0} {1} Group".Fmt(
                 person.NickName.HasValue() ? person.NickName : person.FirstName,
@@ -239,6 +243,7 @@ namespace CMSRegCustom.Models
                 leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
                     o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
                 neworg = leaderorg.CloneOrg();
+                neworg.CampusId = campus;
                 neworg.OrganizationName = groupname;
                 DbUtil.Db.SubmitChanges();
             }
@@ -249,7 +254,6 @@ namespace CMSRegCustom.Models
                 neworg = DbUtil.Db.Organizations.SingleOrDefault(o =>
                     o.OrganizationName == groupname);
             }
-
 
             g.SetAdmin(discuser, true);
             g.SetBlogger(discuser, true);
@@ -277,6 +281,8 @@ namespace CMSRegCustom.Models
                 (int)OrganizationMember.MemberTypeCode.Member,
                 DateTime.Now, null, false);
             MakeDiscUser();
+            if (!person.EmailAddress.HasValue())
+                person.EmailAddress = email;
             var g = DiscData.Group.LoadByName(neworg.OrganizationName);
             g.SetMember(discuser, true);
             discuser.DefaultGroup = g.Name;
@@ -400,7 +406,7 @@ namespace CMSRegCustom.Models
             Body = Body.Replace("{membersignupurl}", MemberSignupUrl);
             Body = Body.Replace("{cmsorgpageurl}", CmsOrgPageUrl);
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
 
             var smtp = new SmtpClient();
             Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);
@@ -425,7 +431,7 @@ namespace CMSRegCustom.Models
             Body = Body.Replace("{password}", discuser.Password);
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", "http://disciples.bellevue.org"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
 
             var smtp = new SmtpClient();
             Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);

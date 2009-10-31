@@ -319,8 +319,8 @@ namespace CMSWeb.Models
                 var req = HttpContext.Current.Request;
                 notify.EmailNotification(from, to,
                             "Task Updated by " + from.Name,
-                            "{0}<br />\n{1}<br />\n{2}".Fmt(
-                            TaskLink(task.Description, task.Id), task.AboutName, sb.ToString()));
+                            "{0} ({3})<br />\n{1}<br />\n{2}".Fmt(
+                            TaskLink(task.Description, task.Id), task.AboutName, sb.ToString(), task.Priority));
             }
         }
         public class TasksAbout

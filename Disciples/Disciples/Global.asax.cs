@@ -8,7 +8,7 @@ using DiscData;
 using System.Net.Mail;
 using System.Web.Configuration;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public class Global : System.Web.HttpApplication
     {

@@ -40,11 +40,11 @@ namespace CmsCheckin
             phone.Visible = false;
 
             var wc = new WebClient();
-            var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]),
-                string.Format("Checkin/Match/{0}{1}", 
-                GetDigits(e.Value), Program.CampusArg));
+            var url = new Uri(new Uri(ServiceUrl()),
+                string.Format("Checkin/Match/{0}", GetDigits(e.Value)));
             this.Cursor = Cursors.WaitCursor;
-            var str = wc.DownloadString(url);
+            //var str = wc.UploadString(url, Program.CampusArg);
+            var str = wc.DownloadString(url + "?" + Program.CampusArg);
             this.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
@@ -76,11 +76,13 @@ namespace CmsCheckin
             families = null;
 
             var wc = new WebClient();
-            var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]),
-                string.Format("Checkin/Family/{0}{1}", 
-                e.Value, Program.CampusArg));
+            var url = new Uri(new Uri(ServiceUrl()),
+                string.Format("Checkin/Family/{0}", e.Value));
             this.Cursor = Cursors.WaitCursor;
-            var str = wc.DownloadString(url);
+
+            //var str = wc.UploadString(url, Program.CampusArg);
+            var str = wc.DownloadString(url + "?" + Program.CampusArg);
+
             this.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
@@ -92,7 +94,14 @@ namespace CmsCheckin
             attendees.FindAttendees(x);
             attendees.GoBack += new EventHandler(attendees_GoBack);
         }
-
+        string ServiceUrl()
+        {
+            string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
+#if DEBUG
+            serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
+#endif
+            return serviceurl;
+        }
         private void Form1_Resize(object sender, EventArgs e)
         {
             phone.Left = (this.Width / 2) - (phone.Width / 2);
@@ -124,67 +133,5 @@ namespace CmsCheckin
             phone.textBox1.Text = String.Empty;
             phone.textBox1.Focus();
         }
-
-
-            //try
-            //{
-            //    pfont = new Font("Arial", 10);
-            //    var pd = new PrintDocument();
-            //    pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-            //    var ps = new PageSettings();
-            //    ps.PaperSize = new PaperSize("label", 300, 100);
-            //    ps.Margins = new Margins(13, 0, 0, 0);
-            //    pd.DefaultPageSettings = ps;
-            //    foreach (var c in labels)
-            //    {
-            //        this.c = c;
-            //        pd.Print();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
-        //private void pd_PrintPage(object sender, PrintPageEventArgs ev)
-        //{
-        //    int row = 0;
-        //    float left = ev.MarginBounds.Left;
-        //    float top = ev.MarginBounds.Top;
-        //    var h = pfont.GetHeight(ev.Graphics);
-        //    var sf = new StringFormat();
-
-        //    ev.Graphics.DrawString(c.Name + " (" + c.PeopleId + ") " + c.Gender,
-        //        pfont, Brushes.Black, left, top + (row * h), sf);
-        //    row++;
-        //    ev.Graphics.DrawString(c.Birthday + " (" + c.Age + ")",
-        //        pfont, Brushes.Black, left, top + (row * h), sf);
-        //    row++;
-        //    ev.Graphics.DrawString(c.Class,
-        //        pfont, Brushes.Black, left, top + (row * h), sf);
-        //    row++;
-        //    ev.HasMorePages = false;
-        //}
-        
-
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-
-        //    var memStrm = new MemoryStream();
-        //    var sw = new StreamWriter(memStrm);
-        //    sw.WriteLine("\x02L");
-        //    sw.WriteLine("H07");
-        //    sw.WriteLine("D11");
-        //    sw.WriteLine("19110080200002510K Ny linje");
-        //    sw.WriteLine("19110080100002510K OHM 1/4 WATT");
-        //    sw.Flush();
-        //    sw.WriteLine("1a6210000000050590PCS");
-        //    sw.WriteLine("E");
-        //    sw.WriteLine("");
-        //    sw.Flush();
-
-        //    memStrm.Position = 0;
-        //    RawPrinterHelper.SendDocToPrinter(printer, memStrm);
-        //    sw.Close();
-        //}
     }
 }

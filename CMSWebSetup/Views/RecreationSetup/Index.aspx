@@ -14,6 +14,7 @@
             $(".clickSelectDiv").editable("/RecreationSetup/EditDiv/", {
                 indicator: '<img src="/images/loading.gif">',
                 loadurl: "/RecreationSetup/Divisions/",
+                loadtype: "POST",
                 type: "select",
                 submit: "OK",
                 style: 'display: inline',
@@ -33,6 +34,7 @@
             $(".clickSelectGender").editable("/RecreationSetup/EditGender/", {
                 indicator: '<img src="/images/loading.gif">',
                 loadurl: "/RecreationSetup/Genders/",
+                loadtype: "GET",
                 type: "select",
                 submit: "OK",
                 style: 'display: inline'

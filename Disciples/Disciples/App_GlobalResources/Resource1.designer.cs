@@ -90,19 +90,19 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;Chron&gt;
-        ///&lt;read day=&quot;1&quot; verses=&quot;Gen 1-3&quot; /&gt;
-        ///&lt;read day=&quot;2&quot; verses=&quot;Gen 4-7&quot; /&gt;
-        ///&lt;read day=&quot;3&quot; verses=&quot;Gen 8-11&quot; /&gt;
-        ///&lt;read day=&quot;4&quot; verses=&quot;Job 1-5&quot; /&gt;
-        ///&lt;read day=&quot;5&quot; verses=&quot;Job 6-9&quot; /&gt;
-        ///&lt;read day=&quot;6&quot; verses=&quot;Job 10-13&quot; /&gt;
-        ///&lt;read day=&quot;7&quot; verses=&quot;Job 14-16&quot; /&gt;
-        ///&lt;read day=&quot;8&quot; verses=&quot;Job 17-20&quot; /&gt;
-        ///&lt;read day=&quot;9&quot; verses=&quot;Job 21-23&quot; /&gt;
-        ///&lt;read day=&quot;10&quot; verses=&quot;Job 24-28&quot; /&gt;
-        ///&lt;read day=&quot;11&quot; verses=&quot;Job 29-31&quot; /&gt;
-        ///&lt;read day=&quot;12&quot; verses=&quot;Job 32-34&quot; /&gt;
-        ///&lt;read day=&quot;13&quot; verses=&quot;J [rest of string was truncated]&quot;;.
+        ///  &lt;read day=&quot;1&quot; verses=&quot;Gen 1-3&quot; /&gt;
+        ///  &lt;read day=&quot;2&quot; verses=&quot;Gen 4-7&quot; /&gt;
+        ///  &lt;read day=&quot;3&quot; verses=&quot;Gen 8-11&quot; /&gt;
+        ///  &lt;read day=&quot;4&quot; verses=&quot;Job 1-5&quot; /&gt;
+        ///  &lt;read day=&quot;5&quot; verses=&quot;Job 6-9&quot; /&gt;
+        ///  &lt;read day=&quot;6&quot; verses=&quot;Job 10-13&quot; /&gt;
+        ///  &lt;read day=&quot;7&quot; verses=&quot;Job 14-16&quot; /&gt;
+        ///  &lt;read day=&quot;8&quot; verses=&quot;Job 17-20&quot; /&gt;
+        ///  &lt;read day=&quot;9&quot; verses=&quot;Job 21-23&quot; /&gt;
+        ///  &lt;read day=&quot;10&quot; verses=&quot;Job 24-28&quot; /&gt;
+        ///  &lt;read day=&quot;11&quot; verses=&quot;Job 29-31&quot; /&gt;
+        ///  &lt;read day=&quot;12&quot; verses=&quot;Job 32-34&quot; /&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Chron {
             get {

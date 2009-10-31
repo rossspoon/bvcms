@@ -8,6 +8,7 @@
             $(".clickSelect").editable("/MetroZip/Edit/", {
                 indicator: '<img src="/images/loading.gif">',
                 loadurl: "/MetroZip/ResidentCodes/",
+                loadtype: "POST",
                 type: "select",
                 submit: "OK",
                 style: 'display: inline'

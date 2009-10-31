@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Configuration;
-using System.Web.Mvc;
 using System.Net.Mail;
 using System.Web.UI;
 using System.Data.SqlClient;
@@ -369,6 +368,14 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_Host] = value;
             }
         }
+        public static string Host1
+        {
+            get
+            {
+                var a = Host.Split('.');
+                return a[0];
+            }
+        }
 
         public static string ConnectionString
         {
@@ -379,8 +386,7 @@ namespace UtilityExtensions
                     return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
 
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                var a = Host.Split('.');
-                cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
+                cb.InitialCatalog = "CMS_{0}".Fmt(Host1);
                 return cb.ConnectionString;
             }
         }
@@ -393,8 +399,7 @@ namespace UtilityExtensions
                     return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
 
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                var a = Host.Split('.');
-                cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
+                cb.InitialCatalog = "CMS_{0}_img".Fmt(Host1);
                 return cb.ConnectionString;
             }
         }
@@ -407,8 +412,7 @@ namespace UtilityExtensions
                     return ConfigurationManager.ConnectionStrings["Disc"].ConnectionString;
 
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                var a = Host.Split('.');
-                cb.InitialCatalog = "CMS_{0}_disc".Fmt(a[0]);
+                cb.InitialCatalog = "CMS_{0}_disc".Fmt(Host1);
                 return cb.ConnectionString;
             }
         }
@@ -736,25 +740,6 @@ namespace UtilityExtensions
                 return c.Value;
             return defaultValue;
         }
-
-        public static IEnumerable<SelectListItem> PageSizes()
-        {
-            var sizes = new int[] { 10, 25, 50, 75, 100, 200 };
-            var list = new List<SelectListItem>();
-            foreach (var size in sizes)
-                list.Add(new SelectListItem { Text = size.ToString() });
-            return list;
-        }
-        public static List<SelectListItem> WithNotSpecified(this IEnumerable<SelectListItem> q)
-        {
-            return q.WithNotSpecified("0");
-        }
-        public static List<SelectListItem> WithNotSpecified(this IEnumerable<SelectListItem> q, string value)
-        {
-            var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = value, Text = "(not specified)" });
-            return list;
-        }
         public static void EndShowMessage(this HttpResponse Response, string message)
         {
             Response.EndShowMessage(message, "javascript: history.go(-1)", "Go Back");
@@ -807,6 +792,16 @@ namespace UtilityExtensions
             url = head.ResolveUrl(url);
             head.Controls.Add(new LiteralControl("<script type='text/javascript' src='"
                 + url + "'></script>"));
+        }
+        public static string AppRoot
+        {
+            get
+            {
+                var approot = Util.ResolveUrl("~");
+                if (approot == "/")
+                    approot = "";
+                return approot;
+            }
         }
         public static string ResolveUrl(string originalUrl)
         {

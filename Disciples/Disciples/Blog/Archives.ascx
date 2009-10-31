@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Archives.ascx.cs" Inherits="BellevueTeachers.Blog.Archives" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="Archives.ascx.cs" Inherits="Disciples.Blog.Archives" %>
 <div class="panel">
     <h4>
         Archives

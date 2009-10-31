@@ -6,7 +6,7 @@ using System.Web.Services;
 using UtilityExtensions;
 using System.IO;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -28,7 +28,7 @@ namespace BellevueTeachers
             {
                 var file = Request.Files[0];
                 fn = Path.GetFileName(file.FileName);
-                var path = Server.MapPath("/Pictures/" + fn);
+                var path = Server.MapPath("/pictures/" + fn);
 
                 while (System.IO.File.Exists(path))
                 {

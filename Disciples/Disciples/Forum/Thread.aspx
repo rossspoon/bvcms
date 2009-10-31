@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
-    Inherits="Forum_Thread" Title="Bellevue Teacher Forum Topic Thread" Codebehind="Thread.aspx.cs" %>
+    Inherits="Forum_Thread" Title="GO Disciples Forum Topic Thread" Codebehind="Thread.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
     <table border="0" cellpadding="10" cellspacing="0">

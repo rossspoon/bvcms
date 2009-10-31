@@ -8,14 +8,14 @@ public partial class Blog_Default : System.Web.UI.Page
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
-        DropDownCC1.DataSource = Group.FetchAdminGroups();
+        DropDownCC1.DataSource = Group.FetchAllGroupsWhereAdmin();
         DropDownCC1.DataTextField = "Name";
         DropDownCC1.DataValueField = "Id";
         DropDownCC1.DataBind();
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        NewBlog.Visible = Group.FetchAdminGroups().Count() > 0;
+        NewBlog.Visible = User.IsInRole("Administrator") || Group.FetchAdminGroups().Count() > 0;
         Panel1.Visible = false;
     }
     protected void NewBlogSave_Click(object sender, EventArgs e)

@@ -16,7 +16,7 @@ public partial class Forum_Thread : System.Web.UI.Page
         if (entry == null || !entry.Forum.IsMember)
             Response.Redirect("/");
 
-        ((BellevueTeachers.Site)Master).AddCrumb("Topics", "~/Forum/{0}.aspx", entry.ForumId)
+        ((Disciples.Site)Master).AddCrumb("Topics", "~/Forum/{0}.aspx", entry.ForumId)
             .Add("Thread", "~/Forum/Thread/{0}.aspx", threadid);
 
         selected = Request.QueryString<int?>("selected");

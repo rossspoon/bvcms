@@ -119,6 +119,7 @@ namespace CMSWebSetup.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Divisions()
         {
             var q = from c in DbUtil.Db.Divisions
@@ -156,7 +157,7 @@ namespace CMSWebSetup.Controllers
                         Code = c.Id.ToString(),
                         Value = c.Description,
                     };
-            return Json(q.ToDictionary(k => k.Code, v => v.Value));
+            return Json(q.ToDictionary(k => k.Code, v => v.Value), JsonRequestBehavior.AllowGet);
         }
     }
 }

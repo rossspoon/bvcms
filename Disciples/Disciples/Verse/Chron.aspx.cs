@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using UtilityExtensions;
 
-namespace BellevueTeachers.Verse
+namespace Disciples.Verse
 {
     public partial class Chron : System.Web.UI.Page
     {

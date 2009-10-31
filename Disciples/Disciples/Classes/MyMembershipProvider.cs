@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public class MyMembershipProvider : SqlMembershipProvider
     {

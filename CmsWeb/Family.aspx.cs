@@ -131,7 +131,8 @@ namespace CMSWeb
                 AddressLineTwo = d.PrimaryAddress2,
                 CityName = d.PrimaryCity,
                 StateCode = d.PrimaryState,
-                ZipCode = d.ZipCode
+                ZipCode = d.PrimaryZip,
+                HomePhone = d.Family.HomePhone
             };
             f.People.Add(d);
             DbUtil.Db.Families.InsertOnSubmit(f);

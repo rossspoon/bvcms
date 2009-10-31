@@ -4,12 +4,11 @@ using System.Web.Security;
 using System.Web;
 using System.Web.UI.WebControls;
 using DiscData;
-using BellevueTeachers;
 using System.Text;
 using System.Linq;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class ProfileEdit : System.Web.UI.Page
     {

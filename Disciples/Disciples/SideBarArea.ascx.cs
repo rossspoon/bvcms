@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class SideBarArea : System.Web.UI.UserControl
     {

@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
-    Inherits="Forum_Default" Title="Bellevue Teacher Forums" Codebehind="Default.aspx.cs" %>
+    Inherits="Forum_Default" Title="GO Disciples Forums" Codebehind="Default.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
     <asp:LinkButton ID="NewForum" runat="server" EnableViewState="false" OnClick="NewForum_Click"  CssClass="CommonImageTextButton Big CommonAddButton">New 

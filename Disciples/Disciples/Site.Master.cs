@@ -8,7 +8,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.Security;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class Site : System.Web.UI.MasterPage
     {

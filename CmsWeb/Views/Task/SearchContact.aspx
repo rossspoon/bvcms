@@ -55,7 +55,7 @@
                 <table>
                 <tr>
                     <td id="NumItems"></td>
-                    <td><%=Html.DropDownList("PageSize", Util.PageSizes(), new { onchange = "SearchClicked()" })%></td>
+                    <td><%=Html.DropDownList("PageSize", Html.PageSizes(), new { onchange = "SearchClicked()" })%></td>
                     <td class="pagination"></td>
                 </tr>
                 </table>

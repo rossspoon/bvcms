@@ -7,7 +7,7 @@ using DiscData;
 using System.Linq;
 using UtilityExtensions;
 
-namespace BellevueTeachers
+namespace Disciples
 {
     public partial class Podcast_Feed : System.Web.UI.Page
     {
@@ -49,8 +49,8 @@ namespace BellevueTeachers
             w.WriteStartElement("rss");
             w.WriteAttributeString("version", "2.0");
             w.WriteStartElement("channel");
-            w.WriteElementString("title", "Bellevue Teacher's Podcast");
-            w.WriteElementString("description", "Bellevue Bible Fellowship Teachers Sunday School Lessons");
+            w.WriteElementString("title", "GO Disciples Podcast");
+            w.WriteElementString("description", "GO Disciples Audio");
             w.WriteElementString("link", Request.Url.Authority + ResolveUrl("~"));
             //        w.WriteElementString("copyright", "Copyright 2007 Bellevue Baptist Church.");
             w.WriteElementString("language", "en-us");

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BellevueTeachers {
+namespace Disciples {
     
     
     public partial class Site {
