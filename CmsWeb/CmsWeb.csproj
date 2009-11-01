@@ -1857,6 +1857,7 @@
     <Content Include="Report\AttendanceReport.aspx" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
+    <Content Include="Views\CheckIn\Campuses.aspx" />
     <Content Include="Views\CheckIn\Multiple.aspx" />
     <Content Include="Views\Register\Add.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />

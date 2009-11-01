@@ -176,6 +176,13 @@ namespace CMSWeb.Controllers
 
             return View("Family", list2);
         }
+        public ActionResult Campuses()
+        {
+            var q = from c in DbUtil.Db.Campus
+                    orderby c.Id
+                    select c;
+            return View(q);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present)
         {

@@ -44,7 +44,7 @@ namespace CmsCheckin
                 string.Format("Checkin/Match/{0}", GetDigits(e.Value)));
             this.Cursor = Cursors.WaitCursor;
             //var str = wc.UploadString(url, Program.CampusArg);
-            var str = wc.DownloadString(url + "?" + Program.CampusArg);
+            var str = wc.DownloadString(url + Program.QueryString);
             this.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
@@ -81,7 +81,7 @@ namespace CmsCheckin
             this.Cursor = Cursors.WaitCursor;
 
             //var str = wc.UploadString(url, Program.CampusArg);
-            var str = wc.DownloadString(url + "?" + Program.CampusArg);
+            var str = wc.DownloadString(url + Program.QueryString);
 
             this.Cursor = Cursors.Default;
 
@@ -94,7 +94,7 @@ namespace CmsCheckin
             attendees.FindAttendees(x);
             attendees.GoBack += new EventHandler(attendees_GoBack);
         }
-        string ServiceUrl()
+        public static string ServiceUrl()
         {
             string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
 #if DEBUG
