@@ -53,6 +53,7 @@
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(195, 133);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 45);
@@ -81,6 +82,7 @@
             // 
             // StartUp
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(282, 199);

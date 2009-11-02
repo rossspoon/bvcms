@@ -16,7 +16,9 @@ namespace CmsCheckin
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var f = new StartUp();
-            f.ShowDialog();
+            var r = f.ShowDialog();
+            if (r == DialogResult.Cancel)
+                return;
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             f.Dispose();

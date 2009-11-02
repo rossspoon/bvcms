@@ -159,7 +159,8 @@ namespace CmsCheckin
                     Class = e.Attribute("org").Value,
                     OrgId = int.Parse(e.Attribute("orgid").Value),
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
-                    Row = Row
+                    Row = Row,
+                    CheckedIn = bool.Parse(e.Attribute("checkedin").Value)
                 };
                 ab.Tag = c;
                 ab.Size = new Size(buttonwidth, buttonheight);
@@ -168,6 +169,7 @@ namespace CmsCheckin
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
                 ab.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
+                ab.Text = c.CheckedIn ? "ü" : String.Empty;
                 col++;
 
                 var eb = new Button();
@@ -211,6 +213,8 @@ namespace CmsCheckin
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
+            if (c.Clicked == false && c.CheckedIn == false && c.OrgId > 0)
+                return;
 
             var n = 0;
             if (int.TryParse(eb.Text, out n))
@@ -226,6 +230,7 @@ namespace CmsCheckin
         {
             var ab = sender as Button;
             var c = ab.Tag as AttendLabel;
+            c.Clicked = true;
             var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
             if (c.OrgId == 0)
                 return;
@@ -277,8 +282,7 @@ namespace CmsCheckin
             coll.Add("PeopleId", c.PeopleId.ToString());
             coll.Add("OrgId", c.OrgId.ToString());
             coll.Add("Present", present.ToString());
-            var url = new Uri(new Uri(ConfigurationSettings.AppSettings["ServiceUrl"]),
-                "Checkin/RecordAttend/");
+            var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/RecordAttend/");
             var resp = wc.UploadValues(url, "POST", coll);
             var s = Encoding.ASCII.GetString(resp);
             this.Cursor = Cursors.Default;
@@ -340,5 +344,7 @@ namespace CmsCheckin
         public int OrgId { get; set; }
         public int NumLabels { get; set; }
         public int Row { get; set; }
+        public bool CheckedIn { get; set; }
+        public bool Clicked { get; set; }
     }
 }

@@ -113,30 +113,18 @@ namespace CMSWeb.Models
         public IEnumerable<SelectListItem> OrgList()
         {
             var q = from o in DbUtil.Db.Organizations
+                    let Hour = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
                     where o.CanSelfCheckin == true
+                    where Hour != null
                     orderby o.OnLineCatalogSort, o.OrganizationName
-                    select new
+                    select new SelectListItem
                     {
-                        o.OrganizationName,
-                        o.OrganizationId,
-                        MeetingTime = (DateTime?)o.WeeklySchedule.MeetingTime,
-                        MeetingDay = o.WeeklySchedule.Day,
+                        Text = "{0} ({1:h:mm})".Fmt(o.OrganizationName, Hour),
+                        Value = o.OrganizationId.ToString(),
                     };
-            var list = new List<SelectListItem>();
-            foreach (var i in q)
-            {
-                var meeting = CMSWeb.Controllers.CheckinController.GetMeeting(
-                    i.OrganizationId, i.MeetingTime, i.MeetingDay, thisday);
-                if (meeting == null)
-                    continue;
-                list.Add(new SelectListItem
-                {
-                    Text = "{0} ({1:h:mm})".Fmt(i.OrganizationName, meeting.MeetingDate),
-                    Value = i.OrganizationId.ToString(),
-                });
-            }
+            var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
