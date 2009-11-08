@@ -10,6 +10,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
+using CMSWebCommon.Models;
 
 namespace CMSWeb.Models
 {
@@ -187,42 +188,15 @@ namespace CMSWeb.Models
 
         public int FindMember()
         {
-            first = first.Trim();
-            last = last.Trim();
-            var fone = Util.GetDigits(phone);
-            var q = from p in DbUtil.Db.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == last || p.MaidenName == last)
-                    where p.BirthDay == birthday.Day && p.BirthMonth == birthday.Month && p.BirthYear == birthday.Year
-                    where p.GenderId == gender
-                    select p;
-            var count = q.Count();
-            if (count > 1)
-                q = from p in q
-                    where p.CellPhone.Contains(fone)
-                            || p.WorkPhone.Contains(fone)
-                            || p.Family.HomePhone.Contains(fone)
-                    select p;
-            count = q.Count();
-
-            peopleid = null;
-            if (count == 1)
-                peopleid = q.Select(p => p.PeopleId).Single();
+            int count;
+            _Participant = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
             return count;
         }
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            if (!first.HasValue())
-                modelState.AddModelError("first", "first name required");
-            if (!last.HasValue())
-                modelState.AddModelError("last", "last name required");
-            if (birthday.Equals(DateTime.MinValue))
-                modelState.AddModelError("dob", "valid birth date required");
+            SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
-            var d = phone.GetDigits().Length;
-            if (d != 7 && d != 10)
-                modelState.AddModelError("phone", "7 or 10 digits");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 modelState.AddModelError("email", "Please specify a valid email address.");
             if (!gender.HasValue)
@@ -360,7 +334,7 @@ namespace CMSWeb.Models
         {
             var sb = new StringBuilder();
             sb.Append("<table>");
-            sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", participant.NickName.HasValue()? participant.NickName : participant.FirstName);
+            sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", participant.PreferredName);
             sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", participant.LastName);
             sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", shirtsize);
 

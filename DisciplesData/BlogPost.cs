@@ -36,7 +36,7 @@ namespace DiscData
         }
         public void AddCategory(string Category)
         {
-            var cat = DbUtil.Db.Categories.Single(ca => ca.Name == Category);
+            var cat = DbUtil.Db.Categories.SingleOrDefault(ca => ca.Name == Category);
             if (cat == null)
             {
                 cat = new Category { Name = Category };

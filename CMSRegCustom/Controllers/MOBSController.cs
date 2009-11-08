@@ -99,7 +99,7 @@ m.person.Name, m.peopleid, m.MeetingTime));
                 c.Title = "Event Registration";
             }
             var p = m.person;
-            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            c.Body = c.Body.Replace("{first}", p.PreferredName);
             c.Body = c.Body.Replace("{tickets}", m.tickets.ToString());
             c.Body = c.Body.Replace("{amount}", m.Amount.ToString("C"));
             c.Body = c.Body.Replace("{date}", m.meeting.MeetingDate.Value.ToShortDateString());

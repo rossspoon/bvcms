@@ -36,14 +36,15 @@ public partial class Blog_Item : System.Web.UI.UserControl
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-        if (post == null || 
+        if (post == null ||
                 (!Page.User.IsInRole("Administrator") 
+                && !Page.User.IsInRole("BlogAdministrator")
                 && !post.BlogCached.IsMember 
                 && !post.BlogCached.IsPublic))
             Response.Redirect("~/");
 
         Edit.NavigateUrl = "~/Blog/Edit.aspx?id=" + post.Id;
-        Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("Administrator");
+        Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("BlogAdministrator");
         CategoryList.DataSource = BlogCategoryController.GetCategoryListFromCache(post.Id);
         CategoryList.DataBind();
     }

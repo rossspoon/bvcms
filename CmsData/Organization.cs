@@ -13,6 +13,16 @@ namespace CmsData
             Active = 30,
             Inactive = 40,
         }
+        public enum AttendTrackLevelCode
+        {
+            None = 0,
+            Headcount = 10,
+            Individual = 20
+        }
+        public enum AttendanceClassificationCode
+        {
+            Normal = 0,
+        }
         public static string FormatOrgName(string name, string leader, string loc)
         {
             if (loc.HasValue())

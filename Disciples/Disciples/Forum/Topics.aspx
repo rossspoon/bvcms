@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Forum_Topics" Title="GO Disciples Forum Topics" Codebehind="Topics.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">

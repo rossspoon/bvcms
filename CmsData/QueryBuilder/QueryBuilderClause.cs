@@ -301,6 +301,7 @@ namespace CmsData
             StartDate = from.StartDate;
             EndDate = from.EndDate;
             Program = from.Program;
+            Schedule = from.Schedule;
             Division = from.Division;
             Organization = from.Organization;
             Days = from.Days;

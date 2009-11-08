@@ -64,6 +64,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button Print;
+        public System.Windows.Forms.Button Print;
+
     }
 }

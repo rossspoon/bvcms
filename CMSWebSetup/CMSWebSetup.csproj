@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CmsWeb\Binaries\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -86,8 +90,6 @@
     <Content Include="Views\Display\EditPage.aspx" />
     <Content Include="Views\Display\Page.aspx" />
     <Content Include="Views\Fund\Edit.aspx" />
-    <Content Include="Views\Fund\FundStatus.ascx" />
-    <Content Include="Views\Fund\FundType.ascx" />
     <Content Include="Views\Fund\Index.aspx" />
     <Content Include="Views\MetroZip\Index.aspx" />
     <Content Include="Views\Ministry\Index.aspx" />

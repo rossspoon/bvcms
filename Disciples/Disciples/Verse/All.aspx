@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="All" Title="Select From All Verses" Codebehind="All.aspx.cs" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

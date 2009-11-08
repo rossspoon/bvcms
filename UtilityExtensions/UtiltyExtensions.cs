@@ -793,6 +793,12 @@ namespace UtilityExtensions
             head.Controls.Add(new LiteralControl("<script type='text/javascript' src='"
                 + url + "'></script>"));
         }
+        public static void IncludeCss(Control head, string url)
+        {
+            url = head.ResolveUrl(url);
+            head.Controls.Add(new LiteralControl("<link type='text/css' href='"
+                + url + "' rel=\"stylesheet\"></script>"));
+        }
         public static string AppRoot
         {
             get

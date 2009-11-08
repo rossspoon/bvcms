@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="True" MasterPageFile="~/site.master" Inherits="AdminUsers_admin_roles"
+<%@ Page StylesheetTheme="Default" Language="C#" AutoEventWireup="True" MasterPageFile="~/site.master" Inherits="AdminUsers_admin_roles"
     Title="Roles Administration" CodeBehind="Roles.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">

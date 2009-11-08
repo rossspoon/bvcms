@@ -29,6 +29,7 @@ namespace CMSPresenter
             public DateTime? Time { get; set; }
             public int? Attended { get; set; }
             public string Leader { get; set; }
+            public string Description { get; set; }
         }
 
         //private List<CodeValueItem> codes = (new CodeValueController()).MeetingStatusCodes();
@@ -51,6 +52,7 @@ namespace CMSPresenter
                        Location = m.Location,
                        OrganizationId = m.OrganizationId,
                        GroupMeeting = m.GroupMeetingFlag,
+                       Description = m.Description,
                    });
             q2 = q2.Skip(startRowIndex).Take(maximumRows);
             return q2;
@@ -76,7 +78,8 @@ namespace CMSPresenter
                          Tracking = o.AttendTrackLevel.Description,
                          Time = m.MeetingDate,
                          Attended = m.NumPresent,
-                         Leader = o.LeaderName
+                         Leader = o.LeaderName,
+                         Description = m.Description
                      };
             return q2;
         }
@@ -99,6 +102,7 @@ namespace CMSPresenter
                        VisitingMembers = m.NumVstMembers,
                        LeaderName = m.Organization.LeaderName,
                        GroupMeeting = m.GroupMeetingFlag,
+                       Description = m.Description
                    });
             return q2;
         }
@@ -134,8 +138,7 @@ namespace CMSPresenter
                      {
                          p.PeopleId,
                          p.LastName,
-                         p.NickName,
-                         p.FirstName,
+                         p.PreferredName,
                          p.PrimaryAddress,
                          p.BirthYear,
                          p.BirthMonth,
@@ -154,10 +157,10 @@ namespace CMSPresenter
             switch (sort)
             {
                 case "Alpha":
-                    q1 = q1.OrderBy(a => a.LastName).ThenBy(b => b.FirstName);
+                    q1 = q1.OrderBy(a => a.LastName).ThenBy(b => b.PreferredName);
                     break;
                 case "VisitorsFirst":
-                    q1 = q1.OrderByDescending(a => a.status == @"Visitor" ? 0 : 1).ThenBy(b => b.LastName).ThenBy(c => c.NickName != null ? c.NickName : c.FirstName);
+                    q1 = q1.OrderByDescending(a => a.status == @"Visitor" ? 0 : 1).ThenBy(b => b.LastName).ThenBy(c => c.PreferredName);
                     break;
                 default:
                     q1 = q1.OrderByDescending(a => a.status).ThenByDescending(b => b.lastattend);
@@ -169,7 +172,7 @@ namespace CMSPresenter
                     {
                         PeopleId = p.PeopleId,
                         LastName = p.LastName,
-                        FirstName = p.NickName != null ? p.NickName : p.FirstName,
+                        FirstName = p.PreferredName,
                         Street = p.PrimaryAddress,
                         Birthday = UtilityExtensions.Util.FormatBirthday(p.BirthYear.Value, p.BirthMonth.Value, p.BirthDay.Value),
                         EmailHome = p.EmailAddress,
@@ -215,7 +218,7 @@ namespace CMSPresenter
                             {
                                 PeopleId = p.PeopleId,
                                 LastName = p.LastName,
-                                FirstName = p.NickName != null ? p.NickName : p.FirstName,
+                                FirstName = p.PreferredName,
                                 Street = p.PrimaryAddress,
                                 Birthday = UtilityExtensions.Util.FormatBirthday(p.BirthYear.Value, p.BirthMonth.Value, p.BirthDay.Value),
                                 EmailHome = p.EmailAddress,

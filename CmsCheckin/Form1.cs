@@ -42,9 +42,13 @@ namespace CmsCheckin
             var wc = new WebClient();
             var url = new Uri(new Uri(ServiceUrl()),
                 string.Format("Checkin/Match/{0}", GetDigits(e.Value)));
+
             this.Cursor = Cursors.WaitCursor;
+            Cursor.Show();
             //var str = wc.UploadString(url, Program.CampusArg);
             var str = wc.DownloadString(url + Program.QueryString);
+            if (Program.HideCursor)
+                Cursor.Hide();
             this.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
@@ -78,11 +82,13 @@ namespace CmsCheckin
             var wc = new WebClient();
             var url = new Uri(new Uri(ServiceUrl()),
                 string.Format("Checkin/Family/{0}", e.Value));
-            this.Cursor = Cursors.WaitCursor;
 
+            this.Cursor = Cursors.WaitCursor;
+            Cursor.Show();
             //var str = wc.UploadString(url, Program.CampusArg);
             var str = wc.DownloadString(url + Program.QueryString);
-
+            if (Program.HideCursor)
+                Cursor.Hide();
             this.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
@@ -115,6 +121,8 @@ namespace CmsCheckin
             phone.Left = (this.Width / 2) - (phone.Width / 2);
             phone.Top = 0;
             this.Resize += new EventHandler(Form1_Resize);
+            if (Program.HideCursor)
+                Cursor.Hide();
         }
 
         void attendees_GoBack(object sender, EventArgs e)

@@ -67,7 +67,7 @@ namespace CMSWeb.Controllers
             var m = new Models.RegisterModel();
             if (Request.HttpMethod.ToUpper() == "GET")
             {
-                m.lastname = (string)Session["lastname"];
+                m.last = (string)Session["lastname"];
                 return View(m);
             }
 
@@ -161,7 +161,7 @@ namespace CMSWeb.Controllers
                 Session["email"] = m.HeadOfHousehold.EmailAddress;
                 return RedirectToAction("Visit2");
             }
-            ModelState.AddModelError("lastname", "Family not found");
+            ModelState.AddModelError("last", "Family not found");
             return View(m);
         }
         public ActionResult Visit2()
@@ -171,7 +171,7 @@ namespace CMSWeb.Controllers
             var m = new Models.RegisterModel { campusid = (int?)Session["campus"], email = (string)Session["email"] };
             if (Request.HttpMethod.ToUpper() == "GET")
             {
-                m.lastname = (string)Session["lastname"];
+                m.last = (string)Session["lastname"];
                 return View(m);
             }
 
@@ -257,8 +257,8 @@ namespace CMSWeb.Controllers
                 c.Title = "Church Database Registration";
             }
             var p = m.person;
-            c.Body = c.Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
-            c.Body = c.Body.Replace("{firstname}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            c.Body = c.Body.Replace("{first}", p.PreferredName);
+            c.Body = c.Body.Replace("{firstname}", p.PreferredName);
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
             var smtp = new SmtpClient();

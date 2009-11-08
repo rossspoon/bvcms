@@ -72,6 +72,7 @@ $(function() {
     $('#OpenQueryDiv').dialog(dialogOptions);
 
     $('#ShowSaveQuery').click(function(ev) {
+        $('#SaveQueryDesc').val($('#Description').text()); 
         $('#SaveQueryDiv').dialog("open");
     });
     $('#ShowOpenQuery').click(function(ev) {
@@ -344,7 +345,8 @@ function UpdateView(vs) {
     $('#IntegerValue').val(vs.IntegerValue);
     $('#NumberValue').val(vs.NumberValue);
     $('#DateValue').val(vs.DateValue);
-    $('#CodeValue').val(vs.CodeValue);
+    if(vs.CodeValue != "")
+        $('#CodeValue').val(vs.CodeValue);
     $('#CodesValue').val(vs.CodesValue);
     $('#Program').val(vs.Program);
     $('#Division').val(vs.Division);

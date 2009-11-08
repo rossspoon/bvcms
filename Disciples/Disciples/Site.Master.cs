@@ -65,7 +65,7 @@ namespace Disciples
 
             NewMenu(MainMenu, "Resources", "~/view/resources.aspx");
 
-            if (Group.FetchAdminGroups().Count() > 0 || Page.User.IsInRole("Administrator"))
+            if (Group.FetchAdminGroups().Count() > 0 || Page.User.IsInRole("Administrator") || Page.User.IsInRole("BlogAdministrator"))
             {
                 m = NewTopMenu(MainMenu, "Admin", "~/AdminGroups.aspx");
                 if (Page.User.IsInRole("Administrator"))

@@ -24,12 +24,6 @@ namespace CMSPresenter
     {
         private List<CodeValueItem> AttendCodes;
         private List<MemberTypeItem> MemberCodes;
-        public static int[] VisitAttendTypes = new int[] 
-        { 
-            (int)Attend.AttendTypeCode.VisitingMember, 
-            (int)Attend.AttendTypeCode.RecentVisitor, 
-            (int)Attend.AttendTypeCode.NewVisitor 
-        };
         public AttendController()
         {
             var c = new CodeValueController();
@@ -63,7 +57,7 @@ namespace CMSPresenter
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && a.MeetingDate >= a.Organization.FirstMeetingDate
                             && a.OrganizationId == meeting.OrganizationId
-                            && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+                            && Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
                         )
                     || // members
@@ -125,7 +119,7 @@ namespace CMSPresenter
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && a.MeetingDate >= a.Organization.FirstMeetingDate
                             && a.OrganizationId == meeting.OrganizationId
-                            && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+                            && Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )
                         )
                     || // members

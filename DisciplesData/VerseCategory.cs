@@ -85,7 +85,17 @@ namespace DiscData
             var owners = new List<string>();
             owners.Add(Owner);
             if (includeAdmin)
+            {
+                owners.Clear();
+                var u = DbUtil.Db.GetUser(Owner);
+                var q = from uu in DbUtil.Db.Users
+                        from ur in uu.UserRoles
+                        where ur.Role.UserRoles.Any(rr => rr.UserId == u.UserId)
+                        group ur by ur.User into g
+                        select g.Key.Username;
+                owners.AddRange(q);
                 owners.Add("admin");
+            }
             if(DbUtil.Db.ViewVerseCategoriesViews.Count(c => c.Username == Owner) == 0)
             {
                 var cc = VerseCategory.LoadByName("Starter Set", "admin").CopyWithVerses();
@@ -96,6 +106,7 @@ namespace DiscData
             }
             return from cv in DbUtil.Db.ViewVerseCategoriesViews
                    where owners.Contains(cv.Username)
+                   where !(cv.Name == "Starter Set" && cv.Username != Owner && cv.Username != "Admin")
                    orderby cv.Username, cv.DisplayName
                    select cv;
         }

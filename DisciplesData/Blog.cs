@@ -33,7 +33,9 @@ namespace DiscData
         }
         public bool IsAdmin
         {
-            get { return CachedGroup.IsAdmin || HttpContext.Current.User.IsInRole("Administrator"); }
+            get { return CachedGroup.IsAdmin || HttpContext.Current.User.IsInRole("Administrator")
+                || HttpContext.Current.User.IsInRole("BlogAdministrator");
+            }
         }
         public bool IsMember
         {
@@ -141,19 +143,23 @@ namespace DiscData
         }
         public IEnumerable<Blog> FetchAllForUser2()
         {
-            if (HttpContext.Current.User.IsInRole("Administrator"))
+            if (HttpContext.Current.User.IsInRole("Administrator")
+                || HttpContext.Current.User.IsInRole("BlogAdministrator"))
                 return DbUtil.Db.Blogs;
             var list = Group.FetchIdsForUser();
             return DbUtil.Db.Blogs.Where(b => list.Contains(b.GroupId.Value) || (b.IsPublic && !b.NotOnMenu));
         }
         [DataObjectMethod(DataObjectMethodType.Update, true)]
-        public void Update(int Id, string Description, string Name, string Title, bool IsPublic)
+        public void Update(int Id, string Description, string Name, string Title, string Owner, bool IsPublic)
         {
             var blog = DbUtil.Db.Blogs.SingleOrDefault(b => b.Id == Id);
             blog.Description = Description;
             blog.Name = Name;
             blog.Title = Title;
             blog.IsPublic = IsPublic;
+            var u = DbUtil.Db.GetUser(Owner);
+            if (u != null)
+                blog.User = u;
             DbUtil.Db.SubmitChanges();
         }
         [DataObjectMethod(DataObjectMethodType.Delete, true)]

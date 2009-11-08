@@ -8,16 +8,25 @@ using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
 using UtilityExtensions;
+using CMSWebCommon.Models;
 
 namespace CMSRegCustom.Models
 {
     public class StepClassModel
     {
         public string first { get; set; }
-        public string lastname { get; set; }
+        public string last { get; set; }
         public string dob { get; set; }
-        private DateTime _dob;
-        public DateTime DOB { get { return _dob; } }
+        private DateTime _Birthday;
+        private DateTime birthday
+        {
+            get
+            {
+                if (_Birthday == DateTime.MinValue)
+                    Util.DateValid(dob, out _Birthday);
+                return _Birthday;
+            }
+        }
         public string zip { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
@@ -43,37 +52,19 @@ namespace CMSRegCustom.Models
 
         public int FindMember()
         {
-            var fone = Util.GetDigits(phone);
-            var q = from p in DbUtil.Db.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == lastname || p.MaidenName == lastname)
-                    where p.CellPhone.Contains(fone)
-                            || p.WorkPhone.Contains(fone)
-                            || p.Family.HomePhone.Contains(fone)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    select p;
-            var count = q.Count();
-            if (count == 1)
-                person = q.Single();
+            int count;
+            person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
             return count;
         }
 
-        public void ValidateModel(ModelStateDictionary ModelState)
+        public void ValidateModel(ModelStateDictionary modelState)
         {
-            if (!first.HasValue())
-                ModelState.AddModelError("first", "first name required");
-            if (!lastname.HasValue())
-                ModelState.AddModelError("lastname", "last name required");
-            if (!Util.DateValid(dob, out _dob))
-                ModelState.AddModelError("dob", "valid birth date required");
+            SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
-            var d = phone.GetDigits().Length;
-            if (d != 7 && d != 10)
-                ModelState.AddModelError("phone", "7 or 10 digits");
             if (!email.HasValue() || !Util.ValidEmail(email))
-                ModelState.AddModelError("email", "Please specify a valid email address.");
+                modelState.AddModelError("email", "Please specify a valid email address.");
             if (meetingid == 0)
-                ModelState.AddModelError("meetingid", "Please select a class date");
+                modelState.AddModelError("meetingid", "Please select a class date");
         }
 
         public IEnumerable<SelectListItem> AvailableClasses(string name)

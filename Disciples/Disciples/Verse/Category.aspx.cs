@@ -26,7 +26,7 @@ public partial class Category : System.Web.UI.Page
         {
             string Owner = DataBinder.Eval(e.Row.DataItem, "Username").ToString();
             string user = User.Identity.Name;
-            bool isOwner = Owner == user || user == "admin";
+            bool isOwner = Owner == user || user == "admin" || User.IsInRole("Administrator");
             if ((e.Row.RowState & DataControlRowState.Edit) == 0)
             {
                 ((ImageButton)e.Row.FindControl("Delete")).Visible = isOwner;

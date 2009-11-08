@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page StylesheetTheme="Default" Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="Role_edit.aspx.cs" Inherits="Disciples.Admin.Role_edit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="server">

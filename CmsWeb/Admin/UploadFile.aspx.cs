@@ -18,7 +18,7 @@ namespace CMSWeb.Admin
             if (FileUpload1.HasFile)
                 try
                 {
-                    FileUpload1.SaveAs(Server.MapPath("/Upload/") +
+                    FileUpload1.SaveAs(Server.MapPath("~/Upload/") +
                          FileUpload1.FileName);
                     Label1.Text = "File name: " +
                          FileUpload1.PostedFile.FileName + "<br>" +

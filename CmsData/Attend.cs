@@ -29,6 +29,12 @@ namespace CmsData
             Homebound = 100,
             OtherClass = 110,
         };
+        public static int[] VisitAttendTypes = new int[] 
+        { 
+            (int)Attend.AttendTypeCode.VisitingMember, 
+            (int)Attend.AttendTypeCode.RecentVisitor, 
+            (int)Attend.AttendTypeCode.NewVisitor 
+        };
         public enum MemberTypeCode
         {
             VisitingMember = 300,

@@ -10,6 +10,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Threading;
 using System.Text.RegularExpressions;
+using CMSWebCommon.Models;
 
 namespace CMSRegCustom.Models
 {
@@ -63,7 +64,18 @@ namespace CMSRegCustom.Models
         public string homecell1 { get; set; }
         public string email1 { get; set; }
         public bool preferredEmail1 { get; set; }
-        public bool shownew1 { get; set; }
+        private string _Shownew1;
+        public string shownew1
+        {
+            get
+            {
+                return _Shownew1;
+            }
+            set
+            {
+                _Shownew1 = value;
+            }
+        }
         public string addr1 { get; set; }
         public string zip1 { get; set; }
         public string city1 { get; set; }
@@ -84,7 +96,7 @@ namespace CMSRegCustom.Models
         public string homecell2 { get; set; }
         public string email2 { get; set; }
         public bool preferredEmail2 { get; set; }
-        public bool shownew2 { get; set; }
+        public string shownew2 { get; set; }
         public string addr2 { get; set; }
         public string zip2 { get; set; }
         public string city2 { get; set; }
@@ -146,30 +158,20 @@ namespace CMSRegCustom.Models
 
         public int FindMember1()
         {
-            return FindMember(phone1, lastname1, first1, DOB1, out _Person1);
+            int count;
+            _Person1 = SearchPeopleModel.FindPerson(phone1, first1, lastname1, DOB1, out count);
+            return count;
         }
         public int FindMember2()
         {
-            return FindMember(phone2, lastname2, first2, DOB2, out _Person2);
+            int count;
+            _Person2 = SearchPeopleModel.FindPerson(phone2, first2, lastname2, DOB2, out count);
+            return count;
         }
-        internal int FindMember(string phone, string last, string first, DateTime DOB,
-            out Person person)
+        public int FindMember(string phone, string first, string last, DateTime dob, out Person person)
         {
-            first = first.Trim();
-            last = last.Trim();
-            var fone = Util.GetDigits(phone);
-            var q = from p in DbUtil.Db.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == last || p.MaidenName == last)
-                    where p.CellPhone.Contains(fone)
-                            || p.WorkPhone.Contains(fone)
-                            || p.Family.HomePhone.Contains(fone)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    select p;
-            var count = q.Count();
-            person = null;
-            if (count == 1)
-                person = q.Single();
+            int count;
+            person = SearchPeopleModel.FindPerson(phone, first, last, dob, out count);
             return count;
         }
 
@@ -190,7 +192,7 @@ namespace CMSRegCustom.Models
                 ModelState.AddModelError("phone1", "pick a phone type");
             if (!email1.HasValue() || !Util.ValidEmail(email1))
                 ModelState.AddModelError("email1", "Please specify a valid email address.");
-            if (shownew1)
+            if (shownew1.ToInt() >= 2)
             {
                 if (!addr1.HasValue())
                     ModelState.AddModelError("addr1", "need address");
@@ -217,7 +219,7 @@ namespace CMSRegCustom.Models
                 ModelState.AddModelError("phone2", "pick a phone type");
             if (!email2.HasValue() || !Util.ValidEmail(email2))
                 ModelState.AddModelError("email2", "Please specify a valid email address.");
-            if (shownew2)
+            if (shownew2.ToInt() >= 2)
             {
                 if (!addr2.HasValue())
                     ModelState.AddModelError("addr2", "need address");

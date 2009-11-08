@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
-    Inherits="CMSWeb.EmailPeople" Title="Email People" %>
+    Inherits="CMSWeb.EmailPeople" Title="Email People" validateRequest="false"  %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
@@ -19,6 +19,17 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:PlaceHolder ID="CKEditPanel" runat="server">
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function() {
+        CKEDITOR.replace( "<%=EmailBody.UniqueID %>", {
+                filebrowserUploadUrl : '/Account/CKEditorUpload/',
+                filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
+        });
+    });
+</script>
+    </asp:PlaceHolder>
 <blockquote style="width: 80%"><span class="style1">Please Note</span>: your session will timeout in 20 minutes. 
 If you hit send after that, your message will not be sent correctly.
 Unless this is an email&nbsp; you can type up quickly,
@@ -52,7 +63,7 @@ text box below. You can then fill out your subject, add any attachment and send 
             </td>
         </tr>
         <tr>
-            <td>
+            <td align="right">
                 From:
             </td>
             <td>
@@ -62,7 +73,7 @@ text box below. You can then fill out your subject, add any attachment and send 
             </td>
         </tr>
         <tr>
-            <td>
+            <td align="right">
                 Subject:
             </td>
             <td>
@@ -70,16 +81,18 @@ text box below. You can then fill out your subject, add any attachment and send 
             </td>
         </tr>
         <tr>
-            <td>
+            <td align="right">
                 Attachment:</td>
             <td>
                 <asp:FileUpload ID="FileUpload1" runat="server" />
             </td>
         </tr>
         <tr>
-            <td>
-                Body:
-            </td>
+            <td align="right">
+                Body:<br />
+                <br />
+                <asp:CheckBox ID="IsHtml" runat="server" AutoPostBack="true" Text="HTML Editor" 
+                    oncheckedchanged="IsHtml_CheckedChanged" />&nbsp;</td>
             <td>
                 <asp:TextBox ID="EmailBody" runat="server" Rows="16" TextMode="MultiLine" Width="90%"></asp:TextBox>
             </td>

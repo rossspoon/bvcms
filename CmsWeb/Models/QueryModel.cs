@@ -75,6 +75,7 @@ namespace CMSWeb.Models
                 {
                     Qb.CopyFromAll(existing);
                     Description = Qb.Description;
+                    SavedQueryDesc = Qb.Description;
                     Qb.Description = Util.ScratchPad;
                     Db.SubmitChanges();
                     SelectedId = Qb.QueryId;
@@ -85,23 +86,6 @@ namespace CMSWeb.Models
             if (SelectedId == null)
                 SelectedId = Qb.QueryId;
         }
-
-        //private int? SessionQueryId
-        //{
-        //    get
-        //    {
-        //        if (HttpContext.Current.Session["QueryId"].IsNotNull())
-        //            return (int)HttpContext.Current.Session["QueryId"];
-        //        return null;
-        //    }
-        //    set
-        //    {
-        //        if (value.HasValue)
-        //            HttpContext.Current.Session["QueryId"] = value.Value;
-        //        else
-        //            HttpContext.Current.Session.Remove("QueryId");
-        //    }
-        //}
 
         public int? SelectedId { get; set; }
 
@@ -174,13 +158,6 @@ namespace CMSWeb.Models
 
         public void SetVisibility()
         {
-            //TextValue = "";
-            //IntegerValue = "";
-            //NumberValue = "";
-            //DateValue = "";
-            //Program = 0;
-            //CodeValue = null;
-
             RightPanelVisible = true;
             TextVisible = false;
             NumberVisible = false;
@@ -260,15 +237,21 @@ namespace CMSWeb.Models
         private List<SelectListItem> ConvertToSelect(object items, string valuefield)
         {
             var list = items as IEnumerable<CMSPresenter.CodeValueItem>;
+            List<SelectListItem> list2;
             switch (valuefield)
             {
                 case "IdCode":
-                    return list.Select(c => new SelectListItem { Text = c.Value, Value = c.IdCode }).ToList();
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.IdCode }).ToList();
+                    break;
                 case "Code":
-                    return list.Select(c => new SelectListItem { Text = c.Value, Value = c.Code }).ToList();
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Code }).ToList();
+                    break;
                 default:
-                    return list.Select(c => new SelectListItem { Text = c.Value, Value = c.Value }).ToList();
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Value }).ToList();
+                    break;
             }
+            list2[0].Selected = true;
+            return list2;
         }
         DateTime? DateParse(string s)
         {
@@ -392,7 +375,7 @@ namespace CMSWeb.Models
             Quarters = c.Quarters;
             if (TagsVisible)
             {
-                if(c.Tags != null)
+                if (c.Tags != null)
                     Tags = c.Tags.Split(';');
                 var cv = new CMSPresenter.CodeValueController();
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");

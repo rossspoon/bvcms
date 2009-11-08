@@ -77,7 +77,7 @@ namespace CMSRegCustom.Controllers
 
             var c = DbUtil.Content("SaleMessage-" + m.saleitem.Id);
             var Body = c.Body;
-            Body = Body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+            Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{quantity}", m.transaction.Quantity.ToString());
             Body = Body.Replace("{amount}", m.transaction.Amount.ToString("C"));
             Body = Body.Replace("{description}", m.transaction.ItemDescription);

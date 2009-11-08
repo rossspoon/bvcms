@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Blog_New" Title="Creating New Blog Post"  ValidateRequest="false" Codebehind="New.aspx.cs" %>
 
 <%@ Register Src="BlogEdit.ascx" TagName="BlogEdit" TagPrefix="uc1" %>

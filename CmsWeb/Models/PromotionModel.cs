@@ -272,7 +272,7 @@ namespace CMSWeb.Models
                     {
                         PeopleId = om.PeopleId,
                         Title = om.Person.TitleCode,
-                        FirstName = om.Person.NickName == null ? om.Person.FirstName : om.Person.NickName,
+                        FirstName = om.Person.PreferredName,
                         LastName = om.Person.LastName,
                         Address = om.Person.PrimaryAddress,
                         Address2 = om.Person.PrimaryAddress2,

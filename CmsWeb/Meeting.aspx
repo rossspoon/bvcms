@@ -77,80 +77,82 @@
             </td>
         </tr>
     </table>
-    <table>
+    <table class="Design2">
+        <tr>
+            <th colspan="2" align="center">
+                Meeting Description
+            </th>
+            <td>
+                <cc1:DisplayOrEditText ID="Description" MaxLength="99" runat="server" BindingSource="meeting" BindingMode="TwoWay" />
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2" align="center">
+                Counts
+            </th>
+            <td valign="bottom" rowspan="6">
+                <asp:HyperLink ID="MeetingSummaryLink" runat="server" Target="_blank">
+                    <asp:Image ID="Image2" ImageUrl="~/images/pdficon_small.gif" runat="server" />
+                    Attendance Summary Report</asp:HyperLink><br />
+                <asp:HyperLink ID="MeetingAttendanceLink" runat="server" Target="_blank">
+                    <asp:Image ID="Image1" ImageUrl="~/images/pdficon_small.gif" runat="server" />
+                    Attendee Report</asp:HyperLink>
+            </td>
+        </tr>
         <tr>
             <td valign="top">
                 <table class="Design2">
-                    <tr>
-                        <th colspan="2" align="center">
-                            Counts
+                    <tr id="TR_NumPresent" runat="server">
+                        <th>
+                            Number Present:
                         </th>
-                        <td valign="bottom" rowspan="6">
-                            <asp:HyperLink ID="MeetingSummaryLink" runat="server" Target="_blank">
-                                <asp:Image ID="Image2" ImageUrl="~/images/pdficon_small.gif" runat="server" />
-                                Attendance Summary Report</asp:HyperLink><br />
-                            <asp:HyperLink ID="MeetingAttendanceLink" runat="server" Target="_blank">
-                                <asp:Image ID="Image1" ImageUrl="~/images/pdficon_small.gif" runat="server" />
-                                Attendee Report</asp:HyperLink>
+                        <td>
+                            <cc1:DisplayOrEditText ID="NumPresent" runat="server" BindingSource="meeting" BindingMode="TwoWay"
+                                AssociatedRowId="TR_NumPresent" />
+                        </td>
+                    </tr>
+                    <tr id="TR_NumMembers" runat="server">
+                        <th>
+                            Members:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="NumMembers" runat="server" BindingSource="meeting" BindingMode="OneWay"
+                                AssociatedRowId="TR_NumMembers" />
+                        </td>
+                    </tr>
+                    <tr id="TR_NumVstMembers" runat="server">
+                        <th>
+                            VstMembers:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="NumVstMembers" runat="server" BindingSource="meeting"
+                                BindingMode="OneWay" AssociatedRowId="TR_NumVstMembers" />
+                        </td>
+                    </tr>
+                    <tr id="TR_NumRepeatVst" runat="server">
+                        <th>
+                            RepeatVst:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="NumRepeatVst" runat="server" BindingSource="meeting" BindingMode="OneWay"
+                                AssociatedRowId="TR_NumRepeatVst" />
+                        </td>
+                    </tr>
+                    <tr id="TR_NumNewVisit" runat="server">
+                        <th>
+                            NewVisit:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditText ID="NumNewVisit" runat="server" BindingSource="meeting" BindingMode="OneWay"
+                                AssociatedRowId="TR_NumNewVisit" />
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">
-                            <table class="Design2">
-                                <tr id="TR_NumPresent" runat="server">
-                                    <th>
-                                        Number Present:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditText ID="NumPresent" runat="server" BindingSource="meeting" BindingMode="TwoWay"
-                                            AssociatedRowId="TR_NumPresent" />
-                                    </td>
-                                </tr>
-                                <tr id="TR_NumMembers" runat="server">
-                                    <th>
-                                        Members:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditText ID="NumMembers" runat="server" BindingSource="meeting" BindingMode="OneWay"
-                                            AssociatedRowId="TR_NumMembers" />
-                                    </td>
-                                </tr>
-                                <tr id="TR_NumVstMembers" runat="server">
-                                    <th>
-                                        VstMembers:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditText ID="NumVstMembers" runat="server" BindingSource="meeting"
-                                            BindingMode="OneWay" AssociatedRowId="TR_NumVstMembers" />
-                                    </td>
-                                </tr>
-                                <tr id="TR_NumRepeatVst" runat="server">
-                                    <th>
-                                        RepeatVst:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditText ID="NumRepeatVst" runat="server" BindingSource="meeting" BindingMode="OneWay"
-                                            AssociatedRowId="TR_NumRepeatVst" />
-                                    </td>
-                                </tr>
-                                <tr id="TR_NumNewVisit" runat="server">
-                                    <th>
-                                        NewVisit:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditText ID="NumNewVisit" runat="server" BindingSource="meeting" BindingMode="OneWay"
-                                            AssociatedRowId="TR_NumNewVisit" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        Group Meeting:
-                                    </th>
-                                    <td>
-                                        <cc1:DisplayOrEditCheckbox ID="GroupMeetingFlag" runat="server" BindingSource="meeting" BindingMode="TwoWay" />
-                                    </td>
-                                </tr>
-                            </table>
+                        <th>
+                            Group Meeting:
+                        </th>
+                        <td>
+                            <cc1:DisplayOrEditCheckbox ID="GroupMeetingFlag" runat="server" BindingSource="meeting" BindingMode="TwoWay" />
                         </td>
                     </tr>
                 </table>

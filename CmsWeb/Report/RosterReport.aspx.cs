@@ -37,6 +37,7 @@ namespace CMSWeb.Reports
         private Document doc;
         private DateTime dt;
         private PdfContentByte dc;
+        private bool pagesetstarted = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -106,6 +107,8 @@ namespace CMSWeb.Reports
                     else
                         doc.Add(new Phrase("no data"));
                 }
+            if (!pagesetstarted)
+                doc.Add(new Phrase("no data"));
             pageEvents.EndPageSet();
             doc.Close();
             Response.End();
@@ -126,7 +129,7 @@ namespace CMSWeb.Reports
             t.AddCell(new Phrase("Name", boldfont));
             t.AddCell(new Phrase("Member Type", boldfont));
             t.AddCell(new Phrase("Medical", boldfont));
-
+            pagesetstarted = true;
         }
         private void AddRow(string Code, string name, int pid, VBSApp app, Font font)
         {

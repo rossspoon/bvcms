@@ -309,6 +309,8 @@ namespace CmsData
                 sm.HerId = otherid;
             foreach (var rec in this.RecRegs)
                 rec.PeopleId = otherid;
+            foreach (var sale in this.SaleTransactions)
+                sale.PeopleId = otherid;
         }
         public bool PurgePerson()
         {

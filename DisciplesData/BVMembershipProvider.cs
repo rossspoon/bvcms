@@ -88,7 +88,7 @@ namespace DiscData
             return configValue;
         }
 
-        public override string ApplicationName { get { return "cms"; } set { } }
+        public override string ApplicationName { get { return "disc"; } set { } }
 
         private bool pEnablePasswordReset;
         public override bool EnablePasswordReset
@@ -502,12 +502,12 @@ namespace DiscData
             if (failureType == "password")
             {
                 failureCount = user.FailedPasswordAttemptCount;
-                windowStart = user.FailedPasswordAttemptWindowStart.Value;
+                windowStart = user.FailedPasswordAttemptWindowStart ?? DateTime.Now;
             }
             else if (failureType == "passwordAnswer")
             {
                 failureCount = user.FailedPasswordAnswerAttemptCount;
-                windowStart = user.FailedPasswordAnswerAttemptWindowStart.Value;
+                windowStart = user.FailedPasswordAnswerAttemptWindowStart ?? DateTime.Now;
             }
             DateTime windowEnd = windowStart.AddMinutes(PasswordAttemptWindow);
             if (failureCount == 0 || DateTime.Now > windowEnd)

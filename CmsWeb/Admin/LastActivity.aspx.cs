@@ -15,6 +15,7 @@ namespace CMSWeb.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Label2.Text = Server.MapPath("~/");
             var dt = DateTime.Now;
             var q = from u in DbUtil.Db.Users
                     orderby u.LastActivityDate descending

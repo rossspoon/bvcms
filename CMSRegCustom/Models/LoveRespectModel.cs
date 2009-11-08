@@ -10,6 +10,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Threading;
 using System.Text.RegularExpressions;
+using CMSWebCommon.Models;
 
 namespace CMSRegCustom.Models
 {
@@ -106,34 +107,14 @@ namespace CMSRegCustom.Models
 
         public int FindMember1()
         {
-            return FindMember(phone1, lastname1, first1, DOB1, out _Person1);
+            int count;
+            _Person1 = SearchPeopleModel.FindPerson(phone1, first1, lastname1, DOB1, out count);
+            return count;
         }
         public int FindMember2()
         {
-            return FindMember(phone2, lastname2, first2, DOB2, out _Person2);
-        }
-        internal int FindMember(string phone, string last, string first, DateTime DOB,
-            out Person person)
-        {
-            first = first.Trim();
-            last = last.Trim();
-            var fone = Util.GetDigits(phone);
-            var q = from p in DbUtil.Db.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == last || p.MaidenName == last)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    select p;
-            var count = q.Count();
-            if (count > 1)
-                q = from p in q
-                    where p.CellPhone.Contains(fone)
-                            || p.WorkPhone.Contains(fone)
-                            || p.Family.HomePhone.Contains(fone)
-                    select p;
-            count = q.Count();
-            person = null;
-            if (count == 1)
-                person = q.Single();
+            int count;
+            _Person2 = SearchPeopleModel.FindPerson(phone2, first2, lastname2, DOB2, out count);
             return count;
         }
 
@@ -406,7 +387,7 @@ namespace CMSRegCustom.Models
                          Married = p.MaritalStatus.Description,
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,

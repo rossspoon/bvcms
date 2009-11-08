@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="admin_user_edit" Title="Edit User" Codebehind="Users_edit.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
@@ -111,7 +111,8 @@
                                                 <asp:Label runat="server" ID="SelectRolesLabel" Text="Select User Roles" />
                                             </h2>
                                             <p>
-                                                <asp:CheckBox ID="SiteAdministrator" runat="server" Text="Site Administrator" />
+                                                <asp:CheckBox ID="SiteAdministrator" runat="server" Text="Site Administrator" /><br />
+                                                <asp:CheckBox ID="BlogAdministrator" runat="server" Text="Blog Administrator" />
                                             </p>
                                         </td>
                                     </tr>

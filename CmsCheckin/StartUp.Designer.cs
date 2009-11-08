@@ -33,6 +33,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.HideCursor = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -80,12 +81,25 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Day Of Week";
             // 
+            // HideCursor
+            // 
+            this.HideCursor.AutoSize = true;
+            this.HideCursor.Checked = true;
+            this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HideCursor.Location = new System.Drawing.Point(49, 146);
+            this.HideCursor.Name = "HideCursor";
+            this.HideCursor.Size = new System.Drawing.Size(105, 21);
+            this.HideCursor.TabIndex = 5;
+            this.HideCursor.Text = "Hide Cursor";
+            this.HideCursor.UseVisualStyleBackColor = true;
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(282, 199);
+            this.Controls.Add(this.HideCursor);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -107,5 +121,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.CheckBox HideCursor;
     }
 }

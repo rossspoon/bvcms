@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="Admin_admin_users" %>
+﻿<%@ Page StylesheetTheme="Default" Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="Admin_admin_users" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
@@ -14,7 +14,8 @@
 
     <asp:HyperLink ID="HyperLink1" NavigateUrl="~/" runat="server">HomePage</asp:HyperLink>
             <asp:TextBox runat="server" ID="TextBox1" BorderStyle="Solid" />
-            <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" /><br />
+            <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" /> 
+    <asp:Label ID="Location" runat="server" Text="Label"></asp:Label><br />
     <br />
     <asp:DataPager ID="pager1" runat="server" PagedControlID="ListView1">
         <Fields>

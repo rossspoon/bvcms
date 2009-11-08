@@ -31,6 +31,7 @@ namespace CMSPresenter
         public bool GroupMeeting { get; set; }
         public string Location { get; set; }
         public int OrganizationId { get; set; }
+        public string Description { get; set; }
     }
     public class MeetingInfo : MeetingInfo0
     {

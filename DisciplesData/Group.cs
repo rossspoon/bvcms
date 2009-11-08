@@ -201,6 +201,7 @@ namespace DiscData
         {
             return from g in FetchAllGroups()
                    where g.IsAdmin || HttpContext.Current.User.IsInRole("Administrator")
+                   || HttpContext.Current.User.IsInRole("BlogAdministrator")
                    select g;
         }
         public static IEnumerable<Group> FetchUserGroups()
@@ -216,7 +217,8 @@ namespace DiscData
             if (FetchType == FetchType.AllGroups)
                 return new GroupController().FetchAll();
             string role = GroupPostfix(gtype);
-            bool isadmin = HttpContext.Current.User.IsInRole("Administrator");
+            bool isadmin = HttpContext.Current.User.IsInRole("Administrator")
+                || HttpContext.Current.User.IsInRole("BlogAdministrator");
             return from g in DbUtil.Db.Groups
                    where //isadmin || 
                         g.Roles.Any(r => r.RoleName == role

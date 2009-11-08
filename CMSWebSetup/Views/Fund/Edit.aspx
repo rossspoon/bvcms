@@ -22,11 +22,11 @@
             </p>
             <p>
                 <label for="FundStatusId">FundStatusId:</label>
-                <% Html.RenderAction<CMSWebSetup.Controllers.FundController>(c => c.FundStatus(Model)); %>
+                <%= Html.DropDownList("FundStatusId", CMSWebSetup.Controllers.FundController.GetFundStatusList()) %>
             </p>
             <p>
                 <label for="FundTypeId">FundTypeId:</label>
-                <% Html.RenderAction<CMSWebSetup.Controllers.FundController>(c => c.FundType(Model)); %>
+                <%= Html.DropDownList("FundTypeId", CMSWebSetup.Controllers.FundController.GetFundTypeList()) %>
             </p>
             <p>
                 <label for="FundPledgeFlag">FundPledgeFlag:</label>

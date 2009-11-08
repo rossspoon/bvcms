@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Admin_History" Title="Untitled Page" Codebehind="History.aspx.cs" %>
+﻿<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Admin_History" Title="Untitled Page" Codebehind="History.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" Runat="Server">
     <asp:GridView ID="grid" runat="server" AllowPaging="True" 

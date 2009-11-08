@@ -50,10 +50,17 @@ namespace Disciples
                             g.WelcomeText = Group.GetNewWelcome();
                             DbUtil.Db.SubmitChanges();
                         }
-                        if (g != null && (User.IsInRole("Administrator") || g.IsMember || g.IsAdmin))
+                        if (g != null && 
+                            (User.IsInRole("Administrator") 
+                            || User.IsInRole("BlogAdministrator") 
+                            || g.IsMember 
+                            || g.IsAdmin))
                         {
                             defaultTop.Content = g.WelcomeText;
-                            if (User.IsInRole("Administrator") || g.IsAdmin || g.IsBlogger)
+                            if (User.IsInRole("Administrator") 
+                                || User.IsInRole("BlogAdministrator") 
+                                || g.IsAdmin 
+                                || g.IsBlogger)
                                 defaultTop.CanEdit = true;
                         }
                         else if (Group.FetchUserGroups().Count() > 0)

@@ -167,8 +167,8 @@ namespace CmsCheckin
                 ab.TextAlign = ContentAlignment.TopCenter;
                 ab.UseVisualStyleBackColor = false;
                 this.Controls.Add(ab);
+                ab.KeyDown += new KeyEventHandler(ab_KeyDown);
                 ab.Click += new EventHandler(ab_Click);
-                ab.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
                 ab.Text = c.CheckedIn ? "ü" : String.Empty;
                 col++;
 
@@ -182,8 +182,9 @@ namespace CmsCheckin
                 eb.TextAlign = ContentAlignment.TopCenter;
                 eb.UseVisualStyleBackColor = false;
                 this.Controls.Add(eb);
-                eb.Click += new EventHandler(eb_Click);
                 eb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
+                eb.Click += new EventHandler(eb_Click);
+                //eb.KeyPress += new KeyPressEventHandler(KeyPressEvent);
                 col++;
 
                 var label = new Label();
@@ -206,6 +207,12 @@ namespace CmsCheckin
 
                 Row++;
             }
+        }
+
+        void ab_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 27)
+                GoBack(sender, e);
         }
 
         void eb_Click(object sender, EventArgs e)
@@ -282,8 +289,16 @@ namespace CmsCheckin
             coll.Add("PeopleId", c.PeopleId.ToString());
             coll.Add("OrgId", c.OrgId.ToString());
             coll.Add("Present", present.ToString());
+            coll.Add("thisday", Program.ThisDay.ToString());
             var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/RecordAttend/");
+
+            this.Cursor = Cursors.WaitCursor;
+            Cursor.Show();
             var resp = wc.UploadValues(url, "POST", coll);
+            if (Program.HideCursor)
+                Cursor.Hide();
+            this.Cursor = Cursors.Default;
+
             var s = Encoding.ASCII.GetString(resp);
             this.Cursor = Cursors.Default;
         }
@@ -328,6 +343,8 @@ namespace CmsCheckin
         private void AttendeeKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
+                GoBack(sender, e);
+            if (e.KeyChar == 13)
             {
                 PrintLabels();
                 GoBack(sender, e);

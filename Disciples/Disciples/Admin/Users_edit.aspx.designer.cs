@@ -211,6 +211,15 @@ public partial class admin_user_edit {
     protected global::System.Web.UI.WebControls.CheckBox SiteAdministrator;
     
     /// <summary>
+    /// BlogAdministrator control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.CheckBox BlogAdministrator;
+    
+    /// <summary>
     /// GridView1 control.
     /// </summary>
     /// <remarks>

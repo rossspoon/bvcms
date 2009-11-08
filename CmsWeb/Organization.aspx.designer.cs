@@ -194,6 +194,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink RecentAttendRpt;
         
         /// <summary>
+        /// AttendanceRpt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink AttendanceRpt;
+        
+        /// <summary>
         /// CloneOrg1 control.
         /// </summary>
         /// <remarks>
@@ -417,6 +426,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CustomControls.DisplayOrEditText NumCheckInLabels;
+        
+        /// <summary>
+        /// NumWorkerCheckInLabels control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText NumWorkerCheckInLabels;
         
         /// <summary>
         /// FirstMeetingDate control.

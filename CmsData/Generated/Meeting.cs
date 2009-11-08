@@ -41,6 +41,8 @@ namespace CmsData
 		
 		private bool _GroupMeetingFlag;
 		
+		private string _Description;
+		
    		
    		private EntitySet< SoulMate> _ChildSoulMates;
 		
@@ -95,6 +97,9 @@ namespace CmsData
 		
 		partial void OnGroupMeetingFlagChanging(bool value);
 		partial void OnGroupMeetingFlagChanged();
+		
+		partial void OnDescriptionChanging(string value);
+		partial void OnDescriptionChanged();
 		
     #endregion
 		public Meeting()
@@ -377,6 +382,28 @@ namespace CmsData
 					this._GroupMeetingFlag = value;
 					this.SendPropertyChanged("GroupMeetingFlag");
 					this.OnGroupMeetingFlagChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(100)")]
+		public string Description
+		{
+			get { return this._Description; }
+
+			set
+			{
+				if (this._Description != value)
+				{
+				
+                    this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 
 			}

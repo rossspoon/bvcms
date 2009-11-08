@@ -66,7 +66,7 @@ namespace CMSWeb.Reports
                     orderby p.Name2
                     select new
                     {
-                        First = p.NickName ?? p.FirstName,
+                        First = p.PreferredName,
                         Last = p.LastName,
                         PeopleId = p.PeopleId,
                         Phone = p.CellPhone ?? p.HomePhone

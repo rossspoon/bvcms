@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Disciples.Register"
+<%@ Page Language="C#" StylesheetTheme="Default" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Disciples.Register"
     EnableViewState="false" Title="GO Disciples Registration" CodeBehind="Register.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">

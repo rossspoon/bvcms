@@ -46,7 +46,7 @@ public partial class Blog_Post : System.Web.UI.Page
 
         AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
-        CanEditComments = blog.IsBlogger || Roles.IsUserInRole("Administrator");
+        CanEditComments = blog.IsBlogger || Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("BlogAdministrator");
     }
 
     protected void PostComment_Click(object sender, EventArgs e)

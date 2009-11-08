@@ -2,6 +2,7 @@ using System;
 using DiscData;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
+using System.Linq;
 
 public partial class Blog_Posts : System.Web.UI.Page
 {
@@ -16,11 +17,30 @@ public partial class Blog_Posts : System.Web.UI.Page
             category = a[1];
         blog = Blog.LoadByName(name);
         Archives1.blog = blog;
-        if (blog == null || !User.IsInRole("Administrator") && !blog.IsMember && !blog.IsPublic)
+        if (blog == null || 
+                (!User.IsInRole("Administrator") 
+                && !User.IsInRole("BlogAdministrator") 
+                && !blog.IsMember 
+                && !blog.IsPublic))
             Response.Redirect("~/");
         AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
 
+        Repeater1.DataSource = from bp in blog.BlogPosts
+                               from x in bp.BlogCategoryXrefs
+                               group x by x.Category into g
+                               let c = g.Count()
+                               select new
+                               {
+                                   Category = g.Key.Name,
+                                   BlogName = blog.Name,
+                                   Count = c,
+                                   Size = c < 3 ? "10pt" :
+                                        c < 10 ? "12pt" :
+                                        c < 30 ? "14pt" :
+                                        "16pt"
+                               };
+        Repeater1.DataBind();
 
         Title = blog.Title;
         var site = Master as Disciples.Site;

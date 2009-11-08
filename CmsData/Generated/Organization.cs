@@ -83,6 +83,8 @@ namespace CmsData
 		
 		private bool? _AllowNonCampusCheckIn;
 		
+		private int? _NumWorkerCheckInLabels;
+		
    		
    		private EntitySet< Organization> _ChildOrgs;
 		
@@ -226,6 +228,9 @@ namespace CmsData
 		
 		partial void OnAllowNonCampusCheckInChanging(bool? value);
 		partial void OnAllowNonCampusCheckInChanged();
+		
+		partial void OnNumWorkerCheckInLabelsChanging(int? value);
+		partial void OnNumWorkerCheckInLabelsChanged();
 		
     #endregion
 		public Organization()
@@ -1014,6 +1019,28 @@ namespace CmsData
 					this._AllowNonCampusCheckIn = value;
 					this.SendPropertyChanged("AllowNonCampusCheckIn");
 					this.OnAllowNonCampusCheckInChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NumWorkerCheckInLabels", UpdateCheck=UpdateCheck.Never, Storage="_NumWorkerCheckInLabels", DbType="int")]
+		public int? NumWorkerCheckInLabels
+		{
+			get { return this._NumWorkerCheckInLabels; }
+
+			set
+			{
+				if (this._NumWorkerCheckInLabels != value)
+				{
+				
+                    this.OnNumWorkerCheckInLabelsChanging(value);
+					this.SendPropertyChanging();
+					this._NumWorkerCheckInLabels = value;
+					this.SendPropertyChanged("NumWorkerCheckInLabels");
+					this.OnNumWorkerCheckInLabelsChanged();
 				}
 
 			}

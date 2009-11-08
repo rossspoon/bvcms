@@ -44,7 +44,7 @@ public partial class Verse_Default : System.Web.UI.Page
         {
             c = VerseCategory.LoadById(catid.Value);
             if (cat != null)
-                IncludeAdmin.Checked = cat.User.Username == "admin";
+                IncludeAdmin.Checked = cat.User.Username != User.Identity.Name;
         }
         Category.DataSource = new VerseCategoryController().GetCategoriesForOwner(
             Request.Form[IncludeAdmin.UniqueID] == "on", user);

@@ -28,9 +28,9 @@
                     <td><%= Html.ValidationMessage("nickname") %></td>
                 </tr>
                 <tr>
-                    <td><label for="lastname">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname") %></td>
-                    <td><%= Html.ValidationMessage("lastname") %></td>
+                    <td><label for="last">Last Name</label></td>
+                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.ValidationMessage("last") %></td>
                 </tr>
                  <tr>
                     <td><label for="dob">Date of Birth</label></td>
@@ -74,9 +74,9 @@
                     <td><%= Html.ValidationMessage("locaddr") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone">Home Phone</label></td>
-                    <td><%= Html.TextBox("homephone")%></td>
-                    <td><%= Html.ValidationMessage("homephone")%></td>
+                    <td><label for="phone">Home Phone</label></td>
+                    <td><%= Html.TextBox("phone")%></td>
+                    <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
                     <td><label for="parent">Parent's Name</label></td>

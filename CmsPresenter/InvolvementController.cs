@@ -75,7 +75,7 @@ namespace CMSPresenter
                      {
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
@@ -108,7 +108,7 @@ namespace CMSPresenter
                      {
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
@@ -147,7 +147,7 @@ namespace CMSPresenter
                      {
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
@@ -184,7 +184,7 @@ namespace CMSPresenter
                      {
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
@@ -221,7 +221,7 @@ namespace CMSPresenter
                      {
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
@@ -257,7 +257,7 @@ namespace CMSPresenter
                          Married = p.MaritalStatus.Description,
                          PeopleId = p.PeopleId,
                          Title = p.TitleCode,
-                         FirstName = p.NickName == null ? p.FirstName : p.NickName,
+                         FirstName = p.PreferredName,
                          LastName = p.LastName,
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,

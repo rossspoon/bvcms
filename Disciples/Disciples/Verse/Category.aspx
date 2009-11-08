@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Category" Title="Manage Verse Categories" Codebehind="Category.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
@@ -6,7 +6,7 @@
    <asp:HiddenField ID="UserId" runat="server" EnableViewState="False" />
     <h4>
         Maintain Verse Categories</h4>
-    <asp:CheckBox ID="includeAdmin" runat="server" AutoPostBack="True" Text="Include Master Categories" /><br />
+    <asp:CheckBox ID="includeAdmin" runat="server" AutoPostBack="True" Text="Include Other Users Categories" /><br />
     <br />
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -43,8 +43,8 @@
                             <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("name") %>'></asp:TextBox>
                         </EditItemTemplate>
                         <ItemTemplate>
-                            <asp:HyperLink ID="DisplayVerses" runat="server" NavigateUrl='<%# Eval("id", "~/Verse/Default.aspx?cat={0}") %>'
-                                Text='<%# Bind("name") %>'></asp:HyperLink>
+                            <asp:HyperLink ID="DisplayVerses" Enabled='<%# Eval("Username").ToString() == User.Identity.Name %>' runat="server" NavigateUrl='<%# Eval("id", "~/Verse/Default.aspx?cat={0}") %>'
+                                Text='<%# Eval("name") %>'></asp:HyperLink>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="Username" HeaderText="Owner" ReadOnly="True" />

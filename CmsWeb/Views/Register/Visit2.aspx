@@ -53,9 +53,9 @@
                     <td><%= Html.ValidationMessage("first") %></td>
                 </tr>
                 <tr>
-                    <td><label for="lastname">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname") %></td>
-                    <td><%= Html.ValidationMessage("lastname") %></td>
+                    <td><label for="last">Last Name</label></td>
+                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.ValidationMessage("last") %></td>
                 </tr>
                  <tr>
                     <td><label for="dob">Date of Birth</label></td>

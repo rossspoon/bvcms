@@ -77,20 +77,20 @@ namespace CMSWebSetup.Controllers
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult FundStatus(ContributionFund fund)
+        public static List<SelectListItem> GetFundStatusList()
         {
             var list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Text = "Open", Value = "1", Selected = fund.FundStatusId == 1});
-            list.Add(new SelectListItem { Text = "Closed", Value = "2", Selected = fund.FundStatusId == 2});
-            return View(list);
+            list.Add(new SelectListItem { Text = "Open", Value = "1" });
+            list.Add(new SelectListItem { Text = "Closed", Value = "2" });
+            return list;
         }
-        public ActionResult FundType(ContributionFund fund)
+        public static List<SelectListItem> GetFundTypeList()
         {
             var list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Text = "1", Value = "1", Selected = fund.FundTypeId == 1 });
-            list.Add(new SelectListItem { Text = "2", Value = "2", Selected = fund.FundTypeId == 2 });
-            list.Add(new SelectListItem { Text = "3", Value = "3", Selected = fund.FundTypeId == 3 });
-            return View(list);
+            list.Add(new SelectListItem { Text = "1", Value = "1" });
+            list.Add(new SelectListItem { Text = "2", Value = "2" });
+            list.Add(new SelectListItem { Text = "3", Value = "3" });
+            return list;
         }
     }
 }

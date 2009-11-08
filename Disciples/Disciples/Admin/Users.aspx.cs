@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using System.Web;
+using UtilityExtensions;
 
 public partial class Admin_admin_users : System.Web.UI.Page
 {
@@ -15,6 +16,7 @@ public partial class Admin_admin_users : System.Web.UI.Page
     {
         //pager1.PageSize = Util.GetPageSizeCookie();
         //pager2.PageSize = Util.GetPageSizeCookie();
+        Location.Text = Server.MapPath("~/");
     }
 
     protected void ListView1_ItemCreated(object sender, ListViewItemEventArgs e)

@@ -8,7 +8,7 @@
 
     <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
 
-<% if(Model.shownew1)
+<% if(Model.shownew1.ToInt() >= 2)
    { %>
     <script type="text/javascript">
         $(function() {
@@ -23,7 +23,7 @@
         });
     </script>
 <% }
-   if(Model.shownew2)
+   if(Model.shownew2.ToInt() >= 2)
    { %>
     <script type="text/javascript">
         $(function() {
@@ -50,6 +50,8 @@
     <% using (Html.BeginForm()) { %>
         <div>
             <fieldset>
+                <%=Html.Hidden("shownew1") %>
+                <%=Html.Hidden("shownew2") %>
                 <table style="empty-cells:show">
                 <col style="width: 13em; text-align:right" />
                 <col />
@@ -86,12 +88,11 @@
                     <td>&nbsp;</td>
                     <td colspan = "2"><%= Html.CheckBox("preferredEmail1") %> This is his preferred email address</td>
                 </tr>
-            <% if (Model.shownew1)
+            <% if (Model.shownew1.ToInt() >= 2)
                { %>
                <tr><th colspan="3"><span style="color:Red">Please provide address</span></th></tr>
                 <tr>
-                    <td><%=Html.Hidden("shownew1") %>
-                    <label for="addr1">Address</label></td>
+                    <td><label for="addr1">Address</label></td>
                     <td><%=Html.TextBox("addr1") %></td>
                     <td><%= Html.ValidationMessage("addr1") %></td>
                 </tr>
@@ -143,13 +144,12 @@
                     <td>&nbsp;</td>
                     <td colspan = "2"><%= Html.CheckBox("preferredEmail2") %> This is her preferred email address</td>
                 </tr>
-            <% if (Model.shownew2)
+            <% if (Model.shownew2.ToInt() >= 2)
                { %>
                <tr><th colspan="3"><span style="color:Red">Please provide address</span>
                <a id="same" href="#">same</a></th></tr>
                 <tr>
-                    <td><%=Html.Hidden("shownew2") %>
-                    <label for="addr2">Address</label></td>
+                    <td><label for="addr2">Address</label></td>
                     <td><%=Html.TextBox("addr2") %></td>
                     <td><%= Html.ValidationMessage("addr2") %></td>
                 </tr>

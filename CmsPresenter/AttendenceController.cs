@@ -55,7 +55,7 @@ namespace CMSPresenter
                     {
                         PeopleId = p.PeopleId,
                         LastName = p.LastName,
-                        FirstName = p.NickName != null ? p.NickName : p.FirstName,
+                        FirstName = p.PreferredName,
                         Street = p.PrimaryAddress,
                         Birthday = UtilityExtensions.Util.FormatBirthday(p.BirthYear.Value, p.BirthMonth.Value, p.BirthDay.Value),
                         EmailHome = p.EmailAddress,

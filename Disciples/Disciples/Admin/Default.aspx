@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Admin_Default" Title="Administrator Pages" Codebehind="Default.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">

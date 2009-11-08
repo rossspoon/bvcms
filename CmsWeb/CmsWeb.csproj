@@ -80,6 +80,7 @@
     <Compile Include="BulkMail.aspx.designer.cs">
       <DependentUpon>BulkMail.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -478,6 +479,8 @@
     <Compile Include="MemberMap.aspx.designer.cs">
       <DependentUpon>MemberMap.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\CheckInInfo.cs" />
+    <Compile Include="Models\CheckInModel.cs" />
     <Compile Include="Models\PagerModel.cs" />
     <Compile Include="Models\ParticipantInfo.cs" />
     <Compile Include="Models\PeopleInfo.cs" />
@@ -488,6 +491,7 @@
     <Compile Include="Models\RecreationModel.cs" />
     <Compile Include="Models\RecRegModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\Reports\AttendanceModel.cs" />
     <Compile Include="Models\SearchContactModel.cs" />
     <Compile Include="Models\TaskInfo.cs" />
     <Compile Include="Models\TaskModel.cs" />
@@ -1860,6 +1864,7 @@
     <Content Include="Views\CheckIn\Campuses.aspx" />
     <Content Include="Views\CheckIn\Multiple.aspx" />
     <Content Include="Views\Register\Add.aspx" />
+    <Content Include="Views\Reports\Attendance.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Site.Master" />

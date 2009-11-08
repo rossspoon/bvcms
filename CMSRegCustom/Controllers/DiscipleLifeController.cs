@@ -49,7 +49,7 @@ namespace CMSRegCustom.Controllers
                 c.Title = "DiscipleLife Registration";
             }
             var Body = c.Body;
-            Body = Body.Replace("{first}", m.person.NickName.HasValue() ? m.person.NickName : m.person.FirstName);
+            Body = Body.Replace("{first}", m.person.PreferredName);
             Body = Body.Replace("{orgname}", m.organization.OrganizationName);
 
             string email = DbUtil.Settings("DiscLifeMail-" + id, "");

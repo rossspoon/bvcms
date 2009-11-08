@@ -62,9 +62,9 @@
                     <td><%= Html.ValidationMessage("first") %></td>
                 </tr>
                 <tr>
-                    <td><label for="lastname">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname") %></td>
-                    <td><%= Html.ValidationMessage("lastname") %></td>
+                    <td><label for="last">Last Name</label></td>
+                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.ValidationMessage("last") %></td>
                 </tr>
                 <tr>
                     <td><label for="dob">Date of Birth</label></td>
@@ -111,10 +111,9 @@
                     <td><%= Html.ValidationMessage("state") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone">Home Phone</label></td>
-                    <td><%= Html.TextBox("homephone")%></td>
-                    <td><%= Html.ValidationMessage("homephone")%>
-                    <%= Html.ValidationMessage("homephone")%></td>
+                    <td><label for="phone">Home Phone</label></td>
+                    <td><%= Html.TextBox("phone")%></td>
+                    <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>

@@ -7,9 +7,6 @@ namespace CmsCheckin
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
@@ -21,11 +18,13 @@ namespace CmsCheckin
                 return;
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
+            HideCursor = f.HideCursor.Checked;
             f.Dispose();
             Application.Run(new Form1());
         }
-        public static int? CampusId { get; set; }
-        public static int? ThisDay { get; set; }
+        public static int CampusId { get; set; }
+        public static int ThisDay { get; set; }
+        public static bool HideCursor { get; set; }
         public static string QueryString
         {
             get

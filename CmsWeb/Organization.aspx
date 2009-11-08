@@ -246,6 +246,8 @@
             <td style="margin-bottom: 20px">
                 <asp:HyperLink ID="RecentAttendRpt" runat="server" Target="_blank">Recent Attendance Report</asp:HyperLink>&nbsp
                 | &nbsp
+                <asp:HyperLink ID="AttendanceRpt" runat="server">Attendance Percentages</asp:HyperLink>&nbsp
+                | &nbsp
                 <cc1:LinkButtonConfirm ID="CloneOrg1" OnClick="CloneOrg_Click" Confirm="This will make a copy of the org. Are you sure?"
                     runat="server">Copy this Organization</cc1:LinkButtonConfirm>
             </td>
@@ -360,6 +362,16 @@
                     </th>
                     <td>
                         <cc1:DisplayOrEditText ID="NumCheckInLabels" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False"
+                            Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Number of Worker CheckIn Labels:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="NumWorkerCheckInLabels" runat="server" BindingSource="organization"
                             BindingMode="TwoWay" ChangedStatus="False"
                             Width="135px"></cc1:DisplayOrEditText>
                     </td>

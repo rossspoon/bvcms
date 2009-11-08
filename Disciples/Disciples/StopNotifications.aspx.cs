@@ -23,8 +23,8 @@ namespace Disciples
             //Profile.Save();
             b.BlogNotifications.Add(new BlogNotify { UserId = user.UserId });
             DbUtil.Db.SubmitChanges();
-            Label1.Text = "you will no longer receive blog post notifications from: {0} ({1})"
-                .Fmt(b.Name, b.User.Name);
+            Label1.Text = "you will no longer receive blog post notifications for: {0}"
+                .Fmt(b.Name);
         }
     }
 }

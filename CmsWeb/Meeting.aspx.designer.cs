@@ -41,6 +41,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.LinkButton MeetingDateChange;
         
         /// <summary>
+        /// Description control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText Description;
+        
+        /// <summary>
         /// MeetingSummaryLink control.
         /// </summary>
         /// <remarks>

@@ -369,6 +369,46 @@ namespace CMSWebCommon.Models
                 return "Address needs to be formatted as: number street; city, state zip";
             return null;
         }
+        public static Person FindPerson(string phone, string last, string first, DateTime DOB, out int count)
+        {
+            first = first.Trim();
+            last = last.Trim();
+            var fone = Util.GetDigits(phone);
+            var q = from p in DbUtil.Db.People
+                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
+                    where (p.LastName == last || p.MaidenName == last)
+                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
+                    select p;
+            count = q.Count();
+            if (count > 1)
+            {
+                q = from p in q
+                    where p.CellPhone.Contains(fone) || p.Family.HomePhone.Contains(fone)
+                    select p;
+                count = q.Count();
+            }
+            Person person = null;
+            if (count == 1)
+                person = q.Single();
+            return person;
+        }
+        public static void ValidateFindPerson(ModelStateDictionary modelState, 
+            string first, 
+            string last, 
+            DateTime birthday, 
+            string phone)
+        {
+            if (!first.HasValue())
+                modelState.AddModelError("first", "first name required");
+            if (!last.HasValue())
+                modelState.AddModelError("last", "last name required");
+            if (birthday.Equals(DateTime.MinValue))
+                modelState.AddModelError("dob", "valid birth date required");
+            var d = phone.GetDigits().Length;
+            if (d != 7 && d != 10)
+                modelState.AddModelError("phone", "7 or 10 digits");
+        }
+
     }
     public class SearchPeopleInfo
     {

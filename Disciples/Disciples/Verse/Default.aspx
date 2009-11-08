@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Verse_Default" Title="Verse Memorization Database" Codebehind="Default.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">

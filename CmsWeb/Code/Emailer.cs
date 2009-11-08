@@ -104,7 +104,11 @@ namespace CMSWeb
                 }
             }
         }
-        public void SendPeopleEmail(IEnumerable<Person> people, string subject, string message, FileUpload attach)
+        public void SendPeopleEmail(IEnumerable<Person> people, 
+            string subject, 
+            string message, 
+            FileUpload attach, 
+            bool IsHtml)
         {
             Subject = subject;
             Message = message;
@@ -119,7 +123,11 @@ namespace CMSWeb
             SmtpClient smtp = null;
             var i = 0;
 
-            var bhtml = "<html>\r\n" + Util.SafeFormat(Message) + "\r\n</html>";
+            string bhtml = "<html>\r\n{0}\r\n</html>";
+            if (IsHtml)
+                bhtml = bhtml.Fmt(message);
+            else
+                bhtml = bhtml.Fmt(Util.SafeFormat(Message));
 
             foreach (var p in people)
             {
@@ -131,18 +139,16 @@ namespace CMSWeb
                     var msg = new MailMessage(From, to);
                     msg.Subject = Subject;
 
-                    string firstnick = p.NickName.HasValue() ? p.NickName : p.FirstName;
-
                     var text = Message;
                     text = text.Replace("{name}", p.Name);
-                    text = text.Replace("{first}", firstnick);
-                    text = text.Replace("{firstname}", firstnick);
+                    text = text.Replace("{first}", p.PreferredName);
+                    text = text.Replace("{firstname}", p.PreferredName);
                     msg.Body = text;
 
                     var html = bhtml;
                     html = html.Replace("{name}", p.Name);
-                    html = html.Replace("{first}", firstnick);
-                    html = html.Replace("{firstname}", firstnick);
+                    html = html.Replace("{first}", p.PreferredName);
+                    html = html.Replace("{firstname}", p.PreferredName);
 
                     var bytes = Encoding.UTF8.GetBytes(html);
                     var htmlStream = new MemoryStream(bytes);
@@ -167,7 +173,7 @@ namespace CMSWeb
                     msg.Subject = "not a valid email address";
                     msg.Body = "Addressed to: " + p.EmailAddress + "\r\n"
                         + "Name: " + p.Name + "\r\n\r\n"
-                        + Message.Replace("{name}", p.Name).Replace("{first}", p.NickName ?? p.FirstName);
+                        + Message.Replace("{name}", p.Name).Replace("{first}", p.PreferredName);
                     msg.IsBodyHtml = false;
                     if (i % 20 == 0)
                         smtp = new SmtpClient();

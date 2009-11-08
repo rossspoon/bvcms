@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Edit"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Edit"
     Title="Edit Blog Post" ValidateRequest="false" CodeBehind="Edit.aspx.cs" %>
 
 <%@ Register TagPrefix="user" TagName="BlogEdit" Src="BlogEdit.ascx" %>

@@ -38,6 +38,7 @@ namespace CMSWeb
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 Response.Cache.SetAllowResponseInBrowserHistory(false);
             }
+            CKEditPanel.Visible = IsHtml.Checked;
         }
 
         protected void SendEmail_Click(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace CMSWeb
             var q = Db.People.Where(Qb.Predicate());
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1);
+            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
             Label1.Visible = true;
             SendEmail.Enabled = false;
         }
@@ -58,7 +59,12 @@ namespace CMSWeb
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1);
+            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
+        }
+
+        protected void IsHtml_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

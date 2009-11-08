@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
 using UtilityExtensions;
+using CMSWebCommon.Models;
 
 namespace CMSRegCustom.Models
 {
@@ -15,7 +16,7 @@ namespace CMSRegCustom.Models
     {
         string first { get; set; }
         string nickname { get; set; }
-        string lastname { get; set; }
+        string last { get; set; }
         string dob { get; set; }
         int? gender { get; set; }
         string grade { get; set; }
@@ -24,7 +25,7 @@ namespace CMSRegCustom.Models
         string state { get; set; }
         string zip { get; set; }
         string locaddr { get; set; }
-        string homephone { get; set; }
+        string phone { get; set; }
         string parent { get; set; }
         string cell { get; set; }
         string email { get; set; }
@@ -43,18 +44,26 @@ namespace CMSRegCustom.Models
     {
         public string first {get; set;}
         public string nickname {get; set;}
-        public string lastname {get; set;}
+        public string last {get; set;}
         public string dob {get; set;}
-        private DateTime _dob;
-        public DateTime DOB { get { return _dob;} }
-		public int? gender { get; set; }
+        private DateTime _Birthday;
+        private DateTime birthday
+        {
+            get
+            {
+                if (_Birthday == DateTime.MinValue)
+                    Util.DateValid(dob, out _Birthday);
+                return _Birthday;
+            }
+        }
+        public int? gender { get; set; }
         public string grade {get; set;}
         public string address {get; set;}
         public string city {get; set;}
         public string state { get; set; }
         public string zip {get; set;}
         public string locaddr {get; set;}
-        public string homephone {get; set;}
+        public string phone {get; set;}
         public string parent {get; set;}
         public string cell {get; set;}
         public string email {get; set;}
@@ -77,8 +86,8 @@ namespace CMSRegCustom.Models
             var sb = new StringBuilder();
             sb.AppendFormat("First:\t{0}\n", first);
             sb.AppendFormat("Nick:\t{0}\n", nickname);
-            sb.AppendFormat("Last:\t{0}\n", lastname);
-            sb.AppendFormat("DOB:\t{0:d}\n", DOB);
+            sb.AppendFormat("Last:\t{0}\n", last);
+            sb.AppendFormat("DOB:\t{0:d}\n", birthday);
             sb.AppendFormat("Gender:\t{0}\n", gender == 1 ? "M" : "F");
             sb.AppendFormat("Grade:\t{0}\n", grade);
             sb.AppendFormat("Addr:\t{0}\n", address);
@@ -115,81 +124,46 @@ namespace CMSRegCustom.Models
                     };
             return q;
         }
-        public IQueryable<CmsData.Person> FindMember()
+        public int FindMember()
         {
-            homephone = Util.GetDigits(homephone);
-            var q = from p in Db.People
-                    where (p.LastName == lastname || p.MaidenName == lastname)
-                            && (p.FirstName == first
-                            || p.NickName == first
-                            || p.MiddleName == first)
-                    where p.CellPhone.Contains(homephone)
-                            || p.Family.HomePhone.Contains(homephone)
-                            || p.WorkPhone.Contains(homephone)
-                            || p.CellPhone.Contains(cell)
-                            || p.Family.HomePhone.Contains(cell)
-                            || p.WorkPhone.Contains(cell)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    select p;
-            return q;
+            int count;
+            person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+            return count;
         }
 
-        public void WelcomeEmail()
+        public void ValidateModel(ModelStateDictionary modelState)
         {
-            //Email(u.Name, u.EmailAddress, "Your account on prayer.bellevue.org", @"Hi {0},<br/>
-            //You now have an account setup on http://prayer.bellevue.org.<br/>
-            //We'll send you more info about how you can use the site later.<br/>
-            //In the meantime, you can get back to the Prayer Times page to make changes using the following credentials:
-            //<blockquote>
-            //<table>
-            //<tr><td>Name:</td><td><b>{1}</b></td></tr>
-            //<tr><td>Username:</td><td><b>{2}</b></td></tr>
-            //<tr><td>Password:</td><td><b>{3}</b></td></tr>
-            //</table>
-            //</blockquote>
-            //Thanks for praying!<br/>
-            //Bellevue Prayer ministry".Fmt(u.FirstName, u.Name, u.Username, u.Password));
-        }
-        public void ValidateModel(ModelStateDictionary ModelState)
-        {
-            if (!first.HasValue())
-                ModelState.AddModelError("first", "first name required");
-            if (!lastname.HasValue())
-                ModelState.AddModelError("lastname", "last name required");
-            if (!Util.DateValid(dob, out _dob))
-                ModelState.AddModelError("dob", "valid birth date required");
+            SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
+
+            var d = cell.GetDigits().Length;
+            if (cell.HasValue() && (d != 7 && d != 10))
+                modelState.AddModelError("cell", "optional or 7 or 10 digits.");
 
             if (!gender.HasValue)
-                ModelState.AddModelError("gender2", "gender required");
+                modelState.AddModelError("gender2", "gender required");
             if (grade == "0")
-                ModelState.AddModelError("grade", "grade required");
+                modelState.AddModelError("grade", "grade required");
             if (!address.HasValue())
-                ModelState.AddModelError("address", "address required");
+                modelState.AddModelError("address", "address required");
             if (!city.HasValue())
-                ModelState.AddModelError("city", "city required");
+                modelState.AddModelError("city", "city required");
             if (!zip.HasValue())
-                ModelState.AddModelError("zip", "zip required");
-            var d = homephone.GetDigits().Length;
-            if (!homephone.HasValue() || (d != 7 && d != 10))
-                ModelState.AddModelError("homephone", "homephone required");
-            d = cell.GetDigits().Length;
-            if (cell.HasValue() && (d != 7 && d != 10))
-                ModelState.AddModelError("cell", "optional or 7 or 10 digits.");
+                modelState.AddModelError("zip", "zip required");
 			if (!Util.ValidEmail(email))
-				ModelState.AddModelError("email", "Please specify a valid email address.");
+				modelState.AddModelError("email", "Please specify a valid email address.");
 			if (!pubphoto.HasValue)
-				ModelState.AddModelError("pubphoto2", "Please specify whether we can publish photo.");
+				modelState.AddModelError("pubphoto2", "Please specify whether we can publish photo.");
 			if (!emcontact.HasValue())
-				ModelState.AddModelError("emcontact", "emergency contact required");
+				modelState.AddModelError("emcontact", "emergency contact required");
 			if (!emphone.HasValue())
-				ModelState.AddModelError("emphone", "emergency phone # required");
+				modelState.AddModelError("emphone", "emergency phone # required");
 			if (!bringer.HasValue())
-				ModelState.AddModelError("bringer", "bringer contact required");
+				modelState.AddModelError("bringer", "bringer contact required");
 			if (!bringerphone.HasValue())
-				ModelState.AddModelError("bringerphone", "bringer phone # required");
-			
-			if (ModelState.IsValid)
-                person = FindMember().FirstOrDefault();
+				modelState.AddModelError("bringerphone", "bringer phone # required");
+
+            if (modelState.IsValid)
+                FindMember();
         }
         public void SaveVBSApp()
         {
@@ -207,9 +181,7 @@ namespace CMSRegCustom.Models
             vb.Request = request;
             vb.MedAllergy = medical.HasValue();
 
-            var p = FindMember().FirstOrDefault();
-            if (p != null)
-                vb.Person = p;
+            vb.Person = person;
             Db.SubmitChanges();
         }
 		public IEnumerable<SelectListItem> GradeCompleteds()

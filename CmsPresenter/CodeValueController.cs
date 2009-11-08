@@ -1044,6 +1044,8 @@ namespace CMSPresenter
             if (list == null)
             {
                 var q = from mt in DbUtil.Db.MemberTypes
+                        where mt.Id != (int)OrganizationMember.MemberTypeCode.Visitor
+                        where mt.Id != (int)OrganizationMember.MemberTypeCode.VisitingMember
                         orderby mt.Description
                         select new MemberTypeItem
                         {

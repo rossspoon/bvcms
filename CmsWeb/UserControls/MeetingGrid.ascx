@@ -13,6 +13,7 @@
         <asp:BoundField DataField="NumPresent" HeaderText="Present" SortExpression="NumPresent" />
         <asp:BoundField DataField="NumVisitors" HeaderText="Visitors" SortExpression="NumVisitors" />
         <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location" />
+        <asp:BoundField DataField="Description" HeaderText="Description" />
         <asp:TemplateField ShowHeader="False">
             <ItemTemplate>
                 <cc1:LinkButtonConfirm ID="DeleteLink" Text="Delete" Confirm="Are you sure you want to delete this meeting (this action cannot be undone)?"

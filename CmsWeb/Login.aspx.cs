@@ -79,6 +79,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                 NotifyAdmins("user loggedin without a role",
                     string.Format("{0} visited site at {1} but does not have Staff role",
                         name, DateTime.Now));
+                FormsAuthentication.SignOut();
                 HttpContext.Current.Response.Redirect("Errors/AccessDenied.htm");
             }
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)

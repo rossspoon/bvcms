@@ -14,7 +14,7 @@ namespace DiscData
         {
             get { return Roles.Provider as BVRoleProvider; }
         }
-        public override string ApplicationName { get { return "cms"; } set { } }
+        public override string ApplicationName { get { return "disc"; } set { } }
         public override void Initialize(string name, NameValueCollection config)
         {
             if (config == null)

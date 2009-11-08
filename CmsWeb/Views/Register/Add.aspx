@@ -15,15 +15,14 @@
                 <col />
                 <col />
                 <tr>
-                    <td><label for="lastname">Last Name</label></td>
-                    <td><%= Html.TextBox("lastname") %></td>
-                    <td><%= Html.ValidationMessage("lastname") %></td>
+                    <td><label for="last">Last Name</label></td>
+                    <td><%= Html.TextBox("last") %></td>
+                    <td><%= Html.ValidationMessage("last") %></td>
                 </tr>
                 <tr>
-                    <td><label for="homephone">Phone</label></td>
-                    <td><%= Html.TextBox("homephone")%></td>
-                    <td><%= Html.ValidationMessage("homephone")%>
-                    <%= Html.ValidationMessage("homephone")%></td>
+                    <td><label for="phone">Phone</label></td>
+                    <td><%= Html.TextBox("phone")%></td>
+                    <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Find Family" /></td>

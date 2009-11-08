@@ -8,9 +8,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
-               <asp:Button ID="refresh" runat="server" Text="Refresh" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Button ID="refresh" runat="server" Text="Refresh" />
                 <asp:Button ID="disable" runat="server" Text="Disable" onclick="disable_Click" /><br />
+        <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label><br />           
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
     </div>
     </form>

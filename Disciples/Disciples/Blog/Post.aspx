@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Post"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Post"
     Title="Blog Post" CodeBehind="Post.aspx.cs" %>
 
 <%@ Register Src="Item.ascx" TagName="Item" TagPrefix="uc1" %>

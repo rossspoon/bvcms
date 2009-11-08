@@ -1,4 +1,4 @@
-<%@ Page ValidateRequest="false" Language="C#" AutoEventWireup="True" Inherits="CMSParagraph"
+<%@ Page StylesheetTheme="Default" ValidateRequest="false" Language="C#" AutoEventWireup="True" Inherits="CMSParagraph"
     CodeBehind="CMSParagraph.aspx.cs" %>
 <%@ OutputCache NoStore="true" Location="None" %>
 <html>

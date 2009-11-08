@@ -19,7 +19,8 @@ public partial class EditComment : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         comment = BlogComment.LoadById(Request.QueryString<int>("id"));
-        if (DbUtil.Db.CurrentUser.UserId != comment.BlogPost.PosterId && !Roles.IsUserInRole("Administrator"))
+        if (DbUtil.Db.CurrentUser.UserId != comment.BlogPost.PosterId && !Roles.IsUserInRole("Administrator")
+                && !Roles.IsUserInRole("BlogAdministrator"))
             Response.Redirect("~/");
         if (!Page.IsPostBack)
         {

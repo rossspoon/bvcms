@@ -38,7 +38,7 @@ namespace UtilityExtensions
 #endif
             if (InDebug)
                 return;
-            smtp.Send(msg);
+            TrySend(smtp, msg);
         }
         public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)
         {
@@ -58,7 +58,7 @@ namespace UtilityExtensions
 #endif
             if (InDebug)
                 return;
-            smtp.Send(msg);
+            TrySend(smtp, msg);
         }
         public static MailAddress FirstAddress(string addrs)
         {
@@ -86,7 +86,20 @@ namespace UtilityExtensions
 #endif
             if (InDebug)
                 return;
-            smtp.Send(msg);
+            TrySend(smtp, msg);
+        }
+        private static void TrySend(SmtpClient smtp, MailMessage msg)
+        {
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (System.Net.Mail.SmtpException ex)
+            {
+                // try one more time
+                System.Threading.Thread.Sleep(2000);
+                smtp.Send(msg);
+            }
         }
     }
 }

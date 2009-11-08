@@ -32,20 +32,20 @@ namespace CMSRegCustom.Controllers
                 if (count > 1)
                     ModelState.AddModelError("findhim", "More than one match for him, sorry");
                 else if (count == 0)
-                    if (!m.shownew1)
+                    if (m.shownew1.ToInt() < 2)
                     {
-                        ModelState.AddModelError("findhim", "Cannot find his record.");
-                        m.shownew1 = true;
+                        ModelState.AddModelError("findhim", "Cannot find his record. Is everything correct?");
+                        m.shownew1 = (m.shownew1.ToInt() + 1).ToString();
                     }
 
                 count = m.FindMember2();
                 if (count > 1)
                     ModelState.AddModelError("findher", "More than one match for her, sorry");
                 else if (count == 0)
-                    if(!m.shownew2)
+                    if(m.shownew2.ToInt() < 2)
                     {
-                        ModelState.AddModelError("findher", "Cannot find her record.");
-                        m.shownew2 = true;
+                        ModelState.AddModelError("findher", "Cannot find her record. Is everything correct?");
+                        m.shownew2 = (m.shownew2.ToInt() + 1).ToString();
                     }
             }
             if (!ModelState.IsValid)
@@ -103,12 +103,12 @@ namespace CMSRegCustom.Controllers
             if (m.ChildParent.Value == m.person1.PeopleId)
             {
                 p = m.person1;
-                count = m.FindMember(m.person1.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
+                count = m.FindMember(p.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
             }
             else
             {
                 p = m.person2;
-                count = m.FindMember(m.person2.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
+                count = m.FindMember(p.HomePhone, m.lastname1, m.first1, m.DOB1, out c);
             }
             if (count > 1)
                 ModelState.AddModelError("findkid", "More than one match for child, sorry");

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
 using UtilityExtensions;
+using CMSWebCommon.Models;
 
 namespace CMSWeb.Models
 {
@@ -16,17 +17,25 @@ namespace CMSWeb.Models
         public int? thisday { get; set; }
         public string first {get; set;}
         public string nickname {get; set;}
-        public string lastname {get; set;}
+        public string last {get; set;}
         public string dob {get; set;}
-        private DateTime _dob;
-        public DateTime DOB { get { return _dob;} }
-		public int? gender { get; set; }
+        private DateTime _Birthday;
+        private DateTime birthday
+        {
+            get
+            {
+                if (_Birthday == DateTime.MinValue)
+                    Util.DateValid(dob, out _Birthday);
+                return _Birthday;
+            }
+        }
+        public int? gender { get; set; }
         public string address1 { get; set; }
         public string address2 { get; set; }
         public string city { get; set; }
         public string state { get; set; }
         public string zip {get; set;}
-        public string homephone {get; set;}
+        public string phone {get; set;}
         public string cellphone { get; set; }
         public string email { get; set; }
         public int? married { get; set; }
@@ -130,39 +139,22 @@ namespace CMSWeb.Models
         }
         public int FindMember()
         {
-            first = first.Trim();
-            lastname = lastname.Trim();
-            homephone = Util.GetDigits(homephone);
-            cellphone = cellphone.GetDigits();
-            var q = from p in DbUtil.Db.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == lastname || p.MaidenName == lastname)
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
-                    where p.CellPhone.Contains(homephone)
-                            || p.Family.HomePhone.Contains(homephone)
-                            || p.Family.HomePhone.Contains(cellphone)
-                    select p;
-            var count = q.Count();
+            int count;
+            _person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
             if (count > 1)
-                q = from p in q
-                    select p;
-            count = q.Count();
-
-            _person = null;
-            if (count == 1)
-                _person = q.Single();
+                _person = SearchPeopleModel.FindPerson(cellphone, first, last, birthday, out count);
             return count;
         }
         public int FindFamily()
         {
-            var ph = Util.GetDigits(homephone).PadLeft(10, '0');
+            var ph = Util.GetDigits(phone).PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
 
-            if (lastname.HasValue())
-                lastname = lastname.Trim();
+            if (last.HasValue())
+                last = last.Trim();
             var q = from f in DbUtil.Db.Families
-                    where f.HeadOfHousehold.LastName == lastname
+                    where f.HeadOfHousehold.LastName == last
                     where f.People.Any(p => p.CellPhoneLU == p7)
                             || f.HomePhoneLU == p7
                     select f.HeadOfHousehold;
@@ -185,40 +177,33 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("city", "city required");
             if (!zip.HasValue())
                 ModelState.AddModelError("zip", "zip required");
-            if (!(homephone.HasValue() || cellphone.HasValue()))
+            if (!(phone.HasValue() || cellphone.HasValue()))
                 ModelState.AddModelError("phone", "need at least one phone #");
         }
-        public void ValidateModel2(ModelStateDictionary ModelState)
+        public void ValidateModel2(ModelStateDictionary modelState)
         {
-            if (!first.HasValue())
-                ModelState.AddModelError("first", "first name required");
-            if (!lastname.HasValue())
-                ModelState.AddModelError("lastname", "last name required");
-            if (!Util.DateValid(dob, out _dob))
-                ModelState.AddModelError("dob", "valid birth date required");
+            SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
             if (!gender.HasValue)
-                ModelState.AddModelError("gender", "gender required");
+                modelState.AddModelError("gender", "gender required");
             if ((married ?? 0) == 0)
-                ModelState.AddModelError("married", "select marital status");
+                modelState.AddModelError("married", "select marital status");
             var d = cellphone.GetDigits().Length;
             if (cellphone.HasValue() && d != 10)
-                ModelState.AddModelError("cellphone", "need 10 digits");
-            d = homephone.GetDigits().Length;
-            if (homephone.HasValue() && d != 10)
-                ModelState.AddModelError("homephone", "need 10 digits");
+                modelState.AddModelError("cellphone", "need 10 digits");
+
             if (!Util.ValidEmail(email))
-                ModelState.AddModelError("email", "Please specify a valid email address.");
+                modelState.AddModelError("email", "Please specify a valid email address.");
             if (org == 0)
-                ModelState.AddModelError("org", "Please choose an organization");
+                modelState.AddModelError("org", "Please choose an organization");
         }
         public void ValidateModel3(ModelStateDictionary ModelState)
         {
-            if (!lastname.HasValue())
-                ModelState.AddModelError("lastname", "last name required");
-            var d = homephone.GetDigits().Length;
+            if (!last.HasValue())
+                ModelState.AddModelError("last", "last name required");
+            var d = phone.GetDigits().Length;
             if (d != 10)
-                ModelState.AddModelError("homephone", "need 10 digits");
+                ModelState.AddModelError("phone", "need 10 digits");
         }
         public void SaveFirstPerson()
         {
@@ -229,10 +214,10 @@ namespace CMSWeb.Models
                  CityName = city,
                  StateCode = state,
                  ZipCode = zip,
-                 HomePhone = homephone.GetDigits(),
+                 HomePhone = phone.GetDigits(),
             };
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
-                null, first, nickname, lastname, dob, false, gender.Value, 
+                null, first, nickname, last, dob, false, gender.Value, 
                 DbUtil.Settings("RegOrigin", "0").ToInt(), null);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
@@ -253,7 +238,7 @@ namespace CMSWeb.Models
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
-                null, first, nickname, lastname, dob, false, gender.Value, 0, null);
+                null, first, nickname, last, dob, false, gender.Value, 0, null);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)

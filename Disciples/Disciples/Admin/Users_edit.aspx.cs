@@ -50,6 +50,7 @@ public partial class admin_user_edit : System.Web.UI.Page
                 NotifyAll.Checked = mu.NotifyAll ?? true;
                 NotifyEnabled.Checked = mu.NotifyEnabled ?? true;
                 SiteAdministrator.Checked = IsUserInRole("Administrator");
+                BlogAdministrator.Checked = IsUserInRole("BlogAdministrator");
                 pid.Text = mu.PeopleId.ToString();
 
                 if (mu == null)
@@ -151,6 +152,13 @@ public partial class admin_user_edit : System.Web.UI.Page
                 Roles.AddUserToRole(mu.Username, Adminstrator);
             else if (!SiteAdministrator.Checked && inrole)
                 Roles.RemoveUserFromRole(mu.Username, Adminstrator);
+
+            const string BlogAdminstrator = "BlogAdministrator";
+            inrole = Roles.IsUserInRole(mu.Username, BlogAdminstrator);
+            if (BlogAdministrator.Checked && !inrole)
+                Roles.AddUserToRole(mu.Username, BlogAdminstrator);
+            else if (!BlogAdministrator.Checked && inrole)
+                Roles.RemoveUserFromRole(mu.Username, BlogAdminstrator);
 
             DbUtil.Db.SubmitChanges();
             UpdateRoleMembership();

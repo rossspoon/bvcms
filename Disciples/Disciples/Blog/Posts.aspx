@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Posts"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Posts"
     Title="Blog Posts" CodeBehind="Posts.aspx.cs" %>
 
 <%@ Register Src="Item.ascx" TagName="Item" TagPrefix="uc1" %>
@@ -37,6 +37,29 @@
                 Posts on this page</h4>
             <ul>
                 <asp:ListView ID="PostsOnPage" runat="server">
+                    <LayoutTemplate>
+                        <li id="itemPlaceHolder" runat="server"></li>
+                    </LayoutTemplate>
+                    <ItemTemplate>
+                        <li>
+                            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl='<%# Eval("Id", "~/Blog/{0}.aspx") %>'
+                                Text='<%# Eval("Title") %>'></asp:HyperLink></li>
+                    </ItemTemplate>
+                </asp:ListView>
+            </ul>
+        </div>
+        <div class="panel" id="Categories">
+            <h4>
+                Categories</h4>
+            <ul>
+                <asp:Repeater ID="Repeater1" runat="server">
+                <ItemTemplate>
+                <asp:HyperLink runat="server"  style='<%# "font-size: " + Eval("Size") %>'
+                    NavigateUrl='<%# "~/Blog/" + Eval("BlogName") + "/" + Eval("Category") + ".aspx" %>'
+                    Text='<%# Eval("Category") %>'></asp:HyperLink>
+                </ItemTemplate>
+                </asp:Repeater>
+                <asp:ListView ID="ListView1" runat="server">
                     <LayoutTemplate>
                         <li id="itemPlaceHolder" runat="server"></li>
                     </LayoutTemplate>

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Forum_Edit" Title="Edit Forum Entry" ValidateRequest="false" Codebehind="Edit.aspx.cs" %>
 
 <%@ Register Src="EditForumEntry.ascx" TagName="EditForumEntry" TagPrefix="uc1" %>

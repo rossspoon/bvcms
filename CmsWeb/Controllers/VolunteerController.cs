@@ -101,7 +101,7 @@ namespace CMSWeb.Controllers
                 else
                     body = m.Opportunity.EmailNoCva;
                 var p = m.person;
-                body = body.Replace("{first}", p.NickName.HasValue() ? p.NickName : p.FirstName);
+                body = body.Replace("{first}", p.PreferredName);
                 Util.SafeFormat(body);
                 body += "<p>You have indicated following interests:\n{0}</p>".Fmt(
                     m.PrepareSummaryText());

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Default"
+<%@ Page StylesheetTheme="Default" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True" Inherits="Blog_Default"
     Title="GO Disciples Blogs" CodeBehind="Default.aspx.cs" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="cphMain" runat="Server">
@@ -75,7 +75,7 @@
                 <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" />
                 <asp:BoundField DataField="Description" HeaderText="Description"></asp:BoundField>
                 <asp:BoundField DataField="GroupName" HeaderText="Group" ReadOnly="True" />
-                <asp:BoundField DataField="Owner" HeaderText="Owner" SortExpression="Owner" ReadOnly="True" />
+                <asp:BoundField DataField="Owner" HeaderText="Owner" SortExpression="Owner" ReadOnly="False" />
                 <asp:CheckBoxField DataField="IsPublic" HeaderText="Public" />
                 <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
@@ -103,6 +103,7 @@
                 <asp:Parameter Name="Description" Type="String" />
                 <asp:Parameter Name="Name" Type="String" />
                 <asp:Parameter Name="Title" Type="String" />
+                <asp:Parameter Name="Owner" Type="String" />
             </UpdateParameters>
         </asp:ObjectDataSource>
     </div>

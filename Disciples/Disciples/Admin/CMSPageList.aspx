@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" AutoEventWireup="True"
+<%@ Page Language="C#" StylesheetTheme="Default" MasterPageFile="~/site.master" AutoEventWireup="True"
     Inherits="Admin_CMSPageList" Title="CMS Pages" Codebehind="CMSPageList.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="Server">
