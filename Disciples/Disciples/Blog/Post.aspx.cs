@@ -47,6 +47,22 @@ public partial class Blog_Post : System.Web.UI.Page
         AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
         CanEditComments = blog.IsBlogger || Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("BlogAdministrator");
+        
+        Repeater1.DataSource = from bp in blog.BlogPosts
+                               from x in bp.BlogCategoryXrefs
+                               group x by x.Category into g
+                               let c = g.Count()
+                               select new
+                               {
+                                   Category = g.Key.Name,
+                                   BlogName = blog.Name,
+                                   Count = c,
+                                   Size = c < 3 ? "10pt" :
+                                        c < 10 ? "12pt" :
+                                        c < 30 ? "14pt" :
+                                        "16pt"
+                               };
+        Repeater1.DataBind();
     }
 
     protected void PostComment_Click(object sender, EventArgs e)

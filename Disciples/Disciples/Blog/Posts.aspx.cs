@@ -17,12 +17,14 @@ public partial class Blog_Posts : System.Web.UI.Page
             category = a[1];
         blog = Blog.LoadByName(name);
         Archives1.blog = blog;
-        if (blog == null || 
-                (!User.IsInRole("Administrator") 
-                && !User.IsInRole("BlogAdministrator") 
-                && !blog.IsMember 
-                && !blog.IsPublic))
+        if (blog == null)
             Response.Redirect("~/");
+        if (!(blog.IsMember 
+            || User.IsInRole("Administrator") 
+            || (User.IsInRole("BlogAdministrator") && blog.PrivacyLevel == 1)
+            || blog.PrivacyLevel == 0
+            ))
+             Response.Redirect("~/");
         AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
 

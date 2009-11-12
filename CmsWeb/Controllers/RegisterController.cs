@@ -117,6 +117,7 @@ namespace CMSWeb.Controllers
                     Session["lastname"] = m.HeadOfHousehold.LastName;
                     Session["name"] = m.HeadOfHousehold.Name;
                     Session["email"] = m.HeadOfHousehold.EmailAddress;
+                    Session["cellphone"] = m.HeadOfHousehold.CellPhone;
                     return RedirectToAction("ConfirmVisit");
                 }
             }
@@ -132,9 +133,9 @@ namespace CMSWeb.Controllers
             if (ModelState.IsValid)
             {
                 m.SaveFirstPerson();
-
                 Session["familyid"] = m.person.FamilyId;
                 Session["lastname"] = m.person.LastName;
+                Session["cellphone"] = m.person.CellPhone;
                 Session["name"] = m.person.Name;
                 Session["email"] = m.person.EmailAddress;
                 EmailVisit(m);
@@ -159,6 +160,7 @@ namespace CMSWeb.Controllers
                 Session["lastname"] = m.HeadOfHousehold.LastName;
                 Session["name"] = m.HeadOfHousehold.Name;
                 Session["email"] = m.HeadOfHousehold.EmailAddress;
+                Session["cellphone"] = m.HeadOfHousehold.CellPhone;
                 return RedirectToAction("Visit2");
             }
             ModelState.AddModelError("last", "Family not found");
@@ -172,6 +174,7 @@ namespace CMSWeb.Controllers
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 m.last = (string)Session["lastname"];
+                m.hcellphone = (string)Session["cellphone"];
                 return View(m);
             }
 

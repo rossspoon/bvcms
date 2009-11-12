@@ -200,7 +200,8 @@ namespace DiscData
         public static IEnumerable<Group> FetchAllGroupsWhereAdmin()
         {
             return from g in FetchAllGroups()
-                   where g.IsAdmin || HttpContext.Current.User.IsInRole("Administrator")
+                   where g.IsAdmin 
+                   || HttpContext.Current.User.IsInRole("Administrator")
                    || HttpContext.Current.User.IsInRole("BlogAdministrator")
                    select g;
         }

@@ -43,8 +43,12 @@ public partial class BlogEdit : System.Web.UI.UserControl
     }
     private void CheckMembership(Blog b)
     {
-        if (b == null || (!b.IsMember && !Page.User.IsInRole("Administrator") 
-                && !Page.User.IsInRole("BlogAdministrator")))
+        if (b == null)
+            Response.Redirect("~/");
+        if (!(b.IsBlogger
+            || Page.User.IsInRole("Administrator")
+            || (Page.User.IsInRole("BlogAdministrator") && b.PrivacyLevel == 1)
+            ))
             Response.Redirect("~/");
     }
     protected override void OnLoad(EventArgs e)

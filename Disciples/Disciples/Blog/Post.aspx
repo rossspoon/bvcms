@@ -102,6 +102,29 @@
                     <asp:HyperLink ID="PrevEntry" runat="server">HyperLink</asp:HyperLink></li>
             </ul>
         </div>
+        <div class="panel" id="Categories">
+            <h4>
+                Categories</h4>
+            <ul>
+                <asp:Repeater ID="Repeater1" runat="server">
+                <ItemTemplate>
+                <asp:HyperLink ID="HyperLink1" runat="server"  style='<%# "font-size: " + Eval("Size") %>'
+                    NavigateUrl='<%# "~/Blog/" + Eval("BlogName") + "/" + Eval("Category") + ".aspx" %>'
+                    Text='<%# Eval("Category") %>'></asp:HyperLink>
+                </ItemTemplate>
+                </asp:Repeater>
+                <asp:ListView ID="ListView1" runat="server">
+                    <LayoutTemplate>
+                        <li id="itemPlaceHolder" runat="server"></li>
+                    </LayoutTemplate>
+                    <ItemTemplate>
+                        <li>
+                            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl='<%# Eval("Id", "~/Blog/{0}.aspx") %>'
+                                Text='<%# Eval("Title") %>'></asp:HyperLink></li>
+                    </ItemTemplate>
+                </asp:ListView>
+            </ul>
+        </div>
         <uc3:Archives ID="Archives1" runat="server" />
         <div class="panel">
             <asp:HyperLink ID="AddEntry" runat="server" EnableViewState="false" NavigateUrl="~/Blog/Edit.aspx">Write a new Post</asp:HyperLink></div>

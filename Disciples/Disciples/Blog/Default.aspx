@@ -76,7 +76,7 @@
                 <asp:BoundField DataField="Description" HeaderText="Description"></asp:BoundField>
                 <asp:BoundField DataField="GroupName" HeaderText="Group" ReadOnly="True" />
                 <asp:BoundField DataField="Owner" HeaderText="Owner" SortExpression="Owner" ReadOnly="False" />
-                <asp:CheckBoxField DataField="IsPublic" HeaderText="Public" />
+                <asp:BoundField DataField="PrivacyLevel" HeaderText="Privacy" />
                 <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
                         <asp:LinkButton ID="delete" runat="server" CausesValidation="False" CommandName="Delete"

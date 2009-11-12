@@ -27,11 +27,11 @@ namespace DiscData
 		
 		private int? _GroupId;
 		
-		private bool _IsPublic;
-		
 		private bool _NotOnMenu;
 		
 		private int? _OwnerId;
+		
+		private int _PrivacyLevel;
 		
    		
    		private EntitySet< BlogNotify> _BlogNotifications;
@@ -67,14 +67,14 @@ namespace DiscData
 		partial void OnGroupIdChanging(int? value);
 		partial void OnGroupIdChanged();
 		
-		partial void OnIsPublicChanging(bool value);
-		partial void OnIsPublicChanged();
-		
 		partial void OnNotOnMenuChanging(bool value);
 		partial void OnNotOnMenuChanged();
 		
 		partial void OnOwnerIdChanging(int? value);
 		partial void OnOwnerIdChanged();
+		
+		partial void OnPrivacyLevelChanging(int value);
+		partial void OnPrivacyLevelChanged();
 		
     #endregion
 		public Blog()
@@ -210,28 +210,6 @@ namespace DiscData
 		}
 
 		
-		[Column(Name="IsPublic", UpdateCheck=UpdateCheck.Never, Storage="_IsPublic", DbType="bit NOT NULL")]
-		public bool IsPublic
-		{
-			get { return this._IsPublic; }
-
-			set
-			{
-				if (this._IsPublic != value)
-				{
-				
-                    this.OnIsPublicChanging(value);
-					this.SendPropertyChanging();
-					this._IsPublic = value;
-					this.SendPropertyChanged("IsPublic");
-					this.OnIsPublicChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="NotOnMenu", UpdateCheck=UpdateCheck.Never, Storage="_NotOnMenu", DbType="bit NOT NULL")]
 		public bool NotOnMenu
 		{
@@ -272,6 +250,28 @@ namespace DiscData
 					this._OwnerId = value;
 					this.SendPropertyChanged("OwnerId");
 					this.OnOwnerIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PrivacyLevel", UpdateCheck=UpdateCheck.Never, Storage="_PrivacyLevel", DbType="int NOT NULL")]
+		public int PrivacyLevel
+		{
+			get { return this._PrivacyLevel; }
+
+			set
+			{
+				if (this._PrivacyLevel != value)
+				{
+				
+                    this.OnPrivacyLevelChanging(value);
+					this.SendPropertyChanging();
+					this._PrivacyLevel = value;
+					this.SendPropertyChanged("PrivacyLevel");
+					this.OnPrivacyLevelChanged();
 				}
 
 			}

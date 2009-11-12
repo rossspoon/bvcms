@@ -32,6 +32,10 @@
                 }
                 age -= 2;
                 $('#age').text(age);
+                if (age < 16) {
+                    $('#cellphone').val($('#hcellphone').val());
+                    $("#married,input:radio[value='10']").attr('checked', 'checked');
+                }
             });
         });
     </script>
@@ -78,7 +82,8 @@
                 </tr>
                 <tr>
                     <td><label for="cellphone">Cell Phone</label></td>
-                    <td><%= Html.TextBox("cellphone") %></td>
+                    <td><%= Html.Hidden("hcellphone") %>
+                    <%= Html.TextBox("cellphone") %></td>
                     <td><%= Html.ValidationMessage("cellphone") %></td>
                 </tr>
                 <tr>

@@ -5,21 +5,13 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using System.Xml.Linq;
 using UtilityExtensions;
-using System.Text.RegularExpressions;
-using CMSPresenter;
 using CmsData;
+using System.Threading;
+using System.Net;
+using System.Web.UI;
 
 namespace CMSWeb
 {
@@ -44,8 +36,9 @@ namespace CMSWeb
         protected void SendEmail_Click(object sender, EventArgs e)
         {
             var Db = DbUtil.Db;
-            DbUtil.LogActivity("Emailing people");
             var Qb = Db.LoadQueryById(this.QueryString<int>("id"));
+
+            DbUtil.LogActivity("Emailing people");
             var q = Db.People.Where(Qb.Predicate());
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
@@ -65,6 +58,47 @@ namespace CMSWeb
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+    }
+    public class MyAsyncTask
+    {
+        internal QueryBuilderClause Qb = null;
+        private String _taskprogress;
+        private AsyncTaskDelegate _dlgt;
+
+        protected delegate void AsyncTaskDelegate();
+
+        public String GetAsyncTaskProgress()
+        {
+            return _taskprogress;
+        }
+        public void DoTheAsyncTask()
+        {
+            var Db = DbUtil.Db;
+            //DbUtil.LogActivity("Emailing people");
+            //var q = Db.People.Where(Qb.Predicate());
+            //q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
+            //var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
+            //em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
+            //Label1.Visible = true;
+            //SendEmail.Enabled = false;
+        }
+
+        public IAsyncResult OnBegin(object sender, EventArgs e, AsyncCallback cb, object extraData)
+        {
+            _taskprogress = "Beginning async task.";
+            _dlgt = new AsyncTaskDelegate(DoTheAsyncTask);
+            IAsyncResult result = _dlgt.BeginInvoke(cb, extraData);
+            return result;
+        }
+        public void OnEnd(IAsyncResult ar)
+        {
+            _taskprogress = "Asynchronous task completed.";
+            _dlgt.EndInvoke(ar);
+        }
+        public void OnTimeout(IAsyncResult ar)
+        {
+            _taskprogress = "Ansynchronous task failed to complete because it exceeded the AsyncTimeout parameter.";
         }
     }
 }

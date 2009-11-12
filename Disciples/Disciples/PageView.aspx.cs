@@ -24,7 +24,7 @@ namespace Disciples
                 ToggleEditor(false);
                 return;
             }
-            Admin.Visible = User.IsInRole("Administrator");
+            Admin.Visible = User.IsInRole("Administrator") || User.IsInRole("BlogAdministrator");
             string pageUrl = Request.QueryString<string>("p");
             if (pageUrl != "newpage.aspx")
             {

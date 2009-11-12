@@ -36,6 +36,7 @@ namespace CMSWeb.Models
         public string state { get; set; }
         public string zip {get; set;}
         public string phone {get; set;}
+        public string hcellphone { get; set; }
         public string cellphone { get; set; }
         public string email { get; set; }
         public int? married { get; set; }
@@ -130,7 +131,7 @@ namespace CMSWeb.Models
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem
                     {
-                        Text = "{0} ({1:h:mm})".Fmt(o.OrganizationName, Hour),
+                        Text = "{0} ({1:h:mm})".Fmt(o.FullName, Hour),
                         Value = o.OrganizationId.ToString(),
                     };
             var list = q.ToList();
