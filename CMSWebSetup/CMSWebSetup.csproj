@@ -97,6 +97,7 @@
     <Content Include="Views\PromotionSetup\Index.aspx" />
     <Content Include="Views\RecreationSetup\Errors.aspx" />
     <Content Include="Views\RecreationSetup\Index.aspx" />
+    <Content Include="Views\Setting\Batch.aspx" />
     <Content Include="Views\Setting\Index.aspx" />
     <Content Include="Views\UsersCanEmailFor\Index.aspx" />
     <Content Include="Views\VolOpportunity\Codes.aspx" />

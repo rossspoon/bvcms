@@ -41,12 +41,20 @@
                 age -= 2;
                 $('#age').text(age);
             });
+            $('#addfam').click(function() {
+                var thisday = $('#thisday').val();
+                var loc = "/Register/Add/<%=Model.campusid %>";
+                if (thisday)
+                    loc += "?thisday=" + thisday;
+                window.location = loc;
+            });
         });
     </script>
     <h2>Church Visit Registration</h2>
+    <%=Html.Hidden("thisday", Model.thisday) %>
     <p>
         Use the form below to register a visit in our Church Database.<br />
-        <a href='/Register/Add/<%=Model.campusid %>'>Add to an existing family</a>
+        <a id="addfam" href='#'>Add to an existing family</a>
     </p>
 
     <% using (Html.BeginForm()) { %>

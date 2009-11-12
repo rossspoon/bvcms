@@ -84,7 +84,7 @@
                     <td><label for="cellphone">Cell Phone</label></td>
                     <td><%= Html.Hidden("hcellphone") %>
                     <%= Html.TextBox("cellphone") %></td>
-                    <td><%= Html.ValidationMessage("cellphone") %></td>
+                    <td><%= Html.ValidationMessage("phone") %></td>
                 </tr>
                 <tr>
                     <td><label for="email">Email</label></td>

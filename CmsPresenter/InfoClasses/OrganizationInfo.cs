@@ -23,6 +23,7 @@ namespace CMSPresenter
         public string Location { get; set; }
         public bool HasTag { get; set; }
         public int? VisitorCount { get; set; }
+        public bool AllowSelfCheckIn { get; set; }
     }
     public class OrganizationInfoExcel
     {

@@ -667,7 +667,7 @@ namespace UtilityExtensions
         {
             if (s == null)
                 return null;
-            s = HttpContext.Current.Server.HtmlEncode(s);
+            s = HttpUtility.HtmlEncode(s);
 
             s = Regex.Replace(s, "(http://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
             s = Regex.Replace(s, "(https://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);

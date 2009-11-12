@@ -50,24 +50,20 @@ namespace CMSWeb.Controllers
             {
                 m.SaveFirstPerson();
 
-                Session["familyid"] = m.person.FamilyId;
-                Session["lastname"] = m.person.LastName;
                 Session["name"] = m.person.Name;
                 EmailRegister(m);
-                return RedirectToAction("Confirm");
+                return RedirectToAction("Confirm", new { familyid = m.person.FamilyId });
             }
             return View(m);
         }
-        public ActionResult Form2()
+        public ActionResult Form2(int familyid)
         {
             if (Session["auth"] == null || (string)Session["auth"] != "true")
                 return RedirectToAction("Login");
-            if (Session["familyid"] == null)
-                return RedirectToAction("Index");
             var m = new Models.RegisterModel();
             if (Request.HttpMethod.ToUpper() == "GET")
             {
-                m.last = (string)Session["lastname"];
+                m.last = m.HeadOfHousehold.LastName;
                 return View(m);
             }
 
@@ -84,15 +80,14 @@ namespace CMSWeb.Controllers
             }
             if (ModelState.IsValid)
             {
-                m.SavePerson(Session["familyid"].ToInt());
+                m.SavePerson(familyid);
                 EmailRegister(m);
-                return RedirectToAction("Confirm");
+                return RedirectToAction("Confirm", new { familyid = familyid });
             }
             return View(m);
         }
         public ActionResult Visit(int? id, string submit, int? thisday)
         {
-            Session["campus"] = id;
             var m = new Models.RegisterModel { campusid = id, thisday = thisday };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -113,12 +108,13 @@ namespace CMSWeb.Controllers
                 if (submit.StartsWith("Add"))
                 {
                     m.SavePerson(m.HeadOfHousehold.FamilyId);
-                    Session["familyid"] = m.HeadOfHousehold.FamilyId;
-                    Session["lastname"] = m.HeadOfHousehold.LastName;
-                    Session["name"] = m.HeadOfHousehold.Name;
-                    Session["email"] = m.HeadOfHousehold.EmailAddress;
-                    Session["cellphone"] = m.HeadOfHousehold.CellPhone;
-                    return RedirectToAction("ConfirmVisit");
+                    return RedirectToAction("ConfirmVisit",
+                        new
+                        {
+                            familyid = m.HeadOfHousehold.FamilyId,
+                            id = id,
+                            thisday = thisday
+                        });
                 }
             }
             else if (foundFamily)
@@ -127,26 +123,19 @@ namespace CMSWeb.Controllers
                 ModelState.AddModelError("submit", "existing family found");
                 return View(m);
             }
-            if (ModelState.IsValid)
-                if (m.FindMember() >= 1)
-                    ModelState.AddModelError("first", "Already Registered");
-            if (ModelState.IsValid)
-            {
-                m.SaveFirstPerson();
-                Session["familyid"] = m.person.FamilyId;
-                Session["lastname"] = m.person.LastName;
-                Session["cellphone"] = m.person.CellPhone;
-                Session["name"] = m.person.Name;
-                Session["email"] = m.person.EmailAddress;
-                EmailVisit(m);
-                return RedirectToAction("ConfirmVisit");
-            }
-            return View(m);
+            m.SaveFirstPerson();
+            EmailVisit(m);
+            return RedirectToAction("ConfirmVisit",
+                new
+                {
+                    familyid = m.person.FamilyId,
+                    id = id,
+                    thisday = thisday
+                });
         }
-        public ActionResult Add(int? id)
+        public ActionResult Add(int? id, int? thisday)
         {
-            Session["campus"] = id;
-            var m = new Models.RegisterModel { campusid = id };
+            var m = new Models.RegisterModel { campusid = id, thisday = thisday };
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -156,25 +145,27 @@ namespace CMSWeb.Controllers
                 return View(m);
             if (m.FindFamily() == 1)
             {
-                Session["familyid"] = m.HeadOfHousehold.FamilyId;
-                Session["lastname"] = m.HeadOfHousehold.LastName;
                 Session["name"] = m.HeadOfHousehold.Name;
                 Session["email"] = m.HeadOfHousehold.EmailAddress;
-                Session["cellphone"] = m.HeadOfHousehold.CellPhone;
-                return RedirectToAction("Visit2");
+                return RedirectToAction("Visit2",
+                    new
+                    {
+                        familyid = m.HeadOfHousehold.FamilyId,
+                        id = id,
+                        thisday = thisday
+                    });
             }
             ModelState.AddModelError("last", "Family not found");
             return View(m);
         }
-        public ActionResult Visit2()
+        public ActionResult Visit2(int familyid, int? id, int? thisday)
         {
-            if (Session["familyid"] == null)
-                return RedirectToAction("Visit");
-            var m = new Models.RegisterModel { campusid = (int?)Session["campus"], email = (string)Session["email"] };
+            var m = new Models.RegisterModel { familyid = familyid, campusid = id, thisday = thisday };
             if (Request.HttpMethod.ToUpper() == "GET")
             {
-                m.last = (string)Session["lastname"];
-                m.hcellphone = (string)Session["cellphone"];
+                m.last = m.HeadOfHousehold.LastName;
+                m.hcellphone = m.HeadOfHousehold.CellPhone;
+                m.email = m.HeadOfHousehold.EmailAddress;
                 return View(m);
             }
 
@@ -191,19 +182,27 @@ namespace CMSWeb.Controllers
             }
             if (ModelState.IsValid)
             {
-                m.SavePerson(Session["familyid"].ToInt());
+                m.SavePerson(familyid);
                 EmailVisit(m);
-                return RedirectToAction("ConfirmVisit");
+                return RedirectToAction("ConfirmVisit",
+                    new
+                    {
+                        id = id,
+                        thisday = thisday,
+                        familyid = familyid
+                    });
             }
             return View(m);
         }
-        public ActionResult Confirm()
+        public ActionResult Confirm(int familyid)
         {
+            var m = new Models.RegisterModel { familyid = familyid };
             return View();
         }
-        public ActionResult ConfirmVisit()
+        public ActionResult ConfirmVisit(int familyid, int? id, int? thisday)
         {
-            return View();
+            var m = new Models.RegisterModel { campusid = id, thisday = thisday, familyid = familyid };
+            return View(m);
         }
         public ActionResult Login(string name, string password, string email, int? campus)
         {
@@ -248,11 +247,11 @@ namespace CMSWeb.Controllers
 
         private void EmailVisit(RegisterModel m)
         {
-            string email = DbUtil.Settings("VisitMail-" + Session["campus"], "");
+            string email = DbUtil.Settings("VisitMail-" + m.campusid, "");
             if (!email.HasValue())
                 email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
 
-            var c = DbUtil.Content("VisitMessage-" + Session["campus"]);
+            var c = DbUtil.Content("VisitMessage-" + m.campusid);
             if (c == null)
             {
                 c = new Content();

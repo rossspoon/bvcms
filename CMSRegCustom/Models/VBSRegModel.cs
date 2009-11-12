@@ -135,6 +135,8 @@ namespace CMSRegCustom.Models
         {
             SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
+            if (!phone.HasValue())
+                modelState.AddModelError("phone", "phone required");
             var d = cell.GetDigits().Length;
             if (cell.HasValue() && (d != 7 && d != 10))
                 modelState.AddModelError("cell", "optional or 7 or 10 digits.");

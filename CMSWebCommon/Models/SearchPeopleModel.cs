@@ -369,7 +369,7 @@ namespace CMSWebCommon.Models
                 return "Address needs to be formatted as: number street; city, state zip";
             return null;
         }
-        public static Person FindPerson(string phone, string last, string first, DateTime DOB, out int count)
+        public static Person FindPerson(string phone, string first, string last, DateTime DOB, out int count)
         {
             first = first.Trim();
             last = last.Trim();
@@ -405,7 +405,7 @@ namespace CMSWebCommon.Models
             if (birthday.Equals(DateTime.MinValue))
                 modelState.AddModelError("dob", "valid birth date required");
             var d = phone.GetDigits().Length;
-            if (d != 7 && d != 10)
+            if (phone.HasValue() && d != 7 && d != 10)
                 modelState.AddModelError("phone", "7 or 10 digits");
         }
 

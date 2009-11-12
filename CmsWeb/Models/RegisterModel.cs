@@ -15,10 +15,11 @@ namespace CMSWeb.Models
     public class RegisterModel
     {
         public int? thisday { get; set; }
-        public string first {get; set;}
-        public string nickname {get; set;}
-        public string last {get; set;}
-        public string dob {get; set;}
+        public int? familyid { get; set; }
+        public string first { get; set; }
+        public string nickname { get; set; }
+        public string last { get; set; }
+        public string dob { get; set; }
         private DateTime _Birthday;
         private DateTime birthday
         {
@@ -34,8 +35,8 @@ namespace CMSWeb.Models
         public string address2 { get; set; }
         public string city { get; set; }
         public string state { get; set; }
-        public string zip {get; set;}
-        public string phone {get; set;}
+        public string zip { get; set; }
+        public string phone { get; set; }
         public string hcellphone { get; set; }
         public string cellphone { get; set; }
         public string email { get; set; }
@@ -67,6 +68,13 @@ namespace CMSWeb.Models
         {
             get
             {
+                if (_headofhousehold == null && familyid.HasValue)
+                {
+                    var q = from f in DbUtil.Db.Families
+                            where f.FamilyId == familyid
+                            select f.HeadOfHousehold;
+                    _headofhousehold = q.Single();
+                }
                 return _headofhousehold;
             }
         }
@@ -169,21 +177,23 @@ namespace CMSWeb.Models
             return 0;
         }
 
-        public void ValidateModel1(ModelStateDictionary ModelState)
+        public void ValidateModel1(ModelStateDictionary modelState)
         {
-            ValidateModel2(ModelState);
+            ValidateModel2(modelState);
             if (!address1.HasValue())
-                ModelState.AddModelError("address1", "address1 required");
+                modelState.AddModelError("address1", "address1 required");
             if (!city.HasValue())
-                ModelState.AddModelError("city", "city required");
+                modelState.AddModelError("city", "city required");
             if (!zip.HasValue())
-                ModelState.AddModelError("zip", "zip required");
+                modelState.AddModelError("zip", "zip required");
             if (!(phone.HasValue() || cellphone.HasValue()))
-                ModelState.AddModelError("phone", "need at least one phone #");
+                modelState.AddModelError("phone", "need at least one phone #");
         }
         public void ValidateModel2(ModelStateDictionary modelState)
         {
             SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
+            if (modelState.IsValid && FindMember() >= 1)
+                modelState.AddModelError("first", "Already Registered");
 
             if (!gender.HasValue)
                 modelState.AddModelError("gender", "gender required");
@@ -210,15 +220,15 @@ namespace CMSWeb.Models
         {
             var f = new Family
             {
-                 AddressLineOne = address1,
-                 AddressLineTwo = address2,
-                 CityName = city,
-                 StateCode = state,
-                 ZipCode = zip,
-                 HomePhone = phone.GetDigits(),
+                AddressLineOne = address1,
+                AddressLineTwo = address2,
+                CityName = city,
+                StateCode = state,
+                ZipCode = zip,
+                HomePhone = phone.GetDigits(),
             };
-            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
-                null, first, nickname, last, dob, false, gender.Value, 
+            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
+                null, first, nickname, last, dob, false, gender.Value,
                 DbUtil.Settings("RegOrigin", "0").ToInt(), null);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
@@ -238,7 +248,7 @@ namespace CMSWeb.Models
         public void SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
-            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult, 
+            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value, 0, null);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;

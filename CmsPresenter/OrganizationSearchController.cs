@@ -49,6 +49,7 @@ namespace CMSPresenter
                         Schedule = o.WeeklySchedule.Description,
                         Location = o.Location,
                         HasTag = o.DivOrgs.Any(ot => ot.DivId == tagid),
+                        AllowSelfCheckIn = o.CanSelfCheckin ?? false,
                     };
             return q;
         }
@@ -106,6 +107,7 @@ namespace CMSPresenter
                                              && a.MeetingDate <= MeetingDate
                                              && a.MeetingDate >= LookbackDt)
                                          select p).Count(),
+                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
                      };
             return q2;
         }
@@ -199,6 +201,21 @@ namespace CMSPresenter
                             orderby o.OrganizationName
                             select o;
                     break;
+                case "Location":
+                    query = from o in query
+                            orderby o.Location
+                            select o;
+                    break;
+                case "Schedule":
+                    query = from o in query
+                            orderby o.WeeklySchedule.Description
+                            select o;
+                    break;
+                case "SelfCheckIn":
+                    query = from o in query
+                            orderby (o.CanSelfCheckin ?? false)
+                            select o;
+                    break;
                 case "LeaderName":
                     query = from o in query
                             orderby o.LeaderName,
@@ -237,6 +254,21 @@ namespace CMSPresenter
                 case "Name DESC":
                     query = from o in query
                             orderby o.OrganizationName descending
+                            select o;
+                    break;
+                case "Location DESC":
+                    query = from o in query
+                            orderby o.Location descending
+                            select o;
+                    break;
+                case "Schedule DESC":
+                    query = from o in query
+                            orderby o.WeeklySchedule.Description descending
+                            select o;
+                    break;
+                case "SelfCheckIn DESC":
+                    query = from o in query
+                            orderby (o.CanSelfCheckin ?? false) descending
                             select o;
                     break;
                 case "LeaderName DESC":

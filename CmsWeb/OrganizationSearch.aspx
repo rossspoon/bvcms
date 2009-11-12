@@ -201,8 +201,9 @@
             ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right"></ItemStyle>
         </asp:BoundField>
-        <asp:BoundField DataField="AttendanceTrackingLevel" HeaderText="Attend Trk" SortExpression="AttendTrk" />
-        <asp:BoundField DataField="LastMeetingDate" HeaderText="Last Meeting Date" SortExpression="LastMeetingDate" />
+        <asp:BoundField DataField="Schedule" HeaderText="Schedule" SortExpression="Schedule" />
+        <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location" />
+        <asp:BoundField DataField="AllowSelfCheckIn" HeaderText="Self Check-in" SortExpression="SelfCheckIn" />
         <asp:TemplateField HeaderText="Tag" ShowHeader="False">
             <ItemTemplate>
                 <asp:LinkButton ID="TagUntag" runat="server" CausesValidation="False" 

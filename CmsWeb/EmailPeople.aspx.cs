@@ -12,11 +12,17 @@ using CmsData;
 using System.Threading;
 using System.Net;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace CMSWeb
 {
     public partial class EmailPeople : System.Web.UI.Page
     {
+        public delegate void AsyncTaskDelegate(object data);
+        AsyncTaskDelegate runner = null;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var Qb = DbUtil.Db.LoadQueryById(this.QueryString<int?>("id"));
@@ -33,18 +39,50 @@ namespace CMSWeb
             CKEditPanel.Visible = IsHtml.Checked;
         }
 
-        protected void SendEmail_Click(object sender, EventArgs e)
+        public void DoJob(object data2)
         {
+            var args = data2 as EmailArguments;
+            HttpContext.Current = args.current;
             var Db = DbUtil.Db;
-            var Qb = Db.LoadQueryById(this.QueryString<int>("id"));
+            var Qb = Db.LoadQueryById(args.QBId);
 
-            DbUtil.LogActivity("Emailing people");
             var q = Db.People.Where(Qb.Predicate());
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
-            var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
-            Label1.Visible = true;
+            var em = new Emailer(args.FromAddress, args.FromName);
+            em.SendPeopleEmail(q, args.Subject, args.Body, args.FileUpload, args.IsHtml);
+        }
+
+        protected void SendEmail_Click(object sender, EventArgs e)
+        {
+            DbUtil.LogActivity("Emailing people");
+
+            var task = new PageAsyncTask(
+                OnBegin,
+                OnEnd,
+                null,
+                new EmailArguments(
+                    this.QueryString<int>("id"),
+                    EmailFrom.SelectedItem.Value,
+                    EmailFrom.SelectedItem.Text,
+                    SubjectLine.Text,
+                    EmailBody.Text,
+                    IsHtml.Checked,
+                    FileUpload1, 
+                    HttpContext.Current));
+
+            RegisterAsyncTask(task);
             SendEmail.Enabled = false;
+        }
+        IAsyncResult OnBegin(object sender, EventArgs e, AsyncCallback cb, object state)
+        {
+            runner = new AsyncTaskDelegate(this.DoJob);
+            IAsyncResult result = runner.BeginInvoke(state, cb, state);
+            return result;
+        }
+        void OnEnd(IAsyncResult ar)
+        {
+            runner.EndInvoke(ar);
+            Label1.Visible = true;
         }
         protected void TestSendEmail_Click(object sender, EventArgs e)
         {
@@ -60,45 +98,26 @@ namespace CMSWeb
 
         }
     }
-    public class MyAsyncTask
+    public class EmailArguments
     {
-        internal QueryBuilderClause Qb = null;
-        private String _taskprogress;
-        private AsyncTaskDelegate _dlgt;
-
-        protected delegate void AsyncTaskDelegate();
-
-        public String GetAsyncTaskProgress()
+        public int QBId { get; set; }
+        public string FromAddress { get; set; }
+        public string FromName { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public bool IsHtml { get; set; }
+        public FileUpload FileUpload { get; set; }
+        public HttpContext current { get; set; }
+        public EmailArguments(int qBId, string fromAddress, string fromName, string subject, string body, bool isHtml, FileUpload fileUpload, HttpContext current)
         {
-            return _taskprogress;
-        }
-        public void DoTheAsyncTask()
-        {
-            var Db = DbUtil.Db;
-            //DbUtil.LogActivity("Emailing people");
-            //var q = Db.People.Where(Qb.Predicate());
-            //q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
-            //var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-            //em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
-            //Label1.Visible = true;
-            //SendEmail.Enabled = false;
-        }
-
-        public IAsyncResult OnBegin(object sender, EventArgs e, AsyncCallback cb, object extraData)
-        {
-            _taskprogress = "Beginning async task.";
-            _dlgt = new AsyncTaskDelegate(DoTheAsyncTask);
-            IAsyncResult result = _dlgt.BeginInvoke(cb, extraData);
-            return result;
-        }
-        public void OnEnd(IAsyncResult ar)
-        {
-            _taskprogress = "Asynchronous task completed.";
-            _dlgt.EndInvoke(ar);
-        }
-        public void OnTimeout(IAsyncResult ar)
-        {
-            _taskprogress = "Ansynchronous task failed to complete because it exceeded the AsyncTimeout parameter.";
+            QBId = qBId;
+            FromAddress = fromAddress;
+            FromName = fromName;
+            Subject = subject;
+            Body = body;
+            IsHtml = isHtml;
+            FileUpload = fileUpload;
+            this.current = current;
         }
     }
 }

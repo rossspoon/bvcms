@@ -104,10 +104,10 @@ namespace CMSWeb
                 }
             }
         }
-        public void SendPeopleEmail(IEnumerable<Person> people, 
-            string subject, 
-            string message, 
-            FileUpload attach, 
+        public void SendPeopleEmail(IEnumerable<Person> people,
+            string subject,
+            string message,
+            FileUpload attach,
             bool IsHtml)
         {
             Subject = subject;
@@ -123,11 +123,12 @@ namespace CMSWeb
             SmtpClient smtp = null;
             var i = 0;
 
-            string bhtml = "<html>\r\n{0}\r\n</html>";
+            string bhtml = null;
             if (IsHtml)
-                bhtml = bhtml.Fmt(message);
+                bhtml = message;
             else
-                bhtml = bhtml.Fmt(Util.SafeFormat(Message));
+                bhtml = Util.SafeFormat(Message);
+            int EmailBatchCount = DbUtil.Settings("EmailBatchCount", "500").ToInt();
 
             foreach (var p in people)
             {
@@ -166,6 +167,8 @@ namespace CMSWeb
                     htmlView.Dispose();
                     htmlStream.Dispose();
                     sb.AppendFormat("\"{0}\" <{1}> ({2})\r\n".Fmt(p.Name, p.EmailAddress, p.PeopleId));
+                    if (i % EmailBatchCount == 0)
+                        NotifySentEmails(sb, smtp);
                 }
                 else
                 {
@@ -181,23 +184,7 @@ namespace CMSWeb
                     smtp.Send(msg);
                 }
             }
-            sb.Append("\r\n");
-            sb.Append(Message);
-            smtp = new SmtpClient();
-
-            var mr = new MailMessage(From, From);
-            mr.Subject = "sent emails";
-            mr.Body = sb.ToString();
-            mr.IsBodyHtml = false;
-            smtp.Send(mr);
-
-            mr = new MailMessage();
-            mr.From = From;
-            mr.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
-            mr.Subject = "sent emails";
-            mr.Body = sb.ToString();
-            mr.IsBodyHtml = false;
-            smtp.Send(mr);
+            NotifySentEmails(sb, smtp);
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
@@ -215,6 +202,28 @@ namespace CMSWeb
                 //var s = "failure sending email to {0}".Fmt(to.Name);
                 //throw new Exception(s);
             }
+        }
+        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp)
+        {
+            sb.Append("\r\n");
+            sb.Append(Message);
+            smtp = new SmtpClient();
+
+            var mr = new MailMessage(From, From);
+            mr.Subject = "sent emails";
+            mr.Body = sb.ToString();
+            mr.IsBodyHtml = false;
+            smtp.Send(mr);
+
+            mr = new MailMessage();
+            mr.From = From;
+            mr.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
+            mr.Subject = "sent emails";
+            mr.Body = sb.ToString();
+            mr.IsBodyHtml = false;
+            smtp.Send(mr);
+
+            sb.Length = 0;
         }
     }
 }

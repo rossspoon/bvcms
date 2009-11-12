@@ -79,6 +79,8 @@ namespace CMSRegCustom.Models
         {
             SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
+            if (!phone.HasValue())
+                modelState.AddModelError("phone", "phone required");
             if (OrgId == 0)
                 modelState.AddModelError("OrgId", "must select a class");
 

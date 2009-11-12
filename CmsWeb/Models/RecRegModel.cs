@@ -197,6 +197,8 @@ namespace CMSWeb.Models
         {
             SearchPeopleModel.ValidateFindPerson(modelState, first, last, birthday, phone);
 
+            if (!phone.HasValue())
+                modelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 modelState.AddModelError("email", "Please specify a valid email address.");
             if (!gender.HasValue)
