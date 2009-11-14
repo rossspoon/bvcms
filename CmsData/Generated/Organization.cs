@@ -94,6 +94,8 @@ namespace CmsData
 		
    		private EntitySet< BadET> _BadETs;
 		
+   		private EntitySet< CheckInTime> _CheckInTimes;
+		
    		private EntitySet< DivOrg> _DivOrgs;
 		
    		private EntitySet< LoveRespect> _LoveRespects;
@@ -243,6 +245,8 @@ namespace CmsData
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
+			
+			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
@@ -1092,6 +1096,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_CheckInTimes_Organizations", Storage="_CheckInTimes", OtherKey="OrganizationId")]
+   		public EntitySet< CheckInTime> CheckInTimes
+   		{
+   		    get { return this._CheckInTimes; }
+
+			set	{ this._CheckInTimes.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_DivOrg_Organizations", Storage="_DivOrgs", OtherKey="OrgId")]
    		public EntitySet< DivOrg> DivOrgs
    		{
@@ -1523,6 +1537,19 @@ namespace CmsData
 		}
 
 		private void detach_BadETs(BadET entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+
+		
+		private void attach_CheckInTimes(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+
+		private void detach_CheckInTimes(CheckInTime entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

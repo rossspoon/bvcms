@@ -190,6 +190,8 @@ namespace CMSWeb.Models
         {
             int count;
             _Participant = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+            if (count == 1)
+                peopleid = _Participant.PeopleId;
             return count;
         }
 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using DiscData;
 using Prayer.Models;
+using UtilityExtensions;
 
 namespace Prayer.Controllers
 {
@@ -15,20 +16,20 @@ namespace Prayer.Controllers
 
         public ActionResult Index(int? id)
         {
-            User u = Util.CurrentUser;
+            User u = DbUtil.Db.CurrentUser;
             var g = Group.LoadByName(STR_PrayerPartners);
             if (g.IsAdmin && id.HasValue)
-                u = Util.GetUser(id);
+                u = DbUtil.Db.GetUser(id);
             return View(new SignupModel(u));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ToggleSlot(int? id, string slot, bool ck)
         {
-            User u = Util.CurrentUser;
+            User u = DbUtil.Db.CurrentUser;
             var g = Group.LoadByName(STR_PrayerPartners);
             if (g.IsAdmin && id.HasValue)
-                u = Util.GetUser(id);
+                u = DbUtil.Db.GetUser(id);
             var m = new SignupModel(u);
             var ret = m.ToggleSlot(slot, ck);
             return Json(ret);

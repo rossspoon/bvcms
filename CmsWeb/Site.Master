@@ -161,6 +161,9 @@
                             <asp:HyperLink ID="Funds" NavigateUrl="/Fund/"
                                 runat="server">Funds</asp:HyperLink></li>
                         <li>
+                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/MemberType/"
+                                runat="server">MemberTypes</asp:HyperLink></li>
+                        <li>
                             <asp:HyperLink ID="HyperLink2" NavigateUrl="/VolOpportunity/"
                                 runat="server">Volunteer Opportunities</asp:HyperLink></li>
                         <li>

@@ -105,6 +105,8 @@ namespace CMSRegCustom.Models
         {
             int count;
             _person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+            if (count == 1)
+                peopleid = _person.PeopleId;
             return count;
         }
 
@@ -216,6 +218,7 @@ namespace CMSRegCustom.Models
                 b.Name = b.Title.Replace(" ", "");
                 b.Description = DbUtil.Settings("GODisciplesBlogDescription", "A Small Group Discussion");
                 b.GroupId = g.Id;
+                b.PrivacyLevel = 1;
                 DiscData.DbUtil.Db.Blogs.InsertOnSubmit(b);
                 DiscData.DbUtil.Db.SubmitChanges();
 

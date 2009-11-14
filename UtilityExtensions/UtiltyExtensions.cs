@@ -341,7 +341,6 @@ namespace UtilityExtensions
             return false;
         }
 
-
         public static string FmtAttendStr(this string attendstr)
         {
             if (!attendstr.HasValue())

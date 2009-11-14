@@ -266,6 +266,10 @@ namespace CmsData
 		
    		private EntitySet< BadET> _BadETs;
 		
+   		private EntitySet< CardIdentifier> _CardIdentifiers;
+		
+   		private EntitySet< CheckInTime> _CheckInTimes;
+		
    		private EntitySet< Contribution> _Contributions;
 		
    		private EntitySet< RecReg> _RecRegs;
@@ -707,6 +711,10 @@ namespace CmsData
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
+			
+			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
+			
+			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
 			
@@ -3456,6 +3464,26 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
+   		public EntitySet< CardIdentifier> CardIdentifiers
+   		{
+   		    get { return this._CardIdentifiers; }
+
+			set	{ this._CardIdentifiers.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_CheckInTimes_People", Storage="_CheckInTimes", OtherKey="PeopleId")]
+   		public EntitySet< CheckInTime> CheckInTimes
+   		{
+   		    get { return this._CheckInTimes; }
+
+			set	{ this._CheckInTimes.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Contribution_People", Storage="_Contributions", OtherKey="PeopleId")]
    		public EntitySet< Contribution> Contributions
    		{
@@ -4321,6 +4349,32 @@ namespace CmsData
 		}
 
 		private void detach_BadETs(BadET entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_CardIdentifiers(CardIdentifier entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_CardIdentifiers(CardIdentifier entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_CheckInTimes(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_CheckInTimes(CheckInTime entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

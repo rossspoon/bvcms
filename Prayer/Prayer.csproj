@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\itextsharp.dll</HintPath>
+      <HintPath>..\CmsWeb\Binaries\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -164,6 +164,10 @@
     <ProjectReference Include="..\DisciplesData\DisciplesData.csproj">
       <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
       <Name>DisciplesData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
+      <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
+      <Name>UtilityExtensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

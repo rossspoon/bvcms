@@ -79,6 +79,8 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="Generated\Campu.cs" />
+    <Compile Include="Generated\CardIdentifier.cs" />
+    <Compile Include="Generated\CheckInTime.cs" />
     <Compile Include="Generated\LoveRespect.cs" />
     <Compile Include="Generated\MOBSReg.cs" />
     <Compile Include="Generated\SaleItem.cs" />

@@ -6,10 +6,10 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.UI;
 using DiscData;
 using System.Net.Mail;
 using System.Diagnostics;
+using UtilityExtensions;
 
 namespace Prayer.Controllers
 {
@@ -54,10 +54,10 @@ namespace Prayer.Controllers
         public ActionResult NewUser(int? id)
         {
             var g = Group.LoadByName(STR_PrayerPartners);
-            var u = Util.CurrentUser;
+            var u = DbUtil.Db.CurrentUser;
             if (id.HasValue && g.IsAdmin)
             {
-                u = Util.GetUser(id);
+                u = DbUtil.Db.GetUser(id);
                 ViewData["userid"] = u.UserId;
             }
             ViewData["username"] = u.Username;
@@ -89,7 +89,7 @@ namespace Prayer.Controllers
             }
 
             FormsAuth.SignIn(userName, rememberMe);
-            Util.CurrentUser = Util.GetUser(userName);
+            DbUtil.Db.CurrentUser = DbUtil.Db.GetUser(userName);
 
             if (!String.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
@@ -100,7 +100,7 @@ namespace Prayer.Controllers
         public ActionResult LogOff()
         {
             FormsAuth.SignOut();
-            Util.CurrentUser = new User { Username = Request.AnonymousID };
+            DbUtil.Db.CurrentUser = new User { Username = Request.AnonymousID };
             return RedirectToAction("Index", "Home");
         }
 
@@ -202,7 +202,7 @@ namespace Prayer.Controllers
                 if (g.IsAdmin)
                     Response.Redirect("/Account/NewUser/" + u.UserId);
                 FormsAuth.SignIn(u.Username, true /* remember me */);
-                Util.CurrentUser = u;
+                DbUtil.Db.CurrentUser = u;
                 return false; // created NewUser
             }
             else
@@ -217,7 +217,7 @@ namespace Prayer.Controllers
                 if (g.IsAdmin)
                     Response.Redirect("/Signup/Index/" + u.UserId);
                 FormsAuth.SignIn(u.Username, true /* remember me */);
-                Util.CurrentUser = u;
+                DbUtil.Db.CurrentUser = u;
                 return true; // was found
             }
         }

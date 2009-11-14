@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Web;
 using System.Text;
+using System.Collections.Generic;
 using System.Collections;
 using System.Web.Mvc.Html;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
+using UtilityExtensions;
 
 public enum ListType
 {
@@ -133,7 +135,7 @@ public static class ViewExtensions
         if (onchange.HasValue())
             tb.MergeAttribute("onchange", onchange);
         var sb = new StringBuilder();
-        foreach (var o in Util.PageSizes())
+        foreach (var o in PageSizes(helper))
         {
             var ot = new TagBuilder("option");
             ot.MergeAttribute("value", o.Value);
@@ -144,6 +146,14 @@ public static class ViewExtensions
         }
         tb.InnerHtml = sb.ToString();
         return tb.ToString();
+    }
+    public static IEnumerable<SelectListItem> PageSizes(this System.Web.Mvc.HtmlHelper helper)
+    {
+        var sizes = new int[] { 10, 25, 50, 75, 100, 200 };
+        var list = new List<SelectListItem>();
+        foreach (var size in sizes)
+            list.Add(new SelectListItem { Text = size.ToString() });
+        return list;
     }
     public static string HyperlinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
     {

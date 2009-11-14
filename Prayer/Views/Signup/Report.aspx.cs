@@ -9,6 +9,8 @@ using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections;
 using DiscData;
+using UtilityExtensions;
+using System.Text;
 
 namespace Prayer.Views.Signup
 {
@@ -37,51 +39,40 @@ namespace Prayer.Views.Signup
             doc.Open();
 
             var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
-            var m = new Prayer.Models.SignupModel(Util.CurrentUser);
+            var m = new Prayer.Models.SignupModel(DbUtil.Db.CurrentUser);
             for (int day = 0; day < 7; day++)
             {
-                var t = new PdfPTable(3 + 1);
-                t.HeaderRows = 2;
+                var t = new PdfPTable(2);
+                t.HeaderRows = 1;
                 t.WidthPercentage = 100;
-                t.SetWidths(new int[] { 13, 29, 29, 29 });
-                t.AddCell("");
+                t.SetWidths(new int[] { 13, 87 });
+                t.AddCell(new Phrase("Time", boldfont));
                 var cell = new PdfPCell(new Paragraph(((DayOfWeek)day).ToString(), boldfont));
-                cell.Colspan = 3;
                 cell.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
                 t.AddCell(cell);
-                t.AddCell(new Phrase("Time", boldfont));
-                t.AddCell(new Phrase("Cube A", boldfont));
-                t.AddCell(new Phrase("Cube B", boldfont));
-                t.AddCell(new Phrase("Cube C", boldfont));
 
                 foreach (var hh in m.FetchSlots(day))
                 {
                     t.AddCell(hh.Time.ToString("h:mm tt"));
-                    foreach (var u in Owners(hh.Owners))
+                    var sb = new StringBuilder();
+                    var i = 0;
+                    foreach (var u in hh.Owners)
                         if (u.Key > 0)
-                            t.AddCell(u.Value);
-                        else
-                            t.AddCell("");
+                        {
+                            if (i>0)
+                                sb.Append(",  ");
+                            i++;
+                            var n = "{0}) {1}".Fmt(i, u.Value);
+                            n = n.Replace(" ", "\u00a0");
+                            sb.Append(n);
+                        }
+                    t.AddCell(sb.ToString());
                 }
                 doc.Add(t);
                 doc.Add(Chunk.NEXTPAGE);
             }
             doc.Close();
             Response.End();
-        }
-
-        private IEnumerable<KeyValuePair<int, string>> Owners(Dictionary<int, string> o)
-        {
-            int i = 0;
-            foreach (var owner in o)
-            {
-                if (i == 3)
-                    break;
-                i++;
-                yield return owner;
-            }
-            for (; i < 3; i++)
-                yield return new KeyValuePair<int, string>(0, "");
         }
     }
 }

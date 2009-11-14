@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Prayer.Models;
+using DiscData;
 
 namespace Prayer.Controllers
 {
@@ -23,7 +24,7 @@ namespace Prayer.Controllers
         }
         public ActionResult Signup()
         {
-            return View(new SignupModel(Util.CurrentUser));
+            return View(new SignupModel(DbUtil.Db.CurrentUser));
         }
         public ActionResult CacheExpire()
         {

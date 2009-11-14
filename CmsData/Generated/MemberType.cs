@@ -23,7 +23,7 @@ namespace CmsData
 		
 		private string _Description;
 		
-		private int _AttendanceTypeId;
+		private int? _AttendanceTypeId;
 		
    		
    		private EntitySet< Attend> _Attends;
@@ -33,6 +33,8 @@ namespace CmsData
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
     	
+		private EntityRef< AttendType> _AttendType;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -49,7 +51,7 @@ namespace CmsData
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
 		
-		partial void OnAttendanceTypeIdChanging(int value);
+		partial void OnAttendanceTypeIdChanging(int? value);
 		partial void OnAttendanceTypeIdChanged();
 		
     #endregion
@@ -62,6 +64,8 @@ namespace CmsData
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
+			
+			this._AttendType = default(EntityRef< AttendType>); 
 			
 			OnCreated();
 		}
@@ -135,8 +139,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendanceTypeId", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceTypeId", DbType="int NOT NULL")]
-		public int AttendanceTypeId
+		[Column(Name="AttendanceTypeId", UpdateCheck=UpdateCheck.Never, Storage="_AttendanceTypeId", DbType="int")]
+		public int? AttendanceTypeId
 		{
 			get { return this._AttendanceTypeId; }
 
@@ -144,6 +148,9 @@ namespace CmsData
 			{
 				if (this._AttendanceTypeId != value)
 				{
+				
+					if (this._AttendType.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnAttendanceTypeIdChanging(value);
 					this.SendPropertyChanging();
@@ -195,6 +202,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_MemberType_AttendType", Storage="_AttendType", ThisKey="AttendanceTypeId", IsForeignKey=true)]
+		public AttendType AttendType
+		{
+			get { return this._AttendType.Entity; }
+
+			set
+			{
+				AttendType previousValue = this._AttendType.Entity;
+				if (((previousValue != value) 
+							|| (this._AttendType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._AttendType.Entity = null;
+						previousValue.MemberTypes.Remove(this);
+					}
+
+					this._AttendType.Entity = value;
+					if (value != null)
+					{
+						value.MemberTypes.Add(this);
+						
+						this._AttendanceTypeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._AttendanceTypeId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("AttendType");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

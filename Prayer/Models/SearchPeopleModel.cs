@@ -6,6 +6,7 @@ using CmsData;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Text.RegularExpressions;
+using UtilityExtensions;
 
 namespace Prayer.Models
 {
@@ -259,7 +260,7 @@ namespace Prayer.Models
         public IEnumerable<SelectListItem> UserTags()
         {
             Db.TagCurrent(); // make sure the current tag exists
-            int userPeopleId = Util.CurrentUser.PeopleId.Value;
+            int userPeopleId = DbUtil.Db.CurrentUser.PeopleId.Value;
             var q1 = from t in Db.Tags
                      where t.PeopleId == userPeopleId
                      where t.TypeId == 1
@@ -281,7 +282,9 @@ namespace Prayer.Models
                          Text = op.Name + ":" + t.Name
                      };
             var q = q1.Union(q2);
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public IEnumerable<SelectListItem> MemberStatusCodes()
         {
@@ -291,7 +294,9 @@ namespace Prayer.Models
                         Value = ms.Id.ToString(),
                         Text = ms.Description
                     };
-            return q.WithNotSpecified();
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public IEnumerable<SelectListItem> GenderCodes()
         {
@@ -301,7 +306,9 @@ namespace Prayer.Models
                         Value = ms.Id.ToString(),
                         Text = ms.Description
                     };
-            return q.WithNotSpecified("99");
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "99", Text = "(not specified)" });
+            return list;
         }
         public PagerModel pagerModel()
         {

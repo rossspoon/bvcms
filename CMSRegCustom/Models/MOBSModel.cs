@@ -165,6 +165,8 @@ namespace CMSRegCustom.Models
         {
             int count;
             _person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+            if(count == 1)
+                peopleid = _person.PeopleId;
             return count;
         }
 

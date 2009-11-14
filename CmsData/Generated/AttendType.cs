@@ -26,6 +26,8 @@ namespace CmsData
    		
    		private EntitySet< Attend> _Attends;
 		
+   		private EntitySet< MemberType> _MemberTypes;
+		
     	
 	#endregion
 	
@@ -48,6 +50,8 @@ namespace CmsData
 		{
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
+			
+			this._MemberTypes = new EntitySet< MemberType>(new Action< MemberType>(this.attach_MemberTypes), new Action< MemberType>(this.detach_MemberTypes)); 
 			
 			
 			OnCreated();
@@ -136,6 +140,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_MemberType_AttendType", Storage="_MemberTypes", OtherKey="AttendanceTypeId")]
+   		public EntitySet< MemberType> MemberTypes
+   		{
+   		    get { return this._MemberTypes; }
+
+			set	{ this._MemberTypes.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -164,6 +178,19 @@ namespace CmsData
 		}
 
 		private void detach_Attends(Attend entity)
+		{
+			this.SendPropertyChanging();
+			entity.AttendType = null;
+		}
+
+		
+		private void attach_MemberTypes(MemberType entity)
+		{
+			this.SendPropertyChanging();
+			entity.AttendType = this;
+		}
+
+		private void detach_MemberTypes(MemberType entity)
 		{
 			this.SendPropertyChanging();
 			entity.AttendType = null;

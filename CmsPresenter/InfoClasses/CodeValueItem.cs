@@ -28,7 +28,7 @@ namespace CMSPresenter
     }
     public class MemberTypeItem : CodeValueItem
     {
-        public int AttendanceTypeId { get; set; }
+        public int? AttendanceTypeId { get; set; }
     }
     public static class CodeValueItemUtil
     {

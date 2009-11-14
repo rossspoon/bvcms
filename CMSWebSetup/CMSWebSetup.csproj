@@ -65,6 +65,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MemberTypeController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\DisplayController.cs" />
     <Compile Include="Controllers\FundController.cs" />
@@ -91,6 +92,7 @@
     <Content Include="Views\Display\Page.aspx" />
     <Content Include="Views\Fund\Edit.aspx" />
     <Content Include="Views\Fund\Index.aspx" />
+    <Content Include="Views\MemberType\Index.aspx" />
     <Content Include="Views\MetroZip\Index.aspx" />
     <Content Include="Views\Ministry\Index.aspx" />
     <Content Include="Views\Program\Index.aspx" />

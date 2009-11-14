@@ -446,6 +446,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink Funds;
         
         /// <summary>
+        /// MemberTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink MemberTypes;
+        
+        /// <summary>
         /// HyperLink2 control.
         /// </summary>
         /// <remarks>

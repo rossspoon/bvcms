@@ -2,7 +2,7 @@
 <%
     if (Request.IsAuthenticated) {
 %>
-        Welcome <b><%= Html.Encode(Util.CurrentUser.Name) %></b>!
+        Welcome <b><%= Html.Encode(DbUtil.Db.CurrentUser.Name) %></b>!
         [ <%= Html.ActionLink("Log Off", "LogOff", "Account") %> ]
 <%
     }

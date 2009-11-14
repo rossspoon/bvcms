@@ -10,6 +10,7 @@ using System.Web.Caching;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using UtilityExtensions;
 
 namespace Prayer
 {
@@ -38,9 +39,9 @@ namespace Prayer
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                Util.CurrentUser = Util.GetUser(User.Identity.Name);
+                DbUtil.Db.CurrentUser = DbUtil.Db.GetUser(User.Identity.Name);
             else
-                Util.CurrentUser = new User { Username = Request.AnonymousID };
+                DbUtil.Db.CurrentUser = new User { Username = Request.AnonymousID };
         }
         public void AnonymousIdentification_OnCreate(Object sender, AnonymousIdentificationEventArgs e)
         {

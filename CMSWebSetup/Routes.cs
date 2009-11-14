@@ -16,6 +16,7 @@ namespace CMSWebSetup
             AddRoute(context, "MetroZip");
             AddRoute(context, "Ministry");
             AddRoute(context, "Program");
+            AddRoute(context, "MemberType");
             AddRoute(context, "Lookup");
             AddRoute(context, "PromotionSetup");
             AddRoute(context, "RecreationSetup");

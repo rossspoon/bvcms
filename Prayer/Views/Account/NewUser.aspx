@@ -7,7 +7,7 @@
     <h2>
         Logged On</h2>
     <p>
-        Hi <%= Util.CurrentUser.FirstName %>, glad you are here!<br />
+        Hi <%= DbUtil.Db.CurrentUser.FirstName %>, glad you are here!<br />
         The information on this page will allow you to log back in to this site the next
         time you visit.</p>
     <p>

@@ -178,10 +178,10 @@ namespace CMSPresenter
             return _count;
         }
 
-        public static int GetAttendanceTypeId(int MemberTypeId)
-        {
-            return CodeValueController.MemberTypeCodes2().Single(mt => mt.Id == MemberTypeId).AttendanceTypeId;
-        }
+        //public static int? GetAttendanceTypeId(int MemberTypeId)
+        //{
+        //    return CodeValueController.MemberTypeCodes2().Single(mt => mt.Id == MemberTypeId).AttendanceTypeId;
+        //}
 
         public IEnumerable<AttendInfo> AttendHistory(int pid, string sortExpression, int maximumRows, int startRowIndex)
         {

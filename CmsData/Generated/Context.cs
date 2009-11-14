@@ -82,6 +82,14 @@ namespace CmsData
         partial void UpdateCampu(Campu instance);
         partial void DeleteCampu(Campu instance);
         
+        partial void InsertCardIdentifier(CardIdentifier instance);
+        partial void UpdateCardIdentifier(CardIdentifier instance);
+        partial void DeleteCardIdentifier(CardIdentifier instance);
+        
+        partial void InsertCheckInTime(CheckInTime instance);
+        partial void UpdateCheckInTime(CheckInTime instance);
+        partial void DeleteCheckInTime(CheckInTime instance);
+        
         partial void InsertChurchAttReportId(ChurchAttReportId instance);
         partial void UpdateChurchAttReportId(ChurchAttReportId instance);
         partial void DeleteChurchAttReportId(ChurchAttReportId instance);
@@ -573,6 +581,18 @@ namespace CmsData
 		public Table< Campu> Campus
 		{
 			get	{ return this.GetTable< Campu>(); }
+
+		}
+
+		public Table< CardIdentifier> CardIdentifiers
+		{
+			get	{ return this.GetTable< CardIdentifier>(); }
+
+		}
+
+		public Table< CheckInTime> CheckInTimes
+		{
+			get	{ return this.GetTable< CheckInTime>(); }
 
 		}
 

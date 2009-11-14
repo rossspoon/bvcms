@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using DiscData;
 using System.Text;
+using UtilityExtensions;
 
 namespace Prayer.Models
 {
@@ -286,7 +287,7 @@ namespace Prayer.Models
                     sb.Append(" - ");
                     sb.Append(o.Value);
                 }
-                if (sb.Length > 0 && Util.CurrentUser.UserId > 0)
+                if (sb.Length > 0 && DbUtil.Db.CurrentUser.UserId > 0)
                     return " title='{0}'".Fmt(sb.ToString());
                 return "";
             }
