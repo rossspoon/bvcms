@@ -434,9 +434,9 @@ namespace CmsData
         partial void UpdateVolunteerForm(VolunteerForm instance);
         partial void DeleteVolunteerForm(VolunteerForm instance);
         
-        partial void InsertWeeklySchedule(WeeklySchedule instance);
-        partial void UpdateWeeklySchedule(WeeklySchedule instance);
-        partial void DeleteWeeklySchedule(WeeklySchedule instance);
+        partial void InsertWeeklySchedule2(WeeklySchedule2 instance);
+        partial void UpdateWeeklySchedule2(WeeklySchedule2 instance);
+        partial void DeleteWeeklySchedule2(WeeklySchedule2 instance);
         
         partial void InsertWord(Word instance);
         partial void UpdateWord(Word instance);
@@ -1112,9 +1112,9 @@ namespace CmsData
 
 		}
 
-		public Table< WeeklySchedule> WeeklySchedules
+		public Table< WeeklySchedule2> WeeklySchedule2s
 		{
-			get	{ return this.GetTable< WeeklySchedule>(); }
+			get	{ return this.GetTable< WeeklySchedule2>(); }
 
 		}
 
@@ -2037,6 +2037,34 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.ScheduleId", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? ScheduleId(
+            [Parameter(Name = "day", DbType="int")] int? day,
+            [Parameter(Name = "time", DbType="datetime")] DateTime? time
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                day,
+                time
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetScheduleTime", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? GetScheduleTime(
+            [Parameter(Name = "day", DbType="int")] int? day,
+            [Parameter(Name = "time", DbType="datetime")] DateTime? time
+            )
+		{
+			return ((DateTime)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                day,
+                time
                 ).ReturnValue));
 		}
 

@@ -157,5 +157,15 @@ namespace CmsData
             DbUtil.Db.SubmitChanges();
             return neworg;
         }
+        public static DateTime GetDateFromScheduleId(int id)
+        {
+            int dw = id / 10000 - 1;
+            id %= 10000;
+            if (dw == 0)
+                dw = 7;
+            int hour = id / 100;
+            int min = id % 100;
+            return new DateTime(1900, 1, dw, hour, min, 0);
+        }
     }
 }

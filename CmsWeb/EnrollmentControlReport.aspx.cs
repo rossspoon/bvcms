@@ -49,12 +49,12 @@ namespace CMSWeb
                      where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                      where o.DivOrgs.Any(t => t.Division.ProgId == progid)
                      select o.OrganizationId;
-            var q = from s in DbUtil.Db.WeeklySchedules
-                    where s.Organizations.Any(o => q1.Contains(o.OrganizationId))
+            var q = from o in DbUtil.Db.Organizations
+                    group o by new { o.ScheduleId, o.MeetingTime } into g
                     select new CodeValueItem
                     {
-                        Id = s.Id,
-                        Value = s.Description,
+                        Id = g.Key.ScheduleId.Value,
+                        Value = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
                     };
             var list = q.ToList();
             list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });

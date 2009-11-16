@@ -19,7 +19,9 @@ namespace CMSPresenter
         public string DivisionName { get; set; }
         public string FirstMeetingDate { get; set; }
         public string LastMeetingDate { get; set; }
-        public string Schedule { get; set; }
+        public int SchedDay { get; set; }
+        public DateTime? MeetingTime { get; set; }
+        public string Schedule { get { return "{0:dddd h:mm tt}".Fmt(MeetingTime); } }
         public string Location { get; set; }
         public bool HasTag { get; set; }
         public int? VisitorCount { get; set; }
@@ -35,7 +37,8 @@ namespace CMSPresenter
         public string Tracking { get; set; }
         public string Division { get; set; }
         public string FirstMeeting { get; set; }
-        public string Schedule { get; set; }
+        public DateTime? MeetingTime { get; set; }
+        public string Schedule { get { return "{0:dddd h:mm tt}".Fmt(MeetingTime); } }
         public string Location { get; set; }
     }
 }

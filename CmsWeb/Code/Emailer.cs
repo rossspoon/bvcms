@@ -132,11 +132,12 @@ namespace CMSWeb
 
             foreach (var p in people)
             {
+                var em = p.EmailAddress.Trim();
                 if (!p.EmailAddress.HasValue())
                     continue;
-                if (Util.ValidEmail(p.EmailAddress))
+                if (Util.ValidEmail(em))
                 {
-                    var to = new MailAddress(p.EmailAddress, p.Name);
+                    var to = new MailAddress(em, p.Name);
                     var msg = new MailMessage(From, to);
                     msg.Subject = Subject;
 
@@ -164,9 +165,10 @@ namespace CMSWeb
                         smtp = new SmtpClient();
                     i++;
                     smtp.Send(msg);
+                    //System.Threading.Thread.Sleep(100);
                     htmlView.Dispose();
                     htmlStream.Dispose();
-                    sb.AppendFormat("\"{0}\" <{1}> ({2})\r\n".Fmt(p.Name, p.EmailAddress, p.PeopleId));
+                    sb.AppendFormat("\"{0}\" <{1}> ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
                     if (i % EmailBatchCount == 0)
                         NotifySentEmails(sb, smtp);
                 }
@@ -174,7 +176,7 @@ namespace CMSWeb
                 {
                     var msg = new MailMessage(From, From);
                     msg.Subject = "not a valid email address";
-                    msg.Body = "Addressed to: " + p.EmailAddress + "\r\n"
+                    msg.Body = "Addressed to: " + em + "\r\n"
                         + "Name: " + p.Name + "\r\n\r\n"
                         + Message.Replace("{name}", p.Name).Replace("{first}", p.PreferredName);
                     msg.IsBodyHtml = false;

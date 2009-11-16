@@ -474,35 +474,6 @@ namespace CmsData
             var right = Expression.Constant(days, typeof(int?));
             return Compare(left, op, right);
         }
-        internal static Expression WorksVolunteerWeek(
-            ParameterExpression parm,
-            int? progid,
-            int? divid,
-            int? org,
-            CompareType op,
-            string weeks)
-        {
-            bool w1 = weeks.Contains('1');
-            bool w2 = weeks.Contains('2');
-            bool w3 = weeks.Contains('3');
-            bool w4 = weeks.Contains('4');
-            bool w5 = weeks.Contains('5');
-            Expression<Func<Person, bool>> pred = p =>
-                p.OrganizationMembers.Any(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && ((m.VipWeek1.Value && w1)
-                        || (m.VipWeek2.Value && w2)
-                        || (m.VipWeek3.Value && w3)
-                        || (m.VipWeek4.Value && w4)
-                        || (m.VipWeek5.Value && w5)));
-
-            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
-            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
-                expr = Expression.Not(expr);
-            return expr;
-        }
         internal static Expression Birthday(
             ParameterExpression parm,
             CompareType op,

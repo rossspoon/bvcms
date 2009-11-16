@@ -42,16 +42,15 @@ namespace CMSWeb.Reports
             var subdiv = this.QueryString<int>("subdiv");
             var schedule = this.QueryString<int>("schedule");
 
-            string divtext = "", subdivtext = "", scheduletext = "";
+            string divtext = "", subdivtext = "";
             var divt = DbUtil.Db.Tags.SingleOrDefault(tag => tag.Id == div);
             if (divt != null)
                 divtext = divt.Name;
             var subdivt = DbUtil.Db.Tags.SingleOrDefault(tag => tag.Id == subdiv);
             if (subdivt != null)
                 subdivtext = subdivt.Name;
-            var schedulet = DbUtil.Db.WeeklySchedules.SingleOrDefault(s => s.Id == schedule);
-            if (schedulet != null)
-                scheduletext = schedulet.Description;
+
+            var scheduletext = CmsData.Organization.GetDateFromScheduleId(schedule).ToString("dddd h:mm tt");
 
             var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
 

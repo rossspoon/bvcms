@@ -579,6 +579,13 @@
     <Compile Include="Report\AttendanceReport.aspx.designer.cs">
       <DependentUpon>AttendanceReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\AttendanceDetail.aspx.cs">
+      <DependentUpon>AttendanceDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\AttendanceDetail.aspx.designer.cs">
+      <DependentUpon>AttendanceDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1845,10 +1852,21 @@
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />
     <Content Include="Content\jquery.multiSelect.css" />
+    <Content Include="Content\jquery.timepickr.css" />
+    <Content Include="Content\clockpick.css" />
     <Content Include="Content\js\fg.menu.js" />
+    <Content Include="Content\js\jquery.anchorHandler.js" />
+    <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
+    <Content Include="Content\js\jquery.clockpick.1.2.1.packed.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />
+    <Content Include="Content\js\jquery.strings.js" />
+    <Content Include="Content\js\jquery.timepickr.min.js" />
+    <Content Include="Content\js\jquery.utils.js" />
+    <Content Include="Content\js\ui.timepickr.js" />
+    <Content Include="Content\js\ui.timepickr.min.js" />
     <Content Include="Content\spinner_bar.gif" />
     <Content Include="Content\Stylesheet1.css" />
+    <Content Include="Content\ui.timepickr.css" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
     <None Include="ckeditor\.htaccess" />
@@ -1859,10 +1877,12 @@
     <Content Include="Image.aspx" />
     <Content Include="index.htm" />
     <Content Include="Report\AttendanceReport.aspx" />
+    <Content Include="Report\AttendanceDetail.aspx" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
     <Content Include="Views\CheckIn\Campuses.aspx" />
     <Content Include="Views\CheckIn\Multiple.aspx" />
+    <Content Include="Views\Home\BatchTag.aspx" />
     <Content Include="Views\Register\Add.aspx" />
     <Content Include="Views\Reports\Attendance.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />

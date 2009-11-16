@@ -283,9 +283,6 @@
     <Field Name="VolunteerProcessedDateMonthsAgo" Title="Volunteer Approved months ago" Type="NullInteger">
       Indicate number of months ago volunteer application was approved
     </Field>
-    <Field Name="WorksVolunteerWeek" Title="Works VIP Week(1,2,3,4,5)" Type="Bit" DisplayAs="WorksVIPWeek({0}, {1}, {2}, {3})" Params="Week,Program,Division,Organization" DataValueField="IdCode">
-      Selects Volunteers in Preschool based on the week of the month they serve (1,2,3,4,5)
-    </Field>
     <Field Name="NumberOfMemberships" Title="Number of Memberships" Type="NullInteger" DisplayAs="NumMemberships({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Schedule">
       Has a number of memberships in a prog, div, org, sched
     </Field>

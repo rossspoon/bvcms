@@ -388,13 +388,6 @@ namespace CmsData
                         CompType,
                         int.Parse(c.TextValue));
                 // W ----------------------
-                case QueryType.WorksVolunteerWeek:
-                    return Expressions.WorksVolunteerWeek(parm,
-                               c.Program,
-                               c.Division,
-                               c.Organization,
-                               CompType,
-                               c.Quarters);
                 case QueryType.WasMemberAsOf:
                     return Expressions.WasMemberAsOf(parm,
                                c.GetDataContext() as CMSDataContext,

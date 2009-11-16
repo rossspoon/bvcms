@@ -46,7 +46,7 @@ namespace CMSPresenter
                         DivisionName = o.Division.Name,
                         FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
                         LastMeetingDate = o.LastMeetingDate.FormatDate(),
-                        Schedule = o.WeeklySchedule.Description,
+                        MeetingTime = o.MeetingTime,
                         Location = o.Location,
                         HasTag = o.DivOrgs.Any(ot => ot.DivId == tagid),
                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
@@ -94,7 +94,7 @@ namespace CMSPresenter
                          DivisionName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
                          LastMeetingDate = o.LastMeetingDate.FormatDate(),
-                         Schedule = o.WeeklySchedule.Description,
+                         MeetingTime = o.MeetingTime,
                          Location = o.Location,
                          DivisionId = o.DivisionId,
                          LeaderId = o.LeaderId,
@@ -127,7 +127,7 @@ namespace CMSPresenter
                          Tracking = dict[o.AttendTrkLevelId].Value,
                          Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
-                         Schedule = o.WeeklySchedule.Description,
+                         MeetingTime = o.MeetingTime,
                          Location = o.Location,
                      };
             return q2;
@@ -208,7 +208,7 @@ namespace CMSPresenter
                     break;
                 case "Schedule":
                     query = from o in query
-                            orderby o.WeeklySchedule.Description
+                            orderby o.ScheduleId
                             select o;
                     break;
                 case "SelfCheckIn":
@@ -263,7 +263,7 @@ namespace CMSPresenter
                     break;
                 case "Schedule DESC":
                     query = from o in query
-                            orderby o.WeeklySchedule.Description descending
+                            orderby o.ScheduleId descending
                             select o;
                     break;
                 case "SelfCheckIn DESC":

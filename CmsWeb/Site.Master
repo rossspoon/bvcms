@@ -183,12 +183,12 @@
                             <asp:HyperLink ID="SessionState" NavigateUrl="~/Admin/SessionState.aspx" runat="server">Session State</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
+                        <li ID="NewUserItem" runat="server" visible="false">
+                            <asp:HyperLink ID="NewUser" runat="server">Add As New User</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="ActivityLog" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="LastActivity" NavigateUrl="~/Admin/LastActivity.aspx" runat="server">Last Activity</asp:HyperLink></li>
-                        <li ID="NewUserItem" runat="server" visible="false">
-                            <asp:HyperLink ID="NewUser" runat="server">Add As New User</asp:HyperLink></li>
                     </ul>
                 </li>
             </ul>

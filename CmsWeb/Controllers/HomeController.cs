@@ -31,7 +31,28 @@ namespace CMSWeb.Controllers
             qb.CleanSlate();
             return Redirect("/QueryBuilder/Main");
         }
-   //     public ActionResult DoBirthDays()
+        public ActionResult BatchTag(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View();
+
+            var q2 = from s in text.Split('\n')
+                     where s.HasValue()
+                     select s.ToInt();
+
+            var Db = DbUtil.Db;
+            var tag = Db.TagCurrent();
+            
+            foreach (var PeopleId in q2)
+            {
+                var tagp = Db.TagPeople.SingleOrDefault(tp => tp.PeopleId == PeopleId && tp.Id == tag.Id);
+                if (tagp == null)
+                    tag.PersonTags.Add(new TagPerson { PeopleId = PeopleId });
+                Db.SubmitChanges();
+            }
+            return Redirect("/MyTags.aspx");
+        }
+        //     public ActionResult DoBirthDays()
    //     {
 			//var offset = new int[] { 20, 25, 30, 35, 40, 45, 50, 55, 60, 65,
 			//						-20, -25, -30, -35, -40, -45, -50, -55, -60, -65 };

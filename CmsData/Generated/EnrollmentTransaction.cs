@@ -41,16 +41,6 @@ namespace CmsData
 		
 		private decimal? _AttendancePercentage;
 		
-		private bool? _VipWeek1;
-		
-		private bool? _VipWeek2;
-		
-		private bool? _VipWeek3;
-		
-		private bool? _VipWeek4;
-		
-		private bool? _VipWeek5;
-		
 		private DateTime? _NextTranChangeDate;
 		
 		private int? _EnrollmentTransactionId;
@@ -107,21 +97,6 @@ namespace CmsData
 		
 		partial void OnAttendancePercentageChanging(decimal? value);
 		partial void OnAttendancePercentageChanged();
-		
-		partial void OnVipWeek1Changing(bool? value);
-		partial void OnVipWeek1Changed();
-		
-		partial void OnVipWeek2Changing(bool? value);
-		partial void OnVipWeek2Changed();
-		
-		partial void OnVipWeek3Changing(bool? value);
-		partial void OnVipWeek3Changed();
-		
-		partial void OnVipWeek4Changing(bool? value);
-		partial void OnVipWeek4Changed();
-		
-		partial void OnVipWeek5Changing(bool? value);
-		partial void OnVipWeek5Changed();
 		
 		partial void OnNextTranChangeDateChanging(DateTime? value);
 		partial void OnNextTranChangeDateChanged();
@@ -415,116 +390,6 @@ namespace CmsData
 					this._AttendancePercentage = value;
 					this.SendPropertyChanged("AttendancePercentage");
 					this.OnAttendancePercentageChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipWeek1", UpdateCheck=UpdateCheck.Never, Storage="_VipWeek1", DbType="bit")]
-		public bool? VipWeek1
-		{
-			get { return this._VipWeek1; }
-
-			set
-			{
-				if (this._VipWeek1 != value)
-				{
-				
-                    this.OnVipWeek1Changing(value);
-					this.SendPropertyChanging();
-					this._VipWeek1 = value;
-					this.SendPropertyChanged("VipWeek1");
-					this.OnVipWeek1Changed();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipWeek2", UpdateCheck=UpdateCheck.Never, Storage="_VipWeek2", DbType="bit")]
-		public bool? VipWeek2
-		{
-			get { return this._VipWeek2; }
-
-			set
-			{
-				if (this._VipWeek2 != value)
-				{
-				
-                    this.OnVipWeek2Changing(value);
-					this.SendPropertyChanging();
-					this._VipWeek2 = value;
-					this.SendPropertyChanged("VipWeek2");
-					this.OnVipWeek2Changed();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipWeek3", UpdateCheck=UpdateCheck.Never, Storage="_VipWeek3", DbType="bit")]
-		public bool? VipWeek3
-		{
-			get { return this._VipWeek3; }
-
-			set
-			{
-				if (this._VipWeek3 != value)
-				{
-				
-                    this.OnVipWeek3Changing(value);
-					this.SendPropertyChanging();
-					this._VipWeek3 = value;
-					this.SendPropertyChanged("VipWeek3");
-					this.OnVipWeek3Changed();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipWeek4", UpdateCheck=UpdateCheck.Never, Storage="_VipWeek4", DbType="bit")]
-		public bool? VipWeek4
-		{
-			get { return this._VipWeek4; }
-
-			set
-			{
-				if (this._VipWeek4 != value)
-				{
-				
-                    this.OnVipWeek4Changing(value);
-					this.SendPropertyChanging();
-					this._VipWeek4 = value;
-					this.SendPropertyChanged("VipWeek4");
-					this.OnVipWeek4Changed();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="VipWeek5", UpdateCheck=UpdateCheck.Never, Storage="_VipWeek5", DbType="bit")]
-		public bool? VipWeek5
-		{
-			get { return this._VipWeek5; }
-
-			set
-			{
-				if (this._VipWeek5 != value)
-				{
-				
-                    this.OnVipWeek5Changing(value);
-					this.SendPropertyChanging();
-					this._VipWeek5 = value;
-					this.SendPropertyChanged("VipWeek5");
-					this.OnVipWeek5Changed();
 				}
 
 			}

@@ -174,8 +174,8 @@ namespace CMSRegCustom.Controllers
                 Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                     p.Name, email, "{0} Registration".Fmt(org.OrganizationName),
     @"Hi {0},<p>Thank you for registering. You are now enrolled for {3} starting the following date:</p>
-<p>{1:ddd MMM d}, {2:yyyy h:mm tt} </p>".Fmt(
-                    p.PreferredName, org.FirstMeetingDate, org.WeeklySchedule.MeetingTime, org.OrganizationName));
+<p>{1:ddd MMM d, yyyy} {2:h:mm tt} </p>".Fmt(
+                    p.PreferredName, org.FirstMeetingDate, org.SchedTime, org.OrganizationName));
             else
                 Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
                                 p.Name, email, "{0} Registration".Fmt(org.OrganizationName),

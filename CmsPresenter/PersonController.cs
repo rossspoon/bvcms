@@ -51,7 +51,8 @@ namespace CMSPresenter
             public int Id { get; set; }
             public string Location { get; set; }
             public string LeaderName { get; set; }
-            public string Schedule { get; set; }
+            public DateTime? MeetingTime { get; set; }
+            public string Schedule { get { return "{0:dddd h:mm tt}".Fmt(MeetingTime); } }
             public int? LeaderId { get; set; }
             public string MemberType { get; set; }
             public DateTime? EnrollDate { get; set; }
@@ -85,7 +86,7 @@ namespace CMSPresenter
                          Name = om.Organization.OrganizationName,
                          Location = om.Organization.Location,
                          LeaderName = om.Organization.LeaderName,
-                         Schedule = om.Organization.WeeklySchedule.Description,
+                         MeetingTime = om.Organization.MeetingTime,
                          MemberType = om.MemberType.Description,
                          LeaderId = om.Organization.LeaderId,
                          EnrollDate = om.EnrollmentDate,
@@ -123,7 +124,7 @@ namespace CMSPresenter
                         Name = etd.OrganizationName,
                         Location = etd.Organization.Location,
                         LeaderName = etd.Organization.LeaderName,
-                        Schedule = etd.Organization.WeeklySchedule.Description,
+                        MeetingTime = etd.Organization.MeetingTime,
                         LeaderId = etd.Organization.LeaderId,
                         EnrollDate = ete.TransactionDate,
                         DropDate = etd.TransactionDate,
@@ -150,7 +151,7 @@ namespace CMSPresenter
                         Name = o.OrganizationName,
                         Location = o.Location,
                         LeaderName = l.Name,
-                        Schedule = o.WeeklySchedule.Description,
+                        MeetingTime = o.MeetingTime,
                         LeaderId = o.LeaderId,
                         EnrollDate = om.EnrollmentDate,
                         MemberType = om.MemberType.Description,

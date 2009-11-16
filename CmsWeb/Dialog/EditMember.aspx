@@ -65,16 +65,6 @@
                 </td>
             </tr>
             <tr>
-            <td>VIP Week:</td>
-                <td>
-                    <cc1:DisplayOrEditCheckbox ID="VipWeek1" Text="1" BindingSource="OrgMember" runat="server" />
-                    <cc1:DisplayOrEditCheckbox ID="VipWeek2" Text="2" BindingSource="OrgMember" runat="server" />
-                    <cc1:DisplayOrEditCheckbox ID="VipWeek3" Text="3" BindingSource="OrgMember" runat="server" />
-                    <cc1:DisplayOrEditCheckbox ID="VipWeek4" Text="4" BindingSource="OrgMember" runat="server" />
-                    <cc1:DisplayOrEditCheckbox ID="VipWeek5" Text="5" BindingSource="OrgMember" runat="server" />
-                </td>
-            </tr>
-            <tr>
             <td>Extra Member Info:</td>
                 <td>
                 <cc1:DisplayOrEditText ID="UserData" BindingSource="OrgMember" runat="server" ></cc1:DisplayOrEditText>

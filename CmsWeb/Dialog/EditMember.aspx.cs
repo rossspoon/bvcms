@@ -63,11 +63,6 @@ namespace CMSWeb.Dialog
                         OrganizationName = OrgMember.Organization.OrganizationName,
                         TransactionDate = Util.Now,
                         TransactionTypeId = 3,// change
-                        VipWeek1 = OrgMember.VipWeek1,
-                        VipWeek2 = OrgMember.VipWeek2,
-                        VipWeek3 = OrgMember.VipWeek3,
-                        VipWeek4 = OrgMember.VipWeek4,
-                        VipWeek5 = OrgMember.VipWeek5,
                         Pending = Pending.Checked,
                         AttendancePercentage = OrgMember.AttendPct
                     };

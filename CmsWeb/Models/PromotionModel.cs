@@ -263,7 +263,7 @@ namespace CMSWeb.Models
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
-                    let tm = pc.Organization.WeeklySchedule.MeetingTime
+                    let tm = pc.Organization.SchedTime.Value
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 => 
                         om2.Pending == true 
                         && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
@@ -305,16 +305,16 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Schedules()
         {
-            var q = from s in DbUtil.Db.WeeklySchedules
-                    where DbUtil.Db.Organizations.Any(o =>
-                        o.DivOrgs.Any(dd => dd.DivId == Promotion.FromDivId)
-                        && o.ScheduleId == s.Id)
-                    orderby s.MeetingTime
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivOrgs.Any(dd => dd.DivId == Promotion.FromDivId)
+                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
-                        Text = s.Description,
-                        Value = s.Id.ToString(),
+                        Value = g.Key.ScheduleId.ToString(),
+                        Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
                     };
+
             var list = q.ToList();
             if (list.Count == 0)
                 list.Insert(0, new SelectListItem { Text = "(Select Promotion First)", Value = "0", Selected = true });

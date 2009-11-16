@@ -365,13 +365,31 @@ namespace CMSWeb {
         protected global::CMSWeb.UserControls.VisitorGrid Visitors;
         
         /// <summary>
-        /// ScheduleId control.
+        /// SchedDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CustomControls.DisplayOrEditDropDown ScheduleId;
+        protected global::CustomControls.DisplayOrEditDropDown SchedDay;
+        
+        /// <summary>
+        /// SchedTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditTime SchedTime;
+        
+        /// <summary>
+        /// RegularExpressionValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
         
         /// <summary>
         /// AllowAttendOverlap control.

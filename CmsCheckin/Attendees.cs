@@ -145,7 +145,7 @@ namespace CmsCheckin
                 col = 0;
 
                 var ab = new Button();
-                ab.BackColor = SystemColors.ControlLight;
+                ab.BackColor = Color.LightBlue;
                 ab.Font = new Font("Wingdings", 28, FontStyle.Regular,
                     GraphicsUnit.Point, ((byte)(2)));
                 ab.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
@@ -173,7 +173,7 @@ namespace CmsCheckin
                 col++;
 
                 var eb = new Button();
-                eb.BackColor = Color.FloralWhite;
+                eb.BackColor = Color.LightGoldenrodYellow;
                 eb.Font = pfont;
                 eb.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
                 eb.Name = "print" + Row;

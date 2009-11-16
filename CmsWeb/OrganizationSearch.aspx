@@ -22,6 +22,15 @@
         $get('<%=TriggerRollsheetPopup.ClientID%>').click();
         $get('<%=RollsheetInputPanel.ClientID%>').focus();
     }
+
+    $(function() {
+        $('#PopupAttDetail').click(function() {
+            $get('<%=TriggerAttDetailPopup.ClientID%>').click();
+            $get('<%=AttDetailInputPanel.ClientID%>').focus();
+        });
+    });
+    function OpenAttDetail() {
+    }
     function ViewRollsheet2() {
         Page_ClientValidate(' ');
         if (Page_IsValid) {
@@ -57,6 +66,25 @@
                    "&schedule=" + sid;
 
             var newWindowUrl = "Report/RosterReport.aspx" + args
+            window.open(newWindowUrl);
+        }
+        return Page_IsValid;
+    }
+    function ViewAttDetail() {
+        Page_ClientValidate(' ');
+        if (Page_IsValid) {
+            var did = '<%=OrgDivisions.SelectedValue %>';
+            var nam = '<%=NameSearch.Text %>';
+            var sid = '<%=Schedule.SelectedValue %>';
+            var d1 = $get('<%=MeetingDate1.ClientID %>').value;
+            var d2 = $get('<%=MeetingDate2.ClientID %>').value;
+            var args = "?divid=" + did +
+                   "&schedid=" + sid +
+                   "&name=" + nam +
+                   "&dt1=" + d1 +
+                   "&dt2=" +d2;
+
+            var newWindowUrl = "Report/AttendanceDetail.aspx" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;
@@ -221,7 +249,8 @@
     <asp:LinkButton ID="ExportExcel" runat="server" OnClick="ExportExcel_Click" Text="Export to Excel" /> &nbsp;|
     <asp:LinkButton ID="RollsheetRpt" runat="server" OnClientClick="OpenRollsheet(); return false;" Text="Create Roll Sheet(s)"/> &nbsp;|
     <asp:HyperLink ID="MeetingsLink" runat="server">Meetings</asp:HyperLink> |
-    <asp:LinkButton ID="RosterRpt" runat="server" OnClientClick="ViewRosterRpt(); return false;">Roster</asp:LinkButton>
+    <asp:LinkButton ID="RosterRpt" runat="server" OnClientClick="ViewRosterRpt(); return false;">Roster</asp:LinkButton>&nbsp;|
+    <a id="PopupAttDetail" href="#">Meetings Attendance</a>
 &nbsp;<asp:UpdatePanel ID="RollsheetPanel" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:LinkButton ID="TriggerRollsheetPopup" style="display:none" runat="server">LinkButton</asp:LinkButton>            
@@ -252,7 +281,30 @@
             </cc2:ModalPopupExtender>
         </ContentTemplate>
     </asp:UpdatePanel>
-     
+    <asp:UpdatePanel ID="AttDetailPanel" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <asp:LinkButton ID="TriggerAttDetailPopup" style="display:none" runat="server">LinkButton</asp:LinkButton>            
+            <asp:Panel ID="AttDetailInputPanel" runat="server" CssClass="modalDiv" Style="display: none">
+                <div style="text-align: left">
+                    <p style="font-size:larger; font-weight:bold"> Please select a date range: </p>
+                    Meetings Start Date: <asp:TextBox ID="MeetingDate1" runat="server"></asp:TextBox><br />
+                    Meetings End Date: <asp:TextBox ID="MeetingDate2" runat="server"></asp:TextBox>
+                    <cc2:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="MeetingDate1"></cc2:CalendarExtender>
+                    <cc2:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="MeetingDate2"></cc2:CalendarExtender>
+                    <span class="footer">
+                        <asp:LinkButton ID="LinkButton3" runat="server" CausesValidation="false" Text="Run"
+                             OnClientClick="ViewAttDetail();" />
+                        <asp:LinkButton ID="LinkButton4" runat="server" CausesValidation="false" Text="Cancel" />
+                    </span>
+                    <br />
+                </div>
+            </asp:Panel>
+            <cc2:ModalPopupExtender ID="AttDetailPopup" BehaviorID="AttDetailPopupBehavior" runat="server"
+                TargetControlID="TriggerAttDetailPopup" PopupControlID="AttDetailInputPanel"
+                CancelControlID="LinkButton4" DropShadow="true" BackgroundCssClass="modalBackground">
+            </cc2:ModalPopupExtender>
+        </ContentTemplate>
+    </asp:UpdatePanel>     
     <asp:ObjectDataSource ID="OrganizationData" runat="server" EnablePaging="True" SelectMethod="FetchOrganizationList"
         TypeName="CMSPresenter.OrganizationSearchController" SelectCountMethod="Count"
         SortParameterName="sortExpression" OnSelected="OrganizationData_Selected" 

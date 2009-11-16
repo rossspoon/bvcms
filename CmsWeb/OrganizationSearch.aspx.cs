@@ -74,14 +74,14 @@ namespace CMSWeb
             }
             else
             {
-                var schedule = DbUtil.Db.WeeklySchedules.Single(s => s.Id == id);
+                var sdt = CmsData.Organization.GetDateFromScheduleId(id);
                 var dt = Util.Now.Date;
                 dt = dt.AddDays(-(int)dt.DayOfWeek); // prev sunday
-                dt = dt.AddDays((int)schedule.Day);
+                dt = dt.AddDays((int)sdt.Day);
                 if (dt < Util.Now.Date)
                     dt = dt.AddDays(7);
                 MeetingDate.Text = dt.ToShortDateString();
-                MeetingTime.Text = schedule.MeetingTime.ToShortTimeString();
+                MeetingTime.Text = sdt.ToShortTimeString();
             }
         }
 

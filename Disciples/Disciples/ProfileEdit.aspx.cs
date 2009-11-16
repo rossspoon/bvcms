@@ -38,16 +38,19 @@ namespace Disciples
         }
         protected void JoinGroup_Click(object sender, EventArgs e)
         {
-            var q = Invitation.LoadBySecretCode(SecretCode.Text);
-            foreach (var i in q)
+            if (SecretCode.Text.HasValue())
             {
-                var g = Group.LoadById(i.GroupId);
-                g.SetMember(mu, true);
-                DbUtil.Db.SubmitChanges();
-                g.NotifyNewUser(User.Identity.Name);
+                var q = Invitation.LoadBySecretCode(SecretCode.Text);
+                foreach (var i in q)
+                {
+                    var g = Group.LoadById(i.GroupId);
+                    g.SetMember(mu, true);
+                    DbUtil.Db.SubmitChanges();
+                    g.NotifyNewUser(User.Identity.Name);
+                }
+                GroupResult.ShowSuccess("group joined");
+                DropDownList1.DataBind();
             }
-            GroupResult.ShowSuccess("group joined");
-            DropDownList1.DataBind();
         }
 
         protected void DropDownList1_DataBound(object sender, EventArgs e)

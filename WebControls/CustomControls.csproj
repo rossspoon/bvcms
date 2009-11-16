@@ -83,6 +83,7 @@
     <Compile Include="BaseDropDownListTypeEditor.cs" />
     <Compile Include="CommandTextBox.cs" />
     <Compile Include="CommandDropDownList.cs" />
+    <Compile Include="DisplayOrEditTime.cs" />
     <Compile Include="DisplayOrEditDropCheck.cs" />
     <Compile Include="DropCheck.cs" />
     <Compile Include="EmailHyperlink.cs" />

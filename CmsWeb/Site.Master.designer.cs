@@ -527,24 +527,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.HyperLink UrgentMessage;
         
         /// <summary>
-        /// ActivityLog control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink ActivityLog;
-        
-        /// <summary>
-        /// LastActivity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink LastActivity;
-        
-        /// <summary>
         /// NewUserItem control.
         /// </summary>
         /// <remarks>
@@ -561,6 +543,24 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink NewUser;
+        
+        /// <summary>
+        /// ActivityLog control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink ActivityLog;
+        
+        /// <summary>
+        /// LastActivity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink LastActivity;
         
         /// <summary>
         /// SearchText control.

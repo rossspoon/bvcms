@@ -111,7 +111,7 @@ namespace CMSWeb.Models
                      where o.CampusId == campus
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
-                     where o.WeeklySchedule.Day == thisday
+                     where o.SchedDay == thisday
                      select o;
             var vo = qv.FirstOrDefault();
             if (vo != null)

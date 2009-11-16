@@ -216,7 +216,7 @@ namespace CMSPresenter
             var q = Db.People.Where(qB.Predicate());
             var q2 = from p in q
                      let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
-                     let tm = bfm.Organization.WeeklySchedule.MeetingTime
+                     let tm = bfm.Organization.SchedTime.Value
                      select new
                      {
                          PeopleId = p.PeopleId,

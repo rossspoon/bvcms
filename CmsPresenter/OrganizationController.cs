@@ -148,7 +148,7 @@ namespace CMSPresenter
                                            && a.MeetingDate <= MeetingDate
                                            && a.MeetingDate >= LookbackDt)
                                        select p).Count(),
-                       Schedule = o.WeeklySchedule.Description,
+                       MeetingTime = o.MeetingTime,
                        AllowSelfCheckIn = o.CanSelfCheckin ?? false,
                    };
         }

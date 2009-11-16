@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="lookup.WeeklySchedule")]
-	public partial class WeeklySchedule : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="lookup.WeeklySchedule2")]
+	public partial class WeeklySchedule2 : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -27,9 +27,9 @@ namespace CmsData
 		
 		private string _Code;
 		
-   		
-   		private EntitySet< Organization> _Organizations;
+		private int? _ScheduleId;
 		
+   		
     	
 	#endregion
 	
@@ -53,11 +53,12 @@ namespace CmsData
 		partial void OnCodeChanging(string value);
 		partial void OnCodeChanged();
 		
+		partial void OnScheduleIdChanging(int? value);
+		partial void OnScheduleIdChanged();
+		
     #endregion
-		public WeeklySchedule()
+		public WeeklySchedule2()
 		{
-			
-			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
 			
 			OnCreated();
@@ -176,20 +177,32 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int", IsDbGenerated=true)]
+		public int? ScheduleId
+		{
+			get { return this._ScheduleId; }
+
+			set
+			{
+				if (this._ScheduleId != value)
+				{
+				
+                    this.OnScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleId = value;
+					this.SendPropertyChanged("ScheduleId");
+					this.OnScheduleIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_ORGANIZATIONS_TBL_WeeklySchedule", Storage="_Organizations", OtherKey="ScheduleId")]
-   		public EntitySet< Organization> Organizations
-   		{
-   		    get { return this._Organizations; }
-
-			set	{ this._Organizations.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -211,19 +224,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_Organizations(Organization entity)
-		{
-			this.SendPropertyChanging();
-			entity.WeeklySchedule = this;
-		}
-
-		private void detach_Organizations(Organization entity)
-		{
-			this.SendPropertyChanging();
-			entity.WeeklySchedule = null;
-		}
-
-		
 	}
 
 }

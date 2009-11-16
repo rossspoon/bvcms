@@ -85,6 +85,7 @@
     <Compile Include="Generated\MOBSReg.cs" />
     <Compile Include="Generated\SaleItem.cs" />
     <Compile Include="Generated\SaleTransaction.cs" />
+    <Compile Include="Generated\WeeklySchedule2.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="MembershipService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -142,7 +143,6 @@
     <Compile Include="Generated\VolInterestCode.cs" />
     <Compile Include="Generated\VolInterestInterestCode.cs" />
     <Compile Include="Generated\VolOpportunity.cs" />
-    <Compile Include="Generated\WeeklySchedule.cs" />
     <Compile Include="Generated\Zip.cs" />
     <Compile Include="Generated\ZipCode.cs" />
     <Compile Include="IndividualContribution.cs" />

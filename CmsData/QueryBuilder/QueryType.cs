@@ -128,7 +128,6 @@ namespace CmsData
         VolunteerProcessedDateMonthsAgo,
         WasMemberAsOf,
         WeddingDate,
-        WorksVolunteerWeek,
         WorkPhone,
     }
 }

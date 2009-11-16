@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async="true" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
+﻿<%@ Page Language="C#" Async="true" AsyncTimeout="1000" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
     Inherits="CMSWeb.EmailPeople" Title="Email People" validateRequest="false"  %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -26,7 +26,7 @@
         CKEDITOR.replace( "<%=EmailBody.UniqueID %>", {
                 filebrowserUploadUrl : '/Account/CKEditorUpload/',
                 filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
-        });
+            });
     });
 </script>
     </asp:PlaceHolder>
@@ -52,7 +52,7 @@ text box below. You can then fill out your subject, add any attachment and send 
                 &nbsp;
             </td>
             <td valign="top">
-                <asp:Button ID="SendEmail" runat="server" Text="Send" Width="62px" OnClick="SendEmail_Click"
+                <asp:Button ID="SendEmail" runat="server" Text="Send" Width="62px" OnClientClick="$.blockUI()" OnClick="SendEmail_Click"
                     Height="42px" />
                 <asp:Label ID="Label1" runat="server" Text="Email has been sent" Font-Size="Large"
                     ForeColor="#58DF55" Height="30px" Visible="False"></asp:Label>

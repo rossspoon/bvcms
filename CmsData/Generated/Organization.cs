@@ -55,8 +55,6 @@ namespace CmsData
 		
 		private DateTime? _ModifiedDate;
 		
-		private int? _ScheduleId;
-		
 		private int? _EntryPointId;
 		
 		private int? _ParentOrgId;
@@ -84,6 +82,14 @@ namespace CmsData
 		private bool? _AllowNonCampusCheckIn;
 		
 		private int? _NumWorkerCheckInLabels;
+		
+		private DateTime? _SchedTime;
+		
+		private int? _SchedDay;
+		
+		private DateTime? _MeetingTime;
+		
+		private int? _ScheduleId;
 		
    		
    		private EntitySet< Organization> _ChildOrgs;
@@ -122,8 +128,6 @@ namespace CmsData
 		private EntityRef< EntryPoint> _EntryPoint;
 		
 		private EntityRef< OrganizationStatus> _OrganizationStatus;
-		
-		private EntityRef< WeeklySchedule> _WeeklySchedule;
 		
 	#endregion
 	
@@ -189,9 +193,6 @@ namespace CmsData
 		partial void OnModifiedDateChanging(DateTime? value);
 		partial void OnModifiedDateChanged();
 		
-		partial void OnScheduleIdChanging(int? value);
-		partial void OnScheduleIdChanged();
-		
 		partial void OnEntryPointIdChanging(int? value);
 		partial void OnEntryPointIdChanged();
 		
@@ -234,6 +235,18 @@ namespace CmsData
 		partial void OnNumWorkerCheckInLabelsChanging(int? value);
 		partial void OnNumWorkerCheckInLabelsChanged();
 		
+		partial void OnSchedTimeChanging(DateTime? value);
+		partial void OnSchedTimeChanged();
+		
+		partial void OnSchedDayChanging(int? value);
+		partial void OnSchedDayChanged();
+		
+		partial void OnMeetingTimeChanging(DateTime? value);
+		partial void OnMeetingTimeChanged();
+		
+		partial void OnScheduleIdChanging(int? value);
+		partial void OnScheduleIdChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -274,8 +287,6 @@ namespace CmsData
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
 			
 			this._OrganizationStatus = default(EntityRef< OrganizationStatus>); 
-			
-			this._WeeklySchedule = default(EntityRef< WeeklySchedule>); 
 			
 			OnCreated();
 		}
@@ -710,31 +721,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int")]
-		public int? ScheduleId
-		{
-			get { return this._ScheduleId; }
-
-			set
-			{
-				if (this._ScheduleId != value)
-				{
-				
-					if (this._WeeklySchedule.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnScheduleIdChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleId = value;
-					this.SendPropertyChanged("ScheduleId");
-					this.OnScheduleIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="EntryPointId", UpdateCheck=UpdateCheck.Never, Storage="_EntryPointId", DbType="int")]
 		public int? EntryPointId
 		{
@@ -1045,6 +1031,94 @@ namespace CmsData
 					this._NumWorkerCheckInLabels = value;
 					this.SendPropertyChanged("NumWorkerCheckInLabels");
 					this.OnNumWorkerCheckInLabelsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SchedTime", UpdateCheck=UpdateCheck.Never, Storage="_SchedTime", DbType="datetime")]
+		public DateTime? SchedTime
+		{
+			get { return this._SchedTime; }
+
+			set
+			{
+				if (this._SchedTime != value)
+				{
+				
+                    this.OnSchedTimeChanging(value);
+					this.SendPropertyChanging();
+					this._SchedTime = value;
+					this.SendPropertyChanged("SchedTime");
+					this.OnSchedTimeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SchedDay", UpdateCheck=UpdateCheck.Never, Storage="_SchedDay", DbType="int")]
+		public int? SchedDay
+		{
+			get { return this._SchedDay; }
+
+			set
+			{
+				if (this._SchedDay != value)
+				{
+				
+                    this.OnSchedDayChanging(value);
+					this.SendPropertyChanging();
+					this._SchedDay = value;
+					this.SendPropertyChanged("SchedDay");
+					this.OnSchedDayChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MeetingTime", UpdateCheck=UpdateCheck.Never, Storage="_MeetingTime", DbType="datetime")]
+		public DateTime? MeetingTime
+		{
+			get { return this._MeetingTime; }
+
+			set
+			{
+				if (this._MeetingTime != value)
+				{
+				
+                    this.OnMeetingTimeChanging(value);
+					this.SendPropertyChanging();
+					this._MeetingTime = value;
+					this.SendPropertyChanged("MeetingTime");
+					this.OnMeetingTimeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int")]
+		public int? ScheduleId
+		{
+			get { return this._ScheduleId; }
+
+			set
+			{
+				if (this._ScheduleId != value)
+				{
+				
+                    this.OnScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleId = value;
+					this.SendPropertyChanged("ScheduleId");
+					this.OnScheduleIdChanged();
 				}
 
 			}
@@ -1425,48 +1499,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("OrganizationStatus");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_ORGANIZATIONS_TBL_WeeklySchedule", Storage="_WeeklySchedule", ThisKey="ScheduleId", IsForeignKey=true)]
-		public WeeklySchedule WeeklySchedule
-		{
-			get { return this._WeeklySchedule.Entity; }
-
-			set
-			{
-				WeeklySchedule previousValue = this._WeeklySchedule.Entity;
-				if (((previousValue != value) 
-							|| (this._WeeklySchedule.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._WeeklySchedule.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._WeeklySchedule.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._ScheduleId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._ScheduleId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("WeeklySchedule");
 				}
 
 			}

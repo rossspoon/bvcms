@@ -146,11 +146,11 @@ namespace CMSWeb
             {
                 var d = Util.Now.Date;
                 d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
-                d = d.AddDays((int)organization.WeeklySchedule.Day);
+                d = d.AddDays(organization.SchedDay ?? 0);
                 if (d > Util.Now.Date)
                     d = d.AddDays(-7);
                 NewMeetingDate.Text = MeetingDate.Text = d.ToShortDateString();
-                NewMeetingTime.Text = MeetingTime.Text = organization.WeeklySchedule.MeetingTime.ToShortTimeString();
+                NewMeetingTime.Text = MeetingTime.Text = organization.SchedTime.Value.ToShortTimeString();
             }
             else
             {

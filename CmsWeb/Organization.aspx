@@ -308,10 +308,20 @@
                         Schedule:
                     </th>
                     <td>
-                        <cc1:DisplayOrEditDropDown ID="ScheduleId" runat="server" BindingMode="TwoWay" BindingSource="organization"
-                            DataTextField="Value" DataValueField="Id" MakeDefault0="True" Width="350px" BindingMember="ScheduleId"
-                            DataSourceID="ODS_ScheduleId">
+                        <cc1:DisplayOrEditDropDown ID="SchedDay" runat="server" BindingMode="TwoWay" BindingSource="organization">
+                        <asp:ListItem Value="0">Sunday</asp:ListItem>
+                        <asp:ListItem Value="1">Monday</asp:ListItem>
+                        <asp:ListItem Value="2">Tuesday</asp:ListItem>
+                        <asp:ListItem Value="3">Wednesday</asp:ListItem>
+                        <asp:ListItem Value="4">Thursday</asp:ListItem>
+                        <asp:ListItem Value="5">Friday</asp:ListItem>
+                        <asp:ListItem Value="6">Saturday</asp:ListItem>
                         </cc1:DisplayOrEditDropDown>
+                        <cc1:DisplayOrEditTime ID="SchedTime" CssClass="clockpick" runat="server" BindingMode="TwoWay" BindingSource="organization"></cc1:DisplayOrEditTime>
+                        <asp:RegularExpressionValidator
+                                ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid time: Use format h:mm am or pm"
+                                ControlToValidate="SchedTime" ValidationExpression="^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$"
+                                SetFocusOnError="True"></asp:RegularExpressionValidator>
                     </td>
                 </tr>
                 <tr>

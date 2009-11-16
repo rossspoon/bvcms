@@ -92,11 +92,6 @@ namespace CmsData
                     TransactionTypeId = 5, // drop
                     CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
-                    VipWeek1 = VipWeek1,
-                    VipWeek2 = VipWeek2,
-                    VipWeek3 = VipWeek3,
-                    VipWeek4 = VipWeek4,
-                    VipWeek5 = VipWeek5,
                     Pending = Pending,
                     AttendancePercentage = AttendPct
                 };

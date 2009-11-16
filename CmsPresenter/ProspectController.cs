@@ -84,22 +84,9 @@ namespace CMSPresenter
             return q;
         }
 
-        public class OrganizationView
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Location { get; set; }
-            public string LeaderName { get; set; }
-            public string Schedule { get; set; }
-            public int? LeaderId { get; set; }
-            public string MemberType { get; set; }
-            public DateTime? EnrollDate { get; set; }
-            public DateTime? DropDate { get; set; }
-            public string DivisionName { get; set; }
-        }
 
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<OrganizationView> EnrollData(int pid)
+        public IEnumerable<PersonController.OrganizationView> EnrollData(int pid)
         {
             var dt = Util.Now.Date.AddDays(1);
             var q = from o in Db.Organizations
@@ -108,13 +95,13 @@ namespace CMSPresenter
                        && dt > om.EnrollmentDate
                     let l = Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
                     orderby o.OrganizationName
-                    select new OrganizationView
+                    select new PersonController.OrganizationView
                     {
                         Id = o.OrganizationId,
                         Name = o.OrganizationName,
                         Location = o.Location,
                         LeaderName = l.Name,
-                        Schedule = o.WeeklySchedule.Description,
+                        MeetingTime = o.MeetingTime,
                         MemberType = om.MemberType.Description,
                         LeaderId = o.LeaderId,
                         EnrollDate = om.EnrollmentDate,
@@ -124,7 +111,7 @@ namespace CMSPresenter
         }
 
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<OrganizationView> PreviousEnrollData(int pid)
+        public IEnumerable<PersonController.OrganizationView> PreviousEnrollData(int pid)
         {
             var q = from o in Db.Organizations
                     from etd in o.EnrollmentTransactions
@@ -132,13 +119,13 @@ namespace CMSPresenter
                     where etd.TransactionStatus == false
                     let ete = Db.EnrollmentTransactions.SingleOrDefault(ete => ete.TransactionId == etd.EnrollmentTransactionId)
                     orderby o.OrganizationName
-                    select new OrganizationView
+                    select new PersonController.OrganizationView
                     {
                         Id = etd.OrganizationId,
                         Name = etd.OrganizationName,
                         Location = o.Location,
                         LeaderName = o.LeaderName,
-                        Schedule = o.WeeklySchedule.Description,
+                        MeetingTime = o.MeetingTime,
                         LeaderId = o.LeaderId,
                         EnrollDate = ete.TransactionDate,
                         DropDate = etd.TransactionDate,
@@ -147,7 +134,7 @@ namespace CMSPresenter
             return q;
         }
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<OrganizationView> PendingEnrollData(int pid)
+        public IEnumerable<PersonController.OrganizationView> PendingEnrollData(int pid)
         {
             var dt = Util.Now;
             var q = from o in Db.Organizations
@@ -156,13 +143,13 @@ namespace CMSPresenter
                         && et.TransactionDate > dt
                     where et.TransactionStatus == false
                     orderby o.OrganizationName
-                    select new OrganizationView
+                    select new PersonController.OrganizationView
                     {
                         Id = et.OrganizationId,
                         Name = et.OrganizationName,
                         Location = o.Location,
                         LeaderName = o.LeaderName,
-                        Schedule = o.WeeklySchedule.Description,
+                        MeetingTime = o.MeetingTime,
                         LeaderId = o.LeaderId,
                         EnrollDate = et.TransactionDate,
                         MemberType = et.MemberType.Description,

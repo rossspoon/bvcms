@@ -275,9 +275,9 @@ namespace CMSWeb.Models
         {
             var ret = (from o in DbUtil.Db.Organizations
                        where o.OrganizationId == OrgId
-                       select new { o.WeeklySchedule, o.Location }).Single();
+                       select new { o.SchedTime.Value.TimeOfDay, o.Location }).Single();
             var dt = Util.Now.Date;
-            dt = dt.Add(ret.WeeklySchedule.MeetingTime.TimeOfDay);
+            dt = dt.Add(ret.TimeOfDay);
 
             var meeting = (from m in DbUtil.Db.Meetings
                            where m.OrganizationId == OrgId

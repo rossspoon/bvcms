@@ -34,9 +34,12 @@ public partial class AdminGroups : System.Web.UI.Page
     protected void AddInvite_Click(object sender, EventArgs e)
     {
         var g = Group.LoadById(DropDownList1.SelectedValue.ToInt());
-        g.AddInvitation(TextBox1.Text);
-        DbUtil.Db.SubmitChanges();
-        Invitations.DataBind();
+        if (TextBox1.Text.HasValue())
+        {
+            g.AddInvitation(TextBox1.Text);
+            DbUtil.Db.SubmitChanges();
+            Invitations.DataBind();
+        }
     }
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {

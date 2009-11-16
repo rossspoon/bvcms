@@ -47,7 +47,7 @@ namespace CMSWeb
             var Qb = Db.LoadQueryById(args.QBId);
 
             var q = Db.People.Where(Qb.Predicate());
-            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
+            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "").OrderBy(p => p.PeopleId);
             var em = new Emailer(args.FromAddress, args.FromName);
             em.SendPeopleEmail(q, args.Subject, args.Body, args.FileUpload, args.IsHtml);
         }

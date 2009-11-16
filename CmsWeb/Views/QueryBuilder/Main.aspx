@@ -39,12 +39,6 @@
                         <%=Html.TextBoxClass("Age", "validate") %>
                     </td>
                 </tr>
-                <tr id="WeekDiv" style="display:none">
-                    <td align="right">Week:</td>
-                    <td>
-                        <%=Html.TextBoxClass("Week", "validate") %>
-                    </td>
-                </tr>
                 <tr id="QuartersDiv" style="display:none">
                     <td align="right">Quarters:</td>
                     <td>

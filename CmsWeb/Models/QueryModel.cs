@@ -26,7 +26,6 @@ namespace CMSWeb.Models
         int? Schedule { get; set; }
         string Days { get; set; }
         string Age { get; set; }
-        string Week { get; set; }
         string Quarters { get; set; }
         string StartDate { get; set; }
         string EndDate { get; set; }
@@ -104,7 +103,6 @@ namespace CMSWeb.Models
         public bool ScheduleVisible { get; set; }
         public bool DaysVisible { get; set; }
         public bool AgeVisible { get; set; }
-        public bool WeekVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
@@ -121,7 +119,6 @@ namespace CMSWeb.Models
         public int? Schedule { get; set; }
         public string Days { get; set; }
         public string Age { get; set; }
-        public string Week { get; set; }
         public string Quarters { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
@@ -173,7 +170,6 @@ namespace CMSWeb.Models
             ScheduleVisible = fieldMap.HasParam("Schedule");
             DaysVisible = fieldMap.HasParam("Days");
             AgeVisible = fieldMap.HasParam("Age");
-            WeekVisible = fieldMap.HasParam("Week");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
             TagsVisible = fieldMap.HasParam("Tags");
@@ -497,13 +493,16 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Schedules()
         {
-            var q = from t in Db.WeeklySchedules
-                    orderby t.MeetingTime
+            var q = from o in DbUtil.Db.Organizations
+                    where o.ScheduleId != null
+                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
-                        Value = t.Id.ToString(),
-                        Text = t.Description
+                        Value = g.Key.ScheduleId.ToString(),
+                        Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
                     };
+            return q;
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;

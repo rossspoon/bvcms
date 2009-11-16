@@ -52,7 +52,6 @@ namespace CMSWeb.Controllers
             m.Age = "";
             m.Program = 0;
             m.Quarters = "";
-            m.Week = "";
             m.StartDate = "";
             m.EndDate = "";
             
@@ -218,13 +217,6 @@ namespace CMSWeb.Controllers
                 m.Errors.Add("Days", "must be integer");
             if (m.AgeVisible && !int.TryParse(m.Age, out i))
                 m.Errors.Add("Age", "must be integer");
-
-            if (m.WeekVisible)
-            {
-                if (!Regex.IsMatch(m.Week, "^(1|2|3|4|5)(,(1|2|3|4|5))*$"))
-                    m.Errors.Add("Week", "need week numbers separated by ,");
-                m.Quarters = m.Week;
-            }
 
             if (m.QuartersVisible && !Regex.IsMatch(m.Quarters, "^(1|2|3|4)(,(1|2|3|4))*$"))
                 m.Errors.Add("Quarters", "need quarters separated by ,");
