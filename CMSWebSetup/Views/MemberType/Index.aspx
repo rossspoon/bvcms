@@ -61,7 +61,7 @@
             </td>
             <td>
                 <span id='a<%=item.Id %>' 
-                    class='clickSelect'><%=item.AttendType.Description%></span>
+                    class='clickSelect'><%=item.AttendType == null ? "" : item.AttendType.Description%></span>
             </td>
             <td>
                 <a id='d<%=item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
