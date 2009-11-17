@@ -1,0 +1,6 @@
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (10, 'A', 'Active')
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (20, 'W', 'Waiting For')
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (30, 'S', 'Someday')
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (40, 'C', 'Completed')
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (50, 'P', 'Pending Acceptance')
+INSERT INTO [lookup].[TaskStatus] ([Id], [Code], [Description]) VALUES (60, 'R', 'ReDelegated')

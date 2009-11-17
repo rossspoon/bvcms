@@ -1,0 +1,7 @@
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 1)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 2)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 3)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 4)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 5)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 6)
+INSERT INTO [dbo].[UserRole] ([UserId], [RoleId]) VALUES (1, 8)

@@ -1,0 +1,6 @@
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (1, 'CC', 'Check/Cash')
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (3, 'P', 'Brokered Property')
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (4, 'G', 'Grave Site')
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (6, 'RC', 'Returned Check')
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (7, 'RV', 'Reversed')
+INSERT INTO [lookup].[ContributionType] ([Id], [Code], [Description]) VALUES (8, 'PL', 'Pledge')

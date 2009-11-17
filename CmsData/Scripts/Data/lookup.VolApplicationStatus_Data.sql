@@ -1,0 +1,5 @@
+INSERT INTO [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (0, 'UK', '(not specified)')
+INSERT INTO [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (10, 'Appr', 'Approved')
+INSERT INTO [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (20, 'WD', 'Withdrawn')
+INSERT INTO [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (30, 'Not', 'Not Approved')
+INSERT INTO [lookup].[VolApplicationStatus] ([Id], [Code], [Description]) VALUES (40, 'Pend', 'Pending')

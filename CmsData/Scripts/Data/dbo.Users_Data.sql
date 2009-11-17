@@ -1,0 +1,3 @@
+SET IDENTITY_INSERT [dbo].[Users] ON
+INSERT INTO [dbo].[Users] ([UserId], [PeopleId], [Username], [Comment], [Password], [PasswordQuestion], [PasswordAnswer], [IsApproved], [LastActivityDate], [LastLoginDate], [LastPasswordChangedDate], [CreationDate], [IsLockedOut], [LastLockedOutDate], [FailedPasswordAttemptCount], [FailedPasswordAttemptWindowStart], [FailedPasswordAnswerAttemptCount], [FailedPasswordAnswerAttemptWindowStart], [ItemsInGrid], [CurrentCart], [MustChangePassword], [Host], [TempPassword], [ResetPasswordCode]) VALUES (1, 1, 'Admin', NULL, '', NULL, NULL, 1, '2009-05-28 07:27:35.133', '2009-05-28 07:26:01.737', NULL, '2009-05-05 22:46:43.890', 0, NULL, 0, NULL, 0, NULL, NULL, NULL, 0, 'localhost', NULL, NULL)
+SET IDENTITY_INSERT [dbo].[Users] OFF
