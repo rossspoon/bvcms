@@ -760,7 +760,7 @@ namespace UtilityExtensions
         {
             if (!email.HasValue())
                 return false;
-            var re = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$");
+            var re = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
             return re.IsMatch(email);
         }
         public static bool IsLocalNetworkRequest

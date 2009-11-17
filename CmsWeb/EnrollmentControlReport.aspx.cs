@@ -45,11 +45,10 @@ namespace CMSWeb
         {
             var divid = SubDivOrg.SelectedValue.ToInt();
             var progid = DivOrg.SelectedValue.ToInt();
-            var q1 = from o in DbUtil.Db.Organizations
-                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0
-                     where o.DivOrgs.Any(t => t.Division.ProgId == progid)
-                     select o.OrganizationId;
             var q = from o in DbUtil.Db.Organizations
+                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0
+                    where o.DivOrgs.Any(t => t.Division.ProgId == progid)
+                    where o.ScheduleId != null
                     group o by new { o.ScheduleId, o.MeetingTime } into g
                     select new CodeValueItem
                     {

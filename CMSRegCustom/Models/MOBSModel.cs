@@ -70,7 +70,7 @@ namespace CMSRegCustom.Models
                 {
                     var q = from m in DbUtil.Db.Meetings
                             where m.Organization.OrganizationId == orgid
-                            where m.MeetingDate > DateTime.Now.AddHours(6)
+                            where m.MeetingDate > DateTime.Now.AddHours(-12)
                             orderby m.MeetingDate
                             select m;
                     _meeting = q.FirstOrDefault();

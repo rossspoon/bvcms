@@ -165,10 +165,6 @@
       <DependentUpon>Posts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Blog\RecentPosts.ascx.cs">
-      <DependentUpon>RecentPosts.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -560,7 +556,6 @@
     <Content Include="Blog\player.swf" />
     <Content Include="Blog\Post.aspx" />
     <Content Include="Blog\Posts.aspx" />
-    <Content Include="Blog\RecentPosts.ascx" />
     <Content Include="Config\connectionStrings.config" />
     <Content Include="BlogPost\MetaWebLogApi.ashx" />
     <Compile Include="Admin\CMSParagraph.aspx.designer.cs">
@@ -648,9 +643,6 @@
     </Compile>
     <Compile Include="Blog\Posts.aspx.designer.cs">
       <DependentUpon>Posts.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Blog\RecentPosts.ascx.designer.cs">
-      <DependentUpon>RecentPosts.ascx</DependentUpon>
     </Compile>
     <Compile Include="CKUpload.ashx.cs">
       <DependentUpon>CKUpload.ashx</DependentUpon>

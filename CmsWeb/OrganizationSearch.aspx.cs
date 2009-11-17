@@ -67,21 +67,21 @@ namespace CMSWeb
 
         private void SetCreateMeetingDefaults(int id)
         {
-            if (id == 0)
+            var sdt = CmsData.Organization.GetDateFromScheduleId(id);
+            if (!sdt.HasValue)
             {
                 MeetingDate.Text = Util.Now.Date.ToShortDateString();
                 MeetingTime.Text = "8:00 AM";
             }
             else
             {
-                var sdt = CmsData.Organization.GetDateFromScheduleId(id);
                 var dt = Util.Now.Date;
                 dt = dt.AddDays(-(int)dt.DayOfWeek); // prev sunday
-                dt = dt.AddDays((int)sdt.Day);
+                dt = dt.AddDays((int)sdt.Value.Day);
                 if (dt < Util.Now.Date)
                     dt = dt.AddDays(7);
                 MeetingDate.Text = dt.ToShortDateString();
-                MeetingTime.Text = sdt.ToShortTimeString();
+                MeetingTime.Text = sdt.Value.ToShortTimeString();
             }
         }
 

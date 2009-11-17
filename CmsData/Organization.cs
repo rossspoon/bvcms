@@ -157,7 +157,7 @@ namespace CmsData
             DbUtil.Db.SubmitChanges();
             return neworg;
         }
-        public static DateTime GetDateFromScheduleId(int id)
+        public static DateTime? GetDateFromScheduleId(int id)
         {
             int dw = id / 10000 - 1;
             id %= 10000;
@@ -165,7 +165,9 @@ namespace CmsData
                 dw = 7;
             int hour = id / 100;
             int min = id % 100;
-            return new DateTime(1900, 1, dw, hour, min, 0);
+            if(hour > 0)
+                return new DateTime(1900, 1, dw, hour, min, 0);
+            return null;
         }
     }
 }

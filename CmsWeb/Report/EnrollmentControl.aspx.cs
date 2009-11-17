@@ -50,7 +50,10 @@ namespace CMSWeb.Reports
             if (subdivt != null)
                 subdivtext = subdivt.Name;
 
-            var scheduletext = CmsData.Organization.GetDateFromScheduleId(schedule).ToString("dddd h:mm tt");
+            string scheduletext = String.Empty;
+            var sdt = CmsData.Organization.GetDateFromScheduleId(schedule);
+            if(sdt.HasValue)
+                scheduletext = sdt.Value.ToString("dddd h:mm tt");
 
             var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
 
