@@ -46,6 +46,20 @@ namespace CMSWeb
                     rr.ImgId = InsertImage(mimetype, bits);
                     rr.Uploaded = DateTime.Now;
                     break;
+                case 3:
+                    if ((PeopleId ?? 0) == 0)
+                        PeopleId = 828612;
+                    var person = DbUtil.Db.People.Single(pp => pp.PeopleId == PeopleId);
+                    if (person.Picture == null)
+                        person.Picture = new Picture();
+                    var p = person.Picture;
+                    p.CreatedDate = Util.Now;
+                    p.CreatedBy = Util.UserName;
+                    p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
+                    p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
+                    p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+                    Db.SubmitChanges();
+                    break;
             }
             Db.SubmitChanges();
         }
@@ -82,7 +96,7 @@ namespace CMSWeb
         public PersonResult[] SearchPerson(string name, string comm, string addr, string birthday)
         {
             var ctl = new PersonSearchController();
-            var q = ctl.FetchPeopleList(0, 10, "", name, comm, addr, 0, 0, birthday, 99, 0, 0, false, 0);
+            var q = ctl.FetchPeopleList(0, 10, "", name, comm, addr, 0, 0, birthday, 99, 0, 0, false, 99);
             var q2 = from p in q
                      select new PersonResult
                      {

@@ -68,6 +68,18 @@ namespace CMSRegCustom.Controllers
 
             return RedirectToAction("Confirm", new { id = m.neworgid });
         }
+        [Authorize(Roles="Edit")]
+        public ActionResult RenameGroup(string oldname, string newname)
+        {
+            ViewData["header"] = Header;
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View();
+
+            if (!(oldname.HasValue() && newname.HasValue() && newname != oldname))
+                return View();
+            Models.GODisciplesModel.RenameGroups(oldname, newname);
+            return Content(Util.EndShowMessage("rename successful", "/", "home"));
+        }
         public ActionResult Confirm(int id)
         {
             var m = new GODisciplesModel("Confirm", id);

@@ -746,8 +746,12 @@ namespace UtilityExtensions
         public static void EndShowMessage(this HttpResponse Response, string message, string href, string text)
         {
             Response.Clear();
-            Response.Write("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>".Fmt(message,href,text));
+            Response.Write(EndShowMessage(message, href, text));
             Response.End();
+        }
+        public static string EndShowMessage(string message, string href, string text)
+        {
+            return "<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>".Fmt(message, href, text);
         }
         public static MailAddress TryGetMailAddress(string address, string name)
         {

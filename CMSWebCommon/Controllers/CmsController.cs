@@ -10,8 +10,8 @@ namespace CMSWebCommon.Controllers
     {
         protected override void HandleUnknownAction(string actionName)
         {
-            base.HandleUnknownAction(actionName);
-            throw new HttpException(404, "");
+            //base.HandleUnknownAction(actionName);
+            throw new HttpException(404, "404");
         }
     }
 }

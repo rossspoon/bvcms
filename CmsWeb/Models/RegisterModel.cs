@@ -41,6 +41,8 @@ namespace CMSWeb.Models
         public string cellphone { get; set; }
         public string email { get; set; }
         public int? married { get; set; }
+        public string School { get; set; }
+        public string Grade { get; set; }
         public int? campusid { get; set; }
         public int? org { get; set; }
         private bool? _Existingfamily;

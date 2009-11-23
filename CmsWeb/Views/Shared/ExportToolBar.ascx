@@ -10,9 +10,6 @@
     <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 
         Export</a>
         <ul>
-            <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
-                title="Labels (pdf for label printer)"><img src="/images/tags.png" /> 
-                Labels</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="For mail merge"><img src="/images/Excel.png" /> 
                 Excel</a></li>
@@ -30,6 +27,9 @@
             <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach Form</a></li>
+            <li><a href='/Report/ContactReport.aspx?id=<%=ViewData["queryid"]%>' 
+                target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
+                Contact Report</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>
@@ -41,13 +41,31 @@
                 Children</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Church' 
                 target="_blank" title="Contains other Church Info"><img src="/images/Excel.png" />
-                Other Church</a></li>
+                Other Churches</a></li>
+        </ul>
+    </li>
+    <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 
+        Labels</a>
+        <ul>
+            <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+                title="Labels (pdf for Datamax label printer)" target="_blank"><img src="/images/tags.png" /> 
+                Roll Labels</a></li>
             <li><a href='/Report/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
-                target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
-                Choir Attendance Labels</a></li>
-            <li><a href='/Report/ContactReport.aspx?id=<%=ViewData["queryid"]%>' 
-                target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
-                Contact Report</a></li>
+                target="_blank" title="Labels for Choir Attendance" target="_blank"><img src="/images/tags.png" />
+                Barcode Labels</a></li>
+            <li>
+                <a href='/Report/Avery.aspx?id=<%=ViewData["queryid"] %>' 
+                    title="Avery Name Labels" target="_blank">
+                    <img src="/images/tags.png" />
+                    Avery Labels</a></li>
+            <li>
+                <a href='/Report/Avery.aspx?id=<%=ViewData["queryid"] %>' 
+                    title="Avery 3 Across Labels (person per row)" target="_blank">
+                    <img src="/images/tags.png" />
+                    Avery Labels 3</a></li>
+            <li><a href='/Report/AveryAddress.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+                title="Address Labels"><img src="/images/tags.png" /> 
+                Avery Address</a></li>
         </ul>
     </li>
     <li class="headlink"><a href='#'><img src="/images/Tag.png" />

@@ -27,7 +27,7 @@ namespace CMSRegCustom.Models
             : this(action)
         {
             neworg = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == id);
-            if(neworg != null)
+            if (neworg != null)
                 campus = neworg.CampusId;
         }
         public int neworgid { get { return neworg.OrganizationId; } }
@@ -312,6 +312,30 @@ namespace CMSRegCustom.Models
             discuser.DefaultGroup = g.Name;
             discuser.ForceLogin = true;
             DiscData.DbUtil.Db.SubmitChanges();
+        }
+        public static void RenameGroups(string oldname, string newname)
+        {
+            var g = DiscData.Group.LoadByName(oldname);
+            if (g != null)
+            {
+                g.Name = newname;
+                var bname = oldname.Replace(" ", "") + "Blog";
+                var b = DiscData.Blog.LoadByName(bname);
+                b.Title = newname + " Blog";
+                b.Name = b.Title.Replace(" ", "");
+                var q = from u in DiscData.DbUtil.Db.Users
+                        where u.DefaultGroup == oldname
+                        select u;
+                foreach (var u in q)
+                    u.DefaultGroup = newname;
+                DiscData.DbUtil.Db.SubmitChanges();
+                var cg = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationName == oldname);
+                if (cg != null)
+                {
+                    cg.OrganizationName = newname;
+                    DbUtil.Db.SubmitChanges();
+                }
+            }
         }
         private string _username;
         private string username

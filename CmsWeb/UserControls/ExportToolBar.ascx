@@ -19,10 +19,6 @@
         Export</a>
         <ul>
             <li>
-                <asp:HyperLink ID="LabelsLink" class="ChooseLabelType" ToolTip="Labels (pdf for label printer)" runat="server">
-                    <asp:Image ID="Image14" ImageUrl="~/images/tags.png" runat="server" />
-                    Labels</asp:HyperLink></li>
-            <li>
                 <asp:HyperLink ID="ExcelLink" class="ChooseLabelType" ToolTip="For mail merge" runat="server">
                     <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel</asp:HyperLink></li>
@@ -31,10 +27,31 @@
                     runat="server">
                     <asp:Image ID="Image7" ImageUrl="~/images/Excel.png" runat="server" />
                     Bulk (csv)</asp:HyperLink></li>
+            <li id="MemberItem" runat="server">
+                <asp:HyperLink ID="MemberLink" ToolTip="Includes Org Member info"
+                    runat="server">
+                    <asp:Image ID="Image21" ImageUrl="~/images/Excel.png" runat="server" />
+                    Member Export</asp:HyperLink></li>
+            <li id="LRItem" runat="server">
+                <asp:HyperLink ID="LRLink" ToolTip="Includes LoveRespect info"
+                    runat="server">
+                    <asp:Image ID="Image24" ImageUrl="~/images/Excel.png" runat="server" />
+                    LoveResp Export</asp:HyperLink></li>
+            <li id="SmlItem" runat="server">
+                <asp:HyperLink ID="SmlLink" ToolTip="Includes Soulmate Live info"
+                    runat="server">
+                    <asp:Image ID="Image22" ImageUrl="~/images/Excel.png" runat="server" />
+                    Soulmate Export</asp:HyperLink></li>
+            <li id="PromoItem" runat="server">
+                <asp:HyperLink ID="PromoLink" ToolTip="Just for Promotion Mail Merge"
+                    runat="server">
+                    <asp:Image ID="Image23" ImageUrl="~/images/Excel.png" runat="server" />
+                    Promotion Export</asp:HyperLink></li>
         </ul>
     </li>
     <li class="headlink"><a href="#">
-        <asp:Image ID="Image3" runat="server" ImageUrl="~/images/Report.png" />&nbsp;Reports</a>
+        <asp:Image ID="Image3" runat="server" ImageUrl="~/images/Report.png" />
+        Reports</a>
         <ul runat="server" id="ReportLinks">
             <li>
                 <asp:HyperLink ID="ProspectLink" runat="server">
@@ -44,6 +61,11 @@
                 <asp:HyperLink ID="InreachLink" runat="server">
                     <asp:Image ID="Image9" ImageUrl="~/images/Report.png" runat="server" />
                     Inreach Form</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="ContactsLink" ToolTip="For calling contacts"
+                    runat="server">
+                    <asp:Image ID="Image25" ImageUrl="~/images/Report.png" runat="server" />
+                    Contact Report</asp:HyperLink></li>
             <li>
                 <asp:HyperLink ID="InvolvementLink" ToolTip="Personal, Contact and Enrollment Info"
                     runat="server">
@@ -64,11 +86,38 @@
                     runat="server">
                     <asp:Image ID="Image19" ImageUrl="~/images/Excel.png" runat="server" />
                     Other Churches</asp:HyperLink></li>
+        </ul>
+    </li>
+    <li class="headlink"><a href="#">
+        <asp:Image ID="Image26" runat="server" ImageUrl="~/images/Tag.png" />
+        Labels</a>
+        <ul>
             <li>
-                <asp:HyperLink ID="ContactsLink" ToolTip="For Robo-calling contacts"
+                <asp:HyperLink ID="LabelsLink" class="ChooseLabelType" ToolTip="Labels (pdf for Datamax label printer)" runat="server">
+                    <asp:Image ID="Image14" ImageUrl="~/images/tags.png" runat="server" />
+                    Roll Labels</asp:HyperLink></li>
+            <li id="RollsheetItem" runat="server">
+                <a title="Rollsheet Report" href="#" onclick="OpenRollsheet();return false;">
+                    <asp:Image ID="Image29" ImageUrl="~/images/tags.png" runat="server" />Rollsheet Report</a></li>
+            <li>
+                <asp:HyperLink ID="BarCodeLabels" ToolTip="Labels for Choir Attendance"
                     runat="server">
-                    <asp:Image ID="Image25" ImageUrl="~/images/Report.png" runat="server" />
-                    Contact Report</asp:HyperLink></li>
+                    <asp:Image ID="Image28" ImageUrl="~/images/tags.png" runat="server" />
+                    BarCode Labels</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="AveryLabels" ToolTip="Avery Name Labels"
+                    runat="server">
+                    <asp:Image ID="Image20" ImageUrl="~/images/tags.png" runat="server" />
+                    Avery Labels</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="AveryLabels3" ToolTip="Avery 3 Across Labels (person per row)"
+                    runat="server">
+                    <asp:Image ID="Image27" ImageUrl="~/images/tags.png" runat="server" />
+                    Avery Labels 3</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="AveryAddressLabels" class="ChooseLabelType" ToolTip="Avery Address Labels" runat="server">
+                    <asp:Image ID="Image30" ImageUrl="~/images/tags.png" runat="server" />
+                    Avery Address</asp:HyperLink></li>
         </ul>
     </li>
     <li class="headlink"><a href="#">
@@ -94,34 +143,6 @@
                     OnClick="AddContact_Click"><asp:Image ID="Image17" ImageUrl="~/images/Tag.png" runat="server" />
                     <asp:Label ID="Label1" runat="server">Add Contact</asp:Label></cc2:LinkButtonConfirm>
                 </li>
-            <li>
-                <asp:HyperLink ID="ChoirLink" ToolTip="Labels for Choir Attendance"
-                    runat="server">
-                    <asp:Image ID="Image18" ImageUrl="~/images/tags.png" runat="server" />
-                    Sheet Labels</asp:HyperLink></li>
-            <li id="RollsheetItem" runat="server">
-                <a title="Rollsheet Report" href="#" onclick="OpenRollsheet();return false;">
-                    <asp:Image ID="Image20" ImageUrl="~/images/tags.png" runat="server" />Rollsheet Report</a></li>
-            <li id="MemberItem" runat="server">
-                <asp:HyperLink ID="MemberLink" ToolTip="Includes Org Member info"
-                    runat="server">
-                    <asp:Image ID="Image21" ImageUrl="~/images/Excel.png" runat="server" />
-                    Member Export</asp:HyperLink></li>
-            <li id="LRItem" runat="server">
-                <asp:HyperLink ID="LRLink" ToolTip="Includes LoveRespect info"
-                    runat="server">
-                    <asp:Image ID="Image24" ImageUrl="~/images/Excel.png" runat="server" />
-                    LoveResp Export</asp:HyperLink></li>
-            <li id="SmlItem" runat="server">
-                <asp:HyperLink ID="SmlLink" ToolTip="Includes Soulmate Live info"
-                    runat="server">
-                    <asp:Image ID="Image22" ImageUrl="~/images/Excel.png" runat="server" />
-                    Soulmate Export</asp:HyperLink></li>
-            <li id="PromoItem" runat="server">
-                <asp:HyperLink ID="PromoLink" ToolTip="Just for Promotion Mail Merge"
-                    runat="server">
-                    <asp:Image ID="Image23" ImageUrl="~/images/Excel.png" runat="server" />
-                    Promotion Export</asp:HyperLink></li>
         </ul>
     </li>
 </ul>

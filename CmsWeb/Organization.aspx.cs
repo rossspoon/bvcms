@@ -142,7 +142,7 @@ namespace CMSWeb
         {
             base.OnPreRender(e);
             VisitLookbackDays.Text = Util.VisitLookbackDays.ToString();
-            if (organization.ScheduleId != null)
+            if (organization.SchedTime != null)
             {
                 var d = Util.Now.Date;
                 d = d.AddDays(-(int)d.DayOfWeek); // prev sunday

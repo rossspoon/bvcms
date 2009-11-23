@@ -150,6 +150,8 @@ namespace CmsData
                 NumCheckInLabels = NumCheckInLabels,
                 CampusId = CampusId,
                 FirstMeetingDate = FirstMeetingDate,
+                SchedDay = SchedDay,
+                SchedTime = SchedTime,
             };
             DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)

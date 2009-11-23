@@ -29,7 +29,10 @@ namespace CMSWeb
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
             ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/ContactReport.aspx?");
-            ChoirLink.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
+            BarCodeLabels.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
+            AveryLabels.NavigateUrl = GoTo("NewWindow", "Report/Avery.aspx?");
+            AveryLabels3.NavigateUrl = GoTo("NewWindow", "Report/Avery3.aspx?");
+            AveryAddressLabels.NavigateUrl = "/Report/AveryAddress.aspx?id=" + queryId;
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Attend&");
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Children&");

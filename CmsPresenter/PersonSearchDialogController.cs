@@ -209,7 +209,6 @@ namespace CMSPresenter
             p.FixTitle();
             p.CellPhone = phone;
             DbUtil.Db.SubmitChanges();
-            Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return true;
         }
         public static bool AddNewPerson(string name,
@@ -224,13 +223,13 @@ namespace CMSPresenter
             return AddNewPerson(name, dob, ParseFamilyType(selectedValue),
                 GenderId, OriginId, EntryPointId, CampusId, phone, addr, MaritalStatusId);
         }
-        private static bool AddNewPerson(string potentialName, 
+        private static bool AddNewPerson(string potentialName,
             string dob,
             AddFamilyType famtype,
-            int GenderId, 
-            int OriginId, 
-            int? EntryPointId, 
-            int? CampusId, 
+            int GenderId,
+            int OriginId,
+            int? EntryPointId,
+            int? CampusId,
             string phone, string addr, int MaritalStatusId)
         {
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
@@ -268,7 +267,7 @@ namespace CMSPresenter
             }
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             Person p1;
-            p1 = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult, 
+            p1 = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult,
                 tag, name, dob, false, GenderId, OriginId, EntryPointId); // unknown gender
             var age = p1.GetAge();
             p1.MaritalStatusId = MaritalStatusId;
@@ -281,7 +280,6 @@ namespace CMSPresenter
                 p1.CellPhone = phone.GetDigits();
             p1.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
-            Task.AddNewPerson(Util.UserPeopleId.Value, p1.PeopleId);
             return true;
         }
         public static bool CheckFamilySelected(string selectedValue)

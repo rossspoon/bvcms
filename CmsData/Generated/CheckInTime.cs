@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private DateTime? _CheckInTimeX;
 		
+		private string _KeyCode;
+		
    		
     	
 		private EntityRef< Organization> _Organization;
@@ -55,6 +57,9 @@ namespace CmsData
 		partial void OnCheckInTimeXChanging(DateTime? value);
 		partial void OnCheckInTimeXChanged();
 		
+		partial void OnKeyCodeChanging(string value);
+		partial void OnKeyCodeChanged();
+		
     #endregion
 		public CheckInTime()
 		{
@@ -70,7 +75,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int Id
 		{
 			get { return this._Id; }
@@ -179,6 +184,28 @@ namespace CmsData
 					this._CheckInTimeX = value;
 					this.SendPropertyChanged("CheckInTimeX");
 					this.OnCheckInTimeXChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="KeyCode", UpdateCheck=UpdateCheck.Never, Storage="_KeyCode", DbType="varchar(80)")]
+		public string KeyCode
+		{
+			get { return this._KeyCode; }
+
+			set
+			{
+				if (this._KeyCode != value)
+				{
+				
+                    this.OnKeyCodeChanging(value);
+					this.SendPropertyChanging();
+					this._KeyCode = value;
+					this.SendPropertyChanged("KeyCode");
+					this.OnKeyCodeChanged();
 				}
 
 			}

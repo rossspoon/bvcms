@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Tools.Applications.Runtime;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using System.ServiceModel;
+using System.Configuration;
 
 namespace PostBundle
 {
@@ -26,7 +27,7 @@ namespace PostBundle
     }
     public partial class ThisWorkbook
     {
-        public CmsWs.cmsSoapClient ws;
+        public CmsWs.WebServiceSoapClient ws;
         public CmsWs.ServiceAuthHeader header; 
 
         public bool ClickToChange = false;
@@ -35,12 +36,9 @@ namespace PostBundle
         private UploadPane u;
         private void ThisWorkbook_Startup(object sender, System.EventArgs e)
         {
-            ws = new CmsWs.cmsSoapClient();
-#if DEBUG
-            ws.Endpoint.Address = new EndpointAddress("http://bellevue03/cms.asmx");
-#else
-            ws.Endpoint.Address = new EndpointAddress("http://bellevue03/cms.asmx");
-#endif
+            ws = new CmsWs.WebServiceSoapClient();
+            ws.Endpoint.Address = new EndpointAddress(ServiceUrl());
+
             header = new CmsWs.ServiceAuthHeader();
             var f = new Signin();
             f.ShowDialog();
@@ -89,6 +87,14 @@ namespace PostBundle
 
         private void ThisWorkbook_Shutdown(object sender, System.EventArgs e)
         {
+        }
+        public static string ServiceUrl()
+        {
+            string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
+#if DEBUG
+            serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
+#endif
+            return serviceurl;
         }
 
         #region VSTO Designer generated code

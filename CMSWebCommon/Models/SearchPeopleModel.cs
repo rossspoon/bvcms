@@ -311,7 +311,7 @@ namespace CMSWebCommon.Models
                     return null;
                 if (p.PositionInFamilyId == 0)
                 {
-                    var cnt = p.Family.People.Where(c => 
+                    var cnt = p.Family.People.Where(c =>
                         c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
                     if (cnt < 2) // room for primary adult?
                         p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
@@ -347,7 +347,6 @@ namespace CMSWebCommon.Models
             tag.PersonTags.Add(new TagPerson { Person = p });
             p.FixTitle();
             Db.SubmitChanges();
-            Task.AddNewPerson(Util.UserPeopleId.Value, p.PeopleId);
             return p.PeopleId;
         }
 

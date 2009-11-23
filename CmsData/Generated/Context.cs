@@ -346,6 +346,10 @@ namespace CmsData
         partial void UpdateSetting(Setting instance);
         partial void DeleteSetting(Setting instance);
         
+        partial void InsertShirtSize(ShirtSize instance);
+        partial void UpdateShirtSize(ShirtSize instance);
+        partial void DeleteShirtSize(ShirtSize instance);
+        
         partial void InsertSoulMate(SoulMate instance);
         partial void UpdateSoulMate(SoulMate instance);
         partial void DeleteSoulMate(SoulMate instance);
@@ -977,6 +981,12 @@ namespace CmsData
 		public Table< Setting> Settings
 		{
 			get	{ return this.GetTable< Setting>(); }
+
+		}
+
+		public Table< ShirtSize> ShirtSizes
+		{
+			get	{ return this.GetTable< ShirtSize>(); }
 
 		}
 

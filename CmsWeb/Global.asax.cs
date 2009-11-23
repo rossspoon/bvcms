@@ -97,6 +97,8 @@ namespace CMSWeb
                 return;
 #endif
             var ex = Server.GetLastError();
+            if (ex is HttpException && (ex.Message == "404" || ex.Message.StartsWith("The controller for path")))
+                return;
             var u = DbUtil.Db.CurrentUser;
             var smtp = new SmtpClient();
             var msg = new MailMessage();

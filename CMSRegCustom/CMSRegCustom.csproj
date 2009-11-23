@@ -95,6 +95,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Views\GODisciples\Confirm.aspx" />
     <Content Include="Views\GODisciples\Index.aspx" />
+    <Content Include="Views\GODisciples\RenameGroup.aspx" />
     <Content Include="Views\GODisciples\Signup.aspx" />
     <Content Include="Views\Sales\Login.aspx" />
     <Content Include="Views\Sales\Download.aspx" />

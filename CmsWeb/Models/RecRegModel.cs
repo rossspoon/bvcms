@@ -274,10 +274,11 @@ namespace CMSWeb.Models
                 null, first, null, last, dob, false, gender.Value,
                     DbUtil.Settings("RecOrigin", "0").ToInt(), 
                     DbUtil.Settings("RecEntry", "0").ToInt());
-            participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
-            participant.FixTitle();
-            if (participant.Age >= 18)
+            if(_Participant.Age > 18)
+            {
+                participant.MaritalStatusId = (int)Person.MaritalStatusCode.Unknown;
                 participant.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+            }
             peopleid = participant.PeopleId;
             participant.EmailAddress = email;
             participant.CampusId = org.CampusId;
@@ -322,17 +323,16 @@ namespace CMSWeb.Models
         }
         public static IEnumerable<SelectListItem> ShirtSizes()
         {
-            return new List<SelectListItem> 
-            {
-                new SelectListItem { Value="0", Text="(not specified)" },
-                new SelectListItem { Value="YT-S", Text="Youth: Small (6-8)" },
-                new SelectListItem { Value="YT-M", Text="Youth: Medium (10-12)" },
-                new SelectListItem { Value="YT-L", Text="Youth: Large (14-16)" },
-                new SelectListItem { Value="AD-S", Text="Adult: Small" },
-                new SelectListItem { Value="AD-M", Text="Adult: Medium" },
-                new SelectListItem { Value="AD-L", Text="Adult: Large" },
-                new SelectListItem { Value="AD-XL", Text="Adult: XLarge" },
-            };
+            var q = from ss in DbUtil.Db.ShirtSizes
+                    orderby ss.Id
+                    select new SelectListItem
+                    {
+                        Value = ss.Code,
+                        Text = ss.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         public string PrepareSummaryText()
         {

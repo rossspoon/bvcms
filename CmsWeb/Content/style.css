@@ -321,3 +321,8 @@ ul#ConditionGrid
     padding-left: 1em;
     padding-right: 1em;
 }
+div.growlUI { background: url(check48.png) no-repeat 10px 10px }
+div.growlUI2 { background: url(attention48.png) no-repeat 10px 10px }
+div.growlUI h1, div.growlUI h2, div.growlUI2 h1, div.growlUI2 h2 {
+	color: white; padding: 5px 5px 5px 75px; text-align: left
+}

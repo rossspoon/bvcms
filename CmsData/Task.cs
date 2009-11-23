@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -37,7 +38,7 @@ namespace CmsData
             }
             return list;
         }
-        public static void AddNewPerson(int coownerid, int newpersonid)
+        public static void AddNewPerson(int newpersonid)
         {
             var Db = DbUtil.Db;
             var task = new Task
@@ -45,11 +46,14 @@ namespace CmsData
                 ListId = Task.GetRequiredTaskList("InBox", DbUtil.NewPeopleManagerId).Id,
                 OwnerId = DbUtil.NewPeopleManagerId,
                 Description = "New Person Data Entry",
-                CoOwnerId = coownerid,
-                CoListId = Task.GetRequiredTaskList("InBox", coownerid).Id,
                 WhoId = newpersonid,
                 StatusId = (int)Task.StatusCode.Active,
             };
+            if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId)
+            {
+                task.CoOwnerId = Util.UserPeopleId.Value;
+                task.CoListId = Task.GetRequiredTaskList("InBox", Util.UserPeopleId.Value).Id;
+            }
             Db.Tasks.InsertOnSubmit(task);
             Db.SubmitChanges();
         }

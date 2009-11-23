@@ -124,6 +124,10 @@ namespace CMSWeb
             goback.Visible = User.IsInRole("Admin") && otherid.HasValue && otherid.Value > 0;
             if (goback.Visible)
                 goback.NavigateUrl = "~/Person.aspx?id=" + otherid.Value;
+            if(Session["CheckInOrgId"].IsNotNull())
+                CheckInLink.NavigateUrl = "/CheckIn/CheckIn/{0}?pid={1}"
+                    .Fmt(Session["CheckInOrgId"],person.PeopleId);
+            CheckInLink.Visible = CheckInLink.NavigateUrl.HasValue();
         }
 
         void ExportToolBar1_TaggedEvent(object sender, EventArgs e)

@@ -130,12 +130,12 @@ namespace CMSRegCustom.Models
                 ZipCode = zip,
             };
             var pos = 30;
-            if (married == 2 || dob.Age().ToInt() >= 18)
-                pos = (int)Family.PositionInFamily.PrimaryAdult;
             person = Person.Add(f, pos,
                 null, first, null, last, dob, married == 2, gender.Value, 
                     DbUtil.Settings("DiscLifeOrigin", "0").ToInt(), 
                     DbUtil.Settings("DiscLifeEntry", "0").ToInt());
+            if (married == 2 || dob.Age().ToInt() >= 18)
+                person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
             {
                 case "h":

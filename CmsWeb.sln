@@ -23,6 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWebCommon", "CMSWebCommo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisciplesData", "DisciplesData\DisciplesData.csproj", "{687619FB-F4C1-42B3-9A33-4BD19390723F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanUploader", "ScanUploader\ScanUploader.csproj", "{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeUploadPicture", "TakeUploadPicture\TakeUploadPicture.csproj", "{DF39F492-D882-4616-95CC-F9A617F08654}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC942D51-94B5-456B-9683-0BA000A1EAF4} = {FC942D51-94B5-456B-9683-0BA000A1EAF4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +183,30 @@ Global
 		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Itanium.ActiveCfg = Release|Any CPU
 		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Debug|Itanium.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Default|Itanium.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Default|x86.ActiveCfg = Debug|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|Itanium.ActiveCfg = Release|Any CPU
+		{C5AE3E2C-3069-4D64-85ED-B2AFC5498F06}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Itanium.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Itanium.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|x86.ActiveCfg = Debug|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Itanium.ActiveCfg = Release|Any CPU
+		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

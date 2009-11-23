@@ -191,6 +191,7 @@ namespace CmsCheckin
                 label.Font = font;
                 label.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight));
                 label.Size = new Size(wids[col] + sep, maxheight);
+                label.UseMnemonic = false;
                 label.Text = e.Attribute("name").Value;
                 label.TextAlign = ContentAlignment.MiddleLeft;
                 this.Controls.Add(label);
@@ -200,6 +201,7 @@ namespace CmsCheckin
                 label.Font = font;
                 label.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight));
                 label.Size = new Size(wids[col] + sep, maxheight);
+                label.UseMnemonic = false;
                 label.Text = e.Attribute("org").Value;
                 label.TextAlign = ContentAlignment.MiddleLeft;
                 this.Controls.Add(label);

@@ -197,7 +197,7 @@ namespace CMSWeb.Controllers
         public ActionResult Confirm(int familyid)
         {
             var m = new Models.RegisterModel { familyid = familyid };
-            return View();
+            return View(m);
         }
         public ActionResult ConfirmVisit(int familyid, int? id, int? thisday)
         {

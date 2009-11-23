@@ -374,13 +374,19 @@ namespace CmsData
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;
                 p.BirthYear = dt.Year;
+                if (p.GetAge() < 18)
+                    p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
             }
             else if (DateTime.TryParse(dob, out dt))
             {
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;
                 if (Regex.IsMatch(dob, @"\d+[-/]\d+[-/]\d+"))
+                {
                     p.BirthYear = dt.Year;
+                    if (p.GetAge() < 18)
+                        p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
+                }
             }
 
             p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
@@ -395,6 +401,24 @@ namespace CmsData
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             p.FixTitle();
+            DbUtil.Db.SubmitChanges();
+            if (Util.UserPeopleId.HasValue)
+                Task.AddNewPerson(p.PeopleId);
+            else
+            {
+                var npm = DbUtil.Db.People.SingleOrDefault(np => np.PeopleId == DbUtil.NewPeopleManagerId);
+                var em = DbUtil.SystemEmailAddress;
+                var name = String.Empty;
+                if (npm != null)
+                {
+                    em = npm.EmailAddress;
+                    name = npm.Name;
+                }
+                Util.Email(em, name, em,
+                        "Just Added Person on " + Util.Host,
+                        "<a href='{0}Person.aspx?id={2}'>{1} ({2})</a>"
+                        .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
+            }
             return p;
         }
         public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
