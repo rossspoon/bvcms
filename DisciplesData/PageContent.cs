@@ -11,17 +11,17 @@ using System.Linq;
 
 namespace DiscData
 {
-    public partial class Page
+    public partial class PageContent
     {
         public int Level = 0;
 
-        public static Page LoadByUrl(string url)
+        public static PageContent LoadByUrl(string url)
         {
-            return DbUtil.Db.Pages.SingleOrDefault(p => p.PageUrl == url);
+            return DbUtil.Db.PageContents.SingleOrDefault(p => p.PageUrl == url);
         }
-        public static Page LoadById(int id)
+        public static PageContent LoadById(int id)
         {
-            return DbUtil.Db.Pages.SingleOrDefault(p => p.PageID == id);
+            return DbUtil.Db.PageContents.SingleOrDefault(p => p.PageID == id);
         }
     }
 }

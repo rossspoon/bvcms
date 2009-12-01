@@ -22,6 +22,10 @@ namespace DiscData
         partial void UpdateBlog(Blog instance);
         partial void DeleteBlog(Blog instance);
         
+        partial void InsertBlogCategory(BlogCategory instance);
+        partial void UpdateBlogCategory(BlogCategory instance);
+        partial void DeleteBlogCategory(BlogCategory instance);
+        
         partial void InsertBlogCategoryXref(BlogCategoryXref instance);
         partial void UpdateBlogCategoryXref(BlogCategoryXref instance);
         partial void DeleteBlogCategoryXref(BlogCategoryXref instance);
@@ -37,14 +41,6 @@ namespace DiscData
         partial void InsertBlogPost(BlogPost instance);
         partial void UpdateBlogPost(BlogPost instance);
         partial void DeleteBlogPost(BlogPost instance);
-        
-        partial void InsertCategory(Category instance);
-        partial void UpdateCategory(Category instance);
-        partial void DeleteCategory(Category instance);
-        
-        partial void InsertContent(Content instance);
-        partial void UpdateContent(Content instance);
-        partial void DeleteContent(Content instance);
         
         partial void InsertForum(Forum instance);
         partial void UpdateForum(Forum instance);
@@ -66,6 +62,10 @@ namespace DiscData
         partial void UpdateGroup(Group instance);
         partial void DeleteGroup(Group instance);
         
+        partial void InsertGroupRole(GroupRole instance);
+        partial void UpdateGroupRole(GroupRole instance);
+        partial void DeleteGroupRole(GroupRole instance);
+        
         partial void InsertInvitation(Invitation instance);
         partial void UpdateInvitation(Invitation instance);
         partial void DeleteInvitation(Invitation instance);
@@ -74,13 +74,17 @@ namespace DiscData
         partial void UpdateOtherNotify(OtherNotify instance);
         partial void DeleteOtherNotify(OtherNotify instance);
         
-        partial void InsertPage(Page instance);
-        partial void UpdatePage(Page instance);
-        partial void DeletePage(Page instance);
+        partial void InsertPageContent(PageContent instance);
+        partial void UpdatePageContent(PageContent instance);
+        partial void DeletePageContent(PageContent instance);
         
         partial void InsertPageVisit(PageVisit instance);
         partial void UpdatePageVisit(PageVisit instance);
         partial void DeletePageVisit(PageVisit instance);
+        
+        partial void InsertParaContent(ParaContent instance);
+        partial void UpdateParaContent(ParaContent instance);
+        partial void DeleteParaContent(ParaContent instance);
         
         partial void InsertPendingNotification(PendingNotification instance);
         partial void UpdatePendingNotification(PendingNotification instance);
@@ -109,6 +113,10 @@ namespace DiscData
         partial void InsertUploadAuthenticationXref(UploadAuthenticationXref instance);
         partial void UpdateUploadAuthenticationXref(UploadAuthenticationXref instance);
         partial void DeleteUploadAuthenticationXref(UploadAuthenticationXref instance);
+        
+        partial void InsertUserGroupRole(UserGroupRole instance);
+        partial void UpdateUserGroupRole(UserGroupRole instance);
+        partial void DeleteUserGroupRole(UserGroupRole instance);
         
         partial void InsertUserRole(UserRole instance);
         partial void UpdateUserRole(UserRole instance);
@@ -178,6 +186,12 @@ namespace DiscData
 
 		}
 
+		public Table< BlogCategory> BlogCategories
+		{
+			get	{ return this.GetTable< BlogCategory>(); }
+
+		}
+
 		public Table< BlogCategoryXref> BlogCategoryXrefs
 		{
 			get	{ return this.GetTable< BlogCategoryXref>(); }
@@ -199,18 +213,6 @@ namespace DiscData
 		public Table< BlogPost> BlogPosts
 		{
 			get	{ return this.GetTable< BlogPost>(); }
-
-		}
-
-		public Table< Category> Categories
-		{
-			get	{ return this.GetTable< Category>(); }
-
-		}
-
-		public Table< Content> Contents
-		{
-			get	{ return this.GetTable< Content>(); }
 
 		}
 
@@ -244,6 +246,12 @@ namespace DiscData
 
 		}
 
+		public Table< GroupRole> GroupRoles
+		{
+			get	{ return this.GetTable< GroupRole>(); }
+
+		}
+
 		public Table< Invitation> Invitations
 		{
 			get	{ return this.GetTable< Invitation>(); }
@@ -256,15 +264,21 @@ namespace DiscData
 
 		}
 
-		public Table< Page> Pages
+		public Table< PageContent> PageContents
 		{
-			get	{ return this.GetTable< Page>(); }
+			get	{ return this.GetTable< PageContent>(); }
 
 		}
 
 		public Table< PageVisit> PageVisits
 		{
 			get	{ return this.GetTable< PageVisit>(); }
+
+		}
+
+		public Table< ParaContent> ParaContents
+		{
+			get	{ return this.GetTable< ParaContent>(); }
 
 		}
 
@@ -310,6 +324,12 @@ namespace DiscData
 
 		}
 
+		public Table< UserGroupRole> UserGroupRoles
+		{
+			get	{ return this.GetTable< UserGroupRole>(); }
+
+		}
+
 		public Table< UserRole> UserRoles
 		{
 			get	{ return this.GetTable< UserRole>(); }
@@ -352,18 +372,6 @@ namespace DiscData
 	    public Table< View.BlogCategoriesView> ViewBlogCategoriesViews
 	    {
 		    get { return this.GetTable< View.BlogCategoriesView>(); }
-
-	    }
-
-	    public Table< View.BlogRecentPostView> ViewBlogRecentPostViews
-	    {
-		    get { return this.GetTable< View.BlogRecentPostView>(); }
-
-	    }
-
-	    public Table< View.Oldrole> ViewOldroles
-	    {
-		    get { return this.GetTable< View.Oldrole>(); }
 
 	    }
 

@@ -13,8 +13,8 @@ namespace DiscData
         public static IEnumerable<Blog> GetBlogsForPoster(string user)
         {
             return from b in DbUtil.Db.Blogs
-                   where b.Group.Roles.Any(r => r.RoleName == "Blogger"
-                       && r.UserRoles.Any(ru => ru.User.Username == user))
+                   where b.Group.GroupRoles.Any(r => r.RoleName == "Blogger"
+                       && r.UserGroupRoles.Any(ru => ru.User.Username == user))
                    select b;
         }
         public string Owner

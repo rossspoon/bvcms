@@ -65,13 +65,17 @@
     <Compile Include="DbUtil.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumEntry.cs" />
+    <Compile Include="Generated\BlogCategory.cs" />
     <Compile Include="Generated\BlogCategoryXref.cs" />
-    <Compile Include="Generated\Category.cs" />
+    <Compile Include="Generated\GroupRole.cs" />
+    <Compile Include="Generated\PageContent.cs" />
+    <Compile Include="Generated\ParaContent.cs" />
     <Compile Include="Generated\PendingNotification.cs" />
+    <Compile Include="Generated\UserGroupRole.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Invitation.cs" />
-    <Compile Include="Page.cs" />
+    <Compile Include="PageContent.cs" />
     <Compile Include="PodCast.cs" />
     <Compile Include="Resource1.Designer.cs">
       <DependentUpon>Resource1.resx</DependentUpon>
@@ -88,7 +92,6 @@
     <Compile Include="Generated\BlogComment.cs" />
     <Compile Include="Generated\BlogNotify.cs" />
     <Compile Include="Generated\BlogPost.cs" />
-    <Compile Include="Generated\Content.cs" />
     <Compile Include="Generated\Context.cs" />
     <Compile Include="Generated\Forum.cs" />
     <Compile Include="Generated\ForumEntry.cs" />
@@ -98,7 +101,6 @@
     <Compile Include="Generated\Group.cs" />
     <Compile Include="Generated\Invitation.cs" />
     <Compile Include="Generated\OtherNotify.cs" />
-    <Compile Include="Generated\Page.cs" />
     <Compile Include="Generated\PageVisit.cs" />
     <Compile Include="Generated\PersonalPage.cs" />
     <Compile Include="Generated\PodCast.cs" />

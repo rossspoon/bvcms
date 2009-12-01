@@ -33,6 +33,8 @@ namespace DiscData
 		
 		private int _PrivacyLevel;
 		
+		private int? _CUserid;
+		
    		
    		private EntitySet< BlogNotify> _BlogNotifications;
 		
@@ -75,6 +77,9 @@ namespace DiscData
 		
 		partial void OnPrivacyLevelChanging(int value);
 		partial void OnPrivacyLevelChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public Blog()
@@ -272,6 +277,28 @@ namespace DiscData
 					this._PrivacyLevel = value;
 					this.SendPropertyChanged("PrivacyLevel");
 					this.OnPrivacyLevelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

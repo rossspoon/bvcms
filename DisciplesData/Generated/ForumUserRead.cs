@@ -23,6 +23,8 @@ namespace DiscData
 		
 		private DateTime? _CreatedOn;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< ForumEntry> _ForumEntry;
@@ -44,6 +46,9 @@ namespace DiscData
 		
 		partial void OnCreatedOnChanging(DateTime? value);
 		partial void OnCreatedOnChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public ForumUserRead()
@@ -125,6 +130,28 @@ namespace DiscData
 					this._CreatedOn = value;
 					this.SendPropertyChanged("CreatedOn");
 					this.OnCreatedOnChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

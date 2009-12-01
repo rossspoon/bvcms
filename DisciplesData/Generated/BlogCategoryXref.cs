@@ -25,7 +25,7 @@ namespace DiscData
     	
 		private EntityRef< BlogPost> _BlogPost;
 		
-		private EntityRef< Category> _Category;
+		private EntityRef< BlogCategory> _BlogCategory;
 		
 	#endregion
 	
@@ -47,7 +47,7 @@ namespace DiscData
 			
 			this._BlogPost = default(EntityRef< BlogPost>); 
 			
-			this._Category = default(EntityRef< Category>); 
+			this._BlogCategory = default(EntityRef< BlogCategory>); 
 			
 			OnCreated();
 		}
@@ -65,7 +65,7 @@ namespace DiscData
 				if (this._CatId != value)
 				{
 				
-					if (this._Category.HasLoadedOrAssignedValue)
+					if (this._BlogCategory.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnCatIdChanging(value);
@@ -155,25 +155,25 @@ namespace DiscData
 		}
 
 		
-		[Association(Name="FK_BlogCategoryXref_Category", Storage="_Category", ThisKey="CatId", IsForeignKey=true)]
-		public Category Category
+		[Association(Name="FK_BlogCategoryXref_Category", Storage="_BlogCategory", ThisKey="CatId", IsForeignKey=true)]
+		public BlogCategory BlogCategory
 		{
-			get { return this._Category.Entity; }
+			get { return this._BlogCategory.Entity; }
 
 			set
 			{
-				Category previousValue = this._Category.Entity;
+				BlogCategory previousValue = this._BlogCategory.Entity;
 				if (((previousValue != value) 
-							|| (this._Category.HasLoadedOrAssignedValue == false)))
+							|| (this._BlogCategory.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._Category.Entity = null;
+						this._BlogCategory.Entity = null;
 						previousValue.BlogCategoryXrefs.Remove(this);
 					}
 
-					this._Category.Entity = value;
+					this._BlogCategory.Entity = value;
 					if (value != null)
 					{
 						value.BlogCategoryXrefs.Add(this);
@@ -189,7 +189,7 @@ namespace DiscData
 						
 					}
 
-					this.SendPropertyChanged("Category");
+					this.SendPropertyChanged("BlogCategory");
 				}
 
 			}

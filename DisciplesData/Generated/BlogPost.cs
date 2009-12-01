@@ -41,6 +41,8 @@ namespace DiscData
 		
 		private int? _PosterId;
 		
+		private int? _CUserid;
+		
    		
    		private EntitySet< BlogCategoryXref> _BlogCategoryXrefs;
 		
@@ -95,6 +97,9 @@ namespace DiscData
 		
 		partial void OnPosterIdChanging(int? value);
 		partial void OnPosterIdChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public BlogPost()
@@ -380,6 +385,28 @@ namespace DiscData
 					this._PosterId = value;
 					this.SendPropertyChanged("PosterId");
 					this.OnPosterIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

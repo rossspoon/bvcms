@@ -21,6 +21,8 @@ namespace DiscData
 		
 		private int _RoleId;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< Role> _Role;
@@ -39,6 +41,9 @@ namespace DiscData
 		
 		partial void OnRoleIdChanging(int value);
 		partial void OnRoleIdChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public UserRole()
@@ -98,6 +103,28 @@ namespace DiscData
 					this._RoleId = value;
 					this.SendPropertyChanged("RoleId");
 					this.OnRoleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

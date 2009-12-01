@@ -225,7 +225,7 @@ namespace CMSRegCustom.Models
                 // make a new first post on blog
                 var firstpost = DbUtil.Content("GODisciplesFirstPost");
                 var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, DateTime.Now);
-                var cat = DiscData.DbUtil.Db.Categories.Single(ca => ca.Name == "Discipleship");
+                var cat = DiscData.DbUtil.Db.BlogCategories.Single(ca => ca.Name == "Discipleship");
                 var bc = new DiscData.BlogCategoryXref { CatId = cat.Id };
                 p.BlogCategoryXrefs.Add(bc);
                 DiscData.DbUtil.Db.SubmitChanges();

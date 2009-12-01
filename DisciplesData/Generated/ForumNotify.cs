@@ -21,6 +21,8 @@ namespace DiscData
 		
 		private string _UserId;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< ForumEntry> _ForumEntry;
@@ -37,6 +39,9 @@ namespace DiscData
 		
 		partial void OnUserIdChanging(string value);
 		partial void OnUserIdChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public ForumNotify()
@@ -91,6 +96,28 @@ namespace DiscData
 					this._UserId = value;
 					this.SendPropertyChanged("UserId");
 					this.OnUserIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

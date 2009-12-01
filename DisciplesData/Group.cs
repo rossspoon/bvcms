@@ -110,11 +110,11 @@ namespace DiscData
         {
             return GetRoleUser(user, role) != null;
         }
-        public UserRole GetRoleUser(User user, string role)
+        public UserGroupRole GetRoleUser(User user, string role)
         {
-            var q = from ru in DbUtil.Db.UserRoles
-                    where ru.UserId == user.UserId && ru.Role.RoleName == role
-                    where ru.Role.GroupId == this.Id
+            var q = from ru in DbUtil.Db.UserGroupRoles
+                    where ru.UserId == user.UserId && ru.GroupRole.RoleName == role
+                    where ru.GroupRole.GroupId == this.Id
                     select ru;
             return q.SingleOrDefault();
         }
@@ -123,23 +123,23 @@ namespace DiscData
             var g = LoadByName(group);
             if (g == null)
                 return false;
-            var q = from ru in DbUtil.Db.UserRoles
-                    where ru.UserId == user.UserId && ru.Role.RoleName == ADMIN
-                    where ru.Role.GroupId == g.Id
+            var q = from ru in DbUtil.Db.UserGroupRoles
+                    where ru.UserId == user.UserId && ru.GroupRole.RoleName == ADMIN
+                    where ru.GroupRole.GroupId == g.Id
                     select ru;
             return q.SingleOrDefault() != null;
         }
-        public static Content GetNewWelcome()
+        public static ParaContent GetNewWelcome()
         {
             var w = ContentService.GetContent("default2_welcome");
-            var welcome = new Content();
+            var welcome = new ParaContent();
             welcome.Body = w.Body;
             welcome.ContentName = "groupwelcometext";
             if (DbUtil.Db.CurrentUser != null)
                 welcome.CreatedById = DbUtil.Db.CurrentUser.UserId;
             welcome.CreatedOn = DateTime.Now;
             welcome.Title = w.Title;
-            DbUtil.Db.Contents.InsertOnSubmit(welcome);
+            DbUtil.Db.ParaContents.InsertOnSubmit(welcome);
             return welcome;
         }
         public static void InsertWithRolesOnSubmit(string name)
@@ -152,38 +152,38 @@ namespace DiscData
             g.WelcomeText = GetNewWelcome();
             DbUtil.Db.Groups.InsertOnSubmit(g);
         }
-        private Role GetRole(string name)
+        private GroupRole GetRole(string name)
         {
-            return Roles.SingleOrDefault(r => r.RoleName == name);
+            return GroupRoles.SingleOrDefault(r => r.RoleName == name);
         }
         private void CreateRole(string name)
         {
             if (GetRole(name) != null)
                 return;
-            var role = new Role();
+            var role = new GroupRole();
             role.RoleName = name;
-            this.Roles.Add(role);
+            this.GroupRoles.Add(role);
         }
         public void DeleteWithRoleOnSubmit()
         {
-            foreach (var r in Roles)
-                DbUtil.Db.UserRoles.DeleteAllOnSubmit(r.UserRoles);
-            DbUtil.Db.Roles.DeleteAllOnSubmit(Roles);
+            foreach (var r in GroupRoles)
+                DbUtil.Db.UserGroupRoles.DeleteAllOnSubmit(r.UserGroupRoles);
+            DbUtil.Db.GroupRoles.DeleteAllOnSubmit(GroupRoles);
             DbUtil.Db.Invitations.DeleteAllOnSubmit(this.Invitations);
-            DbUtil.Db.Contents.DeleteOnSubmit(this.WelcomeText);
+            DbUtil.Db.ParaContents.DeleteOnSubmit(this.WelcomeText);
             DbUtil.Db.Groups.DeleteOnSubmit(this);
         }
         private void AddUserToRole(User user, string role)
         {
             var r = GetRole(role);
-            var ru = new UserRole();
+            var ru = new UserGroupRole();
             ru.UserId = user.UserId;
-            r.UserRoles.Add(ru);
+            r.UserGroupRoles.Add(ru);
         }
         private void RemoveUserFromRole(User user, string role)
         {
             var ru = GetRoleUser(user, role);
-            DbUtil.Db.UserRoles.DeleteOnSubmit(ru);
+            DbUtil.Db.UserGroupRoles.DeleteOnSubmit(ru);
         }
         private void SetRole(User user, string rolename, bool value)
         {
@@ -222,8 +222,8 @@ namespace DiscData
                 || HttpContext.Current.User.IsInRole("BlogAdministrator");
             return from g in DbUtil.Db.Groups
                    where //isadmin || 
-                        g.Roles.Any(r => r.RoleName == role
-                           && r.UserRoles.Any(ur => ur.UserId == ContextUser.UserId))
+                        g.GroupRoles.Any(r => r.RoleName == role
+                           && r.UserGroupRoles.Any(ur => ur.UserId == ContextUser.UserId))
                    select g;
         }
         public static IEnumerable<int> FetchIdsForUser()
@@ -256,7 +256,7 @@ namespace DiscData
         public static IEnumerable<User> GetUsersInGroup(int groupid)
         {
             return from u in DbUtil.Db.Users
-                   where u.UserRoles.Any(ur => ur.Role.GroupId == groupid)
+                   where u.UserGroupRoles.Any(ur => ur.GroupRole.GroupId == groupid)
                    select u;
         }
         public static IEnumerable<User> GetUsersInRole(string role)
@@ -268,8 +268,8 @@ namespace DiscData
         public IEnumerable<User> GetUsersInRole(GroupType gtype)
         {
             var role = GroupPostfix(gtype);
-            return from r in Roles
-                   from ru in r.UserRoles
+            return from r in GroupRoles
+                   from ru in r.UserGroupRoles
                    where r.RoleName == role
                    select ru.User;
         }

@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace DiscData
 {
-	[Table(Name="dbo.Page")]
-	public partial class Page : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.PageContent")]
+	public partial class PageContent : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -34,6 +34,10 @@ namespace DiscData
 		private int? _CreatedById;
 		
 		private int? _ModifiedById;
+		
+		private int? _CUserid;
+		
+		private int? _CUserid2;
 		
    		
     	
@@ -75,8 +79,14 @@ namespace DiscData
 		partial void OnModifiedByIdChanging(int? value);
 		partial void OnModifiedByIdChanged();
 		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
+		
+		partial void OnCUserid2Changing(int? value);
+		partial void OnCUserid2Changed();
+		
     #endregion
-		public Page()
+		public PageContent()
 		{
 			
 			
@@ -287,6 +297,50 @@ namespace DiscData
 					this._ModifiedById = value;
 					this.SendPropertyChanged("ModifiedById");
 					this.OnModifiedByIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid2", UpdateCheck=UpdateCheck.Never, Storage="_CUserid2", DbType="int")]
+		public int? CUserid2
+		{
+			get { return this._CUserid2; }
+
+			set
+			{
+				if (this._CUserid2 != value)
+				{
+				
+                    this.OnCUserid2Changing(value);
+					this.SendPropertyChanging();
+					this._CUserid2 = value;
+					this.SendPropertyChanged("CUserid2");
+					this.OnCUserid2Changed();
 				}
 
 			}

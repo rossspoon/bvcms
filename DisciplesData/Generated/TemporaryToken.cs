@@ -25,6 +25,8 @@ namespace DiscData
 		
 		private int? _CreatedBy;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< User> _User;
@@ -47,6 +49,9 @@ namespace DiscData
 		
 		partial void OnCreatedByChanging(int? value);
 		partial void OnCreatedByChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public TemporaryToken()
@@ -145,6 +150,28 @@ namespace DiscData
 					this._CreatedBy = value;
 					this.SendPropertyChanged("CreatedBy");
 					this.OnCreatedByChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

@@ -17,7 +17,7 @@ namespace DiscData
         {
             var d = new Dictionary<string, BlogCategoryXref>();
             foreach (var bc in this.BlogCategoryXrefs)
-                d.Add(bc.Category.Name, bc);
+                d.Add(bc.BlogCategory.Name, bc);
             return d;
         }
         public static BlogPost LoadFromId(int id)
@@ -36,11 +36,11 @@ namespace DiscData
         }
         public void AddCategory(string Category)
         {
-            var cat = DbUtil.Db.Categories.SingleOrDefault(ca => ca.Name == Category);
+            var cat = DbUtil.Db.BlogCategories.SingleOrDefault(ca => ca.Name == Category);
             if (cat == null)
             {
-                cat = new Category { Name = Category };
-                DbUtil.Db.Categories.InsertOnSubmit(cat);
+                cat = new BlogCategory { Name = Category };
+                DbUtil.Db.BlogCategories.InsertOnSubmit(cat);
                 DbUtil.Db.SubmitChanges();
             }
             var bc = new BlogCategoryXref { CatId = cat.Id };
@@ -202,7 +202,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
             DateTime dtnow = DateTime.Now;
             var q = from p in DbUtil.Db.BlogPosts
                     where p.BlogId == BlogId && p.EntryDate < dtnow
-                    where (category == "" || p.BlogCategoryXrefs.Any(bc => bc.Category.Name == category))
+                    where (category == "" || p.BlogCategoryXrefs.Any(bc => bc.BlogCategory.Name == category))
                     orderby p.EntryDate descending
                     select p;
             var c = q.Count();
@@ -222,16 +222,6 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
                     orderby p.EntryDate descending
                     select p;
             return q;
-        }
-        [DataObjectMethod(DataObjectMethodType.Select, true)]
-        public static IEnumerable<View.BlogRecentPostView> FetchTopNTitles(int BlogId, int count)
-        {
-            DateTime dtnow = DateTime.Now;
-            var q = from p in DbUtil.Db.ViewBlogRecentPostViews
-                    where p.BlogId == BlogId && p.EntryDate < dtnow
-                    orderby p.EntryDate descending
-                    select p;
-            return q.Take(count);
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public static List<BlogComment> FetchPostComments(int BlogPostId)

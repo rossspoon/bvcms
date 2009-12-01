@@ -21,6 +21,8 @@ namespace DiscData
 		
 		private string _NotifyType;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< User> _User;
@@ -37,6 +39,9 @@ namespace DiscData
 		
 		partial void OnNotifyTypeChanging(string value);
 		partial void OnNotifyTypeChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public PendingNotification()
@@ -91,6 +96,28 @@ namespace DiscData
 					this._NotifyType = value;
 					this.SendPropertyChanged("NotifyType");
 					this.OnNotifyTypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

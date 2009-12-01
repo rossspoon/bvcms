@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace DiscData
 {
-	[Table(Name="dbo.Category")]
-	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.BlogCategory")]
+	public partial class BlogCategory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -39,7 +39,7 @@ namespace DiscData
 		partial void OnNameChanged();
 		
     #endregion
-		public Category()
+		public BlogCategory()
 		{
 			
 			this._BlogCategoryXrefs = new EntitySet< BlogCategoryXref>(new Action< BlogCategoryXref>(this.attach_BlogCategoryXrefs), new Action< BlogCategoryXref>(this.detach_BlogCategoryXrefs)); 
@@ -133,13 +133,13 @@ namespace DiscData
 		private void attach_BlogCategoryXrefs(BlogCategoryXref entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = this;
+			entity.BlogCategory = this;
 		}
 
 		private void detach_BlogCategoryXrefs(BlogCategoryXref entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = null;
+			entity.BlogCategory = null;
 		}
 
 		

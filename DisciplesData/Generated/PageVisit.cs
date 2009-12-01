@@ -29,6 +29,8 @@ namespace DiscData
 		
 		private int? _UserId;
 		
+		private int? _CUserid;
+		
    		
     	
 		private EntityRef< User> _User;
@@ -57,6 +59,9 @@ namespace DiscData
 		
 		partial void OnUserIdChanging(int? value);
 		partial void OnUserIdChanged();
+		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
 		
     #endregion
 		public PageVisit()
@@ -199,6 +204,28 @@ namespace DiscData
 					this._UserId = value;
 					this.SendPropertyChanged("UserId");
 					this.OnUserIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

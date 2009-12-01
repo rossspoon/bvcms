@@ -28,12 +28,12 @@ namespace DiscData
 		
    		private EntitySet< Forum> _Forums;
 		
+   		private EntitySet< GroupRole> _GroupRoles;
+		
    		private EntitySet< Invitation> _Invitations;
 		
-   		private EntitySet< Role> _Roles;
-		
     	
-		private EntityRef< Content> _WelcomeText;
+		private EntityRef< ParaContent> _WelcomeText;
 		
 	#endregion
 	
@@ -59,12 +59,12 @@ namespace DiscData
 			
 			this._Forums = new EntitySet< Forum>(new Action< Forum>(this.attach_Forums), new Action< Forum>(this.detach_Forums)); 
 			
+			this._GroupRoles = new EntitySet< GroupRole>(new Action< GroupRole>(this.attach_GroupRoles), new Action< GroupRole>(this.detach_GroupRoles)); 
+			
 			this._Invitations = new EntitySet< Invitation>(new Action< Invitation>(this.attach_Invitations), new Action< Invitation>(this.detach_Invitations)); 
 			
-			this._Roles = new EntitySet< Role>(new Action< Role>(this.attach_Roles), new Action< Role>(this.detach_Roles)); 
 			
-			
-			this._WelcomeText = default(EntityRef< Content>); 
+			this._WelcomeText = default(EntityRef< ParaContent>); 
 			
 			OnCreated();
 		}
@@ -165,6 +165,16 @@ namespace DiscData
    		}
 
 		
+   		[Association(Name="FK_GroupRoles_Group", Storage="_GroupRoles", OtherKey="GroupId")]
+   		public EntitySet< GroupRole> GroupRoles
+   		{
+   		    get { return this._GroupRoles; }
+
+			set	{ this._GroupRoles.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Invitation_Group", Storage="_Invitations", OtherKey="GroupId")]
    		public EntitySet< Invitation> Invitations
    		{
@@ -175,28 +185,18 @@ namespace DiscData
    		}
 
 		
-   		[Association(Name="FK_Roles_Group", Storage="_Roles", OtherKey="GroupId")]
-   		public EntitySet< Role> Roles
-   		{
-   		    get { return this._Roles; }
-
-			set	{ this._Roles.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
     	
 		[Association(Name="Groups__WelcomeText", Storage="_WelcomeText", ThisKey="ContentId", IsForeignKey=true)]
-		public Content WelcomeText
+		public ParaContent WelcomeText
 		{
 			get { return this._WelcomeText.Entity; }
 
 			set
 			{
-				Content previousValue = this._WelcomeText.Entity;
+				ParaContent previousValue = this._WelcomeText.Entity;
 				if (((previousValue != value) 
 							|| (this._WelcomeText.HasLoadedOrAssignedValue == false)))
 				{
@@ -274,6 +274,19 @@ namespace DiscData
 		}
 
 		
+		private void attach_GroupRoles(GroupRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.Group = this;
+		}
+
+		private void detach_GroupRoles(GroupRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.Group = null;
+		}
+
+		
 		private void attach_Invitations(Invitation entity)
 		{
 			this.SendPropertyChanging();
@@ -281,19 +294,6 @@ namespace DiscData
 		}
 
 		private void detach_Invitations(Invitation entity)
-		{
-			this.SendPropertyChanging();
-			entity.Group = null;
-		}
-
-		
-		private void attach_Roles(Role entity)
-		{
-			this.SendPropertyChanging();
-			entity.Group = this;
-		}
-
-		private void detach_Roles(Role entity)
 		{
 			this.SendPropertyChanging();
 			entity.Group = null;

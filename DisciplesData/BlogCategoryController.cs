@@ -20,7 +20,7 @@ namespace DiscData
                 HttpContext.Current.Items["categories"] = DbUtil.Db.BlogCategoryXrefs.ToList();
             return from bc in (List<BlogCategoryXref>)(HttpContext.Current.Items["categories"])
                    where bc.BlogPostId == BlogPostId
-                   select bc.Category.Name;
+                   select bc.BlogCategory.Name;
         }
     }
 }

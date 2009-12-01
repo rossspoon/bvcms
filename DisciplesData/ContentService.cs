@@ -10,33 +10,33 @@ namespace DiscData
     {
         #region Page Methods
 
-        public static Page GetPage(string pageUrl)
+        public static PageContent GetPage(string pageUrl)
         {
-            var p = Page.LoadByUrl(pageUrl);
+            var p = PageContent.LoadByUrl(pageUrl);
             if (p == null)
                 throw new Exception("There is no page corresponding to " + pageUrl);
             return p;
         }
 
-        public static Page GetPage(int pageID)
+        public static PageContent GetPage(int pageID)
         {
-            var p = Page.LoadById(pageID);
+            var p = PageContent.LoadById(pageID);
             if (p == null)
                 throw new Exception("There is no page corresponding to " + pageID.ToString());
             return p;
         }
 
-        public static Content GetContent(string contentName)
+        public static ParaContent GetContent(string contentName)
         {
-            return DbUtil.Db.Contents.SingleOrDefault(c => c.ContentName == contentName);
+            return DbUtil.Db.ParaContents.SingleOrDefault(c => c.ContentName == contentName);
         }
-        public static Content GetContent(int id)
+        public static ParaContent GetContent(int id)
         {
-            return DbUtil.Db.Contents.SingleOrDefault(c => c.ContentID == id);
+            return DbUtil.Db.ParaContents.SingleOrDefault(c => c.ContentID == id);
         }
         public static bool ContentExists(string contentName)
         {
-            return 0 < DbUtil.Db.Contents.Count(c => c.ContentName == contentName);
+            return 0 < DbUtil.Db.ParaContents.Count(c => c.ContentName == contentName);
         }
 
         static string StripNonAlphaNumeric(string sIn)
@@ -61,13 +61,13 @@ namespace DiscData
             return result;
         }
 
-        public static void SavePage(Page p)
+        public static void SavePage(PageContent p)
         {
             if (p.PageID == 0)
             {
-                DbUtil.Db.Pages.InsertOnSubmit(p);
+                DbUtil.Db.PageContents.InsertOnSubmit(p);
                 p.PageUrl = TransformTitleToUrl(p.Title);
-                int existingUrls = DbUtil.Db.Pages.Count(pg => pg.PageUrl == p.PageUrl);
+                int existingUrls = DbUtil.Db.PageContents.Count(pg => pg.PageUrl == p.PageUrl);
                 if (existingUrls > 0)
                 {
                     existingUrls++;
@@ -86,8 +86,8 @@ namespace DiscData
 
         public static void DeletePage(int pageID)
         {
-            var p = Page.LoadById(pageID);
-            DbUtil.Db.Pages.DeleteOnSubmit(p);
+            var p = PageContent.LoadById(pageID);
+            DbUtil.Db.PageContents.DeleteOnSubmit(p);
             DbUtil.Db.SubmitChanges();
         }
         #endregion

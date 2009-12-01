@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace DiscData
 {
-	[Table(Name="dbo.Content")]
-	public partial class Content : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.ParaContent")]
+	public partial class ParaContent : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -28,6 +28,8 @@ namespace DiscData
 		private DateTime? _CreatedOn;
 		
 		private int? _CreatedById;
+		
+		private int? _CUserid;
 		
    		
    		private EntitySet< Group> _Groups;
@@ -58,8 +60,11 @@ namespace DiscData
 		partial void OnCreatedByIdChanging(int? value);
 		partial void OnCreatedByIdChanged();
 		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
+		
     #endregion
-		public Content()
+		public ParaContent()
 		{
 			
 			this._Groups = new EntitySet< Group>(new Action< Group>(this.attach_Groups), new Action< Group>(this.detach_Groups)); 
@@ -196,6 +201,28 @@ namespace DiscData
 					this._CreatedById = value;
 					this.SendPropertyChanged("CreatedById");
 					this.OnCreatedByIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}

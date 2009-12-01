@@ -79,8 +79,10 @@ namespace DiscData
 		
 		private bool? _ForceLogin;
 		
+		private int? _CUserId;
+		
    		
-   		private EntitySet< Page> _CreatedPages;
+   		private EntitySet< PageContent> _CreatedPages;
 		
    		private EntitySet< Blog> _Blogs;
 		
@@ -106,11 +108,15 @@ namespace DiscData
 		
    		private EntitySet< TemporaryToken> _TemporaryTokens;
 		
+   		private EntitySet< UserGroupRole> _UserGroupRoles;
+		
    		private EntitySet< UserRole> _UserRoles;
+		
+   		private EntitySet< Verse> _Verses;
 		
    		private EntitySet< VerseCategory> _VerseCategories;
 		
-   		private EntitySet< Page> _ModifiedPages;
+   		private EntitySet< PageContent> _ModifiedPages;
 		
     	
 	#endregion
@@ -213,11 +219,14 @@ namespace DiscData
 		partial void OnForceLoginChanging(bool? value);
 		partial void OnForceLoginChanged();
 		
+		partial void OnCUserIdChanging(int? value);
+		partial void OnCUserIdChanged();
+		
     #endregion
 		public User()
 		{
 			
-			this._CreatedPages = new EntitySet< Page>(new Action< Page>(this.attach_CreatedPages), new Action< Page>(this.detach_CreatedPages)); 
+			this._CreatedPages = new EntitySet< PageContent>(new Action< PageContent>(this.attach_CreatedPages), new Action< PageContent>(this.detach_CreatedPages)); 
 			
 			this._Blogs = new EntitySet< Blog>(new Action< Blog>(this.attach_Blogs), new Action< Blog>(this.detach_Blogs)); 
 			
@@ -243,11 +252,15 @@ namespace DiscData
 			
 			this._TemporaryTokens = new EntitySet< TemporaryToken>(new Action< TemporaryToken>(this.attach_TemporaryTokens), new Action< TemporaryToken>(this.detach_TemporaryTokens)); 
 			
+			this._UserGroupRoles = new EntitySet< UserGroupRole>(new Action< UserGroupRole>(this.attach_UserGroupRoles), new Action< UserGroupRole>(this.detach_UserGroupRoles)); 
+			
 			this._UserRoles = new EntitySet< UserRole>(new Action< UserRole>(this.attach_UserRoles), new Action< UserRole>(this.detach_UserRoles)); 
+			
+			this._Verses = new EntitySet< Verse>(new Action< Verse>(this.attach_Verses), new Action< Verse>(this.detach_Verses)); 
 			
 			this._VerseCategories = new EntitySet< VerseCategory>(new Action< VerseCategory>(this.attach_VerseCategories), new Action< VerseCategory>(this.detach_VerseCategories)); 
 			
-			this._ModifiedPages = new EntitySet< Page>(new Action< Page>(this.attach_ModifiedPages), new Action< Page>(this.detach_ModifiedPages)); 
+			this._ModifiedPages = new EntitySet< PageContent>(new Action< PageContent>(this.attach_ModifiedPages), new Action< PageContent>(this.detach_ModifiedPages)); 
 			
 			
 			OnCreated();
@@ -256,7 +269,7 @@ namespace DiscData
 		
     #region Columns
 		
-		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", DbType="int NOT NULL", IsPrimaryKey=true)]
 		public int UserId
 		{
 			get { return this._UserId; }
@@ -938,12 +951,34 @@ namespace DiscData
 		}
 
 		
+		[Column(Name="cUserId", UpdateCheck=UpdateCheck.Never, Storage="_CUserId", DbType="int")]
+		public int? CUserId
+		{
+			get { return this._CUserId; }
+
+			set
+			{
+				if (this._CUserId != value)
+				{
+				
+                    this.OnCUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CUserId = value;
+					this.SendPropertyChanged("CUserId");
+					this.OnCUserIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
    		[Association(Name="CreatedPages__CreatedBy", Storage="_CreatedPages", OtherKey="CreatedById")]
-   		public EntitySet< Page> CreatedPages
+   		public EntitySet< PageContent> CreatedPages
    		{
    		    get { return this._CreatedPages; }
 
@@ -1072,12 +1107,32 @@ namespace DiscData
    		}
 
 		
+   		[Association(Name="FK_UserGroupRole_Users", Storage="_UserGroupRoles", OtherKey="UserId")]
+   		public EntitySet< UserGroupRole> UserGroupRoles
+   		{
+   		    get { return this._UserGroupRoles; }
+
+			set	{ this._UserGroupRoles.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_UserRole_Users", Storage="_UserRoles", OtherKey="UserId")]
    		public EntitySet< UserRole> UserRoles
    		{
    		    get { return this._UserRoles; }
 
 			set	{ this._UserRoles.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Verse_Users", Storage="_Verses", OtherKey="CreatedBy")]
+   		public EntitySet< Verse> Verses
+   		{
+   		    get { return this._Verses; }
+
+			set	{ this._Verses.Assign(value); }
 
    		}
 
@@ -1093,7 +1148,7 @@ namespace DiscData
 
 		
    		[Association(Name="ModifiedPages__ModifiedBy", Storage="_ModifiedPages", OtherKey="ModifiedById")]
-   		public EntitySet< Page> ModifiedPages
+   		public EntitySet< PageContent> ModifiedPages
    		{
    		    get { return this._ModifiedPages; }
 
@@ -1123,13 +1178,13 @@ namespace DiscData
 		}
 
    		
-		private void attach_CreatedPages(Page entity)
+		private void attach_CreatedPages(PageContent entity)
 		{
 			this.SendPropertyChanging();
 			entity.CreatedBy = this;
 		}
 
-		private void detach_CreatedPages(Page entity)
+		private void detach_CreatedPages(PageContent entity)
 		{
 			this.SendPropertyChanging();
 			entity.CreatedBy = null;
@@ -1292,6 +1347,19 @@ namespace DiscData
 		}
 
 		
+		private void attach_UserGroupRoles(UserGroupRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_UserGroupRoles(UserGroupRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
 		private void attach_UserRoles(UserRole entity)
 		{
 			this.SendPropertyChanging();
@@ -1299,6 +1367,19 @@ namespace DiscData
 		}
 
 		private void detach_UserRoles(UserRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_Verses(Verse entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_Verses(Verse entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -1318,13 +1399,13 @@ namespace DiscData
 		}
 
 		
-		private void attach_ModifiedPages(Page entity)
+		private void attach_ModifiedPages(PageContent entity)
 		{
 			this.SendPropertyChanging();
 			entity.ModifiedBy = this;
 		}
 
-		private void detach_ModifiedPages(Page entity)
+		private void detach_ModifiedPages(PageContent entity)
 		{
 			this.SendPropertyChanging();
 			entity.ModifiedBy = null;

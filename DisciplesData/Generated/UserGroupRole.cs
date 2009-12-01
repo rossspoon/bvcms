@@ -10,23 +10,23 @@ using System.ComponentModel;
 
 namespace DiscData
 {
-	[Table(Name="dbo.PrayerSlot")]
-	public partial class PrayerSlot : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.UserGroupRole")]
+	public partial class UserGroupRole : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 	#region Private Fields
 		
-		private int _Day;
-		
-		private DateTime _Time;
-		
 		private int _UserId;
+		
+		private int _RoleId;
 		
 		private int? _CUserid;
 		
    		
     	
+		private EntityRef< GroupRole> _GroupRole;
+		
 		private EntityRef< User> _User;
 		
 	#endregion
@@ -36,22 +36,21 @@ namespace DiscData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnDayChanging(int value);
-		partial void OnDayChanged();
-		
-		partial void OnTimeChanging(DateTime value);
-		partial void OnTimeChanged();
-		
 		partial void OnUserIdChanging(int value);
 		partial void OnUserIdChanged();
+		
+		partial void OnRoleIdChanging(int value);
+		partial void OnRoleIdChanged();
 		
 		partial void OnCUseridChanging(int? value);
 		partial void OnCUseridChanged();
 		
     #endregion
-		public PrayerSlot()
+		public UserGroupRole()
 		{
 			
+			
+			this._GroupRole = default(EntityRef< GroupRole>); 
 			
 			this._User = default(EntityRef< User>); 
 			
@@ -60,50 +59,6 @@ namespace DiscData
 
 		
     #region Columns
-		
-		[Column(Name="Day", UpdateCheck=UpdateCheck.Never, Storage="_Day", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int Day
-		{
-			get { return this._Day; }
-
-			set
-			{
-				if (this._Day != value)
-				{
-				
-                    this.OnDayChanging(value);
-					this.SendPropertyChanging();
-					this._Day = value;
-					this.SendPropertyChanged("Day");
-					this.OnDayChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Time", UpdateCheck=UpdateCheck.Never, Storage="_Time", DbType="datetime NOT NULL", IsPrimaryKey=true)]
-		public DateTime Time
-		{
-			get { return this._Time; }
-
-			set
-			{
-				if (this._Time != value)
-				{
-				
-                    this.OnTimeChanging(value);
-					this.SendPropertyChanging();
-					this._Time = value;
-					this.SendPropertyChanged("Time");
-					this.OnTimeChanged();
-				}
-
-			}
-
-		}
-
 		
 		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", DbType="int NOT NULL", IsPrimaryKey=true)]
 		public int UserId
@@ -123,6 +78,31 @@ namespace DiscData
 					this._UserId = value;
 					this.SendPropertyChanged("UserId");
 					this.OnUserIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RoleId", UpdateCheck=UpdateCheck.Never, Storage="_RoleId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int RoleId
+		{
+			get { return this._RoleId; }
+
+			set
+			{
+				if (this._RoleId != value)
+				{
+				
+					if (this._GroupRole.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RoleId = value;
+					this.SendPropertyChanged("RoleId");
+					this.OnRoleIdChanged();
 				}
 
 			}
@@ -160,7 +140,49 @@ namespace DiscData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_PrayerSlot_Users", Storage="_User", ThisKey="UserId", IsForeignKey=true)]
+		[Association(Name="FK_UserGroupRole_GroupRoles", Storage="_GroupRole", ThisKey="RoleId", IsForeignKey=true)]
+		public GroupRole GroupRole
+		{
+			get { return this._GroupRole.Entity; }
+
+			set
+			{
+				GroupRole previousValue = this._GroupRole.Entity;
+				if (((previousValue != value) 
+							|| (this._GroupRole.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._GroupRole.Entity = null;
+						previousValue.UserGroupRoles.Remove(this);
+					}
+
+					this._GroupRole.Entity = value;
+					if (value != null)
+					{
+						value.UserGroupRoles.Add(this);
+						
+						this._RoleId = value.RoleId;
+						
+					}
+
+					else
+					{
+						
+						this._RoleId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("GroupRole");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_UserGroupRole_Users", Storage="_User", ThisKey="UserId", IsForeignKey=true)]
 		public User User
 		{
 			get { return this._User.Entity; }
@@ -175,13 +197,13 @@ namespace DiscData
 					if (previousValue != null)
 					{
 						this._User.Entity = null;
-						previousValue.PrayerSlots.Remove(this);
+						previousValue.UserGroupRoles.Remove(this);
 					}
 
 					this._User.Entity = value;
 					if (value != null)
 					{
-						value.PrayerSlots.Add(this);
+						value.UserGroupRoles.Add(this);
 						
 						this._UserId = value.UserId;
 						

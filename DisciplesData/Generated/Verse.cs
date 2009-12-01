@@ -35,10 +35,14 @@ namespace DiscData
 		
 		private int? _CreatedBy;
 		
+		private int? _CUserid;
+		
    		
    		private EntitySet< VerseCategoryXref> _VerseCategoryXrefs;
 		
     	
+		private EntityRef< User> _User;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -73,12 +77,17 @@ namespace DiscData
 		partial void OnCreatedByChanging(int? value);
 		partial void OnCreatedByChanged();
 		
+		partial void OnCUseridChanging(int? value);
+		partial void OnCUseridChanged();
+		
     #endregion
 		public Verse()
 		{
 			
 			this._VerseCategoryXrefs = new EntitySet< VerseCategoryXref>(new Action< VerseCategoryXref>(this.attach_VerseCategoryXrefs), new Action< VerseCategoryXref>(this.detach_VerseCategoryXrefs)); 
 			
+			
+			this._User = default(EntityRef< User>); 
 			
 			OnCreated();
 		}
@@ -272,11 +281,36 @@ namespace DiscData
 				if (this._CreatedBy != value)
 				{
 				
+					if (this._User.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnCreatedByChanging(value);
 					this.SendPropertyChanging();
 					this._CreatedBy = value;
 					this.SendPropertyChanged("CreatedBy");
 					this.OnCreatedByChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
+		public int? CUserid
+		{
+			get { return this._CUserid; }
+
+			set
+			{
+				if (this._CUserid != value)
+				{
+				
+                    this.OnCUseridChanging(value);
+					this.SendPropertyChanging();
+					this._CUserid = value;
+					this.SendPropertyChanged("CUserid");
+					this.OnCUseridChanged();
 				}
 
 			}
@@ -302,6 +336,48 @@ namespace DiscData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_Verse_Users", Storage="_User", ThisKey="CreatedBy", IsForeignKey=true)]
+		public User User
+		{
+			get { return this._User.Entity; }
+
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._User.Entity = null;
+						previousValue.Verses.Remove(this);
+					}
+
+					this._User.Entity = value;
+					if (value != null)
+					{
+						value.Verses.Add(this);
+						
+						this._CreatedBy = value.UserId;
+						
+					}
+
+					else
+					{
+						
+						this._CreatedBy = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("User");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
