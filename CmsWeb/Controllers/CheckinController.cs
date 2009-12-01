@@ -84,7 +84,7 @@ namespace CMSWeb.Controllers
                     CheckInTimeX = dt,
                     OrganizationId = id,
                     PeopleId = pid,
-                    KeyCode = KeyCode
+                    //KeyCode = KeyCode
                 };
                 DbUtil.Db.CheckInTimes.InsertOnSubmit(ck);
                 DbUtil.Db.SubmitChanges();

@@ -46,5 +46,22 @@ namespace CMSWeb.Controllers
             }
             return new EmptyResult();
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult Codes(int? id)
+        {
+            var vols = new VolunteersModel();
+            if (id.HasValue)
+                UpdateModel(vols);
+            var q = from p in DbUtil.Db.VolInterestInterestCodes
+                    where p.VolInterest.OpportunityCode == vols.OpportunityId
+                    select new { Key = p.VolInterestCode.Description.Replace(' ', '_').Replace('-','_'), PeopleId = "p" + p.VolInterest.PeopleId };
+            return Json(q);
+        }
+        public ActionResult CustomReport(int id)
+        {
+            var m = new VolunteersModel();
+            m.OpportunityId = id;
+            return View(m);
+        }
     }
 }

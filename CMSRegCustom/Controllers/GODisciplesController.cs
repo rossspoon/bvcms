@@ -12,7 +12,6 @@ using System.Net.Mail;
 
 namespace CMSRegCustom.Controllers
 {
-    [HandleError]
     public class GODisciplesController : CMSWebCommon.Controllers.CmsController
     {
         public GODisciplesController()

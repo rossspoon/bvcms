@@ -42,6 +42,9 @@
                 UrlKey
             </th>
             <th>
+                FormContent
+            </th>
+            <th>
                 Email Yes Cva
             </th>
             <th>
@@ -68,6 +71,10 @@
             <td>
                 <span id='<%="UrlKey." + item.Id %>' 
                     class='clickEdit'><%=item.UrlKey%></span>
+            </td>
+            <td>
+                <span id='<%="Form." + item.Id %>' 
+                    class='clickEdit'><%=item.FormContent%></span>
             </td>
             <td>
                 <span id='<%="EmailYesCva." + item.Id %>' 

@@ -10,7 +10,6 @@ using UtilityExtensions;
 
 namespace CMSWebSetup.Controllers
 {
-    [HandleError]
     public class VolOpportunityController : CMSWebCommon.Controllers.CmsController
     {
         [Authorize(Roles = "Admin")]
@@ -62,6 +61,9 @@ namespace CMSWebSetup.Controllers
                     break;
                 case "UrlKey":
                     o.UrlKey = value;
+                    break;
+                case "Form":
+                    o.FormContent = value;
                     break;
                 case "EmailNoCva":
                     o.EmailNoCva = value;

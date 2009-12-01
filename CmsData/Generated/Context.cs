@@ -1314,6 +1314,50 @@ namespace CmsData
     #endregion
 	#region Scalar Functions
 		
+		[Function(Name="dbo.GetAttendedTodaysMeeting", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? GetAttendedTodaysMeeting(
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "thisday", DbType="int")] int? thisday,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((Boolean)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                thisday,
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetTodaysMeetingHour", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? GetTodaysMeetingHour(
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "thisday", DbType="int")] int? thisday
+            )
+		{
+			return ((DateTime)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                thisday
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetTodaysMeetingId", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? GetTodaysMeetingId(
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "thisday", DbType="int")] int? thisday
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                thisday
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.AttendStr_3", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string AttendStr3(
@@ -1444,6 +1488,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.ScheduleId", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? ScheduleId(
+            [Parameter(Name = "day", DbType="int")] int? day,
+            [Parameter(Name = "time", DbType="datetime")] DateTime? time
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                day,
+                time
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.AttendPct_2", IsComposable = true)]
 		[return: Parameter(DbType = "real")]
 		public decimal? AttendPct2(
@@ -1458,17 +1516,17 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.GetTodaysMeetingId", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? GetTodaysMeetingId(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "thisday", DbType="int")] int? thisday
+		[Function(Name="dbo.GetScheduleTime", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? GetScheduleTime(
+            [Parameter(Name = "day", DbType="int")] int? day,
+            [Parameter(Name = "time", DbType="datetime")] DateTime? time
             )
 		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
+			return ((DateTime)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                thisday
+                day,
+                time
                 ).ReturnValue));
 		}
 
@@ -1495,36 +1553,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
                 oid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetTodaysMeetingHour", IsComposable = true)]
-		[return: Parameter(DbType = "datetime")]
-		public DateTime? GetTodaysMeetingHour(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "thisday", DbType="int")] int? thisday
-            )
-		{
-			return ((DateTime)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                thisday
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetAttendedTodaysMeeting", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? GetAttendedTodaysMeeting(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "thisday", DbType="int")] int? thisday,
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Boolean)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                thisday,
-                pid
                 ).ReturnValue));
 		}
 
@@ -2047,34 +2075,6 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.ScheduleId", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? ScheduleId(
-            [Parameter(Name = "day", DbType="int")] int? day,
-            [Parameter(Name = "time", DbType="datetime")] DateTime? time
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                day,
-                time
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetScheduleTime", IsComposable = true)]
-		[return: Parameter(DbType = "datetime")]
-		public DateTime? GetScheduleTime(
-            [Parameter(Name = "day", DbType="int")] int? day,
-            [Parameter(Name = "time", DbType="datetime")] DateTime? time
-            )
-		{
-			return ((DateTime)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                day,
-                time
                 ).ReturnValue));
 		}
 

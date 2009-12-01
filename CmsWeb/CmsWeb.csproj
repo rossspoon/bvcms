@@ -1874,18 +1874,23 @@
     <Content Include="Config\smtp.config" />
     <Content Include="Content\attention48.png" />
     <Content Include="Content\check48.png" />
+    <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />
     <Content Include="Content\jquery.multiSelect.css" />
     <Content Include="Content\jquery.timepickr.css" />
     <Content Include="Content\clockpick.css" />
+    <Content Include="Content\jquery.treeview.css" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
+    <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.packed.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />
     <Content Include="Content\js\jquery.strings.js" />
     <Content Include="Content\js\jquery.timepickr.min.js" />
+    <Content Include="Content\js\jquery.treeview.js" />
+    <Content Include="Content\js\jquery.treeview.min.js" />
     <Content Include="Content\js\jquery.utils.js" />
     <Content Include="Content\js\ui.timepickr.js" />
     <Content Include="Content\js\ui.timepickr.min.js" />
@@ -1897,6 +1902,19 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
+    <Content Include="demos\checkboxtree\checkboxtree.html" />
+    <Content Include="demos\checkboxtree\css\checkboxtree.css" />
+    <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
+    <Content Include="Content\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
+    <Content Include="Content\images\checkboxtree\bg-checkbox-over.gif" />
+    <Content Include="Content\images\checkboxtree\bg-checkbox.gif" />
+    <Content Include="Content\images\checkboxtree\img-arrow-blank.gif" />
+    <Content Include="Content\images\checkboxtree\img-arrow-collapsed.gif" />
+    <Content Include="Content\images\checkboxtree\img-arrow-expanded.gif" />
+    <Content Include="demos\checkboxtree\HTMLPage1.htm" />
+    <Content Include="demos\checkboxtree\js\jquery-latest.js" />
+    <Content Include="demos\checkboxtree\js\jquery.checkboxtree.js" />
+    <Content Include="demos\checkboxtree\dv.htm" />
     <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
@@ -1963,7 +1981,6 @@
     <Content Include="Views\Register\Login.aspx" />
     <Content Include="Views\Register\Visit.aspx" />
     <Content Include="Views\Register\Visit2.aspx" />
-    <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\ExportToolBar.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Pager.aspx" />
@@ -1979,8 +1996,10 @@
     <Content Include="Views\Task\Tabs.aspx" />
     <Content Include="Views\Task\TabsOptions.aspx" />
     <Content Include="Views\Task\TabsOptionsRows.aspx" />
+    <Content Include="Views\Volunteers\CustomReport.aspx" />
     <Content Include="Views\Volunteers\Index.aspx" />
     <Content Include="Views\Volunteer\Confirm.aspx" />
+    <Content Include="Views\Volunteer\PickList2.aspx" />
     <Content Include="Views\Volunteer\Index.aspx" />
     <Content Include="Views\Volunteer\PickList.aspx" />
     <Content Include="Views\Volunteer\Unknown.aspx" />
@@ -2008,6 +2027,7 @@
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailVisitorSubRpt.rdlc" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

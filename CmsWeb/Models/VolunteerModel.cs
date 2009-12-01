@@ -58,6 +58,10 @@ namespace CMSWeb.Models
                 return _Birthday;
             }
         }
+        public string formcontent
+        {
+            get { return DbUtil.Content(Opportunity.FormContent).Body; }
+        }
 
         public string zip { get; set; }
         public string phone {get; set;}

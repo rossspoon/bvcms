@@ -11,7 +11,6 @@ using UtilityExtensions;
 
 namespace CMSRegCustom.Controllers
 {
-    [HandleError]
     public class StepClassController : CMSWebCommon.Controllers.CmsController
     {
         public StepClassController()

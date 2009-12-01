@@ -159,8 +159,8 @@ namespace CMSRegCustom.Models
             };
             var p = Person.Add(f, 30,
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
-                    DbUtil.Settings("GODisciplesOrigin", "0").ToInt(),
-                    DbUtil.Settings("GODisciplesEntry", "0").ToInt());
+                    DbUtil.Settings("GODisciplesOrigin", "70").ToInt(),
+                    DbUtil.Settings("GODisciplesEntry", "15").ToInt());
             p.EmailAddress = email;
             p.CampusId = campus;
             if (p.Age >= 18)

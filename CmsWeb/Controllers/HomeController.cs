@@ -14,7 +14,6 @@ using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
-    [HandleError]
     public class HomeController : CMSWebCommon.Controllers.CmsController
     {
         public ActionResult Index()

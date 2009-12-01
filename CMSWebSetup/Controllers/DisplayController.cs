@@ -14,7 +14,6 @@ using UtilityExtensions;
 
 namespace CMSWebSetup.Controllers
 {
-    [HandleError]
     [Authorize(Roles = "Admin")]
     public class DisplayController : CMSWebCommon.Controllers.CmsController
     {

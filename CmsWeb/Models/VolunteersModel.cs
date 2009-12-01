@@ -24,6 +24,17 @@ namespace CMSWeb.Models
             {
                 _OpportunityId = value;
                 DbUtil.Db.SetUserPreference("OpportunityId", value);
+                Opportunity = DbUtil.Db.VolOpportunities.SingleOrDefault(o => o.Id == value);
+            }
+        }
+        public VolOpportunity Opportunity;
+        public string reportcontent
+        {
+            get
+            {
+                if (Opportunity == null)
+                    return string.Empty;
+                return DbUtil.Content(Opportunity.FormContent + "Report").Body;
             }
         }
 

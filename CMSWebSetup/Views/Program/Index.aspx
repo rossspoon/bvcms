@@ -10,8 +10,16 @@
                 style: 'display: inline',
                 width: '200px'
             });
+            $('.clickSelect').editable('/Program/Edit', {
+                data: " {'true':'True','false':'False'}",
+                type: 'select',
+                submit: 'OK',
+                callback: function(value, settings) {
+                    window.location = "/Program/";
+                }
+            });
             $("a.delete").click(function(ev) {
-                if(confirm("are you sure?"))
+                if (confirm("are you sure?"))
                     $.post("/Program/Delete/" + $(this).attr("id"), null, function(ret) {
                         window.location = "/Program/";
                     });
@@ -28,6 +36,9 @@
             <th>
                 ProgramName
             </th>
+            <th>
+                Has Main Fellowship Orgs
+            </th>
             <th></th>
         </tr>
 
@@ -38,6 +49,10 @@
             <td>
                 <span id='<%="ProgramName." + item.Id %>' 
                     class='clickEdit'><%=item.Name%></span>
+            </td>
+            <td>
+                <span id='<%="MainFellowship." + item.Id %>' 
+                    class='clickSelect'><%=item.BFProgram%></span>
             </td>
             <td>
                 <a id='d<%= item.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>

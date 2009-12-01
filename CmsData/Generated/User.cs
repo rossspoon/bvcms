@@ -71,6 +71,8 @@ namespace CmsData
 		
 		private Guid? _ResetPasswordCode;
 		
+		private string _DefaultGroup;
+		
    		
    		private EntitySet< ActivityLog> _ActivityLogs;
 		
@@ -174,6 +176,9 @@ namespace CmsData
 		
 		partial void OnResetPasswordCodeChanging(Guid? value);
 		partial void OnResetPasswordCodeChanged();
+		
+		partial void OnDefaultGroupChanging(string value);
+		partial void OnDefaultGroupChanged();
 		
     #endregion
 		public User()
@@ -790,6 +795,28 @@ namespace CmsData
 					this._ResetPasswordCode = value;
 					this.SendPropertyChanged("ResetPasswordCode");
 					this.OnResetPasswordCodeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DefaultGroup", UpdateCheck=UpdateCheck.Never, Storage="_DefaultGroup", DbType="varchar(50)")]
+		public string DefaultGroup
+		{
+			get { return this._DefaultGroup; }
+
+			set
+			{
+				if (this._DefaultGroup != value)
+				{
+				
+                    this.OnDefaultGroupChanging(value);
+					this.SendPropertyChanging();
+					this._DefaultGroup = value;
+					this.SendPropertyChanged("DefaultGroup");
+					this.OnDefaultGroupChanged();
 				}
 
 			}

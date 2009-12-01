@@ -55,6 +55,8 @@ namespace CmsData
 		
 		private DateTime? _ModifiedDate;
 		
+		private int? _ScheduleId;
+		
 		private int? _EntryPointId;
 		
 		private int? _ParentOrgId;
@@ -88,8 +90,6 @@ namespace CmsData
 		private int? _SchedDay;
 		
 		private DateTime? _MeetingTime;
-		
-		private int? _ScheduleId;
 		
    		
    		private EntitySet< Organization> _ChildOrgs;
@@ -193,6 +193,9 @@ namespace CmsData
 		partial void OnModifiedDateChanging(DateTime? value);
 		partial void OnModifiedDateChanged();
 		
+		partial void OnScheduleIdChanging(int? value);
+		partial void OnScheduleIdChanged();
+		
 		partial void OnEntryPointIdChanging(int? value);
 		partial void OnEntryPointIdChanged();
 		
@@ -243,9 +246,6 @@ namespace CmsData
 		
 		partial void OnMeetingTimeChanging(DateTime? value);
 		partial void OnMeetingTimeChanged();
-		
-		partial void OnScheduleIdChanging(int? value);
-		partial void OnScheduleIdChanged();
 		
     #endregion
 		public Organization()
@@ -721,6 +721,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int")]
+		public int? ScheduleId
+		{
+			get { return this._ScheduleId; }
+
+			set
+			{
+				if (this._ScheduleId != value)
+				{
+				
+                    this.OnScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleId = value;
+					this.SendPropertyChanged("ScheduleId");
+					this.OnScheduleIdChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="EntryPointId", UpdateCheck=UpdateCheck.Never, Storage="_EntryPointId", DbType="int")]
 		public int? EntryPointId
 		{
@@ -1097,28 +1119,6 @@ namespace CmsData
 					this._MeetingTime = value;
 					this.SendPropertyChanged("MeetingTime");
 					this.OnMeetingTimeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int")]
-		public int? ScheduleId
-		{
-			get { return this._ScheduleId; }
-
-			set
-			{
-				if (this._ScheduleId != value)
-				{
-				
-                    this.OnScheduleIdChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleId = value;
-					this.SendPropertyChanged("ScheduleId");
-					this.OnScheduleIdChanged();
 				}
 
 			}

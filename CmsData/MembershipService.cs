@@ -71,7 +71,7 @@ namespace CmsData
         }
         public static string FetchUsername(string first, string last)
         {
-            var username = first.ToLower() + last.ToLower()[0];
+            var username = first.Trim().ToLower() + last.Trim().ToLower()[0];
             var uname = username;
             var i = 1;
             while (DbUtil.Db.Users.SingleOrDefault(u => u.Username == uname) != null)

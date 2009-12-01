@@ -21,8 +21,9 @@ namespace CMSWebSetup.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create()
         {
-            var m = new Program { Name = "NEW" };
-            DbUtil.Db.Programs.InsertOnSubmit(m);
+            var p = new Program { Name = "NEW PROGRAM", BFProgram = false };
+            DbUtil.Db.Programs.InsertOnSubmit(p);
+            p.Divisions.Add(new Division {  Name = "NEW DIVISION" });
             DbUtil.Db.SubmitChanges();
             return Redirect("/Program/");
         }
@@ -41,6 +42,11 @@ namespace CMSWebSetup.Controllers
                 case "ProgramName":
                     p.Name = value;
                     break;
+                case "MainFellowship": 
+                    p.BFProgram = bool.Parse(value);
+                    if (p.BFProgram.Value)
+                        DbUtil.Db.ExecuteCommand("update Program set BFProgram = 0");
+                    break;
             }
             DbUtil.Db.SubmitChanges();
             return c;
@@ -53,6 +59,7 @@ namespace CMSWebSetup.Controllers
             var p = DbUtil.Db.Programs.SingleOrDefault(m => m.Id == id.ToInt());
             if (p == null)
                 return new EmptyResult();
+            DbUtil.Db.Divisions.DeleteAllOnSubmit(p.Divisions);
             DbUtil.Db.Programs.DeleteOnSubmit(p);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();

@@ -37,6 +37,8 @@ namespace CmsData
 		
 		private string _HelpMessage;
 		
+		private string _FormContent;
+		
    		
    		private EntitySet< VolInterest> _VolInterests;
 		
@@ -79,6 +81,9 @@ namespace CmsData
 		
 		partial void OnHelpMessageChanging(string value);
 		partial void OnHelpMessageChanged();
+		
+		partial void OnFormContentChanging(string value);
+		partial void OnFormContentChanged();
 		
     #endregion
 		public VolOpportunity()
@@ -308,6 +313,28 @@ namespace CmsData
 					this._HelpMessage = value;
 					this.SendPropertyChanged("HelpMessage");
 					this.OnHelpMessageChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FormContent", UpdateCheck=UpdateCheck.Never, Storage="_FormContent", DbType="varchar(50)")]
+		public string FormContent
+		{
+			get { return this._FormContent; }
+
+			set
+			{
+				if (this._FormContent != value)
+				{
+				
+                    this.OnFormContentChanging(value);
+					this.SendPropertyChanging();
+					this._FormContent = value;
+					this.SendPropertyChanged("FormContent");
+					this.OnFormContentChanged();
 				}
 
 			}

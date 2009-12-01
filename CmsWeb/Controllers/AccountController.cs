@@ -15,11 +15,8 @@ using System.IO;
 
 namespace CMSWeb.Controllers
 {
-
-    [HandleError]
     public class AccountController : CMSWebCommon.Controllers.CmsController
     {
-
         // This constructor is used by the MVC framework to instantiate the controller using
         // the default forms authentication and membership providers.
 
@@ -94,13 +91,9 @@ CKEditorFuncNum, baseurl + fn, error));
 
             FormsAuth.SignIn(userName, rememberMe);
             if (!String.IsNullOrEmpty(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
             else
-            {
                 return Redirect("/Home/");
-            }
         }
 
         [Authorize(Roles = "Admin")]
