@@ -230,7 +230,7 @@
     <div id="CommonFooter">
         <div id="Common">
             <div style="text-align: center">
-                &copy;<%=DateTime.Now.Year.ToString()%>
+                &copy;<%=Util.Now.Year.ToString()%>
                 <asp:Label ID="FooterEntity" runat="server" Text="Label">Bellevue Baptist Church</asp:Label>
                 All rights reserved.<br />
             </div>

@@ -176,7 +176,7 @@ namespace CMSRegCustom.Models
             var i = ImageData.Image.NewTextFromBits(bits);
             vb.ImgId = i.Id;
             vb.IsDocument = true;
-            vb.Uploaded = DateTime.Now;
+            vb.Uploaded = Util.Now;
             vb.ActiveInAnotherChurch = otherchurch;
 			vb.PubPhoto = pubphoto == 1;
             vb.GradeCompleted = grade;

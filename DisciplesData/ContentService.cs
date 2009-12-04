@@ -79,7 +79,7 @@ namespace DiscData
             else
             {
                 p.ModifiedById = DbUtil.Db.CurrentUser.UserId;
-                p.ModifiedOn = DateTime.Now;
+                p.ModifiedOn = Util.Now;
             }
             DbUtil.Db.SubmitChanges();
         }

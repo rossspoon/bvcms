@@ -49,7 +49,7 @@ namespace CMSWeb.Reports
             var qid = this.QueryString<int?>("queryid");
             var div = this.QueryString<int?>("div");
             var schedule = this.QueryString<int?>("schedule");
-            dt = DateTime.Now;
+            dt = Util.Now;
             var tm = this.QueryString<string>("tm");
 
             doc = new Document(PageSize.LETTER, 36, 36, 64, 64);

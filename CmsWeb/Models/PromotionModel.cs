@@ -246,7 +246,7 @@ namespace CMSWeb.Models
                     t.OrganizationId,
                     pid,
                     (int)OrganizationMember.MemberTypeCode.Member,
-                    DateTime.Now,
+                    Util.Now,
                     null,
                     true);
             }

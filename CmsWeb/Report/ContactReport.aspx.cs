@@ -40,7 +40,7 @@ namespace CMSWeb.Reports
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             var qid = this.QueryString<int?>("id");
-            dt = DateTime.Now;
+            dt = Util.Now;
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
@@ -202,7 +202,7 @@ namespace CMSWeb.Reports
             var list = q.ToList();
 
             var attstr = new StringBuilder("\n");
-            var dt = DateTime.Now;
+            var dt = Util.Now;
             var yearago = dt.AddYears(-1);
             while (dt > yearago)
             {

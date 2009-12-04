@@ -234,7 +234,7 @@ namespace CMSRegCustom.Models
             var transaction = new SaleTransaction
             {
                 PeopleId = person.PeopleId,
-                SaleDate = DateTime.Now,
+                SaleDate = Util.Now,
                 ItemId = saleitem.Id,
                 ItemDescription = saleitem.Description,
                 Quantity = testing ? 1 : quantity,

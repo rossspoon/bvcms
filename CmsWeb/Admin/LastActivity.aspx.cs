@@ -16,14 +16,14 @@ namespace CMSWeb.Admin
         protected void Page_Load(object sender, EventArgs e)
         {
             Label2.Text = Server.MapPath("~/");
-            var dt = DateTime.Now;
+            var dt = Util.Now;
             var q = from u in DbUtil.Db.Users
                     orderby u.LastActivityDate descending
                     where u.LastActivityDate != null
                     select new { u.Person.Name, u.LastActivityDate, u.Host, u.UserId, u.Username };
             var sb = new StringBuilder();
 
-            sb.AppendFormat("<tr><td></td><td>&nbsp;</td><td colspan=\"2\">{0}</td></tr>".Fmt(DateTime.Now));
+            sb.AppendFormat("<tr><td></td><td>&nbsp;</td><td colspan=\"2\">{0}</td></tr>".Fmt(Util.Now));
             var n = 0;
             foreach(var i in q)
             {

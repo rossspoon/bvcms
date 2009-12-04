@@ -59,7 +59,7 @@ namespace CMSWeb.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Create(int id, int oid)
         {
-            var reg = new RecReg { PeopleId = id, Uploaded = DateTime.Now, OrgId=oid };
+            var reg = new RecReg { PeopleId = id, Uploaded = Util.Now, OrgId=oid };
             DbUtil.Db.RecRegs.InsertOnSubmit(reg);
             DbUtil.Db.SubmitChanges();
             return Json(new { id = reg.Id });

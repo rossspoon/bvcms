@@ -56,7 +56,7 @@ namespace CMSRegCustom.Controllers
                 };
                 DbUtil.Db.MOBSRegs.InsertOnSubmit(reg);
             }
-            reg.Created = DateTime.Now;
+            reg.Created = Util.Now;
             reg.Email = m.email;
             reg.NumTickets = m.tickets;
 

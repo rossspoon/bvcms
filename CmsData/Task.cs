@@ -24,7 +24,7 @@ namespace CmsData
         public string AboutName { get { return AboutWho == null ? "" : AboutWho.Name; } }
         partial void OnCreated()
         {
-            CreatedOn = DateTime.Now;
+            CreatedOn = Util.Now;
         }
         public static TaskList GetRequiredTaskList(string name, int pid)
         {

@@ -21,7 +21,7 @@ namespace DiscData.View
             get
             {
                 var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
-                var compareTime = DateTime.Now.Subtract(onlineSpan);
+                var compareTime = Util.Now.Subtract(onlineSpan);
                 return LastVisit > compareTime;// && LastVisit != CreationDate;
             }
         }

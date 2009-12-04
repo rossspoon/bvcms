@@ -133,7 +133,7 @@ namespace CmsData
             var neworg = new Organization
             {
                 AttendTrkLevelId = AttendTrkLevelId,
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 DivisionId = DivisionId,
                 LeaderMemberTypeId = LeaderMemberTypeId,

@@ -57,7 +57,7 @@ namespace CMSPresenter
             user.IsApproved = IsApproved;
             user.MustChangePassword = MustChangePassword;
             if (user.IsLockedOut ^ IsLockedOut)
-                user.LastLockedOutDate = DateTime.Now;
+                user.LastLockedOutDate = Util.Now;
             user.IsLockedOut = IsLockedOut;
             if (PeopleId > 0)
                 user.PeopleId = PeopleId;

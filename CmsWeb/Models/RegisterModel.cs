@@ -292,7 +292,7 @@ namespace CMSWeb.Models
                 {
                     OrganizationId = OrgId,
                     MeetingDate = dt,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
                     Location = ret.Location,

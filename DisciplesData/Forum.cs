@@ -23,7 +23,7 @@ namespace DiscData
         public ForumEntry NewEntry(string title, string entry)
         {
             return DbUtil.Db.ForumNewEntry(Id, null, title, entry,
-                DateTime.Now, HttpContext.Current.User.Identity.Name).Single();
+                Util.Now, HttpContext.Current.User.Identity.Name).Single();
         }
         public static Forum LoadFromId(int id)
         {

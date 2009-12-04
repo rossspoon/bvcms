@@ -62,15 +62,15 @@ By logging in below, you agree that you understand this purpose and will abide b
             if (user == null)
                 NotifyAdmins("attempt to login by non-user on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is not a user"
-                            .Fmt(Login1.UserName, DateTime.Now));
+                            .Fmt(Login1.UserName, Util.Now));
             else if (user.IsLockedOut)
                 NotifyAdmins("user locked out on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is locked out"
-                            .Fmt(user.UserName, DateTime.Now));
+                            .Fmt(user.UserName, Util.Now));
             else if (!user.IsApproved)
                 NotifyAdmins("unapproved user logging in on " + Request.Url.Authority,
                         "{0} tried to login at {1} but is not approved"
-                            .Fmt(user.UserName, DateTime.Now));
+                            .Fmt(user.UserName, Util.Now));
         }
         public static void CheckStaffRole(string name)
         {
@@ -78,7 +78,7 @@ By logging in below, you agree that you understand this purpose and will abide b
             {
                 NotifyAdmins("user loggedin without a role",
                     string.Format("{0} visited site at {1} but does not have Staff role",
-                        name, DateTime.Now));
+                        name, Util.Now));
                 FormsAuthentication.SignOut();
                 HttpContext.Current.Response.Redirect("Errors/AccessDenied.htm");
             }
@@ -107,7 +107,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                     e.Authenticated = true;
                     Notify(WebConfigurationManager.AppSettings["senderrorsto"], 
                         "{0} is being impersonated".Fmt(Login1.UserName), 
-                        DateTime.Now.ToString());
+                        Util.Now.ToString());
                 }
                 else
                     e.Authenticated = CMSMembershipProvider.provider.ValidateUser(Login1.UserName, Login1.Password);

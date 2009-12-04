@@ -138,7 +138,7 @@ namespace CMSRegCustom.Models
                 {
                     var q = from m in DbUtil.Db.Meetings
                             where m.Organization.OrganizationId == DbUtil.Settings("SmlGroupId", "0").ToInt()
-                            where m.MeetingDate > DateTime.Now
+                            where m.MeetingDate > Util.Now
                             orderby m.MeetingDate ascending
                             select m;
                     _meeting = q.FirstOrDefault();
@@ -318,7 +318,7 @@ namespace CMSRegCustom.Models
                 a.OrganizationId == meeting.OrganizationId
                 && a.PeopleId == person.PeopleId
                 && a.AttendanceFlag == true
-                && a.MeetingDate > DateTime.Now);
+                && a.MeetingDate > Util.Now);
             if (attend != null)
                 Attend.RecordAttendance(person.PeopleId, attend.MeetingId, false);
             Attend.RecordAttendance(person.PeopleId, meeting.MeetingId, true);
@@ -340,7 +340,7 @@ namespace CMSRegCustom.Models
                 a.OrganizationId == childcaremeeting.OrganizationId
                 && a.PeopleId == c.PeopleId
                 && a.AttendanceFlag == true
-                && a.MeetingDate > DateTime.Now);
+                && a.MeetingDate > Util.Now);
             if (attend != null)
                 Attend.RecordAttendance(c.PeopleId, attend.MeetingId, false);
             Attend.RecordAttendance(c.PeopleId, childcaremeeting.MeetingId, true);

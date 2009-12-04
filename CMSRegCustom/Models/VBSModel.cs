@@ -160,7 +160,7 @@ namespace CMSRegCustom.Models
                           orderby m.MeetingDate descending
                           select m;
                 var meeting = qme.FirstOrDefault();
-                if (meeting != null && (DateTime.Now - meeting.MeetingDate.Value).TotalHours <= 24)
+                if (meeting != null && (Util.Now - meeting.MeetingDate.Value).TotalHours <= 24)
                     Attend.RecordAttendance(v.PeopleId.Value, meeting.MeetingId, true);
             }
             return FetchVBSInfo(id);

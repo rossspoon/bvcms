@@ -179,7 +179,7 @@ namespace CmsData
 
             var user = Db.Users.Single(u => u.Username == username);
             user.Password = EncodePassword(newPwd);
-            user.LastPasswordChangedDate = DateTime.Now;
+            user.LastPasswordChangedDate = Util.Now;
             Db.SubmitChanges();
             return true;
         }
@@ -236,7 +236,7 @@ namespace CmsData
                 if (per != null)
                     pid = per.PeopleId;
 
-                var createDate = DateTime.Now;
+                var createDate = Util.Now;
                 var user = new User
                 {
                     PeopleId = pid,
@@ -282,7 +282,7 @@ namespace CmsData
             var u = GetUser(username, false);
             if (u == null)
             {
-                var createDate = DateTime.Now;
+                var createDate = Util.Now;
                 var user = new User
                 {
                     PeopleId = PeopleId,
@@ -332,7 +332,7 @@ namespace CmsData
         {
             var Db = new CMSDataContext(Util.ConnectionString);
             var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
-            var compareTime = DateTime.Now.Subtract(onlineSpan);
+            var compareTime = Util.Now.Subtract(onlineSpan);
             return Db.Users.Count(u => u.LastActivityDate > compareTime);
         }
 
@@ -375,7 +375,7 @@ namespace CmsData
                 MembershipUser mu = GetMu(u);
                 if (userIsOnline)
                 {
-                    u.LastActivityDate = DateTime.Now;
+                    u.LastActivityDate = Util.Now;
                     string host = HttpContext.Current.Request.Url.Host;
                     if (host.Length > 98)
                         host = host.Substring(0, 98);
@@ -397,7 +397,7 @@ namespace CmsData
                 MembershipUser mu = GetMu(u);
                 if (userIsOnline)
                 {
-                    u.LastActivityDate = DateTime.Now;
+                    u.LastActivityDate = Util.Now;
                     string host = HttpContext.Current.Request.Url.Host;
                     if (host.Length > 98)
                         host = host.Substring(0, 98);
@@ -432,7 +432,7 @@ namespace CmsData
             var u = Db.Users.SingleOrDefault(user => user.Username == username);
             if (u != null)
             {
-                u.LastLockedOutDate = DateTime.Now;
+                u.LastLockedOutDate = Util.Now;
                 u.IsLockedOut = false;
                 Db.SubmitChanges();
             }
@@ -483,7 +483,7 @@ namespace CmsData
                 throw new MembershipPasswordException("Incorrect password answer.");
             }
             user.Password = EncodePassword(newPassword);
-            user.LastPasswordChangedDate = DateTime.Now;
+            user.LastPasswordChangedDate = Util.Now;
             Db.SubmitChanges();
             return newPassword;
         }
@@ -508,7 +508,7 @@ namespace CmsData
             if (CheckPassword(password, user.Password))
                 if (user.IsApproved)
                 {
-                    user.LastLoginDate = DateTime.Now;
+                    user.LastLoginDate = Util.Now;
                     Db.SubmitChanges();
                     return true;
                 }
@@ -524,25 +524,25 @@ namespace CmsData
             if (failureType == "password")
             {
                 failureCount = user.FailedPasswordAttemptCount;
-                windowStart = user.FailedPasswordAttemptWindowStart ?? DateTime.Now;
+                windowStart = user.FailedPasswordAttemptWindowStart ?? Util.Now;
             }
             else if (failureType == "passwordAnswer")
             {
                 failureCount = user.FailedPasswordAnswerAttemptCount;
-                windowStart = user.FailedPasswordAnswerAttemptWindowStart ?? DateTime.Now;
+                windowStart = user.FailedPasswordAnswerAttemptWindowStart ?? Util.Now;
             }
             DateTime windowEnd = windowStart.AddMinutes(PasswordAttemptWindow);
-            if (failureCount == 0 || DateTime.Now > windowEnd)
+            if (failureCount == 0 || Util.Now > windowEnd)
             {
                 if (failureType == "password")
                 {
                     user.FailedPasswordAttemptCount = 1;
-                    user.FailedPasswordAttemptWindowStart = DateTime.Now;
+                    user.FailedPasswordAttemptWindowStart = Util.Now;
                 }
                 else if (failureType == "passwordAnswer")
                 {
                     user.FailedPasswordAnswerAttemptCount = 1;
-                    user.FailedPasswordAnswerAttemptWindowStart = DateTime.Now;
+                    user.FailedPasswordAnswerAttemptWindowStart = Util.Now;
                 }
             }
             else if (failureCount++ >= MaxInvalidPasswordAttempts)

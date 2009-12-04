@@ -224,7 +224,7 @@ namespace CMSRegCustom.Models
 
                 // make a new first post on blog
                 var firstpost = DbUtil.Content("GODisciplesFirstPost");
-                var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, DateTime.Now);
+                var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, Util.Now);
                 var cat = DiscData.DbUtil.Db.BlogCategories.Single(ca => ca.Name == "Discipleship");
                 var bc = new DiscData.BlogCategoryXref { CatId = cat.Id };
                 p.BlogCategoryXrefs.Add(bc);
@@ -246,7 +246,7 @@ namespace CMSRegCustom.Models
                     {
                         AttendTrkLevelId = (int)Organization.AttendTrackLevelCode.Individual,
                         OrganizationStatusId = (int)Organization.OrgStatusCode.Active,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = Util.Now,
                         CreatedBy = Util.UserId1,
                         OrganizationName = STR_GODisciplesLeaders,
                         SecurityTypeId = 0,
@@ -292,18 +292,18 @@ namespace CMSRegCustom.Models
             // make member of leaders
             OrganizationMember.InsertOrgMembers(leaderorg.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member,
-                DateTime.Now, null, false);
+                Util.Now, null, false);
 
             // make leader of own new org
             OrganizationMember.InsertOrgMembers(neworg.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Leader,
-                DateTime.Now, null, false);
+                Util.Now, null, false);
         }
         public void PerformMemberSetup()
         {
             OrganizationMember.InsertOrgMembers(neworg.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member,
-                DateTime.Now, null, false);
+                Util.Now, null, false);
             MakeDiscUser();
             if (!person.EmailAddress.HasValue())
                 person.EmailAddress = email;

@@ -227,7 +227,7 @@ namespace CMSWeb
             DbUtil.LogActivity("Adding contact to: {0}".Fmt(person.Name));
             var c = new NewContact
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 ContactDate = Util.Now.Date,
                 ContactTypeId = 99,
@@ -270,7 +270,7 @@ namespace CMSWeb
             DbUtil.LogActivity("Adding contact from: {0}".Fmt(person.Name));
             var c = new NewContact
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 ContactDate = Util.Now.Date,
                 ContactTypeId = 99,

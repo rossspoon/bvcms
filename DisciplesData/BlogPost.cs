@@ -48,7 +48,7 @@ namespace DiscData
         }
         partial void OnEntryDateChanging(DateTime? value)
         {
-            DateTime dtnow = DateTime.Now;
+            DateTime dtnow = Util.Now;
             if (value > dtnow)
                 NotifyLater = true;
         }
@@ -56,7 +56,7 @@ namespace DiscData
         {
             get
             {
-                TimeSpan ts = DateTime.Now
+                TimeSpan ts = Util.Now
                                 - (Updated.HasValue ? Updated.Value : EntryDate.Value);
                 return ts.TotalSeconds > 10 && ts.TotalHours < 24;
             }
@@ -165,7 +165,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
             var bc = new BlogComment();
             bc.Comment = text;
             bc.PosterId = DbUtil.Db.CurrentUser.UserId;
-            bc.DatePosted = DateTime.Now;
+            bc.DatePosted = Util.Now;
             BlogComments.Add(bc);
             return bc;
         }
@@ -182,7 +182,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public static IEnumerable<BlogPost> FetchTopNPosts(int BlogId, int count)
         {
-            DateTime dtnow = DateTime.Now;
+            DateTime dtnow = Util.Now;
             var q = from p in DbUtil.Db.BlogPosts
                     where p.BlogId == BlogId && p.EntryDate < dtnow
                     orderby p.EntryDate descending
@@ -199,7 +199,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public static IEnumerable<BlogPost> FetchPageOfPosts(int BlogId, string category, int count, int Page, out int tcount)
         {
-            DateTime dtnow = DateTime.Now;
+            DateTime dtnow = Util.Now;
             var q = from p in DbUtil.Db.BlogPosts
                     where p.BlogId == BlogId && p.EntryDate < dtnow
                     where (category == "" || p.BlogCategoryXrefs.Any(bc => bc.BlogCategory.Name == category))
@@ -215,7 +215,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
         public static IEnumerable<BlogPost> FetchMonthOfPosts(int BlogId, DateTime month)
         {
             var nextmon = month.AddMonths(1);
-            var dtnow = DateTime.Now;
+            var dtnow = Util.Now;
             var q = from p in DbUtil.Db.BlogPosts
                     where p.BlogId == BlogId && p.EntryDate < dtnow
                     where p.EntryDate >= month && p.EntryDate < nextmon

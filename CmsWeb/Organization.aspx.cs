@@ -192,7 +192,7 @@ namespace CMSWeb
 
             mt = new CmsData.Meeting
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 OrganizationId = organization.OrganizationId,
                 GroupMeetingFlag = false,
@@ -219,7 +219,7 @@ namespace CMSWeb
 
             mt = new CmsData.Meeting
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 OrganizationId = organization.OrganizationId,
                 GroupMeetingFlag = true,

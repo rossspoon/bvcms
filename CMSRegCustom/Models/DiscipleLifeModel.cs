@@ -164,7 +164,7 @@ namespace CMSRegCustom.Models
                     dt[0] = DateTime.Parse(AgeDate);
                     dt[1] = dt[0].AddYears(1);
                     dt[2] = dt[0].AddYears(-1);
-                    var now = DateTime.Now;
+                    var now = Util.Now;
                     var q = from d in dt
                             orderby Math.Abs(d.Subtract(now).TotalDays)
                             select d;

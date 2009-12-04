@@ -73,7 +73,7 @@ namespace CMSRegCustom.Models
         {
             var q = from m in DbUtil.Db.Meetings
                     where m.Organization.OrganizationName == name
-                    where m.MeetingDate > DateTime.Now.AddDays(6)
+                    where m.MeetingDate > Util.Now.AddDays(6)
                     orderby m.MeetingDate ascending
                     select new { Dt = m.MeetingDate.Value, Id = m.MeetingId.ToString() };
             var q2 = from m in q.ToList()
@@ -102,7 +102,7 @@ namespace CMSRegCustom.Models
                 a.OrganizationId == meeting.OrganizationId
                 && a.PeopleId == person.PeopleId
                 && a.AttendanceFlag == true
-                && a.MeetingDate > DateTime.Now);
+                && a.MeetingDate > Util.Now);
             if (attend != null)
                 Attend.RecordAttendance(person.PeopleId, attend.MeetingId, false);
             Attend.RecordAttendance(person.PeopleId, meeting.MeetingId, true);

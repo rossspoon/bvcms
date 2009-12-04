@@ -97,7 +97,7 @@ namespace CMSWeb
             nt.PeopleId = t.PeopleId;
             nt.OrganizationName = t.OrganizationName;
             nt.MemberTypeId = t.MemberTypeId;
-            nt.CreatedDate = DateTime.Now;
+            nt.CreatedDate = Util.Now;
             //nt.TransactionNotes = "fix";
             DbUtil.Db.EnrollmentTransactions.InsertOnSubmit(nt);
             return nt;

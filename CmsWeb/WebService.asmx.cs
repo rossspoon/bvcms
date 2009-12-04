@@ -37,14 +37,14 @@ namespace CMSWeb
                     vb.UserInfo = UserInfo;
                     Db.VBSApps.InsertOnSubmit(vb);
                     vb.ImgId = InsertImage(mimetype, bits);
-                    vb.Uploaded = DateTime.Now;
+                    vb.Uploaded = Util.Now;
                     break;
                 case 2:
                     var rr = new RecReg();
                     rr.UserInfo = UserInfo;
                     Db.RecRegs.InsertOnSubmit(rr);
                     rr.ImgId = InsertImage(mimetype, bits);
-                    rr.Uploaded = DateTime.Now;
+                    rr.Uploaded = Util.Now;
                     break;
                 case 3:
                     if ((PeopleId ?? 0) == 0)
@@ -172,7 +172,7 @@ namespace CMSWeb
                 if (f == null)
                     throw new Exception("Unknown Fund ({0})".Fmt(d.Fund));
             }
-            var now = DateTime.Now;
+            var now = Util.Now;
             foreach (var d in a)
             {
                 var bd = new CmsData.BundleDetail

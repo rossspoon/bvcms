@@ -193,8 +193,8 @@ namespace CmsData
             if (!dt0.HasValue)
                 return -1;
             var dt = dt0.Value;
-            years = DateTime.Now.Year - dt.Year;
-            if (DateTime.Now.Month < dt.Month || (DateTime.Now.Month == dt.Month && DateTime.Now.Day < dt.Day))
+            years = Util.Now.Year - dt.Year;
+            if (Util.Now.Month < dt.Month || (Util.Now.Month == dt.Month && Util.Now.Day < dt.Day))
                 years--;
             return years;
         }
@@ -238,7 +238,7 @@ namespace CmsData
                             InactiveDate = om.InactiveDate,
                             MemberTypeId = om.MemberTypeId,
                             ModifiedBy = Util.UserId1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = Util.Now,
                             PeopleId = otherid,
                             AttendPct = om.AttendPct,
                             AttendStr = om.AttendStr,

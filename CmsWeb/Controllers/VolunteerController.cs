@@ -52,7 +52,7 @@ namespace CMSWeb.Controllers
             {
                 v = new VolInterest
                 {
-                    Created = DateTime.Now,
+                    Created = Util.Now,
                     PeopleId = m.person.PeopleId,
                 };
                 m.person.EmailAddress = m.email;

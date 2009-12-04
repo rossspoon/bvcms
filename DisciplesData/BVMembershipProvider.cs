@@ -171,7 +171,7 @@ namespace DiscData
 
             var user = Db.Users.Single(u => u.Username == username);
             user.Password = EncodePassword(newPwd);
-            user.LastPasswordChangedDate = DateTime.Now;
+            user.LastPasswordChangedDate = Util.Now;
             Db.SubmitChanges();
             return true;
         }
@@ -216,7 +216,7 @@ namespace DiscData
             var u = GetUser(username, false);
             if (u == null)
             {
-                var createDate = DateTime.Now;
+                var createDate = Util.Now;
                 var user = new User
                 {
                     Username = username,
@@ -265,7 +265,7 @@ namespace DiscData
 
         public static User MakeNewUser(string username, string password, string email, bool isApproved, int? PeopleId)
         {
-            var createDate = DateTime.Now;
+            var createDate = Util.Now;
             var user = new User
             {
                 PeopleId = PeopleId,
@@ -315,7 +315,7 @@ namespace DiscData
         {
             var Db = new DiscDataContext(Util.ConnectionStringDisc);
             var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
-            var compareTime = DateTime.Now.Subtract(onlineSpan);
+            var compareTime = Util.Now.Subtract(onlineSpan);
             return Db.Users.Count(u => u.LastActivityDate > compareTime);
         }
 
@@ -356,7 +356,7 @@ namespace DiscData
                 MembershipUser mu = GetMu(u);
                 if (userIsOnline)
                 {
-                    u.LastActivityDate = DateTime.Now;
+                    u.LastActivityDate = Util.Now;
                     string host = HttpContext.Current.Request.Url.Host;
                     if (host.Length > 98)
                         host = host.Substring(0, 98);
@@ -378,7 +378,7 @@ namespace DiscData
                 MembershipUser mu = GetMu(u);
                 if (userIsOnline)
                 {
-                    u.LastActivityDate = DateTime.Now;
+                    u.LastActivityDate = Util.Now;
                     string host = HttpContext.Current.Request.Url.Host;
                     if (host.Length > 98)
                         host = host.Substring(0, 98);
@@ -412,7 +412,7 @@ namespace DiscData
             var u = Db.Users.SingleOrDefault(user => user.Username == username);
             if (u != null)
             {
-                u.LastLockedOutDate = DateTime.Now;
+                u.LastLockedOutDate = Util.Now;
                 u.IsLockedOut = false;
                 Db.SubmitChanges();
             }
@@ -462,7 +462,7 @@ namespace DiscData
                 throw new MembershipPasswordException("Incorrect password answer.");
             }
             user.Password = EncodePassword(newPassword);
-            user.LastPasswordChangedDate = DateTime.Now;
+            user.LastPasswordChangedDate = Util.Now;
             Db.SubmitChanges();
             return newPassword;
         }
@@ -486,7 +486,7 @@ namespace DiscData
             if (CheckPassword(password, user.Password))
                 if (user.IsApproved)
                 {
-                    user.LastLoginDate = DateTime.Now;
+                    user.LastLoginDate = Util.Now;
                     Db.SubmitChanges();
                     return true;
                 }

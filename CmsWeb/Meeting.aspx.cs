@@ -172,7 +172,7 @@ namespace CMSWeb
 			{
                 newMtg = new CmsData.Meeting
 				{
-					CreatedDate = DateTime.Now,
+					CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
 					OrganizationId = orgid,
 					GroupMeetingFlag = false,

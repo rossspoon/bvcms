@@ -57,7 +57,7 @@ namespace CmsData
                         MeetingCt = o.Meetings.Count()
                     };
             var i = q.Single();
-            if (DateTime.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
+            if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
             {
                 var enrollid = Db.EnrollmentTransactions.Where(et =>
                     et.PeopleId == PeopleId

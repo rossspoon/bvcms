@@ -26,7 +26,7 @@ namespace DiscData
             {
                 var r = new ForumUserRead();
                 r.UserId = user.UserId;
-                r.CreatedOn = DateTime.Now;
+                r.CreatedOn = Util.Now;
                 this.ForumUserReads.Add(r);
             }
         }
@@ -37,7 +37,7 @@ namespace DiscData
         public ForumEntry NewReply(string title, string entry)
         {
             return DbUtil.Db.ForumNewEntry(ForumId, Id, title, entry,
-                DateTime.Now, HttpContext.Current.User.Identity.Name).Single();
+                Util.Now, HttpContext.Current.User.Identity.Name).Single();
         }
         public ICollection<MailAddress> GetNotificationList()
         {

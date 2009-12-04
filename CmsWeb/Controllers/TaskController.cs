@@ -84,7 +84,7 @@ namespace CMSWeb.Controllers
             {
                 listid = TaskModel.InBoxId(model.PeopleId);
                 var c = new HttpCookie("tasktab", model.CurTab);
-                c.Expires = DateTime.Now.AddDays(360);
+                c.Expires = Util.Now.AddDays(360);
                 Response.Cookies.Add(c);
             }
             var tid = model.AddTask(model.PeopleId, listid, TaskDesc);

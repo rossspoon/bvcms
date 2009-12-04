@@ -61,7 +61,7 @@ namespace DiscData
         {
             var i = new Invitation();
             i.Password = passcode;
-            i.Expires = DateTime.Now.AddMonths(2);
+            i.Expires = Util.Now.AddMonths(2);
             Invitations.Add(i);
         }
 
@@ -137,7 +137,7 @@ namespace DiscData
             welcome.ContentName = "groupwelcometext";
             if (DbUtil.Db.CurrentUser != null)
                 welcome.CreatedById = DbUtil.Db.CurrentUser.UserId;
-            welcome.CreatedOn = DateTime.Now;
+            welcome.CreatedOn = Util.Now;
             welcome.Title = w.Title;
             DbUtil.Db.ParaContents.InsertOnSubmit(welcome);
             return welcome;

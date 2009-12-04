@@ -14,7 +14,7 @@ namespace CMSWeb.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var start = DateTime.Now;
+            var start = Util.Now;
             DbUtil.Db.ExecuteCommand("truncate table dbo.BadET");
             var q = from t in DbUtil.Db.EnrollmentTransactions
                     group t by new { t.PeopleId, t.OrganizationId } into g
@@ -50,7 +50,7 @@ namespace CMSWeb.Admin
                     AddBadET(list, g.tlast, 10);
                 WriteBadEts(list);
             }
-            var time = DateTime.Now.Subtract(start);
+            var time = Util.Now.Subtract(start);
             Label1.Text = time.ToString();
         }
         void AddBadET(List<BadET> list, EnrollmentTransaction t, int flag)

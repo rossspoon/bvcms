@@ -68,7 +68,7 @@ namespace DiscData
         }
         public BlogPost NewPost(string title, string entry)
         {
-            DateTime dt = DateTime.Now;
+            DateTime dt = Util.Now;
             return NewPost(title, entry, DbUtil.Db.CurrentUser.Username, dt);
         }
         public BlogPost NewPost(string title, string entry, string user, DateTime dt)

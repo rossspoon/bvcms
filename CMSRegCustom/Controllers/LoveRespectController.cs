@@ -51,7 +51,7 @@ namespace CMSRegCustom.Controllers
                 m.AddPeople();
             m.EnrollInClass(m.person1);
             m.EnrollInClass(m.person2);
-            var dt = DateTime.Now;
+            var dt = Util.Now;
             var q = from s in DbUtil.Db.LoveRespects
                     where s.HerId == m.person2.PeopleId
                     where s.HimId == m.person1.PeopleId
@@ -71,7 +71,7 @@ namespace CMSRegCustom.Controllers
                     HisEmailPreferred = m.preferredEmail1,
                     Relationship = m.Relation,
                     OrgId = m.OrgId,
-                    Created = DateTime.Now,
+                    Created = Util.Now,
                     PreferNight = m.night
                 };
                 DbUtil.Db.LoveRespects.InsertOnSubmit(lr);

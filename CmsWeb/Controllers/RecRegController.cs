@@ -78,7 +78,7 @@ namespace CMSWeb.Controllers
                     UserInfo = "online",
                     OrgId = m.orgid,
                     DivId = m.divid,
-                    Uploaded = DateTime.Now,
+                    Uploaded = Util.Now,
                     Email = m.email,
                     FeePaid = false,
                 };

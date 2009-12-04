@@ -125,7 +125,7 @@ namespace CMSWeb
             var d = family.People.Single(p => p.PeopleId == l.CommandArgument.ToInt());
             var f = new Family
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 AddressLineOne = d.PrimaryAddress,
                 AddressLineTwo = d.PrimaryAddress2,

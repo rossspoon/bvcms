@@ -14,7 +14,7 @@ namespace DiscData
             var cc = new VerseCategory();
             cc.Name = " A new copy of " + Name;
             cc.CreatedBy = DbUtil.Db.CurrentUser.UserId;
-            cc.CreatedOn = DateTime.Now;
+            cc.CreatedOn = Util.Now;
             DbUtil.Db.VerseCategories.InsertOnSubmit(cc);
             foreach (VerseCategoryXref x1 in this.VerseCategoryXrefs)
             {
@@ -59,7 +59,7 @@ namespace DiscData
             var c = new VerseCategory();
             c.Name = Name;
             c.CreatedBy = DbUtil.Db.CurrentUser.UserId;
-            c.CreatedOn = DateTime.Now;
+            c.CreatedOn = Util.Now;
             DbUtil.Db.VerseCategories.InsertOnSubmit(c);
             DbUtil.Db.SubmitChanges();
         }
@@ -68,7 +68,7 @@ namespace DiscData
         {
             var c = VerseCategory.LoadById(id);
             c.Name = Name;
-            c.ModifiedOn = DateTime.Now;
+            c.ModifiedOn = Util.Now;
             DbUtil.Db.SubmitChanges();
         }
         [DataObjectMethod(DataObjectMethodType.Delete, true)]
@@ -101,7 +101,7 @@ namespace DiscData
                 var cc = VerseCategory.LoadByName("Starter Set", "admin").CopyWithVerses();
                 cc.Name = "Starter Set";
                 cc.CreatedBy = DbUtil.Db.GetUser(Owner).UserId;
-                cc.CreatedOn = DateTime.Now;
+                cc.CreatedOn = Util.Now;
                 DbUtil.Db.SubmitChanges();
             }
             return from cv in DbUtil.Db.ViewVerseCategoriesViews

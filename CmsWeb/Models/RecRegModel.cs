@@ -180,7 +180,7 @@ namespace CMSWeb.Models
             get
             {
                 var dt = DateTime.Parse(RecAgeDiv.ExpirationDt);
-                return RecAgeDiv.Fee.Value + (dt < DateTime.Now ? (RecAgeDiv.ExtraFee ?? 0) : 0);
+                return RecAgeDiv.Fee.Value + (dt < Util.Now ? (RecAgeDiv.ExtraFee ?? 0) : 0);
             }
         }
 

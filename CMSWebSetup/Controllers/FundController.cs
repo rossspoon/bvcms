@@ -28,7 +28,7 @@ namespace CMSWebSetup.Controllers
                     FundId=fundid,
                     ChurchId = 1,
                     CreatedBy = Util.UserId1,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     RecordStatus = false,
                     FundStatusId = 1,
                     FundTypeId = 1,
