@@ -77,7 +77,7 @@ namespace CMSWeb.Controllers
             var pid = q.SingleOrDefault();
             if (pid > 0)
             {
-                var dt = DateTime.Now;
+                var dt = Util.Now;
                 var ck = new CheckInTime
                 {
                     CheckInDay = dt.Date,

@@ -15,7 +15,7 @@
             });
         });
     </script>
-    <h2>Volunteer for <%=Model.Opportunity.Description %></h2>
+    <h2><%=Model.Opportunity.Description %></h2>
 
     <% using (Html.BeginForm()) { %>
     <%=Html.Hidden("Id", Model.VolInterestId) %>

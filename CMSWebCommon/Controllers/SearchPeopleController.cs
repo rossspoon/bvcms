@@ -38,7 +38,7 @@ namespace CMSWebCommon.Controllers
         public JsonResult AddNew()
         {
             var m = new Models.SearchPeopleModel();
-            UpdateModel(m);
+            UpdateModel(m); 
             var err = m.ValidateAddNew();
             if (err.HasValue())
                 return Json(new { err = err });

@@ -8,9 +8,9 @@
         <td colspan="2">
             <a id="ClearForm" href="#">clear</a>
         </td>
-        <th>OrgId:</th>
-        <td>
-            <input name="OrgId" title="Organization Id" style="width:90px" type="text" class="clearable" />
+        <th>Campus:</th>
+        <td colspan="2" nowrap="nowrap">
+            <%=Html.DropDownList("CampusId", Model.CampusCodes(), new { style = "width: 150px" })%>
         </td>
     </tr>
     <tr>
@@ -19,8 +19,8 @@
             <input name="Name" title="Starting letters of First<space>Last or just Last" style="width:190px" type="text" class="clearable" />
         </td>
         <th>Tags:</th>
-        <td>
-            <%=Html.DropDownList("TagId", Model.UserTags())%>
+        <td colspan="2">
+            <%=Html.DropDownList("TagId", Model.UserTags(), new {style="width: 240px"})%>
         </td>
     </tr>
     <tr>
@@ -32,6 +32,7 @@
         <td>
             <%=Html.DropDownList("MemberStatusId", Model.MemberStatusCodes())%>
         </td>
+        <th align="left">OrgId</th>
     </tr>
     <tr>
         <th>Address:</th>
@@ -42,13 +43,18 @@
         <td>
             <%=Html.DropDownList("GenderId", Model.GenderCodes())%>
         </td>
+        <td>
+            <input name="OrgId" title="Organization Id" style="width:50px" type="text" class="clearable" />
+        </td>
     </tr>
     <tr>
         <th>Date of Birth:</th>
         <td valign="top">
             <input name="DateOfBirth" title="YYYY or MM or MM/DD or MM/DD/YY" style="width:190px" type="text" class="clearable" />
         </td>
-        <td colspan="2">
+        <th>Married:</th>
+        <td><%=Html.DropDownList("MaritalStatusId", Model.MaritalStatusCodes()) %></td>
+        <td>
             <input id="Search" type="button" tabindex="6" value="Search" />
         </td>
     </tr>

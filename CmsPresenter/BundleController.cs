@@ -416,7 +416,7 @@ namespace CMSPresenter
 		}
 		public BundleHeader NewBundle()
 		{
-			var dt = DateTime.Now.Date;
+			var dt = Util.Now.Date;
 			var dw = (int)dt.DayOfWeek;
 			dt = dt.AddDays(-dw);
 			var b = new BundleHeader
@@ -426,7 +426,7 @@ namespace CMSPresenter
 				ChurchId = 1,
 				ContributionDate = dt,
                 CreatedBy = Util.UserId1,
-				CreatedDate = DateTime.Now,
+				CreatedDate = Util.Now,
 				RecordStatus = false,
 				FundId = 1, // Local Church Operations
 			};

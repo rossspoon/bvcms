@@ -7,7 +7,7 @@
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
 <script>
 </script>
-    <h2>Volunteer for <%=Model.Opportunity.Description %></h2>
+    <h2><%=Model.Opportunity.Description %></h2>
 
     <% using (Html.BeginForm()) { %>
     <%=Html.Hidden("Id", Model.VolInterestId) %>
@@ -17,7 +17,7 @@
                 <col style="width: 13em; text-align:right" />
                 <col />
                 <col />
-                <tr><td colspan="3">Volunteer Interests for <%=Model.person.Name %></td></tr>
+                <tr><td colspan="3">Service Area Interests for <%=Model.person.Name %></td></tr>
                 <% if (Model.Opportunity.ExtraInstructions.HasValue())
                    { %>
                 <tr>

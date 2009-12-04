@@ -33,7 +33,7 @@ namespace CMSWeb.Models
         }
         public List<Attendee> FamilyMembers(int id, int campus, int thisday)
         {
-            var now = DateTime.Now;
+            var now = Util.Now;
             // get org members first
             var members =
                 from om in DbUtil.Db.OrganizationMembers
@@ -66,7 +66,7 @@ namespace CMSWeb.Models
                 };
 
             // now get recent visitors
-            var threeweeksago = DateTime.Now.AddDays(-27);
+            var threeweeksago = Util.Now.AddDays(-27);
 
             var visitors =
                 from a in DbUtil.Db.Attends
@@ -167,7 +167,7 @@ namespace CMSWeb.Models
                 {
                     OrganizationId = OrgId,
                     MeetingDate = info.MeetingTime,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
                     Location = info.Location,

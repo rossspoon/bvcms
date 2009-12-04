@@ -5,7 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Volunteer for <%=Model.Opportunity.Description %></h2>
+    <h2><%=Model.Opportunity.Description %></h2>
 
     <%= Html.ValidationMessage("find") %>
     <% using (Html.BeginForm()) { %>
@@ -38,7 +38,8 @@
                 <tr>
                     <td><label for="email">Email</label></td>
                     <td><%= Html.TextBox("email") %></td>
-                    <td><%= Html.ValidationMessage("email") %></td>
+                    <td><%= Html.CheckBox("preferredemail") %> preferred email
+                    <%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>

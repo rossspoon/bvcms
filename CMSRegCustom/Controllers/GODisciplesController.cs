@@ -16,7 +16,9 @@ namespace CMSRegCustom.Controllers
     {
         public GODisciplesController()
         {
-            ViewData["logoimg"] = DbUtil.Settings("GoDisciplesLogo", "/Content/Crosses.png");
+            ViewData["head"] = HeaderHtml("GODisciplesHeader",
+                Header,
+                DbUtil.Settings("GoDisciplesLogo", "/Content/Crosses.png"));
         }
         public ActionResult Index()
         {

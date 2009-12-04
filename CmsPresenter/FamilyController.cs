@@ -105,7 +105,7 @@ namespace CMSPresenter
                  RelatedFamilyId = p.FamilyId,
                  FamilyRelationshipDesc = "Add Description",
                  CreatedBy = Util.UserId1,
-                 CreatedDate = DateTime.Now,
+                 CreatedDate = Util.Now,
              };
              DbUtil.Db.RelatedFamilies.InsertOnSubmit(rf);
              DbUtil.Db.SubmitChanges();

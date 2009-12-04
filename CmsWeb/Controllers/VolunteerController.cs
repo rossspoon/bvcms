@@ -14,11 +14,6 @@ namespace CMSWeb.Controllers
 {
     public class VolunteerController : CMSWebCommon.Controllers.CmsController
     {
-        public VolunteerController()
-        {
-            ViewData["header"] = DbUtil.Settings("VolHeader", "change VolHeader setting");
-            ViewData["logoimg"] = DbUtil.Settings("VolLogo", "/Content/Crosses.png");
-        }
         public ActionResult Start(string id)
         {
             var vol = DbUtil.Db.VolOpportunities.SingleOrDefault(v => v.UrlKey == id);
@@ -26,9 +21,16 @@ namespace CMSWeb.Controllers
                 return View("Unknown");
             return RedirectToAction("Index", new { id = vol.Id });
         }
+        private void SetHeader(Models.VolunteerModel m)
+        {
+            ViewData["head"] = HeaderHtml("Volunteer-" + m.Opportunity.UrlKey,
+                            DbUtil.Settings("VolHeader", "change VolHeader setting"),
+                            DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
+        }
         public ActionResult Index(int id)
         {
             var m = new Models.VolunteerModel { OpportunityId = id };
+            SetHeader(m);            
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -66,6 +68,7 @@ namespace CMSWeb.Controllers
         public ActionResult PickList(int id)
         {
             var m = new Models.VolunteerModel { VolInterestId = id };
+            SetHeader(m);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -108,11 +111,12 @@ namespace CMSWeb.Controllers
 
             Util.Email(m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
                  m.Opportunity.Description, body);
-            return RedirectToAction("Confirm");
+            return RedirectToAction("Confirm", new { id = id });
         }
         public ActionResult PickList2(int id)
         {
             var m = new Models.VolunteerModel { VolInterestId = id };
+            SetHeader(m);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -150,10 +154,12 @@ namespace CMSWeb.Controllers
                 }
             }
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Confirm");
+            return RedirectToAction("Confirm", new { id = id });
         }
-        public ActionResult Confirm()
+        public ActionResult Confirm(int id)
         {
+            var m = new Models.VolunteerModel { VolInterestId = id };
+            SetHeader(m);
             return View();
         }
     }

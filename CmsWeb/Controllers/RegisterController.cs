@@ -16,8 +16,9 @@ namespace CMSWeb.Controllers
     {
         public RegisterController()
         {
-            ViewData["header"] = DbUtil.Settings("RegHeader", "change RegHeader setting");
-            ViewData["logoimg"] = DbUtil.Settings("RegLogo", "/Content/Crosses.png");
+            ViewData["head"] = HeaderHtml("RegHeader",
+                DbUtil.Settings("RegHeader", "change RegHeader setting"),
+                DbUtil.Settings("RegLogo", "/Content/Crosses.png"));
         }
 
         public ActionResult Inside(int? campus)

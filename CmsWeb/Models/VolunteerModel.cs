@@ -17,10 +17,7 @@ namespace CMSWeb.Models
         private int _OpportunityId;
         public int OpportunityId
         {
-            get
-            {
-                return _OpportunityId;
-            }
+            get { return _OpportunityId; }
             set
             {
                 _OpportunityId = value;
@@ -30,10 +27,7 @@ namespace CMSWeb.Models
         internal VolInterest VolInterest;
         public int VolInterestId
         {
-            get
-            {
-                return VolInterest.Id;
-            }
+            get { return VolInterest.Id; }
             set
             {
                 VolInterest = DbUtil.Db.VolInterests.SingleOrDefault(vi => vi.Id == value);
@@ -69,6 +63,7 @@ namespace CMSWeb.Models
         public Person person { get; set; }
         public string[] interests { get; set; }
         public string question { get; set; }
+        public bool preferredemail { get; set; }
 
         public string Checked(int id)
         {

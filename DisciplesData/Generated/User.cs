@@ -269,7 +269,7 @@ namespace DiscData
 		
     #region Columns
 		
-		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int UserId
 		{
 			get { return this._UserId; }

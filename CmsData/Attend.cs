@@ -76,7 +76,7 @@ namespace CmsData
                     OrganizationId = o.Meeting.OrganizationId,
                     PeopleId = PeopleId,
                     MeetingDate = o.Meeting.MeetingDate.Value,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                 };
                 o.Meeting.Attends.Add(o.Attendance);
@@ -218,7 +218,7 @@ namespace CmsData
                 {
                     OrganizationId = member.OrganizationId,
                     MeetingDate = meeting.MeetingDate,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
                     Location = member.Organization.Location,
@@ -238,7 +238,7 @@ namespace CmsData
                     OrganizationId = member.OrganizationId,
                     MemberTypeId = member.MemberTypeId,
                     MeetingDate = meeting.MeetingDate.Value,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                     Meeting = othMeeting,
                 };

@@ -79,7 +79,7 @@
             o.BindSelect();
             $("#AddNew", o.$this).click(o.AddNew);
             $("#ClearForm", o.$this).click(o.ClearForm);
-            $("#AddToExisting", o.$this).change(o.DisplaySelect);
+            $("#AddToExisting", o.$this).click(o.DisplaySelect);
             $('a.sortable', o.$this).click(o.SortClicked);
             $('#Search', o.$this).click(o.SearchClicked);
         });

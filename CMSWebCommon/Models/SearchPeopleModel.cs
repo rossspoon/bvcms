@@ -26,11 +26,13 @@ namespace CMSWebCommon.Models
         public string DateOfBirth { get; set; }
         public int? TagId { get; set; }
         public int? MemberStatusId { get; set; }
-        public int? GenderId { get; set; }
+        public int GenderId { get; set; }
         public bool AddToExisting { get; set; }
         public int? ExistingFamilyMember { get; set; }
         public int? EntryPoint { get; set; }
         public int? Origin { get; set; }
+        public int MaritalStatusId { get; set; }
+        public int CampusId { get; set; }
 
         public string Sort { get; set; }
         private int? _Page;
@@ -98,23 +100,6 @@ namespace CMSWebCommon.Models
             }
         }
 
-        private static void NameSplit(string name, out string First, out string Last)
-        {
-            First = null;
-            Last = null;
-            if (name == null)
-                return;
-            var a = name.Split(' ');
-            First = "";
-            if (a.Length > 1)
-            {
-                First = a[0];
-                Last = a[1];
-            }
-            else
-                Last = a[0];
-
-        }
         private IQueryable<Person> ApplySearch()
         {
             var Db = DbUtil.Db;
@@ -129,7 +114,7 @@ namespace CMSWebCommon.Models
             if (Name.HasValue())
             {
                 string First, Last;
-                NameSplit(Name, out First, out Last);
+                Person.NameSplit(Name, out First, out Last);
                 if (First.HasValue())
                     query = from p in query
                             where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last))
@@ -190,8 +175,12 @@ namespace CMSWebCommon.Models
             }
             if (OrgId.HasValue && OrgId > 0)
                 query = query.Where(p => p.OrganizationMembers.Any(om => om.OrganizationId == OrgId));
-            if (GenderId.HasValue && GenderId != 99)
+            if (GenderId != 99)
                 query = query.Where(p => p.GenderId == GenderId);
+            if (CampusId != 0)
+                query = query.Where(p => p.CampusId == CampusId);
+            if (MaritalStatusId != 0)
+                query = query.Where(p => p.MaritalStatusId == MaritalStatusId);
 
             return query;
         }
@@ -268,6 +257,30 @@ namespace CMSWebCommon.Models
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return list;
         }
+        public IEnumerable<SelectListItem> CampusCodes()
+        {
+            var q = from c in DbUtil.Db.Campus
+                    select new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
+        }
+        public IEnumerable<SelectListItem> MaritalStatusCodes()
+        {
+            var q = from c in DbUtil.Db.MaritalStatuses
+                    select new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
+        }
 
         public IEnumerable<SelectListItem> GenderCodes()
         {
@@ -283,89 +296,87 @@ namespace CMSWebCommon.Models
         }
         public int? AddNewPerson()
         {
-            var Db = DbUtil.Db;
-            var p = new Person { AddressTypeId = 10 };
-            p.EntryPointId = EntryPoint;
-            p.OriginId = Origin;
-            Db.People.InsertOnSubmit(p);
-            DateTime bdt;
-            if (DateTime.TryParse(DateOfBirth, out bdt))
+            string name;
+            if (Name.HasValue())
+                name = Name.Trim();
+            else
+                name = "New Person";
+
+            Family fam;
+            var PrimaryCount = 0;
+            if (AddToExisting)
             {
-                p.BirthDay = bdt.Day;
-                p.BirthMonth = bdt.Month;
-                if (Regex.IsMatch(DateOfBirth, @"\d+/\d+/\d+"))
-                {
-                    p.BirthYear = bdt.Year;
-                    if (bdt.AddYears(18) > Util.Now)
-                        p.PositionInFamilyId = 30;
-                }
-            }
-            if (AddToExisting) // existing family
-            {
-                var q = from per in Db.People
+                var q = from per in DbUtil.Db.People
                         where per.PeopleId == ExistingFamilyMember
                         select per.Family;
-                p.Family = q.SingleOrDefault();
-                p.CellPhone = Communication.GetDigits();
-                if (p.Family == null)
+                fam = q.SingleOrDefault();
+                if (fam == null)
                     return null;
-                if (p.PositionInFamilyId == 0)
-                {
-                    var cnt = p.Family.People.Where(c =>
-                        c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
-                    if (cnt < 2) // room for primary adult?
-                        p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-                    else
-                        p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
-                }
+                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
+                if (name.StartsWith("New"))
+                    name = fam.HeadOfHousehold.LastName;
             }
             else // new single family
             {
-                p.Family = new Family();
-                p.Family.HomePhone = Communication.GetDigits();
+                fam = new Family();
+                DbUtil.Db.Families.InsertOnSubmit(fam);
+                fam.HomePhone = Communication.GetDigits();
                 if (Address.HasValue())
                 {
                     var m = AddrRegex.Match(Address);
-                    p.Family.AddressLineOne = m.Groups["addr"].Value;
-                    p.Family.CityName = m.Groups["city"].Value;
-                    p.Family.StateCode = m.Groups["state"].Value;
-                    p.Family.ZipCode = m.Groups["zip"].Value;
+                    fam.AddressLineOne = m.Groups["addr"].Value;
+                    fam.CityName = m.Groups["city"].Value;
+                    fam.StateCode = m.Groups["state"].Value;
+                    fam.ZipCode = m.Groups["zip"].Value;
                 }
-                if (p.PositionInFamilyId == 0)
-                    p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             }
-            string First, Last;
-            NameSplit(Name, out First, out Last);
-            p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(First);
-            p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(Last);
-            p.GenderId = GenderId ?? 0;
-            if (p.GenderId == 99)
-                p.GenderId = 0;
-
-            p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
-            var tag = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-            tag.PersonTags.Add(new TagPerson { Person = p });
+            Person p;
+            p = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult,
+                null, name, DateOfBirth, false, GenderId, Origin ?? 0, EntryPoint);
+            var age = p.GetAge();
+            p.MaritalStatusId = MaritalStatusId;
             p.FixTitle();
-            Db.SubmitChanges();
+            if (PrimaryCount == 2)
+                p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
+                p.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+            if (AddToExisting)
+                p.CellPhone = Communication.GetDigits();
+            p.CampusId = CampusId;
+            DbUtil.Db.SubmitChanges();
             return p.PeopleId;
         }
 
         public string ValidateAddNew()
         {
-            DateTime dt;
-            if (Util.DateValid(DateOfBirth, out dt))
-                return "need valid birthday";
+            if (AddToExisting && !ExistingFamilyMember.HasValue)
+                return "Must Select a family first";
+
             string first, last;
-            NameSplit(Name, out first, out last);
+            Person.NameSplit(Name, out first, out last);
             if (!first.HasValue() || !last.HasValue())
-                return "need first and last name";
-            if (Communication.HasValue() && Communication.GetDigits() == Communication.FmtFone())
-                return "need valid phone number (7 or 10 digits)";
+                return "need first and last name when adding";
+
+            DateTime dt;
+            if (DateOfBirth != "na" && !Util.DateValid(DateOfBirth, out dt))
+                return "Must have a valid birthday when adding or \"na\"";
+
+            if (GenderId == 99)
+                return "Must have a gender when adding";
+
             if (AddToExisting) // existing family
                 if (Address.HasValue())
                     return "Address should be blank when adding to existing family";
+
             if (!AddToExisting && Address.HasValue() && !AddrRegex.IsMatch(Address))
                 return "Address needs to be formatted as: number street; city, state zip";
+
+            if (Communication.HasValue() && Communication.GetDigits() == Communication.FmtFone())
+                return "need valid phone number (7 or 10 digits)";
+
+            if (MaritalStatusId == 99)
+                return "need to choose a marital status";
+
             return null;
         }
         public static Person FindPerson(string phone, string first, string last, DateTime DOB, out int count)

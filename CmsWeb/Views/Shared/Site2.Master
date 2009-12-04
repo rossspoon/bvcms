@@ -14,14 +14,7 @@
 
 <body>
     <div class="page">
-
-        <div id="header">
-           <div id="title">
-              <h1><img alt="logo" src='<%=ViewData["logoimg"] %>' 
-                    align="middle" />&nbsp;<%=ViewData["header"]%></h1>
-           </div>
-        </div>
-
+        <%=ViewData["head"] %>
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 
