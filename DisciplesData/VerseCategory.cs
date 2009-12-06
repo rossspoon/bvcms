@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -89,8 +90,8 @@ namespace DiscData
                 owners.Clear();
                 var u = DbUtil.Db.GetUser(Owner);
                 var q = from uu in DbUtil.Db.Users
-                        from ur in uu.UserRoles
-                        where ur.Role.UserRoles.Any(rr => rr.UserId == u.UserId)
+                        from ur in uu.UserGroupRoles
+                        where ur.GroupRole.UserGroupRoles.Any(rr => rr.UserId == u.UserId)
                         group ur by ur.User into g
                         select g.Key.Username;
                 owners.AddRange(q);

@@ -42,7 +42,7 @@
     <asp:Button ID="SaveChanges2" runat="server" OnClick="SaveChanges_Click" Text="Save Changes"
         Width="126px" EnableViewState="False" />
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnablePaging="True" SelectMethod="Select"
-        SelectCountMethod="GetCount" TypeName="DiscData.VerseSummaryController" 
+        SelectCountMethod="GetCount" TypeName="CmsData.VerseSummaryController" 
         EnableViewState="False" OldValuesParameterFormatString="original_{0}">
         <SelectParameters>
             <asp:Parameter Name="startRowIndex" Type="Int32" />

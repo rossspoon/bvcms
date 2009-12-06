@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DiscData;
+using CmsData;
 using UtilityExtensions;
 
 namespace Disciples
@@ -14,9 +14,9 @@ namespace Disciples
         protected void Page_Load(object sender, EventArgs e)
         {
             var u = Request.QueryString<string>("user");
-            var user = DbUtil.Db.GetUser(u);
+            var user = DbUtil.Db.Users.Single(uu => uu.Username == u);
             var id = Request.QueryString<int>("blog");
-            var b = DiscData.Blog.LoadById(id);
+            var b = CmsData.Blog.LoadById(id);
             //var Profile = new WebProfile().GetProfile(u);
             //Profile.NotifyAll = false;
             //Profile.NotifyEnabled = false;

@@ -22,7 +22,7 @@
         </Columns>
     </asp:GridView></div>
     <asp:ObjectDataSource ID="ObjectDataSource1" EnableViewState="false" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="FetchSummary" TypeName="DiscData.PodCastController"></asp:ObjectDataSource>
+        SelectMethod="FetchSummary" TypeName="CmsData.PodCastController"></asp:ObjectDataSource>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphSideBar" runat="server">
     <div id="extra" class="front">

@@ -22,6 +22,8 @@ namespace CMSRegCustom.Controllers
         }
         public ActionResult Index()
         {
+            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+                return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var c = DbUtil.Content("GODisciplesIndex");
             if (c == null)
@@ -31,6 +33,8 @@ namespace CMSRegCustom.Controllers
         }
         public ActionResult Leader(int? id)
         {
+            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+                return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Leader");
             if (id.HasValue)
@@ -54,6 +58,8 @@ namespace CMSRegCustom.Controllers
         }
         public ActionResult Disciple(int id)
         {
+            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+                return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Disciple", id);
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -69,9 +75,30 @@ namespace CMSRegCustom.Controllers
 
             return RedirectToAction("Confirm", new { id = m.neworgid });
         }
-        [Authorize(Roles="Edit")]
+        public ActionResult Individual(int id)
+        {
+            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+                return Content(DbUtil.Content("GoDisciplesDisabled").Body);
+            ViewData["header"] = Header;
+            var m = new Models.GODisciplesModel("Disciple", id);
+            if (Request.HttpMethod.ToUpper() == "GET")
+                return View("Signup", m);
+
+            UpdateModel(m);
+            m.ValidateModel(ModelState);
+            if (!ModelState.IsValid)
+                return View("Signup", m);
+
+            m.PerformMemberSetup();
+            m.EmailMemberNotices();
+
+            return RedirectToAction("Confirm", new { id = m.neworgid });
+        }
+        [Authorize(Roles = "Edit")]
         public ActionResult RenameGroup(string oldname, string newname)
         {
+            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+                return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View();
@@ -91,6 +118,15 @@ namespace CMSRegCustom.Controllers
         private string Header
         {
             get { return DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration"; }
+        }
+        public ActionResult FixPW()
+        {
+            var q = from u in DbUtil.Db.Users
+                    where u.TempPassword != null && u.TempPassword != ""
+                    select u;
+            foreach(var u in q)
+                MembershipService.ChangePassword(u.Username, u.TempPassword);
+            return Content("done");
         }
     }
 }

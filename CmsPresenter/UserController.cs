@@ -22,7 +22,7 @@ namespace CMSPresenter
         private CMSDataContext Db;
         public UserController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
         [DataObjectMethod(DataObjectMethodType.Delete, true)]
         public void Delete(int UserId)
@@ -34,7 +34,14 @@ namespace CMSPresenter
 			Db.UserCanEmailFors.DeleteAllOnSubmit(user.UsersICanEmailFor);
 			Db.Preferences.DeleteAllOnSubmit(user.Preferences);
             Db.ActivityLogs.DeleteAllOnSubmit(user.ActivityLogs);
-			foreach (var f in user.VolunteerFormsUploaded)
+
+            Db.BlogNotifications.DeleteAllOnSubmit(user.BlogNotifications);
+            Db.PageVisits.DeleteAllOnSubmit(user.PageVisits);
+            Db.PrayerSlots.DeleteAllOnSubmit(user.PrayerSlots);
+            Db.UserRoles.DeleteAllOnSubmit(user.UserRoles);
+            Db.PendingNotifications.DeleteAllOnSubmit(user.PendingNotifications);
+            Db.UserGroupRoles.DeleteAllOnSubmit(user.UserGroupRoles);
+            foreach (var f in user.VolunteerFormsUploaded)
 				f.UploaderId = null;
             Db.SubmitChanges();
             Membership.DeleteUser(user.Username, true);
@@ -76,7 +83,7 @@ namespace CMSPresenter
                     select u;
 
             if (name.HasValue())
-                q = q.Where(u => u.Name2.StartsWith(name));
+                q = q.Where(u => u.Name2.StartsWith(name) || u.Username == name);
             if (roleid > 0)
                 q = q.Where(u => u.UserRoles.Any(ur => ur.RoleId == roleid));
             count = q.Count();

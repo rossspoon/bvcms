@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using UtilityExtensions;
 
 public partial class Admin_CMSPageList : System.Web.UI.Page

@@ -1,4 +1,6 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWebCommon.Models.SearchPeopleModel>" %>
+<html>
+<body>
 <form id="searchform" method="post">
 <%=Html.Hidden("entrypoint", Model.Origin) %>
 <%=Html.Hidden("origin", Model.EntryPoint) %>
@@ -90,4 +92,5 @@
     </tbody>
 </table>
 </form>
-
+</body>
+</html>

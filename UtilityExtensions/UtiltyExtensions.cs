@@ -402,19 +402,19 @@ namespace UtilityExtensions
                 return cb.ConnectionString;
             }
         }
-        public static string ConnectionStringDisc
-        {
-            get
-            {
-                var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
-                if (cs == null)
-                    return ConfigurationManager.ConnectionStrings["Disc"].ConnectionString;
+        //public static string ConnectionStringDisc
+        //{
+        //    get
+        //    {
+        //        var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+        //        if (cs == null)
+        //            return ConfigurationManager.ConnectionStrings["Disc"].ConnectionString;
 
-                var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                cb.InitialCatalog = "CMS_{0}_disc".Fmt(Host1);
-                return cb.ConnectionString;
-            }
-        }
+        //        var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+        //        cb.InitialCatalog = "CMS_{0}_disc".Fmt(Host1);
+        //        return cb.ConnectionString;
+        //    }
+        //}
         public static string UserName
         {
             get

@@ -3,7 +3,7 @@ using System.Data;
 using System.Web;
 using System.Text;
 using System.Xml;
-using DiscData;
+using CmsData;
 using System.Linq;
 using UtilityExtensions;
 
@@ -15,7 +15,7 @@ namespace Disciples
         {
             base.OnLoad(e);
             string u = Request.QueryString<string>("u");
-            var podcaster = DbUtil.Db.GetUser(u);
+            var podcaster = DbUtil.Db.Users.Single(uu => uu.Username == u);
 
             Response.ClearContent();
             Response.ContentEncoding = Encoding.UTF8;
@@ -70,9 +70,9 @@ namespace Disciples
                 w.WriteElementString("description", p.Description);
                 w.WriteElementString("link", "http://{0}/blog/podcast/{1}.aspx"
                     .Fmt(Request.Url.Authority, p.PostId));
-                var pc = DbUtil.Db.GetUser(p.UserId);
+                var pc = DbUtil.Db.Users.Single(uu => uu.UserId == p.UserId);
 
-                w.WriteElementString("author", pc.FirstName + ' ' + pc.LastName);
+                w.WriteElementString("author", pc.Name);
                 w.WriteElementString("pubDate", p.PubDate.Value.ToString("r"));
                 w.WriteElementString("category", "Podcast");
 

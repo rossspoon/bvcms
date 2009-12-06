@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using System.Linq;
 using System.Web.Security;
 using UtilityExtensions;
@@ -14,9 +14,7 @@ public partial class Blog_Post : System.Web.UI.Page
 
         Item1.PostId = Request.QueryString["id"];
         if (Item1.BlogPost == null)
-        {
             return;
-        }
         blog = Item1.BlogPost.BlogCached;
         Archives1.blog = blog;
         site.HeadTitleText = blog.Title;
@@ -46,11 +44,11 @@ public partial class Blog_Post : System.Web.UI.Page
 
         AddEntry.NavigateUrl = "~/Blog/New.aspx?id=" + blog.Id;
         AddEntry.Visible = blog.IsBlogger;
-        CanEditComments = blog.IsBlogger || Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("BlogAdministrator");
+        CanEditComments = blog.IsBlogger || Roles.IsUserInRole("BlogAdministrator");
         
         Repeater1.DataSource = from bp in blog.BlogPosts
                                from x in bp.BlogCategoryXrefs
-                               group x by x.Category into g
+                               group x by x.BlogCategory into g
                                let c = g.Count()
                                select new
                                {

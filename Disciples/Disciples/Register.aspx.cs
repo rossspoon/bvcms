@@ -1,7 +1,7 @@
 using System;
 using System.Web.Security;
 using System.Web.UI.WebControls;
-using DiscData;
+using CmsData;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
@@ -26,17 +26,17 @@ namespace Disciples
                 return;
 
             // check for duplicate in CMS
-            using (var cn = new SqlConnection(Util.ConnectionStringDisc))
-            {
-                cn.Open();
-                var cmd = new SqlCommand("select count(*) from dbo.Users where username = @username", cn);
-                cmd.Parameters.AddWithValue("@username", txtLogin.Text);
-                if (cmd.ExecuteScalar().ToInt() > 0)
-                {
-                    usernameValidator.IsValid = false;
-                    return;
-                }
-            }
+            //using (var cn = new SqlConnection(Util.ConnectionString))
+            //{
+            //    cn.Open();
+            //    var cmd = new SqlCommand("select count(*) from dbo.Users where username = @username", cn);
+            //    cmd.Parameters.AddWithValue("@username", txtLogin.Text);
+            //    if (cmd.ExecuteScalar().ToInt() > 0)
+            //    {
+            //        usernameValidator.IsValid = false;
+            //        return;
+            //    }
+            //}
 
             //register them
 
@@ -46,13 +46,13 @@ namespace Disciples
             //add the profile
             if (status == MembershipCreateStatus.Success)
             {
-                var u = DbUtil.Db.GetUser(txtLogin.Text);
-                u.FirstName = txtFirst.Text;
-                u.LastName = txtLast.Text;
+                var u = DbUtil.Db.Users.Single(uu => uu.Username == txtLogin.Text);
+                //u.FirstName = txtFirst.Text;
+                //u.LastName = txtLast.Text;
                 u.DefaultGroup = "";
-                u.NotifyAll = true;
-                u.NotifyEnabled = true;
-                u.BirthDay = DateTime.Parse(txtBirthday.Text);
+                //u.NotifyAll = true;
+                //u.NotifyEnabled = true;
+                //u.BirthDay = DateTime.Parse(txtBirthday.Text);
                 DbUtil.Db.SubmitChanges();
 
                 btnRegister.Enabled = false;
@@ -62,10 +62,10 @@ namespace Disciples
                 if (SecretCode.Text != "")
                 {
                     var q = Invitation.LoadBySecretCode(SecretCode.Text);
-                    DiscData.Group ming = null;
+                    CmsData.Group ming = null;
                     foreach (var i in q)
                     {
-                        var g = DiscData.Group.LoadById(i.GroupId);
+                        var g = CmsData.Group.LoadById(i.GroupId);
                         g.SetMember(u, true);
                         DbUtil.Db.SubmitChanges();
                         g.NotifyNewUser(txtLogin.Text);

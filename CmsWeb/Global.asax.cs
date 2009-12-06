@@ -9,6 +9,7 @@ using CMSWeb;
 using System.Net.Mail;
 using System.Web.Configuration;
 using CMSPresenter;
+using System.Net;
 
 namespace CMSWeb
 {
@@ -98,8 +99,14 @@ namespace CMSWeb
                 return;
 #endif
             var ex = Server.GetLastError();
-            if (ex is HttpException && (ex.Message == "404" || ex.Message.StartsWith("The controller for path")))
-                return;
+            if (ex is HttpException)
+            {
+                var code = ((HttpException)ex).GetHttpCode();
+                //if (code == (int)HttpStatusCode.NotFound 
+                //    || code == (int)HttpStatusCode.Forbidden)
+                    return;
+            }
+            
             var u = DbUtil.Db.CurrentUser;
             var smtp = new SmtpClient();
             var msg = new MailMessage();

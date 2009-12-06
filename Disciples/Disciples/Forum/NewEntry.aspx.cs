@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using UtilityExtensions;
 
 public partial class NewEntry : System.Web.UI.Page

@@ -39,6 +39,6 @@
             (new category)</span>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
                 OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategorySummary"
-                TypeName="DiscData.BlogCategoryController"></asp:ObjectDataSource>
+                TypeName="CmsData.BlogCategoryController"></asp:ObjectDataSource>
     </p>
 </div>

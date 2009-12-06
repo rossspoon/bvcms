@@ -29,7 +29,7 @@ namespace CMSPresenter
         private CMSDataContext Db;
         public VolunteerAppController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
 
         private int _count;

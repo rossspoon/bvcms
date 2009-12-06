@@ -17,7 +17,7 @@
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
             SelectMethod="GetCategorySummary"
-            TypeName="DiscData.BlogCategoryViewController" OldValuesParameterFormatString="original_{0}">
+            TypeName="CmsData.BlogCategoryViewController" OldValuesParameterFormatString="original_{0}">
         </asp:ObjectDataSource>
         <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" /></div>

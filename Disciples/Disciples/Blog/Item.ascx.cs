@@ -1,6 +1,6 @@
 using System;
 using System.Web;
-using DiscData;
+using CmsData;
 using System.Web.Security;
 using System.Linq;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ public partial class Blog_Item : System.Web.UI.UserControl
             Response.Redirect("~/");
 
         Edit.NavigateUrl = "~/Blog/Edit.aspx?id=" + post.Id;
-        Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("Administrator") || Roles.IsUserInRole("BlogAdministrator");
+        Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("BlogAdministrator");
         CategoryList.DataSource = BlogCategoryController.GetCategoryListFromCache(post.Id);
         CategoryList.DataBind();
     }

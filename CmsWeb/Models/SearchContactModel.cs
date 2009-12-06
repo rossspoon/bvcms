@@ -75,7 +75,7 @@ namespace CMSWeb.Models
 
         public SearchContactModel()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
 
         public IEnumerable<ContactInfo> ContactList(IQueryable<NewContact> query)

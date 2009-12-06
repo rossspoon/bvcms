@@ -18,7 +18,7 @@
         </Columns>
     </asp:GridView>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnableViewState="false"
-        SelectMethod="GetTopLevelEntriesForForum" TypeName="DiscData.ForumEntryController">
+        SelectMethod="GetTopLevelEntriesForForum" TypeName="CmsData.ForumEntryController">
         <SelectParameters>
             <asp:QueryStringParameter DefaultValue="1" Name="ForumId" QueryStringField="ForumId"
                 Type="Int32" />

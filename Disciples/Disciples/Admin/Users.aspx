@@ -60,7 +60,7 @@
                                 Text='<%# Eval("EmailAddress") %>' />
                         </td>
                         <td>
-                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastVisit", "{0:MM/dd/yy h:mm t}") %>' />
+                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:MM/dd/yy h:mm t}") %>' />
                         </td>
                     </tr>
                 </ItemTemplate>

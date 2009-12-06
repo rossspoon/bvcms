@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 
 public partial class ForumEntryDisplay : System.Web.UI.UserControl
 {

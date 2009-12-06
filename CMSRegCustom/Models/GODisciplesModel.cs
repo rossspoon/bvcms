@@ -68,10 +68,9 @@ namespace CMSRegCustom.Models
         public string city { get; set; }
         public string state { get; set; }
 
-        private DiscData.User discuser;
+        private User discuser;
         private Organization neworg;
         private Organization leaderorg;
-        private DiscData.Group discorg;
         public string GroupDescription
         {
             get
@@ -180,26 +179,25 @@ namespace CMSRegCustom.Models
         internal void PerformLeaderSetup()
         {
             MakeUserOnCms();
-            MakeDiscUser();
             if (!person.EmailAddress.HasValue())
                 person.EmailAddress = email;
 
             var groupname = "{0} {1} Group".Fmt(
                 person.PreferredName,
                 person.LastName);
-            var g = DiscData.Group.LoadByName(groupname);
+            var g = Group.LoadByName(groupname);
             const string STR_GODisciplesLeaders = "GO Disciples Leaders";
-            if (!DiscData.Group.IsUserAdmin(discuser, groupname))
+            if (!Group.IsUserAdmin(discuser, groupname))
             {
                 // make a group on disciples with a unique name
                 var startname = groupname;
                 var i = 1;
-                while (DiscData.Group.LoadByName(groupname) != null
+                while (Group.LoadByName(groupname) != null
                     || DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationName == groupname) != null)
                     groupname = startname + " " + i++;
-                DiscData.Group.InsertWithRolesOnSubmit(groupname);
-                DiscData.DbUtil.Db.SubmitChanges();
-                g = DiscData.Group.LoadByName(groupname);
+                Group.InsertWithRolesOnSubmit(groupname);
+                DbUtil.Db.SubmitChanges();
+                g = Group.LoadByName(groupname);
 
                 // add Welcome Text
                 var cw = DbUtil.Content("GODisciplesGroupWelcome");
@@ -208,27 +206,27 @@ namespace CMSRegCustom.Models
                     g.WelcomeText.Title = cw.Title.Replace("{name}", groupname);
                     g.WelcomeText.Body = cw.Body.Replace("{leader}", person.Name);
                 }
-                discuser.ForceLogin = true;
-                DiscData.DbUtil.Db.SubmitChanges();
+                //discuser.ForceLogin = true;
+                DbUtil.Db.SubmitChanges();
 
                 // make a blog on disciples
-                var b = new DiscData.Blog();
+                var b = new Blog();
                 b.Title = groupname + " Blog";
                 b.OwnerId = discuser.UserId;
                 b.Name = b.Title.Replace(" ", "");
                 b.Description = DbUtil.Settings("GODisciplesBlogDescription", "A Small Group Discussion");
                 b.GroupId = g.Id;
                 b.PrivacyLevel = 1;
-                DiscData.DbUtil.Db.Blogs.InsertOnSubmit(b);
-                DiscData.DbUtil.Db.SubmitChanges();
+                DbUtil.Db.Blogs.InsertOnSubmit(b);
+                DbUtil.Db.SubmitChanges();
 
                 // make a new first post on blog
                 var firstpost = DbUtil.Content("GODisciplesFirstPost");
-                var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, Util.Now);
-                var cat = DiscData.DbUtil.Db.BlogCategories.Single(ca => ca.Name == "Discipleship");
-                var bc = new DiscData.BlogCategoryXref { CatId = cat.Id };
+                var p = b.NewPost(firstpost.Title, firstpost.Body, discuser.Username, DateTime.Now);
+                var cat = DbUtil.Db.BlogCategories.Single(ca => ca.Name == "Discipleship");
+                var bc = new BlogCategoryXref { CatId = cat.Id };
                 p.BlogCategoryXrefs.Add(bc);
-                DiscData.DbUtil.Db.SubmitChanges();
+                DbUtil.Db.SubmitChanges();
 
                 // create a new cms org
                 leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
@@ -276,18 +274,18 @@ namespace CMSRegCustom.Models
             g.SetBlogger(discuser, true);
             g.SetMember(discuser, true);
 
-            var leaderg = DiscData.Group.LoadByName(DbUtil.Settings("GoDisciplesLeadersGroup",
+            var leaderg = Group.LoadByName(DbUtil.Settings("GoDisciplesLeadersGroup",
                 STR_GODisciplesLeaders));
             if (leaderg == null)
             {
-                DiscData.Group.InsertWithRolesOnSubmit(STR_GODisciplesLeaders);
-                DiscData.DbUtil.Db.SubmitChanges();
-                leaderg = DiscData.Group.LoadByName(STR_GODisciplesLeaders);
+                Group.InsertWithRolesOnSubmit(STR_GODisciplesLeaders);
+                DbUtil.Db.SubmitChanges();
+                leaderg = Group.LoadByName(STR_GODisciplesLeaders);
             }
             leaderg.SetMember(discuser, true);
             discuser.DefaultGroup = leaderg.Name;
 
-            DiscData.DbUtil.Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
 
             // make member of leaders
             OrganizationMember.InsertOrgMembers(leaderorg.OrganizationId, person.PeopleId,
@@ -307,28 +305,35 @@ namespace CMSRegCustom.Models
             MakeDiscUser();
             if (!person.EmailAddress.HasValue())
                 person.EmailAddress = email;
-            var g = DiscData.Group.LoadByName(neworg.OrganizationName);
+            var g = Group.LoadByName(neworg.OrganizationName);
             g.SetMember(discuser, true);
             discuser.DefaultGroup = g.Name;
-            discuser.ForceLogin = true;
-            DiscData.DbUtil.Db.SubmitChanges();
+            //discuser.ForceLogin = true;
+            DbUtil.Db.SubmitChanges();
+        }
+        public void PerformIndividualSetup()
+        {
+            MakeDiscUser();
+            if (!person.EmailAddress.HasValue())
+                person.EmailAddress = email;
+            DbUtil.Db.SubmitChanges();
         }
         public static void RenameGroups(string oldname, string newname)
         {
-            var g = DiscData.Group.LoadByName(oldname);
+            var g = Group.LoadByName(oldname);
             if (g != null)
             {
                 g.Name = newname;
                 var bname = oldname.Replace(" ", "") + "Blog";
-                var b = DiscData.Blog.LoadByName(bname);
+                var b = Blog.LoadByName(bname);
                 b.Title = newname + " Blog";
                 b.Name = b.Title.Replace(" ", "");
-                var q = from u in DiscData.DbUtil.Db.Users
+                var q = from u in DbUtil.Db.Users
                         where u.DefaultGroup == oldname
                         select u;
                 foreach (var u in q)
                     u.DefaultGroup = newname;
-                DiscData.DbUtil.Db.SubmitChanges();
+                DbUtil.Db.SubmitChanges();
                 var cg = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationName == oldname);
                 if (cg != null)
                 {
@@ -364,78 +369,42 @@ namespace CMSRegCustom.Models
             get
             {
                 if (_password == null)
-                {
-                    var q = from u in DiscData.DbUtil.Db.Users
-                            where u.PeopleId == person.PeopleId
-                            orderby u.LastActivityDate descending
-                            select u;
-                    var dser = q.FirstOrDefault();
-                    if (dser != null && Membership.Provider.ValidateUser(username, dser.Password))
-                        _password = dser.Password;
-                    else
-                        _password = MembershipService.FetchPassword();
-                }
+                    _password = MembershipService.FetchPassword();
                 return _password;
             }
         }
         private void MakeDiscUser()
         {
-            bool userexists;
-            do
-            {
-                var q3 = from u in DiscData.DbUtil.Db.Users
-                         where u.Username == username
-                         where u.PeopleId != person.PeopleId
-                         orderby u.LastActivityDate descending
-                         select u;
-                userexists = q3.SingleOrDefault() != null;
-                if (userexists)
-                    _username = _username + "1";
-            } while (userexists);
-
-            var q2 = from u in DiscData.DbUtil.Db.Users
-                     where u.PeopleId == person.PeopleId
-                     orderby u.LastActivityDate descending
-                     select u;
-            discuser = q2.FirstOrDefault();
-
-            if (discuser != null)
-            {
-                discuser.Password = password;
-                discuser.Username = username; // force username to be this name
-            }
+            discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
+            if (discuser == null)
+                discuser = MembershipService.CreateUser(person.PeopleId, username, password);
             else
             {
-                discuser = DiscData.BVMembershipProvider.MakeNewUser(
-                    username, password, email,
-                    true, person.PeopleId);
-                discuser = DiscData.DbUtil.Db.Users.Single(u => u.UserId == discuser.UserId);
-                discuser.FirstName = person.PreferredName;
-                discuser.LastName = person.LastName;
-                discuser.BirthDay = person.GetBirthdate();
+                MembershipService.ChangePassword(username, password);
+                discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
             }
-            DiscData.DbUtil.Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
         private void MakeUserOnCms()
         {
             const string STR_Attendance = "Attendance";
             const string STR_Staff = "Staff";
-            var user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
-            if (user != null)
+            discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
+            if (discuser == null)
+            {
+                discuser = MembershipService.CreateUser(person.PeopleId, username, password);
+                discuser.Roles = new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff };
+            }
+            else
             {
                 MembershipService.ChangePassword(username, password);
-                user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
-                var roles = user.Roles.ToList();
+                discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
+                var roles = discuser.Roles.ToList();
                 if (!roles.Contains(STR_Attendance))
                     roles.Add(STR_Attendance);
                 if (!roles.Contains(STR_Staff))
                     roles.Add(STR_Staff);
-                user.Roles = roles.ToArray();
-            }
-            else
-            {
-                user = MembershipService.CreateUser(person.PeopleId, username, password);
-                user.Roles = new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff };
+                discuser.Roles = roles.ToArray();
             }
             DbUtil.Db.SubmitChanges();
         }
@@ -476,7 +445,7 @@ namespace CMSRegCustom.Models
             var Body = c.Body;
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
-            Body = Body.Replace("{password}", discuser.Password);
+            Body = Body.Replace("{password}", password);
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));

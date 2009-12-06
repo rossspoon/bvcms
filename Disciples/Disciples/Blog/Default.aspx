@@ -93,7 +93,7 @@
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnableViewState="False"
-            SelectMethod="FetchAllForUser2" TypeName="DiscData.BlogController" UpdateMethod="Update"
+            SelectMethod="FetchAllForUser2" TypeName="CmsData.BlogController" UpdateMethod="Update"
             DeleteMethod="Delete">
             <DeleteParameters>
                 <asp:Parameter Name="Id" Type="Int32" />

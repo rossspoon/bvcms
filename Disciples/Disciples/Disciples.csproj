@@ -831,6 +831,8 @@
     <Content Include="WebService1.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\StarterDiscDb.mdf">
+    </Content>
     <Content Include="App_GlobalResources\books.xml" />
     <Content Include="App_GlobalResources\Chron.xml" />
     <Content Include="App_GlobalResources\Resource1.resx">
@@ -1516,9 +1518,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DisciplesData\DisciplesData.csproj">
-      <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
-      <Name>DisciplesData</Name>
+    <ProjectReference Include="..\..\CmsData\CmsData.csproj">
+      <Project>{98AEE43C-4226-49E7-BD46-C1A85467ECED}</Project>
+      <Name>CmsData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UtilityExtensions\UtilityExtensions.csproj">
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>

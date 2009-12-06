@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using MetaWebLogAPI;
 using System.Web.Security;
-using DiscData;
+using CmsData;
 using System.Linq;
 using UtilityExtensions;
 
@@ -13,7 +13,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
     private bool Authenticate(int groupid, string username, string password)
     {
         var g = Group.LoadById(groupid);
-        var user = DbUtil.Db.GetUser(username);
+        var user = DbUtil.Db.Users.Single(uu => uu.Username == username);
         return Membership.ValidateUser(username, password) && g.IsUserBlogger(user);
     }
 
@@ -49,7 +49,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
                 DbUtil.Db.BlogCategoryXrefs.DeleteAllOnSubmit(p.BlogCategoryXrefs);
                 foreach (var c in post.categories)
                 {
-                    var cat = DbUtil.Db.Categories.Single(ca => ca.Name == c);
+                    var cat = DbUtil.Db.BlogCategories.Single(ca => ca.Name == c);
                     var bc = new BlogCategoryXref { CatId = cat.Id };
                     p.BlogCategoryXrefs.Add(bc);
                 }
@@ -90,7 +90,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
         if (Authenticate(p.Blog.GroupId.Value, username, password))
         {
             Post post = new Post();
-            post.categories = p.BlogCategoryXrefs.Select(c => c.Category.Name).ToArray();
+            post.categories = p.BlogCategoryXrefs.Select(c => c.BlogCategory.Name).ToArray();
             post.dateCreated = p.EntryDate.Value;
             post.description = p.Post;
             post.link = Util.ResolveUrl("~/Blog/" + p.Id + ".aspx");
@@ -119,7 +119,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
                     orderby p.EntryDate descending
                     select new Post
                     {
-                        categories = p.BlogCategoryXrefs.Select(c => c.Category.Name).ToArray(),
+                        categories = p.BlogCategoryXrefs.Select(c => c.BlogCategory.Name).ToArray(),
                         userid = p.User.Username,
                         dateCreated = p.EntryDate.Value,
                         description = p.Post,
@@ -160,7 +160,7 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
             if (post.categories != null)
                 foreach (string s in post.categories)
                 {
-                    var cat = DbUtil.Db.Categories.Single(ca => ca.Name == s);
+                    var cat = DbUtil.Db.BlogCategories.Single(ca => ca.Name == s);
                     var bc = new BlogCategoryXref { CatId = cat.Id };
                     p.BlogCategoryXrefs.Add(bc);
                 }
@@ -205,8 +205,8 @@ public class MetaWebLog : CookComputing.XmlRpc.XmlRpcService, IMetaWeblog
         var b = Blog.LoadById(blogid.ToInt());
         if (Authenticate(b.GroupId.Value, username, password))
         {
-            var bc = new DiscData.Category { Name = newcat.name };
-            DbUtil.Db.Categories.InsertOnSubmit(bc);
+            var bc = new BlogCategory { Name = newcat.name };
+            DbUtil.Db.BlogCategories.InsertOnSubmit(bc);
             DbUtil.Db.SubmitChanges();
             return bc.Id;
         }

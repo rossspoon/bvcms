@@ -23,7 +23,7 @@ namespace CMSPresenter
 
         public OrganizationSearchController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
         public int count;
         private Dictionary<int, CodeValueItem> dict = (new CodeValueController()).AttendanceTrackLevelCodes().ToDictionary(cv => cv.Id);

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using DiscData;
+using CmsData;
 using UtilityExtensions;
 
 namespace Disciples.Modules
 {
     public partial class Paragraph : System.Web.UI.UserControl
     {
-        private Content _Content;
-        public Content Content
+        private ParaContent _Content;
+        public ParaContent Content
         {
             get { return _Content; }
             set { _Content = value; }
@@ -21,7 +21,7 @@ namespace Disciples.Modules
             set
             {
                 contentName = value;
-                Content = DbUtil.Db.Contents.SingleOrDefault(c => c.ContentName == contentName);
+                Content = DbUtil.Db.ParaContents.SingleOrDefault(c => c.ContentName == contentName);
             }
         }
         public string HeaderText
@@ -43,7 +43,7 @@ namespace Disciples.Modules
                 Literal1.Text = "Set both the ContentID and PageName";
 
             if (Content != null &&
-                (Page.User.IsInRole("Administrator") || Page.User.IsInRole("BlogAdministrator") || CanEdit))
+                (Page.User.IsInRole("BlogAdministrator") || CanEdit))
             {
                 Panel1.CssClass = "contentboxadmin";
                 string dblclick = string.Format("showPopWin('{0}?id={1}', 800, 650, null);",

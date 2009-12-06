@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI;
-using DiscData;
+using CmsData;
 using System.Web;
 using System.Linq;
 using System.Collections.Generic;
@@ -78,7 +78,6 @@ public class Readings2 : Control
                     Verse = p.Attribute("verses").Value
                 };
         var rpa = q.ToArray();
-        int d = 0;
         var ss = new string[4];
         foreach(var p in q)
         {

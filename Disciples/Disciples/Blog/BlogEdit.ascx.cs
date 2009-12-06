@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI.WebControls;
-using DiscData;
+using CmsData;
 using System.Web;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -91,7 +91,7 @@ public partial class BlogEdit : System.Web.UI.UserControl
     {
         if (Post != null)
             foreach (var bc in Post.BlogCategoryXrefs)
-                CheckBoxList1.Items.FindByText(bc.Category.Name).Selected = true;
+                CheckBoxList1.Items.FindByText(bc.BlogCategory.Name).Selected = true;
     }
     protected void Cancel_Click(object sender, EventArgs e)
     {

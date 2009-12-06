@@ -325,8 +325,11 @@ namespace CmsData
         }
         public static void NameSplit(string name, out string First, out string Last)
         {
-            var a = name.Trim().Split(' ');
             First = "";
+            Last = "";
+            if (!name.HasValue())
+                return;
+            var a = name.Trim().Split(' ');
             if (a.Length > 1)
             {
                 First = a[0];

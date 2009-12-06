@@ -4,7 +4,7 @@ using System.Web.Security;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text.RegularExpressions;
-using DiscData;
+using CmsData;
 using System.IO;
 using UtilityExtensions;
 
@@ -12,7 +12,7 @@ namespace Disciples
 {
     public partial class PageView : System.Web.UI.Page
     {
-        protected Page thisPage = new Page();
+        protected PageContent thisPage = new PageContent();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,7 +24,7 @@ namespace Disciples
                 ToggleEditor(false);
                 return;
             }
-            Admin.Visible = User.IsInRole("Administrator") || User.IsInRole("BlogAdministrator");
+            Admin.Visible = User.IsInRole("BlogAdministrator");
             string pageUrl = Request.QueryString<string>("p");
             if (pageUrl != "newpage.aspx")
             {

@@ -143,7 +143,7 @@
                 Type="Int32" />
             <asp:ControlParameter Name="dt1" ControlID="FromDate" Type="DateTime" />
             <asp:ControlParameter Name="dt2" ControlID="ToDate" Type="DateTime" />
-            <asp:QueryStringParameter Name="Pledges" Type="Boolean" QueryStringField="pledged"
+            <asp:QueryStringParameter Name="Pledges" Type="string" QueryStringField="pledged"
                 DefaultValue="false" />
         </SelectParameters>
     </asp:ObjectDataSource>

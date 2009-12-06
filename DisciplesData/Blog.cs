@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Web.Security;
 using System.Net.Mail;
 using System.Linq;
+using UtilityExtensions;
 
 namespace DiscData
 {
@@ -145,8 +146,7 @@ namespace DiscData
         }
         public IEnumerable<Blog> FetchAllForUser2()
         {
-            if (HttpContext.Current.User.IsInRole("Administrator")
-                    || HttpContext.Current.User.IsInRole("BlogAdministrator"))
+            if (HttpContext.Current.User.IsInRole("BlogAdministrator"))
                 return DbUtil.Db.Blogs;
             var list = Group.FetchIdsForUser();
             return DbUtil.Db.Blogs.Where(b => list.Contains(b.GroupId.Value) || (b.PrivacyLevel == 0 && !b.NotOnMenu));

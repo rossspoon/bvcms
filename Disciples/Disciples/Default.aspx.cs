@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using System.Web;
 using System.Web.Security;
 using System.Linq;
@@ -19,6 +19,10 @@ namespace Disciples
                 defaultTop.ContentName = "default_welcome";
                 Panel1.Visible = true;
                 Label1.Text = defaultTop.HeaderText;
+                var forgotusername = Login1.FindControl("ForgotUsername") as HyperLink;
+                forgotusername.NavigateUrl = DbUtil.TaskHost + "/Account/ForgotUsername";
+                var forgotpassword = Login1.FindControl("ForgotPassword") as HyperLink;
+                forgotpassword.NavigateUrl = DbUtil.TaskHost + "/Account/ForgotPassword";
             }
             else
             {
@@ -51,14 +55,12 @@ namespace Disciples
                             DbUtil.Db.SubmitChanges();
                         }
                         if (g != null && 
-                            (User.IsInRole("Administrator") 
-                            || User.IsInRole("BlogAdministrator") 
+                            (User.IsInRole("BlogAdministrator") 
                             || g.IsMember 
                             || g.IsAdmin))
                         {
                             defaultTop.Content = g.WelcomeText;
-                            if (User.IsInRole("Administrator") 
-                                || User.IsInRole("BlogAdministrator") 
+                            if (User.IsInRole("BlogAdministrator") 
                                 || g.IsAdmin 
                                 || g.IsBlogger)
                                 defaultTop.CanEdit = true;
@@ -70,7 +72,6 @@ namespace Disciples
                         break;
                 }
                 Label1.Text = defaultTop.HeaderText;
-                
             }
         }
 

@@ -3,7 +3,7 @@ using System.Web.UI;
 using System.Web.Security;
 using System.Web;
 using System.Web.UI.WebControls;
-using DiscData;
+using CmsData;
 using System.Text;
 using System.Linq;
 using UtilityExtensions;
@@ -15,27 +15,27 @@ namespace Disciples
         User mu = DbUtil.Db.CurrentUser;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
-            {
-                txtEmail.Text = mu.EmailAddress;
-                NotifyAll.Checked = mu.NotifyAll ?? true;
-                NotifyEnabled.Checked = mu.NotifyEnabled ?? true;
-                if (mu.BirthDay.HasValue)
-                    txtBirthday.Text = mu.BirthDay.Value.ToShortDateString();
-            }
+            //if (!Page.IsPostBack)
+            //{
+            //    txtEmail.Text = mu.EmailAddress;
+            //    //NotifyAll.Checked = mu.NotifyAll ?? true;
+            //    //NotifyEnabled.Checked = mu.NotifyEnabled ?? true;
+            //    //if (mu.BirthDay.HasValue)
+            //    //    txtBirthday.Text = mu.BirthDay.Value.ToShortDateString();
+            //}
         }
         protected void PasswordWasChanged(object sender, EventArgs e)
         {
             ChangePasswordResult.ShowSuccess("Password was changed");
         }
-        protected void SaveEmail_Click(object sender, EventArgs e)
-        {
-            mu.EmailAddress = txtEmail.Text;
-            mu.NotifyEnabled = NotifyEnabled.Checked;
-            mu.NotifyAll = NotifyAll.Checked;
-            DbUtil.Db.SubmitChanges();
-            EmailChangedResult.ShowSuccess("Email Profile Changed");
-        }
+        //protected void SaveEmail_Click(object sender, EventArgs e)
+        //{
+        //    //mu.EmailAddress = txtEmail.Text;
+        //    //mu.NotifyEnabled = NotifyEnabled.Checked;
+        //    //mu.NotifyAll = NotifyAll.Checked;
+        //    DbUtil.Db.SubmitChanges();
+        //    //EmailChangedResult.ShowSuccess("Email Profile Changed");
+        //}
         protected void JoinGroup_Click(object sender, EventArgs e)
         {
             if (SecretCode.Text.HasValue())
@@ -66,21 +66,21 @@ namespace Disciples
             DbUtil.Db.SubmitChanges();
             GroupResult.ShowSuccess("Default Group Changed");
         }
-        protected void SaveBirthday_Click(object sender, EventArgs e)
-        {
-            if (BirthdayValid.IsValid)
-            {
-                mu.BirthDay = DateTime.Parse(txtBirthday.Text);
-                DbUtil.Db.SubmitChanges();
-                BirthdayResult.ShowSuccess("Birthday Changed");
-            }
-        }
+        //protected void SaveBirthday_Click(object sender, EventArgs e)
+        //{
+        //    if (BirthdayValid.IsValid)
+        //    {
+        //        //mu.BirthDay = DateTime.Parse(txtBirthday.Text);
+        //        DbUtil.Db.SubmitChanges();
+        //        //BirthdayResult.ShowSuccess("Birthday Changed");
+        //    }
+        //}
 
-        protected void BirthdayValid_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            DateTime bd;
-            args.IsValid = DateTime.TryParse(txtBirthday.Text, out bd);
-        }
+        //protected void BirthdayValid_ServerValidate(object source, ServerValidateEventArgs args)
+        //{
+        //    DateTime bd;
+        //    args.IsValid = DateTime.TryParse(txtBirthday.Text, out bd);
+        //}
 
         protected void SecretCodeValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {

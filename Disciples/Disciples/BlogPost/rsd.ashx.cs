@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
-using DiscData;
+using CmsData;
 using System.Web.Services;
 using System.Text;
 using UtilityExtensions;
@@ -18,7 +18,7 @@ namespace Disciples.BlogPost
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/xml";
-            var b = DiscData.Blog.LoadById(context.Request.QueryString<int>("blogid"));
+            var b = CmsData.Blog.LoadById(context.Request.QueryString<int>("blogid"));
             context.Response.ContentEncoding = Encoding.UTF8;
             var homeurl = Util.ResolveServerUrl("~/BlogPost/{0}.aspx".Fmt(b.Name));
             var engineurl = Util.ResolveServerUrl("~");

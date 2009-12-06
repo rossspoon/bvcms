@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using DiscData;
+using CmsData;
 using System.Linq;
 using Disciples;
 using UtilityExtensions;
@@ -29,8 +29,8 @@ public partial class admin_user_edit : System.Web.UI.Page
         }
         else
         {
-            Group.ContextUser = DbUtil.Db.GetUser(userName);
-            mu = DbUtil.Db.GetUser(userName);
+            mu = DbUtil.Db.Users.Single(uu => uu.Username == userName);
+            Group.ContextUser = mu;
         }
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -42,13 +42,12 @@ public partial class admin_user_edit : System.Web.UI.Page
                 UserID.Text = mu.Username;
                 //UserID.Enabled = false;
 
-                FirstName.Text = mu.FirstName;
-                LastName.Text = mu.LastName;
-                if (mu.BirthDay.HasValue)
-                    Birthday.Text = mu.BirthDay.Value.ToShortDateString();
+                FirstName.Text = mu.Person.FirstName;
+                LastName.Text = mu.Person.LastName;
+                Birthday.Text = mu.Person.DOB;
                 LastLogin.Text = mu.LastLoginDate.ToString();
-                NotifyAll.Checked = mu.NotifyAll ?? true;
-                NotifyEnabled.Checked = mu.NotifyEnabled ?? true;
+                //NotifyAll.Checked = mu.NotifyAll ?? true;
+                //NotifyEnabled.Checked = mu.NotifyEnabled ?? true;
                 SiteAdministrator.Checked = IsUserInRole("Administrator");
                 BlogAdministrator.Checked = IsUserInRole("BlogAdministrator");
                 pid.Text = mu.PeopleId.ToString();
@@ -78,11 +77,17 @@ public partial class admin_user_edit : System.Web.UI.Page
             return;
         try
         {
+            DbUtil.Db.UserCanEmailFors.DeleteAllOnSubmit(mu.UsersICanEmailFor);
+            DbUtil.Db.UserCanEmailFors.DeleteAllOnSubmit(mu.UsersICanEmailFor);
+            DbUtil.Db.Preferences.DeleteAllOnSubmit(mu.Preferences);
+            DbUtil.Db.ActivityLogs.DeleteAllOnSubmit(mu.ActivityLogs);
+
             DbUtil.Db.BlogNotifications.DeleteAllOnSubmit(mu.BlogNotifications);
             DbUtil.Db.PageVisits.DeleteAllOnSubmit(mu.PageVisits);
             DbUtil.Db.PrayerSlots.DeleteAllOnSubmit(mu.PrayerSlots);
             DbUtil.Db.UserRoles.DeleteAllOnSubmit(mu.UserRoles);
             DbUtil.Db.PendingNotifications.DeleteAllOnSubmit(mu.PendingNotifications);
+            DbUtil.Db.UserGroupRoles.DeleteAllOnSubmit(mu.UserGroupRoles);
             DbUtil.Db.Users.DeleteOnSubmit(mu);
 
             var q = from x in DbUtil.Db.VerseCategoryXrefs
@@ -123,18 +128,18 @@ public partial class admin_user_edit : System.Web.UI.Page
 
     private void UpdateProfile()
     {
-        mu.NotifyAll = NotifyAll.Checked;
-        mu.NotifyEnabled = NotifyEnabled.Checked;
-        mu.FirstName = FirstName.Text;
-        mu.LastName = LastName.Text;
-        if (pid.Text.HasValue())
-            mu.PeopleId = pid.Text.ToInt();
-        else
-            mu.PeopleId = null;
-        DateTime dt;
-        if (DateTime.TryParse(Birthday.Text, out dt))
-            mu.BirthDay = dt;
-        DbUtil.Db.SubmitChanges();
+        //mu.NotifyAll = NotifyAll.Checked;
+        //mu.NotifyEnabled = NotifyEnabled.Checked;
+        //mu.FirstName = FirstName.Text;
+        //mu.LastName = LastName.Text;
+        //if (pid.Text.HasValue())
+        //    mu.PeopleId = pid.Text.ToInt();
+        //else
+        //    mu.PeopleId = null;
+        //DateTime dt;
+        //if (DateTime.TryParse(Birthday.Text, out dt))
+        //    mu.BirthDay = dt;
+        //DbUtil.Db.SubmitChanges();
     }
     public void UpdateUser(object sender, EventArgs e)
     {
@@ -142,33 +147,34 @@ public partial class admin_user_edit : System.Web.UI.Page
             return;
         try
         {
-            mu.Username = UserID.Text;
-            mu.EmailAddress = Email.Text;
-            mu.IsApproved = ActiveUser.Checked;
-            UpdateProfile();
-            const string Adminstrator = "Administrator";
-            bool inrole = Roles.IsUserInRole(mu.Username, Adminstrator);
+            //mu.Username = UserID.Text;
+            ////mu.EmailAddress = Email.Text;
+            //mu.IsApproved = ActiveUser.Checked;
+            //UpdateProfile();
+            const string Administrator = "Administrator";
+            bool inrole = Roles.IsUserInRole(mu.Username, Administrator);
             if (SiteAdministrator.Checked && !inrole)
-                Roles.AddUserToRole(mu.Username, Adminstrator);
+                Roles.AddUserToRole(mu.Username, Administrator);
             else if (!SiteAdministrator.Checked && inrole)
-                Roles.RemoveUserFromRole(mu.Username, Adminstrator);
+                Roles.RemoveUserFromRole(mu.Username, Administrator);
 
-            const string BlogAdminstrator = "BlogAdministrator";
-            inrole = Roles.IsUserInRole(mu.Username, BlogAdminstrator);
+            const string STR_BlogAdministrator = "BlogAdministrator";
+            inrole = Roles.IsUserInRole(mu.Username, STR_BlogAdministrator);
             if (BlogAdministrator.Checked && !inrole)
-                Roles.AddUserToRole(mu.Username, BlogAdminstrator);
+                Roles.AddUserToRole(mu.Username, STR_BlogAdministrator);
             else if (!BlogAdministrator.Checked && inrole)
-                Roles.RemoveUserFromRole(mu.Username, BlogAdminstrator);
+                Roles.RemoveUserFromRole(mu.Username, STR_BlogAdministrator);
 
+            mu.IsApproved = ActiveUser.Checked;
             DbUtil.Db.SubmitChanges();
             UpdateRoleMembership();
             if (pw.Text.HasValue())
             {
-                BVMembershipProvider.provider.AdminOverride = true;
-                var u = BVMembershipProvider.provider.GetUser(mu.Username, false);
+                CMSMembershipProvider.provider.AdminOverride = true;
+                var u = CMSMembershipProvider.provider.GetUser(mu.Username, false);
                 u.UnlockUser();
                 u.ChangePassword(u.ResetPassword(), pw.Text);
-                BVMembershipProvider.provider.AdminOverride = false;
+                CMSMembershipProvider.provider.AdminOverride = false;
             }
             SetResultMessage("User details has been successfully updated.");
         }
@@ -184,7 +190,7 @@ public partial class admin_user_edit : System.Web.UI.Page
             return;
         try
         {
-            mu = BVMembershipProvider.provider.NewUser(UserID.Text, pw.Text, Email.Text, ActiveUser.Checked, null);
+            mu = CMSMembershipProvider.provider.NewUser(UserID.Text, pw.Text, Email.Text, ActiveUser.Checked, null);
             if (mu != null && mu.Username.HasValue())
             {
                 mu.PasswordQuestion = "what is 1+1?";

@@ -84,7 +84,7 @@
         </div>
     </div>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="FetchPostComments"
-        TypeName="DiscData.BlogPostController">
+        TypeName="CmsData.BlogPostController">
         <SelectParameters>
             <asp:QueryStringParameter Name="BlogPostId" QueryStringField="id" Type="Int32" />
         </SelectParameters>

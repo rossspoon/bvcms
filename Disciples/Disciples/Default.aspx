@@ -55,6 +55,17 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td colspan="2">
+                                                <asp:HyperLink ID="ForgotUsername" runat="server" 
+                                                    ToolTip="Retrieve your username">Forgot Username</asp:HyperLink>
+                                                ?</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <asp:HyperLink ID="ForgotPassword" runat="server" ToolTip="Reset your password">Forgot Password</asp:HyperLink>
+                                                ?</td>
+                                        </tr>
+                                        <tr>
                                             <td align="center" colspan="2" style="color: red">
                                                 <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
                                             </td>
@@ -71,6 +82,7 @@
                         </table>
                     </LayoutTemplate>
                 </asp:Login>
+                test
             </asp:Panel>
         </div>
     </div>

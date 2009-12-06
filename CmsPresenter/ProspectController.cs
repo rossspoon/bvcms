@@ -18,7 +18,7 @@ namespace CMSPresenter
         private List<MemberTypeItem> MemberCodes;
         public ProspectController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
             var c = new CodeValueController();
             AttendCodes = c.AttendanceTypeCodes();
             MemberCodes = CodeValueController.MemberTypeCodes2();

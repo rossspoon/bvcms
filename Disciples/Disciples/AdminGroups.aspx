@@ -11,7 +11,7 @@ Inherits="AdminGroups" Title="Roles Administration" Codebehind="AdminGroups.aspx
             OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
         </asp:DropDownList><br />
         <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="FetchAdminGroups"
-            TypeName="DiscData.GroupController"></asp:ObjectDataSource>
+            TypeName="CmsData.GroupController"></asp:ObjectDataSource>
         <asp:UpdatePanel ID="UpdatePanel1" EnableViewState="false" runat="server">
             <ContentTemplate>
                 <div>
@@ -29,7 +29,7 @@ Inherits="AdminGroups" Title="Roles Administration" Codebehind="AdminGroups.aspx
                         </Columns>
                     </asp:GridView>
                     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" DeleteMethod="Delete"
-                        SelectMethod="FetchInvitesForGroup" TypeName="DiscData.InvitationController" UpdateMethod="Update">
+                        SelectMethod="FetchInvitesForGroup" TypeName="CmsData.InvitationController" UpdateMethod="Update">
                         <DeleteParameters>
                             <asp:Parameter Name="Password" Type="Object" />
                         </DeleteParameters>
@@ -79,7 +79,7 @@ Inherits="AdminGroups" Title="Roles Administration" Codebehind="AdminGroups.aspx
                         </Columns>
                     </asp:GridView>
                     <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="GetUsersInGroup"
-                        TypeName="DiscData.GroupController">
+                        TypeName="CmsData.GroupController">
                         <SelectParameters>
                             <asp:ControlParameter ControlID="DropDownList1" Name="id" PropertyName="SelectedValue"
                                 Type="Int32" />

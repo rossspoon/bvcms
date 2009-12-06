@@ -24,7 +24,7 @@ namespace CMSPresenter
         private CMSDataContext Db;
         public ContactController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
 
         public IEnumerable<ContactInfo> ContactList(int pid)

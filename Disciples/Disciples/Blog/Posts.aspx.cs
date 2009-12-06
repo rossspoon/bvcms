@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 using System.Linq;
@@ -30,7 +30,7 @@ public partial class Blog_Posts : System.Web.UI.Page
 
         Repeater1.DataSource = from bp in blog.BlogPosts
                                from x in bp.BlogCategoryXrefs
-                               group x by x.Category into g
+                               group x by x.BlogCategory into g
                                let c = g.Count()
                                select new
                                {

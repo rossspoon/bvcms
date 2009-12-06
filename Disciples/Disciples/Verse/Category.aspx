@@ -64,7 +64,7 @@
         </Triggers>
     </asp:UpdatePanel>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" DeleteMethod="DeleteDeep"
-        SelectMethod="GetCategoriesForOwner" TypeName="DiscData.VerseCategoryController"
+        SelectMethod="GetCategoriesForOwner" TypeName="CmsData.VerseCategoryController"
         UpdateMethod="Update" EnableViewState="False">
         <UpdateParameters>
             <asp:Parameter Name="Name" Type="String" />

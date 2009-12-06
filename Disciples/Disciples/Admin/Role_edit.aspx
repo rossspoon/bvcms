@@ -46,7 +46,7 @@
                                         </Columns>
                                     </asp:GridView>
                                     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetUsers"
-                                        TypeName="DiscData.GroupController">
+                                        TypeName="CmsData.GroupController">
                                         <SelectParameters>
                                             <asp:QueryStringParameter QueryStringField="id" Type="Int32" Name="groupid" />
                                         </SelectParameters>

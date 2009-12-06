@@ -44,7 +44,7 @@
             Generic Welcome Text</asp:HyperLink></p>
         </div>
         <asp:ObjectDataSource ID="allGroups" runat="server" SelectMethod="FetchAllGroupsWhereAdmin"
-            TypeName="DiscData.GroupController" DeleteMethod="DeleteGroup">
+            TypeName="CmsData.GroupController" DeleteMethod="DeleteGroup">
             <DeleteParameters>
                 <asp:Parameter Name="Name" Type="String" />
             </DeleteParameters>
@@ -62,7 +62,7 @@
             </Columns>
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" DeleteMethod="Delete"
-            SelectMethod="FetchAll" TypeName="DiscData.InvitationController" 
+            SelectMethod="FetchAll" TypeName="CmsData.InvitationController" 
             SortParameterName="sortExpression">
             <DeleteParameters>
                 <asp:Parameter Name="Password" Type="String" />

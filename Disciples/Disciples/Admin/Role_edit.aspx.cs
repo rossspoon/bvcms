@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DiscData;
+using CmsData;
 using System.Web.Security;
 using UtilityExtensions;
 
@@ -22,7 +22,7 @@ namespace Disciples.Admin
             foreach (GridViewRow row in GridView1.Rows)
             {
                 string u = (string)GridView1.DataKeys[row.RowIndex].Value;
-                var user = DbUtil.Db.GetUser(u);
+                var user = DbUtil.Db.Users.Single(uu => uu.Username == u);
                 g.SetAdmin(user, ((CheckBox)row.FindControl("cbAdmin")).Checked);
                 g.SetMember(user, ((CheckBox)row.FindControl("cbMember")).Checked);
                 g.SetBlogger(user, ((CheckBox)row.FindControl("cbBlogger")).Checked);

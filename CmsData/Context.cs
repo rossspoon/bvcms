@@ -285,9 +285,16 @@ namespace CmsData
         {
             return FetchOrCreateTag(Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
         }
+        User _currentuser;
         public User CurrentUser
         {
-            get { return Users.SingleOrDefault(u => u.UserId == Util.UserId); }
+            get 
+            {
+                if (_currentuser != null)
+                    return _currentuser;
+                return Users.SingleOrDefault(u => u.UserId == Util.UserId); 
+            }
+            set { _currentuser = value; }
         }
         public Person NewPeopleManager
         {

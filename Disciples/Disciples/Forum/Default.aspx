@@ -72,7 +72,7 @@
         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
     </asp:GridView>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnableViewState="false" SelectMethod="FetchAllForUser"
-        TypeName="DiscData.ForumController" DeleteMethod="Delete" UpdateMethod="Update">
+        TypeName="CmsData.ForumController" DeleteMethod="Delete" UpdateMethod="Update">
         <DeleteParameters>
             <asp:Parameter Name="Id" Type="Object" />
         </DeleteParameters>

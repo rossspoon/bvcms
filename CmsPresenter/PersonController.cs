@@ -26,7 +26,7 @@ namespace CMSPresenter
 
         public PersonController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<FamilyMember> FamilyMembers(int PersonId)

@@ -22,7 +22,7 @@
         <AlternatingRowStyle BackColor="#CCFFCC" />
     </asp:GridView>
 <asp:LinqDataSource ID="LinqDataSource1" runat="server" 
-    ContextTypeName="DiscData.DiscDataContext" EnableViewState="False" OrderBy="VisitTime desc" 
+    ContextTypeName="CmsData.DiscDataContext" EnableViewState="False" OrderBy="VisitTime desc" 
     Select="new (FirstName, LastName, PageTitle, CreatedOn, PageUrl, VisitTime)" 
     StoreOriginalValuesInViewState="False" TableName="ViewViewPageVisits">
 </asp:LinqDataSource>

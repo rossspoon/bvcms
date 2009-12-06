@@ -24,7 +24,7 @@ namespace CMSPresenter
 
         public ContactSearchController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
 
         public int count;

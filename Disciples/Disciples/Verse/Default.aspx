@@ -75,7 +75,7 @@ function OpenWin(w, wURL)
                 </Triggers>
             </asp:UpdatePanel>
             <asp:ObjectDataSource ID="VerseDataSource" runat="server" SelectMethod="GetSortedVerseCollectionFromCategory"
-                TypeName="DiscData.VerseController" EnableViewState="False" DeleteMethod="RemoveVerseFromCategory">
+                TypeName="CmsData.VerseController" EnableViewState="False" DeleteMethod="RemoveVerseFromCategory">
                 <DeleteParameters>
                     <asp:ControlParameter ControlID="Category" Name="CatId" PropertyName="SelectedValue"
                         Type="Int32" />

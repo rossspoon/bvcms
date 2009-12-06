@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using DiscData;
+using CmsData;
 
 public partial class Admin_UpdatePodcastPosts : System.Web.UI.Page
 {

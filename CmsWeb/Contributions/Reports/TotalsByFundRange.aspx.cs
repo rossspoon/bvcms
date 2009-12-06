@@ -21,9 +21,11 @@ namespace CMSWeb.Reports
         {
             if (!IsPostBack)
             {
-                var pledged = Page.QueryString<bool?>("pledged");
-                if (pledged.HasValue && pledged.Value)
+                var pledged = Page.QueryString<string>("pledged");
+                if (pledged == "true")
                     Label1.Text = "Pledge Totals by Range for Fund";
+                if (pledged == "both")
+                    Label1.Text = "Pledge Totals by Range (pledges included)";
                 var from = this.QueryString<DateTime?>("from");
                 var today = Util.Now.Date;
                 var first = new DateTime(today.Year, today.Month, 1);

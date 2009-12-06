@@ -1,5 +1,5 @@
 using System;
-using DiscData;
+using CmsData;
 using System.Web;
 using UtilityExtensions;
 
@@ -32,7 +32,7 @@ public partial class CMSParagraph : System.Web.UI.Page
         {
             if (ContentId.HasValue)
             {
-                Content text = ContentService.GetContent(ContentId.Value);
+                ParaContent text = ContentService.GetContent(ContentId.Value);
                 if (text.Body != null)
                     txtContent2.Text = text.Body;
                 TextBox1.Text = text.Title;
@@ -42,11 +42,11 @@ public partial class CMSParagraph : System.Web.UI.Page
 
     protected void btnSave_Click(object sender, System.EventArgs e)
     {
-        Content text = ContentService.GetContent(ContentId.Value);
+        ParaContent text = ContentService.GetContent(ContentId.Value);
         if (text == null)
         {
-            text = new Content();
-            DbUtil.Db.Contents.InsertOnSubmit(text);
+            text = new ParaContent();
+            DbUtil.Db.ParaContents.InsertOnSubmit(text);
             text.CreatedById = DbUtil.Db.CurrentUser.UserId;
             text.CreatedOn = DateTime.Now;
         }

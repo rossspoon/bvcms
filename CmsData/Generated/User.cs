@@ -74,11 +74,45 @@ namespace CmsData
 		private string _DefaultGroup;
 		
    		
+   		private EntitySet< PageContent> _CreatedPages;
+		
    		private EntitySet< ActivityLog> _ActivityLogs;
+		
+   		private EntitySet< Blog> _Blogs;
+		
+   		private EntitySet< BlogComment> _BlogComments;
+		
+   		private EntitySet< BlogNotify> _BlogNotifications;
+		
+   		private EntitySet< BlogPost> _BlogPosts;
+		
+   		private EntitySet< Forum> _Forums;
+		
+   		private EntitySet< ForumEntry> _ForumEntries;
+		
+   		private EntitySet< ForumUserRead> _ForumUserReads;
+		
+   		private EntitySet< PageVisit> _PageVisits;
+		
+   		private EntitySet< PendingNotification> _PendingNotifications;
+		
+   		private EntitySet< PodCast> _PodCasts;
+		
+   		private EntitySet< PrayerSlot> _PrayerSlots;
+		
+   		private EntitySet< TemporaryToken> _TemporaryTokens;
+		
+   		private EntitySet< UserGroupRole> _UserGroupRoles;
 		
    		private EntitySet< Preference> _Preferences;
 		
    		private EntitySet< UserRole> _UserRoles;
+		
+   		private EntitySet< Verse> _Verses;
+		
+   		private EntitySet< VerseCategory> _VerseCategories;
+		
+   		private EntitySet< PageContent> _ModifiedPages;
 		
    		private EntitySet< UserCanEmailFor> _UsersICanEmailFor;
 		
@@ -184,11 +218,45 @@ namespace CmsData
 		public User()
 		{
 			
+			this._CreatedPages = new EntitySet< PageContent>(new Action< PageContent>(this.attach_CreatedPages), new Action< PageContent>(this.detach_CreatedPages)); 
+			
 			this._ActivityLogs = new EntitySet< ActivityLog>(new Action< ActivityLog>(this.attach_ActivityLogs), new Action< ActivityLog>(this.detach_ActivityLogs)); 
+			
+			this._Blogs = new EntitySet< Blog>(new Action< Blog>(this.attach_Blogs), new Action< Blog>(this.detach_Blogs)); 
+			
+			this._BlogComments = new EntitySet< BlogComment>(new Action< BlogComment>(this.attach_BlogComments), new Action< BlogComment>(this.detach_BlogComments)); 
+			
+			this._BlogNotifications = new EntitySet< BlogNotify>(new Action< BlogNotify>(this.attach_BlogNotifications), new Action< BlogNotify>(this.detach_BlogNotifications)); 
+			
+			this._BlogPosts = new EntitySet< BlogPost>(new Action< BlogPost>(this.attach_BlogPosts), new Action< BlogPost>(this.detach_BlogPosts)); 
+			
+			this._Forums = new EntitySet< Forum>(new Action< Forum>(this.attach_Forums), new Action< Forum>(this.detach_Forums)); 
+			
+			this._ForumEntries = new EntitySet< ForumEntry>(new Action< ForumEntry>(this.attach_ForumEntries), new Action< ForumEntry>(this.detach_ForumEntries)); 
+			
+			this._ForumUserReads = new EntitySet< ForumUserRead>(new Action< ForumUserRead>(this.attach_ForumUserReads), new Action< ForumUserRead>(this.detach_ForumUserReads)); 
+			
+			this._PageVisits = new EntitySet< PageVisit>(new Action< PageVisit>(this.attach_PageVisits), new Action< PageVisit>(this.detach_PageVisits)); 
+			
+			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
+			
+			this._PodCasts = new EntitySet< PodCast>(new Action< PodCast>(this.attach_PodCasts), new Action< PodCast>(this.detach_PodCasts)); 
+			
+			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
+			
+			this._TemporaryTokens = new EntitySet< TemporaryToken>(new Action< TemporaryToken>(this.attach_TemporaryTokens), new Action< TemporaryToken>(this.detach_TemporaryTokens)); 
+			
+			this._UserGroupRoles = new EntitySet< UserGroupRole>(new Action< UserGroupRole>(this.attach_UserGroupRoles), new Action< UserGroupRole>(this.detach_UserGroupRoles)); 
 			
 			this._Preferences = new EntitySet< Preference>(new Action< Preference>(this.attach_Preferences), new Action< Preference>(this.detach_Preferences)); 
 			
 			this._UserRoles = new EntitySet< UserRole>(new Action< UserRole>(this.attach_UserRoles), new Action< UserRole>(this.detach_UserRoles)); 
+			
+			this._Verses = new EntitySet< Verse>(new Action< Verse>(this.attach_Verses), new Action< Verse>(this.detach_Verses)); 
+			
+			this._VerseCategories = new EntitySet< VerseCategory>(new Action< VerseCategory>(this.attach_VerseCategories), new Action< VerseCategory>(this.detach_VerseCategories)); 
+			
+			this._ModifiedPages = new EntitySet< PageContent>(new Action< PageContent>(this.attach_ModifiedPages), new Action< PageContent>(this.detach_ModifiedPages)); 
 			
 			this._UsersICanEmailFor = new EntitySet< UserCanEmailFor>(new Action< UserCanEmailFor>(this.attach_UsersICanEmailFor), new Action< UserCanEmailFor>(this.detach_UsersICanEmailFor)); 
 			
@@ -828,12 +896,152 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="CreatedPages__CreatedBy", Storage="_CreatedPages", OtherKey="CreatedById")]
+   		public EntitySet< PageContent> CreatedPages
+   		{
+   		    get { return this._CreatedPages; }
+
+			set	{ this._CreatedPages.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_ActivityLog_Users", Storage="_ActivityLogs", OtherKey="UserId")]
    		public EntitySet< ActivityLog> ActivityLogs
    		{
    		    get { return this._ActivityLogs; }
 
 			set	{ this._ActivityLogs.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Blog_Users", Storage="_Blogs", OtherKey="OwnerId")]
+   		public EntitySet< Blog> Blogs
+   		{
+   		    get { return this._Blogs; }
+
+			set	{ this._Blogs.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_BlogComment_Users", Storage="_BlogComments", OtherKey="PosterId")]
+   		public EntitySet< BlogComment> BlogComments
+   		{
+   		    get { return this._BlogComments; }
+
+			set	{ this._BlogComments.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_BlogNotify_Users", Storage="_BlogNotifications", OtherKey="UserId")]
+   		public EntitySet< BlogNotify> BlogNotifications
+   		{
+   		    get { return this._BlogNotifications; }
+
+			set	{ this._BlogNotifications.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_BlogPost_Users", Storage="_BlogPosts", OtherKey="PosterId")]
+   		public EntitySet< BlogPost> BlogPosts
+   		{
+   		    get { return this._BlogPosts; }
+
+			set	{ this._BlogPosts.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Forum_Users", Storage="_Forums", OtherKey="CreatedBy")]
+   		public EntitySet< Forum> Forums
+   		{
+   		    get { return this._Forums; }
+
+			set	{ this._Forums.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_ForumEntry_Users", Storage="_ForumEntries", OtherKey="CreatedBy")]
+   		public EntitySet< ForumEntry> ForumEntries
+   		{
+   		    get { return this._ForumEntries; }
+
+			set	{ this._ForumEntries.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_ForumUserRead_Users", Storage="_ForumUserReads", OtherKey="UserId")]
+   		public EntitySet< ForumUserRead> ForumUserReads
+   		{
+   		    get { return this._ForumUserReads; }
+
+			set	{ this._ForumUserReads.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PageVisit_Users", Storage="_PageVisits", OtherKey="UserId")]
+   		public EntitySet< PageVisit> PageVisits
+   		{
+   		    get { return this._PageVisits; }
+
+			set	{ this._PageVisits.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PendingNotifications_Users", Storage="_PendingNotifications", OtherKey="UserId")]
+   		public EntitySet< PendingNotification> PendingNotifications
+   		{
+   		    get { return this._PendingNotifications; }
+
+			set	{ this._PendingNotifications.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PodCast_Users", Storage="_PodCasts", OtherKey="UserId")]
+   		public EntitySet< PodCast> PodCasts
+   		{
+   		    get { return this._PodCasts; }
+
+			set	{ this._PodCasts.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PrayerSlot_Users", Storage="_PrayerSlots", OtherKey="UserId")]
+   		public EntitySet< PrayerSlot> PrayerSlots
+   		{
+   		    get { return this._PrayerSlots; }
+
+			set	{ this._PrayerSlots.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_TemporaryToken_Users", Storage="_TemporaryTokens", OtherKey="CreatedBy")]
+   		public EntitySet< TemporaryToken> TemporaryTokens
+   		{
+   		    get { return this._TemporaryTokens; }
+
+			set	{ this._TemporaryTokens.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_UserGroupRole_Users", Storage="_UserGroupRoles", OtherKey="UserId")]
+   		public EntitySet< UserGroupRole> UserGroupRoles
+   		{
+   		    get { return this._UserGroupRoles; }
+
+			set	{ this._UserGroupRoles.Assign(value); }
 
    		}
 
@@ -854,6 +1062,36 @@ namespace CmsData
    		    get { return this._UserRoles; }
 
 			set	{ this._UserRoles.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Verse_Users", Storage="_Verses", OtherKey="CreatedBy")]
+   		public EntitySet< Verse> Verses
+   		{
+   		    get { return this._Verses; }
+
+			set	{ this._Verses.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_VerseCategory_Users", Storage="_VerseCategories", OtherKey="CreatedBy")]
+   		public EntitySet< VerseCategory> VerseCategories
+   		{
+   		    get { return this._VerseCategories; }
+
+			set	{ this._VerseCategories.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="ModifiedPages__ModifiedBy", Storage="_ModifiedPages", OtherKey="ModifiedById")]
+   		public EntitySet< PageContent> ModifiedPages
+   		{
+   		    get { return this._ModifiedPages; }
+
+			set	{ this._ModifiedPages.Assign(value); }
 
    		}
 
@@ -892,7 +1130,7 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_Users_PEOPLE_TBL", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		[Association(Name="FK_Users_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
 			get { return this._Person.Entity; }
@@ -951,6 +1189,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_CreatedPages(PageContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreatedBy = this;
+		}
+
+		private void detach_CreatedPages(PageContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreatedBy = null;
+		}
+
+		
 		private void attach_ActivityLogs(ActivityLog entity)
 		{
 			this.SendPropertyChanging();
@@ -958,6 +1209,175 @@ namespace CmsData
 		}
 
 		private void detach_ActivityLogs(ActivityLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_Blogs(Blog entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_Blogs(Blog entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_BlogComments(BlogComment entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_BlogComments(BlogComment entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_BlogNotifications(BlogNotify entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_BlogNotifications(BlogNotify entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_BlogPosts(BlogPost entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_BlogPosts(BlogPost entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_Forums(Forum entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_Forums(Forum entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_ForumEntries(ForumEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_ForumEntries(ForumEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_ForumUserReads(ForumUserRead entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_ForumUserReads(ForumUserRead entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_PageVisits(PageVisit entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_PageVisits(PageVisit entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_PendingNotifications(PendingNotification entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_PendingNotifications(PendingNotification entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_PodCasts(PodCast entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_PodCasts(PodCast entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_PrayerSlots(PrayerSlot entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_PrayerSlots(PrayerSlot entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_TemporaryTokens(TemporaryToken entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_TemporaryTokens(TemporaryToken entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_UserGroupRoles(UserGroupRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_UserGroupRoles(UserGroupRole entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -987,6 +1407,45 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+
+		
+		private void attach_Verses(Verse entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_Verses(Verse entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_VerseCategories(VerseCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_VerseCategories(VerseCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_ModifiedPages(PageContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModifiedBy = this;
+		}
+
+		private void detach_ModifiedPages(PageContent entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModifiedBy = null;
 		}
 
 		

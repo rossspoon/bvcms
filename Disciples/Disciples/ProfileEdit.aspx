@@ -20,7 +20,7 @@
                 AutoPostBack="True" TabIndex="3">
             </asp:DropDownList>
             <asp:ObjectDataSource ID="ObjectDataSource1" EnableViewState="false" runat="server"
-                SelectMethod="FetchUserGroups" TypeName="DiscData.GroupController"></asp:ObjectDataSource>
+                SelectMethod="FetchUserGroups" TypeName="CmsData.GroupController"></asp:ObjectDataSource>
         </blockquote>
     </asp:Panel>
     <asp:Panel ID="Panel2" runat="server" GroupingText="Password">
@@ -33,7 +33,7 @@
             </asp:ChangePassword>
         </blockquote>
     </asp:Panel>
-    <asp:Panel ID="Panel3" runat="server" GroupingText="Email">
+<%--    <asp:Panel ID="Panel3" runat="server" GroupingText="Email">
         <blockquote>
             <cms:ResultMessage ID="EmailChangedResult" EnableViewState="false" runat="server" />
             <table>
@@ -64,7 +64,7 @@
                 ValidationGroup="UpdateEmail" OnClick="SaveEmail_Click" TabIndex="12" />
         </blockquote>
     </asp:Panel>
-    <asp:Panel ID="Panel5" runat="server" GroupingText="Birthday">
+--%><%--    <asp:Panel ID="Panel5" runat="server" GroupingText="Birthday">
         <blockquote>
             <cms:ResultMessage ID="BirthdayResult" EnableViewState="false" runat="server" />
             <table>
@@ -86,5 +86,5 @@
                 ValidationGroup="Birthday" OnClick="SaveBirthday_Click" TabIndex="12" />
         </blockquote>
     </asp:Panel>
-</div>
+--%></div>
 </asp:Content>

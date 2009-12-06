@@ -49,9 +49,6 @@ namespace CmsData
                 true,
                 PeopleId);
             CMSMembershipProvider.provider.AdminOverride = false;
-            user.MustChangePassword = false;
-            DbUtil.Db.Users.InsertOnSubmit(user);
-            DbUtil.Db.SubmitChanges();
             return user;
         }
 

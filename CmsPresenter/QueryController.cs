@@ -22,7 +22,7 @@ namespace CMSPresenter
         private CMSDataContext Db;
         public QueryController()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
         }
         int savedQueryCount = 0;
         public int SavedQueryCount(bool onlyMine, string sortExpression, int maximumRows, int startRowIndex)

@@ -33,7 +33,11 @@ namespace CMSWebCommon.Models
         public int? Origin { get; set; }
         public int MaritalStatusId { get; set; }
         public int CampusId { get; set; }
-
+        public SearchPeopleModel()
+        {
+            MaritalStatusId = 99;
+            GenderId = 99;
+        }
         public string Sort { get; set; }
         private int? _Page;
         public int? Page
@@ -179,7 +183,7 @@ namespace CMSWebCommon.Models
                 query = query.Where(p => p.GenderId == GenderId);
             if (CampusId != 0)
                 query = query.Where(p => p.CampusId == CampusId);
-            if (MaritalStatusId != 0)
+            if (MaritalStatusId != 99)
                 query = query.Where(p => p.MaritalStatusId == MaritalStatusId);
 
             return query;
@@ -266,7 +270,11 @@ namespace CMSWebCommon.Models
                         Text = c.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            list.Insert(0, new SelectListItem 
+            { 
+                Value = "0", 
+                Text = "(not specified)"
+            });
             return list;
         }
         public IEnumerable<SelectListItem> MaritalStatusCodes()
@@ -278,7 +286,12 @@ namespace CMSWebCommon.Models
                         Text = c.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            list.Insert(0, new SelectListItem 
+            { 
+                Value = "99", 
+                Text = "(not specified)",
+                Selected = true
+            });
             return list;
         }
 
@@ -291,7 +304,12 @@ namespace CMSWebCommon.Models
                         Text = ms.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "99", Text = "(not specified)" });
+            list.Insert(0, new SelectListItem 
+            { 
+                Value = "99", 
+                Text = "(not specified)",
+                Selected = true
+            });
             return list;
         }
         public int? AddNewPerson()
@@ -363,6 +381,9 @@ namespace CMSWebCommon.Models
 
             if (GenderId == 99)
                 return "Must have a gender when adding";
+
+            if (CampusId == 0)
+                return "Must have a CampusId when adding";
 
             if (AddToExisting) // existing family
                 if (Address.HasValue())

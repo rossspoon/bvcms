@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
-using DiscData;
+using CmsData;
 using System.Net.Mail;
 using System.Web.Configuration;
 
@@ -22,14 +22,14 @@ namespace Disciples
         {
             if (User.Identity.IsAuthenticated)
             {
-                var u = DbUtil.Db.GetUser(User.Identity.Name);
-                if (u != null && (u.ForceLogin ?? false))
-                {
-                    u.ForceLogin = false;
-                    DbUtil.Db.SubmitChanges();
-                    FormsAuthentication.SignOut();
-                    Response.Redirect("~/");
-                }
+                var u = DbUtil.Db.Users.Single(uu => uu.Username == User.Identity.Name);
+                //if (u != null && (u.ForceLogin ?? false))
+                //{
+                //    u.ForceLogin = false;
+                //    DbUtil.Db.SubmitChanges();
+                //    FormsAuthentication.SignOut();
+                //    Response.Redirect("~/");
+                //}
             }
         }
 
@@ -55,7 +55,7 @@ namespace Disciples
         {
             if (User.Identity.IsAuthenticated)
             {
-                var u = DbUtil.Db.GetUser(User.Identity.Name);
+                var u = DbUtil.Db.Users.Single(uu => uu.Username == User.Identity.Name);
                 if (u == null)
                 {
                     FormsAuthentication.SignOut();

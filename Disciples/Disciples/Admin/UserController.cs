@@ -3,18 +3,18 @@ using System.Web.Security;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using DiscData;
-using DiscData.View;
+using CmsData;
+using CmsData.View;
 using UtilityExtensions;
 using System.Configuration;
 
 [DataObject(true)]
 public class UserController
 {
-    private DiscDataContext Db;
+    private CMSDataContext Db;
     public UserController()
     {
-        Db = new DiscDataContext(Util.ConnectionStringDisc);
+        Db = new CMSDataContext(Util.ConnectionString);
     }
 
     [DataObjectMethod(DataObjectMethodType.Update, true)]
@@ -23,12 +23,12 @@ public class UserController
         var user = Db.Users.Single(u => u.UserId == UserId);
         if (PasswordSetOnly.HasValue())
         {
-            BVMembershipProvider.provider.AdminOverride = true;
-            var mu = BVMembershipProvider.provider.GetUser(user.Username, false);
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var mu = CMSMembershipProvider.provider.GetUser(user.Username, false);
             mu.UnlockUser();
             mu.ChangePassword(mu.ResetPassword(), PasswordSetOnly);
             user.TempPassword = PasswordSetOnly;
-            BVMembershipProvider.provider.AdminOverride = false;
+            CMSMembershipProvider.provider.AdminOverride = false;
         }
         user.Username = Username;
         user.EmailAddress = EmailAddress;
@@ -48,14 +48,14 @@ public class UserController
         if (PeopleId > 0)
             pid = PeopleId;
 
-        BVMembershipProvider.provider.AdminOverride = true;
-        var user = BVMembershipProvider.provider.NewUser(
+        CMSMembershipProvider.provider.AdminOverride = true;
+        var user = CMSMembershipProvider.provider.NewUser(
             Username,
             PasswordSetOnly,
             EmailAddress,
             IsApproved,
             pid);
-        BVMembershipProvider.provider.AdminOverride = false;
+        CMSMembershipProvider.provider.AdminOverride = false;
         user.MustChangePassword = MustChangePassword;
         Db.Users.InsertOnSubmit(user);
         Db.SubmitChanges();
@@ -67,13 +67,13 @@ public class UserController
         return count;
     }
     [DataObjectMethod(DataObjectMethodType.Select, false)]
-    public IEnumerable<UserList> GetUsers(string name, string sortExpression, int startIndex, int maximumRows)
+    public IEnumerable<User> GetUsers(string name, string sortExpression, int startIndex, int maximumRows)
     {
-        var q = from u in Db.ViewUserLists
+        var q = from u in Db.Users
                 select u;
 
         if (name.HasValue())
-            q = q.Where(u => u.LastName.StartsWith(name));
+            q = q.Where(u => u.Name2.StartsWith(name));
         count = q.Count();
 
         if (!sortExpression.HasValue())
@@ -85,10 +85,10 @@ public class UserController
                 q = q.OrderBy(u => u.PeopleId).ThenBy(u => u.Username);
                 break;
             case "Name":
-                q = q.OrderBy(u => u.LastName).ThenBy(u => u.FirstName);
+                q = q.OrderBy(u => u.Name2);
                 break;
             case "LastActivityDate":
-                q = q.OrderBy(u => u.LastVisit);
+                q = q.OrderBy(u => u.LastActivityDate);
                 break;
             case "IsApproved":
                 q = q.OrderBy(u => u.IsApproved);
@@ -103,12 +103,12 @@ public class UserController
                 q = q.OrderByDescending(u => u.PeopleId).ThenByDescending(u => u.Username);
                 break;
             case "Name DESC":
-                q = q.OrderByDescending(u => u.LastName).ThenByDescending(u => u.FirstName);
+                q = q.OrderByDescending(u => u.Name2);
                 break;
             case "LastActivityDate DESC":
             case "IsOnLine":
             case "IsOnLine DESC":
-                q = q.OrderByDescending(u => u.LastVisit);
+                q = q.OrderByDescending(u => u.LastActivityDate);
                 break;
             case "IsApproved DESC":
                 q = q.OrderByDescending(u => u.IsApproved);
@@ -130,7 +130,7 @@ public class UserController
         var q = from bn in DbUtil.Db.BlogNotifications
                 let user = bn.Blog.BlogPosts.OrderByDescending(p => p.EntryDate).First().User
                 //let user = post != null ? post.User : null
-                let poster = user != null ? user.FirstName + " " + user.LastName : ""
+                let poster = user != null ? user.Name : ""
                 where bn.User.Username == username
                 select new OptOut
                 {

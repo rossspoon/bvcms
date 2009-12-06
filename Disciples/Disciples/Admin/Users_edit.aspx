@@ -140,7 +140,7 @@
                                                 </Columns>
                                             </asp:GridView>
                                             <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
-                                                SelectMethod="FetchAllGroups" TypeName="DiscData.GroupController">
+                                                SelectMethod="FetchAllGroups" TypeName="CmsData.GroupController">
                                             </asp:ObjectDataSource>
                                         </td>
                                     </tr>

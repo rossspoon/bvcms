@@ -62,6 +62,30 @@ namespace CmsData
         partial void UpdateBaptismType(BaptismType instance);
         partial void DeleteBaptismType(BaptismType instance);
         
+        partial void InsertBlog(Blog instance);
+        partial void UpdateBlog(Blog instance);
+        partial void DeleteBlog(Blog instance);
+        
+        partial void InsertBlogCategory(BlogCategory instance);
+        partial void UpdateBlogCategory(BlogCategory instance);
+        partial void DeleteBlogCategory(BlogCategory instance);
+        
+        partial void InsertBlogCategoryXref(BlogCategoryXref instance);
+        partial void UpdateBlogCategoryXref(BlogCategoryXref instance);
+        partial void DeleteBlogCategoryXref(BlogCategoryXref instance);
+        
+        partial void InsertBlogComment(BlogComment instance);
+        partial void UpdateBlogComment(BlogComment instance);
+        partial void DeleteBlogComment(BlogComment instance);
+        
+        partial void InsertBlogNotify(BlogNotify instance);
+        partial void UpdateBlogNotify(BlogNotify instance);
+        partial void DeleteBlogNotify(BlogNotify instance);
+        
+        partial void InsertBlogPost(BlogPost instance);
+        partial void UpdateBlogPost(BlogPost instance);
+        partial void DeleteBlogPost(BlogPost instance);
+        
         partial void InsertBundleDetail(BundleDetail instance);
         partial void UpdateBundleDetail(BundleDetail instance);
         partial void DeleteBundleDetail(BundleDetail instance);
@@ -150,6 +174,10 @@ namespace CmsData
         partial void UpdateDropType(DropType instance);
         partial void DeleteDropType(DropType instance);
         
+        partial void InsertDUser(DUser instance);
+        partial void UpdateDUser(DUser instance);
+        partial void DeleteDUser(DUser instance);
+        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -178,6 +206,22 @@ namespace CmsData
         partial void UpdateFamilyRelationship(FamilyRelationship instance);
         partial void DeleteFamilyRelationship(FamilyRelationship instance);
         
+        partial void InsertForum(Forum instance);
+        partial void UpdateForum(Forum instance);
+        partial void DeleteForum(Forum instance);
+        
+        partial void InsertForumEntry(ForumEntry instance);
+        partial void UpdateForumEntry(ForumEntry instance);
+        partial void DeleteForumEntry(ForumEntry instance);
+        
+        partial void InsertForumNotify(ForumNotify instance);
+        partial void UpdateForumNotify(ForumNotify instance);
+        partial void DeleteForumNotify(ForumNotify instance);
+        
+        partial void InsertForumUserRead(ForumUserRead instance);
+        partial void UpdateForumUserRead(ForumUserRead instance);
+        partial void DeleteForumUserRead(ForumUserRead instance);
+        
         partial void InsertGender(Gender instance);
         partial void UpdateGender(Gender instance);
         partial void DeleteGender(Gender instance);
@@ -190,9 +234,21 @@ namespace CmsData
         partial void UpdateGeoCode(GeoCode instance);
         partial void DeleteGeoCode(GeoCode instance);
         
+        partial void InsertGroup(Group instance);
+        partial void UpdateGroup(Group instance);
+        partial void DeleteGroup(Group instance);
+        
+        partial void InsertGroupRole(GroupRole instance);
+        partial void UpdateGroupRole(GroupRole instance);
+        partial void DeleteGroupRole(GroupRole instance);
+        
         partial void InsertInterestPoint(InterestPoint instance);
         partial void UpdateInterestPoint(InterestPoint instance);
         partial void DeleteInterestPoint(InterestPoint instance);
+        
+        partial void InsertInvitation(Invitation instance);
+        partial void UpdateInvitation(Invitation instance);
+        partial void DeleteInvitation(Invitation instance);
         
         partial void InsertJoinType(JoinType instance);
         partial void UpdateJoinType(JoinType instance);
@@ -278,6 +334,26 @@ namespace CmsData
         partial void UpdateOrigin(Origin instance);
         partial void DeleteOrigin(Origin instance);
         
+        partial void InsertOtherNotify(OtherNotify instance);
+        partial void UpdateOtherNotify(OtherNotify instance);
+        partial void DeleteOtherNotify(OtherNotify instance);
+        
+        partial void InsertPageContent(PageContent instance);
+        partial void UpdatePageContent(PageContent instance);
+        partial void DeletePageContent(PageContent instance);
+        
+        partial void InsertPageVisit(PageVisit instance);
+        partial void UpdatePageVisit(PageVisit instance);
+        partial void DeletePageVisit(PageVisit instance);
+        
+        partial void InsertParaContent(ParaContent instance);
+        partial void UpdateParaContent(ParaContent instance);
+        partial void DeleteParaContent(ParaContent instance);
+        
+        partial void InsertPendingNotification(PendingNotification instance);
+        partial void UpdatePendingNotification(PendingNotification instance);
+        partial void DeletePendingNotification(PendingNotification instance);
+        
         partial void InsertPerson(Person instance);
         partial void UpdatePerson(Person instance);
         partial void DeletePerson(Person instance);
@@ -290,9 +366,17 @@ namespace CmsData
         partial void UpdatePicture(Picture instance);
         partial void DeletePicture(Picture instance);
         
+        partial void InsertPodCast(PodCast instance);
+        partial void UpdatePodCast(PodCast instance);
+        partial void DeletePodCast(PodCast instance);
+        
         partial void InsertPostalLookup(PostalLookup instance);
         partial void UpdatePostalLookup(PostalLookup instance);
         partial void DeletePostalLookup(PostalLookup instance);
+        
+        partial void InsertPrayerSlot(PrayerSlot instance);
+        partial void UpdatePrayerSlot(PrayerSlot instance);
+        partial void DeletePrayerSlot(PrayerSlot instance);
         
         partial void InsertPreference(Preference instance);
         partial void UpdatePreference(Preference instance);
@@ -309,6 +393,10 @@ namespace CmsData
         partial void InsertQueryBuilderClause(QueryBuilderClause instance);
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
         partial void DeleteQueryBuilderClause(QueryBuilderClause instance);
+        
+        partial void InsertReadPlan(ReadPlan instance);
+        partial void UpdateReadPlan(ReadPlan instance);
+        partial void DeleteReadPlan(ReadPlan instance);
         
         partial void InsertRecAgeDivision(RecAgeDivision instance);
         partial void UpdateRecAgeDivision(RecAgeDivision instance);
@@ -390,9 +478,21 @@ namespace CmsData
         partial void UpdateTaskStatus(TaskStatus instance);
         partial void DeleteTaskStatus(TaskStatus instance);
         
+        partial void InsertTemporaryToken(TemporaryToken instance);
+        partial void UpdateTemporaryToken(TemporaryToken instance);
+        partial void DeleteTemporaryToken(TemporaryToken instance);
+        
+        partial void InsertUploadAuthenticationXref(UploadAuthenticationXref instance);
+        partial void UpdateUploadAuthenticationXref(UploadAuthenticationXref instance);
+        partial void DeleteUploadAuthenticationXref(UploadAuthenticationXref instance);
+        
         partial void InsertUserCanEmailFor(UserCanEmailFor instance);
         partial void UpdateUserCanEmailFor(UserCanEmailFor instance);
         partial void DeleteUserCanEmailFor(UserCanEmailFor instance);
+        
+        partial void InsertUserGroupRole(UserGroupRole instance);
+        partial void UpdateUserGroupRole(UserGroupRole instance);
+        partial void DeleteUserGroupRole(UserGroupRole instance);
         
         partial void InsertUserRole(UserRole instance);
         partial void UpdateUserRole(UserRole instance);
@@ -405,6 +505,18 @@ namespace CmsData
         partial void InsertVBSApp(VBSApp instance);
         partial void UpdateVBSApp(VBSApp instance);
         partial void DeleteVBSApp(VBSApp instance);
+        
+        partial void InsertVerse(Verse instance);
+        partial void UpdateVerse(Verse instance);
+        partial void DeleteVerse(Verse instance);
+        
+        partial void InsertVerseCategory(VerseCategory instance);
+        partial void UpdateVerseCategory(VerseCategory instance);
+        partial void DeleteVerseCategory(VerseCategory instance);
+        
+        partial void InsertVerseCategoryXref(VerseCategoryXref instance);
+        partial void UpdateVerseCategoryXref(VerseCategoryXref instance);
+        partial void DeleteVerseCategoryXref(VerseCategoryXref instance);
         
         partial void InsertVolApplicationStatus(VolApplicationStatus instance);
         partial void UpdateVolApplicationStatus(VolApplicationStatus instance);
@@ -558,6 +670,42 @@ namespace CmsData
 
 		}
 
+		public Table< Blog> Blogs
+		{
+			get	{ return this.GetTable< Blog>(); }
+
+		}
+
+		public Table< BlogCategory> BlogCategories
+		{
+			get	{ return this.GetTable< BlogCategory>(); }
+
+		}
+
+		public Table< BlogCategoryXref> BlogCategoryXrefs
+		{
+			get	{ return this.GetTable< BlogCategoryXref>(); }
+
+		}
+
+		public Table< BlogComment> BlogComments
+		{
+			get	{ return this.GetTable< BlogComment>(); }
+
+		}
+
+		public Table< BlogNotify> BlogNotifications
+		{
+			get	{ return this.GetTable< BlogNotify>(); }
+
+		}
+
+		public Table< BlogPost> BlogPosts
+		{
+			get	{ return this.GetTable< BlogPost>(); }
+
+		}
+
 		public Table< BundleDetail> BundleDetails
 		{
 			get	{ return this.GetTable< BundleDetail>(); }
@@ -690,6 +838,12 @@ namespace CmsData
 
 		}
 
+		public Table< DUser> DUsers
+		{
+			get	{ return this.GetTable< DUser>(); }
+
+		}
+
 		public Table< EnrollmentTransaction> EnrollmentTransactions
 		{
 			get	{ return this.GetTable< EnrollmentTransaction>(); }
@@ -732,6 +886,30 @@ namespace CmsData
 
 		}
 
+		public Table< Forum> Forums
+		{
+			get	{ return this.GetTable< Forum>(); }
+
+		}
+
+		public Table< ForumEntry> ForumEntries
+		{
+			get	{ return this.GetTable< ForumEntry>(); }
+
+		}
+
+		public Table< ForumNotify> ForumNotifications
+		{
+			get	{ return this.GetTable< ForumNotify>(); }
+
+		}
+
+		public Table< ForumUserRead> ForumUserReads
+		{
+			get	{ return this.GetTable< ForumUserRead>(); }
+
+		}
+
 		public Table< Gender> Genders
 		{
 			get	{ return this.GetTable< Gender>(); }
@@ -750,9 +928,27 @@ namespace CmsData
 
 		}
 
+		public Table< Group> Groups
+		{
+			get	{ return this.GetTable< Group>(); }
+
+		}
+
+		public Table< GroupRole> GroupRoles
+		{
+			get	{ return this.GetTable< GroupRole>(); }
+
+		}
+
 		public Table< InterestPoint> InterestPoints
 		{
 			get	{ return this.GetTable< InterestPoint>(); }
+
+		}
+
+		public Table< Invitation> Invitations
+		{
+			get	{ return this.GetTable< Invitation>(); }
 
 		}
 
@@ -882,6 +1078,36 @@ namespace CmsData
 
 		}
 
+		public Table< OtherNotify> OtherNotifications
+		{
+			get	{ return this.GetTable< OtherNotify>(); }
+
+		}
+
+		public Table< PageContent> PageContents
+		{
+			get	{ return this.GetTable< PageContent>(); }
+
+		}
+
+		public Table< PageVisit> PageVisits
+		{
+			get	{ return this.GetTable< PageVisit>(); }
+
+		}
+
+		public Table< ParaContent> ParaContents
+		{
+			get	{ return this.GetTable< ParaContent>(); }
+
+		}
+
+		public Table< PendingNotification> PendingNotifications
+		{
+			get	{ return this.GetTable< PendingNotification>(); }
+
+		}
+
 		public Table< Person> People
 		{
 			get	{ return this.GetTable< Person>(); }
@@ -900,9 +1126,21 @@ namespace CmsData
 
 		}
 
+		public Table< PodCast> PodCasts
+		{
+			get	{ return this.GetTable< PodCast>(); }
+
+		}
+
 		public Table< PostalLookup> PostalLookups
 		{
 			get	{ return this.GetTable< PostalLookup>(); }
+
+		}
+
+		public Table< PrayerSlot> PrayerSlots
+		{
+			get	{ return this.GetTable< PrayerSlot>(); }
 
 		}
 
@@ -927,6 +1165,12 @@ namespace CmsData
 		public Table< QueryBuilderClause> QueryBuilderClauses
 		{
 			get	{ return this.GetTable< QueryBuilderClause>(); }
+
+		}
+
+		public Table< ReadPlan> ReadPlans
+		{
+			get	{ return this.GetTable< ReadPlan>(); }
 
 		}
 
@@ -1050,9 +1294,27 @@ namespace CmsData
 
 		}
 
+		public Table< TemporaryToken> TemporaryTokens
+		{
+			get	{ return this.GetTable< TemporaryToken>(); }
+
+		}
+
+		public Table< UploadAuthenticationXref> UploadAuthenticationXrefs
+		{
+			get	{ return this.GetTable< UploadAuthenticationXref>(); }
+
+		}
+
 		public Table< UserCanEmailFor> UserCanEmailFors
 		{
 			get	{ return this.GetTable< UserCanEmailFor>(); }
+
+		}
+
+		public Table< UserGroupRole> UserGroupRoles
+		{
+			get	{ return this.GetTable< UserGroupRole>(); }
 
 		}
 
@@ -1071,6 +1333,24 @@ namespace CmsData
 		public Table< VBSApp> VBSApps
 		{
 			get	{ return this.GetTable< VBSApp>(); }
+
+		}
+
+		public Table< Verse> Verses
+		{
+			get	{ return this.GetTable< Verse>(); }
+
+		}
+
+		public Table< VerseCategory> VerseCategories
+		{
+			get	{ return this.GetTable< VerseCategory>(); }
+
+		}
+
+		public Table< VerseCategoryXref> VerseCategoryXrefs
+		{
+			get	{ return this.GetTable< VerseCategoryXref>(); }
 
 		}
 
@@ -1155,6 +1435,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.BlogCategoriesView> ViewBlogCategoriesViews
+	    {
+		    get { return this.GetTable< View.BlogCategoriesView>(); }
+
+	    }
+
 	    public Table< View.City> ViewCities
 	    {
 		    get { return this.GetTable< View.City>(); }
@@ -1191,15 +1477,39 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.PodcastSummary> ViewPodcastSummaries
+	    {
+		    get { return this.GetTable< View.PodcastSummary>(); }
+
+	    }
+
 	    public Table< View.TableColumn> ViewTableColumns
 	    {
 		    get { return this.GetTable< View.TableColumn>(); }
 
 	    }
 
+	    public Table< View.UserList> ViewUserLists
+	    {
+		    get { return this.GetTable< View.UserList>(); }
+
+	    }
+
 	    public Table< View.VBSInfo> ViewVBSInfos
 	    {
 		    get { return this.GetTable< View.VBSInfo>(); }
+
+	    }
+
+	    public Table< View.VerseCategoriesView> ViewVerseCategoriesViews
+	    {
+		    get { return this.GetTable< View.VerseCategoriesView>(); }
+
+	    }
+
+	    public Table< View.VerseSummary> ViewVerseSummaries
+	    {
+		    get { return this.GetTable< View.VerseSummary>(); }
 
 	    }
 
@@ -1308,6 +1618,17 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.TaggedPerson>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 tagid
+                );
+		}
+
+		[Function(Name="disc.VerseSummaryForCategory2", IsComposable = true)]
+		public IQueryable< View.VerseSummaryForCategory2 > VerseSummaryForCategory2(
+            [Parameter(DbType="int")] int? catid
+            )
+		{
+			return this.CreateMethodCallQuery< View.VerseSummaryForCategory2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                catid
                 );
 		}
 
@@ -1772,6 +2093,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="disc.VersePos", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? VersePos(
+            [Parameter(Name = "id", DbType="int")] int? id
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                id
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.EntryPointId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? EntryPointId(
@@ -1781,6 +2114,20 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="disc.VerseInCategory", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? VerseInCategory(
+            [Parameter(Name = "vid", DbType="int")] int? vid,
+            [Parameter(Name = "catid", DbType="int")] int? catid
+            )
+		{
+			return ((Boolean)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                vid,
+                catid
                 ).ReturnValue));
 		}
 
@@ -2078,6 +2425,32 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="disc.DayOfYear", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? DayOfYear(
+            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                DateX
+                ).ReturnValue));
+		}
+
+		[Function(Name="disc.GetProfile", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string GetProfile(
+            [Parameter(Name = "Username", DbType="varchar")] string Username,
+            [Parameter(Name = "PropertyName", DbType="varchar")] string PropertyName
+            )
+		{
+			return ((String)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                Username,
+                PropertyName
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.UEmail", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string UEmail(
@@ -2129,6 +2502,27 @@ namespace CmsData
     #endregion
 	#region Stored Procedures
 		
+		[Function(Name="dbo.ForumNewEntry")]
+		public ISingleResult< ForumEntry> ForumNewEntry(
+            [Parameter(Name = "forumid", DbType="int")] int? forumid,
+            [Parameter(Name = "replytoid", DbType="int")] int? replytoid,
+            [Parameter(Name = "title", DbType="nvarchar")] string title,
+            [Parameter(Name = "entry", DbType="text")] string entry,
+            [Parameter(Name = "created", DbType="datetime")] DateTime? created,
+            [Parameter(Name = "createdby", DbType="nvarchar")] string createdby
+            )
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                forumid,
+                replytoid,
+                title,
+                entry,
+                created,
+                createdby
+			);
+			return ((ISingleResult< ForumEntry>)(result.ReturnValue));
+		}
+
     #endregion
    }
 

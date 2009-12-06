@@ -3267,7 +3267,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(26)", IsDbGenerated=true)]
+		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
 		public string PreferredName
 		{
 			get { return this._PreferredName; }
@@ -3534,7 +3534,7 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Users_PEOPLE_TBL", Storage="_Users", OtherKey="PeopleId")]
+   		[Association(Name="FK_Users_People", Storage="_Users", OtherKey="PeopleId")]
    		public EntitySet< User> Users
    		{
    		    get { return this._Users; }

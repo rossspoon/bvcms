@@ -53,7 +53,7 @@ namespace CMSWeb.Models
 
         public QueryModel()
         {
-            Db = new CMSDataContext(Util.ConnectionString);
+            Db = DbUtil.Db;
             ConditionName = "Group";
             Direction = "asc";
             TagTypeId = DbUtil.TagTypeId_Personal;
@@ -502,7 +502,6 @@ namespace CMSWeb.Models
                         Value = g.Key.ScheduleId.ToString(),
                         Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
                     };
-            return q;
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;

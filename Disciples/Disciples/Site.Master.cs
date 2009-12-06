@@ -1,6 +1,6 @@
 ﻿using System;
 using CustomControls;
-using DiscData;
+using CmsData;
 using System.Web;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -42,7 +42,7 @@ namespace Disciples
 
             HtmlGenericControl m;
             m = NewTopMenu(MainMenu, "Blogs", "~/Blog/");
-            foreach (DiscData.Blog b in new BlogController().FetchAllForUser())
+            foreach (var b in new BlogController().FetchAllForUser())
                 NewMenu(m, b.Title, "~/Blog/" + b.Name + ".aspx");
 
             //var fc = new ForumController();
@@ -65,7 +65,7 @@ namespace Disciples
 
             NewMenu(MainMenu, "Resources", "~/view/resources.aspx");
 
-            if (Group.FetchAdminGroups().Count() > 0 || Page.User.IsInRole("Administrator") || Page.User.IsInRole("BlogAdministrator"))
+            if (Group.FetchAdminGroups().Count() > 0 || Page.User.IsInRole("BlogAdministrator"))
             {
                 m = NewTopMenu(MainMenu, "Admin", "~/AdminGroups.aspx");
                 if (Page.User.IsInRole("Administrator"))
