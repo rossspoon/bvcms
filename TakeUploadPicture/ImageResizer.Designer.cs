@@ -93,6 +93,7 @@ namespace TakeUploadPicture
             this.btnSave.TabIndex = 47;
             this.btnSave.Text = "   Send to Server";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // picZoomIn
             // 

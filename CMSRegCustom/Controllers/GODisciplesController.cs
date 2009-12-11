@@ -75,12 +75,12 @@ namespace CMSRegCustom.Controllers
 
             return RedirectToAction("Confirm", new { id = m.neworgid });
         }
-        public ActionResult Individual(int id)
+        public ActionResult Individual(string id)
         {
             if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
-            var m = new Models.GODisciplesModel("Disciple", id);
+            var m = new Models.GODisciplesModel("Individual");
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
 
@@ -89,10 +89,10 @@ namespace CMSRegCustom.Controllers
             if (!ModelState.IsValid)
                 return View("Signup", m);
 
-            m.PerformMemberSetup();
-            m.EmailMemberNotices();
+            m.PerformIndividualSetup(id);
+            m.EmailIndividualNotices(id);
 
-            return RedirectToAction("Confirm", new { id = m.neworgid });
+            return RedirectToAction("Confirm2");
         }
         [Authorize(Roles = "Edit")]
         public ActionResult RenameGroup(string oldname, string newname)
@@ -114,19 +114,25 @@ namespace CMSRegCustom.Controllers
             ViewData["header"] = Header + " Successful";
             return View(m);
         }
+        public ActionResult Confirm2()
+        {
+            var m = new GODisciplesModel("Confirm");
+            ViewData["header"] = Header + " Successful";
+            return View("Confirm", m);
+        }
 
         private string Header
         {
             get { return DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration"; }
         }
-        public ActionResult FixPW()
-        {
-            var q = from u in DbUtil.Db.Users
-                    where u.TempPassword != null && u.TempPassword != ""
-                    select u;
-            foreach(var u in q)
-                MembershipService.ChangePassword(u.Username, u.TempPassword);
-            return Content("done");
-        }
+        //public ActionResult FixPW()
+        //{
+        //    var q = from u in DbUtil.Db.Users
+        //            where u.TempPassword != null && u.TempPassword != ""
+        //            select u;
+        //    foreach(var u in q)
+        //        MembershipService.ChangePassword(u.Username, u.TempPassword);
+        //    return Content("done");
+        //}
     }
 }

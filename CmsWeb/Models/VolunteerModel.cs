@@ -63,7 +63,6 @@ namespace CMSWeb.Models
         public Person person { get; set; }
         public string[] interests { get; set; }
         public string question { get; set; }
-        public bool preferredemail { get; set; }
 
         public string Checked(int id)
         {
@@ -100,10 +99,9 @@ namespace CMSWeb.Models
         {
             var q = from vi in VolInterest.VolInterestInterestCodes
                     select vi.VolInterestCode.Description;
-            var sb = new StringBuilder("<blockquote>\n");
+            var sb = new StringBuilder();
             foreach (var i in q)
-                sb.AppendFormat("{0}</br>\n", i);
-            sb.Append("</blockquote>\n");
+                sb.AppendFormat("{0}<br/>\n", i);
             return sb.ToString();
 
         }

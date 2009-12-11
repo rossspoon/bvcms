@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DiscData;
+using CmsData;
 using System.Text;
 using UtilityExtensions;
 
@@ -51,7 +51,7 @@ namespace Prayer.Models
                        select new
                        {
                            Slot = ps,
-                           Name = ps.User.FirstName + " " + ps.User.LastName,
+                           Name = ps.User.Name,
                            UserId = ps.UserId
                        };
             return from ms in MemSlots(day)
@@ -69,7 +69,7 @@ namespace Prayer.Models
                        select new
                        {
                            Slot = ps,
-                           Name = ps.User.FirstName + " " + ps.User.LastName,
+                           Name = ps.User.Name,
                            UserId = ps.UserId
                        };
             return from ms in MemSlots()
@@ -88,7 +88,7 @@ namespace Prayer.Models
                        select new
                        {
                            UserId = ps.UserId,
-                           Name = ps.User.FirstName + " " + ps.User.LastName,
+                           Name = ps.User.Name,
                        };
             return new SlotInfo(User)
             {

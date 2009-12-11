@@ -39,7 +39,7 @@ namespace CMSRegCustom.Controllers
                 if (count > 1)
                     ModelState.AddModelError("findher", "More than one match for her, sorry");
                 else if (count == 0)
-                    if(!m.shownew2)
+                    if (!m.shownew2)
                     {
                         ModelState.AddModelError("findher", "Cannot find her record.");
                         m.shownew2 = true;
@@ -65,10 +65,8 @@ namespace CMSRegCustom.Controllers
                 {
                     HerId = m.person2.PeopleId,
                     HerEmail = m.email2,
-                    HerEmailPreferred = m.preferredEmail2,
                     HimId = m.person1.PeopleId,
                     HisEmail = m.email1,
-                    HisEmailPreferred = m.preferredEmail1,
                     Relationship = m.Relation,
                     OrgId = m.OrgId,
                     Created = Util.Now,
@@ -80,14 +78,10 @@ namespace CMSRegCustom.Controllers
                 lr.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
             var smtp = new SmtpClient();
-            SendStaffEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.organization, 
-                LoveRespectModel.NightWord(m.night));
-            SendStaffEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.organization, 
-                LoveRespectModel.NightWord(m.night));
-            SendEmail(smtp, m.person1, m.email1, m.preferredEmail1, 
-                m.phone1, m.homecell1, m.MaritalStatus, m.organization, m.night.Value);
-            SendEmail(smtp, m.person2, m.email2, m.preferredEmail2, 
-                m.phone2, m.homecell2, m.MaritalStatus, m.organization, m.night.Value);
+            SendStaffEmail(smtp, m.person1, m.email1, m.organization, LoveRespectModel.NightWord(m.night));
+            SendStaffEmail(smtp, m.person2, m.email2, m.organization, LoveRespectModel.NightWord(m.night));
+            SendEmail(smtp, m.person1, m.email1, m.phone1, m.homecell1, m.MaritalStatus, m.organization, m.night.Value);
+            SendEmail(smtp, m.person2, m.email2, m.phone2, m.homecell2, m.MaritalStatus, m.organization, m.night.Value);
             return RedirectToAction("Confirm");
         }
         public ActionResult Other()
@@ -118,27 +112,16 @@ namespace CMSRegCustom.Controllers
             return View();
         }
 
-        private static void SendStaffEmail(SmtpClient smtp, Person p, string email, bool preferred, CmsData.Organization org, string night)
+        private static void SendStaffEmail(SmtpClient smtp, Person p, string email, 
+            CmsData.Organization org, string night)
         {
-            Util.Email2(smtp, email,
-                                DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(org.OrganizationName),
-@"{0}({1}) registered for {2} (night: {3})</p>".Fmt(
-            p.Name, p.PeopleId, org.OrganizationName, night));
+            Util.Email2(smtp, email, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(org.OrganizationName), @"{0}({1}) registered for {2} (night: {3})</p>".Fmt(p.Name, p.PeopleId, org.OrganizationName, night));
         }
 
-        private void SendEmail(SmtpClient smtp, Person p, string email, bool preferred, 
+        private void SendEmail(SmtpClient smtp, Person p, string email, 
             string phone, string homecell, int married, CmsData.Organization org, int night)
         {
             var sb = new StringBuilder();
-            var oldaddress = "";
-            if (p.EmailAddress != email && preferred)
-            {
-                sb.AppendFormat("We have updated your email address to be: {0}.<br />\n", email);
-                oldaddress = p.EmailAddress;
-                p.EmailAddress = email;
-            }
-            else if (!p.EmailAddress.HasValue())
-                p.EmailAddress = email;
 
             if (homecell == "h" && p.Family.HomePhone.HasValue() && !p.Family.HomePhone.EndsWith(phone.GetDigits()))
             {
@@ -160,13 +143,6 @@ namespace CMSRegCustom.Controllers
                 p.MaritalStatusId = married;
                 p.FixTitle();
             }
-            if (sb.Length > 0)
-            {
-                ChangeMail(smtp, p.EmailAddress, org, p, sb.ToString());
-                ChangeMail(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress), org, p, sb.ToString());
-                if (oldaddress.HasValue())
-                    ChangeMail(smtp, oldaddress, org, p, sb.ToString());
-            }
             DbUtil.Db.SubmitChanges();
 
             if (night == 3)
@@ -181,18 +157,6 @@ namespace CMSRegCustom.Controllers
 @"Hi {0},<p>Thank you for registering for a Love and Respect small group. 
 Someone will be in contact with you as soon as we form groups.</p>".Fmt(
                 p.PreferredName));
-        }
-
-
-        private void ChangeMail(SmtpClient smtp, string email, CmsData.Organization org, Person p, string changes)
-        {
-            Util.Email(smtp, DbUtil.Settings("LRMail", DbUtil.SystemEmailAddress),
-                            p.Name, email, "Changes on church record",
-@"{0} just registered on Bellevue for {1}.</p>
-<p>{2}</p>
-		<p>If this was not you, please contact us ASAP.</p>".Fmt(
-                p.PreferredName, org.OrganizationName, changes));
-            DbUtil.Db.SubmitChanges();
         }
 
         private static void SendStaffEmailOth(SmtpClient smtp, LoveRespectModel m)

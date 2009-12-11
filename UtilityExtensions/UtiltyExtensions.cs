@@ -376,6 +376,14 @@ namespace UtilityExtensions
             }
         }
 
+        public static string CmsHost
+        {
+            get
+            {
+                var h = ConfigurationManager.AppSettings["cmshost"];
+                return h.Replace("{church}", Host1);
+            }
+        }
         public static string ConnectionString
         {
             get

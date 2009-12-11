@@ -37,9 +37,7 @@ namespace CMSPresenter
 
             Db.BlogNotifications.DeleteAllOnSubmit(user.BlogNotifications);
             Db.PageVisits.DeleteAllOnSubmit(user.PageVisits);
-            Db.PrayerSlots.DeleteAllOnSubmit(user.PrayerSlots);
             Db.UserRoles.DeleteAllOnSubmit(user.UserRoles);
-            Db.PendingNotifications.DeleteAllOnSubmit(user.PendingNotifications);
             Db.UserGroupRoles.DeleteAllOnSubmit(user.UserGroupRoles);
             foreach (var f in user.VolunteerFormsUploaded)
 				f.UploaderId = null;

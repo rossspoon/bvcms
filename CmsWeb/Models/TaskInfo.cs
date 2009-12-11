@@ -104,7 +104,7 @@ namespace CMSWeb.Models
             get
             {
                 return "mailto:{0}?subject={1}&body={3}/Task/List/{2}#detail#select"
-                .Fmt(OwnerEmail, Description, Id, DbUtil.TaskHost);
+                .Fmt(OwnerEmail, Description, Id, Util.CmsHost);
             }
         }
         public bool ForceCompleteWContact { get; set; }

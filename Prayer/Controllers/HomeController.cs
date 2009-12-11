@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Prayer.Models;
-using DiscData;
+using CmsData;
 
 namespace Prayer.Controllers
 {

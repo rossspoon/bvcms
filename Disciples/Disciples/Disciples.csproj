@@ -755,6 +755,7 @@
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="CKUpload.ashx" />
     <Content Include="Config\smtp.config" />
+    <Content Include="Config\AppSettings.config" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\CookComputing.XmlRpc.dll.deploy" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\PostPodcast.application" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\PostPodcast.exe.config.deploy" />

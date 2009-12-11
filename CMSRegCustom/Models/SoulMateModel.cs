@@ -47,8 +47,6 @@ namespace CMSRegCustom.Models
             _ChildCareMeeting = s.ChildCareMeeting;
             email1 = s.HisEmail;
             email2 = s.HerEmail;
-            preferredEmail1 = s.HisEmailPreferred.Value;
-            preferredEmail2 = s.HerEmailPreferred.Value;
         }
         public SoulMateModel()
         {
@@ -63,7 +61,6 @@ namespace CMSRegCustom.Models
         public string phone1 { get; set; }
         public string homecell1 { get; set; }
         public string email1 { get; set; }
-        public bool preferredEmail1 { get; set; }
         private string _Shownew1;
         public string shownew1
         {
@@ -95,7 +92,6 @@ namespace CMSRegCustom.Models
         public string phone2 { get; set; }
         public string homecell2 { get; set; }
         public string email2 { get; set; }
-        public bool preferredEmail2 { get; set; }
         public string shownew2 { get; set; }
         public string addr2 { get; set; }
         public string zip2 { get; set; }

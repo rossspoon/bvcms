@@ -21,13 +21,11 @@ namespace CmsData
 		
 		private DateTime _Time;
 		
-		private int _UserId;
-		
-		private int? _CUserid;
+		private int _PeopleId;
 		
    		
     	
-		private EntityRef< User> _User;
+		private EntityRef< Person> _Person;
 		
 	#endregion
 	
@@ -42,18 +40,15 @@ namespace CmsData
 		partial void OnTimeChanging(DateTime value);
 		partial void OnTimeChanged();
 		
-		partial void OnUserIdChanging(int value);
-		partial void OnUserIdChanged();
-		
-		partial void OnCUseridChanging(int? value);
-		partial void OnCUseridChanged();
+		partial void OnPeopleIdChanging(int value);
+		partial void OnPeopleIdChanged();
 		
     #endregion
 		public PrayerSlot()
 		{
 			
 			
-			this._User = default(EntityRef< User>); 
+			this._Person = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -105,46 +100,24 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int UserId
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int PeopleId
 		{
-			get { return this._UserId; }
+			get { return this._PeopleId; }
 
 			set
 			{
-				if (this._UserId != value)
+				if (this._PeopleId != value)
 				{
 				
-					if (this._User.HasLoadedOrAssignedValue)
+					if (this._Person.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-                    this.OnUserIdChanging(value);
+                    this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="cUserid", UpdateCheck=UpdateCheck.Never, Storage="_CUserid", DbType="int")]
-		public int? CUserid
-		{
-			get { return this._CUserid; }
-
-			set
-			{
-				if (this._CUserid != value)
-				{
-				
-                    this.OnCUseridChanging(value);
-					this.SendPropertyChanging();
-					this._CUserid = value;
-					this.SendPropertyChanged("CUserid");
-					this.OnCUseridChanged();
+					this._PeopleId = value;
+					this.SendPropertyChanged("PeopleId");
+					this.OnPeopleIdChanged();
 				}
 
 			}
@@ -160,41 +133,41 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_PrayerSlot_Users", Storage="_User", ThisKey="UserId", IsForeignKey=true)]
-		public User User
+		[Association(Name="FK_PrayerSlot_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		public Person Person
 		{
-			get { return this._User.Entity; }
+			get { return this._Person.Entity; }
 
 			set
 			{
-				User previousValue = this._User.Entity;
+				Person previousValue = this._Person.Entity;
 				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._User.Entity = null;
+						this._Person.Entity = null;
 						previousValue.PrayerSlots.Remove(this);
 					}
 
-					this._User.Entity = value;
+					this._Person.Entity = value;
 					if (value != null)
 					{
 						value.PrayerSlots.Add(this);
 						
-						this._UserId = value.UserId;
+						this._PeopleId = value.PeopleId;
 						
 					}
 
 					else
 					{
 						
-						this._UserId = default(int);
+						this._PeopleId = default(int);
 						
 					}
 
-					this.SendPropertyChanged("User");
+					this.SendPropertyChanged("Person");
 				}
 
 			}

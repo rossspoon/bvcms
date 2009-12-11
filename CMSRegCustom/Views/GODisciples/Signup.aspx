@@ -50,15 +50,15 @@
                     <%= Html.RadioButton("homecell", "c") %> Cell
                     <%= Html.ValidationMessage("phone")%></td>
                 </tr>
+               <tr><th colspan="3"><%= Html.ValidationMessage("email0") %></th></tr>
+            <% if (Model.shownew)
+               { %>
+               <tr><th colspan="3"><span style="color:Red">Please provide contact information</span></th></tr>
                 <tr>
                     <td><label for="email">Contact Email</label></td>
                     <td><%= Html.TextBox("email", Model.email, new { maxlength = 50 })%></td>
-                    <td><%= Html.CheckBox("preferredemail") %> preferred email
-                    <%= Html.ValidationMessage("email") %></td>
+                    <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
-            <% if (Model.shownew)
-               { %>
-               <tr><th colspan="3"><span style="color:Red">Please provide address</span></th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew") %>
                     <label for="addr">Address</label></td>

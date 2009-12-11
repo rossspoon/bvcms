@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CmsWeb\Binaries\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CmsWeb\Binaries\Microsoft.Web.Mvc.dll</HintPath>
@@ -70,6 +74,7 @@
     <Compile Include="Controllers\MOBSController.cs" />
     <Compile Include="Controllers\DiscipleLifeController.cs" />
     <Compile Include="Controllers\LoveRespectController.cs" />
+    <Compile Include="Controllers\PrayerController.cs" />
     <Compile Include="Controllers\SoulMateController.cs" />
     <Compile Include="Controllers\StepClassController.cs" />
     <Compile Include="Controllers\VBSController.cs" />
@@ -79,10 +84,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Models\GODisciplesModel.cs" />
+    <Compile Include="Models\PsUtil.cs" />
     <Compile Include="Models\SalesModel.cs" />
     <Compile Include="Models\DiscipleLifeModel.cs" />
     <Compile Include="Models\LoveRespectModel.cs" />
     <Compile Include="Models\MOBSModel.cs" />
+    <Compile Include="Models\PrayerModel.cs" />
     <Compile Include="Models\SoulMateModel.cs" />
     <Compile Include="Models\StepClassModel.cs" />
     <Compile Include="Models\VBSDetailModel.cs" />
@@ -90,6 +97,13 @@
     <Compile Include="Models\VBSRegModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes.cs" />
+    <Compile Include="Views\Prayer\Report.aspx.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Prayer\Report.aspx.designer.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
@@ -97,6 +111,7 @@
     <Content Include="Views\GODisciples\Index.aspx" />
     <Content Include="Views\GODisciples\RenameGroup.aspx" />
     <Content Include="Views\GODisciples\Signup.aspx" />
+    <Content Include="Views\Prayer\Index.aspx" />
     <Content Include="Views\Sales\Login.aspx" />
     <Content Include="Views\Sales\Download.aspx" />
     <Content Include="Views\Sales\Items.aspx" />
@@ -117,6 +132,8 @@
     <Content Include="Views\MOBS\Payment.aspx" />
     <Content Include="Views\MOBS\Unknown.aspx" />
     <Content Include="Views\MOBS\Registrations.aspx" />
+    <Content Include="Views\Prayer\PickTimes.aspx" />
+    <Content Include="Views\Prayer\Report.aspx" />
     <Content Include="Views\SoulMate\CheckBack.aspx" />
     <Content Include="Views\SoulMate\ChildCare.aspx" />
     <Content Include="Views\SoulMate\Confirm.aspx" />

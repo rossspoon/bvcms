@@ -646,7 +646,7 @@ namespace CMSPresenter
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0
                     where m.Organization.Meetings.Any(meeting => meeting.MeetingDate.Value.Date == date.Date)
                     where m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
-                    let u = m.Person.Users.FirstOrDefault()
+                    let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Staff"))
                     where u != null
                     group m by m.PeopleId into g
                     select g;
@@ -672,7 +672,7 @@ namespace CMSPresenter
                     {
                         string orgname = Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
                         sb.AppendFormat("<a href='{0}/Meeting.aspx?id={1}'>{2} - {3}</a><br/>\n",
-                            DbUtil.TaskHost, mt.MeetingId, orgname, mt.MeetingDate);
+                            Util.CmsHost, mt.MeetingId, orgname, mt.MeetingDate);
                         sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:M/d/yy h:mmtt}</td></tr>\n",
                             person.Name, orgname, mt.MeetingDate);
                     }

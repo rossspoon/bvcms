@@ -9,6 +9,7 @@ using System.Configuration;
 using CMSWeb.Models;
 using UtilityExtensions;
 using System.Net.Mail;
+using System.Text;
 
 namespace CMSWeb.Controllers
 {
@@ -241,8 +242,7 @@ namespace CMSWeb.Controllers
 
             var smtp = new SmtpClient();
             Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), "new registration in cms",
-                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
+            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
         private void EmailVisit(RegisterModel m)
@@ -265,8 +265,20 @@ namespace CMSWeb.Controllers
 
             var smtp = new SmtpClient();
             Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms",
-                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
+            Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
+        }
+
+        public ContentResult Schools(string q, int limit)
+        {
+            var qu = from p in DbUtil.Db.People
+                    where p.SchoolOther.Contains(q)
+                    group p by p.SchoolOther into g
+                    select g.Key;
+            var sb = new StringBuilder();
+            foreach (var li in qu.Take(limit))
+                sb.AppendLine(li);
+
+            return Content(sb.ToString());
         }
     }
 }

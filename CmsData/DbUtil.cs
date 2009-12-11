@@ -117,7 +117,7 @@ namespace CmsData
         public static int BFClassOrgTagId { get { return Settings("BFClassOrgTagId", "").ToInt(); } }
         public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
         public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
-        public static string TaskHost { get { return Settings("DefaultHost", ""); } }
+        public static string TaskHost { get { return Util.CmsHost; } }
         public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole", "") == "true"; } }
 
         public const string MiscTagsString = "Misc Tags";

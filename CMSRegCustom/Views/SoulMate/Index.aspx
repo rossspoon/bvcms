@@ -84,10 +84,6 @@
                     <td><%= Html.TextBox("email1") %></td>
                     <td><%= Html.ValidationMessage("email1") %></td>
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td colspan = "2"><%= Html.CheckBox("preferredEmail1") %> This is his preferred email address</td>
-                </tr>
             <% if (Model.shownew1.ToInt() >= 2)
                { %>
                <tr><th colspan="3"><span style="color:Red">Please provide address</span></th></tr>
@@ -139,10 +135,6 @@
                     <td><label for="email2">Email</label></td>
                     <td><%= Html.TextBox("email2") %></td>
                     <td><%= Html.ValidationMessage("email2") %></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td colspan = "2"><%= Html.CheckBox("preferredEmail2") %> This is her preferred email address</td>
                 </tr>
             <% if (Model.shownew2.ToInt() >= 2)
                { %>

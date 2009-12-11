@@ -35,6 +35,10 @@ namespace CmsData
         {
             get { return FormatOrgName(OrganizationName, LeaderName, Location); }
         }
+        public string FullName2
+        {
+            get { return Division.Name + ", " + FormatOrgName(OrganizationName, LeaderName, Location); }
+        }
         private CMSDataContext _Db;
         public CMSDataContext Db
         {

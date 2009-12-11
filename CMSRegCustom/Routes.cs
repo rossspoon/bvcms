@@ -11,15 +11,16 @@ namespace CMSRegCustom
         }
         public override void RegisterArea(AreaRegistrationContext context)
         {
-           AddRoute(context, "DiscipleLife");
-           AddRoute(context, "LoveRespect");
-           AddRoute(context, "SoulMate");
-           AddRoute(context, "StepClass");
-           AddRoute(context, "VBS");
-           AddRoute(context, "VBSReg");
-           AddRoute(context, "MOBS");
-           AddRoute(context, "Sales");
-           AddRoute(context, "GODisciples");
+            AddRoute(context, "DiscipleLife");
+            AddRoute(context, "LoveRespect");
+            AddRoute(context, "SoulMate");
+            AddRoute(context, "StepClass");
+            AddRoute(context, "VBS");
+            AddRoute(context, "VBSReg");
+            AddRoute(context, "MOBS");
+            AddRoute(context, "Sales");
+            AddRoute(context, "GODisciples");
+            AddRoute(context, "Prayer");
         }
         private void AddRoute(AreaRegistrationContext context, string controller)
         {

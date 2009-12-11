@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using DiscData;
+using CmsData;
 using System.Net.Mail;
 using System.Diagnostics;
 using UtilityExtensions;
@@ -57,7 +57,7 @@ namespace Prayer.Controllers
             var u = DbUtil.Db.CurrentUser;
             if (id.HasValue && g.IsAdmin)
             {
-                u = DbUtil.Db.GetUser(id);
+                u = DbUtil.Db.Users.SingleOrDefault(uu => uu.UserId == id);
                 ViewData["userid"] = u.UserId;
             }
             ViewData["username"] = u.Username;
@@ -89,7 +89,7 @@ namespace Prayer.Controllers
             }
 
             FormsAuth.SignIn(userName, rememberMe);
-            DbUtil.Db.CurrentUser = DbUtil.Db.GetUser(userName);
+            DbUtil.Db.CurrentUser = DbUtil.Db.Users.SingleOrDefault(uu => uu.Username == userName);
 
             if (!String.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
@@ -109,7 +109,7 @@ namespace Prayer.Controllers
             if (id.HasValue)
             {
                 var p = CmsData.DbUtil.Db.LoadPersonById(id.Value);
-                ViewData["first"] = p.NickName.HasValue() ? p.NickName : p.FirstName;
+                ViewData["first"] = p.PreferredName;
                 ViewData["last"] = p.LastName;
                 ViewData["email"] = p.EmailAddress;
                 ViewData["birthday"] = p.DOB;
@@ -186,8 +186,6 @@ namespace Prayer.Controllers
                     IsApproved = true,
                     LastActivityDate = DateTime.Now,
                     CreationDate = DateTime.Now,
-                    NotifyAll = true,
-                    NotifyEnabled = true,
                 };
                 DbUtil.Db.Users.InsertOnSubmit(u);
                 DbUtil.Db.SubmitChanges();
@@ -235,7 +233,7 @@ In the meantime, you can get back to the Prayer Times page to make changes using
 </table>
 </blockquote>
 Thanks for praying!<br/>
-Bellevue Prayer ministry".Fmt(u.FirstName, u.Name, u.Username, u.Password));
+Bellevue Prayer ministry".Fmt(u.Person.PreferredName, u.Name, u.Username, u.Password));
         }
         private void NewUserNotification(CmsData.Person p, User u, bool existing)
         {

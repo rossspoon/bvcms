@@ -44,7 +44,6 @@ namespace CMSWeb
             bool canUpdate = User.IsInRole("Edit");
             AddRelatedFamily2.Visible = canUpdate;
             AddMembers2.Visible = canUpdate;
-            DeleteFamily.Visible = User.IsInRole("Edit") && family.MemberCount == 0;
 
             FamilyPrimaryAddr.showPreferredAddress = false;
 
@@ -154,15 +153,6 @@ namespace CMSWeb
                 DbUtil.LogActivity("Removing Related Family for {0}".Fmt(person.Name));
             Response.Redirect("~/Family.aspx?id=" + family.FamilyId);
 
-        }
-
-        protected void DeleteFamily_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(family.RelatedFamilies1);
-            DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(family.RelatedFamilies2);
-            DbUtil.Db.Families.DeleteOnSubmit(family);
-            DbUtil.Db.SubmitChanges();
-            Response.EndShowMessage("Family Deleted", "/", "click here");
         }
     }
 }

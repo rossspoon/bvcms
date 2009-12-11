@@ -37,7 +37,6 @@ namespace CMSRegCustom.Models
         public string phone { get; set; }
         public string homecell { get; set; }
         public string email { get; set; }
-        public bool preferredEmail { get; set; }
         public string TransactionId { get; set; }
         public string ServiceUOrgID
         {

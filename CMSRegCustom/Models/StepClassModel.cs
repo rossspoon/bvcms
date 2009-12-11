@@ -30,7 +30,6 @@ namespace CMSRegCustom.Models
         public string zip { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
-        public bool preferredEmail { get; set; }
         public Person person { get; set; }
         internal CmsData.Meeting meeting;
         public int meetingid

@@ -69,6 +69,44 @@
         $.unblockUI();
         window.location = "/CheckIn/CheckIn/" + $('#OrgId').val() + "?pid=" + $('#PeopleId').val();
     });
+    $('#editschool').click(function() {
+        $('#editschool').hide();
+        $('.schooltext').show();
+    });
+    //http://localhost:58724/CheckIn/CheckIn/88292?pid=828612
+    $('.schooltext').autocomplete("/Register/Schools");
+    $('.schooltext').keypress(function(e) {
+        var key = window.event ? e.keyCode : e.which;
+        if (key != 13)
+            return;
+        $.post("/CheckIn/Edit/", {
+            id: $('.schooltext').attr("id"),
+            value: $('.schooltext').val()
+        }, function(ret) {
+            $('#editschool').text($('.schooltext').val());
+            $('.schooltext').hide();
+            $('#editschool').show();
+        });
+    });
+    $('.schooltext').hide();
+    $('#editschool').show();
+
+    $(".edit").editable("/CheckIn/Edit/", {
+        indicator: "<img src='/images/loading.gif'>",
+        tooltip: "Click to edit...",
+        style: 'display: inline',
+        width: '200px'
+    });
+    $('.editarea').editable("/CheckIn/Edit/", {
+        type: "textarea",
+        indicator: "<img src='/images/loading.gif'>",
+        tooltip: "Click to edit...",
+        style: 'display: inline',
+        width: '300px',
+        height: '200px',
+        submit: 'OK',
+        cancel: 'cancel'
+    });
 
     $('#KeyCard').focus();
 });

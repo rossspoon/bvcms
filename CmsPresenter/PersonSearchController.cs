@@ -87,6 +87,7 @@ namespace CMSPresenter
                         Grade = p.Grade.ToString(),
                         AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
                         Married = p.MaritalStatus.Description,
+                        FamilyId = p.FamilyId
                     };
             return q.Take(maximumRows);
         }

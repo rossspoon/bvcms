@@ -94,11 +94,7 @@ namespace CmsData
 		
    		private EntitySet< PageVisit> _PageVisits;
 		
-   		private EntitySet< PendingNotification> _PendingNotifications;
-		
    		private EntitySet< PodCast> _PodCasts;
-		
-   		private EntitySet< PrayerSlot> _PrayerSlots;
 		
    		private EntitySet< TemporaryToken> _TemporaryTokens;
 		
@@ -238,11 +234,7 @@ namespace CmsData
 			
 			this._PageVisits = new EntitySet< PageVisit>(new Action< PageVisit>(this.attach_PageVisits), new Action< PageVisit>(this.detach_PageVisits)); 
 			
-			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
-			
 			this._PodCasts = new EntitySet< PodCast>(new Action< PodCast>(this.attach_PodCasts), new Action< PodCast>(this.detach_PodCasts)); 
-			
-			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
 			
 			this._TemporaryTokens = new EntitySet< TemporaryToken>(new Action< TemporaryToken>(this.attach_TemporaryTokens), new Action< TemporaryToken>(this.detach_TemporaryTokens)); 
 			
@@ -996,32 +988,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_PendingNotifications_Users", Storage="_PendingNotifications", OtherKey="UserId")]
-   		public EntitySet< PendingNotification> PendingNotifications
-   		{
-   		    get { return this._PendingNotifications; }
-
-			set	{ this._PendingNotifications.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_PodCast_Users", Storage="_PodCasts", OtherKey="UserId")]
    		public EntitySet< PodCast> PodCasts
    		{
    		    get { return this._PodCasts; }
 
 			set	{ this._PodCasts.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_PrayerSlot_Users", Storage="_PrayerSlots", OtherKey="UserId")]
-   		public EntitySet< PrayerSlot> PrayerSlots
-   		{
-   		    get { return this._PrayerSlots; }
-
-			set	{ this._PrayerSlots.Assign(value); }
 
    		}
 
@@ -1319,19 +1291,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_PendingNotifications(PendingNotification entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-
-		private void detach_PendingNotifications(PendingNotification entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-
-		
 		private void attach_PodCasts(PodCast entity)
 		{
 			this.SendPropertyChanging();
@@ -1339,19 +1298,6 @@ namespace CmsData
 		}
 
 		private void detach_PodCasts(PodCast entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-
-		
-		private void attach_PrayerSlots(PrayerSlot entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-
-		private void detach_PrayerSlots(PrayerSlot entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;

@@ -122,9 +122,6 @@
                         <td align="right">
                             <cc1:EditUpdateButton ID="EditUpdateButton1" runat="server" OnClick="EditUpdateButton1_Click"
                                 Changes="0" />
-                            <asp:ImageButton ID="DeleteFamily" runat="server" ImageUrl="~/images/delete.gif"
-                                OnClientClick="return confirm('Are you sure you want to delete?')" 
-                                onclick="DeleteFamily_Click" />
                         </td>
                         <td>
                             &nbsp;

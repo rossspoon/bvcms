@@ -2,9 +2,12 @@
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Register</title>
+    <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $("#zip").change(function() {
@@ -15,6 +18,7 @@
                     }
                 }, 'json');
             });
+            $("#School").autocomplete("/Register/Schools");
         });
     </script>
     <h2>Church Database Registration</h2>
@@ -99,6 +103,16 @@
                     <td><label for="email">Email</label></td>
                     <td><%= Html.TextBox("email") %></td>
                     <td><%= Html.ValidationMessage("email") %></td>
+                </tr>
+                <tr>
+                    <td><label for="school">School</label></td>
+                    <td><%= Html.TextBox("School") %></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><label for="graduate">Graduation Year</label></td>
+                    <td><%= Html.TextBox("Graduate") %></td>
+                    <td><%= Html.ValidationMessage("Graduate") %></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Register" /></td>

@@ -154,7 +154,6 @@ namespace CMSWeb.Models
         public string phone { get; set; }
         public string homecell { get; set; }
         public string email { get; set; }
-        public bool preferredEmail { get; set; }
         public bool shownew { get; set; }
         public string addr { get; set; }
         public string zip { get; set; }

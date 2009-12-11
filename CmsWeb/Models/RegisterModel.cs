@@ -42,7 +42,7 @@ namespace CMSWeb.Models
         public string email { get; set; }
         public int? married { get; set; }
         public string School { get; set; }
-        public string Grade { get; set; }
+        public string Graduate { get; set; }
         public int? campusid { get; set; }
         public int? org { get; set; }
         private bool? _Existingfamily;
@@ -134,14 +134,16 @@ namespace CMSWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     let Hour = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
+                    let loc = (o.Location == "" || o.Location == null)? "" : ", " + o.Location
+                    let leader = o.LeaderName == "" ? "" : ", " + o.LeaderName
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
                     where o.CanSelfCheckin == true
                     where Hour != null
-                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    orderby Hour, o.Division.Name, o.OrganizationName, o.Location
                     select new SelectListItem
                     {
-                        Text = "{0} ({1:h:mm})".Fmt(o.FullName, Hour),
+                        Text = "{0:h:mm} - {1}:{2}{3}{4}".Fmt(Hour, o.Division.Name, o.OrganizationName, loc, leader),
                         Value = o.OrganizationId.ToString(),
                     };
             var list = q.ToList();
@@ -229,9 +231,11 @@ namespace CMSWeb.Models
                 ZipCode = zip,
                 HomePhone = phone.GetDigits(),
             };
+            var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
-                DbUtil.Settings("RegOrigin", "0").ToInt(), null);
+                DbUtil.Settings("RegOrigin", "10").ToInt(), 
+                organization == null? null : organization.EntryPointId);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
@@ -250,8 +254,10 @@ namespace CMSWeb.Models
         public void SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
+            var organization = DbUtil.Db.Organizations.Single(o => o.OrganizationId == org);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
-                null, first, nickname, last, dob, false, gender.Value, 0, null);
+                null, first, nickname, last, dob, false, gender.Value,
+                DbUtil.Settings("RegOrigin", "10").ToInt(), organization.EntryPointId);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)

@@ -102,8 +102,8 @@ namespace CMSWeb
             if (ex is HttpException)
             {
                 var code = ((HttpException)ex).GetHttpCode();
-                //if (code == (int)HttpStatusCode.NotFound 
-                //    || code == (int)HttpStatusCode.Forbidden)
+                if (code == (int)HttpStatusCode.NotFound 
+                    || code == (int)HttpStatusCode.Forbidden)
                     return;
             }
             

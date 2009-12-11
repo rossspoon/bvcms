@@ -20,11 +20,12 @@
     <ReportItems>
       <Image Name="image1">
         <Sizing>AutoSize</Sizing>
-        <Width>0.75in</Width>
+        <Width>0.6in</Width>
         <MIMEType>image/jpeg</MIMEType>
         <Source>Embedded</Source>
         <Style />
         <ZIndex>1</ZIndex>
+        <Height>0.4in</Height>
         <Value>bellevue_design</Value>
       </Image>
       <Textbox Name="textbox11">

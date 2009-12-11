@@ -14,11 +14,6 @@ namespace UtilityExtensions
             var smtp = new SmtpClient();
             Email(smtp, from, name, addr, subject, message);
         }
-        public static void Email2(string from, string addr, string subject, string message)
-        {
-            var smtp = new SmtpClient();
-            Email2(smtp, from, addr, subject, message);
-        }
         public static void Email(SmtpClient smtp, string from, string name, string addr, string subject, string message)
         {
             var fr = FirstAddress(from);
@@ -49,9 +44,29 @@ namespace UtilityExtensions
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             msg.To.Add(addrs);
             msg.Subject = subject;
-            msg.Body = message;
             msg.BodyEncoding = System.Text.Encoding.UTF8;
             msg.IsBodyHtml = false;
+            msg.Body = message;
+            var InDebug = false;
+#if DEBUG
+            InDebug = true;
+#endif
+            if (InDebug)
+                return;
+            TrySend(smtp, msg);
+        }
+        public static void EmailHtml2(SmtpClient smtp, string from, string addrs, string subject, string message)
+        {
+            var fr = FirstAddress(from);
+            var msg = new MailMessage();
+            msg.From = fr;
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            msg.To.Add(addrs);
+            msg.Subject = subject;
+            msg.BodyEncoding = System.Text.Encoding.UTF8;
+            msg.IsBodyHtml = true;
+            msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
             var InDebug = false;
 #if DEBUG
             InDebug = true;
@@ -94,7 +109,7 @@ namespace UtilityExtensions
             {
                 smtp.Send(msg);
             }
-            catch (System.Net.Mail.SmtpException ex)
+            catch (System.Net.Mail.SmtpException)
             {
                 // try one more time
                 System.Threading.Thread.Sleep(2000);

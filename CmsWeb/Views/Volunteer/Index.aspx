@@ -38,8 +38,7 @@
                 <tr>
                     <td><label for="email">Email</label></td>
                     <td><%= Html.TextBox("email") %></td>
-                    <td><%= Html.CheckBox("preferredemail") %> preferred email
-                    <%= Html.ValidationMessage("email") %></td>
+                    <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Submit" /></td>

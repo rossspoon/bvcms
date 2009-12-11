@@ -50,7 +50,7 @@
                 <asp:LoginView ID="LoginView1" runat="server">
                     <AnonymousTemplate>
                         <asp:HyperLink ID="HyperLink2" NavigateUrl="~/default.aspx#login" runat="server">Login</asp:HyperLink>
-                        | <asp:HyperLink ID="HyperLink3" NavigateUrl="~/register.aspx" runat="server">Register</asp:HyperLink>
+                        | <asp:HyperLink ID="RegisterLink" runat="server">Register</asp:HyperLink>
                     </AnonymousTemplate>
                     <LoggedInTemplate>
                         Hi

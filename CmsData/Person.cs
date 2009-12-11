@@ -146,7 +146,8 @@ namespace CmsData
         {
             get
             {
-                if (SpouseId.HasValue) return Family.People.Single(p => p.PeopleId == SpouseId.Value).Name;
+                if (SpouseId.HasValue)
+                    return Family.People.Single(p => p.PeopleId == SpouseId.Value).Name;
                 return "";
             }
         }
@@ -211,15 +212,8 @@ namespace CmsData
         public void DeletePerson()
         {
             Db.TagPeople.DeleteAllOnSubmit(Tags);
-            var f = this.Family;
             Db.People.DeleteOnSubmit(this);
             Db.SubmitChanges();
-            Db.Refresh(RefreshMode.OverwriteCurrentValues, f);
-            if (f.People.Count() == 0)
-            {
-                Db.Families.DeleteOnSubmit(f);
-                Db.SubmitChanges();
-            }
         }
         public void MovePersonStuff(int otherid)
         {

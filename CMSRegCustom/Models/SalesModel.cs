@@ -7,6 +7,7 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CMSWebCommon.Models;
+using System.Net.Mail;
 
 namespace CMSRegCustom.Models
 {
@@ -32,7 +33,6 @@ namespace CMSRegCustom.Models
         public string phone { get; set; }
         public string homecell { get; set; }
         public string email { get; set; }
-        public bool preferredEmail { get; set; }
         public string TransactionId { get; set; }
         public string ServiceUOrgID
         {
@@ -248,9 +248,7 @@ namespace CMSRegCustom.Models
         }
         public void SendNotice()
         {
-            Util.Email2(email, saleitem.Email, "Purchased Item",
-            "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(
-            person.Name, peopleid, quantity, Description));
+            Util.Email2(new SmtpClient(), email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
         }
     }
 }

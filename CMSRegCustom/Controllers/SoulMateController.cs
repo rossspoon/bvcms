@@ -41,7 +41,7 @@ namespace CMSRegCustom.Controllers
                 if (count > 1)
                     ModelState.AddModelError("findher", "More than one match for her, sorry");
                 else if (count == 0)
-                    if(m.shownew2.ToInt() < 2)
+                    if (m.shownew2.ToInt() < 2)
                     {
                         ModelState.AddModelError("findher", "Cannot find her record. Is everything correct?");
                         m.shownew2 = (m.shownew2.ToInt() + 1).ToString();
@@ -52,9 +52,9 @@ namespace CMSRegCustom.Controllers
             m.AddPeople();
             m.EnrollInClass(m.person1);
             m.EnrollInClass(m.person2);
-            var sm = DbUtil.Db.SoulMates.SingleOrDefault(s => 
-                s.EventId == m.meeting.MeetingId 
-                && s.HerId == m.person2.PeopleId 
+            var sm = DbUtil.Db.SoulMates.SingleOrDefault(s =>
+                s.EventId == m.meeting.MeetingId
+                && s.HerId == m.person2.PeopleId
                 && s.HimId == m.person1.PeopleId);
             if (sm == null)
             {
@@ -63,10 +63,8 @@ namespace CMSRegCustom.Controllers
                     EventId = m.meeting.MeetingId,
                     HerId = m.person2.PeopleId,
                     HerEmail = m.email2,
-                    HerEmailPreferred = m.preferredEmail2,
                     HimId = m.person1.PeopleId,
                     HisEmail = m.email1,
-                    HisEmailPreferred = m.preferredEmail1,
                     Relationship = m.Relation,
                     ChildcareId = m.childcaremeetingid
                 };
@@ -76,8 +74,8 @@ namespace CMSRegCustom.Controllers
                 sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
             var smtp = new SmtpClient();
-            SendStaffEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.meeting);
-            SendStaffEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.meeting);
+            SendStaffEmail(smtp, m.person1, m.email1, m.meeting);
+            SendStaffEmail(smtp, m.person2, m.email2, m.meeting);
             if (m.childcaremeeting != null)
                 return RedirectToAction("ChildCare", new { id = sm.Id });
             return RedirectToAction("Confirm", new { id = sm.Id });
@@ -128,33 +126,25 @@ namespace CMSRegCustom.Controllers
         {
             var m = new Models.SoulMateModel(id);
             var smtp = new SmtpClient();
-            SendEmail(smtp, m.person1, m.email1, m.preferredEmail1, m.meeting, m.Children(m.person1));
-            SendEmail(smtp, m.person2, m.email2, m.preferredEmail2, m.meeting, m.Children(m.person2));
+            SendEmail(smtp, m.person1, m.email1, m.meeting, m.Children(m.person1));
+            SendEmail(smtp, m.person2, m.email2, m.meeting, m.Children(m.person2));
             return View(m);
         }
 
-        private static void SendStaffEmail(SmtpClient smtp, Person p, string email, bool preferred, CmsData.Meeting meeting)
+        private static void SendStaffEmail(SmtpClient smtp, Person p, string email, CmsData.Meeting meeting)
         {
-            Util.Email2(smtp, email,
-                                DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(meeting.Organization.OrganizationName),
+            Util.Email2(smtp, email, 
+                DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress), 
+                "{0} Registration".Fmt(meeting.Organization.OrganizationName), 
 @"{0}({1}) registered for {3} for the following date:
-{2:ddd MMM d, yyyy h:mm tt}".Fmt(
-            p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
+{2:ddd MMM d, yyyy h:mm tt}"
+.Fmt(p.Name, p.PeopleId, meeting.MeetingDate, meeting.Organization.OrganizationName));
         }
 
 
-        private void SendEmail(SmtpClient smtp, Person p, string email, bool preferred, 
+        private void SendEmail(SmtpClient smtp, Person p, string email, 
             CmsData.Meeting meeting, IEnumerable<ChildItem> children)
         {
-            if (p.EmailAddress != email && preferred)
-            {
-                Util.Email(smtp, DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
-                                p.Name, p.EmailAddress, "Your email has been changed",
-@"Hi {0},<p>You have just registered on Bellevue for {2}. We have updated your email address to be: {1}.</p>
-		<p>If this was not you, please contact us ASAP.</p>".Fmt(p.PreferredName, email, meeting.Organization.OrganizationName));
-                p.EmailAddress = email;
-                DbUtil.Db.SubmitChanges();
-            }
             var sb = new StringBuilder();
             if (children.Count() > 0)
             {

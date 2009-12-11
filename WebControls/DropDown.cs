@@ -63,7 +63,7 @@ namespace CustomControls
                 {
                     base.SelectedValue = value;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     
                 }

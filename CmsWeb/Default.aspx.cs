@@ -116,7 +116,7 @@ namespace CMSWeb
                 catch (WebException)
                 {
                 }
-                 XDocument rssFeed = XDocument.Parse(feed.Data);
+                XDocument rssFeed = XDocument.Parse(feed.Data);
 
                 var posts = from item in rssFeed.Descendants("item")
                             let au = item.Element("author")

@@ -211,7 +211,7 @@ The bvCMS Team</p>
                     where u.Person.BirthYear == bd.Year
                     select u;
             var smtp = new SmtpClient();
-            foreach(var user in q)
+            foreach (var user in q)
             {
                 Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, email,
                     "bvcms forgot username",
@@ -222,12 +222,10 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, user.Username));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
-                    "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
             }
             if (q.Count() == 0)
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
-    "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
 
             return RedirectToAction("RequestUsername");
 
@@ -254,9 +252,9 @@ The bvCMS Team</p>
             if (user != null)
             {
                 user.ResetPasswordCode = Guid.NewGuid();
-                var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt( 
+                var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt(
                     Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
-                Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress, 
+                Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
                     "bvcms password reset link",
                     @"Hi {0},
 <p>You recently requested a new password.  To reset your password, follow the link below:<br />
@@ -264,14 +262,12 @@ The bvCMS Team</p>
 <p>If you did not request a new password, please disregard this message.</p>
 <p>Thanks,<br />
 The bvCMS Team</p>
-".Fmt(user.Name,link));
+".Fmt(user.Name, link));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
-                    "bvcms user: {0} forgot password".Fmt(user.Name), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot password".Fmt(user.Name), "no content");
             }
             else
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
-    "bvcms unknown user: {0} forgot password".Fmt(username), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown user: {0} forgot password".Fmt(username), "no content");
 
             return RedirectToAction("RequestPassword");
 

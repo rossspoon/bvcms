@@ -23,8 +23,34 @@ namespace CMSWeb.Models
             public string Phone { get; set; }
             public string Cell { get; set; }
             public string Email { get; set; }
-            public string School { get; set; }
-            public int? Year { get; set; }
+            private string _School;
+            public string School
+            {
+                get
+                {
+                    if (!_School.HasValue())
+                        return "click to add";
+                    return _School;
+                }
+                set
+                {
+                    _School = value;
+                }
+            }
+            private string _Year;
+            public string Year
+            {
+                get
+                {
+                    return _Year;
+                }
+                set
+                {
+                    _Year = value;
+                }
+            }
+            public string Grade { get; set; }
+            public string CheckInNotes { get; set; }
             public string ImageUrl
             {
                 get { return "/Image.aspx?portrait=1&id=" + ImageId; }
@@ -33,6 +59,7 @@ namespace CMSWeb.Models
         public int OrgId { get; set; }
         public string OrgName { get; set; }
         public PersonInfo person { get; set; }
+        public string guid { get; set; }
         public CheckInRecModel(int orgId, int? pid)
         {
             var q = from o in DbUtil.Db.Organizations
@@ -54,7 +81,8 @@ namespace CMSWeb.Models
                          Cell = p.CellPhone.FmtFone("C "),
                          Email = p.EmailAddress,
                          School = p.SchoolOther,
-                         Year = p.Grade,
+                         Year = p.Grade.ToString(),
+                         CheckInNotes = p.CheckInNotes
                      };
             person = q2.SingleOrDefault();
             if (person == null)
@@ -63,6 +91,24 @@ namespace CMSWeb.Models
                     PeopleId = 0,
                     Name = "not found",
                 };
+            else
+            {
+                var guid = (Guid?)(HttpContext.Current.Session["checkinguid"]);
+                if (!guid.HasValue)
+                {
+                    var tt = new TemporaryToken
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedBy = Util.UserId1,
+                        CreatedOn = Util.Now,
+                    };
+                    DbUtil.Db.TemporaryTokens.InsertOnSubmit(tt);
+                    DbUtil.Db.SubmitChanges();
+                    guid = tt.Id;
+                    HttpContext.Current.Session["checkinguid"] = guid;
+                }
+                this.guid = guid.ToString();
+            }
             OrgId = orgId;
         }
         public string WithBreak(string s)

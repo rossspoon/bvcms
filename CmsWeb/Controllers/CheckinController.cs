@@ -64,9 +64,13 @@ namespace CMSWeb.Controllers
         //http://localhost:58724/CheckIn/CheckIn/88197
         public ActionResult CheckIn(int id, int? pid)
         {
-            var m = new CheckInRecModel(id, pid);
             Session["CheckInOrgId"] = id;
+            var m = new CheckInRecModel(id, pid);
+            CreateToken(m);
             return View(m);
+        }
+        private static void CreateToken(CheckInRecModel m)
+        {
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult PostCheckIn(int id, string KeyCode)
@@ -106,6 +110,29 @@ namespace CMSWeb.Controllers
             card.PeopleId = pid;
             DbUtil.Db.SubmitChanges();
             return Content("Card Associated");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Edit(string id, string value)
+        {
+            var a = id.Split('.');
+            var c = new ContentResult();
+            c.Content = value;
+            var pid = a[1].ToInt();
+            var p = DbUtil.Db.People.Single(pp => pp.PeopleId == pid);
+            switch (a[0][0])
+            {
+                case 's':
+                    p.SchoolOther = value;
+                    break;
+                case 'y':
+                    p.Grade = value.ToInt();
+                    break;
+                case 'n':
+                    p.CheckInNotes = value;
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            return c;
         }
     }
 }

@@ -72,6 +72,8 @@ namespace CmsData
             var p = new List<object>();
             foreach (var s in ParamList)
             {
+                if (s == "OrgRequired")
+                    continue;
                 var s2 = s;
                 if (s2 == "Week")
                     s2 = "Quarters";

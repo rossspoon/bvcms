@@ -1,18 +1,20 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.ServiceModel;
+using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
-using System.Collections.Specialized;
 using System.IO;
 
 namespace TakeUploadPicture
 {
-    public partial class StandAloneTestForm : Form
+    public partial class StandAloneForm : Form
     {
         cmsws.WebServiceSoapClient wsvc = new cmsws.WebServiceSoapClient();
         private Capture cam;
@@ -22,7 +24,7 @@ namespace TakeUploadPicture
         const int VIDEOHEIGHT = 480; // Depends on video device caps
         const int VIDEOBITSPERPIXEL = 64; // BitsPerPixel values determined by device
 
-        public StandAloneTestForm()
+        public StandAloneForm()
         {
             InitializeComponent();
 
@@ -37,7 +39,7 @@ namespace TakeUploadPicture
                 imageResizer1.btnTakePicture.Click += new EventHandler(btnTakePicture_Click);
                 imageResizer1.btnSave.Click += new EventHandler(btnUploadPicture_Click);
             }
-            catch (Exception er)
+            catch (Exception)
             {
                 //Handle exception
                 imageResizer1.Enabled = false;
@@ -99,9 +101,9 @@ namespace TakeUploadPicture
         {
             this.Cursor = Cursors.WaitCursor;
             var bits = ConvertImageToByteArray(imageResizer1.SaveImage(), ImageFormat.Jpeg);
-            wsvc.UploadImage(Program.header, Program.PeopleId, "", 3, "image/jpeg", bits);
-            ShowWindow(this.Handle, SW_MINIMIZED);
-            this.Cursor = Cursors.Default;
+            wsvc.UploadImage(Program.header, Program.PeopleId, Program.Guid, 3, "image/jpeg", bits);
+            cam.Dispose();
+            Application.Exit();
         }
 
         private void imageResizer1_Resize(object sender, EventArgs e)
@@ -117,5 +119,12 @@ namespace TakeUploadPicture
             }
             cam = new Capture(VIDEODEVICE, VIDEOWIDTH, VIDEOHEIGHT, VIDEOBITSPERPIXEL, imageResizer1.pctCamera);
         }
+
+        private void StandAloneForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            cam.Dispose();
+            Application.Exit();
+        }
+       
     }
 }

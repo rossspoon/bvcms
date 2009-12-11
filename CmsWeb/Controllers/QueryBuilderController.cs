@@ -223,6 +223,8 @@ namespace CMSWeb.Controllers
 
             if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
                 m.Errors.Add("IntegerValue", "need integer");
+            if (m.OrganizationRequired && m.Organization == 0)
+                m.Errors.Add("OrganizationError", "Organization Required");
 
             decimal d;
             if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))

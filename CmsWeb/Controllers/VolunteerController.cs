@@ -9,6 +9,7 @@ using System.Configuration;
 using CMSWeb.Models;
 using UtilityExtensions;
 using System.Diagnostics;
+using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
@@ -55,7 +56,7 @@ namespace CMSWeb.Controllers
                     Created = Util.Now,
                     PeopleId = m.person.PeopleId,
                 };
-                m.person.EmailAddress = m.email;
+                //m.person.EmailAddress = m.email;
                 m.Opportunity.VolInterests.Add(v);
                 DbUtil.Db.VolInterests.InsertOnSubmit(v);
                 DbUtil.Db.SubmitChanges();
@@ -120,8 +121,8 @@ namespace CMSWeb.Controllers
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
-            foreach (var i in Request.Form.Keys)
-                Debug.WriteLine("{0}: {1}".Fmt(i, Request.Form[i.ToString()].ToString()));
+            //foreach (var i in Request.Form.Keys)
+            //    Debug.WriteLine("{0}: {1}".Fmt(i, Request.Form[i.ToString()].ToString()));
 
             DbUtil.Db.VolInterestInterestCodes.DeleteAllOnSubmit(m.VolInterest.VolInterestInterestCodes);
             DbUtil.Db.SubmitChanges();
@@ -150,10 +151,31 @@ namespace CMSWeb.Controllers
                 if (val == "on")
                 {
                     var desc = i.Replace('_', ' ');
-                    m.VolInterest.VolInterestInterestCodes.Add(new VolInterestInterestCode { InterestCodeId = dict[desc].Id });
+                    m.VolInterest.VolInterestInterestCodes.Add(
+                        new VolInterestInterestCode { InterestCodeId = dict[desc].Id });
                 }
             }
             DbUtil.Db.SubmitChanges();
+
+            var smtp = new SmtpClient();
+            var summary = m.PrepareSummaryText();
+            Util.EmailHtml2(smtp, 
+                m.person.EmailAddress, 
+                m.Opportunity.Email, 
+                "new {0} volunteer registration".Fmt(m.Opportunity.UrlKey), 
+                "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
+                .Fmt(m.person.Name, m.person.PeopleId, summary));
+
+            var c = DbUtil.Content("Volunteer" + m.Opportunity.UrlKey);
+            if (c != null)
+            {
+                var body = c.Body;
+                var p = m.person;
+                body = body.Replace("{first}", p.PreferredName);
+                body = body.Replace("{serviceareas}", summary);
+                Util.Email(smtp, m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
+                     m.Opportunity.Description, body);
+            }
             return RedirectToAction("Confirm", new { id = id });
         }
         public ActionResult Confirm(int id)

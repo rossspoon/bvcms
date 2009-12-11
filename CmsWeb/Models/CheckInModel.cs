@@ -157,6 +157,7 @@ namespace CMSWeb.Models
                     {
                         MeetingId = DbUtil.Db.GetTodaysMeetingId(OrgId, thisday),
                         MeetingTime = DbUtil.Db.GetTodaysMeetingHour(OrgId, thisday),
+                        o.AttendTrkLevelId,
                         o.Location
                     };
             var info = q.Single();
@@ -169,7 +170,8 @@ namespace CMSWeb.Models
                     MeetingDate = info.MeetingTime,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = false,
+                    GroupMeetingFlag = info.AttendTrkLevelId 
+                        == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
                     Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);

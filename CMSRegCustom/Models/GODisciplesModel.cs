@@ -60,7 +60,6 @@ namespace CMSRegCustom.Models
         public string phone { get; set; }
         public string homecell { get; set; }
         public string email { get; set; }
-        public bool preferredemail { get; set; }
 
         public bool shownew { get; set; }
         public string addr { get; set; }
@@ -76,7 +75,7 @@ namespace CMSRegCustom.Models
             get
             {
                 if (neworg == null)
-                    return "GO Disciples Leaders";
+                    return "GO Disciples";
                 else
                     return "GO Disciples, " + neworg.OrganizationName;
             }
@@ -115,10 +114,10 @@ namespace CMSRegCustom.Models
 
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");
-            if (!email.HasValue() || !Util.ValidEmail(email))
-                modelState.AddModelError("email", "Please specify a valid email address.");
             if (shownew)
             {
+                if (!email.HasValue() || !Util.ValidEmail(email))
+                    modelState.AddModelError("email", "Please specify a valid email address.");
                 if (!gender.HasValue)
                     modelState.AddModelError("gender", "gender required");
                 if (!married.HasValue)
@@ -145,6 +144,9 @@ namespace CMSRegCustom.Models
                     }
                     else
                         AddPerson();
+                else if (count == 1)
+                    if (!person.EmailAddress.HasValue())
+                        modelState.AddModelError("email0", "Cannot enroll without an email address, contact church to provide one");
             }
         }
         private void AddPerson()
@@ -161,7 +163,7 @@ namespace CMSRegCustom.Models
                     DbUtil.Settings("GODisciplesOrigin", "70").ToInt(),
                     DbUtil.Settings("GODisciplesEntry", "15").ToInt());
             p.EmailAddress = email;
-            p.CampusId = campus;
+            p.CampusId = DbUtil.Settings("DefaultCampusId", campus.ToString()).ToInt2();
             if (p.Age >= 18)
                 p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
@@ -179,8 +181,6 @@ namespace CMSRegCustom.Models
         internal void PerformLeaderSetup()
         {
             MakeUserOnCms();
-            if (!person.EmailAddress.HasValue())
-                person.EmailAddress = email;
 
             var groupname = "{0} {1} Group".Fmt(
                 person.PreferredName,
@@ -311,11 +311,24 @@ namespace CMSRegCustom.Models
             //discuser.ForceLogin = true;
             DbUtil.Db.SubmitChanges();
         }
-        public void PerformIndividualSetup()
+        private static Group GetGroupByInvitation(string invitationcode)
+        {
+            var g = DbUtil.Db.Groups.SingleOrDefault(
+                            gr => gr.Invitations.Any(
+                                i => i.Password == invitationcode && i.Expires > Util.Now));
+            return g;
+        }
+        public void PerformIndividualSetup(string invitationcode)
         {
             MakeDiscUser();
             if (!person.EmailAddress.HasValue())
                 person.EmailAddress = email;
+            var g = GetGroupByInvitation(invitationcode);
+            if (g != null)
+            {
+                g.SetMember(discuser, true);
+                discuser.DefaultGroup = g.Name;
+            }
             DbUtil.Db.SubmitChanges();
         }
         public static void RenameGroups(string oldname, string newname)
@@ -380,7 +393,7 @@ namespace CMSRegCustom.Models
                 discuser = MembershipService.CreateUser(person.PeopleId, username, password);
             else
             {
-                MembershipService.ChangePassword(username, password);
+                _password = LinkResetPassword();
                 discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
             }
             DbUtil.Db.SubmitChanges();
@@ -397,7 +410,7 @@ namespace CMSRegCustom.Models
             }
             else
             {
-                MembershipService.ChangePassword(username, password);
+                _password = LinkResetPassword();
                 discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
                 var roles = discuser.Roles.ToList();
                 if (!roles.Contains(STR_Attendance))
@@ -418,22 +431,22 @@ namespace CMSRegCustom.Models
             var Body = c.Body;
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
-            Body = Body.Replace("{password}", discuser.Password);
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
             Body = Body.Replace("{membersignupurl}", MemberSignupUrl);
             Body = Body.Replace("{cmsorgpageurl}", CmsOrgPageUrl);
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{password}", password);
 
             var smtp = new SmtpClient();
-            Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);
-            Util.Email2(smtp, email, adminmail, "new GO leader registration in cms",
-                "{0}({1},{2}) joined {3}\r\nand has {4} own {5}".Fmt(
-                p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName,
-                p.GenderId == 2 ? "her" : "his",
-                neworg.OrganizationName));
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email2(smtp, p.EmailAddress, adminmail,
+                "new Leader GODisciple registration in cms", 
+                "{0}({1},{2}) joined {3}\r\nand has {4} own {5}"
+                .Fmt(p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName, 
+                p.GenderId == 2 ? "her" : "his", neworg.OrganizationName));
 
-            UpdateEmailPhone(smtp, adminmail, p);
+            UpdatePhone(smtp, adminmail, p);
         }
         public void EmailMemberNotices()
         {
@@ -445,40 +458,83 @@ namespace CMSRegCustom.Models
             var Body = c.Body;
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
-            Body = Body.Replace("{password}", password);
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{password}", password);
 
             var smtp = new SmtpClient();
-            Util.Email(smtp, adminmail, p.Name, email, c.Title, Body);
-            Util.Email2(smtp, email, adminmail, "new GO disciple registration in cms",
-                "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email2(smtp, p.EmailAddress, adminmail, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             var q = from om in neworg.OrganizationMembers
                     where om.MemberTypeId == neworg.LeaderMemberTypeId
                     select om.Person;
             var leader = q.FirstOrDefault();
             if (leader != null)
-                Util.Email2(smtp, email, leader.EmailAddress, "new GO disciple registration",
-                    "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
-            UpdateEmailPhone(smtp, adminmail, p);
+                Util.Email2(smtp, p.EmailAddress, leader.EmailAddress, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            UpdatePhone(smtp, adminmail, p);
         }
-        private void UpdateEmailPhone(SmtpClient smtp, string adminmail, Person p)
+        public Content ContentDefault(string name)
         {
-            if (email != p.EmailAddress && preferredemail)
+                var c = DbUtil.Content(name);
+                if (c == null)
+                {
+                    c = new Content();
+                    c.Body = 
+@"Hi {first}, 
+<blockquote>
+Username: {username}<br/>
+Password: {password}<br/>
+Group: {groupname}<br/>
+</blockquote>
+Link: <a href='{disciplesurl}'>GoDisciples</a>";
+                    c.Title = "GoDisciples Account Info";
+                }
+                return c;
+        }
+        public void EmailIndividualNotices(string invitationcode)
+        {
+            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            var g = GetGroupByInvitation(invitationcode);
+            Content c;
+            var groupname = "";
+            string Body;
+            if (g != null || invitationcode.HasValue())
             {
-                const string subject = "updated email address";
-                const string message =
-@"We have updated your email address from {0} to {1}.<br />
-If this is not correct, please reply and let us know.";
-
-                Util.Email(smtp, adminmail, p.Name, email, subject,
-                    message.Fmt(p.EmailAddress, email));
-                Util.Email(smtp, adminmail, p.Name, p.EmailAddress, subject,
-                    message.Fmt(p.EmailAddress, email));
-                p.EmailAddress = email;
+                c = ContentDefault("GODisciplesGroupConfirm");
+                if (g != null)
+                    groupname = g.Name;
+                else
+                    groupname = "Sorry, Group Invitation Code has expired";
             }
-            if (homecell == "c" && !p.CellPhone.EndsWith(phone.GetDigits()))
+            else
+            {
+                c = ContentDefault("GODisciplesIndivudualConfirm");
+                groupname = "Sorry, Group Invitation Code has expired";
+            }
+            var p = person;
+            Body = c.Body.Replace("{groupname}", groupname);
+            Body = Body.Replace("{first}", p.PreferredName);
+            Body = Body.Replace("{username}", discuser.Username);
+            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{password}", password);
+
+            var smtp = new SmtpClient();
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email2(smtp, p.EmailAddress, adminmail, "new Individual GODisciple registration in cms", "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
+            UpdatePhone(smtp, adminmail, p);
+        }
+        private string LinkResetPassword()
+        {
+            return
+            @"<i>(your current password has not been changed,
+		<a href='{0}'>you can reset it here</a>)</i>"
+                                .Fmt(Util.ResolveServerUrl("~/Account/ForgotPassword"));
+        }
+        private void UpdatePhone(SmtpClient smtp, string adminmail, Person p)
+        {
+            if (homecell == "c" && p.CellPhone.HasValue() && !p.CellPhone.EndsWith(phone.GetDigits()))
             {
                 const string subject = "updated cell phone";
                 const string message =

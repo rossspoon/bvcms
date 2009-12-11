@@ -161,10 +161,6 @@
       <Project>{C01603B7-AEE1-4FB8-92E3-80D095C71005}</Project>
       <Name>CmsData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DisciplesData\DisciplesData.csproj">
-      <Project>{687619FB-F4C1-42B3-9A33-4BD19390723F}</Project>
-      <Name>DisciplesData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UtilityExtensions\UtilityExtensions.csproj">
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
       <Name>UtilityExtensions</Name>

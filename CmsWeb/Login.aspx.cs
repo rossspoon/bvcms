@@ -15,6 +15,7 @@ using CMSPresenter;
 using CmsData;
 using CMSWeb.Controllers;
 using System.Text;
+using System.Net.Mail;
 
 namespace CMSWeb
 {
@@ -115,8 +116,7 @@ By logging in below, you agree that you understand this purpose and will abide b
         }
         private static void Notify(string to, string subject, string message)
         {
-            Util.Email2(Util.FirstAddress(DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress)).Address,
-                                    to, subject, message);
+            Util.Email2(new SmtpClient(), Util.FirstAddress(DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress)).Address, to, subject, message);
         }
         private static void NotifyAdmins(string subject, string message)
         {

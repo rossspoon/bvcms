@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DiscData;
+using CmsData;
 using System.Web.Security;
 using System.Web.Caching;
 using System.Diagnostics;
@@ -39,8 +39,8 @@ namespace Prayer
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                DbUtil.Db.CurrentUser = DbUtil.Db.GetUser(User.Identity.Name);
-            else
+                DbUtil.Db.CurrentUser = DbUtil.Db.Users.SingleOrDefault(uu => uu.Username == User.Identity.Name);
+           else
                 DbUtil.Db.CurrentUser = new User { Username = Request.AnonymousID };
         }
         public void AnonymousIdentification_OnCreate(Object sender, AnonymousIdentificationEventArgs e)

@@ -84,9 +84,7 @@ public partial class admin_user_edit : System.Web.UI.Page
 
             DbUtil.Db.BlogNotifications.DeleteAllOnSubmit(mu.BlogNotifications);
             DbUtil.Db.PageVisits.DeleteAllOnSubmit(mu.PageVisits);
-            DbUtil.Db.PrayerSlots.DeleteAllOnSubmit(mu.PrayerSlots);
             DbUtil.Db.UserRoles.DeleteAllOnSubmit(mu.UserRoles);
-            DbUtil.Db.PendingNotifications.DeleteAllOnSubmit(mu.PendingNotifications);
             DbUtil.Db.UserGroupRoles.DeleteAllOnSubmit(mu.UserGroupRoles);
             DbUtil.Db.Users.DeleteOnSubmit(mu);
 

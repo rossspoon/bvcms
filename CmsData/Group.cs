@@ -112,6 +112,8 @@ namespace CmsData
         }
         public UserGroupRole GetRoleUser(User user, string role)
         {
+            if (user == null)
+                return null;
             var q = from ru in DbUtil.Db.UserGroupRoles
                     where ru.UserId == user.UserId && ru.GroupRole.RoleName == role
                     where ru.GroupRole.GroupId == this.Id

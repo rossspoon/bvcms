@@ -351,7 +351,7 @@ namespace CMSWeb.Models
         }
         private static string TaskLink(string text, int id)
         {
-            return "<a href='{0}{1}'>{2}</a>".Fmt(DbUtil.TaskHost, TaskLink0(id), text);
+            return "<a href='{0}{1}'>{2}</a>".Fmt(Util.CmsHost, TaskLink0(id), text);
         }
 
         public static void ChangeTask(StringBuilder sb, Task task, string field, object value)

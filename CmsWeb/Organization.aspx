@@ -100,7 +100,7 @@
                         </th>
                         <td>
                             <cc1:DisplayOrEditText ID="OrganizationName" runat="server" BindingSource="organization"
-                                Width="250px">
+                                MaxLength="59" Width="250px">
                             &nbsp;
                             </cc1:DisplayOrEditText>
                         </td>

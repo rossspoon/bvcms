@@ -54,7 +54,6 @@ namespace CMSWeb.Dialog
         }
         protected void AddSelectedFamilyMembers_Click(object sender, EventArgs e)
         {
-            var fids = new List<int>();
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             foreach (var p in Search.SelectedPeople())
             {
@@ -65,23 +64,9 @@ namespace CMSWeb.Dialog
                     p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
                 else
                     p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
-                fids.Add(p.FamilyId);
                 p.FamilyId = FamilyId;
             }
             DbUtil.Db.SubmitChanges();
-
-            foreach (var fid in fids)
-                if (DbUtil.Db.People.Count(p => p.FamilyId == fid) == 0)
-                {
-                    f = DbUtil.Db.Families.SingleOrDefault(fam => fam.FamilyId == fid);
-                    if (f != null)
-                    {
-                        DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(f.RelatedFamilies1);
-                        DbUtil.Db.RelatedFamilies.DeleteAllOnSubmit(f.RelatedFamilies2);
-                        DbUtil.Db.Families.DeleteOnSubmit(f);
-                        DbUtil.Db.SubmitChanges();
-                    }
-                }
             this.Page.ClientScript.RegisterStartupScript(typeof(AddContactee),
                 "closeThickBox", "self.parent.AddSelected();", true);
         }

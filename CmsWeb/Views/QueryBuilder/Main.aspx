@@ -85,6 +85,7 @@
                     <td align="right">Organization:</td>
                     <td>
                         <select id="Organization" ></select>
+                        <span id="OrganizationError" class="validate"></span>
                     </td>
                 </tr>
                 <tr id="SchedDiv" style="display:none">

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DiscData;
+using CmsData;
 using System.Text;
 using System.Net;
 using UtilityExtensions;
@@ -34,7 +34,7 @@ namespace Prayer.Models
             var q2 = from n in q
                      select new
                      {
-                         n.User.FirstName,
+                         n.User.Person.PreferredName,
                          n.User.Name,
                          n.User.PrayerSlots,
                          n.User.EmailAddress,
@@ -49,7 +49,7 @@ namespace Prayer.Models
 You have reserved the following prayer times:
 <table>{1}</table>
 Thank you for praying!<br/>
-Prayer Ministry".Fmt(n.FirstName, sb.ToString()));
+Prayer Ministry".Fmt(n.PreferredName, sb.ToString()));
             }
             DbUtil.Db.PendingNotifications.DeleteAllOnSubmit(q);
             DbUtil.Db.SubmitChanges();

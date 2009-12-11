@@ -93,8 +93,8 @@
         <% foreach (var v in Model.FetchVolunteers())
            { %>
         <tr>
-            <td><a href="/Volunteer/PickList/<%=v.Id %>"><%="{0:MM-dd-yy HH:mm}".Fmt(v.Created)%></a></td>
-            <td>
+            <td nowrap="nowrap"><a href="/Volunteer/PickList/<%=v.Id %>"><%="{0:MM-dd-yy HH:mm}".Fmt(v.Created)%></a></td>
+            <td nowrap="nowrap">
                 <a href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
             </td>
             <td><%=v.Interests%></td>

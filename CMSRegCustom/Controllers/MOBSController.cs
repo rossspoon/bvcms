@@ -8,6 +8,7 @@ using CmsData;
 using CMSRegCustom.Models;
 using UtilityExtensions;
 using System.Configuration;
+using System.Net.Mail;
 
 namespace CMSRegCustom.Controllers
 {
@@ -62,10 +63,11 @@ namespace CMSRegCustom.Controllers
 
             DbUtil.Db.SubmitChanges();
 
-            Util.Email2(m.email,
-                    DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress), "MOBS Registration",
-"{0}({1}) has registered for MOBS event on {2}\r\n(check cms to confirm feepaid)".Fmt(
-m.person.Name, m.peopleid, m.MeetingTime));
+            Util.Email2(new SmtpClient(), m.email, 
+                DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress), 
+                "MOBS Registration", 
+                "{0}({1}) has registered for MOBS event on {2}\r\n(check cms to confirm feepaid)"
+                .Fmt(m.person.Name, m.peopleid, m.MeetingTime));
 
             TempData["regid"] = reg.Id;
             return RedirectToAction("Payment");

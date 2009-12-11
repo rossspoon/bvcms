@@ -40,10 +40,6 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td colspan = "2"><%= Html.CheckBox("preferredEmail") %> This is my preferred email address</td>
-                </tr>
-                <tr>
                     <td><label for="MeetingId">Step 2 Class Dates</label></td>
                     <td><%= Html.DropDownList("MeetingId", Model.AvailableClasses("Step 2"))%></td>
                     <td><%= Html.ValidationMessage("MeetingId")%></td>

@@ -82,6 +82,13 @@
     </Compile>
     <Compile Include="Controllers\FamilyResult.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Person2.aspx.cs">
+      <DependentUpon>Person2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Person2.aspx.designer.cs">
+      <DependentUpon>Person2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1873,12 +1880,14 @@
     <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />
+    <Content Include="Content\jquery.autocomplete.css" />
     <Content Include="Content\jquery.multiSelect.css" />
     <Content Include="Content\jquery.timepickr.css" />
     <Content Include="Content\clockpick.css" />
     <Content Include="Content\jquery.treeview.css" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
+    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.packed.js" />
@@ -1898,6 +1907,8 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
+    <Content Include="Config\AppSettings.config" />
+    <Content Include="Person2.aspx" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
@@ -2024,6 +2035,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="demos\checkboxtree\images\" />
+    <Folder Include="Deploy\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

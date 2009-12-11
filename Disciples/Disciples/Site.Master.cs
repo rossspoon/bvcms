@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Web.Security;
 using UtilityExtensions;
+using System.IO;
 
 namespace Disciples
 {
@@ -54,6 +55,11 @@ namespace Disciples
             //}
 
             NewMenu(MainMenu, "Podcasting", "~/Podcast/");
+            if (!Page.User.Identity.IsAuthenticated)
+            {
+                var registerlink = LoginView1.FindControl("RegisterLink") as HyperLink;
+                registerlink.NavigateUrl = Path.Combine(DbUtil.TaskHost, "GODisciples/Individual");
+            }
 
             m = NewTopMenu(MainMenu, "Bible Tools", "#");
             NewMenu(m, "One Year Bible Plan (mix)", "~/Verse/DailyReading.aspx");

@@ -249,6 +249,8 @@ namespace CmsData
 		
 		private string _CellPhoneAC;
 		
+		private string _CheckInNotes;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -273,6 +275,10 @@ namespace CmsData
    		private EntitySet< Contribution> _Contributions;
 		
    		private EntitySet< RecReg> _RecRegs;
+		
+   		private EntitySet< PendingNotification> _PendingNotifications;
+		
+   		private EntitySet< PrayerSlot> _PrayerSlots;
 		
    		private EntitySet< SaleTransaction> _SaleTransactions;
 		
@@ -692,6 +698,9 @@ namespace CmsData
 		partial void OnCellPhoneACChanging(string value);
 		partial void OnCellPhoneACChanged();
 		
+		partial void OnCheckInNotesChanging(string value);
+		partial void OnCheckInNotesChanged();
+		
     #endregion
 		public Person()
 		{
@@ -719,6 +728,10 @@ namespace CmsData
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
+			
+			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
+			
+			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
 			
 			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
@@ -3380,6 +3393,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="CheckInNotes", UpdateCheck=UpdateCheck.Never, Storage="_CheckInNotes", DbType="varchar(1000)")]
+		public string CheckInNotes
+		{
+			get { return this._CheckInNotes; }
+
+			set
+			{
+				if (this._CheckInNotes != value)
+				{
+				
+                    this.OnCheckInNotesChanging(value);
+					this.SendPropertyChanging();
+					this._CheckInNotes = value;
+					this.SendPropertyChanged("CheckInNotes");
+					this.OnCheckInNotesChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3500,6 +3535,26 @@ namespace CmsData
    		    get { return this._RecRegs; }
 
 			set	{ this._RecRegs.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
+   		public EntitySet< PendingNotification> PendingNotifications
+   		{
+   		    get { return this._PendingNotifications; }
+
+			set	{ this._PendingNotifications.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PrayerSlot_People", Storage="_PrayerSlots", OtherKey="PeopleId")]
+   		public EntitySet< PrayerSlot> PrayerSlots
+   		{
+   		    get { return this._PrayerSlots; }
+
+			set	{ this._PrayerSlots.Assign(value); }
 
    		}
 
@@ -4401,6 +4456,32 @@ namespace CmsData
 		}
 
 		private void detach_RecRegs(RecReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_PendingNotifications(PendingNotification entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_PendingNotifications(PendingNotification entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_PrayerSlots(PrayerSlot entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_PrayerSlots(PrayerSlot entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using DiscData;
+using CmsData;
 using Prayer.Models;
 using UtilityExtensions;
 
@@ -19,7 +19,7 @@ namespace Prayer.Controllers
             User u = DbUtil.Db.CurrentUser;
             var g = Group.LoadByName(STR_PrayerPartners);
             if (g.IsAdmin && id.HasValue)
-                u = DbUtil.Db.GetUser(id);
+                u = DbUtil.Db.Users.SingleOrDefault(uu => uu.UserId == id);
             return View(new SignupModel(u));
         }
 
@@ -29,7 +29,7 @@ namespace Prayer.Controllers
             User u = DbUtil.Db.CurrentUser;
             var g = Group.LoadByName(STR_PrayerPartners);
             if (g.IsAdmin && id.HasValue)
-                u = DbUtil.Db.GetUser(id);
+                u = DbUtil.Db.Users.SingleOrDefault(uu => uu.UserId == id);
             var m = new SignupModel(u);
             var ret = m.ToggleSlot(slot, ck);
             return Json(ret);

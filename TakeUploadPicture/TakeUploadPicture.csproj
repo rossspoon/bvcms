@@ -64,39 +64,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Capture.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="ImageResizer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ImageResizer.Designer.cs">
       <DependentUpon>ImageResizer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Login.Designer.cs">
-      <DependentUpon>Login.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ImageResizer.resx">
       <DependentUpon>ImageResizer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
-      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="StandAloneTestForm.resx">
-      <DependentUpon>StandAloneTestForm.cs</DependentUpon>
+    <EmbeddedResource Include="StandAloneForm.resx">
+      <DependentUpon>StandAloneForm.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -118,11 +103,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="StandAloneTestForm.cs">
+    <Compile Include="StandAloneForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StandAloneTestForm.Designer.cs">
-      <DependentUpon>StandAloneTestForm.cs</DependentUpon>
+    <Compile Include="StandAloneForm.Designer.cs">
+      <DependentUpon>StandAloneForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ using CmsData;
 using CMSWeb.Models;
 using UtilityExtensions;
 using System.Configuration;
+using System.Net.Mail;
 
 namespace CMSWeb.Controllers
 {
@@ -110,10 +111,7 @@ namespace CMSWeb.Controllers
             DbUtil.Db.SubmitChanges();
             m.regid = reg.Id;
 
-            Util.Email2(m.email,
-                    DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(m.division.Name),
-"{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)".Fmt(
-m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
+            Util.Email2(new SmtpClient(), m.email, DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(m.division.Name), "{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)".Fmt(m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
 
             if ((reg.FeePaid ?? false) == true)
                 return RedirectToAction("Confirm", new { id = reg.Id });
@@ -151,7 +149,7 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
 <p>We have the following information:
 {2}
 ".Fmt(m.division.Name, m.organization.OrganizationName,
-    ImageData.Image.Content(m.registration.ImgId.Value), DbUtil.TaskHost));
+    ImageData.Image.Content(m.registration.ImgId.Value), Util.CmsHost));
 
             return View(m);
         }

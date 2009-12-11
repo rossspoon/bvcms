@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilityExtensions", "Utilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsData", "CmsData\CmsData.csproj", "{98AEE43C-4226-49E7-BD46-C1A85467ECED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisciplesData", "DisciplesData\DisciplesData.csproj", "{687619FB-F4C1-42B3-9A33-4BD19390723F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,12 +37,6 @@ Global
 		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|x86.ActiveCfg = Release|x86
 		{98AEE43C-4226-49E7-BD46-C1A85467ECED}.Release|x86.Build.0 = Release|x86
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{687619FB-F4C1-42B3-9A33-4BD19390723F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
