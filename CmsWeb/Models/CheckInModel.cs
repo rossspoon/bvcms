@@ -39,7 +39,7 @@ namespace CMSWeb.Models
                 from om in DbUtil.Db.OrganizationMembers
                 let Hour = DbUtil.Db.GetTodaysMeetingHour(om.OrganizationId, thisday)
                 let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
-                where om.Organization.CanSelfCheckin.Value
+                where om.Organization.CanSelfCheckin == true
                 where om.Organization.CampusId == campus || campus == 0
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
@@ -106,6 +106,7 @@ namespace CMSWeb.Models
             const string PleaseVisit = "No self check-in meetings available";
             var VisitorOrgName = PleaseVisit;
             var VisitorOrgId = 0;
+            var VisitorOrgHour = (DateTime?)null;
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
                      where o.CampusId == campus
@@ -118,6 +119,7 @@ namespace CMSWeb.Models
             {
                 VisitorOrgName = vo.OrganizationName;
                 VisitorOrgId = vo.OrganizationId;
+                VisitorOrgHour = vo.SchedTime;
             }
             var otherfamily =
                 from p in DbUtil.Db.People
@@ -136,7 +138,8 @@ namespace CMSWeb.Models
                     OrgId = oldervisitor ? VisitorOrgId : 0,
                     Age = p.Age ?? 0,
                     Gender = p.Gender.Code,
-                    NumLabels = 1
+                    NumLabels = 1,
+                    Hour = VisitorOrgHour,
                 };
             list.AddRange(otherfamily.ToList());
             return list.OrderByDescending(a => a.Age).ToList();

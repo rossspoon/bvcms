@@ -14,10 +14,6 @@ namespace TakeUploadPicture
         /// The main entry point for the application.
         /// </summary>
         /// 
-
-        //const string mutex_id = "Global\\TakeUploadPicture";
-
-
         [STAThread]
         static void Main(string[] args)
         {
@@ -31,13 +27,15 @@ namespace TakeUploadPicture
                 var a = arg.Split(',');
                 PeopleId = int.Parse(a[0]);
                 Guid = a[1];
-                header.Username = "tkup";
-                header.Password = "password";
+                if (a.Length > 2)
+                    Host = a[2];
+                else
+                    Host = "http://localhost:58724/";
                 Application.Run(new StandAloneForm());
             }
         }
-        internal static cmsws.ServiceAuthHeader header = new cmsws.ServiceAuthHeader();
         public static int PeopleId { get; set; }
         public static string Guid { get; set; }
+        public static string Host { get; set; }
     }
 }

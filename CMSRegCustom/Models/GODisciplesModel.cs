@@ -146,7 +146,9 @@ namespace CMSRegCustom.Models
                         AddPerson();
                 else if (count == 1)
                     if (!person.EmailAddress.HasValue())
-                        modelState.AddModelError("email0", "Cannot enroll without an email address, contact church to provide one");
+                        modelState.AddModelError("email0", 
+                            "Cannot enroll without an email address, contact church to let us know yours, {0}"
+                            .Fmt(DbUtil.Settings("GoDisciplesPhone", "(901) 347-2000")));
             }
         }
         private void AddPerson()

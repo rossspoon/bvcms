@@ -190,6 +190,16 @@ namespace UtilityExtensions
                 age--;
             return age;
         }
+        public static DateTime Now2
+        {
+            get
+            {
+                var daysoffset = (double?)HttpContext.Current.Application["daysoffset"];
+                if(daysoffset.HasValue)
+                    return DateTime.Now.AddDays(daysoffset.Value);
+                return DateTime.Now;
+            }
+        }
         public static DateTime Now
         {
             get { return DateTime.Now; }

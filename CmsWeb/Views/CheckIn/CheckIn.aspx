@@ -7,9 +7,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
-
     <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-
     <script src="/Scripts/CheckIn.js" type="text/javascript"></script>
 
     <%=Html.Hidden("OrgId") %>
@@ -17,7 +15,7 @@
     <h2>
         CheckIn for
         <%=Model.OrgName %></h2>
-    <table cellpadding="5">
+    <table class="checkin" cellpadding="5">
         <tr>
             <td>
                 <img src='<%=Model.person.ImageUrl %>' /><br />
@@ -26,8 +24,8 @@
             <td>
                 <table cellpadding="3">
                     <tr>
-                        <th align="right">
-                            Name
+                        <th>
+                            Name:
                         </th>
                         <td>
                             <a href='/Person.aspx?id=<%=Model.person.PeopleId %>'>
@@ -35,64 +33,64 @@
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Address Line 1
+                        <th nowrap="nowrap">
+                            Addr Line 1:
                         </th>
                         <td>
                             <%=Model.person.Addr1 %>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Address Line 2
+                        <th nowrap="nowrap">
+                            Addr Line 2:
                         </th>
                         <td>
                             <%=Model.person.Addr2 %>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            City, State, Zip
+                        <th nowrap="nowrap">
+                            City, State, Zip:
                         </th>
                         <td>
                             <%=Model.person.CityStateZip%>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Home Phone
+                        <th nowrap="nowrap">
+                            Home Phone:
                         </th>
                         <td>
                             <%=Model.person.Phone%>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Cell
+                        <th nowrap="nowrap">
+                            Cell:
                         </th>
                         <td>
                             <%=Model.person.Cell %>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Email
+                        <th nowrap="nowrap">
+                            Email:
                         </th>
                         <td>
                             <%=Model.person.Email %>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Birthday
+                        <th nowrap="nowrap">
+                            Birthday:
                         </th>
                         <td>
                             <%=Model.person.Birthday %>
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            School
+                        <th nowrap="nowrap">
+                            School:
                         </th>
                         <td>
                             <a id='editschool' title="click to edit" href='#'>
@@ -101,8 +99,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Graduate Year
+                        <th nowrap="nowrap">
+                            Graduate Year:
                         </th>
                         <td>
                             <span id='y.<%=Model.person.PeopleId %>' title="click to edit" class="edit" href='#'>
@@ -110,8 +108,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th align="right" nowrap="nowrap">
-                            Notes
+                        <th nowrap="nowrap">
+                            Notes:
                         </th>
                         <td>
                             <span id='n.<%=Model.person.PeopleId %>' class='editarea'>
@@ -119,6 +117,8 @@
                         </td>
                     </tr>
                 </table>
+            </td>
+            <td>
             </td>
         </tr>
     </table>
@@ -128,6 +128,13 @@
         New Card?
         <input type="checkbox" id="newCard" />
     </div>
+    <h3>Family</h3>
+    <ul>
+    <% foreach (var m in Model.GetFamilyMembers())
+       { %>
+       <li><a href="/CheckIn/CheckIn/<%=Model.OrgId %>?pid=<%=m.PeopleId %>"><%=m.Name %></a></li>
+    <% } %>
+    </ul>
     <div id="GOdialog" style="display: none; cursor: default">
         <h1>
             Click GO to refresh page.</h1>

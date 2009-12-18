@@ -9,6 +9,7 @@ using CmsData;
 using UtilityExtensions;
 using CMSWeb.Models;
 using System.Xml;
+using System.IO;
 
 namespace CMSWeb.Controllers
 {
@@ -61,16 +62,11 @@ namespace CMSWeb.Controllers
             r.Content = "success";
             return r;
         }
-        //http://localhost:58724/CheckIn/CheckIn/88197
-        public ActionResult CheckIn(int id, int? pid)
+        public ActionResult CheckIn(int? id, int? pid)
         {
-            Session["CheckInOrgId"] = id;
-            var m = new CheckInRecModel(id, pid);
-            CreateToken(m);
+            Session["CheckInOrgId"] = id ?? 0;
+            var m = new CheckInRecModel(id ?? 0, pid);
             return View(m);
-        }
-        private static void CreateToken(CheckInRecModel m)
-        {
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult PostCheckIn(int id, string KeyCode)
@@ -133,6 +129,34 @@ namespace CMSWeb.Controllers
             }
             DbUtil.Db.SubmitChanges();
             return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult UploadImage()
+        {
+            var PeopleId = Request.Headers["PeopleId"].ToInt2();
+            const string STR_NotGood = "not good";
+            if (!PeopleId.HasValue)
+                return Content (STR_NotGood);
+            var guid = new Guid(Request.Headers["Guid"].ToString());
+            var tok = DbUtil.Db.TemporaryTokens.SingleOrDefault(tt => tt.Id == guid);
+            if (tok == null)
+                return Content(STR_NotGood);
+            if (Util.Now.Subtract(tok.CreatedOn).TotalHours > 20 || tok.Expired)
+                return Content(STR_NotGood);
+            var person = DbUtil.Db.People.Single(pp => pp.PeopleId == PeopleId);
+            if (person.Picture == null)
+                person.Picture = new Picture();
+            byte[] bits = new byte[Request.InputStream.Length];
+            Request.InputStream.Read(bits, 0, bits.Length);
+
+            var p = person.Picture;
+            p.CreatedDate = Util.Now;
+            p.CreatedBy = Util.UserName;
+            p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
+            p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
+            p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+            DbUtil.Db.SubmitChanges();
+            return Content("done");
         }
     }
 }

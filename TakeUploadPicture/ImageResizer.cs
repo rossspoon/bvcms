@@ -119,9 +119,6 @@ namespace TakeUploadPicture
                     displayFilters += fileFilterLeft.Substring(0, fileFilterLeft.Length - 1) + ")" + fileFilterRight.Substring(0, fileFilterRight.Length - 1) + "|";
                 }
             }
-            ofdImage.Filter = displayFilters.Substring(0, displayFilters.Length - 1);
-            sfdImage.Filter = ofdImage.Filter;
-            ofdImage.FilterIndex = jpegIndex;
         }
 
         // Allows developer to set starting image and required size of resulting image

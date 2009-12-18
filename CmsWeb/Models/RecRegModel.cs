@@ -179,6 +179,8 @@ namespace CMSWeb.Models
             get
             {
                 var dt = DateTime.Parse(RecAgeDiv.ExpirationDt);
+                if (Util.Now.Subtract(dt).TotalDays > 180)
+                    dt = dt.AddYears(1);
                 return RecAgeDiv.Fee.Value + (dt < Util.Now ? (RecAgeDiv.ExtraFee ?? 0) : 0);
             }
         }

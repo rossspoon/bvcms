@@ -63,12 +63,36 @@ namespace CmsCheckin
             button8.Click += new EventHandler(buttonclick);
             button9.Click += new EventHandler(buttonclick);
             button0.Click += new EventHandler(buttonclick);
+            button10.Click += new EventHandler(button10_Click);
+            button11.Click += new EventHandler(button10_Click);
+            button12.Click += new EventHandler(button10_Click);
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
+        }
+
+        private Button lastbutton;
+        private string lastnumber;
+        void button10_Click(object sender, EventArgs e)
+        {
+            var b = sender as Button;
+            if (button10 == b)
+                lastbutton = b;
+            else if (lastbutton == button10 && button11 == b)
+                lastbutton = b;
+            else if (lastbutton == button11 && button12 == b)
+            {
+                textBox1.Text = lastnumber;
+                lastbutton = b;
+            }
         }
         public event EventHandler<EventArgs<string>> Go;
         private void buttongo_Click(object sender, EventArgs e)
         {
+            lastbutton = null;
+            var d = GetDigits(textBox1.Text).Length;
+            if (d != 10 && d != 7)
+                return;
+            lastnumber = textBox1.Text;
             Go(sender, new EventArgs<string>(textBox1.Text));
         }
 
@@ -85,11 +109,18 @@ namespace CmsCheckin
             else if(e.KeyChar >= '0' && e.KeyChar <= '9')
                 KeyStroke(e.KeyChar);
             else if(e.KeyChar == '\r')
+            {
+                var d = GetDigits(textBox1.Text).Length;
+                if (d != 10 && d != 7)
+                    return;
+                lastnumber = textBox1.Text;
                 Go(sender, new EventArgs<string>(textBox1.Text));
+            }
             e.Handled = true;
         }
         private void KeyStroke(char d)
         {
+            lastbutton = null;
             var t = GetDigits(textBox1.Text);
             if (t.Length < 10)
                 t += d;
@@ -99,6 +130,7 @@ namespace CmsCheckin
         }
         private void BackSpace()
         {
+            lastbutton = null;
             var t = GetDigits(textBox1.Text);
             var len = t.Length - 1;
             if (len < 0)

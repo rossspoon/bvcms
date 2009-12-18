@@ -41,6 +41,10 @@ namespace CmsCheckin
             cbDayOfWeek.Items.Add(new DayOfWeek { Day = 6, Text = "Saturday" });
             cbDayOfWeek.SelectedIndex = (int)DateTime.Now.DayOfWeek;
 
+#if DEBUG
+            TestMode.Checked = true;
+#endif
+
             var wc = new WebClient();
             var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/Campuses");
             var str = wc.DownloadString(url);

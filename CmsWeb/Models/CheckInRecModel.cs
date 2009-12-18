@@ -6,11 +6,17 @@ using System.Web;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
+using System.Collections;
 
 namespace CMSWeb.Models
 {
     public class CheckInRecModel
     {
+        public class FamilyMemberInfo
+        {
+            public int PeopleId { get; set; }
+            public string Name { get; set; }
+        }
         public class PersonInfo
         {
             public int? PeopleId { get; set; }
@@ -23,6 +29,7 @@ namespace CMSWeb.Models
             public string Phone { get; set; }
             public string Cell { get; set; }
             public string Email { get; set; }
+            public int FamilyId { get; set; }
             private string _School;
             public string School
             {
@@ -60,12 +67,16 @@ namespace CMSWeb.Models
         public string OrgName { get; set; }
         public PersonInfo person { get; set; }
         public string guid { get; set; }
+        public string host
+        {
+            get { return Util.CmsHost; }
+        }
         public CheckInRecModel(int orgId, int? pid)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgId
                     select o.OrganizationName;
-            OrgName = q.Single();
+            OrgName = q.SingleOrDefault();
             var q2 = from p in DbUtil.Db.People
                      where p.PeopleId == pid
                      select new PersonInfo
@@ -82,7 +93,8 @@ namespace CMSWeb.Models
                          Email = p.EmailAddress,
                          School = p.SchoolOther,
                          Year = p.Grade.ToString(),
-                         CheckInNotes = p.CheckInNotes
+                         CheckInNotes = p.CheckInNotes,
+                         FamilyId = p.FamilyId
                      };
             person = q2.SingleOrDefault();
             if (person == null)
@@ -116,6 +128,18 @@ namespace CMSWeb.Models
             if (s.HasValue())
                 return s + "<br />";
             return string.Empty;
+        }
+        public IEnumerable<FamilyMemberInfo> GetFamilyMembers()
+        {
+            var q = from p in DbUtil.Db.People
+                    where p.FamilyId == person.FamilyId
+                    where p.PeopleId != person.PeopleId
+                    select new FamilyMemberInfo
+                    {
+                        Name = p.Name,
+                        PeopleId = p.PeopleId
+                    };
+            return q;
         }
     }
 }

@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td><label for="dob">Date of Birth</label></td>
-                    <td><%= Html.TextBox("dob") %></td>
+                    <td><%= Html.TextBox("dob") %> mm/dd/yyyy</td>
                     <td><%= Html.ValidationMessage("dob") %></td>
                 </tr>
                 <tr>

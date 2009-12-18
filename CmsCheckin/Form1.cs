@@ -103,9 +103,8 @@ namespace CmsCheckin
         public static string ServiceUrl()
         {
             string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
-#if DEBUG
-            serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
-#endif
+            if (Program.TestMode)
+                serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
             return serviceurl;
         }
         private void Form1_Resize(object sender, EventArgs e)

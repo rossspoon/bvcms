@@ -28,29 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.imageResizer1 = new TakeUploadPicture.ImageResizer();
+            this.imageResizer2 = new TakeUploadPicture.ImageResizer();
             this.SuspendLayout();
             // 
-            // imageResizer1
+            // imageResizer2
             // 
-            this.imageResizer1.Location = new System.Drawing.Point(0, 0);
-            this.imageResizer1.Margin = new System.Windows.Forms.Padding(4);
-            this.imageResizer1.MinimumSize = new System.Drawing.Size(733, 369);
-            this.imageResizer1.Name = "imageResizer1";
-            this.imageResizer1.OffsetX = 0;
-            this.imageResizer1.OffsetY = 0;
-            this.imageResizer1.RequiredHeight = 0;
-            this.imageResizer1.RequiredWidth = 0;
-            this.imageResizer1.Size = new System.Drawing.Size(800, 482);
-            this.imageResizer1.TabIndex = 0;
+            this.imageResizer2.Location = new System.Drawing.Point(0, 0);
+            this.imageResizer2.Name = "imageResizer2";
+            this.imageResizer2.OffsetX = 0;
+            this.imageResizer2.OffsetY = 0;
+            this.imageResizer2.RequiredHeight = 0;
+            this.imageResizer2.RequiredWidth = 0;
+            this.imageResizer2.Size = new System.Drawing.Size(773, 485);
+            this.imageResizer2.TabIndex = 0;
             // 
             // StandAloneForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(801, 484);
-            this.Controls.Add(this.imageResizer1);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(769, 486);
+            this.Controls.Add(this.imageResizer2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "StandAloneForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Take Upload Picture";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.StandAloneForm_FormClosed);
             this.ResumeLayout(false);
@@ -59,6 +59,8 @@
 
         #endregion
 
-        private ImageResizer imageResizer1;
+        private ImageResizer imageResizer2;
+
+
     }
 }

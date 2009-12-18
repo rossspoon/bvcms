@@ -11,12 +11,14 @@ using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Collections.Specialized;
+using System.Net;
+using System.Drawing.Drawing2D;
 
 namespace TakeUploadPicture
 {
     public partial class StandAloneForm : Form
     {
-        cmsws.WebServiceSoapClient wsvc = new cmsws.WebServiceSoapClient();
         private Capture cam;
         IntPtr m_ip = IntPtr.Zero;
         const int VIDEODEVICE = 0; // zero based index of video capture device to use
@@ -24,34 +26,28 @@ namespace TakeUploadPicture
         const int VIDEOHEIGHT = 480; // Depends on video device caps
         const int VIDEOBITSPERPIXEL = 64; // BitsPerPixel values determined by device
 
-        public StandAloneForm()
+       public StandAloneForm()
         {
             InitializeComponent();
 
-#if DEBUG
-#else
-            wsvc.Endpoint.Address = new EndpointAddress(
-                ConfigurationSettings.AppSettings["serviceUrl"]);
-#endif
             try
             {
-                cam = new Capture(VIDEODEVICE, VIDEOWIDTH, VIDEOHEIGHT, VIDEOBITSPERPIXEL, imageResizer1.pctCamera);
-                imageResizer1.btnTakePicture.Click += new EventHandler(btnTakePicture_Click);
-                imageResizer1.btnSave.Click += new EventHandler(btnUploadPicture_Click);
+                cam = new Capture(VIDEODEVICE, VIDEOWIDTH, VIDEOHEIGHT, VIDEOBITSPERPIXEL, imageResizer2.pctCamera);
+                imageResizer2.btnTakePicture.Click += new EventHandler(btnTakePicture_Click);
+                imageResizer2.btnSave.Click += new EventHandler(btnUploadPicture_Click);
             }
             catch (Exception)
             {
                 //Handle exception
-                imageResizer1.Enabled = false;
             }
         }
         private void btnTakePicture_Click(object sender, EventArgs e)
         {
             const string STR_ShowCamera = "Show Camera";
-            if (imageResizer1.btnTakePicture.Text == STR_ShowCamera)
+            if (imageResizer2.btnTakePicture.Text == STR_ShowCamera)
             {
-                imageResizer1.pctCamera.Visible = true;
-                imageResizer1.btnTakePicture.Text = "Take Picture";
+                imageResizer2.pctCamera.Visible = true;
+                imageResizer2.btnTakePicture.Text = "Take Picture";
                 return;
             }
             if (cam != null)
@@ -68,9 +64,9 @@ namespace TakeUploadPicture
                 Bitmap b = new Bitmap(cam.Width, cam.Height, cam.Stride, PixelFormat.Format24bppRgb, m_ip);
                 b.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
-                imageResizer1.BaseImage = b;
-                imageResizer1.pctCamera.Visible = false;
-                imageResizer1.btnTakePicture.Text = STR_ShowCamera;
+                imageResizer2.BaseImage = b;
+                imageResizer2.pctCamera.Visible = false;
+                imageResizer2.btnTakePicture.Text = STR_ShowCamera;
 
                 Cursor.Current = Cursors.Default;
             }
@@ -92,32 +88,21 @@ namespace TakeUploadPicture
             return b;
         }
 
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        const int SW_MINIMIZED = 6;
-
         private void btnUploadPicture_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            var bits = ConvertImageToByteArray(imageResizer1.SaveImage(), ImageFormat.Jpeg);
-            wsvc.UploadImage(Program.header, Program.PeopleId, Program.Guid, 3, "image/jpeg", bits);
+            var bits = ConvertImageToByteArray(imageResizer2.SaveImage(), ImageFormat.Jpeg);
+
+            var formdata = new NameValueCollection();
+            formdata.Add("PeopleId", Program.PeopleId.ToString());
+            formdata.Add("Guid", Program.Guid.ToString());
+            var url = new Uri(new Uri(Program.Host), "Checkin/UploadImage/");
+            var wc = new WebClient();
+            wc.Headers.Add(formdata);
+            wc.UploadData(url, "POST", bits);
+
             cam.Dispose();
             Application.Exit();
-        }
-
-        private void imageResizer1_Resize(object sender, EventArgs e)
-        {
-            if (cam != null)
-            {
-                cam.Dispose();
-            }
-            if (m_ip != IntPtr.Zero)
-            {
-                Marshal.FreeCoTaskMem(m_ip);
-                m_ip = IntPtr.Zero;
-            }
-            cam = new Capture(VIDEODEVICE, VIDEOWIDTH, VIDEOHEIGHT, VIDEOBITSPERPIXEL, imageResizer1.pctCamera);
         }
 
         private void StandAloneForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -125,6 +110,7 @@ namespace TakeUploadPicture
             cam.Dispose();
             Application.Exit();
         }
-       
+
+
     }
 }

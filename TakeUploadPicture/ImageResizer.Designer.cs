@@ -28,7 +28,6 @@ namespace TakeUploadPicture
         /// </summary>
         private void InitializeComponent()
         {
-            this.sfdImage = new System.Windows.Forms.SaveFileDialog();
             this.Label1 = new System.Windows.Forms.Label();
             this.btnTakePicture = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -37,7 +36,6 @@ namespace TakeUploadPicture
             this.Label2 = new System.Windows.Forms.Label();
             this.tbResize = new System.Windows.Forms.TrackBar();
             this.pctCamera = new System.Windows.Forms.PictureBox();
-            this.ofdImage = new System.Windows.Forms.OpenFileDialog();
             this.GroupBox1 = new System.Windows.Forms.GroupBox();
             this.Label4 = new System.Windows.Forms.Label();
             this.nudCropWidth = new System.Windows.Forms.NumericUpDown();
@@ -58,10 +56,9 @@ namespace TakeUploadPicture
             // 
             // Label1
             // 
-            this.Label1.Location = new System.Drawing.Point(117, 61);
-            this.Label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Label1.Location = new System.Drawing.Point(88, 50);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(44, 15);
+            this.Label1.Size = new System.Drawing.Size(33, 12);
             this.Label1.TabIndex = 57;
             this.Label1.Text = "200%";
             // 
@@ -69,12 +66,10 @@ namespace TakeUploadPicture
             // 
             this.btnTakePicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTakePicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnTakePicture.Image = global::TakeUploadPicture.Properties.Resources.import1;
             this.btnTakePicture.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTakePicture.Location = new System.Drawing.Point(652, 13);
-            this.btnTakePicture.Margin = new System.Windows.Forms.Padding(4);
+            this.btnTakePicture.Location = new System.Drawing.Point(662, 11);
             this.btnTakePicture.Name = "btnTakePicture";
-            this.btnTakePicture.Size = new System.Drawing.Size(134, 92);
+            this.btnTakePicture.Size = new System.Drawing.Size(100, 75);
             this.btnTakePicture.TabIndex = 44;
             this.btnTakePicture.Text = "Take Picture";
             this.btnTakePicture.UseVisualStyleBackColor = false;
@@ -84,12 +79,10 @@ namespace TakeUploadPicture
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnSave.Enabled = false;
-            this.btnSave.Image = global::TakeUploadPicture.Properties.Resources.disk_blue;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(652, 379);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.Location = new System.Drawing.Point(662, 308);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(134, 90);
+            this.btnSave.Size = new System.Drawing.Size(100, 73);
             this.btnSave.TabIndex = 47;
             this.btnSave.Text = "   Send to Server";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -98,10 +91,9 @@ namespace TakeUploadPicture
             // picZoomIn
             // 
             this.picZoomIn.Image = global::TakeUploadPicture.Properties.Resources.ZoomIn48;
-            this.picZoomIn.Location = new System.Drawing.Point(111, 84);
-            this.picZoomIn.Margin = new System.Windows.Forms.Padding(4);
+            this.picZoomIn.Location = new System.Drawing.Point(83, 68);
             this.picZoomIn.Name = "picZoomIn";
-            this.picZoomIn.Size = new System.Drawing.Size(43, 39);
+            this.picZoomIn.Size = new System.Drawing.Size(32, 32);
             this.picZoomIn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picZoomIn.TabIndex = 55;
             this.picZoomIn.TabStop = false;
@@ -110,10 +102,9 @@ namespace TakeUploadPicture
             // picZoomOut
             // 
             this.picZoomOut.Image = global::TakeUploadPicture.Properties.Resources.ZoomOut48;
-            this.picZoomOut.Location = new System.Drawing.Point(5, 84);
-            this.picZoomOut.Margin = new System.Windows.Forms.Padding(4);
+            this.picZoomOut.Location = new System.Drawing.Point(4, 68);
             this.picZoomOut.Name = "picZoomOut";
-            this.picZoomOut.Size = new System.Drawing.Size(43, 39);
+            this.picZoomOut.Size = new System.Drawing.Size(32, 32);
             this.picZoomOut.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picZoomOut.TabIndex = 54;
             this.picZoomOut.TabStop = false;
@@ -121,22 +112,20 @@ namespace TakeUploadPicture
             // 
             // Label2
             // 
-            this.Label2.Location = new System.Drawing.Point(60, 61);
-            this.Label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Label2.Location = new System.Drawing.Point(45, 50);
             this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(44, 15);
+            this.Label2.Size = new System.Drawing.Size(33, 12);
             this.Label2.TabIndex = 45;
             this.Label2.Text = "100%";
             // 
             // tbResize
             // 
             this.tbResize.Enabled = false;
-            this.tbResize.Location = new System.Drawing.Point(2, 20);
-            this.tbResize.Margin = new System.Windows.Forms.Padding(4);
+            this.tbResize.Location = new System.Drawing.Point(2, 16);
             this.tbResize.Maximum = 200;
             this.tbResize.Minimum = 1;
             this.tbResize.Name = "tbResize";
-            this.tbResize.Size = new System.Drawing.Size(160, 56);
+            this.tbResize.Size = new System.Drawing.Size(120, 45);
             this.tbResize.TabIndex = 50;
             this.tbResize.TickFrequency = 10;
             this.tbResize.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
@@ -145,14 +134,10 @@ namespace TakeUploadPicture
             // 
             // pctCamera
             // 
-            this.pctCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pctCamera.Location = new System.Drawing.Point(4, 4);
-            this.pctCamera.Margin = new System.Windows.Forms.Padding(4);
+            this.pctCamera.Location = new System.Drawing.Point(0, 0);
             this.pctCamera.Name = "pctCamera";
-            this.pctCamera.Padding = new System.Windows.Forms.Padding(4);
-            this.pctCamera.Size = new System.Drawing.Size(624, 474);
+            this.pctCamera.Padding = new System.Windows.Forms.Padding(3);
+            this.pctCamera.Size = new System.Drawing.Size(640, 480);
             this.pctCamera.TabIndex = 0;
             this.pctCamera.TabStop = false;
             // 
@@ -164,51 +149,45 @@ namespace TakeUploadPicture
             this.GroupBox1.Controls.Add(this.Label5);
             this.GroupBox1.Controls.Add(this.nudCropHeight);
             this.GroupBox1.Controls.Add(this.lblSize);
-            this.GroupBox1.Location = new System.Drawing.Point(641, 113);
-            this.GroupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.GroupBox1.Location = new System.Drawing.Point(654, 92);
             this.GroupBox1.Name = "GroupBox1";
-            this.GroupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.GroupBox1.Size = new System.Drawing.Size(144, 92);
+            this.GroupBox1.Size = new System.Drawing.Size(108, 75);
             this.GroupBox1.TabIndex = 49;
             this.GroupBox1.TabStop = false;
             // 
             // Label4
             // 
             this.Label4.AutoSize = true;
-            this.Label4.Location = new System.Drawing.Point(6, 18);
-            this.Label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Label4.Location = new System.Drawing.Point(4, 15);
             this.Label4.Name = "Label4";
-            this.Label4.Size = new System.Drawing.Size(44, 17);
+            this.Label4.Size = new System.Drawing.Size(35, 13);
             this.Label4.TabIndex = 7;
             this.Label4.Text = "Width";
             // 
             // nudCropWidth
             // 
             this.nudCropWidth.Enabled = false;
-            this.nudCropWidth.Location = new System.Drawing.Point(58, 16);
-            this.nudCropWidth.Margin = new System.Windows.Forms.Padding(4);
+            this.nudCropWidth.Location = new System.Drawing.Point(44, 13);
             this.nudCropWidth.Name = "nudCropWidth";
-            this.nudCropWidth.Size = new System.Drawing.Size(67, 22);
+            this.nudCropWidth.Size = new System.Drawing.Size(50, 20);
             this.nudCropWidth.TabIndex = 6;
             this.nudCropWidth.ValueChanged += new System.EventHandler(this.nudCrop_ValueChanged);
             // 
             // Label5
             // 
             this.Label5.AutoSize = true;
-            this.Label5.Location = new System.Drawing.Point(1, 48);
-            this.Label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Label5.Location = new System.Drawing.Point(1, 39);
             this.Label5.Name = "Label5";
-            this.Label5.Size = new System.Drawing.Size(49, 17);
+            this.Label5.Size = new System.Drawing.Size(38, 13);
             this.Label5.TabIndex = 9;
             this.Label5.Text = "Height";
             // 
             // nudCropHeight
             // 
             this.nudCropHeight.Enabled = false;
-            this.nudCropHeight.Location = new System.Drawing.Point(58, 46);
-            this.nudCropHeight.Margin = new System.Windows.Forms.Padding(4);
+            this.nudCropHeight.Location = new System.Drawing.Point(44, 37);
             this.nudCropHeight.Name = "nudCropHeight";
-            this.nudCropHeight.Size = new System.Drawing.Size(67, 22);
+            this.nudCropHeight.Size = new System.Drawing.Size(50, 20);
             this.nudCropHeight.TabIndex = 8;
             this.nudCropHeight.ValueChanged += new System.EventHandler(this.nudCrop_ValueChanged);
             // 
@@ -216,20 +195,19 @@ namespace TakeUploadPicture
             // 
             this.lblSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSize.Location = new System.Drawing.Point(8, 72);
+            this.lblSize.Location = new System.Drawing.Point(6, 58);
             this.lblSize.Margin = new System.Windows.Forms.Padding(0);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(135, 16);
+            this.lblSize.Size = new System.Drawing.Size(101, 13);
             this.lblSize.TabIndex = 53;
             this.lblSize.Text = "0 x 0";
             this.lblSize.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Label3
             // 
-            this.Label3.Location = new System.Drawing.Point(7, 61);
-            this.Label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Label3.Location = new System.Drawing.Point(5, 50);
             this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(28, 15);
+            this.Label3.Size = new System.Drawing.Size(21, 12);
             this.Label3.TabIndex = 58;
             this.Label3.Text = "1%";
             // 
@@ -242,31 +220,29 @@ namespace TakeUploadPicture
             this.groupBox2.Controls.Add(this.Label2);
             this.groupBox2.Controls.Add(this.picZoomOut);
             this.groupBox2.Controls.Add(this.tbResize);
-            this.groupBox2.Location = new System.Drawing.Point(631, 212);
+            this.groupBox2.Location = new System.Drawing.Point(646, 172);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(162, 131);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Size = new System.Drawing.Size(122, 106);
             this.groupBox2.TabIndex = 59;
             this.groupBox2.TabStop = false;
             // 
             // ImageResizer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.pctCamera);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.GroupBox1);
             this.Controls.Add(this.btnTakePicture);
             this.Controls.Add(this.btnSave);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(733, 369);
             this.Name = "ImageResizer";
-            this.Size = new System.Drawing.Size(800, 482);
+            this.Size = new System.Drawing.Size(773, 485);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ImageResizer_Paint);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.EasyImageResizerControl_MouseMove);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EasyImageResizerControl_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.EasyImageResizerControl_MouseUp);
-            this.SizeChanged += new System.EventHandler(this.EasyImageResizerControl_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.picZoomIn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picZoomOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbResize)).EndInit();
@@ -283,7 +259,6 @@ namespace TakeUploadPicture
 
         #endregion
 
-        internal System.Windows.Forms.SaveFileDialog sfdImage;
         internal System.Windows.Forms.Label Label1;
         internal System.Windows.Forms.Button btnTakePicture;
         internal System.Windows.Forms.Button btnSave;
@@ -291,7 +266,6 @@ namespace TakeUploadPicture
         internal System.Windows.Forms.PictureBox picZoomOut;
         internal System.Windows.Forms.Label Label2;
         internal System.Windows.Forms.TrackBar tbResize;
-        internal System.Windows.Forms.OpenFileDialog ofdImage;
         internal System.Windows.Forms.GroupBox GroupBox1;
         internal System.Windows.Forms.Label Label4;
         internal System.Windows.Forms.NumericUpDown nudCropWidth;

@@ -60,9 +60,12 @@
     });
     $('#newCard').click(function() {
         $('#KeyCard').focus();
+        return false;
     });
     $('#tkup').click(function() {
         $.blockUI({ message: $('#GOdialog'), css: { width: '275px'} });
+        window.location = $('#tkup').attr("href");
+        return false;
     });
 
     $('#GOrefresh').click(function() {

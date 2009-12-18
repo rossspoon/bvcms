@@ -58,7 +58,7 @@ namespace CmsCheckin
                 lab.AutoSize = true;
                 lab.Text = "Not Found, try another phone number?";
                 this.Controls.Add(lab);
-                Print.Text = "Return to Phone Number";
+                Print.Text = "Try again";
                 return;
             }
 
@@ -150,29 +150,38 @@ namespace CmsCheckin
             {
                 col = 0;
 
-                var ab = new Button();
-                ab.FlatStyle = FlatStyle.Flat;
-                ab.FlatAppearance.BorderSize = 1;
-                ab.FlatAppearance.BorderColor = Color.Black;
-                ab.BackColor = Color.CornflowerBlue;
-                ab.ForeColor = Color.White;
-                ab.Font = new Font("Wingdings", 24, FontStyle.Bold,
-                    GraphicsUnit.Point, ((byte)(2)));
-                ab.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
-                ab.Name = "attend" + Row;
                 var c = new AttendLabel
                 {
                     Name = e.Attribute("name").Value,
                     Birthday = e.Attribute("bday").Value,
                     Gender = e.Attribute("gender").Value,
-                    PeopleId = Convert.ToInt32(e.Attribute("id").Value),
+                    PeopleId = int.Parse(e.Attribute("id").Value),
                     Class = e.Attribute("org").Value,
                     OrgId = int.Parse(e.Attribute("orgid").Value),
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
                     Row = Row,
-                    CheckedIn = bool.Parse(e.Attribute("checkedin").Value)
+                    CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
+                    leadtime = double.Parse(e.Attribute("leadtime").Value)
                 };
-                ab.Tag = c;
+
+                var ab = new Button();
+                ab.FlatStyle = FlatStyle.Flat;
+                ab.FlatAppearance.BorderSize = 1;
+                if (c.OrgId != 0 && c.leadtime <= Program.LeadTime)
+                {
+                    ab.BackColor = Color.CornflowerBlue;
+                    ab.FlatAppearance.BorderColor = Color.Black;
+                }
+                else
+                {
+                    ab.Enabled = false;
+                    ab.FlatAppearance.BorderColor = SystemColors.ButtonShadow;
+                }
+                ab.ForeColor = Color.White;
+                ab.Font = new Font("Wingdings", 24, FontStyle.Bold,
+                    GraphicsUnit.Point, ((byte)(2)));
+                ab.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
+                ab.Name = "attend" + Row;
                 ab.Size = new Size(buttonwidth, buttonheight);
                 ab.TextAlign = ContentAlignment.TopCenter;
                 ab.UseVisualStyleBackColor = false;
@@ -180,6 +189,7 @@ namespace CmsCheckin
                 ab.KeyDown += new KeyEventHandler(ab_KeyDown);
                 ab.Click += new EventHandler(ab_Click);
                 ab.Text = c.CheckedIn ? "ü" : String.Empty;
+                ab.Tag = c;
                 col++;
 
                 var label = new Label();
@@ -236,6 +246,12 @@ namespace CmsCheckin
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
+
+            if (c.OrgId > 0 && !c.Clicked && ab.Text == String.Empty)
+            {
+                ab_Click(ab, e);
+                return;
+            }
 
             var n = 0;
             if (int.TryParse(eb.Text, out n))
@@ -377,5 +393,6 @@ namespace CmsCheckin
         public int Row { get; set; }
         public bool CheckedIn { get; set; }
         public bool Clicked { get; set; }
+        public double leadtime { get; set; }
     }
 }

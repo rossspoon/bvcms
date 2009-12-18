@@ -283,7 +283,12 @@ namespace CMSWeb.Models
         {
             var ret = (from o in DbUtil.Db.Organizations
                        where o.OrganizationId == OrgId
-                       select new { o.SchedTime.Value.TimeOfDay, o.Location }).Single();
+                       select new 
+                       { 
+                           o.SchedTime.Value.TimeOfDay,
+                           o.AttendTrkLevelId,
+                           o.Location
+                       }).Single();
             var dt = Util.Now.Date;
             dt = dt.Add(ret.TimeOfDay);
 
@@ -300,7 +305,8 @@ namespace CMSWeb.Models
                     MeetingDate = dt,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = false,
+                    GroupMeetingFlag = ret.AttendTrkLevelId
+                        == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
                     Location = ret.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);

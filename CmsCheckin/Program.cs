@@ -19,12 +19,16 @@ namespace CmsCheckin
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
+            TestMode = f.TestMode.Checked;
+            LeadTime = int.Parse(f.LeadTime.Text);
             f.Dispose();
             Application.Run(new Form1());
         }
         public static int CampusId { get; set; }
         public static int ThisDay { get; set; }
+        public static int LeadTime { get; set; }
         public static bool HideCursor { get; set; }
+        public static bool TestMode{ get; set; }
         public static string QueryString
         {
             get

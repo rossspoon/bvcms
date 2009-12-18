@@ -29,12 +29,14 @@ namespace CmsData
             get { return Membership.Provider as CMSMembershipProvider; }
         }
 
+        private CMSDataContext Db;
         private int newPasswordLength = 8;
 
         private MachineKeySection machineKey;
 
         public override void Initialize(string name, NameValueCollection config)
         {
+            Db = new CMSDataContext(Util.ConnectionString);
             if (config == null)
                 throw new ArgumentNullException("config");
 
@@ -151,7 +153,6 @@ namespace CmsData
         public override bool ChangePassword(string username, string oldPwd, string newPwd)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             if (!ValidateUser(username, oldPwd))
                 return false;
             var args = new ValidatePasswordEventArgs(username, newPwd, true);
@@ -190,7 +191,6 @@ namespace CmsData
                       string newPwdAnswer)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             if (!ValidateUser(username, password))
                 return false;
             var user = Db.Users.Single(u => u.Username == username);
@@ -210,7 +210,6 @@ namespace CmsData
                  out MembershipCreateStatus status)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var args = new ValidatePasswordEventArgs(username, password, true);
             OnValidatingPassword(args);
             if (args.Cancel)
@@ -305,7 +304,7 @@ namespace CmsData
                 FailedPasswordAnswerAttemptCount = 0,
                 FailedPasswordAnswerAttemptWindowStart = createDate,
             };
-            var Db = DbUtil.Db;
+            var Db = new CMSDataContext(Util.ConnectionString);
             Db.Users.InsertOnSubmit(user);
             Db.SubmitChanges();
             return user;
@@ -314,7 +313,6 @@ namespace CmsData
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var user = Db.Users.SingleOrDefault(u => u.Username == username);
             Db.UserRoles.DeleteAllOnSubmit(user.UserRoles);
             Db.Users.DeleteOnSubmit(user);
@@ -324,7 +322,6 @@ namespace CmsData
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = DbUtil.Db;
             var users = new MembershipUserCollection();
             var q = Db.Users.AsQueryable();
             totalRecords = q.Count();
@@ -336,7 +333,6 @@ namespace CmsData
 
         public override int GetNumberOfUsersOnline()
         {
-            var Db = DbUtil.Db;
             var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
             var compareTime = Util.Now.Subtract(onlineSpan);
             return Db.Users.Count(u => u.LastActivityDate > compareTime);
@@ -345,7 +341,6 @@ namespace CmsData
         public override string GetPassword(string username, string answer)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             if (!EnablePasswordRetrieval)
                 throw new ProviderException("Password Retrieval Not Enabled.");
 
@@ -374,7 +369,6 @@ namespace CmsData
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var q = Db.Users.Where(user => user.Username == username);
             if (q.Count() > 1)
                 throw new Exception("duplicate user: " + username);
@@ -398,7 +392,6 @@ namespace CmsData
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            var Db = DbUtil.Db;
             var u = Db.Users.SingleOrDefault(user =>
                 user.UserId == providerUserKey.ToInt());
             if (u != null)
@@ -437,7 +430,6 @@ namespace CmsData
         public override bool UnlockUser(string username)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var u = Db.Users.SingleOrDefault(user => user.Username == username);
             if (u != null)
             {
@@ -450,14 +442,12 @@ namespace CmsData
 
         public override string GetUserNameByEmail(string email)
         {
-            var Db = DbUtil.Db;
             return Db.Users.Single(u => u.Person.EmailAddress == email).Username;
         }
 
         public override string ResetPassword(string username, string answer)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             if (!EnablePasswordReset)
                 throw new NotSupportedException("Password reset is not enabled.");
 
@@ -499,7 +489,6 @@ namespace CmsData
 
         public override void UpdateUser(MembershipUser user)
         {
-            var Db = DbUtil.Db;
             var u = Db.Users.SingleOrDefault(us => us.Username == user.UserName);
             u.IsApproved = user.IsApproved;
             //u.Person.EmailAddress = user.Email;
@@ -510,7 +499,6 @@ namespace CmsData
         public override bool ValidateUser(string username, string password)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var user = Db.Users.SingleOrDefault(u => u.Username == username);
             if (user == null)
                 return false;
@@ -527,7 +515,6 @@ namespace CmsData
 
         private void UpdateFailureCount(User user, string failureType)
         {
-            var Db = DbUtil.Db;
             DateTime windowStart = new DateTime();
             int failureCount = 0;
             if (failureType == "password")
@@ -640,7 +627,6 @@ namespace CmsData
 
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = DbUtil.Db;
             var users = new MembershipUserCollection();
             var q = from u in Db.Users select u;
 
@@ -663,7 +649,6 @@ namespace CmsData
 
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var Db = DbUtil.Db;
             var users = new MembershipUserCollection();
             var q = from u in Db.Users select u;
 
@@ -686,7 +671,6 @@ namespace CmsData
         public void MustChangePassword(string username, bool tf)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var user = Db.Users.Single(u => u.Username == username);
             user.MustChangePassword = tf;
             Db.SubmitChanges();
@@ -694,7 +678,6 @@ namespace CmsData
         public bool MustChangePassword(string username)
         {
             username = Util.GetUserName(username);
-            var Db = DbUtil.Db;
             var user = Db.Users.SingleOrDefault(u => u.Username == username);
             if (user == null)
                 return false;

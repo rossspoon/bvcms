@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using UtilityExtensions;
 
 namespace CMSWeb.Models
 {
@@ -18,11 +19,18 @@ namespace CMSWeb.Models
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);
-            using(var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
+            using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {
                 w.WriteStartElement("Attendees");
                 foreach (var c in items)
                 {
+                    double leadtime = 0;
+                    if (c.Hour.HasValue)
+                    {
+                        var midnight = c.Hour.Value.Date;
+                        var now = midnight.Add(Util.Now2.TimeOfDay);
+                        leadtime = c.Hour.Value.Subtract(now).TotalHours;
+                    }
                     w.WriteStartElement("attendee");
                     w.WriteAttributeString("id", c.Id.ToString());
                     w.WriteAttributeString("name", c.DisplayName);
@@ -31,6 +39,7 @@ namespace CMSWeb.Models
                     w.WriteAttributeString("orgid", c.OrgId.ToString());
                     w.WriteAttributeString("loc", c.Location);
                     w.WriteAttributeString("gender", c.Gender);
+                    w.WriteAttributeString("leadtime", leadtime.ToString());
                     w.WriteAttributeString("age", c.Age.ToString());
                     w.WriteAttributeString("numlabels", c.NumLabels.ToString());
                     w.WriteAttributeString("checkedin", c.CheckedIn.ToString());
