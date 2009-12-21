@@ -69,7 +69,7 @@
         </EmptyDataTemplate>
     </asp:ListView>
     <asp:ObjectDataSource ID="dsMeetings" runat="server" SelectMethod="MeetingsForDate"
-        TypeName="CMSPresenter.MeetingController">
+        TypeName="CMSPresenter.MeetingController" SortParameterName="SortOn" SelectCountMethod="MeetingsCount">
         <SelectParameters>
             <asp:ControlParameter ControlID="MeetingDate" Name="MeetingDate" Type="DateTime" />
             <asp:QueryStringParameter QueryStringField="name" Name="Name" Type="String" />

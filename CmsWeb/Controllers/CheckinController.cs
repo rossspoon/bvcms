@@ -62,6 +62,7 @@ namespace CMSWeb.Controllers
             r.Content = "success";
             return r;
         }
+        [Authorize(Roles="Staff")]
         public ActionResult CheckIn(int? id, int? pid)
         {
             Session["CheckInOrgId"] = id ?? 0;

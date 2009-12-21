@@ -18,7 +18,7 @@ namespace CMSWebSetup.Controllers
             return View(m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [AcceptVerbs(HttpVerbs.Post)] 
         public ActionResult Create(string id)
         {
             var m = new Setting { Id = id };
@@ -77,6 +77,24 @@ namespace CMSWebSetup.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Admin")]
+        public ActionResult OrphanedImages()
+        {
+            var m = from i in DbUtil.Db.ViewOrphanedImages
+                    select i;
+            return View(m);
+        }
+        [Authorize(Roles = "Admin")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult DeleteImage(string id)
+        {
+            var iid = id.Substring(1).ToInt();
+            var img = ImageData.DbUtil.Db.Images.SingleOrDefault(m => m.Id == iid);
+            if (img == null)
+                return Content("#r0");
+            ImageData.DbUtil.Db.Images.DeleteOnSubmit(img);
+            ImageData.DbUtil.Db.SubmitChanges();
+            return Content("#r" + iid);
+        }
     }
 }

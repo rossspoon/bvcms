@@ -96,6 +96,7 @@ namespace TakeUploadPicture
             var formdata = new NameValueCollection();
             formdata.Add("PeopleId", Program.PeopleId.ToString());
             formdata.Add("Guid", Program.Guid.ToString());
+            //MessageBox.Show(Program.Host);
             var url = new Uri(new Uri(Program.Host), "Checkin/UploadImage/");
             var wc = new WebClient();
             wc.Headers.Add(formdata);

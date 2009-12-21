@@ -239,8 +239,6 @@ namespace CmsData
 		
 		private string _Name;
 		
-		private string _PreferredName;
-		
 		private string _Name2;
 		
 		private int? _HashNum;
@@ -248,6 +246,8 @@ namespace CmsData
 		private int? _CampusId;
 		
 		private string _CellPhoneAC;
+		
+		private string _PreferredName;
 		
 		private string _CheckInNotes;
 		
@@ -683,9 +683,6 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
-		partial void OnPreferredNameChanging(string value);
-		partial void OnPreferredNameChanged();
-		
 		partial void OnName2Changing(string value);
 		partial void OnName2Changed();
 		
@@ -697,6 +694,9 @@ namespace CmsData
 		
 		partial void OnCellPhoneACChanging(string value);
 		partial void OnCellPhoneACChanged();
+		
+		partial void OnPreferredNameChanging(string value);
+		partial void OnPreferredNameChanged();
 		
 		partial void OnCheckInNotesChanging(string value);
 		partial void OnCheckInNotesChanged();
@@ -3280,28 +3280,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
-		public string PreferredName
-		{
-			get { return this._PreferredName; }
-
-			set
-			{
-				if (this._PreferredName != value)
-				{
-				
-                    this.OnPreferredNameChanging(value);
-					this.SendPropertyChanging();
-					this._PreferredName = value;
-					this.SendPropertyChanged("PreferredName");
-					this.OnPreferredNameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(57)", IsDbGenerated=true)]
 		public string Name2
 		{
@@ -3386,6 +3364,28 @@ namespace CmsData
 					this._CellPhoneAC = value;
 					this.SendPropertyChanged("CellPhoneAC");
 					this.OnCellPhoneACChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
+		public string PreferredName
+		{
+			get { return this._PreferredName; }
+
+			set
+			{
+				if (this._PreferredName != value)
+				{
+				
+                    this.OnPreferredNameChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredName = value;
+					this.SendPropertyChanged("PreferredName");
+					this.OnPreferredNameChanged();
 				}
 
 			}

@@ -403,7 +403,7 @@ namespace CmsData
                 Task.AddNewPerson(p.PeopleId);
             else
             {
-                var npm = DbUtil.Db.People.SingleOrDefault(np => np.PeopleId == DbUtil.NewPeopleManagerId);
+                var npm = DbUtil.Db.NewPeopleManager;
                 var em = DbUtil.SystemEmailAddress;
                 var name = String.Empty;
                 if (npm != null)

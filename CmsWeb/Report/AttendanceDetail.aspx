@@ -6,6 +6,6 @@
 <head runat="server">
     <title></title>
 </head>
-<body id=bd runat="server">
+<body id="bd" runat="server" style="font-family:Arial">
 </body>
 </html>

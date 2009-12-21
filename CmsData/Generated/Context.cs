@@ -1477,6 +1477,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.OrphanedImage> ViewOrphanedImages
+	    {
+		    get { return this.GetTable< View.OrphanedImage>(); }
+
+	    }
+
 	    public Table< View.PodcastSummary> ViewPodcastSummaries
 	    {
 		    get { return this.GetTable< View.PodcastSummary>(); }
@@ -1913,6 +1919,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="disc.VersePos", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? VersePos(
+            [Parameter(Name = "id", DbType="int")] int? id
+            )
+		{
+			return ((Int32)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                id
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.HeadOfHouseholdId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? HeadOfHouseholdId(
@@ -2045,6 +2063,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="disc.VerseInCategory", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? VerseInCategory(
+            [Parameter(Name = "vid", DbType="int")] int? vid,
+            [Parameter(Name = "catid", DbType="int")] int? catid
+            )
+		{
+			return ((Boolean)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                vid,
+                catid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.BibleFellowshipTeacher", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string BibleFellowshipTeacher(
@@ -2093,18 +2125,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="disc.VersePos", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? VersePos(
-            [Parameter(Name = "id", DbType="int")] int? id
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                id
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.EntryPointId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? EntryPointId(
@@ -2114,20 +2134,6 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="disc.VerseInCategory", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? VerseInCategory(
-            [Parameter(Name = "vid", DbType="int")] int? vid,
-            [Parameter(Name = "catid", DbType="int")] int? catid
-            )
-		{
-			return ((Boolean)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                vid,
-                catid
                 ).ReturnValue));
 		}
 
@@ -2425,6 +2431,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.UEmail", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string UEmail(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((String)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="disc.DayOfYear", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? DayOfYear(
@@ -2448,18 +2466,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 Username,
                 PropertyName
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.UEmail", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string UEmail(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((String)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
                 ).ReturnValue));
 		}
 

@@ -35,6 +35,7 @@ namespace CMSWeb.Report
                         location = m.Organization.Location,
                         Date = m.MeetingDate.Value,
                         Count = m.NumPresent,
+                        Description = m.Description
                     };
             var list = q.ToList();
 

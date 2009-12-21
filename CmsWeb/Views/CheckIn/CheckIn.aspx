@@ -19,7 +19,7 @@
         <tr>
             <td>
                 <img src='<%=Model.person.ImageUrl %>' /><br />
-                <a href='tkup:<%=Model.person.PeopleId %>,<%=Model.guid %>' id="tkup">Take Picture</a>
+                <a href='tkup:<%=Model.person.PeopleId %>,<%=Model.guid %>,<%=Model.host %>' id="tkup">Take Picture</a>
             </td>
             <td>
                 <table cellpadding="3">

@@ -105,16 +105,6 @@
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
                 <tr>
-                    <td><label for="school">School</label></td>
-                    <td><%= Html.TextBox("School") %></td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><label for="graduate">Graduation Year</label></td>
-                    <td><%= Html.TextBox("Graduate") %></td>
-                    <td><%= Html.ValidationMessage("Graduate") %></td>
-                </tr>
-                <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Register" /></td>
                 </tr>
                 </table>

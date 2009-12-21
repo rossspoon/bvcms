@@ -247,7 +247,7 @@ namespace CmsCheckin
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
 
-            if (c.OrgId > 0 && !c.Clicked && ab.Text == String.Empty)
+            if (ab.Enabled == true && !c.Clicked && ab.Text == String.Empty)
             {
                 ab_Click(ab, e);
                 return;
@@ -275,12 +275,14 @@ namespace CmsCheckin
             {
                 ab.Text = "ü";
                 eb.Text = c.NumLabels.ToString();
+                Refresh();
                 RecordAttend(c, true);
             }
             else
             {
                 ab.Text = String.Empty;
                 eb.Text = String.Empty;
+                Refresh();
                 RecordAttend(c, false);
             }
         }
@@ -313,24 +315,33 @@ namespace CmsCheckin
         {
             if (c.OrgId == 0)
                 return;
-            this.Cursor = Cursors.WaitCursor;
-            var wc = new WebClient();
-            var coll = new NameValueCollection();
-            coll.Add("PeopleId", c.PeopleId.ToString());
-            coll.Add("OrgId", c.OrgId.ToString());
-            coll.Add("Present", present.ToString());
-            coll.Add("thisday", Program.ThisDay.ToString());
-            var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/RecordAttend/");
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                var wc = new WebClient();
+                var coll = new NameValueCollection();
+                coll.Add("PeopleId", c.PeopleId.ToString());
+                coll.Add("OrgId", c.OrgId.ToString());
+                coll.Add("Present", present.ToString());
+                coll.Add("thisday", Program.ThisDay.ToString());
+                var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/RecordAttend/");
 
-            this.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
-            var resp = wc.UploadValues(url, "POST", coll);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            this.Cursor = Cursors.Default;
+                this.Cursor = Cursors.WaitCursor;
+                Cursor.Show();
+                var resp = wc.UploadValues(url, "POST", coll);
 
-            var s = Encoding.ASCII.GetString(resp);
-            this.Cursor = Cursors.Default;
+                var s = Encoding.ASCII.GetString(resp);
+            }
+            catch (Exception)
+            {
+                GoBack(this, null);
+            }
+            finally
+            {
+                if (Program.HideCursor)
+                    Cursor.Hide();
+                this.Cursor = Cursors.Default;
+            }
         }
 
 

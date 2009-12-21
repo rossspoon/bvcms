@@ -57,7 +57,12 @@ namespace CMSPresenter
             q2 = q2.Skip(startRowIndex).Take(maximumRows);
             return q2;
         }
-        public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId, int CampusId)
+        private int meetingsfordatecount;
+        public int MeetingsForDateCount(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId, int CampusId, string SortOn)
+        {
+            return meetingsfordatecount;
+        }
+        public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId, int CampusId, string SortOn)
         {
             var name = HttpContext.Current.Server.UrlDecode(Name);
             var q = DbUtil.Db.Organizations.Select(o => o);
@@ -81,6 +86,41 @@ namespace CMSPresenter
                          Leader = o.LeaderName,
                          Description = m.Description
                      };
+            meetingsfordatecount = q2.Count();
+            switch (SortOn)
+            { 
+                case "Attended":
+                    q2 = q2.OrderBy(m => m.Attended);
+                    break;
+                case "Leader":
+                    q2 = q2.OrderBy(m => m.Leader);
+                    break;
+                case "Time":
+                    q2 = q2.OrderBy(m => m.Time);
+                    break;
+                case "Division":
+                    q2 = q2.OrderBy(m => m.Division);
+                    break;
+                case "Organization":
+                    q2 = q2.OrderBy(m => m.Organization);
+                    break;
+                case "Attended DESC":
+                    q2 = q2.OrderByDescending(m => m.Attended);
+                    break;
+                case "Leader DESC":
+                    q2 = q2.OrderByDescending(m => m.Leader);
+                    break;
+                case "Time DESC":
+                    q2 = q2.OrderByDescending(m => m.Time);
+                    break;
+                case "Division DESC":
+                    q2 = q2.OrderByDescending(m => m.Division);
+                    break;
+                case "Organization DESC":
+                    q2 = q2.OrderByDescending(m => m.Organization);
+                    break;
+            }
+
             return q2;
         }
         public IEnumerable<MeetingInfo> Meeting(int mtgid)

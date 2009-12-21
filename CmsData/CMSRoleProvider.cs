@@ -23,11 +23,9 @@ namespace CmsData
         {
             get { return Roles.Provider as CMSRoleProvider; }
         }
-        private CMSDataContext Db;
         public override string ApplicationName { get { return "cms"; } set { } }
         public override void Initialize(string name, NameValueCollection config)
         {
-            Db = new CMSDataContext(Util.ConnectionString);
             if (config == null)
                 throw new ArgumentNullException("config");
 
@@ -43,31 +41,31 @@ namespace CmsData
 
         public override void AddUsersToRoles(string[] usernames, string[] rolenames)
         {
-            var qu = Db.Users.Where(u => usernames.Contains(u.Username));
-            var qr = Db.Roles.Where(r => rolenames.Contains(r.RoleName));
+            var qu = DbUtil.Db.Users.Where(u => usernames.Contains(u.Username));
+            var qr = DbUtil.Db.Roles.Where(r => rolenames.Contains(r.RoleName));
             foreach (var user in qu)
                 foreach (var role in qr)
                     user.UserRoles.Add(new UserRole { Role = role });
-            Db.SubmitChanges();
+            DbUtil.Db.SubmitChanges();
         }
         public override void CreateRole(string rolename)
         {
-            Db.Roles.InsertOnSubmit(new Role { RoleName = rolename });
-            Db.SubmitChanges();
+            DbUtil.Db.Roles.InsertOnSubmit(new Role { RoleName = rolename });
+            DbUtil.Db.SubmitChanges();
         }
 
         public override bool DeleteRole(string rolename, bool throwOnPopulatedRole)
         {
-            var role = Db.Roles.Single(r => r.RoleName == rolename);
-            Db.UserRoles.DeleteAllOnSubmit(role.UserRoles);
-            Db.Roles.DeleteOnSubmit(role);
-            Db.SubmitChanges();
+            var role = DbUtil.Db.Roles.Single(r => r.RoleName == rolename);
+            DbUtil.Db.UserRoles.DeleteAllOnSubmit(role.UserRoles);
+            DbUtil.Db.Roles.DeleteOnSubmit(role);
+            DbUtil.Db.SubmitChanges();
             return true;
         }
 
         public override string[] GetAllRoles()
         {
-            return Db.Roles.Select(r => r.RoleName).ToArray();
+            return DbUtil.Db.Roles.Select(r => r.RoleName).ToArray();
         }
 
         public override string[] GetRolesForUser(string username)
@@ -89,7 +87,7 @@ namespace CmsData
 
         public override string[] GetUsersInRole(string rolename)
         {
-            var q = from u in Db.Users
+            var q = from u in DbUtil.Db.Users
                     where u.UserRoles.Any(ur => ur.Role.RoleName == rolename)
                     select u.Username;
             return q.ToArray();
@@ -97,7 +95,7 @@ namespace CmsData
 
         public IEnumerable<User> GetRoleUsers(string rolename)
         {
-            var q = from u in Db.Users
+            var q = from u in DbUtil.Db.Users
                     where u.UserRoles.Any(ur => ur.Role.RoleName == rolename)
                     select u;
             return q;
@@ -106,7 +104,7 @@ namespace CmsData
         public override bool IsUserInRole(string username, string rolename)
         {
             username = Util.GetUserName(username);
-            var q = from ur in Db.UserRoles
+            var q = from ur in DbUtil.Db.UserRoles
                     where rolename == ur.Role.RoleName
                     where username == ur.User.Username
                     select ur;
@@ -115,21 +113,21 @@ namespace CmsData
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] rolenames)
         {
-            var q = from ur in Db.UserRoles
+            var q = from ur in DbUtil.Db.UserRoles
                     where rolenames.Contains(ur.Role.RoleName) && usernames.Contains(ur.User.Username)
                     select ur;
-            Db.UserRoles.DeleteAllOnSubmit(q);
-            Db.SubmitChanges();
+            DbUtil.Db.UserRoles.DeleteAllOnSubmit(q);
+            DbUtil.Db.SubmitChanges();
         }
 
         public override bool RoleExists(string rolename)
         {
-            return Db.Roles.Count(r => r.RoleName == rolename) > 0;
+            return DbUtil.Db.Roles.Count(r => r.RoleName == rolename) > 0;
         }
 
         public override string[] FindUsersInRole(string rolename, string usernameToMatch)
         {
-            var q = from u in Db.Users
+            var q = from u in DbUtil.Db.Users
                     where u.UserRoles.Any(ur => ur.Role.RoleName == rolename)
                     select u;
             bool left = usernameToMatch.StartsWith("%");

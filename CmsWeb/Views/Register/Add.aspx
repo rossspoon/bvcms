@@ -25,6 +25,11 @@
                     <td><%= Html.ValidationMessage("phone")%></td>
                 </tr>
                 <tr>
+                    <td><label for="dob">Date of Birth (optional)</label></td>
+                    <td><%= Html.TextBox("dob") %> <span id="age"></span></td>
+                    <td>(m/d/yy or mmddyy)<%= Html.ValidationMessage("dob") %></td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Find Family" /></td>
                 </tr>
                 </table>

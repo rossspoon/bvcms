@@ -41,8 +41,6 @@ namespace CMSWeb.Models
         public string cellphone { get; set; }
         public string email { get; set; }
         public int? married { get; set; }
-        public string School { get; set; }
-        public string Graduate { get; set; }
         public int? campusid { get; set; }
         public int? org { get; set; }
         private bool? _Existingfamily;
@@ -173,12 +171,18 @@ namespace CMSWeb.Models
                     select f.HeadOfHousehold;
             var count = q.Count();
             _headofhousehold = null;
-            if (count >= 1)
+            if (count == 0)
             {
-                _headofhousehold = q.First();
-                return 1;
+                q = from f in DbUtil.Db.Families
+                        where f.HeadOfHousehold.LastName == last
+                        where f.HeadOfHousehold.BirthDay == birthday.Day 
+                            && f.HeadOfHousehold.BirthMonth == birthday.Month 
+                            && f.HeadOfHousehold.BirthYear == birthday.Year
+                        select f.HeadOfHousehold;
             }
-            return 0;
+            if (count == 1)
+                _headofhousehold = q.First();
+            return count;
         }
 
         public void ValidateModel1(ModelStateDictionary modelState)
@@ -254,10 +258,11 @@ namespace CMSWeb.Models
         public void SavePerson(int FamilyId)
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
-            var organization = DbUtil.Db.Organizations.Single(o => o.OrganizationId == org);
+            var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
-                DbUtil.Settings("RegOrigin", "10").ToInt(), organization.EntryPointId);
+                DbUtil.Settings("RegOrigin", "10").ToInt(),
+                organization == null ? null : organization.EntryPointId);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
@@ -268,11 +273,7 @@ namespace CMSWeb.Models
             p.MaritalStatusId = married.Value;
             p.FixTitle();
             p.CellPhone = cellphone.GetDigits();
-            email = email.Trim();
-            if (email.HasValue())
-                p.EmailAddress = email;
-            else
-                p.EmailAddress = (string)HttpContext.Current.Session["email"];
+            p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             if (org.HasValue)

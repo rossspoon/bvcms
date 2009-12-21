@@ -19,14 +19,17 @@
     }
 
     function OpenRollsheet() {
-        $get('<%=TriggerRollsheetPopup.ClientID%>').click();
+        var modalPopupBehavior = $find('RollsheetPopupBehavior');
+        modalPopupBehavior.show();
         $get('<%=RollsheetInputPanel.ClientID%>').focus();
     }
 
     $(function() {
         $('#PopupAttDetail').click(function() {
-            $get('<%=TriggerAttDetailPopup.ClientID%>').click();
+            var modalPopupBehavior = $find('AttDetailPopupBehavior');
+            modalPopupBehavior.show();
             $get('<%=AttDetailInputPanel.ClientID%>').focus();
+            return false;
         });
     });
     function OpenAttDetail() {

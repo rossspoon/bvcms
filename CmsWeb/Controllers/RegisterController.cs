@@ -51,7 +51,6 @@ namespace CMSWeb.Controllers
             {
                 m.SaveFirstPerson();
 
-                Session["name"] = m.person.Name;
                 EmailRegister(m);
                 return RedirectToAction("Confirm", new { familyid = m.person.FamilyId });
             }
@@ -61,7 +60,7 @@ namespace CMSWeb.Controllers
         {
             if (Session["auth"] == null || (string)Session["auth"] != "true")
                 return RedirectToAction("Login");
-            var m = new Models.RegisterModel();
+            var m = new Models.RegisterModel { familyid = familyid };
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 m.last = m.HeadOfHousehold.LastName;
@@ -144,10 +143,9 @@ namespace CMSWeb.Controllers
             m.ValidateModel3(ModelState);
             if (!ModelState.IsValid)
                 return View(m);
-            if (m.FindFamily() == 1)
+            int count = m.FindFamily();
+            if (count == 1)
             {
-                Session["name"] = m.HeadOfHousehold.Name;
-                Session["email"] = m.HeadOfHousehold.EmailAddress;
                 return RedirectToAction("Visit2",
                     new
                     {
@@ -156,7 +154,10 @@ namespace CMSWeb.Controllers
                         thisday = thisday
                     });
             }
-            ModelState.AddModelError("last", "Family not found");
+            if (count == 0)
+                ModelState.AddModelError("last", "Family not found");
+            else
+                ModelState.AddModelError("last", "More than one family found");
             return View(m);
         }
         public ActionResult Visit2(int familyid, int? id, int? thisday)
@@ -205,22 +206,16 @@ namespace CMSWeb.Controllers
             var m = new Models.RegisterModel { campusid = id, thisday = thisday, familyid = familyid };
             return View(m);
         }
-        public ActionResult Login(string name, string password, string email, int? campus)
+        public ActionResult Login(string password, int? campus)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View();
 
-            if (!name.HasValue())
-                ModelState.AddModelError("name", "required");
             if (!password.HasValue())
                 ModelState.AddModelError("password", "required");
-            if (!Util.ValidEmail(email))
-                ModelState.AddModelError("email", "valid registration email required");
             if (ModelState.IsValid)
                 if (password == DbUtil.Settings("RegPassword", "fgsltw"))
                 {
-                    Session["name"] = name;
-                    Session["email"] = email;
                     Session["auth"] = "true";
                     return RedirectToAction("Index");
                 }

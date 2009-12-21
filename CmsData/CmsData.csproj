@@ -123,6 +123,7 @@
     <Compile Include="Generated\VerseCategory.cs" />
     <Compile Include="Generated\VerseCategoryXref.cs" />
     <Compile Include="Generated\Views\BlogCategoriesView.cs" />
+    <Compile Include="Generated\Views\OrphanedImage.cs" />
     <Compile Include="Generated\Views\PodcastSummary.cs" />
     <Compile Include="Generated\Views\UserList.cs" />
     <Compile Include="Generated\Views\VerseCategoriesView.cs" />

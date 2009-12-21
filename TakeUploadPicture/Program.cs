@@ -30,7 +30,7 @@ namespace TakeUploadPicture
                 if (a.Length > 2)
                     Host = a[2];
                 else
-                    Host = "http://localhost:58724/";
+                    Host = "http://cms.bellevue.org/";
                 Application.Run(new StandAloneForm());
             }
         }
