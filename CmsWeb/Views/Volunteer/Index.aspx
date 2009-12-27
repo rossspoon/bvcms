@@ -5,7 +5,6 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%=Model.Opportunity.Description %></h2>
 
     <%= Html.ValidationMessage("find") %>
     <% using (Html.BeginForm()) { %>

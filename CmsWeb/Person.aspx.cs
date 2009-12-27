@@ -220,7 +220,23 @@ namespace CMSWeb
         protected void HiddenButton4_Click(object sender, EventArgs e)
         {
             DbUtil.LogActivity("Viewing attendance for: {0}".Fmt(person.Name));
+            AttendGrid.Sort("MeetingDate", SortDirection.Descending);
+            AttendData.SelectParameters["future"].DefaultValue = "false";
             AttendGrid.Visible = true;
+        }
+        protected void ShowAttends(object sender, EventArgs e)
+        {
+            if (future.Checked)
+            {
+                AttendGrid.Sort("MeetingDate", SortDirection.Ascending);
+                AttendData.SelectParameters["future"].DefaultValue = "true";
+            }
+            else
+            {
+                AttendGrid.Sort("MeetingDate", SortDirection.Descending);
+                AttendData.SelectParameters["future"].DefaultValue = "false";
+            }
+            UpdatePanel4.Update();
         }
 
         protected void AddContact_Click(object sender, EventArgs e)

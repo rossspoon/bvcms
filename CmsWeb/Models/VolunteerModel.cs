@@ -9,39 +9,28 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 using CMSWebCommon.Models;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Models
 {
     public class VolunteerModel
     {
-        private int _OpportunityId;
-        public int OpportunityId
+        private string _view;
+        public string View
         {
-            get { return _OpportunityId; }
+            get
+            {
+                return _view;
+            }
             set
             {
-                _OpportunityId = value;
-                Opportunity = DbUtil.Db.VolOpportunities.Single(o => o.Id == value);
+                _view = value;
+                formcontent = DbUtil.Content("Volunteer-" + View + ".view").Body;
             }
         }
-        internal VolInterest VolInterest;
-        public int VolInterestId
-        {
-            get { return VolInterest.Id; }
-            set
-            {
-                VolInterest = DbUtil.Db.VolInterests.SingleOrDefault(vi => vi.Id == value);
-                interests = VolInterest.VolInterestInterestCodes.Select(vi =>
-                               vi.VolInterestCode.Id.ToString()).ToArray();
-                OpportunityId = VolInterest.VolOpportunity.Id;
-                person = VolInterest.Person;
-                question = VolInterest.Question;
-            }
-        }
-        public VolOpportunity Opportunity;
-        public string first {get; set;}
-        public string last {get; set;}
-        public string dob {get; set;}
+        public string first { get; set; }
+        public string last { get; set; }
+        public string dob { get; set; }
         private DateTime _Birthday;
         private DateTime birthday
         {
@@ -52,13 +41,23 @@ namespace CMSWeb.Models
                 return _Birthday;
             }
         }
-        public string formcontent
+        public string formcontent { get; set; }
+        public string FormInitialize()
         {
-            get { return DbUtil.Content(Opportunity.FormContent).Body; }
+            var q = from vi in person.FetchVolInterestInterestCodes(View)
+                    select vi.VolInterestCode;
+            var sb = new StringBuilder();
+            sb.AppendLine("<script type='text/javascript'>");
+            sb.AppendLine("$(document).ready(function() {");
+            foreach (var vi in q)
+                sb.AppendFormat("$(\"input[name={0}{1}]\").attr('checked', true);\n", vi.Org, vi.Code);
+            sb.AppendLine("});");
+            sb.AppendLine("</script>");
+            return sb.ToString();
         }
 
         public string zip { get; set; }
-        public string phone {get; set;}
+        public string phone { get; set; }
         public string email { get; set; }
         public Person person { get; set; }
         public string[] interests { get; set; }
@@ -85,25 +84,21 @@ namespace CMSWeb.Models
 
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");
-            if (!email.HasValue() || !Util.ValidEmail(email))
-                modelState.AddModelError("email", "Please specify a valid email address.");
         }
         public void ValidateModel2(ModelStateDictionary ModelState)
         {
             if (interests == null)
                 ModelState.AddModelError("interests", "Must check at least one interest");
-            else if (Opportunity.MaxChecks.HasValue && interests.Length > Opportunity.MaxChecks)
-                ModelState.AddModelError("interests", "Please check a maximum of {0} interests".Fmt(Opportunity.MaxChecks));
         }
         public string PrepareSummaryText()
         {
-            var q = from vi in VolInterest.VolInterestInterestCodes
-                    select vi.VolInterestCode.Description;
+            var q = from vi in person.VolList
+                    orderby vi.Value.sortdesc
+                    select vi.Key;
             var sb = new StringBuilder();
             foreach (var i in q)
                 sb.AppendFormat("{0}<br/>\n", i);
             return sb.ToString();
-
         }
     }
 }

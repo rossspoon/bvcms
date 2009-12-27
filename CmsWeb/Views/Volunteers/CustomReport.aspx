@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteersModel>" %>
+<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage" %>
 <html>
 <head>
 <script src="/Content/js/jquery-1.3.2.min.js" type="text/javascript"></script>
@@ -6,10 +6,6 @@
 </script>
 </head>
 <body>
+    <%=ViewData["content"] %>
 </body>
 </html>
-    <h2>Custom Report for <%=Model.Opportunity.Description %></h2>
-    <div>
-    <%=Model.reportcontent %>
-<%=Html.Hidden("opportunityid", Model.OpportunityId) %>
-    </div>

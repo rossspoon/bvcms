@@ -56,6 +56,7 @@ namespace CmsData
         HasPicture,
 		HasContacts,
         HasRelatedFamily,
+        HasVolunteered,
         HaveVolunteerApplications,
         HomePhone,
         InBFClass,
@@ -128,6 +129,7 @@ namespace CmsData
         VolunteerProcessedDateMonthsAgo,
         WasMemberAsOf,
         WeddingDate,
+        WidowedDate,
         WorkPhone,
     }
 }

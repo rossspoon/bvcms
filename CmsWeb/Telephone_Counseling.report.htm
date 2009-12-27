@@ -1,0 +1,463 @@
+﻿<script type="text/javascript">
+        $(document).ready(function() {
+                $.post("/Volunteers/Codes/Telephone_Counseling", {}, function(ret) {
+                    var a = {};
+                    $.each(ret, function(i, val) {
+                        $('.' + val.Key).each(function(e, ele) {
+                            var c = $(ele).attr("class");
+                            if (!a[c]) {
+                                a[c] = {};
+                                a[c].count = 0;
+                                a[c].people = '';
+                            }
+                            if (!a[c][val.PeopleId]) {
+                                a[c][val.PeopleId] = true;
+                                a[c].count++;
+                                var pid = val.PeopleId.substring(1);
+                                a[c].people += '<br/><a href="/Person.aspx?id=' + pid + '">'
+									+ val.Name + '</a>';
+                            }
+                        });
+                    });
+                    $.each(a, function(c, val) {
+                        var n = parseInt($("[class='" + c + "']").text());
+                        if (isNaN(n)) n = 0;
+                        $("[class='" + c + "']").text(n + val.count);
+                        $("[class='" + c + "']").append(val.people);
+                    });
+                }, "json");
+        });
+    </script>
+<table border="1" cellpadding="5" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+				Week</td>
+			<td>
+				8:00-9:00</td>
+			<td>
+				9:00-10:00</td>
+		</tr>
+		<tr>
+			<td>
+				3-Jan-10</td>
+			<td align="right">
+				<span class="Jan_800">&nbsp;</span></td>
+			<td align="right">
+				<span class="Jan_900">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				10-Jan-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				17-Jan-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				24-Jan-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				31-Jan-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_800 Telephone_Counseling_Week5">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jan_900 Telephone_Counseling_Week5">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				7-Feb-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				14-Feb-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				21-Feb-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				28-Feb-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Feb_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				7-Mar-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				14-Mar-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				21-Mar-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				28-Mar-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Mar_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				4-Apr-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				11-Apr-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				18-Apr-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				25-Apr-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Apr_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				2-May-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				9-May-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				16-May-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				23-May-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				30-May-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_800 Telephone_Counseling_Week5">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_May_900 Telephone_Counseling_Week5">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				6-Jun-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				13-Jun-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				20-Jun-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				27-Jun-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jun_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				4-Jul-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				11-Jul-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				18-Jul-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				25-Jul-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Jul_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				1-Aug-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				8-Aug-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				15-Aug-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				22-Aug-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				29-Aug-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_800 Telephone_Counseling_Week5">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Aug_900 Telephone_Counseling_Week5">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				5-Sep-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				12-Sep-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				19-Sep-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				26-Sep-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Sep_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				3-Oct-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				10-Oct-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				17-Oct-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				24-Oct-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				31-Oct-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_800 Telephone_Counseling_Week5">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Oct_900 Telephone_Counseling_Week5">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				7-Nov-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				14-Nov-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				21-Nov-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				28-Nov-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Nov_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				5-Dec-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_800 Telephone_Counseling_Week1">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_900 Telephone_Counseling_Week1">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				12-Dec-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_800 Telephone_Counseling_Week2">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_900 Telephone_Counseling_Week2">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				19-Dec-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_800 Telephone_Counseling_Week3">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_900 Telephone_Counseling_Week3">&nbsp;</span></td>
+		</tr>
+		<tr>
+			<td>
+				26-Dec-10</td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_800 Telephone_Counseling_Week4">&nbsp;</span></td>
+			<td align="right">
+				<span class="Telephone_Counseling_Dec_900 Telephone_Counseling_Week4">&nbsp;</span></td>
+		</tr>
+	</tbody>
+	<colgroup>
+		<col style="text-align: right; vertical-align: text-top" />
+		<col />
+		<col />
+	</colgroup>
+</table>

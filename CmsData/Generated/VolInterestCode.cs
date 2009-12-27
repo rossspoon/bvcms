@@ -19,7 +19,9 @@ namespace CmsData
 		
 		private int _Id;
 		
-		private int? _OpportunityId;
+		private string _Code;
+		
+		private string _Org;
 		
 		private string _Description;
 		
@@ -27,8 +29,6 @@ namespace CmsData
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
     	
-		private EntityRef< VolOpportunity> _VolOpportunity;
-		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -39,8 +39,11 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
-		partial void OnOpportunityIdChanging(int? value);
-		partial void OnOpportunityIdChanged();
+		partial void OnCodeChanging(string value);
+		partial void OnCodeChanged();
+		
+		partial void OnOrgChanging(string value);
+		partial void OnOrgChanged();
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
@@ -51,8 +54,6 @@ namespace CmsData
 			
 			this._VolInterestInterestCodes = new EntitySet< VolInterestInterestCode>(new Action< VolInterestInterestCode>(this.attach_VolInterestInterestCodes), new Action< VolInterestInterestCode>(this.detach_VolInterestInterestCodes)); 
 			
-			
-			this._VolOpportunity = default(EntityRef< VolOpportunity>); 
 			
 			OnCreated();
 		}
@@ -82,24 +83,43 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OpportunityId", UpdateCheck=UpdateCheck.Never, Storage="_OpportunityId", DbType="int")]
-		public int? OpportunityId
+		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="varchar(50)")]
+		public string Code
 		{
-			get { return this._OpportunityId; }
+			get { return this._Code; }
 
 			set
 			{
-				if (this._OpportunityId != value)
+				if (this._Code != value)
 				{
 				
-					if (this._VolOpportunity.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnOpportunityIdChanging(value);
+                    this.OnCodeChanging(value);
 					this.SendPropertyChanging();
-					this._OpportunityId = value;
-					this.SendPropertyChanged("OpportunityId");
-					this.OnOpportunityIdChanged();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Org", UpdateCheck=UpdateCheck.Never, Storage="_Org", DbType="varchar(20)")]
+		public string Org
+		{
+			get { return this._Org; }
+
+			set
+			{
+				if (this._Org != value)
+				{
+				
+                    this.OnOrgChanging(value);
+					this.SendPropertyChanging();
+					this._Org = value;
+					this.SendPropertyChanged("Org");
+					this.OnOrgChanged();
 				}
 
 			}
@@ -147,48 +167,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_VolInterestCodes_VolOpportunity", Storage="_VolOpportunity", ThisKey="OpportunityId", IsForeignKey=true)]
-		public VolOpportunity VolOpportunity
-		{
-			get { return this._VolOpportunity.Entity; }
-
-			set
-			{
-				VolOpportunity previousValue = this._VolOpportunity.Entity;
-				if (((previousValue != value) 
-							|| (this._VolOpportunity.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._VolOpportunity.Entity = null;
-						previousValue.VolInterestCodes.Remove(this);
-					}
-
-					this._VolOpportunity.Entity = value;
-					if (value != null)
-					{
-						value.VolInterestCodes.Add(this);
-						
-						this._OpportunityId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._OpportunityId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("VolOpportunity");
-				}
-
-			}
-
-		}
-
-		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

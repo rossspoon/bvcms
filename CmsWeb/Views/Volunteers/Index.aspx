@@ -10,8 +10,12 @@
     <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
-            $('#OpportunityId').change(RefreshList);
-            $('#InterestId').change(RefreshList);
+            $('#Org').change(RefreshList);
+            $('#View').change(RefreshList);
+            $('#query').click(function() {
+                var q = $('#form').formSerialize2();
+                $.navigate("/Volunteers/Query/" + $('#QueryId').val(), q);
+            });
             $('#Volunteers > thead a.sortable').click(function(ev) {
                 var newsort = $(this).text();
                 var oldsort = $("#Sort").val();
@@ -22,12 +26,6 @@
                 else
                     $("#Dir").val('asc');
                 RefreshList();
-            });
-            $("a.delete").click(function(ev) {
-                if (confirm("are you sure?"))
-                    $.post("/Volunteers/Delete/" + $(this).attr("id"), null, function(ret) {
-                        window.location = "/Volunteers/";
-                    });
             });
         });
         (function($) {
@@ -58,33 +56,34 @@
         })(jQuery);
         function RefreshList() {
             var q = $('#form').formSerialize2();
-            $.navigate("/Volunteers/Index", q);
+            $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }
         function GotoPage(pg) {
             var q = $('#form').formSerialize2();
             q = q.appendQuery("Page=" + pg);
-            $.navigate("/Volunteers/Index", q);
+            $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }
         function SetPageSize(sz) {
             var q = $('#form').formSerialize2();
             q = q.appendQuery("PageSize=" + sz);
-            $.navigate("/Volunteers/Index", q);
+            $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }
     </script>
+    <%=Html.Hidden("QueryId", Model.QueryId) %>
     <form id="form" method="get" action="/Volunteers/Index">
     <div class="modalPopup">
-       Opportunities: <%=Html.DropDownList("OpportunityId", Model.Opportunities())%>
-       Interests: <%=Html.DropDownList("InterestId", Model.Interests())%>
+       Interests: <%=Html.DropDownList("Org", Model.Interests())%>
+       Views: <%=Html.DropDownList("View", CMSWeb.Models.VolunteersModel.Views())%>
+       <a id="query" href="#">QueryBuilder</a>
     </div>
     <%=Html.Hidden("Sort", Model.Sort) %>
     <%=Html.Hidden("Dir", Model.Dir) %>
     <table id="Volunteers">
         <thead>
         <tr>
-            <th><a href="#" class="sortable">Date</a></th>
+            <th></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th>Interests</th>
-            <th>Question</th>
             <th><a href="#" class="sortable">Application</a></th>
             <th></th>
         </tr>
@@ -93,17 +92,13 @@
         <% foreach (var v in Model.FetchVolunteers())
            { %>
         <tr>
-            <td nowrap="nowrap"><a href="/Volunteer/PickList/<%=v.Id %>"><%="{0:MM-dd-yy HH:mm}".Fmt(v.Created)%></a></td>
+            <td nowrap="nowrap"><a href="/Volunteer/PickList2/<%=Model.View %>?pid=<%=v.PeopleId %>">volunteer page</a></td>
             <td nowrap="nowrap">
                 <a href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
             </td>
             <td><%=v.Interests%></td>
-            <td><%=v.Answer%></td>
             <td>
             <%=v.Application %>
-            </td>
-            <td>
-                <a id='d<%= v.Id %>' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
             </td>
         </tr>
         <% } %>

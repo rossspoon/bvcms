@@ -163,6 +163,21 @@ namespace CMSWeb
         {
             MeetingGrid1.Visible = true;
             MeetingGrid1.DefaultSort();
+            MeetingData.SelectParameters["Future"].DefaultValue = "false";
+            MeetingsPanel.Update();
+        }
+        protected void ShowFuture_Click(object sender, EventArgs e)
+        {
+            if (Future.Checked)
+            {
+                MeetingGrid1.DefaultSort2();
+                MeetingData.SelectParameters["Future"].DefaultValue = "true";
+            }
+            else
+            {
+                MeetingGrid1.DefaultSort();
+                MeetingData.SelectParameters["Future"].DefaultValue = "false";
+            }
             MeetingsPanel.Update();
         }
 

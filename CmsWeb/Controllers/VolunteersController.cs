@@ -26,42 +26,61 @@ namespace CMSWeb.Controllers
         }
         public ActionResult Index(int? id)
         {
-            var vols = new VolunteersModel();
+            var vols = new VolunteersModel { QueryId = id };
             UpdateModel(vols);
+            if (!vols.View.HasValue())
+                vols.View = "ns";
             DbUtil.LogActivity("Volunteers");
             return View(vols);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id)
+        public JsonResult Codes(string id)
         {
-            if (User.IsInRole("edit"))
-            {
-                var iid = id.Substring(1).ToInt();
-                var v = DbUtil.Db.VolInterests.SingleOrDefault(vi => vi.Id == iid);
-                if (v == null)
-                    return new EmptyResult();
-                DbUtil.Db.VolInterestInterestCodes.DeleteAllOnSubmit(v.VolInterestInterestCodes);
-                DbUtil.Db.VolInterests.DeleteOnSubmit(v);
-                DbUtil.Db.SubmitChanges();
-            }
-            return new EmptyResult();
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult Codes(int? id)
-        {
-            var vols = new VolunteersModel();
-            if (id.HasValue)
-                UpdateModel(vols);
             var q = from p in DbUtil.Db.VolInterestInterestCodes
-                    where p.VolInterest.OpportunityCode == vols.OpportunityId
-                    select new { Key = p.VolInterestCode.Description.Replace(' ', '_').Replace('-','_'), PeopleId = "p" + p.VolInterest.PeopleId };
+                    where p.VolInterestCode.Org == id
+                    select new
+                    {
+                        Key = p.VolInterestCode.Org + p.VolInterestCode.Code,
+                        PeopleId = "p" + p.PeopleId,
+                        Name = p.Person.Name
+                    };
             return Json(q);
         }
-        public ActionResult CustomReport(int id)
+        public ActionResult CustomReport(string id)
         {
-            var m = new VolunteersModel();
-            m.OpportunityId = id;
-            return View(m);
+            ViewData["content"] = DbUtil.Content("Volunteer-{0}.report".Fmt(id)).Body;
+            return View();
+        }
+        public ActionResult Query(int id)
+        {
+            var vols = new VolunteersModel { QueryId = id };
+            UpdateModel(vols);
+            var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.QueryId == id).Clone();
+            var comp = CompareType.Equal;
+            if (vols.Org == "na")
+                comp = CompareType.NotEqual;
+            var clause = qb.AddNewClause(QueryType.HasVolunteered, comp, "1,T");
+            clause.Quarters = vols.View;
+            DbUtil.Db.QueryBuilderClauses.InsertOnSubmit(qb);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
+        public ActionResult UpdateAll(int id, string view)
+        {
+            var orgkeys = Person.OrgKeys(view);
+            var Qb = DbUtil.Db.LoadQueryById(id);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            q = from p in q
+                where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) > 0
+                select p;
+            foreach (var person in q)
+            {
+                var m = new Models.VolunteerModel { View = view, person = person };
+                m.person.BuildVolInfoList(view); // gets existing
+                m.person.BuildVolInfoList(view); // 2nd time updates existing
+                m.person.RefreshCommitments(view);
+            }
+            return Content("done");
         }
     }
 }

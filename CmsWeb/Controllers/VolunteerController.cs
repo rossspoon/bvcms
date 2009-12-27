@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
@@ -10,6 +11,7 @@ using CMSWeb.Models;
 using UtilityExtensions;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Controllers
 {
@@ -17,21 +19,18 @@ namespace CMSWeb.Controllers
     {
         public ActionResult Start(string id)
         {
-            var vol = DbUtil.Db.VolOpportunities.SingleOrDefault(v => v.UrlKey == id);
-            if (vol == null)
-                return View("Unknown");
-            return RedirectToAction("Index", new { id = vol.Id });
+            return RedirectToAction("Index", new { id = id });
         }
-        private void SetHeader(Models.VolunteerModel m)
+        private void SetHeader(string view)
         {
-            ViewData["head"] = HeaderHtml("Volunteer-" + m.Opportunity.UrlKey,
+            ViewData["head"] = HeaderHtml("Volunteer-" + view,
                             DbUtil.Settings("VolHeader", "change VolHeader setting"),
                             DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
         }
-        public ActionResult Index(int id)
+        public ActionResult Index(string id)
         {
-            var m = new Models.VolunteerModel { OpportunityId = id };
-            SetHeader(m);            
+            var m = new Models.VolunteerModel { View = id };
+            SetHeader(id);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -47,141 +46,60 @@ namespace CMSWeb.Controllers
             }
             if (!ModelState.IsValid)
                 return View(m);
-            var v = DbUtil.Db.VolInterests.SingleOrDefault(vi =>
-                vi.PeopleId == m.person.PeopleId && vi.OpportunityCode == m.OpportunityId);
-            if (v == null)
-            {
-                v = new VolInterest
-                {
-                    Created = Util.Now,
-                    PeopleId = m.person.PeopleId,
-                };
-                //m.person.EmailAddress = m.email;
-                m.Opportunity.VolInterests.Add(v);
-                DbUtil.Db.VolInterests.InsertOnSubmit(v);
-                DbUtil.Db.SubmitChanges();
-            }
-            if (m.Opportunity.FormContent.HasValue())
-                return RedirectToAction("PickList2", new { id = v.Id });
-            return RedirectToAction("PickList", new { id = v.Id });
+            return RedirectToAction("PickList2", new { id = id, pid = m.person.PeopleId });
         }
 
-        public ActionResult PickList(int id)
+        public ActionResult PickList2(string id, int pid)
         {
-            var m = new Models.VolunteerModel { VolInterestId = id };
-            SetHeader(m);
+            var person = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == pid);
+            var m = new Models.VolunteerModel { View = id, person = person };
+            SetHeader(id);
+            m.person.BuildVolInfoList(id); // gets existing
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
-            UpdateModel(m);
-            m.ValidateModel2(ModelState);
-            if (!ModelState.IsValid)
-                return View(m);
+            m.person.ReplaceInterestCodes(
+                Request.Form.Keys.Cast<string>().Where(k => Request.Form[k] == "on"), id);
+            m.person.BuildVolInfoList(id); // 2nd time updates existing
+            m.person.RefreshCommitments(id);
 
-            m.VolInterest.Question = m.question;
+            string email = DbUtil.Settings("VolunteerMail-" + id, "");
+            if (!email.HasValue())
+                email = DbUtil.Settings("VolunteerMail", DbUtil.SystemEmailAddress);
 
-            var qd = from vi in m.VolInterest.VolInterestInterestCodes
-                     join i in m.interests on vi.InterestCodeId equals i.ToInt() into j
-                     from i in j.DefaultIfEmpty()
-                     where string.IsNullOrEmpty(i)
-                     select vi;
-            DbUtil.Db.VolInterestInterestCodes.DeleteAllOnSubmit(qd);
-
-            var qa = from i in m.interests
-                     join vi in m.VolInterest.VolInterestInterestCodes
-                        on i.ToInt() equals vi.InterestCodeId into j
-                     from vi in j.DefaultIfEmpty()
-                     where vi == null
-                     select i.ToInt();
-
-            foreach (var i in qa)
-                m.VolInterest.VolInterestInterestCodes.Add(new VolInterestInterestCode { InterestCodeId = i });
-
-            var cva = m.person.Volunteers.OrderByDescending(vo => vo.ProcessedDate).FirstOrDefault();
-            DbUtil.Db.SubmitChanges();
-            string body;
-            if ((cva != null && cva.StatusId == 10) || !m.Opportunity.EmailNoCva.HasValue())
-                body = m.Opportunity.EmailYesCva; // Yes, have CVA already
-            else
-                body = m.Opportunity.EmailNoCva;
-            var p = m.person;
-            body = body.Replace("{first}", p.PreferredName);
-            Util.SafeFormat(body);
-            body += "<p>You have indicated following interests:\n{0}</p>".Fmt(
-                m.PrepareSummaryText());
-
-            Util.Email(m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
-                 m.Opportunity.Description, body);
-            return RedirectToAction("Confirm", new { id = id });
-        }
-        public ActionResult PickList2(int id)
-        {
-            var m = new Models.VolunteerModel { VolInterestId = id };
-            SetHeader(m);
-            if (Request.HttpMethod.ToUpper() == "GET")
-                return View(m);
-
-            //foreach (var i in Request.Form.Keys)
-            //    Debug.WriteLine("{0}: {1}".Fmt(i, Request.Form[i.ToString()].ToString()));
-
-            DbUtil.Db.VolInterestInterestCodes.DeleteAllOnSubmit(m.VolInterest.VolInterestInterestCodes);
-            DbUtil.Db.SubmitChanges();
-
-            var dict = m.Opportunity.VolInterestCodes.ToDictionary(vi => vi.Description);
-            foreach (var i in Request.Form.Keys.Cast<string>())
+            if (Request.Form["noemail"] != "noemail")
             {
-                var val = Request.Form[i];
-                if (val == "on")
+                var summary = m.PrepareSummaryText();
+                var smtp = new SmtpClient();
+                Util.EmailHtml2(smtp,
+                    m.person.EmailAddress,
+                    email,
+                    "{0} volunteer registration".Fmt(id),
+                    "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
+                    .Fmt(m.person.Name, m.person.PeopleId, summary));
+
+                var c = DbUtil.Content("Volunteer" + id);
+                if (c != null)
                 {
-                    var desc = i.Replace('_', ' ');
-                    if (!dict.ContainsKey(desc))
+                    var body = c.Body;
+                    var p = m.person;
+                    body = body.Replace("{first}", p.PreferredName);
+                    body = body.Replace("{serviceareas}", summary);
+                    var em = m.person.EmailAddress;
+                    if (!Util.ValidEmail(email))
                     {
-                        var vic = new VolInterestCode { Description = desc, OpportunityId = m.OpportunityId };
-                        DbUtil.Db.VolInterestCodes.InsertOnSubmit(vic);
-                        dict[desc] = vic;
+                        em = email;
+                        body = "<p>NO EMAIL</p>\n" + body;
                     }
+                    Util.Email(smtp, email, m.person.Name, em,
+                         id, body);
                 }
-            }
-            DbUtil.Db.SubmitChanges();
-            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues);
-
-            foreach (var i in Request.Form.Keys.Cast<string>())
-            {
-                var val = Request.Form[i];
-                if (val == "on")
-                {
-                    var desc = i.Replace('_', ' ');
-                    m.VolInterest.VolInterestInterestCodes.Add(
-                        new VolInterestInterestCode { InterestCodeId = dict[desc].Id });
-                }
-            }
-            DbUtil.Db.SubmitChanges();
-
-            var smtp = new SmtpClient();
-            var summary = m.PrepareSummaryText();
-            Util.EmailHtml2(smtp, 
-                m.person.EmailAddress, 
-                m.Opportunity.Email, 
-                "new {0} volunteer registration".Fmt(m.Opportunity.UrlKey), 
-                "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
-                .Fmt(m.person.Name, m.person.PeopleId, summary));
-
-            var c = DbUtil.Content("Volunteer" + m.Opportunity.UrlKey);
-            if (c != null)
-            {
-                var body = c.Body;
-                var p = m.person;
-                body = body.Replace("{first}", p.PreferredName);
-                body = body.Replace("{serviceareas}", summary);
-                Util.Email(smtp, m.Opportunity.Email, m.person.Name, m.person.EmailAddress,
-                     m.Opportunity.Description, body);
             }
             return RedirectToAction("Confirm", new { id = id });
         }
-        public ActionResult Confirm(int id)
+        public ActionResult Confirm(string id)
         {
-            var m = new Models.VolunteerModel { VolInterestId = id };
-            SetHeader(m);
+            SetHeader(id);
             return View();
         }
     }

@@ -45,6 +45,8 @@ namespace CmsData
 		
 		private bool? _EffAttendFlag;
 		
+		private bool? _Registered;
+		
    		
     	
 		private EntityRef< MemberType> _MemberType;
@@ -105,6 +107,9 @@ namespace CmsData
 		
 		partial void OnEffAttendFlagChanging(bool? value);
 		partial void OnEffAttendFlagChanged();
+		
+		partial void OnRegisteredChanging(bool? value);
+		partial void OnRegisteredChanged();
 		
     #endregion
 		public Attend()
@@ -443,6 +448,28 @@ namespace CmsData
 					this._EffAttendFlag = value;
 					this.SendPropertyChanged("EffAttendFlag");
 					this.OnEffAttendFlagChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Registered", UpdateCheck=UpdateCheck.Never, Storage="_Registered", DbType="bit")]
+		public bool? Registered
+		{
+			get { return this._Registered; }
+
+			set
+			{
+				if (this._Registered != value)
+				{
+				
+                    this.OnRegisteredChanging(value);
+					this.SendPropertyChanging();
+					this._Registered = value;
+					this.SendPropertyChanged("Registered");
+					this.OnRegisteredChanged();
 				}
 
 			}

@@ -39,6 +39,9 @@
     <Field Name="DeceasedDate" Title="Deceased Date" Type="Date">
       Todo: explain how unknown dates work
     </Field>
+    <Field Name="WidowedDate" Title="Widowed Date" Type="Date" >
+      Todo: explain how unknown dates work
+    </Field>
     <Field Name="FirstName" Title="First Name" Type="String">
       Searchs all or part of First Name
     </Field>
@@ -270,6 +273,9 @@
     </Field>
     <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
       Person is in a small group named such
+    </Field>
+    <Field Name="HasVolunteered" Title="Has Volunteered" Type="Bit" DisplayAs="HasVolunteered({0})" DataValueField="IdCode" Params="View">
+      Indicates has Volunteered for a particular Opportunity (view)
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
       Indicates Volunteer Applications are in the church system

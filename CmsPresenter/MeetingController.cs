@@ -32,14 +32,17 @@ namespace CMSPresenter
             public string Description { get; set; }
         }
 
-        //private List<CodeValueItem> codes = (new CodeValueController()).MeetingStatusCodes();
         private int _count;
-
-        public IEnumerable<MeetingInfo0> Meetings(int orgid, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<MeetingInfo0> Meetings(int orgid, string sortExpression, int maximumRows, int startRowIndex, bool future)
         {
+            DateTime midnight = Util.Now.Date.AddDays(1);
             var q = from m in DbUtil.Db.Meetings
                     where m.OrganizationId == orgid
                     select m;
+            if (future)
+                q = q.Where(m => m.MeetingDate >= midnight);
+            else
+                q = q.Where(m => m.MeetingDate < midnight);
             _count = q.Count();
             q = ApplySort(q, sortExpression);
             var q2 = q.Select(m =>
@@ -57,6 +60,11 @@ namespace CMSPresenter
             q2 = q2.Skip(startRowIndex).Take(maximumRows);
             return q2;
         }
+        public int MeetingCount(int orgid, string sortExpression, int maximumRows, int startRowIndex, bool future)
+        {
+            return _count;
+        }
+
         private int meetingsfordatecount;
         public int MeetingsForDateCount(DateTime MeetingDate, string Name, int ProgId, int DivId, int SchedId, int CampusId, string SortOn)
         {
@@ -280,10 +288,6 @@ namespace CMSPresenter
 
         }
 
-        public int MeetingCount(int orgid, string sortExpression, int maximumRows, int startRowIndex)
-        {
-            return _count;
-        }
         private static IQueryable<Meeting> ApplySort(IQueryable<Meeting> q, string sort)
         {
             switch (sort)

@@ -522,10 +522,6 @@ namespace CmsData
         partial void UpdateVolApplicationStatus(VolApplicationStatus instance);
         partial void DeleteVolApplicationStatus(VolApplicationStatus instance);
         
-        partial void InsertVolInterest(VolInterest instance);
-        partial void UpdateVolInterest(VolInterest instance);
-        partial void DeleteVolInterest(VolInterest instance);
-        
         partial void InsertVolInterestCode(VolInterestCode instance);
         partial void UpdateVolInterestCode(VolInterestCode instance);
         partial void DeleteVolInterestCode(VolInterestCode instance);
@@ -533,10 +529,6 @@ namespace CmsData
         partial void InsertVolInterestInterestCode(VolInterestInterestCode instance);
         partial void UpdateVolInterestInterestCode(VolInterestInterestCode instance);
         partial void DeleteVolInterestInterestCode(VolInterestInterestCode instance);
-        
-        partial void InsertVolOpportunity(VolOpportunity instance);
-        partial void UpdateVolOpportunity(VolOpportunity instance);
-        partial void DeleteVolOpportunity(VolOpportunity instance);
         
         partial void InsertVolunteer(Volunteer instance);
         partial void UpdateVolunteer(Volunteer instance);
@@ -1360,12 +1352,6 @@ namespace CmsData
 
 		}
 
-		public Table< VolInterest> VolInterests
-		{
-			get	{ return this.GetTable< VolInterest>(); }
-
-		}
-
 		public Table< VolInterestCode> VolInterestCodes
 		{
 			get	{ return this.GetTable< VolInterestCode>(); }
@@ -1375,12 +1361,6 @@ namespace CmsData
 		public Table< VolInterestInterestCode> VolInterestInterestCodes
 		{
 			get	{ return this.GetTable< VolInterestInterestCode>(); }
-
-		}
-
-		public Table< VolOpportunity> VolOpportunities
-		{
-			get	{ return this.GetTable< VolOpportunity>(); }
 
 		}
 
@@ -2428,6 +2408,18 @@ namespace CmsData
 			return ((Int32)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.WidowedDate", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? WidowedDate(
+            [Parameter(Name = "peopleid", DbType="int")] int? peopleid
+            )
+		{
+			return ((DateTime)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                peopleid
                 ).ReturnValue));
 		}
 

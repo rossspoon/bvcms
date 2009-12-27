@@ -39,6 +39,10 @@ namespace CMSWeb
         {
             Grid.Sort("MeetingDate", SortDirection.Descending);
         }
+        public void DefaultSort2()
+        {
+            Grid.Sort("MeetingDate", SortDirection.Ascending);
+        }
         public string GridClientID
         {
             get
@@ -50,6 +54,9 @@ namespace CMSWeb
         protected void Grid_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             e.Cancel = !Page.User.IsInRole("Edit");
+        }
+        protected void ttt(object sender, GridViewCommandEventArgs e)
+        {
         }
     }
 }

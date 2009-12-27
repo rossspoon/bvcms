@@ -351,6 +351,7 @@ function UpdateView(vs) {
     $('#Program').val(vs.Program);
     $('#Division').val(vs.Division);
     $('#Organization').val(vs.Organization);
+    $('#View').val(vs.View);
     $('#SavedQueryDesc').val(vs.SavedQueryDesc);
     $('#Schedule').val(vs.Schedule);
     $('#Days').val(vs.Days);
@@ -369,6 +370,7 @@ function UpdateView(vs) {
     $('#EndDiv').showhide(vs.EndDateVisible);
     $('#StartDiv').showhide(vs.StartDateVisible);
     $('#OrgDiv').showhide(vs.OrganizationVisible);
+    $('#ViewDiv').showhide(vs.ViewVisible);
     $('#DaysDiv').showhide(vs.DaysVisible);
     $('#AgeDiv').showhide(vs.AgeVisible);
     $('#SavedQueryDiv').showhide(vs.SavedQueryVisible);

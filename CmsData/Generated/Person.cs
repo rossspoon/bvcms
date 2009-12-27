@@ -290,7 +290,7 @@ namespace CmsData
 		
    		private EntitySet< VBSApp> _VBSApps;
 		
-   		private EntitySet< VolInterest> _VolInterests;
+   		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
    		private EntitySet< Volunteer> _Volunteers;
 		
@@ -743,7 +743,7 @@ namespace CmsData
 			
 			this._VBSApps = new EntitySet< VBSApp>(new Action< VBSApp>(this.attach_VBSApps), new Action< VBSApp>(this.detach_VBSApps)); 
 			
-			this._VolInterests = new EntitySet< VolInterest>(new Action< VolInterest>(this.attach_VolInterests), new Action< VolInterest>(this.detach_VolInterests)); 
+			this._VolInterestInterestCodes = new EntitySet< VolInterestInterestCode>(new Action< VolInterestInterestCode>(this.attach_VolInterestInterestCodes), new Action< VolInterestInterestCode>(this.detach_VolInterestInterestCodes)); 
 			
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
@@ -3609,12 +3609,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_VolInterest_People", Storage="_VolInterests", OtherKey="PeopleId")]
-   		public EntitySet< VolInterest> VolInterests
+   		[Association(Name="FK_VolInterestInterestCodes_People", Storage="_VolInterestInterestCodes", OtherKey="PeopleId")]
+   		public EntitySet< VolInterestInterestCode> VolInterestInterestCodes
    		{
-   		    get { return this._VolInterests; }
+   		    get { return this._VolInterestInterestCodes; }
 
-			set	{ this._VolInterests.Assign(value); }
+			set	{ this._VolInterestInterestCodes.Assign(value); }
 
    		}
 
@@ -4553,13 +4553,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_VolInterests(VolInterest entity)
+		private void attach_VolInterestInterestCodes(VolInterestInterestCode entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = this;
 		}
 
-		private void detach_VolInterests(VolInterest entity)
+		private void detach_VolInterestInterestCodes(VolInterestInterestCode entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

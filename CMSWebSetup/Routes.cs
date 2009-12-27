@@ -22,7 +22,6 @@ namespace CMSWebSetup
             AddRoute(context, "RecreationSetup");
             AddRoute(context, "Setting");
             AddRoute(context, "UsersCanEmailFor");
-            AddRoute(context, "VolOpportunity");
         }
         private void AddRoute(AreaRegistrationContext context, string controller)
         {

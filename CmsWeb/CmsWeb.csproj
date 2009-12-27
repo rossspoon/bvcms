@@ -1204,6 +1204,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\TextFile1.txt">
+      <Link>TextFile1.txt</Link>
+    </Content>
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
@@ -2008,7 +2011,6 @@
     <Content Include="Views\Volunteer\Confirm.aspx" />
     <Content Include="Views\Volunteer\PickList2.aspx" />
     <Content Include="Views\Volunteer\Index.aspx" />
-    <Content Include="Views\Volunteer\PickList.aspx" />
     <Content Include="Views\Volunteer\Unknown.aspx" />
   </ItemGroup>
   <ItemGroup>

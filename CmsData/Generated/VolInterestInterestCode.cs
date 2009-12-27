@@ -17,13 +17,13 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _VolInterestId;
+		private int _PeopleId;
 		
 		private int _InterestCodeId;
 		
    		
     	
-		private EntityRef< VolInterest> _VolInterest;
+		private EntityRef< Person> _Person;
 		
 		private EntityRef< VolInterestCode> _VolInterestCode;
 		
@@ -34,8 +34,8 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnVolInterestIdChanging(int value);
-		partial void OnVolInterestIdChanged();
+		partial void OnPeopleIdChanging(int value);
+		partial void OnPeopleIdChanged();
 		
 		partial void OnInterestCodeIdChanging(int value);
 		partial void OnInterestCodeIdChanged();
@@ -45,7 +45,7 @@ namespace CmsData
 		{
 			
 			
-			this._VolInterest = default(EntityRef< VolInterest>); 
+			this._Person = default(EntityRef< Person>); 
 			
 			this._VolInterestCode = default(EntityRef< VolInterestCode>); 
 			
@@ -55,24 +55,24 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="VolInterestId", UpdateCheck=UpdateCheck.Never, Storage="_VolInterestId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int VolInterestId
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int PeopleId
 		{
-			get { return this._VolInterestId; }
+			get { return this._PeopleId; }
 
 			set
 			{
-				if (this._VolInterestId != value)
+				if (this._PeopleId != value)
 				{
 				
-					if (this._VolInterest.HasLoadedOrAssignedValue)
+					if (this._Person.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-                    this.OnVolInterestIdChanging(value);
+                    this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
-					this._VolInterestId = value;
-					this.SendPropertyChanged("VolInterestId");
-					this.OnVolInterestIdChanged();
+					this._PeopleId = value;
+					this.SendPropertyChanged("PeopleId");
+					this.OnPeopleIdChanged();
 				}
 
 			}
@@ -113,41 +113,41 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_VolInterestInterestCodes_VolInterest", Storage="_VolInterest", ThisKey="VolInterestId", IsForeignKey=true)]
-		public VolInterest VolInterest
+		[Association(Name="FK_VolInterestInterestCodes_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		public Person Person
 		{
-			get { return this._VolInterest.Entity; }
+			get { return this._Person.Entity; }
 
 			set
 			{
-				VolInterest previousValue = this._VolInterest.Entity;
+				Person previousValue = this._Person.Entity;
 				if (((previousValue != value) 
-							|| (this._VolInterest.HasLoadedOrAssignedValue == false)))
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._VolInterest.Entity = null;
+						this._Person.Entity = null;
 						previousValue.VolInterestInterestCodes.Remove(this);
 					}
 
-					this._VolInterest.Entity = value;
+					this._Person.Entity = value;
 					if (value != null)
 					{
 						value.VolInterestInterestCodes.Add(this);
 						
-						this._VolInterestId = value.Id;
+						this._PeopleId = value.PeopleId;
 						
 					}
 
 					else
 					{
 						
-						this._VolInterestId = default(int);
+						this._PeopleId = default(int);
 						
 					}
 
-					this.SendPropertyChanged("VolInterest");
+					this.SendPropertyChanged("Person");
 				}
 
 			}

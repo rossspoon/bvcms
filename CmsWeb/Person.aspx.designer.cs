@@ -725,6 +725,15 @@ namespace CMSWeb {
         protected global::System.Web.UI.UpdatePanel UpdatePanel4;
         
         /// <summary>
+        /// future control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox future;
+        
+        /// <summary>
         /// AttendGrid control.
         /// </summary>
         /// <remarks>

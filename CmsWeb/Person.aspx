@@ -753,6 +753,7 @@
             <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+                        <asp:CheckBox ID="future" runat="server" Text="Future Commitments" AutoPostBack="true" OnCheckedChanged="ShowAttends" />
                         <asp:GridView ID="AttendGrid" runat="server" AllowPaging="True" SkinID="GridViewSkin"
                             AllowSorting="True" AutoGenerateColumns="False" DataSourceID="AttendData" PageSize="10"
                             EmptyDataText="No Attendance History Found." Visible="false">
@@ -1396,6 +1397,7 @@
             <asp:Parameter Name="sortExpression" Type="String" DefaultValue="MeetingDate DESC" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
+            <asp:Parameter Name="future" Type="Boolean" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ContactedList" runat="server" EnablePaging="True" SelectCountMethod="ContactsCount"

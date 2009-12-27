@@ -135,6 +135,12 @@ namespace CmsData
                                c.Tags,
                                CompType,
                                c.CodeIds == "1");
+            //                internal static Expression HasVolunteerCode(ParameterExpression parm,
+            //int volOppId,
+            //string tag,
+            //CompareType op,
+            //bool tf)
+
                 case QueryType.HasLowerName:
                     return Expressions.HasLowerName(c.GetDataContext() as CMSDataContext,
                                parm,
@@ -148,7 +154,12 @@ namespace CmsData
                     return Expressions.HasRelatedFamily(parm,
                                CompType,
                                c.CodeIds == "1");
-				case QueryType.HaveVolunteerApplications:
+                case QueryType.HasVolunteered:
+                    return Expressions.HasVolunteered(parm,
+                               c.Quarters,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.HaveVolunteerApplications:
 					return Expressions.HaveVolunteerApplications(parm,
 							   CompType,
 							   c.CodeIds == "1");
@@ -400,6 +411,11 @@ namespace CmsData
                                c.CodeIds == "1");
                 case QueryType.WeddingDate:
                     return Expressions.WeddingDate(parm, CompType, c.TextValue);
+                case QueryType.WidowedDate:
+                    return Expressions.WidowedDate(parm,
+                               c.GetDataContext() as CMSDataContext,
+                               CompType,
+                               c.DateValue);
                 default:
                     if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
                         return Expressions.CompareConstant(parm,

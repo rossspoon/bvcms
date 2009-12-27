@@ -544,6 +544,17 @@ namespace CmsData
             var right = Expression.Constant(date, typeof(DateTime?));
             return Compare(left, op, right);
         }
+        internal static Expression WidowedDate(
+            ParameterExpression parm, CMSDataContext Db,
+            CompareType op,
+            DateTime? date)
+        {
+            Expression<Func<Person, DateTime?>> pred = p =>
+                Db.WidowedDate(p.PeopleId);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Constant(date, typeof(DateTime?));
+            return Compare(left, op, right);
+        }
         internal static Expression DaysTillBirthday(
             ParameterExpression parm, CMSDataContext Db,
             CompareType op,
@@ -1006,6 +1017,25 @@ namespace CmsData
             var a = tag.Split(';').Select(s => s.Split(',')[0].ToInt()).ToArray();
             Expression<Func<Person, bool>> pred = p =>
                 p.Tags.Any(t => a.Contains(t.Id));
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression HasVolunteered(ParameterExpression parm,
+            string View,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred;
+            if (View == "ns") 
+                pred = p => p.VolInterestInterestCodes.Count() > 0;
+            else
+            {
+                var orgkeys = Person.OrgKeys(View);
+                pred = p =>
+                      p.VolInterestInterestCodes.Any(vi => orgkeys.Contains(vi.VolInterestCode.Org));
+            }
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

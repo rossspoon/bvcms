@@ -64,6 +64,8 @@ namespace CMSPresenter
                         (inEditMode && !meeting.GroupMeetingFlag
                         && p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId
                             && om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
+                    || // intended
+                        (attend.Registered == true)
 
                     select new AttendInfo
                     {
@@ -83,6 +85,7 @@ namespace CMSPresenter
                         PeopleId = p.PeopleId,
                         AttendFlag = attend == null ? false : attend.AttendanceFlag,
                         RollSheetSectionId = ismember ? 1 : 2,
+                        RegisteredFlag = attend == null ? false : attend.Registered ?? false,
                     };
 
             q = from a in q
@@ -173,7 +176,7 @@ namespace CMSPresenter
             return q;
         }
 
-        public int HistoryCount(int pid, string sortExpression, int maximumRows, int startRowIndex)
+        public int HistoryCount(int pid, string sortExpression, int maximumRows, int startRowIndex, bool future)
         {
             return _count;
         }
@@ -183,13 +186,27 @@ namespace CMSPresenter
         //    return CodeValueController.MemberTypeCodes2().Single(mt => mt.Id == MemberTypeId).AttendanceTypeId;
         //}
 
-        public IEnumerable<AttendInfo> AttendHistory(int pid, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<AttendInfo> AttendHistory(int pid, string sortExpression, int maximumRows, int startRowIndex, bool future)
         {
+            var midnight = Util.Now.Date.AddDays(1);
             var q = from a in DbUtil.Db.Attends
                     where a.PeopleId == pid
                     where !(a.Meeting.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
-                    where a.AttendanceFlag == true || a.AttendanceFlag == null
                     select a;
+            if (future)
+            {
+                q = from a in q
+                    where a.MeetingDate >= midnight
+                    where a.Registered == true || a.AttendanceFlag == true
+                    select a;
+            }
+            else
+            {
+                q = from a in q
+                    where a.MeetingDate < midnight
+                    where a.AttendanceFlag == true
+                    select a;
+            }
             _count = q.Count();
             q = ApplySort(q, sortExpression);
             q = q.Skip(startRowIndex).Take(maximumRows);

@@ -284,6 +284,24 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.Image Image10;
         
         /// <summary>
+        /// VolunteerLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink VolunteerLink;
+        
+        /// <summary>
+        /// Image18 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Image18;
+        
+        /// <summary>
         /// AttendLink control.
         /// </summary>
         /// <remarks>

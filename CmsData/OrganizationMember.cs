@@ -47,8 +47,8 @@ namespace CmsData
             var q = from o in Db.Organizations
                     where o.OrganizationId == OrganizationId
                     let count = Db.Attends.Count(a => a.PeopleId == PeopleId 
-                        && a.OrganizationId == OrganizationId 
-                        && a.MeetingDate < DateTime.Today)
+                        && a.OrganizationId == OrganizationId
+                        && (a.MeetingDate < DateTime.Today || a.AttendanceFlag == true))
                     select new
                     {
                         FirstMeetingDt = o.FirstMeetingDate,

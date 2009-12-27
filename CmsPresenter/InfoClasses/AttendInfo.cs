@@ -28,6 +28,7 @@ namespace CMSPresenter
         public string MemberType { get; set; }
         public string AttendType { get; set; }
         public bool AttendFlag { get; set; }
+        public bool RegisteredFlag { get; set; }
         public int RollSheetSectionId { get; set; }
     }
 }

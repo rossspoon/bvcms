@@ -76,7 +76,6 @@
     <Compile Include="Controllers\RecreationSetupController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\UsersCanEmailForController.cs" />
-    <Compile Include="Controllers\VolOpportunityController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -103,8 +102,6 @@
     <Content Include="Views\Setting\Index.aspx" />
     <Content Include="Views\Setting\OrphanedImages.aspx" />
     <Content Include="Views\UsersCanEmailFor\Index.aspx" />
-    <Content Include="Views\VolOpportunity\Codes.aspx" />
-    <Content Include="Views\VolOpportunity\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 <asp:GridView ID="Grid" runat="server" PageSize="10" AllowPaging="True" DataKeyNames="MeetingId"
     SkinID="GridViewSkin" PagerSettings-Position="Bottom"
     AllowSorting="True" AutoGenerateColumns="False" 
-    onrowdeleting="Grid_RowDeleting" >
+    onrowdeleting="Grid_RowDeleting" OnRowCommand="ttt" >
     <Columns>
         <asp:HyperLinkField DataNavigateUrlFields="MeetingId" 
             DataNavigateUrlFormatString="~/Meeting.aspx?id={0}" 

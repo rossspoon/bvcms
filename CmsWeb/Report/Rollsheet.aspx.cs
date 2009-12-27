@@ -92,7 +92,7 @@ namespace CMSWeb.Reports
                 if (meeting != null)
                 {
                     var q = from at in meeting.Attends
-                            where at.AttendanceFlag == true
+                            where at.AttendanceFlag == true || at.Registered == true
                             orderby at.Person.Name2
                             select at;
                     foreach (var a in q)

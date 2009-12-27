@@ -83,6 +83,8 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Generated\VolunteerCode.cs" />
+    <Compile Include="VolInterest.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumEntry.cs" />
     <Compile Include="Generated\Blog.cs" />
@@ -186,10 +188,8 @@
     <Compile Include="Generated\Views\LastName.cs" />
     <Compile Include="Generated\Views\Nick.cs" />
     <Compile Include="Generated\Views\VBSInfo.cs" />
-    <Compile Include="Generated\VolInterest.cs" />
     <Compile Include="Generated\VolInterestCode.cs" />
     <Compile Include="Generated\VolInterestInterestCode.cs" />
-    <Compile Include="Generated\VolOpportunity.cs" />
     <Compile Include="Generated\Zip.cs" />
     <Compile Include="Generated\ZipCode.cs" />
     <Compile Include="IndividualContribution.cs" />
@@ -230,7 +230,6 @@
     <Compile Include="Generated\ResidentCode.cs" />
     <Compile Include="Generated\VolApplicationStatus.cs" />
     <Compile Include="Generated\Volunteer.cs" />
-    <Compile Include="Generated\VolunteerCode.cs" />
     <Compile Include="Generated\VolunteerForm.cs" />
     <Compile Include="QueryBuilder\CategoryClass.cs" />
     <Compile Include="User.cs" />

@@ -9,21 +9,33 @@
     <script type="text/javascript" src="/content/js/jquery.treeview.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("ul.treeview").treeview({
+        $("ul.treeview").treeview({
+                control: "#treecontrol",
                 animated: "fast",
                 collapsed: true
             });
         });
     </script>
-    <h2><%=Model.Opportunity.Description %></h2>
-
+    <%=Model.FormInitialize() %>
+    <h4><%=Model.person.Name %></h4>
     <% using (Html.BeginForm()) { %>
-    <%=Html.Hidden("Id", Model.VolInterestId) %>
+    <%=Html.Hidden("PeopleId", Model.person.PeopleId) %>
+    <% var summary = Model.PrepareSummaryText();
+       if(summary != "")
+       { %>
+       <h4>Previous Selections</h4>
+        <%=summary %>
+    <% } %>
+
         <div>
             <fieldset>
+
                 <%=Model.formcontent %>
-                <input type="submit" value="Submit" /><br />
-                <span style="color:Green;font-weight:bold"><%=ViewData["saved"] %></span>
+                <input type="submit" value="Submit" />
+                <% if (User.IsInRole("Admin") && Util.UserPeopleId != Model.person.PeopleId)
+                   { %>
+                   <input type="checkbox" name="noemail" value="noemail" checked="checked" /> No Email Notice
+                <% } %>
             </fieldset>
         </div>
     <% } %>

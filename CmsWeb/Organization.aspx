@@ -499,6 +499,7 @@
                 <ContentTemplate>
                     <asp:LinkButton ID="NewMeetingLink" runat="server" OnClientClick="OpenNewMeeting();return false;"
                         Text="Create New Meeting" />
+                    <asp:CheckBox ID="Future" runat="server" AutoPostBack="true" OnCheckedChanged="ShowFuture_Click" Text="Future" />
                     <br />
                     <uc3:MeetingGrid ID="MeetingGrid1" runat="server" DataSourceID="MeetingData" Visible="false" />
                     <div style="visibility: hidden">
@@ -610,6 +611,7 @@
             <asp:Parameter Name="sortExpression" Type="String" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
+            <asp:Parameter Name="future" Type="Boolean" DefaultValue="false" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="VisitorData" runat="server" EnablePaging="True" SelectCountMethod="VisitorCount"

@@ -11,6 +11,9 @@
         Thank you for being willing to volunteer.  
         You should receive an email with more information shortly.
     </p>
-    <a href="http://www.bellevue.org">Return to Bellevue</a>
+    <p>
+        If you do not receive an email, it may be that we have an old or no email address for you, 
+        please contact the church to provide one for us and we'll update your record.
+    </p>
 
 </asp:Content>

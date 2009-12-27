@@ -33,6 +33,7 @@ namespace CMSWeb.Models
         string[] Tags { get; set; }
         string CodeValue { get; set; }
         string[] CodeValues { get; set; }
+        string View { get; set; }
         string TextValue { get; set; }
         string DateValue { get; set; }
         string NumberValue { get; set; }
@@ -100,6 +101,7 @@ namespace CMSWeb.Models
         public bool EndDateVisible { get; set; }
         public bool StartDateVisible { get; set; }
         public bool OrganizationVisible { get; set; }
+        public bool ViewVisible { get; set; }
         public bool OrganizationRequired { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool DaysVisible { get; set; }
@@ -107,13 +109,14 @@ namespace CMSWeb.Models
         public bool SavedQueryVisible { get; set; }
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
-
+        
         public List<SelectListItem> TagData { get; set; }
         public List<SelectListItem> CodeData { get; set; }
         public List<SelectListItem> CompareData { get; set; }
         public List<SelectListItem> ProgramData { get; set; }
         public List<SelectListItem> DivisionData { get; set; }
         public List<SelectListItem> OrganizationData { get; set; }
+        public List<SelectListItem> ViewData { get; set; }
         public int? Program { get; set; }
         public int? Division { get; set; }
         public int? Organization { get; set; }
@@ -121,6 +124,7 @@ namespace CMSWeb.Models
         public string Days { get; set; }
         public string Age { get; set; }
         public string Quarters { get; set; }
+        public string View { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Comparison { get; set; }
@@ -174,6 +178,7 @@ namespace CMSWeb.Models
             AgeVisible = fieldMap.HasParam("Age");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
+            ViewVisible = fieldMap.HasParam("View");
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)
             {
@@ -306,6 +311,8 @@ namespace CMSWeb.Models
             c.Program = Program ?? 0;
             c.Division = Division ?? 0;
             c.Organization = Organization ?? 0;
+            if (ViewVisible)
+                Quarters = View;
             c.Schedule = Schedule ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
@@ -361,6 +368,8 @@ namespace CMSWeb.Models
             Division = c.Division;
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
+            if (ViewVisible)
+                View = c.Quarters;
             Schedule = c.Schedule;
             StartDate = DateString(c.StartDate);
             EndDate = DateString(c.EndDate);
@@ -507,6 +516,10 @@ namespace CMSWeb.Models
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
+        }
+        public IEnumerable<SelectListItem> Views()
+        {
+            return CMSWeb.Models.VolunteersModel.Views().ToList();
         }
         public IEnumerable<SelectListItem> Programs()
         {

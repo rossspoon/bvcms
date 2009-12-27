@@ -24,6 +24,7 @@ namespace CMSWeb
         {
             EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
             LabelsLink.NavigateUrl = "/Report/LabelsRpt.aspx?id=" + queryId;
+            VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;
             BulkMailLink.NavigateUrl = "/bulkmail.aspx?" + queryId;
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
