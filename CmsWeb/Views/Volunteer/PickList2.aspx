@@ -19,7 +19,7 @@
     <%=Model.FormInitialize() %>
     <h4><%=Model.person.Name %></h4>
     <% using (Html.BeginForm()) { %>
-    <%=Html.Hidden("PeopleId", Model.person.PeopleId) %>
+    <%=Html.Hidden("pid", Model.person.PeopleId) %>
     <% var summary = Model.PrepareSummaryText();
        if(summary != "")
        { %>

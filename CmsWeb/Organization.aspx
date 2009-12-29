@@ -248,6 +248,8 @@
                 | &nbsp
                 <asp:HyperLink ID="AttendanceRpt" runat="server">Attendance Percentages</asp:HyperLink>&nbsp
                 | &nbsp
+                <asp:HyperLink ID="VolunteerCalendar" runat="server">Volunteer Calendar</asp:HyperLink>&nbsp
+                | &nbsp
                 <cc1:LinkButtonConfirm ID="CloneOrg1" OnClick="CloneOrg_Click" Confirm="This will make a copy of the org. Are you sure?"
                     runat="server">Copy this Organization</cc1:LinkButtonConfirm>
             </td>

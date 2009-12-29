@@ -72,6 +72,7 @@ namespace CMSWeb
             EditUpdateButton1.DataBind();
             RecentAttendRpt.NavigateUrl = "~/Report/PastAttendeeRpt.aspx?id=" + organization.OrganizationId;
             AttendanceRpt.NavigateUrl = "~/Reports/Attendance/" + organization.OrganizationId;
+            VolunteerCalendar.NavigateUrl = "~/Volunteers/Calendar/" + organization.OrganizationId;
             MemberToolbar.TaggedEvent += new EventHandler(MemberToolbar_TaggedEvent);
             VisitorToolbar.TaggedEvent += new EventHandler(VisitorToolbar_TaggedEvent);
             InactiveToolbar.TaggedEvent += new EventHandler(InactiveToolbar_TaggedEvent);

@@ -30,6 +30,8 @@ namespace CMSWeb.Controllers
         public ActionResult Index(string id)
         {
             var m = new Models.VolunteerModel { View = id };
+            if (!m.formcontent.HasValue())
+                return Content("view not found");
             SetHeader(id);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
@@ -49,19 +51,21 @@ namespace CMSWeb.Controllers
             return RedirectToAction("PickList2", new { id = id, pid = m.person.PeopleId });
         }
 
-        public ActionResult PickList2(string id, int pid)
+        public ActionResult PickList2(string id, int? pid)
         {
             var person = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == pid);
+            if (person == null)
+                return Content("person not found");
             var m = new Models.VolunteerModel { View = id, person = person };
-            SetHeader(id);
-            m.person.BuildVolInfoList(id); // gets existing
+            SetHeader(m.View);
+            m.person.BuildVolInfoList(m.View); // gets existing
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
             m.person.ReplaceInterestCodes(
                 Request.Form.Keys.Cast<string>().Where(k => Request.Form[k] == "on"), id);
-            m.person.BuildVolInfoList(id); // 2nd time updates existing
-            m.person.RefreshCommitments(id);
+            m.person.BuildVolInfoList(m.View); // 2nd time updates existing
+            m.person.RefreshCommitments(m.View);
 
             string email = DbUtil.Settings("VolunteerMail-" + id, "");
             if (!email.HasValue())

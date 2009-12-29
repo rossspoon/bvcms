@@ -677,10 +677,12 @@ namespace CMSPresenter
                             person.Name, orgname, mt.MeetingDate);
                     }
                 }
-                notify.EmailNotification(DbUtil.Db.CurrentUser.Person, person, "Attendance reports ready for viewing on CMS", sb.ToString());
+                notify.EmailNotification(DbUtil.Db.CurrentUser.Person, person, 
+                    "Attendance reports ready for viewing on CMS", sb.ToString());
             }
             sb2.Append("</table>\n");
-            notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person, "Attendance emails sent", sb2.ToString());
+            notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person, 
+                "Attendance emails sent", sb2.ToString());
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<MemberTag> FetchMemberGroups(int oid)

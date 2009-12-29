@@ -65,7 +65,11 @@ namespace CMSWeb.Models
                     where Org == "ns" || Org == null || 
                         p.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Org == Org)
                     select p;
-
+            if (!Sort.HasValue())
+            {
+                Sort = "Name";
+                Dir = "asc";
+            }
             count = q.Count();
             if (Dir == "asc")
                 switch (Sort)

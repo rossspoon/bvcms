@@ -229,7 +229,7 @@ namespace CmsData
                         Code = i.Substring(org.Length),
                     };
                     DbUtil.Db.VolInterestCodes.InsertOnSubmit(vic);
-                    dict[desc] = vic;
+                    dict[i] = vic;
                 }
             }
             DbUtil.Db.SubmitChanges();
@@ -340,24 +340,24 @@ namespace CmsData
         {
             string config = DbUtil.Content("Volunteer-" + view + ".xml").Body;
             var doc = XDocument.Parse(config);
-            var a = doc.Root.Attribute("Year");
+            var a = doc.Root.Attribute("year");
             if (a != null)
-                p.year = doc.Root.Attribute("Year").Value.ToInt();
+                p.year = doc.Root.Attribute("year").Value.ToInt();
             else
                 p.year = Util.Now.Year;
-            p.times = doc.Root.Descendants("Times").Descendants("time").ToDictionary(
+            p.times = doc.Root.Descendants("times").Descendants("time").ToDictionary(
                 t => t.Attribute("name").Value,
                 t => new DayTime
                 {
                     Day = t.Attribute("day").Value.ToInt(),
                     Time = DateTime.Parse(t.Attribute("hour").Value)
                 });
-            p.orgs = doc.Root.Descendants("Org").ToDictionary(
+            p.orgs = doc.Root.Descendants("org").ToDictionary(
                 o => o.Attribute("name").Value,
                 o => new OrgInfo
                 {
                     Name = o.Attribute("name").Value,
-                    OrgId = o.Attribute("OrgId").Value.ToInt(),
+                    OrgId = o.Attribute("orgid").Value.ToInt(),
                     times = o.Descendants("time").Select(t =>
                         p.times[t.Attribute("name").Value]).ToList(),
                     groups = o.Descendants("group").Select(t => t.Value).ToList()

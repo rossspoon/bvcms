@@ -51,7 +51,7 @@ namespace CMSPresenter
                        MeetingId = m.MeetingId,
                        MeetingDate = m.MeetingDate,
                        NumVisitors = m.NumNewVisit + m.NumRepeatVst + m.NumVstMembers,
-                       NumPresent = m.NumPresent,
+                       NumPresent = m.NumPresent + m.Attends.Count(a => !a.AttendanceFlag && a.Registered.Value),
                        Location = m.Location,
                        OrganizationId = m.OrganizationId,
                        GroupMeeting = m.GroupMeetingFlag,

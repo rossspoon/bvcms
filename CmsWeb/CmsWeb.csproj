@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Controllers\FamilyResult.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Person2.aspx.cs">
       <DependentUpon>Person2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2008,6 +2009,7 @@
     <Content Include="Views\Task\TabsOptionsRows.aspx" />
     <Content Include="Views\Volunteers\CustomReport.aspx" />
     <Content Include="Views\Volunteers\Index.aspx" />
+    <Content Include="Views\Volunteers\Calendar.aspx" />
     <Content Include="Views\Volunteer\Confirm.aspx" />
     <Content Include="Views\Volunteer\PickList2.aspx" />
     <Content Include="Views\Volunteer\Index.aspx" />

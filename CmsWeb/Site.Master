@@ -170,6 +170,9 @@
                             <asp:HyperLink ID="Settings" NavigateUrl="/Setting/"
                                 runat="server">Settings</asp:HyperLink></li>
                         <li>
+                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/"
+                                runat="server">Special Content</asp:HyperLink></li>
+                        <li>
                             <asp:HyperLink ID="Recreation" NavigateUrl="/RecreationSetup/"
                                 runat="server">Recreation Setup</asp:HyperLink></li>
                         <li>

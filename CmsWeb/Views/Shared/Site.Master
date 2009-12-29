@@ -184,6 +184,8 @@
                         <li>
                             <a href="/Setting/">Settings</a></li>
                         <li>
+                            <a href="/Display/Index/">Special Content</a></li>
+                        <li>
                             <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
                         <li>
                             <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>

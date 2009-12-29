@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Views\Display\Index.aspx" />
     <Content Include="Views\Lookup\Index.aspx" />
     <Content Include="Views\Display\EditPage.aspx" />
     <Content Include="Views\Display\Page.aspx" />

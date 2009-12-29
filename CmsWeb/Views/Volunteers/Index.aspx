@@ -92,7 +92,12 @@
         <% foreach (var v in Model.FetchVolunteers())
            { %>
         <tr>
-            <td nowrap="nowrap"><a href="/Volunteer/PickList2/<%=Model.View %>?pid=<%=v.PeopleId %>">volunteer page</a></td>
+            <td nowrap="nowrap">
+                <% if (Model.View != "ns")
+                   { %>
+                <a href="/Volunteer/PickList2/<%=Model.View %>?pid=<%=v.PeopleId %>"><%=Model.View %> page</a>
+                <% } %>
+            </td>
             <td nowrap="nowrap">
                 <a href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
             </td>

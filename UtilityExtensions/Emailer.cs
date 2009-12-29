@@ -29,7 +29,7 @@ namespace UtilityExtensions
             msg.IsBodyHtml = true;
             var InDebug = false;
 #if DEBUG
-            InDebug = true;
+            InDebug = false;
 #endif
             if (InDebug)
                 return;
@@ -49,7 +49,7 @@ namespace UtilityExtensions
             msg.Body = message;
             var InDebug = false;
 #if DEBUG
-            InDebug = true;
+            InDebug = false;
 #endif
             if (InDebug)
                 return;

@@ -56,12 +56,14 @@ namespace CMSRegCustom.Controllers
 
             return RedirectToAction("Confirm", new { id = m.neworgid });
         }
-        public ActionResult Disciple(int id)
+        public ActionResult Disciple(int? id)
         {
+            if (!id.HasValue)
+                return Content("group not found");
             if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
-            var m = new Models.GODisciplesModel("Disciple", id);
+            var m = new Models.GODisciplesModel("Disciple", id.Value);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
 

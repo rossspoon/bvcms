@@ -15,6 +15,9 @@ using System.Web.Routing;
 using CMSWeb;
 using CMSWeb.Models;
 using CmsData;
+using System.Diagnostics;
+using System.Net.Mail;
+using System.Text;
 
 namespace CMSWeb.Controllers
 {
@@ -46,6 +49,14 @@ namespace CMSWeb.Controllers
                     };
             return Json(q);
         }
+        public ActionResult Calendar(int id)
+        {
+            var m = new VolunteerCommitmentsModel(id);
+            if (m.times == null)
+                return Content("no future meetings available");
+            return View(m);
+        }
+
         public ActionResult CustomReport(string id)
         {
             ViewData["content"] = DbUtil.Content("Volunteer-{0}.report".Fmt(id)).Body;
@@ -80,6 +91,42 @@ namespace CMSWeb.Controllers
                 m.person.BuildVolInfoList(view); // 2nd time updates existing
                 m.person.RefreshCommitments(view);
             }
+            return Content("done");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EmailReminders(int id)
+        {
+            var meeting = DbUtil.Db.Meetings.Single(m => m.MeetingId == id);
+
+            var q = from a in meeting.Attends
+                    where a.AttendanceFlag == true || a.Registered == true
+                    select a.Person;
+            var o = meeting.Organization;
+            var sb = new StringBuilder(
+@"{0} - {1:M/d/yy h:mm tt}<br/>
+The following people have been sent a meeting notice:<br/>
+<blockquote>
+".Fmt(o.OrganizationName, meeting.MeetingDate));
+            var smtp = new SmtpClient();
+            var memail = DbUtil.Db.CurrentUser.Person.EmailAddress;
+            foreach (var person in q)
+            {
+                var em = person.EmailAddress.Trim();
+                if (!Util.ValidEmail(em))
+                    continue;
+                sb.AppendFormat("{0}</br>\n", person.Name);
+                Util.Email(memail, person.Name, em,
+                    "{0} Reminder".Fmt(o.OrganizationName),
+@"<blockquote><table>
+<tr><td>Time:</td><td>{0:dddd, M/d/yy h:mm tt}</td></tr>
+<tr><td>Location:</td><td>{1}</td></tr>
+</table></blockquote>".Fmt(meeting.MeetingDate, o.Location));
+            }
+            sb.Append("</blockquote>\n");
+
+            Util.EmailHtml2(smtp, memail, memail,
+                "Meeting Reminder emails sent", sb.ToString());
+
             return Content("done");
         }
     }

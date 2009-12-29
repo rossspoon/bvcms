@@ -17,14 +17,14 @@ namespace CMSWebSetup.Controllers
     [Authorize(Roles = "Admin")]
     public class DisplayController : CMSWebCommon.Controllers.CmsController
     {
-        //public ActionResult Menu()
-        //{
-        //    var menu = DbUtil.Db.Contents.SingleOrDefault(m => m.Name == "menu");
-        //    var c = new ContentResult();
-        //    if (menu != null)
-        //        c.Content = menu.Body;
-        //    return c;
-        //}
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+            var q = from c in DbUtil.Db.Contents
+                    orderby c.Name
+                    select c;
+            return View(q);
+        }
         //public ActionResult RsdLink()
         //{
         //    var link = "<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"http://"
@@ -77,6 +77,14 @@ namespace CMSWebSetup.Controllers
             content.Title = title;
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Page", "Display", new { id = id });
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeletePage(string id)
+        {
+            var content = DbUtil.Content(id);
+            DbUtil.Db.Contents.DeleteOnSubmit(content);
+            DbUtil.Db.SubmitChanges();
+            return RedirectToAction("Index", "Display");
         }
     }
 }

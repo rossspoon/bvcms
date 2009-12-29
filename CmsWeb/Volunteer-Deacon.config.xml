@@ -1,5 +1,5 @@
 ﻿<pre Year="2010">
-  <Times>
+  <times>
     <time name="_730" day="0" hour="7:30 AM" />
     <time name="_800" day="0" hour="8:00 AM" />
     <time name="_850" day="0" hour="8:50 AM" />
@@ -9,52 +9,52 @@
     <time name="_1100" day="0" hour="11:00 AM" />
     <time name="_600" day="0" hour="6:00 PM" />
     <time name="_Wed630" day="3" hour="6:30 PM" />
-  </Times>
-  <Org name="Hospital_Visitation" OrgId="88383" />
-  <Org name="Homebound_Visitation" OrgId="88382" />
-  <Org name="Valet_Parking" OrgId="88387" />
-  <Org name="Valet_Senior_Adult" OrgId="88058">
+  </times>
+  <org name="Hospital_Visitation" orgid="88383" />
+  <org name="Homebound_Visitation" orgid="88382" />
+  <org name="Valet_Parking" orgid="88387" />
+  <org name="Valet_Senior_Adult" orgid="81058">
     <time name="_900" />
     <time name="_1100" />
-  </Org>
-  <Org name="Valet_Preschool" OrgId="88374">
+  </org>
+  <org name="Valet_Preschool" orgid="88374">
     <time name="_730" />
     <time name="_850" />
     <time name="_1045" />
-  </Org>
-  <Org name="Nursery" OrgId="88388">
-  </Org>
-  <Org name="VIP_Babies" OrgId="88375">
+  </org>
+  <org name="Nursery" orgid="88388">
+  </org>
+  <org name="VIP_Babies" orgid="88375">
     <time name="_800" />
     <time name="_930" />
     <time name="_1100" />
-  </Org>
-  <Org name="VIP_Younger_Preschool" OrgId="88378">
+  </org>
+  <org name="VIP_Younger_Preschool" orgid="88378">
     <time name="_800" />
     <time name="_930" />
     <time name="_1100" />
-  </Org>
-  <Org name="VIP_Middle_Preschool" OrgId="88376">
+  </org>
+  <org name="VIP_Middle_Preschool" orgid="88376">
     <time name="_800" />
     <time name="_930" />
     <time name="_1100" />
-  </Org>
-  <Org name="VIP_Older_Preschool" OrgId="88377">
+  </org>
+  <org name="VIP_Older_Preschool" orgid="88377">
     <time name="_800" />
     <time name="_930" />
     <time name="_1100" />
-  </Org>
-  <Org name="Telephone_Counseling" OrgId="88379">
+  </org>
+  <org name="Telephone_Counseling" orgid="88379">
     <time name="_800" />
     <time name="_900" />
-  </Org>
-  <Org name="Counseling" OrgId="88380">
+  </org>
+  <org name="Counseling" orgid="88380">
     <time name="_930" />
     <time name="_1100" />
     <time name="_600" />
     <time name="_Wed630" />
-  </Org>
-  <Org name="Evangelism" OrgId="88381" />
-  <Org name="Exhort_To_Serve" OrgId="88386" />
-  <Org name="GoDisciples" OrgId="88385" />
+  </org>
+  <org name="Evangelism" orgid="88381" />
+  <org name="Exhort_To_Serve" orgid="88386" />
+  <org name="GODisciples" orgid="88385" />
 </pre>

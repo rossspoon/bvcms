@@ -25,7 +25,9 @@ namespace CMSWeb.Models
             set
             {
                 _view = value;
-                formcontent = DbUtil.Content("Volunteer-" + View + ".view").Body;
+                var c = DbUtil.Content("Volunteer-" + View + ".view");
+                if (c != null)
+                    formcontent = c.Body;
             }
         }
         public string first { get; set; }

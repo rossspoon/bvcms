@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Web.UI.HtmlControls;
 using CustomControls;
 using System.Data.Linq;
+using System.Net.Mail;
 //using System.Transactions;
 
 namespace CMSWeb
