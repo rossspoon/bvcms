@@ -17,7 +17,6 @@ namespace CMSWebSetup.Controllers
     [Authorize(Roles = "Admin")]
     public class DisplayController : CMSWebCommon.Controllers.CmsController
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var q = from c in DbUtil.Db.Contents
@@ -25,13 +24,6 @@ namespace CMSWebSetup.Controllers
                     select c;
             return View(q);
         }
-        //public ActionResult RsdLink()
-        //{
-        //    var link = "<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"http://"
-        //        + HttpContext.Request.Url.Authority
-        //        + "/rsdcontent.ashx\" />";
-        //    return new ContentResult { Content = link };
-        //}
         public ActionResult Page(string id)
         {
             if (!id.HasValue())
@@ -50,8 +42,7 @@ namespace CMSWebSetup.Controllers
             ViewData["page"] = id;
             return View();
         }
-        [Authorize(Roles = "Admin")]
-        public ActionResult EditPage(string id)
+        public ActionResult EditPage(string id, bool? ishtml)
         {
             var content = DbUtil.Content(id);
             if (content != null)
@@ -60,10 +51,10 @@ namespace CMSWebSetup.Controllers
                 ViewData["title"] = content.Title;
             }
             ViewData["id"] = id;
+            ViewData["ishtml"] = ishtml ?? true;
             return View();
         }
         [ValidateInput(false)]
-        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdatePage(string id, string title, string html)
         {
@@ -76,9 +67,8 @@ namespace CMSWebSetup.Controllers
             content.Body = html;
             content.Title = title;
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Page", "Display", new { id = id });
+            return RedirectToAction("Index");
         }
-        [Authorize(Roles = "Admin")]
         public ActionResult DeletePage(string id)
         {
             var content = DbUtil.Content(id);

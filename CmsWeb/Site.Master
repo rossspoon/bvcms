@@ -128,6 +128,12 @@
                                     <asp:HyperLink ID="HyperLink10" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFund2.aspx"
                                         runat="server">Totals by Fund</asp:HyperLink></li>
                                 <li>
+                                    <asp:HyperLink ID="HyperLink2" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundAgeRange.aspx"
+                                        runat="server">Totals by Fund Age Range</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink18" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both"
+                                        runat="server">Totals by Fund Age Range (pledges included)</asp:HyperLink></li>
+                                <li>
                                     <asp:HyperLink ID="HyperLink11" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx"
                                         runat="server">Totals by Fund Range</asp:HyperLink></li>
                                 <li>

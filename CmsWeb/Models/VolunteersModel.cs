@@ -65,6 +65,11 @@ namespace CMSWeb.Models
                     where Org == "ns" || Org == null || 
                         p.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Org == Org)
                     select p;
+
+            //if (SmallGroup != "ns")
+            //    q = from p in q
+            //        where p.OrganizationMembers.Any(m => m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == SmallGroup))
+            //        select p;
             if (!Sort.HasValue())
             {
                 Sort = "Name";
@@ -143,6 +148,36 @@ namespace CMSWeb.Models
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "ns" });
             return list;
         }
+        //public string SmallGroup { get; set; }
+        //public IEnumerable<SelectListItem> SmallGroups()
+        //{
+        //    var orgkeys = Person.OrgKeys(View);
+
+        //    var q = DbUtil.Db.People.Where(p => p.VolInterestInterestCodes.Count() > 0);
+        //    var Qb = DbUtil.Db.LoadQueryById(QueryId);
+        //    if (Qb != null)
+        //        q = DbUtil.Db.People.Where(Qb.Predicate());
+
+        //    if (Org == "na")
+        //        q = from p in q
+        //            where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) == 0
+        //            select p;
+        //    else
+        //        q = from p in q
+        //            where Org == "ns" || Org == null || 
+        //                p.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Org == Org)
+        //            select p;
+
+        //    var q2 = from g in DbUtil.Db.OrgMemMemTags
+        //             where q.Select(p => p.PeopleId).Contains(g.PeopleId)
+        //             select new SelectListItem
+        //             {
+        //                 Text = g.MemberTag.Name,
+        //             };
+        //    var list = q2.ToList();
+        //    list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "ns" });
+        //    return list;
+        //}
         public PagerModel pagerModel()
         {
             return new PagerModel

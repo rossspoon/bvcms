@@ -102,5 +102,16 @@ namespace CMSWeb.Models
                 sb.AppendFormat("{0}<br/>\n", i);
             return sb.ToString();
         }
+        public string PrepareSummaryText2()
+        {
+            var q = from vi in person.VolList
+                    where vi.Value.oi.nodrop
+                    orderby vi.Value.sortdesc
+                    select vi.Key;
+            var sb = new StringBuilder();
+            foreach (var i in q)
+                sb.AppendFormat("{0}<br/>\n", i);
+            return sb.ToString();
+        }
     }
 }

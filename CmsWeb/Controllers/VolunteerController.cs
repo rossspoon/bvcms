@@ -73,7 +73,7 @@ namespace CMSWeb.Controllers
 
             if (Request.Form["noemail"] != "noemail")
             {
-                var summary = m.PrepareSummaryText();
+                var summary = m.PrepareSummaryText2();
                 var smtp = new SmtpClient();
                 Util.EmailHtml2(smtp,
                     m.person.EmailAddress,
@@ -103,6 +103,7 @@ namespace CMSWeb.Controllers
         }
         public ActionResult Confirm(string id)
         {
+            ViewData["url"] = Session["continuelink"];
             SetHeader(id);
             return View();
         }

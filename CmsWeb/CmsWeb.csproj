@@ -80,6 +80,13 @@
     <Compile Include="BulkMail.aspx.designer.cs">
       <DependentUpon>BulkMail.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contributions\Reports\TotalsByFundAgeRange.aspx.cs">
+      <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contributions\Reports\TotalsByFundAgeRange.aspx.designer.cs">
+      <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\FamilyResult.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Models\VolunteerCommitmentsModel.cs" />
@@ -1906,6 +1913,7 @@
     <Content Include="Content\spinner_bar.gif" />
     <Content Include="Content\Stylesheet1.css" />
     <Content Include="Content\ui.timepickr.css" />
+    <Content Include="Contributions\Reports\TotalsByFundAgeRange.aspx" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
     <None Include="ckeditor\.htaccess" />

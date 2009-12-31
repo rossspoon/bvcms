@@ -118,6 +118,48 @@ namespace CMSPresenter
             set { total = value; }
         }
         public decimal PctTotal { get; set; }
+        public decimal? Average
+        {
+            get { return total.Value / DonorCount; }
+        }
+    }
+    public class AgeRangeInfo
+    {
+        string[] RangeLabels = new string[] 
+        { 
+            "0", 
+            "1 - 10", 
+            "11 - 20",
+            "21 - 30",
+            "31 - 40",
+            "41 - 50",
+            "51 - 60",
+            "61 - 70",
+            "71 - 80",
+            "81 - 90",
+            "91 - 100",
+            "101 - 110",
+            "111 - 120",
+        };
+        public string Range
+        {
+            get { return RangeLabels[RangeId]; }
+        }
+        public int RangeId { get; set; }
+        public int? Count { get; set; }
+        public int? DonorCount { get; set; }
+        public decimal? PctCount { get; set; }
+        private decimal? total;
+        public decimal? Total
+        {
+            get { return total.HasValue ? total : (decimal?)0.0; }
+            set { total = value; }
+        }
+        public decimal? Average
+        {
+            get { return total.Value / DonorCount; }
+        }
+        public decimal PctTotal { get; set; }
     }
     [DataObject]
     public class BundleController
@@ -681,6 +723,75 @@ namespace CMSPresenter
             };
             var q2 = from r in q
                      select new RangeInfo
+                     {
+                         RangeId = r.RangeId,
+                         Total = r.Total,
+                         Count = r.Count,
+                         DonorCount = r.DonorCount,
+                         PctCount = (decimal)r.Count / RangeTotal.Count * 100,
+                         PctTotal = r.Total.Value / RangeTotal.Total.Value * 100,
+                     };
+            return q2;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<AgeRangeInfo> TotalsByFundAgeRange(int fundid, DateTime dt1, DateTime dt2, string Pledges)
+        {
+            var contributionTypes = new int[] 
+            { 
+                (int)Contribution.TypeCode.ReturnedCheck, 
+                (int)Contribution.TypeCode.Reversed, 
+            };
+            var q0 = from c in DbUtil.Db.Contributions
+                     where dt1 <= c.ContributionDate.Value.Date
+                     where c.ContributionDate.Value.Date <= dt2
+                     where !contributionTypes.Contains(c.ContributionTypeId)
+                     where c.FundId == fundid || fundid == 0
+                     select c;
+            switch (Pledges)
+            {
+                case "true":
+                    q0 = from c in q0
+                         where c.PledgeFlag
+                         select c;
+                    break;
+                case "false":
+                    q0 = from c in q0
+                         where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+                         where !c.PledgeFlag
+                         where c.PostingDate != null
+                         select c;
+                    break;
+                case "both":
+                    q0 = from c in q0
+                         where (!c.PledgeFlag && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded)
+                                || c.PledgeFlag
+                         where (!c.PledgeFlag && c.PostingDate != null) || c.PledgeFlag
+                         select c;
+                    break;
+            }
+
+            var q = from c in q0
+                    let age = c.Person.Age ?? 0
+                    let agerange = age == 0 ? 0 : (age / 10) + 1
+                    group c by agerange into g
+                    orderby g.Key
+                    select new AgeRangeInfo
+                    {
+                        RangeId = g.Key,
+                        Total = g.Sum(t => t.ContributionAmount),
+                        Count = g.Count(),
+                        DonorCount = (from d in g
+                                      group d by d.PeopleId into gd
+                                      select gd).Count()
+                    };
+            RangeTotal = new RangeInfo
+            {
+                Count = q.Sum(t => t.Count),
+                Total = q.Sum(t => t.Total),
+                DonorCount = (from c in q0 group c by c.PeopleId into g select g).Count()
+            };
+            var q2 = from r in q
+                     select new AgeRangeInfo
                      {
                          RangeId = r.RangeId,
                          Total = r.Total,

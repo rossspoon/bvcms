@@ -30,6 +30,7 @@ namespace CMSWeb.Controllers
         public ActionResult Index(int? id)
         {
             var vols = new VolunteersModel { QueryId = id };
+            Session["continuelink"] = Request.Url;
             UpdateModel(vols);
             if (!vols.View.HasValue())
                 vols.View = "ns";
@@ -72,6 +73,7 @@ namespace CMSWeb.Controllers
                 comp = CompareType.NotEqual;
             var clause = qb.AddNewClause(QueryType.HasVolunteered, comp, "1,T");
             clause.Quarters = vols.View;
+
             DbUtil.Db.QueryBuilderClauses.InsertOnSubmit(qb);
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
