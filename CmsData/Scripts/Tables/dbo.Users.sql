@@ -26,10 +26,12 @@ CREATE TABLE [dbo].[Users]
 [TempPassword] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Name] AS ([dbo].[UName]([PeopleId])),
 [Name2] AS ([dbo].[UName2]([PeopleId])),
-[ResetPasswordCode] [uniqueidentifier] NULL
-) ON [PRIMARY]
+[ResetPasswordCode] [uniqueidentifier] NULL,
+[DefaultGroup] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+)
+
+ALTER TABLE [dbo].[Users] ADD
+CONSTRAINT [FK_Users_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([PeopleId])
 GO
 ALTER TABLE [dbo].[Users] ADD CONSTRAINT [PK_Users_1] PRIMARY KEY CLUSTERED  ([UserId]) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[Users] ADD CONSTRAINT [FK_Users_PEOPLE_TBL] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([PeopleId])
 GO

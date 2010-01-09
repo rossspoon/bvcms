@@ -13,8 +13,10 @@ CREATE TABLE [dbo].[Attend]
 [AttendId] [int] NOT NULL IDENTITY(1, 1),
 [OtherAttends] [int] NOT NULL CONSTRAINT [DF_Attend_OtherAttends] DEFAULT ((0)),
 [BFCAttendance] [bit] NULL,
-[EffAttendFlag] AS (CONVERT([bit],case when [AttendanceTypeId]=(90) then NULL when [AttendanceFlag]=(1) AND [OtherAttends]>(0) AND [BFCAttendance]=(1) then NULL when [AttendanceFlag]=(1) then (1) when [OtherAttends]>(0) then NULL else (0) end,(0)))
-) ON [PRIMARY]
+[EffAttendFlag] AS (CONVERT([bit],case when [AttendanceTypeId]=(90) then NULL when [AttendanceFlag]=(1) AND [OtherAttends]>(0) AND [BFCAttendance]=(1) then NULL when [AttendanceFlag]=(1) then (1) when [OtherAttends]>(0) then NULL else (0) end,(0))),
+[Registered] [bit] NULL
+)
+
 GO
 ALTER TABLE [dbo].[Attend] ADD CONSTRAINT [PK_Attend] PRIMARY KEY CLUSTERED  ([AttendId]) ON [PRIMARY]
 GO

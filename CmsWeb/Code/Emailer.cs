@@ -86,6 +86,13 @@ namespace CMSWeb
             foreach (var a in Addresses)
             {
                 var msg = new MailMessage(From, a);
+                string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+                if (sysfromemail.HasValue())
+                {
+                    var sysmail = new MailAddress(sysfromemail);
+                    if (From.Host != sysmail.Host)
+                        msg.Sender = sysmail;
+                }
                 msg.Subject = Subject;
                 msg.Body = "<html>\r\n" + Message + "\r\n</html>";
                 msg.IsBodyHtml = true;
@@ -139,6 +146,13 @@ namespace CMSWeb
                 {
                     var to = new MailAddress(em, p.Name);
                     var msg = new MailMessage(From, to);
+                    string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+                    if (sysfromemail.HasValue())
+                    {
+                        var sysmail = new MailAddress(sysfromemail);
+                        if (From.Host != sysmail.Host)
+                            msg.Sender = sysmail;
+                    }
                     msg.Subject = Subject;
 
                     var text = Message;
@@ -176,6 +190,13 @@ namespace CMSWeb
                 {
                     var msg = new MailMessage(From, From);
                     msg.Subject = "not a valid email address";
+                    string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+                    if (sysfromemail.HasValue())
+                    {
+                        var sysmail = new MailAddress(sysfromemail);
+                        if (From.Host != sysmail.Host)
+                            msg.Sender = sysmail;
+                    }
                     msg.Body = "Addressed to: " + em + "\r\n"
                         + "Name: " + p.Name + "\r\n\r\n"
                         + Message.Replace("{name}", p.Name).Replace("{first}", p.PreferredName);
@@ -211,19 +232,32 @@ namespace CMSWeb
             sb.Append(Message);
             smtp = new SmtpClient();
 
-            var mr = new MailMessage(From, From);
-            mr.Subject = "sent emails";
-            mr.Body = sb.ToString();
-            mr.IsBodyHtml = false;
-            smtp.Send(mr);
+            var msg = new MailMessage(From, From);
+            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+            if (sysfromemail.HasValue())
+            {
+                var sysmail = new MailAddress(sysfromemail);
+                if (From.Host != sysmail.Host)
+                    msg.Sender = sysmail;
+            }
+            msg.Subject = "sent emails";
+            msg.Body = sb.ToString();
+            msg.IsBodyHtml = false;
+            smtp.Send(msg);
 
-            mr = new MailMessage();
-            mr.From = From;
-            mr.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
-            mr.Subject = "sent emails";
-            mr.Body = sb.ToString();
-            mr.IsBodyHtml = false;
-            smtp.Send(mr);
+            msg = new MailMessage();
+            msg.From = From;
+            if (sysfromemail.HasValue())
+            {
+                var sysmail = new MailAddress(sysfromemail);
+                if (From.Host != sysmail.Host)
+                    msg.Sender = sysmail;
+            }
+            msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
+            msg.Subject = "sent emails";
+            msg.Body = sb.ToString();
+            msg.IsBodyHtml = false;
+            smtp.Send(msg);
 
             sb.Length = 0;
         }

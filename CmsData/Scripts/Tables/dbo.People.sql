@@ -92,7 +92,6 @@ CREATE TABLE [dbo].[People]
 [ModifiedDate] [datetime] NULL,
 [PictureId] [int] NULL,
 [ContributionOptionsId] [int] NULL,
-[Age] AS ([dbo].[Age]([PeopleId])),
 [PrimaryCity] AS ([dbo].[PrimaryCity]([PeopleId])),
 [PrimaryZip] AS ([dbo].[PrimaryZip]([PeopleId])),
 [PrimaryAddress] AS ([dbo].[PrimaryAddress]([PeopleId])),
@@ -111,13 +110,17 @@ CREATE TABLE [dbo].[People]
 [WorkPhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [BibleFellowshipClassId] AS ([dbo].[BibleFellowshipClassId2]([PeopleId])),
 [Name] AS ((case when [Nickname]<>'' then [nickname] else [FirstName] end+' ')+[LastName]),
-[PreferredName] AS (case when [Nickname]<>'' then [nickname] else [FirstName] end+' '),
 [Name2] AS (([LastName]+', ')+case when [Nickname]<>'' then [nickname] else [FirstName] end),
 [HashNum] AS (checksum([FirstName]+[LastName])),
 [CampusId] [int] NULL,
-[CellPhoneAC] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
+[CellPhoneAC] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PreferredName] AS (case when [Nickname]<>'' then [nickname] else [FirstName] end),
+[CheckInNotes] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Age] AS ((datepart(year,isnull([DeceasedDate],getdate()))-[BirthYear])-case when [BirthMonth]>datepart(month,isnull([DeceasedDate],getdate())) OR [BirthMonth]=datepart(month,isnull([DeceasedDate],getdate())) AND [BirthDay]>datepart(day,isnull([DeceasedDate],getdate())) then (1) else (0) end)
+)
+
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -146,14 +149,21 @@ BEGIN
 		UPDATE dbo.Families SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
 			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
 		WHERE FamilyId = @fid
+		DECLARE @n INT
+		SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fid
+		IF @n = 0
+		BEGIN
+			DELETE dbo.RelatedFamilies WHERE @fid IN(FamilyId, RelatedFamilyId)
+			DELETE dbo.Families WHERE FamilyId = @fid
+		END
 		FETCH NEXT FROM c INTO @fid;
 	END;
 	CLOSE c;
 	DEALLOCATE c;
 
 END
-
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -197,6 +207,7 @@ BEGIN
 
 END
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -234,10 +245,34 @@ BEGIN
 			UPDATE dbo.Families SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
 				HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
 			WHERE FamilyId = @fid
+
 			FETCH NEXT FROM c INTO @fid;
 		END;
 		CLOSE c;
 		DEALLOCATE c;
+		
+		IF (UPDATE(FamilyId))
+		BEGIN
+			DECLARE c2 CURSOR FOR
+			SELECT FamilyId FROM deleted GROUP BY FamilyId
+			OPEN c2;
+			DECLARE @fidold INT
+			FETCH NEXT FROM c2 INTO @fidold;
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				DECLARE @n INT
+				SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fidold
+				IF @n = 0
+				BEGIN
+					DELETE dbo.RelatedFamilies WHERE @fidold IN(FamilyId, RelatedFamilyId)
+					DELETE dbo.Families WHERE FamilyId = @fidold
+				END
+				FETCH NEXT FROM c2 INTO @fidold;
+			END;
+			CLOSE c2;
+			DEALLOCATE c2;
+		END
+
 	END
     IF UPDATE(CellPhone)
 	BEGIN
@@ -248,8 +283,8 @@ BEGIN
 	END
 
 END
-
 GO
+
 ALTER TABLE [dbo].[People] ADD CONSTRAINT [PEOPLE_PK] PRIMARY KEY NONCLUSTERED  ([PeopleId]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_People_2] ON [dbo].[People] ([CellPhoneLU]) ON [PRIMARY]

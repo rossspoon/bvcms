@@ -83,6 +83,9 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="PeopleExtra.cs" />
+    <Compile Include="Generated\PeopleExtra.cs" />
+    <Compile Include="Generated\Views\ContributionsView.cs" />
     <Compile Include="Generated\VolunteerCode.cs" />
     <Compile Include="VolInterest.cs" />
     <Compile Include="Forum.cs" />

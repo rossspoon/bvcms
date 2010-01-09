@@ -13,7 +13,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using CMSPresenter;
 using CmsData;
-using CMSWeb.Controllers;
 using System.Text;
 using System.Net.Mail;
 
@@ -123,6 +122,8 @@ By logging in below, you agree that you understand this purpose and will abide b
             var sb = new StringBuilder();
             foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
             {
+                if (!Util.ValidEmail(u.Person.EmailAddress))
+                    continue;
                 if (sb.Length > 0)
                     sb.Append(",");
                 sb.AppendFormat("{0} <{1}>", u.Person.Name, u.Person.EmailAddress);

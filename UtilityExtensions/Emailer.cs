@@ -16,13 +16,20 @@ namespace UtilityExtensions
         }
         public static void Email(SmtpClient smtp, string from, string name, string addr, string subject, string message)
         {
+            if (!from.HasValue())
+                return;
             var fr = FirstAddress(from);
             var ma = Util.TryGetMailAddress(addr, name);
             if (ma == null)
                 return;
             var msg = new MailMessage(fr, ma);
-            //msg.From = new MailAddress("");
-            //msg.Sender = new MailAddress("");
+            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+            if (sysfromemail.HasValue())
+            {
+                var sysmail = new MailAddress(sysfromemail);
+                if (fr.Host != sysmail.Host)
+                    msg.Sender = sysmail;
+            }
             msg.Subject = subject;
             msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
             msg.BodyEncoding = System.Text.Encoding.UTF8;
@@ -40,6 +47,13 @@ namespace UtilityExtensions
             var fr = FirstAddress(from);
             var msg = new MailMessage();
             msg.From = fr;
+            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+            if (sysfromemail.HasValue())
+            {
+                var sysmail = new MailAddress(sysfromemail);
+                if (fr.Host != sysmail.Host)
+                    msg.Sender = sysmail;
+            }
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             msg.To.Add(addrs);
@@ -60,6 +74,13 @@ namespace UtilityExtensions
             var fr = FirstAddress(from);
             var msg = new MailMessage();
             msg.From = fr;
+            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+            if (sysfromemail.HasValue())
+            {
+                var sysmail = new MailAddress(sysfromemail);
+                if (fr.Host != sysmail.Host)
+                    msg.Sender = sysmail;
+            }
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             msg.To.Add(addrs);
@@ -81,27 +102,6 @@ namespace UtilityExtensions
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",");
             return new MailAddress(a[0]);
-        }
-        public static void Email3(SmtpClient smtp, string from, string name, string addr, string subject, string message)
-        {
-            var fr = FirstAddress(from);
-            var ma = Util.TryGetMailAddress(addr, name);
-            if (ma == null)
-                return;
-            var msg = new MailMessage(fr, ma);
-            msg.From = fr;
-            msg.Sender = new MailAddress("bbcms01@bellevue.org");
-            msg.Subject = subject;
-            msg.Body = "<html>\r\n" + message + "\r\n</html>\r\n";
-            msg.BodyEncoding = System.Text.Encoding.UTF8;
-            msg.IsBodyHtml = true;
-            var InDebug = false;
-#if DEBUG
-            InDebug = true;
-#endif
-            if (InDebug)
-                return;
-            TrySend(smtp, msg);
         }
         private static void TrySend(SmtpClient smtp, MailMessage msg)
         {

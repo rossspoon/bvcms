@@ -222,6 +222,49 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression MeetingId(
+            ParameterExpression parm,
+            CompareType op,
+            int id)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.Attends.Any(a =>
+                    (a.AttendanceFlag == true || a.Registered == true)
+                    && a.MeetingId == id
+                    );
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression PeopleExtra(
+            ParameterExpression parm,
+            CompareType op,
+            string value)
+        {
+            var a = value.Split(new char[] { ':' }, 2);
+            Expression<Func<Person, bool>> pred = p =>
+                p.PeopleExtras.Any(e =>
+                    e.Field == a[0] && e.StrValue == a[1]);
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression PeopleExtraDate(
+            ParameterExpression parm,
+            CompareType op,
+            string value)
+        {
+            var a = value.Split(new char[] { ':' }, 2);
+            var dt = DateTime.Parse(a[1]);
+            Expression<Func<Person, DateTime>> pred = p =>
+                p.PeopleExtras.SingleOrDefault(e =>
+                    e.Field == a[0]).DateValue.Value;
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(dt), left.Type);
+            return Compare(left, op, right);
+        }
         internal static Expression RecentAttendCount(
             ParameterExpression parm,
             int? progid,

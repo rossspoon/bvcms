@@ -158,28 +158,28 @@
                         <li>
                             <asp:HyperLink ID="HyperLink6" NavigateUrl="~/Admin/Users.aspx" runat="server">Users</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Programs" NavigateUrl="/Program/"
+                            <asp:HyperLink ID="Programs" NavigateUrl="/Setup/Program/"
                                 runat="server">Programs</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Ministries" NavigateUrl="/Ministry/"
+                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/"
                                 runat="server">Ministries</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="MetroZips" NavigateUrl="/MetroZip/" 
+                            <asp:HyperLink ID="MetroZips" NavigateUrl="/Setup/MetroZip/" 
                                 runat="server">MetroZips</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Funds" NavigateUrl="/Fund/"
+                            <asp:HyperLink ID="Funds" NavigateUrl="/Setup/Fund/"
                                 runat="server">Funds</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/MemberType/"
+                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/"
                                 runat="server">MemberTypes</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Settings" NavigateUrl="/Setting/"
+                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/"
                                 runat="server">Settings</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/"
                                 runat="server">Special Content</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Recreation" NavigateUrl="/RecreationSetup/"
+                            <asp:HyperLink ID="Recreation" NavigateUrl="/Setup/Recreation/"
                                 runat="server">Recreation Setup</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"

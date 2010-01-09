@@ -35,6 +35,15 @@ namespace CMSWeb
             {
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 Response.Cache.SetAllowResponseInBrowserHistory(false);
+
+                var body = this.QueryString<string>("body");
+                if (body.HasValue())
+                    EmailBody.Text = Server.UrlDecode(body);
+                var subj = this.QueryString<string>("subj");
+                if (subj.HasValue())
+                    SubjectLine.Text = Server.UrlDecode(subj);
+                var ishtml = this.QueryString<bool?>("ishtml");
+                IsHtml.Checked = ishtml ?? false;
             }
             CKEditPanel.Visible = IsHtml.Checked;
         }

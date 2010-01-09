@@ -137,6 +137,12 @@ namespace UtilityExtensions
         {
             return string.Format(fmt, p);
         }
+        public static string Truncate(this string source, int length)
+        {
+            if (source.HasValue() && source.Length > length)
+                source = source.Substring(0, length);
+            return source;
+        }
         public static string EmailHref(this string addr, string name)
         {
             if (!addr.HasValue())

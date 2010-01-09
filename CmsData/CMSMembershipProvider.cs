@@ -309,9 +309,8 @@ namespace CmsData
                 FailedPasswordAnswerAttemptCount = 0,
                 FailedPasswordAnswerAttemptWindowStart = createDate,
             };
-            var Db = new CMSDataContext(Util.ConnectionString);
-            Db.Users.InsertOnSubmit(user);
-            Db.SubmitChanges();
+            DbUtil.Db.Users.InsertOnSubmit(user);
+            DbUtil.Db.SubmitChanges();
             return user;
         }
 

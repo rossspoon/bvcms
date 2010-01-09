@@ -91,6 +91,8 @@ namespace CmsData
 		
 		private DateTime? _MeetingTime;
 		
+		private bool? _ShowOnlyRegisteredAtCheckIn;
+		
    		
    		private EntitySet< Organization> _ChildOrgs;
 		
@@ -246,6 +248,9 @@ namespace CmsData
 		
 		partial void OnMeetingTimeChanging(DateTime? value);
 		partial void OnMeetingTimeChanged();
+		
+		partial void OnShowOnlyRegisteredAtCheckInChanging(bool? value);
+		partial void OnShowOnlyRegisteredAtCheckInChanged();
 		
     #endregion
 		public Organization()
@@ -1119,6 +1124,28 @@ namespace CmsData
 					this._MeetingTime = value;
 					this.SendPropertyChanged("MeetingTime");
 					this.OnMeetingTimeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ShowOnlyRegisteredAtCheckIn", UpdateCheck=UpdateCheck.Never, Storage="_ShowOnlyRegisteredAtCheckIn", DbType="bit")]
+		public bool? ShowOnlyRegisteredAtCheckIn
+		{
+			get { return this._ShowOnlyRegisteredAtCheckIn; }
+
+			set
+			{
+				if (this._ShowOnlyRegisteredAtCheckIn != value)
+				{
+				
+                    this.OnShowOnlyRegisteredAtCheckInChanging(value);
+					this.SendPropertyChanging();
+					this._ShowOnlyRegisteredAtCheckIn = value;
+					this.SendPropertyChanged("ShowOnlyRegisteredAtCheckIn");
+					this.OnShowOnlyRegisteredAtCheckInChanged();
 				}
 
 			}

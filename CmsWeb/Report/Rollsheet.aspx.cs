@@ -33,6 +33,7 @@ namespace CMSWeb.Reports
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
+        private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
@@ -96,15 +97,15 @@ namespace CMSWeb.Reports
                             orderby at.Person.Name2
                             select at;
                     foreach (var a in q)
-                        AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, font);
+                        AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, a.Person.DOB, font);
                 }
                 else
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, group))
-                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, font);
+                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
                 if (!group.HasValue && meeting == null)
                 {
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, boldfont);
+                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                 }
                 if (t.Rows.Count > 0)
                     mct.AddElement(t);
@@ -131,7 +132,7 @@ namespace CMSWeb.Reports
                                     "M.{0}.{1:MMddyyHHmm}".Fmt(o.OrgId, dt));
             return mct;
         }
-        private void AddRow(string Code, string name, int pid, Font font)
+        private void AddRow(string Code, string name, int pid, string dob, Font font)
         {
             var bc = new Barcode39();
             bc.X = 1.2f;
@@ -147,8 +148,11 @@ namespace CMSWeb.Reports
             t.AddCell("");
             t.AddCell(box);
 
-            var p = new Phrase(name, font);
-            p.Add(new Chunk(" (" + Code + ")", smallfont));
+            var bd = DateTime.Parse(dob);
+
+            var p = new Phrase(name + "\n", font);
+            p.Add(new Chunk(" ", medfont));
+            p.Add(new Chunk("({0}) {1:MMM d}".Fmt(Code, bd), smallfont));
             t.AddCell(p);
         }
         private class OrgInfo

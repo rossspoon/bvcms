@@ -83,6 +83,10 @@
     <Comparison Type="IsNull" Display="{0} is null" />
     <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
+  <FieldType Name="IntegerEqual">
+    <Comparison Type="Equal" Display="{0} = {1}" />
+    <Comparison Type="NotEqual" Display="{0} &lt;&gt; {1}" />
+  </FieldType>
   <FieldType Name="String">
     <Comparison Type="Equal" Display="{0} = '{1}'" />
     <Comparison Type="StartsWith" Display="{0} like '{1}%'" />

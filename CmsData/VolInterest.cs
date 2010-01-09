@@ -39,6 +39,7 @@ namespace CmsData
         }
         public class DayTime
         {
+            public string Name { get; set; }
             public int Day { get; set; }
             public DateTime Time { get; set; }
         }
@@ -46,7 +47,7 @@ namespace CmsData
         {
             public int OrgId { get; set; }
             public string Name { get; set; }
-            public List<DayTime> times { get; set; }
+            public Dictionary<string, DayTime> times { get; set; }
             public List<string> groups { get; set; }
             public bool nodrop { get; set; }
             public void CleanAttends(int pid)
@@ -96,7 +97,7 @@ namespace CmsData
                         if (hour != null)
                             CreateMeetingRegister(sun, hour, pid, year);
                         else
-                            foreach (var t in oi.times)
+                            foreach (var t in oi.times.Values)
                                 CreateMeetingRegister(sun, t, pid, year);
                     }
                 }
@@ -283,7 +284,7 @@ namespace CmsData
                     vol.oi.nodrop = true;
                 vol.sortdesc = vol.oi.Name;
 
-                vol.hour = (from p in times where c.Contains(p.Key) select p.Value)
+                vol.hour = (from p in vol.oi.times where c.Contains(p.Key) select p.Value)
                     .SingleOrDefault();
                 vol.month = (from p in months where c.Contains(p.Key) select p.Value)
                     .SingleOrDefault();
@@ -310,7 +311,6 @@ namespace CmsData
             }
         }
         private int year;
-        private Dictionary<string, DayTime> times;
         private Dictionary<string, OrgInfo> orgs;
         Dictionary<string, int> months = new Dictionary<string, int>
         {
@@ -345,13 +345,13 @@ namespace CmsData
                 p.year = doc.Root.Attribute("year").Value.ToInt();
             else
                 p.year = Util.Now.Year;
-            p.times = doc.Root.Descendants("times").Descendants("time").ToDictionary(
-                t => t.Attribute("name").Value,
-                t => new DayTime
-                {
-                    Day = t.Attribute("day").Value.ToInt(),
-                    Time = DateTime.Parse(t.Attribute("hour").Value)
-                });
+            //p.times = doc.Root.Descendants("times").Descendants("time").ToDictionary(
+            //    t => t.Attribute("name").Value,
+            //    t => new DayTime
+            //    {
+            //        Day = t.Attribute("day").Value.ToInt(),
+            //        Time = DateTime.Parse(t.Attribute("hour").Value)
+            //    });
             p.orgs = doc.Root.Descendants("org").ToDictionary(
                 o => o.Attribute("name").Value,
                 o => new OrgInfo
@@ -359,7 +359,12 @@ namespace CmsData
                     Name = o.Attribute("name").Value,
                     OrgId = o.Attribute("orgid").Value.ToInt(),
                     times = o.Descendants("time").Select(t =>
-                        p.times[t.Attribute("name").Value]).ToList(),
+                        new DayTime
+                        {
+                            Name = t.Attribute("name").Value,
+                            Day = t.Attribute("day").Value.ToInt(),
+                            Time = DateTime.Parse(t.Attribute("hour").Value)
+                        }).ToDictionary(dt => dt.Name),
                     groups = o.Descendants("group").Select(t => t.Value).ToList()
                 });
         }

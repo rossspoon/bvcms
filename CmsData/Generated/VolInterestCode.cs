@@ -19,11 +19,11 @@ namespace CmsData
 		
 		private int _Id;
 		
+		private string _Description;
+		
 		private string _Code;
 		
 		private string _Org;
-		
-		private string _Description;
 		
    		
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
@@ -39,14 +39,14 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
+		partial void OnDescriptionChanging(string value);
+		partial void OnDescriptionChanged();
+		
 		partial void OnCodeChanging(string value);
 		partial void OnCodeChanged();
 		
 		partial void OnOrgChanging(string value);
 		partial void OnOrgChanged();
-		
-		partial void OnDescriptionChanging(string value);
-		partial void OnDescriptionChanged();
 		
     #endregion
 		public VolInterestCode()
@@ -83,6 +83,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(80)")]
+		public string Description
+		{
+			get { return this._Description; }
+
+			set
+			{
+				if (this._Description != value)
+				{
+				
+                    this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="varchar(50)")]
 		public string Code
 		{
@@ -105,7 +127,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Org", UpdateCheck=UpdateCheck.Never, Storage="_Org", DbType="varchar(20)")]
+		[Column(Name="Org", UpdateCheck=UpdateCheck.Never, Storage="_Org", DbType="varchar(50)")]
 		public string Org
 		{
 			get { return this._Org; }
@@ -120,28 +142,6 @@ namespace CmsData
 					this._Org = value;
 					this.SendPropertyChanged("Org");
 					this.OnOrgChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(50)")]
-		public string Description
-		{
-			get { return this._Description; }
-
-			set
-			{
-				if (this._Description != value)
-				{
-				
-                    this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
 				}
 
 			}

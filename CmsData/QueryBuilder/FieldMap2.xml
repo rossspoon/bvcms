@@ -73,8 +73,10 @@
       Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
     </Field>
     <Field Name="EmailAddress"  Title="Email" Type="String">
+      Email address
     </Field>
-    <Field Name="PeopleId" Title="PeopleId (internal)" Type="Integer">
+    <Field Name="PeopleId" Type="Integer">
+      Advanced use
     </Field>
   </Category>
   <Category Title="Growth">
@@ -341,6 +343,9 @@
       <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
       Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.
     </Field>-->
+    <Field Name="MeetingId" Type="Integer">
+      Advanced use
+    </Field>
   </Category>
   <Category Title="Miscellaneous">
     <Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode">
@@ -393,6 +398,12 @@
     </Field>
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
       Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
+    </Field>
+    <Field Name="PeopleExtra" Title="ExtraValue" Type="StringEqual">
+      ExtraValue field = (field:value)
+    </Field>
+    <Field Name="PeopleExtraDate" Title="ExtraValueDate" Type="String">
+      ExtraValue field = (field:value)
     </Field>
   </Category>
 </Fields>

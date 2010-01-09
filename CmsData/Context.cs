@@ -72,10 +72,19 @@ namespace CmsData
         {
             return this.People.FirstOrDefault(p => p.PeopleId == id);
         }
-
         public Organization LoadOrganizationById(int id)
         {
             return this.Organizations.FirstOrDefault(o => o.OrganizationId == id);
+        }
+        public string FetchExtra(int pid, string field)
+        {
+            return this.PeopleExtras.OrderByDescending(e => e.TransactionTime)
+                .First(e => e.Field == field && e.PeopleId == pid).StrValue;
+        }
+        public DateTime? FetchExtraDate(int pid, string field)
+        {
+            return this.PeopleExtras.OrderByDescending(e => e.TransactionTime)
+                .First(e => e.Field == field && e.PeopleId == pid).DateValue;
         }
         private QueryBuilderClause CheckBadQuery(QueryBuilderClause qb)
         {

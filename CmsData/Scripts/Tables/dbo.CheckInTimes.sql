@@ -1,11 +1,12 @@
 CREATE TABLE [dbo].[CheckInTimes]
 (
-[Id] [int] NOT NULL,
+[Id] [int] NOT NULL IDENTITY(1, 1),
 [PeopleId] [int] NULL,
 [OrganizationId] [int] NULL,
 [CheckInDay] [datetime] NULL,
 [CheckInTime] [datetime] NULL
-) ON [PRIMARY]
+)
+
 GO
 ALTER TABLE [dbo].[CheckInTimes] ADD CONSTRAINT [PK_CheckInTimes] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
 GO

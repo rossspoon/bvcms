@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[Organizations]
 [OrganizationName] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [ModifiedBy] [int] NULL,
 [ModifiedDate] [datetime] NULL,
+[ScheduleId] [int] NULL,
 [EntryPointId] [int] NULL,
 [ParentOrgId] [int] NULL,
 [AllowAttendOverlap] [bit] NOT NULL CONSTRAINT [DF_Organizations_AllowAttendOverlap] DEFAULT ((0)),
@@ -36,9 +37,11 @@ CREATE TABLE [dbo].[Organizations]
 [SchedTime] [datetime] NULL,
 [SchedDay] [int] NULL,
 [MeetingTime] [datetime] NULL,
-[ScheduleId] [int] NULL
-) ON [PRIMARY]
+[ShowOnlyRegisteredAtCheckIn] [bit] NULL
+)
+
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -55,7 +58,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF NOT UPDATE(SchedDay) OR UPDATE(SchedTime)
+	IF NOT (UPDATE(SchedDay) OR UPDATE(SchedTime))
 		RETURN
 	DECLARE @orgid INT, @day INT, @time DATETIME
     DECLARE c CURSOR FOR
@@ -75,6 +78,7 @@ BEGIN
 
 END
 GO
+
 ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [ORGANIZATIONS_PK] PRIMARY KEY NONCLUSTERED  ([OrganizationId]) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Organizations] WITH NOCHECK ADD CONSTRAINT [ChildOrgs__ParentOrg] FOREIGN KEY ([ParentOrgId]) REFERENCES [dbo].[Organizations] ([OrganizationId])

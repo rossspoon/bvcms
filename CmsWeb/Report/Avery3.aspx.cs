@@ -69,16 +69,17 @@ namespace CMSWeb.Reports
                         First = p.PreferredName,
                         Last = p.LastName,
                         PeopleId = p.PeopleId,
-                        Phone = p.CellPhone ?? p.HomePhone
+                        Phone = p.CellPhone ?? p.HomePhone,
+                        dob = p.DOB
                     };
             foreach (var m in q)
-                AddRow(t, m.First, m.Last, m.Phone, m.PeopleId);
+                AddRow(t, m.First, m.Last, m.Phone, m.dob, m.PeopleId);
             document.Add(t);
 
             document.Close();
             Response.End();
         }
-        public void AddRow(PdfPTable t, string fname, string lname, string phone, int pid)
+        public void AddRow(PdfPTable t, string fname, string lname, string phone, string dob, int pid)
         {
             var t2 = new PdfPTable(2);
             t2.WidthPercentage = 100f;

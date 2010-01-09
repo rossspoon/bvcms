@@ -20,7 +20,10 @@ namespace CMSWeb
     {
         protected void Application_Start()
         {
+            AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+            RouteTable.Routes.RouteExistingFiles = true;
+            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -51,23 +54,11 @@ namespace CMSWeb
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.js");
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.css");
 
-            routes.RouteExistingFiles = true;
-
-            AreaRegistration.RegisterAllAreas();
-
-            AddRoute(routes, "Task", "Task", "Task/{action}/{id}", "List");
-            AddRoute(routes, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
-            AddRoute(routes, "QueryBuilder", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");
-            AddRoute(routes, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
-            AddRoute(routes, "Volunteer", "Volunteer", "Volunteer/{id}", "Start");
-            AddRoute(routes, "Default", "Home", "{controller}/{action}/{id}", "Index");
-            
-            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
-        }
-        private static void AddRoute(RouteCollection routes, string name, string controller, string path, string action)
-        {
-            routes.MapRoute(name, path, 
-                new { controller = controller, action = action, id = "" });
+            routes.MapRoute(
+                "Default",                                              // Route name
+                "{controller}/{action}/{id}",                           // URL with parameters
+                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+            );
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -118,7 +109,7 @@ namespace CMSWeb
             }
             else
             {
-                msg.From = new MailAddress(WebConfigurationManager.AppSettings["sysfromemail"]);
+                msg.From = new MailAddress(WebConfigurationManager.AppSettings["errorsfromemail"]);
                 msg.Body = ex.ToString();
             }
             foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))

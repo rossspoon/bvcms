@@ -211,13 +211,21 @@ namespace UtilityExtensions
             else if (typBindingSource == typeof(decimal))
                 value = decimal.Parse(textvalue);
             else if (typBindingSource == typeof(decimal?))
-                value = decimal.Parse(textvalue);
+            {
+                decimal d;
+                if (decimal.TryParse(textvalue, out d))
+                    value = d;
+            }
             else if (typBindingSource == typeof(double))
                 value = double.Parse(textvalue);
             else if (typBindingSource == typeof(bool))
                 value = bool.Parse(textvalue);
             else if (typBindingSource == typeof(bool?))
-                value = bool.Parse(textvalue);
+            {
+                bool b;
+                if (bool.TryParse(textvalue, out b))
+                    value = b;
+            }
             else if (typBindingSource == typeof(DateTime))
             {
                 DateTime dt = DateTime.MinValue;

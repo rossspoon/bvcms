@@ -223,24 +223,29 @@ namespace CmsData
                 var om2 = Db.OrganizationMembers.SingleOrDefault(o => o.PeopleId == otherid && o.OrganizationId == om.OrganizationId);
                 if (om2 == null)
                 {
-                    om.Organization.OrganizationMembers.Add(
-                        new OrganizationMember
-                        {
-                            CreatedBy = om.CreatedBy,
-                            CreatedDate = om.CreatedDate,
-                            EnrollmentDate = om.EnrollmentDate,
-                            InactiveDate = om.InactiveDate,
-                            MemberTypeId = om.MemberTypeId,
-                            ModifiedBy = Util.UserId1,
-                            ModifiedDate = Util.Now,
-                            PeopleId = otherid,
-                            AttendPct = om.AttendPct,
-                            AttendStr = om.AttendStr,
-                            LastAttended = om.LastAttended,
-                            Pending = om.Pending,
-                        });
-                    Db.OrganizationMembers.DeleteOnSubmit(om);
+                    om2 = new OrganizationMember
+                    {
+                        CreatedBy = om.CreatedBy,
+                        CreatedDate = om.CreatedDate,
+                        EnrollmentDate = om.EnrollmentDate,
+                        InactiveDate = om.InactiveDate,
+                        MemberTypeId = om.MemberTypeId,
+                        ModifiedBy = Util.UserId1,
+                        ModifiedDate = Util.Now,
+                        PeopleId = otherid,
+                        AttendPct = om.AttendPct,
+                        AttendStr = om.AttendStr,
+                        LastAttended = om.LastAttended,
+                        Pending = om.Pending,
+                    };
+                    om.Organization.OrganizationMembers.Add(om2);
+                    foreach(var m in om.OrgMemMemTags)
+                    {
+                        om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
+                        Db.OrgMemMemTags.DeleteOnSubmit(m);
+                    }
                 }
+                Db.OrganizationMembers.DeleteOnSubmit(om);
             }
             foreach (var et in this.EnrollmentTransactions)
                 et.PeopleId = otherid;
@@ -355,10 +360,16 @@ namespace CmsData
 
             if (firstname.HasValue())
                 p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
+            else
+                p.FirstName = "Unknown";
             if (nickname.HasValue())
                 p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
             if (lastname.HasValue())
                 p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
+            p.FirstName = p.FirstName.Truncate(25);
+            p.MiddleName = p.MiddleName.Truncate(15);
+            p.NickName = p.NickName.Truncate(15);
+            p.LastName = p.LastName.Truncate(30);
 
             p.GenderId = gender;
             if (p.GenderId == 99)
@@ -387,7 +398,15 @@ namespace CmsData
             }
 
             p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
-            fam.People.Add(p);
+            if (fam == null)
+            {
+                fam = new Family();
+                DbUtil.Db.Families.InsertOnSubmit(fam);
+                p.Family = fam;
+            }
+            else
+                fam.People.Add(p);
+
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
             if (Util.UserPeopleId.HasValue)

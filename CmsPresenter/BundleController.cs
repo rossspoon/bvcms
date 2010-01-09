@@ -140,10 +140,18 @@ namespace CMSPresenter
             "91 - 100",
             "101 - 110",
             "111 - 120",
+            "121 - 130",
+            "131 - 140",
+            "141 - 150",
         };
         public string Range
         {
-            get { return RangeLabels[RangeId]; }
+            get
+            {
+                if (RangeId <= 15)
+                    return RangeLabels[RangeId];
+                return "0";
+            }
         }
         public int RangeId { get; set; }
         public int? Count { get; set; }

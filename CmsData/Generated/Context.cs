@@ -358,6 +358,10 @@ namespace CmsData
         partial void UpdatePerson(Person instance);
         partial void DeletePerson(Person instance);
         
+        partial void InsertPeopleExtra(PeopleExtra instance);
+        partial void UpdatePeopleExtra(PeopleExtra instance);
+        partial void DeletePeopleExtra(PeopleExtra instance);
+        
         partial void InsertPhonePreference(PhonePreference instance);
         partial void UpdatePhonePreference(PhonePreference instance);
         partial void DeletePhonePreference(PhonePreference instance);
@@ -1106,6 +1110,12 @@ namespace CmsData
 
 		}
 
+		public Table< PeopleExtra> PeopleExtras
+		{
+			get	{ return this.GetTable< PeopleExtra>(); }
+
+		}
+
 		public Table< PhonePreference> PhonePreferences
 		{
 			get	{ return this.GetTable< PhonePreference>(); }
@@ -1424,6 +1434,12 @@ namespace CmsData
 	    public Table< View.City> ViewCities
 	    {
 		    get { return this.GetTable< View.City>(); }
+
+	    }
+
+	    public Table< View.ContributionsView> ViewContributionsViews
+	    {
+		    get { return this.GetTable< View.ContributionsView>(); }
 
 	    }
 

@@ -360,6 +360,9 @@ namespace CmsData
                 case FieldType.Number:
                 case FieldType.NullNumber:
                 case FieldType.String:
+                case FieldType.StringEqual:
+                case FieldType.Integer:
+                case FieldType.IntegerEqual:
                     qb.TextValue = value.ToString();
                     break;
                 default:

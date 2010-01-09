@@ -73,6 +73,51 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Manage\AreaRegistration.cs" />
+    <Compile Include="Areas\Public\AreaRegistration.cs" />
+    <Compile Include="Code\CmsController.cs" />
+    <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
+    <Compile Include="Areas\Main\Models\SearchPeopleModel.cs" />
+    <Compile Include="Areas\Public\Controllers\DiscipleLifeController.cs" />
+    <Compile Include="Areas\Public\Controllers\GODisciplesController.cs" />
+    <Compile Include="Areas\Public\Controllers\LoveRespectController.cs" />
+    <Compile Include="Areas\Public\Controllers\MOBSController.cs" />
+    <Compile Include="Areas\Public\Controllers\PrayerController.cs" />
+    <Compile Include="Areas\Public\Controllers\SalesController.cs" />
+    <Compile Include="Areas\Public\Controllers\SoulMateController.cs" />
+    <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
+    <Compile Include="Areas\Manage\Controllers\VBSController.cs" />
+    <Compile Include="Areas\Public\Controllers\VBSRegController.cs" />
+    <Compile Include="Areas\Public\Models\DiscipleLifeModel.cs" />
+    <Compile Include="Areas\Public\Models\GODisciplesModel.cs" />
+    <Compile Include="Areas\Public\Models\LoveRespectModel.cs" />
+    <Compile Include="Areas\Public\Models\MOBSModel.cs" />
+    <Compile Include="Areas\Public\Models\PrayerModel.cs" />
+    <Compile Include="Areas\Public\Models\PsUtil.cs" />
+    <Compile Include="Areas\Main\Models\SalesModel.cs" />
+    <Compile Include="Areas\Public\Models\SoulMateModel.cs" />
+    <Compile Include="Areas\Public\Models\StepClassModel.cs" />
+    <Compile Include="Areas\Manage\Models\VBSDetailModel.cs" />
+    <Compile Include="Areas\Manage\Models\VBSModel.cs" />
+    <Compile Include="Areas\Public\Models\VBSRegModel.cs" />
+    <Compile Include="Areas\Public\Views\Prayer\Report.aspx.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Areas\Setup\AreaRegistration.cs" />
+    <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
+    <Compile Include="Areas\Setup\Controllers\FundController.cs" />
+    <Compile Include="Areas\Setup\Controllers\LookupController.cs" />
+    <Compile Include="Areas\Setup\Controllers\MemberTypeController.cs" />
+    <Compile Include="Areas\Setup\Controllers\MetroZipController.cs" />
+    <Compile Include="Areas\Setup\Controllers\MinistryController.cs" />
+    <Compile Include="Areas\Setup\Controllers\ProgramController.cs" />
+    <Compile Include="Areas\Setup\Controllers\PromotionController.cs" />
+    <Compile Include="Areas\Setup\Controllers\RecreationController.cs" />
+    <Compile Include="Areas\Setup\Controllers\SettingController.cs" />
+    <Compile Include="Areas\Setup\Controllers\UsersCanEmailForController.cs" />
+    <Compile Include="Areas\Setup\Models\PromotionModel.cs" />
     <Compile Include="BulkMail.aspx.cs">
       <DependentUpon>BulkMail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -87,9 +132,9 @@
     <Compile Include="Contributions\Reports\TotalsByFundAgeRange.aspx.designer.cs">
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\FamilyResult.cs" />
-    <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Models\VolunteerCommitmentsModel.cs" />
+    <Compile Include="Areas\Main\Controllers\FamilyResult.cs" />
+    <Compile Include="Areas\Manage\Controllers\ReportsController.cs" />
+    <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Person2.aspx.cs">
       <DependentUpon>Person2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -374,17 +419,17 @@
     <Compile Include="Contributions\Years.aspx.designer.cs">
       <DependentUpon>Years.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CheckinController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PromotionController.cs" />
-    <Compile Include="Controllers\QueryBuilderController.cs" />
-    <Compile Include="Controllers\RecreationController.cs" />
-    <Compile Include="Controllers\RecRegController.cs" />
-    <Compile Include="Controllers\RegisterController.cs" />
-    <Compile Include="Controllers\TaskController.cs" />
-    <Compile Include="Controllers\VolunteerController.cs" />
-    <Compile Include="Controllers\VolunteersController.cs" />
+    <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Manage\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
+    <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
+    <Compile Include="Areas\Manage\Controllers\RecreationController.cs" />
+    <Compile Include="Areas\Public\Controllers\RecRegController.cs" />
+    <Compile Include="Areas\Public\Controllers\RegisterController.cs" />
+    <Compile Include="Areas\Main\Controllers\TaskController.cs" />
+    <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
+    <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -495,25 +540,25 @@
     <Compile Include="MemberMap.aspx.designer.cs">
       <DependentUpon>MemberMap.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Models\CheckInInfo.cs" />
-    <Compile Include="Models\CheckInModel.cs" />
-    <Compile Include="Models\CheckInRecModel.cs" />
-    <Compile Include="Models\PagerModel.cs" />
-    <Compile Include="Models\ParticipantInfo.cs" />
-    <Compile Include="Models\PeopleInfo.cs" />
-    <Compile Include="Models\PromoteInfo.cs" />
-    <Compile Include="Models\PromotionModel.cs" />
-    <Compile Include="Models\QueryModel.cs" />
-    <Compile Include="Models\RecDetailModel.cs" />
-    <Compile Include="Models\RecreationModel.cs" />
-    <Compile Include="Models\RecRegModel.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
-    <Compile Include="Models\Reports\AttendanceModel.cs" />
-    <Compile Include="Models\SearchContactModel.cs" />
-    <Compile Include="Models\TaskInfo.cs" />
-    <Compile Include="Models\TaskModel.cs" />
-    <Compile Include="Models\VolunteerModel.cs" />
-    <Compile Include="Models\VolunteersModel.cs" />
+    <Compile Include="Areas\Main\Models\CheckInInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckInModel.cs" />
+    <Compile Include="Areas\Main\Models\CheckInRecModel.cs" />
+    <Compile Include="Areas\Main\Models\PagerModel.cs" />
+    <Compile Include="Areas\Manage\Models\ParticipantInfo.cs" />
+    <Compile Include="Areas\Main\Models\PeopleInfo.cs" />
+    <Compile Include="Areas\Manage\Models\PromoteInfo.cs" />
+    <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
+    <Compile Include="Areas\Main\Models\QueryModel.cs" />
+    <Compile Include="Areas\Main\Models\RecDetailModel.cs" />
+    <Compile Include="Areas\Manage\Models\RecreationModel.cs" />
+    <Compile Include="Areas\Public\Models\RecRegModel.cs" />
+    <Compile Include="Areas\Public\Models\RegisterModel.cs" />
+    <Compile Include="Areas\Manage\Models\Reports\AttendanceModel.cs" />
+    <Compile Include="Areas\Main\Models\SearchContactModel.cs" />
+    <Compile Include="Areas\Main\Models\TaskInfo.cs" />
+    <Compile Include="Areas\Main\Models\TaskModel.cs" />
+    <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
     <Compile Include="Dialog\MovePerson.aspx.cs">
       <DependentUpon>MovePerson.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1186,18 +1231,6 @@
       <Project>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</Project>
       <Name>CmsPresenter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CMSRegCustom\CMSRegCustom.csproj">
-      <Project>{343B9F21-D8C9-47DA-8D7F-CEDD5BC58963}</Project>
-      <Name>CMSRegCustom</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CMSWebCommon\CMSWebCommon.csproj">
-      <Project>{8B3F8C72-E77F-4CAF-9DF0-FFC46860E151}</Project>
-      <Name>CMSWebCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CMSWebSetup\CMSWebSetup.csproj">
-      <Project>{7B604DAA-9D8D-4E4E-8BE6-4107ED717456}</Project>
-      <Name>CMSWebSetup</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ImageData\ImageData.csproj">
       <Project>{512DA381-E81B-4121-B978-FC850EC88353}</Project>
       <Name>ImageData</Name>
@@ -1220,6 +1253,67 @@
     <Content Include="AppReview\Web.config" />
     <Content Include="App_Themes\Minimal\Skin1.skin" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
+    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
+    <Content Include="Areas\Public\Views\DiscipleLife\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\DiscipleLife\Index.aspx" />
+    <Content Include="Areas\Public\Views\GODisciples\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\GODisciples\Index.aspx" />
+    <Content Include="Areas\Public\Views\GODisciples\RenameGroup.aspx" />
+    <Content Include="Areas\Public\Views\GODisciples\Signup.aspx" />
+    <Content Include="Areas\Public\Views\LoveRespect\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\LoveRespect\Index.aspx" />
+    <Content Include="Areas\Public\Views\LoveRespect\Index0.aspx" />
+    <Content Include="Areas\Public\Views\LoveRespect\Other.aspx" />
+    <Content Include="Areas\Public\Views\LoveRespect\Other0.aspx" />
+    <Content Include="Areas\Public\Views\MOBS\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\MOBS\Index.aspx" />
+    <Content Include="Areas\Public\Views\MOBS\Payment.aspx" />
+    <Content Include="Areas\Public\Views\MOBS\Registrations.aspx" />
+    <Content Include="Areas\Public\Views\MOBS\Unknown.aspx" />
+    <Content Include="Areas\Public\Views\Prayer\Index.aspx" />
+    <Content Include="Areas\Public\Views\Prayer\PickTimes.aspx" />
+    <Content Include="Areas\Public\Views\Prayer\Report.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Download.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Item.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Items.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Login.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Payment.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Transactions.aspx" />
+    <Content Include="Areas\Public\Views\Sales\Unknown.aspx" />
+    <Content Include="Areas\Public\Views\SoulMate\CheckBack.aspx" />
+    <Content Include="Areas\Public\Views\SoulMate\ChildCare.aspx" />
+    <Content Include="Areas\Public\Views\SoulMate\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\SoulMate\Index.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step1.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step2.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step3.aspx" />
+    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.aspx" />
+    <Content Include="Areas\Public\Views\VBSReg\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\VBSReg\Index.aspx" />
+    <Content Include="Areas\Manage\Views\VBS\Detail.aspx" />
+    <Content Include="Areas\Manage\Views\VBS\Index.aspx" />
+    <Content Include="Areas\Manage\Views\VBS\OrgOptions.ascx" />
+    <Content Include="Areas\Manage\Views\Display\EditPage.aspx" />
+    <Content Include="Areas\Manage\Views\Display\Index.aspx" />
+    <Content Include="Areas\Manage\Views\Display\Page.aspx" />
+    <Content Include="Areas\Setup\Views\Fund\Edit.aspx" />
+    <Content Include="Areas\Setup\Views\Fund\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Lookup\Index.aspx" />
+    <Content Include="Areas\Setup\Views\MemberType\Index.aspx" />
+    <Content Include="Areas\Setup\Views\MetroZip\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Ministry\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Program\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Promotion\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
+    <Content Include="Areas\Setup\Views\Recreation\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\OrphanedImages.aspx" />
+    <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.aspx" />
     <Content Include="BulkMail.aspx" />
     <Content Include="ckeditor\CHANGES.html" />
     <Content Include="ckeditor\ckeditor.js" />
@@ -1916,6 +2010,10 @@
     <Content Include="Contributions\Reports\TotalsByFundAgeRange.aspx" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
+    <Content Include="Areas\Setup\Views\Web.config" />
+    <Content Include="Areas\Public\Views\Web.config" />
+    <Content Include="Areas\Manage\Views\Web.config" />
+    <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
@@ -1946,11 +2044,11 @@
     <Content Include="Scripts\CheckIn.js" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />
-    <Content Include="Views\CheckIn\Campuses.aspx" />
-    <Content Include="Views\CheckIn\CheckIn.aspx" />
-    <Content Include="Views\Home\BatchTag.aspx" />
-    <Content Include="Views\Register\Add.aspx" />
-    <Content Include="Views\Reports\Attendance.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn\Campuses.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn\CheckIn.aspx" />
+    <Content Include="Areas\Manage\Views\Home\BatchTag.aspx" />
+    <Content Include="Areas\Public\Views\Register\Add.aspx" />
+    <Content Include="Areas\Manage\Views\Reports\Attendance.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Site.Master" />
@@ -1963,65 +2061,65 @@
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Scripts\Task.js" />
     <Content Include="StaffOnly\Web.config" />
-    <Content Include="Views\Account\AddUser.aspx" />
-    <Content Include="Views\Account\ChangePassword.aspx" />
-    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
-    <Content Include="Views\Account\ForgotPassword.aspx" />
-    <Content Include="Views\Account\ForgotUsername.aspx" />
-    <Content Include="Views\Account\LogOn.aspx" />
-    <Content Include="Views\Account\Register.aspx" />
-    <Content Include="Views\Account\RequestPassword.aspx" />
-    <Content Include="Views\Account\RequestUsername.aspx" />
-    <Content Include="Views\Account\ResetPassword.aspx" />
-    <Content Include="Views\CheckIn\Index.aspx" />
-    <Content Include="Views\CheckIn\Keyboard.ascx" />
-    <Content Include="Views\Home\About.aspx" />
-    <Content Include="Views\Promotion\Index.aspx" />
-    <Content Include="Views\Promotion\List.ascx" />
-    <Content Include="Views\QueryBuilder\Conditions.ascx" />
-    <Content Include="Views\QueryBuilder\Main.aspx" />
-    <Content Include="Views\QueryBuilder\Results.aspx" />
-    <Content Include="Views\QueryBuilder\TryConditions.ascx" />
-    <Content Include="Views\Recreation\All.aspx" />
-    <Content Include="Views\Recreation\Coaches.aspx" />
-    <Content Include="Views\Recreation\Detail.aspx" />
-    <Content Include="Views\Recreation\Index.aspx" />
-    <Content Include="Views\Recreation\List.ascx" />
-    <Content Include="Views\RecReg\Confirm.aspx" />
-    <Content Include="Views\RecReg\Index.aspx" />
-    <Content Include="Views\RecReg\NoLeague.aspx" />
-    <Content Include="Views\RecReg\OtherInfo.aspx" />
-    <Content Include="Views\RecReg\Payment.aspx" />
-    <Content Include="Views\RecReg\Unknown.aspx" />
-    <Content Include="Views\Register\Confirm.aspx" />
-    <Content Include="Views\Register\ConfirmVisit.aspx" />
-    <Content Include="Views\Register\Form2.aspx" />
-    <Content Include="Views\Register\Index.aspx" />
-    <Content Include="Views\Register\Login.aspx" />
-    <Content Include="Views\Register\Visit.aspx" />
-    <Content Include="Views\Register\Visit2.aspx" />
+    <Content Include="Areas\Manage\Views\Account\AddUser.aspx" />
+    <Content Include="Areas\Manage\Views\Account\ChangePassword.aspx" />
+    <Content Include="Areas\Manage\Views\Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Areas\Manage\Views\Account\ForgotPassword.aspx" />
+    <Content Include="Areas\Manage\Views\Account\ForgotUsername.aspx" />
+    <Content Include="Areas\Manage\Views\Account\LogOn.aspx" />
+    <Content Include="Areas\Manage\Views\Account\Register.aspx" />
+    <Content Include="Areas\Manage\Views\Account\RequestPassword.aspx" />
+    <Content Include="Areas\Manage\Views\Account\RequestUsername.aspx" />
+    <Content Include="Areas\Manage\Views\Account\ResetPassword.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn\Index.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn\Keyboard.ascx" />
+    <Content Include="Areas\Manage\Views\Home\About.aspx" />
+    <Content Include="Areas\Manage\Views\Promotion\Index.aspx" />
+    <Content Include="Areas\Manage\Views\Promotion\List.ascx" />
+    <Content Include="Areas\Main\Views\QueryBuilder\Conditions.ascx" />
+    <Content Include="Areas\Main\Views\QueryBuilder\Main.aspx" />
+    <Content Include="Areas\Main\Views\QueryBuilder\Results.aspx" />
+    <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.ascx" />
+    <Content Include="Areas\Manage\Views\Recreation\All.aspx" />
+    <Content Include="Areas\Manage\Views\Recreation\Coaches.aspx" />
+    <Content Include="Areas\Manage\Views\Recreation\Detail.aspx" />
+    <Content Include="Areas\Manage\Views\Recreation\Index.aspx" />
+    <Content Include="Areas\Manage\Views\Recreation\List.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\Index.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\NoLeague.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\OtherInfo.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\Payment.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\Unknown.aspx" />
+    <Content Include="Areas\Public\Views\Register\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\Register\ConfirmVisit.aspx" />
+    <Content Include="Areas\Public\Views\Register\Form2.aspx" />
+    <Content Include="Areas\Public\Views\Register\Index.aspx" />
+    <Content Include="Areas\Public\Views\Register\Login.aspx" />
+    <Content Include="Areas\Public\Views\Register\Visit.aspx" />
+    <Content Include="Areas\Public\Views\Register\Visit2.aspx" />
     <Content Include="Views\Shared\ExportToolBar.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Pager.aspx" />
-    <Content Include="Views\Task\Columns.aspx" />
-    <Content Include="Views\Task\Detail.aspx" />
-    <Content Include="Views\Task\Detail2.aspx" />
-    <Content Include="Views\Task\Edit.aspx" />
-    <Content Include="Views\Task\List.aspx" />
-    <Content Include="Views\Task\Row.aspx" />
-    <Content Include="Views\Task\Rows.aspx" />
-    <Content Include="Views\Task\SearchContact.aspx" />
-    <Content Include="Views\Task\SearchContactRows.aspx" />
-    <Content Include="Views\Task\Tabs.aspx" />
-    <Content Include="Views\Task\TabsOptions.aspx" />
-    <Content Include="Views\Task\TabsOptionsRows.aspx" />
-    <Content Include="Views\Volunteers\CustomReport.aspx" />
-    <Content Include="Views\Volunteers\Index.aspx" />
-    <Content Include="Views\Volunteers\Calendar.aspx" />
-    <Content Include="Views\Volunteer\Confirm.aspx" />
-    <Content Include="Views\Volunteer\PickList2.aspx" />
-    <Content Include="Views\Volunteer\Index.aspx" />
-    <Content Include="Views\Volunteer\Unknown.aspx" />
+    <Content Include="Areas\Main\Views\Task\Columns.aspx" />
+    <Content Include="Areas\Main\Views\Task\Detail.aspx" />
+    <Content Include="Areas\Main\Views\Task\Detail2.aspx" />
+    <Content Include="Areas\Main\Views\Task\Edit.aspx" />
+    <Content Include="Areas\Main\Views\Task\List.aspx" />
+    <Content Include="Areas\Main\Views\Task\Row.aspx" />
+    <Content Include="Areas\Main\Views\Task\Rows.aspx" />
+    <Content Include="Areas\Main\Views\Task\SearchContact.aspx" />
+    <Content Include="Areas\Main\Views\Task\SearchContactRows.aspx" />
+    <Content Include="Areas\Main\Views\Task\Tabs.aspx" />
+    <Content Include="Areas\Main\Views\Task\TabsOptions.aspx" />
+    <Content Include="Areas\Main\Views\Task\TabsOptionsRows.aspx" />
+    <Content Include="Areas\Manage\Views\Volunteers\CustomReport.aspx" />
+    <Content Include="Areas\Manage\Views\Volunteers\Index.aspx" />
+    <Content Include="Areas\Manage\Views\Volunteers\Calendar.aspx" />
+    <Content Include="Areas\Public\Views\Volunteer\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\Volunteer\PickList2.aspx" />
+    <Content Include="Areas\Public\Views\Volunteer\Index.aspx" />
+    <Content Include="Areas\Public\Views\Volunteer\Unknown.aspx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc" />
@@ -2046,8 +2144,13 @@
     <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailVisitorSubRpt.rdlc" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Main\Views\Shared\" />
+    <Folder Include="Areas\Public\Views\Shared\" />
+    <Folder Include="Areas\Setup\Views\Shared\" />
+    <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Deploy\" />
+    <Folder Include="Models\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -2056,18 +2159,15 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target> -->
-  <UsingTask TaskName="Microsoft.Web.Mvc.Build.CreateAreaManifest" AssemblyName="Microsoft.Web.Mvc.Build, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  <!--<UsingTask TaskName="Microsoft.Web.Mvc.Build.CreateAreaManifest" AssemblyName="Microsoft.Web.Mvc.Build, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   <UsingTask TaskName="Microsoft.Web.Mvc.Build.CopyAreaManifests" AssemblyName="Microsoft.Web.Mvc.Build, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   <Target Name="AfterBuild" DependsOnTargets="AfterBuildCompiler">
     <PropertyGroup>
       <AreasManifestDir>$(ProjectDir)\..\Manifests</AreasManifestDir>
     </PropertyGroup>
-    <!-- If this is an area child project, uncomment the following line:
-    <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Child" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
-    -->
     <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Parent" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
     <CopyAreaManifests ManifestPath="$(AreasManifestDir)" CrossCopy="false" RenameViews="true" />
-  </Target>
+  </Target>-->
   <Target Name="AfterBuildCompiler" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
   </Target>

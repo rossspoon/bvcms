@@ -174,15 +174,17 @@
                         <li>
                             <a href="/Admin/Users.aspx">Users</a></li>
                         <li>
-                            <a href="/Program/">Programs</a></li>
+                            <a href="/Setup/Program/">Programs</a></li>
                         <li>
-                            <a href="/Ministry/">Ministries</a></li>
+                            <a href="/Setup/Ministry/">Ministries</a></li>
                         <li>
-                            <a href="/MetroZip/">MetroZips</a></li>
+                            <a href="/Setup/MetroZip/">MetroZips</a></li>
                         <li>
                             <a href="/Fund/">Funds</a></li>
                         <li>
-                            <a href="/Setting/">Settings</a></li>
+                            <a href="/Setup/MemberType/">MemberTypes</a></li>
+                        <li>
+                            <a href="/Setup/Setting/">Settings</a></li>
                         <li>
                             <a href="/Display/Index/">Special Content</a></li>
                         <li>

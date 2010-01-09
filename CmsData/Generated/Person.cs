@@ -201,8 +201,6 @@ namespace CmsData
 		
 		private int? _ContributionOptionsId;
 		
-		private int? _Age;
-		
 		private string _PrimaryCity;
 		
 		private string _PrimaryZip;
@@ -251,6 +249,8 @@ namespace CmsData
 		
 		private string _CheckInNotes;
 		
+		private int? _Age;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -277,6 +277,8 @@ namespace CmsData
    		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< PendingNotification> _PendingNotifications;
+		
+   		private EntitySet< PeopleExtra> _PeopleExtras;
 		
    		private EntitySet< PrayerSlot> _PrayerSlots;
 		
@@ -626,9 +628,6 @@ namespace CmsData
 		partial void OnContributionOptionsIdChanging(int? value);
 		partial void OnContributionOptionsIdChanged();
 		
-		partial void OnAgeChanging(int? value);
-		partial void OnAgeChanged();
-		
 		partial void OnPrimaryCityChanging(string value);
 		partial void OnPrimaryCityChanged();
 		
@@ -701,6 +700,9 @@ namespace CmsData
 		partial void OnCheckInNotesChanging(string value);
 		partial void OnCheckInNotesChanged();
 		
+		partial void OnAgeChanging(int? value);
+		partial void OnAgeChanged();
+		
     #endregion
 		public Person()
 		{
@@ -730,6 +732,8 @@ namespace CmsData
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
 			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
+			
+			this._PeopleExtras = new EntitySet< PeopleExtra>(new Action< PeopleExtra>(this.attach_PeopleExtras), new Action< PeopleExtra>(this.detach_PeopleExtras)); 
 			
 			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
 			
@@ -2862,28 +2866,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Age", UpdateCheck=UpdateCheck.Never, Storage="_Age", DbType="int", IsDbGenerated=true)]
-		public int? Age
-		{
-			get { return this._Age; }
-
-			set
-			{
-				if (this._Age != value)
-				{
-				
-                    this.OnAgeChanging(value);
-					this.SendPropertyChanging();
-					this._Age = value;
-					this.SendPropertyChanged("Age");
-					this.OnAgeChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PrimaryCity", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCity", DbType="varchar(50)", IsDbGenerated=true)]
 		public string PrimaryCity
 		{
@@ -3415,6 +3397,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Age", UpdateCheck=UpdateCheck.Never, Storage="_Age", DbType="int", IsDbGenerated=true)]
+		public int? Age
+		{
+			get { return this._Age; }
+
+			set
+			{
+				if (this._Age != value)
+				{
+				
+                    this.OnAgeChanging(value);
+					this.SendPropertyChanging();
+					this._Age = value;
+					this.SendPropertyChanged("Age");
+					this.OnAgeChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3545,6 +3549,16 @@ namespace CmsData
    		    get { return this._PendingNotifications; }
 
 			set	{ this._PendingNotifications.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PeopleExtra_People", Storage="_PeopleExtras", OtherKey="PeopleId")]
+   		public EntitySet< PeopleExtra> PeopleExtras
+   		{
+   		    get { return this._PeopleExtras; }
+
+			set	{ this._PeopleExtras.Assign(value); }
 
    		}
 
@@ -4469,6 +4483,19 @@ namespace CmsData
 		}
 
 		private void detach_PendingNotifications(PendingNotification entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_PeopleExtras(PeopleExtra entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_PeopleExtras(PeopleExtra entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

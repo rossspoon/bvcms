@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -13,6 +14,21 @@ BEGIN
 		DELETE FROM dbo.BadET WHERE PeopleId = @pid
 		DELETE FROM dbo.EnrollmentTransaction WHERE PeopleId = @pid
 		DELETE FROM dbo.MOBSReg WHERE PeopleId = @pid
+		DELETE FROM dbo.CardIdentifiers WHERE PeopleId = @pid
+		DELETE FROM dbo.CheckInTimes WHERE PeopleId = @pid
+		DELETE FROM disc.PendingNotifications WHERE PeopleId = @pid
+		DELETE FROM disc.PrayerSlot WHERE PeopleId = @pid
+		
+		DELETE disc.VerseCategoryXref
+		FROM disc.VerseCategoryXref x 
+		JOIN disc.VerseCategory c ON x.VerseCategoryId = c.id
+		JOIN dbo.Users u ON c.CreatedBy = u.UserId
+		WHERE u.PeopleId = @pid
+		
+		DELETE disc.VerseCategory
+		FROM disc.VerseCategory c
+		JOIN dbo.Users u ON c.CreatedBy = u.UserId
+		WHERE u.PeopleId = @pid
 		
 		DECLARE @t TABLE(id int)
 		INSERT INTO @t(id) SELECT MeetingId FROM dbo.Attend a WHERE a.PeopleId = @pid
@@ -48,6 +64,15 @@ BEGIN
 		DELETE FROM dbo.UserCanEmailFor WHERE UserId IN (SELECT UserId FROM dbo.Users WHERE PeopleId = @pid)
 		DELETE FROM dbo.UserCanEmailFor WHERE CanEmailFor IN (SELECT UserId FROM dbo.Users WHERE PeopleId = @pid)
 		UPDATE dbo.VolunteerForm SET UploaderId = NULL WHERE UploaderId IN (SELECT UserId FROM dbo.Users WHERE PeopleId = @pid)
+		
+		DELETE disc.UserGroupRole
+		FROM disc.UserGroupRole ugr
+		JOIN dbo.Users u ON ugr.UserId = u.UserId
+		WHERE u.PeopleId = @pid
+		DELETE disc.PageVisit
+		FROM disc.PageVisit pv
+		JOIN dbo.Users u ON pv.UserId = u.UserId
+		WHERE u.PeopleId = @pid
 		DELETE FROM dbo.Users WHERE PeopleId = @pid
 		
 		DELETE FROM dbo.TagPerson WHERE id IN (SELECT Id FROM dbo.Tag WHERE PeopleId = @pid)
@@ -61,9 +86,8 @@ BEGIN
 		DELETE FROM dbo.VBSApp WHERE PeopleId = @pid
 		
 		DELETE dbo.VolInterestInterestCodes
-		FROM dbo.VolInterestInterestCodes vc JOIN dbo.VolInterest vi ON vc.VolInterestId = vi.Id
-		WHERE vi.PeopleId = @pid
-		DELETE FROM dbo.VolInterest WHERE PeopleId = @pid
+		FROM dbo.VolInterestInterestCodes vc
+		WHERE vc.PeopleId = @pid
 		
 		SELECT @fid = FamilyId, @pic = PictureId FROM dbo.People WHERE PeopleId = @pid
 		

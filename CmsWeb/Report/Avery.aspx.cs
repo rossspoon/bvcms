@@ -69,6 +69,7 @@ namespace CMSWeb.Reports
                         First = p.PreferredName,
                         Last = p.LastName,
                         PeopleId = p.PeopleId,
+                        dob = p.DOB,
                         Phone = p.CellPhone ?? p.HomePhone
                     };
             foreach (var m in q)

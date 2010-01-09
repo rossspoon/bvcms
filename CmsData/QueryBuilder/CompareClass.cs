@@ -39,6 +39,7 @@ namespace CmsData
                 case FieldType.Number:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
+                case FieldType.IntegerEqual:
                 case FieldType.NullInteger:
                     return Display.Fmt(fld, c.TextValue);
                 case FieldType.Date:
@@ -253,6 +254,10 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.MeetingId:
+                    return Expressions.MeetingId(parm,
+                               CompType,
+                               c.TextValue.ToInt());
                 // N -------------------
                 case QueryType.NumberOfMemberships:
                     return Expressions.NumberOfMemberships(parm,
@@ -303,6 +308,14 @@ namespace CmsData
                     return Expressions.PendingCurrentOrg(parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.PeopleExtra:
+                    return Expressions.PeopleExtra(parm,
+                                CompType,
+                                c.TextValue);
+                case QueryType.PeopleExtraDate:
+                    return Expressions.PeopleExtraDate(parm,
+                                CompType,
+                                c.TextValue);
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(parm,
                                CompType,
