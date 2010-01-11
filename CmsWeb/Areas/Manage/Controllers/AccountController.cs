@@ -14,7 +14,7 @@ using CMSPresenter;
 using System.IO;
 using System.Web.Configuration;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CMSWeb.Areas.Manage.Controllers
 {
     public class AccountController : CmsController
     {

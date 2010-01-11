@@ -1,8 +1,0 @@
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (0, 'NON', 'Non-Dropped')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (10, 'DUP', 'Duplicate')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (20, 'ADM', 'Administrative')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (30, 'DEC', 'Deceased')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (40, 'LET', 'Lettered Out')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (50, 'REQ', 'Requested Drop')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (60, 'AND', 'Another Denomination')
-INSERT INTO [lookup].[DropType] ([Id], [Code], [Description]) VALUES (98, 'OTH', 'Other')

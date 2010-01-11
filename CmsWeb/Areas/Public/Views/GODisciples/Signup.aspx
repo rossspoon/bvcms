@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Areas.Public.Areas.Public.Models.GODisciplesModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.GODisciplesModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title><%=ViewData["header"] %></title>

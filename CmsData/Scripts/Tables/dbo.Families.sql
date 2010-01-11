@@ -31,56 +31,13 @@ CREATE TABLE [dbo].[Families]
 [ModifiedDate] [datetime] NULL,
 [HeadOfHouseholdId] [int] NULL,
 [HeadOfHouseholdSpouseId] [int] NULL,
-[CoupleFlag] AS ([dbo].[CoupleFlag]([FamilyId])),
+[CoupleFlag] [int] NULL,
 [HomePhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [HomePhoneAC] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_NULLS ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE TRIGGER [dbo].[insFamily] 
-   ON  [dbo].[Families] 
-   AFTER INSERT
-AS 
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+)
 
-	DECLARE @fid INT, @phone VARCHAR(20)
-
-	DECLARE c CURSOR FORWARD_ONLY FOR
-	SELECT FamilyId, HomePhone
-	FROM inserted 
-
-	OPEN c
-	FETCH NEXT FROM c INTO @fid, @phone
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE dbo.People
-		SET HomePhone = @phone
-		WHERE FamilyId = @fid
-		
-		UPDATE dbo.Families
-		SET HomePhoneLU = RIGHT(HomePhone, 7),
-			HomePhoneAC = LEFT(RIGHT(REPLICATE('0',10) + HomePhone, 10), 3),
-			HeadOfHouseholdId = dbo.HeadOfHouseholdId(FamilyId),
-			HeadOfHouseholdSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
-		WHERE FamilyId = @fid
-		
-		FETCH NEXT FROM c INTO @fid, @phone
-	END
-	CLOSE c
-	DEALLOCATE c
-END
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -91,44 +48,29 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE TRIGGER [dbo].[updFamily] 
-   ON  [dbo].[Families] 
-   FOR UPDATE
+   ON  dbo.Families 
+   FOR UPDATE, INSERT
 AS 
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-	IF NOT UPDATE(HomePhone) 
+	IF NOT UPDATE(HomePhone)
 		RETURN 
 
-	DECLARE @fid INT, @phone VARCHAR(20)
-
-	DECLARE c CURSOR FORWARD_ONLY FOR
-	SELECT FamilyId, HomePhone
-	FROM inserted
-
-	OPEN c
-	FETCH NEXT FROM c INTO @fid, @phone
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE dbo.People
-		SET HomePhone = @phone
-		WHERE FamilyId = @fid
-		
-		UPDATE dbo.Families
-		SET HomePhoneLU = RIGHT(@phone, 7),
-			HomePhoneAC = LEFT(RIGHT(REPLICATE('0',10) + HomePhone, 10), 3),
-			HeadOfHouseholdId = dbo.HeadOfHouseholdId(FamilyId),
-			HeadOfHouseholdSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
-
-		WHERE FamilyId = @fid
-		
-		FETCH NEXT FROM c INTO @fid, @phone
-	END
-	CLOSE c
-	DEALLOCATE c
+	UPDATE dbo.People
+	SET HomePhone = f.HomePhone
+	FROM dbo.People p
+	JOIN dbo.Families f ON p.FamilyId = f.FamilyId
+	WHERE f.FamilyId IN (SELECT FamilyId FROM INSERTED)
+	
+	UPDATE dbo.Families
+	SET HomePhoneLU = RIGHT(HomePhone, 7),
+		HomePhoneAC = LEFT(RIGHT(REPLICATE('0',10) + HomePhone, 10), 3)
+	WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
 END
 GO
+
 ALTER TABLE [dbo].[Families] ADD CONSTRAINT [FAMILIES_PK] PRIMARY KEY NONCLUSTERED  ([FamilyId]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_Families] ON [dbo].[Families] ([HomePhoneLU]) ON [PRIMARY]

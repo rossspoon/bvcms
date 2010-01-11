@@ -14,8 +14,47 @@ CREATE TABLE [dbo].[OrganizationMembers]
 [LastAttended] [datetime] NULL,
 [Pending] [bit] NULL,
 [UserData] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
+)
+SET QUOTED_IDENTIFIER ON
 GO
+SET ANSI_NULLS ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE TRIGGER [dbo].[insdelOrganizationMember] 
+   ON  [dbo].[OrganizationMembers]
+   AFTER INSERT, DELETE
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	UPDATE dbo.Organizations
+	SET MemberCount = dbo.OrganizationMemberCount(OrganizationId)
+	WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+	OR OrganizationId IN (SELECT OrganizationId FROM DELETED)
+
+	UPDATE dbo.People
+	SET Grade = dbo.SchoolGrade(PeopleId) 
+	WHERE PeopleId IN (SELECT PeopleId FROM INSERTED)
+	OR PeopleId IN (SELECT PeopleId FROM DELETED)
+
+	UPDATE dbo.People
+	SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
+	BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
+	BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
+	InBFClass = dbo.InBFClass(p.PeopleId)
+	FROM dbo.People p
+	JOIN dbo.OrganizationMembers om ON p.PeopleId = om.PeopleId
+	WHERE om.OrganizationId IN (SELECT OrganizationId FROM DELETED)
+	OR om.OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+END
+GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -27,34 +66,50 @@ GO
 -- =============================================
 CREATE TRIGGER [dbo].[updOrganizationMember] 
    ON  [dbo].[OrganizationMembers]
-   AFTER INSERT, UPDATE
+   AFTER UPDATE
 AS 
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    IF (
-		UPDATE(MemberTypeId) 
-		OR UPDATE(Pending) 
-    )
+    IF UPDATE(MemberTypeId)
 	BEGIN
-		DECLARE @pid INT
-		DECLARE c CURSOR FOR
-		SELECT PeopleId FROM inserted
-		OPEN c;
-		FETCH NEXT FROM c INTO @pid;
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			UPDATE dbo.People SET Grade = dbo.SchoolGrade(PeopleId) WHERE PeopleId = @pid
-			FETCH NEXT FROM c INTO @pid;
-		END;
-		CLOSE c;
-		DEALLOCATE c;
+		UPDATE dbo.Organizations
+		SET LeaderId = dbo.OrganizationLeaderId(OrganizationId),
+		LeaderName = dbo.OrganizationLeaderName(OrganizationId)
+		WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+
+	END
+	
+	IF UPDATE(Pending)
+	BEGIN
+		UPDATE dbo.People
+		SET Grade = dbo.SchoolGrade(PeopleId) 
+		WHERE PeopleId IN (SELECT PeopleId FROM INSERTED)
+
+		UPDATE dbo.Organizations
+		SET MemberCount = dbo.OrganizationMemberCount(OrganizationId)
+		WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
 	END
 
+	UPDATE dbo.People
+	SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
+	BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
+	BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
+	InBFClass = dbo.InBFClass(p.PeopleId)
+	FROM dbo.People p
+	JOIN dbo.OrganizationMembers om ON p.PeopleId = om.PeopleId
+	WHERE om.OrganizationId IN 
+	(	SELECT i.OrganizationId FROM INSERTED i
+		JOIN DELETED d ON i.OrganizationId = d.OrganizationId AND i.PeopleId = d.PeopleId
+		JOIN dbo.Organizations o ON o.OrganizationId = i.OrganizationId
+		WHERE o.LeaderMemberTypeId IN (i.MemberTypeId, d.MemberTypeId)
+	)
 END
 GO
+
+
 ALTER TABLE [dbo].[OrganizationMembers] ADD CONSTRAINT [ORGANIZATION_MEMBERS_PK] PRIMARY KEY NONCLUSTERED  ([OrganizationId], [PeopleId]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ORGANIZATION_MEMBERS_PPL_FK_IX] ON [dbo].[OrganizationMembers] ([PeopleId]) ON [PRIMARY]

@@ -1,5 +1,0 @@
-INSERT INTO [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (0, 'NSP', 'Not Specified')
-INSERT INTO [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (10, 'SCH', 'Scheduled')
-INSERT INTO [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (20, 'NSC', 'Not Scheduled')
-INSERT INTO [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (30, 'CMP', 'Completed')
-INSERT INTO [lookup].[BaptismStatus] ([Id], [Code], [Description]) VALUES (40, 'CAN', 'Cancelled')

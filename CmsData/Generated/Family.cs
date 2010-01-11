@@ -915,7 +915,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CoupleFlag", UpdateCheck=UpdateCheck.Never, Storage="_CoupleFlag", DbType="int", IsDbGenerated=true)]
+		[Column(Name="CoupleFlag", UpdateCheck=UpdateCheck.Never, Storage="_CoupleFlag", DbType="int")]
 		public int? CoupleFlag
 		{
 			get { return this._CoupleFlag; }

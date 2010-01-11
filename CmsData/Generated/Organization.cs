@@ -820,7 +820,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int", IsDbGenerated=true)]
+		[Column(Name="MemberCount", UpdateCheck=UpdateCheck.Never, Storage="_MemberCount", DbType="int")]
 		public int? MemberCount
 		{
 			get { return this._MemberCount; }
@@ -842,7 +842,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LeaderId", UpdateCheck=UpdateCheck.Never, Storage="_LeaderId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="LeaderId", UpdateCheck=UpdateCheck.Never, Storage="_LeaderId", DbType="int")]
 		public int? LeaderId
 		{
 			get { return this._LeaderId; }
@@ -864,7 +864,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LeaderName", UpdateCheck=UpdateCheck.Never, Storage="_LeaderName", DbType="varchar(100)", IsDbGenerated=true)]
+		[Column(Name="LeaderName", UpdateCheck=UpdateCheck.Never, Storage="_LeaderName", DbType="varchar(50)")]
 		public string LeaderName
 		{
 			get { return this._LeaderName; }

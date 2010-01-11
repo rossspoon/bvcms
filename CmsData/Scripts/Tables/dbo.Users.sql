@@ -24,11 +24,35 @@ CREATE TABLE [dbo].[Users]
 [MustChangePassword] [bit] NOT NULL CONSTRAINT [DF_Users_MustChangePassword] DEFAULT ((0)),
 [Host] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [TempPassword] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[Name] AS ([dbo].[UName]([PeopleId])),
-[Name2] AS ([dbo].[UName2]([PeopleId])),
+[Name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Name2] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ResetPasswordCode] [uniqueidentifier] NULL,
 [DefaultGroup] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+CREATE TRIGGER [dbo].[updUser] 
+   ON  [dbo].[Users]
+   AFTER INSERT, UPDATE
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	
+	IF UPDATE(PeopleId)
+	BEGIN
+		UPDATE Users
+		SET Name = dbo.UName(PeopleId),
+		Name2 = dbo.UName2(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM INSERTED)
+	END
+END
+GO
+
+
 
 ALTER TABLE [dbo].[Users] ADD
 CONSTRAINT [FK_Users_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([PeopleId])

@@ -1,5 +1,0 @@
-INSERT INTO [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (10, 'Yes', 'Member')
-INSERT INTO [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (20, 'No', 'Not Member')
-INSERT INTO [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (30, 'Pending', 'Pending Member')
-INSERT INTO [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (40, 'Previous', 'Previous Member')
-INSERT INTO [lookup].[MemberStatus] ([Id], [Code], [Description]) VALUES (50, 'Add', 'Just Added')

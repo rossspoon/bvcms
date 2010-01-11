@@ -1,3 +1,5 @@
+
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -10,15 +12,10 @@ CREATE FUNCTION [dbo].[InBFClass]
 RETURNS bit
 AS
 	BEGIN
-	declare @mem BIT, @bfid INT
-	SELECT TOP 1 @bfid = Id FROM dbo.Program WHERE BFProgram = 1
-
-	select @mem = 1
-	FROM dbo.OrganizationMembers  AS om
-	join dbo.Organizations o on o.OrganizationId = om.OrganizationId
-	join dbo.DivOrg AS do ON o.OrganizationId = do.OrgId
-	join dbo.Division d ON do.DivId = d.Id
-	where d.ProgId = @bfid and om.PeopleId = @pid
+	declare @mem BIT
+	
+	IF dbo.BibleFellowshipClassId(@pid) IS NOT NULL
+		select @mem = 1
 
 	RETURN isnull(@mem, 0)
 

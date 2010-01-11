@@ -1,6 +1,0 @@
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (0, 'UNK', 'Unknown')
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (10, 'SNG', 'Single')
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (20, 'MAR', 'Married')
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (30, 'SEP', 'Separated')
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (40, 'DIV', 'Divorced')
-INSERT INTO [lookup].[MaritalStatus] ([Id], [Code], [Description]) VALUES (50, 'WID', 'Widowed')

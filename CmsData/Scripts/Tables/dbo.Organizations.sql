@@ -23,9 +23,9 @@ CREATE TABLE [dbo].[Organizations]
 [EntryPointId] [int] NULL,
 [ParentOrgId] [int] NULL,
 [AllowAttendOverlap] [bit] NOT NULL CONSTRAINT [DF_Organizations_AllowAttendOverlap] DEFAULT ((0)),
-[MemberCount] AS ([dbo].[OrganizationMemberCount2]([OrganizationId])),
-[LeaderId] AS ([dbo].[OrganizationLeaderId]([OrganizationId])),
-[LeaderName] AS ([dbo].[organizationLeaderName]([OrganizationId])),
+[MemberCount] [int] NULL,
+[LeaderId] [int] NULL,
+[LeaderName] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ClassFilled] [bit] NULL,
 [OnLineCatalogSort] [int] NULL,
 [PendingLoc] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -39,6 +39,8 @@ CREATE TABLE [dbo].[Organizations]
 [MeetingTime] [datetime] NULL,
 [ShowOnlyRegisteredAtCheckIn] [bit] NULL
 )
+
+
 
 GO
 
@@ -58,26 +60,44 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF NOT (UPDATE(SchedDay) OR UPDATE(SchedTime))
-		RETURN
-	DECLARE @orgid INT, @day INT, @time DATETIME
-    DECLARE c CURSOR FOR
-    SELECT OrganizationId, SchedDay, SchedTime FROM INSERTED
-    OPEN c;
-    FETCH NEXT FROM c INTO @orgid, @day, @time
-    WHILE @@FETCH_STATUS = 0
-    BEGIN
-		UPDATE dbo.Organizations 
-		SET ScheduleId = dbo.ScheduleId(@day, @time),
-			MeetingTime = dbo.GetScheduleTime(@day, @time)
-		WHERE OrganizationId = @orgid
-		FETCH NEXT FROM c INTO @orgid, @day, @time
-    END
-	CLOSE c;
-	DEALLOCATE c;
+	IF UPDATE(SchedDay) OR UPDATE(SchedTime)
+	BEGIN
+		UPDATE dbo.Organizations
+		SET ScheduleId = dbo.ScheduleId(SchedDay, SchedTime),
+		MeetingTime = dbo.GetScheduleTime(SchedDay, SchedTime)
+		WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+	END
+	IF UPDATE(LeaderMemberTypeId)
+	OR UPDATE(DivisionId)
+	BEGIN
+		UPDATE dbo.People
+		SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
+		BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
+		BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
+		InBFClass = dbo.InBFClass(p.PeopleId)
+		FROM dbo.People p
+		JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
+		JOIN DELETED o ON m.OrganizationId = o.OrganizationId
+		JOIN dbo.Division d ON d.Id = o.DivisionId
+		JOIN dbo.Program pr ON pr.Id = d.ProgId
+		WHERE pr.BFProgram = 1
 
+		UPDATE dbo.People
+		SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
+		BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
+		BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
+		InBFClass = dbo.InBFClass(p.PeopleId)
+		FROM dbo.People p
+		JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
+		JOIN INSERTED o ON m.OrganizationId = o.OrganizationId
+		JOIN dbo.Division d ON d.Id = o.DivisionId
+		JOIN dbo.Program pr ON pr.Id = d.ProgId
+		WHERE pr.BFProgram = 1
+	END
 END
 GO
+
+
 
 ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [ORGANIZATIONS_PK] PRIMARY KEY NONCLUSTERED  ([OrganizationId]) ON [PRIMARY]
 GO

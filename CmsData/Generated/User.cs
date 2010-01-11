@@ -796,7 +796,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(100)", IsDbGenerated=true)]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50)")]
 		public string Name
 		{
 			get { return this._Name; }
@@ -818,7 +818,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(100)", IsDbGenerated=true)]
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(50)")]
 		public string Name2
 		{
 			get { return this._Name2; }

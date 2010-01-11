@@ -174,10 +174,6 @@ namespace CmsData
         partial void UpdateDropType(DropType instance);
         partial void DeleteDropType(DropType instance);
         
-        partial void InsertDUser(DUser instance);
-        partial void UpdateDUser(DUser instance);
-        partial void DeleteDUser(DUser instance);
-        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -834,12 +830,6 @@ namespace CmsData
 
 		}
 
-		public Table< DUser> DUsers
-		{
-			get	{ return this.GetTable< DUser>(); }
-
-		}
-
 		public Table< EnrollmentTransaction> EnrollmentTransactions
 		{
 			get	{ return this.GetTable< EnrollmentTransaction>(); }
@@ -1485,12 +1475,6 @@ namespace CmsData
 
 	    }
 
-	    public Table< View.TableColumn> ViewTableColumns
-	    {
-		    get { return this.GetTable< View.TableColumn>(); }
-
-	    }
-
 	    public Table< View.UserList> ViewUserLists
 	    {
 		    get { return this.GetTable< View.UserList>(); }
@@ -2088,18 +2072,6 @@ namespace CmsData
 		[Function(Name="dbo.Age", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? Age(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.BibleFellowshipClassId2", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? BibleFellowshipClassId2(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
 		{

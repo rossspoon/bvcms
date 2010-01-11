@@ -92,23 +92,23 @@ CREATE TABLE [dbo].[People]
 [ModifiedDate] [datetime] NULL,
 [PictureId] [int] NULL,
 [ContributionOptionsId] [int] NULL,
-[PrimaryCity] AS ([dbo].[PrimaryCity]([PeopleId])),
-[PrimaryZip] AS ([dbo].[PrimaryZip]([PeopleId])),
-[PrimaryAddress] AS ([dbo].[PrimaryAddress]([PeopleId])),
-[PrimaryState] AS ([dbo].[PrimaryState]([PeopleId])),
+[PrimaryCity] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PrimaryZip] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PrimaryAddress] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PrimaryState] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [HomePhone] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[SpouseId] AS ([dbo].[SpouseId]([PeopleId])),
-[PrimaryAddress2] AS ([dbo].[PrimaryAddress2]([PeopleId])),
-[PrimaryResCode] AS ([dbo].[PrimaryResCode]([PeopleId])),
-[PrimaryBadAddrFlag] AS ([dbo].[PrimaryBadAddressFlag]([PeopleId])),
-[BibleFellowshipTeacher] AS ([dbo].[BibleFellowshipTeacher]([PeopleId])),
-[BibleFellowshipTeacherId] AS ([dbo].[BibleFellowshipTeacherId]([PeopleId])),
-[LastContact] AS ([dbo].[LastContact]([PeopleId])),
-[InBFClass] AS ([dbo].[InBFClass]([PeopleId])),
+[SpouseId] [int] NULL,
+[PrimaryAddress2] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PrimaryResCode] [int] NULL,
+[PrimaryBadAddrFlag] [int] NULL,
+[BibleFellowshipTeacher] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[BibleFellowshipTeacherId] [int] NULL,
+[LastContact] [datetime] NULL,
+[InBFClass] [bit] NULL,
 [Grade] [int] NULL,
 [CellPhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [WorkPhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[BibleFellowshipClassId] AS ([dbo].[BibleFellowshipClassId2]([PeopleId])),
+[BibleFellowshipClassId] [int] NULL,
 [Name] AS ((case when [Nickname]<>'' then [nickname] else [FirstName] end+' ')+[LastName]),
 [Name2] AS (([LastName]+', ')+case when [Nickname]<>'' then [nickname] else [FirstName] end),
 [HashNum] AS (checksum([FirstName]+[LastName])),
@@ -118,6 +118,33 @@ CREATE TABLE [dbo].[People]
 [CheckInNotes] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Age] AS ((datepart(year,isnull([DeceasedDate],getdate()))-[BirthYear])-case when [BirthMonth]>datepart(month,isnull([DeceasedDate],getdate())) OR [BirthMonth]=datepart(month,isnull([DeceasedDate],getdate())) AND [BirthDay]>datepart(day,isnull([DeceasedDate],getdate())) then (1) else (0) end)
 )
+
+
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_BaptismType] FOREIGN KEY ([BaptismTypeId]) REFERENCES [lookup].[BaptismType] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_Campus] FOREIGN KEY ([CampusId]) REFERENCES [lookup].[Campus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_DecisionType] FOREIGN KEY ([DecisionTypeId]) REFERENCES [lookup].[DecisionType] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_DropType] FOREIGN KEY ([DropCodeId]) REFERENCES [lookup].[DropType] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_FamilyPosition] FOREIGN KEY ([PositionInFamilyId]) REFERENCES [lookup].[FamilyPosition] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_Gender] FOREIGN KEY ([GenderId]) REFERENCES [lookup].[Gender] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_JoinType] FOREIGN KEY ([JoinCodeId]) REFERENCES [lookup].[JoinType] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_MaritalStatus] FOREIGN KEY ([MaritalStatusId]) REFERENCES [lookup].[MaritalStatus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_MemberStatus] FOREIGN KEY ([MemberStatusId]) REFERENCES [lookup].[MemberStatus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_Origin] FOREIGN KEY ([OriginId]) REFERENCES [lookup].[Origin] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_PEOPLE_TBL_InterestPoint] FOREIGN KEY ([InterestPointId]) REFERENCES [lookup].[InterestPoint] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_PEOPLE_TBL_Picture] FOREIGN KEY ([PictureId]) REFERENCES [dbo].[Picture] ([PictureId])
+
 
 GO
 
@@ -147,7 +174,8 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		UPDATE dbo.Families SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
-			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
+			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId),
+			CoupleFlag = dbo.CoupleFlag(FamilyId)
 		WHERE FamilyId = @fid
 		DECLARE @n INT
 		SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fid
@@ -160,50 +188,6 @@ BEGIN
 	END;
 	CLOSE c;
 	DEALLOCATE c;
-
-END
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_NULLS ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE TRIGGER insPerson 
-   ON  dbo.People 
-   AFTER INSERT
-AS 
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-	IF NOT UPDATE(FamilyId)
-		RETURN
-		
-	DECLARE @pid INT
-
-	DECLARE c CURSOR FORWARD_ONLY FOR
-	SELECT PeopleId
-	FROM inserted
-
-	OPEN c
-	FETCH NEXT FROM c INTO @pid
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE dbo.People
-		SET HomePhone = f.HomePhone
-		FROM dbo.People p JOIN dbo.Families f ON p.FamilyId = f.FamilyId
-		WHERE p.PeopleId = @pid
-		
-		FETCH NEXT FROM c INTO @pid
-	END
-	CLOSE c
-	DEALLOCATE c
 
 END
 GO
@@ -235,42 +219,37 @@ BEGIN
 		OR UPDATE(FamilyId)
     )
 	BEGIN
-		DECLARE @fid INT
-		DECLARE c CURSOR FOR
-		SELECT FamilyId FROM inserted GROUP BY FamilyId
-		OPEN c;
-		FETCH NEXT FROM c INTO @fid;
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			UPDATE dbo.Families SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
-				HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId)
-			WHERE FamilyId = @fid
+		UPDATE dbo.Families 
+		SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
+			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId),
+			CoupleFlag = dbo.CoupleFlag(FamilyId)
+		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
 
-			FETCH NEXT FROM c INTO @fid;
-		END;
-		CLOSE c;
-		DEALLOCATE c;
-		
 		IF (UPDATE(FamilyId))
 		BEGIN
-			DECLARE c2 CURSOR FOR
+			DECLARE c CURSOR FOR
 			SELECT FamilyId FROM deleted GROUP BY FamilyId
-			OPEN c2;
-			DECLARE @fidold INT
-			FETCH NEXT FROM c2 INTO @fidold;
+			OPEN c;
+			DECLARE @fid INT
+			FETCH NEXT FROM c INTO @fid;
 			WHILE @@FETCH_STATUS = 0
 			BEGIN
 				DECLARE @n INT
-				SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fidold
+				SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fid
 				IF @n = 0
 				BEGIN
-					DELETE dbo.RelatedFamilies WHERE @fidold IN(FamilyId, RelatedFamilyId)
-					DELETE dbo.Families WHERE FamilyId = @fidold
+					DELETE dbo.RelatedFamilies WHERE @fid IN(FamilyId, RelatedFamilyId)
+					DELETE dbo.Families WHERE FamilyId = @fid
 				END
-				FETCH NEXT FROM c2 INTO @fidold;
+				FETCH NEXT FROM c INTO @fid;
 			END;
-			CLOSE c2;
-			DEALLOCATE c2;
+			CLOSE c;
+			DEALLOCATE c;
+
+			UPDATE dbo.People
+			SET HomePhone = f.HomePhone
+			FROM dbo.People p JOIN dbo.Families f ON p.FamilyId = f.FamilyId
+			WHERE p.PeopleId IN (SELECT PeopleId FROM INSERTED)
 		END
 
 	END
@@ -282,8 +261,90 @@ BEGIN
 		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
 	END
 
+	IF UPDATE(CityName) 
+	OR UPDATE(AltCityName)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryCity = dbo.PrimaryCity(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+
+	IF UPDATE(AddressLineOne) 
+	OR UPDATE(AltAddressLineOne)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryAddress = dbo.PrimaryAddress(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+	
+	IF UPDATE(AddressLineTwo) 
+	OR UPDATE(AltAddressLineTwo)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryAddress2 = dbo.PrimaryAddress2(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+
+	IF UPDATE(StateCode) 
+	OR UPDATE(AltStateCode)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryState = dbo.PrimaryState(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+
+	IF UPDATE(BadAddressFlag) 
+	OR UPDATE(AltBadAddressFlag)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryBadAddrFlag = dbo.PrimaryBadAddressFlag(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+
+	IF UPDATE(ResCodeId) 
+	OR UPDATE(AltResCodeId)
+	OR UPDATE(AddressTypeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryResCode = dbo.PrimaryResCode(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+	END
+
+	IF UPDATE(FamilyId) 
+	OR UPDATE(MaritalStatusId)
+	OR UPDATE(PositionInFamilyId)
+	OR UPDATE(DeceasedDate)
+	OR UPDATE(FirstName)
+	BEGIN
+		UPDATE dbo.People
+		SET SpouseId = dbo.SpouseId(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
+		
+		UPDATE dbo.Families
+		SET CoupleFlag = dbo.CoupleFlag(FamilyId)
+		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+	END
+	
+	IF UPDATE(FirstName)
+	OR UPDATE(LastName)
+	OR UPDATE(NickName)
+	BEGIN
+		UPDATE Users
+		SET Name = dbo.UName(PeopleId),
+		Name2 = dbo.UName2(PeopleId)
+		WHERE PeopleId IN (SELECT PeopleId FROM INSERTED)
+	END
+
+
 END
 GO
+
+
 
 ALTER TABLE [dbo].[People] ADD CONSTRAINT [PEOPLE_PK] PRIMARY KEY NONCLUSTERED  ([PeopleId]) ON [PRIMARY]
 GO
@@ -293,29 +354,6 @@ CREATE NONCLUSTERED INDEX [IX_PEOPLE_TBL] ON [dbo].[People] ([EmailAddress]) ON 
 GO
 CREATE NONCLUSTERED INDEX [PEOPLE_FAMILY_FK_IX] ON [dbo].[People] ([FamilyId]) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_BaptismType] FOREIGN KEY ([BaptismTypeId]) REFERENCES [lookup].[BaptismType] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_Campus] FOREIGN KEY ([CampusId]) REFERENCES [lookup].[Campus] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_DecisionType] FOREIGN KEY ([DecisionTypeId]) REFERENCES [lookup].[DecisionType] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_DropType] FOREIGN KEY ([DropCodeId]) REFERENCES [lookup].[DropType] ([Id])
-GO
+
 ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_Families] FOREIGN KEY ([FamilyId]) REFERENCES [dbo].[Families] ([FamilyId])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_FamilyPosition] FOREIGN KEY ([PositionInFamilyId]) REFERENCES [lookup].[FamilyPosition] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_Gender] FOREIGN KEY ([GenderId]) REFERENCES [lookup].[Gender] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_JoinType] FOREIGN KEY ([JoinCodeId]) REFERENCES [lookup].[JoinType] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_MaritalStatus] FOREIGN KEY ([MaritalStatusId]) REFERENCES [lookup].[MaritalStatus] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_MemberStatus] FOREIGN KEY ([MemberStatusId]) REFERENCES [lookup].[MemberStatus] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_People_Origin] FOREIGN KEY ([OriginId]) REFERENCES [lookup].[Origin] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_InterestPoint] FOREIGN KEY ([InterestPointId]) REFERENCES [lookup].[InterestPoint] ([Id])
-GO
-ALTER TABLE [dbo].[People] ADD CONSTRAINT [FK_PEOPLE_TBL_Picture] FOREIGN KEY ([PictureId]) REFERENCES [dbo].[Picture] ([PictureId])
 GO

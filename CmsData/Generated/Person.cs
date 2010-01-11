@@ -2866,7 +2866,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryCity", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCity", DbType="varchar(50)", IsDbGenerated=true)]
+		[Column(Name="PrimaryCity", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCity", DbType="varchar(50)")]
 		public string PrimaryCity
 		{
 			get { return this._PrimaryCity; }
@@ -2888,7 +2888,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryZip", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryZip", DbType="varchar(11)", IsDbGenerated=true)]
+		[Column(Name="PrimaryZip", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryZip", DbType="varchar(50)")]
 		public string PrimaryZip
 		{
 			get { return this._PrimaryZip; }
@@ -2910,7 +2910,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(60)", IsDbGenerated=true)]
+		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(50)")]
 		public string PrimaryAddress
 		{
 			get { return this._PrimaryAddress; }
@@ -2932,7 +2932,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryState", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryState", DbType="varchar(5)", IsDbGenerated=true)]
+		[Column(Name="PrimaryState", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryState", DbType="varchar(50)")]
 		public string PrimaryState
 		{
 			get { return this._PrimaryState; }
@@ -2976,7 +2976,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SpouseId", UpdateCheck=UpdateCheck.Never, Storage="_SpouseId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="SpouseId", UpdateCheck=UpdateCheck.Never, Storage="_SpouseId", DbType="int")]
 		public int? SpouseId
 		{
 			get { return this._SpouseId; }
@@ -2998,7 +2998,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(60)", IsDbGenerated=true)]
+		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(50)")]
 		public string PrimaryAddress2
 		{
 			get { return this._PrimaryAddress2; }
@@ -3020,7 +3020,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryResCode", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryResCode", DbType="int", IsDbGenerated=true)]
+		[Column(Name="PrimaryResCode", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryResCode", DbType="int")]
 		public int? PrimaryResCode
 		{
 			get { return this._PrimaryResCode; }
@@ -3042,7 +3042,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryBadAddrFlag", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryBadAddrFlag", DbType="int", IsDbGenerated=true)]
+		[Column(Name="PrimaryBadAddrFlag", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryBadAddrFlag", DbType="int")]
 		public int? PrimaryBadAddrFlag
 		{
 			get { return this._PrimaryBadAddrFlag; }
@@ -3064,7 +3064,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BibleFellowshipTeacher", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacher", DbType="varchar(100)", IsDbGenerated=true)]
+		[Column(Name="BibleFellowshipTeacher", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacher", DbType="varchar(50)")]
 		public string BibleFellowshipTeacher
 		{
 			get { return this._BibleFellowshipTeacher; }
@@ -3086,7 +3086,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BibleFellowshipTeacherId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacherId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="BibleFellowshipTeacherId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacherId", DbType="int")]
 		public int? BibleFellowshipTeacherId
 		{
 			get { return this._BibleFellowshipTeacherId; }
@@ -3108,7 +3108,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LastContact", UpdateCheck=UpdateCheck.Never, Storage="_LastContact", DbType="datetime", IsDbGenerated=true)]
+		[Column(Name="LastContact", UpdateCheck=UpdateCheck.Never, Storage="_LastContact", DbType="datetime")]
 		public DateTime? LastContact
 		{
 			get { return this._LastContact; }
@@ -3130,7 +3130,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="InBFClass", UpdateCheck=UpdateCheck.Never, Storage="_InBFClass", DbType="bit", IsDbGenerated=true)]
+		[Column(Name="InBFClass", UpdateCheck=UpdateCheck.Never, Storage="_InBFClass", DbType="bit")]
 		public bool? InBFClass
 		{
 			get { return this._InBFClass; }
@@ -3218,7 +3218,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BibleFellowshipClassId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipClassId", DbType="int", IsDbGenerated=true)]
+		[Column(Name="BibleFellowshipClassId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipClassId", DbType="int")]
 		public int? BibleFellowshipClassId
 		{
 			get { return this._BibleFellowshipClassId; }

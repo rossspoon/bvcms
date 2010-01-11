@@ -1,8 +1,10 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-CREATE VIEW dbo.OrphanedImages
+
+CREATE VIEW [dbo].[OrphanedImages]
 AS
 SELECT Id, mimetype, length
 FROM  ImageData.dbo.Image AS i
@@ -19,14 +21,13 @@ WHERE (NOT EXISTS
                     FROM   dbo.VBSApp AS v
                     WHERE (i.Id = ImgId))) AND (NOT EXISTS
                    (SELECT NULL AS Expr1
-                    FROM   dbo.VolInterest AS v
-                    WHERE (i.Id = ImgId))) AND (NOT EXISTS
-                   (SELECT NULL AS Expr1
                     FROM   dbo.VolunteerForm AS f
                     WHERE (i.Id = SmallId) OR
                                    (i.Id = MediumId) OR
                                    (i.Id = LargeId)))
+
 GO
+
 EXEC sp_addextendedproperty N'MS_DiagramPane1', N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
