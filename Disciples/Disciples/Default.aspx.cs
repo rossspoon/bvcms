@@ -21,9 +21,9 @@ namespace Disciples
                 Panel1.Visible = true;
                 Label1.Text = defaultTop.HeaderText;
                 var forgotusername = Login1.FindControl("ForgotUsername") as HyperLink;
-                forgotusername.NavigateUrl = Path.Combine(DbUtil.TaskHost, "/Account/ForgotUsername"); ;
+                forgotusername.NavigateUrl = DbUtil.TaskHost + "Account/ForgotUsername"; ;
                 var forgotpassword = Login1.FindControl("ForgotPassword") as HyperLink;
-                forgotpassword.NavigateUrl = Path.Combine(DbUtil.TaskHost, "/Account/ForgotPassword"); ;
+                forgotpassword.NavigateUrl = DbUtil.TaskHost + "Account/ForgotPassword"; ;
             }
             else
             {

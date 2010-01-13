@@ -36,6 +36,8 @@ CREATE TABLE [dbo].[Families]
 [HomePhoneAC] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
 
+
+
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -48,28 +50,58 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE TRIGGER [dbo].[updFamily] 
-   ON  dbo.Families 
+   ON  [dbo].[Families] 
    FOR UPDATE, INSERT
 AS 
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-	IF NOT UPDATE(HomePhone)
-		RETURN 
 
-	UPDATE dbo.People
-	SET HomePhone = f.HomePhone
-	FROM dbo.People p
-	JOIN dbo.Families f ON p.FamilyId = f.FamilyId
-	WHERE f.FamilyId IN (SELECT FamilyId FROM INSERTED)
+	IF UPDATE(HomePhone)
+	BEGIN
+		UPDATE dbo.People
+		SET HomePhone = f.HomePhone
+		FROM dbo.People p
+		JOIN dbo.Families f ON p.FamilyId = f.FamilyId
+		WHERE f.FamilyId IN (SELECT FamilyId FROM INSERTED)
+		
+		UPDATE dbo.Families
+		SET HomePhoneLU = RIGHT(HomePhone, 7),
+			HomePhoneAC = LEFT(RIGHT(REPLICATE('0',10) + HomePhone, 10), 3)
+		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+	END
 	
-	UPDATE dbo.Families
-	SET HomePhoneLU = RIGHT(HomePhone, 7),
-		HomePhoneAC = LEFT(RIGHT(REPLICATE('0',10) + HomePhone, 10), 3)
-	WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+	IF UPDATE(CityName) 
+	OR UPDATE(AltCityName)
+	OR UPDATE(AddressLineOne) 
+	OR UPDATE(AltAddressLineOne)
+	OR UPDATE(AddressLineTwo) 
+	OR UPDATE(AltAddressLineTwo)
+	OR UPDATE(StateCode) 
+	OR UPDATE(AltStateCode)
+	OR UPDATE(ZipCode)
+	OR UPDATE(AltZipCode)
+	OR UPDATE(BadAddressFlag) 
+	OR UPDATE(AltBadAddressFlag)
+	OR UPDATE(ResCodeId) 
+	OR UPDATE(AltResCodeId)
+	BEGIN
+		UPDATE dbo.People
+		SET PrimaryCity = dbo.PrimaryCity(PeopleId),
+		PrimaryAddress = dbo.PrimaryAddress(PeopleId),
+		PrimaryAddress2 = dbo.PrimaryAddress2(PeopleId),
+		PrimaryState = dbo.PrimaryState(PeopleId),
+		PrimaryBadAddrFlag = dbo.PrimaryBadAddressFlag(PeopleId),
+		PrimaryResCode = dbo.PrimaryResCode(PeopleId),
+		PrimaryZip = dbo.PrimaryZip(PeopleId)
+		WHERE FamilyId IN (SELECT FamilyId FROM inserted)
+	END
+
 END
 GO
+
+
 
 ALTER TABLE [dbo].[Families] ADD CONSTRAINT [FAMILIES_PK] PRIMARY KEY NONCLUSTERED  ([FamilyId]) ON [PRIMARY]
 GO

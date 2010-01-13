@@ -29,23 +29,20 @@ namespace CMSPresenter
 
         public IEnumerable<ContactInfo> ContactList(int pid)
         {
-            var nc = from c in Db.NewContacts
-                     where c.contactees.Any(p => p.PeopleId == pid)
-                     orderby c.ContactDate descending
-                     select c;
-
-            var q = from c1 in nc
-                    select
-                        new ContactInfo
-                        {
-                            ContactId = c1.ContactId,
-                            Comments = c1.Comments,
-                            ContactDate = c1.ContactDate,
-                            ContactReason = c1.NewContactReason.Description,
-                            Program = c1.Ministry.MinistryDescription,
-                            Teacher = (Db.People.SingleOrDefault(p2 => p2.PeopleId == pid).BibleFellowshipTeacher),
-                            TypeOfContact = c1.NewContactType.Description
-                        };
+            var Teacher = Db.People.Where(p => p.PeopleId == pid).Select(p => p.BFClass.LeaderName).SingleOrDefault();
+            var q = from c in Db.NewContacts
+                    where c.contactees.Any(p => p.PeopleId == pid)
+                    orderby c.ContactDate descending
+                    select new ContactInfo
+                    {
+                        ContactId = c.ContactId,
+                        Comments = c.Comments,
+                        ContactDate = c.ContactDate,
+                        ContactReason = c.NewContactReason.Description,
+                        Program = c.Ministry.MinistryDescription,
+                        Teacher = Teacher,
+                        TypeOfContact = c.NewContactType.Description
+                    };
             return q;
         }
 
@@ -62,20 +59,18 @@ namespace CMSPresenter
             var q = from c in Db.NewContacts
                     where c.contactees.Any(p => p.PeopleId == pid)
                     orderby c.ContactDate descending
-                    select c;
+                    select new ContactInfo
+                    {
+                        ContactId = c.ContactId,
+                        Comments = c.Comments,
+                        ContactDate = c.ContactDate,
+                        ContactReason = c.NewContactReason.Description,
+                        Program = "",
+                        Teacher = "",
+                        TypeOfContact = c.NewContactType.Description
+                    };
             _contactsCount = q.Count();
-            var q2 = from c in q.Skip(startRowIndex).Take(maximumRows)
-                     select new ContactInfo
-                     {
-                         ContactId = c.ContactId,
-                         Comments = c.Comments,
-                         ContactDate = c.ContactDate,
-                         ContactReason = c.NewContactReason.Description,
-                         Program = "",
-                         Teacher = "",
-                         TypeOfContact = c.NewContactType.Description
-                     };
-            return q2;
+            return q.Skip(startRowIndex).Take(maximumRows);
         }
 
         private int _contactsMadeCount;
@@ -124,7 +119,7 @@ namespace CMSPresenter
             var isdev = HttpContext.Current.User.IsInRole("Developer");
             _contacteeCount = q.Count();
             var q2 = from c in q.Skip(startRowIndex).Take(maximumRows)
-                     let task = Db.Tasks.FirstOrDefault(t => 
+                     let task = Db.Tasks.FirstOrDefault(t =>
                          t.WhoId == c.PeopleId && t.SourceContactId == cid)
                      select new ContacteeInfo
                      {
@@ -137,7 +132,7 @@ namespace CMSPresenter
                      };
             return q2;
         }
-        public bool CanViewComments( int cid)
+        public bool CanViewComments(int cid)
         {
             if (!Util.OrgMembersOnly)
                 return true;

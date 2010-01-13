@@ -339,7 +339,9 @@ namespace CmsData
                     && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Util.CurrentOrgId
-                    );
+                    )
+                && !p.OrganizationMembers.Any(m => m.OrganizationId == Util.CurrentOrgId 
+                    && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

@@ -264,6 +264,7 @@ namespace CMSPresenter
                     fam.StateCode = m.Groups["state"].Value;
                     fam.ZipCode = m.Groups["zip"].Value;
                 }
+                DbUtil.Db.SubmitChanges();
             }
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(tag.PersonTags); // only return the new people we are adding
             Person p1;

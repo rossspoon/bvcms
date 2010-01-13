@@ -67,10 +67,8 @@ namespace CMSPresenter
                              om.OrganizationId == p.BibleFellowshipClassId).Organization
                              .DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          Fullname = p.Name,
-                         OrganizationId = (p.BibleFellowshipClassId != null ? (int)p.BibleFellowshipClassId : 0),
-                         OrganizationName = Db.Organizations
-                                            .Where(a => a.OrganizationId == p.BibleFellowshipClassId)
-                                            .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher,
+                         OrganizationId = p.BibleFellowshipClassId ?? 0,
+                         OrganizationName = p.BFClass.OrganizationName,
                          CellPhone = p.CellPhone ,
                          HomePhone = p.HomePhone,
                          WorkPhone = p.WorkPhone,
@@ -94,7 +92,7 @@ namespace CMSPresenter
                        select h;
 
             var q = from p in DbUtil.Db.People
-                     join pid in pids on p.PeopleId equals pid.Key.PeopleId
+                    join pid in pids on p.PeopleId equals pid.Key.PeopleId
                     let attendct = DbUtil.Db.Attends
                                      .Count(a => a.OrganizationId == pid.Key.OrgId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)
                     let lastattend = DbUtil.Db.Attends
@@ -135,7 +133,7 @@ namespace CMSPresenter
                          OrganizationId = pid.Key.OrgId,
                          OrganizationName = DbUtil.Db.Organizations
                                             .Where(a => a.OrganizationId == pid.Key.OrgId)
-                                            .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
+                                            .Max(b => b.OrganizationName) + " - " + p.BFClass.LeaderName
 
                      };
 
@@ -196,7 +194,7 @@ namespace CMSPresenter
                         OrganizationId = pid.Key.OrgId,
                         OrganizationName = DbUtil.Db.Organizations
                                            .Where(a => a.OrganizationId == pid.Key.OrgId)
-                                           .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
+                                           .Max(b => b.OrganizationName) + " - " + p.BFClass.LeaderName
 
                     };
 
@@ -248,7 +246,7 @@ namespace CMSPresenter
                         OrganizationId = (int)p.BibleFellowshipClassId,
                         OrganizationName = DbUtil.Db.Organizations
                                            .Where(a => a.OrganizationId == p.BibleFellowshipClassId)
-                                           .Max(b => b.OrganizationName) + " - " + p.BibleFellowshipTeacher
+                                           .Max(b => b.OrganizationName) + " - " + p.BFClass.LeaderName
 
                     };
 

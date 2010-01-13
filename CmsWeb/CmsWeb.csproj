@@ -1253,6 +1253,7 @@
     <Content Include="AppReview\Web.config" />
     <Content Include="App_Themes\Minimal\Skin1.skin" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
+    <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Areas\Public\Views\DiscipleLife\Confirm.aspx" />

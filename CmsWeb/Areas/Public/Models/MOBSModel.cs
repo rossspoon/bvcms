@@ -69,6 +69,7 @@ namespace CMSWeb.Models
                     var q = from m in DbUtil.Db.Meetings
                             where m.Organization.OrganizationId == orgid
                             where m.MeetingDate > Util.Now.AddHours(-12)
+                            where (m.Organization.ClassFilled ?? false) == false
                             orderby m.MeetingDate
                             select m;
                     _meeting = q.FirstOrDefault();

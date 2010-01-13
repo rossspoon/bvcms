@@ -1,3 +1,5 @@
+
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -19,6 +21,7 @@ FROM         dbo.OrganizationMembers AS om INNER JOIN
              dbo.Organizations AS o ON om.OrganizationId = o.OrganizationId INNER JOIN
              dbo.People AS p ON om.PeopleId = p.PeopleId
 WHERE     (om.MemberTypeId = o.LeaderMemberTypeId) AND (om.OrganizationId = @oid)
+AND ISNULL(om.Pending,0) = 0
 ORDER BY EnrollmentDate
 
 	return @id

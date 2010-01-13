@@ -3,6 +3,10 @@ CREATE TABLE [dbo].[DivOrg]
 [DivId] [int] NOT NULL,
 [OrgId] [int] NOT NULL
 )
+
+
+GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -20,10 +24,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	UPDATE dbo.People
-	SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
-	BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
-	BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
-	InBFClass = dbo.InBFClass(p.PeopleId)
+	SET BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId)
 	FROM dbo.People p
 	JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
 	JOIN dbo.Organizations o ON m.OrganizationId = o.OrganizationId
@@ -33,10 +34,7 @@ BEGIN
 	WHERE pr.BFProgram = 1
 
 	UPDATE dbo.People
-	SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
-	BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
-	BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
-	InBFClass = dbo.InBFClass(p.PeopleId)
+	SET BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId)
 	FROM dbo.People p
 	JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
 	JOIN dbo.Organizations o ON m.OrganizationId = o.OrganizationId
@@ -47,6 +45,7 @@ BEGIN
 
 END
 GO
+
 
 
 ALTER TABLE [dbo].[DivOrg] ADD CONSTRAINT [PK_DivOrg] PRIMARY KEY CLUSTERED  ([DivId], [OrgId]) ON [PRIMARY]

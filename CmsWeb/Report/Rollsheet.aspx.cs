@@ -148,7 +148,8 @@ namespace CMSWeb.Reports
             t.AddCell("");
             t.AddCell(box);
 
-            var bd = DateTime.Parse(dob);
+            DateTime bd;
+            DateTime.TryParse(dob, out bd);
 
             var p = new Phrase(name + "\n", font);
             p.Add(new Chunk(" ", medfont));

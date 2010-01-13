@@ -60,7 +60,7 @@
     });
     $('#newCard').click(function() {
         $('#KeyCard').focus();
-        return false;
+        return true;
     });
     $('#tkup').click(function() {
         $.blockUI({ message: $('#GOdialog'), css: { width: '275px'} });

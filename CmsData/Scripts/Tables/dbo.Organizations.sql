@@ -40,8 +40,24 @@ CREATE TABLE [dbo].[Organizations]
 [ShowOnlyRegisteredAtCheckIn] [bit] NULL
 )
 
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE TRIGGER [dbo].[insOrg] 
+   ON  [dbo].[Organizations] 
+   AFTER INSERT
+AS 
+BEGIN
+	SET NOCOUNT ON;
 
-
+	UPDATE dbo.Organizations
+	SET ScheduleId = dbo.ScheduleId(SchedDay, SchedTime),
+	MeetingTime = dbo.GetScheduleTime(SchedDay, SchedTime)
+	WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+	
+END
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -55,47 +71,39 @@ GO
 -- =============================================
 CREATE TRIGGER [dbo].[updOrg] 
    ON  [dbo].[Organizations] 
-   AFTER INSERT, UPDATE
+   AFTER UPDATE
 AS 
 BEGIN
 	SET NOCOUNT ON;
 
 	IF UPDATE(SchedDay) OR UPDATE(SchedTime)
-	BEGIN
 		UPDATE dbo.Organizations
 		SET ScheduleId = dbo.ScheduleId(SchedDay, SchedTime),
 		MeetingTime = dbo.GetScheduleTime(SchedDay, SchedTime)
 		WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
-	END
-	IF UPDATE(LeaderMemberTypeId)
-	OR UPDATE(DivisionId)
-	BEGIN
-		UPDATE dbo.People
-		SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
-		BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
-		BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
-		InBFClass = dbo.InBFClass(p.PeopleId)
-		FROM dbo.People p
-		JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
-		JOIN DELETED o ON m.OrganizationId = o.OrganizationId
-		JOIN dbo.Division d ON d.Id = o.DivisionId
-		JOIN dbo.Program pr ON pr.Id = d.ProgId
-		WHERE pr.BFProgram = 1
+	
+	IF UPDATE(DivisionId)
+	OR UPDATE(LeaderMemberTypeId)
+		IF 1 IN (SELECT ISNULL(BFProgram,0) FROM dbo.Program p
+				JOIN dbo.Division d ON p.Id = d.ProgId
+				JOIN DELETED od ON d.Id = od.DivisionId
+				JOIN INSERTED oi ON d.Id = oi.DivisionId)
+		BEGIN
+			UPDATE dbo.Organizations
+			SET LeaderId = dbo.OrganizationLeaderId(OrganizationId),
+			LeaderName = dbo.OrganizationLeaderName(OrganizationId)
+			WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
 
-		UPDATE dbo.People
-		SET BibleFellowshipTeacherId = dbo.BibleFellowshipTeacherId(p.PeopleId),
-		BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId),
-		BibleFellowshipTeacher = dbo.BibleFellowshipTeacher(p.PeopleId),
-		InBFClass = dbo.InBFClass(p.PeopleId)
-		FROM dbo.People p
-		JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
-		JOIN INSERTED o ON m.OrganizationId = o.OrganizationId
-		JOIN dbo.Division d ON d.Id = o.DivisionId
-		JOIN dbo.Program pr ON pr.Id = d.ProgId
-		WHERE pr.BFProgram = 1
-	END
+			UPDATE dbo.People
+			SET BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId)
+			FROM dbo.People p
+			JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
+			JOIN INSERTED o ON m.OrganizationId = o.OrganizationId
+		END
 END
 GO
+
+
 
 
 

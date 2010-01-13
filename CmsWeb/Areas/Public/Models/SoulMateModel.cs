@@ -55,8 +55,8 @@ namespace CMSWeb.Models
         public string first1 { get; set; }
         public string lastname1 { get; set; }
         public string dob1 { get; set; }
-        private DateTime _dob1;
-        public DateTime DOB1 { get { return _dob1; } }
+        private DateTime _BDay1;
+        public DateTime BDay1 { get { return _BDay1; } }
         public string phone1 { get; set; }
         public string homecell1 { get; set; }
         public string email1 { get; set; }
@@ -86,8 +86,8 @@ namespace CMSWeb.Models
         public string first2 { get; set; }
         public string lastname2 { get; set; }
         public string dob2 { get; set; }
-        private DateTime _dob2;
-        public DateTime DOB2 { get { return _dob2; } }
+        private DateTime _BDay2;
+        public DateTime BDay2 { get { return _BDay2; } }
         public string phone2 { get; set; }
         public string homecell2 { get; set; }
         public string email2 { get; set; }
@@ -155,14 +155,14 @@ namespace CMSWeb.Models
         {
             int count;
             _Person1 = CMSWeb.Models.SearchPeopleModel
-                .FindPerson(phone1, first1, lastname1, DOB1, out count);
+                .FindPerson(phone1, first1, lastname1, BDay1, out count);
             return count;
         }
         public int FindMember2()
         {
             int count;
             _Person2 = CMSWeb.Models.SearchPeopleModel
-                .FindPerson(phone2, first2, lastname2, DOB2, out count);
+                .FindPerson(phone2, first2, lastname2, BDay2, out count);
             return count;
         }
         public int FindMember(string phone, string first, string last, DateTime dob, out Person person)
@@ -181,7 +181,7 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname1", "last name required");
             else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
                 ModelState.AddModelError("lastname1", "Please use Proper Casing");
-            if (!Util.DateValid(dob1, out _dob1))
+            if (!Util.DateValid(dob1, out _BDay1))
                 ModelState.AddModelError("dob1", "valid birth date required");
             var d = phone1.GetDigits().Length;
             if (d != 7 && d != 10)
@@ -208,7 +208,7 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("lastname2", "last name required");
             else if (lastname2.ToUpper() == lastname2 || lastname2.ToLower() == lastname2)
                 ModelState.AddModelError("lastname2", "Please use Proper Casing");
-            if (!Util.DateValid(dob2, out _dob2))
+            if (!Util.DateValid(dob2, out _BDay2))
                 ModelState.AddModelError("dob2", "valid birth date required");
             d = phone2.GetDigits().Length;
             if (d != 7 && d != 10)
@@ -243,7 +243,7 @@ namespace CMSWeb.Models
                 modelState.AddModelError("lastname1", "last name required");
             else if (lastname1.ToUpper() == lastname1 || lastname1.ToLower() == lastname1)
                 modelState.AddModelError("lastname1", "Please use Proper Casing");
-            if (!Util.DateValid(dob1, out _dob1))
+            if (!Util.DateValid(dob1, out _BDay1))
                 modelState.AddModelError("dob1", "valid birth date required");
 
             if (!gender.HasValue)

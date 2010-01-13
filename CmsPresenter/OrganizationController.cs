@@ -104,7 +104,6 @@ namespace CMSPresenter
         {
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
             var q = DbUtil.Db.People.Where(qb.Predicate());
-            q = q.Where(p => !p.OrganizationMembers.Any(om => om.OrganizationId == orgid));
             visitorCount = q.Count();
             q = ApplySort(q, orgid, sortExpression);
             var q2 = FetchVisitorList(q.Skip(startRowIndex).Take(maximumRows), orgid);
@@ -177,8 +176,8 @@ namespace CMSPresenter
                         WorkPhone = p.WorkPhone,
                         MemberStatus = p.MemberStatus.Description,
                         Email = p.EmailAddress,
-                        BFTeacher = p.BibleFellowshipTeacher,
-                        BFTeacherId = p.BibleFellowshipTeacherId,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         MemberTypeCode = om.MemberType.Code,
                         MemberType = om.MemberType.Description,
@@ -216,8 +215,8 @@ namespace CMSPresenter
                         WorkPhone = p.WorkPhone,
                         MemberStatus = p.MemberStatus.Description,
                         Email = p.EmailAddress,
-                        BFTeacher = p.BibleFellowshipTeacher,
-                        BFTeacherId = p.BibleFellowshipTeacherId,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         MemberTypeCode = m.MemberType.Code,
                         MemberType = m.MemberType.Description,
@@ -253,8 +252,8 @@ namespace CMSPresenter
                         WorkPhone = p.WorkPhone,
                         MemberStatus = p.MemberStatus.Description,
                         Email = p.EmailAddress,
-                        BFTeacher = p.BibleFellowshipTeacher,
-                        BFTeacherId = p.BibleFellowshipTeacherId,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
@@ -298,7 +297,7 @@ namespace CMSPresenter
                 case "BFTeacher":
                     query = from om in query
                             let p = om.Person
-                            orderby p.BibleFellowshipTeacher,
+                            orderby p.BFClass.LeaderName,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -352,7 +351,7 @@ namespace CMSPresenter
                 case "BFTeacher DESC":
                     query = from om in query
                             let p = om.Person
-                            orderby p.BibleFellowshipTeacher descending,
+                            orderby p.BFClass.LeaderName descending,
                             p.LastName descending,
                             p.FirstName descending,
                             p.PeopleId descending
@@ -430,7 +429,7 @@ namespace CMSPresenter
                 case "BFTeacher":
                     query = from om in query
                             let p = om.Person
-                            orderby p.BibleFellowshipTeacher,
+                            orderby p.BFClass.LeaderName,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -490,7 +489,7 @@ namespace CMSPresenter
                 case "BFTeacher DESC":
                     query = from om in query
                             let p = om.Person
-                            orderby p.BibleFellowshipTeacher descending,
+                            orderby p.BFClass.LeaderName descending,
                             p.LastName descending,
                             p.FirstName descending,
                             p.PeopleId descending
@@ -562,7 +561,7 @@ namespace CMSPresenter
                     break;
                 case "BFTeacher":
                     query = from p in query
-                            orderby p.BibleFellowshipTeacher,
+                            orderby p.BFClass.LeaderName,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -597,7 +596,7 @@ namespace CMSPresenter
                     break;
                 case "BFTeacher DESC":
                     query = from p in query
-                            orderby p.BibleFellowshipTeacher descending,
+                            orderby p.BFClass.LeaderName descending,
                             p.LastName descending,
                             p.FirstName descending,
                             p.PeopleId descending

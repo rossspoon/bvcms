@@ -107,12 +107,12 @@ namespace CMSWeb.Areas.Public.Controllers
             if (m.ChildParent.Value == m.person1.PeopleId)
             {
                 p = m.person1;
-                count = m.FindMember(p.HomePhone, m.first1, m.lastname1, m.DOB1, out c);
+                count = m.FindMember(p.HomePhone, m.first1, m.lastname1, m.BDay1, out c);
             }
             else
             {
                 p = m.person2;
-                count = m.FindMember(p.HomePhone, m.first1, m.lastname1, m.DOB1, out c);
+                count = m.FindMember(p.HomePhone, m.first1, m.lastname1, m.BDay1, out c);
             }
             if (count > 1)
                 ModelState.AddModelError("findkid", "More than one match for child, sorry");

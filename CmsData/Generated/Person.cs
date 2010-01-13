@@ -219,13 +219,7 @@ namespace CmsData
 		
 		private int? _PrimaryBadAddrFlag;
 		
-		private string _BibleFellowshipTeacher;
-		
-		private int? _BibleFellowshipTeacherId;
-		
 		private DateTime? _LastContact;
-		
-		private bool? _InBFClass;
 		
 		private int? _Grade;
 		
@@ -319,6 +313,8 @@ namespace CmsData
    		private EntitySet< Task> _TasksCoOwned;
 		
     	
+		private EntityRef< Organization> _BFClass;
+		
 		private EntityRef< BaptismType> _BaptismType;
 		
 		private EntityRef< Campu> _Campu;
@@ -655,17 +651,8 @@ namespace CmsData
 		partial void OnPrimaryBadAddrFlagChanging(int? value);
 		partial void OnPrimaryBadAddrFlagChanged();
 		
-		partial void OnBibleFellowshipTeacherChanging(string value);
-		partial void OnBibleFellowshipTeacherChanged();
-		
-		partial void OnBibleFellowshipTeacherIdChanging(int? value);
-		partial void OnBibleFellowshipTeacherIdChanged();
-		
 		partial void OnLastContactChanging(DateTime? value);
 		partial void OnLastContactChanged();
-		
-		partial void OnInBFClassChanging(bool? value);
-		partial void OnInBFClassChanged();
 		
 		partial void OnGradeChanging(int? value);
 		partial void OnGradeChanged();
@@ -773,6 +760,8 @@ namespace CmsData
 			
 			this._TasksCoOwned = new EntitySet< Task>(new Action< Task>(this.attach_TasksCoOwned), new Action< Task>(this.detach_TasksCoOwned)); 
 			
+			
+			this._BFClass = default(EntityRef< Organization>); 
 			
 			this._BaptismType = default(EntityRef< BaptismType>); 
 			
@@ -3064,50 +3053,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BibleFellowshipTeacher", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacher", DbType="varchar(50)")]
-		public string BibleFellowshipTeacher
-		{
-			get { return this._BibleFellowshipTeacher; }
-
-			set
-			{
-				if (this._BibleFellowshipTeacher != value)
-				{
-				
-                    this.OnBibleFellowshipTeacherChanging(value);
-					this.SendPropertyChanging();
-					this._BibleFellowshipTeacher = value;
-					this.SendPropertyChanged("BibleFellowshipTeacher");
-					this.OnBibleFellowshipTeacherChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="BibleFellowshipTeacherId", UpdateCheck=UpdateCheck.Never, Storage="_BibleFellowshipTeacherId", DbType="int")]
-		public int? BibleFellowshipTeacherId
-		{
-			get { return this._BibleFellowshipTeacherId; }
-
-			set
-			{
-				if (this._BibleFellowshipTeacherId != value)
-				{
-				
-                    this.OnBibleFellowshipTeacherIdChanging(value);
-					this.SendPropertyChanging();
-					this._BibleFellowshipTeacherId = value;
-					this.SendPropertyChanged("BibleFellowshipTeacherId");
-					this.OnBibleFellowshipTeacherIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="LastContact", UpdateCheck=UpdateCheck.Never, Storage="_LastContact", DbType="datetime")]
 		public DateTime? LastContact
 		{
@@ -3123,28 +3068,6 @@ namespace CmsData
 					this._LastContact = value;
 					this.SendPropertyChanged("LastContact");
 					this.OnLastContactChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="InBFClass", UpdateCheck=UpdateCheck.Never, Storage="_InBFClass", DbType="bit")]
-		public bool? InBFClass
-		{
-			get { return this._InBFClass; }
-
-			set
-			{
-				if (this._InBFClass != value)
-				{
-				
-                    this.OnInBFClassChanging(value);
-					this.SendPropertyChanging();
-					this._InBFClass = value;
-					this.SendPropertyChanged("InBFClass");
-					this.OnInBFClassChanged();
 				}
 
 			}
@@ -3227,6 +3150,9 @@ namespace CmsData
 			{
 				if (this._BibleFellowshipClassId != value)
 				{
+				
+					if (this._BFClass.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnBibleFellowshipClassIdChanging(value);
 					this.SendPropertyChanging();
@@ -3757,6 +3683,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="BFMembers__BFClass", Storage="_BFClass", ThisKey="BibleFellowshipClassId", IsForeignKey=true)]
+		public Organization BFClass
+		{
+			get { return this._BFClass.Entity; }
+
+			set
+			{
+				Organization previousValue = this._BFClass.Entity;
+				if (((previousValue != value) 
+							|| (this._BFClass.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._BFClass.Entity = null;
+						previousValue.BFMembers.Remove(this);
+					}
+
+					this._BFClass.Entity = value;
+					if (value != null)
+					{
+						value.BFMembers.Add(this);
+						
+						this._BibleFellowshipClassId = value.OrganizationId;
+						
+					}
+
+					else
+					{
+						
+						this._BibleFellowshipClassId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("BFClass");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_People_BaptismType", Storage="_BaptismType", ThisKey="BaptismTypeId", IsForeignKey=true)]
 		public BaptismType BaptismType
 		{

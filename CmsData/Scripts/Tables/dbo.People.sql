@@ -101,10 +101,7 @@ CREATE TABLE [dbo].[People]
 [PrimaryAddress2] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [PrimaryResCode] [int] NULL,
 [PrimaryBadAddrFlag] [int] NULL,
-[BibleFellowshipTeacher] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[BibleFellowshipTeacherId] [int] NULL,
 [LastContact] [datetime] NULL,
-[InBFClass] [bit] NULL,
 [Grade] [int] NULL,
 [CellPhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [WorkPhoneLU] [char] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -118,6 +115,59 @@ CREATE TABLE [dbo].[People]
 [CheckInNotes] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Age] AS ((datepart(year,isnull([DeceasedDate],getdate()))-[BirthYear])-case when [BirthMonth]>datepart(month,isnull([DeceasedDate],getdate())) OR [BirthMonth]=datepart(month,isnull([DeceasedDate],getdate())) AND [BirthDay]>datepart(day,isnull([DeceasedDate],getdate())) then (1) else (0) end)
 )
+
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [BFMembers__BFClass] FOREIGN KEY ([BibleFellowshipClassId]) REFERENCES [dbo].[Organizations] ([OrganizationId])
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE TRIGGER [dbo].[insPeople] 
+   ON  [dbo].[People]
+   AFTER INSERT
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	UPDATE dbo.Families 
+	SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
+		HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId),
+		CoupleFlag = dbo.CoupleFlag(FamilyId)
+	WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+	
+	UPDATE dbo.People
+	SET SpouseId = dbo.SpouseId(PeopleId)
+	WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+
+	UPDATE dbo.People
+	SET HomePhone = f.HomePhone
+	FROM dbo.People p JOIN dbo.Families f ON p.FamilyId = f.FamilyId
+	WHERE p.PeopleId IN (SELECT PeopleId FROM INSERTED)
+
+	UPDATE dbo.People
+	SET CellPhoneLU = RIGHT(CellPhone, 7),
+	CellPhoneAC = LEFT(RIGHT(REPLICATE('0',10) + CellPhone, 10), 3),
+	PrimaryCity = dbo.PrimaryCity(PeopleId),
+	PrimaryAddress = dbo.PrimaryAddress(PeopleId),
+	PrimaryAddress2 = dbo.PrimaryAddress2(PeopleId),
+	PrimaryState = dbo.PrimaryState(PeopleId),
+	PrimaryBadAddrFlag = dbo.PrimaryBadAddressFlag(PeopleId),
+	PrimaryResCode = dbo.PrimaryResCode(PeopleId),
+	PrimaryZip = dbo.PrimaryZip(PeopleId),
+	SpouseId = dbo.SpouseId(PeopleId)
+	WHERE PeopleId IN (SELECT PeopleId FROM INSERTED)
+		
+	UPDATE dbo.Families
+	SET CoupleFlag = dbo.CoupleFlag(FamilyId)
+	WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+END
+GO
+
+
 
 
 ALTER TABLE [dbo].[People] ADD
@@ -177,6 +227,11 @@ BEGIN
 			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId),
 			CoupleFlag = dbo.CoupleFlag(FamilyId)
 		WHERE FamilyId = @fid
+
+		UPDATE dbo.People
+		SET SpouseId = dbo.SpouseId(PeopleId)
+		WHERE FamilyId = @fid
+
 		DECLARE @n INT
 		SELECT @n = COUNT(*) FROM dbo.People WHERE FamilyId = @fid
 		IF @n = 0
@@ -203,7 +258,7 @@ GO
 -- =============================================
 CREATE TRIGGER [dbo].[updPeople] 
    ON  [dbo].[People]
-   AFTER INSERT, UPDATE
+   AFTER UPDATE
 AS 
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -223,6 +278,10 @@ BEGIN
 		SET HeadOfHouseHoldId = dbo.HeadOfHouseholdId(FamilyId),
 			HeadOfHouseHoldSpouseId = dbo.HeadOfHouseHoldSpouseId(FamilyId),
 			CoupleFlag = dbo.CoupleFlag(FamilyId)
+		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+		
+		UPDATE dbo.People
+		SET SpouseId = dbo.SpouseId(PeopleId)
 		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
 
 		IF (UPDATE(FamilyId))
@@ -261,57 +320,31 @@ BEGIN
 		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
 	END
 
-	IF UPDATE(CityName) 
+	IF UPDATE(AddressTypeId)
+	OR UPDATE(CityName) 
 	OR UPDATE(AltCityName)
-	OR UPDATE(AddressTypeId)
-	BEGIN
-		UPDATE dbo.People
-		SET PrimaryCity = dbo.PrimaryCity(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-	END
-
-	IF UPDATE(AddressLineOne) 
+	OR UPDATE(AddressLineOne) 
 	OR UPDATE(AltAddressLineOne)
-	OR UPDATE(AddressTypeId)
-	BEGIN
-		UPDATE dbo.People
-		SET PrimaryAddress = dbo.PrimaryAddress(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-	END
-	
-	IF UPDATE(AddressLineTwo) 
+	OR UPDATE(AddressLineTwo) 
 	OR UPDATE(AltAddressLineTwo)
-	OR UPDATE(AddressTypeId)
-	BEGIN
-		UPDATE dbo.People
-		SET PrimaryAddress2 = dbo.PrimaryAddress2(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-	END
-
-	IF UPDATE(StateCode) 
+	OR UPDATE(StateCode) 
 	OR UPDATE(AltStateCode)
-	OR UPDATE(AddressTypeId)
-	BEGIN
-		UPDATE dbo.People
-		SET PrimaryState = dbo.PrimaryState(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-	END
-
-	IF UPDATE(BadAddressFlag) 
+	OR UPDATE(BadAddressFlag) 
 	OR UPDATE(AltBadAddressFlag)
-	OR UPDATE(AddressTypeId)
-	BEGIN
-		UPDATE dbo.People
-		SET PrimaryBadAddrFlag = dbo.PrimaryBadAddressFlag(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-	END
-
-	IF UPDATE(ResCodeId) 
+	OR UPDATE(ResCodeId) 
 	OR UPDATE(AltResCodeId)
-	OR UPDATE(AddressTypeId)
+	OR UPDATE(ZipCode)
+	OR UPDATE(AltZipCode)
+	OR UPDATE(FamilyId)
 	BEGIN
 		UPDATE dbo.People
-		SET PrimaryResCode = dbo.PrimaryResCode(PeopleId)
+		SET PrimaryCity = dbo.PrimaryCity(PeopleId),
+		PrimaryAddress = dbo.PrimaryAddress(PeopleId),
+		PrimaryAddress2 = dbo.PrimaryAddress2(PeopleId),
+		PrimaryState = dbo.PrimaryState(PeopleId),
+		PrimaryBadAddrFlag = dbo.PrimaryBadAddressFlag(PeopleId),
+		PrimaryResCode = dbo.PrimaryResCode(PeopleId),
+		PrimaryZip = dbo.PrimaryZip(PeopleId)
 		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
 	END
 
@@ -343,6 +376,9 @@ BEGIN
 
 END
 GO
+
+
+
 
 
 

@@ -94,6 +94,8 @@ namespace CmsData
 		private bool? _ShowOnlyRegisteredAtCheckIn;
 		
    		
+   		private EntitySet< Person> _BFMembers;
+		
    		private EntitySet< Organization> _ChildOrgs;
 		
    		private EntitySet< EnrollmentTransaction> _EnrollmentTransactions;
@@ -255,6 +257,8 @@ namespace CmsData
     #endregion
 		public Organization()
 		{
+			
+			this._BFMembers = new EntitySet< Person>(new Action< Person>(this.attach_BFMembers), new Action< Person>(this.detach_BFMembers)); 
 			
 			this._ChildOrgs = new EntitySet< Organization>(new Action< Organization>(this.attach_ChildOrgs), new Action< Organization>(this.detach_ChildOrgs)); 
 			
@@ -1157,6 +1161,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="BFMembers__BFClass", Storage="_BFMembers", OtherKey="BibleFellowshipClassId")]
+   		public EntitySet< Person> BFMembers
+   		{
+   		    get { return this._BFMembers; }
+
+			set	{ this._BFMembers.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="ChildOrgs__ParentOrg", Storage="_ChildOrgs", OtherKey="ParentOrgId")]
    		public EntitySet< Organization> ChildOrgs
    		{
@@ -1550,6 +1564,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_BFMembers(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.BFClass = this;
+		}
+
+		private void detach_BFMembers(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.BFClass = null;
+		}
+
+		
 		private void attach_ChildOrgs(Organization entity)
 		{
 			this.SendPropertyChanging();

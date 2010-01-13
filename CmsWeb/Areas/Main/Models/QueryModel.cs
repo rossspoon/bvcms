@@ -652,8 +652,8 @@ namespace CMSWeb.Models
                         PhonePref = p.PhonePrefId,
                         MemberStatus = p.MemberStatus.Description,
                         Email = p.EmailAddress,
-                        BFTeacher = p.BibleFellowshipTeacher,
-                        BFTeacherId = p.BibleFellowshipTeacherId,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId),
                     };
@@ -691,7 +691,7 @@ namespace CMSWeb.Models
                         break;
                     case "Teacher":
                         q = from p in q
-                            orderby p.BibleFellowshipTeacher,
+                            orderby p.BFClass.LeaderName,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -732,7 +732,7 @@ namespace CMSWeb.Models
                         break;
                     case "Teacher":
                         q = from p in q
-                            orderby p.BibleFellowshipTeacher descending,
+                            orderby p.BFClass.LeaderName descending,
                             p.LastName descending,
                             p.FirstName descending,
                             p.PeopleId descending

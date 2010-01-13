@@ -159,5 +159,12 @@ namespace CMSWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("done");
         }
+        public ActionResult CheckInList()
+        {
+            var m = from t in DbUtil.Db.CheckInTimes
+                    orderby t.CheckInTimeX descending
+                    select t;
+            return View(m.Take(200));
+        }
     }
 }

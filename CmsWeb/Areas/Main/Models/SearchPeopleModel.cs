@@ -347,6 +347,7 @@ namespace CMSWeb.Models
                     fam.StateCode = m.Groups["state"].Value;
                     fam.ZipCode = m.Groups["zip"].Value;
                 }
+                DbUtil.Db.SubmitChanges();
             }
             Person p;
             p = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult,
