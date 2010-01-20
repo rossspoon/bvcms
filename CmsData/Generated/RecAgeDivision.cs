@@ -37,6 +37,8 @@ namespace CmsData
 		
 		private string _ExpirationDt;
 		
+		private decimal? _ShirtFee;
+		
    		
     	
 		private EntityRef< Division> _Division;
@@ -81,6 +83,9 @@ namespace CmsData
 		
 		partial void OnExpirationDtChanging(string value);
 		partial void OnExpirationDtChanged();
+		
+		partial void OnShirtFeeChanging(decimal? value);
+		partial void OnShirtFeeChanged();
 		
     #endregion
 		public RecAgeDivision()
@@ -321,6 +326,28 @@ namespace CmsData
 					this._ExpirationDt = value;
 					this.SendPropertyChanged("ExpirationDt");
 					this.OnExpirationDtChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ShirtFee", UpdateCheck=UpdateCheck.Never, Storage="_ShirtFee", DbType="money")]
+		public decimal? ShirtFee
+		{
+			get { return this._ShirtFee; }
+
+			set
+			{
+				if (this._ShirtFee != value)
+				{
+				
+                    this.OnShirtFeeChanging(value);
+					this.SendPropertyChanging();
+					this._ShirtFee = value;
+					this.SendPropertyChanged("ShirtFee");
+					this.OnShirtFeeChanged();
 				}
 
 			}

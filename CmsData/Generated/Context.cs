@@ -1475,6 +1475,18 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.Sproc> ViewSprocs
+	    {
+		    get { return this.GetTable< View.Sproc>(); }
+
+	    }
+
+	    public Table< View.Trigger> ViewTriggers
+	    {
+		    get { return this.GetTable< View.Trigger>(); }
+
+	    }
+
 	    public Table< View.UserList> ViewUserLists
 	    {
 		    get { return this.GetTable< View.UserList>(); }
@@ -1665,20 +1677,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.AttendStr_3", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string AttendStr3(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((String)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.AttendDesc", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string AttendDesc(
@@ -1809,20 +1807,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.AttendPct_2", IsComposable = true)]
-		[return: Parameter(DbType = "real")]
-		public decimal? AttendPct2(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Decimal)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.GetScheduleTime", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? GetScheduleTime(
@@ -1935,24 +1919,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.EnrollmentTransactionId2", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? EnrollmentTransactionId2(
-            [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "oid", DbType="int")] int? oid,
-            [Parameter(Name = "tid", DbType="int")] int? tid,
-            [Parameter(Name = "ttid", DbType="int")] int? ttid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid,
-                oid,
-                tid,
-                ttid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.CoupleFlag", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? CoupleFlag(
@@ -2007,18 +1973,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.BibleFellowshipTeacherId", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? BibleFellowshipTeacherId(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.BibleFellowshipClassId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? BibleFellowshipClassId(
@@ -2057,18 +2011,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.BibleFellowshipTeacher", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string BibleFellowshipTeacher(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((String)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.Age", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? Age(
@@ -2100,18 +2042,6 @@ namespace CmsData
             )
 		{
 			return ((Int32)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.InBFClass", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? InBFClass(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((Boolean)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
                 ).ReturnValue));

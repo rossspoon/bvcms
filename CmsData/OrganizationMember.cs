@@ -59,11 +59,15 @@ namespace CmsData
             var i = q.Single();
             if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
             {
-                var enrollid = Db.EnrollmentTransactions.Where(et =>
-                    et.PeopleId == PeopleId
-                    && et.OrganizationId == OrganizationId
-                    && et.EnrollmentDate == this.EnrollmentDate
-                    && et.TransactionTypeId == 1).Select(et => et.TransactionId).SingleOrDefault();
+                var qe = from et in Db.EnrollmentTransactions
+                         where et.PeopleId == PeopleId
+                            && et.OrganizationId == OrganizationId
+                            && et.EnrollmentDate == this.EnrollmentDate
+                            && et.TransactionTypeId == 1
+                         orderby et.TransactionId
+                         select et.TransactionId;
+                var enrollid = qe.FirstOrDefault();
+
                 var qt = from et in Db.EnrollmentTransactions
                          where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
                          where et.TransactionId >= enrollid
@@ -121,7 +125,7 @@ namespace CmsData
             Db.OrgMemMemTags.DeleteOnSubmit(group);
             return false;
         }
-        public static void InsertOrgMembers
+        public static OrganizationMember InsertOrgMembers
             (int OrganizationId,
             int PeopleId,
             int MemberTypeId,
@@ -132,7 +136,7 @@ namespace CmsData
             var Db = DbUtil.Db;
             var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
             if (m != null)
-                return;
+                return m;
             var om = new OrganizationMember
             {
                 OrganizationId = OrganizationId,
@@ -163,7 +167,7 @@ namespace CmsData
             Db.OrganizationMembers.InsertOnSubmit(om);
             Db.EnrollmentTransactions.InsertOnSubmit(et);
             Db.SubmitChanges();
-            Db.UpdateSchoolGrade(PeopleId);
+            return om;
         }
     }
 }

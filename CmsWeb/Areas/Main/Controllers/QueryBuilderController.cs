@@ -26,6 +26,12 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["Title"] = "QueryBuilder";
             ViewData["OnQueryBuilder"] = "true";
         }
+        public ActionResult NewQuery()
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate();
+            return RedirectToAction("Main");
+        }
         public ActionResult Main(int? id, int? run)
         {
             var m = new QueryModel { QueryId = id };

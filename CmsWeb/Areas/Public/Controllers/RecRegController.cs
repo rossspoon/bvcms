@@ -111,7 +111,12 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.SubmitChanges();
             m.regid = reg.Id;
 
-            Util.Email2(new SmtpClient(), m.email, DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), "{0} Registration".Fmt(m.division.Name), "{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)".Fmt(m.participant.Name, m.participant.PeopleId, m.division.Name, m.organization.OrganizationName));
+            Util.Email2(new SmtpClient(), m.email, 
+                DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), 
+                "{0} Registration".Fmt(m.division.Name), 
+                "{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)"
+                .Fmt(m.participant.Name, m.participant.PeopleId, 
+                m.division.Name, m.organization.OrganizationName));
 
             if ((reg.FeePaid ?? false) == true)
                 return RedirectToAction("Confirm", new { id = reg.Id });

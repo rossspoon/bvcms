@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -26,17 +27,22 @@ BEGIN
     
     SELECT @yearago = DATEADD(year,-1,@lastmeet)
     
-	SELECT @tct = COUNT(*) FROM dbo.Attend
-     WHERE PeopleId = @pid
-       AND OrganizationId = @orgid
-       AND EffAttendFlag IS NOT NULL
-       AND MeetingDate >= @yearago
-       
+	SELECT @tct = COUNT(*) FROM dbo.Attend a
+	JOIN dbo.Organizations o ON a.OrganizationId = o.OrganizationId
+    WHERE PeopleId = @pid
+    AND a.OrganizationId = @orgid
+    AND ((o.AttendTrkLevelId = 30 AND (ISNULL(a.Registered,0) = 1 OR EffAttendFlag = 1)) 
+			OR o.AttendTrkLevelId = 20)
+    AND EffAttendFlag IS NOT NULL
+    AND MeetingDate >= @yearago
+    AND MeetingDate <= GETDATE()
+    
     SELECT @act = COUNT(*) FROM dbo.Attend
-     WHERE PeopleId = @pid
-       AND OrganizationId = @orgid
-       AND EffAttendFlag = 1
-       AND MeetingDate >= @yearago
+    WHERE PeopleId = @pid
+    AND OrganizationId = @orgid
+    AND EffAttendFlag = 1
+    AND MeetingDate >= @yearago
+    AND MeetingDate <= GETDATE()
        
        
 	if @tct = 0
@@ -72,7 +78,13 @@ BEGIN
 		ELSE '.'
 		END + @a
 	FROM dbo.Attend a
-	WHERE a.MeetingDate >= @dt AND a.PeopleId = @pid AND a.OrganizationId = @orgid
+	JOIN dbo.Organizations o ON a.OrganizationId = o.OrganizationId
+	WHERE a.MeetingDate >= @dt 
+	AND a.MeetingDate <= GETDATE()
+	AND a.PeopleId = @pid 
+	AND a.OrganizationId = @orgid
+    AND ((o.AttendTrkLevelId = 30 AND ISNULL(a.Registered,0) = 1) 
+			OR o.AttendTrkLevelId = 20)
 	ORDER BY MeetingDate DESC
 	
 	----------------------------------------------------------------

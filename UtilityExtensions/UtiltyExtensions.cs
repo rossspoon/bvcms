@@ -51,12 +51,22 @@ namespace UtilityExtensions
             int.TryParse(s, out i);
             return i;
         }
+        public static string ToShortDateStr(this DateTime? date)
+        {
+            if (date.HasValue)
+                return date.Value.ToShortDateString();
+            return "";
+        }
         public static DateTime? ToDate(this string s)
         {
             DateTime dt;
             if (DateTime.TryParse(s, out dt))
                 return dt;
             return null;
+        }
+        public static DateTime? ToDate(this object o)
+        {
+            return o.ToString().ToDate();
         }
         public static int? ToInt2(this string s)
         {
@@ -201,7 +211,7 @@ namespace UtilityExtensions
             get
             {
                 var daysoffset = (double?)HttpContext.Current.Application["daysoffset"];
-                if(daysoffset.HasValue)
+                if (daysoffset.HasValue)
                     return DateTime.Now.AddDays(daysoffset.Value);
                 return DateTime.Now;
             }
@@ -215,7 +225,7 @@ namespace UtilityExtensions
             string csz = city ?? string.Empty;
             if (st.HasValue())
                 csz += ", " + st;
-            if (zip.HasValue())
+            if (zip.HasValue() && zip.Length >= 5)
                 csz += " " + zip.Substring(0, 5);
             return csz.Trim();
         }
@@ -338,7 +348,7 @@ namespace UtilityExtensions
                 return "";
             var t = zip.GetDigits();
             if (t.Length > 5)
-                return t.Substring(0,5);
+                return t.Substring(0, 5);
             return t;
         }
         public static bool DateValid(string dt, out DateTime dt2)
@@ -732,13 +742,13 @@ namespace UtilityExtensions
             }
             return 10;
         }
-        public static string IpAddress() 
-        { 
+        public static string IpAddress()
+        {
             string strIpAddress;
             strIpAddress = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
             if (strIpAddress == null)
-                strIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"]; 
-            return strIpAddress; 
+                strIpAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            return strIpAddress;
         }
         public static void Cookie(string name, string value, int days)
         {

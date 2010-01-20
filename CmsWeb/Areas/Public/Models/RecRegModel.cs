@@ -180,7 +180,12 @@ namespace CMSWeb.Models
                 var dt = DateTime.Parse(RecAgeDiv.ExpirationDt);
                 if (Util.Now.Subtract(dt).TotalDays > 180)
                     dt = dt.AddYears(1);
-                return RecAgeDiv.Fee.Value + (dt < Util.Now ? (RecAgeDiv.ExtraFee ?? 0) : 0);
+                var amt = RecAgeDiv.Fee.Value;
+                if (dt < Util.Now)
+                    amt += RecAgeDiv.ExtraFee ?? 0;
+                if (shirtsize != "lastyear")
+                    amt += RecAgeDiv.ShirtFee ?? 0;
+                return amt;
             }
         }
 
@@ -323,7 +328,7 @@ namespace CMSWeb.Models
                      select r;
             return q2.SingleOrDefault();
         }
-        public static IEnumerable<SelectListItem> ShirtSizes()
+        public static IEnumerable<SelectListItem> ShirtSizes(RecAgeDivision RecAgeDiv)
         {
             var q = from ss in DbUtil.Db.ShirtSizes
                     orderby ss.Id
@@ -334,6 +339,8 @@ namespace CMSWeb.Models
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            if (RecAgeDiv != null && RecAgeDiv.ShirtFee > 0)
+                list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;
         }
         public string PrepareSummaryText()

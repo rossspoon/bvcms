@@ -50,6 +50,14 @@ namespace CmsData
             Pending = 30,
             Previous = 40,
             JustAdded = 50,
+            InactiveMember = 100,
+            DeletedMember = 110,
+            DeletedProspect = 120,
+            ProspectActive = 130,
+            ProspectInactive = 140,
+            MiscNameActive = 150,
+            MiscNameInactive = 160,
+            Unknown = 170
         }
         public enum DiscoveryClassStatusCode
         {
@@ -147,7 +155,12 @@ namespace CmsData
             get
             {
                 if (SpouseId.HasValue)
-                    return Family.People.Single(p => p.PeopleId == SpouseId.Value).Name;
+                {
+                    var q = from p in Db.People
+                            where p.PeopleId == SpouseId
+                            select p.Name;
+                    return q.SingleOrDefault();
+                }
                 return "";
             }
         }

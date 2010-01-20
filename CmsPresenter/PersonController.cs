@@ -31,16 +31,19 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<FamilyMember> FamilyMembers(int PersonId)
         {
-            var q = from p in Db.People
-                    from m in p.Family.People
-                    where p.PeopleId == PersonId
-                    orderby p.PeopleId == m.Family.HeadOfHouseholdId ? 1 : p.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 : 3, m.Age descending, m.LastName, m.Name
+            var p = DbUtil.Db.LoadPersonById(PersonId);
+            var q = from m in p.Family.People
+                    orderby 
+                        m.PeopleId == m.Family.HeadOfHouseholdId ? 1 : 
+                        m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 : 
+                        3, m.Age descending, m.Name2
                     select new FamilyMember
                    {
                        Id = m.PeopleId,
                        Name = m.Name,
                        Age = m.Age,
                        Deceased = m.DeceasedDate != null,
+                       PositionInFamily = m.FamilyPosition.Code
                    };
             return q;
         }

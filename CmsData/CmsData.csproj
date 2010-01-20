@@ -83,6 +83,8 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Generated\Views\Sproc.cs" />
+    <Compile Include="Generated\Views\Trigger.cs" />
     <Compile Include="PeopleExtra.cs" />
     <Compile Include="Generated\PeopleExtra.cs" />
     <Compile Include="Generated\Views\ContributionsView.cs" />

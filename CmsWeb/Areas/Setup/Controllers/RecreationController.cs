@@ -69,6 +69,9 @@ namespace CMSWeb.Areas.Setup.Controllers
                 case "p":
                     rec.ExtraFee = Decimal.Parse(value);
                     break;
+                case "t":
+                    rec.ShirtFee = Decimal.Parse(value);
+                    break;
                 case "z":
                     if (DateTime.TryParse(value, out dt))
                         rec.ExpirationDt = dt.ToString("M/d");

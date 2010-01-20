@@ -145,7 +145,7 @@ namespace CMSWeb.Models
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                     let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith("TM:")) > 0
                     let recreg = om.Person.RecRegs.Where(r =>
-                        r.OrgId == om.OrganizationId && (r.Expired ?? false) == false)
+                        r.DivId == LeagueId && (r.Expired ?? false) == false)
                         .OrderByDescending(r => r.Uploaded).FirstOrDefault()
                     where !FilterUnassigned || team == false
                     select new ParticipantInfo

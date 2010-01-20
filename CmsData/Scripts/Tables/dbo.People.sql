@@ -71,7 +71,7 @@ CREATE TABLE [dbo].[People]
 [AltStreetName] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [CellPhone] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [WorkPhone] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[EmailAddress] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[EmailAddress] [varchar] (150) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OtherPreviousChurch] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OtherNewChurch] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [SchoolOther] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -115,6 +115,7 @@ CREATE TABLE [dbo].[People]
 [CheckInNotes] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Age] AS ((datepart(year,isnull([DeceasedDate],getdate()))-[BirthYear])-case when [BirthMonth]>datepart(month,isnull([DeceasedDate],getdate())) OR [BirthMonth]=datepart(month,isnull([DeceasedDate],getdate())) AND [BirthDay]>datepart(day,isnull([DeceasedDate],getdate())) then (1) else (0) end)
 )
+
 
 ALTER TABLE [dbo].[People] ADD
 CONSTRAINT [BFMembers__BFClass] FOREIGN KEY ([BibleFellowshipClassId]) REFERENCES [dbo].[Organizations] ([OrganizationId])
@@ -257,7 +258,7 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE TRIGGER [dbo].[updPeople] 
-   ON  [dbo].[People]
+   ON  dbo.People
    AFTER UPDATE
 AS 
 BEGIN
@@ -283,6 +284,7 @@ BEGIN
 		UPDATE dbo.People
 		SET SpouseId = dbo.SpouseId(PeopleId)
 		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
+		OR FamilyId IN (SELECT FamilyId FROM DELETED)
 
 		IF (UPDATE(FamilyId))
 		BEGIN
@@ -348,21 +350,6 @@ BEGIN
 		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
 	END
 
-	IF UPDATE(FamilyId) 
-	OR UPDATE(MaritalStatusId)
-	OR UPDATE(PositionInFamilyId)
-	OR UPDATE(DeceasedDate)
-	OR UPDATE(FirstName)
-	BEGIN
-		UPDATE dbo.People
-		SET SpouseId = dbo.SpouseId(PeopleId)
-		WHERE PeopleId IN (SELECT PeopleId FROM inserted)
-		
-		UPDATE dbo.Families
-		SET CoupleFlag = dbo.CoupleFlag(FamilyId)
-		WHERE FamilyId IN (SELECT FamilyId FROM INSERTED)
-	END
-	
 	IF UPDATE(FirstName)
 	OR UPDATE(LastName)
 	OR UPDATE(NickName)
@@ -376,6 +363,7 @@ BEGIN
 
 END
 GO
+
 
 
 

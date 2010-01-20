@@ -18,6 +18,7 @@ namespace CMSWeb.Areas.Main
             AddRoute(context, "SearchPeople");
             AddRoute(context, "TaskList", "Task", "Task/{action}/{id}", "List");
             AddRoute(context, "Task");
+            AddRoute(context, "Person");
             AddRoute(context, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
             AddRoute(context, "QueryBuilderMain", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");
             AddRoute(context, "QueryBuilder");

@@ -100,7 +100,7 @@ namespace CMSWeb.Areas.Public.Controllers
             UpdateModel(m);
             m.ValidateChild(ModelState);
             if (!ModelState.IsValid)
-                return View(m);
+                return View("ChildCare", m);
             int count = 0;
             Person c = null;
             Person p = null;

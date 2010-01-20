@@ -287,6 +287,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="Age" HeaderText="Age" SortExpression="Age" />
+                            <asp:BoundField DataField="PositionInFamily" HeaderText="" />
                         </Columns>
                     </asp:GridView>
                     <asp:Label runat="server" ID="SpouseIndicatorNote" Text="* Indicates Spouse"></asp:Label>
@@ -521,8 +522,8 @@
                             Spouse:
                         </th>
                         <td>
-                            <cc1:DisplayOrEditText ID="DisplayOrEditText" runat="server" BindingMember="SpouseName"
-                                BindingMode="OneWay" BindingSource="person" Width="135px" ChangedStatus="False"></cc1:DisplayOrEditText>
+                            <cc1:DisplayHyperlink ID="DisplayHyperlink2" runat="server" BindingMember="SpouseName"
+                                BindingUrlFormat="/Person.aspx?id={0}" BindingUrlMember="SpouseId" BindingSource="person">[SpouseName]</cc1:DisplayHyperlink>
                         </td>
                     </tr>
                     <tr>

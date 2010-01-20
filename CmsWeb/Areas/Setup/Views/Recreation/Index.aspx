@@ -77,6 +77,9 @@
                 ExtraFee
             </th>
             <th>
+                ShirtFee
+            </th>
+            <th>
                 ExpirationDt
             </th>
             <th></th>
@@ -118,6 +121,10 @@
                     class='clickEdit'><%=item.ExtraFee%></span>
             </td>
             <td>
+                <span id='t<%=item.Id %>' 
+                    class='clickEdit'><%=item.ShirtFee%></span>
+            </td>
+            <td>
                 <span id='z<%=item.Id %>' 
                     class='clickEdit'><%=item.ExpirationDt%></span>
             </td>
@@ -129,7 +136,7 @@
 
     </table>
 
-    <% using (Html.BeginForm("Create", "RecreationSetup"))
+    <% using (Html.BeginForm("Create", "Recreation"))
        { %>
     <p><input type="submit" value="Create" /></p>
     <% } %>

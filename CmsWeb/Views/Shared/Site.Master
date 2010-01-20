@@ -116,7 +116,7 @@
                         <li>
                             <a href="/QueryBuilder/Main">Last Query</a></li>
                         <li>
-                            <%=Html.ActionLink("New Query", "NewQuery", "Home")%></li>
+                            <%=Html.ActionLink("New Query", "NewQuery", "QueryBuilder")%></li>
                         <li>
                             <a href="/SavedQueries.aspx">Saved Queries</a></li>
 <% if (ViewData["OnQueryBuilder"] == "true")

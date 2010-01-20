@@ -63,7 +63,7 @@ namespace UtilityExtensions
             msg.Body = message;
             var InDebug = false;
 #if DEBUG
-            InDebug = false;
+            InDebug = true;
 #endif
             if (InDebug)
                 return;

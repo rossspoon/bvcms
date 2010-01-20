@@ -47,8 +47,8 @@ namespace CmsData
             //    this.Audit<EnrollmentTransaction>(et => et.TransactionId);
             //    this.Audit<NewContact>(c => c.ContactId);
 
-            AuditUtility.ProcessInserts(GetChangeSet().Inserts);
-            AuditUtility.ProcessUpdates(GetChangeSet().Updates);
+            //AuditUtility.ProcessInserts(GetChangeSet().Inserts);
+            //AuditUtility.ProcessUpdates(GetChangeSet().Updates);
             //}
 
             //base.SubmitChanges(failureMode);

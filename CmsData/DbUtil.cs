@@ -17,14 +17,17 @@ namespace CmsData
     public static class DbUtil
     {
         private const string CMSDbKEY = "CMSDbKey";
+        //private static CMSDataContext _idb;
         private static CMSDataContext InternalDb
         {
             get
             {
+                //return _idb;
                 return (CMSDataContext)HttpContext.Current.Items[CMSDbKEY];
             }
             set
             {
+                //_idb = value;
                 HttpContext.Current.Items[CMSDbKEY] = value;
             }
         }
@@ -37,7 +40,7 @@ namespace CmsData
                 if (InternalDb == null)
                 {
                     InternalDb = new CMSDataContext(Util.ConnectionString);
-                    //InternalDb.CommandTimeout = 1200;
+                    InternalDb.CommandTimeout = 1200;
                 }
                 return InternalDb;
             }

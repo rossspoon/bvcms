@@ -17,7 +17,8 @@ namespace CmsData
         {
             None = 0,
             Headcount = 10,
-            Individual = 20
+            Individual = 20,
+            Registered = 30
         }
         public enum AttendanceClassificationCode
         {

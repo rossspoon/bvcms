@@ -33,7 +33,7 @@
                 <col />
                 <tr>
                     <td><label for="shirtsize">ShirtSize</label></td>
-                    <td><%= Html.DropDownList("shirtsize", CMSWeb.Models.RecRegModel.ShirtSizes())%></td>
+                    <td><%= Html.DropDownList("shirtsize", CMSWeb.Models.RecRegModel.ShirtSizes(Model.RecAgeDiv))%></td>
                     <td><%= Html.ValidationMessage("shirtsize")%></td>
                 </tr>
                 <tr>

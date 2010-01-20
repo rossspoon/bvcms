@@ -74,8 +74,9 @@ namespace CMSWeb.Areas.Manage.Controllers
                 ModelState.AddModelError("person", "Missing data on participant");
                 return View("Detail", m);
             }
-            if (m.League > 0 && (!m.recreg.OrgId.HasValue || m.recreg.OrgId != m.RecAgeDiv.OrgId) && m.recreg.PeopleId.HasValue)
-                m.EnrollInOrg();
+            if (!m.NoReassign && m.RecAgeDiv != null && m.League > 0 && m.recreg.PeopleId.HasValue)
+                if (!m.recreg.OrgId.HasValue || m.recreg.OrgId != m.RecAgeDiv.OrgId)
+                    m.EnrollInOrg();
             if (m.League == 0)
                 m.League = null;
             DbUtil.Db.SubmitChanges();

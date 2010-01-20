@@ -9,8 +9,10 @@ CREATE TABLE [dbo].[RecAgeDivision]
 [GenderId] [int] NULL,
 [Fee] [money] NULL,
 [ExtraFee] [money] NULL,
-[ExpirationDt] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
+[ExpirationDt] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ShirtFee] [money] NULL
+)
+
 GO
 ALTER TABLE [dbo].[RecAgeDivision] ADD CONSTRAINT [PK_Recreation] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
 GO

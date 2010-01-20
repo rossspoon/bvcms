@@ -509,13 +509,13 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditDropDown MaritalStatusId;
         
         /// <summary>
-        /// DisplayOrEditText control.
+        /// DisplayHyperlink2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CustomControls.DisplayOrEditText DisplayOrEditText;
+        protected global::CustomControls.DisplayHyperlink DisplayHyperlink2;
         
         /// <summary>
         /// WeddingDate control.

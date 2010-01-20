@@ -65,6 +65,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [Authorize(Roles="Staff")]
         public ActionResult CheckIn(int? id, int? pid)
         {
+            Session.Timeout = 1000;
             Session["CheckInOrgId"] = id ?? 0;
             var m = new CheckInRecModel(id ?? 0, pid);
             return View(m);
@@ -72,6 +73,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult PostCheckIn(int id, string KeyCode)
         {
+            Session["CheckInOrgId"] = id;
             var q = from kc in DbUtil.Db.CardIdentifiers
                     where KeyCode == kc.Id
                     select kc.PeopleId;

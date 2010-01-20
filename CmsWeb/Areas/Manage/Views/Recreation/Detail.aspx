@@ -65,16 +65,18 @@
                 <td colspan="3" valign="top">
                     <label>
                         ShirtSize:
-                        <%=Html.DropDownList("ShirtSize", CMSWeb.Models.RecRegModel.ShirtSizes())%></label>
+                        <%=Html.DropDownList("ShirtSize", CMSWeb.Models.RecRegModel.ShirtSizes(Model.RecAgeDiv))%></label>
                     <label>League: <%=Html.DropDownList("League", Model.Leagues()) %></label>
                     <label>
                         Teammate Request:
                         <%=Html.TextBox("Request", d.Request)%></label>
                 </td>
             </tr>
-            <tr><td colspan="4" align="right"><%=Model.AgeDiv %></td><td>
+            <tr><td colspan="4" align="right">
+                Auto AgeDiv: <strong><%=Model.AgeDiv %></strong> Actual AgeDiv: <strong><%=Model.AgeDivActual %></strong></td><td>
                     <% if (User.IsInRole("Edit"))
                        { %>
+                    <input type="checkbox" name="NoReassign" value="true" /> NoReassign Age Division
                     <input type="submit" name="Submit" value="Submit" />
                     <span style="color:Red"><%=Html.ValidationMessage("person") %></span>
                     <% } %>

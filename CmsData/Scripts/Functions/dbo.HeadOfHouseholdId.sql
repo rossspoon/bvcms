@@ -5,11 +5,6 @@ GO
 SET ANSI_NULLS ON
 GO
 
--- =============================================
--- Author:		Kenny
--- Create date: 4/17/2008
--- Description:	Finds the Head of Household given a family ID
--- =============================================
 CREATE FUNCTION [dbo].[HeadOfHouseholdId] ( @family_id INT )
 RETURNS INT
 AS 

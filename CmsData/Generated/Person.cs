@@ -2390,7 +2390,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailAddress", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress", DbType="varchar(50)")]
+		[Column(Name="EmailAddress", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress", DbType="varchar(150)")]
 		public string EmailAddress
 		{
 			get { return this._EmailAddress; }

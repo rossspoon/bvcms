@@ -20,12 +20,13 @@ namespace CMSWeb.Models.Reports
         public AttendanceModel(int orgId)
         {
             OrgId = orgId;
+            var dt = UtilityExtensions.Util.Now;
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgId
                     select new
                     {
                         o.OrganizationName,
-                        MaxMeet = o.Meetings.Max(m => m.MeetingDate),
+                        MaxMeet = o.Meetings.Where(m => m.MeetingDate < dt).Max(m => m.MeetingDate),
                         MinMeet = o.Meetings.Min(m => m.MeetingDate)
                     };
             var i = q.SingleOrDefault();
@@ -96,6 +97,8 @@ namespace CMSWeb.Models.Reports
                     where a.OrganizationId == orgid
                     where a.PeopleId == pid
                     where a.MeetingDate > start && a.MeetingDate <= end
+                    where ((a.Organization.AttendTrkLevelId == 30 && a.Registered == true)
+			        || a.Organization.AttendTrkLevelId == 20)
                     orderby a.MeetingDate.Date descending
                     select new
                     {
