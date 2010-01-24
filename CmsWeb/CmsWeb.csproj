@@ -75,7 +75,16 @@
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
-    <Compile Include="Areas\Main\Models\PersonModel.cs" />
+    <Compile Include="Areas\Main\Models\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\Person\AttendHistoryModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\ContactsReceivedModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\ContactsMadeModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\PendingEnrollmentsModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\PrevEnrollmentsModel.cs" />
+    <Compile Include="Areas\Main\Models\OrgMemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\PagerModel2.cs" />
+    <Compile Include="Areas\Main\Models\Person\EnrollmentsModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\PersonModel.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Code\CmsController.cs" />
@@ -540,7 +549,7 @@
     <Compile Include="Areas\Main\Models\CheckInRecModel.cs" />
     <Compile Include="Areas\Main\Models\PagerModel.cs" />
     <Compile Include="Areas\Manage\Models\ParticipantInfo.cs" />
-    <Compile Include="Areas\Main\Models\PeopleInfo.cs" />
+    <Compile Include="Areas\Main\Models\Person\PeopleInfo.cs" />
     <Compile Include="Areas\Manage\Models\PromoteInfo.cs" />
     <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
     <Compile Include="Areas\Main\Models\QueryModel.cs" />
@@ -1246,6 +1255,16 @@
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
     <Content Include="Areas\Main\Views\Person\Address.ascx" />
+    <Content Include="Areas\Main\Views\Person\AttendanceGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\Basic.ascx" />
+    <Content Include="Areas\Main\Views\Person\ContactsReceivedGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\ContactsMadeGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\PendingTasksGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\Growth.ascx" />
+    <Content Include="Areas\Main\Views\Person\Membership.ascx" />
+    <Content Include="Areas\Main\Views\Person\PendingEnrollGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
@@ -2048,6 +2067,7 @@
     <Content Include="Areas\Manage\Views\Reports\Attendance.aspx" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
+    <Content Include="Views\Shared\Pager2.aspx" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Shared\Site2.Master" />
     <Content Include="Views\Shared\Site3.Master" />

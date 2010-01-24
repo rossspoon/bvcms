@@ -4,8 +4,6 @@
 <head id="Head1" runat="server">
     <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />
     <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
     <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
@@ -13,6 +11,8 @@
     <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
     <link href="/Content/content.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
     <asp:ContentPlaceHolder ID="HeaderLinks" runat="server">
     </asp:ContentPlaceHolder>
 </head>

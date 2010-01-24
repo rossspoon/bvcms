@@ -22,6 +22,10 @@ namespace CmsData
         partial void UpdateActivityLog(ActivityLog instance);
         partial void DeleteActivityLog(ActivityLog instance);
         
+        partial void InsertAddress(Address instance);
+        partial void UpdateAddress(Address instance);
+        partial void DeleteAddress(Address instance);
+        
         partial void InsertAddressType(AddressType instance);
         partial void UpdateAddressType(AddressType instance);
         partial void DeleteAddressType(AddressType instance);
@@ -599,6 +603,12 @@ namespace CmsData
 		public Table< ActivityLog> ActivityLogs
 		{
 			get	{ return this.GetTable< ActivityLog>(); }
+
+		}
+
+		public Table< Address> Addresses
+		{
+			get	{ return this.GetTable< Address>(); }
 
 		}
 

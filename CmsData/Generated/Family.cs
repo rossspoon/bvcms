@@ -93,9 +93,13 @@ namespace CmsData
    		private EntitySet< RelatedFamily> _RelatedFamilies2;
 		
     	
+		private EntityRef< ResidentCode> _AltResidentCode;
+		
 		private EntityRef< Person> _HeadOfHousehold;
 		
 		private EntityRef< Person> _HeadOfHouseholdSpouse;
+		
+		private EntityRef< ResidentCode> _ResidentCode;
 		
 	#endregion
 	
@@ -217,9 +221,13 @@ namespace CmsData
 			this._RelatedFamilies2 = new EntitySet< RelatedFamily>(new Action< RelatedFamily>(this.attach_RelatedFamilies2), new Action< RelatedFamily>(this.detach_RelatedFamilies2)); 
 			
 			
+			this._AltResidentCode = default(EntityRef< ResidentCode>); 
+			
 			this._HeadOfHousehold = default(EntityRef< Person>); 
 			
 			this._HeadOfHouseholdSpouse = default(EntityRef< Person>); 
+			
+			this._ResidentCode = default(EntityRef< ResidentCode>); 
 			
 			OnCreated();
 		}
@@ -369,6 +377,9 @@ namespace CmsData
 				if (this._ResCodeId != value)
 				{
 				
+					if (this._ResidentCode.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnResCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._ResCodeId = value;
@@ -390,6 +401,9 @@ namespace CmsData
 			{
 				if (this._AltResCodeId != value)
 				{
+				
+					if (this._AltResidentCode.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnAltResCodeIdChanging(value);
 					this.SendPropertyChanging();
@@ -1019,6 +1033,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="AltResCodeFamilies__AltResidentCode", Storage="_AltResidentCode", ThisKey="AltResCodeId", IsForeignKey=true)]
+		public ResidentCode AltResidentCode
+		{
+			get { return this._AltResidentCode.Entity; }
+
+			set
+			{
+				ResidentCode previousValue = this._AltResidentCode.Entity;
+				if (((previousValue != value) 
+							|| (this._AltResidentCode.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._AltResidentCode.Entity = null;
+						previousValue.AltResCodeFamilies.Remove(this);
+					}
+
+					this._AltResidentCode.Entity = value;
+					if (value != null)
+					{
+						value.AltResCodeFamilies.Add(this);
+						
+						this._AltResCodeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._AltResCodeId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("AltResidentCode");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_HeadOfHousehold", ThisKey="HeadOfHouseholdId", IsForeignKey=true)]
 		public Person HeadOfHousehold
 		{
@@ -1096,6 +1152,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("HeadOfHouseholdSpouse");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="ResCodeFamilies__ResidentCode", Storage="_ResidentCode", ThisKey="ResCodeId", IsForeignKey=true)]
+		public ResidentCode ResidentCode
+		{
+			get { return this._ResidentCode.Entity; }
+
+			set
+			{
+				ResidentCode previousValue = this._ResidentCode.Entity;
+				if (((previousValue != value) 
+							|| (this._ResidentCode.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ResidentCode.Entity = null;
+						previousValue.ResCodeFamilies.Remove(this);
+					}
+
+					this._ResidentCode.Entity = value;
+					if (value != null)
+					{
+						value.ResCodeFamilies.Add(this);
+						
+						this._ResCodeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._ResCodeId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("ResidentCode");
 				}
 
 			}

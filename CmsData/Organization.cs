@@ -72,6 +72,8 @@ namespace CmsData
             }
             set
             {
+                if (!value.HasValue())
+                    return;
                 var a = value.Split(',');
                 var qdelete = from d in DivOrgs
                               where !a.Contains(d.Division.Name)

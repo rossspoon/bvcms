@@ -229,7 +229,7 @@ namespace CMSWeb
                 trPreferredAddress.Visible = false;
 
             if (Line1.Editing)
-                VerifyAddress2.Text = "<input type=\"button\" value=\"Verfiy Address\" onclick=\"javascript:PageMethods.VerifyAddress('{0}', {0}.value, {1}.value, {2}.value, {3}.value, {4}.value, VerifyCallback)\" />"
+                VerifyAddress2.Text = "<input type=\"button\" value=\"Verify Address\" onclick=\"javascript:PageMethods.VerifyAddress('{0}', {0}.value, {1}.value, {2}.value, {3}.value, {4}.value, VerifyCallback)\" />"
                     .Fmt(Line1.ClientID, Line2.ClientID, City.ClientID, State.ClientID, Zip.ClientID);
             else
                 VerifyAddress2.Text = "";

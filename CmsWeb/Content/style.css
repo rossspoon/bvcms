@@ -328,3 +328,19 @@ div.growlUI h1, div.growlUI h2, div.growlUI2 h1, div.growlUI2 h2 {
 }
 .checkin { font-size:large }
 .checkin th { font-weight: normal; font-size:small; text-align:right; color:Gray }
+table.grid 
+{
+    border-collapse: collapse; 
+    color: #333333
+}
+table.grid > tbody > tr.alt
+{
+    background-color: #eff3fb
+}
+table.grid > thead > tr
+{
+    background-color: #3e8cb5; 
+    color: white; 
+    font-weight: bold
+}
+

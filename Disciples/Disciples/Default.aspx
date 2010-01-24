@@ -82,7 +82,6 @@
                         </table>
                     </LayoutTemplate>
                 </asp:Login>
-                test
             </asp:Panel>
         </div>
     </div>

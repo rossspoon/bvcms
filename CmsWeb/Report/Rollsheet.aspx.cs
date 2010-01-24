@@ -55,6 +55,7 @@ namespace CMSWeb.Reports
             dt = this.QueryString<DateTime?>("dt");
 
             var mid = this.QueryString<int?>("meetingid");
+            var bygroup = this.QueryString<int?>("bygroup");
 
 
             CmsData.Meeting meeting = null;
@@ -64,7 +65,13 @@ namespace CMSWeb.Reports
                 dt = meeting.MeetingDate;
                 org = meeting.OrganizationId;
             }
-            var list1 = list(org, group, div, schedule, name);
+
+            IEnumerable<OrgInfo> list1;
+            if (bygroup.HasValue)
+                list1 = ReportList2(org, div, schedule, name);
+            else
+                list1 = ReportList(org, group, div, schedule, name);
+
             if (list1.Count() == 0)
             {
                 Response.Write("no data found");
@@ -100,9 +107,10 @@ namespace CMSWeb.Reports
                         AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, a.Person.DOB, font);
                 }
                 else
-                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, group))
+                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.GroupId))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
-                if (!group.HasValue && meeting == null)
+
+                if (!bygroup.HasValue && !group.HasValue && meeting == null)
                 {
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
@@ -163,8 +171,9 @@ namespace CMSWeb.Reports
             public string Name { get; set; }
             public string Teacher { get; set; }
             public string Location { get; set; }
+            public int? GroupId { get; set; }
         }
-        private IEnumerable<OrgInfo> list(int? orgid, int? groupid, int? divid, int? schedule, string name)
+        private IEnumerable<OrgInfo> ReportList(int? orgid, int? groupid, int? divid, int? schedule, string name)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
@@ -180,6 +189,28 @@ namespace CMSWeb.Reports
                         Name = o.OrganizationName,
                         Teacher = o.LeaderName,
                         Location = o.Location,
+                        GroupId = groupid
+                    };
+            return q;
+        }
+        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? divid, int? schedule, string name)
+        {
+            var q = from o in DbUtil.Db.Organizations
+                    from sg in o.MemberTags
+                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
+                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
+                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
+                    let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
+                    select new OrgInfo
+                    {
+                        OrgId = o.OrganizationId,
+                        Division = o.OrganizationName,
+                        Name = sg.Name,
+                        Teacher = "",
+                        Location = o.Location,
+                        GroupId = sg.Id
                     };
             return q;
         }

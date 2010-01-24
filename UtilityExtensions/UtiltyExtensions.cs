@@ -51,12 +51,6 @@ namespace UtilityExtensions
             int.TryParse(s, out i);
             return i;
         }
-        public static string ToShortDateStr(this DateTime? date)
-        {
-            if (date.HasValue)
-                return date.Value.ToShortDateString();
-            return "";
-        }
         public static DateTime? ToDate(this string s)
         {
             DateTime dt;
@@ -393,7 +387,7 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_Host] = value;
             }
         }
-        public static string Host1
+        private static string Host1
         {
             get
             {

@@ -24,7 +24,15 @@ namespace CmsData
 		private string _Description;
 		
    		
+   		private EntitySet< Family> _AltResCodeFamilies;
+		
+   		private EntitySet< Person> _AltResCodePeople;
+		
    		private EntitySet< Zip> _Zips;
+		
+   		private EntitySet< Family> _ResCodeFamilies;
+		
+   		private EntitySet< Person> _ResCodePeople;
 		
     	
 	#endregion
@@ -47,7 +55,15 @@ namespace CmsData
 		public ResidentCode()
 		{
 			
+			this._AltResCodeFamilies = new EntitySet< Family>(new Action< Family>(this.attach_AltResCodeFamilies), new Action< Family>(this.detach_AltResCodeFamilies)); 
+			
+			this._AltResCodePeople = new EntitySet< Person>(new Action< Person>(this.attach_AltResCodePeople), new Action< Person>(this.detach_AltResCodePeople)); 
+			
 			this._Zips = new EntitySet< Zip>(new Action< Zip>(this.attach_Zips), new Action< Zip>(this.detach_Zips)); 
+			
+			this._ResCodeFamilies = new EntitySet< Family>(new Action< Family>(this.attach_ResCodeFamilies), new Action< Family>(this.detach_ResCodeFamilies)); 
+			
+			this._ResCodePeople = new EntitySet< Person>(new Action< Person>(this.attach_ResCodePeople), new Action< Person>(this.detach_ResCodePeople)); 
 			
 			
 			OnCreated();
@@ -126,12 +142,52 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="AltResCodeFamilies__AltResidentCode", Storage="_AltResCodeFamilies", OtherKey="AltResCodeId")]
+   		public EntitySet< Family> AltResCodeFamilies
+   		{
+   		    get { return this._AltResCodeFamilies; }
+
+			set	{ this._AltResCodeFamilies.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="AltResCodePeople__AltResidentCode", Storage="_AltResCodePeople", OtherKey="AltResCodeId")]
+   		public EntitySet< Person> AltResCodePeople
+   		{
+   		    get { return this._AltResCodePeople; }
+
+			set	{ this._AltResCodePeople.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Zips_ResidentCode", Storage="_Zips", OtherKey="MetroMarginalCode")]
    		public EntitySet< Zip> Zips
    		{
    		    get { return this._Zips; }
 
 			set	{ this._Zips.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="ResCodeFamilies__ResidentCode", Storage="_ResCodeFamilies", OtherKey="ResCodeId")]
+   		public EntitySet< Family> ResCodeFamilies
+   		{
+   		    get { return this._ResCodeFamilies; }
+
+			set	{ this._ResCodeFamilies.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="ResCodePeople__ResidentCode", Storage="_ResCodePeople", OtherKey="ResCodeId")]
+   		public EntitySet< Person> ResCodePeople
+   		{
+   		    get { return this._ResCodePeople; }
+
+			set	{ this._ResCodePeople.Assign(value); }
 
    		}
 
@@ -157,6 +213,32 @@ namespace CmsData
 		}
 
    		
+		private void attach_AltResCodeFamilies(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.AltResidentCode = this;
+		}
+
+		private void detach_AltResCodeFamilies(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.AltResidentCode = null;
+		}
+
+		
+		private void attach_AltResCodePeople(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.AltResidentCode = this;
+		}
+
+		private void detach_AltResCodePeople(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.AltResidentCode = null;
+		}
+
+		
 		private void attach_Zips(Zip entity)
 		{
 			this.SendPropertyChanging();
@@ -164,6 +246,32 @@ namespace CmsData
 		}
 
 		private void detach_Zips(Zip entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = null;
+		}
+
+		
+		private void attach_ResCodeFamilies(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = this;
+		}
+
+		private void detach_ResCodeFamilies(Family entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = null;
+		}
+
+		
+		private void attach_ResCodePeople(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.ResidentCode = this;
+		}
+
+		private void detach_ResCodePeople(Person entity)
 		{
 			this.SendPropertyChanging();
 			entity.ResidentCode = null;

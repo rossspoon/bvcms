@@ -1,7 +1,10 @@
 ﻿$(function() {
-    var $addrtabs = $("#address-tab").tabs();
-    var $maintabs = $("#main-tab").tabs();
-    $addrtabs.tabs('select', $('#addrtab').val());
+    var addrtabs = $("#address-tab").tabs();
+    $("#enrollment-tab").tabs();
+    $("#member-tab").tabs();
+    $('table.grid > tbody > tr:even').addClass('alt');
+    var maintabs = $("#main-tab").tabs();
+    addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     $('#clipaddr').click(function() {
         var inElement = $('#addrhidden')[0];
@@ -39,4 +42,29 @@
         });
         return false;
     });
+    $(".CreateAndGo").click(function() {
+        if (confirm($(this).attr("confirm")))
+            $.post($(this).attr("href"), null, function(ret) {
+                window.location = ret;
+            });
+        return false;
+    });
 });
+function GotoPage(e, pg) {
+    return GetTable(e, "#Page", pg);
+}
+function SetPageSize(e, sz) {
+    return GetTable(e, "#PageSize", sz);
+}
+function GetTable(e, arg0, arg1) {
+    var f = $(e).closest('form');
+    $(arg0, f).val(arg1);
+    var q = f.serialize();
+    $.post(f.attr('action'), q, function(ret) {
+        $(f).replaceWith(ret).ready(function() {
+            $('table.grid > tbody > tr:even', f).addClass('alt');
+        });
+    });
+    return false;
+}
+

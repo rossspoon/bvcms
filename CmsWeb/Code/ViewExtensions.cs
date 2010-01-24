@@ -179,6 +179,14 @@ public static class ViewExtensions
         tb.MergeAttributes<string, object>(attr);
         return tb.ToString();
     }
+    public static string Span(this System.Web.Mvc.HtmlHelper helper, string text, object htmlAttributes)
+    {
+        var tb = new TagBuilder("span");
+        var attr = new RouteValueDictionary(htmlAttributes);
+        tb.InnerHtml = text;
+        tb.MergeAttributes<string, object>(attr);
+        return tb.ToString();
+    }
     public static bool IsDebug(this System.Web.Mvc.HtmlHelper helper)
     {
         var d = false;

@@ -56,7 +56,7 @@
             $find('<%=RollsheetPopup.ClientID%>').show();
         }
 
-        function ViewRollsheet2() {
+        function ViewRollsheet2(sg) {
             var re = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
             var d = $get('<%=MeetingDate.ClientID %>').value;
             var t = $get('<%=MeetingTime.ClientID %>').value;
@@ -69,6 +69,8 @@
                 return;
             }
             var args = "?org=curr&dt=" + d + " " + t;
+            if (sg)
+                args += "&bygroup=1";
             var newWindowUrl = "Report/Rollsheet.aspx" + args
             window.open(newWindowUrl);
         }
@@ -545,6 +547,8 @@
                         <td class="footer">
                             <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" Text="Create"
                                 OnClientClick="ViewRollsheet2();" ValidationGroup="NewMeetingValidatorGroup" />
+                            <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="false" Text="By Group"
+                                OnClientClick="ViewRollsheet2('grouped');" ValidationGroup="NewMeetingValidatorGroup" />
                             <asp:LinkButton ID="RollsheetCancel" runat="server" CausesValidation="false" Text="Cancel" />
                         </td>
                     </tr>

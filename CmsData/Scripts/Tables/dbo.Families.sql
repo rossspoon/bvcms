@@ -36,6 +36,11 @@ CREATE TABLE [dbo].[Families]
 [HomePhoneAC] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
 
+ALTER TABLE [dbo].[Families] ADD
+CONSTRAINT [AltResCodeFamilies__AltResidentCode] FOREIGN KEY ([AltResCodeId]) REFERENCES [lookup].[ResidentCode] ([Id])
+ALTER TABLE [dbo].[Families] ADD
+CONSTRAINT [ResCodeFamilies__ResidentCode] FOREIGN KEY ([ResCodeId]) REFERENCES [lookup].[ResidentCode] ([Id])
+
 
 
 GO

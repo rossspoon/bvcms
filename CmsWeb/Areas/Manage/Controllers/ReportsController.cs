@@ -20,9 +20,17 @@ namespace CMSWeb.Areas.Manage.Controllers
 
         public ActionResult Attendance(int id)
         {
-            var m = new AttendanceModel(id);
-            UpdateModel(m);
-            return View(m);
+
+            try
+            {
+                var m = new AttendanceModel(id);
+                UpdateModel(m);
+                return View(m);
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.AddressInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.Address>" %>
 <table>
     <tr>
         <td>
             <table class="Design2">
                 <tr>
                     <th>Address:</th>
-                    <td><%=Model.AddressLine1 %></td>
+                    <td><%=Model.Address1 %></td>
                     <th>Bad Address Flag:</th>
                     <td><input type="checkbox" <%=Model.BadAddress%> disabled="disabled" /></td>
                 </tr>
                 <tr>
                     <th>&nbsp;</th>
-                    <td><%=Model.AddressLine2 %></td>
+                    <td><%=Model.Address2 %></td>
                     <th>Resident Code:</th>
                     <td><%=Model.ResCode %></td>
                 </tr>
@@ -33,11 +33,11 @@
                         <table class="Design2">
                             <tr>
                                 <th>From:</th>
-                                <td><%=Model.FromDate.ToShortDateStr() %></td>
+                                <td><%=Model.FromDt.FormatDate() %></td>
                             </tr>
                             <tr>
                                 <th>To:</th>
-                                <td><%=Model.ToDate.ToShortDateStr() %></td>
+                                <td><%=Model.ToDt.FormatDate() %></td>
                             </tr>
                         </table>
                     </td>
@@ -45,7 +45,7 @@
                 <tr>
                     <th>Preferred Address</th>
                     <td colspan="3">
-                        <input type="radio" disabled="disabled" <%=Model.Preferred%> />
+                        <%=Html.RadioButton("Preferred", Model.Name, Model.Preferred, new { disabled = "disabled" })%>
                     </td>
                 </tr>
             </table>

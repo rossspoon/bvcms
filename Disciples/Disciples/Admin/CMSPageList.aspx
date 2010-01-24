@@ -19,8 +19,8 @@
         </Columns>
     </asp:GridView>
     <asp:LinqDataSource ID="LinqDataSource1" runat="server" 
-        ContextTypeName="CmsData.DiscDataContext" Select="new (PageID, Title, PageUrl)" 
-        TableName="Pages">
+        ContextTypeName="CmsData.CMSDataContext" Select="new (PageID, Title, PageUrl)" 
+        TableName="PageContents">
     </asp:LinqDataSource>
     </div>
 </asp:Content>

@@ -116,6 +116,25 @@ CREATE TABLE [dbo].[People]
 [Age] AS ((datepart(year,isnull([DeceasedDate],getdate()))-[BirthYear])-case when [BirthMonth]>datepart(month,isnull([DeceasedDate],getdate())) OR [BirthMonth]=datepart(month,isnull([DeceasedDate],getdate())) AND [BirthDay]>datepart(day,isnull([DeceasedDate],getdate())) then (1) else (0) end)
 )
 
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [AltResCodePeople__AltResidentCode] FOREIGN KEY ([AltResCodeId]) REFERENCES [lookup].[ResidentCode] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [EnvPeople__EnvelopeOption] FOREIGN KEY ([EnvelopeOptionsId]) REFERENCES [lookup].[EnvelopeOption] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_BaptismStatus] FOREIGN KEY ([BaptismStatusId]) REFERENCES [lookup].[BaptismStatus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_DiscoveryClassStatus] FOREIGN KEY ([DiscoveryClassStatusId]) REFERENCES [lookup].[DiscoveryClassStatus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_EntryPoint] FOREIGN KEY ([EntryPointId]) REFERENCES [lookup].[EntryPoint] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_InterestPoint] FOREIGN KEY ([InterestPointId]) REFERENCES [lookup].[InterestPoint] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [FK_People_MemberLetterStatus] FOREIGN KEY ([LetterStatusId]) REFERENCES [lookup].[MemberLetterStatus] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [ResCodePeople__ResidentCode] FOREIGN KEY ([ResCodeId]) REFERENCES [lookup].[ResidentCode] ([Id])
+ALTER TABLE [dbo].[People] ADD
+CONSTRAINT [StmtPeople__ContributionStatementOption] FOREIGN KEY ([ContributionOptionsId]) REFERENCES [lookup].[EnvelopeOption] ([Id])
+
 
 ALTER TABLE [dbo].[People] ADD
 CONSTRAINT [BFMembers__BFClass] FOREIGN KEY ([BibleFellowshipClassId]) REFERENCES [dbo].[Organizations] ([OrganizationId])
@@ -191,8 +210,7 @@ ALTER TABLE [dbo].[People] ADD
 CONSTRAINT [FK_People_MemberStatus] FOREIGN KEY ([MemberStatusId]) REFERENCES [lookup].[MemberStatus] ([Id])
 ALTER TABLE [dbo].[People] ADD
 CONSTRAINT [FK_People_Origin] FOREIGN KEY ([OriginId]) REFERENCES [lookup].[Origin] ([Id])
-ALTER TABLE [dbo].[People] ADD
-CONSTRAINT [FK_PEOPLE_TBL_InterestPoint] FOREIGN KEY ([InterestPointId]) REFERENCES [lookup].[InterestPoint] ([Id])
+
 ALTER TABLE [dbo].[People] ADD
 CONSTRAINT [FK_PEOPLE_TBL_Picture] FOREIGN KEY ([PictureId]) REFERENCES [dbo].[Picture] ([PictureId])
 
