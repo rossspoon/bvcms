@@ -95,22 +95,22 @@
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("Address", person.PersonalAddr); %>
+                <% Html.RenderPartial("AddressDisplay", person.PersonalAddr); %>
                 </form>
             </div>
             <div id="AltPersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("Address", person.AltPersonalAddr); %>
+                <% Html.RenderPartial("AddressDisplay", person.AltPersonalAddr); %>
                 </form>
             </div>
             <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("Address", person.FamilyAddr); %>
+                <% Html.RenderPartial("AddressDisplay", person.FamilyAddr); %>
                 </form>
             </div>
             <div id="AltFamilyAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("Address", person.AltFamilyAddr); %>
+                <% Html.RenderPartial("AddressDisplay", person.AltFamilyAddr); %>
                 </form>
             </div>
             <%=Html.Hidden("addrtab") %>

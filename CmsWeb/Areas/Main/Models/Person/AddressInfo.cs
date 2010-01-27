@@ -6,6 +6,7 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Data.Linq;
 
 namespace CMSWeb.Models
 {
@@ -61,17 +62,9 @@ namespace CMSWeb.Models
             var a = new AddressInfo();
             switch (typeid)
             {
-                case "PersonalAddr":
-                    a.Address1 = p.AddressLineOne;
-                    a.Address2 = p.AddressLineTwo;
-                    a.ToDt = p.AddressToDate;
-                    a.BadAddress = p.BadAddressFlag;
-                    a.City = p.CityName;
-                    a.State = p.StateCode;
-                    a.Zip = p.ZipCode;
-                    a.ResCodeId = p.ResCodeId;
-                    break;
                 case "FamilyAddr":
+                    a.Name = typeid;
+                    a.PeopleId = p.PeopleId;
                     a.Address1 = p.Family.AddressLineOne;
                     a.Address2 = p.Family.AddressLineTwo;
                     a.ToDt = p.Family.AddressToDate;
@@ -80,18 +73,11 @@ namespace CMSWeb.Models
                     a.State = p.Family.StateCode;
                     a.Zip = p.Family.ZipCode;
                     a.ResCodeId = p.Family.ResCodeId;
-                    break;
-                case "AltPersonalAddr":
-                    a.Address1 = p.AltAddressLineOne;
-                    a.Address2 = p.AltAddressLineTwo;
-                    a.ToDt = p.AltAddressToDate;
-                    a.BadAddress = p.AltBadAddressFlag;
-                    a.City = p.AltCityName;
-                    a.State = p.AltStateCode;
-                    a.Zip = p.AltZipCode;
-                    a.ResCodeId = p.AltResCodeId;
+                    a.Preferred = p.AddressTypeId == 10;
                     break;
                 case "AltFamilyAddr":
+                    a.Name = typeid;
+                    a.PeopleId = p.PeopleId;
                     a.Address1 = p.Family.AltAddressLineOne;
                     a.Address2 = p.Family.AltAddressLineTwo;
                     a.ToDt = p.Family.AltAddressToDate;
@@ -100,6 +86,33 @@ namespace CMSWeb.Models
                     a.State = p.Family.AltStateCode;
                     a.Zip = p.Family.AltZipCode;
                     a.ResCodeId = p.Family.AltResCodeId;
+                    a.Preferred = p.AddressTypeId == 20;
+                    break;
+                case "PersonalAddr":
+                    a.Name = typeid;
+                    a.PeopleId = p.PeopleId;
+                    a.Address1 = p.AddressLineOne;
+                    a.Address2 = p.AddressLineTwo;
+                    a.ToDt = p.AddressToDate;
+                    a.BadAddress = p.BadAddressFlag;
+                    a.City = p.CityName;
+                    a.State = p.StateCode;
+                    a.Zip = p.ZipCode;
+                    a.ResCodeId = p.ResCodeId;
+                    a.Preferred = p.AddressTypeId == 30;
+                    break;
+                case "AltPersonalAddr":
+                    a.Name = typeid;
+                    a.PeopleId = p.PeopleId;
+                    a.Address1 = p.AltAddressLineOne;
+                    a.Address2 = p.AltAddressLineTwo;
+                    a.ToDt = p.AltAddressToDate;
+                    a.BadAddress = p.AltBadAddressFlag;
+                    a.City = p.AltCityName;
+                    a.State = p.AltStateCode;
+                    a.Zip = p.AltZipCode;
+                    a.ResCodeId = p.AltResCodeId;
+                    a.Preferred = p.AddressTypeId == 40;
                     break;
             }
             return a;
@@ -110,16 +123,6 @@ namespace CMSWeb.Models
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             switch (Name)
             {
-                case "PersonalAddr":
-                    p.AddressLineOne = Address1;
-                    p.AddressLineTwo = Address2;
-                    p.AddressToDate = ToDt;
-                    p.BadAddressFlag = BadAddress;
-                    p.CityName = City;
-                    p.StateCode = State;
-                    p.ZipCode = Zip;
-                    p.ResCodeId = ResCodeId;
-                    break;
                 case "FamilyAddr":
                     p.Family.AddressLineOne = Address1;
                     p.Family.AddressLineTwo = Address2;
@@ -129,17 +132,8 @@ namespace CMSWeb.Models
                     p.Family.StateCode = State;
                     p.Family.ZipCode = Zip;
                     p.Family.ResCodeId = ResCodeId;
-                    break;
-                case "AltPersonalAddr":
-                    p.AltAddressLineOne = Address1;
-                    p.AltAddressLineTwo = Address2;
-                    p.AltAddressToDate = ToDt;
-                    p.AltBadAddressFlag = BadAddress;
-                    p.AltCityName = City;
-                    p.AltStateCode = State;
-                    p.AltZipCode = Zip;
-                    p.AltResCodeId = ResCodeId;
-                    break;
+                    if (Preferred)
+                        p.AddressTypeId = 10;
                     break;
                 case "AltFamilyAddr":
                     p.Family.AltAddressLineOne = Address1;
@@ -150,6 +144,32 @@ namespace CMSWeb.Models
                     p.Family.AltStateCode = State;
                     p.Family.AltZipCode = Zip;
                     p.Family.AltResCodeId = ResCodeId;
+                    if (Preferred)
+                        p.AddressTypeId = 20;
+                    break;
+                case "PersonalAddr":
+                    p.AddressLineOne = Address1;
+                    p.AddressLineTwo = Address2;
+                    p.AddressToDate = ToDt;
+                    p.BadAddressFlag = BadAddress;
+                    p.CityName = City;
+                    p.StateCode = State;
+                    p.ZipCode = Zip;
+                    p.ResCodeId = ResCodeId;
+                    if (Preferred)
+                        p.AddressTypeId = 30;
+                    break;
+                case "AltPersonalAddr":
+                    p.AltAddressLineOne = Address1;
+                    p.AltAddressLineTwo = Address2;
+                    p.AltAddressToDate = ToDt;
+                    p.AltBadAddressFlag = BadAddress;
+                    p.AltCityName = City;
+                    p.AltStateCode = State;
+                    p.AltZipCode = Zip;
+                    p.AltResCodeId = ResCodeId;
+                    if (Preferred)
+                        p.AddressTypeId = 40;
                     break;
             }
             DbUtil.Db.SubmitChanges();

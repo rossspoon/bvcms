@@ -79,20 +79,35 @@
                     changeMonth: true,
                     changeYear: true
                 });
+                $("#verifyaddress").click(function() {
+                    var f = $(this).closest('form');
+                    var q = f.serialize();
+                    $.post($(this).attr('href'), q, function(ret) {
+                        if (confirm(ret.address + "\nUse this Address?")) {
+                            $('#Address1', f).val(ret.Line1);
+                            $('#Address2', f).val(ret.Line2);
+                            $('#City', f).val(ret.City);
+                            $('#State', f).val(ret.State);
+                            $('#Zip', f).val(ret.Zip);
+                        }
+                    }, "json");
+                    return false;
+                });
                 return false;
             });
         });
         return false;
     });
-    $("form.DisplayEdit a.button").live('click', function() {
+    $("form.DisplayEdit a.submitbutton").live('click', function() {
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
-            $(f).html(ret);
-        });
-        var bc = $('#businesscard');
-        $.post($(bc).attr("href"), null, function(ret) {
-            $(bc).html(ret);
+            $(f).html(ret).ready(function() {
+                var bc = $('#businesscard');
+                $.post($(bc).attr("href"), null, function(ret) {
+                    $(bc).html(ret);
+                });
+            });
         });
         return false;
     });

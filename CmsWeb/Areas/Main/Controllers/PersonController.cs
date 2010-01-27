@@ -170,27 +170,6 @@ namespace CMSWeb.Areas.Main.Controllers
             return Content("/Task/List/{0}".Fmt(t.Id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicDisplay(int id)
-        {
-            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicEdit(int id)
-        {
-            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicUpdate(int id)
-        {
-            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
-            UpdateModel(m);
-            m.UpdatePerson();
-            m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
-            return View("BasicDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult BusinessCard(int id)
         {
             var m = new Models.PersonModel(id);
@@ -228,6 +207,54 @@ namespace CMSWeb.Areas.Main.Controllers
             foreach (var li in qu.Take(limit))
                 sb.AppendLine(li);
             return Content(sb.ToString());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicDisplay(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicEdit(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicUpdate(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            UpdateModel(m);
+            m.UpdatePerson();
+            m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View("BasicDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddressDisplay(int id, string type)
+        {
+            var m = Models.AddressInfo.GetAddressInfo(id, type);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddressEdit(int id, string type)
+        {
+            var m = Models.AddressInfo.GetAddressInfo(id, type);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddressUpdate(int id, string type)
+        {
+            var m = Models.AddressInfo.GetAddressInfo(id, type);
+            UpdateModel(m);
+            m.UpdateAddress();
+            m = Models.AddressInfo.GetAddressInfo(id, type);
+            return View("AddressDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)
+        {
+            var r = CMSPresenter.PersonController.LookupAddress(Address1, Address2, City, State, Zip);
+            return Json(r);
         }
     }
 }

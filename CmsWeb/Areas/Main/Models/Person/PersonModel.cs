@@ -29,6 +29,7 @@ namespace CMSWeb.Models
             public int? NewMemberClassStatusId { get; set; }
             public int? StatementOptionId { get; set; }
             public int? EnvelopeOptionId { get; set; }
+            public int AddressTypeId { get; set; }
 
             public string BaptismStatus
             {
@@ -88,12 +89,14 @@ namespace CMSWeb.Models
             public string EnvelopeOption
             {
                 get { return cv.EnvelopeOptions().ItemValue(EnvelopeOptionId); }
-                
             }
+            //public string AddressType
+            //{
+            //    get { return cv.AddressTypeCodes().ItemValue(AddressTypeId); }
+            //}
 
             public string BaptismDate { get; set; }
             public bool Deceased { get; set; }
-            public string AddressType { get; set; }
             public string DecisionDate { get; set; }
             public string BaptismSchedDate { get; set; }
             public string PrevChurch { get; set; }
@@ -143,7 +146,7 @@ namespace CMSWeb.Models
                     where p.PeopleId == id
                     select new PersonInfo
                     {
-                        AddressType = p.AddressTypeId.ToString(),
+                        AddressTypeId = p.AddressTypeId,
                         Age = p.Age.ToString(),
                         BaptismSchedDate = p.BaptismSchedDate.FormatDate(),
                         BaptismTypeId = p.BaptismTypeId,
@@ -208,6 +211,8 @@ namespace CMSWeb.Models
                         SendInfo = p.InfoBecomeAChristian,
                         FamilyAddr = new AddressInfo
                         {
+                            Name = "FamilyAddr",
+                            PeopleId = p.PeopleId,
                             Address1 = p.Family.AddressLineOne,
                             Address2 = p.Family.AddressLineTwo,
                             City = p.Family.CityName,
@@ -218,10 +223,11 @@ namespace CMSWeb.Models
                             FromDt = p.Family.AddressFromDate,
                             ToDt = p.Family.AddressToDate,
                             Preferred = p.AddressTypeId == 10,
-                            Name = "FamilyAddr",
                         },
                         AltFamilyAddr = new AddressInfo
                         {
+                            Name = "AltFamilyAddr",
+                            PeopleId = p.PeopleId,
                             Address1 = p.Family.AltAddressLineOne,
                             Address2 = p.Family.AltAddressLineTwo,
                             City = p.Family.AltCityName,
@@ -232,10 +238,11 @@ namespace CMSWeb.Models
                             FromDt = p.Family.AltAddressFromDate,
                             ToDt = p.Family.AltAddressToDate,
                             Preferred = p.AddressTypeId == 20,
-                            Name = "AltFamilyAddr",
                         },
                         PersonalAddr = new AddressInfo
                         {
+                            Name = "PersonalAddr",
+                            PeopleId = p.PeopleId,
                             Address1 = p.AddressLineOne,
                             Address2 = p.AddressLineTwo,
                             City = p.CityName,
@@ -246,10 +253,11 @@ namespace CMSWeb.Models
                             FromDt = p.AddressFromDate,
                             ToDt = p.AddressToDate,
                             Preferred = p.AddressTypeId == 30,
-                            Name = "PersonalAddr",
                         },
                         AltPersonalAddr = new AddressInfo
                         {
+                            Name = "AltPersonalAddr",
+                            PeopleId = p.PeopleId,
                             Address1 = p.AltAddressLineOne,
                             Address2 = p.AltAddressLineTwo,
                             City = p.AltCityName,
@@ -260,7 +268,6 @@ namespace CMSWeb.Models
                             FromDt = p.AltAddressFromDate,
                             ToDt = p.AltAddressToDate,
                             Preferred = p.AddressTypeId == 40,
-                            Name = "AltPersonalAddr",
                         },
                     };
             displayperson = q.Single();

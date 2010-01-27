@@ -1257,7 +1257,7 @@
     <Content Include="App_Themes\Minimal\Skin1.skin" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
-    <Content Include="Areas\Main\Views\Person\Address.ascx" />
+    <Content Include="Areas\Main\Views\Person\AddressDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\AttendanceGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\BasicDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsReceivedGrid.ascx" />

@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.BasicPersonInfo>" %>
-<form class="DisplayEdit" action="">
 <% if (Page.User.IsInRole("Edit"))
    { %>
 <a class="displayedit" href="/Person/BasicEdit/<%=Model.PeopleId %>">Edit</a>
@@ -116,4 +115,3 @@
     </table>
 </div>
 <div style="clear:both"></div>
-</form>

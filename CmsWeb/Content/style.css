@@ -366,7 +366,7 @@ form.DisplayEdit input[type=text]
 {
     width: 20em;
 }
-a.button {
+a.submitbutton,a.button {
   padding:5px;
     border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
     background-color:#3B5998;

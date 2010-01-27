@@ -1,58 +1,55 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.Address>" %>
-<table>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.AddressInfo>" %>
+<% if (Page.User.IsInRole("Edit"))
+   { %>
+<a class="displayedit" href="/Person/AddressDisplay/<%=Model.PeopleId %>?type=<%=Model.Name %>">Cancel</a>
+<% } %>
+<table class="Design2">
     <tr>
+        <th>Address:</th>
+        <td><%=Html.TextBox("Address1") %></td>
+    </tr>
+    <tr>
+        <th>Address2:</th>
+        <td><%=Html.TextBox("Address2") %></td>
+    </tr>
+    <tr>
+        <th>City:</th>
+        <td><%=Html.TextBox("City") %></td>
+    </tr>
+    <tr>
+        <th>State:</th>
+        <td><%=Html.TextBox("State") %></td>
+    </tr>
+    <tr>
+        <th>Zip:</th>
+        <td><%=Html.TextBox("Zip", Model.Zip.FmtZip()) %> <a id="verifyaddress" href="/Person/VerifyAddress/" class="button">Verify</a></td>
+    </tr>
+    <tr>
+        <th>Resident Code:</th>
+        <td><%=Html.DropDownList("ResCode", CMSWeb.Models.AddressInfo.ResCodes()) %></td>
+    </tr>
+    <tr>
+        <th>Bad Address Flag:</th>
+        <td><%=Html.CheckBox("BadAddress") %></td>
+    </tr>
+    <tr>
+        <th style="vertical-align: top">Effective Dates:</th>
         <td>
             <table class="Design2">
                 <tr>
-                    <th>Address:</th>
-                    <td><%=Html.TextBox("Address1") %></td>
+                    <th>From:</th>
+                    <td><%=Html.TextBox("FromDt", Model.FromDt.FormatDate()) %></td>
                 </tr>
                 <tr>
-                    <th>Bad Address Flag:</th>
-                    <td><%=Html.CheckBox("BadAddress") %></td>
-                </tr>
-                <tr>
-                    <th>Address2:</th>
-                    <td><%=Model.Address2 %></td>
-                </tr>
-                <tr>
-                    <th>Resident Code:</th>
-                    <td><%=Html.DropDownList("ResCode", Model.ResCode) %></td>
-                </tr>
-                <tr>
-                    <th>City:</th>
-                    <td><%=Model.City %></td>
-                </tr>
-                <tr>
-                    <th>State:</th>
-                    <td><%=Model.State %></td>
-                </tr>
-                <tr>
-                    <th>Zip:</th>
-                    <td><%=Model.Zip.FmtZip() %></td>
-                </tr>
-                <tr>
-                    <th style="vertical-align: top">Effective Dates:</th>
-                    <td colspan="3">
-                        <table class="Design2">
-                            <tr>
-                                <th>From:</th>
-                                <td><%=Model.FromDt.FormatDate() %></td>
-                            </tr>
-                            <tr>
-                                <th>To:</th>
-                                <td><%=Model.ToDt.FormatDate() %></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Preferred Address</th>
-                    <td colspan="3">
-                        <%=Html.RadioButton("Preferred", Model.Name, Model.Preferred, new { disabled = "disabled" })%>
-                    </td>
+                    <th>To:</th>
+                    <td><%=Html.TextBox("ToDt", Model.ToDt.FormatDate()) %></td>
                 </tr>
             </table>
         </td>
     </tr>
+    <tr>
+        <th>Preferred Address</th>
+        <td><%=Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)%></td>
+    </tr>
+    <tr><td></td><td><a href="/Person/AddressUpdate/<%=Model.PeopleId %>?type=<%=Model.Name %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

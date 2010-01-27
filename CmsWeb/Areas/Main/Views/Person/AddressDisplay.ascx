@@ -1,4 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.AddressInfo>" %>
+<% if (Page.User.IsInRole("Edit"))
+   { %>
+<a class="displayedit" href="/Person/AddressEdit/<%=Model.PeopleId %>?type=<%=Model.Name %>">Edit</a>
+<% } %>
 <table>
     <tr>
         <td>
@@ -44,8 +48,8 @@
                 </tr>
                 <tr>
                     <th>Preferred Address</th>
-                    <td colspan="3">
-                        <%=Html.RadioButton("Preferred", Model.Name, Model.Preferred, new { disabled = "disabled" })%>
+                    <td>
+                        <input type="checkbox" disabled="disabled" <%=Model.Preferred ? "checked='checked'" : "" %> />
                     </td>
                 </tr>
             </table>

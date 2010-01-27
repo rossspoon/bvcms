@@ -83,6 +83,6 @@
         <tr><td>Do Not Call</td><td><%=Html.CheckBox("DoNotCallFlag") %> </td></tr>
         <tr><td>Do Not Visit</td><td><%=Html.CheckBox("DoNotVisitFlag") %> </td></tr>
         <tr><td>Do Not Mail</td><td><%=Html.CheckBox("DoNotMailFlag") %> </td></tr>
-        <tr><td></td><td><a href="/Person/BasicUpdate/<%=Model.PeopleId %>" class="button">Save Changes</a></td></tr>
+        <tr><td></td><td><a href="/Person/BasicUpdate/<%=Model.PeopleId %>" class="submitbutton">Save Changes</a></td></tr>
     </table>
 
