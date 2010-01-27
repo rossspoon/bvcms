@@ -13,6 +13,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
+using System.Transactions;
 
 namespace CMSWeb.Models
 {
@@ -109,7 +110,7 @@ namespace CMSWeb.Models
         public bool SavedQueryVisible { get; set; }
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
-        
+
         public List<SelectListItem> TagData { get; set; }
         public List<SelectListItem> CodeData { get; set; }
         public List<SelectListItem> CompareData { get; set; }
@@ -603,6 +604,7 @@ namespace CMSWeb.Models
         private IQueryable<Person> query;
         public int FetchCount()
         {
+            Db.SetNoLock();
             query = PersonQuery();
             count = query.Count();
             return count ?? 0;
@@ -615,9 +617,9 @@ namespace CMSWeb.Models
         }
         private IQueryable<Person> PersonQuery()
         {
-            Db.SetNoLock();
             if (Qb == null)
                 LoadScratchPad();
+            Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
             return q;
         }
@@ -625,6 +627,7 @@ namespace CMSWeb.Models
         {
             if (Qb == null)
                 LoadScratchPad();
+            Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
             Db.TagAll(q);
         }
@@ -632,6 +635,7 @@ namespace CMSWeb.Models
         {
             if (Qb == null)
                 LoadScratchPad();
+            Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
             Db.UnTagAll(q);
         }

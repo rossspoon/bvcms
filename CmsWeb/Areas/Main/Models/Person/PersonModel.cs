@@ -5,80 +5,114 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
+using CMSPresenter;
 
 namespace CMSWeb.Models
 {
     public class PersonModel
     {
-        public class PersonInfo
+        public class PersonInfo : BasicPersonInfo
         {
-            public string Address { get; set; }
-            public string Address2 { get; set; }
-            public string EmailAddress { get; set; }
-            public string HomePhone { get; set; }
-            public int PeopleId { get; set; }
+            private CodeValueController cv = new CodeValueController();
             public int FamilyId { get; set; }
             public int? SpouseId { get; set; }
-            public string NickName { get; set; }
-            public string Title { get; set; }
-            public string First { get; set; }
-            public string Middle { get; set; }
-            public string Last { get; set; }
-            public string Suffix { get; set; }
-            public string Maiden { get; set; }
-            public string Gender { get; set; }
-            public string CellPhone { get; set; }
-            public string WorkPhone { get; set; }
-            public string School { get; set; }
-            public string Grade { get; set; }
-            public string Employer { get; set; }
-            public string Occupation { get; set; }
-            public string Campus { get; set; }
-            public string JoinDate { get; set; }
-            public string BaptismStatus { get; set; }
+
+            public int? BaptismStatusId { get; set; }
+            public int? DecisionTypeId { get; set; }
+            public int? JoinTypeId { get; set; }
+            public int? BaptismTypeId { get; set; }
+            public int? LetterStatusId { get; set; }
+            public int? InterestPointId { get; set; }
+            public int? OriginId { get; set; }
+            public int? EntryPointId { get; set; }
+            public int? DropTypeId { get; set; }
+            public int? NewMemberClassStatusId { get; set; }
+            public int? StatementOptionId { get; set; }
+            public int? EnvelopeOptionId { get; set; }
+
+            public string BaptismStatus
+            {
+                get { return cv.BaptismStatuses().ItemValue(BaptismStatusId); }
+                
+            }
+            public string DecisionType
+            {
+                get { return cv.DecisionCodes().ItemValue(DecisionTypeId); }
+                
+            }
+            public string JoinType
+            {
+                get { return cv.JoinTypes().ItemValue(JoinTypeId); }
+                
+            }
+            public string BaptismType
+            {
+                get { return cv.BaptismTypes().ItemValue(BaptismTypeId); }
+                
+            }
+            public string LetterStatus
+            {
+                get { return cv.LetterStatusCodes().ItemValue(LetterStatusId); }
+                
+            }
+            public string InterestPoint
+            {
+                get { return cv.InterestPoints().ItemValue(InterestPointId); }
+                
+            }
+            public string Origin
+            {
+                get { return cv.Origins().ItemValue(OriginId); }
+                
+            }
+            public string EntryPoint
+            {
+                get { return cv.EntryPoints().ItemValue(EntryPointId); }
+                
+            }
+            public string DropType
+            {
+                get { return cv.DropTypes().ItemValue(DropTypeId); }
+                
+            }
+            public string NewMemberClassStatus
+            {
+                get { return cv.DiscoveryClassStatusCodes().ItemValue(NewMemberClassStatusId); }
+                
+            }
+            public string StatementOption
+            {
+                get { return cv.EnvelopeOptions().ItemValue(StatementOptionId); }
+                
+            }
+            public string EnvelopeOption
+            {
+                get { return cv.EnvelopeOptions().ItemValue(EnvelopeOptionId); }
+                
+            }
+
             public string BaptismDate { get; set; }
-            public string MaritalStatus { get; set; }
-            public string Spouse { get; set; }
-            public string WeddingDate { get; set; }
-            public string Birthday { get; set; }
             public bool Deceased { get; set; }
-            public string DeceasedDate { get; set; }
-            public string Age { get; set; }
-            public string DoNotCall { get; set; }
-            public string DoNotVisit { get; set; }
-            public string DoNotMail { get; set; }
-            public string StatementOption { get; set; }
-            public string EnvelopeOption { get; set; }
             public string AddressType { get; set; }
-            public string DecisionType { get; set; }
             public string DecisionDate { get; set; }
-            public string JoinType { get; set; }
-            public string BaptismType { get; set; }
             public string BaptismSchedDate { get; set; }
             public string PrevChurch { get; set; }
-            public string MemberStatus { get; set; }
-            public string DropType { get; set; }
             public string DropDate { get; set; }
             public string NewChurch { get; set; }
-            public string NewMemberClassStatus { get; set; }
             public string NewMemberClassDate { get; set; }
             public string Name { get; set; }
             public int? SmallPicId { get; set; }
-            public string LetterStatus { get; set; }
             public string LetterRequested { get; set; }
             public string LetterReceived { get; set; }
             public string LetterNotes { get; set; }
-            public string InterestPoint { get; set; }
-            public string Origin { get; set; }
-            public string EntryPoint { get; set; }
             public bool MemberAnyChurch { get; set; }
             public bool ChristAsSavior { get; set; }
             public bool PleaseVisit { get; set; }
             public bool InterestedInJoining { get; set; }
             public bool SendInfo { get; set; }
             public string Comments { get; set; }
-            private Address _PrimaryAddr;
-            public Address PrimaryAddr
+            private AddressInfo _PrimaryAddr;
+            public AddressInfo PrimaryAddr
             {
                 get
                 {
@@ -94,41 +128,15 @@ namespace CMSWeb.Models
                     return _PrimaryAddr;
                 }
             }
-            public Address FamilyAddr { get; set; }
-            public Address AltFamilyAddr { get; set; }
-            public Address PersonalAddr { get; set; }
-            public Address AltPersonalAddr { get; set; }
+            public AddressInfo FamilyAddr { get; set; }
+            public AddressInfo AltFamilyAddr { get; set; }
+            public AddressInfo PersonalAddr { get; set; }
+            public AddressInfo AltPersonalAddr { get; set; }
             public PersonContactsReceivedModel contacts;
             public PersonContactsMadeModel contactsmade;
             public IEnumerable<TaskModel.TasksAbout> tasks;
         }
-        public class Address
-        {
-            public string Address1 { get; set; }
-            public string Address2 { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string Zip { get; set; }
-            public string CityStateZip()
-            {
-                return Util.FormatCSZ4(City, State, Zip);
-            }
-            public string AddrCityStateZip()
-            {
-                return Address1 + ";" + CityStateZip();
-            }
-            public string Addr2CityStateZip()
-            {
-                return Address2 + ";" + CityStateZip();
-            }
-            public bool? BadAddress { get; set; }
-            public string ResCode { get; set; }
-            public bool Preferred { get; set; }
-            public DateTime? FromDt { get; set; }
-            public DateTime? ToDt { get; set; }
-            public string Name { get; set; }
-        }
-        public PersonInfo person;
+        public PersonInfo displayperson;
         public PersonModel(int? id)
         {
             var q = from p in DbUtil.Db.People
@@ -136,44 +144,42 @@ namespace CMSWeb.Models
                     select new PersonInfo
                     {
                         AddressType = p.AddressTypeId.ToString(),
-                        Address = p.PrimaryAddress,
-                        Address2 = p.PrimaryAddress2,
                         Age = p.Age.ToString(),
                         BaptismSchedDate = p.BaptismSchedDate.FormatDate(),
-                        BaptismType = p.BaptismType.Description,
-                        BaptismStatus = p.BaptismStatus.Description,
+                        BaptismTypeId = p.BaptismTypeId,
+                        BaptismStatusId = p.BaptismStatusId,
                         BaptismDate = p.BaptismDate.FormatDate(),
                         Birthday = p.DOB,
-                        Campus = p.Campu.Description,
+                        CampusId = p.CampusId,
                         CellPhone = p.CellPhone.FmtFone(),
                         Deceased = p.Deceased,
-                        DeceasedDate = p.DeceasedDate.FormatDate(),
+                        DeceasedDate = p.DeceasedDate,
                         DecisionDate = p.DecisionDate.FormatDate(),
-                        DecisionType = p.DecisionType.Description,
-                        DoNotCall = p.DoNotCallFlag ? "Do Not Call" : "",
-                        DoNotMail = p.DoNotMailFlag ? "Do Not Mail" : "",
-                        DoNotVisit = p.DoNotVisitFlag ? "Do Not Visit" : "",
+                        DecisionTypeId = p.DecisionType.Id,
+                        DoNotCallFlag = p.DoNotCallFlag,
+                        DoNotMailFlag = p.DoNotMailFlag,
+                        DoNotVisitFlag = p.DoNotVisitFlag,
                         DropDate = p.DropDate.FormatDate(),
-                        DropType = p.DropType.Description,
+                        DropTypeId = p.DropType.Id,
                         EmailAddress = p.EmailAddress,
                         Employer = p.EmployerOther,
-                        EnvelopeOption = p.EnvelopeOption.Description,
+                        EnvelopeOptionId = p.EnvelopeOptionsId,
                         FamilyId = p.FamilyId,
                         First = p.FirstName,
-                        Gender = p.Gender.Description,
+                        GenderId = p.GenderId,
                         Grade = p.Grade.ToString(),
-                        HomePhone = p.Family.HomePhone.FmtFone(),
-                        JoinDate = p.JoinDate.FormatDate(),
-                        JoinType = p.JoinType.Description,
+                        HomePhone = p.Family.HomePhone,
+                        JoinDate = p.JoinDate,
+                        JoinTypeId = p.JoinCodeId,
                         Last = p.LastName,
                         Maiden = p.MaidenName,
-                        MaritalStatus = p.MaritalStatus.Description,
-                        MemberStatus = p.MemberStatus.Description,
+                        MaritalStatusId = p.MaritalStatusId,
+                        MemberStatusId = p.MemberStatusId,
                         Middle = p.MiddleName,
                         Name = p.Name,
                         NewChurch = p.OtherNewChurch,
                         NewMemberClassDate = p.DiscoveryClassDate.FormatDate(),
-                        NewMemberClassStatus = p.DiscoveryClassStatus.Description,
+                        NewMemberClassStatusId = p.DiscoveryClassStatusId,
                         NickName = p.NickName,
                         Occupation = p.OccupationOther,
                         PeopleId = p.PeopleId,
@@ -182,25 +188,25 @@ namespace CMSWeb.Models
                         School = p.SchoolOther,
                         Spouse = p.SpouseName,
                         SpouseId = p.SpouseId,
-                        StatementOption = p.ContributionStatementOption.Description,
+                        StatementOptionId = p.ContributionOptionsId,
                         Suffix = p.SuffixCode,
                         Title = p.TitleCode,
-                        WeddingDate = p.WeddingDate.FormatDate(),
-                        WorkPhone = p.WorkPhone.FmtFone(),
-                        LetterStatus = p.MemberLetterStatus.Description,
+                        WeddingDate = p.WeddingDate,
+                        WorkPhone = p.WorkPhone,
+                        LetterStatusId = p.LetterStatusId,
                         LetterReceived = p.LetterDateReceived.FormatDate(),
                         LetterRequested = p.LetterDateRequested.FormatDate(),
                         LetterNotes = p.LetterStatusNotes,
-                        InterestPoint = p.InterestPoint.Description,
-                        Origin = p.Origin.Description,
-                        EntryPoint = p.EntryPoint.Description,
+                        InterestPointId = p.InterestPointId,
+                        OriginId = p.OriginId,
+                        EntryPointId = p.EntryPointId,
                         ChristAsSavior = p.ChristAsSavior,
                         Comments = p.Comments,
                         InterestedInJoining = p.InterestedInJoining,
                         MemberAnyChurch = p.MemberAnyChurch ?? false,
                         PleaseVisit = p.PleaseVisit,
                         SendInfo = p.InfoBecomeAChristian,
-                        FamilyAddr = new Address
+                        FamilyAddr = new AddressInfo
                         {
                             Address1 = p.Family.AddressLineOne,
                             Address2 = p.Family.AddressLineTwo,
@@ -208,13 +214,13 @@ namespace CMSWeb.Models
                             State = p.Family.StateCode,
                             Zip = p.Family.ZipCode,
                             BadAddress = p.Family.BadAddressFlag,
-                            ResCode = p.Family.ResidentCode.Description,
+                            ResCodeId = p.Family.ResCodeId,
                             FromDt = p.Family.AddressFromDate,
                             ToDt = p.Family.AddressToDate,
                             Preferred = p.AddressTypeId == 10,
                             Name = "FamilyAddr",
                         },
-                        AltFamilyAddr = new Address
+                        AltFamilyAddr = new AddressInfo
                         {
                             Address1 = p.Family.AltAddressLineOne,
                             Address2 = p.Family.AltAddressLineTwo,
@@ -222,13 +228,13 @@ namespace CMSWeb.Models
                             State = p.Family.AltStateCode,
                             Zip = p.Family.AltZipCode,
                             BadAddress = p.Family.AltBadAddressFlag,
-                            ResCode = p.Family.ResidentCode.Description,
-                            FromDt = p.Family.AddressFromDate,
-                            ToDt = p.Family.AddressToDate,
+                            ResCodeId = p.Family.AltResCodeId,
+                            FromDt = p.Family.AltAddressFromDate,
+                            ToDt = p.Family.AltAddressToDate,
                             Preferred = p.AddressTypeId == 20,
                             Name = "AltFamilyAddr",
                         },
-                        PersonalAddr = new Address
+                        PersonalAddr = new AddressInfo
                         {
                             Address1 = p.AddressLineOne,
                             Address2 = p.AddressLineTwo,
@@ -236,13 +242,13 @@ namespace CMSWeb.Models
                             State = p.StateCode,
                             Zip = p.ZipCode,
                             BadAddress = p.BadAddressFlag,
-                            ResCode = p.ResidentCode.Description,
+                            ResCodeId = p.ResCodeId,
                             FromDt = p.AddressFromDate,
                             ToDt = p.AddressToDate,
                             Preferred = p.AddressTypeId == 30,
                             Name = "PersonalAddr",
                         },
-                        AltPersonalAddr = new Address
+                        AltPersonalAddr = new AddressInfo
                         {
                             Address1 = p.AltAddressLineOne,
                             Address2 = p.AltAddressLineTwo,
@@ -250,35 +256,38 @@ namespace CMSWeb.Models
                             State = p.AltStateCode,
                             Zip = p.AltZipCode,
                             BadAddress = p.AltBadAddressFlag,
-                            ResCode = p.AltResidentCode.Description,
+                            ResCodeId = p.AltResCodeId,
                             FromDt = p.AltAddressFromDate,
                             ToDt = p.AltAddressToDate,
                             Preferred = p.AddressTypeId == 40,
                             Name = "AltPersonalAddr",
                         },
                     };
-            person = q.Single();
-            enrollments = new PersonEnrollmentsModel(id.Value);
-            prevEnrollments = new PersonPrevEnrollmentsModel(id.Value);
-            pendingEnrollments = new PersonPendingEnrollmentsModel(id.Value);
-            attendances = new PersonAttendHistoryModel(id.Value);
-            person.contacts = new PersonContactsReceivedModel(id.Value);
-            person.contactsmade = new PersonContactsMadeModel(id.Value);
+            displayperson = q.Single();
+            displayperson.contacts = new PersonContactsReceivedModel(id.Value);
+            displayperson.contactsmade = new PersonContactsMadeModel(id.Value);
             var m = new TaskModel();
-            person.tasks = m.TasksAboutList(id.Value);
+            displayperson.tasks = m.TasksAboutList(id.Value);
             vol = DbUtil.Db.Volunteers.FirstOrDefault(v => v.PeopleId == id.Value);
             if (vol == null)
                 vol = new Volunteer();
         }
+        private Person _person;
+        public Person Person
+        {
+            get
+            {
+                if (_person == null)
+                    _person = DbUtil.Db.LoadPersonById(displayperson.PeopleId);
+                return _person;
+            }
+        }
+
         public Volunteer vol;
-        public PersonEnrollmentsModel enrollments;
-        public PersonPrevEnrollmentsModel prevEnrollments;
-        public PersonPendingEnrollmentsModel pendingEnrollments;
-        public PersonAttendHistoryModel attendances;
         public string Name
         {
-            get { return person.Name; }
-            set { person.Name = value; }
+            get { return displayperson.Name; }
+            set { displayperson.Name = value; }
         }
         public IEnumerable<SelectListItem> PreferredAddresses()
         {
@@ -290,33 +299,24 @@ namespace CMSWeb.Models
                     };
             return q;
         }
-        private RecReg recreg;
+        public int? recregid { get; set; }
         public bool HasRecReg
         {
             get
             {
-                if (recreg == null)
+                if (!recregid.HasValue)
                     if (HttpContext.Current.User.IsInRole("Attendance"))
                     {
                         var q = from rr in DbUtil.Db.RecRegs
-                                where rr.PeopleId == person.PeopleId
+                                where rr.PeopleId == displayperson.PeopleId
                                 orderby rr.Uploaded descending
-                                select rr;
-                        recreg = q.FirstOrDefault();
+                                select rr.Id;
+                        recregid = q.FirstOrDefault();
                     }
-                return recreg != null;
+                return recregid.HasValue && recregid > 0;
             }
         }
-        public string RecRegLink
-        {
-            get
-            {
-                if (recreg != null)
-                    return "/Recreation/Detail/{0}".Fmt(recreg.Id);
-                return "";
-            }
-        }
-        private int? ckorg;
+        public int? ckorg;
         public bool CanCheckIn
         {
             get
@@ -324,29 +324,6 @@ namespace CMSWeb.Models
                 ckorg = (int?)HttpContext.Current.Session["CheckInOrgId"];
                 return ckorg.HasValue;
             }
-        }
-        public string CheckInLink
-        {
-            get { return "/CheckIn/CheckIn/{0}?pid={1}".Fmt(ckorg, person.PeopleId); }
-        }
-        public bool IsFinance
-        {
-            get
-            {
-                return HttpContext.Current.User.IsInRole("Finance");
-            }
-        }
-        public string ContributionsLink
-        {
-            get { return "/Contributions/Years.aspx?id={0}".Fmt(person.PeopleId); }
-        }
-        public bool IsAdmin
-        {
-            get { return HttpContext.Current.User.IsInRole("Admin"); }
-        }
-        public bool IsEdit
-        {
-            get { return HttpContext.Current.User.IsInRole("Edit"); }
         }
         public class FamilyMember
         {
@@ -360,7 +337,7 @@ namespace CMSWeb.Models
         public IEnumerable<FamilyMember> FamilyMembers()
         {
             var q = from m in DbUtil.Db.People
-                    where m.FamilyId == person.FamilyId
+                    where m.FamilyId == displayperson.FamilyId
                     orderby
                         m.PeopleId == m.Family.HeadOfHouseholdId ? 1 :
                         m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 :
@@ -372,49 +349,52 @@ namespace CMSWeb.Models
                         Age = m.Age,
                         Color = m.DeceasedDate != null ? "red" : "black",
                         PositionInFamily = m.FamilyPosition.Code,
-                        SpouseIndicator = m.PeopleId == person.SpouseId ? "*" : "&nbsp;"
+                        SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;"
                     };
             return q;
         }
-        public string addrtab { get { return person.PrimaryAddr.Name; } }
-        public class AddressInfo
+        public string addrtab { get { return displayperson.PrimaryAddr.Name; } }
+        public static IEnumerable<SelectListItem> GenderCodes()
         {
-            public string AddressLine1 { get; set; }
-            public string AddressLine2 { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string Zip { get; set; }
-            public bool? BadAddressFlag { get; set; }
-            public string BadAddress
-            {
-                get { return (BadAddressFlag ?? false) ? "checked=\"checked\"" : ""; }
-            }
-            public int? ResCodeId { get; set; }
-            public string ResCode
-            {
-                get
-                {
-                    if (ResCodeId.HasValue)
-                        return ResCodes().Single(rc => rc.Value == ResCodeId.ToString()).Text;
-                    return "(not specified)";
-                }
-            }
-            public bool PreferredFlag { get; set; }
-            public string Preferred
-            {
-                get { return PreferredFlag ? "checked=\"checked\"" : ""; }
-            }
-            public DateTime? FromDate { get; set; }
-            public DateTime? ToDate { get; set; }
-        }
-        public static IEnumerable<SelectListItem> ResCodes()
-        {
-            var q = from rc in DbUtil.Db.ResidentCodes
-                    orderby rc.Id
+            var q = from i in DbUtil.Db.Genders
+                    orderby i.Id
                     select new SelectListItem
                     {
-                        Value = rc.Id.ToString(),
-                        Text = rc.Description
+                        Value = i.Id.ToString(),
+                        Text = i.Description
+                    };
+            return q;
+        }
+        public static IEnumerable<SelectListItem> Campuses()
+        {
+            var q = from i in DbUtil.Db.Campus
+                    orderby i.Id
+                    select new SelectListItem
+                    {
+                        Value = i.Id.ToString(),
+                        Text = i.Description
+                    };
+            return q;
+        }
+        public static IEnumerable<SelectListItem> MemberStatuses()
+        {
+            var q = from i in DbUtil.Db.MemberStatuses
+                    orderby i.Id
+                    select new SelectListItem
+                    {
+                        Value = i.Id.ToString(),
+                        Text = i.Description
+                    };
+            return q;
+        }
+        public static IEnumerable<SelectListItem> MaritalStatuses()
+        {
+            var q = from i in DbUtil.Db.MaritalStatuses
+                    orderby i.Id
+                    select new SelectListItem
+                    {
+                        Value = i.Id.ToString(),
+                        Text = i.Description
                     };
             return q;
         }

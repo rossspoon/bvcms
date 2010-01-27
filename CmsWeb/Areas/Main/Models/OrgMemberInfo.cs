@@ -16,7 +16,7 @@ namespace CMSWeb.Models
         public string MemberType { get; set; }
         public int? LeaderId { get; set; }
         public DateTime? EnrollDate { get; set; }
-        public decimal? AttendPct { get; set; }
+        public Decimal? AttendPct { get; set; }
         public string DivisionName { get; set; }
     }
 }

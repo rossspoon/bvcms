@@ -2,11 +2,10 @@
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
-    $('table.grid > tbody > tr:even').addClass('alt');
     var maintabs = $("#main-tab").tabs();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
-    $('#clipaddr').click(function() {
+    $('#clipaddr').live('click', function() {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
             var range = inElement.createTextRange();
@@ -16,16 +15,17 @@
         return false;
     });
     $('#deleteperson').click(function() {
+        var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
-            $.post("/Person/Delete/" + $(this).attr("pid"), null, function(ret) {
+            $.post(href, null, function(ret) {
                 window.location.reload();
             });
         }
     });
     $('#moveperson').click(function(ev) {
-        var pid = $(this).attr("pid");
+        var href = $(this).attr("href");
         $('#dialogbox').SearchPeople(ev, function(id, peopleid) {
-            $.post("/Person/Move/" + pid, { to: peopleid }, function(ret) {
+            $.post(href, { to: peopleid }, function(ret) {
                 $('#dialogbox').dialog("close");
                 if (ret) {
                     $.blockUI({ message: "Move Failed: " + ret });
@@ -49,22 +49,52 @@
             });
         return false;
     });
-});
-function GotoPage(e, pg) {
-    return GetTable(e, "#Page", pg);
-}
-function SetPageSize(e, sz) {
-    return GetTable(e, "#PageSize", sz);
-}
-function GetTable(e, arg0, arg1) {
-    var f = $(e).closest('form');
-    $(arg0, f).val(arg1);
-    var q = f.serialize();
-    $.post(f.attr('action'), q, function(ret) {
-        $(f).replaceWith(ret).ready(function() {
-            $('table.grid > tbody > tr:even', f).addClass('alt');
+
+    $("#enrollment-link").click(function() {
+        $.showTable($('#current-tab form'));
+    });
+    $("#previous-link").click(function() {
+        $.showTable($('#previous-tab form'));
+    });
+    $("#pending-link").click(function() {
+        $.showTable($('#pending-tab form'));
+    });
+    $("#attendance-link").click(function() {
+        $.showTable($('#attendance-tab form'));
+    });
+    $("#growth-link").click(function() {
+        $("#growth-tab form").each(function() {
+            $.showTable($(this));
         });
     });
-    return false;
-}
+    $("a.displayedit").live('click', function() {
+        var f = $(this).closest('form');
+        $.post($(this).attr('href'), null, function(ret) {
+            $(f).html(ret).ready(function() {
+                $('#Employer', f).autocomplete("/Person/Employers");
+                $('#School', f).autocomplete("/Person/Schools");
+                $('#Occupation', f).autocomplete("/Person/Occupations");
+                $(".datepicker").datepicker({
+                    dateFormat: 'm/d/yy',
+                    changeMonth: true,
+                    changeYear: true
+                });
+                return false;
+            });
+        });
+        return false;
+    });
+    $("form.DisplayEdit a.button").live('click', function() {
+        var f = $(this).closest('form');
+        var q = f.serialize();
+        $.post($(this).attr('href'), q, function(ret) {
+            $(f).html(ret);
+        });
+        var bc = $('#businesscard');
+        $.post($(bc).attr("href"), null, function(ret) {
+            $(bc).html(ret);
+        });
+        return false;
+    });
+});
 

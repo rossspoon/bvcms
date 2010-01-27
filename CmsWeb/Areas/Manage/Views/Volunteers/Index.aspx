@@ -6,14 +6,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $('#Org').change(RefreshList);
             $('#View').change(RefreshList);
             $('#query').click(function() {
-                var q = $('#form').formSerialize2();
+                var q = $('#form').serialize();
                 $.navigate("/Volunteers/Query/" + $('#QueryId').val(), q);
             });
             $('#Volunteers > thead a.sortable').click(function(ev) {
@@ -55,16 +53,16 @@
             };
         })(jQuery);
         function RefreshList() {
-            var q = $('#form').formSerialize2();
+            var q = $('#form').serialize();
             $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }
         function GotoPage(pg) {
-            var q = $('#form').formSerialize2();
+            var q = $('#form').serialize();
             q = q.appendQuery("Page=" + pg);
             $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }
         function SetPageSize(sz) {
-            var q = $('#form').formSerialize2();
+            var q = $('#form').serialize();
             q = q.appendQuery("PageSize=" + sz);
             $.navigate("/Volunteers/Index/" + $('#QueryId').val(), q);
         }

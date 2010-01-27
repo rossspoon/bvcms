@@ -77,13 +77,15 @@
     </tr>
     <tr>
         <td style="vertical-align: top">
-            <% Html.RenderPartial("ContactsMadeGrid", Model.contactsmade); %>
+            <form action="/Person/ContactsMadeGrid/<%=Model.PeopleId %>">
+            </form>
         </td>
         <td>
         </td>
         <td style="vertical-align: top">
             <% Html.RenderPartial("PendingTasksGrid", Model.tasks); %>
-            <% Html.RenderPartial("ContactsReceivedGrid", Model.contacts); %>
+            <form action="/Person/ContactsReceivedGrid/<%=Model.PeopleId %>">
+            </form>
         </td>
     </tr>
 </table>

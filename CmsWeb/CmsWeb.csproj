@@ -57,6 +57,7 @@
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -79,6 +80,8 @@
     <Compile Include="Areas\Main\Models\Person\AttendHistoryModel.cs" />
     <Compile Include="Areas\Main\Models\Person\ContactsReceivedModel.cs" />
     <Compile Include="Areas\Main\Models\Person\ContactsMadeModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\BasicPersonInfo.cs" />
+    <Compile Include="Areas\Main\Models\Person\AddressInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\PendingEnrollmentsModel.cs" />
     <Compile Include="Areas\Main\Models\Person\PrevEnrollmentsModel.cs" />
     <Compile Include="Areas\Main\Models\OrgMemberInfo.cs" />
@@ -1256,9 +1259,12 @@
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
     <Content Include="Areas\Main\Views\Person\Address.ascx" />
     <Content Include="Areas\Main\Views\Person\AttendanceGrid.ascx" />
-    <Content Include="Areas\Main\Views\Person\Basic.ascx" />
+    <Content Include="Areas\Main\Views\Person\BasicDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsReceivedGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsMadeGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\BasicEdit.ascx" />
+    <Content Include="Areas\Main\Views\Person\BusinessCard.ascx" />
+    <Content Include="Areas\Main\Views\Person\AddressEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\PendingTasksGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Growth.ascx" />
     <Content Include="Areas\Main\Views\Person\Membership.ascx" />
@@ -2006,6 +2012,7 @@
     <Content Include="Content\jquery.treeview.css" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
+    <Content Include="Content\js\jQuery.autocomplete.js" />
     <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
@@ -2057,6 +2064,7 @@
     <Content Include="Report\Avery.aspx" />
     <Content Include="Report\AveryAddress.aspx" />
     <Content Include="Scripts\CheckIn.js" />
+    <Content Include="Scripts\Pager.js" />
     <Content Include="Scripts\Person.js" />
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Scripts\Vbs.js" />

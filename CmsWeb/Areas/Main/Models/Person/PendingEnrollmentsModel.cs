@@ -9,17 +9,17 @@ namespace CMSWeb.Models
 {
     public class PersonPendingEnrollmentsModel
     {
-        public Person person;
+        int PeopleId;
         public PersonPendingEnrollmentsModel(int id)
         {
-            person = DbUtil.Db.LoadPersonById(id);
+            PeopleId = id;
         }
         public IEnumerable<OrgMemberInfo> PendingEnrollments()
         {
             var dt = Util.Now;
             var q = from o in DbUtil.Db.Organizations
                     from om in o.OrganizationMembers
-                    where om.PeopleId == person.PeopleId && om.Pending.Value == true
+                    where om.PeopleId == PeopleId && om.Pending.Value == true
                     let leader = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
                     let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                     orderby o.OrganizationName

@@ -12,7 +12,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-<script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
 <script src="/Content/js/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/Content/js/jquery.dimensions.min.js" type="text/javascript"></script>
 <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>

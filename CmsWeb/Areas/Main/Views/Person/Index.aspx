@@ -1,13 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PersonModel>" %>
-
+<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+    <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     <script src="/Scripts/Person.js" type="text/javascript"></script>
+    <script src="/Scripts/Pager.js" type="text/javascript"></script>
 
+    <% CMSWeb.Models.PersonModel.PersonInfo person = Model.displayperson; %>
     <table class="PersonHead" border="0">
         <tr>
             <td><%=Model.Name %></td>
@@ -19,84 +20,42 @@
     <div style="clear: both; margin-top: 8px;">
         <table>
             <tr>
-                    <td>
-                        <table>
-                            <%if (Model.person.Deceased)
-                              { %>
-                            <tr>
-                                <td style="color: Red" colspan="2">Deceased:
-                                    <%=Model.person.DeceasedDate %>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <tr>
-                                <td><a href="http://www.google.com/maps?q=<%=Model.person.PrimaryAddr.AddrCityStateZip() %>" target="_blank">
-                                        <%=Model.person.PrimaryAddr.Address1 %></a>
-                                </td>
-                                <td><a id="clipaddr" href="#" title="copy name and address to clipboard">clipboard</a>
-                                </td>
-                            </tr>
-                            <% if (Model.person.PrimaryAddr.Address2.HasValue())
-                               { %>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="http://www.google.com/maps?q=<%=Model.person.PrimaryAddr.Addr2CityStateZip() %>"
-                                        target="_blank"><%=Model.person.PrimaryAddr.Address2 %></a>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <tr>
-                                <td><%=Model.person.PrimaryAddr.CityStateZip() %></td>
-                                <td><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=<%=Model.person.PrimaryAddr.AddrCityStateZip() %>'
-                                        target="_blank">driving directions</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="mailto:<%=Model.person.EmailAddress %>"><%=Model.person.EmailAddress %></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><%=Model.person.HomePhone.FmtFone() %></td>
-                            </tr>
-                            <tr>
-                                <td><%=Model.person.DoNotCall %></td>
-                                <td>
-                                    <%=Html.HyperlinkIf(Model.IsFinance, Model.ContributionsLink, "Contributions", null, null) %>
-                                    <%=Html.HyperlinkIf(Model.HasRecReg, Model.RecRegLink, "RecForm", null, null)  %>
-                                    <%=Html.HyperlinkIf(Model.CanCheckIn, Model.CheckInLink, "CheckIn", null, null)  %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                <% using (Html.BeginForm("Edit", "Person"))
+                <td>
+                    <div id="businesscard" href="/Person/BusinessCard/<%=person.PeopleId %>">
+                    <% Html.RenderPartial("BusinessCard", person); %>
+                    </div>
+                    <table>
+                        <tr>
+                            <td><%=person.DoNotCall %></td>
+                            <td>
+                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Contributions/Years.aspx?id=" + person.PeopleId, "Contributions", null, null)%>
+                                <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
+                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, person.PeopleId), "CheckIn", null, null)%>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <% if (Page.User.IsInRole("Admin"))
                                    { %>
-                                    <% if (Model.IsAdmin)
-                                       { %>
-                                    <input type="submit" value="Edit" />
-                                    <% } %>
-                                    <% if (Model.IsAdmin)
-                                       { %>
-                                    <a id="deleteperson" pid="<%=Model.person.PeopleId %>" href="#"><img border="0" src="/images/delete.gif" /></a>
-                                    <a id="moveperson" pid="<%=Model.person.PeopleId %>" href="#">move</a>
-                                    <% } %>
+                                <a id="deleteperson" href="/Person/Delete/<%=person.PeopleId %>"><img border="0" src="/images/delete.gif" /></a>
+                                <a id="moveperson" href="/Person/Move/<%=person.PeopleId %>">move</a>
                                 <% } %>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
                 <td valign="top">
-                    <a id="Picture" href="/UploadPicture.aspx?id=<%=Model.person.PeopleId %>" title="Click to see larger version or upload new">
-                    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=Model.person.SmallPicId %>" />
+                    <a id="Picture" href="/UploadPicture.aspx?id=<%=person.PeopleId %>" title="Click to see larger version or upload new">
+                    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=person.SmallPicId %>" />
                     </a>
                 </td>
-                <td class="style1"></td>
+                <td></td>
                 <td valign="top">
                     <br />
                     <table>
                         <tr>
                             <th align="left" colspan="4">
-                                <a href="/Family.aspx?id=<%=Model.person.FamilyId %>"><strong>Family Members</strong></a>
+                                <a href="/Family.aspx?id=<%=person.FamilyId %>"><strong>Family Members</strong></a>
                             </th>
                         </tr>
                     <% foreach (var m in Model.FamilyMembers())
@@ -119,11 +78,13 @@
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
             <li><a id="member-link" href="#member-tab"><span>Member Profile</span></a></li>
-            <li><a href="#growth-tab"><span>Growth</span></a></li>
+            <li><a id="growth-link" href="#growth-tab"><span>Growth</span></a></li>
             <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
         </ul>
         <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
-            <% Html.RenderPartial("Basic", Model.person); %>
+            <form class="DisplayEdit" action="">
+            <% Html.RenderPartial("BasicDisplay", person); %>
+            </form>
         </div>
         <div id="address-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
@@ -133,16 +94,24 @@
                 <li><a href="#AltPersonalAddr"><span>Family Alternate</span></a></li>
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Address", Model.person.PersonalAddr); %>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("Address", person.PersonalAddr); %>
+                </form>
             </div>
             <div id="AltPersonalAddr" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Address", Model.person.AltPersonalAddr); %>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("Address", person.AltPersonalAddr); %>
+                </form>
             </div>
             <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Address", Model.person.FamilyAddr); %>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("Address", person.FamilyAddr); %>
+                </form>
             </div>
             <div id="AltFamilyAddr" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Address", Model.person.AltFamilyAddr); %>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("Address", person.AltFamilyAddr); %>
+                </form>
             </div>
             <%=Html.Hidden("addrtab") %>
         </div>
@@ -154,16 +123,20 @@
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
             </ul>
             <div id="current-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("EnrollGrid", Model.enrollments); %>
+                <form action="/Person/EnrollGrid/<%=person.PeopleId %>">
+                </form>
             </div>
             <div id="previous-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("PrevEnrollGrid", Model.prevEnrollments); %>
+                <form action="/Person/PrevEnrollGrid/<%=person.PeopleId %>">
+                </form>
             </div>
             <div id="pending-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("PendingEnrollGrid", Model.pendingEnrollments); %>
+                <form action="/Person/PendingEnrollGrid/<%=person.PeopleId %>">
+                </form>
             </div>
             <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("AttendanceGrid", Model.attendances); %>
+                <form action="/Person/AttendanceGrid/<%=person.PeopleId %>">
+                </form>
             </div>
         </div>
         <div id="member-tab" class="ui-tabs-hide ui-tabs-panel">
@@ -172,7 +145,7 @@
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
             <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Membership", Model.person); %>
+                <% Html.RenderPartial("Membership", person); %>
             </div>
             <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <table>
@@ -184,11 +157,11 @@
                                 </tr>
                                 <tr>
                                     <th>Status:</th>
-                                    <td><%=Model.person.LetterStatus %></td>
+                                    <td><%=person.LetterStatus %></td>
                                     <th>Date Requested:</th>
-                                    <td><%=Model.person.LetterRequested %></td>
+                                    <td><%=person.LetterRequested %></td>
                                     <th>Date Received:</th>
-                                    <td><%=Model.person.LetterReceived %></td>
+                                    <td><%=person.LetterReceived %></td>
                                 </tr>
                             </table>
                         </td>
@@ -196,14 +169,14 @@
                     <tr>
                         <td valign="top">
                             <strong>Notes:</strong><br />
-                            <%=Model.person.LetterNotes %>
+                            <%=person.LetterNotes %>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Growth", Model.person); %>
+                <% Html.RenderPartial("Growth", person); %>
         </div>
         <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
             <table class="Design2" style="border-style: groove; border-width: thin;">
@@ -214,7 +187,7 @@
                         <input type="checkbox" <%=Model.vol.Leader ? "checked='checked'" : "" %> disabled="disabled" />
                         Leadership (background check)
                     </td>
-                    <td><a href="/AppReview/VolunteerApp.aspx?id=<%=Model.person.PeopleId %>"
+                    <td><a href="/AppReview/VolunteerApp.aspx?id=<%=person.PeopleId %>"
                         <%=User.IsInRole("ApplicationReview") ? "disabled='disabled'" : "" %>>Volunteer Application Review</a></td>
                 </tr>
                 <tr>
@@ -224,14 +197,6 @@
             </table>
         </div>
     </div>
-<textarea id="addrhidden" rows="5" cols="20" style="display: none"><%=Model.person.Name %>
-    <%=Model.person.PrimaryAddr.Address1 %>
-    <% if (Model.person.PrimaryAddr.Address2.HasValue())
-       { %><%=Model.person.PrimaryAddr.Address2 %>
-    <% } %><%=Model.person.PrimaryAddr.CityStateZip() %>
-</textarea>
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
     </div>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

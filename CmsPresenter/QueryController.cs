@@ -133,6 +133,7 @@ namespace CMSPresenter
         public string QueryDescription { get; set; }
         public IQueryable<Person> PersonQuery(int QueryId)
         {
+            Db.SetNoLock();
             var Qb = Db.LoadQueryById(QueryId);
             var q = Db.People.Where(Qb.Predicate());
             QueryDescription = Qb.Description;
@@ -140,12 +141,14 @@ namespace CMSPresenter
         }
         public void TagAll(int QueryId)
         {
+            Db.SetNoLock();
             var Qb = Db.LoadQueryById(QueryId);
             var q = Db.People.Where(Qb.Predicate());
             Db.TagAll(q);
         }
         public void UnTagAll(int QueryId)
         {
+            Db.SetNoLock();
             var Qb = Db.LoadQueryById(QueryId);
             var q = Db.People.Where(Qb.Predicate());
             Db.UnTagAll(q);

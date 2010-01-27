@@ -343,4 +343,35 @@ table.grid > thead > tr
     color: white; 
     font-weight: bold
 }
+table.grid thead a
+{
+    color: white; 
+}
+.DisplayEdit
+{
+    position: relative;
+}
+.DisplayEdit a.displayedit
+{
+    font-size:9px;
+    height:18px;
+    line-height:18px;
+    padding-right:22px;
+    position:absolute;
+    right:0;
+    text-align:right;
+    top:0;
+}
+form.DisplayEdit input[type=text]
+{
+    width: 20em;
+}
+a.button {
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
 

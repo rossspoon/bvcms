@@ -8,7 +8,7 @@
         o.Target = ev.target;
         o.Select = select;
         o.SearchClicked = function() {
-            o.qs = $('#searchform', o.$this).formSerialize2();
+            o.qs = $('#searchform', o.$this).serialize();
             $.post('/SearchPeople/Rows/0', o.qs, o.LoadRows);
             return false;
         };
@@ -30,7 +30,7 @@
         o.AddNew = function(ev) {
             if (!confirm("Are you sure you want to add a new person?"))
                 return false;
-            o.qs = $("#searchform", o.$this).formSerialize2();
+            o.qs = $("#searchform", o.$this).serialize();
             if (ev.target.id != "AddNew")
                 o.qs = o.qs.appendQuery("ExistingFamilyMember=" + ev.target.id.substring(1));
             $.post('/SearchPeople/AddNew', o.qs, function(ret) {
@@ -74,7 +74,7 @@
         if (o.multi)
             o.qs = o.qs.appendQuery("select=2");
         this.load("/SearchPeople/", o.qs, function() {
-            o.qs = $('#searchform', o.$this).formSerialize2();
+            o.qs = $('#searchform', o.$this).serialize();
             $("#people", o.$this).SearchPeoplePager();
             o.BindSelect();
             $("#AddNew", o.$this).click(o.AddNew);

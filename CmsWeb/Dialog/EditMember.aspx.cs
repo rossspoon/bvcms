@@ -77,11 +77,14 @@ namespace CMSWeb.Dialog
 
         protected void Delete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            var pid = OrgMember.PeopleId;
-            OrgMember.Drop();
-            DbUtil.Db.SubmitChanges();
-            OrganizationMember.UpdateMeetingsToUpdate();
-            DbUtil.Db.UpdateSchoolGrade(pid);
+            if (OrgMember != null)
+            {
+                var pid = OrgMember.PeopleId;
+                OrgMember.Drop();
+                DbUtil.Db.SubmitChanges();
+                OrganizationMember.UpdateMeetingsToUpdate();
+                DbUtil.Db.UpdateSchoolGrade(pid);
+            }
 
             this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
                "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);

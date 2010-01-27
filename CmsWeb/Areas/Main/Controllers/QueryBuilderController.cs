@@ -21,11 +21,6 @@ namespace CMSWeb.Areas.Main.Controllers
 {
     public class QueryBuilderController : CmsController
     {
-        public QueryBuilderController()
-        {
-            ViewData["Title"] = "QueryBuilder";
-            ViewData["OnQueryBuilder"] = "true";
-        }
         public ActionResult NewQuery()
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
@@ -34,6 +29,10 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         public ActionResult Main(int? id, int? run)
         {
+            ViewData["Title"] = "QueryBuilder";
+            ViewData["OnQueryBuilder"] = "true";
+            ViewData["TagAction"] = "/QueryBuilder/TagAll/";
+            ViewData["UnTagAction"] = "/QueryBuilder/UnTagAll/";
             var m = new QueryModel { QueryId = id };
             DbUtil.LogActivity("QueryBuilder");
             if (run.HasValue)

@@ -9,11 +9,11 @@ namespace CMSWeb.Models
 {
     public class PersonEnrollmentsModel
     {
-        public Person person;
+        private int PeopleId;
         public PagerModel2 Pager { get; set; }
         public PersonEnrollmentsModel(int id)
         {
-            person = DbUtil.Db.LoadPersonById(id);
+            PeopleId = id;
             Pager = new PagerModel2(Count);
         }
         private IQueryable<OrganizationMember> _enrollments;
@@ -21,7 +21,7 @@ namespace CMSWeb.Models
         {
             if (_enrollments == null)
                 _enrollments = from om in DbUtil.Db.OrganizationMembers
-                               where om.PeopleId == person.PeopleId
+                               where om.PeopleId == PeopleId
                                where (om.Pending ?? false) == false
                                where !(om.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
                                select om;
@@ -36,9 +36,8 @@ namespace CMSWeb.Models
         }
         public IEnumerable<OrgMemberInfo> Enrollments()
         {
-            var q = FetchEnrollments();
-            q = ApplySort(q, Pager.Sort);
-
+            var q = ApplySort();
+            q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from om in q
                      let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                      select new OrgMemberInfo
@@ -52,25 +51,26 @@ namespace CMSWeb.Models
                          MemberType = om.MemberType.Description,
                          LeaderId = om.Organization.LeaderId,
                          EnrollDate = om.EnrollmentDate,
-                         AttendPct = (om.AttendPct == null ? 0 : om.AttendPct.Value),
+                         AttendPct = om.AttendPct,
                          DivisionName = div.Program.Name + "/" + div.Name,
                      };
-            return q2.Skip(Pager.StartRow).Take(Pager.PageSize);
+            return q2;
         }
-        private IQueryable<OrganizationMember> ApplySort(IQueryable<OrganizationMember> q, string sortExpression)
+        private IQueryable<OrganizationMember> ApplySort()
         {
-            switch (sortExpression)
+            var q = FetchEnrollments();
+            switch (Pager.SortExpression)
             {
-                case "Name":
+                case "Organization":
                     q = q.OrderBy(om => om.Organization.OrganizationName);
                     break;
-                case "EnrollDate":
+                case "Enroll Date":
                     q = q.OrderBy(om => om.EnrollmentDate);
                     break;
-                case "Name DESC":
+                case "Organization desc":
                     q = q.OrderByDescending(om => om.Organization.OrganizationName);
                     break;
-                case "EnrollDate DESC":
+                case "Enroll Date desc":
                     q = q.OrderByDescending(om => om.EnrollmentDate);
                     break;
             }

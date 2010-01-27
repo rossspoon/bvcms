@@ -5,11 +5,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $('#LeagueId').change(RefreshPage);
@@ -26,7 +21,7 @@
             });
         });
         function RefreshPage() {
-            var q = $('#form').formSerialize();
+            var q = $('#form').serialize();
             $.navigate("/Recreation/All/" + $('#LeagueId').val(),q);
         }
     </script>

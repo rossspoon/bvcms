@@ -9,11 +9,11 @@ namespace CMSWeb.Models
 {
     public class PersonAttendHistoryModel
     {
-        public Person person;
+        private int PeopleId;
         public PagerModel2 Pager { get; set; }
         public PersonAttendHistoryModel(int id)
         {
-            person = DbUtil.Db.LoadPersonById(id);
+            PeopleId = id;
             Pager = new PagerModel2(Count);
         }
         public bool future { get; set; }
@@ -24,7 +24,7 @@ namespace CMSWeb.Models
             {
                 var midnight = Util.Now.Date.AddDays(1);
                 _attends = from a in DbUtil.Db.Attends
-                           where a.PeopleId == person.PeopleId
+                           where a.PeopleId == PeopleId
                            where !(a.Meeting.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
                            select a;
                 if (future)
@@ -53,9 +53,7 @@ namespace CMSWeb.Models
         }
         public IEnumerable<AttendInfo> Attendances()
         {
-            var q = FetchAttends();
-            q = ApplySort(q, Pager.Sort);
-
+            var q = ApplySort();
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from a in q
                      let o = a.Meeting.Organization
@@ -73,38 +71,33 @@ namespace CMSWeb.Models
                      };
             return q2;
         }
-        private static IQueryable<Attend> ApplySort(IQueryable<Attend> q, string sort)
+        private IQueryable<Attend> ApplySort()
         {
-            switch (sort)
+            var q = FetchAttends();
+            switch (Pager.SortExpression)
             {
+                case "Organization":
+                    q = q.OrderBy(a => a.Meeting.Organization.OrganizationName).ThenByDescending(a => a.MeetingDate);
+                    break;
+                case "Organization desc":
+                    q = q.OrderByDescending(a => a.Meeting.Organization.OrganizationName).ThenByDescending(a => a.MeetingDate);
+                    break;
                 case "MemberType":
-                    q = q.OrderBy(a => a.MemberTypeId);
+                    q = q.OrderBy(a => a.MemberTypeId).ThenByDescending(a => a.MeetingDate);
+                    break;
+                case "MemberType desc":
+                    q = q.OrderByDescending(a => a.MemberTypeId).ThenByDescending(a => a.MeetingDate);
                     break;
                 case "AttendType":
-                    q = q.OrderBy(a => a.AttendanceTypeId);
+                    q = q.OrderBy(a => a.AttendanceTypeId).ThenByDescending(a => a.MeetingDate);
                     break;
-                case "Name":
-                    q = q.OrderBy(a => a.Person.LastName).ThenBy(a => a.Person.FirstName);
+                case "AttendType desc":
+                    q = q.OrderByDescending(a => a.AttendanceTypeId).ThenByDescending(a => a.MeetingDate);
                     break;
-                case "MemberType DESC":
-                    q = q.OrderByDescending(a => a.MemberTypeId);
-                    break;
-                case "AttendType DESC":
-                    q = q.OrderByDescending(a => a.AttendanceTypeId);
-                    break;
-                case "Name DESC":
-                    q = q.OrderByDescending(a => a.Person.LastName).ThenByDescending(a => a.Person.FirstName);
-                    break;
-                case "Organization":
-                    q = q.OrderBy(a => a.Meeting.OrganizationId).ThenBy(a => a.MeetingDate);
-                    break;
-                case "MeetingDate":
+                case "Meeting":
                     q = q.OrderBy(a => a.MeetingDate);
                     break;
-                case "Organization DESC":
-                    q = q.OrderByDescending(a => a.Meeting.OrganizationId).ThenBy(a => a.MeetingDate);
-                    break;
-                case "MeetingDate DESC":
+                case "Meeting desc":
                 default:
                     q = q.OrderByDescending(a => a.MeetingDate);
                     break;

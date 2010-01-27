@@ -9,11 +9,11 @@ namespace CMSWeb.Models
 {
     public class PersonPrevEnrollmentsModel
     {
-        public Person person;
+        private int PeopleId;
         public PagerModel2 Pager { get; set; }
         public PersonPrevEnrollmentsModel(int id)
         {
-            person = DbUtil.Db.LoadPersonById(id);
+            PeopleId = id;
             Pager = new PagerModel2(Count);
         }
         private IQueryable<EnrollmentTransaction> _enrollments;
@@ -22,7 +22,7 @@ namespace CMSWeb.Models
             if (_enrollments == null)
                 _enrollments = from etd in DbUtil.Db.EnrollmentTransactions
                     where etd.TransactionStatus == false
-                    where etd.PeopleId == person.PeopleId
+                    where etd.PeopleId == PeopleId
                     where etd.TransactionTypeId >= 4
                     where !(etd.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
                     select etd;
@@ -37,9 +37,8 @@ namespace CMSWeb.Models
         }
         public IEnumerable<OrgMemberInfo> PrevEnrollments()
         {
-            var q = FetchPrevEnrollments();
-            q = ApplySort(q, Pager.Sort);
-
+            var q = ApplySort();
+            q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from om in q
                      let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                      select new OrgMemberInfo
@@ -52,27 +51,28 @@ namespace CMSWeb.Models
                          MeetingTime = om.Organization.MeetingTime,
                          MemberType = om.MemberType.Description,
                          LeaderId = om.Organization.LeaderId,
-                         EnrollDate = om.EnrollmentDate,
+                         EnrollDate = om.FirstTransaction.TransactionDate,
                          AttendPct = om.AttendancePercentage,
                          DivisionName = div.Program.Name + "/" + div.Name,
                      };
-            return q2.Skip(Pager.StartRow).Take(Pager.PageSize);
+            return q2;
         }
-        private IQueryable<EnrollmentTransaction> ApplySort(IQueryable<EnrollmentTransaction> q, string sortExpression)
+        private IQueryable<EnrollmentTransaction> ApplySort()
         {
-            switch (sortExpression)
+            var q = FetchPrevEnrollments();
+            switch (Pager.SortExpression)
             {
-                case "Name":
+                case "Organization":
                     q = q.OrderBy(om => om.Organization.OrganizationName);
                     break;
-                case "EnrollDate":
-                    q = q.OrderBy(om => om.EnrollmentDate);
+                case "Enroll Date":
+                    q = q.OrderBy(om => om.FirstTransaction.TransactionDate);
                     break;
-                case "Name DESC":
+                case "Organization desc":
                     q = q.OrderByDescending(om => om.Organization.OrganizationName);
                     break;
-                case "EnrollDate DESC":
-                    q = q.OrderByDescending(om => om.EnrollmentDate);
+                case "Enroll Date desc":
+                    q = q.OrderByDescending(om => om.FirstTransaction.TransactionDate);
                     break;
             }
             return q;

@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using UtilityExtensions;
+using CmsData;
 
 namespace CMSWeb.Models
 {

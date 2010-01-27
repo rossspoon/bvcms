@@ -15,7 +15,10 @@ CREATE TABLE [dbo].[EnrollmentTransaction]
 [NextTranChangeDate] [datetime] NULL,
 [EnrollmentTransactionId] [int] NULL,
 [Pending] [bit] NULL
-) ON [PRIMARY]
+)
+
+ALTER TABLE [dbo].[EnrollmentTransaction] ADD
+CONSTRAINT [DescTransactions__FirstTransaction] FOREIGN KEY ([EnrollmentTransactionId]) REFERENCES [dbo].[EnrollmentTransaction] ([TransactionId])
 GO
 SET QUOTED_IDENTIFIER ON
 GO

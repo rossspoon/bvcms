@@ -1,4 +1,9 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.PersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.BasicPersonInfo>" %>
+<form class="DisplayEdit" action="">
+<% if (Page.User.IsInRole("Edit"))
+   { %>
+<a class="displayedit" href="/Person/BasicEdit/<%=Model.PeopleId %>">Edit</a>
+<% } %>
 <div style="float:left">
     <table class="Design2">
         <tr><th>Goes By:</th>
@@ -75,7 +80,7 @@
         </tr>
         <tr>
             <th>Joined:</th>
-            <td><%=Model.JoinDate %></td>
+            <td><%=Model.JoinDate.FormatDate() %></td>
         </tr>
         <tr>
             <th>Marital Status:</th>
@@ -87,7 +92,7 @@
         </tr>
         <tr>
             <th>Wedding Date:</th>
-            <td><%=Model.WeddingDate %></td>
+            <td><%=Model.WeddingDate.FormatDate()%></td>
         </tr>
         <tr>
             <th>Birthday:</th>
@@ -95,7 +100,7 @@
         </tr>
         <tr>
             <th>Deceased:</th>
-            <td><%=Model.DeceasedDate %></td>
+            <td><%=Model.DeceasedDate.FormatDate()%></td>
         </tr>
         <tr>
             <th>Age:</th>
@@ -111,3 +116,4 @@
     </table>
 </div>
 <div style="clear:both"></div>
+</form>

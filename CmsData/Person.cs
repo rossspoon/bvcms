@@ -479,6 +479,22 @@ namespace CmsData
             Db.TagPeople.DeleteOnSubmit(tp);
             return false;
         }
+        public static void Tag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
+        {
+            var Db = DbUtil.Db;
+            var tag = Db.FetchOrCreateTag(TagName, OwnerId, TagTypeId);
+            var tp = Db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == PeopleId);
+            if (tp == null)
+                tag.PersonTags.Add(new TagPerson { PeopleId = PeopleId });
+        }
+        public static void UnTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
+        {
+            var Db = DbUtil.Db;
+            var tag = Db.FetchOrCreateTag(TagName, OwnerId, TagTypeId);
+            var tp = Db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == PeopleId);
+            if (tp != null)
+                Db.TagPeople.DeleteOnSubmit(tp);
+        }
         //private string GetTagString(int tagtype, string user)
         //{
         //    var sb = new StringBuilder();

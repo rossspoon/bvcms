@@ -5,21 +5,25 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
+using System.Text;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
     public class PersonController : Controller
     {
-        //
-        // GET: /Main/Person/
-
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
                 return Content("no person");
             var m = new Models.PersonModel(id);
-            if (m.person == null)
+            if (m.displayperson == null)
                 return Content("person not found");
+            Util.CurrentPeopleId = id.Value;
+            Session["ActivePerson"] = m.displayperson.Name;
+            var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
+            ViewData["queryid"] = qb.QueryId;
+            ViewData["TagAction"] = "/Person/Tag/" + id;
+            ViewData["UnTagAction"] = "/Person/UnTag/" + id;
             return View(m);
         }
         public ActionResult Move(int? id, int to)
@@ -37,6 +41,20 @@ namespace CMSWeb.Areas.Main.Controllers
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Tag(int id)
+        {
+            Person.Tag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UnTag(int id)
+        {
+            Person.UnTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EnrollGrid(int id)
         {
             var m = new Models.PersonEnrollmentsModel(id);
@@ -48,6 +66,12 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var m = new Models.PersonPrevEnrollmentsModel(id);
             UpdateModel(m.Pager);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PendingEnrollGrid(int id)
+        {
+            var m = new Models.PersonPendingEnrollmentsModel(id);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -144,6 +168,66 @@ namespace CMSWeb.Areas.Main.Controllers
             p.TasksAboutPerson.Add(t);
             DbUtil.Db.SubmitChanges();
             return Content("/Task/List/{0}".Fmt(t.Id));
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicDisplay(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicEdit(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BasicUpdate(int id)
+        {
+            var m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            UpdateModel(m);
+            m.UpdatePerson();
+            m = Models.BasicPersonInfo.GetBasicPersonInfo(id);
+            return View("BasicDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult BusinessCard(int id)
+        {
+            var m = new Models.PersonModel(id);
+            return View(m.displayperson);
+        }
+        public ContentResult Schools(string q, int limit)
+        {
+            var qu = from p in DbUtil.Db.People
+                     where p.SchoolOther.Contains(q)
+                     group p by p.SchoolOther into g
+                     select g.Key;
+            var sb = new StringBuilder();
+            foreach (var li in qu.Take(limit))
+                sb.AppendLine(li);
+            return Content(sb.ToString());
+        }
+        public ContentResult Employers(string q, int limit)
+        {
+            var qu = from p in DbUtil.Db.People
+                     where p.EmployerOther.Contains(q)
+                     group p by p.EmployerOther into g
+                     select g.Key;
+            var sb = new StringBuilder();
+            foreach (var li in qu.Take(limit))
+                sb.AppendLine(li);
+            return Content(sb.ToString());
+        }
+        public ContentResult Occupations(string q, int limit)
+        {
+            var qu = from p in DbUtil.Db.People
+                     where p.OccupationOther.Contains(q)
+                     group p by p.OccupationOther into g
+                     select g.Key;
+            var sb = new StringBuilder();
+            foreach (var li in qu.Take(limit))
+                sb.AppendLine(li);
+            return Content(sb.ToString());
         }
     }
 }

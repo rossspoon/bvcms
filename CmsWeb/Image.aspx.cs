@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using UtilityExtensions;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace CMSWeb
 {
@@ -32,7 +33,13 @@ namespace CMSWeb
             if (portrait == 1)
             {
                 context.Response.ContentType = "image/jpeg";
-                context.Response.WriteFile(context.Server.MapPath("~/images/unknown.jpg"));
+                var u = HttpContext.Current.Cache["unknownimage"] as Byte[];
+                if (u == null)
+                {
+                    u = File.ReadAllBytes(context.Server.MapPath("/images/unknown.jpg"));
+                    HttpContext.Current.Cache["unknownimage"] = u;
+                }
+                context.Response.BinaryWrite(u);
             }
             else
             {

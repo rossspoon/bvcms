@@ -36,8 +36,6 @@ namespace CMSWeb.Models
         public IEnumerable<ContactInfo> Contacts()
         {
             var q = FetchContacts();
-            //q = ApplySort(q, Pager.Sort);
-
             var q2 = from c in q
                      select new ContactInfo
                      {
@@ -50,13 +48,6 @@ namespace CMSWeb.Models
                          TypeOfContact = c.NewContactType.Description
                      };
             return q2.Skip(Pager.StartRow).Take(Pager.PageSize);
-        }
-        private IQueryable<NewContact> ApplySort(IQueryable<NewContact> q, string sortExpression)
-        {
-            switch (sortExpression)
-            {
-            }
-            return q;
         }
     }
 }

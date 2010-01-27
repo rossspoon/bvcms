@@ -83,24 +83,3 @@ $.navigate = function(url, data) {
 };
 })(jQuery);
 
-String.prototype.startsWith = function(t, i) {
-    return (t == this.substring(0, t.length));
-}
-String.prototype.appendQuery = function(q) {
-    if (this && this.length > 0)
-        return this + '&' + q;
-    return q;
-}
-String.prototype.endsWith = function(t, i) {
-    return (t == this.substring(this.length - t.length));
-}
-String.prototype.addCommas = function() {
-    var x = this.split('.');
-    var x1 = x[0];
-    var x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1 + x2;
-}

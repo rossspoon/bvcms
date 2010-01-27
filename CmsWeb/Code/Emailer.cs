@@ -179,6 +179,15 @@ namespace CMSWeb
                         smtp = new SmtpClient();
                     i++;
                     smtp.Send(msg);
+                    DbUtil.Db.EmailLogs.InsertOnSubmit(
+                        new EmailLog 
+                        { 
+                            Fromaddr = From.Address, 
+                            Toaddr = to.Address, 
+                            Subject = Subject, 
+                            Time = Util.Now 
+                        });
+                    DbUtil.Db.SubmitChanges();
                     //System.Threading.Thread.Sleep(100);
                     htmlView.Dispose();
                     htmlStream.Dispose();

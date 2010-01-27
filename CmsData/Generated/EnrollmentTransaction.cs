@@ -48,7 +48,11 @@ namespace CmsData
 		private bool? _Pending;
 		
    		
+   		private EntitySet< EnrollmentTransaction> _DescTransactions;
+		
     	
+		private EntityRef< EnrollmentTransaction> _FirstTransaction;
+		
 		private EntityRef< Organization> _Organization;
 		
 		private EntityRef< Person> _Person;
@@ -111,6 +115,10 @@ namespace CmsData
 		public EnrollmentTransaction()
 		{
 			
+			this._DescTransactions = new EntitySet< EnrollmentTransaction>(new Action< EnrollmentTransaction>(this.attach_DescTransactions), new Action< EnrollmentTransaction>(this.detach_DescTransactions)); 
+			
+			
+			this._FirstTransaction = default(EntityRef< EnrollmentTransaction>); 
 			
 			this._Organization = default(EntityRef< Organization>); 
 			
@@ -429,6 +437,9 @@ namespace CmsData
 				if (this._EnrollmentTransactionId != value)
 				{
 				
+					if (this._FirstTransaction.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnEnrollmentTransactionIdChanging(value);
 					this.SendPropertyChanging();
 					this._EnrollmentTransactionId = value;
@@ -467,10 +478,62 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="DescTransactions__FirstTransaction", Storage="_DescTransactions", OtherKey="EnrollmentTransactionId")]
+   		public EntitySet< EnrollmentTransaction> DescTransactions
+   		{
+   		    get { return this._DescTransactions; }
+
+			set	{ this._DescTransactions.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
     	
+		[Association(Name="DescTransactions__FirstTransaction", Storage="_FirstTransaction", ThisKey="EnrollmentTransactionId", IsForeignKey=true)]
+		public EnrollmentTransaction FirstTransaction
+		{
+			get { return this._FirstTransaction.Entity; }
+
+			set
+			{
+				EnrollmentTransaction previousValue = this._FirstTransaction.Entity;
+				if (((previousValue != value) 
+							|| (this._FirstTransaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._FirstTransaction.Entity = null;
+						previousValue.DescTransactions.Remove(this);
+					}
+
+					this._FirstTransaction.Entity = value;
+					if (value != null)
+					{
+						value.DescTransactions.Add(this);
+						
+						this._EnrollmentTransactionId = value.TransactionId;
+						
+					}
+
+					else
+					{
+						
+						this._EnrollmentTransactionId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("FirstTransaction");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="ENROLLMENT_TRANSACTION_ORG_FK", Storage="_Organization", ThisKey="OrganizationId", IsForeignKey=true)]
 		public Organization Organization
 		{
@@ -614,6 +677,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_DescTransactions(EnrollmentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.FirstTransaction = this;
+		}
+
+		private void detach_DescTransactions(EnrollmentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.FirstTransaction = null;
+		}
+
+		
 	}
 
 }

@@ -178,6 +178,10 @@ namespace CmsData
         partial void UpdateDropType(DropType instance);
         partial void DeleteDropType(DropType instance);
         
+        partial void InsertEmailLog(EmailLog instance);
+        partial void UpdateEmailLog(EmailLog instance);
+        partial void DeleteEmailLog(EmailLog instance);
+        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -837,6 +841,12 @@ namespace CmsData
 		public Table< DropType> DropTypes
 		{
 			get	{ return this.GetTable< DropType>(); }
+
+		}
+
+		public Table< EmailLog> EmailLogs
+		{
+			get	{ return this.GetTable< EmailLog>(); }
 
 		}
 

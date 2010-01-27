@@ -24,9 +24,18 @@ namespace CMSWeb.Models
         }
         public string Sort { get; set; }
         public string Direction { get; set; }
+        public string SortExpression
+        {
+            get
+            {
+                if (Direction == "asc")
+                    return Sort;
+                return Sort + " " + Direction;
+            }
+        }
         public delegate int CountDelegate();
         private CountDelegate GetCount;
-        
+
         public int PageSize
         {
             get { return DbUtil.Db.UserPreference("PageSize", "10").ToInt(); }
@@ -46,14 +55,14 @@ namespace CMSWeb.Models
         {
             get { return (Page.Value - 1) * PageSize; }
         }
-        public IEnumerable<int> PageSizeList()
+        public IEnumerable<SelectListItem> PageSizeList()
         {
             int[] pagesizes = { 10, 25, 50, 100, 200 };
-            return pagesizes.AsEnumerable();
+            return pagesizes.Select(i => new SelectListItem { Text = i.ToString(), Selected = PageSize == i });
         }
         public IEnumerable<int> PageList()
         {
-            for (var i = 1; i <= LastPage;i++ )
+            for (var i = 1; i <= LastPage; i++)
             {
                 if (i > 1 && i < Page - 2)
                 {

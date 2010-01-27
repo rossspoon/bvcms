@@ -24,8 +24,6 @@
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $('#PromotionId').change(RefreshPage);

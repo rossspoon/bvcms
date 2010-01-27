@@ -1,7 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.Reports.AttendanceModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $('#Attendances > thead a.sortable').click(function(ev) {
@@ -17,7 +16,7 @@
             });
         });
         function RefreshList() {
-            var q = $('form').formSerialize2();
+            var q = $('form').serialize();
             $.navigate("/Reports/Attendance/<%=Model.OrgId%>", q);
         }
     </script>

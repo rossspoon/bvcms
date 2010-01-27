@@ -1,19 +1,23 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.AddressInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.Address>" %>
 <table>
     <tr>
         <td>
             <table class="Design2">
                 <tr>
                     <th>Address:</th>
-                    <td><%=Model.Address1 %></td>
-                    <th>Bad Address Flag:</th>
-                    <td><input type="checkbox" <%=Model.BadAddress%> disabled="disabled" /></td>
+                    <td><%=Html.TextBox("Address1") %></td>
                 </tr>
                 <tr>
-                    <th>&nbsp;</th>
+                    <th>Bad Address Flag:</th>
+                    <td><%=Html.CheckBox("BadAddress") %></td>
+                </tr>
+                <tr>
+                    <th>Address2:</th>
                     <td><%=Model.Address2 %></td>
+                </tr>
+                <tr>
                     <th>Resident Code:</th>
-                    <td><%=Model.ResCode %></td>
+                    <td><%=Html.DropDownList("ResCode", Model.ResCode) %></td>
                 </tr>
                 <tr>
                     <th>City:</th>

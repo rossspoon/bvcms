@@ -468,6 +468,8 @@ namespace CmsData
         }
         public void SetUserPreference(string pref, object value)
         {
+            if (UserPreference(pref) == value.ToString())
+                return;
             var p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
             if (p != null)
                 p.ValueX = value.ToString();

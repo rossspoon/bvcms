@@ -55,6 +55,7 @@ namespace CMSWeb
             var Db = DbUtil.Db;
             var Qb = Db.LoadQueryById(args.QBId);
 
+            Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "").OrderBy(p => p.PeopleId);
             var em = new Emailer(args.FromAddress, args.FromName);
