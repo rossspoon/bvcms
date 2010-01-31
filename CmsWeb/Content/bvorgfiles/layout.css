@@ -27,13 +27,11 @@ img{
   border: none;
 }
 
-#content a,
 a{
   color: #458830;
   text-decoration: none;
 }
 
-#content a:hover,
 a:hover{
   color: green;
   text-decoration: underline;

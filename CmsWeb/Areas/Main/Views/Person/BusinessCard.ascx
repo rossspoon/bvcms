@@ -1,9 +1,9 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.PersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.PersonInfo>" %>
 <table>
     <%if (Model.Deceased)
       { %>
     <tr>
-        <td style="color: Red" colspan="2">Deceased: <%=Model.DeceasedDate%></td>
+        <td style="color: Red" colspan="2">Deceased: <%=Model.basic.DeceasedDate%></td>
     </tr>
     <% } %>
     <tr>
@@ -28,7 +28,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2"><a href="mailto:<%=Model.EmailAddress %>"><%=Model.EmailAddress%></a></td>
+        <td colspan="2"><a href="mailto:<%=Model.basic.EmailAddress %>"><%=Model.basic.EmailAddress%></a></td>
     </tr>
 </table>
 <textarea id="addrhidden" rows="5" cols="20" style="display: none"><%=Model.Name %>

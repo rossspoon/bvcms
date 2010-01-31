@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 
-namespace CMSWeb.Models
+namespace CMSWeb.Models.PersonPage
 {
     public class BasicPersonInfo
     {
@@ -46,7 +46,7 @@ namespace CMSWeb.Models
 
         public string Campus
         {
-            get { return cv.AllCampuses().ItemValue(CampusId); }
+            get { return cv.AllCampuses().ItemValue(CampusId ?? 0); }
 
         }
         public string Gender
@@ -121,6 +121,8 @@ namespace CMSWeb.Models
 
         public void UpdatePerson()
         {
+            if (CampusId == 0)
+                CampusId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             p.DOB = Birthday;
             p.CampusId = CampusId;
@@ -133,7 +135,8 @@ namespace CMSWeb.Models
             p.LastName = Last;
             p.GenderId = GenderId;
             p.Grade = Grade.ToInt2();
-            p.Family.HomePhone = HomePhone;
+            p.CellPhone = CellPhone.GetDigits();
+            p.Family.HomePhone = HomePhone.GetDigits();
             p.MaidenName = Maiden;
             p.MaritalStatusId = MaritalStatusId;
             p.MiddleName = Middle;
@@ -143,52 +146,28 @@ namespace CMSWeb.Models
             p.SuffixCode = Suffix;
             p.TitleCode = Title;
             p.WeddingDate = WeddingDate;
-            p.WorkPhone = WorkPhone;
+            p.WorkPhone = WorkPhone.GetDigits();
             DbUtil.Db.SubmitChanges();
         }
         public static IEnumerable<SelectListItem> GenderCodes()
         {
-            var q = from i in DbUtil.Db.Genders
-                    orderby i.Id
-                    select new SelectListItem
-                    {
-                        Value = i.Id.ToString(),
-                        Text = i.Description
-                    };
-            return q;
+            var cv = new CodeValueController();
+            return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> Campuses()
         {
-            var q = from i in DbUtil.Db.Campus
-                    orderby i.Id
-                    select new SelectListItem
-                    {
-                        Value = i.Id.ToString(),
-                        Text = i.Description
-                    };
-            return q;
+            var cv = new CodeValueController();
+            return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
         public static IEnumerable<SelectListItem> MemberStatuses()
         {
-            var q = from i in DbUtil.Db.MemberStatuses
-                    orderby i.Id
-                    select new SelectListItem
-                    {
-                        Value = i.Id.ToString(),
-                        Text = i.Description
-                    };
-            return q;
+            var cv = new CodeValueController();
+            return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> MaritalStatuses()
         {
-            var q = from i in DbUtil.Db.MaritalStatuses
-                    orderby i.Id
-                    select new SelectListItem
-                    {
-                        Value = i.Id.ToString(),
-                        Text = i.Description
-                    };
-            return q;
+            var cv = new CodeValueController();
+            return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
         }
     }
 }

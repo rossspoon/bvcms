@@ -2,6 +2,7 @@
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
+    $("#growth-tab").tabs();
     var maintabs = $("#main-tab").tabs();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
@@ -63,7 +64,7 @@
         $.showTable($('#attendance-tab form'));
     });
     $("#growth-link").click(function() {
-        $("#growth-tab form").each(function() {
+        $("#contacts-tab form").each(function() {
             $.showTable($(this));
         });
     });
@@ -71,9 +72,14 @@
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
             $(f).html(ret).ready(function() {
-                $('#Employer', f).autocomplete("/Person/Employers");
-                $('#School', f).autocomplete("/Person/Schools");
-                $('#Occupation', f).autocomplete("/Person/Occupations");
+                var acopts = {
+                    minChars: 3,
+                    matchContains: 1
+                };
+                $('#Employer', f).autocomplete("/Person/Employers", acopts);
+                $('#School', f).autocomplete("/Person/Schools", acopts);
+                $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
+                $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
                 $(".datepicker").datepicker({
                     dateFormat: 'm/d/yy',
                     changeMonth: true,

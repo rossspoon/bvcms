@@ -268,6 +268,8 @@ namespace CmsData
 		
    		private EntitySet< Contribution> _Contributions;
 		
+   		private EntitySet< EmailOptOut> _EmailOptOuts;
+		
    		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< PendingNotification> _PendingNotifications;
@@ -731,6 +733,8 @@ namespace CmsData
 			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
+			
+			this._EmailOptOuts = new EntitySet< EmailOptOut>(new Action< EmailOptOut>(this.attach_EmailOptOuts), new Action< EmailOptOut>(this.detach_EmailOptOuts)); 
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
@@ -3515,6 +3519,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_EmailOptOut_People", Storage="_EmailOptOuts", OtherKey="ToPeopleId")]
+   		public EntitySet< EmailOptOut> EmailOptOuts
+   		{
+   		    get { return this._EmailOptOuts; }
+
+			set	{ this._EmailOptOuts.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Participant_People", Storage="_RecRegs", OtherKey="PeopleId")]
    		public EntitySet< RecReg> RecRegs
    		{
@@ -4817,6 +4831,19 @@ namespace CmsData
 		}
 
 		private void detach_Contributions(Contribution entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_EmailOptOuts(EmailOptOut entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_EmailOptOuts(EmailOptOut entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

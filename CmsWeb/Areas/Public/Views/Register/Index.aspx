@@ -3,7 +3,6 @@
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Register</title>
     <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
-
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -18,7 +17,10 @@
                     }
                 }, 'json');
             });
-            $("#School").autocomplete("/Register/Schools");
+            $("#School").autocomplete("/Register/Schools", {
+                minChars: 3,
+                matchContains: 1
+            });
         });
     </script>
     <h2>Church Database Registration</h2>

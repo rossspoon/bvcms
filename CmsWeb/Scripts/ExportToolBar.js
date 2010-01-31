@@ -31,6 +31,24 @@
         });
         return false;
     });
+    $.QueryString = function(q, item) {
+        var r = new Object();
+        $.each(q.split('&'), function() {
+            var kv = this.split('=');
+            r[kv[0]] = kv[1];
+        });
+        return r[item];
+    };
+    $.block = function() {
+        $.blockUI({ message: 'working on it...<img src="/content/loading.gif"/>' });
+    };
+    $.unblock = function() {
+        $.unblockUI({ fadeOut: 150 });
+    };
+    $.navigate = function(url, data) {
+        url += (url.match(/\?/) ? "&" : "?") + data;
+        window.location = url;
+    };
 });
 String.prototype.startsWith = function(t, i) {
     return (t == this.substring(0, t.length));

@@ -182,6 +182,10 @@ namespace CmsData
         partial void UpdateEmailLog(EmailLog instance);
         partial void DeleteEmailLog(EmailLog instance);
         
+        partial void InsertEmailOptOut(EmailOptOut instance);
+        partial void UpdateEmailOptOut(EmailOptOut instance);
+        partial void DeleteEmailOptOut(EmailOptOut instance);
+        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -193,6 +197,10 @@ namespace CmsData
         partial void InsertEnvelopeOption(EnvelopeOption instance);
         partial void UpdateEnvelopeOption(EnvelopeOption instance);
         partial void DeleteEnvelopeOption(EnvelopeOption instance);
+        
+        partial void InsertExtraDatum(ExtraDatum instance);
+        partial void UpdateExtraDatum(ExtraDatum instance);
+        partial void DeleteExtraDatum(ExtraDatum instance);
         
         partial void InsertFamily(Family instance);
         partial void UpdateFamily(Family instance);
@@ -850,6 +858,12 @@ namespace CmsData
 
 		}
 
+		public Table< EmailOptOut> EmailOptOuts
+		{
+			get	{ return this.GetTable< EmailOptOut>(); }
+
+		}
+
 		public Table< EnrollmentTransaction> EnrollmentTransactions
 		{
 			get	{ return this.GetTable< EnrollmentTransaction>(); }
@@ -865,6 +879,12 @@ namespace CmsData
 		public Table< EnvelopeOption> EnvelopeOptions
 		{
 			get	{ return this.GetTable< EnvelopeOption>(); }
+
+		}
+
+		public Table< ExtraDatum> ExtraDatas
+		{
+			get	{ return this.GetTable< ExtraDatum>(); }
 
 		}
 
@@ -1438,6 +1458,12 @@ namespace CmsData
 	    public Table< View.BlogCategoriesView> ViewBlogCategoriesViews
 	    {
 		    get { return this.GetTable< View.BlogCategoriesView>(); }
+
+	    }
+
+	    public Table< View.Church> ViewChurches
+	    {
+		    get { return this.GetTable< View.Church>(); }
 
 	    }
 

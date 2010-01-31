@@ -5,7 +5,7 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CMSWeb.Models.PersonPage
 {
     public class PersonPendingEnrollmentsModel
     {

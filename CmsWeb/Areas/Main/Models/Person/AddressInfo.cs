@@ -8,7 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Data.Linq;
 
-namespace CMSWeb.Models
+namespace CMSWeb.Models.PersonPage
 {
     public class AddressInfo
     {
@@ -38,7 +38,7 @@ namespace CMSWeb.Models
         public int? ResCodeId { get; set; }
         public string ResCode
         {
-            get { return CodeValueController.ResidentCodes().ItemValue(ResCodeId); }
+            get { return CodeValueController.ResidentCodesWithZero().ItemValue(ResCodeId ?? 0); }
         }
         public bool Preferred { get; set; }
         public DateTime? FromDt { get; set; }
@@ -46,14 +46,11 @@ namespace CMSWeb.Models
 
         public static IEnumerable<SelectListItem> ResCodes()
         {
-            var q = from rc in DbUtil.Db.ResidentCodes
-                    orderby rc.Id
-                    select new SelectListItem
-                    {
-                        Value = rc.Id.ToString(),
-                        Text = rc.Description
-                    };
-            return q;
+            return QueryModel.ConvertToSelect(CodeValueController.ResidentCodesWithZero(), "Id");
+        }
+        public static IEnumerable<SelectListItem> States()
+        {
+            return QueryModel.ConvertToSelect(CodeValueController.GetStateList(), "Code");
         }
 
         public static AddressInfo GetAddressInfo(int id, string typeid)
@@ -120,6 +117,8 @@ namespace CMSWeb.Models
 
         public void UpdateAddress()
         {
+            if (ResCodeId == 0)
+                ResCodeId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             switch (Name)
             {

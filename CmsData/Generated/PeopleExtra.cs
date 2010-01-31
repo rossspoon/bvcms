@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private DateTime _TransactionTime;
 		
+		private string _Data;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -52,6 +54,9 @@ namespace CmsData
 		
 		partial void OnTransactionTimeChanging(DateTime value);
 		partial void OnTransactionTimeChanged();
+		
+		partial void OnDataChanging(string value);
+		partial void OnDataChanged();
 		
     #endregion
 		public PeopleExtra()
@@ -172,6 +177,28 @@ namespace CmsData
 					this._TransactionTime = value;
 					this.SendPropertyChanged("TransactionTime");
 					this.OnTransactionTimeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Data", UpdateCheck=UpdateCheck.Never, Storage="_Data", DbType="varchar")]
+		public string Data
+		{
+			get { return this._Data; }
+
+			set
+			{
+				if (this._Data != value)
+				{
+				
+                    this.OnDataChanging(value);
+					this.SendPropertyChanging();
+					this._Data = value;
+					this.SendPropertyChanged("Data");
+					this.OnDataChanged();
 				}
 
 			}

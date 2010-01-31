@@ -125,6 +125,20 @@ namespace CmsData
             Db.OrgMemMemTags.DeleteOnSubmit(group);
             return false;
         }
+        public void AddToGroup(string name)
+        {
+            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
+            if (mt == null)
+            {
+                mt = new MemberTag { Name = name, OrgId = OrganizationId };
+                DbUtil.Db.MemberTags.InsertOnSubmit(mt);
+                DbUtil.Db.SubmitChanges();
+            }
+            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id);
+            if (omt == null)
+                mt.OrgMemMemTags.Add(new OrgMemMemTag { PeopleId = PeopleId, OrgId = OrganizationId });
+            DbUtil.Db.SubmitChanges();
+        }
         public static OrganizationMember InsertOrgMembers
             (int OrganizationId,
             int PeopleId,

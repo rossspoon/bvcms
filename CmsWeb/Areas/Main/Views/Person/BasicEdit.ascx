@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.BasicPersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.BasicPersonInfo>" %>
 <a class="displayedit" href="/Person/BasicDisplay/<%=Model.PeopleId %>">cancel</a>
     <table class="Design2">
         <tr><th>Goes By:</th>
@@ -23,7 +23,7 @@
             <td><%=Html.TextBox("Maiden") %></td>
         </tr>
         <tr><th>Gender:</th>
-            <td><%=Html.DropDownList("GenderId", CMSWeb.Models.PersonModel.GenderCodes()) %></td>
+            <td><%=Html.DropDownList("GenderId", CMSWeb.Models.PersonPage.BasicPersonInfo.GenderCodes())%></td>
         </tr>
 <tr><td></td></tr>
         <tr>
@@ -61,11 +61,11 @@
 <tr><td></td></tr>
         <tr>
             <th>Campus:</th>
-            <td><%=Html.DropDownList("CampusId", CMSWeb.Models.PersonModel.Campuses())%></td>
+            <td><%=Html.DropDownList("CampusId", CMSWeb.Models.PersonPage.BasicPersonInfo.Campuses())%></td>
         </tr>
         <tr>
             <th>Marital Status:</th>
-            <td><%=Html.DropDownList("MaritalStatusId", CMSWeb.Models.PersonModel.MaritalStatuses())%></td>
+            <td><%=Html.DropDownList("MaritalStatusId", CMSWeb.Models.PersonPage.BasicPersonInfo.MaritalStatuses())%></td>
         </tr>
         <tr>
             <th>Wedding Date:</th>

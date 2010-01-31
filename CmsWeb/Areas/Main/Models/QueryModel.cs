@@ -239,7 +239,7 @@ namespace CMSWeb.Models
             AddEnabled = !cc.IsFirst;
             RemoveEnabled = !cc.IsFirst;
         }
-        private List<SelectListItem> ConvertToSelect(object items, string valuefield)
+        public static List<SelectListItem> ConvertToSelect(object items, string valuefield)
         {
             var list = items as IEnumerable<CMSPresenter.CodeValueItem>;
             List<SelectListItem> list2;
@@ -247,6 +247,9 @@ namespace CMSWeb.Models
             {
                 case "IdCode":
                     list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.IdCode }).ToList();
+                    break;
+                case "Id":
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Id.ToString() }).ToList();
                     break;
                 case "Code":
                     list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Code }).ToList();

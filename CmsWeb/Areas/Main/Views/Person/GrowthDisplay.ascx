@@ -1,4 +1,8 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.PersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.GrowthInfo>" %>
+<% if (Page.User.IsInRole("Edit"))
+   { %>
+<a class="displayedit" href="/Person/GrowthEdit/<%=Model.PeopleId %>">Edit</a>
+<% } %>
 <table>
     <tr>
         <td valign="top" style="border-style: groove; border-width: thin;">
@@ -17,7 +21,7 @@
                 </tr>
                 <tr>
                     <th>Is a member of another Church?</th>
-                    <td><input type="checkbox" <%=Model.MemberAnyChurch ? "checked='checked'" : "" %> disabled="disabled" /></td>
+                    <td><input type="checkbox" <%=Model.MemberAnyChurch.Value ? "checked='checked'" : "" %> disabled="disabled" /></td>
                 </tr>
             </table>
         </td>
@@ -54,38 +58,6 @@
                     </td>
                 </tr>
             </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <strong>Contacts Given:</strong>
-            <a href="/Person/AddContactMade/<%=Model.PeopleId %>" 
-                confirm="Are you sure you want to add a new contact record?" 
-                class="CreateAndGo">Add New</a>
-        </td>
-        <td>
-        </td>
-        <td>
-            <strong>Contacts Received:</strong>
-            <a href="/Person/AddContactReceived/<%=Model.PeopleId %>" 
-                confirm="Are you sure you want to add a new contact record?" 
-                class="CreateAndGo">Add New Contact</a>
-            <a href="/Person/AddAboutTask/<%=Model.PeopleId %>" 
-                confirm="Are you sure you want to add a new task about this person?" 
-                class="CreateAndGo">Add New Task</a>
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top">
-            <form action="/Person/ContactsMadeGrid/<%=Model.PeopleId %>">
-            </form>
-        </td>
-        <td>
-        </td>
-        <td style="vertical-align: top">
-            <% Html.RenderPartial("PendingTasksGrid", Model.tasks); %>
-            <form action="/Person/ContactsReceivedGrid/<%=Model.PeopleId %>">
-            </form>
         </td>
     </tr>
 </table>

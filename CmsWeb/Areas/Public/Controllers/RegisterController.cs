@@ -269,11 +269,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     where p.SchoolOther.Contains(q)
                     group p by p.SchoolOther into g
                     select g.Key;
-            var sb = new StringBuilder();
-            foreach (var li in qu.Take(limit))
-                sb.AppendLine(li);
-
-            return Content(sb.ToString());
+            return Content(string.Join("\n", qu.Take(limit).ToArray()));
         }
         public JsonResult CityState(string id)
         {

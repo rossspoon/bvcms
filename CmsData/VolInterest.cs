@@ -169,7 +169,7 @@ namespace CmsData
                         null, false);
                 if (!smallgroup.HasValue())
                     return;
-                var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == smallgroup);
+                var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == smallgroup && t.OrgId == oi.OrgId);
                 if (mt == null)
                 {
                     mt = new MemberTag { Name = smallgroup, OrgId = oi.OrgId };

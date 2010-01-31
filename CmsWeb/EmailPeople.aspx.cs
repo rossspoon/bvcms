@@ -57,7 +57,11 @@ namespace CMSWeb
 
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
-            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "").OrderBy(p => p.PeopleId);
+            q = from p in q
+                where p.EmailAddress != null && p.EmailAddress != ""
+                where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
+                orderby p.PeopleId
+                select p;
             var em = new Emailer(args.FromAddress, args.FromName);
             em.SendPeopleEmail(q, args.Subject, args.Body, args.FileUpload, args.IsHtml);
         }

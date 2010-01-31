@@ -165,6 +165,8 @@ namespace CMSWeb
                     html = html.Replace("{name}", p.Name);
                     html = html.Replace("{first}", p.PreferredName);
                     html = html.Replace("{firstname}", p.PreferredName);
+                    html = html.Replace("{unsubscribe}", "<a href=\"{0}OptOut/UnSubscribe/{1}\">Unsubcribe</a>"
+                        .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
 
                     var bytes = Encoding.UTF8.GetBytes(html);
                     var htmlStream = new MemoryStream(bytes);

@@ -22,9 +22,11 @@ namespace CMSWeb.Areas.Public
             AddRoute(context, "RecReg");
             AddRoute(context, "Register");
             AddRoute(context, "Sales");
+            AddRoute(context, "OptOut");
             AddRoute(context, "SoulMate");
             AddRoute(context, "StepClass");
             AddRoute(context, "VBSReg");
+            AddRoute(context, "Event");
             AddRoute(context, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
             AddRoute(context, "VolunteerStart", "Volunteer", "Volunteer/{id}", "Start");
             AddRoute(context, "Volunteer");

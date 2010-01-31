@@ -2,12 +2,10 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="/Scripts/CheckIn.js" type="text/javascript"></script>
 
     <%=Html.Hidden("OrgId") %>

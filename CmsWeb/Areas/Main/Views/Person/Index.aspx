@@ -1,14 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PersonModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PersonPage.PersonModel>" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="/Scripts/Person.js" type="text/javascript"></script>
     <script src="/Scripts/Pager.js" type="text/javascript"></script>
-
-    <% CMSWeb.Models.PersonModel.PersonInfo person = Model.displayperson; %>
+    <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
     <table class="PersonHead" border="0">
         <tr>
             <td><%=Model.Name %></td>
@@ -21,32 +21,32 @@
         <table>
             <tr>
                 <td>
-                    <div id="businesscard" href="/Person/BusinessCard/<%=person.PeopleId %>">
-                    <% Html.RenderPartial("BusinessCard", person); %>
+                    <div id="businesscard" href="/Person/BusinessCard/<%=p.PeopleId %>">
+                    <% Html.RenderPartial("BusinessCard", p); %>
                     </div>
                     <table>
                         <tr>
-                            <td><%=person.DoNotCall %></td>
+                            <td><%=p.basic.DoNotCall %></td>
                             <td>
-                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Contributions/Years.aspx?id=" + person.PeopleId, "Contributions", null, null)%>
+                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Contributions/Years.aspx?id=" + p.PeopleId, "Contributions", null, null)%>
                                 <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
-                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, person.PeopleId), "CheckIn", null, null)%>
+                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <% if (Page.User.IsInRole("Admin"))
                                    { %>
-                                <a id="deleteperson" href="/Person/Delete/<%=person.PeopleId %>"><img border="0" src="/images/delete.gif" /></a>
-                                <a id="moveperson" href="/Person/Move/<%=person.PeopleId %>">move</a>
+                                <a id="deleteperson" href="/Person/Delete/<%=p.PeopleId %>"><img border="0" src="/images/delete.gif" /></a>
+                                <a id="moveperson" href="/Person/Move/<%=p.PeopleId %>">move</a>
                                 <% } %>
                             </td>
                         </tr>
                     </table>
                 </td>
                 <td valign="top">
-                    <a id="Picture" href="/UploadPicture.aspx?id=<%=person.PeopleId %>" title="Click to see larger version or upload new">
-                    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=person.SmallPicId %>" />
+                    <a id="Picture" href="/UploadPicture.aspx?id=<%=p.PeopleId %>" title="Click to see larger version or upload new">
+                    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=p.SmallPicId %>" />
                     </a>
                 </td>
                 <td></td>
@@ -55,7 +55,7 @@
                     <table>
                         <tr>
                             <th align="left" colspan="4">
-                                <a href="/Family.aspx?id=<%=person.FamilyId %>"><strong>Family Members</strong></a>
+                                <a href="/Family.aspx?id=<%=p.FamilyId %>"><strong>Family Members</strong></a>
                             </th>
                         </tr>
                     <% foreach (var m in Model.FamilyMembers())
@@ -83,7 +83,7 @@
         </ul>
         <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
             <form class="DisplayEdit" action="">
-            <% Html.RenderPartial("BasicDisplay", person); %>
+            <% Html.RenderPartial("BasicDisplay", p.basic); %>
             </form>
         </div>
         <div id="address-tab" class="ui-tabs-hide ui-tabs-panel">
@@ -95,22 +95,22 @@
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", person.PersonalAddr); %>
+                <% Html.RenderPartial("AddressDisplay", p.PersonalAddr); %>
                 </form>
             </div>
             <div id="AltPersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", person.AltPersonalAddr); %>
+                <% Html.RenderPartial("AddressDisplay", p.AltPersonalAddr); %>
                 </form>
             </div>
             <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", person.FamilyAddr); %>
+                <% Html.RenderPartial("AddressDisplay", p.FamilyAddr); %>
                 </form>
             </div>
             <div id="AltFamilyAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", person.AltFamilyAddr); %>
+                <% Html.RenderPartial("AddressDisplay", p.AltFamilyAddr); %>
                 </form>
             </div>
             <%=Html.Hidden("addrtab") %>
@@ -123,19 +123,19 @@
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
             </ul>
             <div id="current-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/EnrollGrid/<%=person.PeopleId %>">
+                <form action="/Person/EnrollGrid/<%=p.PeopleId %>">
                 </form>
             </div>
             <div id="previous-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/PrevEnrollGrid/<%=person.PeopleId %>">
+                <form action="/Person/PrevEnrollGrid/<%=p.PeopleId %>">
                 </form>
             </div>
             <div id="pending-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/PendingEnrollGrid/<%=person.PeopleId %>">
+                <form action="/Person/PendingEnrollGrid/<%=p.PeopleId %>">
                 </form>
             </div>
             <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/AttendanceGrid/<%=person.PeopleId %>">
+                <form action="/Person/AttendanceGrid/<%=p.PeopleId %>">
                 </form>
             </div>
         </div>
@@ -145,7 +145,9 @@
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
             <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Membership", person); %>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("MemberDisplay", p.member); %>
+                </form>
             </div>
             <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <table>
@@ -157,11 +159,11 @@
                                 </tr>
                                 <tr>
                                     <th>Status:</th>
-                                    <td><%=person.LetterStatus %></td>
+                                    <td><%=p.LetterStatus %></td>
                                     <th>Date Requested:</th>
-                                    <td><%=person.LetterRequested %></td>
+                                    <td><%=p.LetterRequested %></td>
                                     <th>Date Received:</th>
-                                    <td><%=person.LetterReceived %></td>
+                                    <td><%=p.LetterReceived %></td>
                                 </tr>
                             </table>
                         </td>
@@ -169,14 +171,25 @@
                     <tr>
                         <td valign="top">
                             <strong>Notes:</strong><br />
-                            <%=person.LetterNotes %>
+                            <%=p.LetterNotes %>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
-                <% Html.RenderPartial("Growth", person); %>
+            <ul class="ui-tabs-nav">
+                <li><a href="#entry-tab"><span>Entry</span></a></li>
+                <li><a href="#contacts-tab"><span>Contacts</span></a></li>
+            </ul>
+            <div id="entry-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("GrowthDisplay", p.growth); %>
+                </form>
+            </div>
+            <div id="contacts-tab" class="ui-tabs-hide ui-tabs-panel">
+                <% Html.RenderPartial("ContactsDisplay", p.PeopleId); %>
+            </div>
         </div>
         <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
             <table class="Design2" style="border-style: groove; border-width: thin;">
@@ -187,7 +200,7 @@
                         <input type="checkbox" <%=Model.vol.Leader ? "checked='checked'" : "" %> disabled="disabled" />
                         Leadership (background check)
                     </td>
-                    <td><a href="/AppReview/VolunteerApp.aspx?id=<%=person.PeopleId %>"
+                    <td><a href="/AppReview/VolunteerApp.aspx?id=<%=p.PeopleId %>"
                         <%=User.IsInRole("ApplicationReview") ? "disabled='disabled'" : "" %>>Volunteer Application Review</a></td>
                 </tr>
                 <tr>

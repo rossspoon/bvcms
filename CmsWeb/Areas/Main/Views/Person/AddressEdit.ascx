@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.AddressInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.AddressInfo>" %>
 <% if (Page.User.IsInRole("Edit"))
    { %>
 <a class="displayedit" href="/Person/AddressDisplay/<%=Model.PeopleId %>?type=<%=Model.Name %>">Cancel</a>
@@ -18,7 +18,7 @@
     </tr>
     <tr>
         <th>State:</th>
-        <td><%=Html.TextBox("State") %></td>
+        <td><%=Html.DropDownList("State", CMSWeb.Models.PersonPage.AddressInfo.States()) %></td>
     </tr>
     <tr>
         <th>Zip:</th>
@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <th>Resident Code:</th>
-        <td><%=Html.DropDownList("ResCode", CMSWeb.Models.AddressInfo.ResCodes()) %></td>
+        <td><%=Html.DropDownList("ResCodeId", CMSWeb.Models.PersonPage.AddressInfo.ResCodes())%></td>
     </tr>
     <tr>
         <th>Bad Address Flag:</th>

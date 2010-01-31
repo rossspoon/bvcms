@@ -406,7 +406,9 @@ namespace CMSWeb.Models
             first = first.Trim();
             last = last.Trim();
             var fone = Util.GetDigits(phone);
-            var q = from p in DbUtil.Db.People
+            var ctx = new CMSDataContext(Util.ConnectionString);
+            ctx.SetNoLock();
+            var q = from p in ctx.People
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)
                     where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
@@ -421,7 +423,11 @@ namespace CMSWeb.Models
             }
             Person person = null;
             if (count == 1)
-                person = q.Single();
+            {
+                var pid = q.Select(p => p.PeopleId).Single();
+                ctx.Dispose();
+                person = DbUtil.Db.LoadPersonById(pid);
+            }
             return person;
         }
         public static void ValidateFindPerson(ModelStateDictionary modelState, 

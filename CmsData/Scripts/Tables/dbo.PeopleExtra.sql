@@ -1,11 +1,13 @@
 CREATE TABLE [dbo].[PeopleExtra]
 (
 [PeopleId] [int] NOT NULL,
-[TransactionTime] [datetime] NOT NULL CONSTRAINT [DF_PeopleExtra_TransactionTime] DEFAULT (((1)/(1))/(1900)),
 [Field] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [StrValue] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[DateValue] [datetime] NULL
+[DateValue] [datetime] NULL,
+[TransactionTime] [datetime] NOT NULL CONSTRAINT [DF_PeopleExtra_TransactionTime] DEFAULT (((1)/(1))/(1900)),
+[Data] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+
 GO
 ALTER TABLE [dbo].[PeopleExtra] ADD CONSTRAINT [PK_PeopleExtra] PRIMARY KEY CLUSTERED  ([PeopleId], [TransactionTime], [Field])
 GO

@@ -5,11 +5,11 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CMSWeb.Models.PersonPage
 {
     public class PersonContactsMadeModel
     {
-        public Person person;
+        public CmsData.Person person;
         public PagerModel2 Pager { get; set; }
         public PersonContactsMadeModel(int id)
         {

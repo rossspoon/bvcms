@@ -1,4 +1,8 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonModel.PersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.MemberInfo>" %>
+<% if (Page.User.IsInRole("Membership"))
+   { %>
+<a class="displayedit" href="/Person/MemberEdit/<%=Model.PeopleId %>">Edit</a>
+<% } %>
 <table>
     <tr>
         <td valign="top">
@@ -34,7 +38,7 @@
                 </tr>
                 <tr>
                     <th>Date:</th>
-                    <td><%=Model.DecisionDate %></td>
+                    <td><%=Model.DecisionDate.FormatDate() %></td>
                 </tr>
             </table>
         </td>
@@ -51,7 +55,7 @@
                 </tr>
                 <tr>
                     <th>Date:</th>
-                    <td><%=Model.JoinDate %></td>
+                    <td><%=Model.JoinDate.FormatDate()%></td>
                 </tr>
                 <tr>
                     <th>Previous Church:</th>
@@ -70,7 +74,7 @@
                 </tr>
                 <tr>
                     <th>Joined:</th>
-                    <td><%=Model.JoinDate %></td>
+                    <td><%=Model.JoinDate.FormatDate() %></td>
                 </tr>
             </table>
         </td>
@@ -91,11 +95,11 @@
                 </tr>
                 <tr>
                     <th>Date:</th>
-                    <td><%=Model.BaptismDate %></td>
+                    <td><%=Model.BaptismDate.FormatDate() %></td>
                 </tr>
                 <tr>
                     <th>Scheduled:</th>
-                    <td><%=Model.BaptismSchedDate %></td>
+                    <td><%=Model.BaptismSchedDate.FormatDate() %></td>
                 </tr>
             </table>
             <td>
@@ -111,7 +115,7 @@
                     </tr>
                     <tr>
                         <th>Date:</th>
-                        <td><%=Model.DropDate %></td>
+                        <td><%=Model.DropDate.FormatDate() %></td>
                     </tr>
                     <tr>
                         <th>New Church:</th>
@@ -130,7 +134,7 @@
                     </tr>
                     <tr>
                         <th>Date:</th>
-                        <td><%=Model.NewMemberClassDate %></td>
+                        <td><%=Model.NewMemberClassDate.FormatDate() %></td>
                     </tr>
                 </table>
             </td>

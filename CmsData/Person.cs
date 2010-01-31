@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Transactions;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Data.Linq.SqlClient;
 
 namespace CmsData
 {
@@ -464,8 +465,11 @@ namespace CmsData
                 else
                     TitleCode = "Ms.";
         }
+        public string OptOutKey(string FromEmail)
+        {
+            return Util.Encrypt("{0}|{1}".Fmt(PeopleId, FromEmail));
+        }
 
-        #region Tags
         public static bool ToggleTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
         {
             var Db = DbUtil.Db;
@@ -495,55 +499,55 @@ namespace CmsData
             if (tp != null)
                 Db.TagPeople.DeleteOnSubmit(tp);
         }
-        //private string GetTagString(int tagtype, string user)
-        //{
-        //    var sb = new StringBuilder();
-        //    var q = from tp in Tags
-        //            where tp.Tag.PeopleId == user && tp.Tag.TypeId == tagtype
-        //            select tp;
-        //    if (user.HasValue())
-        //        q = q.Where(tp => tp.Tag.Owner == user);
-        //    foreach (var tp in q)
-        //        sb.Append(tp.Tag.Name + ";");
-        //    if (sb.Length > 0)
-        //        sb.Remove(sb.Length - 1, 1);
-        //    return sb.ToString();
-        //}
-        //private void AddRemoveTags(string value, int tagtype, string user)
-        //{
-        //    var TagSet = Tags.Where(t => t.Tag.TypeId == tagtype);
-        //    if (user.HasValue())
-        //        TagSet = TagSet.Where(t => t.Tag.Owner == user);
-
-        //    var tagnames = value.Split(';');
-
-        //    var TagDeletes = TagSet.Where(t => !tagnames.Contains(t.Tag.Name));
-        //    Db.TagPeople.DeleteAllOnSubmit(TagDeletes);
-
-        //    var TagAdds = from tagname in tagnames
-        //                  join t in TagSet on tagname equals t.Tag.Name into joined
-        //                  from t in joined.DefaultIfEmpty()
-        //                  where t == null
-        //                  select tagname;
-
-        //    foreach (var tagname in TagAdds)
-        //    {
-        //        var tag = Db.Tags.SingleOrDefault(t =>
-        //            (t.Owner == user || !user.HasValue()) && t.Name == tagname && t.TypeId == tagtype);
-
-        //        if (tag == null)
-        //        {
-        //            tag = new Tag { Name = tagname, Owner = user, TypeId = tagtype };
-        //            Db.Tags.InsertOnSubmit(tag);
-        //        }
-        //        Tags.Add(new TagPerson { Tag = tag });
-        //    }
-        //}
         partial void OnNickNameChanged()
         {
             if (NickName != null && NickName.Trim() == String.Empty)
                 NickName = null;
         }
-        #endregion
+        private bool _DecisionTypeIdChanged;
+        public bool DecisionTypeIdChanged
+        {
+            get { return _DecisionTypeIdChanged; }
+        }
+        partial void OnDecisionTypeIdChanged()
+        {
+            _DecisionTypeIdChanged = true;
+        }
+        private bool _DiscoveryClassStatusIdChanged;
+        public bool DiscoveryClassStatusIdChanged
+        {
+            get { return _DiscoveryClassStatusIdChanged; }
+        }
+        partial void OnDiscoveryClassStatusIdChanged()
+        {
+            _DiscoveryClassStatusIdChanged = true;
+        }
+        private bool _BaptismStatusIdChanged;
+        public bool BaptismStatusIdChanged
+        {
+            get { return _BaptismStatusIdChanged; }
+        }
+        partial void OnBaptismStatusIdChanged()
+        {
+            _BaptismStatusIdChanged = true;
+        }
+        private bool _DeceasedDateChanged;
+        public bool DeceasedDateChanged
+        {
+            get { return _DeceasedDateChanged; }
+        }
+        partial void OnDeceasedDateChanged()
+        {
+            _DeceasedDateChanged = true;
+        }
+        private bool _DropCodeIdChanged;
+        public bool DropCodeIdChanged
+        {
+            get { return _DropCodeIdChanged; }
+        }
+        partial void OnDropCodeIdChanged()
+        {
+            _DropCodeIdChanged = true;
+        }
     }
 }
