@@ -16,20 +16,15 @@ namespace CMSWeb.Models.PersonPage
         public BasicPersonInfo basic { get; set; }
         public MemberInfo member { get; set; }
         public GrowthInfo growth { get; set; }
+        public MemberNotesInfo membernotes { get; set; }
 
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
         public int? SpouseId { get; set; }
 
-        public int? LetterStatusId { get; set; }
-        public string LetterStatus { get { return cv.LetterStatusCodes().ItemValue(LetterStatusId ?? 0); } }
-
         public bool Deceased { get; set; }
         public string Name { get; set; }
         public int? SmallPicId { get; set; }
-        public string LetterRequested { get; set; }
-        public string LetterReceived { get; set; }
-        public string LetterNotes { get; set; }
 
         public int AddressTypeId { get; set; }
         private AddressInfo _PrimaryAddr;
@@ -61,25 +56,30 @@ namespace CMSWeb.Models.PersonPage
                     {
                         PeopleId = p.PeopleId,
                         AddressTypeId = p.AddressTypeId,
+                        Deceased = p.Deceased,
+                        FamilyId = p.FamilyId,
+                        Name = p.Name,
+                        SmallPicId = p.Picture.SmallId,
+                        SpouseId = p.SpouseId,
 
                         member = new MemberInfo
                         {
                             PeopleId = p.PeopleId,
                             BaptismSchedDate = p.BaptismSchedDate,
-                            BaptismTypeId = p.BaptismTypeId,
-                            BaptismStatusId = p.BaptismStatusId,
+                            BaptismTypeId = p.BaptismTypeId ?? 0,
+                            BaptismStatusId = p.BaptismStatusId ?? 0,
                             BaptismDate = p.BaptismDate,
                             DecisionDate = p.DecisionDate,
-                            DecisionTypeId = p.DecisionType.Id,
+                            DecisionTypeId = p.DecisionTypeId ?? 0,
                             DropDate = p.DropDate,
-                            DropTypeId = p.DropType.Id,
-                            EnvelopeOptionId = p.EnvelopeOptionsId,
-                            StatementOptionId = p.ContributionOptionsId,
+                            DropTypeId = p.DropCodeId,
+                            EnvelopeOptionId = p.EnvelopeOptionsId ?? 0,
+                            StatementOptionId = p.ContributionOptionsId ?? 0,
                             JoinTypeId = p.JoinCodeId,
                             NewChurch = p.OtherNewChurch,
                             PrevChurch = p.OtherPreviousChurch,
                             NewMemberClassDate = p.DiscoveryClassDate,
-                            NewMemberClassStatusId = p.DiscoveryClassStatusId,
+                            NewMemberClassStatusId = p.DiscoveryClassStatusId ?? 0,
                             MemberStatusId = p.MemberStatusId,
                             JoinDate = p.JoinDate,
                         },
@@ -88,7 +88,7 @@ namespace CMSWeb.Models.PersonPage
                             PeopleId = p.PeopleId,
                             Age = p.Age.ToString(),
                             Birthday = p.DOB,
-                            CampusId = p.CampusId,
+                            CampusId = p.CampusId ?? 0,
                             CellPhone = p.CellPhone.FmtFone(),
                             DeceasedDate = p.DeceasedDate,
                             DoNotCallFlag = p.DoNotCallFlag,
@@ -118,9 +118,9 @@ namespace CMSWeb.Models.PersonPage
                         growth = new GrowthInfo
                         {
                             PeopleId = p.PeopleId,
-                            InterestPointId = p.InterestPointId,
-                            OriginId = p.OriginId,
-                            EntryPointId = p.EntryPointId,
+                            InterestPointId = p.InterestPointId ?? 0,
+                            OriginId = p.OriginId ?? 0,
+                            EntryPointId = p.EntryPointId ?? 0,
                             ChristAsSavior = p.ChristAsSavior,
                             Comments = p.Comments,
                             InterestedInJoining = p.InterestedInJoining,
@@ -128,15 +128,14 @@ namespace CMSWeb.Models.PersonPage
                             PleaseVisit = p.PleaseVisit,
                             SendInfo = p.InfoBecomeAChristian,
                         },
-                        Deceased = p.Deceased,
-                        FamilyId = p.FamilyId,
-                        Name = p.Name,
-                        SmallPicId = p.Picture.SmallId,
-                        SpouseId = p.SpouseId,
-                        LetterStatusId = p.LetterStatusId,
-                        LetterReceived = p.LetterDateReceived.FormatDate(),
-                        LetterRequested = p.LetterDateRequested.FormatDate(),
-                        LetterNotes = p.LetterStatusNotes,
+                        membernotes = new MemberNotesInfo
+                        {
+                            PeopleId = p.PeopleId,
+                            LetterStatusId = p.LetterStatusId ?? 0,
+                            LetterReceived = p.LetterDateReceived,
+                            LetterRequested = p.LetterDateRequested,
+                            LetterNotes = p.LetterStatusNotes,
+                        },
                         FamilyAddr = new AddressInfo
                         {
                             Name = "FamilyAddr",
@@ -147,7 +146,7 @@ namespace CMSWeb.Models.PersonPage
                             State = p.Family.StateCode,
                             Zip = p.Family.ZipCode,
                             BadAddress = p.Family.BadAddressFlag,
-                            ResCodeId = p.Family.ResCodeId,
+                            ResCodeId = p.Family.ResCodeId ?? 0,
                             FromDt = p.Family.AddressFromDate,
                             ToDt = p.Family.AddressToDate,
                             Preferred = p.AddressTypeId == 10,
@@ -162,7 +161,7 @@ namespace CMSWeb.Models.PersonPage
                             State = p.Family.AltStateCode,
                             Zip = p.Family.AltZipCode,
                             BadAddress = p.Family.AltBadAddressFlag,
-                            ResCodeId = p.Family.AltResCodeId,
+                            ResCodeId = p.Family.AltResCodeId ?? 0,
                             FromDt = p.Family.AltAddressFromDate,
                             ToDt = p.Family.AltAddressToDate,
                             Preferred = p.AddressTypeId == 20,
@@ -177,7 +176,7 @@ namespace CMSWeb.Models.PersonPage
                             State = p.StateCode,
                             Zip = p.ZipCode,
                             BadAddress = p.BadAddressFlag,
-                            ResCodeId = p.ResCodeId,
+                            ResCodeId = p.ResCodeId ?? 0,
                             FromDt = p.AddressFromDate,
                             ToDt = p.AddressToDate,
                             Preferred = p.AddressTypeId == 30,
@@ -192,7 +191,7 @@ namespace CMSWeb.Models.PersonPage
                             State = p.AltStateCode,
                             Zip = p.AltZipCode,
                             BadAddress = p.AltBadAddressFlag,
-                            ResCodeId = p.AltResCodeId,
+                            ResCodeId = p.AltResCodeId ?? 0,
                             FromDt = p.AltAddressFromDate,
                             ToDt = p.AltAddressToDate,
                             Preferred = p.AddressTypeId == 40,

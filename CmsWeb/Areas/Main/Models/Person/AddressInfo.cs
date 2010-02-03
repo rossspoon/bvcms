@@ -129,8 +129,8 @@ namespace CMSWeb.Models.PersonPage
                     p.Family.BadAddressFlag = BadAddress;
                     p.Family.CityName = City;
                     p.Family.StateCode = State;
-                    p.Family.ZipCode = Zip;
                     p.Family.ResCodeId = ResCodeId;
+                    p.Family.ZipCode = Zip;
                     if (Preferred)
                         p.AddressTypeId = 10;
                     break;
@@ -141,8 +141,8 @@ namespace CMSWeb.Models.PersonPage
                     p.Family.AltBadAddressFlag = BadAddress;
                     p.Family.AltCityName = City;
                     p.Family.AltStateCode = State;
-                    p.Family.AltZipCode = Zip;
                     p.Family.AltResCodeId = ResCodeId;
+                    p.Family.AltZipCode = Zip;
                     if (Preferred)
                         p.AddressTypeId = 20;
                     break;
@@ -153,8 +153,8 @@ namespace CMSWeb.Models.PersonPage
                     p.BadAddressFlag = BadAddress;
                     p.CityName = City;
                     p.StateCode = State;
-                    p.ZipCode = Zip;
                     p.ResCodeId = ResCodeId;
+                    p.ZipCode = Zip;
                     if (Preferred)
                         p.AddressTypeId = 30;
                     break;
@@ -165,8 +165,8 @@ namespace CMSWeb.Models.PersonPage
                     p.AltBadAddressFlag = BadAddress;
                     p.AltCityName = City;
                     p.AltStateCode = State;
-                    p.AltZipCode = Zip;
                     p.AltResCodeId = ResCodeId;
+                    p.AltZipCode = Zip;
                     if (Preferred)
                         p.AddressTypeId = 40;
                     break;

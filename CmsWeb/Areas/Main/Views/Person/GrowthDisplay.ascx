@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <th>Is a member of another Church?</th>
-                    <td><input type="checkbox" <%=Model.MemberAnyChurch.Value ? "checked='checked'" : "" %> disabled="disabled" /></td>
+                    <td><input type="checkbox" <%=Model.MemberAnyChurch == true ? "checked='checked'" : "" %> disabled="disabled" /></td>
                 </tr>
             </table>
         </td>

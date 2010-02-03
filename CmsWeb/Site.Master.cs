@@ -60,7 +60,7 @@ namespace CMSWeb
             if (Util.CurrentPeopleId != 0)
             {
                 CurrentPersonMenuItem.Visible = true;
-                CurrentPersonLink.NavigateUrl = "Person.aspx?id={0}".Fmt(Util.CurrentPeopleId);
+                CurrentPersonLink.NavigateUrl = "Person/Index/{0}".Fmt(Util.CurrentPeopleId);
                 CurrentPersonLink.Text = Session["ActivePerson"].ToString();
                 if (Page.User.IsInRole("Admin"))
                 {

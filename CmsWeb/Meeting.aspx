@@ -182,7 +182,7 @@
                 <td>
                     <asp:Label ID="Label1" Visible='<%# ShowAttendanceFlag1.Value == "True" %>' runat="server"
                         Text='<%# Eval("Name") %>'></asp:Label>
-                    <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# Eval("PeopleId", "~/Person.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# Eval("PeopleId", "~/Person/Index/{0}") %>'
                         Visible='<%# ShowAttendanceFlag1.Value != "True" %>' Text='<%# Eval("Name") %>'
                         runat="server">HyperLink</asp:HyperLink>
                 </td>

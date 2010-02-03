@@ -97,7 +97,7 @@
                 <% } %>
             </td>
             <td nowrap="nowrap">
-                <a href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
+                <a href='/Person/Index/<%=v.PeopleId%>'><%=v.Name%></a>
             </td>
             <td><%=v.Interests%></td>
             <td>

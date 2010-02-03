@@ -375,6 +375,7 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Mother's name:</td><td>{0}</td></tr>\n", mname);
             sb.AppendFormat("<tr><td>Father's name:</td><td>{0}</td></tr>\n", fname);
             sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", coaching);
+            sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0}</td></tr>\n", Amount);
 
             sb.Append("</table>");
 

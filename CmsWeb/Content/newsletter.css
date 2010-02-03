@@ -1,0 +1,67 @@
+body {
+	background-color: #eeeeee
+}
+a img {
+	border-bottom: medium none; border-left: medium none; border-top: medium none; border-right: medium none
+}
+table.bg1 {
+	background-color: #eeeeee
+}
+table.bg2 {
+	background-color: #ffffff;	border: solid 2px #E36C0A;
+}
+td.permission {
+	padding-bottom: 10px; background-color: #eeeeee; padding-left: 20px; padding-right: 20px; padding-top: 10px
+}
+td.permission p {
+	padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; font-family: arial; color: #333333; font-size: 12px; font-weight: normal; padding-top: 0px
+}
+td.permission p a {
+	font-family: arial; color: #333333; font-size: 12px; font-weight: normal
+}
+td.body {
+	padding-bottom: 20px; background-color: #ffffff; padding-left: 20px; padding-right: 20px; padding-top: 0px
+}
+td.buttons {
+	padding-bottom: 0px; padding-left: 0px; padding-right: 0px; padding-top: 20px
+}
+td.mainbar h2 {
+	padding-bottom: 0px; margin-top: 20px; padding-left: 0px; padding-right: 0px; font-family: arial; margin-bottom: 0px; font-size: 16px; font-weight: bold; padding-top: 0px
+}
+td.mainbar h2 a {
+	padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; font-family: arial; font-size: 16px; font-weight: bold; text-decoration: none; padding-top: 0px
+}
+td.mainbar p {
+	padding-bottom: 0px; margin: 0px 0px 14px; padding-left: 0px; padding-right: 0px; font-family: arial; color: #333333; font-size: 13px; font-weight: normal; padding-top: 0px
+}
+td.mainbar p a {
+	font-family: arial; font-size: 13px; font-weight: normal
+}
+td.mainbar p.more a {
+	font-family: arial; font-size: 13px; font-weight: normal; text-decoration: none
+}
+td.mainbar ul {
+	padding-bottom: 0px; margin: 0px 0px 14px 24px; padding-left: 0px; padding-right: 0px; font-family: arial; color: #333333; font-size: 13px; font-weight: normal; padding-top: 0px
+}
+td.mainbar ul li a {
+	font-family: arial; font-size: 13px; font-weight: normal
+}
+td.footer {
+	padding-bottom: 0px; font-size:14px; background-color: #E36C0A; padding-left: 20px; padding-right: 20px; height: 41px; vertical-align: middle; padding-top: 0px; text-align:center;
+}
+td.footer p {
+	padding-bottom: 0px; line-height: 16px; margin: 0px; padding-left: 0px; padding-right: 0px; font-family: arial; color: #ffffff; font-size: 14px; font-weight: normal; padding-top: 0px
+}
+td.header {
+	background-image: url(http://www.bvcms.com/content/header-gradient.png); padding-bottom: 0px; padding-left: 6px; padding-right: 6px; height: 61px; vertical-align: middle; padding-top: 0px
+}
+#orangerect {
+	background-image: url(http://www.bvcms.com/content/orangerect.png); margin-top: 12px; width: 279px; background-REpEat: no-repeat; height: 78px; margin-left: 1em
+}
+#description {
+	font-style: italic; padding-left: 12px; padding-right: 12px; font-family: arial, Sans-Serif; font-size: 16px; padding-top: 4px
+}
+#headerimage {
+	margin-top: 5px; 
+}
+ 

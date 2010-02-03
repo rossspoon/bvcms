@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.PersonAttendHistoryModel>" %>
+Show Future Meetings: <%=Html.CheckBox("future") %>
 <table class="grid" cellPadding="4">
 <thead>
 <tr>

@@ -14,7 +14,7 @@
                     $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
                         $.post('/Recreation/Assign/' + id + "?PeopleId=" + peopleid, null, function(ret) {
                             $('#' + id).text(ret.pid);
-                            $("#namelink").replaceWith("<a id='namelink' href='/Person.aspx?id=" + ret.pid + "'>" + ret.name + "</a>");
+                            $("#namelink").replaceWith("<a id='namelink' href='/Person/Index/" + ret.pid + "'>" + ret.name + "</a>");
                         }, "json");
                     }, {
                         origin: 70, // enrollment
@@ -37,7 +37,7 @@
                 <td><label><a id='<%=d.Id%>' class="searchpeople" href="#">search(<%=d.PeopleId%>)</a></label></td>
                 <td>
                     <label>
-                        Name: <a id="namelink" href="/Person.aspx?id=<%=d.PeopleId%>">
+                        Name: <a id="namelink" href="/Person/Index/<%=d.PeopleId%>">
                             <%=d.Name%></a></label>
                 </td>
                 <td>

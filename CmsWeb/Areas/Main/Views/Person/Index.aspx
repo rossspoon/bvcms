@@ -61,7 +61,7 @@
                     <% foreach (var m in Model.FamilyMembers())
                        { %>
                         <tr>
-                            <td><a href="/Person/Index/<%=m.Id %>"><span style='<%=m.Color%>'><%=m.Name %></span></a></td>
+                            <td><a href="/Person/Index/<%=m.Id %>"><span style='color: <%=m.Color%>'><%=m.Name %></span></a></td>
                             <td><%=m.SpouseIndicator %></td>
                             <td><%=m.Age %></td>
                             <td><%=m.PositionInFamily %></td>
@@ -150,31 +150,9 @@
                 </form>
             </div>
             <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
-                <table>
-                    <tr>
-                        <td valign="top">
-                            <table class="Design2">
-                                <tr>
-                                    <th colspan="6" class="LightBlueBG">Letter</th>
-                                </tr>
-                                <tr>
-                                    <th>Status:</th>
-                                    <td><%=p.LetterStatus %></td>
-                                    <th>Date Requested:</th>
-                                    <td><%=p.LetterRequested %></td>
-                                    <th>Date Received:</th>
-                                    <td><%=p.LetterReceived %></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <strong>Notes:</strong><br />
-                            <%=p.LetterNotes %>
-                        </td>
-                    </tr>
-                </table>
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("MemberNotesDisplay", p.membernotes); %>
+                </form>
             </div>
         </div>
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">

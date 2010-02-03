@@ -37,7 +37,7 @@ namespace CMSWeb
                     };
             GridView1.DataSource = q.Take(60);
             GridView1.DataBind();
-            //Name.NavigateUrl = "/Person.aspx?id=" + id;
+            //Name.NavigateUrl = "/Person/Index/" + id;
             Name.Text = DbUtil.Db.LoadPersonById(id.Value).Name;
             //Org.NavigateUrl = "/Organization.aspx?id=" + oid;
             Org.Text = DbUtil.Db.LoadOrganizationById(oid.Value).FullName;

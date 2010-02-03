@@ -61,7 +61,7 @@
     <% foreach (var p in Model.Attendances())
        { %>
         <tr>
-        <td><a href="/Person.aspx?id=<%=p.PeopleId %>"><%= p.Name %></a></td>
+        <td><a href="/Person/Index/<%=p.PeopleId %>"><%= p.Name %></a></td>
         <td align="right"><%=p.Age %></td>
         <td><span style="font-family:Courier New"><%=p.AttendStr %></span></td>
         <td align="right"><%=p.AttendPct.ToString("N1") %></td>

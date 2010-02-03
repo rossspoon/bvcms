@@ -114,9 +114,9 @@ namespace CMSWeb.Areas.Public.Controllers
             Util.Email2(new SmtpClient(), m.email, 
                 DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress), 
                 "{0} Registration".Fmt(m.division.Name), 
-                "{0}({1}) has registered for {2}: {3}\r\n(check cms to confirm feepaid)"
+                "{0}({1}) has registered for {2}: {3}"
                 .Fmt(m.participant.Name, m.participant.PeopleId, 
-                m.division.Name, m.organization.OrganizationName));
+                m.division.Name, m.organization.OrganizationName, m.Amount));
 
             if ((reg.FeePaid ?? false) == true)
                 return RedirectToAction("Confirm", new { id = reg.Id });
@@ -147,7 +147,7 @@ namespace CMSWeb.Areas.Public.Controllers
 
             Util.Email(DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress),
     "", m.registration.Email, "Recreation Registration",
-@"<p>Thank you for registering for {0}: {1}
+@"<p>Thank you for registering for {0}: {1} 
 You will receive another email with team information once they have been established.</p>
 <p>You will need to download the <a href=""{3}/Upload/MedicalRelease.pdf"">Medical Release Form</a>, 
 print, sign, and return it to the Recreation Ministry in order to complete your registration.</p>
@@ -155,6 +155,15 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
 {2}
 ".Fmt(m.division.Name, m.organization.OrganizationName,
     ImageData.Image.Content(m.registration.ImgId.Value), Util.CmsHost));
+
+            Util.Email2(new SmtpClient(), m.email,
+                DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress),
+                "{0} Registration".Fmt(m.division.Name),
+@"{0}({1}) has registered for {2}: {3}\r\n
+Feepaid: {4:c}, TransactionID: {5}"
+                .Fmt(m.participant.Name, m.participant.PeopleId,
+                m.division.Name, m.organization.OrganizationName, 
+                m.Amount, TransactionID));
 
             return View(m);
         }

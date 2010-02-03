@@ -282,7 +282,7 @@
                         <Columns>
                             <asp:TemplateField HeaderText="Name">
                                 <ItemTemplate>
-                                    <asp:HyperLink ID="namelink" runat="server" NavigateUrl='<%# Eval("Id", "~/Person.aspx?Id={0}") %>'
+                                    <asp:HyperLink ID="namelink" runat="server" NavigateUrl='<%# Eval("Id", "~/Person/Index/{0}") %>'
                                         Text='<%# Eval("Name") %>'></asp:HyperLink>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -523,7 +523,7 @@
                         </th>
                         <td>
                             <cc1:DisplayHyperlink ID="DisplayHyperlink2" runat="server" BindingMember="SpouseName"
-                                BindingUrlFormat="/Person.aspx?id={0}" BindingUrlMember="SpouseId" BindingSource="person">[SpouseName]</cc1:DisplayHyperlink>
+                                BindingUrlFormat="/Person/Index/{0}" BindingUrlMember="SpouseId" BindingSource="person">[SpouseName]</cc1:DisplayHyperlink>
                         </td>
                     </tr>
                     <tr>
@@ -654,7 +654,7 @@
                                 <asp:BoundField DataField="Location" HeaderText="Location" />
                                 <asp:TemplateField HeaderText="Leader">
                                     <ItemTemplate>
-                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person.aspx?id={0}") %>'
+                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person/Index/{0}") %>'
                                             Text='<%# Eval("LeaderName") %>'></asp:HyperLink></ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="Schedule" HeaderText="Schedule" />
@@ -694,7 +694,7 @@
                                 <asp:BoundField DataField="Location" HeaderText="Location" />
                                 <asp:TemplateField HeaderText="Leader">
                                     <ItemTemplate>
-                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person.aspx?id={0}") %>'
+                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person/Index/{0}") %>'
                                             Text='<%# Eval("LeaderName") %>'></asp:HyperLink></ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="Schedule" HeaderText="Schedule" />
@@ -734,7 +734,7 @@
                                 <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location" />
                                 <asp:TemplateField HeaderText="Leader" SortExpression="Leader">
                                     <ItemTemplate>
-                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person.aspx?id={0}") %>'
+                                        <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person/Index/{0}") %>'
                                             Text='<%# Eval("LeaderName") %>'></asp:HyperLink></ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField DataField="Schedule" HeaderText="Schedule" SortExpression="Schedule" />
@@ -831,7 +831,7 @@
                         <td valign="top">
                             <table class="Design2">
                                 <tr>
-                                    <th colspan="2" class="LightBlueBG">
+                                    <th colspan="2" class="Design2Head">
                                         Decision
                                     </th>
                                 </tr>
@@ -875,7 +875,7 @@
                         <td valign="top">
                             <table class="Design2">
                                 <tr>
-                                    <th colspan="2" class="LightBlueBG">
+                                    <th colspan="2" class="Design2Head">
                                         Join
                                     </th>
                                 </tr>
@@ -920,7 +920,7 @@
                         <td valign="top">
                             <table class="Design2" width="100%">
                                 <tr>
-                                    <th colspan="2" class="LightBlueBG">
+                                    <th colspan="2" class="Design2Head">
                                         Church Membership
                                     </th>
                                 </tr>
@@ -955,7 +955,7 @@
                         <td valign="top">
                             <table class="Design2" width="100%">
                                 <tr>
-                                    <th colspan="2" class="LightBlueBG">
+                                    <th colspan="2" class="Design2Head">
                                         Baptism
                                     </th>
                                 </tr>
@@ -1014,7 +1014,7 @@
                             <td valign="top">
                                 <table class="Design2" width="100%">
                                     <tr>
-                                        <th colspan="2" class="LightBlueBG">
+                                        <th colspan="2" class="Design2Head">
                                             Drop
                                         </th>
                                     </tr>
@@ -1060,7 +1060,7 @@
                             <td valign="top">
                                 <table class="Design2" width="100%">
                                     <tr>
-                                        <th colspan="2" class="LightBlueBG">
+                                        <th colspan="2" class="Design2Head">
                                             Step 1 Class
                                         </th>
                                     </tr>
@@ -1110,7 +1110,7 @@
                         <td valign="top">
                             <table class="Design2">
                                 <tr>
-                                    <th colspan="6" class="LightBlueBG">
+                                    <th colspan="6" class="Design2Head">
                                         Letter
                                     </th>
                                 </tr>

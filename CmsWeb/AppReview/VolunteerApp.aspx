@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <cc1:DisplayHyperlink ID="Name" runat="server" BindingMember="Person.Name" BindingMode="OneWay"
-        BindingSource="vol" BindingUrlFormat="~/Person.aspx?id={0}" BindingUrlMember="PeopleId">
+        BindingSource="vol" BindingUrlFormat="~/Person/Index/{0}" BindingUrlMember="PeopleId">
         [Name]</cc1:DisplayHyperlink>
     <br />
     <table class="Design2" style="border-style: groove; border-width: thin;">

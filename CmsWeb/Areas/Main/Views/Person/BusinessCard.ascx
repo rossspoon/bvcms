@@ -3,7 +3,7 @@
     <%if (Model.Deceased)
       { %>
     <tr>
-        <td style="color: Red" colspan="2">Deceased: <%=Model.basic.DeceasedDate%></td>
+        <td style="color: Red" colspan="2">Deceased: <%=Model.basic.DeceasedDate.FormatDate() %></td>
     </tr>
     <% } %>
     <tr>

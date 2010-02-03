@@ -22,7 +22,7 @@
                                     <asp:GridView ID="Birthdays" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                         SkinID="GridViewSkin">
                                         <Columns>
-                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person.aspx?id={0}"
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person/Index/{0}"
                                                 DataTextField="Name" DataTextFormatString="{0}" />
                                             <asp:BoundField DataField="Birthday" DataFormatString="{0:MMM dd}" />
                                         </Columns>
@@ -90,7 +90,7 @@
                                      <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                         SkinID="GridViewSkin">
                                         <Columns>
-                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person.aspx?id={0}"
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person/Index/{0}"
                                                 DataTextField="Name" DataTextFormatString="{0}" />
                                             <asp:BoundField DataField="Birthday" DataFormatString="{0:MMM dd}" />
                                         </Columns>

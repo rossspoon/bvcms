@@ -94,8 +94,7 @@ namespace CmsData
                 switch (DecisionTypeId ?? 0)
                 {
                     case (int)Person.DecisionCode.ProfessionForMembership:
-                        if (DiscoveryClassStatusId.HasValue
-                            && DiscClassStatuses.Contains(DiscoveryClassStatusId.Value)
+                        if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
                             && BaptismStatusId == (int)Person.BaptismStatusCode.Completed)
                         {
                             MemberStatusId = (int)Person.MemberStatusCode.Member;
@@ -109,8 +108,7 @@ namespace CmsData
                         break;
                     case (int)Person.DecisionCode.Letter:
                         if (DiscoveryClassStatusIdChanged)
-                            if ((DiscoveryClassStatusId.HasValue
-                                    && DiscClassStatuses.Contains(DiscoveryClassStatusId.Value))
+                            if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
                                 || DiscoveryClassStatusId == (int)Person.DiscoveryClassStatusCode.AdminApproval)
                             {
                                 MemberStatusId = (int)Person.MemberStatusCode.Member;
@@ -120,8 +118,7 @@ namespace CmsData
                         break;
                     case (int)Person.DecisionCode.Statement:
                         if (DiscoveryClassStatusIdChanged)
-                            if (DiscoveryClassStatusId.HasValue
-                                    && DiscClassStatuses.Contains(DiscoveryClassStatusId.Value))
+                            if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0))
                             {
                                 MemberStatusId = (int)Person.MemberStatusCode.Member;
                                 JoinCodeId = (int)Person.JoinTypeCode.Statement;
@@ -129,8 +126,7 @@ namespace CmsData
                             }
                         break;
                     case (int)Person.DecisionCode.StatementReqBaptism:
-                        if ((DiscoveryClassStatusId.HasValue
-                                    && DiscClassStatuses.Contains(DiscoveryClassStatusId.Value))
+                        if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
                             && BaptismStatusId == (int)Person.BaptismStatusCode.Completed)
                         {
                             MemberStatusId = (int)Person.MemberStatusCode.Member;

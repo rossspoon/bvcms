@@ -94,7 +94,7 @@
             <td style="border: 1px solid grey">
                 <% if (Model.WhoId.HasValue)
                    { %>
-                <%=Html.HyperLink("/Person.aspx?id=" + Model.WhoId, Model.Who)%>
+                <%=Html.HyperLink("/Person/Index/" + Model.WhoId, Model.Who)%>
                 <% } 
                    if (Model.IsAnOwner)
                    { %>

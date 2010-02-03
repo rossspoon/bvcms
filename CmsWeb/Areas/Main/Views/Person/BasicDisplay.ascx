@@ -35,15 +35,15 @@
     <table class="Design2">
         <tr>
             <th>Home Phone:</th>
-            <td><%=Model.HomePhone %></td>
+            <td><%=Model.HomePhone.FmtFone() %></td>
         </tr>
         <tr>
             <th>Cell Phone:</th>
-            <td><%=Model.CellPhone %></td>
+            <td><%=Model.CellPhone.FmtFone()%></td>
         </tr>
         <tr>
             <th>Work Phone:</th>
-            <td><%=Model.WorkPhone %></td>
+            <td><%=Model.WorkPhone.FmtFone()%></td>
         </tr>
         <tr>
             <th>Email:</th>

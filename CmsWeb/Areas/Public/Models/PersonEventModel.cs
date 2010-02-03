@@ -57,7 +57,7 @@ namespace CMSWeb.Models
         {
             get { return married == 10 ? "Single" : "Married"; }
         }
-        public void ValidateModel(ModelStateDictionary ModelState)
+        public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
             CMSWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
@@ -93,13 +93,13 @@ namespace CMSWeb.Models
             }
         }
 
-        internal void ValidateModel2(ModelStateDictionary ModelState)
+        internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
             CMSWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
-            if (index == 0 && (!email.HasValue() || !Util.ValidEmail(email)))
+            if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (index == 0)
             {

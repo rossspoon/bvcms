@@ -11,12 +11,13 @@ namespace CMSWeb.Models.PersonPage
     {
         private int PeopleId;
         public PagerModel2 Pager { get; set; }
-        public PersonAttendHistoryModel(int id)
+        public PersonAttendHistoryModel(int id, bool future)
         {
             PeopleId = id;
+            this.future = future;
             Pager = new PagerModel2(Count);
         }
-        public bool future { get; set; }
+        private bool future { get; set; }
         private IQueryable<Attend> _attends;
         private IQueryable<Attend> FetchAttends()
         {
@@ -98,8 +99,13 @@ namespace CMSWeb.Models.PersonPage
                     q = q.OrderBy(a => a.MeetingDate);
                     break;
                 case "Meeting desc":
-                default:
                     q = q.OrderByDescending(a => a.MeetingDate);
+                    break;
+                default:
+                    if(future)
+                        q = q.OrderBy(a => a.MeetingDate);
+                    else
+                        q = q.OrderByDescending(a => a.MeetingDate);
                     break;
             }
             return q;

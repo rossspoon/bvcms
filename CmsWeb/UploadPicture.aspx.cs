@@ -26,7 +26,7 @@ namespace CMSWeb
                 person.Picture = new Picture();
             if (!IsPostBack)
                 HiddenField1.Value = "large";
-            HyperLink2.NavigateUrl = "~/Person.aspx?id=" + id.ToString();
+            HyperLink2.NavigateUrl = "~/Person/Index/" + id.ToString();
             HyperLink2.Text = "Return to: " + person.Name;
         }
 

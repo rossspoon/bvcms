@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<CMSWeb.Models.PersonEventModel>>" %>
+<table cellpadding="0" cellspacing="0">
 <% 
     for(var i = 0; i < Model.Count; i++)
     {
@@ -13,7 +14,8 @@
     if (last.Found == true || last.IsNew)
     {
 %>
-    <tr><td colspan="2"><input type="submit" class="submitbutton" value="Complete Registration and Pay <%=ViewData["fee"]%>" />
+    <tr><td colspan="2"><input id="submitit" type="submit" class="submitbutton" value="Complete Registration and Pay <%=ViewData["fee"]%>" />
         or <a href="/Event/AddAnotherPerson/" class="submitbutton">Add another household member</a></td>
     </tr>
 <%  } %>
+</table>

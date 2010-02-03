@@ -65,7 +65,7 @@ namespace CMSWeb
         void PersonGrid1_DataBound(object sender, EventArgs e)
         {
             if (AutoNavigateOn1 && PersonGrid1.DataPager != null && PersonGrid1.DataPager.TotalRowCount == 1)
-                Response.Redirect("~/Person.aspx?id=" + PersonGrid1.TopPeopleId);
+                Response.Redirect("~/Person/Index/" + PersonGrid1.TopPeopleId);
         }
 
         private void SaveToSession()

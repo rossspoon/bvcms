@@ -52,7 +52,7 @@
             <td>
                 <asp:Image ID="PersonIcon" ImageUrl="~/images/individual.gif" Width="10px" Height="12px"
                     runat="server" />
-                <asp:HyperLink ID="PersonLink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person.aspx?id={0}") %>'
+                <asp:HyperLink ID="PersonLink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person/Index/{0}") %>'
                     Text='<%# Eval("Name") %>'></asp:HyperLink>
             </td>
             <td>
@@ -77,7 +77,7 @@
                     Name='<%# Eval("Name") %>'></cc1:EmailHyperlink>
             </td>
             <td>
-                <asp:HyperLink ID="BFTeacherLink" runat="server" NavigateUrl='<%# Eval("BFTeacherId", "~/Person.aspx?id={0}") %>'
+                <asp:HyperLink ID="BFTeacherLink" runat="server" NavigateUrl='<%# Eval("BFTeacherId", "~/Person/Index/{0}") %>'
                     Text='<%# Eval("BFTeacher") %>'></asp:HyperLink>
             </td>
             <td>

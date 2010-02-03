@@ -11,7 +11,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Decision</th>
+        <th colspan="2" class="Design2Head">Decision</th>
     </tr>
     <tr>
         <th>Type:</th>
@@ -23,7 +23,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Join</th>
+        <th colspan="2" class="Design2Head">Join</th>
     </tr>
     <tr>
         <th>Type:</th>
@@ -39,7 +39,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Church Membership</th>
+        <th colspan="2" class="Design2Head">Church Membership</th>
     </tr>
     <tr>
         <th>Member Status:</th>
@@ -51,7 +51,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Baptism</th>
+        <th colspan="2" class="Design2Head">Baptism</th>
     </tr>
     <tr>
         <th>Type:</th>
@@ -71,7 +71,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Drop</th>
+        <th colspan="2" class="Design2Head">Drop</th>
     </tr>
     <tr>
         <th>Type:</th>
@@ -87,7 +87,7 @@
     </tr>
 <tr><td></td></tr>
     <tr>
-        <th colspan="2" class="LightBlueBG">Step 1 Class</th>
+        <th colspan="2" class="Design2Head">Step 1 Class</th>
     </tr>
     <tr>
         <th>Status:</th>

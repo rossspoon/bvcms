@@ -62,7 +62,7 @@
 <% foreach (var r in Model.FetchAll())
    { %>
         <tr>
-            <td><a href="/Person.aspx?id=<%=r.PeopleId %>"><%=r.Name%></a></td>
+            <td><a href="/Person/Index/<%=r.PeopleId %>"><%=r.Name%></a></td>
             <td><%=r.MemberType %></td>
             <td><%=r.TeamName%></td>
             <td><%=r.Birthday%></td>

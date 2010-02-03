@@ -35,7 +35,7 @@ namespace CMSWeb.Models.PersonPage
         public bool DoNotMailFlag { get; set; }
 
         public int? CampusId { get; set; }
-        public int? MemberStatusId { get; set; }
+        public int MemberStatusId { get; set; }
         public DateTime? JoinDate { get; set; }
         public int MaritalStatusId { get; set; }
         public string Spouse { get; set; }
@@ -46,7 +46,7 @@ namespace CMSWeb.Models.PersonPage
 
         public string Campus
         {
-            get { return cv.AllCampuses().ItemValue(CampusId ?? 0); }
+            get { return cv.AllCampuses0().ItemValue(CampusId); }
 
         }
         public string Gender
@@ -88,7 +88,7 @@ namespace CMSWeb.Models.PersonPage
                     {
                         Age = p.Age.ToString(),
                         Birthday = p.DOB,
-                        CampusId = p.CampusId,
+                        CampusId = p.CampusId ?? 0,
                         CellPhone = p.CellPhone.FmtFone(),
                         DeceasedDate = p.DeceasedDate,
                         DoNotCallFlag = p.DoNotCallFlag,
@@ -144,6 +144,7 @@ namespace CMSWeb.Models.PersonPage
             p.OccupationOther = Occupation;
             p.SchoolOther = School;
             p.SuffixCode = Suffix;
+            p.EmployerOther = Employer;
             p.TitleCode = Title;
             p.WeddingDate = WeddingDate;
             p.WorkPhone = WorkPhone.GetDigits();

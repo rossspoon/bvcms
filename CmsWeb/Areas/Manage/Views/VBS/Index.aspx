@@ -40,7 +40,7 @@
             <td>
             <% if(v.PeopleId != null) 
                { %>
-                <a id='n<%=v.Id%>' href='/Person.aspx?id=<%=v.PeopleId%>'><%=v.Name%></a>
+                <a id='n<%=v.Id%>' href='/Person/Index/<%=v.PeopleId%>'><%=v.Name%></a>
             <% } %>
             </td>
             <td width="20%"><%=v.Request%></td>

@@ -446,7 +446,7 @@ namespace CmsData
                 }
                 Util.Email(em, name, em,
                         "Just Added Person on " + Util.Host,
-                        "<a href='{0}Person.aspx?id={2}'>{1} ({2})</a>"
+                        "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
                         .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
             }
             return p;
@@ -548,6 +548,26 @@ namespace CmsData
         partial void OnDropCodeIdChanged()
         {
             _DropCodeIdChanged = true;
+        }
+        internal static int FindResCode(string zipcode)
+        {
+            if (zipcode.Length >= 5)
+            {
+                var z5 = zipcode.Substring(0, 5);
+                var z = DbUtil.Db.Zips.SingleOrDefault(zip => z5 == zip.ZipCode);
+                if (z == null)
+                    return 30;
+                return z.MetroMarginalCode ?? 30;
+            }
+            return 30;
+        }
+        partial void OnZipCodeChanged()
+        {
+            ResCodeId = FindResCode(ZipCode);
+        }
+        partial void OnAltZipCodeChanged()
+        {
+            AltResCodeId = FindResCode(AltZipCode);
         }
     }
 }

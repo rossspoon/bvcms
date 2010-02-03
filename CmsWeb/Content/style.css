@@ -223,6 +223,15 @@ table.Design2 th {
     background-color: #EFF3FB;
     empty-cells : show;
 }
+table.Design2 th.Design2Head {
+    border: solid 1px #EEEEEE;
+    text-align: left;
+    font-weight: bold;
+    color: #4B4B4B;
+    font-size: 100%;
+    background-color: #EFF3FB;
+    empty-cells : show;
+}
 
 
 .modalBackground 

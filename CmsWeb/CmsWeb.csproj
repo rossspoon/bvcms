@@ -82,6 +82,7 @@
     <Compile Include="Areas\Main\Models\Person\ContactsMadeModel.cs" />
     <Compile Include="Areas\Main\Models\Person\BasicPersonInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\AddressInfo.cs" />
+    <Compile Include="Areas\Main\Models\Person\MemberNotesInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\GrowthInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\PersonInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberInfo.cs" />
@@ -1273,6 +1274,8 @@
     <Content Include="Areas\Main\Views\Person\BusinessCard.ascx" />
     <Content Include="Areas\Main\Views\Person\AddressEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsDisplay.ascx" />
+    <Content Include="Areas\Main\Views\Person\MemberNotesEdit.ascx" />
+    <Content Include="Areas\Main\Views\Person\MemberNotesDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\GrowthEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\MemberEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\PendingTasksGrid.ascx" />
@@ -2065,6 +2068,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="template-basic2.htm" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
@@ -2098,6 +2102,8 @@
     <Content Include="Areas\Manage\Views\Home\BatchTag.aspx" />
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Areas\Manage\Views\Reports\Attendance.aspx" />
+    <Content Include="Content\newsletter.css" />
+    <Content Include="template-basic.htm" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Pager2.aspx" />

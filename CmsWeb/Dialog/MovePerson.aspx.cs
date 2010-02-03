@@ -56,7 +56,7 @@ namespace CMSWeb.Dialog
                 {
                     p.MovePersonStuff(otherid);
                     DbUtil.Db.SubmitChanges();
-                    var s = "'{0}?id={1}&goback={2}'".Fmt(Page.ResolveUrl("~/Person.aspx"), otherid, PeopleId);
+                    var s = "'{0}{1}&goback={2}'".Fmt(Page.ResolveUrl("~/Person/Index/"), otherid, PeopleId);
                     this.Page.ClientScript.RegisterStartupScript(typeof(MovePerson),
                         "closeThickBox", "self.parent.FinishMove({0});".Fmt(s), true);
                 }

@@ -223,7 +223,7 @@
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Leader Name" SortExpression="LeaderName">
             <ItemTemplate>
-                <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person.aspx?id={0}") %>'
+                <asp:HyperLink ID="LeaderLink" runat="server" NavigateUrl='<%# Eval("LeaderId", "~/Person/Index/{0}") %>'
                     Text='<%# Eval("LeaderName") %>'></asp:HyperLink>
                 <br />
             </ItemTemplate>

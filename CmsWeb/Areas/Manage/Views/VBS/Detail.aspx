@@ -19,7 +19,7 @@
     			$('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
     				$.post('/VBS/Assign/' + id + "?PeopleId=" + peopleid, null, function(ret) {
     					$('#' + id).text(ret.pid);
-    					$("#namelink").replaceWith("<a id='namelink' href='/Person.aspx?id=" + ret.pid + "'>" + ret.name + "</a>");
+    					$("#namelink").replaceWith("<a id='namelink' href='/Person/Index/" + ret.pid + "'>" + ret.name + "</a>");
     				}, "json");
     			});
     			return false;
@@ -34,7 +34,7 @@
 <form method="post" action="/VBS/Update/<%=d.Id%>">
 <table><tr>
 <td><label><a id='<%=d.Id%>' class="searchpeople" href="#">search(<%=d.PeopleId%>)</a></label></td>
-<td><label>Name: <a id="namelink" href="/Person.aspx?id=<%=d.PeopleId%>"><%=d.Name%></a></label> </td>
+<td><label>Name: <a id="namelink" href="/Person/Index/<%=d.PeopleId%>"><%=d.Name%></a></label> </td>
 <td>
 	<label>Can Pub Photo:<%=Html.CheckBox("PubPhoto", d.PubPhoto)%></label> |
 	<label>In Other Church:<%=Html.CheckBox("ActiveInAnotherChurch", d.ActiveInAnotherChurch)%></label> |

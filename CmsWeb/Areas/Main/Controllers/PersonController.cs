@@ -36,7 +36,8 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["UnTagAction"] = "/Person/UnTag/" + id;
             return View(m);
         }
-        public ActionResult Move(int? id, int to)
+        [Authorize(Roles="Admin")]
+        public ActionResult Move(int id, int to)
         {
             var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             try
@@ -49,6 +50,18 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("error");
             }
             return new EmptyResult();
+        }
+        [Authorize(Roles="Admin")]
+        public ActionResult Delete(int id)
+        {
+            Util.Auditing = false;
+            var person = DbUtil.Db.LoadPersonById(id);
+            if (!person.PurgePerson())
+                return Content("error, not deleted");
+            Util.CurrentPeopleId = 0;
+            Session.Remove("ActivePerson");
+            return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
+                .Fmt("Person Deleted", "javascript: history.go(-1)", "Go Back"));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Tag(int id)
@@ -85,9 +98,9 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AttendanceGrid(int id)
+        public ActionResult AttendanceGrid(int id, bool? future)
         {
-            var m = new PersonAttendHistoryModel(id);
+            var m = new PersonAttendHistoryModel(id, future == true);
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -304,6 +317,26 @@ namespace CMSWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdateGrowth();
             return View("GrowthDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MemberNotesDisplay(int id)
+        {
+            var m = MemberNotesInfo.GetMemberNotesInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MemberNotesEdit(int id)
+        {
+            var m = MemberNotesInfo.GetMemberNotesInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MemberNotesUpdate(int id)
+        {
+            var m = MemberNotesInfo.GetMemberNotesInfo(id);
+            UpdateModel(m);
+            m.UpdateMemberNotes();
+            return View("MemberNotesDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)

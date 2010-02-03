@@ -97,6 +97,9 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult NewKeyCard(int pid, string KeyCode)
         {
+            var p = DbUtil.Db.LoadPersonById(pid);
+            if (p == null)
+                return Content("No person to associate card with");
             var q = from kc in DbUtil.Db.CardIdentifiers
                     where KeyCode == kc.Id
                     select kc;

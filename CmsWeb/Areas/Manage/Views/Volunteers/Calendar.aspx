@@ -46,7 +46,7 @@
                     <br />
                     <% foreach (var p in cell.Persons)
                        { %>
-                    <a href="/Person.aspx?id=<%=p.PeopleId %>">
+                    <a href="/Person/Index/<%=p.PeopleId %>">
                         <%=p.Name%></a><br />
                     <% } %>
                     <% } %>

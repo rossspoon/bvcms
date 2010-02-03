@@ -76,7 +76,7 @@ Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" T
                         <td>
                             <asp:Image ID="PersonIcon" ImageUrl="~/images/individual.gif" Width="10px" Height="12px"
                                 runat="server" />
-                            <asp:HyperLink ID="PersonLink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person.aspx?id={0}") %>'
+                            <asp:HyperLink ID="PersonLink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person/Index/{0}") %>'
                                 Text='<%# Eval("Name") %>'></asp:HyperLink>
                         </td>
                         <td>

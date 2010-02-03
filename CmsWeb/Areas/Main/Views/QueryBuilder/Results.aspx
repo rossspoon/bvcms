@@ -34,7 +34,7 @@
    { %>
 <tr>
     <td><img src="/images/individual.gif" width="10px" height="12px" />
-        <a href='<%="/Person.aspx?id=" + p.PeopleId %>'><%=p.Name %></a>
+        <a href='<%="/Person/Index/" + p.PeopleId %>'><%=p.Name %></a>
     </td>
     <td>
         <%=p.MemberStatus %><br />
@@ -55,7 +55,7 @@
         <a href='<%="mailto:" + p.Email %>'><%=p.Email %></a>
     </td>
     <td>
-        <a href='<%="/Person.aspx?id=" + p.BFTeacherId %>'><%=p.BFTeacher %></a>
+        <a href='<%="/Person/Index/" + p.BFTeacherId %>'><%=p.BFTeacher %></a>
     </td>
     <td>
         <a href="#" class="taguntag" title="Add to/Remove from Active Tag" value='<%=p.PeopleId %>'><%=p.HasTag? "Remove" : "Add" %></a>

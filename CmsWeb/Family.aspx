@@ -160,7 +160,7 @@
                                 </asp:BoundField>
                                 <asp:TemplateField HeaderText="Name">
                                     <ItemTemplate>
-                                        <asp:HyperLink ID="namelink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person.aspx?Id={0}") %>'
+                                        <asp:HyperLink ID="namelink" runat="server" NavigateUrl='<%# Eval("PeopleId", "~/Person/Index/{0}") %>'
                                             Text='<%# Eval("Name") %>'></asp:HyperLink>
                                     </ItemTemplate>
                                     <HeaderStyle HorizontalAlign="Left" VerticalAlign="Middle" />

@@ -52,9 +52,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             {
                 case "a":
                     DateTime dt;
-                    if (DateTime.TryParse(value, out dt))
-                        rec.AgeDate = dt.ToString("M/d");
-                    else
+                    if (!DateTime.TryParse(value, out dt))
                         rec.AgeDate = null;
                     break;
                 case "s":

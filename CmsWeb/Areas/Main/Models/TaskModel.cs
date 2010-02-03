@@ -767,7 +767,9 @@ namespace CMSWeb.Models
 
         public void ArchiveTask(int TaskId, ITaskNotify notify)
         {
-            var task = DbUtil.Db.Tasks.Single(t => t.Id == TaskId);
+            var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
+            if (task == null)
+                return;
 
             if (task.OwnerId == PeopleId)
             {

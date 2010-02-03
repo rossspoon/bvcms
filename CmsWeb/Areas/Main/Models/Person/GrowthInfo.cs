@@ -36,9 +36,9 @@ namespace CMSWeb.Models.PersonPage
                     {
                         PeopleId = p.PeopleId,
 
-                        InterestPointId = p.InterestPointId,
-                        OriginId = p.OriginId,
-                        EntryPointId = p.EntryPointId,
+                        InterestPointId = p.InterestPointId ?? 0,
+                        OriginId = p.OriginId ?? 0,
+                        EntryPointId = p.EntryPointId ?? 0,
                         ChristAsSavior = p.ChristAsSavior,
                         Comments = p.Comments,
                         InterestedInJoining = p.InterestedInJoining,
@@ -51,6 +51,14 @@ namespace CMSWeb.Models.PersonPage
         public void UpdateGrowth()
         {
             var p = DbUtil.Db.LoadPersonById(PeopleId);
+
+
+            if (InterestPointId == 0)
+                InterestPointId = null;
+            if (OriginId == 0)
+                OriginId = null;
+            if (EntryPointId == 0)
+                EntryPointId = null;
 
             p.InterestPointId = InterestPointId;
             p.OriginId = OriginId;

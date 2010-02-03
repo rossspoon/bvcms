@@ -23,11 +23,8 @@
         return false;
     });
     $("form.DisplayEdit").submit(function() {
-        return false;
-    });
-    $("form.DisplayEdit input:submit").live("click", function() {
-        var f = $(this).closest('form');
-        $(f).submit();
+        if (!$("#submitit").val())
+            return false;
     });
     $("form.DisplayEdit a.cancel").live('click', function() {
         var f = $(this).closest('form');

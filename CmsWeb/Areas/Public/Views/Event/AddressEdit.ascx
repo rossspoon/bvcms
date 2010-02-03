@@ -23,6 +23,14 @@
         <td><input type="text" name="list[<%=Model.index%>].state" value="<%=Model.state%>" /></td>
         <td></td>
     </tr>
+    <% }
+       else
+       { %>
+    <tr>
+        <td><label for="email">Contact Email</label></td>
+        <td><input type="text" name="list[<%=Model.index%>].email" value="<%=Model.email%>" /></td>
+        <td><%= Html.ValidationMessage("email")%></td>
+    </tr>
     <% } %>
     <tr>
         <td><label for="gender">Gender</label></td>

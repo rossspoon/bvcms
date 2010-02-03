@@ -36,7 +36,7 @@
     
         <tr>
             <td>
-                <a href="/Person.aspx?id=<%= Html.Encode(item.Person.PeopleId) %>"><%= Html.Encode(item.Person.Name) %></a>
+                <a href="/Person/Index/<%= Html.Encode(item.Person.PeopleId) %>"><%= Html.Encode(item.Person.Name) %></a>
             </td>
             <td>
                 <%= Html.Encode(item.Quantity) %>

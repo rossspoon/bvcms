@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using UtilityExtensions;
 
 namespace CMSWeb.Models
 {
@@ -13,6 +14,7 @@ namespace CMSWeb.Models
         public string Location { get; set; }
         public string LeaderName { get; set; }
         public DateTime? MeetingTime { get; set; }
+        public string Schedule { get { return "{0:ddd h:mm tt}".Fmt(MeetingTime); } }
         public string MemberType { get; set; }
         public int? LeaderId { get; set; }
         public DateTime? EnrollDate { get; set; }

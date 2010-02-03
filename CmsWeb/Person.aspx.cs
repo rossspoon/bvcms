@@ -123,7 +123,7 @@ namespace CMSWeb
             var otherid = this.QueryString<int?>("goback");
             goback.Visible = User.IsInRole("Admin") && otherid.HasValue && otherid.Value > 0;
             if (goback.Visible)
-                goback.NavigateUrl = "~/Person.aspx?id=" + otherid.Value;
+                goback.NavigateUrl = "~/Person/Index/" + otherid.Value;
             var ckorg = (int?)Session["CheckInOrgId"];
             if (ckorg.HasValue)
                 CheckInLink.NavigateUrl = "/CheckIn/CheckIn/{0}?pid={1}"
@@ -133,7 +133,7 @@ namespace CMSWeb
 
         void ExportToolBar1_TaggedEvent(object sender, EventArgs e)
         {
-            Response.Redirect("~/Person.aspx?id=" + person.PeopleId.ToString());
+            Response.Redirect("~/Person/Index/" + person.PeopleId.ToString());
         }
 
         private void GridOnTabClick(TabContainer tabs, string find, GridView grid, string onclick)
@@ -350,7 +350,6 @@ namespace CMSWeb
             UpdatePanel1.Update();
             UpdatePanel2.Update();
         }
-
         protected void DeletePerson_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             Util.Auditing = false;

@@ -1,12 +1,19 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonEventModel>" %>
-<tr <%=Model.index % 2 == 1 ? "class='alt'" : "" %>><td>
+<tr <%=Model.index % 2 == 1 ? "class='alt'" : "" %>>
+<td colspan="2">
 <table>
     <tr>
         <td><label for="first">First Name</label></td>
-        <td><input type="text" name="list[<%=Model.index%>].first" value="<%=Model.first%>" /></td>
-        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
+        <td><input type="text" name="list[<%=Model.index%>].first" value="<%=Model.first%>" />
+        <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" />
         <input type="hidden" name="list[<%=Model.index%>].ShowAddress" value="<%=Model.ShowAddress %>" />
-        <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" /></td>
+        </td>
+        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
+<% if (Model.index > 0)
+   { %>
+    <a class="cancel" href="/Event/Cancel/<%=Model.index %>">Cancel this participant</a>
+<% } %>
+        </td>
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>
@@ -57,11 +64,5 @@
     </tr>
     <% } %>
 </table>
-</td>
-<td align="right" valign="top">
-<% if (Model.index > 0)
-   { %>
-    <a class="cancel" href="/Event/Cancel/<%=Model.index %>">Cancel this participant</a>
-<% } %>
 </td>
 </tr>

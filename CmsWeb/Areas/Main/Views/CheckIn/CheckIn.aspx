@@ -26,7 +26,7 @@
                             Name:
                         </th>
                         <td>
-                            <a href='/Person.aspx?id=<%=Model.person.PeopleId %>'>
+                            <a href='/Person/Index/<%=Model.person.PeopleId %>'>
                                 <%=Model.person.Name%></a>
                         </td>
                     </tr>

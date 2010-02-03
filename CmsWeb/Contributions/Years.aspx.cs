@@ -26,7 +26,7 @@ namespace CMSWeb.Contributions
                 Response.EndShowMessage("no person");
 
             PersonLink.Text = person.Name;
-            PersonLink.NavigateUrl = "~/Person.aspx?id=" + person.PeopleId;
+            PersonLink.NavigateUrl = "~/Person/Index/" + person.PeopleId;
 
             hlContributionStatement.Text = "Contribution Statement";
             //hlContributionStatement.NavigateUrl = "~/Contributions/Reports/ContributionStatementRpt.aspx?id=" + person.PeopleId + 

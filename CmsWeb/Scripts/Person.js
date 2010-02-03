@@ -117,5 +117,17 @@
         });
         return false;
     });
+    $("#future").live('click', function() {
+        var f = $(this).closest('form');
+        var q = f.serialize();
+        $.post($(f).attr("action"), q, function(ret) {
+            $(f).html(ret);
+        });
+    }); 
+    $("form.DisplayEdit").submit(function() {
+        if (!$("#submitit").val())
+            return false;
+    });
+
 });
 

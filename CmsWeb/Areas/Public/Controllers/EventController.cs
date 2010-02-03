@@ -53,7 +53,7 @@ namespace CMSWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PersonFind(int id, IList<PersonEventModel> list)
         {
-            list[id].ValidateModel(ModelState);
+            list[id].ValidateModelForFind(ModelState);
             ComputeFee(list);
             return View("list", list);
         }
@@ -75,7 +75,7 @@ namespace CMSWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SubmitNew(int id, IList<PersonEventModel> list)
         {
-            list[id].ValidateModel2(ModelState);
+            list[id].ValidateModelForNew(ModelState);
             if (ModelState.IsValid)
                 list[id].IsNew = true;
             ComputeFee(list);

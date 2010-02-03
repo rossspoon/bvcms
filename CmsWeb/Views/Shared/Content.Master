@@ -80,7 +80,7 @@
 <% if (Util.CurrentPeopleId != 0)
    { %>                            
                         <li>
-                            <a href="/Person.aspx?id=<%=Util.CurrentPeopleId%>"><%=Session["ActivePerson"]%></a></li>
+                            <a href="/Person/Index/<%=Util.CurrentPeopleId%>"><%=Session["ActivePerson"]%></a></li>
 <% } %>
                         <li>
                             <a href="/ContactSearch.aspx">Contact Search</a></li>
@@ -103,7 +103,7 @@
 <% if (Util.CurrentOrgId != 0)
    { %>                            
                         <li>
-                            <a href="/Person.aspx?id=<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
+                            <a href="/Person/Index/<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
 <% } %>
                     </ul>
                 </li>
