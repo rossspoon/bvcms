@@ -148,6 +148,8 @@ namespace CMSWeb.Models.PersonPage
             p.TitleCode = Title;
             p.WeddingDate = WeddingDate;
             p.WorkPhone = WorkPhone.GetDigits();
+            if (p.DeceasedDateChanged)
+                p.MemberProfileAutomation();
             DbUtil.Db.SubmitChanges();
         }
         public static IEnumerable<SelectListItem> GenderCodes()

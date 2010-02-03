@@ -26,6 +26,7 @@
     <%=Html.Hidden("Email", Model.registration.Email) %>
     <%=Html.Hidden("Misc1", Model.participant.Name) %>
     <%=Html.Hidden("Misc2", Model.division.Name) %>
+    <%=Html.Hidden("Misc3", Model.Amount) %>
     <%=Html.SubmitButton("Submit", "Next") %>
     </form>
 

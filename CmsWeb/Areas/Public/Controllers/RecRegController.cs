@@ -116,7 +116,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 "{0} Registration".Fmt(m.division.Name), 
                 "{0}({1}) has registered for {2}: {3}"
                 .Fmt(m.participant.Name, m.participant.PeopleId, 
-                m.division.Name, m.organization.OrganizationName, m.Amount));
+                m.division.Name, m.organization.OrganizationName));
 
             if ((reg.FeePaid ?? false) == true)
                 return RedirectToAction("Confirm", new { id = reg.Id });
@@ -133,7 +133,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var tm = TempData["model"] as Models.RecRegModel;
             return View(tm);
         }
-        public ActionResult Confirm(int? id, string TransactionID)
+        public ActionResult Confirm(int? id, string TransactionID, string Misc3)
         {
             if (!id.HasValue)
                 return View("Unknown");
@@ -144,6 +144,9 @@ namespace CMSWeb.Areas.Public.Controllers
                 m.registration.TransactionId = TransactionID;
                 DbUtil.Db.SubmitChanges();
             }
+            decimal amt = 0;
+            if (Misc3.HasValue())
+                amt = decimal.Parse(Misc3);
 
             Util.Email(DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress),
     "", m.registration.Email, "Recreation Registration",
@@ -160,10 +163,10 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
                 DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress),
                 "{0} Registration".Fmt(m.division.Name),
 @"{0}({1}) has registered for {2}: {3}\r\n
-Feepaid: {4:c}, TransactionID: {5}"
+Feepaid: {4:C}, TransactionID: {5}"
                 .Fmt(m.participant.Name, m.participant.PeopleId,
                 m.division.Name, m.organization.OrganizationName, 
-                m.Amount, TransactionID));
+                amt, TransactionID));
 
             return View(m);
         }

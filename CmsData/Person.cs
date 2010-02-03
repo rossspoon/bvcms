@@ -551,7 +551,7 @@ namespace CmsData
         }
         internal static int FindResCode(string zipcode)
         {
-            if (zipcode.Length >= 5)
+            if (zipcode.HasValue() && zipcode.Length >= 5)
             {
                 var z5 = zipcode.Substring(0, 5);
                 var z = DbUtil.Db.Zips.SingleOrDefault(zip => z5 == zip.ZipCode);
