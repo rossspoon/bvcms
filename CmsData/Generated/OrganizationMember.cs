@@ -45,6 +45,8 @@ namespace CmsData
 		
 		private string _UserData;
 		
+		private decimal? _Amount;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -103,6 +105,9 @@ namespace CmsData
 		
 		partial void OnUserDataChanging(string value);
 		partial void OnUserDataChanged();
+		
+		partial void OnAmountChanging(decimal? value);
+		partial void OnAmountChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -433,6 +438,28 @@ namespace CmsData
 					this._UserData = value;
 					this.SendPropertyChanged("UserData");
 					this.OnUserDataChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Amount", UpdateCheck=UpdateCheck.Never, Storage="_Amount", DbType="money")]
+		public decimal? Amount
+		{
+			get { return this._Amount; }
+
+			set
+			{
+				if (this._Amount != value)
+				{
+				
+                    this.OnAmountChanging(value);
+					this.SendPropertyChanging();
+					this._Amount = value;
+					this.SendPropertyChanged("Amount");
+					this.OnAmountChanged();
 				}
 
 			}

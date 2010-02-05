@@ -323,7 +323,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(25)")]
+		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(40)")]
 		public string Location
 		{
 			get { return this._Location; }

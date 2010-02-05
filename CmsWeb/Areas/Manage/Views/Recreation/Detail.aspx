@@ -6,6 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <% CMSWeb.Models.RecDetailModel d = Model; %>
     <div>
+        <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
         <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(function() {

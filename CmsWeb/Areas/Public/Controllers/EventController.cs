@@ -132,7 +132,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = testing ?? false,
                 description = org.OrganizationName,
                 postbackurl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Event/Confirm/" + d.Id,
-                orgid = id,
+                oid = id,
             };
             return View("Payment", m);
         }

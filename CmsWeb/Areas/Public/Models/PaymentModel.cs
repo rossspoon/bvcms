@@ -52,7 +52,7 @@ namespace CMSWeb.Models
         public string state { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        public int orgid { get; set; }
+        public int oid { get; set; }
 
     }
 }

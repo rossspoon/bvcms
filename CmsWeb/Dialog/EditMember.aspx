@@ -67,7 +67,7 @@
             <tr>
             <td>Extra Member Info:</td>
                 <td>
-                <cc1:DisplayOrEditText ID="UserData" BindingSource="OrgMember" runat="server" ></cc1:DisplayOrEditText>
+                <cc1:DisplayOrEditText ID="UserData" BindingSource="OrgMember" TextMode="MultiLine" Width="18em" Rows="3" runat="server" ></cc1:DisplayOrEditText>
                 </td>
             </tr>
             <tr>

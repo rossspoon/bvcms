@@ -1,18 +1,17 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.CheckInRecModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+    <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="/Scripts/CheckIn.js" type="text/javascript"></script>
 
     <%=Html.Hidden("OrgId") %>
     <%=Html.Hidden("PeopleId", Model.person.PeopleId) %>
-    <h2>
-        CheckIn for
-        <%=Model.OrgName %></h2>
     <table class="checkin" cellpadding="5">
         <tr>
             <td>
@@ -20,6 +19,9 @@
                 <a href='tkup:<%=Model.person.PeopleId %>,<%=Model.guid %>,<%=Model.host %>' id="tkup">Take Picture</a>
             </td>
             <td>
+            <h2>
+                CheckIn for
+                <%=Model.OrgName %></h2>
                 <table cellpadding="3">
                     <tr>
                         <th>

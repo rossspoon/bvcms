@@ -9,11 +9,12 @@ CREATE TABLE [dbo].[Meetings]
 [NumVstMembers] [int] NOT NULL CONSTRAINT [DF__MEETINGS___NUM_V__5027A6DA] DEFAULT ((0)),
 [NumRepeatVst] [int] NOT NULL CONSTRAINT [DF__MEETINGS___NUM_R__511BCB13] DEFAULT ((0)),
 [NumNewVisit] [int] NOT NULL CONSTRAINT [DF__MEETINGS___NUM_N__520FEF4C] DEFAULT ((0)),
-[Location] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Location] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [MeetingDate] [datetime] NULL,
 [GroupMeetingFlag] [bit] NOT NULL CONSTRAINT [DF__MEETINGS___GROUP__5AA5354D] DEFAULT ((0)),
 [Description] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
+)
+
 GO
 ALTER TABLE [dbo].[Meetings] ADD CONSTRAINT [MEETINGS_PK] PRIMARY KEY NONCLUSTERED  ([MeetingId]) ON [PRIMARY]
 GO

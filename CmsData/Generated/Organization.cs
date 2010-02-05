@@ -93,6 +93,8 @@ namespace CmsData
 		
 		private bool? _ShowOnlyRegisteredAtCheckIn;
 		
+		private int? _Limit;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -253,6 +255,9 @@ namespace CmsData
 		
 		partial void OnShowOnlyRegisteredAtCheckInChanging(bool? value);
 		partial void OnShowOnlyRegisteredAtCheckInChanged();
+		
+		partial void OnLimitChanging(int? value);
+		partial void OnLimitChanged();
 		
     #endregion
 		public Organization()
@@ -1150,6 +1155,28 @@ namespace CmsData
 					this._ShowOnlyRegisteredAtCheckIn = value;
 					this.SendPropertyChanged("ShowOnlyRegisteredAtCheckIn");
 					this.OnShowOnlyRegisteredAtCheckInChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Limit", UpdateCheck=UpdateCheck.Never, Storage="_Limit", DbType="int")]
+		public int? Limit
+		{
+			get { return this._Limit; }
+
+			set
+			{
+				if (this._Limit != value)
+				{
+				
+                    this.OnLimitChanging(value);
+					this.SendPropertyChanging();
+					this._Limit = value;
+					this.SendPropertyChanged("Limit");
+					this.OnLimitChanged();
 				}
 
 			}

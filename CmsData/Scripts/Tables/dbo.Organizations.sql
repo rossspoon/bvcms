@@ -37,8 +37,10 @@ CREATE TABLE [dbo].[Organizations]
 [SchedTime] [datetime] NULL,
 [SchedDay] [int] NULL,
 [MeetingTime] [datetime] NULL,
-[ShowOnlyRegisteredAtCheckIn] [bit] NULL
+[ShowOnlyRegisteredAtCheckIn] [bit] NULL,
+[Limit] [int] NULL
 )
+
 
 -- =============================================
 -- Author:		<Author,,Name>

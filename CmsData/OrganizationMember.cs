@@ -139,6 +139,19 @@ namespace CmsData
                 mt.OrgMemMemTags.Add(new OrgMemMemTag { PeopleId = PeopleId, OrgId = OrganizationId });
             DbUtil.Db.SubmitChanges();
         }
+        public void RemoveFromGroup(string name)
+        {
+            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
+            if (mt == null)
+                return;
+            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id);
+            if (omt != null)
+            {
+                OrgMemMemTags.Remove(omt);
+                Db.OrgMemMemTags.DeleteOnSubmit(omt);
+                DbUtil.Db.SubmitChanges();
+            }
+        }
         public static OrganizationMember InsertOrgMembers
             (int OrganizationId,
             int PeopleId,

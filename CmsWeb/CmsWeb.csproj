@@ -94,8 +94,10 @@
     <Compile Include="Areas\Main\Models\Person\PersonModel.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
+    <Compile Include="Areas\Public\Controllers\RetreatController.cs" />
     <Compile Include="Areas\Public\Controllers\EventController.cs" />
     <Compile Include="Areas\Public\Controllers\OptOutController.cs" />
+    <Compile Include="Areas\Public\Models\RetreatModel.cs" />
     <Compile Include="Areas\Public\Models\PersonEventModel.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Code\CmsController.cs" />
@@ -1287,6 +1289,14 @@
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
+    <Content Include="Areas\Public\Views\Retreat\AddressDisplay.ascx" />
+    <Content Include="Areas\Public\Views\Retreat\AddressEdit.ascx" />
+    <Content Include="Areas\Public\Views\Retreat\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\Retreat\Index.aspx" />
+    <Content Include="Areas\Public\Views\Retreat\List.ascx" />
+    <Content Include="Areas\Public\Views\Retreat\Payment.aspx" />
+    <Content Include="Areas\Public\Views\Retreat\PersonDisplay.ascx" />
+    <Content Include="Areas\Public\Views\Retreat\PersonEdit.ascx" />
     <Content Include="Areas\Public\Views\DiscipleLife\Confirm.aspx" />
     <Content Include="Areas\Public\Views\DiscipleLife\Index.aspx" />
     <Content Include="Areas\Public\Views\Event\AddressEdit.ascx" />
@@ -2068,6 +2078,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\Retreat.js" />
     <Content Include="template-basic2.htm" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />

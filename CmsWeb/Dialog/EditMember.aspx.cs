@@ -70,8 +70,9 @@ namespace CMSWeb.Dialog
                 }
                 DbUtil.Db.SubmitChanges();
                 EditUpdateButton1.DataBind();
-                this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
-                    "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
+                if (from != "na")
+                    this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
+                        "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
             }
         }
 

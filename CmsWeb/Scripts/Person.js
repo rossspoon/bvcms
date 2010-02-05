@@ -19,9 +19,20 @@
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
             $.post(href, null, function(ret) {
-                window.location.reload();
+                if (ret) {
+                    $.blockUI({ message: "delete Failed: " + ret });
+                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+                }
+                else {
+                    $.blockUI({ message: "person deleted" });
+                    $('.blockOverlay').attr('title', 'Click to unblock').click(function() {
+                        $.unblockUI();
+                        window.location = "/";
+                    });
+                }
             });
         }
+        return false;
     });
     $('#moveperson').click(function(ev) {
         var href = $(this).attr("href");
@@ -43,6 +54,47 @@
         });
         return false;
     });
+    if ($("#ui-widget-iframe").length == 0) {
+        $('<div id="ui-widget-iframe-outer"><iframe id="ui-widget-iframe" src="" frameborder="0" /></div>')
+		.appendTo(document.body)
+		.hide();
+    }
+
+    $('#current-tab form a.membertype').live("click", function(ev) {
+        var dialogOuter = $("#ui-widget-iframe-outer");
+        var w = 600;
+        var dialogFrame = $("#ui-widget-iframe");
+        dialogFrame.attr('height', 400);
+        dialogFrame.attr('width', 600);
+
+        dialogFrame.attr('src', this.href);
+        $("body").css("overflow", "hidden");
+        var dialog = dialogOuter.dialog(
+				{ modal: true,
+				    title: this.title,
+				    resizable: false,
+				    shadow: false,
+				    close: function(ev, ui) {
+				        dialogOuter.dialog('destroy'); $("body").css("overflow", "auto");
+				        $.getTable($('#current-tab form'));
+				    }
+				});
+
+        var hW = dialogFrame.width();
+        dialog.dialog('option', 'width', hW + 40);
+        dialog.dialog('option', 'position', 'center');
+
+        var offset = dialog.offset();
+        $('.ui-widget-shadow').width(hW + 40);
+        $('.ui-widget-shadow').css({
+            left: offset.left,
+            top: offset.top,
+            width: dialog.outerWidth(),
+            height: dialog.outerHeight()
+        });
+        return false;
+    });
+
     $(".CreateAndGo").click(function() {
         if (confirm($(this).attr("confirm")))
             $.post($(this).attr("href"), null, function(ret) {
@@ -123,7 +175,7 @@
         $.post($(f).attr("action"), q, function(ret) {
             $(f).html(ret);
         });
-    }); 
+    });
     $("form.DisplayEdit").submit(function() {
         if (!$("#submitit").val())
             return false;

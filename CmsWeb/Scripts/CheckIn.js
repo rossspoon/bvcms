@@ -77,7 +77,11 @@
         $('.schooltext').show();
     });
     //http://localhost:58724/CheckIn/CheckIn/88292?pid=828612
-    $('.schooltext').autocomplete("/Register/Schools");
+    var acopts = {
+        minChars: 3,
+        matchContains: 1
+    };
+    $('.schooltext').autocomplete("/Register/Schools", acopts);
     $('.schooltext').keypress(function(e) {
         var key = window.event ? e.keyCode : e.which;
         if (key != 13)

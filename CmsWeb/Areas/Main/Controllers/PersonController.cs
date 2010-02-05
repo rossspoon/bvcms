@@ -57,13 +57,12 @@ namespace CMSWeb.Areas.Main.Controllers
             Util.Auditing = false;
             var person = DbUtil.Db.LoadPersonById(id);
             if (person == null)
-                return Content("bad peopleid");
+                return Content("error, bad peopleid");
             if (!person.PurgePerson())
                 return Content("error, not deleted");
             Util.CurrentPeopleId = 0;
             Session.Remove("ActivePerson");
-            return Content("<h3 style='color:red'>{0}</h3>\n<a href='/'>{1}</a>"
-                .Fmt("Person Deleted", "Go Home"));
+            return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Tag(int id)
