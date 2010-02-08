@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
+using CMSWeb.Models;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
@@ -19,7 +20,7 @@ namespace CMSWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int? origin, int? entrypoint)
         {
-            var m = new Models.SearchPeopleModel();
+            var m = new SearchPeopleModel();
             UpdateModel(m);
             if (origin.HasValue)
                 m.Origin = origin;
@@ -29,7 +30,7 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         public ActionResult Rows(int id)
         {
-            var m = new Models.SearchPeopleModel();
+            var m = new SearchPeopleModel();
             UpdateModel(m);
             m.Page = id;
             return PartialView(m);
@@ -37,7 +38,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AddNew()
         {
-            var m = new Models.SearchPeopleModel();
+            var m = new SearchPeopleModel();
             UpdateModel(m); 
             var err = m.ValidateAddNew();
             if (err.HasValue())

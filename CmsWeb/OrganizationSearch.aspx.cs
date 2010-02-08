@@ -53,6 +53,13 @@ namespace CMSWeb
             else
                 SetCreateMeetingDefaults(Schedule.SelectedValue.ToInt());
 
+            var div = Page.QueryString<int?>("div");
+            var progid = Page.QueryString<int?>("progid");
+            if (div.HasValue)
+            {
+                OrgDivisions.SelectedValue = div.ToString();
+                Tags.SelectedValue = "{0}:{1}".Fmt(progid,div);
+            }
             ManageOrgTags.Visible = User.IsInRole("OrgTagger");
             var col = OrganizationGrid.Columns[OrganizationGrid.Columns.Count - 1];
             col.Visible = ManageOrgTags.Visible;

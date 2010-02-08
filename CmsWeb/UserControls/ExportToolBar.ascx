@@ -67,10 +67,20 @@
                     <asp:Image ID="Image25" ImageUrl="~/images/Report.png" runat="server" />
                     Contact Report</asp:HyperLink></li>
             <li>
+                <asp:HyperLink ID="AttendanceLink" ToolTip="General Attendance Stats"
+                    runat="server">
+                    <asp:Image ID="Image31" ImageUrl="~/images/Report.png" runat="server" />
+                    Weekly Attend</asp:HyperLink></li>
+            <li>
                 <asp:HyperLink ID="InvolvementLink" ToolTip="Personal, Contact and Enrollment Info"
                     runat="server">
                     <asp:Image ID="Image10" ImageUrl="~/images/Excel.png" runat="server" />
                     Involvement</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="FamilyLink" ToolTip="Family Information"
+                    runat="server">
+                    <asp:Image ID="Image32" ImageUrl="~/images/Report.png" runat="server" />
+                    Family Report</asp:HyperLink></li>
             <li>
                 <asp:HyperLink ID="VolunteerLink" ToolTip="Volunteer Information"
                     runat="server">
@@ -80,7 +90,7 @@
                 <asp:HyperLink ID="AttendLink" ToolTip="Contains attendance information for their class"
                     runat="server">
                     <asp:Image ID="Image11" ImageUrl="~/images/Excel.png" runat="server" />
-                    Attendance</asp:HyperLink></li>
+                    BF Attendance</asp:HyperLink></li>
             <li>
                 <asp:HyperLink ID="ChildrenLink" ToolTip="Contains emergency contact, who brought child info"
                     runat="server">

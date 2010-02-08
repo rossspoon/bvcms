@@ -17,10 +17,11 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class AttendanceReport : System.Web.UI.Page
+    public class WeeklyAttendanceResult : ActionResult
     {
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
@@ -33,13 +34,18 @@ namespace CMSWeb.Reports
         private DateTime dt;
         private PdfContentByte dc;
 
-        protected void Page_Load(object sender, EventArgs e)
+        private int? qid;
+        public WeeklyAttendanceResult(int? id)
         {
-            Response.Clear();
+            qid = id;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var qid = this.QueryString<int?>("id");
             dt = Util.Now;
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
@@ -47,8 +53,6 @@ namespace CMSWeb.Reports
             w.PageEvent = pageEvents;
             doc.Open();
             dc = w.DirectContent;
-
-            var ctl = new RollsheetController();
 
             StartPageSet();
             if (qid.HasValue) // print using a query
@@ -328,3 +332,4 @@ namespace CMSWeb.Reports
         }
     }
 }
+

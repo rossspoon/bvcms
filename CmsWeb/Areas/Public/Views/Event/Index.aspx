@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<IList<CMSWeb.Models.PersonEventModel>>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<IList<CMSWeb.Models.EventModel>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 </asp:Content>
@@ -14,7 +14,14 @@ tr.alt
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
     <script src="/Scripts/Event.js?v=3" type="text/javascript"></script>
     <h2><%=ViewData["EventName"] %></h2>
-    <form class="DisplayEdit" action="/Event/CompleteRegistration/<%=ViewData["OrgId"] %><%=ViewData["testing"] %>" method="post">
-    <% Html.RenderPartial("List", Model); %>
-    </form>
+    <%=ViewData["Instructions"] %>
+    <% 
+        var d = new Dictionary<string, object>();
+        d.Add("class", "DisplayEdit");
+        var rv = ViewData["rv"] as RouteValueDictionary;
+        using(Html.BeginForm("CompleteRegistration", "Event", rv, FormMethod.Post, d))
+        {
+            Html.RenderPartial("List", Model);
+        }
+    %>
 </asp:Content>

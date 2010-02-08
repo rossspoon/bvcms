@@ -266,6 +266,24 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.Image Image25;
         
         /// <summary>
+        /// AttendanceLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink AttendanceLink;
+        
+        /// <summary>
+        /// Image31 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Image31;
+        
+        /// <summary>
         /// InvolvementLink control.
         /// </summary>
         /// <remarks>
@@ -282,6 +300,24 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image Image10;
+        
+        /// <summary>
+        /// FamilyLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink FamilyLink;
+        
+        /// <summary>
+        /// Image32 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Image32;
         
         /// <summary>
         /// VolunteerLink control.

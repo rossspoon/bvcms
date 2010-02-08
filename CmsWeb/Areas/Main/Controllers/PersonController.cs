@@ -7,6 +7,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Text;
 using CMSWeb.Models.PersonPage;
+using CMSWeb.Models;
 using System.Diagnostics;
 
 namespace CMSWeb.Areas.Main.Controllers
@@ -122,7 +123,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PendingTasksGrid(int id)
         {
-            var m = new Models.TaskModel();
+            var m = new TaskModel();
             return View(m.TasksAboutList(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -192,7 +193,7 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 OwnerId = pid,
                 Description = "NewTask",
-                ListId = Models.TaskModel.InBoxId(pid),
+                ListId = TaskModel.InBoxId(pid),
                 StatusId = active,
             };
             p.TasksAboutPerson.Add(t);

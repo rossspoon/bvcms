@@ -10,15 +10,16 @@ using System.Data.Linq;
 
 namespace CMSWeb.Models
 {
-    public class PersonEventModel
+    public class EventModel
     {
-        public PersonEventModel()
+        public EventModel()
         {
             option = 1;
         }
         public int index { get; set; }
         public string first { get; set; }
         public string last { get; set; }
+        public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
         public string homecell { get; set; }
@@ -34,6 +35,7 @@ namespace CMSWeb.Models
         public bool? Found { get; set; }
         public bool IsNew { get; set; }
         public bool ShowAddress { get; set; }
+        public string evtype { get; set; }
 
         private DateTime _Birthday;
         public DateTime birthday
@@ -101,6 +103,11 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
+            if (!gender.HasValue)
+                ModelState.AddModelError("gender", "Please specify gender");
+            if (!married.HasValue)
+                ModelState.AddModelError("married", "Please specify marital status");
+
             if (index == 0)
             {
                 if (!address.HasValue())
@@ -123,7 +130,7 @@ namespace CMSWeb.Models
                 sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);
             return sb.ToString();
         }
-        internal void AddPerson(Person p)
+        internal void AddPerson(Person p, int entrypoint)
         {
             Family f;
             if (p == null)
@@ -138,10 +145,10 @@ namespace CMSWeb.Models
                 f = p.Family;
 
             _Person = Person.Add(f, 30,
-                null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
-                    DbUtil.Settings("EventOrigin", "0").ToInt(),
-                    DbUtil.Settings("EventEntry", "0").ToInt());
+                null, first.Trim(), null, last.Trim(), dob, married == 20, gender ?? 0,
+                    (int)Person.OriginCode.Enrollment, entrypoint);
             person.EmailAddress = email;
+            person.SuffixCode = suffix;
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;

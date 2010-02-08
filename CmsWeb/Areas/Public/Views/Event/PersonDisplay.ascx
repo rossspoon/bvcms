@@ -1,10 +1,11 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonEventModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.EventModel>" %>
 <tr <%=Model.index % 2 == 1 ? "class='alt'" : "" %>><td>
 <table>
     <tr>
         <td><label for="first">First Name</label></td>
         <td><%=Model.first %>
         <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" />
+        <input type="hidden" name="list[<%=Model.index%>].evtype" value="<%=Model.evtype%>" />
         <input type="hidden" name="list[<%=Model.index%>].Found" value="<%=Model.Found%>" />
         <input type="hidden" name="list[<%=Model.index%>].IsNew" value="<%=Model.IsNew%>" />
         <input type="hidden" name="list[<%=Model.index%>].ShowAddress" value="<%=Model.ShowAddress %>" />
@@ -17,6 +18,8 @@
         <input type="hidden" name="list[<%=Model.index%>].zip" value="<%=Model.zip%>" />
         <input type="hidden" name="list[<%=Model.index%>].city" value="<%=Model.city%>" />
         <input type="hidden" name="list[<%=Model.index%>].state" value="<%=Model.state%>" />
+        <input type="hidden" name="list[<%=Model.index%>].email" value="<%=Model.email%>" />
+        <input type="hidden" name="list[<%=Model.index%>].age" value="<%=Model.age%>" class="age" />
         </td>
     </tr>
     <tr>
@@ -49,11 +52,16 @@
 </table>
 </td>
 <td>
-<input type="hidden" name="list[<%=Model.index%>].email" value="<%=Model.email%>" />
-<input type="radio" name="list[<%=Model.index%>].option" value="1" 
-<%=Model.option == 1 ? "checked='checked'" : "" %> class="option" /> 5K Run<br />
-<input type="radio" name="list[<%=Model.index%>].option" value="2" 
-<%=Model.option == 2 ? "checked='checked'" : "" %> class="option" /> 1 mile Fun Run
-<input type="hidden" name="list[<%=Model.index%>].age" value="<%=Model.age%>" class="age" />
+<% switch (Model.evtype)
+   {
+       case "childcare": %>
+<%          break;
+       default: %>
+    <input type="radio" name="list[<%=Model.index%>].option" value="1" 
+    <%=Model.option == 1 ? "checked='checked'" : "" %> class="option" /> 5K Run<br />
+    <input type="radio" name="list[<%=Model.index%>].option" value="2" 
+    <%=Model.option == 2 ? "checked='checked'" : "" %> class="option" /> 1 mile Fun Run
+<%          break;
+   } %>
 </td>
 </tr>

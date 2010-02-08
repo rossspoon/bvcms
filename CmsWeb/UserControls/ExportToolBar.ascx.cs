@@ -36,6 +36,8 @@ namespace CMSWeb
             AveryAddressLabels.NavigateUrl = "/Report/AveryAddress.aspx?id=" + queryId;
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Attend&");
+            AttendanceLink.NavigateUrl = GoTo2("NewWindow", "/Reports/WeeklyAttendance/" + queryId);
+            FamilyLink.NavigateUrl = GoTo2("NewWindow", "/Reports/Family/" + queryId);
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Children&");
             ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Church&");
             MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Organization&");
@@ -53,6 +55,10 @@ namespace CMSWeb
         private string GoTo(string function, string target)
         {
             return "javascript:TB" + function + "('" + Page.ResolveUrl("~/{0}id={1}')".Fmt(target, queryId));
+        }
+        private string GoTo2(string function, string target)
+        {
+            return "javascript:TB" + function + "('" + target + "')";
         }
         public event EventHandler TaggedEvent;
 

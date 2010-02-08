@@ -65,64 +65,44 @@
                 <li class="headlink">
                     <a href="/">Home</a>
                     <ul id="HomeDrop">
-                        <li>
-                            <a href="/">Home Page</a></li>
-                        <li>
-                            <a href="/Task/List/">Tasks</a></li>
+                        <li><a href="/">Home Page</a></li>
+                        <li><a href="/Task/List/">Tasks</a></li>
                     </ul>
                 </li>
                 <li class="headlink">
                     <a href="/Search.aspx">Person</a>
                     <ul>
-                        <li>
-                            <a href="/Search.aspx">Quick Search</a></li>
-                        <li>
-                            <a href="/MyTags.aspx">Manage Tags</a></li>
+                        <li><a href="/Search.aspx">Quick Search</a></li>
+                        <li><a href="/MyTags.aspx">Manage Tags</a></li>
 <% if (Util.CurrentPeopleId != 0)
    { %>                            
-                        <li>
-                            <a href="/Person/Index/<%=Util.CurrentPeopleId%>"><%=Session["ActivePerson"]%></a></li>
+                        <li><a href="/Person/Index/<%=Util.CurrentPeopleId%>"><%=Session["ActivePerson"]%></a></li>
 <% } %>
-                        <li>
-                            <a href="/ContactSearch.aspx">Contact Search</a></li>
+                        <li><a href="/ContactSearch.aspx">Contact Search</a></li>
                     </ul>
                 </li>
                 <li class="headlink">
                     <a href="/OrganizationSearch.aspx">Organization</a>
                     <ul>
-                        <li>
-                            <a href="/OrganizationSearch.aspx">Search</a></li>
-                        <li>
-                            <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a></li>
-                        <li>
-                            <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a></li>
-<% if (Page.User.IsInRole("Edit"))
-   { %>                            
-                        <li>
-                            <a href="/VBS/">VBS Enrollment</a></li>
-<% } %>
+                        <li><a href="/OrganizationSearch.aspx">Search</a></li>
+                        <li><a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a></li>
+                        <li><a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a></li>
 <% if (Util.CurrentOrgId != 0)
    { %>                            
-                        <li>
-                            <a href="/Organization.aspx?id=<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
+                        <li><a href="/Organization.aspx?id=<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
 <% } %>
                     </ul>
                 </li>
                 <li class="headlink">
                     <a href="/QueryBuilder/Main">QueryBuilder</a>
                     <ul>
-                        <li>
-                            <a href="/QueryBuilder/Main">Last Query</a></li>
-                        <li>
-                            <%=Html.ActionLink("New Query", "NewQuery", "QueryBuilder")%></li>
-                        <li>
-                            <a href="/SavedQueries.aspx">Saved Queries</a></li>
+                        <li><a href="/QueryBuilder/Main">Last Query</a></li>
+                        <li><%=Html.ActionLink("New Query", "NewQuery", "QueryBuilder")%></li>
+                        <li><a href="/SavedQueries.aspx">Saved Queries</a></li>
 <% if (ViewData["OnQueryBuilder"] == "true")
    { %>
-                        <li>
-                            <a id="ShowOpenQuery" href="#">Open Saved Query</a></li>
-                        <li>
-                            <a id="ShowSaveQuery" href="#">Save Query As</a></li>
+                        <li><a id="ShowOpenQuery" href="#">Open Saved Query</a></li>
+                        <li><a id="ShowSaveQuery" href="#">Save Query As</a></li>
 <% } %>
                     </ul>
                 </li>
@@ -131,33 +111,27 @@
                 <li class="headlink">
                     <a href="#" runat="server">Contributions</a>
                     <ul>
-                        <li>
-                            <a href="/Contributions/Bundles.aspx">Bundles</a></li>
-                        <li>
-                            <a href="/Contributions/All.aspx">All</a></li>
-                        <li class="headlink">
-                            <a href="#" runat="server">Reports</a>
+                        <li><a href="/Contributions/Bundles.aspx">Bundles</a></li>
+                        <li><a href="/Contributions/All.aspx">All</a></li>
+                        <li class="headlink"><a href="#" runat="server">Reports</a>
                             <ul>
-                                <li>
-                                    <a href="/Contributions/Reports/ContributionStatementExtract.aspx">
+                                <li><a href="/Contributions/Reports/ContributionStatementExtract.aspx">
                                     Statements Extract</a></li>
-                                <li>
-                                    <a href="/Contributions/GLExtract.aspx">
+                                <li><a href="/Contributions/GLExtract.aspx">
                                     GL Extract</a></li>
-                                <li>
-                                    <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">
+                                <li><a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">
                                     Totals by Fund</a></li>
-                                <li>
-                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">
+                                <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">
+                                    Totals by Fund Age Range</a></li>
+                                <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">
+                                    Totals by Fund Age Range (pledges included)</a></li>
+                                <li><a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">
                                     Totals by Fund Range</a></li>
-                                <li>
-                                    <a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">
+                                <li><a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">
                                     Pledge Totals by Fund</a></li>
-                                <li>
-                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
+                                <li><a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
                                     Pledge Totals by Fund Range</a></li>
-                                <li>
-                                    <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">
+                                <li><a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">
                                     Pledge Report</a></li>
                             </ul>
                         </li>
@@ -169,34 +143,27 @@
                 <li class="headlink">
                     <a href="#">Admin</a>
                     <ul>
-                        <li>
-                            <a href="/Admin/Users.aspx">Users</a></li>
-                        <li>
-                            <a href="/Setup/Program/">Programs</a></li>
-                        <li>
-                            <a href="/Setup/Ministry/">Ministries</a></li>
-                        <li>
-                            <a href="/Setup/MetroZip/">MetroZips</a></li>
-                        <li>
-                            <a href="/Fund/">Funds</a></li>
-                        <li>
-                            <a href="/Setup/MemberType/">MemberTypes</a></li>
-                        <li>
-                            <a href="/Setup/Setting/">Settings</a></li>
-                        <li>
-                            <a href="/Display/Index/">Special Content</a></li>
-                        <li>
-                            <a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly</a></li>
-                        <li>
-                            <a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
-                        <li>
-                            <a href="/Admin/SessionState.aspx">Session State</a></li>
-                        <li>
-                            <a href="/Admin/UrgentMessage.aspx">Urgent Message</a></li>
-                        <li>
-                            <a href="/Admin/Activity.aspx">Activity Log</a></li>
-                        <li>
-                            <a href="/Admin/LastActivity.aspx">Last Activity</a></li>
+                        <li><a href="/Admin/Users.aspx">Users</a></li>
+                        <li><a href="/Setup/Program/">Programs</a></li>
+                        <li><a href="/Setup/Division/">Divisions</a></li>
+                        <li><a href="/Setup/Ministry/">Ministries</a></li>
+                        <li><a href="/Setup/MetroZip/">MetroZips</a></li>
+                        <li><a href="/Fund/">Funds</a></li>
+                        <li><a href="/Setup/MemberType/">MemberTypes</a></li>
+                        <li><a href="/Setup/Setting/">Settings</a></li>
+                        <li><a href="/Setup/Lookup/">Lookups</a></li>
+                        <li><a href="/Display/Index/">Special Content</a></li>
+                        <li><a href="/Setup/Recreation/">Recreation Setup</a></li>
+                        <li><a href="/Admin/ToggleOrgMembersOnly.ashx"><%=Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On"  %></a></li>
+                        <li><a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
+                        <li><a href="/Admin/SessionState.aspx">Session State</a></li>
+                        <li><a href="/Admin/UrgentMessage.aspx">Urgent Message</a></li>
+<% if (Util.CurrentPeopleId != 0 && Page.User.IsInRole("Admin"))
+   { %>
+                        <li><a href="/Account/AddUser/<%=Util.CurrentPeopleId %>">Add <%=Session["ActivePerson"].ToString() %> As New User</a></li>
+<% } %>
+                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                        <li><a href="/Admin/LastActivity.aspx">Last Activity</a></li>
                     </ul>
                 </li>
 <% } %>
@@ -207,11 +174,8 @@
                 onblur="if(this.value=='') this.value=this.defaultValue;" 
                 onkeypress="return EnterSubmit(event,this.form)" />
             </div>
-    <div id="CommonNavigationShadow">
+    <div id="CommonNavigationShadow"></div>
     </div>
-        </div>
-
-
     </div>
     
     <div class="main">

@@ -285,6 +285,7 @@ namespace CMSWeb.Models
         public class ContactTaskInfo
         {
             public int Id { get; set; }
+            public int PeopleId { get; set; }
             public string Who { get; set; }
             public string Description { get; set; }
         }
@@ -304,6 +305,7 @@ namespace CMSWeb.Models
                     select new ContactTaskInfo
                     {
                         Id = t.Id,
+                        PeopleId = t.AboutWho.PeopleId,
                         Who = t.AboutWho.Name,
                         Description = t.Description,
                     };

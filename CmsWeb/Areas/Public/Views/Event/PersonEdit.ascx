@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonEventModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.EventModel>" %>
 <tr <%=Model.index % 2 == 1 ? "class='alt'" : "" %>>
 <td colspan="2">
 <table>
@@ -6,6 +6,7 @@
         <td><label for="first">First Name</label></td>
         <td><input type="text" name="list[<%=Model.index%>].first" value="<%=Model.first%>" />
         <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" />
+        <input type="hidden" name="list[<%=Model.index%>].evtype" value="<%=Model.evtype%>" />
         <input type="hidden" name="list[<%=Model.index%>].ShowAddress" value="<%=Model.ShowAddress %>" />
         </td>
         <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
@@ -18,7 +19,8 @@
     <tr>
         <td><label for="last">Last Name</label></td>
         <td><input type="text" name="list[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
-        <td><%= Html.ValidationMessage("last") %></td>
+        <td>suffix:<input type="text" name="list[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" />
+        <%= Html.ValidationMessage("last") %></td>
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
@@ -50,6 +52,10 @@
         <% }
            else
            { %>
+           <p>We could not find this record.<br />
+           The first and last names and the birthday<br />
+           must match a record we have in our system.
+           </p>
             <a href="/Event/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
             or <a href="/Event/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
         <% } %>

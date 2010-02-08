@@ -8,13 +8,13 @@
         <input type="hidden" name="ShowAddress" value="<%=Model.ShowAddress %>" />
         <input type="hidden" name="orgid" value="<%=Model.orgid %>" />
         </td>
-        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
-        </td>
+        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %></td>
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>
         <td><input type="text" name="last" value="<%=Model.last%>" /></td>
-        <td><%= Html.ValidationMessage("last") %></td>
+        <td>suffix:<input type="text" name="suffix" class="short" value="<%=Model.suffix%>" />
+        <%= Html.ValidationMessage("last") %></td>
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
@@ -43,6 +43,10 @@
         <% }
            else
            { %>
+           <p>We could not find your record.<br />
+           The first and last names and the birthday<br />
+           must match a record we have in our system.
+           </p>
             <a href="/Retreat/PersonFind" class="submitbutton">Try Find Again</a>
             or <a href="/Retreat/ShowMoreInfo" class="submitbutton">Register as new</a>
         <% } %>

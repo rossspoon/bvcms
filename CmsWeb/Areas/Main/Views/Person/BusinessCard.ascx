@@ -30,6 +30,9 @@
     <tr>
         <td colspan="2"><a href="mailto:<%=Model.basic.EmailAddress %>"><%=Model.basic.EmailAddress%></a></td>
     </tr>
+    <tr>
+        <td colspan="2"><%=Model.basic.HomePhone.FmtFone("h")%></a></td>
+    </tr>
 </table>
 <textarea id="addrhidden" rows="5" cols="20" style="display: none"><%=Model.Name %>
     <%=Model.PrimaryAddr.Address1 %>

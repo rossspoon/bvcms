@@ -43,9 +43,7 @@ namespace CMSWeb.Models
             get
             {
                 if (_division == null)
-                {
                     _division = DbUtil.Db.Divisions.SingleOrDefault(d => d.Id == divid);
-                }
                 return _division;
             }
         }

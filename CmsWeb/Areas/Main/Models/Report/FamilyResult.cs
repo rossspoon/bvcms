@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -17,10 +18,12 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class AttendanceReport : System.Web.UI.Page
+    public class FamilyResult : ActionResult
     {
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
@@ -28,18 +31,23 @@ namespace CMSWeb.Reports
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8, new GrayColor(50));
         private Font xsmallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7, new GrayColor(50));
         private PageEvent pageEvents = new PageEvent();
-        private PdfPTable MainTable;
+        private PdfPTable t;
         private Document doc;
         private DateTime dt;
         private PdfContentByte dc;
 
-        protected void Page_Load(object sender, EventArgs e)
+        private int? qid;
+        public FamilyResult(int? id)
         {
-            Response.Clear();
+            qid = id;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var qid = this.QueryString<int?>("id");
             dt = Util.Now;
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
@@ -47,20 +55,57 @@ namespace CMSWeb.Reports
             w.PageEvent = pageEvents;
             doc.Open();
             dc = w.DirectContent;
+            
+            t = new PdfPTable(1);
+            t.WidthPercentage = 100;
+            t.DefaultCell.Padding = 0;
+            t.HeaderRows = 1;
 
-            var ctl = new RollsheetController();
+            t.AddCell(StartPageSet());
 
-            StartPageSet();
+            t.DefaultCell.Border = PdfPCell.TOP_BORDER;
+            t.DefaultCell.BorderColor = Color.BLACK;
+            t.DefaultCell.BorderColorTop = Color.BLACK;
+            t.DefaultCell.BorderWidthTop = 2.0f;
+
             if (qid.HasValue) // print using a query
             {
                 var qB = DbUtil.Db.LoadQueryById(qid.Value);
                 var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        orderby p.Name2
-                        select p;
-                foreach (var p in q)
-                    AddRow(p);
-                if (MainTable.Rows.Count > 1)
-                    doc.Add(MainTable);
+                        let person = p
+                        group p by p.FamilyId into g
+                        select new
+                        {
+                            members = from m in g.First().Family.People
+                                      select new
+                                      {
+                                          order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
+                                                m.PositionInFamilyId,
+                                          person = m
+                                      }
+                        };
+                foreach (var f in q)
+                {
+                    var ft = new PdfPTable(HeaderWids);
+                    ft.DefaultCell.SetLeading(2.0f, 1f);
+                    ft.DefaultCell.Border = PdfPCell.NO_BORDER;
+                    ft.DefaultCell.Padding = 5;
+                    int fn = 1;
+                    var color = Color.BLACK;
+                    foreach (var p in f.members.OrderBy(m => m.order))
+                    {
+                        if (color == Color.WHITE)
+                            color = new GrayColor(240);
+                        else
+                            color = Color.WHITE;
+                        Debug.WriteLine("{0:##}: {1}".Fmt(p.order, p.person.Name));
+                        AddRow(ft, p.person, fn, color);
+                        fn++;
+                    }
+                    t.AddCell(ft);
+                }
+                if (t.Rows.Count > 1)
+                    doc.Add(t);
                 else
                     doc.Add(new Phrase("no data"));
             }
@@ -71,95 +116,63 @@ namespace CMSWeb.Reports
             Response.End();
         }
 
-        float[] HeaderWids = new float[] { 40 + 70 + 80, 40 + 130 };
-        float[] LeftWids = new float[] { 40, 70, 80 };
-        float[] RightWids = new float[] { 40, 130 };
-        int border = PdfPCell.NO_BORDER; //PdfPCell.BOX;
+        float[] HeaderWids = new float[] { 55, 40, 95 };
 
-        private void StartPageSet()
+        private PdfPTable StartPageSet()
         {
-            MainTable = new PdfPTable(HeaderWids);
-            MainTable.WidthPercentage = 100;
-            MainTable.DefaultCell.Border = border;
-            MainTable.DefaultCell.Padding = 5;
-            MainTable.HeaderRows = 1;
-            pageEvents.StartPageSet("Attendance Report: {0:d}".Fmt(dt));
-
-            var LeftTable = new PdfPTable(LeftWids);
-            LeftTable.WidthPercentage = 100;
-            LeftTable.DefaultCell.Border = border;
-            LeftTable.DefaultCell.Padding = 5;
-            LeftTable.AddCell(new Phrase("\nPerson", boldfont));
-            LeftTable.AddCell(new Phrase("\nAddress", boldfont));
-            LeftTable.AddCell(new Phrase("Phone\nEmail", boldfont));
-            var cell = new PdfPCell(MainTable.DefaultCell);
-            cell.AddElement(LeftTable);
-            cell.Padding = 0;
-            MainTable.AddCell(cell);
-
-            var RightTable = new PdfPTable(RightWids);
-            RightTable.WidthPercentage = 100;
-            RightTable.DefaultCell.Border = border;
-            RightTable.DefaultCell.Padding = 5;
-            RightTable.DefaultCell.PaddingBottom = 0;
-            RightTable.AddCell(new Phrase("\nBirthday", boldfont));
-            RightTable.AddCell(new Phrase("\nMember Status", boldfont));
-            cell = new PdfPCell(MainTable.DefaultCell);
-            cell.Padding = 0;
-            cell.AddElement(RightTable);
-            MainTable.AddCell(cell);
+            var t = new PdfPTable(HeaderWids);
+            t.DefaultCell.SetLeading(2.0f, 1f);
+            t.DefaultCell.Border = PdfPCell.NO_BORDER;
+            t.WidthPercentage = 100;
+            t.DefaultCell.Padding = 5;
+            pageEvents.StartPageSet("Family Report: {0:d}".Fmt(dt));
+            t.AddCell(new Phrase("Name (id)\nAddress/Contact info", boldfont));
+            t.AddCell(new Phrase("Birthday (age, gender)\nMember (Other Church)", boldfont));
+            t.AddCell(new Phrase("Position in Family\nPrimary Class", boldfont));
+            return t;
         }
-        Color color = Color.BLACK;
 
-        private void AddRow(Person p)
+        private void AddRow(PdfPTable t, Person p, int fn, Color color)
         {
-            if (color == Color.WHITE)
-                color = new GrayColor(240);
+            t.DefaultCell.BackgroundColor = color;
+
+            var c1 = new Phrase();
+            c1.Add(new Chunk(p.Name, boldfont));
+            c1.Add(new Chunk("  ({0})\n".Fmt(p.PeopleId), smallfont));
+            var contact = new StringBuilder();
+            var cv = new CodeValueController();
+            if (fn == 1)
+            {
+                AddLine(contact, p.PrimaryAddress);
+                AddLine(contact, p.PrimaryAddress2);
+                AddLine(contact, "{0}, {1} {2}".Fmt(p.PrimaryCity, p.PrimaryState, p.PrimaryZip.FmtZip()));
+            }
+            AddPhone(contact, p.HomePhone, "h ");
+            AddPhone(contact, p.CellPhone, "c ");
+            AddPhone(contact, p.WorkPhone, "w ");
+            AddLine(contact, p.EmailAddress);
+            c1.Add(new Chunk(contact.ToString(), font));
+            t.AddCell(c1);
+
+            var c2 = new Phrase("{0} ({1}, {2})\n".Fmt(p.DOB, p.Age,
+                p.GenderId == 1 ? "M" : p.GenderId == 2 ? "F" : "U"), font);
+            c2.Add(new Chunk("{0} ({1})".Fmt(cv.MemberStatusCodes().ItemValue(p.MemberStatusId), "?"), font));
+            t.AddCell(c2);
+
+            
+            var c3 = new Phrase((
+                    p.PositionInFamilyId == 10 ? "Primary Adult" :
+                    p.PositionInFamilyId == 20 ? "Secondary Adult" :
+                                                 "Child") + "\n", font);
+            if (p.BibleFellowshipClassId.HasValue)
+            {
+                c3.Add(new Chunk(p.BFClass.OrganizationName, font));
+                if (p.BFClass.LeaderName.HasValue())
+                    c3.Add(new Chunk(" ({0})".Fmt(p.BFClass.LeaderName), smallfont));
+                t.AddCell(c3);
+            }
             else
-                color = Color.WHITE;
-
-            MainTable.DefaultCell.BackgroundColor = color;
-
-            var LeftTable = new PdfPTable(LeftWids);
-            LeftTable.WidthPercentage = 100;
-            LeftTable.DefaultCell.Border = border;
-            LeftTable.DefaultCell.Padding = 5;
-            var name = new Phrase(p.Name + "\n", font);
-            name.Add(new Chunk("  ({0})".Fmt(p.PeopleId), smallfont));
-            LeftTable.AddCell(name);
-            var addr = new StringBuilder(p.PrimaryAddress);
-            AddLine(addr, p.PrimaryAddress2);
-            AddLine(addr, "{0}, {1} {2}".Fmt(p.PrimaryCity, p.PrimaryState, p.PrimaryZip.FmtZip()));
-            LeftTable.AddCell(new Phrase(addr.ToString(), font));
-            var phones = new StringBuilder();
-            AddPhone(phones, p.HomePhone, "h ");
-            AddPhone(phones, p.CellPhone, "c ");
-            AddPhone(phones, p.WorkPhone, "w ");
-            AddLine(phones, p.EmailAddress);
-            LeftTable.AddCell(new Phrase(phones.ToString(), font));
-
-            var c = new PdfPCell(MainTable.DefaultCell);
-            c.Padding = 0;
-            c.AddElement(LeftTable);
-            MainTable.AddCell(c);
-
-            var RightTable = new PdfPTable(RightWids);
-            RightTable.WidthPercentage = 100;
-            RightTable.DefaultCell.Border = border;
-            RightTable.DefaultCell.Padding = 5;
-            RightTable.DefaultCell.PaddingBottom = 0;
-            RightTable.AddCell(new Phrase(p.DOB, font));
-            RightTable.AddCell(new Phrase(p.MemberStatus.Description));
-
-            c = new PdfPCell(MainTable.DefaultCell);
-            c.Padding = 0;
-            c.AddElement(RightTable);
-            MainTable.AddCell(c);
-
-            c = new PdfPCell(MainTable.DefaultCell);
-            c.Colspan = 2;
-            c.AddElement(GetAttendance(p));
-            MainTable.AddCell(c);
+                t.AddCell("");
         }
         private void AddLine(StringBuilder sb, string value)
         {
@@ -167,12 +180,12 @@ namespace CMSWeb.Reports
         }
         private void AddLine(StringBuilder sb, string value, string postfix)
         {
-            if(value.HasValue())
+            if (value.HasValue())
             {
                 if (sb.Length > 0)
                     sb.Append("\n");
                 sb.Append(value);
-                if(postfix.HasValue())
+                if (postfix.HasValue())
                     sb.Append(postfix);
             }
         }
@@ -328,3 +341,4 @@ namespace CMSWeb.Reports
         }
     }
 }
+

@@ -30,15 +30,21 @@
             <li><a href='/Report/ContactReport.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
                 Contact Report</a></li>
+            <li><a href='/Reports/WeeklyAttendance/<%=ViewData["queryid"]%>' 
+                target="_blank" title="General Attendance Stats"><img src="/images/Report.png" />
+                Weekly Attendance</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>
+            <li><a href='/Report/Family/<%=ViewData["queryid"]%>' 
+                target="_blank"><img src="/images/Report.png" /> 
+                Family Report</a></li>
             <li><a href='/Volunteers/Index/<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Volunteer Report</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
-                Attendance</a></li>
+                BF Attendance</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Children' 
                 target="_blank" title="Contains emergency contact, who brought child info"><img src="/images/Excel.png" />
                 Children</a></li>

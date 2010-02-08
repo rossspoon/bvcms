@@ -97,7 +97,7 @@ namespace CmsData
                     CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
                     Pending = Pending,
-                    AttendancePercentage = AttendPct
+                    AttendancePercentage = AttendPct,
                 };
                 Db.EnrollmentTransactions.InsertOnSubmit(et);
             }

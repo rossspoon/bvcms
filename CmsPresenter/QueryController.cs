@@ -25,18 +25,19 @@ namespace CMSPresenter
             Db = DbUtil.Db;
         }
         int savedQueryCount = 0;
-        public int SavedQueryCount(bool onlyMine, string sortExpression, int maximumRows, int startRowIndex)
+        public int SavedQueryCount(bool onlyMine, bool showscratchpads, string sortExpression, int maximumRows, int startRowIndex)
         {
             return savedQueryCount;
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<SavedQueryInfo> FetchSavedQueries(bool onlyMine, string sortExpression, int maximumRows, int startRowIndex)
+        public IEnumerable<SavedQueryInfo> FetchSavedQueries(bool onlyMine, bool showscratchpads, string sortExpression, int maximumRows, int startRowIndex)
         {
             var isdev = Roles.IsUserInRole("Developer");
             var q = from c in Db.QueryBuilderClauses
                     where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
                     where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)
+                    where !c.Description.Contains("scratchpad") || showscratchpads
                     select c;
             savedQueryCount = q.Count();
             if (!sortExpression.HasValue())

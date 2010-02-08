@@ -15,6 +15,7 @@ namespace CMSWeb.Models
         public string request { get; set; }
         public string first { get; set; }
         public string last { get; set; }
+        public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
         public string homecell { get; set; }
@@ -59,13 +60,13 @@ namespace CMSWeb.Models
         {
             get
             {
-                if (!_amountpaid.HasValue)
+                if (!_amountpaid.HasValue && person != null)
                 {
                     var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m =>
                         m.PeopleId == person.PeopleId && m.OrganizationId == orgid);
                     _amountpaid = om != null ? om.Amount ?? 0 : 0;
                 }
-                return _amountpaid.Value;
+                return _amountpaid ?? 0;
             }
         }
         public decimal ComputeFee()
@@ -133,6 +134,10 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("zip", "zip needs at least 5 digits.");
             if (!state.HasValue())
                 ModelState.AddModelError("state", "state required");
+            if (!gender.HasValue)
+                ModelState.AddModelError("gender", "Please specify gender");
+            if (!married.HasValue)
+                ModelState.AddModelError("married", "Please specify marital status");
         }
         public override string ToString()
         {
@@ -144,7 +149,7 @@ namespace CMSWeb.Models
                 sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);
             return sb.ToString();
         }
-        internal void AddPerson()
+        internal void AddPerson(int entrypoint)
         {
             var f = new Family
             {
@@ -156,8 +161,8 @@ namespace CMSWeb.Models
 
             _Person = Person.Add(f, 30,
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
-                    DbUtil.Settings("RetreatOrigin", "0").ToInt(),
-                    DbUtil.Settings("RetreatEntry", "0").ToInt());
+                    (int)Person.OriginCode.Enrollment, entrypoint);
+            person.SuffixCode = suffix;
             person.EmailAddress = email;
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)

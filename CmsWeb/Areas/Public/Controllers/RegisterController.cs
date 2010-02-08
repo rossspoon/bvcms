@@ -237,7 +237,9 @@ namespace CMSWeb.Areas.Public.Controllers
 
             var smtp = new SmtpClient();
             Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
+            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), 
+                "new registration on {0}".Fmt(Util.Host), 
+                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
         private void EmailVisit(Models.RegisterModel m)

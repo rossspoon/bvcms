@@ -6,7 +6,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:CheckBox ID="OnlyMyQueries" runat="server" AutoPostBack="true" Text="Show only my queries" /><br />
+    <asp:CheckBox ID="OnlyMyQueries" runat="server" AutoPostBack="true" Text="Show only my queries" />
+    <asp:CheckBox ID="ShowScratchPads" runat="server" AutoPostBack="true" Text="Show Scratch pad queries" /><br />
     <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AllowPaging="True"
         AutoGenerateColumns="False" SkinID="GridViewSkin" AllowSorting="True" DataKeyNames="QueryId"
         PageSize="10">
@@ -24,11 +25,9 @@
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField DataField="User" HeaderText="User" SortExpression="User" />
-            <asp:HyperLinkField DataNavigateUrlFields="QueryId" DataNavigateUrlFormatString="/QueryBuilder/Main/{0}"
-                Text="Edit in QB" />
             <asp:TemplateField HeaderText="Description" SortExpression="Description">
                 <ItemTemplate>
-                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("QueryId", "~/SavedQuery.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("QueryId", "/QueryBuilder/Main/{0}") %>'
                         Text='<%# Eval("Description", "{0}") %>'></asp:HyperLink>
                 </ItemTemplate>
                 <EditItemTemplate>
@@ -65,6 +64,7 @@
         </UpdateParameters>
         <SelectParameters>
             <asp:ControlParameter Name="onlyMine" Type="Boolean" ControlID="OnlyMyQueries" PropertyName="Checked" />
+            <asp:ControlParameter Name="showscratchpads" Type="Boolean" ControlID="ShowScratchPads" PropertyName="Checked" />
             <asp:Parameter Name="sortExpression" Type="String" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />

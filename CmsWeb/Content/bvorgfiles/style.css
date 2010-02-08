@@ -202,3 +202,7 @@ form.DisplayEdit a.submitbutton,a.button {
     color:#FFFFFF;
     text-decoration:none;
 }
+form.DisplayEdit input.short 
+{
+    width: 1.5em;
+}

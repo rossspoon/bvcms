@@ -124,7 +124,7 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         public ActionResult SearchPeople(int? id)
         {
-            var m = new Models.SearchPeopleModel();
+            var m = new SearchPeopleModel();
             UpdateModel(m);
             if (id.HasValue)
             {

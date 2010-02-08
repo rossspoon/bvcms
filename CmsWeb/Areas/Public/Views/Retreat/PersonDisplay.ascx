@@ -58,7 +58,7 @@
 <% } %>
 <input type="radio" name="option" value="2" 
 <%=Model.option == 2 ? "checked='checked'" : "" %> class="option" /> Balance Due (<%=Model.BalanceDue().ToString("C") %>)<br />
-Roomate Request (optional)<br />
-<input type="text" name="request" />
+<p><strong>Roomate Request</strong> (optional)<br />
+<input type="text" name="request" /></p>
 </td>
 </tr>

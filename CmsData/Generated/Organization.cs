@@ -95,6 +95,16 @@ namespace CmsData
 		
 		private int? _Limit;
 		
+		private string _EmailAddresses;
+		
+		private string _RegType;
+		
+		private string _EmailMessage;
+		
+		private string _EmailSubject;
+		
+		private string _Instructions;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -258,6 +268,21 @@ namespace CmsData
 		
 		partial void OnLimitChanging(int? value);
 		partial void OnLimitChanged();
+		
+		partial void OnEmailAddressesChanging(string value);
+		partial void OnEmailAddressesChanged();
+		
+		partial void OnRegTypeChanging(string value);
+		partial void OnRegTypeChanged();
+		
+		partial void OnEmailMessageChanging(string value);
+		partial void OnEmailMessageChanged();
+		
+		partial void OnEmailSubjectChanging(string value);
+		partial void OnEmailSubjectChanged();
+		
+		partial void OnInstructionsChanging(string value);
+		partial void OnInstructionsChanged();
 		
     #endregion
 		public Organization()
@@ -1177,6 +1202,116 @@ namespace CmsData
 					this._Limit = value;
 					this.SendPropertyChanged("Limit");
 					this.OnLimitChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailAddresses", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddresses", DbType="varchar(200)")]
+		public string EmailAddresses
+		{
+			get { return this._EmailAddresses; }
+
+			set
+			{
+				if (this._EmailAddresses != value)
+				{
+				
+                    this.OnEmailAddressesChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddresses = value;
+					this.SendPropertyChanged("EmailAddresses");
+					this.OnEmailAddressesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegType", UpdateCheck=UpdateCheck.Never, Storage="_RegType", DbType="varchar(50)")]
+		public string RegType
+		{
+			get { return this._RegType; }
+
+			set
+			{
+				if (this._RegType != value)
+				{
+				
+                    this.OnRegTypeChanging(value);
+					this.SendPropertyChanging();
+					this._RegType = value;
+					this.SendPropertyChanged("RegType");
+					this.OnRegTypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
+		public string EmailMessage
+		{
+			get { return this._EmailMessage; }
+
+			set
+			{
+				if (this._EmailMessage != value)
+				{
+				
+                    this.OnEmailMessageChanging(value);
+					this.SendPropertyChanging();
+					this._EmailMessage = value;
+					this.SendPropertyChanged("EmailMessage");
+					this.OnEmailMessageChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailSubject", UpdateCheck=UpdateCheck.Never, Storage="_EmailSubject", DbType="varchar(50)")]
+		public string EmailSubject
+		{
+			get { return this._EmailSubject; }
+
+			set
+			{
+				if (this._EmailSubject != value)
+				{
+				
+                    this.OnEmailSubjectChanging(value);
+					this.SendPropertyChanging();
+					this._EmailSubject = value;
+					this.SendPropertyChanged("EmailSubject");
+					this.OnEmailSubjectChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
+		public string Instructions
+		{
+			get { return this._Instructions; }
+
+			set
+			{
+				if (this._Instructions != value)
+				{
+				
+                    this.OnInstructionsChanging(value);
+					this.SendPropertyChanging();
+					this._Instructions = value;
+					this.SendPropertyChanged("Instructions");
+					this.OnInstructionsChanged();
 				}
 
 			}

@@ -1,23 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
-using CmsData;
-using UtilityExtensions;
-using System.Text;
-using CMSWeb.Models.Reports;
+using CMSWeb.Areas.Main.Models.Report;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CMSWeb.Areas.Main.Controllers
 {
-    public class ReportsController : CmsController
+    public class ReportsController : Controller
     {
+        //
+        // GET: /Main/Report/
+
         public ActionResult Index()
         {
-            return Content("no page");
+            return View();
         }
-
         public ActionResult Attendance(int id)
         {
 
@@ -31,6 +29,14 @@ namespace CMSWeb.Areas.Manage.Controllers
             {
                 return Content(ex.Message);
             }
+        }
+        public ActionResult WeeklyAttendance(int? id)
+        {
+            return new WeeklyAttendanceResult(id);
+        }
+        public ActionResult Family(int? id)
+        {
+            return new FamilyResult(id);
         }
     }
 }

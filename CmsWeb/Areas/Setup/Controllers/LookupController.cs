@@ -21,14 +21,18 @@ namespace CMSWeb.Areas.Setup.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index(string id)
         {
+            if (!id.HasValue())
+                return View("list");
             ViewData["type"] = id;
             var q = DbUtil.Db.ExecuteQuery<Row>("select * from lookup." + id);
             return View(q);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(int pk, string type)
+        public ActionResult Create(int? pk, string type)
         {
+            if (!pk.HasValue)
+                return Content("need an integer id");
             DbUtil.Db.ExecuteCommand("insert lookup." + type + " (id, code, description) values ({0}, '', '')", pk);
             return RedirectToAction("Index", new { id = type });
         }

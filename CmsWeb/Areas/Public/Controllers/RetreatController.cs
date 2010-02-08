@@ -41,6 +41,8 @@ namespace CMSWeb.Areas.Public.Controllers
             var m = new RetreatModel();
             m.orgid = id;
 #endif
+            if (org.OrganizationMembers.Count() >= org.Limit)
+                return View("Filled");
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -124,7 +126,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var ms2 = new MemoryStream(Encoding.Default.GetBytes(s));
             var m = ser.ReadObject(ms2) as RetreatModel;
             if (m.IsNew)
-                m.AddPerson();
+                m.AddPerson(org.EntryPointId ?? 0);
             var om = OrganizationMember.InsertOrgMembers(orgid,
                 m.person.PeopleId, 220, DateTime.Now, null, false);
             om.Amount = (om.Amount ?? 0) + fee;
@@ -155,8 +157,6 @@ namespace CMSWeb.Areas.Public.Controllers
 </p>";
                 c.Title = "Event Registration";
             }
-            var sb = new StringBuilder();
-                sb.AppendLine(m.ToString());
 
             var req = m.request;
             if (req.HasValue())
@@ -167,15 +167,16 @@ namespace CMSWeb.Areas.Public.Controllers
             c.Body = c.Body.Replace("{amount}", fee.ToString("C"));
             c.Body = c.Body.Replace("{description}", org.OrganizationName);
             c.Body = c.Body.Replace("{request}", req);
-            c.Body = c.Body.Replace("{particpants}", sb.ToString());
-            c.Body = c.Body.Replace("{participants}", sb.ToString());
+            c.Body = c.Body.Replace("{particpants}", m.ToString());
+            c.Body = c.Body.Replace("{participants}", m.ToString());
 
-            Util.EmailHtml2(new SmtpClient(), m.email, DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress),
+            var smtp = new SmtpClient();
+            Util.EmailHtml2(smtp, m.email, DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress),
                 c.Title,
                 "<p>{0}({1}) has registered for {2}</p>\n{3}".Fmt(
-                p.Name, p.PeopleId, org.OrganizationName, sb.ToString()));
+                p.Name, p.PeopleId, org.OrganizationName, m.ToString()));
 
-            Util.Email(DbUtil.Settings("EventMail-" + orgid, DbUtil.SystemEmailAddress),
+            Util.Email(smtp, DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress),
                  p.Name, m.email, c.Title, c.Body);
 
             ViewData["orgname"] = org.OrganizationName;

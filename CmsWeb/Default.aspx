@@ -166,7 +166,8 @@
                                         <Columns>
                                             <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Task/List/{0}#detail"
                                                 DataTextField="Description" HeaderText="Task" />
-                                            <asp:BoundField DataField="Who" HeaderText="Who" />
+                                            <asp:HyperLinkField DataNavigateUrlFields="PeopleId" DataNavigateUrlFormatString="/Person/Index/{0}"
+                                                DataTextField="Who" HeaderText="Who" />
                                         </Columns>
                                     </asp:GridView>
                                 </div>

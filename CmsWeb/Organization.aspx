@@ -352,6 +352,43 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>
+                        Max Limit:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="Limit" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False"
+                            Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Online Notify Emails:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="EmailAddresses" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False"
+                            Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Online Reg Type:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="RegType" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False"
+                            Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <asp:HyperLink runat="server" ID="emailmessagelink">online registration notification message</asp:HyperLink><br />
+                        <asp:HyperLink runat="server" ID="instructionslink">online registration instructions</asp:HyperLink>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         &#160;&nbsp
                     </td>

@@ -10,7 +10,7 @@
 
     <script type="text/javascript">
         $(function() {
-            $("#zip1").change(function() {
+            $("#zip1").blur(function() {
                 $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
                     if (ret) {
                         $('#state1').val(ret.state);
@@ -20,7 +20,7 @@
             });
         });
         $(function() {
-            $("#zip2").change(function() {
+            $("#zip2").blur(function() {
                 $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
                     if (ret) {
                         $('#state2').val(ret.state);

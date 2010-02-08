@@ -159,6 +159,13 @@ namespace CmsData
                 FirstMeetingDate = FirstMeetingDate,
                 SchedDay = SchedDay,
                 SchedTime = SchedTime,
+                EmailSubject = EmailSubject,
+                EmailMessage = EmailMessage,
+                EmailAddresses = EmailAddresses,
+                RegType = RegType,
+                Limit = Limit,
+                AllowNonCampusCheckIn = AllowNonCampusCheckIn,
+                AttendTrackLevel = AttendTrackLevel,
             };
             DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)

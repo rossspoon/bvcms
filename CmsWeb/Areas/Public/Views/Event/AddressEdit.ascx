@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonEventModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.EventModel>" %>
     <tr><th colspan="3"><span style="color:Red">Please provide additional information</span></th></tr>
     <% if(Model.index == 0)
        { %>
@@ -10,18 +10,18 @@
     </tr>
     <tr>
         <td><label for="zip">Zip</label></td>
-        <td><input type="text" name="list[<%=Model.index%>].zip" value="<%=Model.zip%>" /></td>
+        <td><input id="zip" type="text" name="list[<%=Model.index%>].zip" value="<%=Model.zip%>" /></td>
         <td><%= Html.ValidationMessage("zip")%></td>
     </tr>
     <tr>
         <td><label for="city">City</label></td>
-        <td><input type="text" name="list[<%=Model.index%>].city" value="<%=Model.city%>" /></td>
+        <td><input id="city" type="text" name="list[<%=Model.index%>].city" value="<%=Model.city%>" /></td>
         <td><%= Html.ValidationMessage("city")%></td>
     </tr>
     <tr>
         <td><label for="state">State</label></td>
-        <td><input type="text" name="list[<%=Model.index%>].state" value="<%=Model.state%>" /></td>
-        <td></td>
+        <td><input id="state" type="text" name="list[<%=Model.index%>].state" value="<%=Model.state%>" /></td>
+        <td><%= Html.ValidationMessage("state")%></td>
     </tr>
     <% }
        else

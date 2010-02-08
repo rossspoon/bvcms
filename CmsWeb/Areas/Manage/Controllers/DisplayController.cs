@@ -76,5 +76,40 @@ namespace CMSWeb.Areas.Manage.Controllers
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index", "Display");
         }
+        public ActionResult OrgContent(int id, string what)
+        {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            switch (what)
+            {
+                case "message":
+                    ViewData["html"] = org.EmailMessage;
+                    ViewData["title"] = org.EmailSubject;
+                    break;
+                case "instructions":
+                    ViewData["html"] = org.Instructions;
+                    ViewData["title"] = "Instructions";
+                    break;
+            }
+            ViewData["id"] = id;
+            return View();
+        }
+        [ValidateInput(false)]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdateOrgContent(int id, string what, string title, string html)
+        {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            switch (what)
+            {
+                case "message":
+                    org.EmailMessage = html;
+                    org.EmailSubject = title;
+                    break;
+                case "instructions":
+                    org.Instructions = html;
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Organization.aspx?id=" + id);
+        }
     }
 }

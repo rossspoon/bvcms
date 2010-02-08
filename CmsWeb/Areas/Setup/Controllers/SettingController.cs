@@ -9,9 +9,9 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
+   [Authorize(Roles = "Admin")]
     public class SettingController : CmsController
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = DbUtil.Db.Settings.AsEnumerable();
@@ -77,14 +77,40 @@ namespace CMSWeb.Areas.Setup.Controllers
             }
             return RedirectToAction("Index");
         }
-        [Authorize(Roles = "Admin")]
+        public ActionResult BatchReportSpecs(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                var q = from r in DbUtil.Db.ChurchAttReportIds
+                        orderby r.Name
+                        select "{0}:\t{1}".Fmt(r.Name, r.Id);
+                ViewData["text"] = string.Join("\n", q.ToArray());
+                return View();
+            }
+            var q2 = from s in text.Split('\n')
+                     where s.HasValue()
+                     let a = s.SplitStr(":", 2)
+                     select new { name = a[0], value = a[1].ToInt() };
+            foreach (var i in q2)
+            {
+                var set = DbUtil.Db.ChurchAttReportIds.SingleOrDefault(m => m.Name == i.name);
+                if (set == null)
+                {
+                    set = new ChurchAttReportId { Name = i.name, Id = i.value };
+                    DbUtil.Db.ChurchAttReportIds.InsertOnSubmit(set);
+                }
+                else
+                    set.Id = i.value;
+            }
+            DbUtil.Db.SubmitChanges();
+            return RedirectToAction("BatchReportSpecs");
+        }
         public ActionResult OrphanedImages()
         {
             var m = from i in DbUtil.Db.ViewOrphanedImages
                     select i;
             return View(m);
         }
-        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult DeleteImage(string id)
         {

@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
+    <Compile Include="Areas\Main\Controllers\ReportController.cs" />
     <Compile Include="Areas\Main\Models\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\AttendHistoryModel.cs" />
     <Compile Include="Areas\Main\Models\Person\ContactsReceivedModel.cs" />
@@ -92,14 +93,18 @@
     <Compile Include="Areas\Main\Models\PagerModel2.cs" />
     <Compile Include="Areas\Main\Models\Person\EnrollmentsModel.cs" />
     <Compile Include="Areas\Main\Models\Person\PersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\WeeklyAttendanceResult.cs">
+    </Compile>
+    <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\RetreatController.cs" />
     <Compile Include="Areas\Public\Controllers\EventController.cs" />
     <Compile Include="Areas\Public\Controllers\OptOutController.cs" />
     <Compile Include="Areas\Public\Models\RetreatModel.cs" />
-    <Compile Include="Areas\Public\Models\PersonEventModel.cs" />
+    <Compile Include="Areas\Public\Models\EventModel.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
+    <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
     <Compile Include="Code\CmsController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
     <Compile Include="Areas\Main\Models\SearchPeopleModel.cs" />
@@ -157,7 +162,6 @@
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Main\Controllers\FamilyResult.cs" />
-    <Compile Include="Areas\Manage\Controllers\ReportsController.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
@@ -570,7 +574,7 @@
     <Compile Include="Areas\Manage\Models\RecreationModel.cs" />
     <Compile Include="Areas\Public\Models\RecRegModel.cs" />
     <Compile Include="Areas\Public\Models\RegisterModel.cs" />
-    <Compile Include="Areas\Manage\Models\Reports\AttendanceModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\AttendanceModel.cs" />
     <Compile Include="Areas\Main\Models\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\TaskInfo.cs" />
     <Compile Include="Areas\Main\Models\TaskModel.cs" />
@@ -784,13 +788,6 @@
     <Compile Include="SavedQueries.aspx.designer.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SavedQuery.aspx.cs">
-      <DependentUpon>SavedQuery.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SavedQuery.aspx.designer.cs">
-      <DependentUpon>SavedQuery.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -939,7 +936,6 @@
     <Content Include="Person.aspx" />
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
-    <Content Include="SavedQuery.aspx" />
     <Content Include="Search.aspx" />
     <Content Include="Dialog\Search.aspx" />
   </ItemGroup>
@@ -1289,9 +1285,11 @@
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
+    <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Public\Views\Retreat\AddressDisplay.ascx" />
     <Content Include="Areas\Public\Views\Retreat\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\Retreat\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\Retreat\Filled.aspx" />
     <Content Include="Areas\Public\Views\Retreat\Index.aspx" />
     <Content Include="Areas\Public\Views\Retreat\List.ascx" />
     <Content Include="Areas\Public\Views\Retreat\Payment.aspx" />
@@ -1353,8 +1351,10 @@
     <Content Include="Areas\Manage\Views\Display\EditPage.aspx" />
     <Content Include="Areas\Manage\Views\Display\Index.aspx" />
     <Content Include="Areas\Manage\Views\Display\Page.aspx" />
+    <Content Include="Areas\Setup\Views\Division\Index.aspx" />
     <Content Include="Areas\Setup\Views\Fund\Edit.aspx" />
     <Content Include="Areas\Setup\Views\Fund\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Lookup\List.aspx" />
     <Content Include="Areas\Setup\Views\Lookup\Index.aspx" />
     <Content Include="Areas\Setup\Views\MemberType\Index.aspx" />
     <Content Include="Areas\Setup\Views\MetroZip\Index.aspx" />
@@ -1364,6 +1364,7 @@
     <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
     <Content Include="Areas\Setup\Views\Recreation\Index.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\BatchReportSpecs.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
     <Content Include="Areas\Setup\Views\Setting\OrphanedImages.aspx" />
     <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.aspx" />
@@ -2112,7 +2113,7 @@
     <Content Include="Areas\Main\Views\CheckIn\CheckIn.aspx" />
     <Content Include="Areas\Manage\Views\Home\BatchTag.aspx" />
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
-    <Content Include="Areas\Manage\Views\Reports\Attendance.aspx" />
+    <Content Include="Areas\Main\Views\Reports\Attendance.aspx" />
     <Content Include="Content\newsletter.css" />
     <Content Include="template-basic.htm" />
     <Content Include="Views\Shared\bvorg.Master" />
@@ -2212,6 +2213,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Main\Views\Shared\" />
+    <Folder Include="Areas\Manage\Models\Reports\" />
+    <Folder Include="Areas\Manage\Views\Reports\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Controllers\" />

@@ -7,7 +7,7 @@
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         $(function() {
-            $("#zip").change(function() {
+            $("#zip").blur(function() {
                 $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
                     if (ret) {
                         $('#state').val(ret.state);

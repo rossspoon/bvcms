@@ -19,7 +19,6 @@ namespace CMSWeb.Areas.Manage
             AddRoute(context, "Home");
             AddRoute(context, "Promotion");
             AddRoute(context, "Recreation");
-            AddRoute(context, "Reports");
             AddRoute(context, "VBS");
             AddRoute(context, "Volunteers");
             context.MapRoute(

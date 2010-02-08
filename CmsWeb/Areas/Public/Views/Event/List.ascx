@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<CMSWeb.Models.PersonEventModel>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<CMSWeb.Models.EventModel>>" %>
 <table cellpadding="0" cellspacing="0">
 <% 
     for(var i = 0; i < Model.Count; i++)

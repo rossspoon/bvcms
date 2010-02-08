@@ -403,6 +403,9 @@ namespace CMSWeb.Models
         }
         public static Person FindPerson(string phone, string first, string last, DateTime DOB, out int count)
         {
+            count = 0;
+            if (!first.HasValue() || !last.HasValue())
+                return null;
             first = first.Trim();
             last = last.Trim();
             var fone = Util.GetDigits(phone);

@@ -22,7 +22,7 @@ namespace CmsCheckin
             InitializeComponent();
         }
 
-        const string printer = "Datamax E-4203";
+        private string printer = ConfigurationSettings.AppSettings["PrinterName"];
         private bool hasprinter;
         private int Row;
         DateTime time;

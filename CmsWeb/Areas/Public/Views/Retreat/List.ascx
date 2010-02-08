@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RetreatModel>" %>
 <table cellpadding="0" cellspacing="0">
 <% 
-        if (Model.Found == true)
+        if (Model.Found == true || Model.IsNew)
         {
             Html.RenderPartial("PersonDisplay", Model);
 %>
