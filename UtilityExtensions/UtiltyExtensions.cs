@@ -784,7 +784,7 @@ namespace UtilityExtensions
         public static MailAddress TryGetMailAddress(string address, string name)
         {
             if (ValidEmail(address))
-                return new MailAddress(address, name);
+                return Util.FirstAddress(address, name);
             else
                 return null;
         }
@@ -793,7 +793,11 @@ namespace UtilityExtensions
             if (!email.HasValue())
                 return false;
             var re = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
-            return re.IsMatch(email);
+            var a = email.SplitStr(",;");
+            var b = true;
+            foreach (var m in a)
+                b = b && re.IsMatch(m);
+            return b;
         }
         public static bool IsLocalNetworkRequest
         {

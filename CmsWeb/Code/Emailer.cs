@@ -18,6 +18,7 @@ using System.Web.UI.WebControls;
 using System.Text;
 using System.Web.Configuration;
 using System.Net.Mime;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb
 {
@@ -40,43 +41,32 @@ namespace CMSWeb
             }
         }
 
-        private List<MailAddress> Addresses = new List<MailAddress>();
+        private MailAddressCollection Addresses = new MailAddressCollection();
         private IEnumerable<Person> people;
 
         public Emailer(string fromaddr, string fromname)
         {
-            //ReplyTo = new MailAddress(fromaddr, fromname);
-            From = new MailAddress(fromaddr, fromname);
-            //if (From.Host == ReplyTo.Host)
-            //    From = ReplyTo;
+            From = Util.FirstAddress(fromaddr, fromname);
         }
         public Emailer(string fromaddr)
         {
-            //ReplyTo = new MailAddress(fromaddr);
-            From = new MailAddress(fromaddr);
-            //if (From.Host == ReplyTo.Host)
-            //    From = ReplyTo;
+            From = Util.FirstAddress(fromaddr);
         }
         public Emailer()
         {
         }
-        public void LoadAddresses(IEnumerable<Person> q)
+        public void LoadAddress(string Address, string Name)
         {
-            foreach (var p in q)
-                Addresses.Add(new MailAddress(p.EmailAddress, p.Name));
-        }
-        public MailAddress LoadAddress(string Address, string Name)
-        {
-            if (Addresses.SingleOrDefault(m => m.Address == Address) == null)
+            var aa = Address.SplitStr(",;");
+            foreach (var ad in aa)
             {
-                var ma = new MailAddress(Address, Name);
-                Addresses.Add(ma);
-                return ma;
+                var ma = Util.TryGetMailAddress(ad, Name);
+                if (ma != null)
+                    Addresses.Add(ma);
             }
-            return null;
         }
 
-        public void NotifyEmail(string subject, string message)
+        private void NotifyEmail(string subject, string message)
         {
             Subject = subject;
             Message = message;
@@ -126,7 +116,7 @@ namespace CMSWeb
             if (attach.FileName.HasValue())
                 a = new Attachment(attach.FileContent, attach.FileName);
 
-            var sb = new StringBuilder();
+            var sb = new StringBuilder("<pre>\r\n");
             SmtpClient smtp = null;
             var i = 0;
 
@@ -135,6 +125,7 @@ namespace CMSWeb
                 bhtml = message;
             else
                 bhtml = Util.SafeFormat(Message);
+
             int EmailBatchCount = DbUtil.Settings("EmailBatchCount", "500").ToInt();
 
             foreach (var p in people)
@@ -142,135 +133,56 @@ namespace CMSWeb
                 var em = p.EmailAddress.Trim();
                 if (!p.EmailAddress.HasValue())
                     continue;
-                if (Util.ValidEmail(em))
-                {
-                    var to = new MailAddress(em, p.Name);
-                    var msg = new MailMessage(From, to);
-                    string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
-                    if (sysfromemail.HasValue())
+
+                if (i % 20 == 0)
+                    smtp = new SmtpClient();
+                i++;
+
+                var text = bhtml.Replace("{name}", p.Name);
+                text = text.Replace("{first}", p.PreferredName);
+                text = text.Replace("{unsubscribe}",
+                    "<a href=\"{0}OptOut/UnSubscribe/{1}\">Unsubscribe</a>"
+                    .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
+
+                Util.SendMsg(smtp, From, subject, text, p.Name, p.EmailAddress, a);
+
+                DbUtil.Db.EmailLogs.InsertOnSubmit(
+                    new EmailLog
                     {
-                        var sysmail = new MailAddress(sysfromemail);
-                        if (From.Host != sysmail.Host)
-                            msg.Sender = sysmail;
-                    }
-                    msg.Subject = Subject;
+                        Fromaddr = From.Address,
+                        Toaddr = p.EmailAddress,
+                        Subject = Subject,
+                        Time = Util.Now
+                    });
+                DbUtil.Db.SubmitChanges();
 
-                    var text = Message;
-                    text = text.Replace("{name}", p.Name);
-                    text = text.Replace("{first}", p.PreferredName);
-                    text = text.Replace("{firstname}", p.PreferredName);
-                    msg.Body = text;
-
-                    var html = bhtml;
-                    html = html.Replace("{name}", p.Name);
-                    html = html.Replace("{first}", p.PreferredName);
-                    html = html.Replace("{firstname}", p.PreferredName);
-                    html = html.Replace("{unsubscribe}", "<a href=\"{0}OptOut/UnSubscribe/{1}\">Unsubcribe</a>"
-                        .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
-
-                    var bytes = Encoding.UTF8.GetBytes(html);
-                    var htmlStream = new MemoryStream(bytes);
-                    var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-                    htmlView.TransferEncoding = TransferEncoding.SevenBit;
-                    msg.AlternateViews.Add(htmlView);
-
-                    if (a != null)
-                        msg.Attachments.Add(a);
-
-                    if (i % 20 == 0)
-                        smtp = new SmtpClient();
-                    i++;
-                    smtp.Send(msg);
-                    DbUtil.Db.EmailLogs.InsertOnSubmit(
-                        new EmailLog 
-                        { 
-                            Fromaddr = From.Address, 
-                            Toaddr = to.Address, 
-                            Subject = Subject, 
-                            Time = Util.Now 
-                        });
-                    DbUtil.Db.SubmitChanges();
-                    //System.Threading.Thread.Sleep(100);
-                    htmlView.Dispose();
-                    htmlStream.Dispose();
-                    sb.AppendFormat("\"{0}\" <{1}> ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
-                    if (i % EmailBatchCount == 0)
-                        NotifySentEmails(sb, smtp);
-                }
-                else
-                {
-                    var msg = new MailMessage(From, From);
-                    msg.Subject = "not a valid email address";
-                    string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
-                    if (sysfromemail.HasValue())
-                    {
-                        var sysmail = new MailAddress(sysfromemail);
-                        if (From.Host != sysmail.Host)
-                            msg.Sender = sysmail;
-                    }
-                    msg.Body = "Addressed to: " + em + "\r\n"
-                        + "Name: " + p.Name + "\r\n\r\n"
-                        + Message.Replace("{name}", p.Name).Replace("{first}", p.PreferredName);
-                    msg.IsBodyHtml = false;
-                    if (i % 20 == 0)
-                        smtp = new SmtpClient();
-                    i++;
-                    smtp.Send(msg);
-                }
+                //System.Threading.Thread.Sleep(100);
+                sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
+                if (i % EmailBatchCount == 0)
+                    NotifySentEmails(sb, smtp, String.Empty);
             }
-            NotifySentEmails(sb, smtp);
+            NotifySentEmails(sb, smtp, String.Empty);
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
-            try
-            {
-                From = new MailAddress(from.EmailAddress, from.Name);
-                Addresses.Clear();
-                var To = LoadAddress(to.EmailAddress, to.Name);
-                if (To == null)
-                    return;
+            From = new MailAddress(from.EmailAddress, from.Name);
+            Addresses.Clear();
+            LoadAddress(to.EmailAddress, to.Name);
+            if (Addresses.Count > 0)
                 NotifyEmail(subject, message);
-            }
-            catch
-            {
-                //var s = "failure sending email to {0}".Fmt(to.Name);
-                //throw new Exception(s);
-            }
         }
-        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp)
+        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp, string message)
         {
-            sb.Append("\r\n");
+            sb.Append("</pre>\r\n");
             sb.Append(Message);
             smtp = new SmtpClient();
 
-            var msg = new MailMessage(From, From);
-            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
-            if (sysfromemail.HasValue())
-            {
-                var sysmail = new MailAddress(sysfromemail);
-                if (From.Host != sysmail.Host)
-                    msg.Sender = sysmail;
-            }
-            msg.Subject = "sent emails";
-            msg.Body = sb.ToString();
-            msg.IsBodyHtml = false;
-            smtp.Send(msg);
-
-            msg = new MailMessage();
-            msg.From = From;
-            if (sysfromemail.HasValue())
-            {
-                var sysmail = new MailAddress(sysfromemail);
-                if (From.Host != sysmail.Host)
-                    msg.Sender = sysmail;
-            }
-            msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
-            msg.Subject = "sent emails";
-            msg.Body = sb.ToString();
-            msg.IsBodyHtml = false;
-            smtp.Send(msg);
+            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address, null);
+            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, 
+                WebConfigurationManager.AppSettings["senderrorsto"], null);
 
             sb.Length = 0;
+            sb.Append("<pre>\r\n");
         }
     }
 }

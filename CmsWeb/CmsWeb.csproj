@@ -2080,7 +2080,6 @@
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\Retreat.js" />
-    <Content Include="template-basic2.htm" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
@@ -2115,7 +2114,6 @@
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Areas\Main\Views\Reports\Attendance.aspx" />
     <Content Include="Content\newsletter.css" />
-    <Content Include="template-basic.htm" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Pager2.aspx" />

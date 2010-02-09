@@ -38,8 +38,14 @@ CREATE TABLE [dbo].[Organizations]
 [SchedDay] [int] NULL,
 [MeetingTime] [datetime] NULL,
 [ShowOnlyRegisteredAtCheckIn] [bit] NULL,
-[Limit] [int] NULL
+[Limit] [int] NULL,
+[EmailAddresses] [varchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[RegType] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[EmailMessage] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[EmailSubject] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Instructions] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+
 
 
 -- =============================================
