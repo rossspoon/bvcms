@@ -45,9 +45,14 @@ namespace CMSWeb.Areas.Public.Controllers
             list[0].evtype = org.RegType;
             return View(list);
         }
-        public ActionResult Childcare(int id, bool? testing)
+        public ActionResult Childcare(int? id, bool? testing)
         {
-            return RedirectToAction("Index", new { id = id, testing = testing });
+            if (!id.HasValue)
+                return Content("must specify an organizationid");
+            var org = DbUtil.Db.LoadOrganizationById(id.Value);
+            if (org == null)
+                return Content("must specify the correct organizationid");
+            return RedirectToAction("Index", new { id = id.Value, testing = testing });
         }
         private decimal ComputeFee(IList<EventModel> list)
         {
@@ -211,10 +216,10 @@ namespace CMSWeb.Areas.Public.Controllers
                 p.Name, p.PeopleId, org.OrganizationName, sb.ToString()));
 
             Util.Email(smtp, org.EmailAddresses, p.Name, list[0].email, org.EmailSubject, msg);
-            if (list[0].email != p.EmailAddress)
+            if (string.Compare(list[0].email, p.EmailAddress, true) != 0)
             {
                 Util.Email(smtp, org.EmailAddresses, p.Name, p.EmailAddress, org.EmailSubject, msg);
-                Util.EmailHtml2(smtp, org.EmailAddresses, org.EmailAddresses,
+                Util.EmailHtml2(smtp, p.EmailAddress, org.EmailAddresses,
                     "different email address than one on record",
                     "<p>{0}({1}) registered  with {2} but has {3} in record.</p>".Fmt(
                     p.Name, p.PeopleId, list[0].email, p.EmailAddress));

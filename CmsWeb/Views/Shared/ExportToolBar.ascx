@@ -32,7 +32,7 @@
                 Contact Report</a></li>
             <li><a href='/Reports/WeeklyAttendance/<%=ViewData["queryid"]%>' 
                 target="_blank" title="General Attendance Stats"><img src="/images/Report.png" />
-                Weekly Attendance</a></li>
+                Weekly Attend</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>

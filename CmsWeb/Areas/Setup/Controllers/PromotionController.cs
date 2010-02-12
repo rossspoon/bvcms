@@ -82,6 +82,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult DivisionCodes(int id)
         {
             var q = from c in DbUtil.Db.Divisions

@@ -81,7 +81,7 @@
         minChars: 3,
         matchContains: 1
     };
-    $('.schooltext').autocomplete("/Register/Schools", acopts);
+    $('.schooltext').autocomplete("/Person/Schools", acopts);
     $('.schooltext').keypress(function(e) {
         var key = window.event ? e.keyCode : e.which;
         if (key != 13)

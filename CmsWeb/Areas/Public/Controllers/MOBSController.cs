@@ -112,13 +112,6 @@ namespace CMSWeb.Areas.Public.Controllers
                  m.person.Name, m.registration.Email, c.Title, c.Body);
             return View(m);
         }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City.Trim(), state = z.State });
-        }
         [Authorize]
         public ActionResult Registrations()
         {

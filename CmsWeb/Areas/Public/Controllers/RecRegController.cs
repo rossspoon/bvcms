@@ -118,7 +118,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 .Fmt(m.participant.Name, m.participant.PeopleId, 
                 m.division.Name, m.organization.OrganizationName));
 
-            if ((reg.FeePaid ?? false) == true)
+            if ((reg.FeePaid ?? false) == true || m.Amount == 0)
                 return RedirectToAction("Confirm", new { id = reg.Id });
             else
             {
@@ -169,13 +169,6 @@ Feepaid: {4:C}, TransactionID: {5}"
                 amt, TransactionID));
 
             return View(m);
-        }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City.Trim(), state = z.State });
         }
     }
 }

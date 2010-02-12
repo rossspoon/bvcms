@@ -41,6 +41,7 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["queryid"] = m.QueryId;
             return View(m);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult SelectCondition(int id, string ConditionName)
         {
             var m = new QueryModel { ConditionName = ConditionName, SelectedId = id };
@@ -62,6 +63,7 @@ namespace CMSWeb.Areas.Main.Controllers
             
             return Json(m);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetCodes(string Comparison, string ConditionName)
         {
             var m = new QueryModel { Comparison = Comparison, ConditionName = ConditionName };
@@ -74,6 +76,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 SelectMultiple = m.SelectMultiple 
             });
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult EditCondition(int id)
         {
             var m = new QueryModel { SelectedId = id };
@@ -146,16 +149,19 @@ namespace CMSWeb.Areas.Main.Controllers
             var m = new QueryModel();
             return View(m);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetDivisions(int id)
         {
             var m = new QueryModel();
             return Json(new { Divisions = m.Divisions(id), Organizations = m.Organizations(0) });
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetOrganizations(int id)
         {
             var m = new QueryModel();
             return Json(m.Organizations(id));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult SavedQueries()
         {
             var m = new QueryModel();

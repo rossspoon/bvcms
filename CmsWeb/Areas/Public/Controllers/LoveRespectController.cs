@@ -120,14 +120,7 @@ namespace CMSWeb.Areas.Public.Controllers
             SendEmailOth(smtp, m);
             return RedirectToAction("Confirm");
         }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json( new { city = z.City, state = z.State });
-        }
-
+        
         public ActionResult Confirm()
         {
             return View();

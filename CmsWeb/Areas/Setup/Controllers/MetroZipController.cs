@@ -50,6 +50,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ResidentCodes()
         {
             var q = from c in DbUtil.Db.ResidentCodes

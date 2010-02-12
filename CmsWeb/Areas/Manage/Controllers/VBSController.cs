@@ -53,6 +53,7 @@ namespace CMSWeb.Areas.Manage.Controllers
             DbUtil.Db.SubmitChanges();
             return new RedirectResult("/VBS/Detail/" + Id);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult OrgOptions(int Id, int? DivId, int? OrgId)
         {
             var m = new Models.VBSModel();

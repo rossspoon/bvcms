@@ -90,13 +90,6 @@ namespace CMSWeb.Areas.Public.Controllers
                  m.person.Name, m.transaction.EmailAddress, c.Title, Body);
             return View(m);
         }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City.Trim(), state = z.State });
-        }
         [Authorize(Roles="Attendance")]
         public ActionResult Transactions()
         {

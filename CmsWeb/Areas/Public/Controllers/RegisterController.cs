@@ -265,6 +265,7 @@ namespace CMSWeb.Areas.Public.Controllers
             Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Schools(string q, int limit)
         {
             var qu = from p in DbUtil.Db.People
@@ -273,6 +274,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     select g.Key;
             return Content(string.Join("\n", qu.Take(limit).ToArray()));
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult CityState(string id)
         {
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);

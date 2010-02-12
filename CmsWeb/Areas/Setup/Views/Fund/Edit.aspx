@@ -51,26 +51,32 @@
             <p>
                 <label for="FundIncomeDept">FundIncomeDept:</label>
                 <%= Html.TextBox("FundIncomeDept") %>
+                <%=Html.ValidationMessage("FundIncomeDept")%>
             </p>
             <p>
                 <label for="FundIncomeAccount">FundIncomeAccount:</label>
                 <%= Html.TextBox("FundIncomeAccount") %>
+                <%=Html.ValidationMessage("FundIncomeAccount")%>
             </p>
             <p>
                 <label for="FundIncomeFund">FundIncomeFund:</label>
                 <%= Html.TextBox("FundIncomeFund") %>
+                <%=Html.ValidationMessage("FundIncomeFund")%>
             </p>
             <p>
                 <label for="FundCashDept">FundCashDept:</label>
                 <%= Html.TextBox("FundCashDept") %>
+                <%=Html.ValidationMessage("FundCashDept")%>
             </p>
             <p>
                 <label for="FundCashAccount">FundCashAccount:</label>
                 <%= Html.TextBox("FundCashAccount") %>
+                <%=Html.ValidationMessage("FundCashAccount")%>
             </p>
             <p>
                 <label for="FundCashFund">FundCashFund:</label>
                 <%= Html.TextBox("FundCashFund") %>
+                <%=Html.ValidationMessage("FundCashFund")%>
             </p>
             <p>
                 <%=Html.Hidden("FundId") %>

@@ -183,12 +183,5 @@ namespace CMSWeb.Areas.Public.Controllers
             ViewData["email"] = m.email;
             return View();
         }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City.Trim(), state = z.State });
-        }
     }
 }

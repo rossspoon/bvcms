@@ -54,6 +54,8 @@ namespace CMSWeb.Areas.Setup.Controllers
                     DateTime dt;
                     if (!DateTime.TryParse(value, out dt))
                         rec.AgeDate = null;
+                    else
+                        rec.AgeDate = value;
                     break;
                 case "s":
                     rec.StartAge = value.ToInt();
@@ -148,6 +150,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                     };
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
+        [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult Genders()
         {
             var q = from c in DbUtil.Db.Genders

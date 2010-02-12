@@ -74,8 +74,27 @@ namespace CMSWeb.Areas.Setup.Controllers
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == FundId);
             if (fund != null)
                 UpdateModel(fund);
-            DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Index");
+
+            if (!fund.FundIncomeAccount.HasValue())
+                ModelState.AddModelError("FundIncomeAccount", "Need an account number");
+            if (!fund.FundIncomeDept.HasValue())
+                ModelState.AddModelError("FundIncomeDept", "Need an account number");
+            if (!fund.FundIncomeFund.HasValue())
+                ModelState.AddModelError("FundIncomeFund", "Need an account number");
+
+            if (!fund.FundCashAccount.HasValue())
+                ModelState.AddModelError("FundCashAccount", "Need an account number");
+            if (!fund.FundCashDept.HasValue())
+                ModelState.AddModelError("FundCashDept", "Need an account number");
+            if (!fund.FundCashFund.HasValue())
+                ModelState.AddModelError("FundCashFund", "Need an account number");
+
+            if (ModelState.IsValid)
+            {
+                DbUtil.Db.SubmitChanges();
+                return RedirectToAction("Index");
+            }
+            return View("Edit", fund);
         }
         public static List<SelectListItem> GetFundStatusList()
         {

@@ -121,14 +121,6 @@ namespace CMSWeb.Areas.Public.Controllers
             m.EnrollInChildcare(c);
             return RedirectToAction("ChildCare", new { id = id });
         }
-        public JsonResult CityState(string id)
-        {
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
-            if (z == null)
-                return Json(null);
-            return Json(new { city = z.City, state = z.State });
-        }
-
         public ActionResult Confirm(int id)
         {
             var m = new Models.SoulMateModel(id);

@@ -109,6 +109,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ProgramCodes()
         {
             var q = from c in DbUtil.Db.Programs

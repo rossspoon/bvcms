@@ -22,12 +22,11 @@ namespace CMSWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // just something special for Bellevue
-            if (Request.Url.Scheme == "http" && Request.Url.Authority == "cms.bellevue.org")
+            if (Request.Url.Scheme == "http" && Util.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)
-                    Response.Redirect("https://cms.bellevue.org/Login.aspx?" + Request.QueryString);
+                    Response.Redirect(Util.CmsHost + "Login.aspx?" + Request.QueryString);
                 else
-                    Response.Redirect("https://cms.bellevue.org/Login.aspx");
+                    Response.Redirect(Util.CmsHost + "Login.aspx");
 
             var terms = DbUtil.Content("TermsOfUse");
             if (terms != null)
@@ -115,7 +114,7 @@ By logging in below, you agree that you understand this purpose and will abide b
         }
         private static void Notify(string to, string subject, string message)
         {
-            Util.Email2(new SmtpClient(), Util.FirstAddress(DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress)).Address, to, subject, message);
+            Util.Email2(new SmtpClient(), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), to, subject, message);
         }
         private static void NotifyAdmins(string subject, string message)
         {
@@ -126,7 +125,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                     continue;
                 if (sb.Length > 0)
                     sb.Append(",");
-                sb.AppendFormat("{0} <{1}>", u.Person.Name, u.Person.EmailAddress);
+                sb.Append(u.EmailAddress);
             }
             Notify(sb.ToString(), subject, message);
         }

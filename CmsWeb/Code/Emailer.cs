@@ -84,7 +84,7 @@ namespace CMSWeb
                         msg.Sender = sysmail;
                 }
                 msg.Subject = Subject;
-                msg.Body = "<html>\r\n" + Message + "\r\n</html>";
+                msg.Body = Message;
                 msg.IsBodyHtml = true;
                 if (i % 20 == 0)
                     smtp = new SmtpClient();
@@ -107,8 +107,6 @@ namespace CMSWeb
             FileUpload attach,
             bool IsHtml)
         {
-            Subject = subject;
-            Message = message;
             this.people = people;
 
             Attachment a = null;
@@ -120,11 +118,11 @@ namespace CMSWeb
             SmtpClient smtp = null;
             var i = 0;
 
-            string bhtml = null;
             if (IsHtml)
-                bhtml = message;
+                Message = message;
             else
-                bhtml = Util.SafeFormat(Message);
+                Message = Util.SafeFormat(message);
+            var bhtml = Message;
 
             int EmailBatchCount = DbUtil.Settings("EmailBatchCount", "500").ToInt();
 

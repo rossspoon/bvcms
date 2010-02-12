@@ -8,7 +8,7 @@
 .sf-menu {
 	line-height:	1.0;
 	position:relative;
-    z-index: 300;
+    z-index: 999;
 }
 .sf-menu ul {
 	position:		absolute;

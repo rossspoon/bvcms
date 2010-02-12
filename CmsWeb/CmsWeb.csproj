@@ -75,9 +75,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportController.cs" />
     <Compile Include="Areas\Main\Models\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\AttendHistoryModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\BasicPersonInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\ContactsMadeModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\ContactsReceivedModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\EnrollmentsModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\GrowthInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\MemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\MemberNotesInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\PendingEnrollmentsModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\PersonInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\PersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\PrevEnrollmentsModel.cs" />
     <Compile Include="Areas\Main\Models\Person\AttendHistoryModel.cs" />
     <Compile Include="Areas\Main\Models\Person\ContactsReceivedModel.cs" />
     <Compile Include="Areas\Main\Models\Person\ContactsMadeModel.cs" />
@@ -2038,6 +2052,7 @@
     <Content Include="Content\check48.png" />
     <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\close.png" />
+    <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />
     <Content Include="Content\jquery-ui-1.8rc1.custom.css" />

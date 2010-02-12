@@ -8,7 +8,7 @@
 
     <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="/Scripts/CheckIn.js" type="text/javascript"></script>
+    <script src="/Scripts/CheckIn.js?v=2" type="text/javascript"></script>
 
     <%=Html.Hidden("OrgId") %>
     <%=Html.Hidden("PeopleId", Model.person.PeopleId) %>
