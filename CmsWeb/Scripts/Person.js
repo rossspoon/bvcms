@@ -192,6 +192,6 @@
     });
 
 });
-function CloseIFrameDialog() {
+function RebindMemberGrids(from) {
     $("#ui-widget-iframe-outer").dialog('close');
 }

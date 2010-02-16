@@ -7,7 +7,8 @@
         <td><input type="text" name="first" value="<%=Model.first%>" />
         <input type="hidden" name="ShowAddress" value="<%=Model.ShowAddress %>" />
         </td>
-        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %></td>
+        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
+        </td>
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>

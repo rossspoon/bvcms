@@ -35,7 +35,7 @@
     </tr>
     <tr>
         <th>Drop:</th>
-        <td><a id="d<%=comboid %>" class="delete" href="/EditMember/Drop/"><img src="/images/delete.gif" border="0" /></a></td>
+        <td><a class="delete" href="/OrgMemberDialog/Drop/d<%=comboid %>"><img src="/images/delete.gif" border="0" /></a></td>
     </tr>
     <tr>
         <td></td>

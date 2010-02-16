@@ -69,8 +69,10 @@ namespace CMSWeb
                         mlink.NavigateUrl = "~/AttendStrDetail.aspx?oid={0}&id={1}&TB_iframe=true&height=450&width=700"
                             .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
                     else
-                        mlink.NavigateUrl = "~/Dialog/EditMember.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
+                        mlink.NavigateUrl = "/OrgMemberDialog/Index/{0}?pid={1}&from={2}&TB_iframe=true&height=450&width=600"
                             .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
+                    //mlink.NavigateUrl = "~/Dialog/EditMember.aspx?oid={0}&pid={1}&from={2}&TB_iframe=true&height=450&width=600"
+                    //        .Fmt(OrgId, mi.PeopleId, MemberPanel.ClientID);
                 }
             }
         }

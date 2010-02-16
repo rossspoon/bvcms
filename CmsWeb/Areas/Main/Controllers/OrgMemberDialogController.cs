@@ -15,6 +15,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Index(int id, int pid, string from)
         {
             var m = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == id && om.PeopleId == pid);
+            ViewData["from"] = from;
             if (m == null)
                 return Content("cannot find membership: id={0} pid={1}".Fmt(id, pid));
             return View(m);
@@ -52,6 +53,15 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
             UpdateModel(om);
+            DbUtil.Db.SubmitChanges();
+            return View("Display", om);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Drop(string id)
+        {
+            var a = id.Split('-');
+            var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
+            om.Drop();
             DbUtil.Db.SubmitChanges();
             return View("Display", om);
         }

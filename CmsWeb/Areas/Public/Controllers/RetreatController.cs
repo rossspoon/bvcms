@@ -35,11 +35,11 @@ namespace CMSWeb.Areas.Public.Controllers
                 email = "david@davidcarroll.name",
                 phone = "9017581862",
                 homecell = "h",
-                orgid = id
+                oid = id
             };
 #else
             var m = new RetreatModel();
-            m.orgid = id;
+            m.oid = id;
 #endif
             if (org.OrganizationMembers.Count() >= org.Limit)
                 return View("Filled");

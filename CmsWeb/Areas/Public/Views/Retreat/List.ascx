@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RetreatModel>" %>
+    <%=Html.Hidden("oid") %>
 <table cellpadding="0" cellspacing="0">
 <% 
         if (Model.Found == true || Model.IsNew)

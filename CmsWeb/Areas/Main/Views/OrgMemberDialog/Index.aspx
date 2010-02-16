@@ -11,8 +11,9 @@
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>
 
     <script src="/Content/js/jquery-ui-1.8rc1.custom.min.js" type="text/javascript"></script>    
-    <script src="/Scripts/EditMember.js" type="text/javascript"></script>
+    <script src="/Scripts/OrgMemberDialog.js" type="text/javascript"></script>
 <% string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; %>
+<%=Html.Hidden("from") %>
 <table>
     <tr>
     <td>Attendance:</td>

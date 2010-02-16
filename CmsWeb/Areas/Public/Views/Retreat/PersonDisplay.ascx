@@ -4,19 +4,18 @@
     <tr>
         <td><label for="first">First Name</label></td>
         <td><%=Model.first %>
-        <input type="hidden" name="orgid" value="<%=Model.orgid %>" />
-        <input type="hidden" name="Found" value="<%=Model.Found%>" />
-        <input type="hidden" name="IsNew" value="<%=Model.IsNew%>" />
-        <input type="hidden" name="ShowAddress" value="<%=Model.ShowAddress %>" />
-        <input type="hidden" name="first" value="<%=Model.first%>" />
-        <input type="hidden" name="last" value="<%=Model.last%>" />
-        <input type="hidden" name="dob" value="<%=Model.birthday.ToShortDateString()%>" />
-        <input type="hidden" name="phone" value="<%=Model.phone%>" />
-        <input type="hidden" name="homecell" value="<%=Model.homecell%>" />
-        <input type="hidden" name="address" value="<%=Model.address%>" />
-        <input type="hidden" name="zip" value="<%=Model.zip%>" />
-        <input type="hidden" name="city" value="<%=Model.city%>" />
-        <input type="hidden" name="state" value="<%=Model.state%>" />
+        <%=Html.Hidden("Found") %>
+        <%=Html.Hidden("IsNew") %>
+        <%=Html.Hidden("ShowAddress") %>
+        <%=Html.Hidden("first") %>
+        <%=Html.Hidden("last") %>
+        <%=Html.Hidden("dob", Model.birthday.ToShortDateString())%>
+        <%=Html.Hidden("phone") %>
+        <%=Html.Hidden("homecell") %>
+        <%=Html.Hidden("address") %>
+        <%=Html.Hidden("zip") %>
+        <%=Html.Hidden("city") %>
+        <%=Html.Hidden("state") %>
         </td>
     </tr>
     <tr>

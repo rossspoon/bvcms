@@ -27,7 +27,7 @@ namespace CMSWeb.Models
         public int? gender { get; set; }
         public int? married { get; set; }
 
-        public int orgid { get; set; }
+        public int oid { get; set; }
         public int option { get; set; }
         public bool? Found { get; set; }
         public bool IsNew { get; set; }
@@ -63,7 +63,7 @@ namespace CMSWeb.Models
                 if (!_amountpaid.HasValue && person != null)
                 {
                     var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m =>
-                        m.PeopleId == person.PeopleId && m.OrganizationId == orgid);
+                        m.PeopleId == person.PeopleId && m.OrganizationId == oid);
                     _amountpaid = om != null ? om.Amount ?? 0 : 0;
                 }
                 return _amountpaid ?? 0;

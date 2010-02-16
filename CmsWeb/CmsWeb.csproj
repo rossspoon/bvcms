@@ -2111,7 +2111,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
-    <Content Include="Scripts\EditMember.js" />
+    <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />
     <Content Include="Scripts\Retreat.js" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
