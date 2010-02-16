@@ -17,7 +17,7 @@
     <tr>
     <td>Attendance:</td>
         <td colspan="3">
-            <a href='<%="/AttendStrDetail.aspx?id={0}&oid={1}".Fmt(Model.OrganizationId, Model.PeopleId) %>' 
+            <a href='<%="/AttendStrDetail.aspx?id={1}&oid={0}".Fmt(Model.OrganizationId, Model.PeopleId) %>' 
             target="_blank" style="font-family: Courier New"><%=Model.AttendStr %></a>
         </td>
     </tr>

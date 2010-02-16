@@ -14,7 +14,9 @@ namespace CMSWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int id, int pid, string from)
         {
-            var m = DbUtil.Db.OrganizationMembers.Single(om => om.OrganizationId == id && om.PeopleId == pid);
+            var m = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == id && om.PeopleId == pid);
+            if (m == null)
+                return Content("cannot find membership: id={0} pid={1}".Fmt(id, pid));
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
