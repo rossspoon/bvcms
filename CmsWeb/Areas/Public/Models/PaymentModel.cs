@@ -12,14 +12,15 @@ namespace CMSWeb.Models
 {
     public class PaymentModel
     {
-        public bool testing { get; set; }
-        public decimal amount { get; set; }
         public int? peopleid { get; set; }
-        public string phone { get; set; }
-        public string email { get; set; }
+        public bool testing { get; set; }
+
+        public decimal Amount { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
         public string TransactionId { get; set; }
-        public string postbackurl { get; set; }
-        public string ServiceUOrgID
+        public string PostbackURL { get; set; }
+        public string OrgID
         {
             get
             {
@@ -32,7 +33,7 @@ namespace CMSWeb.Models
 #endif
             }
         }
-        public string ServiceUOrgAccountID
+        public string OrgAccountID
         {
             get
             {
@@ -46,13 +47,15 @@ namespace CMSWeb.Models
             }
         }
 
-        public string address { get; set; }
-        public string zip { get; set; }
-        public string city { get; set; }
-        public string state { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int oid { get; set; }
+        public string NameOnAccount { get; set; }
+        public string Address { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Misc1 { get; set; }
+        public string Misc2 { get; set; }
+        public string Misc3 { get; set; }
+        public string Misc4 { get; set; }
 
     }
 }

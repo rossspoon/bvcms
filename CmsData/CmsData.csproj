@@ -83,6 +83,7 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="MemberRules.cs" />
     <Compile Include="EmailOptOut.cs" />
     <Compile Include="Generated\Address.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="Generated\Views\UserList.cs" />
     <Compile Include="Generated\Views\VerseCategoriesView.cs" />
     <Compile Include="Generated\Views\VerseSummary.cs" />
-    <Compile Include="Generated\WeeklySchedule2.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Invitation.cs" />
@@ -159,7 +159,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RecAgeDivision.cs" />
+    <Compile Include="RecLeague.cs" />
     <Compile Include="Generated\ActivityLog.cs" />
     <Compile Include="Generated\AttendanceClassification.cs" />
     <Compile Include="Generated\AttendTrackLevel.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="Generated\OrgMemMemTag.cs" />
     <Compile Include="Generated\Preference.cs" />
     <Compile Include="Generated\Program.cs" />
-    <Compile Include="Generated\RecAgeDivision.cs" />
     <Compile Include="Generated\RecReg.cs" />
     <Compile Include="Generated\Setting.cs" />
     <Compile Include="Generated\SoulMate.cs" />

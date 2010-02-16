@@ -105,12 +105,12 @@ namespace CMSWeb
             ContributionsLink.NavigateUrl = "~/Contributions/Years.aspx?id={0}".Fmt(person.PeopleId);
             ContributionsLink.Visible = User.IsInRole("Finance");
 
-            var recreg = person.RecRegs.OrderByDescending(v => v.Uploaded).FirstOrDefault();
-            if (recreg != null)
-            {
-                RecFormLink.NavigateUrl = "/Recreation/Detail/{0}".Fmt(recreg.Id);
-                RecFormLink.Visible = User.IsInRole("Attendance");
-            }
+            //var recreg = person.RecRegs.OrderByDescending(v => v.Uploaded).FirstOrDefault();
+            //if (recreg != null)
+            //{
+            //    RecFormLink.NavigateUrl = "/Recreation/Detail/{0}".Fmt(recreg.Id);
+            //    RecFormLink.Visible = User.IsInRole("Attendance");
+            //}
 
             if (((CMSWeb.Site)Page.Master).ScriptManager.IsInAsyncPostBack)
                 if (Page.Request.Params["__EVENTTARGET"] == UpdatePanel1.ClientID)

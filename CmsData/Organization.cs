@@ -152,8 +152,8 @@ namespace CmsData
                 AllowAttendOverlap = AllowAttendOverlap,
                 AttendClassificationId = AttendClassificationId,
                 CanSelfCheckin = CanSelfCheckin,
-                GradeRangeStart = GradeRangeStart,
-                GradeRangeEnd = GradeRangeEnd,
+                GradeAgeStart = GradeAgeStart,
+                GradeAgeEnd = GradeAgeEnd,
                 NumCheckInLabels = NumCheckInLabels,
                 CampusId = CampusId,
                 FirstMeetingDate = FirstMeetingDate,
@@ -166,6 +166,8 @@ namespace CmsData
                 Limit = Limit,
                 AllowNonCampusCheckIn = AllowNonCampusCheckIn,
                 AttendTrackLevel = AttendTrackLevel,
+                RollSheetVisitorWks = RollSheetVisitorWks,
+                NumWorkerCheckInLabels = NumWorkerCheckInLabels,
             };
             DbUtil.Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)

@@ -75,7 +75,7 @@ namespace CMSWeb.Areas.Public.Controllers
             {
                 var summary = m.PrepareSummaryText2();
                 var smtp = new SmtpClient();
-                Util.EmailHtml2(smtp,
+                Util.Email2(smtp,
                     m.person.EmailAddress,
                     email,
                     "{0} volunteer registration".Fmt(id),

@@ -8,24 +8,24 @@
 
     <h2>Payment Processing</h2>
     <p>
-        You will now be redirected to ServiceU.com to process your credit card payment of <%=Model.amount.ToString("C") %>.
+        You will now be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
         After you are finished there, you will be redirected back here to get your confirmation.
     </p>
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
-    <%=Html.Hidden("OrgID", Model.ServiceUOrgID) %>
-    <%=Html.Hidden("OrgAccountID", Model.ServiceUOrgAccountID) %>
-    <%=Html.Hidden("Amount", Model.amount) %>
-    <%=Html.Hidden("PostbackURL", Model.postbackurl) %>
-    <%=Html.Hidden("NameOnAccount", Model.name) %> 
-    <%=Html.Hidden("Address", Model.address) %>
-    <%=Html.Hidden("City", Model.city)%>
-    <%=Html.Hidden("State", Model.state)%>
-    <%=Html.Hidden("PostalCode", Model.zip)%>
-    <%=Html.Hidden("Phone", Model.phone)%>
-    <%=Html.Hidden("Email", Model.email) %>
-    <%=Html.Hidden("Misc1", Model.name)%>
-    <%=Html.Hidden("Misc2", Model.description) %>
-    <%=Html.Hidden("Misc3", Model.oid) %>
+    <%=Html.Hidden("OrgID") %>
+    <%=Html.Hidden("OrgAccountID") %>
+    <%=Html.Hidden("Amount") %>
+    <%=Html.Hidden("PostbackURL") %>
+    <%=Html.Hidden("NameOnAccount") %> 
+    <%=Html.Hidden("Address") %>
+    <%=Html.Hidden("City")%>
+    <%=Html.Hidden("State")%>
+    <%=Html.Hidden("PostalCode")%>
+    <%=Html.Hidden("Phone")%>
+    <%=Html.Hidden("Email") %>
+    <%=Html.Hidden("Misc1")%>
+    <%=Html.Hidden("Misc2") %>
+    <%=Html.Hidden("Misc3") %>
     <%=Html.SubmitButton("Submit", "Next") %>
     </form>
 

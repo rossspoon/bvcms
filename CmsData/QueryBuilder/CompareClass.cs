@@ -355,10 +355,10 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
-                case QueryType.RecFeePaid:
-                    return Expressions.RecFeePaid(parm,
-                               CompType,
-                               c.CodeIds == "1");
+                //case QueryType.RecFeePaid:
+                //    return Expressions.RecFeePaid(parm,
+                //               CompType,
+                //               c.CodeIds == "1");
                 case QueryType.RecActiveOtherChurch:
                     return Expressions.RecActiveOtherChurch(parm,
                                CompType,

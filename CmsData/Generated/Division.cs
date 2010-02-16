@@ -30,9 +30,7 @@ namespace CmsData
 		
    		private EntitySet< Organization> _Organizations;
 		
-   		private EntitySet< RecReg> _RecRegs;
-		
-   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
+   		private EntitySet< RecLeague> _RecLeagues;
 		
    		private EntitySet< Promotion> _FromPromotions;
 		
@@ -68,9 +66,7 @@ namespace CmsData
 			
 			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
-			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
-			
-			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
+			this._RecLeagues = new EntitySet< RecLeague>(new Action< RecLeague>(this.attach_RecLeagues), new Action< RecLeague>(this.detach_RecLeagues)); 
 			
 			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
 			
@@ -200,22 +196,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Participant_Division", Storage="_RecRegs", OtherKey="DivId")]
-   		public EntitySet< RecReg> RecRegs
+   		[Association(Name="FK_RecLeague_Division", Storage="_RecLeagues", OtherKey="DivId")]
+   		public EntitySet< RecLeague> RecLeagues
    		{
-   		    get { return this._RecRegs; }
+   		    get { return this._RecLeagues; }
 
-			set	{ this._RecRegs.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_Recreation_Division", Storage="_RecAgeDivisions", OtherKey="DivId")]
-   		public EntitySet< RecAgeDivision> RecAgeDivisions
-   		{
-   		    get { return this._RecAgeDivisions; }
-
-			set	{ this._RecAgeDivisions.Assign(value); }
+			set	{ this._RecLeagues.Assign(value); }
 
    		}
 
@@ -329,26 +315,13 @@ namespace CmsData
 		}
 
 		
-		private void attach_RecRegs(RecReg entity)
+		private void attach_RecLeagues(RecLeague entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = this;
 		}
 
-		private void detach_RecRegs(RecReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = null;
-		}
-
-		
-		private void attach_RecAgeDivisions(RecAgeDivision entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = this;
-		}
-
-		private void detach_RecAgeDivisions(RecAgeDivision entity)
+		private void detach_RecLeagues(RecLeague entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

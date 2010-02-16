@@ -69,8 +69,8 @@
 
         dialogFrame.attr('src', this.href);
         $("body").css("overflow", "hidden");
-        var dialog = dialogOuter.dialog(
-				{ modal: true,
+        var dialog = dialogOuter.dialog({ 
+                    modal: true,
 				    title: this.title,
 				    resizable: false,
 				    shadow: false,
@@ -120,6 +120,16 @@
             $.showTable($(this));
         });
     });
+    $("#recreg-link").click(function() {
+        var f = $('#recreg-tab form')
+        if ($('table', f).size() > 0)
+            return false;
+        var q = f.serialize();
+        $.post(f.attr('action'), q, function(ret) {
+            $(f).html(ret);
+        });
+    });
+
     $("a.displayedit").live('click', function() {
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
@@ -182,4 +192,6 @@
     });
 
 });
-
+function CloseIFrameDialog() {
+    $("#ui-widget-iframe-outer").dialog('close');
+}

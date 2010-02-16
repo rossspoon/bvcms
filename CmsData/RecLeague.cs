@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsData
 {
-    public partial class RecAgeDivision
+    public partial class RecLeague
     {
         public DateTime agedate
         {

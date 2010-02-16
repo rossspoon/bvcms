@@ -321,7 +321,7 @@
                         <asp:ListItem Value="5">Friday</asp:ListItem>
                         <asp:ListItem Value="6">Saturday</asp:ListItem>
                         </cc1:DisplayOrEditDropDown>
-                        <cc1:DisplayOrEditTime ID="SchedTime" CssClass="clockpick" runat="server" BindingMode="TwoWay" BindingSource="organization"></cc1:DisplayOrEditTime>
+                        <cc1:DisplayOrEditTime ID="SchedTime" runat="server" BindingMode="TwoWay" BindingSource="organization"></cc1:DisplayOrEditTime>
                         <asp:RegularExpressionValidator
                                 ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid time: Use format h:mm am or pm"
                                 ControlToValidate="SchedTime" ValidationExpression="^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$"
@@ -516,11 +516,40 @@
                 </tr>
                 <tr>
                     <th>
-                        Grade:
+                        Start Grade/Age:
                     </th>
                     <td>
-                        <cc1:DisplayOrEditText ID="GradeRangeStart" runat="server" BindingSource="organization"
-                            BindingMember="GradeRangeStart" BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
+                        <cc1:DisplayOrEditText ID="GradeAgeStart" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        End Grade/Age:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="GradeAgeEnd" runat="server" BindingSource="organization"
+                            BindingMode="TwoWay" ChangedStatus="False" Width="135px"></cc1:DisplayOrEditText>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Gender:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditDropDown ID="GenderId" runat="server" BindingMode="TwoWay"
+                            BindingSource="organization" DataTextField="Value" DataValueField="Id" Width="200px"
+                            DataSourceID="ODS_GenderId" MakeDefault0="False">
+                        </cc1:DisplayOrEditDropDown>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Fee:
+                    </th>
+                    <td>
+                        <cc1:DisplayOrEditText ID="Fee" runat="server" BindingSource="organization">
+                        </cc1:DisplayOrEditText>
                     </td>
                 </tr>
                 <tr>
@@ -679,6 +708,8 @@
     <asp:ObjectDataSource ID="ODS_LeaderMemberTypeId" runat="server" SelectMethod="MemberTypeCodes0"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_SecurityTypeId" runat="server" SelectMethod="SecurityTypeCodes"
+        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ODS_GenderId" runat="server" SelectMethod="GenderCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODS_AttendTrkLevelId" runat="server" SelectMethod="AttendanceTrackLevelCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>

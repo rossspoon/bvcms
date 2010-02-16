@@ -79,10 +79,7 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
 
-            var ser = new DataContractSerializer(typeof(RetreatModel));
-            var ms = new MemoryStream();
-            ser.WriteObject(ms, mm);
-            var s = Encoding.Default.GetString(ms.ToArray());
+            var s = Util.Serialize<RetreatModel>(mm);
             var d = new ExtraDatum { Data = s, Stamp = Util.Now };
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
@@ -90,18 +87,20 @@ namespace CMSWeb.Areas.Public.Controllers
             var p = mm;
             var m = new PaymentModel
             {
-                address = p.address,
-                amount = mm.ComputeFee(),
-                city = p.city,
-                email = p.email,
-                name = p.first + " " + p.last,
-                phone = p.phone.FmtFone(),
-                state = p.state,
-                zip = p.zip,
+                NameOnAccount = p.first + " " + p.last,
+                Address = p.address,
+                Amount = mm.ComputeFee(),
+                City = p.city,
+                Email = p.email,
+                Phone = p.phone.FmtFone(),
+                State = p.state,
+                PostalCode = p.zip,
                 testing = testing ?? false,
-                description = org.OrganizationName,
-                postbackurl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Retreat/Confirm/" + d.Id,
-                oid = id,
+                PostbackURL = Request.Url.Scheme + "://" + Request.Url.Authority + "/Retreat/Confirm/" + d.Id,
+                Misc1 = p.first + " " + p.last,
+                Misc2 = org.OrganizationName,
+                Misc3 = id.ToString(),
+                Misc4 = mm.ComputeFee().ToString(),
             };
             return View("Payment", m);
         }
@@ -122,9 +121,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var org = DbUtil.Db.LoadOrganizationById(orgid);
 
             var s = DbUtil.Db.ExtraDatas.Single(e => e.Id == id).Data;
-            var ser = new DataContractSerializer(typeof(RetreatModel));
-            var ms2 = new MemoryStream(Encoding.Default.GetBytes(s));
-            var m = ser.ReadObject(ms2) as RetreatModel;
+            var m = Util.DeSerialize<RetreatModel>(s);
             if (m.IsNew)
                 m.AddPerson(org.EntryPointId ?? 0);
             var om = OrganizationMember.InsertOrgMembers(orgid,
@@ -135,6 +132,7 @@ namespace CMSWeb.Areas.Public.Controllers
 
             if (m.request.HasValue())
                 AddToUserData("Request: " + m.request, om);
+            DbUtil.Db.SubmitChanges();
 
             if (m.option == 1)
                 om.AddToGroup("PD: Deposit");
@@ -171,13 +169,15 @@ namespace CMSWeb.Areas.Public.Controllers
             c.Body = c.Body.Replace("{participants}", m.ToString());
 
             var smtp = new SmtpClient();
-            Util.EmailHtml2(smtp, m.email, DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress),
-                c.Title,
+            string staffemail = Util.PickFirst(org.EmailAddresses, 
+                DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress));
+            Util.Email2(smtp, m.email, staffemail, c.Title,
                 "<p>{0}({1}) has registered for {2}</p>\n{3}".Fmt(
                 p.Name, p.PeopleId, org.OrganizationName, m.ToString()));
 
-            Util.Email(smtp, DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress),
-                 p.Name, m.email, c.Title, c.Body);
+            Util.Email(smtp, staffemail, p.Name, m.email, c.Title, c.Body);
+            Util.SendIfEmailDifferent(smtp, staffemail, m.email,
+                p.PeopleId, p.Name, p.EmailAddress, c.Title, c.Body);
 
             ViewData["orgname"] = org.OrganizationName;
             ViewData["email"] = m.email;

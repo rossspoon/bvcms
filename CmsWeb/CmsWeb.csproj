@@ -75,10 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportController.cs" />
     <Compile Include="Areas\Main\Models\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendHistoryModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\BasicPersonInfo.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Areas\Main\Models\Person\ContactsMadeModel.cs" />
     <Compile Include="Areas\Main\Models\Person\BasicPersonInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\AddressInfo.cs" />
+    <Compile Include="Areas\Main\Models\Person\RecRegInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberNotesInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\GrowthInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\PersonInfo.cs" />
@@ -584,7 +587,6 @@
     <Compile Include="Areas\Manage\Models\PromoteInfo.cs" />
     <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
     <Compile Include="Areas\Main\Models\QueryModel.cs" />
-    <Compile Include="Areas\Manage\Models\RecDetailModel.cs" />
     <Compile Include="Areas\Manage\Models\RecreationModel.cs" />
     <Compile Include="Areas\Public\Models\RecRegModel.cs" />
     <Compile Include="Areas\Public\Models\RegisterModel.cs" />
@@ -1277,6 +1279,10 @@
     <Content Include="App_Themes\Minimal\Skin1.skin" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgMemberDialog\Move.ascx" />
+    <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.ascx" />
+    <Content Include="Areas\Main\Views\OrgMemberDialog\Display.ascx" />
+    <Content Include="Areas\Main\Views\OrgMemberDialog\Index.aspx" />
     <Content Include="Areas\Main\Views\Person\AddressDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\AttendanceGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\BasicDisplay.ascx" />
@@ -1286,6 +1292,8 @@
     <Content Include="Areas\Main\Views\Person\BusinessCard.ascx" />
     <Content Include="Areas\Main\Views\Person\AddressEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsDisplay.ascx" />
+    <Content Include="Areas\Main\Views\Person\RecRegDisplay.ascx" />
+    <Content Include="Areas\Main\Views\Person\RecRegEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\MemberNotesEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\MemberNotesDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\GrowthEdit.ascx" />
@@ -1299,7 +1307,15 @@
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
+    <Content Include="Areas\Manage\Views\Display\LeagueContent.aspx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\AddressDisplay.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\AddressEdit.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\OtherDisplay.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\Index.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\List.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\PersonDisplay.ascx" />
+    <Content Include="Areas\Public\Views\RecReg\PersonEdit.ascx" />
     <Content Include="Areas\Public\Views\Retreat\AddressDisplay.ascx" />
     <Content Include="Areas\Public\Views\Retreat\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\Retreat\Confirm.aspx" />
@@ -1375,8 +1391,9 @@
     <Content Include="Areas\Setup\Views\Ministry\Index.aspx" />
     <Content Include="Areas\Setup\Views\Program\Index.aspx" />
     <Content Include="Areas\Setup\Views\Promotion\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
     <Content Include="Areas\Setup\Views\Recreation\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
+    <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchReportSpecs.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
@@ -2094,6 +2111,8 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\EditMember.js" />
+    <Content Include="Scripts\RecReg.js" />
     <Content Include="Scripts\Retreat.js" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />
@@ -2163,13 +2182,11 @@
     <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.ascx" />
     <Content Include="Areas\Manage\Views\Recreation\All.aspx" />
     <Content Include="Areas\Manage\Views\Recreation\Coaches.aspx" />
-    <Content Include="Areas\Manage\Views\Recreation\Detail.aspx" />
     <Content Include="Areas\Manage\Views\Recreation\Index.aspx" />
     <Content Include="Areas\Manage\Views\Recreation\List.ascx" />
     <Content Include="Areas\Public\Views\RecReg\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\Index.aspx" />
     <Content Include="Areas\Public\Views\RecReg\NoLeague.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\OtherInfo.aspx" />
+    <Content Include="Areas\Public\Views\RecReg\OtherEdit.ascx" />
     <Content Include="Areas\Public\Views\RecReg\Payment.aspx" />
     <Content Include="Areas\Public\Views\RecReg\Unknown.aspx" />
     <Content Include="Areas\Public\Views\Register\Confirm.aspx" />

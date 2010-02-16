@@ -414,9 +414,9 @@ namespace CmsData
         partial void UpdateReadPlan(ReadPlan instance);
         partial void DeleteReadPlan(ReadPlan instance);
         
-        partial void InsertRecAgeDivision(RecAgeDivision instance);
-        partial void UpdateRecAgeDivision(RecAgeDivision instance);
-        partial void DeleteRecAgeDivision(RecAgeDivision instance);
+        partial void InsertRecLeague(RecLeague instance);
+        partial void UpdateRecLeague(RecLeague instance);
+        partial void DeleteRecLeague(RecLeague instance);
         
         partial void InsertRecReg(RecReg instance);
         partial void UpdateRecReg(RecReg instance);
@@ -557,10 +557,6 @@ namespace CmsData
         partial void InsertVolunteerForm(VolunteerForm instance);
         partial void UpdateVolunteerForm(VolunteerForm instance);
         partial void DeleteVolunteerForm(VolunteerForm instance);
-        
-        partial void InsertWeeklySchedule2(WeeklySchedule2 instance);
-        partial void UpdateWeeklySchedule2(WeeklySchedule2 instance);
-        partial void DeleteWeeklySchedule2(WeeklySchedule2 instance);
         
         partial void InsertWord(Word instance);
         partial void UpdateWord(Word instance);
@@ -1206,9 +1202,9 @@ namespace CmsData
 
 		}
 
-		public Table< RecAgeDivision> RecAgeDivisions
+		public Table< RecLeague> RecLeagues
 		{
-			get	{ return this.GetTable< RecAgeDivision>(); }
+			get	{ return this.GetTable< RecLeague>(); }
 
 		}
 
@@ -1419,12 +1415,6 @@ namespace CmsData
 		public Table< VolunteerForm> VolunteerForms
 		{
 			get	{ return this.GetTable< VolunteerForm>(); }
-
-		}
-
-		public Table< WeeklySchedule2> WeeklySchedule2s
-		{
-			get	{ return this.GetTable< WeeklySchedule2>(); }
 
 		}
 

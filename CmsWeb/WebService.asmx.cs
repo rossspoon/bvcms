@@ -39,13 +39,13 @@ namespace CMSWeb
                     vb.ImgId = InsertImage(mimetype, bits);
                     vb.Uploaded = Util.Now;
                     break;
-                case 2:
-                    var rr = new RecReg();
-                    rr.UserInfo = UserInfo;
-                    Db.RecRegs.InsertOnSubmit(rr);
-                    rr.ImgId = InsertImage(mimetype, bits);
-                    rr.Uploaded = Util.Now;
-                    break;
+                //case 2:
+                //    var rr = new RecReg();
+                //    rr.UserInfo = UserInfo;
+                //    Db.RecRegs.InsertOnSubmit(rr);
+                //    rr.ImgId = InsertImage(mimetype, bits);
+                //    rr.Uploaded = Util.Now;
+                //    break;
                 case 3:
                     if (!PeopleId.HasValue)
                         return;

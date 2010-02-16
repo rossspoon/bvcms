@@ -449,7 +449,17 @@ namespace CMSWeb.Models
             if (phone.HasValue() && d != 7 && d != 10)
                 modelState.AddModelError("phone", "7 or 10 digits");
         }
-
+        public static string NotFoundText
+        {
+            get
+            {
+                return @"We could not find this person's record.<br />
+The first name of the individual,<br />
+the last name and the birthday<br />
+must all match a record we have in our system.<br />
+Try a different first name if you are using a nickname.";
+            }
+        }
     }
     public class SearchPeopleInfo
     {

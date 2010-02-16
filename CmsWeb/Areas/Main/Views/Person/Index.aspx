@@ -29,8 +29,8 @@
                             <td><%=p.basic.DoNotCall %></td>
                             <td>
                                 <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Contributions/Years.aspx?id=" + p.PeopleId, "Contributions", null, null)%>
-                                <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
-                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
+<%--                                <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
+--%>                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
                             </td>
                         </tr>
                         <tr>
@@ -77,7 +77,7 @@
             <li><a href="#basic-tab"><span>Basic</span></a></li>
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
-            <li><a id="member-link" href="#member-tab"><span>Member Profile</span></a></li>
+            <li><a href="#member-tab"><span>Member Profile</span></a></li>
             <li><a id="growth-link" href="#growth-tab"><span>Growth</span></a></li>
             <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
         </ul>
@@ -121,6 +121,7 @@
                 <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
                 <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
+                <li><a id="recreg-link" href="#recreg-tab"><span>Registration</span></a></li>
             </ul>
             <div id="current-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form action="/Person/EnrollGrid/<%=p.PeopleId %>">
@@ -136,6 +137,10 @@
             </div>
             <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form action="/Person/AttendanceGrid/<%=p.PeopleId %>">
+                </form>
+            </div>
+            <div id="recreg-tab" class="ui-tabs-panel ui-tabs-hide">
+                <form class="DisplayEdit" action="/Person/RecRegDisplay/<%=p.PeopleId %>">
                 </form>
             </div>
         </div>

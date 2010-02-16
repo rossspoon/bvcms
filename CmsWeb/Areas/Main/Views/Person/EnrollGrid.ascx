@@ -21,7 +21,7 @@
     <td><%=om.Schedule %></td>
     <td><%=om.EnrollDate.FormatDate() %></td>
     <td><a class="membertype" pid="<%=om.PeopleId %>" oid="<%=om.OrgId %>" 
-        href="<%="/Dialog/EditMember.aspx?oid={0}&pid={1}&from={2}".Fmt(om.OrgId, om.PeopleId, "na") %>">
+        href="<%="/OrgMemberDialog/Index/{0}?pid={1}&from={2}".Fmt(om.OrgId, om.PeopleId, "na") %>">
         <%=om.MemberType %></a></td>
     <td><%=om.AttendPct > 0 ? om.AttendPct.Value.ToString("N1") : "" %></td>
     </tr>

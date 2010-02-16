@@ -9,9 +9,9 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RecreationController : CmsController
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             if (DbUtil.Settings("RecreationProgramId", "") == string.Empty)
@@ -24,131 +24,119 @@ namespace CMSWeb.Areas.Setup.Controllers
             if (!ModelState.IsValid)
                 return View("Errors");
 
-            var m = from r in DbUtil.Db.RecAgeDivisions
-                    orderby r.OrgId != null ? r.Organization.OrganizationName : ""
-                    select r;
+            var q = from c in DbUtil.Db.Divisions
+                    where c.ProgId == DbUtil.Settings("RecreationProgramId", "0").ToInt()
+                    where c.RecLeagues.Count() == 0
+                    orderby c.Name
+                    select new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name,
+                    };
+            ViewData["leagues"] = q;
+            var m = from league in DbUtil.Db.RecLeagues
+                    orderby league.Division.Name
+                    select league;
+            return View(m);
+        }
+        public ActionResult AgeDivisions(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no league");
+            var league = DbUtil.Db.RecLeagues.SingleOrDefault(l => l.DivId == id);
+
+            var m = from o in DbUtil.Db.Organizations
+                    where o.DivisionId == id
+                    orderby o.OrganizationName
+                    select o;
+            ViewData["League"] = league.Division.Name;
+            ViewData["id"] = league.DivId;
             return View(m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create()
+        public ActionResult CreateLeague(int? id)
         {
-            var m = new RecAgeDivision();
-            DbUtil.Db.RecAgeDivisions.InsertOnSubmit(m);
+            if (!id.HasValue)
+                ModelState.AddModelError("league", "Must select league");
+            var m = new RecLeague { DivId = id.Value };
+            DbUtil.Db.RecLeagues.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
-            return Redirect("/Setup/Recreation/");
+            return RedirectToAction("Index");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Edit(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
-            var c = new ContentResult();
-            c.Content = value;
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(p => p.Id == iid);
-            if (rec == null)
+            var c = Content(value);
+            var org = DbUtil.Db.Organizations.SingleOrDefault(p => p.OrganizationId == iid);
+            if (org == null)
                 return c;
             switch (id.Substring(0, 1))
             {
-                case "a":
-                    DateTime dt;
-                    if (!DateTime.TryParse(value, out dt))
-                        rec.AgeDate = null;
-                    else
-                        rec.AgeDate = value;
-                    break;
                 case "s":
-                    rec.StartAge = value.ToInt();
+                    org.GradeAgeStart = value.ToInt();
                     break;
                 case "e":
-                    rec.EndAge = value.ToInt();
+                    org.GradeAgeEnd = value.ToInt();
                     break;
                 case "f":
-                    rec.Fee = Decimal.Parse(value);
+                    org.Fee = Decimal.Parse(value);
                     break;
-                case "p":
-                    rec.ExtraFee = Decimal.Parse(value);
-                    break;
-                case "t":
-                    rec.ShirtFee = Decimal.Parse(value);
-                    break;
-                case "z":
-                    if (DateTime.TryParse(value, out dt))
-                        rec.ExpirationDt = dt.ToString("M/d");
-                    else
-                        rec.ExpirationDt = null;
+                case "g":
+                    org.GenderId = value.ToInt();
+                    c = Content(org.Gender.Description);
                     break;
             }
             DbUtil.Db.SubmitChanges();
             return c;
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult EditDiv(string id, string value)
+        public ContentResult EditLeague(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
-            rec.DivId = value.ToInt();
-            rec.OrgId = null;
+            var c = new ContentResult();
+            c.Content = value;
+            var league = DbUtil.Db.RecLeagues.SingleOrDefault(l => l.DivId == iid);
+            if (league == null)
+                return c;
+            switch (id.Substring(0, 1))
+            {
+                case "a":
+                    DateTime dt;
+                    if (!DateTime.TryParse(value, out dt))
+                        league.AgeDate = null;
+                    else
+                        league.AgeDate = value;
+                    break;
+                case "e":
+                    league.ExtraFee = Decimal.Parse(value);
+                    break;
+                case "t":
+                    league.ShirtFee = Decimal.Parse(value);
+                    break;
+                case "z":
+                    if (DateTime.TryParse(value, out dt))
+                        league.ExpirationDt = dt.ToString("M/d");
+                    else
+                        league.ExpirationDt = null;
+                    break;
+            }
             DbUtil.Db.SubmitChanges();
-            return Content(rec.Division.Name);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult EditOrg(string id, string value)
-        {
-            var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
-            rec.OrgId = value.ToInt();
-            DbUtil.Db.SubmitChanges();
-            return Content(rec.Organization.OrganizationName);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult EditGender(string id, string value)
-        {
-            var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
-            rec.GenderId = value.ToInt();
-            DbUtil.Db.SubmitChanges();
-            return Content(rec.Gender.Description);
+            return c;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id)
+        public EmptyResult DeleteLeague(string id)
         {
             var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
-            if (rec == null)
+            var league = DbUtil.Db.RecLeagues.SingleOrDefault(m => m.DivId == iid);
+            if (league == null)
                 return new EmptyResult();
-            DbUtil.Db.RecAgeDivisions.DeleteOnSubmit(rec);
+            DbUtil.Db.RecLeagues.DeleteOnSubmit(league);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult Divisions()
-        {
-            var q = from c in DbUtil.Db.Divisions
-                    orderby c.Name
-                    where c.ProgId == DbUtil.Settings("RecreationProgramId", "0").ToInt()
-                    select new
-                    {
-                        Code = c.Id.ToString(),
-                        Value = c.Name,
-                    };
-            return Json(q.ToDictionary(k => k.Code, v => v.Value));
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult Organizations(string id)
-        {
-            var iid = id.Substring(1).ToInt();
-            var rec = DbUtil.Db.RecAgeDivisions.SingleOrDefault(m => m.Id == iid);
-            var q = from c in DbUtil.Db.Organizations
-                    orderby c.OrganizationName
-                    where c.DivOrgs.Any(od => od.DivId == rec.DivId)
-                    select new
-                    {
-                        Code = c.OrganizationId.ToString(),
-                        Value = c.OrganizationName,
-                    };
-            return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
         [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult Genders()

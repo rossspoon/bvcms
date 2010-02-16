@@ -52,10 +52,7 @@
         <% }
            else
            { %>
-           <p>We could not find this record.<br />
-           The first and last names and the birthday<br />
-           must match a record we have in our system.
-           </p>
+           <p><%=CMSWeb.Models.SearchPeopleModel.NotFoundText %></p>
             <a href="/Event/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
             or <a href="/Event/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
         <% } %>

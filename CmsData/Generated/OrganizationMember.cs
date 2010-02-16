@@ -47,6 +47,8 @@ namespace CmsData
 		
 		private decimal? _Amount;
 		
+		private string _Request;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -108,6 +110,9 @@ namespace CmsData
 		
 		partial void OnAmountChanging(decimal? value);
 		partial void OnAmountChanged();
+		
+		partial void OnRequestChanging(string value);
+		partial void OnRequestChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -460,6 +465,28 @@ namespace CmsData
 					this._Amount = value;
 					this.SendPropertyChanged("Amount");
 					this.OnAmountChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="varchar(100)")]
+		public string Request
+		{
+			get { return this._Request; }
+
+			set
+			{
+				if (this._Request != value)
+				{
+				
+                    this.OnRequestChanging(value);
+					this.SendPropertyChanging();
+					this._Request = value;
+					this.SendPropertyChanged("Request");
+					this.OnRequestChanged();
 				}
 
 			}

@@ -131,10 +131,7 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
 
-            var ser = new DataContractSerializer(typeof(IList<EventModel>));
-            var ms = new MemoryStream();
-            ser.WriteObject(ms, list);
-            var s = Encoding.Default.GetString(ms.ToArray());
+            var s = Util.Serialize<IList<EventModel>>(list);
             var d = new ExtraDatum { Data = s, Stamp = Util.Now };
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
@@ -142,18 +139,19 @@ namespace CMSWeb.Areas.Public.Controllers
             var p = list[0];
             var m = new PaymentModel
             {
-                address = p.address,
-                amount = ComputeFee(list),
-                city = p.city,
-                email = p.email,
-                name = p.first + " " + p.last,
-                phone = p.phone.FmtFone(),
-                state = p.state,
-                zip = p.zip,
+                NameOnAccount = p.first + " " + p.last,
+                Address = p.address,
+                Amount = ComputeFee(list),
+                City = p.city,
+                Email = p.email,
+                Phone = p.phone.FmtFone(),
+                State = p.state,
+                PostalCode = p.zip,
                 testing = testing ?? false,
-                description = org.OrganizationName,
-                postbackurl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Event/Confirm/" + d.Id,
-                oid = id,
+                PostbackURL = Request.Url.Scheme + "://" + Request.Url.Authority + "/Event/Confirm/" + d.Id,
+                Misc1 = p.first + " " + p.last,
+                Misc2 = org.OrganizationName,
+                Misc3 = id.ToString(),
             };
             return View("Payment", m);
         }
@@ -167,9 +165,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var org = DbUtil.Db.LoadOrganizationById(orgid);
 
             var s = DbUtil.Db.ExtraDatas.Single(e => e.Id == id).Data;
-            var ser = new DataContractSerializer(typeof(IList<EventModel>));
-            var ms2 = new MemoryStream(Encoding.Default.GetBytes(s));
-            var list = ser.ReadObject(ms2) as IList<EventModel>;
+            var list = Util.DeSerialize<IList<EventModel>>(s);
 
             for (var i = 0; i < list.Count; i++ )
             {
@@ -210,20 +206,13 @@ namespace CMSWeb.Areas.Public.Controllers
             msg = msg.Replace("{participants}", sb.ToString());
 
             var smtp = new SmtpClient();
-            Util.EmailHtml2(smtp, list[0].email, org.EmailAddresses,
+            Util.Email2(smtp, list[0].email, org.EmailAddresses,
                 org.EmailSubject,
                 "<p>{0}({1}) has registered for {2}</p>\n<p>Participants<br />\n{3}".Fmt(
                 p.Name, p.PeopleId, org.OrganizationName, sb.ToString()));
-
             Util.Email(smtp, org.EmailAddresses, p.Name, list[0].email, org.EmailSubject, msg);
-            if (string.Compare(list[0].email, p.EmailAddress, true) != 0)
-            {
-                Util.Email(smtp, org.EmailAddresses, p.Name, p.EmailAddress, org.EmailSubject, msg);
-                Util.EmailHtml2(smtp, p.EmailAddress, org.EmailAddresses,
-                    "different email address than one on record",
-                    "<p>{0}({1}) registered  with {2} but has {3} in record.</p>".Fmt(
-                    p.Name, p.PeopleId, list[0].email, p.EmailAddress));
-            }
+            Util.SendIfEmailDifferent(smtp, org.EmailAddresses, list[0].email, 
+                p.PeopleId, p.Name, p.EmailAddress, org.EmailSubject, msg);
 
             ViewData["orgname"] = org.OrganizationName;
             ViewData["email"] = list[0].email;

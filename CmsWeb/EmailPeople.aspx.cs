@@ -29,6 +29,15 @@ namespace CMSWeb
             if (Qb == null)
                 Response.EndShowMessage("query not found");
             var q = DbUtil.Db.People.Where(Qb.Predicate());
+
+            if (this.QueryString<string>("parents") == "true")
+            {
+                q = from p in q
+                    from m in p.Family.People
+                    where m.PositionInFamilyId == 10
+                    select m;
+            }
+
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
             Count.Text = q.Count().ToString();
             if (!Page.IsPostBack)
@@ -57,6 +66,13 @@ namespace CMSWeb
 
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
+            if (args.wantParents)
+            {
+                q = from p in q
+                    from m in p.Family.People
+                    where m.PositionInFamilyId == 10
+                    select m;
+            }
             q = from p in q
                 where p.EmailAddress != null && p.EmailAddress != ""
                 where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
@@ -74,15 +90,17 @@ namespace CMSWeb
                 OnBegin,
                 OnEnd,
                 null,
-                new EmailArguments(
-                    this.QueryString<int>("id"),
-                    EmailFrom.SelectedItem.Value,
-                    EmailFrom.SelectedItem.Text,
-                    SubjectLine.Text,
-                    EmailBody.Text,
-                    IsHtml.Checked,
-                    FileUpload1, 
-                    HttpContext.Current));
+                new EmailArguments {
+                    QBId = this.QueryString<int>("id"),
+                    FromAddress = EmailFrom.SelectedItem.Value,
+                    FromName = EmailFrom.SelectedItem.Text,
+                    Subject = SubjectLine.Text,
+                    Body = EmailBody.Text,
+                    IsHtml = IsHtml.Checked,
+                    FileUpload = FileUpload1, 
+                    current = HttpContext.Current,
+                    wantParents = this.QueryString<string>("parents") == "true"
+                });
 
             RegisterAsyncTask(task);
             SendEmail.Enabled = false;
@@ -115,6 +133,7 @@ namespace CMSWeb
     public class EmailArguments
     {
         public int QBId { get; set; }
+        public bool wantParents { get; set; }
         public string FromAddress { get; set; }
         public string FromName { get; set; }
         public string Subject { get; set; }
@@ -122,16 +141,5 @@ namespace CMSWeb
         public bool IsHtml { get; set; }
         public FileUpload FileUpload { get; set; }
         public HttpContext current { get; set; }
-        public EmailArguments(int qBId, string fromAddress, string fromName, string subject, string body, bool isHtml, FileUpload fileUpload, HttpContext current)
-        {
-            QBId = qBId;
-            FromAddress = fromAddress;
-            FromName = fromName;
-            Subject = subject;
-            Body = body;
-            IsHtml = isHtml;
-            FileUpload = fileUpload;
-            this.current = current;
-        }
     }
 }

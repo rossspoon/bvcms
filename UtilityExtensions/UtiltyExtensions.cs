@@ -16,6 +16,8 @@ using System.Configuration;
 using System.Net.Mail;
 using System.Web.UI;
 using System.Data.SqlClient;
+using System.IO;
+using System.Runtime.Serialization;
 
 namespace UtilityExtensions
 {
@@ -867,6 +869,27 @@ namespace UtilityExtensions
         public static string ResolveServerUrl(string serverUrl)
         {
             return ResolveServerUrl(serverUrl, false);
+        }
+        public static string PickFirst(params string[] args)
+        {
+            foreach (var s in args)
+                if (s.HasValue())
+                    return s;
+            return "";
+        }
+        public static string Serialize<T>(T m)
+        {
+            var ser = new DataContractSerializer(typeof(T));
+            var ms = new MemoryStream();
+            ser.WriteObject(ms, m);
+            var s = Encoding.Default.GetString(ms.ToArray());
+            return s;
+        }
+        public static T DeSerialize<T>(string s)
+        {
+            var ser = new DataContractSerializer(typeof(T));
+            var ms = new MemoryStream(Encoding.Default.GetBytes(s));
+            return (T)ser.ReadObject(ms);
         }
     }
     public class EventArg<T> : EventArgs

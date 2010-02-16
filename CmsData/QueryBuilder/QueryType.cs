@@ -116,7 +116,7 @@ namespace CmsData
         RecentAttendType,
         RecentContactMinistry,
         RecentContactType,
-        RecFeePaid,
+        //RecFeePaid,
         RecActiveOtherChurch,
         SavedQuery,
         SchoolOther,

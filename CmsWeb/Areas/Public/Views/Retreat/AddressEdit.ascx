@@ -8,17 +8,17 @@
     </tr>
     <tr>
         <td><label for="zip">Zip</label></td>
-        <td><input type="text" name="zip" value="<%=Model.zip%>" /></td>
+        <td><input id="zip" type="text" name="zip" value="<%=Model.zip%>" /></td>
         <td><%= Html.ValidationMessage("zip")%></td>
     </tr>
     <tr>
         <td><label for="city">City</label></td>
-        <td><input type="text" name="city" value="<%=Model.city%>" /></td>
+        <td><input id="city" type="text" name="city" value="<%=Model.city%>" /></td>
         <td><%= Html.ValidationMessage("city")%></td>
     </tr>
     <tr>
         <td><label for="state">State</label></td>
-        <td><input type="text" name="state" value="<%=Model.state%>" /></td>
+        <td><input id="state" type="text" name="state" value="<%=Model.state%>" /></td>
         <td></td>
     </tr>
     <tr>

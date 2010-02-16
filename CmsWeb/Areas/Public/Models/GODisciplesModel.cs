@@ -511,10 +511,7 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
                     groupname = "Sorry, Group Invitation Code has expired";
             }
             else
-            {
-                c = ContentDefault("GODisciplesIndivudualConfirm");
-                groupname = "Sorry, Group Invitation Code has expired";
-            }
+                c = ContentDefault("GODisciplesIndividualConfirm");
             var p = person;
             Body = c.Body.Replace("{groupname}", groupname);
             Body = Body.Replace("{first}", p.PreferredName);

@@ -76,6 +76,7 @@ namespace CMSWeb.Models
                     city = person.PrimaryCity;
                     state = person.PrimaryState;
                     zip = person.PrimaryZip;
+                    gender = person.GenderId;
                 }
                 else if (count > 1)
                     ModelState.AddModelError("find", "More than one match, sorry");

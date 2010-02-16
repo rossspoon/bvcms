@@ -24,9 +24,9 @@ namespace CmsData
 		private string _Description;
 		
    		
-   		private EntitySet< Person> _People;
+   		private EntitySet< Organization> _Organizations;
 		
-   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
+   		private EntitySet< Person> _People;
 		
     	
 	#endregion
@@ -49,9 +49,9 @@ namespace CmsData
 		public Gender()
 		{
 			
-			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
+			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
-			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
+			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
 			
 			OnCreated();
@@ -130,22 +130,22 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_Organizations_Gender", Storage="_Organizations", OtherKey="GenderId")]
+   		public EntitySet< Organization> Organizations
+   		{
+   		    get { return this._Organizations; }
+
+			set	{ this._Organizations.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_People_Gender", Storage="_People", OtherKey="GenderId")]
    		public EntitySet< Person> People
    		{
    		    get { return this._People; }
 
 			set	{ this._People.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_Recreation_Gender", Storage="_RecAgeDivisions", OtherKey="GenderId")]
-   		public EntitySet< RecAgeDivision> RecAgeDivisions
-   		{
-   		    get { return this._RecAgeDivisions; }
-
-			set	{ this._RecAgeDivisions.Assign(value); }
 
    		}
 
@@ -171,6 +171,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.Gender = this;
+		}
+
+		private void detach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.Gender = null;
+		}
+
+		
 		private void attach_People(Person entity)
 		{
 			this.SendPropertyChanging();
@@ -178,19 +191,6 @@ namespace CmsData
 		}
 
 		private void detach_People(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.Gender = null;
-		}
-
-		
-		private void attach_RecAgeDivisions(RecAgeDivision entity)
-		{
-			this.SendPropertyChanging();
-			entity.Gender = this;
-		}
-
-		private void detach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Gender = null;

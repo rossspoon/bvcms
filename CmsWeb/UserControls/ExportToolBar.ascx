@@ -11,7 +11,11 @@
             <li>
                 <asp:HyperLink ID="EmailLink" runat="server">
                     <asp:Image ID="Image5" ImageUrl="~/images/Mail.png" Width="16" runat="server" />
-                    Individual</asp:HyperLink></li>
+                    Individuals</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="EmailLinkParents" runat="server">
+                    <asp:Image ID="Image33" ImageUrl="~/images/Mail.png" Width="16" runat="server" />
+                    Parents</asp:HyperLink></li>
         </ul>
     </li>
     <li class="headlink"><a href="#">

@@ -19,6 +19,8 @@ namespace CMSWeb.Areas.Main.Controllers
             if (!id.HasValue)
                 return Content("no person");
             var m = new PersonModel(id);
+            if (m == null)
+                return Content("no person");
             if (m.displayperson == null)
                 return Content("person not found");
             if (Util.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
@@ -339,6 +341,26 @@ namespace CMSWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdateMemberNotes();
             return View("MemberNotesDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RecRegDisplay(int id)
+        {
+            var m = RecRegInfo.GetRecRegInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RecRegEdit(int id)
+        {
+            var m = RecRegInfo.GetRecRegInfo(id);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RecRegUpdate(int id)
+        {
+            var m = RecRegInfo.GetRecRegInfo(id);
+            UpdateModel(m);
+            m.UpdateRecReg();
+            return View("RecRegDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)

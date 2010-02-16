@@ -5,6 +5,8 @@
         <ul>
             <li><a href='/EmailPeople.aspx?id=<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
                 Individuals</a></li>
+            <li><a href='/EmailPeople.aspx?id=<%=ViewData["queryid"]%>&parents=true'><img src="/images/Mail.png" /> 
+                Parents</a></li>
         </ul>
     </li>
     <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 

@@ -25,27 +25,11 @@ namespace CmsData
 		
 		private bool? _IsDocument;
 		
-		private DateTime? _Uploaded;
-		
-		private string _Request;
-		
 		private bool? _ActiveInAnotherChurch;
-		
-		private string _UserInfo;
 		
 		private string _ShirtSize;
 		
-		private bool? _FeePaid;
-		
-		private string _TransactionId;
-		
 		private bool? _MedAllergy;
-		
-		private int? _OrgId;
-		
-		private int? _DivId;
-		
-		private bool? _Expired;
 		
 		private string _Email;
 		
@@ -71,12 +55,10 @@ namespace CmsData
 		
 		private string _Policy;
 		
+		private string _Comments;
+		
    		
     	
-		private EntityRef< Division> _Division;
-		
-		private EntityRef< Organization> _Organization;
-		
 		private EntityRef< Person> _Person;
 		
 	#endregion
@@ -98,38 +80,14 @@ namespace CmsData
 		partial void OnIsDocumentChanging(bool? value);
 		partial void OnIsDocumentChanged();
 		
-		partial void OnUploadedChanging(DateTime? value);
-		partial void OnUploadedChanged();
-		
-		partial void OnRequestChanging(string value);
-		partial void OnRequestChanged();
-		
 		partial void OnActiveInAnotherChurchChanging(bool? value);
 		partial void OnActiveInAnotherChurchChanged();
-		
-		partial void OnUserInfoChanging(string value);
-		partial void OnUserInfoChanged();
 		
 		partial void OnShirtSizeChanging(string value);
 		partial void OnShirtSizeChanged();
 		
-		partial void OnFeePaidChanging(bool? value);
-		partial void OnFeePaidChanged();
-		
-		partial void OnTransactionIdChanging(string value);
-		partial void OnTransactionIdChanged();
-		
 		partial void OnMedAllergyChanging(bool? value);
 		partial void OnMedAllergyChanged();
-		
-		partial void OnOrgIdChanging(int? value);
-		partial void OnOrgIdChanged();
-		
-		partial void OnDivIdChanging(int? value);
-		partial void OnDivIdChanged();
-		
-		partial void OnExpiredChanging(bool? value);
-		partial void OnExpiredChanged();
 		
 		partial void OnEmailChanging(string value);
 		partial void OnEmailChanged();
@@ -167,14 +125,13 @@ namespace CmsData
 		partial void OnPolicyChanging(string value);
 		partial void OnPolicyChanged();
 		
+		partial void OnCommentsChanging(string value);
+		partial void OnCommentsChanged();
+		
     #endregion
 		public RecReg()
 		{
 			
-			
-			this._Division = default(EntityRef< Division>); 
-			
-			this._Organization = default(EntityRef< Organization>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -275,50 +232,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Uploaded", UpdateCheck=UpdateCheck.Never, Storage="_Uploaded", DbType="datetime")]
-		public DateTime? Uploaded
-		{
-			get { return this._Uploaded; }
-
-			set
-			{
-				if (this._Uploaded != value)
-				{
-				
-                    this.OnUploadedChanging(value);
-					this.SendPropertyChanging();
-					this._Uploaded = value;
-					this.SendPropertyChanged("Uploaded");
-					this.OnUploadedChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="varchar(140)")]
-		public string Request
-		{
-			get { return this._Request; }
-
-			set
-			{
-				if (this._Request != value)
-				{
-				
-                    this.OnRequestChanging(value);
-					this.SendPropertyChanging();
-					this._Request = value;
-					this.SendPropertyChanged("Request");
-					this.OnRequestChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="ActiveInAnotherChurch", UpdateCheck=UpdateCheck.Never, Storage="_ActiveInAnotherChurch", DbType="bit")]
 		public bool? ActiveInAnotherChurch
 		{
@@ -334,28 +247,6 @@ namespace CmsData
 					this._ActiveInAnotherChurch = value;
 					this.SendPropertyChanged("ActiveInAnotherChurch");
 					this.OnActiveInAnotherChurchChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="UserInfo", UpdateCheck=UpdateCheck.Never, Storage="_UserInfo", DbType="varchar(15)")]
-		public string UserInfo
-		{
-			get { return this._UserInfo; }
-
-			set
-			{
-				if (this._UserInfo != value)
-				{
-				
-                    this.OnUserInfoChanging(value);
-					this.SendPropertyChanging();
-					this._UserInfo = value;
-					this.SendPropertyChanged("UserInfo");
-					this.OnUserInfoChanged();
 				}
 
 			}
@@ -385,50 +276,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FeePaid", UpdateCheck=UpdateCheck.Never, Storage="_FeePaid", DbType="bit")]
-		public bool? FeePaid
-		{
-			get { return this._FeePaid; }
-
-			set
-			{
-				if (this._FeePaid != value)
-				{
-				
-                    this.OnFeePaidChanging(value);
-					this.SendPropertyChanging();
-					this._FeePaid = value;
-					this.SendPropertyChanged("FeePaid");
-					this.OnFeePaidChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="TransactionId", UpdateCheck=UpdateCheck.Never, Storage="_TransactionId", DbType="varchar(50)")]
-		public string TransactionId
-		{
-			get { return this._TransactionId; }
-
-			set
-			{
-				if (this._TransactionId != value)
-				{
-				
-                    this.OnTransactionIdChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionId = value;
-					this.SendPropertyChanged("TransactionId");
-					this.OnTransactionIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="MedAllergy", UpdateCheck=UpdateCheck.Never, Storage="_MedAllergy", DbType="bit")]
 		public bool? MedAllergy
 		{
@@ -444,78 +291,6 @@ namespace CmsData
 					this._MedAllergy = value;
 					this.SendPropertyChanged("MedAllergy");
 					this.OnMedAllergyChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
-		public int? OrgId
-		{
-			get { return this._OrgId; }
-
-			set
-			{
-				if (this._OrgId != value)
-				{
-				
-					if (this._Organization.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnOrgIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrgId = value;
-					this.SendPropertyChanged("OrgId");
-					this.OnOrgIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="DivId", UpdateCheck=UpdateCheck.Never, Storage="_DivId", DbType="int")]
-		public int? DivId
-		{
-			get { return this._DivId; }
-
-			set
-			{
-				if (this._DivId != value)
-				{
-				
-					if (this._Division.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnDivIdChanging(value);
-					this.SendPropertyChanging();
-					this._DivId = value;
-					this.SendPropertyChanged("DivId");
-					this.OnDivIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Expired", UpdateCheck=UpdateCheck.Never, Storage="_Expired", DbType="bit")]
-		public bool? Expired
-		{
-			get { return this._Expired; }
-
-			set
-			{
-				if (this._Expired != value)
-				{
-				
-                    this.OnExpiredChanging(value);
-					this.SendPropertyChanging();
-					this._Expired = value;
-					this.SendPropertyChanged("Expired");
-					this.OnExpiredChanged();
 				}
 
 			}
@@ -787,6 +562,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar")]
+		public string Comments
+		{
+			get { return this._Comments; }
+
+			set
+			{
+				if (this._Comments != value)
+				{
+				
+                    this.OnCommentsChanging(value);
+					this.SendPropertyChanging();
+					this._Comments = value;
+					this.SendPropertyChanged("Comments");
+					this.OnCommentsChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -795,91 +592,7 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_Participant_Division", Storage="_Division", ThisKey="DivId", IsForeignKey=true)]
-		public Division Division
-		{
-			get { return this._Division.Entity; }
-
-			set
-			{
-				Division previousValue = this._Division.Entity;
-				if (((previousValue != value) 
-							|| (this._Division.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Division.Entity = null;
-						previousValue.RecRegs.Remove(this);
-					}
-
-					this._Division.Entity = value;
-					if (value != null)
-					{
-						value.RecRegs.Add(this);
-						
-						this._DivId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._DivId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Division");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Participant_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
-		public Organization Organization
-		{
-			get { return this._Organization.Entity; }
-
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Organization.Entity = null;
-						previousValue.RecRegs.Remove(this);
-					}
-
-					this._Organization.Entity = value;
-					if (value != null)
-					{
-						value.RecRegs.Add(this);
-						
-						this._OrgId = value.OrganizationId;
-						
-					}
-
-					else
-					{
-						
-						this._OrgId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Organization");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Participant_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		[Association(Name="FK_RecReg_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
 			get { return this._Person.Entity; }

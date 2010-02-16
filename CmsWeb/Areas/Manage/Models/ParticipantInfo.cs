@@ -8,7 +8,6 @@ namespace CMSWeb.Models
 {
     public class ParticipantInfo
     {
-        public int? Id { get; set; }
         public bool IsSelected { get; set; }
         public string Checked
         {
@@ -21,7 +20,7 @@ namespace CMSWeb.Models
         public string MemberType { get; set; }
         public string MemberStatus { get; set; }
         public string TeamName { get; set; }
-        public bool FeePaid { get; set; }
+        public bool? FeePaid { get; set; }
         public string Request { get; set; }
         public string ShirtSize { get; set; }
         public int? BDay { get; set; }

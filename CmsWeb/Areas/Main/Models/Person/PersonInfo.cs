@@ -11,8 +11,6 @@ namespace CMSWeb.Models.PersonPage
 {
     public class PersonInfo
     {
-        private CodeValueController cv = new CodeValueController();
-
         public BasicPersonInfo basic { get; set; }
         public MemberInfo member { get; set; }
         public GrowthInfo growth { get; set; }
@@ -52,6 +50,7 @@ namespace CMSWeb.Models.PersonPage
         {
             var q = from p in DbUtil.Db.People
                     where p.PeopleId == id
+                    let rr = p.RecRegs.SingleOrDefault()
                     select new PersonInfo
                     {
                         PeopleId = p.PeopleId,

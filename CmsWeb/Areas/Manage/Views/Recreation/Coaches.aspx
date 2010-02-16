@@ -10,7 +10,6 @@
     <td><a href="/Person/Index/<%=r.PeopleId %>"><%=r.Person.Name%></a></td>
     <td><%=r.Fname %></td>
     <td><%=r.Mname %></td>
-    <td><a href="/Recreation/Detail/<%=r.Id%>"><%=r.Uploaded.Value.ToString("M/d H:mm") %></a></td>
 </tr>
 <% } %>
 </table>

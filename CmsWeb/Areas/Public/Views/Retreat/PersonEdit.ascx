@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RetreatModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecRegModel>" %>
 <tr>
 <td colspan="2">
 <table>
@@ -6,7 +6,6 @@
         <td><label for="first">First Name</label></td>
         <td><input type="text" name="first" value="<%=Model.first%>" />
         <input type="hidden" name="ShowAddress" value="<%=Model.ShowAddress %>" />
-        <input type="hidden" name="orgid" value="<%=Model.orgid %>" />
         </td>
         <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %></td>
     </tr>
@@ -43,12 +42,9 @@
         <% }
            else
            { %>
-           <p>We could not find your record.<br />
-           The first and last names and the birthday<br />
-           must match a record we have in our system.
-           </p>
-            <a href="/Retreat/PersonFind" class="submitbutton">Try Find Again</a>
-            or <a href="/Retreat/ShowMoreInfo" class="submitbutton">Register as new</a>
+           <p><%=CMSWeb.Models.SearchPeopleModel.NotFoundText %></p>
+            <a href="/RecReg/PersonFind" class="submitbutton">Try Find Again</a>
+            or <a href="/RecReg/ShowMoreInfo" class="submitbutton">Register as new</a>
         <% } %>
         </td>
     </tr>
@@ -57,7 +53,7 @@
        { %>
     <% Html.RenderPartial("AddressEdit", Model); %>
     <tr><td></td>
-        <td><a href="/Retreat/SubmitNew" class="submitbutton">Submit</a></td>
+        <td><a href="/RecReg/SubmitNew" class="submitbutton">Submit</a></td>
     </tr>
     <% } %>
 </table>

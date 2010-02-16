@@ -87,14 +87,18 @@ namespace CMSWeb.Dialog
                 DbUtil.Db.UpdateSchoolGrade(pid);
             }
 
-            this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
-               "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
+            if (from == "na")
+                this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
+                    "closedialog", "self.parent.CloseIFrameDialog();", true);
+            else
+                this.Page.ClientScript.RegisterStartupScript(typeof(EditMember),
+                    "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }
         protected void Groups_DataBound(object sender, EventArgs e)
         {
             var cbl = sender as CheckBoxList;
             foreach (ListItem li in cbl.Items)
-                li.Selected = OrgMember.OrgMemMemTags.Any(mt => mt.MemberTagId == li.Value.ToInt());
+                li.Selected = OrgMember.OrgMemMemTags.Any(mt => mt.MemberTagId.ToString() == li.Value);
         }
 
         protected void UpdateGroups_Click(object sender, EventArgs e)

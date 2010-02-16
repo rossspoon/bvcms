@@ -53,8 +53,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                         Program = d.Program.Name,
                         OrgCount = d.Organizations.Count(),
                         DivOrgsCount = d.DivOrgs.Count(),
-                        RecAgeDivCount = d.RecAgeDivisions.Count(),
-                        RecRegCount = d.RecRegs.Count(),
+                        RecAgeDivCount = d.RecLeagues.Count(),
                         FromPromotionsCount = d.FromPromotions.Count(),
                         ToPromotionsCount = d.ToPromotions.Count(),
                     };
@@ -99,8 +98,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             var q = from d in DbUtil.Db.Divisions
                     where d.Id == iid
                     where d.Organizations.Count() == 0
-                    where d.RecAgeDivisions.Count() == 0
-                    where d.RecRegs.Count() == 0
+                    where d.RecLeagues.Count() == 0
                     where d.ToPromotions.Count() == 0
                     where d.FromPromotions.Count() == 0
                     select d;

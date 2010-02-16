@@ -13,54 +13,29 @@ namespace UtilityExtensions
 {
     public static partial class Util
     {
-        public static void Email(string from, string name, string addr, string subject, string message)
+        public static void Email(string from, string name, string addrs, string subject, string message)
         {
-            var smtp = new SmtpClient();
-            Email(smtp, from, name, addr, subject, message);
+            Email(new SmtpClient(), from, name, addrs, subject, message);
         }
-        public static void Email(SmtpClient smtp, string from, string name, string addr, string subject, string message)
+        public static void Email(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
             if (!from.HasValue())
                 return;
             var fr = FirstAddress(from);
-            var InDebug = false;
 #if DEBUG
-            InDebug = false;
+#else
+            SendMsg(smtp, fr, subject, message, name, addrs, null);
 #endif
-            if (InDebug)
-                return;
-            SendMsg(smtp, fr, subject, message, name, addr, null);
         }
         public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)
         {
             var fr = FirstAddress(from);
-
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-
-            var InDebug = false;
 #if DEBUG
-            InDebug = true;
-#endif
-            if (InDebug)
-                return;
+#else
             SendMsg(smtp, fr, subject, message, null, addrs, null);
-        }
-        public static void EmailHtml2(SmtpClient smtp, string from, string addrs, string subject, string message)
-        {
-            var fr = FirstAddress(from);
-
-            if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-
-            var InDebug = false;
-#if DEBUG
-            InDebug = true;
 #endif
-            if (InDebug)
-                return;
-
-            SendMsg(smtp, fr, subject, message, null, addrs, null);
         }
         public static MailAddress FirstAddress(string addrs)
         {
@@ -134,6 +109,23 @@ namespace UtilityExtensions
 
             htmlView.Dispose();
             htmlStream.Dispose();
+        }
+        public static void SendIfEmailDifferent(
+            SmtpClient smtp, string staff, string to, 
+            int peopleid, string name, string emailonrecord, 
+            string subject, string message)
+        {
+            if (string.Compare(to, emailonrecord, true) == 0)
+                return;
+
+            if (emailonrecord.HasValue())
+                Util.Email(smtp, staff, name, emailonrecord, subject, message);
+            else
+                emailonrecord = "none";
+
+            Util.Email2(smtp, emailonrecord, staff, "different email address than one on record",
+                "<p>{0}({1}) registered  with {2} but has {3} in record.</p>".Fmt(
+                name, peopleid, to, emailonrecord));
         }
     }
 }

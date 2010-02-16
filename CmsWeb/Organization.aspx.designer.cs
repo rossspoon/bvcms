@@ -590,13 +590,40 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditText RollSheetVisitorWks;
         
         /// <summary>
-        /// GradeRangeStart control.
+        /// GradeAgeStart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CustomControls.DisplayOrEditText GradeRangeStart;
+        protected global::CustomControls.DisplayOrEditText GradeAgeStart;
+        
+        /// <summary>
+        /// GradeAgeEnd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText GradeAgeEnd;
+        
+        /// <summary>
+        /// GenderId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditDropDown GenderId;
+        
+        /// <summary>
+        /// Fee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CustomControls.DisplayOrEditText Fee;
         
         /// <summary>
         /// PendingLoc control.
@@ -903,6 +930,15 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ODS_SecurityTypeId;
+        
+        /// <summary>
+        /// ODS_GenderId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ODS_GenderId;
         
         /// <summary>
         /// ODS_AttendTrkLevelId control.

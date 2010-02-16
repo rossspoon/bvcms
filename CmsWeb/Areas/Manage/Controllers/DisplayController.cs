@@ -111,5 +111,23 @@ namespace CMSWeb.Areas.Manage.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/Organization.aspx?id=" + id);
         }
+        public ActionResult LeagueContent(int id)
+        {
+            var league = DbUtil.Db.RecLeagues.Single(rl => rl.DivId == id);
+            ViewData["html"] = league.EmailMessage;
+            ViewData["title"] = league.EmailSubject;
+            ViewData["id"] = id;
+            return View();
+        }
+        [ValidateInput(false)]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdateLeagueContent(int id, string title, string html)
+        {
+            var league = DbUtil.Db.RecLeagues.Single(rl => rl.DivId == id);
+            league.EmailMessage = html;
+            league.EmailSubject = title;
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Setup/Recreation/");
+        }
     }
 }

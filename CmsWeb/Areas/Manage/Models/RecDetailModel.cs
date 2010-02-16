@@ -55,11 +55,11 @@ namespace CMSWeb.Models
                 recreg.DivId = value;
             }
         }
-        public bool FeePaid
-        {
-            get { return recreg.FeePaid ?? false; }
-            set { recreg.FeePaid = value; }
-        }
+        //public bool FeePaid
+        //{
+        //    get { return recreg.FeePaid ?? false; }
+        //    set { recreg.FeePaid = value; }
+        //}
         public string Request
         {
             get { return recreg.Request; }
@@ -87,24 +87,24 @@ namespace CMSWeb.Models
         {
             get { return recreg.Email; }
         }
-        public string TransactionID
-        {
-            get { return recreg.TransactionId; }
-        }
-        internal RecAgeDivision GetRecAgeDivision(int divid)
+        //public string TransactionID
+        //{
+        //    get { return recreg.TransactionId; }
+        //}
+        internal CmsData.Organization GetRecAgeDivision(int divid)
         {
             if (!recreg.PeopleId.HasValue)
                 return null;
-            var q = from r in DbUtil.Db.RecAgeDivisions
-                    where r.DivId == divid
+            var q = from r in DbUtil.Db.Organizations
+                    where r.DivisionId == divid
                     where r.GenderId == recreg.Person.GenderId || r.GenderId == 0
                     select r;
             var list = q.ToList();
             var bd0 = recreg.Person.GetBirthdate();
             var bd = bd0.HasValue ? bd0.Value : DateTime.MinValue;
             var q2 = from r in list
-                     let age = bd.AgeAsOf(r.agedate)
-                     where age >= r.StartAge && age <= r.EndAge
+                     let age = bd.AgeAsOf(r.Division.RecLeagues.Single().agedate)
+                     where age >= r.GradeAgeStart && age <= r.GradeAgeEnd
                      select r;
             return q2.SingleOrDefault();
         }
@@ -113,9 +113,9 @@ namespace CMSWeb.Models
         {
             get
             {
-                if (RecAgeDiv == null || RecAgeDiv.Organization == null)
+                if (RecAgeDiv == null)
                     return "no valid age division";
-                return RecAgeDiv.Organization.OrganizationName;
+                return RecAgeDiv.OrganizationName;
             }
         }
         public string AgeDivActual
@@ -155,20 +155,20 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Leagues()
         {
-            var q = from d in DbUtil.Db.Divisions
-                    where d.RecAgeDivisions.Count() > 0
-                    orderby d.Name
+            var q = from league in DbUtil.Db.RecLeagues
+                    where league.Division.Organizations.Count() > 0
+                    orderby league.Division.Name
                     select new SelectListItem
                     {
-                        Text = d.Name,
-                        Value = d.Id.ToString(),
+                        Text = league.Division.Name,
+                        Value = league.DivId.ToString(),
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(Select League)", Value = "0", Selected = true });
             return list;
         }
-        private RecAgeDivision _RecAgeDiv;
-        public RecAgeDivision RecAgeDiv
+        private CmsData.Organization _RecAgeDiv;
+        public CmsData.Organization RecAgeDiv
         {
             get
             {
@@ -181,7 +181,7 @@ namespace CMSWeb.Models
         {
             if (RecAgeDiv == null || !recreg.PeopleId.HasValue)
                 return false;
-            var oid = RecAgeDiv.OrgId;
+            var oid = RecAgeDiv.OrganizationId;
             OrgId = oid;
             recreg.OrgId = oid;
             DbUtil.Db.SubmitChanges();

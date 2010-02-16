@@ -48,14 +48,12 @@
     <table id="Participants">
         <thead>
         <tr>
-            <th><a href="#" class="sortable">Name</a></th>
-            <th><a href="#" class="sortable">Type</a></th>
-            <th><a href="#" class="sortable">Team</a></th>
+            <th align="left"><a href="#" class="sortable">Name</a></th>
+            <th align="left"><a href="#" class="sortable">Type</a></th>
+            <th align="left"><a href="#" class="sortable">Team</a></th>
             <th><a href="#" class="sortable">Birthday</a></th>
             <th><a href="#" class="sortable">ShirtSize</a></th>
-            <th><a href="#" class="sortable">FeePaid</a></th>
-            <th><a href="#" class="sortable">Request</a></th>
-            <th><a href="#" class="sortable">Uploaded</a></th>
+            <th align="left"><a href="#" class="sortable">Request</a></th>
         </tr>
         </thead>
         <tbody>
@@ -67,9 +65,7 @@
             <td><%=r.TeamName%></td>
             <td><%=r.Birthday%></td>
             <td><%=r.ShirtSize%></td>
-            <td><%=r.FeePaid%></td>
             <td><%=r.Request%></td>
-            <td><a href="/Recreation/Detail/<%=r.Id%>"><%=r.Uploaded.Value.ToString("M/d H:mm") %></a></td>
         </tr>
 <% } %>
         </tbody>

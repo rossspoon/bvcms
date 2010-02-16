@@ -36,23 +36,23 @@ namespace CMSWeb.Models.OrganizationPage
             get { return displayperson.Name; }
             set { displayperson.Name = value; }
         }
-        public int? recregid { get; set; }
-        public bool HasRecReg
-        {
-            get
-            {
-                if (!recregid.HasValue)
-                    if (HttpContext.Current.User.IsInRole("Attendance"))
-                    {
-                        var q = from rr in DbUtil.Db.RecRegs
-                                where rr.PeopleId == displayperson.PeopleId
-                                orderby rr.Uploaded descending
-                                select rr.Id;
-                        recregid = q.FirstOrDefault();
-                    }
-                return recregid.HasValue && recregid > 0;
-            }
-        }
+        //public int? recregid { get; set; }
+        //public bool HasRecReg
+        //{
+        //    get
+        //    {
+        //        if (!recregid.HasValue)
+        //            if (HttpContext.Current.User.IsInRole("Attendance"))
+        //            {
+        //                var q = from rr in DbUtil.Db.RecRegs
+        //                        where rr.PeopleId == displayperson.PeopleId
+        //                        orderby rr.Uploaded descending
+        //                        select rr.Id;
+        //                recregid = q.FirstOrDefault();
+        //            }
+        //        return recregid.HasValue && recregid > 0;
+        //    }
+        //}
         public int? ckorg;
         public bool CanCheckIn
         {

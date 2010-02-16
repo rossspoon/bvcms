@@ -29,9 +29,9 @@ namespace CmsData
 		
 		private int? _LeaderMemberTypeId;
 		
-		private int? _GradeRangeStart;
+		private int? _GradeAgeStart;
 		
-		private int? _GradeRangeEnd;
+		private int? _GradeAgeEnd;
 		
 		private int? _RollSheetVisitorWks;
 		
@@ -105,6 +105,10 @@ namespace CmsData
 		
 		private string _Instructions;
 		
+		private int? _GenderId;
+		
+		private decimal? _Fee;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -126,10 +130,6 @@ namespace CmsData
 		
    		private EntitySet< MemberTag> _MemberTags;
 		
-   		private EntitySet< RecReg> _RecRegs;
-		
-   		private EntitySet< RecAgeDivision> _RecAgeDivisions;
-		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
     	
@@ -138,6 +138,8 @@ namespace CmsData
 		private EntityRef< Campu> _Campu;
 		
 		private EntityRef< Division> _Division;
+		
+		private EntityRef< Gender> _Gender;
 		
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
@@ -170,11 +172,11 @@ namespace CmsData
 		partial void OnLeaderMemberTypeIdChanging(int? value);
 		partial void OnLeaderMemberTypeIdChanged();
 		
-		partial void OnGradeRangeStartChanging(int? value);
-		partial void OnGradeRangeStartChanged();
+		partial void OnGradeAgeStartChanging(int? value);
+		partial void OnGradeAgeStartChanged();
 		
-		partial void OnGradeRangeEndChanging(int? value);
-		partial void OnGradeRangeEndChanged();
+		partial void OnGradeAgeEndChanging(int? value);
+		partial void OnGradeAgeEndChanged();
 		
 		partial void OnRollSheetVisitorWksChanging(int? value);
 		partial void OnRollSheetVisitorWksChanged();
@@ -284,6 +286,12 @@ namespace CmsData
 		partial void OnInstructionsChanging(string value);
 		partial void OnInstructionsChanged();
 		
+		partial void OnGenderIdChanging(int? value);
+		partial void OnGenderIdChanged();
+		
+		partial void OnFeeChanging(decimal? value);
+		partial void OnFeeChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -308,10 +316,6 @@ namespace CmsData
 			
 			this._MemberTags = new EntitySet< MemberTag>(new Action< MemberTag>(this.attach_MemberTags), new Action< MemberTag>(this.detach_MemberTags)); 
 			
-			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
-			
-			this._RecAgeDivisions = new EntitySet< RecAgeDivision>(new Action< RecAgeDivision>(this.attach_RecAgeDivisions), new Action< RecAgeDivision>(this.detach_RecAgeDivisions)); 
-			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
 			
@@ -320,6 +324,8 @@ namespace CmsData
 			this._Campu = default(EntityRef< Campu>); 
 			
 			this._Division = default(EntityRef< Division>); 
+			
+			this._Gender = default(EntityRef< Gender>); 
 			
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
@@ -471,21 +477,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="GradeRangeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeStart", DbType="int")]
-		public int? GradeRangeStart
+		[Column(Name="GradeAgeStart", UpdateCheck=UpdateCheck.Never, Storage="_GradeAgeStart", DbType="int")]
+		public int? GradeAgeStart
 		{
-			get { return this._GradeRangeStart; }
+			get { return this._GradeAgeStart; }
 
 			set
 			{
-				if (this._GradeRangeStart != value)
+				if (this._GradeAgeStart != value)
 				{
 				
-                    this.OnGradeRangeStartChanging(value);
+                    this.OnGradeAgeStartChanging(value);
 					this.SendPropertyChanging();
-					this._GradeRangeStart = value;
-					this.SendPropertyChanged("GradeRangeStart");
-					this.OnGradeRangeStartChanged();
+					this._GradeAgeStart = value;
+					this.SendPropertyChanged("GradeAgeStart");
+					this.OnGradeAgeStartChanged();
 				}
 
 			}
@@ -493,21 +499,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="GradeRangeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeRangeEnd", DbType="int")]
-		public int? GradeRangeEnd
+		[Column(Name="GradeAgeEnd", UpdateCheck=UpdateCheck.Never, Storage="_GradeAgeEnd", DbType="int")]
+		public int? GradeAgeEnd
 		{
-			get { return this._GradeRangeEnd; }
+			get { return this._GradeAgeEnd; }
 
 			set
 			{
-				if (this._GradeRangeEnd != value)
+				if (this._GradeAgeEnd != value)
 				{
 				
-                    this.OnGradeRangeEndChanging(value);
+                    this.OnGradeAgeEndChanging(value);
 					this.SendPropertyChanging();
-					this._GradeRangeEnd = value;
-					this.SendPropertyChanged("GradeRangeEnd");
-					this.OnGradeRangeEndChanged();
+					this._GradeAgeEnd = value;
+					this.SendPropertyChanged("GradeAgeEnd");
+					this.OnGradeAgeEndChanged();
 				}
 
 			}
@@ -1319,6 +1325,53 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="GenderId", UpdateCheck=UpdateCheck.Never, Storage="_GenderId", DbType="int")]
+		public int? GenderId
+		{
+			get { return this._GenderId; }
+
+			set
+			{
+				if (this._GenderId != value)
+				{
+				
+					if (this._Gender.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnGenderIdChanging(value);
+					this.SendPropertyChanging();
+					this._GenderId = value;
+					this.SendPropertyChanged("GenderId");
+					this.OnGenderIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Fee", UpdateCheck=UpdateCheck.Never, Storage="_Fee", DbType="money")]
+		public decimal? Fee
+		{
+			get { return this._Fee; }
+
+			set
+			{
+				if (this._Fee != value)
+				{
+				
+                    this.OnFeeChanging(value);
+					this.SendPropertyChanging();
+					this._Fee = value;
+					this.SendPropertyChanged("Fee");
+					this.OnFeeChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1419,26 +1472,6 @@ namespace CmsData
    		    get { return this._MemberTags; }
 
 			set	{ this._MemberTags.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_Participant_Organizations", Storage="_RecRegs", OtherKey="OrgId")]
-   		public EntitySet< RecReg> RecRegs
-   		{
-   		    get { return this._RecRegs; }
-
-			set	{ this._RecRegs.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_Recreation_Organizations", Storage="_RecAgeDivisions", OtherKey="OrgId")]
-   		public EntitySet< RecAgeDivision> RecAgeDivisions
-   		{
-   		    get { return this._RecAgeDivisions; }
-
-			set	{ this._RecAgeDivisions.Assign(value); }
 
    		}
 
@@ -1576,6 +1609,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Division");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_Gender", Storage="_Gender", ThisKey="GenderId", IsForeignKey=true)]
+		public Gender Gender
+		{
+			get { return this._Gender.Entity; }
+
+			set
+			{
+				Gender previousValue = this._Gender.Entity;
+				if (((previousValue != value) 
+							|| (this._Gender.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Gender.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._Gender.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._GenderId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._GenderId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Gender");
 				}
 
 			}
@@ -1850,32 +1925,6 @@ namespace CmsData
 		}
 
 		private void detach_MemberTags(MemberTag entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_RecRegs(RecReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_RecRegs(RecReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_RecAgeDivisions(RecAgeDivision entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_RecAgeDivisions(RecAgeDivision entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

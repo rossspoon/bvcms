@@ -270,13 +270,13 @@ namespace CmsData
 		
    		private EntitySet< EmailOptOut> _EmailOptOuts;
 		
-   		private EntitySet< RecReg> _RecRegs;
-		
    		private EntitySet< PendingNotification> _PendingNotifications;
 		
    		private EntitySet< PeopleExtra> _PeopleExtras;
 		
    		private EntitySet< PrayerSlot> _PrayerSlots;
+		
+   		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< SaleTransaction> _SaleTransactions;
 		
@@ -736,13 +736,13 @@ namespace CmsData
 			
 			this._EmailOptOuts = new EntitySet< EmailOptOut>(new Action< EmailOptOut>(this.attach_EmailOptOuts), new Action< EmailOptOut>(this.detach_EmailOptOuts)); 
 			
-			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
-			
 			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
 			
 			this._PeopleExtras = new EntitySet< PeopleExtra>(new Action< PeopleExtra>(this.attach_PeopleExtras), new Action< PeopleExtra>(this.detach_PeopleExtras)); 
 			
 			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
+			
+			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
 			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
@@ -3529,16 +3529,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Participant_People", Storage="_RecRegs", OtherKey="PeopleId")]
-   		public EntitySet< RecReg> RecRegs
-   		{
-   		    get { return this._RecRegs; }
-
-			set	{ this._RecRegs.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
    		public EntitySet< PendingNotification> PendingNotifications
    		{
@@ -3565,6 +3555,16 @@ namespace CmsData
    		    get { return this._PrayerSlots; }
 
 			set	{ this._PrayerSlots.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_RecReg_People", Storage="_RecRegs", OtherKey="PeopleId")]
+   		public EntitySet< RecReg> RecRegs
+   		{
+   		    get { return this._RecRegs; }
+
+			set	{ this._RecRegs.Assign(value); }
 
    		}
 
@@ -4850,19 +4850,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_RecRegs(RecReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_RecRegs(RecReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_PendingNotifications(PendingNotification entity)
 		{
 			this.SendPropertyChanging();
@@ -4896,6 +4883,19 @@ namespace CmsData
 		}
 
 		private void detach_PrayerSlots(PrayerSlot entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_RecRegs(RecReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_RecRegs(RecReg entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
