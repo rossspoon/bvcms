@@ -318,7 +318,7 @@ namespace CMSWeb.Models
         {
             var g = DbUtil.Db.Groups.SingleOrDefault(
                             gr => gr.Invitations.Any(
-                                i => i.Password == invitationcode && i.Expires > Util.Now));
+                                i => i.Password == invitationcode));
             return g;
         }
         public void PerformIndividualSetup(string invitationcode)
@@ -501,7 +501,6 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
             var g = GetGroupByInvitation(invitationcode);
             Content c;
             var groupname = "";
-            string Body;
             if (g != null || invitationcode.HasValue())
             {
                 c = ContentDefault("GODisciplesGroupConfirm");
@@ -513,7 +512,7 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
             else
                 c = ContentDefault("GODisciplesIndividualConfirm");
             var p = person;
-            Body = c.Body.Replace("{groupname}", groupname);
+            var Body = c.Body.Replace("{groupname}", groupname);
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));

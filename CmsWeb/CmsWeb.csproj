@@ -110,6 +110,17 @@
     <Compile Include="Areas\Main\Models\PagerModel2.cs" />
     <Compile Include="Areas\Main\Models\Person\EnrollmentsModel.cs" />
     <Compile Include="Areas\Main\Models\Person\PersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\ContactsResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\AveryResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
+    <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\EnrollmentControlResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\RollsheetResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\RosterResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\BarCodeLabelsResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\TemplateResult.cs" />
     <Compile Include="Areas\Main\Models\Report\WeeklyAttendanceResult.cs">
     </Compile>
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
@@ -636,12 +647,6 @@
     <Compile Include="PurgeProgress.aspx.designer.cs">
       <DependentUpon>PurgeProgress.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\Avery.aspx.designer.cs">
-      <DependentUpon>Avery.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\Avery3.aspx.designer.cs">
-      <DependentUpon>Avery3.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\BFCAvgWeeklyAttendanceRpt.aspx.cs">
       <DependentUpon>BFCAvgWeeklyAttendanceRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -655,13 +660,6 @@
     </Compile>
     <Compile Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx.designer.cs">
       <DependentUpon>BFCWeeklyAttendanceSummaryRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\ChoirMeeting.aspx.cs">
-      <DependentUpon>ChoirMeeting.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\ChoirMeeting.aspx.designer.cs">
-      <DependentUpon>ChoirMeeting.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\ChurchAttendanceRpt.aspx.cs">
       <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
@@ -677,13 +675,6 @@
     <Compile Include="Report\ChurchAttendanceSummaryRpt.aspx.designer.cs">
       <DependentUpon>ChurchAttendanceSummaryRpt.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\AttendanceReport.aspx.cs">
-      <DependentUpon>AttendanceReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\AttendanceReport.aspx.designer.cs">
-      <DependentUpon>AttendanceReport.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\AttendanceDetail.aspx.cs">
       <DependentUpon>AttendanceDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -691,34 +682,12 @@
     <Compile Include="Report\AttendanceDetail.aspx.designer.cs">
       <DependentUpon>AttendanceDetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\Avery3.aspx.cs">
-      <DependentUpon>Avery3.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\Avery.aspx.cs">
-      <DependentUpon>Avery.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\AveryAddress.aspx.cs">
-      <DependentUpon>AveryAddress.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\AveryAddress.aspx.designer.cs">
-      <DependentUpon>AveryAddress.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Report\DecisionSummary.aspx.designer.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\EnrollmentControl.aspx.cs">
-      <DependentUpon>EnrollmentControl.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\EnrollmentControl.aspx.designer.cs">
-      <DependentUpon>EnrollmentControl.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\InReachRpt.aspx.cs">
       <DependentUpon>InReachRpt.aspx</DependentUpon>
@@ -748,13 +717,6 @@
     <Compile Include="Report\MeetingSummaryRpt.aspx.designer.cs">
       <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\ContactReport.aspx.cs">
-      <DependentUpon>ContactReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\ContactReport.aspx.designer.cs">
-      <DependentUpon>ContactReport.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\PastAttendeeRpt.aspx.cs">
       <DependentUpon>PastAttendeeRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -775,20 +737,6 @@
     </Compile>
     <Compile Include="Report\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Report\Rollsheet.aspx.cs">
-      <DependentUpon>Rollsheet.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\Rollsheet.aspx.designer.cs">
-      <DependentUpon>Rollsheet.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\RosterReport.aspx.cs">
-      <DependentUpon>RosterReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\RosterReport.aspx.designer.cs">
-      <DependentUpon>RosterReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\WorshipDetail.aspx.cs">
       <DependentUpon>WorshipDetail.aspx</DependentUpon>
@@ -1222,20 +1170,15 @@
     <Content Include="images\work.gif" />
     <Content Include="Report\BFCAvgWeeklyAttendanceRpt.aspx" />
     <Content Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx" />
-    <Content Include="Report\ChoirMeeting.aspx" />
     <Content Include="Report\ChurchAttendanceRpt.aspx" />
     <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
-    <Content Include="Report\EnrollmentControl.aspx" />
     <Content Include="Report\InReachRpt.aspx" />
     <Content Include="Report\LabelsRpt.aspx" />
     <Content Include="Report\MeetingAttendanceRpt.aspx" />
     <Content Include="Report\MeetingSummaryRpt.aspx" />
-    <Content Include="Report\ContactReport.aspx" />
     <Content Include="Report\PastAttendeeRpt.aspx" />
     <Content Include="Report\ProspectCardsRpt.aspx" />
-    <Content Include="Report\Rollsheet.aspx" />
-    <Content Include="Report\RosterReport.aspx" />
     <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\Address.ascx" />
@@ -2131,11 +2074,7 @@
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
     <Content Include="index.htm" />
-    <Content Include="Report\AttendanceReport.aspx" />
     <Content Include="Report\AttendanceDetail.aspx" />
-    <Content Include="Report\Avery3.aspx" />
-    <Content Include="Report\Avery.aspx" />
-    <Content Include="Report\AveryAddress.aspx" />
     <Content Include="Scripts\CheckIn.js" />
     <Content Include="Scripts\Event.js" />
     <Content Include="Scripts\Pager.js" />
@@ -2236,10 +2175,6 @@
     <EmbeddedResource Include="Report\rdlc\PastAttendeeRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\PastContactsSummarySubRpt.rdlc" />
     <EmbeddedResource Include="Report\rdlc\ProspectCardsRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\RollsheetPage1SubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\RollsheetRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailSubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\RollsheetStandardDetailVisitorSubRpt.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Main\Views\Shared\" />

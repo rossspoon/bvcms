@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,72 +16,44 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class Rollsheet : System.Web.UI.Page
+    public class RollsheetResult : ActionResult
     {
-        public class MemberInfo
+        public int? qid, div, schedule, meetingid, groupid, orgid;
+        public bool? bygroup;
+        public string name;
+
+        public override void ExecuteResult(ControllerContext context)
         {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Organization { get; set; }
-            public string Location { get; set; }
-            public string MemberType { get; set; }
-        }
-
-        private PdfPCell box;
-        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
-        private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
-        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
-        private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
-        private PageEvent pageEvents = new PageEvent();
-        private PdfPTable t;
-        private Document doc;
-        private DateTime? dt;
-        private PdfContentByte dc;
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            int? org = null;
-            int? group = null;
-            if (this.QueryString<string>("org") == "curr")
-            {
-                org = Util.CurrentOrgId;
-                group = Util.CurrentGroupId;
-            }
-            var div = this.QueryString<int?>("div");
-            var schedule = this.QueryString<int?>("schedule");
-            var name = this.QueryString<string>("name");
-            dt = this.QueryString<DateTime?>("dt");
-
-            var mid = this.QueryString<int?>("meetingid");
-            var bygroup = this.QueryString<int?>("bygroup");
-
+            var Response = context.HttpContext.Response;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             CmsData.Meeting meeting = null;
-            if (mid.HasValue)
+            if (meetingid.HasValue)
             {
-                meeting = DbUtil.Db.Meetings.Single(mt => mt.MeetingId == mid);
+                meeting = DbUtil.Db.Meetings.Single(mt => mt.MeetingId == meetingid);
                 dt = meeting.MeetingDate;
-                org = meeting.OrganizationId;
+                orgid = meeting.OrganizationId;
             }
 
             IEnumerable<OrgInfo> list1;
-            if (bygroup.HasValue)
-                list1 = ReportList2(org, div, schedule, name);
+            if (bygroup == true)
+                list1 = ReportList2(orgid, div, schedule, name);
             else
-                list1 = ReportList(org, group, div, schedule, name);
+                list1 = ReportList(orgid, groupid, div, schedule, name);
 
             if (list1.Count() == 0)
             {
                 Response.Write("no data found");
                 return;
             }
-
-            Response.Clear();
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
@@ -110,7 +83,7 @@ namespace CMSWeb.Reports
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.GroupId))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
 
-                if (!bygroup.HasValue && !group.HasValue && meeting == null)
+                if (!bygroup.HasValue && !groupid.HasValue && meeting == null)
                 {
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
@@ -125,6 +98,26 @@ namespace CMSWeb.Reports
             doc.Close();
             Response.End();
         }
+
+        public class MemberInfo
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public string Organization { get; set; }
+            public string Location { get; set; }
+            public string MemberType { get; set; }
+        }
+
+        private PdfPCell box;
+        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
+        private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
+        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
+        private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+        private PageEvent pageEvents = new PageEvent();
+        private PdfPTable t;
+        private Document doc;
+        private DateTime? dt;
+        private PdfContentByte dc;
 
         private MultiColumnText StartPageSet(OrgInfo o)
         {
@@ -336,3 +329,5 @@ namespace CMSWeb.Reports
         }
     }
 }
+
+

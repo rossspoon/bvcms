@@ -7,40 +7,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
-//using System.Web.UI;
-//using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
+using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class EnrollmentControl : System.Web.UI.Page
+    public class EnrollmentControlResult : ActionResult
     {
-        public class MemberInfo
+        public int div, subdiv, schedule;
+
+        public override void ExecuteResult(ControllerContext context)
         {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Organization { get; set; }
-            public string Location { get; set; }
-            public string MemberType { get; set; }
-        }
-        protected void Page_Load(object sender, EventArgs e)
-        {
+            var Response = context.HttpContext.Response;
+
             Response.Clear();
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
             var doc = new Document(PageSize.LETTER, 36, 36, 36, 42);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
             w.PageEvent = new HeadFoot();
-
-            var div = this.QueryString<int>("div");
-            var subdiv = this.QueryString<int>("subdiv");
-            var schedule = this.QueryString<int>("schedule");
 
             string divtext = "", subdivtext = "";
             var divt = DbUtil.Db.Tags.SingleOrDefault(tag => tag.Id == div);
@@ -52,7 +48,7 @@ namespace CMSWeb.Reports
 
             string scheduletext = String.Empty;
             var sdt = CmsData.Organization.GetDateFromScheduleId(schedule);
-            if(sdt.HasValue)
+            if (sdt.HasValue)
                 scheduletext = sdt.Value.ToString("dddd h:mm tt");
 
             var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
@@ -74,12 +70,12 @@ namespace CMSWeb.Reports
             t.AddCell(new Phrase("Organization", boldfont));
             t.AddCell(new Phrase("Location", boldfont));
             t.AddCell(new Phrase("Member Type", boldfont));
-            
+
             foreach (var m in list(subdiv, div, schedule))
             {
                 t.AddCell(new Phrase(m.Name, font));
-                t.AddCell(new Phrase(m.Organization,font));
-                t.AddCell(new Phrase(m.Location,font));
+                t.AddCell(new Phrase(m.Organization, font));
+                t.AddCell(new Phrase(m.Location, font));
                 t.AddCell(new Phrase(m.MemberType, font));
             }
             if (t.Rows.Count > 1)
@@ -88,6 +84,14 @@ namespace CMSWeb.Reports
                 doc.Add(new Phrase("no data"));
             doc.Close();
             Response.End();
+        }
+        public class MemberInfo
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public string Organization { get; set; }
+            public string Location { get; set; }
+            public string MemberType { get; set; }
         }
         IEnumerable<MemberInfo> list(int divid, int progid, int schedule)
         {
@@ -166,3 +170,4 @@ namespace CMSWeb.Reports
         }
     }
 }
+

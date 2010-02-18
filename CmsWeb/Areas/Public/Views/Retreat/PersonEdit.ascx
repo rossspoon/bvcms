@@ -44,8 +44,8 @@
            else
            { %>
            <p><%=CMSWeb.Models.SearchPeopleModel.NotFoundText %></p>
-            <a href="/RecReg/PersonFind" class="submitbutton">Try Find Again</a>
-            or <a href="/RecReg/ShowMoreInfo" class="submitbutton">Register as new</a>
+            <a href="/Retreat/PersonFind" class="submitbutton">Try Find Again</a>
+            or <a href="/Retreat/ShowMoreInfo" class="submitbutton">Register as new</a>
         <% } %>
         </td>
     </tr>
@@ -54,7 +54,7 @@
        { %>
     <% Html.RenderPartial("AddressEdit", Model); %>
     <tr><td></td>
-        <td><a href="/RecReg/SubmitNew" class="submitbutton">Submit</a></td>
+        <td><a href="/Retreat/SubmitNew" class="submitbutton">Submit</a></td>
     </tr>
     <% } %>
 </table>

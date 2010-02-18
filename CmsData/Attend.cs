@@ -66,6 +66,11 @@ namespace CmsData
 
             var o = DbUtil.Db.AttendMeetingInfo0(MeetingId, PeopleId);
 
+            // do not record inactive members
+            if (o.info.MemberTypeId.HasValue // member of this class
+                && o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive)
+                return null;
+
             if (o.info.AttendedElsewhere > 0 && attended)
                 return "{0}({1}) already attended elsewhere".Fmt(o.info.Name, PeopleId);
 
@@ -99,7 +104,8 @@ namespace CmsData
                 o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
                 o.path = 2;
             }
-            else if (o.info.MemberTypeId.HasValue) // member of this class
+            else if (o.info.MemberTypeId.HasValue // member of this class
+                && o.info.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive) 
             {
                 o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
                 o.Attendance.AttendanceTypeId = GetAttendType(o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);

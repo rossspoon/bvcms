@@ -6,10 +6,17 @@
     </tr>
     <tr>
         <td colspan="2">
-        <% foreach(var o in Model)
+    <% if (Model != null)
+       {
+           foreach (var o in Model)
            { %>
-        <a class="move" href="/OrgMemberDialog/MoveSelect/<%=o.id %>"><%=o.OrgName %></a><br />
-        <% } %>
+        <a class="move" href="/OrgMemberDialog/MoveSelect/<%=o.id %>"><%=o.OrgName%></a><br />
+        <% }
+       }
+       else
+       { %>
+        Organization must have a main division
+    <% } %>
         </td>
     </tr>
 </table>

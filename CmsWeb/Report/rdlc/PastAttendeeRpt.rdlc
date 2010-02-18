@@ -37,13 +37,6 @@
     </ReportItems>
     <Height>0.5in</Height>
     <PrintOnLastPage>true</PrintOnLastPage>
-    <Style>
-      <BackgroundImage>
-        <Source>Embedded</Source>
-        <Value>bellevue_design</Value>
-        <BackgroundRepeat>NoRepeat</BackgroundRepeat>
-      </BackgroundImage>
-    </Style>
   </PageHeader>
   <BottomMargin>1in</BottomMargin>
   <rd:ReportID>57cac466-3ceb-4a95-852e-628704725131</rd:ReportID>

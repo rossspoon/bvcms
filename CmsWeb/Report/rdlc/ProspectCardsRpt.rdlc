@@ -31,21 +31,12 @@
           <PaddingBottom>2pt</PaddingBottom>
           <Direction>RTL</Direction>
         </Style>
-        <ZIndex>2</ZIndex>
+        <ZIndex>1</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>5.8in</Left>
         <Height>0.25in</Height>
         <Value>=Globals!PageNumber &amp; " of " &amp; Globals!TotalPages &amp; " pages"</Value>
       </Textbox>
-      <Image Name="image1">
-        <Sizing>Fit</Sizing>
-        <Width>0.75in</Width>
-        <MIMEType>image/jpeg</MIMEType>
-        <Source>Embedded</Source>
-        <Style />
-        <ZIndex>1</ZIndex>
-        <Value>bellevue_design</Value>
-      </Image>
       <Textbox Name="textbox2">
         <rd:DefaultName>textbox2</rd:DefaultName>
         <Width>3.75in</Width>

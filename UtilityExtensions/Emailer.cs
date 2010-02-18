@@ -120,11 +120,9 @@ namespace UtilityExtensions
 
             if (emailonrecord.HasValue())
                 Util.Email(smtp, staff, name, emailonrecord, subject, message);
-            else
-                emailonrecord = "none";
 
             Util.Email2(smtp, emailonrecord, staff, "different email address than one on record",
-                "<p>{0}({1}) registered  with {2} but has {3} in record.</p>".Fmt(
+                "<p>{0}({1}) registered  with '{2}' but has '{3}' in record.</p>".Fmt(
                 name, peopleid, to, emailonrecord));
         }
     }

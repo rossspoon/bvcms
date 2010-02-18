@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,11 +16,16 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class ChoirMeeting : System.Web.UI.Page
+    public class Avery3Result : ActionResult
     {
+        public int? id;
         protected float H = 1.0f;
         protected float W = 2.625f;
         protected float GAP = .125f;
@@ -28,13 +34,11 @@ namespace CMSWeb.Reports
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 20);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
-        protected void Page_Load(object sender, EventArgs e)
+        public override void ExecuteResult(ControllerContext context)
         {
-            Response.Clear();
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
-
-            var id = this.QueryString<int?>("id");
 
             var document = new Document(PageSize.LETTER);
             document.SetMargins(36f, 36f, 33f, 36f);
@@ -69,31 +73,18 @@ namespace CMSWeb.Reports
                         First = p.PreferredName,
                         Last = p.LastName,
                         PeopleId = p.PeopleId,
-                        Phone = p.CellPhone ?? p.HomePhone
+                        Phone = p.CellPhone ?? p.HomePhone,
+                        dob = p.DOB
                     };
             foreach (var m in q)
-                AddRow(t, m.First, m.Last, m.Phone, m.PeopleId);
+                AddRow(t, m.First, m.Last, m.Phone, m.dob, m.PeopleId);
             document.Add(t);
 
             document.Close();
             Response.End();
         }
-        public void AddRow(PdfPTable t, string fname, string lname, string phone, int pid)
+        public void AddRow(PdfPTable t, string fname, string lname, string phone, string dob, int pid)
         {
-            var bc = new Barcode39();
-            bc.X = 1.2f;
-            bc.Font = null;
-            bc.Code = pid.ToString();
-            var img = bc.CreateImageWithBarcode(dc, null, null);
-            var p1 = new Phrase();
-            p1.Add(new Chunk(img, 0, 0));
-            p1.Add(new Phrase("\n\n" + fname + " " + lname + " (" + pid + ")", smallfont));
-            var c = new PdfPCell( p1);
-            c.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
-            c.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
-            c.Border = PdfPCell.NO_BORDER;
-            c.FixedHeight = H * 72f;
-
             var t2 = new PdfPTable(2);
             t2.WidthPercentage = 100f;
             t2.DefaultCell.Border = PdfPCell.NO_BORDER;
@@ -125,11 +116,13 @@ namespace CMSWeb.Reports
             cell.Border = PdfPCell.NO_BORDER;
             cell.FixedHeight = H * 72f;
 
-            t.AddCell(c);
+            t.AddCell(cell);
             t.AddCell("");
             t.AddCell(cell);
             t.AddCell("");
             t.AddCell(cell);
         }
+
     }
 }
+

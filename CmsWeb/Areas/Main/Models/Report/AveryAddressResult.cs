@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,11 +16,18 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class AveryAddress : System.Web.UI.Page
+    public class AveryAddressResult : ActionResult
     {
+        public int? id;
+        public string format;
+        public bool? titles;
         const float Pts = 72f;
         const float H = 1.0f * Pts;
         const float W = 2.625f * Pts;
@@ -29,23 +37,18 @@ namespace CMSWeb.Reports
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
-        protected void Page_Load(object sender, EventArgs e)
+        public override void ExecuteResult(ControllerContext context)
         {
-            Response.Clear();
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var id = this.QueryString<int?>("id");
-
-            var labelNameFormat = this.QueryString<string>("format");
-
             var ctl = new MailingController();
-            var useTitles = Request.QueryString["titles"];
-            ctl.UseTitles = useTitles == "true";
+            ctl.UseTitles = titles == true;
 
             const string STR_Name = "Name";
             IEnumerable<MailingInfo> q = null;
-            switch (labelNameFormat)
+            switch (format)
             {
                 case "Individual":
                     q = ctl.FetchIndividualList(STR_Name, id.Value);
@@ -131,5 +134,7 @@ namespace CMSWeb.Reports
                 t.AddCell("");
             return n % 3 == 0;
         }
+
     }
 }
+

@@ -246,6 +246,7 @@ namespace CMSPresenter
 
             var absentees = from m in DbUtil.Db.Meetings
                             from om in m.Organization.OrganizationMembers
+                            where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                             join p in DbUtil.Db.People on om.PeopleId equals p.PeopleId
                             let attendct = DbUtil.Db.Attends
                                             .Count(a => a.OrganizationId == om.OrganizationId && a.PeopleId == p.PeopleId && a.AttendanceFlag == true)

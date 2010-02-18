@@ -11,7 +11,7 @@
                     <th>Address:</th>
                     <td><%=Model.Address1 %></td>
                     <th>Bad Address Flag:</th>
-                    <td><input type="checkbox" <%=Model.BadAddress%> disabled="disabled" /></td>
+                    <td><input type="checkbox" <%=Model.BadAddress == true ? "checked='checked'" : "" %> disabled="disabled" /></td>
                 </tr>
                 <tr>
                     <th>&nbsp;</th>

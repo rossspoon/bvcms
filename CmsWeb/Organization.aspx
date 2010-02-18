@@ -71,7 +71,7 @@
             var args = "?org=curr&dt=" + d + " " + t;
             if (sg)
                 args += "&bygroup=1";
-            var newWindowUrl = "Report/Rollsheet.aspx" + args
+            var newWindowUrl = "Reports/Rollsheet/" + args
             window.open(newWindowUrl);
         }
 

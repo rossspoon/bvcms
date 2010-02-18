@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Web.Configuration;
 using CMSPresenter;
 using System.Net;
+using System.Text;
 
 namespace CMSWeb
 {
@@ -84,9 +85,8 @@ namespace CMSWeb
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var debug = true;
 #if DEBUG
-            if(debug)
+            if (HttpContext.Current != null)
                 return;
 #endif
             var ex = Server.GetLastError();
@@ -101,16 +101,24 @@ namespace CMSWeb
             var u = DbUtil.Db.CurrentUser;
             var smtp = new SmtpClient();
             var msg = new MailMessage();
+
+            var sb = new StringBuilder();
+            if (Request.RequestType == "POST")
+                foreach (var s in Request.Form.AllKeys)
+                    sb.AppendFormat("\n{0}: {1}", s, Request.Form[s]);
+
             msg.Subject = "bvcms error on " + Request.Url.Authority;
             if (u != null)
             {
                 msg.From = new MailAddress(u.EmailAddress, u.Name);
-                msg.Body = "\n{0} ({1}, {2})\n".Fmt(u.EmailAddress, u.UserId, u.Name) + ex.ToString();
+                msg.Body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.UserId, u.Name, Request.Url.OriginalString) 
+                    + ex.ToString() + sb.ToString();
             }
             else
             {
                 msg.From = new MailAddress(WebConfigurationManager.AppSettings["errorsfromemail"]);
-                msg.Body = ex.ToString();
+                msg.Body = "\n{0}\n".Fmt(Request.Url.OriginalString)
+                    + ex.ToString() + sb.ToString();
             }
             foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
                 msg.To.Add(new MailAddress(a.Person.EmailAddress, a.Name));

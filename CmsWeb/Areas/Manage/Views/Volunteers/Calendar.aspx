@@ -42,7 +42,7 @@
                     <% if (cell != null)
                        { %>
                     <a href="#" class="reminder" mid="<%=cell.MeetingId %>">Email Reminders(<%=cell.Persons.Count() %>)</a><br />
-                    <a href="/Report/Rollsheet.aspx?meetingid=<%=cell.MeetingId %>">Rollsheet Report</a><br />
+                    <a href="/Reports/Rollsheet/?meetingid=<%=cell.MeetingId %>">Rollsheet Report</a><br />
                     <br />
                     <% foreach (var p in cell.Persons)
                        { %>

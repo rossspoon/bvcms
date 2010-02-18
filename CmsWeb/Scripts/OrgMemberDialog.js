@@ -23,7 +23,7 @@
         });
         return false;
     });
-    $("a.delete").click(function(ev) {
+    $("a.delete").live("click", function(ev) {
         if (confirm("are you sure?"))
             $.post($(this).attr("href"), null, function(ret) {
                 self.parent.RebindMemberGrids($("#from").val());

@@ -30,11 +30,11 @@ namespace CMSWeb
             BulkMailLink.NavigateUrl = "/bulkmail.aspx?" + queryId;
             ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
-            ContactsLink.NavigateUrl = GoTo("NewWindow", "Report/ContactReport.aspx?");
-            BarCodeLabels.NavigateUrl = GoTo("NewWindow", "Report/ChoirMeeting.aspx?");
-            AveryLabels.NavigateUrl = GoTo("NewWindow", "Report/Avery.aspx?");
-            AveryLabels3.NavigateUrl = GoTo("NewWindow", "Report/Avery3.aspx?");
-            AveryAddressLabels.NavigateUrl = "/Report/AveryAddress.aspx?id=" + queryId;
+            ContactsLink.NavigateUrl = GoTo2("NewWindow", "Reports/Contacts/" + queryId);
+            BarCodeLabels.NavigateUrl = GoTo2("NewWindow", "Reports/BarCodeLabels/" + queryId);
+            AveryLabels.NavigateUrl = GoTo2("NewWindow", "Reports/Avery/" + queryId);
+            AveryLabels3.NavigateUrl = GoTo2("NewWindow", "Reports/Avery3/" + queryId);
+            AveryAddressLabels.NavigateUrl = "/Reports/AveryAddress/" + queryId;
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Attend&");
             AttendanceLink.NavigateUrl = GoTo2("NewWindow", "/Reports/WeeklyAttendance/" + queryId);

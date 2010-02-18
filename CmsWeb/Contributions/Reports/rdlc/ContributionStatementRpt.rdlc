@@ -42,7 +42,7 @@
           <FontSize>8pt</FontSize>
           <TextAlign>Left</TextAlign>
         </Style>
-        <ZIndex>6</ZIndex>
+        <ZIndex>5</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>5.15in</Left>
         <Height>1.2in</Height>
@@ -53,7 +53,7 @@
         <rd:DefaultName>textbox5</rd:DefaultName>
         <Top>0.5in</Top>
         <Width>2.33in</Width>
-        <ZIndex>5</ZIndex>
+        <ZIndex>4</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>5.25in</Left>
         <Height>0.16in</Height>
@@ -63,7 +63,7 @@
         <rd:DefaultName>textbox4</rd:DefaultName>
         <Top>0.33in</Top>
         <Width>1.56in</Width>
-        <ZIndex>4</ZIndex>
+        <ZIndex>3</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>5.25in</Left>
         <Height>0.16in</Height>
@@ -78,7 +78,7 @@
           <FontSize>14pt</FontSize>
           <FontWeight>700</FontWeight>
         </Style>
-        <ZIndex>3</ZIndex>
+        <ZIndex>2</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>0.91in</Left>
         <Height>0.25in</Height>
@@ -93,23 +93,12 @@
           <FontSize>20pt</FontSize>
           <FontWeight>700</FontWeight>
         </Style>
-        <ZIndex>2</ZIndex>
+        <ZIndex>1</ZIndex>
         <CanGrow>true</CanGrow>
         <Left>0.85in</Left>
         <Height>0.32in</Height>
         <Value>Bellevue</Value>
       </Textbox>
-      <Image Name="image1">
-        <Sizing>AutoSize</Sizing>
-        <Top>0.2in</Top>
-        <Width>0.75in</Width>
-        <Source>Embedded</Source>
-        <Style />
-        <ZIndex>1</ZIndex>
-        <Left>0.1in</Left>
-        <Height>0.5in</Height>
-        <Value>bellevue_design</Value>
-      </Image>
       <Textbox Name="textbox1">
         <rd:DefaultName>textbox1</rd:DefaultName>
         <Top>0.75in</Top>

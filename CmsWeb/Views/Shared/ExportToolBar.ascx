@@ -29,7 +29,7 @@
             <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach Form</a></li>
-            <li><a href='/Report/ContactReport.aspx?id=<%=ViewData["queryid"]%>' 
+            <li><a href='/Reports/Contacts/<%=ViewData["queryid"]%>' 
                 target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
                 Contact Report</a></li>
             <li><a href='/Reports/WeeklyAttendance/<%=ViewData["queryid"]%>' 
@@ -38,7 +38,7 @@
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Involvement' 
                 target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
                 Involvement</a></li>
-            <li><a href='/Report/Family/<%=ViewData["queryid"]%>' 
+            <li><a href='/Reports/Family/<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Family Report</a></li>
             <li><a href='/Volunteers/Index/<%=ViewData["queryid"]%>' 
@@ -61,20 +61,20 @@
             <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Labels (pdf for Datamax label printer)" target="_blank"><img src="/images/tags.png" /> 
                 Roll Labels</a></li>
-            <li><a href='/Report/ChoirMeeting.aspx?id=<%=ViewData["queryid"]%>' 
+            <li><a href='/Reports/BarCodeLabels/<%=ViewData["queryid"]%>' 
                 target="_blank" title="Labels for Choir Attendance" target="_blank"><img src="/images/tags.png" />
                 Barcode Labels</a></li>
             <li>
-                <a href='/Report/Avery.aspx?id=<%=ViewData["queryid"] %>' 
+                <a href='/Reports/Avery/<%=ViewData["queryid"] %>' 
                     title="Avery Name Labels" target="_blank">
                     <img src="/images/tags.png" />
                     Avery Labels</a></li>
             <li>
-                <a href='/Report/Avery.aspx?id=<%=ViewData["queryid"] %>' 
+                <a href='/Reports/Avery3/<%=ViewData["queryid"] %>' 
                     title="Avery 3 Across Labels (person per row)" target="_blank">
                     <img src="/images/tags.png" />
                     Avery Labels 3</a></li>
-            <li><a href='/Report/AveryAddress.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+            <li><a href='/Reports/AveryAddress/<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Address Labels"><img src="/images/tags.png" /> 
                 Avery Address</a></li>
         </ul>

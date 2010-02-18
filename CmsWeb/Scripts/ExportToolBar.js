@@ -12,9 +12,10 @@
     });
     $(".ChooseLabelType").click(function(ev) {
         $("#ChooseLabelType").dialog("open");
+        var sep = ev.target.href.search(/\?/) == -1 ? "?" : "&";
         $("#cmdOK").click(function() {
             var url = ev.target.href
-                + "&titles=" + $('#UseTitle')[0].checked
+                + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()
                 + "&web=" + $('#WebView')[0].checked;
             $("#ChooseLabelType").dialog("close");

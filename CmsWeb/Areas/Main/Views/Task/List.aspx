@@ -65,7 +65,7 @@
                 </td>
                 <td>
                     New Task:
-                    <input type="text" id="TaskDesc" style="width: 217px" onkeypress="return AddTaskEnter(event)" />
+                    <input type="text" id="TaskDesc" maxlength="100" style="width: 217px" onkeypress="return AddTaskEnter(event)" />
                     <a href="javascript:AddTaskClick()">Add Task</a>
                 </td>
             </tr>
@@ -102,7 +102,7 @@
         <% Html.RenderPartial("Pager", Model.pagerModel()); %>
         <div>
             New List(tab):
-            <input type="text" id="ListName" style="width: 217px" onkeypress="return AddListEnter(event)" />
+            <input type="text" id="ListName" maxlength="50" style="width: 217px" onkeypress="return AddListEnter(event)" />
             <a href="#" onclick="return AddListClick()">Add List</a>
         </div>
 <input type="hidden" id="Count" value='<%=Model.Count%>' />

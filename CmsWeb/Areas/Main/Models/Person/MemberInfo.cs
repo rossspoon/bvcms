@@ -97,6 +97,7 @@ namespace CMSWeb.Models.PersonPage
             p.EnvelopeOptionsId = EnvelopeOptionId;
             p.ContributionOptionsId = StatementOptionId;
             p.JoinCodeId = JoinTypeId;
+            p.JoinDate = JoinDate;
             p.OtherNewChurch = NewChurch;
             p.OtherPreviousChurch = PrevChurch;
             p.DiscoveryClassDate = NewMemberClassDate;

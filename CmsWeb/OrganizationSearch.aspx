@@ -51,7 +51,7 @@
                    "&name=" + nam +
                    "&dt=" + d + " " + t;
 
-            var newWindowUrl = "Report/Rollsheet.aspx" + args
+            var newWindowUrl = "Reports/Rollsheet/" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;
@@ -66,12 +66,20 @@
             }
             var sid = '<%=Schedule.SelectedValue %>';
             var args = "?div=" + did +
-                   "&schedule=" + sid;
+               "&schedule=" + sid;
 
-            var newWindowUrl = "Report/RosterReport.aspx" + args
+            var newWindowUrl = "Reports/Roster/" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;
+    }
+    function ViewReport(url) {
+        if ('<%=OrgDivisions.SelectedValue %>' == '0')
+            alert('must choose division');
+        else {
+            var args = "?div=<%=OrgDivisions.SelectedValue %>&schedule=<%=Schedule.SelectedValue %>&name=<%=NameSearch.Text %>";
+            window.open(url + args);
+        }
     }
     function ViewAttDetail() {
         Page_ClientValidate(' ');
@@ -253,6 +261,8 @@
     <asp:LinkButton ID="RollsheetRpt" runat="server" OnClientClick="OpenRollsheet(); return false;" Text="Create Roll Sheet(s)"/> &nbsp;|
     <asp:HyperLink ID="MeetingsLink" runat="server">Meetings</asp:HyperLink> |
     <asp:LinkButton ID="RosterRpt" runat="server" OnClientClick="ViewRosterRpt(); return false;">Roster</asp:LinkButton>&nbsp;|
+    <asp:LinkButton ID="LinkButton2" runat="server" OnClientClick="ViewReport('/Reports/OrgLeaders/'); return false;">Leaders</asp:LinkButton>&nbsp;|
+    <asp:LinkButton ID="LinkButton5" runat="server" OnClientClick="ViewReport('/Reports/ClassList/'); return false;">Class List</asp:LinkButton>&nbsp;|
     <a id="PopupAttDetail" href="#">Meetings Attendance</a>
 &nbsp;<asp:UpdatePanel ID="RollsheetPanel" runat="server" UpdateMode="Conditional">
         <ContentTemplate>

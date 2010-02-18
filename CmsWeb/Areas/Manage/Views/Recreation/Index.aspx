@@ -82,8 +82,7 @@
             <th><a href="#" class="sortable">Birthday</a></th>
             <th><a href="#" class="sortable">ShirtSize</a></th>
             <th><a href="#" class="sortable">FeePaid</a></th>
-            <th><a href="#" class="sortable">Request</a></th>
-            <th><a href="#" class="sortable">Uploaded</a></th>
+            <th align="left"><a href="#" class="sortable">Request</a></th>
         </tr>
         </thead>
         <tbody>

@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -17,11 +18,18 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class ContactReport : System.Web.UI.Page
+    public class ContactsResult : ActionResult
     {
+        private int? qid;
+        public ContactsResult(int? id)
+        {
+            qid = id;
+        }
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
@@ -33,13 +41,12 @@ namespace CMSWeb.Reports
         private DateTime dt;
         private PdfContentByte dc;
 
-        protected void Page_Load(object sender, EventArgs e)
+        public override void ExecuteResult(ControllerContext context)
         {
-            Response.Clear();
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var qid = this.QueryString<int?>("id");
             dt = Util.Now;
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
@@ -68,6 +75,9 @@ namespace CMSWeb.Reports
                 doc.Add(new Phrase("no data"));
             pageEvents.EndPageSet();
             doc.Close();
+
+
+
             Response.End();
         }
 
@@ -172,12 +182,12 @@ namespace CMSWeb.Reports
         }
         private void AddLine(StringBuilder sb, string value, string postfix)
         {
-            if(value.HasValue())
+            if (value.HasValue())
             {
                 if (sb.Length > 0)
                     sb.Append("\n");
                 sb.Append(value);
-                if(postfix.HasValue())
+                if (postfix.HasValue())
                     sb.Append(postfix);
             }
         }
@@ -363,3 +373,4 @@ namespace CMSWeb.Reports
         }
     }
 }
+

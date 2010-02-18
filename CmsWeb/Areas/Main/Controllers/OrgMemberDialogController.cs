@@ -72,6 +72,8 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["name"] = om.Person.Name;
             ViewData["oid"] = id;
             ViewData["pid"] = pid;
+            if (om.Organization.DivisionId != null)
+                return View((IEnumerable<OrgMove>)null);
             var q = from o in om.Organization.Division.Organizations
                     where o.OrganizationId != id
                     orderby o.OrganizationName

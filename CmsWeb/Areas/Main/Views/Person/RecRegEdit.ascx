@@ -54,8 +54,8 @@
     </tr>
      <tr>
         <td><label for="coaching">Interested in Coaching?</label></td>
-        <td><%= Html.RadioButton("coaching", 1) %> Yes
-        <%= Html.RadioButton("coaching", 0) %> No</td>
+        <td><%= Html.RadioButton("coaching", "true") %> Yes
+        <%= Html.RadioButton("coaching", "false") %> No</td>
         <td><%= Html.ValidationMessage("coaching2") %></td>
     </tr>
     <tr>

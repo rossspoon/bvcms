@@ -14,8 +14,10 @@ CREATE TABLE [dbo].[OrganizationMembers]
 [LastAttended] [datetime] NULL,
 [Pending] [bit] NULL,
 [UserData] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[Amount] [money] NULL
+[Amount] [money] NULL,
+[Request] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+
 
 
 

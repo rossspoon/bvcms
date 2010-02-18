@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,11 +16,16 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class Avery : System.Web.UI.Page
+    public class AveryResult : ActionResult
     {
+        public int? id;
         protected float H = 1.0f;
         protected float W = 2.625f;
         protected float GAP = .125f;
@@ -28,13 +34,11 @@ namespace CMSWeb.Reports
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 20);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
-        protected void Page_Load(object sender, EventArgs e)
+        public override void ExecuteResult(ControllerContext context)
         {
-            Response.Clear();
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
-
-            var id = this.QueryString<int?>("id");
 
             var document = new Document(PageSize.LETTER);
             document.SetMargins(36f, 36f, 33f, 36f);
@@ -74,6 +78,8 @@ namespace CMSWeb.Reports
                     };
             foreach (var m in q)
                 AddCell(t, m.First, m.Last, m.Phone, m.PeopleId);
+            while (t.Rows.Count == 0)
+                t.AddCell("");
             document.Add(t);
 
             document.Close();
@@ -120,3 +126,4 @@ namespace CMSWeb.Reports
         }
     }
 }
+

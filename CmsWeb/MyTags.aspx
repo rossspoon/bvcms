@@ -42,7 +42,7 @@
                 </th>
                 <td>
                     <span class="footer">
-                        <asp:TextBox ID="TagName" runat="server" Width="225px"></asp:TextBox>
+                        <asp:TextBox ID="TagName" runat="server" Width="225px" MaxLength="50" ></asp:TextBox>
                     </span>
                 </td>
                 <td>

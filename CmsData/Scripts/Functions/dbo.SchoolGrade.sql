@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -14,7 +15,7 @@ BEGIN
 	-- Declare the return variable here
 	DECLARE @g INT
 
-	SELECT TOP 1 @g = o.GradeRangeStart 
+	SELECT TOP 1 @g = o.GradeAgeStart 
 	FROM dbo.OrganizationMembers AS om 
 		JOIN dbo.Organizations AS o ON om.OrganizationId = o.OrganizationId 
 		JOIN dbo.DivOrg do ON o.OrganizationId = do.OrgId 
@@ -23,7 +24,7 @@ BEGIN
 	WHERE p.BFProgram = 1 
 		AND om.PeopleId = @pid 
 		AND om.MemberTypeId = 220 
-		AND GradeRangeStart <> 0
+		AND GradeAgeStart <> 0
 
 	-- Return the result of the function
 	RETURN @g

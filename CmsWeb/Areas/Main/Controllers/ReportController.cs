@@ -38,5 +38,89 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             return new FamilyResult(id);
         }
+        public ActionResult BarCodeLabels(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new BarCodeLabelsResult(id.Value);
+        }
+        public ActionResult Contacts(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new ContactsResult(id.Value);
+        }
+        public ActionResult Rollsheet(int? id, string org, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup)
+        {
+            return new RollsheetResult
+            {
+                qid = id,
+                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
+                groupid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentGroupId : null,
+                div = div,
+                name = name,
+                schedule = schedule,
+                meetingid = meetingid,
+                bygroup = bygroup.HasValue,
+            };
+        }
+        public ActionResult OrgLeaders(string org, int? div, int? schedule, string name)
+        {
+            return new OrgLeadersResult
+            {
+                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
+                div = div,
+                name = name,
+                schedule = schedule,
+            };
+        }
+        public ActionResult ClassList(string org, int? div, int? schedule, string name)
+        {
+            return new ClassListResult
+            {
+                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
+                div = div,
+                name = name,
+                schedule = schedule,
+            };
+        }
+        public ActionResult Roster(int? queryid, int? org, int? div, int? schedule, string name, string tm)
+        {
+            return new RosterResult
+            {
+                qid = queryid,
+                org = org,
+                div = div,
+                schedule = schedule,
+                tm = tm,
+            };
+        }
+        public ActionResult EnrollmentControl(int div, int subdiv, int schedule)
+        {
+            return new EnrollmentControlResult
+            {
+                div = div,
+                schedule = schedule,
+                subdiv = subdiv
+            };
+        }
+        public ActionResult Avery(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new AveryResult { id = id };
+        }
+        public ActionResult Avery3(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new Avery3Result { id = id };
+        }
+        public ActionResult AveryAddress(int? id, string format, bool? titles)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new AveryAddressResult { id = id, format = format, titles = titles };
+        }
     }
 }

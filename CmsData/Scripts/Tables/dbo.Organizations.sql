@@ -6,8 +6,8 @@ CREATE TABLE [dbo].[Organizations]
 [OrganizationStatusId] [int] NOT NULL,
 [DivisionId] [int] NULL,
 [LeaderMemberTypeId] [int] NULL,
-[GradeRangeStart] [int] NULL,
-[GradeRangeEnd] [int] NULL,
+[GradeAgeStart] [int] NULL,
+[GradeAgeEnd] [int] NULL,
 [RollSheetVisitorWks] [int] NULL,
 [AttendTrkLevelId] [int] NOT NULL,
 [SecurityTypeId] [int] NOT NULL,
@@ -43,8 +43,13 @@ CREATE TABLE [dbo].[Organizations]
 [RegType] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [EmailMessage] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [EmailSubject] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[Instructions] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[Instructions] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[GenderId] [int] NULL,
+[Fee] [money] NULL
 )
+
+ALTER TABLE [dbo].[Organizations] ADD
+CONSTRAINT [FK_Organizations_Gender] FOREIGN KEY ([GenderId]) REFERENCES [lookup].[Gender] ([Id])
 
 
 
@@ -92,24 +97,27 @@ BEGIN
 	
 	IF UPDATE(DivisionId)
 	OR UPDATE(LeaderMemberTypeId)
+	BEGIN
+		UPDATE dbo.Organizations
+		SET LeaderId = dbo.OrganizationLeaderId(OrganizationId),
+		LeaderName = dbo.OrganizationLeaderName(OrganizationId)
+		WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
+
 		IF 1 IN (SELECT ISNULL(BFProgram,0) FROM dbo.Program p
 				JOIN dbo.Division d ON p.Id = d.ProgId
 				JOIN DELETED od ON d.Id = od.DivisionId
 				JOIN INSERTED oi ON d.Id = oi.DivisionId)
 		BEGIN
-			UPDATE dbo.Organizations
-			SET LeaderId = dbo.OrganizationLeaderId(OrganizationId),
-			LeaderName = dbo.OrganizationLeaderName(OrganizationId)
-			WHERE OrganizationId IN (SELECT OrganizationId FROM INSERTED)
-
 			UPDATE dbo.People
 			SET BibleFellowshipClassId = dbo.BibleFellowshipClassId(p.PeopleId)
 			FROM dbo.People p
 			JOIN dbo.OrganizationMembers m ON p.PeopleId = m.PeopleId
 			JOIN INSERTED o ON m.OrganizationId = o.OrganizationId
 		END
+	END
 END
 GO
+
 
 
 

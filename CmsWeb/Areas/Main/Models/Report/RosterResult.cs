@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -15,42 +16,23 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Diagnostics;
 
-namespace CMSWeb.Reports
+namespace CMSWeb.Areas.Main.Models.Report
 {
-    public partial class RosterReport : System.Web.UI.Page
+    public class RosterResult : ActionResult
     {
-        public class MemberInfo
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Organization { get; set; }
-            public string Location { get; set; }
-            public string MemberType { get; set; }
-        }
+        public int? qid, org, div, schedule;
+        public string tm;
 
-        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
-        private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
-        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
-        private PageEvent pageEvents = new PageEvent();
-        private PdfPTable t;
-        private Document doc;
-        private DateTime dt;
-        private PdfContentByte dc;
-        private bool pagesetstarted = false;
-
-        protected void Page_Load(object sender, EventArgs e)
+        public override void ExecuteResult(ControllerContext context)
         {
-            Response.Clear();
+            var Response = context.HttpContext.Response;
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
-
-            var org = this.QueryString<int?>("org");
-            var qid = this.QueryString<int?>("queryid");
-            var div = this.QueryString<int?>("div");
-            var schedule = this.QueryString<int?>("schedule");
-            dt = Util.Now;
-            var tm = this.QueryString<string>("tm");
 
             doc = new Document(PageSize.LETTER, 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
@@ -113,6 +95,24 @@ namespace CMSWeb.Reports
             doc.Close();
             Response.End();
         }
+        public class MemberInfo
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public string Organization { get; set; }
+            public string Location { get; set; }
+            public string MemberType { get; set; }
+        }
+
+        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
+        private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
+        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
+        private PageEvent pageEvents = new PageEvent();
+        private PdfPTable t;
+        private Document doc;
+        private DateTime dt;
+        private PdfContentByte dc;
+        private bool pagesetstarted = false;
 
         private void StartPageSet(OrgInfo o)
         {
@@ -286,3 +286,5 @@ namespace CMSWeb.Reports
         }
     }
 }
+
+
