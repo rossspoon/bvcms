@@ -33,6 +33,7 @@ namespace CMSWeb.Areas.Setup.Controllers
             var set = DbUtil.Db.Settings.SingleOrDefault(m => m.Id == id);
             set.SettingX = value;
             DbUtil.Db.SubmitChanges();
+            DbUtil.SetSetting(id, value);
             var c = new ContentResult();
             c.Content = set.SettingX;
             return c;

@@ -103,6 +103,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\DataSources\Match.datasource" />
+    <Content Include="ttt.lbl.txt" />
     <Compile Include="RawPrint.cs" />
     <Compile Include="StartUp.cs">
       <SubType>Form</SubType>

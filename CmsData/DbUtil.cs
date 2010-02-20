@@ -117,11 +117,24 @@ namespace CmsData
                 return defaultvalue;
             return string.Empty;
         }
+        public static void SetSetting(string name, string value)
+        {
+            if (HttpContext.Current == null)
+                return;
+            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
+            if (list == null)
+            {
+                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX);
+                HttpContext.Current.Cache[Util.Host + "Settings"] = list;
+            }
+            list[name] = value;
+        }
         public static int BFClassOrgTagId { get { return Settings("BFClassOrgTagId", "").ToInt(); } }
         public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
         public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
+        public static string StartAddress { get { return Settings("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }
         public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole", "") == "true"; } }
-
+        
         public const string MiscTagsString = "Misc Tags";
         public const int TagTypeId_Personal = 1;
         public const int TagTypeId_OrgMembersOnly = 3;

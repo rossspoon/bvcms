@@ -36,6 +36,7 @@ namespace CMSWeb.Models
         public bool IsNew { get; set; }
         public bool ShowAddress { get; set; }
         public string evtype { get; set; }
+        public bool CanPay { get; set; }
 
         private DateTime _Birthday;
         public DateTime birthday

@@ -14,7 +14,8 @@
     if (last.Found == true || last.IsNew)
     {
 %>
-    <tr><td colspan="2"><input id="submitit" type="submit" class="submitbutton" value="Complete Registration and Pay <%=ViewData["fee"]%>" />
+    <tr><td colspan="2"><input id="submitit" type="submit" class="submitbutton" value="Complete Registration and Pay <%=ViewData["fee"]%>"
+        <%=last.CanPay? "" : "disabled='disabled'" %> />
         or <a href="/Event/AddAnotherPerson/" class="submitbutton">Add another household member</a></td>
     </tr>
 <%  } %>

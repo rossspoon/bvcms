@@ -35,6 +35,11 @@ namespace CMSWeb.Areas.Main.Controllers
             return new FamilyResult(m.FamilyMembers(id, campus, thisday));
 
         }
+        public ClassResult Class(int id, int thisday)
+        {
+            NoCache();
+            return new ClassResult(id, thisday);
+        }
         private void NoCache()
         {
             var seconds = 10;

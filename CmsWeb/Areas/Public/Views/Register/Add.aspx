@@ -26,8 +26,8 @@
                 </tr>
                 <tr>
                     <td><label for="dob">Date of Birth (optional)</label></td>
-                    <td><%= Html.TextBox("dob") %> <span id="age"></span></td>
-                    <td>(m/d/yy or mmddyy)<%= Html.ValidationMessage("dob") %></td>
+                    <td><%= Html.TextBox("dob", Model.dob, new { title = "m/d/y, mmddyy, mmddyyyy" })%> <span id="age"></span></td>
+                    <td>(m/d/y) <%= Html.ValidationMessage("dob") %></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td><td><input type="submit" value="Find Family" /></td>

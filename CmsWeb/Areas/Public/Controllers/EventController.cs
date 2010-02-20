@@ -60,13 +60,14 @@ namespace CMSWeb.Areas.Public.Controllers
             switch (list[0].evtype)
             {
                 case "childcare":
-                    fee = 6M;
+                    fee = list.Count(p => p.age < 15) > 0 ? 6M : 0M;
                     break;
                 case "5kfunrun":
                     foreach (var m in list)
                         fee += m.age >= 10 ? 25 : 15;
                     break;
             }
+            list[list.Count - 1].CanPay = fee > 0;
             ViewData["fee"] = fee.ToString("c");
             return fee;
         }

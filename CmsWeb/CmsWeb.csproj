@@ -2056,7 +2056,6 @@
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />
-    <Content Include="Scripts\Retreat.js" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />
     <Content Include="demos\checkboxtree\css\checkboxtree.css" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
@@ -2087,6 +2086,7 @@
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Areas\Main\Views\Reports\Attendance.aspx" />
     <Content Include="Content\newsletter.css" />
+    <Content Include="ttt.lbl4.txt" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Pager2.aspx" />

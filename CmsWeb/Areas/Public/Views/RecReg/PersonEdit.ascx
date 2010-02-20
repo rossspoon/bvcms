@@ -18,8 +18,8 @@
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
-        <td><input type="text" name="dob" value="<%=Model.dob%>" class="dob" /></td>
-        <td><span id="age"><%=Model.age %></span> <%= Html.ValidationMessage("dob") %></td>
+        <td><input type="text" name="dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
+        <td><span id="age"><%=Model.age %></span> (m/d/y) <%= Html.ValidationMessage("dob") %></td>
     </tr>
     <tr>
         <td><label for="phone">Phone</label></td>

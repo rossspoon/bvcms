@@ -28,6 +28,7 @@ namespace CMSWeb.Areas.Main.Models.Report
         public int? qid, div, schedule, meetingid, groupid, orgid;
         public bool? bygroup;
         public string name;
+        public DateTime? dt;
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -83,11 +84,9 @@ namespace CMSWeb.Areas.Main.Models.Report
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.GroupId))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
 
-                if (!bygroup.HasValue && !groupid.HasValue && meeting == null)
-                {
+                if (bygroup == false && !groupid.HasValue && meeting == null)
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
-                }
                 if (t.Rows.Count > 0)
                     mct.AddElement(t);
                 else
@@ -116,7 +115,6 @@ namespace CMSWeb.Areas.Main.Models.Report
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
-        private DateTime? dt;
         private PdfContentByte dc;
 
         private MultiColumnText StartPageSet(OrgInfo o)

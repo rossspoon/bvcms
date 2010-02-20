@@ -48,6 +48,8 @@ namespace CMSWeb.Models
                 {
                     Id = om.PeopleId,
                     Name = om.Person.Name,
+                    First = om.Person.PreferredName,
+                    Last = om.Person.LastName,
                     BYear = om.Person.BirthYear,
                     BMon = om.Person.BirthMonth,
                     BDay = om.Person.BirthDay,
@@ -86,6 +88,8 @@ namespace CMSWeb.Models
                 {
                     Id = a.PeopleId,
                     Name = a.Person.Name,
+                    First = a.Person.PreferredName,
+                    Last = a.Person.LastName,
                     BYear = a.Person.BirthYear,
                     BMon = a.Person.BirthMonth,
                     BDay = a.Person.BirthDay,
@@ -133,6 +137,8 @@ namespace CMSWeb.Models
                 {
                     Id = p.PeopleId,
                     Name = p.Name,
+                    First = p.PreferredName,
+                    Last = p.LastName,
                     BYear = p.BirthYear,
                     BMon = p.BirthMonth,
                     BDay = p.BirthDay,

@@ -24,7 +24,7 @@
     <% } %>
     <tr>
         <td><%=Model.PrimaryAddr.CityStateZip()%></td>
-        <td><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=<%=Model.PrimaryAddr.AddrCityStateZip() %>'
+        <td><a href='http://www.google.com/maps?f=d&saddr=<%=DbUtil.StartAddress %>&pw=2&daddr=<%=Model.PrimaryAddr.AddrCityStateZip() %>'
                 target="_blank">driving directions</a>
         </td>
     </tr>

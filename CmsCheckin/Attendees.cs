@@ -153,6 +153,8 @@ namespace CmsCheckin
                 var c = new AttendLabel
                 {
                     Name = e.Attribute("name").Value,
+                    First = e.Attribute("first").Value,
+                    Last = e.Attribute("last").Value,
                     Birthday = e.Attribute("bday").Value,
                     Gender = e.Attribute("gender").Value,
                     PeopleId = int.Parse(e.Attribute("id").Value),
@@ -302,11 +304,10 @@ namespace CmsCheckin
                 var c = ab.Tag as AttendLabel;
                 var n = 0;
                 if (int.TryParse(eb.Text, out n))
-                    for (var i = 0; i < n; i++)
-                    {
-                        PrintLabel(c);
-                        printed = true;
-                    }
+                {
+                    PrintLabel(c, n);
+                    printed = true;
+                }
             }
             if (printed)
                 PrintBlankLabel();
@@ -344,7 +345,6 @@ namespace CmsCheckin
             }
         }
 
-
         private void PrintBlankLabel()
         {
             if (!hasprinter)
@@ -360,19 +360,31 @@ namespace CmsCheckin
             RawPrinterHelper.SendDocToPrinter(printer, ms);
             st.Close();
         }
-        void PrintLabel(AttendLabel c)
+        void PrintLabel(AttendLabel c, int n)
         {
             if (!hasprinter)
                 return;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02O0130");
+            sw.WriteLine("\x02n");
+            sw.WriteLine("\x02M0500");
+            sw.WriteLine("\x02O0220");
+            sw.WriteLine("\x02V0");
+            sw.WriteLine("\x02SG");
+            sw.WriteLine("\x02d");
+            sw.WriteLine("\x01D");
             sw.WriteLine("\x02L");
-            sw.WriteLine("H07");
             sw.WriteLine("D11");
-            sw.WriteLine("191100500400015" + c.Name);
-            sw.WriteLine("191100300200015" + " (" + c.PeopleId + " " + c.Gender + ")  " + time.ToString("M/d/yy HHmmss"));
-            //sw.WriteLine("191100300100015" + c.Class);
+            sw.WriteLine("PG");
+            sw.WriteLine("pC");
+            sw.WriteLine("SG");
+            sw.WriteLine("ySPM");
+            sw.WriteLine("A2");
+            sw.WriteLine("1911A3000450009" + c.First);
+            sw.WriteLine("1911A1000300011" + c.Last);
+            sw.WriteLine("1911A1000060008" + " (" + c.PeopleId + " " + c.Gender + ")" + time.ToString("  M/d/yy"));
+            sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
+            sw.WriteLine("Q" + n.ToString("0000"));
             sw.WriteLine("E");
             sw.Flush();
 
@@ -380,6 +392,7 @@ namespace CmsCheckin
             RawPrinterHelper.SendDocToPrinter(printer, memStrm);
             sw.Close();
         }
+
 
         private void AttendeeKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -395,6 +408,8 @@ namespace CmsCheckin
     public class AttendLabel
     {
         public string Name { get; set; }
+        public string First { get; set; }
+        public string Last { get; set; }
         public int PeopleId { get; set; }
         public string Birthday { get; set; }
         public string Gender { get; set; }

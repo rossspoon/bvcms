@@ -143,8 +143,8 @@ namespace CMSWeb.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("{0}({1},{2},{3},{4}), Birthday: {5}({6}), Phone: {7}, {8}<br />\n".Fmt(
-                person.Name, person.PeopleId, person.Gender.Code, person.MaritalStatus.Code, option == 1 ? "5K" : "FunRun",
+            sb.AppendFormat("{0}({1},{2},{3}), Birthday: {4}({5}), Phone: {6}, {7}<br />\n".Fmt(
+                person.Name, person.PeopleId, person.Gender.Code, person.MaritalStatus.Code, 
                 person.DOB, person.Age, phone.FmtFone(homecell), email));
             if (ShowAddress)
                 sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);

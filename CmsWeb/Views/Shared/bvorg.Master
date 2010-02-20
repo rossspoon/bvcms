@@ -5,8 +5,6 @@
      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
      <link href="/content/bvorgfiles/style.css?v=2" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="TitleContent" runat="server">
-     <title>Step 1 Class Online Registration (Member Development)</title>
-        <title></title>
     </asp:ContentPlaceHolder>
 
 <style type="text/css">

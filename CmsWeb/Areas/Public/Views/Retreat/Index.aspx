@@ -12,7 +12,7 @@ tr.alt
 }
 </style>
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
-    <script src="/Scripts/Event.js" type="text/javascript"></script>
+    <script src="/Scripts/Event.js?v=4" type="text/javascript"></script>
     <h2><%=ViewData["EventName"] %></h2>
     <form class="DisplayEdit" action="/Retreat/CompleteRegistration/<%=ViewData["oid"] %><%=ViewData["testing"] %>" method="post">
     <% Html.RenderPartial("List", Model); %>

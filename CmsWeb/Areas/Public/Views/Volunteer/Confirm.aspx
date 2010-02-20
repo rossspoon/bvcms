@@ -15,7 +15,7 @@
         If you do not receive an email, it may be that we have an old or no email address for you, 
         please contact the church to provide one for us and we'll update your record.
     </p>
-    <% if(User.IsInRole("Staff"))
+    <% if(User.IsInRole("Staff") && ViewData["url"].IsNotNull())
        { %>
        <a href='<%=ViewData["url"] %>'>continue</a>
     <% } %>

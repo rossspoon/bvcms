@@ -393,6 +393,8 @@ namespace CmsData
             DateTime dt;
             if (Util.DateValid(dob, out dt))
             {
+                if (dt > Util.Now)
+                    dt = dt.AddYears(-100);
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;
                 p.BirthYear = dt.Year;

@@ -90,10 +90,11 @@ namespace CmsCheckin
         {
             lastbutton = null;
             var d = GetDigits(textBox1.Text).Length;
-            if (d != 10 && d != 7)
+            if (d != 10 && d != 7 && !textBox1.Text.StartsWith("0"))
                 return;
             lastnumber = textBox1.Text;
             Go(sender, new EventArgs<string>(textBox1.Text));
+            textBox1.Text = "";
         }
 
         private void buttonbs_Click(object sender, EventArgs e)

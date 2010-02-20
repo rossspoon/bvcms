@@ -411,6 +411,8 @@ namespace CMSWeb.Models
             var fone = Util.GetDigits(phone);
             var ctx = new CMSDataContext(Util.ConnectionString);
             ctx.SetNoLock();
+            if (DOB > Util.Now)
+                DOB = DOB.AddYears(-100);
             var q = from p in ctx.People
                     where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
                     where (p.LastName == last || p.MaidenName == last)

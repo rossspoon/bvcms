@@ -105,7 +105,7 @@
                 <%=Html.HyperLink(Model.ProspectReportLink(), "Prospect Report", new { target = "_blank" })%>
                 <div>
                     <%=Html.HyperLink("http://www.google.com/maps?q=" + Model.WhoAddrCityStateZip, Model.WhoAddress, new { target = "_blank" })%>
-                    | <%=Html.HyperLink("http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=" + Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
+                    | <%=Html.HyperLink("http://www.google.com/maps?f=d&saddr=" + DbUtil.StartAddress + "&pw=2&daddr=" + Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
                     <%=Html.HyperLink("mailto:" + Model.WhoEmail, Model.WhoEmail2)%>
                     | <%=Model.WhoPhone%> 
                 </div>
