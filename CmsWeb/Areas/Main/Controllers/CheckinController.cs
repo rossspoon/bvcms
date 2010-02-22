@@ -40,6 +40,36 @@ namespace CMSWeb.Areas.Main.Controllers
             NoCache();
             return new ClassResult(id, thisday);
         }
+        public ActionResult NameSearch(string id)
+        {
+            NoCache();
+
+            string first;
+            string last;
+            var q = DbUtil.Db.People.Select(p => p);
+            Person.NameSplit(id, out first, out last);
+            if (first.HasValue())
+                q = from p in q
+                    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
+                        && (p.FirstName.StartsWith(first) || p.NickName.StartsWith(first) || p.MiddleName.StartsWith(first))
+                    select p;
+            else
+                q = from p in q
+                    where p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last)
+                    select p;
+
+            var q2 = from p in q
+                     select new SearchInfo
+                     {
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
+                         Address = p.PrimaryAddress,
+                         Age = p.Age,
+                         Name = p.Name
+                     };
+
+            return new NameSearchResult(q2);
+        }
         private void NoCache()
         {
             var seconds = 10;
@@ -67,7 +97,7 @@ namespace CMSWeb.Areas.Main.Controllers
             r.Content = "success";
             return r;
         }
-        [Authorize(Roles="Staff")]
+        [Authorize(Roles = "Staff")]
         public ActionResult CheckIn(int? id, int? pid)
         {
             Session.Timeout = 1000;
@@ -147,7 +177,7 @@ namespace CMSWeb.Areas.Main.Controllers
             var PeopleId = Request.Headers["PeopleId"].ToInt2();
             const string STR_NotGood = "not good";
             if (!PeopleId.HasValue)
-                return Content (STR_NotGood);
+                return Content(STR_NotGood);
             var guid = new Guid(Request.Headers["Guid"].ToString());
             var tok = DbUtil.Db.TemporaryTokens.SingleOrDefault(tt => tt.Id == guid);
             if (tok == null)

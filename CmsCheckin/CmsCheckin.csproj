@@ -56,6 +56,18 @@
     <Compile Include="Attendees.Designer.cs">
       <DependentUpon>Attendees.cs</DependentUpon>
     </Compile>
+    <Compile Include="SearchResults.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchResults.Designer.cs">
+      <DependentUpon>SearchResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Name.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Name.Designer.cs">
+      <DependentUpon>Name.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventArgs.cs" />
     <Compile Include="Families.cs">
       <SubType>UserControl</SubType>
@@ -80,6 +92,12 @@
     <EmbeddedResource Include="Attendees.resx">
       <DependentUpon>Attendees.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SearchResults.resx">
+      <DependentUpon>SearchResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Name.resx">
+      <DependentUpon>Name.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Families.resx">
       <DependentUpon>Families.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,7 +121,6 @@
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\DataSources\Match.datasource" />
-    <Content Include="ttt.lbl.txt" />
     <Compile Include="RawPrint.cs" />
     <Compile Include="StartUp.cs">
       <SubType>Form</SubType>

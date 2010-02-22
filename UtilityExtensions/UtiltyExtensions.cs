@@ -240,6 +240,24 @@ namespace UtilityExtensions
                 return prefix + phone;
             return "";
         }
+        public static string FmtFone7(this string phone)
+        {
+            if (string.IsNullOrEmpty(phone))
+                return "";
+            var ph = GetDigits(phone).PadLeft(10, '0');
+            var p7 = ph.Substring(3);
+            var t = new StringBuilder(p7);
+            if (t.Length >= 4)
+                t.Insert(3, "-");
+            return t.ToString();
+        }
+        public static string FmtFone7(this string phone, string prefix)
+        {
+            phone = phone.FmtFone7();
+            if (phone.HasValue())
+                return prefix + phone;
+            return "";
+        }
         public static bool AllDigits(this string str)
         {
             Regex patt = new Regex("[^0-9]");

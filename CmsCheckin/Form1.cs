@@ -19,6 +19,8 @@ namespace CmsCheckin
     {
         PhoneNumber phone;
         Attendees attendees;
+        Name namesearch;
+        SearchResults results;
         Families families;
         public Form1()
         {
@@ -41,6 +43,17 @@ namespace CmsCheckin
             Uri url;
             string str;
             XDocument x;
+            if (e.Value == "411")
+            {
+                phone.Visible = false;
+                namesearch = new Name();
+                this.Controls.Add(namesearch);
+                namesearch.Left = (this.Width / 2) - (namesearch.Width / 2);
+                namesearch.Top = 0;
+                namesearch.GoBack += new EventHandler(name_GoBack);
+                namesearch.Go += new EventHandler<EventArgs<string>>(namesearch_Go);
+                return;
+            }
             if (e.Value.StartsWith("0"))
             {
                 url = new Uri(new Uri(ServiceUrl()),
@@ -102,6 +115,42 @@ namespace CmsCheckin
                 attendees.GoBack += new EventHandler(attendees_GoBack);
             }
         }
+
+        void namesearch_Go(object sender, EventArgs<string> e)
+        {
+            this.Controls.Remove(namesearch);
+            namesearch = null;
+
+            var wc = new WebClient();
+            var url = new Uri(new Uri(ServiceUrl()),
+                string.Format("Checkin/NameSearch/{0}", e.Value));
+
+            this.Cursor = Cursors.WaitCursor;
+            Cursor.Show();
+            var str = wc.DownloadString(url);
+            if (Program.HideCursor)
+                Cursor.Hide();
+            this.Cursor = Cursors.Default;
+
+            var x = XDocument.Parse(str);
+
+            results = new SearchResults();
+            this.Controls.Add(results);
+            results.Left = (this.Width / 2) - (results.Width / 2);
+            results.Top = 0;
+            results.ShowResults(x);
+            results.GoBack += new EventHandler<EventArgs<string>>(results_GoBack);
+        }
+
+        void results_GoBack(object sender, EventArgs<string> e)
+        {
+            this.Controls.Remove(results);
+            results = null;
+            phone.Visible = true;
+            phone.textBox1.Text = PhoneNumber.FmtFone(e.Value);
+            phone.textBox1.Focus();
+            phone.textBox1.Select(phone.textBox1.Text.Length, 0);
+        }
         void families_Go(object sender, EventArgs<int> e)
         {
             this.Controls.Remove(families);
@@ -156,6 +205,14 @@ namespace CmsCheckin
         {
             this.Controls.Remove(attendees);
             attendees = null;
+            phone.Visible = true;
+            phone.textBox1.Text = String.Empty;
+            phone.textBox1.Focus();
+        }
+        void name_GoBack(object sender, EventArgs e)
+        {
+            this.Controls.Remove(namesearch);
+            namesearch = null;
             phone.Visible = true;
             phone.textBox1.Text = String.Empty;
             phone.textBox1.Focus();

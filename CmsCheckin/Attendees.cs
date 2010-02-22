@@ -303,7 +303,7 @@ namespace CmsCheckin
                 var ab = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
                 var c = ab.Tag as AttendLabel;
                 var n = 0;
-                if (int.TryParse(eb.Text, out n))
+                if (int.TryParse(eb.Text, out n) && n > 0)
                 {
                     PrintLabel(c, n);
                     printed = true;
@@ -362,7 +362,7 @@ namespace CmsCheckin
         }
         void PrintLabel(AttendLabel c, int n)
         {
-            if (!hasprinter)
+            if (!hasprinter || n == 0)
                 return;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);

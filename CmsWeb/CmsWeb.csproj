@@ -79,7 +79,11 @@
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportController.cs" />
-    <Compile Include="Areas\Main\Models\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendHistoryModel.cs" />
@@ -189,7 +193,7 @@
     <Compile Include="Contributions\Reports\TotalsByFundAgeRange.aspx.designer.cs">
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Main\Controllers\FamilyResult.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
@@ -589,9 +593,9 @@
     <Compile Include="MemberMap.aspx.designer.cs">
       <DependentUpon>MemberMap.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Main\Models\CheckInInfo.cs" />
-    <Compile Include="Areas\Main\Models\CheckInModel.cs" />
-    <Compile Include="Areas\Main\Models\CheckInRecModel.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\CheckInInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\CheckInModel.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\CheckInRecModel.cs" />
     <Compile Include="Areas\Main\Models\PagerModel.cs" />
     <Compile Include="Areas\Manage\Models\ParticipantInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\PeopleInfo.cs" />

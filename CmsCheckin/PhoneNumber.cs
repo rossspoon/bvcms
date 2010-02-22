@@ -12,6 +12,8 @@ namespace CmsCheckin
 {
     public partial class PhoneNumber : UserControl
     {
+        public event EventHandler<EventArgs<string>> Go;
+
         public PhoneNumber()
         {
             InitializeComponent();
@@ -22,7 +24,7 @@ namespace CmsCheckin
             var d = b.Name[6];
             KeyStroke(d);
         }
-        public string GetDigits(string s)
+        public static string GetDigits(string s)
         {
             if (string.IsNullOrEmpty(s))
                 return "";
@@ -37,7 +39,7 @@ namespace CmsCheckin
             Regex patt = new Regex("[^0-9]");
             return !(patt.IsMatch(str));
         }
-        public string FmtFone(string phone)
+        public static string FmtFone(string phone)
         {
             var ph = GetDigits(phone);
             if (string.IsNullOrEmpty(ph))
@@ -85,13 +87,11 @@ namespace CmsCheckin
                 lastbutton = b;
             }
         }
-        public event EventHandler<EventArgs<string>> Go;
+
         private void buttongo_Click(object sender, EventArgs e)
         {
             lastbutton = null;
             var d = GetDigits(textBox1.Text).Length;
-            if (d != 10 && d != 7 && !textBox1.Text.StartsWith("0"))
-                return;
             lastnumber = textBox1.Text;
             Go(sender, new EventArgs<string>(textBox1.Text));
             textBox1.Text = "";
