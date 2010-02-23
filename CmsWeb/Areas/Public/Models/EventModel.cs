@@ -36,7 +36,9 @@ namespace CMSWeb.Models
         public bool IsNew { get; set; }
         public bool ShowAddress { get; set; }
         public string evtype { get; set; }
-        public bool CanPay { get; set; }
+        public bool LastItem { get; set; }
+
+        public string ShirtSize { get; set; }
 
         private DateTime _Birthday;
         public DateTime birthday
@@ -47,6 +49,17 @@ namespace CMSWeb.Models
                     Util.DateValid(dob, out _Birthday);
                 return _Birthday;
             }
+        }
+        public decimal ComputeFee()
+        {
+            switch (evtype)
+            {
+                case "childcare":
+                    return age < 15 ? 6M : 0M;
+                case "5kfunrun":
+                    return age >= 10 ? 25 : 15;
+            }
+            return 0;
         }
         public int age
         {
@@ -121,6 +134,12 @@ namespace CMSWeb.Models
                 if (!state.HasValue())
                     ModelState.AddModelError("state", "state required");
             }
+        }
+        internal void ValidateModelForComplete(ModelStateDictionary ModelState)
+        {
+            if (evtype == "5kfunrun")
+                if (ShirtSize == "0")
+                    ModelState.AddModelError("ShirtSize", "please choose a shirtsize");
         }
         public override string ToString()
         {

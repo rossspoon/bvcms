@@ -40,6 +40,7 @@
     $("form.DisplayEdit").submit(function() {
         if (!$("#submitit").val())
             return false;
+        return true;
     });
     $("form.DisplayEdit a.cancel").live('click', function() {
         var f = $(this).closest('form');

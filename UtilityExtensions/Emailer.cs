@@ -85,14 +85,14 @@ namespace UtilityExtensions
             var bytes1 = Encoding.UTF8.GetBytes(text);
             var htmlStream1 = new MemoryStream(bytes1);
             var htmlView1 = new AlternateView(htmlStream1, MediaTypeNames.Text.Plain);
-            htmlView1.TransferEncoding = TransferEncoding.SevenBit;
+            htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
             msg.AlternateViews.Add(htmlView1);
 
             var html = Message;
             var bytes = Encoding.UTF8.GetBytes(html);
             var htmlStream = new MemoryStream(bytes);
             var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-            htmlView.TransferEncoding = TransferEncoding.SevenBit;
+            htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
             msg.AlternateViews.Add(htmlView);
 
             string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];

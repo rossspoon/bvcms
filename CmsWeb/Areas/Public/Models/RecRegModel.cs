@@ -288,7 +288,7 @@ namespace CMSWeb.Models
                      select o;
             return q2.FirstOrDefault();
         }
-        public static IEnumerable<SelectListItem> ShirtSizes(CmsData.Organization RecAgeDiv)
+        public static List<SelectListItem> ShirtSizes()
         {
             var q = from ss in DbUtil.Db.ShirtSizes
                     orderby ss.Id
@@ -299,6 +299,11 @@ namespace CMSWeb.Models
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
+        }
+        public static IEnumerable<SelectListItem> ShirtSizes(CmsData.Organization RecAgeDiv)
+        {
+            var list = ShirtSizes();
             if (RecAgeDiv != null)
             {
                 var league = RecAgeDiv.Division.RecLeagues.Single();

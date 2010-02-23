@@ -52,16 +52,29 @@
 </table>
 </td>
 <td>
-<% switch (Model.evtype)
+<% if (Model.evtype != "childcare")
    {
-       case "childcare": %>
-<%          break;
-       default: %>
-    <input type="radio" name="list[<%=Model.index%>].option" value="1" 
-    <%=Model.option == 1 ? "checked='checked'" : "" %> class="option" /> 5K Run<br />
-    <input type="radio" name="list[<%=Model.index%>].option" value="2" 
-    <%=Model.option == 2 ? "checked='checked'" : "" %> class="option" /> 1 mile Fun Run
-<%          break;
-   } %>
+        if (Model.LastItem)
+        { %>
+        <input type="radio" name="list[<%=Model.index%>].option" value="1" 
+        <%=Model.option == 1 ? "checked='checked'" : "" %> class="option" /> 5K Run<br />
+        <input type="radio" name="list[<%=Model.index%>].option" value="2" 
+        <%=Model.option == 2 ? "checked='checked'" : "" %> class="option" /> 1 mile Fun Run<br /><br />
+        Shirt Size: 
+        <select name="list[<%=Model.index%>].ShirtSize">
+        <% foreach (var i in CMSWeb.Models.RecRegModel.ShirtSizes())
+           { %>
+            <option value="<%=i.Value %>" <%=i.Value == Model.ShirtSize ? "selected='selected'" : "" %>><%=i.Text%></option>
+        <% } %>
+        </select> 
+     <% }
+        else
+        { %>
+        <%=Model.option == 1 ? "5K Run" : "1 mile Fun Run"%><br />
+        Shirtsize: <%=CMSWeb.Models.RecRegModel.ShirtSizes().Single(ss => ss.Value == Model.ShirtSize).Text%>
+        <input type="hidden" name="list[<%=Model.index%>].option" value='<%=Model.option %>' />
+        <input type="hidden" name="list[<%=Model.index%>].ShirtSize" value="<%=Model.ShirtSize %>" />
+     <% } %>
+<% } %>
 </td>
 </tr>

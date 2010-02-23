@@ -35,8 +35,11 @@ namespace CMSWeb.Areas.Main.Controllers
             return new FamilyResult(m.FamilyMembers(id, campus, thisday));
 
         }
-        public ClassResult Class(int id, int thisday)
+        public ActionResult Class(int id, int thisday)
         {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            if (org == null)
+                return new EmptyResult();
             NoCache();
             return new ClassResult(id, thisday);
         }

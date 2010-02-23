@@ -16,18 +16,22 @@ namespace CMSWeb.Areas.Public.Controllers
 {
     public class EventController : Controller
     {
-        public ActionResult Index(int id, bool? testing)
+        private void SetViewData(int id, bool? testing, CmsData.Organization org, IList<EventModel> list)
         {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            if (org == null)
-                return Content("invalid organization");
             var rv = new RouteValueDictionary();
             rv.Add("id", id);
             if (testing == true)
                 rv.Add("testing", "true");
             ViewData["rv"] = rv;
             ViewData["EventName"] = org.OrganizationName + " Registration";
+            ViewData["filled"] = org.ClassFilled ?? false;
             ViewData["Instructions"] = org.Instructions;
+        }
+        public ActionResult Index(int id, bool? testing)
+        {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            if (org == null)
+                return Content("invalid organization");
             var list = new List<EventModel>();
 #if DEBUG
             list.Add(new EventModel
@@ -43,6 +47,7 @@ namespace CMSWeb.Areas.Public.Controllers
             list.Add(new EventModel());
 #endif
             list[0].evtype = org.RegType;
+            SetViewData(id, testing, org, list);
             return View(list);
         }
         public ActionResult Childcare(int? id, bool? testing)
@@ -54,28 +59,10 @@ namespace CMSWeb.Areas.Public.Controllers
                 return Content("must specify the correct organizationid");
             return RedirectToAction("Index", new { id = id.Value, testing = testing });
         }
-        private decimal ComputeFee(IList<EventModel> list)
-        {
-            decimal fee = 0;
-            switch (list[0].evtype)
-            {
-                case "childcare":
-                    fee = list.Count(p => p.age < 15) > 0 ? 6M : 0M;
-                    break;
-                case "5kfunrun":
-                    foreach (var m in list)
-                        fee += m.age >= 10 ? 25 : 15;
-                    break;
-            }
-            list[list.Count - 1].CanPay = fee > 0;
-            ViewData["fee"] = fee.ToString("c");
-            return fee;
-        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PersonFind(int id, IList<EventModel> list)
         {
             list[id].ValidateModelForFind(ModelState);
-            ComputeFee(list);
             return View("list", list);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -99,7 +86,6 @@ namespace CMSWeb.Areas.Public.Controllers
             list[id].ValidateModelForNew(ModelState);
             if (ModelState.IsValid)
                 list[id].IsNew = true;
-            ComputeFee(list);
             return View("list", list);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -111,6 +97,9 @@ namespace CMSWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddAnotherPerson(IList<EventModel> list)
         {
+            list[list.Count - 1].ValidateModelForComplete(ModelState);
+            if (!ModelState.IsValid)
+                return View("list", list);
 #if DEBUG
             list.Add(new EventModel
             {
@@ -128,9 +117,30 @@ namespace CMSWeb.Areas.Public.Controllers
             return View("list", list);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult IsValid(IList<EventModel> list)
+        {
+            list[list.Count - 1].ValidateModelForComplete(ModelState);
+            if (!ModelState.IsValid)
+                return View("list", list);
+            return Content("OK");
+        }
+        public static decimal ComputeFee(IList<EventModel> list)
+        {
+            return list[0].evtype == "ChildCare" ?
+                            list.Max(i => i.ComputeFee()) :
+                            list.Sum(i => i.ComputeFee());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CompleteRegistration(int id, bool? testing, IList<EventModel> list)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
+            var m = list[list.Count - 1];
+            m.ValidateModelForComplete(ModelState);
+            if (!ModelState.IsValid)
+            {
+                SetViewData(id, testing, org, list);
+                return View("Index", list);
+            }
 
             var s = Util.Serialize<IList<EventModel>>(list);
             var d = new ExtraDatum { Data = s, Stamp = Util.Now };
@@ -138,7 +148,7 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.SubmitChanges();
 
             var p = list[0];
-            var m = new PaymentModel
+            var pm = new PaymentModel
             {
                 NameOnAccount = p.first + " " + p.last,
                 Address = p.address,
@@ -154,7 +164,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc2 = org.OrganizationName,
                 Misc3 = id.ToString(),
             };
-            return View("Payment", m);
+            return View("Payment", pm);
         }
         public ActionResult Confirm(int? id, string TransactionID, string Misc3)
         {
@@ -192,6 +202,15 @@ namespace CMSWeb.Areas.Public.Controllers
                     m.person.Family.HomePhone = m.phone;
                 if (!m.person.CellPhone.HasValue() && m.homecell == "c")
                     m.person.CellPhone = m.phone;
+
+                var reg = m.person.RecRegs.SingleOrDefault();
+
+                if (reg == null)
+                {
+                    reg = new RecReg();
+                    m.person.RecRegs.Add(reg);
+                }
+                reg.ShirtSize = m.ShirtSize;
             }
             DbUtil.Db.SubmitChanges();
 

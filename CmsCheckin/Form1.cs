@@ -59,6 +59,8 @@ namespace CmsCheckin
                 url = new Uri(new Uri(ServiceUrl()),
                     string.Format("Checkin/Class/{0}", GetDigits(e.Value.Substring(1))));
                 str = wc.DownloadString(url + Program.QueryString);
+                if (string.IsNullOrEmpty(str))
+                    return;
                 x = XDocument.Parse(str);
                 var list = x.Root.Descendants("Name").Select(m => m.Value).ToList();
                 var n = list.Count / 5;

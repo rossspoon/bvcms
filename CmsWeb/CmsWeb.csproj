@@ -1239,6 +1239,7 @@
     <Content Include="Areas\Main\Views\Person\BusinessCard.ascx" />
     <Content Include="Areas\Main\Views\Person\AddressEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\ContactsDisplay.ascx" />
+    <Content Include="Areas\Main\Views\Person\PeopleExtrasGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\RecRegDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\RecRegEdit.ascx" />
     <Content Include="Areas\Main\Views\Person\MemberNotesEdit.ascx" />
@@ -2090,7 +2091,6 @@
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Areas\Main\Views\Reports\Attendance.aspx" />
     <Content Include="Content\newsletter.css" />
-    <Content Include="ttt.lbl4.txt" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Content.Master" />
     <Content Include="Views\Shared\Pager2.aspx" />
