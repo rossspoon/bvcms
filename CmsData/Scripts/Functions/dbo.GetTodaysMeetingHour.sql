@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -24,7 +25,7 @@ AS
 		SELECT @prevMidnight = dateadd(dd,0, datediff(dd,0,GETDATE())) + @plusdays
         
         SELECT  @DefaultHour = MeetingTime,
-                @DefaultDay = SchedDay
+                @DefaultDay = ISNULL(SchedDay, 0)
         FROM    dbo.Organizations
         WHERE   OrganizationId = @orgid
         

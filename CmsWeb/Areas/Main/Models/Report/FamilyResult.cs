@@ -169,10 +169,8 @@ namespace CMSWeb.Areas.Main.Models.Report
                 c3.Add(new Chunk(p.BFClass.OrganizationName, font));
                 if (p.BFClass.LeaderName.HasValue())
                     c3.Add(new Chunk(" ({0})".Fmt(p.BFClass.LeaderName), smallfont));
-                t.AddCell(c3);
             }
-            else
-                t.AddCell("");
+            t.AddCell(c3);
         }
         private void AddLine(StringBuilder sb, string value)
         {

@@ -45,8 +45,10 @@ CREATE TABLE [dbo].[Organizations]
 [EmailSubject] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Instructions] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [GenderId] [int] NULL,
-[Fee] [money] NULL
+[Fee] [money] NULL,
+[Description] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+
 
 ALTER TABLE [dbo].[Organizations] ADD
 CONSTRAINT [FK_Organizations_Gender] FOREIGN KEY ([GenderId]) REFERENCES [lookup].[Gender] ([Id])
