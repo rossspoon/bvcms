@@ -330,6 +330,8 @@ namespace PostBundle.CmsWs {
         
         private string birthdayField;
         
+        private bool deceasedField;
+        
         private string ageField;
         
         /// <remarks/>
@@ -406,6 +408,18 @@ namespace PostBundle.CmsWs {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public bool Deceased {
+            get {
+                return this.deceasedField;
+            }
+            set {
+                this.deceasedField = value;
+                this.RaisePropertyChanged("Deceased");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public string Age {
             get {
                 return this.ageField;

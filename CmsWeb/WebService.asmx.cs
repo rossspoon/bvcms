@@ -129,12 +129,13 @@ namespace CMSWeb
             var q2 = from p in q
                      select new PersonResult
                      {
-                         Name = p.Name,
+                         Name = p.Deceased ? "[" + p.Name + "]" : p.Name,
                          Age = p.Age,
                          Address = p.Address,
                          CSZ = p.CityStateZip,
                          Phone = string.Join(",", p.Phones.ToArray()),
                          Birthday = p.BirthDate,
+                         Deceased = p.Deceased,
                          PeopleId = p.PeopleId,
                      };
             if (ctl.count > 10)
@@ -311,6 +312,7 @@ namespace CMSWeb
         public string CSZ { get; set; }
         public string Phone { get; set; }
         public string Birthday { get; set; }
+        public bool Deceased { get; set; }
         public string Age { get; set; }
     }
     public class BundleResult

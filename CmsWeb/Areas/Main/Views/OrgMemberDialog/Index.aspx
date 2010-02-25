@@ -5,12 +5,12 @@
 <head runat="server">
     <title>Index</title>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.8rc1.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>
 
-    <script src="/Content/js/jquery-ui-1.8rc1.custom.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>    
     <script src="/Scripts/OrgMemberDialog.js" type="text/javascript"></script>
 <% string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; %>
 <%=Html.Hidden("from") %>

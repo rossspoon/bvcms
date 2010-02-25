@@ -14,7 +14,7 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
             <Scripts>
                 <asp:ScriptReference Path="~/Content/js/jquery-1.4.1.min.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery-ui-1.8rc1.custom.min.js" />
+                <asp:ScriptReference Path="~/Content/js/jquery-ui-1.7.2.custom.min.js" />
                 <asp:ScriptReference Path="~/Content/js/hoverIntent.js" />
                 <asp:ScriptReference Path="~/Content/js/superfish.js" />
                 <asp:ScriptReference Path="~/Content/js/supersubs.js" />
@@ -22,7 +22,7 @@
                 <asp:ScriptReference Path="~/Content/js/jquery-cookie.js" />
                 <asp:ScriptReference Path="~/Content/js/jquery.blockUI.js" />
                 <asp:ScriptReference Path="~/Content/js/thickbox-compressed.js" />
-                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js" />
+                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=3" />
             </Scripts>
     </asp:ScriptManager>
 <script type="text/javascript">

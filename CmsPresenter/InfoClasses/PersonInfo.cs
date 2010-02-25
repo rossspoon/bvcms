@@ -85,6 +85,7 @@ namespace CMSPresenter
         }
         public string BFTeacher { get; set; }
         public int? BFTeacherId { get; set; }
+        public bool Deceased { get; set; }
         
     }
 }

@@ -60,39 +60,29 @@
 		.hide();
     }
 
-    $('#current-tab form a.membertype').live("click", function(ev) {
-        var dialogOuter = $("#ui-widget-iframe-outer");
-        var w = 600;
-        var dialogFrame = $("#ui-widget-iframe");
-        dialogFrame.attr('height', 400);
-        dialogFrame.attr('width', 600);
-
-        dialogFrame.attr('src', this.href);
-        $("body").css("overflow", "hidden");
-        var dialog = dialogOuter.dialog({ 
-                    modal: true,
-				    title: this.title,
-				    resizable: false,
-				    shadow: false,
-				    close: function(ev, ui) {
-				        dialogOuter.dialog('destroy'); $("body").css("overflow", "auto");
-				        $.getTable($('#current-tab form'));
-				    }
-				});
-
-        var hW = dialogFrame.width();
-        dialog.dialog('option', 'width', hW + 40);
-        dialog.dialog('option', 'position', 'center');
-
-        var offset = dialog.offset();
-        $('.ui-widget-shadow').width(hW + 40);
-        $('.ui-widget-shadow').css({
-            left: offset.left,
-            top: offset.top,
-            width: dialog.outerWidth(),
-            height: dialog.outerHeight()
-        });
-        return false;
+    $('#current-tab form a.membertype').live("click", function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var horizontalPadding = 30;
+        var verticalPadding = 30;
+        $('<iframe id="memberDialog" class="externalSite" src="' + this.href + '" />').dialog({
+            title: 'Member Dialog',
+            bgiframe: true,
+            autoOpen: true,
+            position: 'center',
+            width: 600,
+            height: 400,
+            modal: true,
+            resizable: true,
+            autoResize: true,
+            overlay: {
+                opacity: 0.5,
+                background: "black"
+            },
+            close: function(ev, ui) {
+                $.getTable($('#current-tab form'));
+            }
+        }).width(600 - horizontalPadding).height(400 - verticalPadding);
     });
 
     $(".CreateAndGo").click(function() {

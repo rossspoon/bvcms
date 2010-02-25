@@ -7,7 +7,7 @@
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />
     <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
     <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.8rc1.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
     <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
     <link href="/Content/content.css" rel="stylesheet" type="text/css" />

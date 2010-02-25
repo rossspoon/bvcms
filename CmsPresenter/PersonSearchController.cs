@@ -51,6 +51,7 @@ namespace CMSPresenter
                         BFTeacher = p.BFClass.LeaderName,
                         BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
+                        Deceased = p.DeceasedDate.HasValue,
                         HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId),
                     };
             return q;

@@ -2017,6 +2017,7 @@
     <Content Include="Content\check48.png" />
     <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\close.png" />
+    <Content Include="Content\js\jquery.ui.dialog.js" />
     <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />
@@ -2188,7 +2189,6 @@
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
-    <Folder Include="Deploy\" />
     <Folder Include="Models\" />
     <Folder Include="Upload\" />
   </ItemGroup>
