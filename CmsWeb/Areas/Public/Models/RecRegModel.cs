@@ -406,7 +406,7 @@ namespace CMSWeb.Models
             var staffemail = Util.PickFirst(org.EmailAddresses,
                 DbUtil.Settings("RecMail", DbUtil.SystemEmailAddress));
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             var league = division.RecLeagues.Single();
             var subject = Util.PickFirst(league.EmailSubject, "Recreation Registration");
             var message = Util.PickFirst(league.EmailMessage,

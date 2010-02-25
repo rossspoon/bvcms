@@ -125,7 +125,7 @@ CKEditorFuncNum, baseurl + fn, error));
         public ActionResult SendNewUserEmail(int userid, string newpassword)
         {
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
                     "New user welcome",
                     @"Hi {0},
@@ -215,7 +215,7 @@ The bvCMS Team</p>
                     where u.Person.BirthMonth == bd.Month
                     where u.Person.BirthYear == bd.Year
                     select u;
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             foreach (var user in q)
             {
                 Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, email,
@@ -253,7 +253,7 @@ The bvCMS Team</p>
                 && u.Person.BirthDay == bd.Day
                 && u.Person.BirthMonth == bd.Month
                 && u.Person.BirthYear == bd.Year);
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             if (user != null)
             {
                 user.ResetPasswordCode = Guid.NewGuid();
@@ -304,7 +304,7 @@ The bvCMS Team</p>
             user.ResetPasswordCode = null;
             
             DbUtil.Db.SubmitChanges();
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress, 
                 "bvcms new password",
                 @"Hi {0},

@@ -11,6 +11,7 @@ using System.Web.Configuration;
 using CMSPresenter;
 using System.Net;
 using System.Text;
+using System.IO;
 
 namespace CMSWeb
 {
@@ -25,6 +26,12 @@ namespace CMSWeb
             RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.RouteExistingFiles = true;
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+            string smtppasswordfile = Server.MapPath("/Config/smtppassword.txt");
+            if (File.Exists(smtppasswordfile))
+            {
+                var a = File.ReadAllText(smtppasswordfile).Split(',');
+                Application["smtpcreds"] = a;
+            }
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -99,7 +106,7 @@ namespace CMSWeb
             }
             
             var u = DbUtil.Db.CurrentUser;
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             var msg = new MailMessage();
 
             var sb = new StringBuilder();
@@ -125,5 +132,5 @@ namespace CMSWeb
                 msg.To.Add(new MailAddress(a.Person.EmailAddress, a.Name));
             smtp.Send(msg);
         }
-    }
+   }
 }

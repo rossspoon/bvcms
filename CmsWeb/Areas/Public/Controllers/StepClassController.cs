@@ -122,7 +122,7 @@ namespace CMSWeb.Areas.Public.Controllers
         }
         private void SendEmail(Models.StepClassModel m, string name)
         {
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress),
                                 m.person.Name, m.email, "Step Class Registration",
 @"Hi {0},<p>Thank you for registering. You are now enrolled in the {2} Class for the following date:</p>

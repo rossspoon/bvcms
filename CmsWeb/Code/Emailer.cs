@@ -87,7 +87,7 @@ namespace CMSWeb
                 msg.Body = Message;
                 msg.IsBodyHtml = true;
                 if (i % 20 == 0)
-                    smtp = new SmtpClient();
+                    smtp = Util.Smtp();
                 i++;
                 try
                 {
@@ -133,7 +133,7 @@ namespace CMSWeb
                     continue;
 
                 if (i % 20 == 0)
-                    smtp = new SmtpClient();
+                    smtp = Util.Smtp();
                 i++;
 
                 var text = bhtml.Replace("{name}", p.Name);
@@ -173,7 +173,6 @@ namespace CMSWeb
         {
             sb.Append("</pre>\r\n");
             sb.Append(Message);
-            smtp = new SmtpClient();
 
             Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address, null);
             Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, 

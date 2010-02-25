@@ -62,7 +62,8 @@ namespace CMSWeb.Areas.Public.Controllers
 
             DbUtil.Db.SubmitChanges();
 
-            Util.Email2(new SmtpClient(), m.email, 
+            var smtp = Util.Smtp();
+            Util.Email2(smtp, m.email, 
                 DbUtil.Settings("MOBSMail", DbUtil.SystemEmailAddress), 
                 "MOBS Registration", 
                 "{0}({1}) has registered for MOBS event on {2}\r\n(check cms to confirm feepaid)"

@@ -80,7 +80,7 @@ namespace CMSWeb.Areas.Public.Controllers
             else
                 sm.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             SendStaffEmail(smtp, m.person1, m.email1, m.meeting);
             SendStaffEmail(smtp, m.person2, m.email2, m.meeting);
             if (m.childcaremeeting != null)
@@ -124,7 +124,7 @@ namespace CMSWeb.Areas.Public.Controllers
         public ActionResult Confirm(int id)
         {
             var m = new Models.SoulMateModel(id);
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             SendEmail(smtp, m.person1, m.email1, m.meeting, m.Children(m.person1));
             SendEmail(smtp, m.person2, m.email2, m.meeting, m.Children(m.person2));
             return View(m);

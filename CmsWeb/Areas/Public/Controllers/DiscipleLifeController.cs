@@ -55,7 +55,7 @@ namespace CMSWeb.Areas.Public.Controllers
             string email = DbUtil.Settings("DiscLifeMail-" + id, "");
             if (!email.HasValue())
                 email = DbUtil.Settings("DiscLifeMail", DbUtil.SystemEmailAddress);
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, email, m.person.Name, m.email, c.Title, Body);
             Util.Email2(smtp, m.email, email, "{0} Registration".Fmt(m.division.Name), "{0}({1}) has registered for {2}: {3}".Fmt(m.person.Name, m.person.PeopleId, m.division.Name, m.organization.OrganizationName));
 

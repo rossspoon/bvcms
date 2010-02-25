@@ -225,7 +225,7 @@ namespace CMSWeb.Areas.Public.Controllers
             msg = msg.Replace("{amount}", ComputeFee(list).ToString("C"));
             msg = msg.Replace("{participants}", sb.ToString());
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email2(smtp, list[0].email, org.EmailAddresses,
                 org.EmailSubject,
                 "<p>{0}({1}) has registered for {2}</p>\n<p>Participants<br />\n{3}".Fmt(

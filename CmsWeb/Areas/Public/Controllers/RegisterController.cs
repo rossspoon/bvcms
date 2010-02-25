@@ -235,7 +235,7 @@ namespace CMSWeb.Areas.Public.Controllers
             }
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
             Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), 
                 "new registration on {0}".Fmt(Util.Host), 
@@ -260,7 +260,7 @@ namespace CMSWeb.Areas.Public.Controllers
             c.Body = c.Body.Replace("{firstname}", p.PreferredName);
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
             Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }

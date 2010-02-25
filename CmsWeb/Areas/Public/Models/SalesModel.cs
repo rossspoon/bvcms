@@ -247,7 +247,8 @@ namespace CMSWeb.Models
         }
         public void SendNotice()
         {
-            Util.Email2(new SmtpClient(), email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
+            var smtp = Util.Smtp();
+            Util.Email2(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
         }
     }
 }

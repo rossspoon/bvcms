@@ -74,7 +74,7 @@ namespace CMSWeb.Areas.Public.Controllers
             if (Request.Form["noemail"] != "noemail")
             {
                 var summary = m.PrepareSummaryText2();
-                var smtp = new SmtpClient();
+                var smtp = Util.Smtp();
                 Util.Email2(smtp,
                     m.person.EmailAddress,
                     email,

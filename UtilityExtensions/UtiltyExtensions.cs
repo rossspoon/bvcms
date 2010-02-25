@@ -18,6 +18,7 @@ using System.Web.UI;
 using System.Data.SqlClient;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Net;
 
 namespace UtilityExtensions
 {
@@ -894,6 +895,14 @@ namespace UtilityExtensions
                 if (s.HasValue())
                     return s;
             return "";
+        }
+        public static SmtpClient Smtp()
+        {
+            var smtp = new SmtpClient();
+            string[] a = (string[])HttpContext.Current.Application["smtpcreds"];
+            if (a != null)
+                smtp.Credentials = new NetworkCredential(a[0], a[1]);
+            return smtp;
         }
         public static string Serialize<T>(T m)
         {

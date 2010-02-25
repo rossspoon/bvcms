@@ -441,7 +441,7 @@ namespace CMSWeb.Models
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
             Util.Email2(smtp, p.EmailAddress, adminmail,
                 "new Leader GODisciple registration in cms", 
@@ -466,7 +466,7 @@ namespace CMSWeb.Models
             Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
             Util.Email2(smtp, p.EmailAddress, adminmail, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             var q = from om in neworg.OrganizationMembers
@@ -519,7 +519,7 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
             Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{password}", password);
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
             Util.Email2(smtp, p.EmailAddress, adminmail, "new Individual GODisciple registration in cms", "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
             UpdatePhone(smtp, adminmail, p);

@@ -168,7 +168,7 @@ namespace CMSWeb.Areas.Public.Controllers
             c.Body = c.Body.Replace("{particpants}", m.ToString());
             c.Body = c.Body.Replace("{participants}", m.ToString());
 
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             string staffemail = Util.PickFirst(org.EmailAddresses, 
                 DbUtil.Settings("RetreatMail-" + orgid, DbUtil.SystemEmailAddress));
             Util.Email2(smtp, m.email, staffemail, c.Title,

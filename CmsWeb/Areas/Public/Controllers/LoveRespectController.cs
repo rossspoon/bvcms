@@ -76,7 +76,7 @@ namespace CMSWeb.Areas.Public.Controllers
             else
                 lr.Relationship = m.Relation;
             DbUtil.Db.SubmitChanges();
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             SendStaffEmail(smtp, 
                 m.person1, 
                 m.email1, 
@@ -115,7 +115,7 @@ namespace CMSWeb.Areas.Public.Controllers
             m.ValidateModel(ModelState);
             if (!ModelState.IsValid)
                 return View(m);
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             SendStaffEmailOth(smtp, m);
             SendEmailOth(smtp, m);
             return RedirectToAction("Confirm");
