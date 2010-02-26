@@ -166,17 +166,15 @@
                             </th>
                         </tr>
                         <tr>
-                            <th align="right">
+                            <th align="right" valign="top">
                                 Change Active Division:
                             </th>
                             <td>
                                 <asp:DropDownList ID="Tags" runat="server" DataTextField="Text" DataSourceID="OrgTagData2"
                                     DataValueField="Value" AutoPostBack="True" OnSelectedIndexChanged="Tags_SelectedIndexChanged">
-                                </asp:DropDownList>
-                                &nbsp;
-                                <input type="checkbox" id="maindiv" /> Main Division
-                                &nbsp;
-                                <asp:LinkButton ID="DeleteTag" runat="server" OnClick="DeleteTag_Click">Delete Division</asp:LinkButton><br />
+                                </asp:DropDownList><br />
+                                <input type="checkbox" id="maindiv" /> make this the main Division when assigning.<br />
+                                <cc1:LinkButtonConfirm ID="DeleteTag" runat="server" OnClick="DeleteTag_Click" Confirm="Are you sure?">Delete Division</cc1:LinkButtonConfirm><br />
 								<asp:Label ID="progdivid" runat="server"></asp:Label>
                             </td>
                         </tr>

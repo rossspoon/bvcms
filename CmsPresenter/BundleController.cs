@@ -22,7 +22,7 @@ namespace CMSPresenter
     {
         public string Fund { get; set; }
         public int Month { get; set; }
-        public int HeaderId { get; set; }
+        public string HeaderId { get; set; }
         public DateTime ContributionDate { get; set; }
         public string FundName { get; set; }
         public string FundDept { get; set; }
@@ -554,6 +554,7 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed, 
             };
+            string GLBundlePrefix = DbUtil.Settings("GLBundlePrefix", "CM");
             var qIncomeFundNo67 =
                 from c in DbUtil.Db.Contributions
                 from d in c.BundleDetails
@@ -567,7 +568,7 @@ namespace CMSPresenter
                 {
                     Fund = g.Key.ContributionFund.FundIncomeFund,
                     Month = ((g.Max(c => c.PostingDate.Value.Month) + 8) % 12) + 1,
-                    HeaderId = g.Key.BundleHeaderId,
+                    HeaderId = GLBundlePrefix + g.Key.BundleHeaderId,
                     ContributionDate = g.Key.ContributionDate.Value,
                     FundName = g.Key.ContributionFund.FundName,
                     FundDept = g.Key.ContributionFund.FundIncomeDept, // Income
@@ -588,7 +589,7 @@ namespace CMSPresenter
                 {
                     Fund = g.Key.ContributionFund.FundCashFund,
                     Month = ((g.Max(c => c.PostingDate.Value.Month) + 8) % 12) + 1,
-                    HeaderId = g.Key.BundleHeaderId,
+                    HeaderId = GLBundlePrefix + g.Key.BundleHeaderId,
                     ContributionDate = g.Key.ContributionDate.Value,
                     FundName = g.Key.ContributionFund.FundName,
                     FundDept = g.Key.ContributionFund.FundCashDept, // Cash
@@ -606,7 +607,7 @@ namespace CMSPresenter
                 {
                     Fund = c.ContributionFund.FundIncomeFund,
                     Month = ((c.PostingDate.Value.Month + 8) % 12) + 1,
-                    HeaderId = 0,
+                    HeaderId = GLBundlePrefix + "0",
                     ContributionDate = c.ContributionDate.Value,
                     FundName = c.ContributionFund.FundName,
                     FundDept = c.ContributionFund.FundIncomeDept, // Income
@@ -624,7 +625,7 @@ namespace CMSPresenter
                 {
                     Fund = c.ContributionFund.FundCashFund,
                     Month = (c.PostingDate.Value.Month + 8) % 12 + 1,
-                    HeaderId = 0,
+                    HeaderId = GLBundlePrefix + "0",
                     ContributionDate = c.ContributionDate.Value,
                     FundName = c.ContributionFund.FundName,
                     FundDept = c.ContributionFund.FundCashDept, // Cash

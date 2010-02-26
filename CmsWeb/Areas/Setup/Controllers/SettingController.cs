@@ -60,22 +60,38 @@ namespace CMSWeb.Areas.Setup.Controllers
                 ViewData["text"] = string.Join("\n", q.ToArray());
                 return View();
             }
-            var q2 = from s in text.Split('\n')
-                     where s.HasValue()
-                     let a = s.SplitStr(":", 2)
-                     select new { name = a[0], value = a[1].Trim() };
-            foreach (var i in q2)
-            {
-                var set = DbUtil.Db.Settings.SingleOrDefault(m => m.Id == i.name);
-                if (set == null)
-                {
-                    set = new Setting { Id = i.name, SettingX = i.value };
-                    DbUtil.Db.Settings.InsertOnSubmit(set);
-                }
-                else
-                    set.SettingX = i.value;
-                DbUtil.Db.SubmitChanges();
-            }
+            var batch = from s in text.Split('\n')
+                        where s.HasValue()
+                        let a = s.SplitStr(":", 2)
+                        select new { name = a[0], value = a[1].Trim() };
+
+            var settings = DbUtil.Db.Settings.ToList();
+
+            var upds = from s in settings
+                       join b in batch on s.Id equals b.name
+                       select new { s = s, value = b.value };
+            
+            foreach (var pair in upds)
+                pair.s.SettingX = pair.value;
+
+            var adds = from b in batch
+                       join s in settings on b.name equals s.Id into g
+                       from s in g.DefaultIfEmpty()
+                       where s == null
+                       select b;
+
+            foreach(var b in adds)
+                DbUtil.Db.Settings.InsertOnSubmit(new Setting { Id = b.name, SettingX = b.value });
+
+            var dels = from s in settings
+                       where !batch.Any(b => b.name == s.Id)
+                       select s;
+
+            DbUtil.Db.Settings.DeleteAllOnSubmit(dels);
+
+            
+            DbUtil.Db.SubmitChanges();            
+
             return RedirectToAction("Index");
         }
         public ActionResult BatchReportSpecs(string text)

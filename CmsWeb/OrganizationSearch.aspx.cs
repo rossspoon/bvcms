@@ -49,17 +49,18 @@ namespace CMSWeb
                 }
                 GridPager.SetPageSize(OrganizationGrid);
                 NameSearch.Focus();
+
+                var div = Page.QueryString<int?>("div");
+                var progid = Page.QueryString<int?>("progid");
+                if (div.HasValue)
+                {
+                    OrgDivisions.SelectedValue = div.ToString();
+                    Tags.SelectedValue = "{0}:{1}".Fmt(progid, div);
+                }
             }
             else
                 SetCreateMeetingDefaults(Schedule.SelectedValue.ToInt());
 
-            var div = Page.QueryString<int?>("div");
-            var progid = Page.QueryString<int?>("progid");
-            if (div.HasValue)
-            {
-                OrgDivisions.SelectedValue = div.ToString();
-                Tags.SelectedValue = "{0}:{1}".Fmt(progid,div);
-            }
             ManageOrgTags.Visible = User.IsInRole("OrgTagger");
             var col = OrganizationGrid.Columns[OrganizationGrid.Columns.Count - 1];
             col.Visible = ManageOrgTags.Visible;
@@ -225,7 +226,7 @@ namespace CMSWeb
             if (tagid == 0)
                 return "";
             var Db = DbUtil.Db;
-            var organization = Db.Organizations.SingleOrDefault(o => o.OrganizationId == OrganizationId);
+            var organization = Db.LoadOrganizationById(OrganizationId);
             var r = new ToggleTagReturn { ControlId = controlid };
             r.HasTag = organization.ToggleTag(tagid, main);
             Db.SubmitChanges();
@@ -245,24 +246,6 @@ namespace CMSWeb
                 if (b.Enabled)
                     b.OnClientClick = "PageMethods.ToggleTag({0},{1},this.id,$('#maindiv').is(':checked'),ToggleTagCallback); return false;"
                         .Fmt(d.OrganizationId, OrganizationSearchController.TagSubDiv(Tags.SelectedValue));
-                //if (e.Row.RowIndex == 0)
-                //{
-                //    var organization = DbUtil.Db.Organizations.Single(a => a.OrganizationId == d.OrganizationId);
-                //    if (organization.ScheduleId != null)
-                //    {
-                //        var dt = Util.Now.Date;
-                //        dt = dt.AddDays(-(int)dt.DayOfWeek); // prev sunday
-                //        dt = dt.AddDays((int)organization.WeeklySchedule.Day);
-                //        if (dt < Util.Now.Date)
-                //            dt = dt.AddDays(7);
-                //        MeetingDate.Text = dt.ToShortDateString();
-                //        MeetingTime.Text = organization.WeeklySchedule.MeetingTime.ToShortTimeString();
-                //    }
-                //    else
-
-                //        MeetingDate.Text = Util.Now.Date.ToShortDateString();
-                //    MeetingTime.Text = "8:00 AM";
-                //}
             }
         }
 

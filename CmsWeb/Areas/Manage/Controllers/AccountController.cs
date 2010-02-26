@@ -79,7 +79,6 @@ CKEditorFuncNum, baseurl + fn, error));
 
         public ActionResult LogOn()
         {
-
             return View();
         }
 
@@ -88,7 +87,6 @@ CKEditorFuncNum, baseurl + fn, error));
             Justification = "Needs to take same parameter type as Controller.Redirect()")]
         public ActionResult LogOn(string userName, string password, bool rememberMe, string returnUrl)
         {
-
             if (!ValidateLogOn(userName, password))
             {
                 ViewData["rememberMe"] = rememberMe;
@@ -99,7 +97,7 @@ CKEditorFuncNum, baseurl + fn, error));
             if (!String.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
             else
-                return Redirect("/Home/");
+                return Redirect("/");
         }
 
         [Authorize(Roles = "Admin")]
@@ -152,12 +150,9 @@ The bvCMS Team</p>
             return Redirect("/Admin/Users.aspx?create=1");
         }
 
-
         public ActionResult LogOff()
         {
-
             FormsAuth.SignOut();
-
             return Redirect("/");
         }
 

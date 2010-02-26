@@ -180,6 +180,7 @@ namespace CMSPresenter
             var q = Db.People.Where(qB.Predicate());
             var q2 = from p in q
                      let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let recreg = p.RecRegs.FirstOrDefault()
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -205,6 +206,7 @@ namespace CMSPresenter
                          AttendStr = bfm.AttendStr,
                          MemberType = bfm.MemberType.Description,
                          MemberInfo = bfm.UserData,
+                         ShirtSize = recreg == null ? "na" : recreg.ShirtSize,
                          Groups = string.Join(",", bfm.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray())
                      };
             return q2.Take(maximumRows);

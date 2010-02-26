@@ -42,7 +42,7 @@ namespace CMSWeb.Contributions
             foreach (var i in q)
             {
                 Response.Write(
-                    "\"00000\",\"001{0}{1:00}CM{2:00000}\",\"000\",\"{3:MMddyy}\",\"{4}\",\"\",\"{5}0000{6}\",\"{7:00000000000}\",\"\"\r\n"
+                    "\"00000\",\"001{0}{1:00}{2:00000}\",\"000\",\"{3:MMddyy}\",\"{4}\",\"\",\"{5}0000{6}\",\"{7:00000000000}\",\"\"\r\n"
                     .Fmt(i.Fund, i.Month, i.HeaderId, i.ContributionDate, i.FundName, i.FundDept, i.FundAcct, i.Amount * 100));
             }
             Response.End();

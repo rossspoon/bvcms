@@ -32,6 +32,9 @@ namespace CMSWeb
                 var a = File.ReadAllText(smtppasswordfile).Split(',');
                 Application["smtpcreds"] = a;
             }
+#if DEBUG
+            HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
+#endif
         }
         public static void RegisterRoutes(RouteCollection routes)
         {

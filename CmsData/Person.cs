@@ -434,7 +434,7 @@ namespace CmsData
             p.EntryPointId = EntryPointId;
             p.FixTitle();
             DbUtil.Db.SubmitChanges();
-            if (Util.UserPeopleId.HasValue)
+            if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId)
                 Task.AddNewPerson(p.PeopleId);
             else
             {

@@ -23,6 +23,7 @@ namespace CMSPresenter
         public string Name { get; set; }
         public string LastName { get; set; }
         public DateTime? JoinDate { get; set; }
+        public string Email { get; set; }
         public string BirthDate { get; set; }
         public string Address { get; set; }
         public string CityStateZip { get; set; }
@@ -42,8 +43,8 @@ namespace CMSPresenter
         {
             get
             {
-                return "ID: {0}\nMobile Phone: {1}\nWork Phone: {2}\nHome Phone: {3}\nBirthDate: {4:d}\nJoin Date: {5:d}\nStatus: {6}"
-                    .Fmt(PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus);
+                return "ID: {0}\nMobile Phone: {1}\nWork Phone: {2}\nHome Phone: {3}\nBirthDate: {4:d}\nJoin Date: {5:d}\nStatus: {6}\nEmail: {7}"
+                    .Fmt(PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus, Email);
             }
         }
     }
@@ -146,6 +147,7 @@ namespace CMSPresenter
                         HomePhone = m.Person.HomePhone,
                         CellPhone = m.Person.CellPhone,
                         WorkPhone = m.Person.WorkPhone,
+                        Email = m.Person.EmailAddress,
                         Age = m.Person.Age,
                         MemberStatus = m.Person.MemberStatus.Description,
                         _Groups = m.OrgMemMemTags.Select(mt => mt.MemberTag.Name),
@@ -170,6 +172,7 @@ namespace CMSPresenter
                         HomePhone = p.HomePhone,
                         CellPhone = p.CellPhone,
                         WorkPhone = p.WorkPhone,
+                        Email = p.EmailAddress,
                         Age = p.Age,
                         MemberStatus = p.MemberStatus.Description,
                         HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId_AddSelected),
