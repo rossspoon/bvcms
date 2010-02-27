@@ -320,5 +320,45 @@ namespace CMSWeb.Models
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, true);
             DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
         }
+        public void EmailRegister()
+        {
+            var c = DbUtil.Content("RegisterMessage");
+            if (c == null)
+            {
+                c = new Content();
+                c.Body = "<p>Thank you for helping us build our Church Database.</p>";
+                c.Title = "Church Database Registration";
+            }
+            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
+
+            var smtp = Util.Smtp();
+            Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), person.Name, person.EmailAddress, c.Title, c.Body);
+            Util.Email2(smtp, person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress),
+                "new registration on {0}".Fmt(Util.Host),
+                "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+        }
+
+        public void EmailVisit()
+        {
+            string email = DbUtil.Settings("VisitMail-" + campusid, "");
+            if (!email.HasValue())
+                email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
+
+            var c = DbUtil.Content("VisitMessage-" + campusid);
+            if (c == null)
+            {
+                c = new Content();
+                c.Body = "<p>Hi {first},</p><p>Thank you for visiting us.</p>";
+                c.Title = "Church Database Registration";
+            }
+            c.Body = c.Body.Replace("{first}", person.PreferredName);
+            c.Body = c.Body.Replace("{firstname}", person.PreferredName);
+            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
+
+            var smtp = Util.Smtp();
+            Util.Email(smtp, email, person.Name, person.EmailAddress, c.Title, c.Body);
+            Util.Email2(smtp, person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+        }
+
     }
 }

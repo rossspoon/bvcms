@@ -8,7 +8,7 @@
     <script type="text/javascript">
         $(function() {
             $('input:text:first').focus();
-            $('#dob').blutr(function() {
+            $('#dob').blur(function() {
                 var bd = $(this).val();
                 var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
                 var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;

@@ -50,8 +50,7 @@ namespace CMSWeb.Areas.Public.Controllers
             if (ModelState.IsValid)
             {
                 m.SaveFirstPerson();
-
-                EmailRegister(m);
+                m.EmailRegister();
                 return RedirectToAction("Confirm", new { familyid = m.person.FamilyId });
             }
             return View(m);
@@ -81,7 +80,7 @@ namespace CMSWeb.Areas.Public.Controllers
             if (ModelState.IsValid)
             {
                 m.SavePerson(familyid);
-                EmailRegister(m);
+                m.EmailRegister();
                 return RedirectToAction("Confirm", new { familyid = familyid });
             }
             return View(m);
@@ -108,6 +107,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 if (submit.StartsWith("Add"))
                 {
                     m.SavePerson(m.HeadOfHousehold.FamilyId);
+                    m.EmailVisit();
                     return RedirectToAction("ConfirmVisit",
                         new
                         {
@@ -124,7 +124,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 return View(m);
             }
             m.SaveFirstPerson();
-            EmailVisit(m);
+            m.EmailVisit();
             return RedirectToAction("ConfirmVisit",
                 new
                 {
@@ -185,7 +185,7 @@ namespace CMSWeb.Areas.Public.Controllers
             if (ModelState.IsValid)
             {
                 m.SavePerson(familyid);
-                EmailVisit(m);
+                m.EmailVisit();
                 return RedirectToAction("ConfirmVisit",
                     new
                     {
@@ -222,47 +222,6 @@ namespace CMSWeb.Areas.Public.Controllers
             System.Threading.Thread.Sleep(20000);
             ModelState.AddModelError("auth", "incorrect password");
             return View();
-        }
-
-        private void EmailRegister(Models.RegisterModel m)
-        {
-            var c = DbUtil.Content("RegisterMessage");
-            if (c == null)
-            {
-                c = new Content();
-                c.Body = "<p>Thank you for helping us build our Church Database.</p>";
-                c.Title = "Church Database Registration";
-            }
-            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
-
-            var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), m.person.Name, m.person.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), 
-                "new registration on {0}".Fmt(Util.Host), 
-                "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
-        }
-
-        private void EmailVisit(Models.RegisterModel m)
-        {
-            string email = DbUtil.Settings("VisitMail-" + m.campusid, "");
-            if (!email.HasValue())
-                email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
-
-            var c = DbUtil.Content("VisitMessage-" + m.campusid);
-            if (c == null)
-            {
-                c = new Content();
-                c.Body = "<p>Hi {first},</p><p>Thank you for visiting us.</p>";
-                c.Title = "Church Database Registration";
-            }
-            var p = m.person;
-            c.Body = c.Body.Replace("{first}", p.PreferredName);
-            c.Body = c.Body.Replace("{firstname}", p.PreferredName);
-            c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(m.PrepareSummaryText());
-
-            var smtp = Util.Smtp();
-            Util.Email(smtp, email, p.Name, p.EmailAddress, c.Title, c.Body);
-            Util.Email2(smtp, m.person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(m.person.Name, m.person.PeopleId));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
