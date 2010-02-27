@@ -148,6 +148,7 @@ namespace CMSWeb.Models
             person.EmailAddress = email;
             person.CampusId = org.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
         }
 
         private class RecItem

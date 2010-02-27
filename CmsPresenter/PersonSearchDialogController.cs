@@ -14,6 +14,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Data.Linq.SqlClient;
 using System.Threading;
+using System.Data.Linq;
 
 namespace CMSPresenter
 {
@@ -212,6 +213,7 @@ namespace CMSPresenter
             p.FixTitle();
             p.CellPhone = phone;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             return true;
         }
         public static bool AddNewPerson(string name,
@@ -284,6 +286,7 @@ namespace CMSPresenter
                 p1.CellPhone = phone.GetDigits();
             p1.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p1);
             return true;
         }
         public static bool CheckFamilySelected(string selectedValue)

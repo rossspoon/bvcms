@@ -174,6 +174,8 @@ namespace CMSWeb.Models
         }
 
         public int? divid { get; set; }
+        public int orgid { get; set; }
+        public decimal? amtpaid { get; set; }
 
         [NonSerialized]
         private Division _division;
@@ -353,7 +355,7 @@ namespace CMSWeb.Models
 
             return sb.ToString();
         }
-        public void Confirm(string TransactionID, string Amount, int orgid)
+        public void Confirm(string TransactionID)
         {
             var org = DbUtil.Db.LoadOrganizationById(orgid);
 
@@ -391,13 +393,8 @@ namespace CMSWeb.Models
                 AddToRegistrationComments("Request: " + request, reg);
                 om.Request = request;
             }
-            if (Amount.HasValue())
-            {
-                om.Amount = decimal.Parse(Amount);
-                AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.Value.ToString("C"), TransactionId), reg);
-            }
-            else
-                AddToRegistrationComments(TransactionID, reg);
+            om.Amount = amtpaid;
+            AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.Value.ToString("C"), TransactionId), reg);
             AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
             AddToRegistrationComments("{0} - {1}".Fmt(division.Name, org.OrganizationName), reg);
 

@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Data.Linq;
 
 namespace CMSWeb.Models
 {
@@ -363,6 +364,7 @@ namespace CMSWeb.Models
                 p.CellPhone = Communication.GetDigits();
             p.CampusId = CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             return p.PeopleId;
         }
 

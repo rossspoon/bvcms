@@ -145,26 +145,36 @@ namespace CMSWeb.Areas.Public.Controllers
             m.OtherOK = ModelState.IsValid;
             return View("list", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CompleteRegistration(int id, bool? testing, RecRegModel m)
+        private static ExtraDatum GetDatum(RecRegModel m)
         {
-            var org = m.RecAgeDiv;
-
             var s = Util.Serialize<RecRegModel>(m);
             var d = new ExtraDatum { Data = s, Stamp = Util.Now };
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
+            return d;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CompleteRegistration(int id, bool? testing, RecRegModel m)
+        {
+            var org = m.RecAgeDiv;
+            m.orgid = org.OrganizationId;
 
+            ExtraDatum d;
             var om = m.GetOrgMember();
             if (om != null && om.Amount > 0)
+            {
+                m.amtpaid = om.Amount;
+                d = GetDatum(m);
                 return RedirectToAction("Confirm",
                     new
                     {
                         id = d.Id,
                         TransactionID = "alreadypaid",
-                        Misc3 = org.OrganizationId.ToString(),
-                        Misc4 = ""
                     });
+            }
+
+            m.amtpaid = m.Amount;
+            d = GetDatum(m);
 
             var pm = new PaymentModel
             {
@@ -180,22 +190,25 @@ namespace CMSWeb.Areas.Public.Controllers
                 PostbackURL = Request.Url.Scheme + "://" + Request.Url.Authority + "/RecReg/Confirm/" + d.Id,
                 Misc1 = m.first + " " + m.last,
                 Misc2 = org.OrganizationName,
-                Misc3 = org.OrganizationId.ToString(),
-                Misc4 = m.Amount.ToString()
             };
             return View("Payment", pm);
         }
-        public ActionResult Confirm(int? id, string TransactionID, string Misc3, string Misc4)
+        public ActionResult Confirm(int? id, string TransactionID)
         {
             if (!id.HasValue)
                 return View("Unknown");
             if (!TransactionID.HasValue())
                 return Content("error no transaction");
 
-            var s = DbUtil.Db.ExtraDatas.Single(e => e.Id == id).Data;
-            var m = Util.DeSerialize<RecRegModel>(s);
+            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
+            if (ed == null)
+                return Content("no pending confirmation found");
 
-            m.Confirm(TransactionID, Misc4, Misc3.ToInt());
+            var s = ed.Data;
+            var m = Util.DeSerialize<RecRegModel>(s);
+            DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+            DbUtil.Db.SubmitChanges();
+            m.Confirm(TransactionID);
             return View(m);
         }
     }

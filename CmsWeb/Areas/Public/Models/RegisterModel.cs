@@ -253,6 +253,7 @@ namespace CMSWeb.Models
             p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);
             _person = p;
@@ -278,6 +279,7 @@ namespace CMSWeb.Models
             p.EmailAddress = email.Trim();
             p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             if (org.HasValue)
                 RecordAttend(p.PeopleId, org.Value);
             _person = p;

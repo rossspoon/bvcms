@@ -19,6 +19,7 @@ using System.Transactions;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data.Linq.SqlClient;
+using System.Web;
 
 namespace CmsData
 {
@@ -434,7 +435,9 @@ namespace CmsData
             p.EntryPointId = EntryPointId;
             p.FixTitle();
             DbUtil.Db.SubmitChanges();
-            if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId)
+            if (Util.UserPeopleId.HasValue 
+                    && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId 
+                    && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
                 Task.AddNewPerson(p.PeopleId);
             else
             {

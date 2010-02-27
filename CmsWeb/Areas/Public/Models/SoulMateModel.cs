@@ -386,6 +386,7 @@ namespace CMSWeb.Models
             np.EmailAddress = email;
             np.CampusId = meeting.Organization.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, np);
             return np;
         }
         internal Person AddPerson(int gender, string first, string last, string dob, 
@@ -418,6 +419,7 @@ namespace CMSWeb.Models
             np.EmailAddress = email;
             np.CampusId = meeting.Organization.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, np);
             return np;
         }
         public Person AddChild(Person p)
@@ -429,6 +431,7 @@ namespace CMSWeb.Models
                 dob1, false, gender.Value, 0, null);
             np.CampusId = meeting.Organization.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, np);
             return np;
         }
     }

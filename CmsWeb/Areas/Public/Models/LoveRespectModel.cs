@@ -276,6 +276,7 @@ namespace CMSWeb.Models
             np.EmailAddress = email;
             np.CampusId = org.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, np);
             return np;
         }
         internal Person AddPerson(int gender, string first, string last, string dob,
@@ -310,6 +311,7 @@ namespace CMSWeb.Models
             np.EmailAddress = email;
             np.CampusId = org.CampusId;
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, np);
             return np;
         }
         public string PrepareSummaryText()

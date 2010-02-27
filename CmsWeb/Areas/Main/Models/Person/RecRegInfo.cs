@@ -32,6 +32,7 @@ namespace CMSWeb.Models.PersonPage
         {
             var q = from r in DbUtil.Db.RecRegs
                     where r.PeopleId == id
+                    orderby r.Id descending
                     select new RecRegInfo
                     {
                         PeopleId = id,
@@ -50,7 +51,7 @@ namespace CMSWeb.Models.PersonPage
                         policy = r.Policy,
                         shirtsize = r.ShirtSize
                     };
-            var rr = q.SingleOrDefault();
+            var rr = q.FirstOrDefault();
             if (rr == null)
                 rr = new RecRegInfo { PeopleId = id };
             return rr;

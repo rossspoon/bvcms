@@ -179,6 +179,7 @@ namespace CMSWeb.Models
                     break;
             }
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             peopleid = p.PeopleId;
         }
         internal void PerformLeaderSetup()
