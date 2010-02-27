@@ -575,7 +575,7 @@ namespace CMSWeb.Models
 
             DbUtil.Db.SubmitChanges();
             notify.EmailNotification(task.Owner, DbUtil.Db.LoadPersonById(toid),
-                "New Task from " + task.Owner.Name,
+                "TASK: " + task.Description,
                 TaskLink(task.Description, taskid) + "<br/>" + task.AboutName);
         }
         public void ChangeOwner(int taskid, int toid, ITaskNotify notify)

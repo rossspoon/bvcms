@@ -28,8 +28,13 @@ namespace CMSWeb
             pager2.PageSize = Util.GetPageSizeCookie();
             AddMember.Visible = Page.User.IsInRole("Attendance") && Select!=GroupSelect.Previous;
             UpdateMembers.Visible = AddMember.Visible;
+#if DEBUG
+            AddMember.NavigateUrl = "/SearchPeopleDialog/Index/{0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+                .Fmt(OrgId, MemberPanel.ClientID, Select == GroupSelect.Pending);
+#else
             AddMember.NavigateUrl = "~/Dialog/AddMember.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
                 .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
+#endif
             UpdateMembers.NavigateUrl = "~/Dialog/EditMembers.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
                 .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
             Page.ClientScript.RegisterClientScriptBlock(typeof(MemberGrid), "membergrid", script);

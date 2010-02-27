@@ -85,6 +85,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
+    <Compile Include="Areas\Main\Models\SearchPeopleDialogModel.cs" />
     <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendHistoryModel.cs" />
@@ -1223,10 +1224,12 @@
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
-    <Content Include="App_Themes\Standard\jquery-ui-1.8rc1.custom.css" />
     <Content Include="App_Themes\Minimal\Skin1.skin" />
+    <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeopleDialog\Index.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeopleDialog\Rows.aspx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Move.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Display.ascx" />
@@ -2018,6 +2021,7 @@
     <Content Include="Content\check48.png" />
     <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\close.png" />
+    <Content Include="Content\Common2.css" />
     <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />

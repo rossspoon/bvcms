@@ -33,7 +33,7 @@ namespace CMSWeb
                 Application["smtpcreds"] = a;
             }
 #if DEBUG
-            HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
+            //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif
         }
         public static void RegisterRoutes(RouteCollection routes)

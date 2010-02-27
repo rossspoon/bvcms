@@ -119,6 +119,8 @@ namespace CmsData
                 if (dt.Year > year)
                     return;
                 dt = dt.Add(hour.Time.TimeOfDay);
+                if (dt <= Util.Now)
+                    return;
 
                 var qme = from m in DbUtil.Db.Meetings
                           where m.OrganizationId == oi.OrgId
@@ -259,16 +261,29 @@ namespace CmsData
         public void BuildVolInfoList(string view)
         {
             bool secondtime = _vollist != null;
-            if (!secondtime)
-                _vollist = new Dictionary<string, VolInfo>();
             if (orgs == null)
                 ReadConfig(this, view);
             var keys = orgs.Keys.Cast<string>();
             var q = from vi in FetchVolInterestInterestCodes(view)
                     select vi.VolInterestCode.Org + vi.VolInterestCode.Code;
+            if (secondtime)
+            {
+                var list = q.ToList();
+                var dels = from v in _vollist
+                           join s in list on v.Key equals s into j
+                           from s in j.DefaultIfEmpty()
+                           where string.IsNullOrEmpty(s)
+                           select v;
+                var dlist = dels.ToList();
+                foreach (var d in dlist)
+                    _vollist.Remove(d.Key);
+            }
+            else
+                _vollist = new Dictionary<string, VolInfo>();
+
             foreach (var c in q)
             {
-                VolInfo vol = _vollist.SingleOrDefault(kp => kp.Key == c).Value;
+                var vol = _vollist.SingleOrDefault(kp => kp.Key == c).Value;
                 if (vol == null)
                 {
                     vol = new VolInfo();

@@ -6,9 +6,9 @@
     <title><%= Html.Encode(ViewData["Title"]) %></title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
     <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />    
+    <link href="/Content/style.css?v=5" rel="stylesheet" type="text/css" />
     <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
     <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/style.css?v=5" rel="stylesheet" type="text/css" />
     <link href="/Content/pager.css?v=2" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
