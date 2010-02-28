@@ -193,6 +193,7 @@ namespace CMSWeb.Areas.Public.Controllers
             };
             return View("Payment", pm);
         }
+        [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID)
         {
             if (!id.HasValue)

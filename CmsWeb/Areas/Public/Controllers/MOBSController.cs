@@ -79,6 +79,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var m = new Models.MOBSModel { regid = (int)TempData["regid"] };
             return View(m);
         }
+        [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID)
         {
             if (!id.HasValue)

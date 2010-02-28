@@ -110,6 +110,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 om.UserData += "\n";
             om.UserData += s;
         }
+        [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID, string Misc3, string Misc4)
         {
             if (!id.HasValue)

@@ -47,6 +47,7 @@ namespace CMSWeb.Areas.Public.Controllers
             m.testing = (bool)TempData["testing"];
             return View(m);
         }
+        [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID, string OrgId)
         {
             if (!id.HasValue)
