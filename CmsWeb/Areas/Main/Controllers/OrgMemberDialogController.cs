@@ -60,10 +60,13 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Drop(string id)
         {
             var a = id.Split('-');
-            var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
-            om.Drop();
-            DbUtil.Db.SubmitChanges();
-            return View("Display", om);
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
+            if (om != null)
+            {
+                om.Drop();
+                DbUtil.Db.SubmitChanges();
+            }
+            return Content("dropped");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Move(int id, int pid)

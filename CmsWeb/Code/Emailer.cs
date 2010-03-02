@@ -159,7 +159,8 @@ namespace CMSWeb
                 if (i % EmailBatchCount == 0)
                     NotifySentEmails(sb, smtp, String.Empty);
             }
-            NotifySentEmails(sb, smtp, String.Empty);
+            if (smtp != null)
+                NotifySentEmails(sb, smtp, String.Empty);
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
