@@ -21,12 +21,12 @@ namespace CMSWeb.Areas.Main.Controllers
                 m.EntryPoint = entrypoint;
             return View(m);
         }
-        public ActionResult Rows(int id)
+        public ActionResult Search(int? id)
         {
             var m = new SearchPeopleDialogModel();
             UpdateModel(m);
             m.Page = id;
-            return PartialView(m);
+            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AddNew()

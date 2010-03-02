@@ -1229,7 +1229,7 @@
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
     <Content Include="Areas\Main\Views\SearchPeopleDialog\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeopleDialog\Rows.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeopleDialog\Search.aspx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Move.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Display.ascx" />
@@ -1261,6 +1261,7 @@
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Areas\Manage\Views\Display\LeagueContent.aspx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
+    <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
     <Content Include="Areas\Public\Views\RecReg\AddressDisplay.ascx" />
     <Content Include="Areas\Public\Views\RecReg\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\RecReg\OtherDisplay.ascx" />
@@ -2064,6 +2065,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />
     <Content Include="demos\checkboxtree\checkboxtree.html" />

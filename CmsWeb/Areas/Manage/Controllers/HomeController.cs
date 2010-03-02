@@ -24,6 +24,12 @@ namespace CMSWeb.Areas.Manage.Controllers
         {
             return View();
         }
+        public ActionResult ShowError(string id, string url)
+        {
+            ViewData["error"] = Server.UrlDecode(id);
+            ViewData["url"] = url;
+            return View();
+        }
         public ActionResult NewQuery()
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();

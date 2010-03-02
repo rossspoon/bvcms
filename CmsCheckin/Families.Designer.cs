@@ -41,9 +41,10 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(584, 699);
+            this.Print.Location = new System.Drawing.Point(422, 674);
+            this.Print.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Print.Name = "Print";
-            this.Print.Size = new System.Drawing.Size(437, 54);
+            this.Print.Size = new System.Drawing.Size(583, 66);
             this.Print.TabIndex = 11;
             this.Print.Text = "Return to Phone Number";
             this.Print.UseVisualStyleBackColor = false;
@@ -53,18 +54,19 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(205, 17);
+            this.label1.Location = new System.Drawing.Point(273, 21);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(265, 36);
+            this.label1.Size = new System.Drawing.Size(323, 45);
             this.label1.TabIndex = 12;
             this.label1.Text = "Choose a Family";
             // 
             // Families
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Print);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Families";
             this.Size = new System.Drawing.Size(1024, 768);
             this.ResumeLayout(false);

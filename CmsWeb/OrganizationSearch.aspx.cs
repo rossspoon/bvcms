@@ -16,6 +16,7 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
 using System.Data.Linq;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb
 {
@@ -255,13 +256,18 @@ namespace CMSWeb
             var orgid = a[1].ToInt();
             var organization = DbUtil.Db.LoadOrganizationById(orgid);
             if (organization == null)
-                return;
+                Util.ShowError("Bad Orgid ({0})".Fmt(meetingcode));
+
+            var re = new Regex(@"(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((?:19|20)[0-9]{2})");
+            if (!re.IsMatch(a[2]))
+                Util.ShowError("Bad Date and Time ({0})".Fmt(meetingcode));
+            var g = re.Match(a[2]);
             var dt = new DateTime(
-                a[2].Substring(4, 2).ToInt() + 2000,
-                a[2].Substring(0, 2).ToInt(),
-                a[2].Substring(2, 2).ToInt(),
-                a[2].Substring(6, 2).ToInt(),
-                a[2].Substring(8, 2).ToInt(),
+                g.Groups[1].Value.ToInt(),
+                g.Groups[2].Value.ToInt(),
+                g.Groups[3].Value.ToInt(),
+                g.Groups[4].Value.ToInt(),
+                g.Groups[5].Value.ToInt(),
                 0);
             var newMtg = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == orgid && m.MeetingDate == dt);
             if (newMtg == null)

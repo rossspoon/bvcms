@@ -68,8 +68,9 @@ namespace CmsCheckin
         private void buttongo_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBox1.Text))
-                GoBack(this, e);
-            Go(this, new EventArgs<string>(textBox1.Text));
+                Go(this, new EventArgs<string>("xyz"));
+            else
+                Go(this, new EventArgs<string>(textBox1.Text));
         }
 
         private void buttonbs_Click(object sender, EventArgs e)
@@ -82,7 +83,7 @@ namespace CmsCheckin
         {
             if (e.KeyChar == '\b')
                 BackSpace();
-            else if(e.KeyChar >= 'a' && e.KeyChar <= 'z')
+            else if ((e.KeyChar >= 'a' && e.KeyChar <= 'z') || e.KeyChar == ' ')
                 KeyStroke(e.KeyChar);
             else if (e.KeyChar == '\r')
                 buttongo_Click(sender, null);

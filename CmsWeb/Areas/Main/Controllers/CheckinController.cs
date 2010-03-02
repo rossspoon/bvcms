@@ -62,6 +62,7 @@ namespace CMSWeb.Areas.Main.Controllers
                     select p;
 
             var q2 = from p in q
+                     orderby p.Name2
                      select new SearchInfo
                      {
                          CellPhone = p.CellPhone,
@@ -70,8 +71,7 @@ namespace CMSWeb.Areas.Main.Controllers
                          Age = p.Age,
                          Name = p.Name
                      };
-
-            return new NameSearchResult(q2);
+            return new NameSearchResult(q2.Take(20));
         }
         private void NoCache()
         {

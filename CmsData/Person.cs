@@ -316,8 +316,12 @@ namespace CmsData
                 sm.HimId = otherid;
             foreach (var sm in this.HerSoulMates)
                 sm.HerId = otherid;
-            foreach (var rec in this.RecRegs)
-                rec.PeopleId = otherid;
+            
+            var torecreg = toperson.RecRegs.SingleOrDefault();
+            var frrecreg = RecRegs.SingleOrDefault();
+            if (torecreg == null && frrecreg != null)
+                frrecreg.PeopleId = otherid;
+
             foreach (var sale in this.SaleTransactions)
                 sale.PeopleId = otherid;
         }
@@ -369,6 +373,7 @@ namespace CmsData
         public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId)
         {
             var p = new Person();
+            p.CreatedDate = Util.Now;
             DbUtil.Db.People.InsertOnSubmit(p);
             p.PositionInFamilyId = position;
             p.AddressTypeId = 10;

@@ -115,7 +115,7 @@ namespace CMSWeb
             var sb = new StringBuilder();
             if (Request.RequestType == "POST")
                 foreach (var s in Request.Form.AllKeys)
-                    if (!s.Contains("Viewstate"))
+                    if (!s.Contains("VIEWSTATE"))
                         sb.AppendFormat("\n{0}: {1}", s, Request.Form[s]);
 
             msg.Subject = "bvcms error on " + Request.Url.Authority;

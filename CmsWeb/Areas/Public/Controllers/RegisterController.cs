@@ -233,7 +233,6 @@ namespace CMSWeb.Areas.Public.Controllers
                     select g.Key;
             return Content(string.Join("\n", qu.Take(limit).ToArray()));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult CityState(string id)
         {
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);

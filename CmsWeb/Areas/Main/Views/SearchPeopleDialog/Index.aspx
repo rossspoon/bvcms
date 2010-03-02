@@ -1,14 +1,20 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SearchPeopleDialogModel>" %>
 <html>
-<head><link href="/Content/style.css" rel="stylesheet" type="text/css" /></head>
-
+<head>
+    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
+</head>
 <body>
-<form id="searchform" method="post">
+    <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>    
+    <script src="/Scripts/SearchDialog.js" type="text/javascript"></script>
+    <script src="/Scripts/Pager.js" type="text/javascript"></script>
+
+<form class="DisplayEdit" action="/SearchPeopleDialog/Search/" method="post">
 <%=Html.Hidden("entrypoint", Model.Origin) %>
 <%=Html.Hidden("origin", Model.EntryPoint) %>
-<div>
-<table class="modalPopup">
-    <tr style="font-size: small">
+<table style="font-size: 12px" class="modalPopup">
+    <tr>
         <td colspan="2">
             <a id="ClearForm" href="#">clear</a>
         </td>
@@ -59,16 +65,16 @@
         <th>Married:</th>
         <td><%=Html.DropDownList("MaritalStatusId", Model.MaritalStatusCodes()) %></td>
         <td>
-            <input id="Search" type="button" tabindex="6" value="Search" />
+            <a href="/SearchPeopleDialog/Search/" class="submitbutton">Search</a>
         </td>
     </tr>
 </table>
+</form>
 <div>
     <a id="AddNew" href="#">Add new person to new family</a> |
     <%=Html.CheckBox("AddToExisting") %> Add new person to existing family
 </div>
-</div>
-<table id="people">
+<table id="people" class="grid" style="font-size:12px">
     <thead>
         <tr> 
             <td colspan="5" nowrap="nowrap">
@@ -90,9 +96,7 @@
         </tr>
     </thead>
     <tbody>
-        <% Html.RenderPartial("Rows", ViewData.Model); %>
     </tbody>
 </table>
-</form>
 </body>
 </html>

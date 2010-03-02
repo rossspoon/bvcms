@@ -41,26 +41,28 @@
             // 
             // cbCampusId
             // 
+            this.cbCampusId.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCampusId.FormattingEnabled = true;
-            this.cbCampusId.Location = new System.Drawing.Point(142, 19);
+            this.cbCampusId.Location = new System.Drawing.Point(142, 22);
             this.cbCampusId.Name = "cbCampusId";
-            this.cbCampusId.Size = new System.Drawing.Size(161, 24);
+            this.cbCampusId.Size = new System.Drawing.Size(260, 39);
             this.cbCampusId.TabIndex = 0;
             // 
             // cbDayOfWeek
             // 
+            this.cbDayOfWeek.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbDayOfWeek.FormattingEnabled = true;
-            this.cbDayOfWeek.Location = new System.Drawing.Point(142, 49);
+            this.cbDayOfWeek.Location = new System.Drawing.Point(142, 77);
             this.cbDayOfWeek.Name = "cbDayOfWeek";
-            this.cbDayOfWeek.Size = new System.Drawing.Size(161, 24);
+            this.cbDayOfWeek.Size = new System.Drawing.Size(260, 39);
             this.cbDayOfWeek.TabIndex = 1;
             // 
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(194, 124);
+            this.button1.Location = new System.Drawing.Point(275, 187);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 45);
+            this.button1.Size = new System.Drawing.Size(127, 64);
             this.button1.TabIndex = 2;
             this.button1.Text = "Start";
             this.button1.UseVisualStyleBackColor = true;
@@ -69,7 +71,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 22);
+            this.label1.Location = new System.Drawing.Point(62, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 17);
             this.label1.TabIndex = 3;
@@ -78,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 52);
+            this.label2.Location = new System.Drawing.Point(44, 93);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 17);
             this.label2.TabIndex = 4;
@@ -89,7 +91,7 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(31, 137);
+            this.HideCursor.Location = new System.Drawing.Point(22, 210);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
             this.HideCursor.TabIndex = 5;
@@ -101,7 +103,7 @@
             this.TestMode.AutoSize = true;
             this.TestMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TestMode.ForeColor = System.Drawing.Color.Gray;
-            this.TestMode.Location = new System.Drawing.Point(31, 183);
+            this.TestMode.Location = new System.Drawing.Point(22, 250);
             this.TestMode.Name = "TestMode";
             this.TestMode.Size = new System.Drawing.Size(91, 21);
             this.TestMode.TabIndex = 5;
@@ -111,7 +113,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 82);
+            this.label3.Location = new System.Drawing.Point(19, 147);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(117, 17);
             this.label3.TabIndex = 6;
@@ -119,6 +121,7 @@
             // 
             // LeadTime
             // 
+            this.LeadTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LeadTime.FormattingEnabled = true;
             this.LeadTime.Items.AddRange(new object[] {
             "1",
@@ -135,18 +138,17 @@
             "12",
             "24",
             "36"});
-            this.LeadTime.Location = new System.Drawing.Point(142, 79);
+            this.LeadTime.Location = new System.Drawing.Point(142, 131);
             this.LeadTime.Name = "LeadTime";
-            this.LeadTime.Size = new System.Drawing.Size(161, 24);
+            this.LeadTime.Size = new System.Drawing.Size(260, 39);
             this.LeadTime.TabIndex = 7;
             this.LeadTime.Text = "5";
             // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(317, 204);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(459, 287);
             this.Controls.Add(this.LeadTime);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TestMode);

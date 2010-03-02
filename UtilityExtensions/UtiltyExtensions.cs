@@ -865,6 +865,12 @@ namespace UtilityExtensions
                 return approot;
             }
         }
+        public static void ShowError(string message)
+        {
+            HttpContext.Current.Response.Redirect(
+                "/Home/ShowError/{0}?url={1}".Fmt(HttpContext.Current.Server.UrlEncode(message),
+                HttpContext.Current.Request.Url.OriginalString));
+        }
         public static string ResolveUrl(string originalUrl)
         {
             if (originalUrl == null)

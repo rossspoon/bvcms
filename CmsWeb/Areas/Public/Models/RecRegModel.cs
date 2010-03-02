@@ -226,7 +226,7 @@ namespace CMSWeb.Models
                 if (Util.Now.Subtract(dt).TotalDays > 180)
                     dt = dt.AddYears(1);
                 var amt = RecAgeDiv.Fee.Value;
-                if (dt < Util.Now)
+                if (Util.Now > dt.AddHours(24))
                     amt += league.ExtraFee ?? 0;
                 if (shirtsize != "lastyear")
                     amt += league.ShirtFee ?? 0;

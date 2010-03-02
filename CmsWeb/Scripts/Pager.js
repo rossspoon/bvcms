@@ -32,7 +32,7 @@
         return false;
     }
     $.showTable = function(f) {
-        if ($('table', f).size() == 0)
+        if ($('table.grid', f).size() == 0)
             $.getTable(f);
         return false;
     }

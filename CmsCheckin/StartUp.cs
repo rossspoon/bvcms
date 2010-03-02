@@ -43,6 +43,7 @@ namespace CmsCheckin
 
 #if DEBUG
             TestMode.Checked = true;
+            HideCursor.Checked = false;
 #endif
 
             var wc = new WebClient();

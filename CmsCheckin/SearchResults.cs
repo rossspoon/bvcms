@@ -23,7 +23,6 @@ namespace CmsCheckin
             InitializeComponent();
         }
 
-        private int Row;
         DateTime time;
 
         public void ShowResults(XDocument x)
