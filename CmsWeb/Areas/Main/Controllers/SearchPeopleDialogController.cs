@@ -21,11 +21,8 @@ namespace CMSWeb.Areas.Main.Controllers
                 m.EntryPoint = entrypoint;
             return View(m);
         }
-        public ActionResult Search(int? id)
+        public ActionResult Rows(SearchPeopleDialogModel m)
         {
-            var m = new SearchPeopleDialogModel();
-            UpdateModel(m);
-            m.Page = id;
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

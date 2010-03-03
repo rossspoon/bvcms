@@ -1,0 +1,67 @@
+﻿body
+{
+    background-color: white;
+    color: #696969;
+    font-family: Verdana,Helvetica,Sans-Serif;
+    font-size: 0.75em;
+    margin: 0;
+    padding: 0;
+}
+
+a:link
+{
+    color: #034AF3;
+    text-decoration: underline;
+}
+h3
+{
+    font-size: 1.2em;
+}
+input[type="text"]
+{
+    border: 1px solid #CCCCCC;
+    width: 200px;
+}
+table.grid 
+{
+    border-collapse:collapse;
+    color: #333333;
+}
+.altrow
+{
+    background-color: #eff3fb
+}
+.headrow
+{
+    background-color: #3e8cb5; 
+    color: white; 
+    font-weight: bold
+}
+table.grid thead a
+{
+    color: white; 
+}
+.DisplayEdit
+{
+    position: relative;
+}
+form.DisplayEdit input[type=text]
+{
+    width: 20em;
+}
+a.submitbutton{
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
+.modalPopup
+{
+	background-color: #eff3fb;
+	border-width: 3px;
+	border-style: solid;
+	border-color: Gray;
+	padding: 10px;
+}

@@ -18,7 +18,7 @@ using System.Data.Linq;
 
 namespace CMSWeb.Models
 {
-    public class SearchPeopleDialogModel
+    public class SearchPeopleDialogModel : PagerModel2
     {
         public int? OrgId { get; set; }
         public string Name { get; set; }
@@ -34,34 +34,12 @@ namespace CMSWeb.Models
         public int? Origin { get; set; }
         public int MaritalStatusId { get; set; }
         public int CampusId { get; set; }
+
         public SearchPeopleDialogModel()
         {
             MaritalStatusId = 99;
             GenderId = 99;
-        }
-        public string Sort { get; set; }
-        private int? _Page;
-        public int? Page
-        {
-            get { return _Page ?? 0; }
-            set { _Page = value; }
-        }
-        public int StartRow
-        {
-            get { return Page.Value * PageSize.Value; }
-        }
-        public int? PageSize
-        {
-            get
-            {
-                var ps = Util.Cookie("PageSize", "10").ToInt();
-                return ps;
-            }
-            set
-            {
-                if (value.HasValue)
-                    Util.Cookie("PageSize", value.Value.ToString(), 360);
-            }
+            GetCount = Count;
         }
 
         private Regex AddrRegex = new Regex(
@@ -83,6 +61,7 @@ namespace CMSWeb.Models
                         CellPhone = p.CellPhone,
                         WorkPhone = p.WorkPhone,
                         MemberStatus = p.MemberStatus.Description,
+                        Email = p.EmailAddress
                     };
             return q;
         }
@@ -90,19 +69,16 @@ namespace CMSWeb.Models
         public IEnumerable<PeopleInfo> PeopleList()
         {
             var query = ApplySearch();
-            query = ApplySort(query, Sort).Skip(StartRow).Take(PageSize.Value);
+            query = ApplySort(query).Skip(StartRow).Take(PageSize);
             return PeopleList(query);
         }
 
-        private int? count;
-        public int Count
+        private int? _count;
+        public int Count()
         {
-            get
-            {
-                if (!count.HasValue)
-                    count = ApplySearch().Count();
-                return count.Value;
-            }
+            if (!_count.HasValue)
+                _count = ApplySearch().Count();
+            return _count.Value;
         }
 
         private IQueryable<Person> ApplySearch()
@@ -190,33 +166,58 @@ namespace CMSWeb.Models
             return query;
         }
 
-        public IQueryable<Person> ApplySort(IQueryable<Person> query, string sort)
+        public IQueryable<Person> ApplySort(IQueryable<Person> query)
         {
-            if (!sort.HasValue())
-                sort = "Date";
-            switch (sort)
-            {
-                case "Id":
-                    query = from c in query
-                            orderby c.PeopleId
-                            select c;
-                    break;
-                case "Name":
-                    query = from c in query
-                            orderby c.Name2
-                            select c;
-                    break;
-                case "CityStateZip":
-                    query = from c in query
-                            orderby c.PrimaryCity
-                            select c;
-                    break;
-                case "Age":
-                    query = from c in query
-                            orderby c.Age
-                            select c;
-                    break;
-            }
+            if (!Sort.HasValue())
+                Sort = "Name";
+            if (Direction == "asc")
+                switch (Sort)
+                {
+                    case "Id":
+                        query = from c in query
+                                orderby c.PeopleId
+                                select c;
+                        break;
+                    case "Name":
+                        query = from c in query
+                                orderby c.Name2
+                                select c;
+                        break;
+                    case "CityStateZip":
+                        query = from c in query
+                                orderby c.PrimaryCity
+                                select c;
+                        break;
+                    case "Age":
+                        query = from c in query
+                                orderby c.Age
+                                select c;
+                        break;
+                }
+            else
+                switch (Sort)
+                {
+                    case "Id":
+                        query = from c in query
+                                orderby c.PeopleId descending
+                                select c;
+                        break;
+                    case "Name":
+                        query = from c in query
+                                orderby c.Name2 descending
+                                select c;
+                        break;
+                    case "CityStateZip":
+                        query = from c in query
+                                orderby c.PrimaryCity descending, c.Name
+                                select c;
+                        break;
+                    case "Age":
+                        query = from c in query
+                                orderby c.Age descending, c.Name
+                                select c;
+                        break;
+                }
             return query;
         }
 
@@ -477,12 +478,13 @@ Try a different first name if you are using a nickname.";
             public string MemberStatus { get; set; }
             public DateTime? JoinDate { get; set; }
             public string BirthDate { get; set; }
+            public string Email { get; set; }
             public string ToolTip
             {
                 get
                 {
-                    return "ID: {0} \nMobile Phone: {1} \nWork Phone: {2} \nHome Phone: {3} \nBirthDate: {4:d} \nJoin Date: {5:d} \nStatus: {6}"
-                        .Fmt(PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus);
+                    return "{0}|PeopleId: {1}|Mobile Phone: {2}|Work Phone: {3}|Home Phone: {4}|BirthDate: {5:d}|Join Date: {6:d}|Status: {7}|{8}"
+                        .Fmt(Name, PeopleId, CellPhone.FmtFone(), WorkPhone.FmtFone(), HomePhone.FmtFone(), BirthDate, JoinDate, MemberStatus, Email);
                 }
             }
         }

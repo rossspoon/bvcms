@@ -429,6 +429,10 @@ namespace CmsData
             else
                 fam.People.Add(p);
 
+            var PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
+            if (PrimaryCount > 2 && p.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
             if (Util.UserPeopleId.HasValue)

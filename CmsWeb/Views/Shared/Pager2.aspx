@@ -1,37 +1,33 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PagerModel2>" %>
-<table class="pager">
-    <tr>
-    <td>
-        <span class="page-numbers desc">Set # rows:</span>
-        <%=Html.DropDownList("PageSize", Model.PageSizeList(), new { onchange = "$.setPageSize(this)" }) %>
-    </td>
-    <td><span class="page-numbers desc">Goto page:</span>
-        <% if (Model.Page > 1)
-           { %>
-        <%=Html.HyperLink("#", "prev", "$.gotoPage(this,{0})".Fmt(Model.Page - 1), new { title = "goto page " + (Model.Page - 1), @class = "page-numbers" })%>
-        <% }
-           foreach (var p in Model.PageList())
-           {
-           if (p == 0)
-           { %>
-        <%=Html.Span("&hellip;", new { @class = "page-numbers dots" })%>
-        <% }
-           if (p > 0 && Model.Page != p)
-           { %>
-        <%=Html.HyperLink("#", p.ToString(), "$.gotoPage(this,{0})".Fmt(p), new { title = "goto page " + p, @class = "page-numbers" })%>
-        <% }
-           if (Model.Page == p)
-           { %>
-        <%=Html.Span(p.ToString(), new { title = "goto page " + p, @class = "current page-numbers" })%>
-        <% }
-           }
-           if (Model.Page < Model.LastPage)
-           { %>
-        <%=Html.HyperLink("#", "next", "$.gotoPage(this,{0})".Fmt(Model.Page + 1), new { title = "goto page " + (Model.Page + 1), @class = "page-numbers" })%>
-        <% } %>
-    </td>
-    </tr>
-</table>
+<div class="pager">
+    <span class="page-numbers desc">Goto page:</span>
+    <% if (Model.Page > 1)
+       { %>
+    <a href='#' class="page-numbers" title='goto page <%=Model.Page-1 %>' onclick='$.gotoPage(this,<%=Model.Page -1 %>)'>prev</a>
+    <% }
+       foreach (var p in Model.PageList())
+       {
+       if (p == 0)
+       { %>
+    <span class="page-numbers dots">&hellip;</span>
+    <% }
+       if (p > 0 && Model.Page != p)
+       { %>
+    <a href='#' class='page-numbers' title='goto page <%=p %>' onclick='$.gotoPage(this,<%=p %>)'><%=p %></a>
+    <% }
+       if (Model.Page == p)
+       { %>
+    <span class="current page-numbers" title="goto page"><%=p %></span>
+    <% }
+       }
+       if (Model.Page < Model.LastPage)
+       { %>
+    <a href='#' class="page-numbers" title='goto page <%=Model.Page+1 %>' onclick='$.gotoPage(this,<%=Model.Page+1 %>)'>next</a>
+    <% } %>
+    <span class="page-numbers desc">Set # rows:</span>
+    <%=Html.DropDownList("PageSize", Model.PageSizeList(), new { onchange = "$.setPageSize(this)" }) %>
+</div>
+<div style="clear:both"></div>
 <%=Html.Hidden("Page")%>
 <%=Html.Hidden("Sort")%>
 <%=Html.Hidden("Direction")%>

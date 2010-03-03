@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\SearchAddController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
+    <Compile Include="Areas\Main\Models\SearchModel.cs" />
+    <Compile Include="Areas\Main\Models\SearchAddModel.cs" />
     <Compile Include="Areas\Main\Models\SearchPeopleDialogModel.cs" />
     <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
@@ -1228,8 +1231,16 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\SearchAdd\AddressDisplay.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\AddressEdit.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\Confirm.aspx" />
+    <Content Include="Areas\Main\Views\SearchAdd\SearchForm.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\Index.aspx" />
+    <Content Include="Areas\Main\Views\SearchAdd\List.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\PersonDisplay.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\PersonEdit.ascx" />
     <Content Include="Areas\Main\Views\SearchPeopleDialog\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeopleDialog\Search.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeopleDialog\Rows.aspx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Move.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Display.ascx" />
@@ -2023,6 +2034,32 @@
     <Content Include="Content\checkboxtree.css" />
     <Content Include="Content\close.png" />
     <Content Include="Content\Common2.css" />
+    <Content Include="Content\Dialog.css" />
+    <Content Include="Content\images\arrowdown.gif" />
+    <Content Include="Content\images\arrowleft.gif" />
+    <Content Include="Content\images\arrowright.gif" />
+    <Content Include="Content\images\arrowup.gif" />
+    <Content Include="Content\images\bl.gif" />
+    <Content Include="Content\images\bl.png" />
+    <Content Include="Content\images\br.gif" />
+    <Content Include="Content\images\br.png" />
+    <Content Include="Content\images\darrowdown.gif" />
+    <Content Include="Content\images\darrowleft.gif" />
+    <Content Include="Content\images\darrowright.gif" />
+    <Content Include="Content\images\darrowup.gif" />
+    <Content Include="Content\images\itunes.png" />
+    <Content Include="Content\images\rarrowdown.gif" />
+    <Content Include="Content\images\rarrowleft.gif" />
+    <Content Include="Content\images\rarrowright.gif" />
+    <Content Include="Content\images\rarrowup.gif" />
+    <Content Include="Content\images\tl.gif" />
+    <Content Include="Content\images\tl.png" />
+    <Content Include="Content\images\tr.gif" />
+    <Content Include="Content\images\tr.png" />
+    <Content Include="Content\images\wait.gif" />
+    <Content Include="Content\jquery.cluetip.css" />
+    <Content Include="Content\js\jquery.cluetip.min.js" />
+    <Content Include="Content\js\jquery.hoverIntent.js" />
     <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />

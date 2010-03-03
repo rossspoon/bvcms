@@ -281,7 +281,7 @@ namespace CMSWeb.Areas.Main.Models.Report
                 var bc = new Barcode39();
                 bc.Font = null;
                 bc.Code = Barcode;
-                bc.X = 1f;
+                bc.X = 1.2f;
                 var img = bc.CreateImageWithBarcode(dc, null, null);
                 var h = font.GetAscentPoint(text, HeadFontSize);
                 img.SetAbsolutePosition(document.PageSize.Width - img.Width - 30, document.PageSize.Height - 30 - img.Height + h);

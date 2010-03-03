@@ -22,6 +22,9 @@ namespace CMSWeb.Models
         {
             GetCount = new CountDelegate(count);
         }
+        public PagerModel2()
+        {
+        }
         public string Sort { get; set; }
         public string Direction { get; set; }
         public string SortExpression
@@ -34,7 +37,7 @@ namespace CMSWeb.Models
             }
         }
         public delegate int CountDelegate();
-        private CountDelegate GetCount;
+        public CountDelegate GetCount;
 
         public int PageSize
         {

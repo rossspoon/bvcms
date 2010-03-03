@@ -1,16 +1,18 @@
 <%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SearchPeopleDialogModel>" %>
-<html>
-<head>
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <link href="/Content/Dialog.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Pager.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>
     <script src="/Content/js/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>    
     <script src="/Scripts/SearchDialog.js" type="text/javascript"></script>
-    <script src="/Scripts/Pager.js" type="text/javascript"></script>
-
-<form class="DisplayEdit" action="/SearchPeopleDialog/Search/" method="post">
+    <script src="/Scripts/pager.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.form.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>
+</head>
+<body>
+<form id="searchForm" class="DisplayEdit" action="/SearchPeopleDialog/Rows/" method="post">
 <%=Html.Hidden("entrypoint", Model.Origin) %>
 <%=Html.Hidden("origin", Model.EntryPoint) %>
 <table style="font-size: 12px" class="modalPopup">
@@ -20,7 +22,7 @@
         </td>
         <th>Campus:</th>
         <td colspan="2" nowrap="nowrap">
-            <%=Html.DropDownList("CampusId", Model.CampusCodes(), new { style = "width: 150px" })%>
+            <%=Html.DropDownList("CampusId", Model.CampusCodes(), new { style = "width: 150px", @class="clearable" })%>
         </td>
     </tr>
     <tr>
@@ -30,7 +32,7 @@
         </td>
         <th>Tags:</th>
         <td colspan="2">
-            <%=Html.DropDownList("TagId", Model.UserTags(), new {style="width: 240px"})%>
+            <%=Html.DropDownList("TagId", Model.UserTags(), new { style = "width: 240px", @class = "clearable" })%>
         </td>
     </tr>
     <tr>
@@ -40,7 +42,7 @@
         </td>
         <th>Member:</th>
         <td>
-            <%=Html.DropDownList("MemberStatusId", Model.MemberStatusCodes())%>
+            <%=Html.DropDownList("MemberStatusId", Model.MemberStatusCodes(), new { @class="clearable"})%>
         </td>
         <th align="left">OrgId</th>
     </tr>
@@ -51,7 +53,7 @@
         </td>
         <th>Gender:</th>
         <td>
-            <%=Html.DropDownList("GenderId", Model.GenderCodes())%>
+            <%=Html.DropDownList("GenderId", Model.GenderCodes(), new { @class = "clearable" })%>
         </td>
         <td>
             <input name="OrgId" title="Organization Id" style="width:50px" type="text" class="clearable" />
@@ -63,40 +65,17 @@
             <input name="DateOfBirth" title="YYYY or MM or MM/DD or MM/DD/YY" style="width:190px" type="text" class="clearable" />
         </td>
         <th>Married:</th>
-        <td><%=Html.DropDownList("MaritalStatusId", Model.MaritalStatusCodes()) %></td>
+        <td><%=Html.DropDownList("MaritalStatusId", Model.MaritalStatusCodes(), new { @class = "clearable" })%></td>
         <td>
             <a href="/SearchPeopleDialog/Search/" class="submitbutton">Search</a>
         </td>
     </tr>
 </table>
-</form>
 <div>
     <a id="AddNew" href="#">Add new person to new family</a> |
     <%=Html.CheckBox("AddToExisting") %> Add new person to existing family
 </div>
-<table id="people" class="grid" style="font-size:12px">
-    <thead>
-        <tr> 
-            <td colspan="5" nowrap="nowrap">
-                <table>
-                <tr>
-                    <td id="NumItems"></td>
-                    <td><%=Html.DropDownList("PageSize", Html.PageSizes())%></td>
-                    <td class="pagination"></td>
-                </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <th><a href="#" class="sortable">Id</a></th>
-            <th><a href="#" class="sortable">Name</a></th>
-            <th>Address</th>
-            <th><a href="#" class="sortable">CityStateZip</a></th>
-            <th><a href="#" class="sortable">Age</a></th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="peoplediv"></div>
+</form>
 </body>
 </html>
