@@ -55,8 +55,10 @@ namespace CMSWeb.Areas.Public.Controllers
             }
             return View(m);
         }
-        public ActionResult Form2(int familyid)
+        public ActionResult Form2(int? familyid)
         {
+            if (!familyid.HasValue)
+                return Content("missing familyid");
             if (Session["auth"] == null || (string)Session["auth"] != "true")
                 return RedirectToAction("Login");
             var m = new Models.RegisterModel { familyid = familyid };
@@ -79,7 +81,7 @@ namespace CMSWeb.Areas.Public.Controllers
             }
             if (ModelState.IsValid)
             {
-                m.SavePerson(familyid);
+                m.SavePerson(familyid.Value);
                 m.EmailRegister();
                 return RedirectToAction("Confirm", new { familyid = familyid });
             }

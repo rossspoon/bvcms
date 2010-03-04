@@ -87,7 +87,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\SearchModel.cs" />
-    <Compile Include="Areas\Main\Models\SearchAddModel.cs" />
+    <Compile Include="Areas\Main\Models\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\SearchPeopleDialogModel.cs" />
     <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
@@ -1231,10 +1231,12 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
-    <Content Include="Areas\Main\Views\SearchAdd\AddressDisplay.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\AddressEdit.ascx" />
-    <Content Include="Areas\Main\Views\SearchAdd\Confirm.aspx" />
-    <Content Include="Areas\Main\Views\SearchAdd\SearchForm.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\ResultsFamily.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\SearchFamily.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\Hidden.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\Results.ascx" />
+    <Content Include="Areas\Main\Views\SearchAdd\SearchPerson.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchAdd\List.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\PersonDisplay.ascx" />
@@ -2102,6 +2104,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\SearchAdd.js" />
     <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />

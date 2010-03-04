@@ -258,14 +258,14 @@ namespace CMSWeb
             if (organization == null)
                 Util.ShowError("Bad Orgid ({0})".Fmt(meetingcode));
 
-            var re = new Regex(@"(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((?:19|20)[0-9]{2})");
+            var re = new Regex(@"\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])([0-9]{2})([01][0-9])([0-5][0-9])\Z");
             if (!re.IsMatch(a[2]))
                 Util.ShowError("Bad Date and Time ({0})".Fmt(meetingcode));
             var g = re.Match(a[2]);
             var dt = new DateTime(
+                g.Groups[3].Value.ToInt() + 2000,
                 g.Groups[1].Value.ToInt(),
                 g.Groups[2].Value.ToInt(),
-                g.Groups[3].Value.ToInt(),
                 g.Groups[4].Value.ToInt(),
                 g.Groups[5].Value.ToInt(),
                 0);

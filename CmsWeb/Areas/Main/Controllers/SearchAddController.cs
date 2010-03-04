@@ -24,41 +24,101 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         public ActionResult Index(int? id, string type)
         {
-            //var org = DbUtil.Db.LoadOrganizationById(id);
-            //if (org == null)
-            //    return Content("invalid organization");
-            var list = new List<SearchAddModel>();
-//#if DEBUG
-//            list.Add(new SearchAddModel
-//            {
-//                first = "David",
-//                last = "Carroll",
-//                dob = "5/30/52",
-//                email = "david@davidcarroll.name",
-//                phone = "9017581862".FmtFone(),
-//                homecell = "h",
-//            });
-//#else
-//            list.Add(new SearchAddModel());
-//#endif
-            switch (type)
-            {
-                case "family":
-                    break;
-                case "organization":
-                    break;
-                case "meeting":
-                    break;
-                case "contactee":
-                    break;
-                case "contactor":
-                    break;
-            }
+#if DEBUG
+            var m = new SearchModel { name = "David Carr" };
+#else
+            var m = new SearchModel();
+#endif
+            m.from = type;
+            //switch (type)
+            //{
+            //    case "family":
+            //        break;
+            //    case "organization":
+            //        break;
+            //    case "meeting":
+            //        break;
+            //    case "contactee":
+            //        break;
+            //    case "contactor":
+            //        break;
+            //}
             if (id.HasValue)
-            list[0].evtype = type;
-            SetViewData(id);
-            return View(list);
+                SetViewData(id);
+            return View(m);
         }
+        public ActionResult Results(SearchModel m)
+        {
+            return View(m);
+        }
+        public ActionResult ResultsFamily(SearchModel m)
+        {
+            m.dob = "";
+            return View(m);
+        }
+        public ActionResult SearchPerson(SearchModel m)
+        {
+#if DEBUG
+            m.name = "d c";
+#endif
+            return View(m);
+        }
+        public ActionResult SearchFamily(SearchModel m)
+        {
+#if DEBUG
+            m.name = "f m";
+#endif
+            return View(m);
+        }
+        public ActionResult SearchCancel(SearchModel m)
+        {
+            if (m.List.Count > 0)
+                return View("List", m);
+            return Content("close");
+        }
+        public ActionResult SearchFamilyCancel(SearchModel m)
+        {
+#if DEBUG
+            m.name = "d c";
+#endif
+            return View("SearchPerson", m);
+        }
+        public ActionResult PersonCancel(int id, SearchModel m)
+        {
+            m.List.RemoveAt(id);
+            if (m.List.Count > 0)
+                return View("List", m);
+#if DEBUG
+            m.name = "d c";
+#endif
+            return View("SearchForm", m);
+        }
+        public ActionResult Select(int id, SearchModel m)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            var s = new SearchPersonModel
+            {
+                first = p.FirstName,
+                goesby = p.NickName,
+                last = p.LastName,
+                marital = p.MaritalStatusId,
+                email = p.EmailAddress,
+                suffix = p.SuffixCode,
+                title = p.TitleCode,
+                dob = p.DOB,
+                address = p.PrimaryAddress,
+                city = p.PrimaryCity,
+                state = p.PrimaryState,
+                zip = p.PrimaryZip,
+                gender = p.GenderId,
+                phone = p.CellPhone,
+
+            };
+            m.List.Add(s);
+            ViewData["mode"] = "search";
+            return View("List", m);
+        }
+
         public ActionResult Childcare(int? id, bool? testing)
         {
             if (!id.HasValue)
@@ -69,126 +129,86 @@ namespace CMSWeb.Areas.Main.Controllers
             return RedirectToAction("Index", new { id = id.Value, testing = testing });
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PersonFind(int id, IList<SearchAddModel> list)
+        public ActionResult ShowMoreInfo(int id, SearchModel m)
         {
-            list[id].ValidateModelForFind(ModelState);
-            return View("list", list);
+            //#if DEBUG
+            //            var m = list[id];
+            //            m.address = "235 Riveredge Cv.";
+            //            m.city = "Cordova";
+            //            m.state = "TN";
+            //            m.zip = "38018";
+            //            m.gender = 1;
+            //            m.married = 20;
+            //#endif
+            m.List[id].ShowAddress = true;
+            return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ShowMoreInfo(int id, IList<SearchAddModel> list)
+        public ActionResult SubmitNew(int id, SearchModel m)
         {
-#if DEBUG
-            var m = list[id];
-            m.address = "235 Riveredge Cv.";
-            m.city = "Cordova";
-            m.state = "TN";
-            m.zip = "38018";
-            m.gender = 1;
-            m.married = 20;
-#endif
-            list[id].ShowAddress = true;
-            return View("list", list);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SubmitNew(int id, IList<SearchAddModel> list)
-        {
-            list[id].ValidateModelForNew(ModelState);
+            m.List[id].ValidateModelForNew(ModelState);
             if (ModelState.IsValid)
-                list[id].IsNew = true;
-            return View("list", list);
+                m.List[id].IsNew = true;
+            return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Cancel(int id, IList<SearchAddModel> list)
+        public ActionResult Cancel(int id, SearchModel m)
         {
-            list.RemoveAt(id);
-            return View("list", list);
+            m.List.RemoveAt(id);
+            return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddAnotherPerson(IList<SearchAddModel> list)
+        public ActionResult AddAnotherPerson(IList<SearchPersonModel> list)
         {
-            list[list.Count - 1].ValidateModelForComplete(ModelState);
+            //list[list.Count - 1].ValidateModelForComplete(ModelState);
             if (!ModelState.IsValid)
                 return View("list", list);
-#if DEBUG
-            list.Add(new SearchAddModel
-            {
-                first = "Delaine",
-                last = "Carroll",
-                dob = "9/29/46",
-                email = "davcar@pobox.com",
-                phone = "9017581862".FmtFone(),
-                homecell = "h"
-            });
-#else
-            list.Add(new SearchAddModel());
-#endif
-            list[list.Count - 1].evtype = list[0].evtype;
+            //#if DEBUG
+            //            list.Add(new SearchPersonModel
+            //            {
+            //                first = "Delaine",
+            //                last = "Carroll",
+            //                dob = "9/29/46",
+            //                email = "davcar@pobox.com",
+            //                phone = "9017581862".FmtFone(),
+            //                homecell = "h"
+            //            });
+            //#else
+            //            list.Add(new SearchAddModel());
+            //#endif
             return View("list", list);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult IsValid(IList<SearchAddModel> list)
-        {
-            list[list.Count - 1].ValidateModelForComplete(ModelState);
-            if (!ModelState.IsValid)
-                return View("list", list);
-            return Content("OK");
-        }
-        public static decimal ComputeFee(IList<SearchAddModel> list)
-        {
-            return list[0].evtype == "ChildCare" ?
-                            list.Max(i => i.ComputeFee()) :
-                            list.Sum(i => i.ComputeFee());
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CompleteRegistration(int? id, IList<SearchAddModel> list)
+        public ActionResult CompleteRegistration(int? id, SearchModel m)
         {
             var org = DbUtil.Db.LoadOrganizationById(id.Value);
-            var m = list[list.Count - 1];
-            m.ValidateModelForComplete(ModelState);
+            //m.ValidateModelForComplete(ModelState);
             if (!ModelState.IsValid)
             {
                 SetViewData(id);
-                return View("Index", list);
+                return View("Index", m);
             }
 
-            var p = list[0];
             if (!id.HasValue)
                 return View("Unknown");
             //var orgid = Misc3.ToInt();
             //var org = DbUtil.Db.LoadOrganizationById(orgid);
 
-            for (var i = 0; i < list.Count; i++ )
+            foreach(var p in m.List)
             {
-                m = list[i];
-                if (m.IsNew)
-                    m.AddPerson(i == 0 ? null : list[0].person, org.EntryPointId ?? 0);
+                if (p.IsNew)
+                    p.AddPerson(null, org.EntryPointId ?? 0);
                 var om = OrganizationMember.InsertOrgMembers(id.Value,
-                    m.person.PeopleId, (int)OrganizationMember.MemberTypeCode.Member, 
+                    p.person.PeopleId, (int)OrganizationMember.MemberTypeCode.Member,
                     DateTime.Now, null, false);
                 if (om.UserData.HasValue())
                     om.UserData += "<br />\n";
-                switch(m.evtype)
-                {
-                    case "childcare":
-                        om.AddToGroup(m.person.PositionInFamilyId == 30 ? "EV: Child" : "EV: Adult");
-                        break;
-                    case "5kfunrun":
-                        om.AddToGroup(m.option == 1 ? "EV: 5K" : "EV: FunRun");
-                        break;
-                }
-                if (!m.person.HomePhone.HasValue() && m.homecell == "h")
-                    m.person.Family.HomePhone = m.phone;
-                if (!m.person.CellPhone.HasValue() && m.homecell == "c")
-                    m.person.CellPhone = m.phone;
 
-                var reg = m.person.RecRegs.SingleOrDefault();
+                if (!p.person.HomePhone.HasValue() && p.homecell == "h")
+                    p.person.Family.HomePhone = m.phone;
+                if (!p.person.CellPhone.HasValue() && p.homecell == "c")
+                    p.person.CellPhone = m.phone;
 
-                if (reg == null)
-                {
-                    reg = new RecReg();
-                    m.person.RecRegs.Add(reg);
-                }
-                reg.ShirtSize = m.ShirtSize;
             }
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();

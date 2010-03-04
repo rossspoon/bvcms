@@ -20,6 +20,13 @@ namespace CMSWeb.Models
 {
     public class SearchModel
     {
+        private IList<SearchPersonModel> list = new List<SearchPersonModel>();
+        public IList<SearchPersonModel> List
+        {
+            get { return list; }
+            set { list = value; }
+        }
+        public string from { get; set; }
         public string name { get; set; }
         public string phone { get; set; }
         public string address { get; set; }
@@ -49,8 +56,7 @@ namespace CMSWeb.Models
 
         public IEnumerable<PeopleInfo> PeopleList()
         {
-            var query = ApplySearch().Take(10);
-            return PeopleList(query);
+            return PeopleList(ApplySearch().Take(10));
         }
 
         private int? _count;
@@ -64,10 +70,13 @@ namespace CMSWeb.Models
             }
         }
 
+        private IQueryable<Person> query = null;
         private IQueryable<Person> ApplySearch()
         {
+            if (query.IsNotNull())
+                return query;
             var Db = DbUtil.Db;
-            var query = Db.People.Select(p => p);
+            query = Db.People.Select(p => p);
 
             if (name.HasValue())
             {

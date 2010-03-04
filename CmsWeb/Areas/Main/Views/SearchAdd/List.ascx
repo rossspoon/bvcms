@@ -1,28 +1,21 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<CMSWeb.Models.SearchAddModel>>" %>
-<table cellpadding="0" cellspacing="0">
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchModel>" %>
+<input type="hidden" name="m.from" value="<%=Model.from%>" />
+<table id="people" cellpadding="0" cellspacing="0">
 <% 
-    CMSWeb.Models.SearchAddModel m = null;
-    for(var i = 0; i < Model.Count; i++)
-    {
-        m = Model[i];
-        m.index = i;
-        m.LastItem = i == (Model.Count - 1);
-        if (m.Found == true || m.IsNew)
-            Html.RenderPartial("PersonDisplay", m);
-        else
-            Html.RenderPartial("PersonEdit", m);
-    }
-    if (ViewData["mode"] == "search")
-    {
+   int n = 0;
+   foreach(var p in Model.List)
+   {
+       p.index = n++;
 %>
-    <tr><td></td>
+<tr <%=n % 2 == 1 ? "class='alt'" : "" %>><td>
+<%
+    Html.RenderPartial("PersonDisplay", p);
+    Html.RenderPartial("Hidden", p);
+%>
+</td></tr>    
+<% } %>
+<tr><td colspan="2"><input id="submitit" type="submit" class="submitbutton" value='Add Complete' />
+        or <a href="/SearchAdd/SearchPerson/" class="submitbutton formlink">Another Search</a>
+        or <a href="/SearchAdd/AddToFamily/" class="submitbutton formlink">Add to Last Family</a></td>
     </tr>
-<%  }
-    else
-    { %>
-    <tr><td colspan="2"><input id="submitit" type="submit"
-             class="submitbutton" value='Add Complete' />
-        or <a href="/SearchAdd/AddAnotherPerson/" class="submitbutton">Search for another person</a></td>
-    </tr>
- <% } %>
 </table>

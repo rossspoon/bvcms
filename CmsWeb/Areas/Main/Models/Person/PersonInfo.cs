@@ -196,7 +196,7 @@ namespace CMSWeb.Models.PersonPage
                             Preferred = p.AddressTypeId == 40,
                         },
                     };
-            return q.Single();
+            return q.SingleOrDefault();
         }
     }
 }
