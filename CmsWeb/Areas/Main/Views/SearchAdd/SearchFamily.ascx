@@ -1,5 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchModel>" %>
-<% Html.RenderPartial("HiddenModel", Model); %>
+<input type="hidden" name="m.type" value="<%=Model.type%>" />
+<input type="hidden" name="m.typeid" value="<%=Model.typeid%>" />
+<input type="hidden" name="m.from" value="<%=Model.from%>" />
+<input type="hidden" name="m.dob" value="<%=Model.dob%>" />
 <table width="100%" class="modalPopup">
 <tr><th align="left">Search for Family</th>
     <td align="right">

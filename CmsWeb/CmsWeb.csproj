@@ -1235,7 +1235,6 @@
     <Content Include="Areas\Main\Views\SearchAdd\FormAbbreviated.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\EditAddress.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormFull.ascx" />
-    <Content Include="Areas\Main\Views\SearchAdd\HiddenModel.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\EditPerson.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\ResultsFamily.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\SearchFamily.ascx" />

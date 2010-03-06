@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using System.Net.Mail;
 using System.Web.Routing;
+using CMSPresenter;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
@@ -21,6 +22,7 @@ namespace CMSWeb.Areas.Main.Controllers
             var m = new SearchModel { typeid = id, type = type, from = from };
 #if DEBUG
             m.name = "Da Car";
+            m.address = "";
 #endif
             return View(m);
         }
@@ -50,7 +52,7 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             if (m.List.Count > 0)
                 return View("List", m);
-            return Content("close");
+            return Complete(0, m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SearchFamilyCancel(SearchModel m)
@@ -72,7 +74,7 @@ namespace CMSWeb.Areas.Main.Controllers
             var s = new SearchPersonModel
             {
                 PeopleId = id,
-                FamilyId = p.FamilyId,
+                FamilyId = m.type == "family" ? m.typeid.Value : p.FamilyId,
                 first = p.FirstName,
                 goesby = p.NickName,
                 last = p.LastName,
@@ -170,57 +172,123 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             switch (m.type)
             {
+                case "family":
+                    return AddFamilyMembers(id.Value, m, false);
+                case "relatedfamily":
+                    return AddRelatedFamilys(id.Value, m, false);
                 case "org":
-                    AddOrgMembers(id.Value, m, false);
-                    break;
+                    return AddOrgMembers(id.Value, m, false);
                 case "pending":
-                    AddOrgMembers(id.Value, m, true);
-                    break;
-                case "meeting":
-                    AddVisitors(id.Value, m);
-                    break;
+                    return AddOrgMembers(id.Value, m, true);
+                case "visitor":
+                    return AddVisitors(id.Value, m);
                 case "contactee":
-                    AddContactees(id.Value, m);
-                    break;
+                    return AddContactees(id.Value, m);
+                case "contactor":
+                    return AddContactors(id.Value, m);
             }
-            DbUtil.Db.SubmitChanges();
-            return Content("close");
+            return new EmptyResult();
         }
 
-        private void AddContactees(int id, SearchModel m)
+        private JsonResult AddContactees(int id, SearchModel m)
         {
-            foreach (var p in m.List)
+            if (id > 0)
             {
-                AddPerson(p, m.List, 0);
-                var ce = new Contactee
+                foreach (var p in m.List)
                 {
-                    ContactId = id,
-                    PeopleId = p.person.PeopleId,
-                };
-                DbUtil.Db.Contactees.InsertOnSubmit(ce);
+                    AddPerson(p, m.List, 0);
+                    var ce = new Contactee
+                    {
+                        ContactId = id,
+                        PeopleId = p.person.PeopleId,
+                    };
+                    DbUtil.Db.Contactees.InsertOnSubmit(ce);
+                }
+                DbUtil.Db.SubmitChanges();
             }
+            return Json(new { close = true, how = "addselected" });
         }
-        private void AddOrgMembers(int id, SearchModel m, bool pending)
+        private JsonResult AddContactors(int id, SearchModel m)
         {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            if (org == null)
-                return;
-            foreach (var p in m.List)
+            if (id > 0)
             {
-                AddPerson(p, m.List, org.EntryPointId ?? 0);
-                OrganizationMember.InsertOrgMembers(id, p.PeopleId.Value, 220, Util.Now, null, pending);
+                foreach (var p in m.List)
+                {
+                    AddPerson(p, m.List, 0);
+                    var ce = new Contactor
+                    {
+                        ContactId = id,
+                        PeopleId = p.person.PeopleId,
+                    };
+                    DbUtil.Db.Contactors.InsertOnSubmit(ce);
+                }
+                DbUtil.Db.SubmitChanges();
             }
+            return Json(new { close = true, how = "addselected" });
         }
-        private void AddVisitors(int id, SearchModel m)
+        private JsonResult AddFamilyMembers(int id, SearchModel m, bool pending)
         {
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(me => me.MeetingId == id);
-            if (meeting == null)
-                return;
-            foreach (var p in m.List)
+            if (id > 0)
             {
-                AddPerson(p, m.List, meeting.Organization.EntryPointId ?? 0);
-                Attend.RecordAttendance(p.PeopleId.Value, id, true);
+                foreach (var p in m.List)
+                {
+                    AddPerson(p, m.List, 0);
+                    if (p.person.Age < 18)
+                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+                    else if (p.family.People.Count(per =>
+                        per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult) < 2)
+                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                    else
+                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+                    p.family.People.Add(p.person);
+                }
+                DbUtil.Db.SubmitChanges();
             }
+            return Json(new { close = true, how = "addselected" });
+        }
+        private JsonResult AddRelatedFamilys(int id, SearchModel m, bool pending)
+        {
+            if (id > 0)
+            {
+                foreach (var p in m.List)
+                {
+                    AddPerson(p, m.List, 0);
+                    FamilyController.AddRelatedFamily(id, p.PeopleId.Value);
+                }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Json(new { close = true, how = "addselected" });
+        }
+        private JsonResult AddOrgMembers(int id, SearchModel m, bool pending)
+        {
+            if (id > 0)
+            {
+                var org = DbUtil.Db.LoadOrganizationById(id);
+                foreach (var p in m.List)
+                {
+                    AddPerson(p, m.List, org.EntryPointId ?? 0);
+                    OrganizationMember.InsertOrgMembers(id, p.PeopleId.Value, 220, Util.Now, null, pending);
+                }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Json(new { close = true, how = "rebindgrids" });
+        }
+        private JsonResult AddVisitors(int id, SearchModel m)
+        {
+            var sb = new StringBuilder();
+            if (id > 0)
+            {
+                var meeting = DbUtil.Db.Meetings.SingleOrDefault(me => me.MeetingId == id);
+                foreach (var p in m.List)
+                {
+                    AddPerson(p, m.List, meeting.Organization.EntryPointId ?? 0);
+                    var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
+                    if (err.HasValue())
+                        sb.AppendLine(err);
+                }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Json(new { close = true, how = "addselected", error = sb.ToString() });
         }
         private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int EntryPoint)
         {

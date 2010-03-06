@@ -28,10 +28,10 @@ namespace CMSWeb
             pager2.PageSize = Util.GetPageSizeCookie();
             AddMember.Visible = Page.User.IsInRole("Attendance") && Select!=GroupSelect.Previous;
             UpdateMembers.Visible = AddMember.Visible;
-            //if (DbUtil.Db.UserPreference("olddialog").ToBool())
-            //    AddMember.NavigateUrl = "~/Dialog/AddMember.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
-            //        .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
-            //else
+            if (DbUtil.Db.UserPreference("olddialog").ToBool())
+                AddMember.NavigateUrl = "~/Dialog/AddMember.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"
+                    .Fmt(OrgId, MemberPanel.ClientID, Select==GroupSelect.Pending);
+            else
                 AddMember.NavigateUrl = "/SearchAdd/Index/{0}?type={2}&from={1}&TB_iframe=true&height=550&width=650"
                     .Fmt(OrgId, MemberPanel.ClientID, Select == GroupSelect.Pending ? "pending" : "org");
             UpdateMembers.NavigateUrl = "~/Dialog/EditMembers.aspx?id={0}&pending={2}&from={1}&TB_iframe=true&height=450&width=600"

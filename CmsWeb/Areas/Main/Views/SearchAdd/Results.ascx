@@ -1,6 +1,12 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchModel>" %>
+<input type="hidden" name="m.type" value="<%=Model.type%>" />
+<input type="hidden" name="m.typeid" value="<%=Model.typeid%>" />
+<input type="hidden" name="m.from" value="<%=Model.from%>" />
+<input type="hidden" name="m.name" value="<%=Model.name%>" />
+<input type="hidden" name="m.dob" value="<%=Model.dob%>" />
+<input type="hidden" name="m.address" value="<%=Model.address%>" />
+<input type="hidden" name="m.phone" value="<%=Model.phone%>" />
 <% 
-    Html.RenderPartial("HiddenModel", Model);
     int n = 0;
     foreach(var p in Model.List)
     {
@@ -39,7 +45,14 @@
 </td>
 </tr>
 <tr><td valign="bottom" align="right">
+<% if (Model.type == "family")
+   { %>
+    <a href="/SearchAdd/FormAbbreviated/<%=Model.typeid %>" class="bt formlink">Add<br />Add New<br />Person</a>
+<% }
+   else
+   { %>
     <a href="/SearchAdd/SearchFamily/" class="bt formlink">Search for<br />Family</a>
+<% } %>
 </td></tr>
 </table>
 

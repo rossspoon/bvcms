@@ -3,13 +3,23 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
-            if (ret == 'close')
-                if (self.parent.RebindMemberGrids)
-                    self.parent.RebindMemberGrids($("#from").val());
-            $(f).html(ret).ready(function() {
-                $('.addrcol').cluetip({ splitTitle: '|' });
-                $('#people > tbody > tr:even').addClass('altrow');
-            });
+            if (ret.close) {
+                switch (ret.how) {
+                    case 'rebindgrids':
+                        if (self.parent.RebindMemberGrids)
+                            self.parent.RebindMemberGrids($("#from").val());
+                        break;
+                    case 'addselected':
+                        if (self.parent.AddSelected)
+                            self.parent.AddSelected(ret.error);
+                        break;
+                }
+            }
+            else
+                $(f).html(ret).ready(function() {
+                    $('.addrcol').cluetip({ splitTitle: '|' });
+                    $('#people > tbody > tr:even').addClass('altrow');
+                });
         });
         return false;
     });
@@ -30,13 +40,13 @@
                 $('#city').val(ret.city);
             }
         }, 'json');
-    }); 
+    });
     $("form input").live("keypress", function(e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;
         }
         return true;
-    });  
+    });
 });
 

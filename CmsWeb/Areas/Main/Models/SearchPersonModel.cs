@@ -174,7 +174,7 @@ namespace CMSWeb.Models
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-            
+
             person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
@@ -191,6 +191,24 @@ namespace CMSWeb.Models
             city = family.CityName;
             state = family.StateCode;
             zip = family.ZipCode;
+        }
+        public string ToolTip
+        {
+            get
+            {
+                return "{0} {1}|Birthday: {2}|c {3}|h {4}|{5}|Gender: {6}|Marital: {7}".Fmt(
+                    goesby ?? first, last,
+                    birthday.FormatDate(),
+                    phone.FmtFone(),
+                    homephone.FmtFone(),
+                    email,
+                    genderdisplay,
+                    marrieddisplay);
+            }
+        }
+        public string CityStateZip
+        {
+            get { return "{0}, {1} {2}".Fmt(city, state, zip); }
         }
     }
 }
