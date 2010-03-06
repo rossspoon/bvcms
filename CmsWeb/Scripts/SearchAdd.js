@@ -23,12 +23,6 @@
         });
         return false;
     });
-    
-    $("form.DisplayEdit").submit(function() {
-        if (!$("#submitit").val())
-            return false;
-        return true;
-    });
     $("#zip").live("blur", function() {
         $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
             if (ret) {
@@ -36,6 +30,13 @@
                 $('#city').val(ret.city);
             }
         }, 'json');
-    });
+    }); 
+    $("form input").live("keypress", function(e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            $('a.default').click();
+            return false;
+        }
+        return true;
+    });  
 });
 

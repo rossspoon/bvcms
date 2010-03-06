@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <td><label for="request">Request Teammate</label></td>
-        <td><%= Html.TextBox("request", Model.request, new { maxlength = 140 })%></td>
+        <td><%= Html.TextBox("request", Model.request, new { maxlength = 100 })%></td>
         <td><%= Html.ValidationMessage("request") %></td>
     </tr>
     <tr>
@@ -50,7 +50,7 @@
     <tr>
         <td><label for="medical">Allergies or<br />
                Medical Problems</label></td>
-        <td><%= Html.TextArea("medical", Model.medical, new { maxlength = 30 })%></td>
+        <td><%= Html.TextArea("medical", Model.medical)%></td>
         <td><%= Html.ValidationMessage("medical")%>Leave blank if none</td>
     </tr>
     <tr>

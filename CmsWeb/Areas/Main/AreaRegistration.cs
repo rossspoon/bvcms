@@ -16,6 +16,7 @@ namespace CMSWeb.Areas.Main
         {
             AddRoute(context, "Checkin");
             AddRoute(context, "SearchPeople");
+            AddRoute(context, "UserPref");
             AddRoute(context, "SearchPeopleDialog");
             AddRoute(context, "SearchAdd");
             AddRoute(context, "TaskList", "Task", "Task/{action}/{id}", "List");

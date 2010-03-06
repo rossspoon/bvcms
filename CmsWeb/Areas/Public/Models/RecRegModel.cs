@@ -17,6 +17,7 @@ namespace CMSWeb.Models
     [Serializable]
     public class RecRegModel
     {
+        public bool ended { get; set; }
         public string first { get; set; }
         public string last { get; set; }
         public string suffix { get; set; }

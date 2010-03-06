@@ -44,6 +44,13 @@ namespace CMSPresenter
             }
             return list;
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> GetStateListUnknown()
+        {
+            var list = GetStateList().ToList();
+            list.Insert(1, new CodeValueItem { Code = "na", Value = "(Unknown)" });
+            return list;
+        }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> LetterStatusCodes()
@@ -1298,7 +1305,7 @@ namespace CMSPresenter
         public static List<CodeValueItem> AddNotSpecified(this IEnumerable<CodeValueItem> q, int value)
         {
             var list = q.ToList();
-            list.Insert(0, new CodeValueItem { Id = value, Value = "(not specified)" });
+            list.Insert(0, new CodeValueItem { Id = value, Code=value.ToString(), Value = "(not specified)" });
             return list;
         }
     }

@@ -1,9 +1,12 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchModel>" %>
-<input type="hidden" name="m.from" value="<%=Model.from%>" />
-<table width="90%">
-<tr>
-<td>
-    <table>
+<% Html.RenderPartial("HiddenModel", Model); %>
+<table width="100%" class="modalPopup">
+<tr><th align="left" colspan="2">Search for Person</th>
+    <td align="right">
+        <a href="/SearchAdd/SearchCancel/" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "quit the dialog"%>"><%=Model.List.Count > 0 ? "go back" : "close"%></a></td>
+</tr>
+<tr><td colspan="2">
+    <table width="100%">
         <tr>
             <td><label for="name">Name</label></td>
             <td><input type="text" name="m.name" value="<%=Model.name%>" /></td>
@@ -21,18 +24,16 @@
             <td><input type="text" name="m.dob" value="<%=Model.dob%>" class="dob" title="" /></td>
         </tr>
         <tr><td></td>
-            <td><a href="/SearchAdd/Results/" class="submitbutton formlink">Search</a></td>
+            <td><a href="/SearchAdd/Results/" class="bt formlink default">Search</a></td>
         </tr>
     </table>
-</td>
-<td align="right" valign="top"><a class="formlink" href="/SearchAdd/SearchCancel/">cancel</a></td>
-</tr>
+</td></tr>
 </table>
 <% 
     int n = 0;
     foreach (var p in Model.List)
     {
         p.index = n++;
-        Html.RenderPartial("Hidden", p);
+        Html.RenderPartial("HiddenPerson", p);
     }
 %>

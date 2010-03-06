@@ -43,6 +43,8 @@ namespace CMSWeb.Areas.Public.Controllers
             var m = new RecRegModel();
             m.divid = id;
 #endif
+            if (league.Division.Organizations.Any(o => o.ClassFilled == true))
+                m.ended = true;
             if (testing == true)
                 ViewData["testing"] = "?testing=true";
             return View(m);
@@ -207,9 +209,9 @@ namespace CMSWeb.Areas.Public.Controllers
 
             var s = ed.Data;
             var m = Util.DeSerialize<RecRegModel>(s);
+            m.Confirm(TransactionID);
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
-            m.Confirm(TransactionID);
             return View(m);
         }
     }

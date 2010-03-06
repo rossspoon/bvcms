@@ -14,7 +14,14 @@ tr.alt
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
     <script src="/Scripts/Event.js?v=5" type="text/javascript"></script>
     <h2><%=ViewData["LeagueName"] %></h2>
+    <% if (Model.ended == true)
+       { %>
+    <h4 style="color:Red">Registration has ended</h4>
+    <% }
+       else
+       { %>
     <form class="DisplayEdit" action="/RecReg/CompleteRegistration/<%=ViewData["divid"] %><%=ViewData["testing"] %>" method="post">
     <% Html.RenderPartial("List", Model); %>
     </form>
+    <% } %>
 </asp:Content>

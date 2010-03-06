@@ -16,6 +16,11 @@ namespace CMSWeb.Models
         {
             option = 1;
         }
+        public CmsData.Organization org
+        {
+            get { return DbUtil.Db.LoadOrganizationById(orgid); }
+        }
+        public int orgid { get; set; }
         public int index { get; set; }
         public string first { get; set; }
         public string last { get; set; }
@@ -39,6 +44,7 @@ namespace CMSWeb.Models
         public bool LastItem { get; set; }
 
         public string ShirtSize { get; set; }
+        public int? nTickets {get; set;}
 
         private DateTime _Birthday;
         public DateTime birthday
@@ -58,6 +64,8 @@ namespace CMSWeb.Models
                     return age < 15 ? 6M : 0M;
                 case "5kfunrun":
                     return age >= 10 ? 25 : 15;
+                case "mobs":
+                    return org.Fee ?? 0;
             }
             return 0;
         }
@@ -137,9 +145,17 @@ namespace CMSWeb.Models
         }
         internal void ValidateModelForComplete(ModelStateDictionary ModelState)
         {
-            if (evtype == "5kfunrun")
-                if (ShirtSize == "0")
-                    ModelState.AddModelError("ShirtSize", "please choose a shirtsize");
+            switch (evtype)
+            {
+                case "5kfunrun":
+                    if (ShirtSize == "0")
+                        ModelState.AddModelError("ShirtSize", "please choose a shirtsize");
+                    break;
+                case "mobs":
+                    if ((nTickets ?? 0) == 0)
+                        ModelState.AddModelError("nTickets", "please enter a number of tickets");
+                    break;
+            }
         }
         public override string ToString()
         {

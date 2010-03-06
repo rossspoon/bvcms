@@ -5,6 +5,7 @@
         <td><label for="first">First Name</label></td>
         <td><%=Model.first %>
         <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" />
+        <input type="hidden" name="list[<%=Model.index%>].orgid" value="<%=Model.orgid%>" />
         <input type="hidden" name="list[<%=Model.index%>].evtype" value="<%=Model.evtype%>" />
         <input type="hidden" name="list[<%=Model.index%>].Found" value="<%=Model.Found%>" />
         <input type="hidden" name="list[<%=Model.index%>].IsNew" value="<%=Model.IsNew%>" />
@@ -44,15 +45,15 @@
         <td><%=Model.email %>
         </td>
     </tr>
-    <% } %>
-    <% if (Model.ShowAddress)
-       { %>
-    <% Html.RenderPartial("AddressDisplay", Model); %>
-    <% } %>
+    <% }
+       if (Model.ShowAddress)
+       { 
+       Html.RenderPartial("AddressDisplay", Model);
+       } %>
 </table>
 </td>
 <td>
-<% if (Model.evtype != "childcare")
+<% if (Model.evtype == "5kfunrun")
    {
         if (Model.LastItem)
         { %>

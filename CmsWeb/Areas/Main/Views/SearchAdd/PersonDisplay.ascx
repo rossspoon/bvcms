@@ -14,12 +14,17 @@
         </tr>
          <tr>
             <td><label for="dob">Date of Birth</label></td>
-            <td><%=Model.birthday.ToShortDateString() %> <span><%=Model.age %></span>
+            <td><%=Model.birthday.FormatDate() %> <span><%=Model.age %></span>
             </td>
         </tr>
         <tr>
-            <td><label for="phone">Phone</label></td>
-            <td><%=Model.phone.FmtFone(Model.homecell) %>
+            <td><label for="phone">Cell Phone</label></td>
+            <td><%=Model.phone.FmtFone() %>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="phone">Home Phone</label></td>
+            <td><%=Model.phone.FmtFone() %>
             </td>
         </tr>
         <tr>
@@ -59,6 +64,6 @@
         </tr>
     </table>
 </td>
-<td align="right" valign="top"><a class="formlink" href="/SearchAdd/PersonCancel/<%=Model.index %>">cancel</a></td>
+<td align="right" valign="top"><a class="formlink" href="/SearchAdd/PersonCancel/<%=Model.index %>" title="remove this person from the list">remove</a></td>
 </tr>
 </table>

@@ -46,6 +46,7 @@ namespace CMSWeb.Areas.Public.Controllers
 #else
             list.Add(new EventModel());
 #endif
+            list[0].orgid = id;
             list[0].evtype = org.RegType;
             SetViewData(id, testing, org, list);
             return View(list);
@@ -114,6 +115,7 @@ namespace CMSWeb.Areas.Public.Controllers
             list.Add(new EventModel());
 #endif
             list[list.Count - 1].evtype = list[0].evtype;
+            list[list.Count - 1].orgid = list[0].orgid;
             return View("list", list);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -124,17 +126,25 @@ namespace CMSWeb.Areas.Public.Controllers
                 return View("list", list);
             return Content("OK");
         }
-        public static decimal ComputeFee(IList<EventModel> list)
+        public static decimal ComputeFee(IList<EventModel> list, int nTickets)
         {
-            return list[0].evtype == "ChildCare" ?
-                            list.Max(i => i.ComputeFee()) :
-                            list.Sum(i => i.ComputeFee());
+            switch (list[0].evtype)
+            {
+                case "ChildCare":
+                    return list.Max(i => i.ComputeFee());
+                case "mobs":
+                    return  nTickets * list[0].org.Fee ?? 0;
+                case "5kfunrun":
+                    return list.Sum(i => i.ComputeFee());
+            }
+            return 0;
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CompleteRegistration(int id, bool? testing, IList<EventModel> list)
+        public ActionResult CompleteRegistration(int id, int? nTickets, string guests, bool? testing, IList<EventModel> list)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
             var m = list[list.Count - 1];
+            m.nTickets = nTickets;
             m.ValidateModelForComplete(ModelState);
             if (!ModelState.IsValid)
             {
@@ -152,7 +162,7 @@ namespace CMSWeb.Areas.Public.Controllers
             {
                 NameOnAccount = p.first + " " + p.last,
                 Address = p.address,
-                Amount = ComputeFee(list),
+                Amount = ComputeFee(list, nTickets ?? 0),
                 City = p.city,
                 Email = p.email,
                 Phone = p.phone.FmtFone(),
@@ -163,11 +173,12 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc1 = p.first + " " + p.last,
                 Misc2 = org.OrganizationName,
                 Misc3 = id.ToString(),
+                Misc4 = guests,
             };
             return View("Payment", pm);
         }
         [ValidateInput(false)]
-        public ActionResult Confirm(int? id, string TransactionID, string Misc3)
+        public ActionResult Confirm(int? id, string TransactionID, string Misc3, string Misc4, decimal? Amount)
         {
             if (!id.HasValue)
                 return View("Unknown");
@@ -175,6 +186,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 return Content("error no transaction");
             var orgid = Misc3.ToInt();
             var org = DbUtil.Db.LoadOrganizationById(orgid);
+            var guests = Misc4;
 
             var s = DbUtil.Db.ExtraDatas.Single(e => e.Id == id).Data;
             var list = Util.DeSerialize<IList<EventModel>>(s);
@@ -187,9 +199,23 @@ namespace CMSWeb.Areas.Public.Controllers
                 var om = OrganizationMember.InsertOrgMembers(orgid,
                     m.person.PeopleId, (int)OrganizationMember.MemberTypeCode.Member, 
                     DateTime.Now, null, false);
-                if (om.UserData.HasValue())
-                    om.UserData += "<br />\n";
-                om.UserData += "TransactionId: " + TransactionID;
+                var reg = m.person.RecRegs.SingleOrDefault();
+                if (reg == null)
+                {
+                    reg = new RecReg();
+                    m.person.RecRegs.Add(reg);
+                }
+                AddToRegistrationComments("-------------", reg);
+                AddToRegistrationComments(m.email, reg);
+                if (guests.HasValue())
+                {
+                    AddToRegistrationComments("Guests: " + guests, reg);
+                    om.Request = guests;
+                }
+                om.Amount = Amount;
+                AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.Value.ToString("C"), TransactionID), reg);
+                AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
+                AddToRegistrationComments(org.OrganizationName, reg);
                 switch(m.evtype)
                 {
                     case "childcare":
@@ -197,22 +223,15 @@ namespace CMSWeb.Areas.Public.Controllers
                         break;
                     case "5kfunrun":
                         om.AddToGroup(m.option == 1 ? "EV: 5K" : "EV: FunRun");
+                        reg.ShirtSize = m.ShirtSize;
                         break;
                 }
                 if (!m.person.HomePhone.HasValue() && m.homecell == "h")
                     m.person.Family.HomePhone = m.phone;
                 if (!m.person.CellPhone.HasValue() && m.homecell == "c")
                     m.person.CellPhone = m.phone;
-
-                var reg = m.person.RecRegs.SingleOrDefault();
-
-                if (reg == null)
-                {
-                    reg = new RecReg();
-                    m.person.RecRegs.Add(reg);
-                }
-                reg.ShirtSize = m.ShirtSize;
             }
+
             DbUtil.Db.SubmitChanges();
 
             var sb = new StringBuilder();
@@ -223,7 +242,8 @@ namespace CMSWeb.Areas.Public.Controllers
             var msg = org.EmailMessage;
             msg = msg.Replace("{first}", p.PreferredName);
             msg = msg.Replace("{number}", list.Count.ToString());
-            msg = msg.Replace("{amount}", ComputeFee(list).ToString("C"));
+            msg = msg.Replace("{tickets}", list[0].nTickets.ToString());
+            msg = msg.Replace("{amount}", (Amount ?? 0).ToString("C"));
             msg = msg.Replace("{participants}", sb.ToString());
 
             var smtp = Util.Smtp();
@@ -239,5 +259,16 @@ namespace CMSWeb.Areas.Public.Controllers
             ViewData["email"] = list[0].email;
             return View();
         }
+        private static void AddToMemberData(string s, OrganizationMember om)
+        {
+            if (om.UserData.HasValue())
+                om.UserData += "\n";
+            om.UserData += s;
+        }
+        private static void AddToRegistrationComments(string s, RecReg rr)
+        {
+            rr.Comments = s + "\n" + rr.Comments;
+        }
+
     }
 }

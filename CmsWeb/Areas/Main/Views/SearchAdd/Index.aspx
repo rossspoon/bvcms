@@ -9,14 +9,8 @@
     <script src="/Scripts/SearchAdd.js" type="text/javascript"></script>
 </head>
 <body>
-    <% 
-        var d = new Dictionary<string, object>();
-        d.Add("class", "DisplayEdit");
-        var rv = ViewData["rv"] as RouteValueDictionary;
-        using (Html.BeginForm("CompleteRegistration", "SearchAdd", rv, FormMethod.Post, d))
-        {
-            Html.RenderPartial("SearchPerson", Model);
-        }
-    %>
+<form action="/SearchAdd/Complete/" method="post" class="DisplayEdit">
+<% Html.RenderPartial("SearchPerson", Model); %>
+</form>
 </body>
 </html>

@@ -26,6 +26,7 @@
     <%=Html.Hidden("Misc1")%>
     <%=Html.Hidden("Misc2") %>
     <%=Html.Hidden("Misc3") %>
+    <%=Html.Hidden("Misc4") %>
     <%=Html.SubmitButton("Submit", "Next") %>
     </form>
 

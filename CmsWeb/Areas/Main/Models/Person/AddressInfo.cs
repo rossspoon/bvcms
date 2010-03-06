@@ -173,5 +173,9 @@ namespace CMSWeb.Models.PersonPage
             }
             DbUtil.Db.SubmitChanges();
         }
+        public static IEnumerable<SelectListItem> StateCodes()
+        {
+            return QueryModel.ConvertToSelect(CodeValueController.GetStateList(), "Code");
+        }
     }
 }

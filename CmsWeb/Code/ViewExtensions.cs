@@ -230,6 +230,25 @@ public static class ViewExtensions
         tb.InnerHtml = sb.ToString();
         return tb.ToString();
     }
+    public static string DropDownList3(this System.Web.Mvc.HtmlHelper helper, string id, string name, IEnumerable<SelectListItem> list, string value)
+    {
+        var tb = new TagBuilder("select");
+        if (id.HasValue())
+            tb.MergeAttribute("id", id);
+        tb.MergeAttribute("name", name);
+        var sb = new StringBuilder();
+        foreach (var o in list)
+        {
+            var ot = new TagBuilder("option");
+            ot.MergeAttribute("value", o.Value);
+            if (value == o.Value)
+                ot.MergeAttribute("selected", "selected");
+            ot.SetInnerText(o.Text);
+            sb.Append(ot.ToString());
+        }
+        tb.InnerHtml = sb.ToString();
+        return tb.ToString();
+    }
     public static string TextBox2(this System.Web.Mvc.HtmlHelper helper, string name, bool visible)
     {
         var tb = new TagBuilder("input");

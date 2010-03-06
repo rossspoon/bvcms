@@ -6,6 +6,7 @@
         <td><label for="first">First Name</label></td>
         <td><input type="text" name="list[<%=Model.index%>].first" value="<%=Model.first%>" />
         <input type="hidden" name="list[<%=Model.index%>].index" value="<%=Model.index%>" />
+        <input type="hidden" name="list[<%=Model.index%>].orgid" value="<%=Model.orgid%>" />
         <input type="hidden" name="list[<%=Model.index%>].evtype" value="<%=Model.evtype%>" />
         <input type="hidden" name="list[<%=Model.index%>].ShowAddress" value="<%=Model.ShowAddress %>" />
         </td>

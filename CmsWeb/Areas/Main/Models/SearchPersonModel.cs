@@ -18,119 +18,179 @@ namespace CMSWeb.Models
         public int index { get; set; }
         public string first { get; set; }
         public string goesby { get; set; }
+        public string middle { get; set; }
         public string last { get; set; }
         public string title { get; set; }
         public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
-        public string homecell { get; set; }
         public string email { get; set; }
+        public int gender { get; set; }
+        public int marital { get; set; }
+
+        public string homephone { get; set; }
         public string address { get; set; }
         public string address2 { get; set; }
         public string city { get; set; }
         public string state { get; set; }
         public string zip { get; set; }
-        public int? gender { get; set; }
-        public int? marital { get; set; }
 
-        public bool? Found { get; set; }
-        public bool IsNew { get; set; }
-        public bool ShowAddress { get; set; }
-        public bool LastItem { get; set; }
-
-        private DateTime _Birthday;
-        public DateTime birthday
+        private DateTime? _Birthday;
+        public DateTime? birthday
         {
             get
             {
-                if (_Birthday == DateTime.MinValue)
-                    Util.DateValid(dob, out _Birthday);
+                DateTime dt;
+                if (!_Birthday.HasValue && dob != "na")
+                    if (Util.DateValid(dob, out dt))
+                        _Birthday = dt;
                 return _Birthday;
             }
         }
-        public int age
+        public int? age
         {
-            get { return birthday.AgeAsOf(Util.Now); }
+            get
+            {
+                if (birthday.HasValue)
+                    return birthday.Value.AgeAsOf(Util.Now);
+                return null;
+            }
         }
         public string genderdisplay
         {
-            get { return cv.GenderCodes().ItemValue(gender); }
+            get { return cv.GenderCodesWithUnspecified().ItemValue(gender); }
         }
         public string marrieddisplay
         {
-            get { return cv.MaritalStatusCodes().ItemValue(marital); }
+            get { return cv.MaritalStatusCodes99().ItemValue(marital); }
         }
-        private int count;
+        public IEnumerable<SelectListItem> TitleCodes()
+        {
+            return QueryModel.ConvertToSelect(cv.TitleCodes(), "Code");
+        }
+        public IEnumerable<SelectListItem> GenderCodes()
+        {
+            return QueryModel.ConvertToSelect(cv.GenderCodesWithUnspecified(), "Id");
+        }
+        public IEnumerable<SelectListItem> MaritalStatuses()
+        {
+            return QueryModel.ConvertToSelect(cv.MaritalStatusCodes99(), "Id");
+        }
+        public IEnumerable<SelectListItem> StateCodes()
+        {
+            return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
+        }
+
+        public bool IsNew
+        {
+            get { return !PeopleId.HasValue; }
+        }
+
+        public int FamilyId { get; set; }
+        private Family _family;
+        public Family family
+        {
+            get
+            {
+                if (_family == null && FamilyId > 0)
+                    _family = DbUtil.Db.Families.Single(f => f.FamilyId == FamilyId);
+                return _family;
+            }
+        }
+        public int? PeopleId { get; set; }
         private Person _Person;
         public Person person
         {
             get
             {
-                if (_Person == null)
-                    _Person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+                if (_Person == null && PeopleId.HasValue)
+                    _Person = DbUtil.Db.LoadPersonById(PeopleId.Value);
                 return _Person;
             }
         }
 
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
-            CMSWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(ModelState, first, last, birthday, phone);
-            if (!phone.HasValue())
-                ModelState.AddModelError("phone", "phone required");
-            if (!email.HasValue() || !Util.ValidEmail(email))
-                ModelState.AddModelError("email", "Please specify a valid email address.");
-            if (!gender.HasValue)
-                ModelState.AddModelError("gender", "Please specify gender");
-            if (!marital.HasValue)
-                ModelState.AddModelError("married", "Please specify marital status");
+            if (!first.HasValue())
+                ModelState.AddModelError("first", "first name required");
 
-            if (index == 0)
-            {
-                if (!address.HasValue())
-                    ModelState.AddModelError("address", "address required.");
-                if (!city.HasValue())
-                    ModelState.AddModelError("city", "city required.");
-                if (zip.GetDigits().Length < 5)
-                    ModelState.AddModelError("zip", "zip needs at least 5 digits.");
-                if (!state.HasValue())
-                    ModelState.AddModelError("state", "state required");
-            }
+            if (!last.HasValue())
+                ModelState.AddModelError("last", "last name required");
+
+            if (!birthday.HasValue && dob != "na")
+                ModelState.AddModelError("dob", "valid birthday (or \"na\")");
+
+            var d = phone.GetDigits().Length;
+            if (d != 7 && d != 10 && phone != "na")
+                ModelState.AddModelError("phone", "7 or 10 digits (or \"na\")");
+
+            if (!Util.ValidEmail(email) && email != "na")
+                ModelState.AddModelError("email", "valid email address (or \"na\")");
+
+            if (gender == 99)
+                ModelState.AddModelError("gender", "specify gender");
+
+            if (marital == 99)
+                ModelState.AddModelError("marital", "specify marital status");
+
+            if (!address.HasValue())
+                ModelState.AddModelError("address", "address required (or \"na\")");
+
+            if (!city.HasValue())
+                ModelState.AddModelError("city", "city required (or \"na\")");
+
+            if (!state.HasValue())
+                ModelState.AddModelError("state", "state required");
+
+            if (zip.GetDigits().Length < 5 && zip != "na")
+                ModelState.AddModelError("zip", "valid zip (or \"na\")");
         }
-        internal void AddPerson(Person p, int entrypoint)
+        internal void AddPerson(int entrypoint)
         {
             Family f;
-            if (p == null)
+            if (FamilyId > 0)
+                f = family;
+            else
                 f = new Family
                 {
+                    HomePhone = homephone.GetDigits(),
                     AddressLineOne = address,
+                    AddressLineTwo = address2,
                     CityName = city,
                     StateCode = state,
                     ZipCode = zip,
                 };
-            else
-                f = p.Family;
 
+            if (goesby != null)
+                goesby = goesby.Trim();
             _Person = Person.Add(f, 30,
-                null, first.Trim(), null, last.Trim(), dob, marital == 20, gender ?? 0,
+                null, first.Trim(), goesby, last.Trim(), dob, marital == 20, gender,
                     (int)Person.OriginCode.Enrollment, entrypoint);
+            person.TitleCode = title;
             person.EmailAddress = email;
-            person.MaritalStatusId = marital.Value;
+            person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
+            person.MiddleName = middle;
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-            switch (homecell)
-            {
-                case "h":
-                    f.HomePhone = phone.GetDigits();
-                    break;
-                case "c":
-                    person.CellPhone = phone.GetDigits();
-                    break;
-            }
+            
+            person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
+            PeopleId = person.PeopleId;
+        }
+
+        internal void LoadFamily()
+        {
+            if (FamilyId < 0)
+                return;
+            homephone = family.HomePhone;
+            address = family.AddressLineOne;
+            address2 = family.AddressLineTwo;
+            city = family.CityName;
+            state = family.StateCode;
+            zip = family.ZipCode;
         }
     }
 }

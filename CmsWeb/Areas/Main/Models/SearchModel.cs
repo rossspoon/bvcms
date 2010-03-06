@@ -20,13 +20,16 @@ namespace CMSWeb.Models
 {
     public class SearchModel
     {
+        public string type { get; set; }
+        public string from { get; set; }
+        public int? typeid { get; set; }
+
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
         {
             get { return list; }
             set { list = value; }
         }
-        public string from { get; set; }
         public string name { get; set; }
         public string phone { get; set; }
         public string address { get; set; }
@@ -39,6 +42,7 @@ namespace CMSWeb.Models
                     select new PeopleInfo
                     {
                         PeopleId = p.PeopleId,
+                        FamilyId = p.FamilyId,
                         Name = p.Name,
                         Address = p.PrimaryAddress,
                         CityStateZip = p.PrimaryCity + ", " + p.PrimaryState + " " + p.PrimaryZip.Substring(0, 5),
@@ -56,7 +60,7 @@ namespace CMSWeb.Models
 
         public IEnumerable<PeopleInfo> PeopleList()
         {
-            return PeopleList(ApplySearch().Take(10));
+            return PeopleList(ApplySearch().Take(Showcount));
         }
 
         private int? _count;
@@ -68,6 +72,11 @@ namespace CMSWeb.Models
                     _count = ApplySearch().Count();
                 return _count.Value;
             }
+        }
+        private const int SHOWCOUNT = 20;
+        public int Showcount
+        {
+            get { return Count > SHOWCOUNT ? SHOWCOUNT : Count; }
         }
 
         private IQueryable<Person> query = null;
@@ -141,6 +150,7 @@ namespace CMSWeb.Models
         public class PeopleInfo
         {
             public int PeopleId { get; set; }
+            public int FamilyId { get; set; }
             public string Name { get; set; }
             public string Address { get; set; }
             public string CityStateZip { get; set; }
