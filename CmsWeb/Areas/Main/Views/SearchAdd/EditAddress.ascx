@@ -6,12 +6,13 @@
     </tr>
     <tr>
         <td><label for="address">Address</label></td>
-        <td><input type="text" name="m.list[<%=Model.index%>].address" value="<%=Model.address%>" />
-        <td><%= Html.ValidationMessage("address")%></td>
+        <td><input id="address" type="text" name="m.list[<%=Model.index%>].address" value="<%=Model.address%>" /></td>
+        <td><a id="verifyaddress" href="/SearchAdd/VerifyAddress/" class="bt">Verify</a>
+        <%= Html.ValidationMessage("address")%></td>
     </tr>
     <tr>
         <td><label for="address2">Address line 2</label></td>
-        <td><input type="text" name="m.list[<%=Model.index%>].address2" value="<%=Model.address2%>" />
+        <td><input id="address2" type="text" name="m.list[<%=Model.index%>].address2" value="<%=Model.address2%>" />
         <td><%= Html.ValidationMessage("address2")%></td>
     </tr>
     <tr>

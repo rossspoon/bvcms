@@ -32,7 +32,7 @@
     <% foreach (var c in ViewData.Model.PeopleList())
        { %>
     <tr>
-        <td><a href="/SearchAdd/Select/<%=c.PeopleId %>" class="namecol"><%=c.Name%></a></td>
+        <td><a href="/SearchAdd/Select/<%=c.PeopleId %>" class="formlink"><%=c.Name%></a></td>
         <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
         <td><%=c.CityStateZip%></td>
         <td><%=c.Age%></td>

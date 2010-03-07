@@ -163,17 +163,19 @@ namespace CMSWeb.Models
 
             if (goesby != null)
                 goesby = goesby.Trim();
-            _Person = Person.Add(f, 30,
-                null, first.Trim(), goesby, last.Trim(), dob, marital == 20, gender,
+            var position = (int)Family.PositionInFamily.Child;
+            if (age >= 18)
+                position = (int)Family.PositionInFamily.PrimaryAdult;
+            _Person = Person.Add(f, position,
+                null, first.Trim(), goesby, last.Trim(), dob, false, gender,
                     (int)Person.OriginCode.Enrollment, entrypoint);
-            person.TitleCode = title;
+            if (title.HasValue())
+                person.TitleCode = title;
             person.EmailAddress = email;
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
-            if (person.Age >= 18)
-                person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
 
             person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();
@@ -196,8 +198,10 @@ namespace CMSWeb.Models
         {
             get
             {
-                return "{0} {1}|Birthday: {2}|c {3}|h {4}|{5}|Gender: {6}|Marital: {7}".Fmt(
+                return "{0} {1}|{2}|{3}|Birthday: {4}|c {5}|h {6}|{7}|Gender: {8}|Marital: {9}".Fmt(
                     goesby ?? first, last,
+                    address,
+                    CityStateZip,
                     birthday.FormatDate(),
                     phone.FmtFone(),
                     homephone.FmtFone(),

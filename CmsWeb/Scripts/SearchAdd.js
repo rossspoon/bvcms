@@ -17,20 +17,31 @@
             }
             else
                 $(f).html(ret).ready(function() {
-                    $('.addrcol').cluetip({ splitTitle: '|' });
+                    $('.addrcol').cluetip({
+                        splitTitle: '|',
+                        hoverIntent: {
+                            sensitivity: 3,
+                            interval: 50,
+                            timeout: 0
+                        }
+                    });
                     $('#people > tbody > tr:even').addClass('altrow');
                 });
         });
         return false;
     });
-    $("a.namecol").live('click', function() {
+    $("#verifyaddress").live("click", function() {
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
-            $(f).html(ret).ready(function() {
-                $('#people > tbody > tr:even').addClass('altrow');
-            });
-        });
+            if (confirm(ret.address + "\nUse this Address?")) {
+                $('#address', f).val(ret.Line1);
+                $('#address2', f).val(ret.Line2);
+                $('#city', f).val(ret.City);
+                $('#state', f).val(ret.State);
+                $('#zip', f).val(ret.Zip);
+            }
+        }, "json");
         return false;
     });
     $("#zip").live("blur", function() {

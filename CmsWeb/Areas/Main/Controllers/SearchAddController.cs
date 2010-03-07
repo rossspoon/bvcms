@@ -20,7 +20,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Index(int? id, string type, string from)
         {
             var m = new SearchModel { typeid = id, type = type, from = from };
-#if DEBUG
+#if DEBUG2
             m.name = "Da Car";
             m.address = "";
 #endif
@@ -34,7 +34,6 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ResultsFamily(SearchModel m)
         {
-            m.dob = "";
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -119,7 +118,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 marital = 99,
                 state = "na"
             };
-#if DEBUG
+#if DEBUG2
             p.title = "Mr.";
             p.first = "David5";
             p.last = "Carroll";
@@ -158,7 +157,7 @@ namespace CMSWeb.Areas.Main.Controllers
             if (id >= 0)
                 id = -1;
             var p = NewPerson(id, m);
-#if DEBUG
+#if DEBUG2
             p.address = "235 Riveredge Cv";
             p.city = "Cordova";
             p.state = "TN";
@@ -303,6 +302,13 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var m in list2)
                     m.FamilyId = p.person.FamilyId;
             }
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult VerifyAddress(SearchModel m)
+        {
+            var p = m.List[m.List.Count - 1];
+            var r = CMSPresenter.PersonController.LookupAddress(p.address, p.address2, p.city, p.state, p.zip);
+            return Json(r);
         }
     }
 }

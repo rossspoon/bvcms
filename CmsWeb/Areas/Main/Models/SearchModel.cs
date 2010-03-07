@@ -127,7 +127,7 @@ namespace CMSWeb.Models
                             || p.WorkPhone.Contains(phone)
                             select p;
             }
-            if (dob.HasValue())
+            if (dob.HasValue() && type != "family" && type != "relatedfamily")
             {
                 DateTime dt;
                 if (DateTime.TryParse(dob, out dt))

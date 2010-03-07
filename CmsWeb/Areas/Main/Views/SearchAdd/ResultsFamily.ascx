@@ -31,7 +31,7 @@
     <% foreach (var c in ViewData.Model.PeopleList())
        { %>
     <tr>
-        <td><a href="/SearchAdd/FormAbbreviated/<%=c.FamilyId %>" class="namecol formlink"><%=c.Name%></a></td>
+        <td><a href="/SearchAdd/FormAbbreviated/<%=c.FamilyId %>" class="formlink"><%=c.Name%></a></td>
         <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
         <td><%=c.CityStateZip%></td>
         <td><%=c.Age%></td>
