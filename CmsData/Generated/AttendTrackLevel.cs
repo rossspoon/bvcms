@@ -126,7 +126,7 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_ORGANIZATIONS_TBL_AttendTrackLevel", Storage="_Organizations", OtherKey="AttendTrkLevelId")]
+   		[Association(Name="FK_Organizations_AttendTrackLevel", Storage="_Organizations", OtherKey="AttendTrkLevelId")]
    		public EntitySet< Organization> Organizations
    		{
    		    get { return this._Organizations; }

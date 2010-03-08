@@ -109,6 +109,12 @@ namespace CmsData
 		
 		private decimal? _Fee;
 		
+		private string _Description;
+		
+		private DateTime? _BirthDayStart;
+		
+		private DateTime? _BirthDayEnd;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -135,13 +141,13 @@ namespace CmsData
     	
 		private EntityRef< Organization> _ParentOrg;
 		
+		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
+		
 		private EntityRef< Campu> _Campu;
 		
 		private EntityRef< Division> _Division;
 		
 		private EntityRef< Gender> _Gender;
-		
-		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
 		private EntityRef< EntryPoint> _EntryPoint;
 		
@@ -292,6 +298,15 @@ namespace CmsData
 		partial void OnFeeChanging(decimal? value);
 		partial void OnFeeChanged();
 		
+		partial void OnDescriptionChanging(string value);
+		partial void OnDescriptionChanged();
+		
+		partial void OnBirthDayStartChanging(DateTime? value);
+		partial void OnBirthDayStartChanged();
+		
+		partial void OnBirthDayEndChanging(DateTime? value);
+		partial void OnBirthDayEndChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -321,13 +336,13 @@ namespace CmsData
 			
 			this._ParentOrg = default(EntityRef< Organization>); 
 			
+			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
+			
 			this._Campu = default(EntityRef< Campu>); 
 			
 			this._Division = default(EntityRef< Division>); 
 			
 			this._Gender = default(EntityRef< Gender>); 
-			
-			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
 			
@@ -1372,6 +1387,72 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar")]
+		public string Description
+		{
+			get { return this._Description; }
+
+			set
+			{
+				if (this._Description != value)
+				{
+				
+                    this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BirthDayStart", UpdateCheck=UpdateCheck.Never, Storage="_BirthDayStart", DbType="datetime")]
+		public DateTime? BirthDayStart
+		{
+			get { return this._BirthDayStart; }
+
+			set
+			{
+				if (this._BirthDayStart != value)
+				{
+				
+                    this.OnBirthDayStartChanging(value);
+					this.SendPropertyChanging();
+					this._BirthDayStart = value;
+					this.SendPropertyChanged("BirthDayStart");
+					this.OnBirthDayStartChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BirthDayEnd", UpdateCheck=UpdateCheck.Never, Storage="_BirthDayEnd", DbType="datetime")]
+		public DateTime? BirthDayEnd
+		{
+			get { return this._BirthDayEnd; }
+
+			set
+			{
+				if (this._BirthDayEnd != value)
+				{
+				
+                    this.OnBirthDayEndChanging(value);
+					this.SendPropertyChanging();
+					this._BirthDayEnd = value;
+					this.SendPropertyChanged("BirthDayEnd");
+					this.OnBirthDayEndChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1532,6 +1613,48 @@ namespace CmsData
 		}
 
 		
+		[Association(Name="FK_Organizations_AttendTrackLevel", Storage="_AttendTrackLevel", ThisKey="AttendTrkLevelId", IsForeignKey=true)]
+		public AttendTrackLevel AttendTrackLevel
+		{
+			get { return this._AttendTrackLevel.Entity; }
+
+			set
+			{
+				AttendTrackLevel previousValue = this._AttendTrackLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._AttendTrackLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._AttendTrackLevel.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._AttendTrackLevel.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._AttendTrkLevelId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._AttendTrkLevelId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("AttendTrackLevel");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_Organizations_Campus", Storage="_Campu", ThisKey="CampusId", IsForeignKey=true)]
 		public Campu Campu
 		{
@@ -1651,48 +1774,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Gender");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_ORGANIZATIONS_TBL_AttendTrackLevel", Storage="_AttendTrackLevel", ThisKey="AttendTrkLevelId", IsForeignKey=true)]
-		public AttendTrackLevel AttendTrackLevel
-		{
-			get { return this._AttendTrackLevel.Entity; }
-
-			set
-			{
-				AttendTrackLevel previousValue = this._AttendTrackLevel.Entity;
-				if (((previousValue != value) 
-							|| (this._AttendTrackLevel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._AttendTrackLevel.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._AttendTrackLevel.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._AttendTrkLevelId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._AttendTrkLevelId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("AttendTrackLevel");
 				}
 
 			}

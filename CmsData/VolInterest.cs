@@ -94,6 +94,8 @@ namespace CmsData
                     {
                         var sun = Sunday(m2, year);
                         sun = sun.AddDays((week - 1) * 7);
+                        if (sun.Month != m2)
+                            continue;
                         if (hour != null)
                             CreateMeetingRegister(sun, hour, pid, year);
                         else

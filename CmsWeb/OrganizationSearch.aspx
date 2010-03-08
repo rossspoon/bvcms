@@ -254,7 +254,7 @@
     </PagerTemplate>
 </asp:GridView>
 <asp:HiddenField ID="ActiveTag" runat="server" />
-
+<div>
     <asp:LinkButton ID="ExportExcel" runat="server" OnClick="ExportExcel_Click" Text="Export to Excel" /> &nbsp;|
     <asp:LinkButton ID="RollsheetRpt" runat="server" OnClientClick="OpenRollsheet(); return false;" Text="Create Roll Sheet(s)"/> &nbsp;|
     <asp:HyperLink ID="MeetingsLink" runat="server">Meetings</asp:HyperLink> |
@@ -262,6 +262,7 @@
     <asp:LinkButton ID="LinkButton2" runat="server" OnClientClick="ViewReport('/Reports/OrgLeaders/'); return false;">Leaders</asp:LinkButton>&nbsp;|
     <asp:LinkButton ID="LinkButton5" runat="server" OnClientClick="ViewReport('/Reports/ClassList/'); return false;">Class List</asp:LinkButton>&nbsp;|
     <a id="PopupAttDetail" href="#">Meetings Attendance</a>
+</div>
 &nbsp;<asp:UpdatePanel ID="RollsheetPanel" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:LinkButton ID="TriggerRollsheetPopup" style="display:none" runat="server">LinkButton</asp:LinkButton>            

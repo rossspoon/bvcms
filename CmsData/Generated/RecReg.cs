@@ -320,7 +320,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MedicalDescription", UpdateCheck=UpdateCheck.Never, Storage="_MedicalDescription", DbType="varchar(300)")]
+		[Column(Name="MedicalDescription", UpdateCheck=UpdateCheck.Never, Storage="_MedicalDescription", DbType="varchar(1000)")]
 		public string MedicalDescription
 		{
 			get { return this._MedicalDescription; }

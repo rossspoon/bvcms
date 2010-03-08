@@ -334,7 +334,31 @@ table#leg td
     border: solid 1px #DDD;
     padding: 5px 
 }
-
+a.bt {
+  border-radius:            3px;
+  -moz-border-radius:       3px;
+  -webkit-border-radius:    3px; 
+  
+  display:                  inline-block;
+  padding:                  4px 6px 2px;
+  .padding-bottom:          4px; /* IE hack to fix spacing issue. */
+  
+  text-decoration:          none;
+  text-align:               center;
+  
+  background:               #f9f9f9;
+  color:                    black;
+  
+  border:                   1px solid;
+    border-top-color:       #ccc;
+    border-left-color:      #ccc;
+    border-right-color:     #bbb;
+    border-bottom-color:    #bbb;
+}
+  
+  a.bt:hover { 
+    border-color:           #99ccff;  
+  }
 
 
 

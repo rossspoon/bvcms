@@ -75,8 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\OrgSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchAddController.cs" />
-    <Compile Include="Areas\Main\Controllers\SearchPeopleDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
@@ -89,7 +89,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\SearchPersonModel.cs" />
-    <Compile Include="Areas\Main\Models\SearchPeopleDialogModel.cs" />
+    <Compile Include="Areas\Main\Models\OrgSearchModel.cs" />
     <Compile Include="Areas\Main\Models\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\AddressInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendHistoryModel.cs" />
@@ -642,13 +642,6 @@
     <Compile Include="OrganizationSearch.aspx.designer.cs">
       <DependentUpon>OrganizationSearch.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Person.aspx.cs">
-      <DependentUpon>Person.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Person.aspx.designer.cs">
-      <DependentUpon>Person.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurgeProgress.aspx.cs">
       <DependentUpon>PurgeProgress.aspx</DependentUpon>
@@ -907,7 +900,6 @@
     <Content Include="NoRemoteAccess.htm" />
     <Content Include="Organization.aspx" />
     <Content Include="OrganizationSearch.aspx" />
-    <Content Include="Person.aspx" />
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
     <Content Include="Search.aspx" />
@@ -1232,6 +1224,9 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.ascx" />
+    <Content Include="Areas\Main\Views\OrgSearch\Index.aspx" />
+    <Content Include="Areas\Main\Views\OrgSearch\Results.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormAbbreviated.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\EditAddress.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormFull.ascx" />
@@ -1244,8 +1239,6 @@
     <Content Include="Areas\Main\Views\SearchAdd\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchAdd\List.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\PersonDisplay.ascx" />
-    <Content Include="Areas\Main\Views\SearchPeopleDialog\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeopleDialog\Rows.aspx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Move.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.ascx" />
     <Content Include="Areas\Main\Views\OrgMemberDialog\Display.ascx" />
@@ -1273,8 +1266,6 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Areas\Manage\Views\Display\LeagueContent.aspx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
@@ -2107,6 +2098,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\OrgSearch.js" />
     <Content Include="Scripts\SearchAdd.js" />
     <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
