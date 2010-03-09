@@ -195,7 +195,7 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0);
+                    AddPerson(p, m.List, (int)Person.OriginCode.Visit, 0);
                     var ce = new Contactee
                     {
                         ContactId = id,
@@ -213,7 +213,7 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0);
+                    AddPerson(p, m.List, 0, 0);
                     var ce = new Contactor
                     {
                         ContactId = id,
@@ -231,7 +231,7 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0);
+                    AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
                     if (p.person.Age < 18)
                         p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
                     else if (p.family.People.Count(per =>
@@ -251,7 +251,7 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0);
+                    AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
                     FamilyController.AddRelatedFamily(id, p.PeopleId.Value);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -265,7 +265,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 var org = DbUtil.Db.LoadOrganizationById(id);
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, org.EntryPointId ?? 0);
+                    AddPerson(p, m.List, (int)Person.OriginCode.Enrollment, org.EntryPointId ?? 0);
                     OrganizationMember.InsertOrgMembers(id, p.PeopleId.Value, 220, Util.Now, null, pending);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -280,7 +280,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 var meeting = DbUtil.Db.Meetings.SingleOrDefault(me => me.MeetingId == id);
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, meeting.Organization.EntryPointId ?? 0);
+                    AddPerson(p, m.List, (int)Person.OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
                     if (err.HasValue())
                         sb.AppendLine(err);
@@ -289,10 +289,10 @@ namespace CMSWeb.Areas.Main.Controllers
             }
             return Json(new { close = true, how = "addselected", error = sb.ToString() });
         }
-        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int EntryPoint)
+        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int Origin, int EntryPoint)
         {
             if (p.IsNew)
-                p.AddPerson(EntryPoint);
+                p.AddPerson(Origin, EntryPoint);
             if (p.FamilyId < 0)
             {
                 var q = from m in list

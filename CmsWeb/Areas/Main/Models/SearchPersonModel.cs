@@ -145,7 +145,7 @@ namespace CMSWeb.Models
             if (zip.GetDigits().Length < 5 && zip != "na")
                 ModelState.AddModelError("zip", "valid zip (or \"na\")");
         }
-        internal void AddPerson(int entrypoint)
+        internal void AddPerson(int origin, int entrypoint)
         {
             Family f;
             if (FamilyId > 0)

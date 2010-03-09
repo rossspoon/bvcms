@@ -87,6 +87,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
+    <Compile Include="Areas\Main\Models\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\OrgSearchModel.cs" />

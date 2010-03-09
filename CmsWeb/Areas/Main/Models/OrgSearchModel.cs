@@ -66,6 +66,32 @@ namespace CMSWeb.Models
                     };
             return q;
         }
+        public IEnumerable<OrganizationInfoExcel> OrganizationExcelList(DateTime MeetingDate)
+        {
+            var q = from o in DbUtil.Db.Organizations select o;
+            q = ApplySearch();
+            var q2 = from o in q
+                     let LookbackDt = MeetingDate.AddDays(-7 * o.RollSheetVisitorWks ?? 3)
+                     select new OrganizationInfoExcel
+                     {
+                         OrgId = o.OrganizationId,
+                         Status = o.OrganizationStatus.Description,
+                         Name = o.OrganizationName,
+                         Leader = o.LeaderName,
+                         Members = o.MemberCount ?? 0,
+                         Tracking = o.AttendTrackLevel.Description,
+                         Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
+                         FirstMeeting = o.FirstMeetingDate.FormatDate(),
+                         MeetingTime = o.MeetingTime,
+                         Location = o.Location,
+                     };
+            return q2;
+        }
+        public IEnumerable<OrganizationInfoExcel> OrganizationExcelList()
+        {
+            return OrganizationExcelList(Util.Now.Date);
+        }
+
         private int TagSubDiv(string s)
         {
             if (!s.HasValue())
@@ -138,7 +164,7 @@ namespace CMSWeb.Models
                         break;
                     case "Division":
                         query = from o in query
-                                orderby o.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
+                                orderby o.Division.Name,
                                 o.OrganizationName
                                 select o;
                         break;
@@ -157,18 +183,18 @@ namespace CMSWeb.Models
                                 orderby o.ScheduleId
                                 select o;
                         break;
-                    case "SelfCheckIn":
+                    case "Self CheckIn":
                         query = from o in query
                                 orderby (o.CanSelfCheckin ?? false)
                                 select o;
                         break;
-                    case "LeaderName":
+                    case "Leader":
                         query = from o in query
                                 orderby o.LeaderName,
                                 o.OrganizationName
                                 select o;
                         break;
-                    case "MemberCount":
+                    case "Members":
                         query = from o in query
                                 orderby o.MemberCount,
                                 o.OrganizationName
@@ -197,7 +223,7 @@ namespace CMSWeb.Models
                         break;
                     case "Division":
                         query = from o in query
-                                orderby o.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name descending,
+                                orderby o.Division.Name descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
@@ -216,18 +242,18 @@ namespace CMSWeb.Models
                                 orderby o.ScheduleId descending
                                 select o;
                         break;
-                    case "SelfCheckIn":
+                    case "Self CheckIn":
                         query = from o in query
                                 orderby (o.CanSelfCheckin ?? false) descending
                                 select o;
                         break;
-                    case "LeaderName":
+                    case "Leader":
                         query = from o in query
                                 orderby o.LeaderName descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
-                    case "MemberCount":
+                    case "Members":
                         query = from o in query
                                 orderby o.MemberCount descending,
                                 o.OrganizationName descending
@@ -249,36 +275,6 @@ namespace CMSWeb.Models
             return query;
         }
 
-        public IEnumerable<SelectListItem> UserTags()
-        {
-            var Db = DbUtil.Db;
-            Db.TagCurrent(); // make sure the current tag exists
-            int userPeopleId = Util.UserPeopleId.Value;
-            var q1 = from t in Db.Tags
-                     where t.PeopleId == userPeopleId
-                     where t.TypeId == DbUtil.TagTypeId_Personal
-                     orderby t.Name
-                     select new SelectListItem
-                     {
-                         Value = t.Id.ToString(),
-                         Text = t.Name
-                     };
-            var q2 = from t in Db.Tags
-                     where t.PeopleId != userPeopleId
-                     where t.TagShares.Any(ts => ts.PeopleId == userPeopleId)
-                     where t.TypeId == DbUtil.TagTypeId_Personal
-                     orderby t.PersonOwner.Name2, t.Name
-                     let op = Db.People.SingleOrDefault(p => p.PeopleId == t.PeopleId)
-                     select new SelectListItem
-                     {
-                         Value = t.Id.ToString(),
-                         Text = op.Name + ":" + t.Name
-                     };
-            var q = q1.Union(q2);
-            var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            return list;
-        }
         public IEnumerable<SelectListItem> StatusIds()
         {
             var q = from s in DbUtil.Db.OrganizationStatuses
@@ -392,6 +388,10 @@ namespace CMSWeb.Models
             public bool HasTag { get; set; }
             public int? VisitorCount { get; set; }
             public bool AllowSelfCheckIn { get; set; }
+            public string ToolTip
+            {
+                get { return ""; }
+            }
         }
         public class OrganizationInfoExcel
         {

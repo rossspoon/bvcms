@@ -6,6 +6,7 @@
 <table width="100%" class="modalPopup">
 <tr><th align="left">Search for Family</th>
     <td align="right">
+        <a href="#" class="clear">clear</a>
         <a href="/SearchAdd/SearchFamilyCancel/" class="formlink" title="back to person search">go back</a></td>
 </tr>
 <tr><td colspan="2">

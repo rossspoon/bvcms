@@ -43,8 +43,11 @@
     <a class="formlink" href="/SearchAdd/SearchFamily/" title="back to family search">go back</a>
 </td>
 </tr>
+<% if (Model.CanAdd)
+   { %>
 <tr><td valign="bottom" align="right">
     <a href="/SearchAdd/FormFull/" class="bt formlink">Add<br />New Family</a>
 </td></tr>
+<% } %>
 </table>
 

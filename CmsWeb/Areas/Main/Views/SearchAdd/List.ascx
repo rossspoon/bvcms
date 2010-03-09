@@ -36,5 +36,8 @@
 <p> 
 <a href="/SearchAdd/Complete/<%=Model.typeid %>" class="bt formlink default">Commit and Add</a>
 or <a href="/SearchAdd/SearchPerson/" class="bt formlink">Another Search</a>
-or <a href="/SearchAdd/FormAbbreviated/<%=p.FamilyId %>" class="bt formlink">Add to Last Family</a></td>
+<% if (Model.CanAdd)
+   { %>
+or <a href="/SearchAdd/FormAbbreviated/<%=p.FamilyId %>" class="bt formlink">Add to Last Family</a>
+<% } %>
 </p> 

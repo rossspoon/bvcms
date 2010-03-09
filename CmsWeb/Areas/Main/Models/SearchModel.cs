@@ -21,6 +21,8 @@ namespace CMSWeb.Models
     public class SearchModel
     {
         public string type { get; set; }
+        private string[] noaddtypes = { "relatedfamily", "contactor" };
+        public bool CanAdd { get { return !noaddtypes.Contains(type); } }
         public string from { get; set; }
         public int? typeid { get; set; }
 

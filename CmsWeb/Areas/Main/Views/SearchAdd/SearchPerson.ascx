@@ -5,6 +5,7 @@
 <table width="100%" class="modalPopup">
 <tr><th align="left" colspan="2">Search for Person</th>
     <td align="right">
+        <a href="#" class="clear">clear</a>
         <a href="/SearchAdd/SearchCancel/" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "quit the dialog"%>"><%=Model.List.Count > 0 ? "go back" : "close"%></a></td>
 </tr>
 <tr><td colspan="2">

@@ -30,6 +30,11 @@
         });
         return false;
     });
+    $('a.clear').live('click', function() {
+        var f = $(this).closest('form');
+        $(f).find(':input').val('');
+        return false;
+    });
     $("#verifyaddress").live("click", function() {
         var f = $(this).closest('form');
         var q = f.serialize();

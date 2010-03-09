@@ -43,6 +43,17 @@
         $.getTable();
         return false;
     });
+    $('a.clear').click(function() {
+        var f = $(this).closest('form');
+        $(f).find(':input').each(function() {
+            $(this).val('');
+        });
+        $(f).find('select').each(function() {
+            $(this).val("0");
+        });
+        $('#DivisionId').html('<option value="0">(select a program)</option>');
+        return $.getTable();
+    });
     $.maxZIndex = $.fn.maxZIndex = function(opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
@@ -99,28 +110,29 @@
             alert('must choose division');
             return false;
         }
-        var sid = $('#ScheduleId').val();
-        var nam = $('#Name').val();
-        var d = $('#MeetingDate').val();
-        var t = $('#MeetingTime').val();
         var args = "?div=" + did +
-               "&schedule=" + sid +
-               "&name=" + nam +
-               "&dt=" + d + " " + t;
+               "&schedule=" + $('#ScheduleId').val() +
+               "&name=" + $('#Name').val() +
+               "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         window.open("/Reports/Rollsheet/" + args);
+    });
+    $('#ExportExcel').click(function() {
+        $('div.dialog').dialog('close');
+        var args = "?prog=" + $('#ProgramId').val() +
+               "&div=" + $('#DivisionId').val() +
+               "&schedule=" + $('#ScheduleId').val() +
+               "&status=" + $('#StatusId').val() +
+               "&campus=" + $('#CampusId').val() +
+               "&name=" + $('#Name').val();
+        window.open("/OrgSearch/ExportExcel/" + args);
     });
     $('#Meetings').click(function() {
         $('div.dialog').dialog('close');
-        var did = $('#DivisionId').val();
-        var pid = $('#ProgramId').val();
-        var sid = $('#ScheduleId').val();
-        var nam = $('#Name').val();
-        var cid = $('#CampusId').val();
-        var args = "?progid=" + pid +
-               "&divid=" + did +
-               "&schedid=" + sid +
-               "&campusid=" + cid +
-               "&name=" + nam;
+        var args = "?progid=" + $('#ProgramId').val() +
+               "&divid=" + $('#DivisionId').val() +
+               "&schedid=" + $('#ScheduleId').val() +
+               "&campusid=" + $('#CampusId').val() +
+               "&name=" + $('#Name').val();
         window.open("/Meetings.aspx" + args);
     });
     $('#AttDetail').click(function() {
@@ -130,15 +142,11 @@
             alert('must choose division');
             return false;
         }
-        var sid = $('#ScheduleId').val();
-        var nam = $('#Name').val();
-        var d1 = $('#MeetingDate1').val();
-        var d2 = $('#MeetingDate2').val();
         var args = "?divid=" + did +
-               "&schedid=" + sid +
-               "&name=" + nam +
-               "&dt1=" + d1 +
-               "&dt2=" + d2;
+               "&schedid=" + $('#ScheduleId').val() +
+               "&name=" + $('#Name').val() +
+               "&dt1=" + $('#MeetingDate1').val() +
+               "&dt2=" + $('#MeetingDate2').val();
         window.open("/Report/AttendanceDetail.aspx" + args);
     });
     $('#Roster').click(function() {
@@ -147,9 +155,19 @@
             alert('must choose division');
             return false;
         }
-        var sid = $('#ScheduleId').val();
-        var args = "?div=" + did + "&schedule=" + sid;
+        var args = "?div=" + did + "&schedule=" + $('#ScheduleId').val();
         window.open("/Reports/Roster/" + args);
+    });
+    $('a.ViewReport').click(function() {
+        var did = $('#DivisionId').val();
+        if (did == '0') {
+            alert('must choose division');
+            return false;
+        }
+        var args = "?div=" + did +
+            "&schedule=" + $('#ScheduleId').val() +
+            "&name=" + $('#Name').val();
+        window.open($(this).attr("href") + args);
     });
 });
 
@@ -160,11 +178,3 @@ function ToggleTagCallback(e) {
     $('#' + result.ControlId).text(result.HasTag ? "Remove" : "Add");
 }
 
-function ViewReport(url) {
-    if ('<%=OrgDivisions.SelectedValue %>' == '0')
-        alert('must choose division');
-    else {
-        var args = "?div=<%=OrgDivisions.SelectedValue %>&schedule=<%=Schedule.SelectedValue %>&name=<%=NameSearch.Text %>";
-        window.open(url + args);
-    }
-}

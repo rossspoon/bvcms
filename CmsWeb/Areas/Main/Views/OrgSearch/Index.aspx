@@ -8,14 +8,14 @@
     <script src="/Scripts/OrgSearch.js" type="text/javascript"></script>
     <h2>Organization Search</h2>
     <form>
-    <a href="#">New Search (clear)</a>
+    <a href="/OrgSearch/Results?clear=true" class="clear">New Search (clear)</a>
     <table width="100%">
         <tr>
             <td>
                 <table class="modalPopup">
                     <tr>
                         <th>Name:</th>
-                        <td><input id="Name" type="text" name="Name" title="OrganizationId, Location or part of Name (organization, leader, division)" /></td>
+                        <td><%=Html.TextBox("Name", Model.Name, new { title="OrganizationId, Location or part of Name (organization, leader, division)"}) %></td>
                         <th>Status:</th>
                         <td><%=Html.DropDownList("StatusId", Model.StatusIds()) %></td>
                     </tr>
@@ -87,15 +87,15 @@
         </tr>
     </table>
     <hr />
-    <table id="results" width="100%"></table>
+    <% Html.RenderPartial("Results", Model); %>
     </form>
     <div>
         <a id="ExportExcel" href="#">Export to Excel</a> | 
         <a id="Rollsheet" href='#'>Create Roll Sheet(s)</a> | 
         <a id="Meetings" href="#">Meetings</a> | 
         <a id="Roster" href="#">Roster</a> | 
-        <a id="OrgLeaders" href="#">Leaders</a> | 
-        <a id="ClassList" href="#">Class List</a> | 
+        <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a> | 
+        <a class="ViewReport" href="/Reports/ClassList/">Class List</a> | 
         <a id="AttDetail" href='#'>Meetings Attendance</a>
     </div>
     <div id="PanelRollsheet" class="modalDiv dialog" style="display: none">

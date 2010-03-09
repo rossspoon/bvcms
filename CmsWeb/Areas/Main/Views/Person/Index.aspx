@@ -183,8 +183,13 @@
                         <input type="checkbox" <%=Model.vol.Leader ? "checked='checked'" : "" %> disabled="disabled" />
                         Leadership (background check)
                     </td>
-                    <td><a href="/AppReview/VolunteerApp.aspx?id=<%=p.PeopleId %>"
-                        <%=User.IsInRole("ApplicationReview") ? "disabled='disabled'" : "" %>>Volunteer Application Review</a></td>
+                    <td>
+<% if (User.IsInRole("ApplicationReview"))
+   { %>
+                    <a href="/AppReview/VolunteerApp.aspx?id=<%=p.PeopleId %>">
+                    Volunteer Application Review</a>
+<% } %>
+                    </td>
                 </tr>
                 <tr>
                     <th>Approval Date:</th>

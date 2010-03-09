@@ -1,6 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgSearchModel>" %>
 <table id="results">
 <thead>
+    <tr><td colspan="8">
+<% Html.RenderPartial("Pager2", Model); %>
+    </td></tr>
     <tr>
         <th align="left"><a href="#" class="sortable">Division</a></th>
         <th align="left"><a href="#" class="sortable">Name</a></th>
@@ -17,7 +20,7 @@
    { %>
     <tr>
         <td><span title="<%=o.DivisionId %>"><%=o.DivisionName %></span></td>
-        <td><a href="/Organization.aspx?id=<%=o.OrganizationId %>"><%=o.OrganizationName %></a></td>
+        <td><a href="/Organization.aspx?id=<%=o.OrganizationId %>" title="<%=o.ToolTip %>"><%=o.OrganizationName %></a></td>
         <td><a href="/Person/Index/<%=o.LeaderId %>"><%=o.LeaderName %></a></td>
         <td align="right"><%=o.MemberCount %></td>
         <td><%=o.Schedule %></td>
