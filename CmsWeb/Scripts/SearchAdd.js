@@ -17,22 +17,27 @@
             }
             else
                 $(f).html(ret).ready(function() {
-                    $('.addrcol').cluetip({
-                        splitTitle: '|',
-                        hoverIntent: {
-                            sensitivity: 3,
-                            interval: 50,
-                            timeout: 0
-                        }
-                    });
+                    $(".addrcol").tooltip({
+                        showBody: "|"
+                    })
+                    //$('.addrcol').cluetip({
+                    //                        splitTitle: '|',
+                    //                        hoverIntent: {
+                    //                            sensitivity: 7,
+                    //                            interval: 50,
+                    //                            timeout: 0
+                    //                        }
+                    //                    });
                     $('#people > tbody > tr:even').addClass('altrow');
                 });
         });
         return false;
     });
     $('a.clear').live('click', function() {
-        var f = $(this).closest('form');
-        $(f).find(':input').val('');
+        $("#name").val('');
+        $("#phone").val('');
+        $("#address").val('');
+        $("#dob").val('');
         return false;
     });
     $("#verifyaddress").live("click", function() {

@@ -11,11 +11,14 @@ namespace CMSWeb
 {
     public partial class Default : System.Web.UI.Page
     {
+        private const string STR_UseOldDialog = "Use <span style='color:DarkGray'>OLD</span> SearchAdd Dialog";
+        private const string STR_UseNewDialog = "Use <span style='color:Red'>NEW</span> SearchAdd Dialog";
         protected void Page_Load(object sender, EventArgs e)
         {
             BindBirthdays();
             BindMyInvolvements();
             BindNews();
+            UseOldNewDialog.Text = DbUtil.Db.UserPreference("olddialog").ToBool()? STR_UseNewDialog : STR_UseOldDialog;
         }
         private void BindBirthdays()
         {
@@ -69,6 +72,20 @@ namespace CMSWeb
             }
             else
                 grdMyInvolvement.Visible = false;
+        }
+        protected void UseDialog_Click(object sender, EventArgs e)
+        {
+            if (DbUtil.Db.UserPreference("olddialog").ToBool())
+            {
+                DbUtil.Db.SetUserPreference("olddialog", "false");
+                UseOldNewDialog.Text = STR_UseOldDialog;
+            }
+            else
+            {
+                DbUtil.Db.SetUserPreference("olddialog", "true");
+                UseOldNewDialog.Text = STR_UseNewDialog;
+            }
+            Response.Redirect("/");
         }
         private void BindNews()
         {

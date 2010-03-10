@@ -4,15 +4,17 @@
     <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery.jeditable.mini.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>
     <script src="/Scripts/OrgSearch.js" type="text/javascript"></script>
-    <h2>Organization Search</h2>
     <form>
-    <a href="/OrgSearch/Results?clear=true" class="clear">New Search (clear)</a>
-    <table width="100%">
+    <table>
         <tr>
             <td>
                 <table class="modalPopup">
+                <tr><td><a href="/OrgSearch/Results?clear=true" class="clear">clear</a></td>
+                    <td align="right" colspan="3"><a href="/OrgSearch/UseOldOrgSearch">Use Old Org Search</a></td>
+                    </tr>
                     <tr>
                         <th>Name:</th>
                         <td><%=Html.TextBox("Name", Model.Name, new { title="OrganizationId, Location or part of Name (organization, leader, division)"}) %></td>
@@ -40,50 +42,26 @@
                     </tr>
                 </table>
             </td>
-            <%--                <td id="ManageOrgTags" runat="server">
+            <td>
+<% if (User.IsInRole("OrgTagger"))
+   { %>
                 <table>
                     <tr>
-                        <th colspan="2">
-                            Manage Divisions
-                        </th>
+                        <th colspan="2">Manage Divisions</th>
                     </tr>
                     <tr>
-                        <th align="right" valign="top">
-                            Change Active Division:
-                        </th>
-                        <td>
-                            <asp:DropDownList ID="Tags" runat="server" DataTextField="Text" DataSourceID="OrgTagData2"
-                                DataValueField="Value" AutoPostBack="True" OnSelectedIndexChanged="Tags_SelectedIndexChanged">
-                            </asp:DropDownList><br />
-                            <input type="checkbox" id="maindiv" /> make this the main Division when assigning.<br />
-                            <cc1:LinkButtonConfirm ID="DeleteTag" runat="server" OnClick="DeleteTag_Click" Confirm="Are you sure?">Delete Division</cc1:LinkButtonConfirm><br />
-							<asp:Label ID="progdivid" runat="server"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th align="right">
-                            New Division Name:
-                        </th>
-                        <td>
-                            <asp:TextBox ID="TagName" runat="server" Width="225px"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="TagNameValidator" runat="server" ErrorMessage="DivName is Required"
-                                ControlToValidate="TagName" ValidationGroup="TagName"></asp:RequiredFieldValidator>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th align="right">
-                            &nbsp;
-                        </th>
-                        <td>
-                            <asp:LinkButton ID="MakeNewTag" runat="server" OnClick="MakeNewTag_Click" ValidationGroup="TagName">Make New 
-    Division</asp:LinkButton>&nbsp;|
-                            <asp:LinkButton ID="RenameTag" runat="server" OnClick="RenameTag_Click" ValidationGroup="TagName">Rename Division</asp:LinkButton>
+                        <th align="right">Tag Division:</th>
+                        <td><%=Html.DropDownList("TagProgramId", Model.ProgramIds())%><br />
+                            <select id="TagDiv">
+                                <option value="0">(select a program)</option>
+                            </select><br />
+                            <input type="checkbox" id="maindiv" /> make this the main Division when tagging<br />
                         </td>
                     </tr>
                 </table>
-                &nbsp;
+<% } %>
             </td>
---%>
+
         </tr>
     </table>
     <hr />

@@ -5,28 +5,30 @@
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
     <tr>
-        <th align="left"><a href="#" class="sortable">Division</a></th>
+        <th><a href="#" class="sortable">ID</a></th>
         <th align="left"><a href="#" class="sortable">Name</a></th>
         <th align="left"><a href="#" class="sortable">Leader</a></th>
         <th align="right"><a href="#" class="sortable">Members</a></th>
         <th align="left"><a href="#" class="sortable">Schedule</a></th>
-        <th align="left"><a href="#" class="sortable">Location</a></th>
         <th><a href="#" class="sortable">Self CheckIn</a></th>
-        <th><a href="#" class="sortable">DivTag</a></th>
+        <th><a href="#" class="sortable">BDay Start</a></th>
+        <th><a href="#" class="sortable">BDay End</a></th>
+        <th><a href="#" class="sortable">Tag</a></th>
     </tr>
 </thead>
 <tbody>
 <% foreach (var o in Model.OrganizationList())
    { %>
     <tr>
-        <td><span title="<%=o.DivisionId %>"><%=o.DivisionName %></span></td>
-        <td><a href="/Organization.aspx?id=<%=o.OrganizationId %>" title="<%=o.ToolTip %>"><%=o.OrganizationName %></a></td>
+        <td class="tip" title="<%=o.ToolTip %>"><img alt="group" src="/content/images/group.png" /></td>
+        <td><a href="/Organization.aspx?id=<%=o.Id %>"><%=o.OrganizationName %></a></td>
         <td><a href="/Person/Index/<%=o.LeaderId %>"><%=o.LeaderName %></a></td>
         <td align="right"><%=o.MemberCount %></td>
         <td><%=o.Schedule %></td>
-        <td><%=o.Location %></td>
-        <td><%=o.AllowSelfCheckIn ? "yes" : "" %></td>
-        <td><a href="#" class="taguntag" title="Add to/Remove from Active Division"><%=o.HasTag ? "Remove" : "Add" %></a></td>
+        <td><span id='ck-<%=o.Id %>' class='yesno'><%=o.AllowSelfCheckIn ? "yes" : "no" %></span></td>
+        <td><span id='bs-<%=o.Id %>' class='bday'><%=o.BDayStart%></span></td>
+        <td><span id='be-<%=o.Id %>' class='bday'><%=o.BDayEnd%></span></td>
+        <td><a id='tt-<%=o.Id %>' href="/OrgSearch/ToggleTag/<%=o.Id %>" class="taguntag" title="Add to/Remove from Tag Division"><%=o.Tag %></a></td>
     </tr>
 <% } %>
 </tbody>

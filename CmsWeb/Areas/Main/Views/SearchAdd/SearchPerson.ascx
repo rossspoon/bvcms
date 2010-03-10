@@ -12,19 +12,19 @@
     <table width="100%">
         <tr>
             <td><label for="name">Name</label></td>
-            <td><input type="text" name="m.name" value="<%=Model.name%>" /></td>
+            <td><input id="name" type="text" name="m.name" value="<%=Model.name%>" /></td>
         </tr>
         <tr>
             <td><label for="phone">Communication</label></td>
-            <td><input type="text" name="m.phone" value="<%=Model.phone%>" /></td>
+            <td><input id="phone" type="text" name="m.phone" value="<%=Model.phone%>" /></td>
         </tr>
         <tr>
             <td><label for="address">Address</label></td>
-            <td><input type="text" name="m.address" value="<%=Model.address%>" /></td>
+            <td><input id="address" type="text" name="m.address" value="<%=Model.address%>" /></td>
         </tr>
          <tr>
             <td><label for="dob">Date of Birth</label></td>
-            <td><input type="text" name="m.dob" value="<%=Model.dob%>" class="dob" title="" /></td>
+            <td><input id="dob" type="text" name="m.dob" value="<%=Model.dob%>" class="dob" title="" /></td>
         </tr>
         <tr><td></td>
             <td><a href="/SearchAdd/Results/" class="bt formlink default">Search</a></td>

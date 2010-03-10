@@ -115,6 +115,8 @@ namespace CmsData
 		
 		private DateTime? _BirthDayEnd;
 		
+		private DateTime? _VisitorDate;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -306,6 +308,9 @@ namespace CmsData
 		
 		partial void OnBirthDayEndChanging(DateTime? value);
 		partial void OnBirthDayEndChanged();
+		
+		partial void OnVisitorDateChanging(DateTime? value);
+		partial void OnVisitorDateChanged();
 		
     #endregion
 		public Organization()
@@ -1446,6 +1451,28 @@ namespace CmsData
 					this._BirthDayEnd = value;
 					this.SendPropertyChanged("BirthDayEnd");
 					this.OnBirthDayEndChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="VisitorDate", UpdateCheck=UpdateCheck.Never, Storage="_VisitorDate", DbType="datetime", IsDbGenerated=true)]
+		public DateTime? VisitorDate
+		{
+			get { return this._VisitorDate; }
+
+			set
+			{
+				if (this._VisitorDate != value)
+				{
+				
+                    this.OnVisitorDateChanging(value);
+					this.SendPropertyChanging();
+					this._VisitorDate = value;
+					this.SendPropertyChanged("VisitorDate");
+					this.OnVisitorDateChanged();
 				}
 
 			}

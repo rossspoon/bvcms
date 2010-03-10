@@ -63,7 +63,14 @@
                     class='clickSelect'><%=i.ProgId == null? "click to set" : i.Program%></span>
             </td>
             <td><%=i.NoZero(i.OrgCount) %></td>
-            <td><a href="/OrganizationSearch.aspx?div=<%=i.Id%>&progid=<%=i.ProgId%>"><%=i.NoZero(i.DivOrgsCount) %></a></td>
+<% if (DbUtil.Db.UserPreference("neworgsearch").ToBool())
+   { %>
+            <td><a href="/OrgSearch/Index/?div=<%=i.Id%>&progid=<%=i.ProgId%>"><%=i.NoZero(i.DivOrgsCount)%></a></td>
+<% }
+   else
+   { %>            
+            <td><a href="/OrganizationSearch.aspx?div=<%=i.Id%>&progid=<%=i.ProgId%>"><%=i.NoZero(i.DivOrgsCount)%></a></td>
+<% } %>
             <td><%=i.NoZero(i.RecAgeDivCount) %></td>
             <td><%=i.NoZero(i.RecRegCount) %></td>
             <td><%=i.NoZero(i.ToPromotionsCount) %></td>

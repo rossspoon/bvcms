@@ -1225,6 +1225,7 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgSearch\TagDivIds.ascx" />
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.ascx" />
     <Content Include="Areas\Main\Views\OrgSearch\Index.aspx" />
     <Content Include="Areas\Main\Views\OrgSearch\Results.ascx" />

@@ -84,10 +84,10 @@
                     </ul>
                 </li>
                 <li class="headlink">
-                    <asp:HyperLink ID="OrgLink" NavigateUrl="~/OrganizationSearch.aspx" runat="server">Organization</asp:HyperLink>
+                    <asp:HyperLink ID="OrgLink" runat="server">Organization</asp:HyperLink>
                     <ul>
                         <li>
-                            <asp:HyperLink ID="OrgSearchLink" NavigateUrl="~/OrganizationSearch.aspx" runat="server">Search</asp:HyperLink></li>
+                            <asp:HyperLink ID="OrgSearchLink" runat="server">Search</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="HyperLink15" NavigateUrl="~/EmailAttendanceNotices.aspx" runat="server">Email Attendance Notices</asp:HyperLink></li>
                         <li>

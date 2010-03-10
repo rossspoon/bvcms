@@ -16,6 +16,7 @@ using System.Web.UI.HtmlControls;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
+using CmsData;
 
 public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchParameters
 {

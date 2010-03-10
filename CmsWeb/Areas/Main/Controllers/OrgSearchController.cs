@@ -19,12 +19,20 @@ namespace CMSWeb.Areas.Main.Controllers
             public int? Sched { get; set; }
             public int? Status { get; set; }
         }
-        private const string STR_OrgSearch = "OrgSearch";
-        public ActionResult Index()
+        private const string STR_OrgSearch = "OrgSearch2";
+        public ActionResult Index(int? div, int? progid)
         {
             NoCache();
             var m = new OrgSearchModel();
-            if (Session[STR_OrgSearch].IsNotNull())
+
+            if (div.HasValue && progid.HasValue)
+            {
+                m.ProgramId = progid;
+                m.TagProgramId = progid;
+                m.DivisionId = div;
+                m.TagDiv = div;
+            }
+            else if (Session[STR_OrgSearch].IsNotNull())
             {
                 var os = Session[STR_OrgSearch] as OrgSearchInfo;
                 m.Name = os.Name;
@@ -43,6 +51,11 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DivisionIds(int id)
+        {
+            return View(OrgSearchModel.DivisionIds(id));
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult TagDivIds(int id)
         {
             return View(OrgSearchModel.DivisionIds(id));
         }
@@ -77,6 +90,54 @@ namespace CMSWeb.Areas.Main.Controllers
             Response.Cache.SetValidUntilExpires(true);
             Response.Cache.SetSlidingExpiration(true);
             Response.Cache.SetETagFromFileDependencies();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Edit(string id, string value)
+        {
+            var a = id.Split('-');
+            var c = new ContentResult();
+            c.Content = value;
+            var org = DbUtil.Db.LoadOrganizationById(a[1].ToInt());
+            if (org == null)
+                return c;
+            switch (a[0])
+            {
+                case "bs":
+                    org.BirthDayStart = value.ToDate();
+                    break;
+                case "be":
+                    org.BirthDayEnd = value.ToDate();
+                    break;
+                case "ck":
+                    org.CanSelfCheckin = value == "yes";
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            return c;
+        }
+        [Serializable]
+        public class ToggleTagReturn
+        {
+            public string value;
+            public string element;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult ToggleTag(int id, int tagdiv, string element, bool main)
+        {
+            var Db = DbUtil.Db;
+            var organization = Db.LoadOrganizationById(id);
+            var r = new ToggleTagReturn 
+            { 
+                element = element,
+                value = organization.ToggleTag(tagdiv, main) ? "Remove" : "Add"
+            };
+            Db.SubmitChanges();
+            return Json(r);
+        }
+        public ActionResult UseOldOrgSearch()
+        {
+            DbUtil.Db.SetUserPreference("neworgsearch", "false");
+            return Redirect("/OrganizationSearch.aspx");
         }
     }
 }

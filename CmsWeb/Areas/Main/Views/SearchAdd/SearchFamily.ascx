@@ -13,15 +13,15 @@
     <table width="100%">
         <tr>
             <td><label for="name">Last Name</label></td>
-            <td><input type="text" name="m.name" value="<%=Model.name%>" /></td>
+            <td><input id="name" type="text" name="m.name" value="<%=Model.name%>" /></td>
         </tr>
         <tr>
             <td><label for="phone">Communication</label></td>
-            <td><input type="text" name="m.phone" value="<%=Model.phone%>" /></td>
+            <td><input id="phone" type="text" name="m.phone" value="<%=Model.phone%>" /></td>
         </tr>
         <tr>
             <td><label for="address">Address</label></td>
-            <td><input type="text" name="m.address" value="<%=Model.address%>" /></td>
+            <td><input id="address" type="text" name="m.address" value="<%=Model.address%>" /></td>
         </tr>
         <tr><td></td>
             <td><a href="/SearchAdd/ResultsFamily/" class="bt formlink default">Search</a></td>

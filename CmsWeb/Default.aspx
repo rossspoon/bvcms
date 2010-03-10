@@ -109,6 +109,7 @@
                             </td>
                         </tr>
                     </table>
+                    <p><asp:LinkButton ID="UseOldNewDialog" runat="server" OnClick="UseDialog_Click"></asp:LinkButton></p>
                 </td>
                 <td>
                     <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">

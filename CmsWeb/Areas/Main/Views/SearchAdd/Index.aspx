@@ -3,10 +3,12 @@
 <head id="Head1" runat="server">
     <title></title>
     <link href="/Content/Dialog.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+<%--    <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+--%>    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />    
     <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.hoverIntent.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>    
+<%--    <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>    
+--%>    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
     <script src="/Scripts/SearchAdd.js" type="text/javascript"></script>
 </head>
 <body>

@@ -78,7 +78,7 @@ namespace CMSWeb.Models
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
                 where a.Organization.CampusId == campus || campus == null
-                where a.AttendanceFlag && a.MeetingDate > threeweeksago
+                where a.AttendanceFlag && a.MeetingDate > a.Organization.VisitorDate
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
                 where Hour1 != null

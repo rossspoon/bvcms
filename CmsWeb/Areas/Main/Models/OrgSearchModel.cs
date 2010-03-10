@@ -23,6 +23,8 @@ namespace CMSWeb.Models
         public string Name { get; set; }
         public int? ProgramId { get; set; }
         public int? DivisionId { get; set; }
+        public int? TagProgramId { get; set; }
+        public int? TagDiv { get; set; }
         public int? ScheduleId { get; set; }
         public int? CampusId { get; set; }
         public int? StatusId { get; set; }
@@ -44,11 +46,10 @@ namespace CMSWeb.Models
         }
         public IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query)
         {
-            var tagid = TagSubDiv(tagstr);
             var q = from o in query
                     select new OrganizationInfo
                     {
-                        OrganizationId = o.OrganizationId,
+                        Id = o.OrganizationId,
                         OrganizationStatus = o.OrganizationStatusId,
                         OrganizationName = o.OrganizationName,
                         LeaderName = o.LeaderName,
@@ -61,8 +62,10 @@ namespace CMSWeb.Models
                         LastMeetingDate = o.LastMeetingDate.FormatDate(),
                         MeetingTime = o.MeetingTime,
                         Location = o.Location,
-                        HasTag = o.DivOrgs.Any(ot => ot.DivId == tagid),
                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
+                        BDayStart = o.BirthDayStart.FormatDate(),
+                        BDayEnd = o.BirthDayEnd.FormatDate(),
+                        Tag = TagDiv == null ? "" : o.DivOrgs.Any(ot => ot.DivId == TagDiv) ? "Remove" : "Add",
                     };
             return q;
         }
@@ -370,7 +373,7 @@ namespace CMSWeb.Models
 
         public class OrganizationInfo
         {
-            public int OrganizationId { get; set; }
+            public int Id { get; set; }
             public int? OrganizationStatus { get; set; }
             public string OrganizationName { get; set; }
             public string LeaderName { get; set; }
@@ -385,12 +388,28 @@ namespace CMSWeb.Models
             public DateTime? MeetingTime { get; set; }
             public string Schedule { get { return "{0:ddd h:mm tt}".Fmt(MeetingTime); } }
             public string Location { get; set; }
-            public bool HasTag { get; set; }
+            public string Tag { get; set; }
             public int? VisitorCount { get; set; }
             public bool AllowSelfCheckIn { get; set; }
+            public string BDayStart { get; set; }
+            public string BDayEnd { get; set; }
             public string ToolTip
             {
-                get { return ""; }
+                get
+                {
+                    return "{0} ({1})|Division: {2} ({3})|Leader: {4}|Tracking: {5}|First Meeting: {6}|Last Meeting: {7}|Schedule: {8}|Location: {9}".Fmt(
+                               OrganizationName,
+                               Id,
+                               DivisionName,
+                               DivisionId,
+                               LeaderName,
+                               AttendanceTrackingLevel,
+                               FirstMeetingDate,
+                               LastMeetingDate,
+                               Schedule,
+                               Location
+                               );
+                }
             }
         }
         public class OrganizationInfoExcel

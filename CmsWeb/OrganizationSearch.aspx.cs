@@ -143,6 +143,11 @@ namespace CMSWeb
             Session.Remove(STR_OrgSearch);
             Response.Redirect("~/OrganizationSearch.aspx");
         }
+        protected void UseNewOrgSearch_Click(object sender, EventArgs e)
+        {
+            DbUtil.Db.SetUserPreference("neworgsearch", "true");
+            Response.Redirect("/OrgSearch/");
+        }
 
         protected void MakeNewTag_Click(object sender, EventArgs e)
         {

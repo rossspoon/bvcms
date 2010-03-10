@@ -18,19 +18,74 @@
         var q = f.serialize();
         $.post($('#search').attr('href'), q, function(ret) {
             $('#results').html(ret).ready(function() {
-                $('.addrcol').cluetip({
-                    splitTitle: '|',
-                    hoverIntent: {
-                        sensitivity: 3,
-                        interval: 50,
-                        timeout: 0
-                    }
-                });
-                $('#results > tbody > tr:even').addClass('alt');
+                $.fmtTable();
             });
         });
         return false;
     }
+    $.editable.addInputType('datepicker', {
+        element: function(settings, original) {
+            var input = $('<input>');
+            if (settings.width != 'none') { input.width(settings.width); }
+            if (settings.height != 'none') { input.height(settings.height); }
+            input.attr('autocomplete', 'off');
+            $(this).append(input);
+            return (input);
+        },
+        plugin: function(settings, original) {
+            var form = this;
+            settings.onblur = 'ignore';
+            $(this).find('input').datepicker().bind('click', function() {
+                $(this).datepicker('show');
+                return false;
+            }).bind('dateSelected', function(e, selectedDate, $td) {
+                $(form).submit();
+            });
+        }
+    });
+    $.editable.addInputType("checkbox", {
+        element: function(settings, original) {
+            var input = $('<input type="checkbox">');
+            $(this).append(input);
+            $(input).click(function() {
+                var value = $(input).attr("checked") ? 'yes' : 'no';
+                $(input).val(value);
+            });
+            return (input);
+        },
+        content: function(string, settings, original) {
+            var checked = string == "yes" ? 1 : 0;
+            var input = $(':input:first', this);
+            $(input).attr("checked", checked);
+            var value = $(input).attr("checked") ? 'yes' : 'no';
+            $(input).val(value);
+        }
+    });
+    $.fmtTable = function() {
+        $('.tip').cluetip({
+            splitTitle: '|',
+            hoverIntent: {
+                sensitivity: 3,
+                interval: 50,
+                timeout: 0
+            }
+        });
+        $('#results > tbody > tr:even').addClass('alt');
+        $(".bday").editable('/OrgSearch/Edit/', {
+            type: 'datepicker',
+            tooltip: 'click to edit...',
+            placeholder: 'na',
+            event: 'click',
+            submit: 'OK',
+            cancel: 'Cancel',
+            width: '100px'
+        });
+        $('.yesno').editable('/OrgSearch/Edit', {
+            type: 'checkbox',
+            submit: 'OK'
+        });
+    }
+    $.fmtTable();
     $('#results > thead a.sortable').live('click', function() {
         var newsort = $(this).text();
         var sort = $("#Sort");
@@ -82,6 +137,14 @@
         $.post('/OrgSearch/DivisionIds/' + $('#ProgramId').val(), null, function(ret) {
             $('#DivisionId').replaceWith(ret);
         });
+    });
+    $('#TagProgramId').change(function() {
+        $.post('/OrgSearch/TagDivIds/' + $('#TagProgramId').val(), null, function(ret) {
+            $('#TagDiv').replaceWith(ret);
+        });
+    });
+    $('#TagDiv').live('change', function() {
+        $.getTable();
     });
     $("form input").live("keypress", function(e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
@@ -169,12 +232,16 @@
             "&name=" + $('#Name').val();
         window.open($(this).attr("href") + args);
     });
+    $('a.taguntag').live('click', function() {
+        $.post($(this).attr('href'), {
+            tagdiv: $('#TagDiv').val(),
+            element: $(this).attr('id'),
+            main: $('#maindiv').attr("checked")
+        }, function(ret) {
+            $('#' + ret.element).text(ret.value);
+        }, "json");
+        return false;
+    });
 });
 
-function ToggleTagCallback(e) {
-    if (e == "")
-        return;
-    var result = eval('(' + e + ')');
-    $('#' + result.ControlId).text(result.HasTag ? "Remove" : "Add");
-}
 
