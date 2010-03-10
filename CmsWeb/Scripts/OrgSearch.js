@@ -71,7 +71,7 @@
             }
         });
         $('#results > tbody > tr:even').addClass('alt');
-        $(".bday").editable('/OrgSearch/Edit/', {
+        $("table.edit .bday").editable('/OrgSearch/Edit/', {
             type: 'datepicker',
             tooltip: 'click to edit...',
             placeholder: 'na',
@@ -80,7 +80,7 @@
             cancel: 'Cancel',
             width: '100px'
         });
-        $('.yesno').editable('/OrgSearch/Edit', {
+        $('table.edit .yesno').editable('/OrgSearch/Edit', {
             type: 'checkbox',
             submit: 'OK'
         });

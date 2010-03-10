@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgSearchModel>" %>
-<table id="results">
+<table id="results" <%=Page.User.IsInRole("Edit") ? "class='edit'" : "" %>>
 <thead>
     <tr><td colspan="8">
 <% Html.RenderPartial("Pager2", Model); %>
