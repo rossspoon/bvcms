@@ -16,7 +16,7 @@ using CMSWeb.Models;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class SearchPeopleController : CmsController
+    public class SearchPeopleController : CmsStaffController
     {
         public ActionResult Index(int? origin, int? entrypoint)
         {

@@ -18,7 +18,7 @@ using CmsData;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class TaskController : CmsController
+    public class TaskController : CmsStaffController
     {
         public TaskController()
         {

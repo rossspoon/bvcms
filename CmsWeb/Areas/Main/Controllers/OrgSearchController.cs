@@ -9,7 +9,7 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class OrgSearchController : Controller
+    public class OrgSearchController : CmsStaffController
     {
         class OrgSearchInfo
         {

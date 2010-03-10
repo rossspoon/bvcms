@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class QueryBuilderController : CmsController
+    public class QueryBuilderController : CmsStaffController
     {
         public ActionResult NewQuery()
         {

@@ -13,7 +13,7 @@ using System.Web.UI;
 
 namespace CMSWeb.Areas.Manage.Controllers
 {
-    public class PromotionController : CmsController
+    public class PromotionController : CmsStaffController
     {
         public ActionResult Index()
         {

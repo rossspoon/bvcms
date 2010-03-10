@@ -10,7 +10,7 @@ using CMSWeb.Models;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class OrgMemberDialogController : Controller
+    public class OrgMemberDialogController : CmsStaffController
     {
         public ActionResult Index(int id, int pid, string from)
         {

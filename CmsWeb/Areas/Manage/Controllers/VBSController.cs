@@ -14,7 +14,7 @@ using CmsData;
 
 namespace CMSWeb.Areas.Manage.Controllers
 {
-    public class VBSController : CmsController
+    public class VBSController : CmsStaffController
     {
         public ActionResult Index()
         {

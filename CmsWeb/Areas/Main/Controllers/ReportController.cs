@@ -7,7 +7,7 @@ using CMSWeb.Areas.Main.Models.Report;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class ReportsController : Controller
+    public class ReportsController : CmsStaffController
     {
         //
         // GET: /Main/Report/

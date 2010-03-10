@@ -14,7 +14,7 @@ using System.Net.Mail;
 
 namespace CMSWeb.Areas.Manage.Controllers
 {
-    public class HomeController : CmsController
+    public class HomeController : CmsStaffController
     {
         public ActionResult Index()
         {

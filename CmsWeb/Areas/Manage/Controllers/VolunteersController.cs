@@ -21,7 +21,7 @@ using System.Text;
 
 namespace CMSWeb.Areas.Manage.Controllers
 {
-    public class VolunteersController : CmsController
+    public class VolunteersController : CmsStaffController
     {
         public VolunteersController()
         {

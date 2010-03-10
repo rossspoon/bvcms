@@ -8,7 +8,7 @@ using CmsData;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class UserPrefController : Controller
+    public class UserPrefController : CmsStaffController
     {
         //
         // GET: /Main/UserPref/

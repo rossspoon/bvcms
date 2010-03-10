@@ -8,7 +8,7 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Public.Controllers
 {
-    public class OptOutController : Controller
+    public class OptOutController : CmsController
     {
         public ActionResult UnSubscribe(string id, string optout, string cancel)
         {

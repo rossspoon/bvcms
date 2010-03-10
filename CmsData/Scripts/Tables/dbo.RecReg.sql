@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[RecReg]
 [ShirtSize] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [MedAllergy] [bit] NULL,
 [email] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[MedicalDescription] [varchar] (300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[MedicalDescription] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [fname] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [mname] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [coaching] [bit] NULL,
@@ -21,6 +21,7 @@ CREATE TABLE [dbo].[RecReg]
 [policy] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Comments] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 )
+
 
 ALTER TABLE [dbo].[RecReg] ADD
 CONSTRAINT [FK_RecReg_People] FOREIGN KEY ([PeopleId]) REFERENCES [dbo].[People] ([PeopleId])

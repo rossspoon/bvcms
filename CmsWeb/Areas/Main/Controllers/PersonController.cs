@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class PersonController : Controller
+    public class PersonController : CmsStaffController
     {
         public ActionResult Index(int? id)
         {

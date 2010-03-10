@@ -14,7 +14,7 @@ using System.Web.Routing;
 
 namespace CMSWeb.Areas.Public.Controllers
 {
-    public class EventController : Controller
+    public class EventController : CmsController
     {
         private void SetViewData(int id, bool? testing, CmsData.Organization org, IList<EventModel> list)
         {

@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -7,7 +8,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE PurgeAllButOrg(@orgid INT)
+CREATE PROCEDURE [dbo].[PurgeAllButOrg](@orgid INT)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -181,11 +182,6 @@ FROM dbo.MemberTags mt
 JOIN dbo.Organizations o ON mt.OrgId = o.OrganizationId
 WHERE NOT EXISTS(SELECT NULL FROM dbo.OrganizationMembers WHERE OrganizationId = o.OrganizationId)
 
-DELETE dbo.RecAgeDivision
-FROM dbo.RecAgeDivision r
-JOIN dbo.Organizations o ON r.OrgId = o.OrganizationId
-WHERE NOT EXISTS(SELECT NULL FROM dbo.OrganizationMembers WHERE OrganizationId = o.OrganizationId)
-
 DELETE dbo.Organizations
 FROM dbo.Organizations o
 WHERE NOT EXISTS(SELECT NULL FROM dbo.OrganizationMembers WHERE OrganizationId = o.OrganizationId)
@@ -198,7 +194,7 @@ DELETE dbo.Division
 FROM dbo.Division d
 WHERE NOT EXISTS(SELECT NULL FROM dbo.DivOrg WHERE DivId = d.Id)
 AND NOT EXISTS(SELECT NULL FROM dbo.Organizations WHERE DivisionId = d.Id)
-AND NOT EXISTS(SELECT NULL FROM dbo.RecReg WHERE DivId = d.Id)
+AND NOT EXISTS(SELECT NULL FROM dbo.RecLeague WHERE DivId = d.Id)
 
 DELETE dbo.Program
 FROM dbo.Program p

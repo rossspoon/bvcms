@@ -46,8 +46,14 @@ CREATE TABLE [dbo].[Organizations]
 [Instructions] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [GenderId] [int] NULL,
 [Fee] [money] NULL,
-[Description] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[Description] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[BirthDayStart] [datetime] NULL,
+[BirthDayEnd] [datetime] NULL,
+[VisitorDate] AS (dateadd(day, -(7)*[RollSheetVisitorWks],getdate()))
 )
+
+ALTER TABLE [dbo].[Organizations] ADD
+CONSTRAINT [FK_Organizations_AttendTrackLevel] FOREIGN KEY ([AttendTrkLevelId]) REFERENCES [lookup].[AttendTrackLevel] ([Id])
 
 
 ALTER TABLE [dbo].[Organizations] ADD
@@ -133,8 +139,7 @@ ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [FK_Organizations_Campus] FOREI
 GO
 ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [FK_Organizations_Division] FOREIGN KEY ([DivisionId]) REFERENCES [dbo].[Division] ([Id])
 GO
-ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [FK_ORGANIZATIONS_TBL_AttendTrackLevel] FOREIGN KEY ([AttendTrkLevelId]) REFERENCES [lookup].[AttendTrackLevel] ([Id])
-GO
+
 ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [FK_ORGANIZATIONS_TBL_EntryPoint] FOREIGN KEY ([EntryPointId]) REFERENCES [lookup].[EntryPoint] ([Id])
 GO
 ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [FK_ORGANIZATIONS_TBL_OrganizationStatus] FOREIGN KEY ([OrganizationStatusId]) REFERENCES [lookup].[OrganizationStatus] ([Id])

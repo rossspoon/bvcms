@@ -10,7 +10,7 @@ using UtilityExtensions;
 namespace CMSWeb.Areas.Setup.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class MemberTypeController : CmsController
+    public class MemberTypeController : CmsStaffController
     {
         public MemberTypeController()
         {

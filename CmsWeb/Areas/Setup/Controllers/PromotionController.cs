@@ -9,9 +9,9 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
-    public class PromotionController : CmsController
+    [Authorize(Roles = "Admin")]
+    public class PromotionController : CmsStaffController
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = new Models.PromotionModel();

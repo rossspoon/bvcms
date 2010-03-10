@@ -15,7 +15,7 @@ using CMSPresenter;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
-    public class SearchAddController : Controller
+    public class SearchAddController : CmsStaffController
     {
         public ActionResult Index(int? id, string type, string from)
         {

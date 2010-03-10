@@ -30,6 +30,17 @@ BEGIN
 		JOIN dbo.Users u ON c.CreatedBy = u.UserId
 		WHERE u.PeopleId = @pid
 		
+		DELETE disc.BlogCategoryXref
+		FROM disc.BlogCategoryXref x
+		JOIN disc.BlogPost bp ON x.BlogPostId = bp.Id
+		JOIN dbo.Users u ON bp.PosterId = u.UserId
+		WHERE u.PeopleId = @pid
+		
+		DELETE disc.BlogPost
+		FROM disc.BlogPost bp
+		JOIN dbo.Users u ON bp.PosterId = u.UserId
+		WHERE u.PeopleId = @pid
+
 		DECLARE @t TABLE(id int)
 		INSERT INTO @t(id) SELECT MeetingId FROM dbo.Attend a WHERE a.PeopleId = @pid
 		

@@ -9,7 +9,7 @@ using CmsData;
 namespace CMSWeb.Areas.Setup.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UsersCanEmailForController : CmsController
+    public class UsersCanEmailForController : CmsStaffController
     {
         public ActionResult Index()
         {

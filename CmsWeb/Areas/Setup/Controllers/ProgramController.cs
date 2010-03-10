@@ -9,9 +9,9 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
-    public class ProgramController : CmsController
+    [Authorize(Roles = "Admin")]
+    public class ProgramController : CmsStaffController
     {
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var m = DbUtil.Db.Programs.AsEnumerable();

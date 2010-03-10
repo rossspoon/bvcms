@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
-    public class DivisionController : CmsController
+    public class DivisionController : CmsStaffController
     {
         public class DivisionInfo
         {

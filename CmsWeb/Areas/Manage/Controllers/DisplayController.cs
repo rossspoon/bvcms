@@ -15,7 +15,7 @@ using UtilityExtensions;
 namespace CMSWeb.Areas.Manage.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class DisplayController : CmsController
+    public class DisplayController : CmsStaffController
     {
         public ActionResult Index()
         {
