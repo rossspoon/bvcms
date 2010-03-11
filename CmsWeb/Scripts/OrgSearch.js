@@ -6,7 +6,8 @@
     });
     $.gotoPage = function(e, pg) {
         $("#Page").val(pg);
-        return $.getTable();
+        $.getTable();
+        return false;
     }
     $.setPageSize = function(e) {
         $('#Page').val(1);
@@ -16,9 +17,11 @@
     $.getTable = function() {
         var f = $('#results').closest('form');
         var q = f.serialize();
+        $.blockUI();
         $.post($('#search').attr('href'), q, function(ret) {
             $('#results').html(ret).ready(function() {
                 $.fmtTable();
+                $.unblockUI();
             });
         });
         return false;
@@ -62,25 +65,19 @@
         }
     });
     $.fmtTable = function() {
-        $('.tip').cluetip({
-            splitTitle: '|',
-            hoverIntent: {
-                sensitivity: 3,
-                interval: 50,
-                timeout: 0
-            }
+        $("#results td.tip").tooltip({
+            showBody: "|"
         });
         $('#results > tbody > tr:even').addClass('alt');
-        $("table.edit .bday").editable('/OrgSearch/Edit/', {
+        $("#results.edit span.bday").editable('/OrgSearch/Edit/', {
             type: 'datepicker',
             tooltip: 'click to edit...',
-            placeholder: 'na',
             event: 'click',
             submit: 'OK',
             cancel: 'Cancel',
             width: '100px'
         });
-        $('table.edit .yesno').editable('/OrgSearch/Edit', {
+        $('#results.edit span.yesno').editable('/OrgSearch/Edit', {
             type: 'checkbox',
             submit: 'OK'
         });
@@ -98,7 +95,7 @@
         $.getTable();
         return false;
     });
-    $('a.clear').click(function() {
+    $('#clear').click(function() {
         var f = $(this).closest('form');
         $(f).find(':input').each(function() {
             $(this).val('');
@@ -107,6 +104,7 @@
             $(this).val("0");
         });
         $('#DivisionId').html('<option value="0">(select a program)</option>');
+        $('#StatusId').val("30");
         return $.getTable();
     });
     $.maxZIndex = $.fn.maxZIndex = function(opt) {
@@ -124,15 +122,6 @@
             $(this).css("z-index", zmax);
         });
     }
-    $(".datepicker").datepicker({
-        showOn: 'button',
-        buttonImageOnly: true,
-        buttonImage: '/Content/images/calendar.gif',
-        dateFormat: 'm/d/yy',
-        beforeShow: function() { $('#ui-datepicker-div').maxZIndex(); },
-        changeMonth: true,
-        changeYear: true
-    });
     $('#ProgramId').change(function() {
         $.post('/OrgSearch/DivisionIds/' + $('#ProgramId').val(), null, function(ret) {
             $('#DivisionId').replaceWith(ret);

@@ -208,6 +208,7 @@ namespace CMSPresenter
                          MemberInfo = bfm.UserData,
                          ShirtSize = recreg == null ? "na" : recreg.ShirtSize,
                          Request = bfm.Request,
+                         Amount = bfm.Amount,
                          Groups = string.Join(",", bfm.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray())
                      };
             return q2.Take(maximumRows);

@@ -38,6 +38,20 @@ namespace CMSWeb.Models
         }
         public delegate int CountDelegate();
         public CountDelegate GetCount;
+        private int? _count;
+        private int count
+        {
+            get
+            {
+                if (!_count.HasValue)
+                {
+                    _count = GetCount();
+                    if (StartRow >= _count)
+                        _Page = null;
+                }
+                return _count.Value;
+            }
+        }
 
         public int PageSize
         {
@@ -52,7 +66,7 @@ namespace CMSWeb.Models
         }
         public int LastPage
         {
-            get { return (int)Math.Ceiling(GetCount() / (double)PageSize); }
+            get { return (int)Math.Ceiling(count / (double)PageSize); }
         }
         public int StartRow
         {

@@ -177,6 +177,12 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+        public static string FormatDate(this DateTime? dt, string def)
+        {
+            if (dt.HasValue)
+                return dt.Value.ToString("d");
+            return def;
+        }
         public static string FormatDateTm(this DateTime dt)
         {
             return dt.ToString("M/d/yy H:mm");

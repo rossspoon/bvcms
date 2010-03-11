@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgSearchModel>" %>
 <table id="results" <%=Page.User.IsInRole("Edit") ? "class='edit'" : "" %>>
 <thead>
-    <tr><td colspan="8">
+    <tr><td colspan="9">
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
     <tr>
@@ -32,7 +32,7 @@
     </tr>
 <% } %>
 </tbody>
-    <tr><td colspan="8">
+    <tr><td colspan="9">
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
 </table>

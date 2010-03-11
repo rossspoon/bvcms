@@ -3,7 +3,7 @@
     <span class="page-numbers desc">Goto page:</span>
     <% if (Model.Page > 1)
        { %>
-    <a href='#' class="page-numbers" title='goto page <%=Model.Page-1 %>' onclick='$.gotoPage(this,<%=Model.Page -1 %>)'>prev</a>
+    <a href='#' class="page-numbers" title='goto page <%=Model.Page-1 %>' onclick='return $.gotoPage(this,<%=Model.Page -1 %>)'>prev</a>
     <% }
        foreach (var p in Model.PageList())
        {
@@ -13,7 +13,7 @@
     <% }
        if (p > 0 && Model.Page != p)
        { %>
-    <a href='#' class='page-numbers' title='goto page <%=p %>' onclick='$.gotoPage(this,<%=p %>)'><%=p %></a>
+    <a href='#' class='page-numbers' title='goto page <%=p %>' onclick='return $.gotoPage(this,<%=p %>)'><%=p %></a>
     <% }
        if (Model.Page == p)
        { %>
@@ -22,7 +22,7 @@
        }
        if (Model.Page < Model.LastPage)
        { %>
-    <a href='#' class="page-numbers" title='goto page <%=Model.Page+1 %>' onclick='$.gotoPage(this,<%=Model.Page+1 %>)'>next</a>
+    <a href='#' class="page-numbers" title='goto page <%=Model.Page+1 %>' onclick='return $.gotoPage(this,<%=Model.Page+1 %>)'>next</a>
     <% } %>
     <span class="page-numbers desc">Set # rows:</span>
     <%=Html.DropDownList("PageSize", Model.PageSizeList(), new { onchange = "$.setPageSize(this)" }) %>

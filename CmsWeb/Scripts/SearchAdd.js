@@ -19,7 +19,7 @@
                 $(f).html(ret).ready(function() {
                     $(".addrcol").tooltip({
                         showBody: "|"
-                    })
+                    });
                     //$('.addrcol').cluetip({
                     //                        splitTitle: '|',
                     //                        hoverIntent: {

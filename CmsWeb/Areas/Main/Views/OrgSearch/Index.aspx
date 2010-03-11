@@ -1,18 +1,20 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OrgSearchModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
-    <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+<%--    <link href="/Content/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+--%>    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />    
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script src="/Content/js/jquery.jeditable.mini.js" type="text/javascript"></script>    
-    <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>
+<%--    <script src="/Content/js/jquery.cluetip.min.js" type="text/javascript"></script>    
+--%>    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
     <script src="/Scripts/OrgSearch.js" type="text/javascript"></script>
     <form>
     <table>
         <tr>
             <td>
                 <table class="modalPopup">
-                <tr><td><a href="/OrgSearch/Results?clear=true" class="clear">clear</a></td>
+                <tr><td><a href="/OrgSearch/Results?clear=true" id="clear">clear</a></td>
                     <td align="right" colspan="3"><a href="/OrgSearch/UseOldOrgSearch">Use Old Org Search</a></td>
                     </tr>
                     <tr>

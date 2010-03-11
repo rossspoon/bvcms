@@ -63,8 +63,8 @@ namespace CMSWeb.Models
                         MeetingTime = o.MeetingTime,
                         Location = o.Location,
                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
-                        BDayStart = o.BirthDayStart.FormatDate(),
-                        BDayEnd = o.BirthDayEnd.FormatDate(),
+                        BDayStart = o.BirthDayStart.FormatDate("na"),
+                        BDayEnd = o.BirthDayEnd.FormatDate("na"),
                         Tag = TagDiv == null ? "" : o.DivOrgs.Any(ot => ot.DivId == TagDiv) ? "Remove" : "Add",
                     };
             return q;
