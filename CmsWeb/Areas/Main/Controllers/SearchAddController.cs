@@ -232,14 +232,18 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
-                    if (p.person.Age < 18)
-                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
-                    else if (p.family.People.Count(per =>
-                        per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult) < 2)
-                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-                    else
-                        p.person.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
-                    p.family.People.Add(p.person);
+                    if (!p.IsNew)
+                    {
+                        if (p.person.Age < 18)
+                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+                        else if (p.family.People.Count(per =>
+                                    per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                                    < 2)
+                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                        else
+                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+                        p.family.People.Add(p.person);
+                    }
                 }
                 DbUtil.Db.SubmitChanges();
             }
@@ -293,7 +297,7 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             if (p.IsNew)
                 p.AddPerson(Origin, EntryPoint);
-            if (p.FamilyId < 0)
+            if (p.FamilyId < 0) // fix up new family pointers
             {
                 var q = from m in list
                         where m.FamilyId == p.FamilyId

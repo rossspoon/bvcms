@@ -165,7 +165,13 @@ namespace CMSWeb.Models
                 goesby = goesby.Trim();
             var position = (int)Family.PositionInFamily.Child;
             if (age >= 18)
+                if (f.People.Count(per =>
+                     per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                     < 2)
                 position = (int)Family.PositionInFamily.PrimaryAdult;
+            else
+                position = (int)Family.PositionInFamily.SecondaryAdult;
+
             _Person = Person.Add(f, position,
                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
                     (int)Person.OriginCode.Enrollment, entrypoint);

@@ -1,0 +1,7 @@
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (0, 'NSP', 'Not Specified')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (10, 'PN', 'Pending')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (20, 'AT', 'Attended')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (30, 'AA', 'Admin Approval')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (40, 'GF', 'Grandfathered')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (50, 'EX', 'Exempted Child (thru Grade 8)')
+INSERT INTO [lookup].[DiscoveryClassStatus] ([Id], [Code], [Description]) VALUES (99, 'UNK', 'Unknown')

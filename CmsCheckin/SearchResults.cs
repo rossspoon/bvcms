@@ -14,11 +14,11 @@ using System.Collections.Specialized;
 
 namespace CmsCheckin
 {
-    public partial class SearchResults : UserControl
+    public partial class NameResults : UserControl
     {
         public event EventHandler<EventArgs<string>> GoBack;
 
-        public SearchResults()
+        public NameResults()
         {
             InitializeComponent();
         }
@@ -99,17 +99,5 @@ namespace CmsCheckin
             if (e.KeyChar == 27)
                 GoBack(sender, new EventArgs<string>(""));
         }
-    }
-    public class PeopleLabel
-    {
-        public string Name { get; set; }
-        public int PeopleId { get; set; }
-        public int FamilyId { get; set; }
-        public string Address { get; set; }
-        public string CellPhone { get; set; }
-        public string HomePhone { get; set; }
-        public string Birthday { get; set; }
-        public string Gender { get; set; }
-        public int Row { get; set; }
     }
 }

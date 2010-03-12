@@ -1,0 +1,6 @@
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (0, 'UNK', 'Unknown')
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (10, 'BPP', 'Baptism POF')
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (20, 'BPS', 'Baptism SRB')
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (30, 'BPB', 'Baptism BIO')
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (40, 'STM', 'Statement')
+INSERT INTO [lookup].[JoinType] ([Id], [Code], [Description]) VALUES (50, 'LET', 'Letter')

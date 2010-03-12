@@ -1,0 +1,6 @@
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (0, 'NSP', 'Not Specified')
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (10, 'ORI', 'Original')
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (20, 'SUB', 'Subsequent')
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (30, 'BIO', 'Biological')
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (40, 'NON', 'Non-Member')
+INSERT INTO [lookup].[BaptismType] ([Id], [Code], [Description]) VALUES (50, 'RFM', 'Required')

@@ -43,6 +43,14 @@ namespace CMSWeb.Areas.Main.Controllers
             NoCache();
             return new ClassResult(id, thisday);
         }
+        public ActionResult Classes(int id, int campus, int thisday, int page)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            if (p == null)
+                return new EmptyResult();
+            NoCache();
+            return new ClassesResult(p, thisday, campus, page);
+        }
         public ActionResult NameSearch(string id)
         {
             NoCache();

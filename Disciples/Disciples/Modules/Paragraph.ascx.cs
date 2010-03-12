@@ -22,11 +22,20 @@ namespace Disciples.Modules
             {
                 contentName = value;
                 Content = DbUtil.Db.ParaContents.SingleOrDefault(c => c.ContentName == contentName);
+                if (Content == null)
+                {
+                    Content = new ParaContent { ContentName = value, Body = "no content" };
+                    DbUtil.Db.ParaContents.InsertOnSubmit(Content);
+                    DbUtil.Db.SubmitChanges();
+                }
             }
         }
         public string HeaderText
         {
-            get { return Content.Title; }
+            get
+            {
+                return Content.Title;
+            }
         }
         public bool CanEdit { get; set; }
 
@@ -42,8 +51,7 @@ namespace Disciples.Modules
             else
                 Literal1.Text = "Set both the ContentID and PageName";
 
-            if (Content != null &&
-                (Page.User.IsInRole("BlogAdministrator") || CanEdit))
+            if (Page.User.IsInRole("BlogAdministrator") || CanEdit)
             {
                 Panel1.CssClass = "contentboxadmin";
                 string dblclick = string.Format("showPopWin('{0}?id={1}', 800, 650, null);",

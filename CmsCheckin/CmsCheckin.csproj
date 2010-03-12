@@ -56,6 +56,13 @@
     <Compile Include="Attendees.Designer.cs">
       <DependentUpon>Attendees.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClassResults.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ClassResults.Designer.cs">
+      <DependentUpon>ClassResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemberList.cs" />
     <Compile Include="SearchResults.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +98,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Attendees.resx">
       <DependentUpon>Attendees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClassResults.resx">
+      <DependentUpon>ClassResults.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchResults.resx">
       <DependentUpon>SearchResults.cs</DependentUpon>
@@ -128,6 +138,7 @@
     <Compile Include="StartUp.Designer.cs">
       <DependentUpon>StartUp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

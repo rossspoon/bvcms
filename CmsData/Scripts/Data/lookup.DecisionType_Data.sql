@@ -1,0 +1,7 @@
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (0, 'UNK', 'Unknown')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (10, 'POF-MEM', 'POF for Membership')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (20, 'POF-NON', 'POF NOT for Membership')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (30, 'LETTER', 'Letter in from SBC')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (40, 'STATEMENT', 'Statement')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (50, 'BAP-REQD', 'Stmt requiring Baptism')
+INSERT INTO [lookup].[DecisionType] ([Id], [Code], [Description]) VALUES (60, 'CANCELLED', 'Cancelled')

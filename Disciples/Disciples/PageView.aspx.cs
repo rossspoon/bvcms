@@ -38,8 +38,6 @@ namespace Disciples
                 {
                     lnkEdit.Enabled = false;
                     thisPage.Title = "Oops! Can't find that page...";
-                    using (var sr = new StreamReader(Server.MapPath("/CMSFiles/404.htm")))
-                        thisPage.Body = sr.ReadToEnd();
                 }
                 ToggleEditor(false);
             }

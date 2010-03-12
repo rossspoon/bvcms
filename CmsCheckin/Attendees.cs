@@ -17,6 +17,8 @@ namespace CmsCheckin
     public partial class Attendees : UserControl
     {
         public event EventHandler GoBack;
+        public event EventHandler<EventArgs<int>> GoClasses;
+
         public Attendees()
         {
             InitializeComponent();
@@ -73,7 +75,7 @@ namespace CmsCheckin
                 labfont = new Font(Verdana, points,
                     ((FontStyle)((FontStyle.Italic | FontStyle.Underline))),
                     GraphicsUnit.Point, ((byte)(0)));
-                wids = new int[4];
+                wids = new int[5];
                 maxheight = 0;
                 foreach (var e in x.Descendants("attendee").Take(MaxRows))
                 {
@@ -93,6 +95,11 @@ namespace CmsCheckin
 
                     size = g.MeasureString(Labels, labfont);
                     wids[n] = Math.Max(wids[n], Math.Max((int)size.Width, buttonwidth));
+                    n++;
+
+                    size = g.MeasureString("|", font);
+                    maxheight = Math.Max(maxheight, (int)size.Height);
+                    wids[n] = Math.Max(wids[n], Math.Max((int)size.Width, buttonwidth/2));
                     n++;
 
                     size = g.MeasureString("|", font);
@@ -152,14 +159,17 @@ namespace CmsCheckin
 
                 var c = new AttendLabel
                 {
+                    cinfo = new ClassInfo
+                    {
+                         OrgId = e.Attribute("orgid").Value.ToInt(),
+                         PeopleId = e.Attribute("id").Value.ToInt()
+                    },
                     Name = e.Attribute("name").Value,
                     First = e.Attribute("first").Value,
                     Last = e.Attribute("last").Value,
                     Birthday = e.Attribute("bday").Value,
                     Gender = e.Attribute("gender").Value,
-                    PeopleId = int.Parse(e.Attribute("id").Value),
                     Class = e.Attribute("org").Value,
-                    OrgId = int.Parse(e.Attribute("orgid").Value),
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
                     Row = Row,
                     CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
@@ -169,7 +179,7 @@ namespace CmsCheckin
                 var ab = new Button();
                 ab.FlatStyle = FlatStyle.Flat;
                 ab.FlatAppearance.BorderSize = 1;
-                if (c.OrgId != 0 && c.leadtime <= Program.LeadTime)
+                if (c.cinfo.OrgId != 0 && c.leadtime <= Program.LeadTime)
                 {
                     ab.BackColor = Color.CornflowerBlue;
                     ab.FlatAppearance.BorderColor = Color.Black;
@@ -201,7 +211,7 @@ namespace CmsCheckin
                 label.UseMnemonic = false;
                 label.Text = c.Name;
                 label.TextAlign = ContentAlignment.MiddleLeft;
-                if (c.OrgId != 0)
+                if (c.cinfo.OrgId != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
                 col++;
@@ -213,7 +223,7 @@ namespace CmsCheckin
                 label.UseMnemonic = false;
                 label.Text = c.Class;
                 label.TextAlign = ContentAlignment.MiddleLeft;
-                if (c.OrgId != 0)
+                if (c.cinfo.OrgId != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
                 col++;
@@ -230,7 +240,19 @@ namespace CmsCheckin
                 this.Controls.Add(eb);
                 eb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
                 eb.Click += new EventHandler(eb_Click);
-                //eb.KeyPress += new KeyPressEventHandler(KeyPressEvent);
+                col++;
+
+                var cb = new Button();
+                cb.BackColor = Color.Coral;
+                cb.Font = pfont;
+                cb.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
+                cb.Name = "visit" + Row;
+                cb.Tag = Row;
+                cb.Size = new Size(buttonwidth/2, buttonheight/2);
+                cb.TextAlign = ContentAlignment.TopCenter;
+                cb.UseVisualStyleBackColor = false;
+                this.Controls.Add(cb);
+                cb.Click += new EventHandler(cb_Click);
                 col++;
 
                 Row++;
@@ -271,22 +293,30 @@ namespace CmsCheckin
             var c = ab.Tag as AttendLabel;
             c.Clicked = true;
             var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
-            if (c.OrgId == 0)
+            if (c.cinfo.OrgId == 0)
                 return;
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
                 eb.Text = c.NumLabels.ToString();
                 Refresh();
-                RecordAttend(c, true);
+                this.RecordAttend(c.cinfo, true);
             }
             else
             {
                 ab.Text = String.Empty;
                 eb.Text = String.Empty;
                 Refresh();
-                RecordAttend(c, false);
+                this.RecordAttend(c.cinfo, false);
             }
+        }
+
+        void cb_Click(object sender, EventArgs e)
+        {
+            var cb = sender as Button;
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + cb.Tag.ToString())] as Button;
+            var c = ab.Tag as AttendLabel;
+            GoClasses(sender, new EventArgs<int>(c.cinfo.PeopleId));
         }
 
         private void GoBack_Click(object sender, EventArgs e)
@@ -311,38 +341,6 @@ namespace CmsCheckin
             }
             if (printed)
                 PrintBlankLabel();
-        }
-        private void RecordAttend(AttendLabel c, bool present)
-        {
-            if (c.OrgId == 0)
-                return;
-            try
-            {
-                this.Cursor = Cursors.WaitCursor;
-                var wc = new WebClient();
-                var coll = new NameValueCollection();
-                coll.Add("PeopleId", c.PeopleId.ToString());
-                coll.Add("OrgId", c.OrgId.ToString());
-                coll.Add("Present", present.ToString());
-                coll.Add("thisday", Program.ThisDay.ToString());
-                var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/RecordAttend/");
-
-                this.Cursor = Cursors.WaitCursor;
-                Cursor.Show();
-                var resp = wc.UploadValues(url, "POST", coll);
-
-                var s = Encoding.ASCII.GetString(resp);
-            }
-            catch (Exception)
-            {
-                GoBack(this, null);
-            }
-            finally
-            {
-                if (Program.HideCursor)
-                    Cursor.Hide();
-                this.Cursor = Cursors.Default;
-            }
         }
 
         private void PrintBlankLabel()
@@ -382,7 +380,7 @@ namespace CmsCheckin
             sw.WriteLine("A2");
             sw.WriteLine("1911A3000450009" + c.First);
             sw.WriteLine("1911A1000300011" + c.Last);
-            sw.WriteLine("1911A1000060008" + " (" + c.PeopleId + " " + c.Gender + ")" + time.ToString("  M/d/yy"));
+            sw.WriteLine("1911A1000060008" + " (" + c.cinfo.PeopleId + " " + c.Gender + ")" + time.ToString("  M/d/yy"));
             sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
             sw.WriteLine("Q" + n.ToString("0000"));
             sw.WriteLine("E");
@@ -407,14 +405,13 @@ namespace CmsCheckin
     }
     public class AttendLabel
     {
+        public ClassInfo cinfo { get; set; }
         public string Name { get; set; }
         public string First { get; set; }
         public string Last { get; set; }
-        public int PeopleId { get; set; }
         public string Birthday { get; set; }
         public string Gender { get; set; }
         public string Class { get; set; }
-        public int OrgId { get; set; }
         public int NumLabels { get; set; }
         public int Row { get; set; }
         public bool CheckedIn { get; set; }

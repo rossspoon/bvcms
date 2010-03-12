@@ -42,12 +42,13 @@ namespace CmsCheckin
             cbDayOfWeek.SelectedIndex = (int)DateTime.Now.DayOfWeek;
 
 #if DEBUG
+            cbDayOfWeek.SelectedIndex = 0;
             TestMode.Checked = true;
             HideCursor.Checked = false;
 #endif
 
             var wc = new WebClient();
-            var url = new Uri(new Uri(Form1.ServiceUrl()), "Checkin/Campuses");
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Campuses");
             var str = wc.DownloadString(url);
             var x = XDocument.Parse(str);
             foreach (var e in x.Descendants("campus"))

@@ -19,102 +19,48 @@ namespace CmsCheckin
     {
         PhoneNumber phone;
         Attendees attendees;
-        Name namesearch;
-        SearchResults results;
+        NameSeach namesearch;
+        NameResults searchresults;
+        ClassResults classresults;
         Families families;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        public string GetDigits(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            var digits = new StringBuilder();
-            foreach (var c in s.ToCharArray())
-                if (Char.IsDigit(c))
-                    digits.Append(c);
-            return digits.ToString();
-        }
         void phone_Go(object sender, EventArgs<string> e)
         {
-            var wc = new WebClient();
-            Uri url;
-            string str;
-            XDocument x;
             if (e.Value == "411")
             {
                 phone.Visible = false;
-                namesearch = new Name();
-                this.Controls.Add(namesearch);
-                namesearch.Left = (this.Width / 2) - (namesearch.Width / 2);
-                namesearch.Top = 0;
+                namesearch = AddControl<NameSeach>(new NameSeach());
                 namesearch.GoBack += new EventHandler(name_GoBack);
                 namesearch.Go += new EventHandler<EventArgs<string>>(namesearch_Go);
                 return;
             }
             if (e.Value.StartsWith("0"))
             {
-                url = new Uri(new Uri(ServiceUrl()),
-                    string.Format("Checkin/Class/{0}", GetDigits(e.Value.Substring(1))));
-                str = wc.DownloadString(url + Program.QueryString);
-                if (string.IsNullOrEmpty(str))
-                    return;
-                x = XDocument.Parse(str);
-                var list = x.Root.Descendants("Name").Select(m => m.Value).ToList();
-                var n = list.Count / 5;
-                if (n % 5 > 0)
-                    n++;
-                n = n * 5 - 1;
-                for(;n > 0;n -= 5)
-                PrintLabel5(list, n);
-
-                list = new List<string>();
-                list.Add(x.Root.Attribute("Name").Value);
-                list.Add(x.Root.Attribute("Teacher").Value);
-                list.Add(x.Root.Attribute("Date").Value);
-                list.Add(x.Root.Attribute("Time").Value);
-                list.Add("Count: " + x.Root.Attribute("Count").Value);
-                PrintLabel5(list, 4);
-
-                PrintBlankLabel();
+                MemberList.PrintList(e.Value.Substring(1));
                 return;
             }
             phone.Visible = false;
 
-            url = new Uri(new Uri(ServiceUrl()),
-                string.Format("Checkin/Match/{0}", GetDigits(e.Value)));
-
-            this.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
-            //var str = wc.UploadString(url, Program.CampusArg);
-            str = wc.DownloadString(url + Program.QueryString);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            this.Cursor = Cursors.Default;
-
-            x = XDocument.Parse(str);
+            var x = this.GetDocument("Checkin/Match/" + Util.GetDigits(e.Value) + Program.QueryString);
 
             if (x.Document.Root.Name == "Families")
             {
-                //ChooseFamily(x);
-                families = new Families();
-                this.Controls.Add(families);
-                families.Left = (this.Width / 2) - (families.Width / 2);
-                families.Top = 0;
-                families.ShowFamilies(x);
+                families = AddControl<Families>(new Families());
                 families.GoBack += new EventHandler(families_GoBack);
                 families.Go += new EventHandler<EventArgs<int>>(families_Go);
+                families.ShowFamilies(x);
             }
             else
             {
-                attendees = new Attendees();
-                this.Controls.Add(attendees);
-                attendees.Left = (this.Width / 2) - (attendees.Width / 2);
-                attendees.Top = 0;
-                attendees.FindAttendees(x);
+                attendees = AddControl<Attendees>(new Attendees());
                 attendees.GoBack += new EventHandler(attendees_GoBack);
+                attendees.GoClasses += new EventHandler<EventArgs<int>>(Go_Classes);
+                attendees.FindAttendees(x);
             }
         }
 
@@ -123,68 +69,52 @@ namespace CmsCheckin
             this.Controls.Remove(namesearch);
             namesearch = null;
 
-            var wc = new WebClient();
-            var url = new Uri(new Uri(ServiceUrl()),
-                string.Format("Checkin/NameSearch/{0}", e.Value));
-
-            this.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
-            var str = wc.DownloadString(url);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            this.Cursor = Cursors.Default;
-
-            var x = XDocument.Parse(str);
-
-            results = new SearchResults();
-            this.Controls.Add(results);
-            results.Left = (this.Width / 2) - (results.Width / 2);
-            results.Top = 0;
-            results.ShowResults(x);
-            results.GoBack += new EventHandler<EventArgs<string>>(results_GoBack);
+            var x = this.GetDocument("Checkin/NameSearch/" + e.Value);
+            searchresults = AddControl<NameResults>(new NameResults());
+            searchresults.GoBack += new EventHandler<EventArgs<string>>(SearchResults_GoBack);
+            searchresults.ShowResults(x);
         }
 
-        void results_GoBack(object sender, EventArgs<string> e)
+        void SearchResults_GoBack(object sender, EventArgs<string> e)
         {
-            this.Controls.Remove(results);
-            results = null;
-            phone.Visible = true;
-            phone.textBox1.Text = PhoneNumber.FmtFone(e.Value);
-            phone.textBox1.Focus();
-            phone.textBox1.Select(phone.textBox1.Text.Length, 0);
+            RemoveControl(searchresults, PhoneNumber.FmtFone(e.Value));
+        }
+        void ClassResults_GoBack(object sender, EventArgs<string> e)
+        {
+            RemoveControl(classresults, string.Empty);
         }
         void families_Go(object sender, EventArgs<int> e)
         {
             this.Controls.Remove(families);
             families = null;
 
-            var wc = new WebClient();
-            var url = new Uri(new Uri(ServiceUrl()),
-                string.Format("Checkin/Family/{0}", e.Value));
-
-            this.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
-            //var str = wc.UploadString(url, Program.CampusArg);
-            var str = wc.DownloadString(url + Program.QueryString);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            this.Cursor = Cursors.Default;
-
-            var x = XDocument.Parse(str);
-
-            attendees = new Attendees();
-            this.Controls.Add(attendees);
-            attendees.Left = (this.Width / 2) - (attendees.Width / 2);
-            attendees.Top = 0;
-            attendees.FindAttendees(x);
+            var x = this.GetDocument("Checkin/Family/" + e.Value + Program.QueryString);
+            attendees = AddControl<Attendees>(new Attendees());
             attendees.GoBack += new EventHandler(attendees_GoBack);
+            attendees.GoClasses += new EventHandler<EventArgs<int>>(Go_Classes);
+            attendees.FindAttendees(x);
         }
-        public static string ServiceUrl()
+        void Go_Classes(object sender, EventArgs<int> e)
         {
-            string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
-            if (Program.TestMode)
-                serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
-            return serviceurl;
+            this.Controls.Remove(attendees);
+            attendees = null;
+
+            var x = this.GetDocument("Checkin/Classes/" 
+                + e.Value + Program.QueryString + "&page=1");
+            classresults = AddControl<ClassResults>(new ClassResults());
+            classresults.GoBack += new EventHandler<EventArgs<int>>(classresults_GoBack);
+            classresults.ShowResults(x);
+       }
+
+        void classresults_GoBack(object sender, EventArgs<int> e)
+        {
+            this.Controls.Remove(classresults);
+            classresults = null;
+            var x = this.GetDocument("Checkin/Family/" + e.Value + Program.QueryString);
+            attendees = AddControl<Attendees>(new Attendees());
+            attendees.GoBack += new EventHandler(attendees_GoBack);
+            attendees.GoClasses += new EventHandler<EventArgs<int>>(Go_Classes);
+            attendees.FindAttendees(x);
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -193,11 +123,8 @@ namespace CmsCheckin
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            phone = new PhoneNumber();
-            this.Controls.Add(phone);
+            phone = AddControl<PhoneNumber>(new PhoneNumber());
             phone.Go += new EventHandler<EventArgs<string>>(phone_Go);
-            phone.Left = (this.Width / 2) - (phone.Width / 2);
-            phone.Top = 0;
             this.Resize += new EventHandler(Form1_Resize);
             if (Program.HideCursor)
                 Cursor.Hide();
@@ -205,88 +132,30 @@ namespace CmsCheckin
 
         void attendees_GoBack(object sender, EventArgs e)
         {
-            this.Controls.Remove(attendees);
-            attendees = null;
-            phone.Visible = true;
-            phone.textBox1.Text = String.Empty;
-            phone.textBox1.Focus();
+            RemoveControl(attendees, string.Empty);
         }
         void name_GoBack(object sender, EventArgs e)
         {
-            this.Controls.Remove(namesearch);
-            namesearch = null;
-            phone.Visible = true;
-            phone.textBox1.Text = String.Empty;
-            phone.textBox1.Focus();
+            RemoveControl(namesearch, string.Empty);
         }
         void families_GoBack(object sender, EventArgs e)
         {
-            this.Controls.Remove(families);
-            families = null;
+            RemoveControl(families, string.Empty);
+        }
+        private void RemoveControl(UserControl c, string s)
+        {
+            this.Controls.Remove(c);
             phone.Visible = true;
-            phone.textBox1.Text = String.Empty;
+            phone.textBox1.Text = PhoneNumber.FmtFone(s);
             phone.textBox1.Focus();
+            phone.textBox1.Select(phone.textBox1.Text.Length, 0);
         }
-        void PrintLabel5(List<string> list, int n)
+        private T AddControl<T>(T c)
         {
-            string printer = ConfigurationSettings.AppSettings["PrinterName"];
-            if (!RawPrinterHelper.HasPrinter(printer))
-                return;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02n");
-            sw.WriteLine("\x02M0500");
-            sw.WriteLine("\x02O0220");
-            sw.WriteLine("\x02V0");
-            sw.WriteLine("\x02SG");
-            sw.WriteLine("\x02d");
-            sw.WriteLine("\x01D");
-            sw.WriteLine("\x02L");
-            sw.WriteLine("D11");
-            sw.WriteLine("PG");
-            sw.WriteLine("pC");
-            sw.WriteLine("SG");
-            sw.WriteLine("ySPM");
-            sw.WriteLine("A2");
-            if (list.Count > n)
-                sw.WriteLine("1911A1000040010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000210010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000370010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000540010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000700010" + list[n]);
-            n--;
-            sw.WriteLine("Q0001");
-            sw.WriteLine("E");
-            sw.Flush();
-
-            memStrm.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, memStrm);
-            sw.Close();
+            var ctl = c as UserControl;
+            ctl.Location = new Point { X = (this.Width / 2) - (ctl.Width / 2), Y = 0 };
+            this.Controls.Add(ctl);
+            return c;
         }
-        private void PrintBlankLabel()
-        {
-            string printer = ConfigurationSettings.AppSettings["PrinterName"];
-            if (!RawPrinterHelper.HasPrinter(printer))
-                return;
-            var ms = new MemoryStream();
-            var st = new StreamWriter(ms);
-            st.WriteLine("\x02L");
-            st.WriteLine("H07");
-            st.WriteLine("D11");
-            st.WriteLine("E");
-            st.Flush();
-            ms.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, ms);
-            st.Close();
-        }
-
     }
 }

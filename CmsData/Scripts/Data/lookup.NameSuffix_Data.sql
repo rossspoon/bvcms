@@ -1,0 +1,7 @@
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (100, 'Jr.', 'Jr.')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (110, 'Sr.', 'Sr.')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (120, 'I', 'I')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (130, 'II', 'II')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (140, 'III', 'III')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (150, 'IV', 'IV')
+INSERT INTO [lookup].[NameSuffix] ([Id], [Code], [Description]) VALUES (160, 'V', 'V')

@@ -10,12 +10,12 @@ using System.Text.RegularExpressions;
 
 namespace CmsCheckin
 {
-    public partial class Name : UserControl
+    public partial class NameSeach : UserControl
     {
         public event EventHandler GoBack;
         public event EventHandler<EventArgs<string>> Go;
 
-        public Name()
+        public NameSeach()
         {
             InitializeComponent();
         }

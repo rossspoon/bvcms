@@ -1,6 +1,6 @@
 ﻿namespace CmsCheckin
 {
-    partial class Name
+    partial class NameSeach
     {
         /// <summary> 
         /// Required designer variable.
