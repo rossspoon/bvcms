@@ -50,72 +50,98 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attendees.cs">
+    <Compile Include="EnterGenderMarital.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Attendees.Designer.cs">
-      <DependentUpon>Attendees.cs</DependentUpon>
+    <Compile Include="EnterGenderMarital.Designer.cs">
+      <DependentUpon>EnterGenderMarital.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClassResults.cs">
+    <Compile Include="ListFamily.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ClassResults.Designer.cs">
-      <DependentUpon>ClassResults.cs</DependentUpon>
+    <Compile Include="ListFamily.Designer.cs">
+      <DependentUpon>ListFamily.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemberList.cs" />
-    <Compile Include="SearchResults.cs">
+    <Compile Include="ListClasses.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SearchResults.Designer.cs">
-      <DependentUpon>SearchResults.cs</DependentUpon>
+    <Compile Include="ListClasses.Designer.cs">
+      <DependentUpon>ListClasses.cs</DependentUpon>
     </Compile>
-    <Compile Include="Name.cs">
+    <Compile Include="EnterDate.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Name.Designer.cs">
-      <DependentUpon>Name.cs</DependentUpon>
+    <Compile Include="EnterDate.Designer.cs">
+      <DependentUpon>EnterDate.cs</DependentUpon>
     </Compile>
-    <Compile Include="EventArgs.cs" />
-    <Compile Include="Families.cs">
+    <Compile Include="EnterPhone.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Families.Designer.cs">
-      <DependentUpon>Families.cs</DependentUpon>
+    <Compile Include="EnterPhone.Designer.cs">
+      <DependentUpon>EnterPhone.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="EnterText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterText.Designer.cs">
+      <DependentUpon>EnterText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Print.cs" />
+    <Compile Include="ListNames.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListNames.Designer.cs">
+      <DependentUpon>ListNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListFamilies.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListFamilies.Designer.cs">
+      <DependentUpon>ListFamilies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PhoneNumber.cs">
+    <Compile Include="Home.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PhoneNumber.Designer.cs">
-      <DependentUpon>PhoneNumber.cs</DependentUpon>
+    <Compile Include="Home.Designer.cs">
+      <DependentUpon>Home.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Attendees.resx">
-      <DependentUpon>Attendees.cs</DependentUpon>
+    <EmbeddedResource Include="EnterGenderMarital.resx">
+      <DependentUpon>EnterGenderMarital.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ClassResults.resx">
-      <DependentUpon>ClassResults.cs</DependentUpon>
+    <EmbeddedResource Include="ListFamily.resx">
+      <DependentUpon>ListFamily.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SearchResults.resx">
-      <DependentUpon>SearchResults.cs</DependentUpon>
+    <EmbeddedResource Include="ListClasses.resx">
+      <DependentUpon>ListClasses.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Name.resx">
-      <DependentUpon>Name.cs</DependentUpon>
+    <EmbeddedResource Include="EnterDate.resx">
+      <DependentUpon>EnterDate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Families.resx">
-      <DependentUpon>Families.cs</DependentUpon>
+    <EmbeddedResource Include="EnterPhone.resx">
+      <DependentUpon>EnterPhone.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="EnterText.resx">
+      <DependentUpon>EnterText.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PhoneNumber.resx">
-      <DependentUpon>PhoneNumber.cs</DependentUpon>
+    <EmbeddedResource Include="ListNames.resx">
+      <DependentUpon>ListNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListFamilies.resx">
+      <DependentUpon>ListFamilies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Home.resx">
+      <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -131,7 +157,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\DataSources\Match.datasource" />
-    <Compile Include="RawPrint.cs" />
+    <Compile Include="PrintRawHelper.cs" />
     <Compile Include="StartUp.cs">
       <SubType>Form</SubType>
     </Compile>

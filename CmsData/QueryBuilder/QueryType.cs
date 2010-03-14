@@ -88,6 +88,7 @@ namespace CmsData
         MemberTypeCodes,
         NickName,
         NumberOfMemberships,
+        NumberOfFamilyMembers,
         OccupationOther,
         OrgInactiveDate,
         OrgJoinDate,

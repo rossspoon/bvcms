@@ -1,6 +1,6 @@
 ﻿namespace CmsCheckin
 {
-    partial class Form1
+    partial class BaseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.BaseForm_Load);
             this.ResumeLayout(false);
 
         }

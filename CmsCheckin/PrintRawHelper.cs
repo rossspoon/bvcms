@@ -7,7 +7,7 @@ using System.IO;
 
 namespace CmsCheckin
 {
-    public class RawPrinterHelper
+    public class PrintRawHelper
     {
         // Structure and API declarions:
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

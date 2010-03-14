@@ -57,6 +57,9 @@
     <Field Name="PositionInFamilyId" Title="Position in Family" Type="Code" DataSource="FamilyPositionCodes" DataValueField="IdCode">
       Search by codes for Primary Adult, Secondary Adult or Child
     </Field>
+    <Field Name="NumberOfFamilyMembers" Title="Number of Family Members" Type="Integer">
+      Number of Family Members
+    </Field>
     <Field Name="FamilyHasChildren" Title="Family Has Children" Type="Bit" DataValueField="IdCode">
       A member of the family is 12 or under
     </Field>

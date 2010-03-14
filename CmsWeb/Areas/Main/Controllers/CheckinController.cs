@@ -51,35 +51,96 @@ namespace CMSWeb.Areas.Main.Controllers
             NoCache();
             return new ClassesResult(p, thisday, campus, page);
         }
-        public ActionResult NameSearch(string id)
+        public ActionResult NameSearch(string id, int page)
         {
             NoCache();
-
-            string first;
-            string last;
-            var q = DbUtil.Db.People.Select(p => p);
-            Person.NameSplit(id, out first, out last);
-            if (first.HasValue())
-                q = from p in q
-                    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
-                        && (p.FirstName.StartsWith(first) || p.NickName.StartsWith(first) || p.MiddleName.StartsWith(first))
-                    select p;
+            return new NameSearchResult(id, page);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddPerson(int id,
+            string addr,
+            string zip,
+            string first,
+            string last,
+            string goesby,
+            string dob,
+            string email,
+            string cell,
+            string home,
+            int marital,
+            int gender,
+            int campusid)
+        {
+            CmsData.Family f;
+            if (id > 0)
+                f = DbUtil.Db.Families.Single(fam => fam.FamilyId == id);
             else
-                q = from p in q
-                    where p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last)
-                    select p;
+            {
+                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
+                f = new CmsData.Family
+                {
+                    HomePhone = home.GetDigits(),
+                    AddressLineOne = addr,
+                    CityName = z != null ? z.City : null,
+                    StateCode = z != null ? z.State : null,
+                    ZipCode = zip,
+                };
+            }
 
-            var q2 = from p in q
-                     orderby p.Name2
-                     select new SearchInfo
-                     {
-                         CellPhone = p.CellPhone,
-                         HomePhone = p.HomePhone,
-                         Address = p.PrimaryAddress,
-                         Age = p.Age,
-                         Name = p.Name
-                     };
-            return new NameSearchResult(q2.Take(20));
+            if (goesby != null)
+                goesby = goesby.Trim();
+            var position = (int)CmsData.Family.PositionInFamily.Child;
+            if (Util.Age0(dob) >= 18)
+                if (f.People.Count(per =>
+                     per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
+                     < 2)
+                    position = (int)CmsData.Family.PositionInFamily.PrimaryAdult;
+                else
+                    position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
+
+            var p = Person.Add(f, position,
+                null, first.Trim(), goesby, last.Trim(), dob, false, gender,
+                    (int)Person.OriginCode.Visit, null);
+            p.MaritalStatusId = marital;
+            p.EmailAddress = email;
+            p.CampusId = campusid;
+            p.CellPhone = cell.GetDigits();
+            DbUtil.Db.SubmitChanges();
+            return Content(f.FamilyId.ToString());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EditPerson(int id,
+            string addr,
+            string zip,
+            string first,
+            string last,
+            string goesby,
+            string dob,
+            string email,
+            string cell,
+            string home,
+            int marital,
+            int gender,
+            int campusid)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
+            p.Family.HomePhone = home.GetDigits();
+            p.Family.AddressLineOne = addr;
+            p.Family.CityName = z != null ? z.City : null;
+            p.Family.StateCode = z != null ? z.State : null;
+            p.Family.ZipCode = zip;
+            p.NickName = goesby;
+            p.FirstName = first;
+            p.LastName = last;
+            p.DOB = dob;
+            p.EmailAddress = email;
+            p.CellPhone = cell.GetDigits();
+            p.MaritalStatusId = marital;
+            p.GenderId = gender;
+            p.CampusId = campusid;
+            DbUtil.Db.SubmitChanges();
+            return Content(p.FamilyId.ToString());
         }
         private void NoCache()
         {

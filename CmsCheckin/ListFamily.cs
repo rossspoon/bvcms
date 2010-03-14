@@ -14,12 +14,9 @@ using System.Collections.Specialized;
 
 namespace CmsCheckin
 {
-    public partial class Attendees : UserControl
+    public partial class ListFamily : UserControl
     {
-        public event EventHandler GoBack;
-        public event EventHandler<EventArgs<int>> GoClasses;
-
-        public Attendees()
+        public ListFamily()
         {
             InitializeComponent();
         }
@@ -28,10 +25,18 @@ namespace CmsCheckin
         private bool hasprinter;
         private int Row;
         DateTime time;
+        List<Control> controls = new List<Control>();
+        List<Control> sucontrols = new List<Control>();
 
-        public void FindAttendees(XDocument x)
+        public void ShowFamily(int fid)
         {
-            hasprinter = RawPrinterHelper.HasPrinter(printer);
+            var x = this.GetDocument("Checkin/Family/" + fid + Program.QueryString);
+            ShowFamily(x);
+        }
+        public void ShowFamily(XDocument x)
+        {
+            ClearControls();
+            hasprinter = PrintRawHelper.HasPrinter(printer);
             Print.Focus();
             time = DateTime.Now;
 
@@ -52,6 +57,7 @@ namespace CmsCheckin
             string Present = "Present";
             string Labels = "Labels";
             var g = this.CreateGraphics();
+            Print.Text = "Print Labels, Return";
             if (x.Descendants("attendee").Count() == 0)
             {
                 var lab = new Label();
@@ -61,10 +67,11 @@ namespace CmsCheckin
                 lab.Text = "Not Found, try another phone number?";
                 this.Controls.Add(lab);
                 Print.Text = "Try again";
+                controls.Add(lab);
                 return;
             }
 
-            var cols = new int[5];
+            var cols = new int[6];
 
             int[] wids;
             int maxheight;
@@ -98,18 +105,15 @@ namespace CmsCheckin
                     n++;
 
                     size = g.MeasureString("|", font);
-                    maxheight = Math.Max(maxheight, (int)size.Height);
-                    wids[n] = Math.Max(wids[n], Math.Max((int)size.Width, buttonwidth/2));
+                    wids[n] = Math.Max(wids[n], buttonwidth/2);
                     n++;
 
-                    size = g.MeasureString("|", font);
                     maxheight = Math.Max(maxheight, (int)size.Height);
-                    n++;
                 }
-                for (var i = 1; i < 5; i++)
+                for (var i = 1; i < 6; i++)
                     cols[i] = cols[i - 1] + wids[i - 1] + sep;
-                cols[4] -= sep;
-                if (cols[4] > 1024)
+                cols[5] -= sep;
+                if (cols[5] > 1024)
                 {
                     points -= 1F;
                     continue;
@@ -118,7 +122,7 @@ namespace CmsCheckin
             }
             Row = 0;
             var col = 0;
-            var LeftEdge = (1024 - cols[4]) / 2;
+            var LeftEdge = (1024 - cols[5]) / 2;
             var labtop = top - rowheight;
 
             var head = new Label();
@@ -127,6 +131,7 @@ namespace CmsCheckin
             head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = Present;
             this.Controls.Add(head);
+            controls.Add(head);
             col++;
 
             head = new Label();
@@ -135,6 +140,7 @@ namespace CmsCheckin
             head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Name";
             this.Controls.Add(head);
+            controls.Add(head);
             col++;
 
             head = new Label();
@@ -143,6 +149,7 @@ namespace CmsCheckin
             head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Meeting";
             this.Controls.Add(head);
+            controls.Add(head);
             col++;
 
             head = new Label();
@@ -151,6 +158,7 @@ namespace CmsCheckin
             head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Labels";
             this.Controls.Add(head);
+            controls.Add(head);
             col++;
 
             foreach (var e in x.Descendants("attendee").Take(MaxRows))
@@ -203,6 +211,7 @@ namespace CmsCheckin
                 ab.Text = c.CheckedIn ? "ü" : String.Empty;
                 ab.Tag = c;
                 col++;
+                controls.Add(ab);
 
                 var label = new Label();
                 label.Font = font;
@@ -214,6 +223,7 @@ namespace CmsCheckin
                 if (c.cinfo.OrgId != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
+                controls.Add(label);
                 col++;
 
                 label = new Label();
@@ -226,6 +236,7 @@ namespace CmsCheckin
                 if (c.cinfo.OrgId != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
+                controls.Add(label);
                 col++;
 
                 var eb = new Button();
@@ -240,10 +251,12 @@ namespace CmsCheckin
                 this.Controls.Add(eb);
                 eb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
                 eb.Click += new EventHandler(eb_Click);
+                controls.Add(eb);
                 col++;
 
                 var cb = new Button();
-                cb.BackColor = Color.Coral;
+                cb.BackColor = Color.LightGray;
+                cb.Enabled = false;
                 cb.Font = pfont;
                 cb.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
                 cb.Name = "visit" + Row;
@@ -253,6 +266,8 @@ namespace CmsCheckin
                 cb.UseVisualStyleBackColor = false;
                 this.Controls.Add(cb);
                 cb.Click += new EventHandler(cb_Click);
+                controls.Add(cb);
+                sucontrols.Add(cb);
                 col++;
 
                 Row++;
@@ -262,7 +277,7 @@ namespace CmsCheckin
         void ab_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyValue == 27)
-                GoBack(sender, e);
+                this.GoHome(string.Empty);
         }
 
         void eb_Click(object sender, EventArgs e)
@@ -316,13 +331,14 @@ namespace CmsCheckin
             var cb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + cb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
-            GoClasses(sender, new EventArgs<int>(c.cinfo.PeopleId));
+            this.Swap(Program.classes);
+            Program.classes.ShowResults(c.cinfo.PeopleId, 1);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
             PrintLabels();
-            GoBack(sender, e);
+            this.GoHome(string.Empty);
         }
         private void PrintLabels()
         {
@@ -335,71 +351,42 @@ namespace CmsCheckin
                 var n = 0;
                 if (int.TryParse(eb.Text, out n) && n > 0)
                 {
-                    PrintLabel(c, n);
+                    CmsCheckin.Print.Label(c, n, time);
                     printed = true;
                 }
             }
             if (printed)
-                PrintBlankLabel();
+                CmsCheckin.Print.BlankLabel();
+        }
+        private void ClearControls()
+        {
+            foreach (var c in controls)
+            {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            controls.Clear();
         }
 
-        private void PrintBlankLabel()
-        {
-            if (!hasprinter)
-                return;
-            var ms = new MemoryStream();
-            var st = new StreamWriter(ms);
-            st.WriteLine("\x02L");
-            st.WriteLine("H07");
-            st.WriteLine("D11");
-            st.WriteLine("E");
-            st.Flush();
-            ms.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, ms);
-            st.Close();
-        }
-        void PrintLabel(AttendLabel c, int n)
-        {
-            if (!hasprinter || n == 0)
-                return;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02n");
-            sw.WriteLine("\x02M0500");
-            sw.WriteLine("\x02O0220");
-            sw.WriteLine("\x02V0");
-            sw.WriteLine("\x02SG");
-            sw.WriteLine("\x02d");
-            sw.WriteLine("\x01D");
-            sw.WriteLine("\x02L");
-            sw.WriteLine("D11");
-            sw.WriteLine("PG");
-            sw.WriteLine("pC");
-            sw.WriteLine("SG");
-            sw.WriteLine("ySPM");
-            sw.WriteLine("A2");
-            sw.WriteLine("1911A3000450009" + c.First);
-            sw.WriteLine("1911A1000300011" + c.Last);
-            sw.WriteLine("1911A1000060008" + " (" + c.cinfo.PeopleId + " " + c.Gender + ")" + time.ToString("  M/d/yy"));
-            sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
-            sw.WriteLine("Q" + n.ToString("0000"));
-            sw.WriteLine("E");
-            sw.Flush();
-
-            memStrm.Position = 0;
-            RawPrinterHelper.SendDocToPrinter(printer, memStrm);
-            sw.Close();
-        }
 
 
         private void AttendeeKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
-                GoBack(sender, e);
+                this.GoHome(string.Empty);
             if (e.KeyChar == 13)
             {
                 PrintLabels();
-                GoBack(sender, e);
+                this.GoHome(string.Empty);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (var c in sucontrols)
+            {
+                c.Enabled = true;
+                c.BackColor = Color.Coral;
             }
         }
     }

@@ -231,8 +231,9 @@ namespace CMSWeb.Areas.Main.Controllers
             {
                 foreach (var p in m.List)
                 {
+                    var isnew = p.IsNew;
                     AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
-                    if (!p.IsNew)
+                    if (!isnew)
                     {
                         if (p.person.Age < 18)
                             p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;

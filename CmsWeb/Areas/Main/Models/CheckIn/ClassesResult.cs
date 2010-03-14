@@ -39,13 +39,15 @@ namespace CMSWeb.Models
                         where bd >= o.BirthDayStart || o.BirthDayStart == null
                         where o.CanSelfCheckin == true
                         where o.CampusId == campusid
+                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                         where Hour1 != null
-                        orderby o.SchedTime, o.Division.Name, o.OrganizationName
+                        orderby o.SchedTime.Value.TimeOfDay, o.BirthDayStart, o.Division.Name, o.OrganizationName
                         select o;
+               
                 var count = q.Count();
                 const int INT_PageSize = 10;
                 var startrow = (page - 1) * INT_PageSize;
-                if (count >= startrow)
+                if (count > startrow + INT_PageSize)
                     w.WriteAttributeString("next", (page + 1).ToString());
                 else
                     w.WriteAttributeString("next", "");
@@ -53,12 +55,13 @@ namespace CMSWeb.Models
                     w.WriteAttributeString("prev", (page - 1).ToString());
                 else
                     w.WriteAttributeString("prev", "");
+                
                 foreach (var o in q.Skip(startrow).Take(INT_PageSize))
                 {
                     w.WriteStartElement("class");
                     w.WriteAttributeString("orgid", o.OrganizationId.ToString());
                     w.WriteAttributeString("display",
-                        o.MeetingTime.Value.ToShortTimeString() + " - " + o.FullName);
+                        o.MeetingTime.Value.ToShortTimeString() + " - " + o.Division.Name + " - " + o.FullName);
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

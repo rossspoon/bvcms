@@ -20,6 +20,7 @@ namespace CMSWeb.Models
                      where f.HeadOfHousehold.DeceasedDate == null
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.People.Any(p => p.CellPhoneLU.StartsWith(p7))
+                     orderby f.FamilyId
                      select new FamilyInfo
                      {
                          FamilyId = f.FamilyId,

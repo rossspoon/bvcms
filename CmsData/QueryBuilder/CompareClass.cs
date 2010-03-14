@@ -136,12 +136,6 @@ namespace CmsData
                                c.Tags,
                                CompType,
                                c.CodeIds == "1");
-            //                internal static Expression HasVolunteerCode(ParameterExpression parm,
-            //int volOppId,
-            //string tag,
-            //CompareType op,
-            //bool tf)
-
                 case QueryType.HasLowerName:
                     return Expressions.HasLowerName(c.GetDataContext() as CMSDataContext,
                                parm,
@@ -265,6 +259,10 @@ namespace CmsData
                                c.Division,
                                c.Organization,
                                c.Schedule,
+                               CompType,
+                               c.TextValue.ToInt());
+                case QueryType.NumberOfFamilyMembers:
+                    return Expressions.NumberOfFamilyMembers(parm,
                                CompType,
                                c.TextValue.ToInt());
                 // O --------------------------

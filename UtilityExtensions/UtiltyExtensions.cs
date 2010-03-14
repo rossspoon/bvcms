@@ -177,6 +177,12 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+        public static string FormatDate2(this DateTime? dt)
+        {
+            if (dt.HasValue)
+                return dt.Value.ToString("M/d/yy");
+            return "";
+        }
         public static string FormatDate(this DateTime? dt, string def)
         {
             if (dt.HasValue)
@@ -201,6 +207,17 @@ namespace UtilityExtensions
             if (td.Month < bd.Month || (td.Month == bd.Month && td.Day < bd.Day))
                 age--;
             return age.ToString();
+        }
+        public static int Age0(this string birthday)
+        {
+            DateTime bd;
+            if (!birthday.DateTryParse(out bd))
+                return -1;
+            DateTime td = Now;
+            int age = td.Year - bd.Year;
+            if (td.Month < bd.Month || (td.Month == bd.Month && td.Day < bd.Day))
+                age--;
+            return age;
         }
         public static int AgeAsOf(this DateTime bd, DateTime dt)
         {

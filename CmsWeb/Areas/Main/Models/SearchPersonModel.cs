@@ -177,7 +177,8 @@ namespace CMSWeb.Models
                     (int)Person.OriginCode.Enrollment, entrypoint);
             if (title.HasValue())
                 person.TitleCode = title;
-            person.EmailAddress = email;
+            if (email != "na")
+                person.EmailAddress = email;
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;

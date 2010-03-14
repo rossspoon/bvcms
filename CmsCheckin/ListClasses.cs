@@ -14,11 +14,9 @@ using System.Collections.Specialized;
 
 namespace CmsCheckin
 {
-    public partial class ClassResults : UserControl
+    public partial class ListClasses : UserControl
     {
-        public event EventHandler<EventArgs<int>> GoBack;
-
-        public ClassResults()
+        public ListClasses()
         {
             InitializeComponent();
         }
@@ -29,8 +27,10 @@ namespace CmsCheckin
         int? next, prev;
         List<Control> controls = new List<Control>();
 
-        public void ShowResults(XDocument x)
+        public void ShowResults(int pid, int page)
         {
+            var x = this.GetDocument("Checkin/Classes/" + pid + Program.QueryString + "&page=" + page);
+
             time = DateTime.Now;
 
             var points = 14F;
@@ -104,17 +104,21 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             this.RecordAttend(c, true);
-            GoBack(sender, new EventArgs<int>(FamilyId));
+            Program.family.ShowFamily(FamilyId);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            GoBack(sender, new EventArgs<int>(FamilyId));
+            this.Swap(Program.family);
+            Program.family.ShowFamily(FamilyId);
         }
         private void ResultKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
-                GoBack(sender, new EventArgs<int>(FamilyId));
+            {
+                this.Swap(Program.family);
+                Program.family.ShowFamily(FamilyId);
+            }
         }
 
         private void ClearControls()
@@ -129,17 +133,13 @@ namespace CmsCheckin
         private void pgdn_Click(object sender, EventArgs e)
         {
             ClearControls();
-            var x = this.GetDocument("Checkin/Classes/"
-                + PeopleId + Program.QueryString + "&page=" + next);
-            ShowResults(x);
+            ShowResults(PeopleId, next.Value);
         }
 
         private void pgup_Click(object sender, EventArgs e)
         {
             ClearControls();
-            var x = this.GetDocument("Checkin/Classes/"
-                + PeopleId + Program.QueryString + "&page=" + prev);
-            ShowResults(x);
+            ShowResults(PeopleId, prev.Value);
         }
     }
     public class ClassInfo

@@ -10,11 +10,9 @@ using System.Text.RegularExpressions;
 
 namespace CmsCheckin
 {
-    public partial class PhoneNumber : UserControl
+    public partial class Home : UserControl
     {
-        public event EventHandler<EventArgs<string>> Go;
-
-        public PhoneNumber()
+        public Home()
         {
             InitializeComponent();
         }
@@ -23,34 +21,6 @@ namespace CmsCheckin
             var b = sender as Button;
             var d = b.Name[6];
             KeyStroke(d);
-        }
-        public static string GetDigits(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return "";
-            var digits = new StringBuilder();
-            foreach (var c in s.ToCharArray())
-                if (Char.IsDigit(c))
-                    digits.Append(c);
-            return digits.ToString();
-        }
-        public bool AllDigits(string str)
-        {
-            Regex patt = new Regex("[^0-9]");
-            return !(patt.IsMatch(str));
-        }
-        public static string FmtFone(string phone)
-        {
-            var ph = GetDigits(phone);
-            if (string.IsNullOrEmpty(ph))
-                return "";
-            var t = new StringBuilder(ph);
-
-            if (ph.Length >= 4)
-                t.Insert(3, "-");
-            if (ph.Length >= 8)
-                t.Insert(7, "-");
-            return t.ToString();
         }
 
         private void PhoneNumber_Load(object sender, EventArgs e)
@@ -91,10 +61,9 @@ namespace CmsCheckin
         private void buttongo_Click(object sender, EventArgs e)
         {
             lastbutton = null;
-            var d = GetDigits(textBox1.Text).Length;
+            var d = textBox1.Text.GetDigits().Length;
             lastnumber = textBox1.Text;
-            Go(sender, new EventArgs<string>(textBox1.Text));
-            textBox1.Text = "";
+            Go();
         }
 
         private void buttonbs_Click(object sender, EventArgs e)
@@ -111,34 +80,53 @@ namespace CmsCheckin
                 KeyStroke(e.KeyChar);
             else if(e.KeyChar == '\r')
             {
-                var d = GetDigits(textBox1.Text).Length;
-                if (d != 10 && d != 7)
-                    return;
                 lastnumber = textBox1.Text;
-                Go(sender, new EventArgs<string>(textBox1.Text));
+                Go();
             }
             e.Handled = true;
         }
         private void KeyStroke(char d)
         {
             lastbutton = null;
-            var t = GetDigits(textBox1.Text);
+            var t = textBox1.Text.GetDigits();
             if (t.Length < 10)
                 t += d;
-            textBox1.Text = FmtFone(t);
+            textBox1.Text = t.FmtFone();
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
         }
         private void BackSpace()
         {
             lastbutton = null;
-            var t = GetDigits(textBox1.Text);
+            var t = textBox1.Text.GetDigits();
             var len = t.Length - 1;
             if (len < 0)
                 len = 0;
-            textBox1.Text = FmtFone(t.Substring(0, len));
+            textBox1.Text = t.Substring(0, len).FmtFone();
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
+        }
+        private void Go()
+        {
+            if (textBox1.Text == "411")
+                this.Swap(Program.namesearch);
+            else if (textBox1.Text.StartsWith("0"))
+                Print.MemberList(textBox1.Text.Substring(1));
+            else
+            {
+                var x = this.GetDocument("Checkin/Match/" + textBox1.Text.GetDigits() + Program.QueryString);
+                if (x.Document.Root.Name == "Families")
+                {
+                    this.Swap(Program.families);
+                    Program.families.ShowFamilies(x);
+                }
+                else
+                {
+                    this.Swap(Program.family);
+                    Program.family.ShowFamily(x);
+                }
+            }
+            textBox1.Text = string.Empty;
         }
     }
 }

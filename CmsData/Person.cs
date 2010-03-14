@@ -166,6 +166,16 @@ namespace CmsData
                 return "";
             }
         }
+        public DateTime? BirthDate
+        {
+            get
+            {
+                DateTime dt;
+                if (DateTime.TryParse(DOB, out dt))
+                    return dt;
+                return null;
+            }
+        }
         public string DOB
         {
             get

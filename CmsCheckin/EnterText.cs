@@ -10,15 +10,41 @@ using System.Text.RegularExpressions;
 
 namespace CmsCheckin
 {
-    public partial class NameSeach : UserControl
+    public partial class EnterText : UserControl
     {
         public event EventHandler GoBack;
-        public event EventHandler<EventArgs<string>> Go;
+        public event EventHandler GoNext;
+        private bool isname;
 
-        public NameSeach()
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            const int WM_KEYDOWN = 0x100;
+            const int WM_SYSKEYDOWN = 0x104;
+
+            if ((msg.Msg == WM_KEYDOWN) || (msg.Msg == WM_SYSKEYDOWN))
+            {
+                switch (keyData)
+                {
+                    case Keys.Tab:
+                        GoNext(this, new EventArgs());
+                        return true;
+                    case Keys.Shift | Keys.Tab:
+                        GoBack(this, new EventArgs());
+                        return true;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        public EnterText(string Header)
+            : this(Header, false)
+        {
+        }
+        public EnterText(string Header, bool isname)
         {
             InitializeComponent();
-        }
+            label2.Text = Header;
+            this.isname = isname;
+       }
         void buttonclick(object sender, EventArgs e)
         {
             var b = sender as Button;
@@ -32,6 +58,17 @@ namespace CmsCheckin
 
         private void Name_Load(object sender, EventArgs e)
         {
+            b1.Click += new EventHandler(buttonclick);
+            b2.Click += new EventHandler(buttonclick);
+            b3.Click += new EventHandler(buttonclick);
+            b4.Click += new EventHandler(buttonclick);
+            b5.Click += new EventHandler(buttonclick);
+            b6.Click += new EventHandler(buttonclick);
+            b7.Click += new EventHandler(buttonclick);
+            b8.Click += new EventHandler(buttonclick);
+            b9.Click += new EventHandler(buttonclick);
+            b0.Click += new EventHandler(buttonclick);
+
             bq.Click += new EventHandler(buttonclick);
             bw.Click += new EventHandler(buttonclick);
             be.Click += new EventHandler(buttonclick);
@@ -60,6 +97,7 @@ namespace CmsCheckin
             bb.Click += new EventHandler(buttonclick);
             bn.Click += new EventHandler(buttonclick);
             bm.Click += new EventHandler(buttonclick);
+            b_.Click += new EventHandler(buttonclick);
 
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
@@ -68,9 +106,9 @@ namespace CmsCheckin
         private void buttongo_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBox1.Text))
-                Go(this, new EventArgs<string>("xyz"));
+                GoNext(this, new EventArgs<string>("xyz"));
             else
-                Go(this, new EventArgs<string>(textBox1.Text));
+                GoNext(this, new EventArgs<string>(textBox1.Text));
         }
 
         private void buttonbs_Click(object sender, EventArgs e)
@@ -81,17 +119,21 @@ namespace CmsCheckin
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '\b')
+            if (e.KeyChar == 27)
+                GoBack(sender, e);
+            else if (e.KeyChar == '\b')
                 BackSpace();
-            else if ((e.KeyChar >= 'a' && e.KeyChar <= 'z') || e.KeyChar == ' ')
-                KeyStroke(e.KeyChar);
-            else if (e.KeyChar == '\r')
+            else if (e.KeyChar == '\r' || e.KeyChar == '\t')
                 buttongo_Click(sender, null);
+            else
+                KeyStroke(e.KeyChar);
             e.Handled = true;
         }
         private void KeyStroke(char d)
         {
             textBox1.Text += d;
+            if (isname)
+                textBox1.Text = textBox1.Text.ToTitleCase();
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
         }
@@ -111,5 +153,39 @@ namespace CmsCheckin
             KeyStroke(' ');
         }
 
+        private void GoBackButton_Click(object sender, EventArgs e)
+        {
+            GoBack(sender, e);
+        }
+
+        private void bat_Click(object sender, EventArgs e)
+        {
+            KeyStroke('@');
+        }
+
+        private void bdot_Click(object sender, EventArgs e)
+        {
+            KeyStroke('.');
+        }
+
+        private void bdash_Click(object sender, EventArgs e)
+        {
+            KeyStroke('-');
+        }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = string.Empty;
+            textBox1.Focus();
+        }
+
+        private void EnterText_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible == true)
+            {
+                textBox1.Focus();
+                textBox1.Select(textBox1.Text.Length, 0);
+            }
+        }
     }
 }

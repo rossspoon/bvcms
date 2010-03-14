@@ -10,12 +10,9 @@ using System.Xml.Linq;
 
 namespace CmsCheckin
 {
-    public partial class Families : UserControl
+    public partial class ListFamilies : UserControl
     {
-        public event EventHandler GoBack;
-        public event EventHandler<EventArgs<int>> Go;
-
-        public Families()
+        public ListFamilies()
         {
             InitializeComponent();
         }
@@ -51,17 +48,18 @@ namespace CmsCheckin
         void ab_Click(object sender, EventArgs e)
         {
             var ab = sender as Button;
-            Go(sender, new EventArgs<int>((int)ab.Tag));
+            this.Swap(Program.family);
+            Program.family.ShowFamily((int)ab.Tag);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            GoBack(sender, e);
+            this.GoHome(string.Empty);
         }
         private void FamilyKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
-                GoBack(sender, e);
+                this.GoHome(string.Empty);
         }
     }
 }
