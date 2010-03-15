@@ -46,13 +46,14 @@
             this.button12 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.button13 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox1.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(229, 172);
+            this.textBox1.Location = new System.Drawing.Point(311, 84);
             this.textBox1.Margin = new System.Windows.Forms.Padding(8, 4, 4, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(411, 64);
@@ -64,7 +65,7 @@
             this.button1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(229, 244);
+            this.button1.Location = new System.Drawing.Point(311, 156);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 84);
@@ -77,7 +78,7 @@
             this.buttonbs.BackColor = System.Drawing.SystemColors.ControlLight;
             this.buttonbs.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonbs.Font = new System.Drawing.Font("Wingdings", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.buttonbs.Location = new System.Drawing.Point(509, 642);
+            this.buttonbs.Location = new System.Drawing.Point(590, 545);
             this.buttonbs.Margin = new System.Windows.Forms.Padding(4);
             this.buttonbs.Name = "buttonbs";
             this.buttonbs.Size = new System.Drawing.Size(132, 84);
@@ -91,7 +92,7 @@
             this.button2.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(369, 244);
+            this.button2.Location = new System.Drawing.Point(451, 156);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(132, 84);
@@ -106,7 +107,7 @@
             this.buttongo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttongo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttongo.ForeColor = System.Drawing.Color.White;
-            this.buttongo.Location = new System.Drawing.Point(369, 641);
+            this.buttongo.Location = new System.Drawing.Point(450, 544);
             this.buttongo.Margin = new System.Windows.Forms.Padding(4);
             this.buttongo.Name = "buttongo";
             this.buttongo.Size = new System.Drawing.Size(132, 85);
@@ -120,7 +121,7 @@
             this.button3.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button3.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(509, 244);
+            this.button3.Location = new System.Drawing.Point(591, 156);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(132, 84);
@@ -133,7 +134,7 @@
             this.button4.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button4.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(229, 335);
+            this.button4.Location = new System.Drawing.Point(311, 247);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(132, 84);
@@ -146,7 +147,7 @@
             this.button5.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button5.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(369, 335);
+            this.button5.Location = new System.Drawing.Point(451, 247);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(132, 84);
@@ -159,7 +160,7 @@
             this.button0.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button0.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button0.Location = new System.Drawing.Point(369, 517);
+            this.button0.Location = new System.Drawing.Point(451, 429);
             this.button0.Margin = new System.Windows.Forms.Padding(4);
             this.button0.Name = "button0";
             this.button0.Size = new System.Drawing.Size(132, 84);
@@ -172,7 +173,7 @@
             this.button6.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button6.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(509, 335);
+            this.button6.Location = new System.Drawing.Point(591, 247);
             this.button6.Margin = new System.Windows.Forms.Padding(4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(132, 84);
@@ -185,7 +186,7 @@
             this.button7.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button7.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(229, 426);
+            this.button7.Location = new System.Drawing.Point(311, 338);
             this.button7.Margin = new System.Windows.Forms.Padding(4);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(132, 84);
@@ -198,7 +199,7 @@
             this.button9.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button9.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(509, 426);
+            this.button9.Location = new System.Drawing.Point(591, 338);
             this.button9.Margin = new System.Windows.Forms.Padding(4);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(132, 84);
@@ -211,7 +212,7 @@
             this.button8.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button8.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(369, 426);
+            this.button8.Location = new System.Drawing.Point(451, 338);
             this.button8.Margin = new System.Windows.Forms.Padding(4);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(132, 84);
@@ -224,7 +225,7 @@
             this.button10.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button10.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(229, 517);
+            this.button10.Location = new System.Drawing.Point(311, 429);
             this.button10.Margin = new System.Windows.Forms.Padding(4);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(132, 84);
@@ -236,7 +237,7 @@
             this.button11.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button11.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(509, 518);
+            this.button11.Location = new System.Drawing.Point(591, 430);
             this.button11.Margin = new System.Windows.Forms.Padding(4);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(132, 84);
@@ -248,7 +249,7 @@
             this.button12.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button12.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button12.Location = new System.Drawing.Point(229, 642);
+            this.button12.Location = new System.Drawing.Point(310, 545);
             this.button12.Margin = new System.Windows.Forms.Padding(4);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(132, 84);
@@ -257,30 +258,46 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(43, 103);
+            this.label1.ForeColor = System.Drawing.Color.Blue;
+            this.label1.Location = new System.Drawing.Point(305, 642);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(732, 36);
+            this.label1.Size = new System.Drawing.Size(410, 125);
             this.label1.TabIndex = 33;
-            this.label1.Text = "Enter your 7 digit phone number and press GO";
+            this.label1.Text = "Enter your phone number (no area code needed) and press GO";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(229, 18);
+            this.label2.Location = new System.Drawing.Point(355, 0);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(412, 73);
+            this.label2.Size = new System.Drawing.Size(312, 73);
             this.label2.TabIndex = 34;
             this.label2.Text = "Check-in";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // PhoneNumber
+            // button13
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.button13.BackColor = System.Drawing.SystemColors.Control;
+            this.button13.FlatAppearance.BorderSize = 0;
+            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button13.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button13.Location = new System.Drawing.Point(4, 684);
+            this.button13.Margin = new System.Windows.Forms.Padding(4);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(132, 84);
+            this.button13.TabIndex = 35;
+            this.button13.Text = ".";
+            this.button13.UseVisualStyleBackColor = false;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // Home
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.button13);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button12);
@@ -300,8 +317,8 @@
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "PhoneNumber";
-            this.Size = new System.Drawing.Size(855, 747);
+            this.Name = "Home";
+            this.Size = new System.Drawing.Size(1024, 768);
             this.Load += new System.EventHandler(this.PhoneNumber_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -328,5 +345,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button13;
     }
 }

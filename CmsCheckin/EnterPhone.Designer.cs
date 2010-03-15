@@ -32,7 +32,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.buttonbs = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.buttongo = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -42,7 +41,8 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.button11 = new System.Windows.Forms.Button();
+            this.bgo = new System.Windows.Forms.Button();
+            this.GoBackButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -95,22 +95,6 @@
             this.button2.TabIndex = 17;
             this.button2.Text = "2";
             this.button2.UseVisualStyleBackColor = false;
-            // 
-            // buttongo
-            // 
-            this.buttongo.BackColor = System.Drawing.Color.LimeGreen;
-            this.buttongo.FlatAppearance.BorderColor = System.Drawing.Color.Green;
-            this.buttongo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttongo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttongo.ForeColor = System.Drawing.Color.White;
-            this.buttongo.Location = new System.Drawing.Point(705, 441);
-            this.buttongo.Margin = new System.Windows.Forms.Padding(4);
-            this.buttongo.Name = "buttongo";
-            this.buttongo.Size = new System.Drawing.Size(178, 139);
-            this.buttongo.TabIndex = 29;
-            this.buttongo.Text = "Next";
-            this.buttongo.UseVisualStyleBackColor = false;
-            this.buttongo.Click += new System.EventHandler(this.buttongo_Click);
             // 
             // button3
             // 
@@ -227,33 +211,49 @@
             this.label2.Text = "label";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button11
+            // bgo
             // 
-            this.button11.BackColor = System.Drawing.Color.LimeGreen;
-            this.button11.FlatAppearance.BorderColor = System.Drawing.Color.Green;
-            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button11.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Location = new System.Drawing.Point(17, 639);
-            this.button11.Margin = new System.Windows.Forms.Padding(4);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(256, 73);
-            this.button11.TabIndex = 35;
-            this.button11.Text = "Go Back";
-            this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.bgo.BackColor = System.Drawing.Color.LimeGreen;
+            this.bgo.FlatAppearance.BorderColor = System.Drawing.Color.Green;
+            this.bgo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bgo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bgo.ForeColor = System.Drawing.Color.White;
+            this.bgo.Location = new System.Drawing.Point(852, 491);
+            this.bgo.Margin = new System.Windows.Forms.Padding(4);
+            this.bgo.Name = "bgo";
+            this.bgo.Size = new System.Drawing.Size(168, 122);
+            this.bgo.TabIndex = 59;
+            this.bgo.Text = "Next";
+            this.bgo.UseVisualStyleBackColor = false;
+            this.bgo.Click += new System.EventHandler(this.buttongo_Click);
+            // 
+            // GoBackButton
+            // 
+            this.GoBackButton.BackColor = System.Drawing.Color.LimeGreen;
+            this.GoBackButton.FlatAppearance.BorderColor = System.Drawing.Color.Green;
+            this.GoBackButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.GoBackButton.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoBackButton.ForeColor = System.Drawing.Color.White;
+            this.GoBackButton.Location = new System.Drawing.Point(4, 689);
+            this.GoBackButton.Margin = new System.Windows.Forms.Padding(4);
+            this.GoBackButton.Name = "GoBackButton";
+            this.GoBackButton.Size = new System.Drawing.Size(265, 75);
+            this.GoBackButton.TabIndex = 58;
+            this.GoBackButton.Text = "Go Back";
+            this.GoBackButton.UseVisualStyleBackColor = false;
+            this.GoBackButton.Click += new System.EventHandler(this.button_goback_Click);
             // 
             // EnterPhone
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button11);
+            this.Controls.Add(this.bgo);
+            this.Controls.Add(this.GoBackButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonbs);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.buttongo);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button5);
@@ -264,8 +264,9 @@
             this.Controls.Add(this.button8);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EnterPhone";
-            this.Size = new System.Drawing.Size(1024, 728);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.Load += new System.EventHandler(this.PhoneNumber_Load);
+            this.VisibleChanged += new System.EventHandler(this.EnterText_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,7 +277,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonbs;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button buttongo;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
@@ -287,6 +287,7 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button bgo;
+        private System.Windows.Forms.Button GoBackButton;
     }
 }

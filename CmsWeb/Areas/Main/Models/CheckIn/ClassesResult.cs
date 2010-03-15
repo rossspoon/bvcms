@@ -38,6 +38,7 @@ namespace CMSWeb.Models
                         where bd <= o.BirthDayEnd || o.BirthDayEnd == null
                         where bd >= o.BirthDayStart || o.BirthDayStart == null
                         where o.CanSelfCheckin == true
+                        where (o.ClassFilled ?? false) == false
                         where o.CampusId == campusid
                         where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                         where Hour1 != null

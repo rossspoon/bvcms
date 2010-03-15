@@ -29,6 +29,7 @@ namespace CmsCheckin
         public void ShowResults(string match, int page)
         {
             ClearControls();
+
             name = match;
             var x = this.GetDocument("Checkin/NameSearch/" + name + "?page=" + page);
 
@@ -56,7 +57,7 @@ namespace CmsCheckin
                 return;
             }
 
-            const int WidName = 935;
+            const int WidName = 890;
             while (true)
             {
                 var wid = 0;
@@ -80,7 +81,8 @@ namespace CmsCheckin
                 var ab = new Button();
                 ab.BackColor = SystemColors.ControlLight;
                 ab.Font = labfont;
-                ab.Location = new Point(10, 100 + (row * 50));
+                const int Gutter = 10;
+                ab.Location = new Point(Gutter, 100 + (row * 50));
                 var homephone = e.Attribute("home").Value;
                 var cellphone = e.Attribute("cell").Value;
                 ab.Tag = !string.IsNullOrEmpty(homephone) ? homephone : !string.IsNullOrEmpty(cellphone) ? cellphone : "";
@@ -94,32 +96,38 @@ namespace CmsCheckin
                 controls.Add(ab);
 
                 var an = new Button();
-                an.BackColor = Color.LightGray;
+                an.BackColor = SystemColors.Control;
+                an.FlatStyle = FlatStyle.Flat;
+                an.FlatAppearance.BorderSize = 1;
                 an.Text = "a";
-                an.Location = new Point(10 + WidName + 10, 100 + (row * 50));
+                an.Location = new Point(Gutter + WidName + Gutter, 100 + (row * 50));
                 an.Tag = new AddFamilyInfo
                 {
-                    FamilyId = e.Attribute("fid").Value.ToInt(),
+                    fid = e.Attribute("fid").Value.ToInt(),
                     home = e.Attribute("home").Value.FmtFone(),
                     addr = e.Attribute("addr").Value,
                     zip = e.Attribute("zip").Value.FmtZip(),
                     last = e.Attribute("last").Value,
                     email = e.Attribute("email").Value,
                 };
-                an.Size = new Size(30, 30);
+                const int ButtonWid = 45;
+                an.Size = new Size(ButtonWid, ButtonWid);
                 this.Controls.Add(an);
                 an.Click += new EventHandler(an_Click);
-                an.Enabled = false;
+                an.Enabled = bAddNewFamily.Enabled;
                 controls.Add(an);
                 sucontrols.Add(an);
 
                 var ed = new Button();
-                ed.BackColor = Color.LightGray;
+                ed.BackColor = SystemColors.Control;
+                ed.FlatStyle = FlatStyle.Flat;
+                ed.FlatAppearance.BorderSize = 1;
                 ed.Text = "e";
-                ed.Location = new Point(10 + WidName + 10 + 30 + 10, 100 + (row * 50));
+                ed.Location = new Point(Gutter + WidName + Gutter + ButtonWid + Gutter, 100 + (row * 50));
                 ed.Tag = new PersonInfo
                 {
                     fid = e.Attribute("fid").Value.ToInt(),
+                    pid = e.Attribute("pid").Value.ToInt(),
                     home = e.Attribute("home").Value.FmtFone(),
                     cell = e.Attribute("cell").Value.FmtFone(),
                     addr = e.Attribute("addr").Value,
@@ -132,10 +140,10 @@ namespace CmsCheckin
                     gender = e.Attribute("gender").Value.ToInt(),
                     marital = e.Attribute("marital").Value.ToInt(),
                 };
-                ed.Size = new Size(30, 30);
+                ed.Size = new Size(ButtonWid, ButtonWid);
                 this.Controls.Add(ed);
                 ed.Click += new EventHandler(ed_Click);
-                ed.Enabled = false;
+                ed.Enabled = bAddNewFamily.Enabled;
                 controls.Add(ed);
                 sucontrols.Add(ed);
 
@@ -152,7 +160,7 @@ namespace CmsCheckin
         {
             var an = sender as Button;
             var fi = (AddFamilyInfo)an.Tag;
-            Program.FamilyId = fi.FamilyId;
+            Program.FamilyId = fi.fid;
             Program.SetFields(fi.last, fi.email, fi.addr, fi.zip, fi.home);
             Program.editing = false;
             this.Swap(Program.first);
@@ -161,7 +169,7 @@ namespace CmsCheckin
         {
             var ed = sender as Button;
             var pi = (PersonInfo)ed.Tag;
-            Program.FamilyId = pi.fid;
+            Program.PeopleId = pi.pid;
             Program.SetFields(pi.last, pi.email, pi.addr, pi.zip, pi.home);
             Program.first.textBox1.Text = pi.first;
             Program.goesby.textBox1.Text = pi.goesby;
@@ -176,7 +184,7 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            this.GoHome(string.Empty);
+            this.Swap(Program.namesearch);
         }
         private void ResultKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -184,7 +192,7 @@ namespace CmsCheckin
                 this.GoHome(string.Empty);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void AddNewFamily_Click(object sender, EventArgs e)
         {
             Program.FamilyId = 0;
             Program.editing = false;
@@ -199,6 +207,9 @@ namespace CmsCheckin
                 c.Dispose();
             }
             controls.Clear();
+            sucontrols.Clear();
+            sucontrols.Add(bAddNewFamily);
+            bAddNewFamily.Enabled = false;
         }
         private void pgdn_Click(object sender, EventArgs e)
         {
@@ -223,7 +234,7 @@ namespace CmsCheckin
     }
     public class AddFamilyInfo
     {
-        public int FamilyId { get; set; }
+        public int fid { get; set; }
         public string home { get; set; }
         public string addr { get; set; }
         public string zip { get; set; }
@@ -232,7 +243,7 @@ namespace CmsCheckin
     }
     public class PersonInfo : AddFamilyInfo
     {
-        public int fid { get; set; }
+        public int pid { get; set; }
         public string first { get; set; }
         public string goesby { get; set; }
         public string dob { get; set; }

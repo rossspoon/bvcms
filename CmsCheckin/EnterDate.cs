@@ -118,9 +118,18 @@ namespace CmsCheckin
             KeyStroke('/');
         }
 
-        private void button11_Click(object sender, EventArgs e)
+        private void button_goback_Click(object sender, EventArgs e)
         {
             GoBack(sender, e);
         }
+        private void EnterText_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible == true)
+            {
+                textBox1.Focus();
+                textBox1.Select(textBox1.Text.Length, 0);
+            }
+        }
+
     }
 }

@@ -85,8 +85,10 @@
     <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult2.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult2.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\SearchModel.cs" />

@@ -69,10 +69,10 @@
             this.buttongo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttongo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttongo.ForeColor = System.Drawing.Color.White;
-            this.buttongo.Location = new System.Drawing.Point(672, 628);
+            this.buttongo.Location = new System.Drawing.Point(701, 691);
             this.buttongo.Margin = new System.Windows.Forms.Padding(4);
             this.buttongo.Name = "buttongo";
-            this.buttongo.Size = new System.Drawing.Size(179, 84);
+            this.buttongo.Size = new System.Drawing.Size(275, 73);
             this.buttongo.TabIndex = 29;
             this.buttongo.Text = "Finish";
             this.buttongo.UseVisualStyleBackColor = false;
@@ -85,7 +85,7 @@
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button11.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Location = new System.Drawing.Point(17, 639);
+            this.button11.Location = new System.Drawing.Point(46, 691);
             this.button11.Margin = new System.Windows.Forms.Padding(4);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(256, 73);
@@ -101,17 +101,16 @@
             this.groupBox1.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(168, 410);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(174, 153);
+            this.groupBox1.Size = new System.Drawing.Size(174, 178);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             // 
             // Female
             // 
-            this.Female.AutoSize = true;
             this.Female.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Female.Location = new System.Drawing.Point(6, 79);
+            this.Female.Location = new System.Drawing.Point(6, 94);
             this.Female.Name = "Female";
-            this.Female.Size = new System.Drawing.Size(158, 44);
+            this.Female.Size = new System.Drawing.Size(158, 60);
             this.Female.TabIndex = 1;
             this.Female.TabStop = true;
             this.Female.Text = "Female";
@@ -119,11 +118,10 @@
             // 
             // Male
             // 
-            this.Male.AutoSize = true;
             this.Male.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Male.Location = new System.Drawing.Point(6, 28);
             this.Male.Name = "Male";
-            this.Male.Size = new System.Drawing.Size(115, 44);
+            this.Male.Size = new System.Drawing.Size(158, 60);
             this.Male.TabIndex = 0;
             this.Male.TabStop = true;
             this.Male.Text = "Male";
@@ -136,20 +134,22 @@
             this.groupBox2.Controls.Add(this.separated);
             this.groupBox2.Controls.Add(this.married);
             this.groupBox2.Controls.Add(this.single);
+            this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox2.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(393, 410);
+            this.groupBox2.Location = new System.Drawing.Point(493, 410);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(426, 187);
+            this.groupBox2.Size = new System.Drawing.Size(426, 227);
             this.groupBox2.TabIndex = 37;
             this.groupBox2.TabStop = false;
             // 
             // widowed
             // 
-            this.widowed.AutoSize = true;
+            this.widowed.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.widowed.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.widowed.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.widowed.Location = new System.Drawing.Point(189, 128);
+            this.widowed.Location = new System.Drawing.Point(206, 159);
             this.widowed.Name = "widowed";
-            this.widowed.Size = new System.Drawing.Size(189, 44);
+            this.widowed.Size = new System.Drawing.Size(198, 60);
             this.widowed.TabIndex = 3;
             this.widowed.TabStop = true;
             this.widowed.Text = "Widowed";
@@ -157,11 +157,12 @@
             // 
             // divorced
             // 
-            this.divorced.AutoSize = true;
+            this.divorced.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.divorced.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.divorced.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.divorced.Location = new System.Drawing.Point(189, 78);
+            this.divorced.Location = new System.Drawing.Point(206, 93);
             this.divorced.Name = "divorced";
-            this.divorced.Size = new System.Drawing.Size(184, 44);
+            this.divorced.Size = new System.Drawing.Size(198, 60);
             this.divorced.TabIndex = 3;
             this.divorced.TabStop = true;
             this.divorced.Text = "Divorced";
@@ -169,11 +170,12 @@
             // 
             // separated
             // 
-            this.separated.AutoSize = true;
+            this.separated.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.separated.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.separated.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.separated.Location = new System.Drawing.Point(189, 28);
+            this.separated.Location = new System.Drawing.Point(206, 28);
             this.separated.Name = "separated";
-            this.separated.Size = new System.Drawing.Size(210, 44);
+            this.separated.Size = new System.Drawing.Size(198, 60);
             this.separated.TabIndex = 2;
             this.separated.TabStop = true;
             this.separated.Text = "Separated";
@@ -181,11 +183,12 @@
             // 
             // married
             // 
-            this.married.AutoSize = true;
+            this.married.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.married.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.married.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.married.Location = new System.Drawing.Point(6, 79);
+            this.married.Location = new System.Drawing.Point(6, 94);
             this.married.Name = "married";
-            this.married.Size = new System.Drawing.Size(164, 44);
+            this.married.Size = new System.Drawing.Size(164, 60);
             this.married.TabIndex = 1;
             this.married.TabStop = true;
             this.married.Text = "Married";
@@ -193,15 +196,19 @@
             // 
             // single
             // 
-            this.single.AutoSize = true;
+            this.single.BackColor = System.Drawing.SystemColors.Control;
+            this.single.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.single.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.single.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.single.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.single.Location = new System.Drawing.Point(6, 28);
             this.single.Name = "single";
-            this.single.Size = new System.Drawing.Size(141, 44);
+            this.single.Size = new System.Drawing.Size(164, 60);
             this.single.TabIndex = 0;
             this.single.TabStop = true;
             this.single.Text = "Single";
-            this.single.UseVisualStyleBackColor = true;
+            this.single.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.single.UseVisualStyleBackColor = false;
             // 
             // first
             // 
@@ -371,7 +378,7 @@
             this.AddAnother.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AddAnother.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddAnother.ForeColor = System.Drawing.Color.White;
-            this.AddAnother.Location = new System.Drawing.Point(296, 639);
+            this.AddAnother.Location = new System.Drawing.Point(332, 691);
             this.AddAnother.Margin = new System.Windows.Forms.Padding(4);
             this.AddAnother.Name = "AddAnother";
             this.AddAnother.Size = new System.Drawing.Size(344, 73);
@@ -428,8 +435,7 @@
             // 
             // EnterGenderMarital
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.label10);
             this.Controls.Add(this.zip);
             this.Controls.Add(this.label8);
@@ -455,11 +461,9 @@
             this.Controls.Add(this.buttongo);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EnterGenderMarital";
-            this.Size = new System.Drawing.Size(1024, 728);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

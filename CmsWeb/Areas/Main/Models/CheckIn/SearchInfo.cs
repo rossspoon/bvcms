@@ -6,7 +6,7 @@ using UtilityExtensions;
 
 namespace CMSWeb.Models
 {
-    public class SearchInfo
+    public class SearchInfo2
     {
         public string first { get; set; }
         public string last { get; set; }
@@ -21,6 +21,7 @@ namespace CMSWeb.Models
         public int marital { get; set; }
         public int? age { get; set; }
         public int fid { get; set; }
+        public int pid { get; set; }
         public string GetDisplay()
         {
             return "{0} {1}({2}) {3} {4} / {5}".Fmt(

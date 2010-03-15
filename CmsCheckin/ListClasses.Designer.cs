@@ -41,7 +41,7 @@
             this.GoBackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GoBackButton.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GoBackButton.ForeColor = System.Drawing.Color.Black;
-            this.GoBackButton.Location = new System.Drawing.Point(751, 676);
+            this.GoBackButton.Location = new System.Drawing.Point(751, 687);
             this.GoBackButton.Margin = new System.Windows.Forms.Padding(4);
             this.GoBackButton.Name = "GoBackButton";
             this.GoBackButton.Size = new System.Drawing.Size(269, 66);
@@ -84,7 +84,7 @@
             this.pgdn.UseVisualStyleBackColor = false;
             this.pgdn.Click += new System.EventHandler(this.pgdn_Click);
             // 
-            // ClassResults
+            // ListClasses
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -92,7 +92,7 @@
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.GoBackButton);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ClassResults";
+            this.Name = "ListClasses";
             this.Size = new System.Drawing.Size(1024, 768);
             this.ResumeLayout(false);
             this.PerformLayout();

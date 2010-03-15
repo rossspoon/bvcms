@@ -69,15 +69,15 @@ namespace CmsCheckin
 
         public static bool RecordAttend(this Control f, ClassInfo c, bool present)
         {
-            if (c.OrgId == 0)
+            if (c.oid == 0)
                 return false;
             try
             {
                 f.Cursor = Cursors.WaitCursor;
                 var wc = new WebClient();
                 var coll = new NameValueCollection();
-                coll.Add("PeopleId", c.PeopleId.ToString());
-                coll.Add("OrgId", c.OrgId.ToString());
+                coll.Add("PeopleId", c.pid.ToString());
+                coll.Add("OrgId", c.oid.ToString());
                 coll.Add("Present", present.ToString());
                 coll.Add("thisday", Program.ThisDay.ToString());
                 var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
@@ -129,6 +129,47 @@ namespace CmsCheckin
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
+
+            f.Cursor = Cursors.WaitCursor;
+            Cursor.Show();
+            var resp = wc.UploadValues(url, "POST", coll);
+
+            var s = Encoding.ASCII.GetString(resp);
+            Program.PeopleId = s.ToInt();
+            if (Program.HideCursor)
+                Cursor.Hide();
+            f.Cursor = Cursors.Default;
+        }
+        public static void EditPerson(this Control f,
+            int id,
+            string first,
+            string last,
+            string goesby,
+            string dob,
+            string email,
+            string addr,
+            string zip,
+            string cell,
+            string home,
+            int marital,
+            int gender)
+        {
+            f.Cursor = Cursors.WaitCursor;
+            var wc = new WebClient();
+            var coll = new NameValueCollection();
+            coll.Add("first", first);
+            coll.Add("last", last);
+            coll.Add("goesby", goesby);
+            coll.Add("dob", dob);
+            coll.Add("email", email);
+            coll.Add("addr", addr);
+            coll.Add("zip", zip);
+            coll.Add("cell", cell);
+            coll.Add("home", home);
+            coll.Add("marital", marital.ToString());
+            coll.Add("gender", gender.ToString());
+            coll.Add("campusid", Program.CampusId.ToString());
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id );
 
             f.Cursor = Cursors.WaitCursor;
             Cursor.Show();
@@ -229,7 +270,6 @@ namespace CmsCheckin
             Program.home.textBox1.Focus();
             Program.home.textBox1.Select(Program.home.textBox1.Text.Length, 0);
         }
-
     }
     public class EventArgs<T> : EventArgs
     {

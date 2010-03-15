@@ -26,6 +26,7 @@ namespace CmsCheckin
             Application.Run(new BaseForm());
         }
         public static int FamilyId { get; set; }
+        public static int PeopleId { get; set; }
         public static int CampusId { get; set; }
         public static int ThisDay { get; set; }
         public static int LeadTime { get; set; }

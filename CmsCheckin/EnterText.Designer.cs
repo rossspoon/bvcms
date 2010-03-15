@@ -135,7 +135,7 @@
             this.bgo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bgo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bgo.ForeColor = System.Drawing.Color.White;
-            this.bgo.Location = new System.Drawing.Point(852, 492);
+            this.bgo.Location = new System.Drawing.Point(852, 491);
             this.bgo.Margin = new System.Windows.Forms.Padding(4);
             this.bgo.Name = "bgo";
             this.bgo.Size = new System.Drawing.Size(168, 122);
@@ -516,7 +516,7 @@
             this.GoBackButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.GoBackButton.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GoBackButton.ForeColor = System.Drawing.Color.White;
-            this.GoBackButton.Location = new System.Drawing.Point(4, 668);
+            this.GoBackButton.Location = new System.Drawing.Point(4, 689);
             this.GoBackButton.Margin = new System.Windows.Forms.Padding(4);
             this.GoBackButton.Name = "GoBackButton";
             this.GoBackButton.Size = new System.Drawing.Size(265, 75);
@@ -748,7 +748,7 @@
             this.Controls.Add(this.bi);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EnterText";
-            this.Size = new System.Drawing.Size(1024, 747);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.Load += new System.EventHandler(this.Name_Load);
             this.VisibleChanged += new System.EventHandler(this.EnterText_VisibleChanged);
             this.ResumeLayout(false);

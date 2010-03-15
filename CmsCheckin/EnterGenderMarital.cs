@@ -34,12 +34,15 @@ namespace CmsCheckin
         {
             if (Marital == 0 || Gender == 0)
                 return;
+            
            AddPersonGoHome();
         }
         private void AddPersonGoHome()
         {
             var gender = Gender;
             var marital = Marital;
+            if (Program.editing)
+                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
 
             string ph;

@@ -130,9 +130,9 @@ namespace CmsCheckin
             sw.WriteLine("SG");
             sw.WriteLine("ySPM");
             sw.WriteLine("A2");
-            sw.WriteLine("1911A3000450009" + c.First);
-            sw.WriteLine("1911A1000300011" + c.Last);
-            sw.WriteLine("1911A1000060008" + " (" + c.cinfo.PeopleId + " " + c.Gender + ")" + time.ToString("  M/d/yy"));
+            sw.WriteLine("1911A3000450009" + c.first);
+            sw.WriteLine("1911A1000300011" + c.last);
+            sw.WriteLine("1911A1000060008" + " (" + c.cinfo.pid + " " + c.gender + ")" + time.ToString("  M/d/yy"));
             sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
             sw.WriteLine("Q" + n.ToString("0000"));
             sw.WriteLine("E");

@@ -15,25 +15,40 @@ namespace CMSWeb.Areas.Main.Controllers
 {
     public class CheckinController : CmsController
     {
-        public ActionResult Match(string id, int campus, int thisday)
+        public ActionResult Match(string id, int campus, int thisday, int? page)
         {
             NoCache();
 
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);
 
-            if (matches.Count() == 0)
-                return new FamilyResult(m.FamilyMembers(0, campus, thisday)); // not found
-            if (matches.Count() == 1)
-                return new FamilyResult(m.FamilyMembers(matches.Single().FamilyId, campus, thisday));
-            return new MultipleResult(matches);
+            if (page.HasValue)
+            {
+                if (matches.Count() == 0)
+                    return new FamilyResult2(0, campus, thisday, 1); // not found
+                if (matches.Count() == 1)
+                    return new FamilyResult2(matches.Single().FamilyId, campus, thisday, 1);
+                return new MultipleResult(matches);
+            }
+            else
+            {
+                if (matches.Count() == 0)
+                    return new FamilyResult(m.FamilyMembers(0, campus, thisday)); // not found
+                if (matches.Count() == 1)
+                    return new FamilyResult(m.FamilyMembers(matches.Single().FamilyId, campus, thisday));
+                return new MultipleResult(matches);
+            }
         }
-        public FamilyResult Family(int id, int campus, int thisday)
+        public ActionResult Family(int id, int campus, int thisday, int? page)
         {
             NoCache();
-            var m = new CheckInModel();
-            return new FamilyResult(m.FamilyMembers(id, campus, thisday));
-
+            if (page.HasValue)
+                return new FamilyResult2(id, campus, thisday, page.Value);
+            else
+            {
+                var m = new CheckInModel();
+                return new FamilyResult(m.FamilyMembers(id, campus, thisday));
+            }
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -51,10 +66,37 @@ namespace CMSWeb.Areas.Main.Controllers
             NoCache();
             return new ClassesResult(p, thisday, campus, page);
         }
-        public ActionResult NameSearch(string id, int page)
+        public ActionResult NameSearch(string id, int? page)
         {
             NoCache();
-            return new NameSearchResult(id, page);
+            if (page.HasValue)
+                return new NameSearchResult2(id, page.Value);
+
+            string first;
+            string last;
+            var q = DbUtil.Db.People.Select(p => p);
+            Person.NameSplit(id, out first, out last);
+            if (first.HasValue())
+                q = from p in q
+                    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
+                        && (p.FirstName.StartsWith(first) || p.NickName.StartsWith(first) || p.MiddleName.StartsWith(first))
+                    select p;
+            else
+                q = from p in q
+                    where p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last)
+                    select p;
+
+            var q2 = from p in q
+                     orderby p.Name2
+                     select new SearchInfo
+                     {
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
+                         Address = p.PrimaryAddress,
+                         Age = p.Age,
+                         Name = p.Name
+                     };
+            return new NameSearchResult(q2.Take(20));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddPerson(int id,

@@ -49,6 +49,26 @@ namespace CMSWeb.Models
             }
         }
         public bool CheckedIn { get; set; }
+
+        public string dob
+        {
+            get
+            {
+                var dt = DateTime.MinValue;
+                DateTime? bd = null;
+                if (DateTime.TryParse(BirthDay, out dt))
+                    bd = dt;
+                return bd.FormatDate2();
+            }
+        }
+        public string goesby { get; set; }
+        public string email { get; set; }
+        public string addr { get; set; }
+        public string zip { get; set; }
+        public string home { get; set; }
+        public string cell { get; set; }
+        public int gender { get; set; }
+        public int marital { get; set; }
     }
     public class FamilyInfo
     {

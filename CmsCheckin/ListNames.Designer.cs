@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.GoBackButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bAddNewFamily = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -52,21 +52,21 @@
             this.GoBackButton.UseVisualStyleBackColor = false;
             this.GoBackButton.Click += new System.EventHandler(this.GoBack_Click);
             // 
-            // button1
+            // bAddNewFamily
             // 
-            this.button1.AutoSize = true;
-            this.button1.BackColor = System.Drawing.Color.Coral;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(984, 713);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(36, 29);
-            this.button1.TabIndex = 11;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bAddNewFamily.BackColor = System.Drawing.SystemColors.Control;
+            this.bAddNewFamily.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+            this.bAddNewFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bAddNewFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bAddNewFamily.ForeColor = System.Drawing.Color.Black;
+            this.bAddNewFamily.Location = new System.Drawing.Point(975, 704);
+            this.bAddNewFamily.Margin = new System.Windows.Forms.Padding(4);
+            this.bAddNewFamily.Name = "bAddNewFamily";
+            this.bAddNewFamily.Size = new System.Drawing.Size(45, 45);
+            this.bAddNewFamily.TabIndex = 11;
+            this.bAddNewFamily.Text = "n";
+            this.bAddNewFamily.UseVisualStyleBackColor = false;
+            this.bAddNewFamily.Click += new System.EventHandler(this.AddNewFamily_Click);
             // 
             // pgdn
             // 
@@ -104,7 +104,7 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Menu;
+            this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.SystemColors.GrayText;
@@ -123,8 +123,9 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bAddNewFamily);
             this.Controls.Add(this.GoBackButton);
+            this.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListNames";
             this.Size = new System.Drawing.Size(1024, 768);
@@ -136,7 +137,7 @@
         #endregion
 
         public System.Windows.Forms.Button GoBackButton;
-        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button bAddNewFamily;
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
         private System.Windows.Forms.Button button2;

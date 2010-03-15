@@ -29,6 +29,7 @@ namespace CmsCheckin
 
         public void ShowResults(int pid, int page)
         {
+            ClearControls();
             var x = this.GetDocument("Checkin/Classes/" + pid + Program.QueryString + "&page=" + page);
 
             time = DateTime.Now;
@@ -53,6 +54,7 @@ namespace CmsCheckin
                 lab.AutoSize = true;
                 lab.Text = "Sorry, no classes found";
                 this.Controls.Add(lab);
+                controls.Add(lab);
                 GoBackButton.Text = "Go Back";
                 return;
             }
@@ -87,8 +89,8 @@ namespace CmsCheckin
                 ab.UseVisualStyleBackColor = false;
                 var c = new ClassInfo
                 {
-                    OrgId = e.Attribute("orgid").Value.ToInt(),
-                    PeopleId = PeopleId,
+                    oid = e.Attribute("orgid").Value.ToInt(),
+                    pid = PeopleId,
                 };
                 ab.Tag = c;
                 ab.Text = e.Attribute("display").Value;
@@ -104,20 +106,21 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             this.RecordAttend(c, true);
-            Program.family.ShowFamily(FamilyId);
+            this.Swap(Program.family);
+            Program.family.ShowFamily(FamilyId, 1);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
             this.Swap(Program.family);
-            Program.family.ShowFamily(FamilyId);
+            Program.family.ShowFamily(FamilyId, 1);
         }
         private void ResultKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
             {
                 this.Swap(Program.family);
-                Program.family.ShowFamily(FamilyId);
+                Program.family.ShowFamily(FamilyId, 1);
             }
         }
 
@@ -132,19 +135,17 @@ namespace CmsCheckin
         }
         private void pgdn_Click(object sender, EventArgs e)
         {
-            ClearControls();
             ShowResults(PeopleId, next.Value);
         }
 
         private void pgup_Click(object sender, EventArgs e)
         {
-            ClearControls();
             ShowResults(PeopleId, prev.Value);
         }
     }
     public class ClassInfo
     {
-        public int OrgId { get; set; }
-        public int PeopleId { get; set; }
+        public int oid { get; set; }
+        public int pid { get; set; }
     }
 }

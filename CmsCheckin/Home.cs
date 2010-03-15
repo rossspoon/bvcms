@@ -114,7 +114,7 @@ namespace CmsCheckin
                 Print.MemberList(textBox1.Text.Substring(1));
             else
             {
-                var x = this.GetDocument("Checkin/Match/" + textBox1.Text.GetDigits() + Program.QueryString);
+                var x = this.GetDocument("Checkin/Match/" + textBox1.Text.GetDigits() + Program.QueryString + "&page=1");
                 if (x.Document.Root.Name == "Families")
                 {
                     this.Swap(Program.families);
@@ -127,6 +127,11 @@ namespace CmsCheckin
                 }
             }
             textBox1.Text = string.Empty;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            this.Swap(Program.namesearch);
         }
     }
 }

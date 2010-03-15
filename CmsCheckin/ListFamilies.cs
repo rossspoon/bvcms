@@ -16,8 +16,10 @@ namespace CmsCheckin
         {
             InitializeComponent();
         }
+        List<Control> controls = new List<Control>();
         public void ShowFamilies(XDocument x)
         {
+            ClearControls();
             Print.Focus();
             Print.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
 
@@ -41,6 +43,7 @@ namespace CmsCheckin
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
                 ab.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
+                controls.Add(ab);
 
                 row++;
             }
@@ -49,7 +52,7 @@ namespace CmsCheckin
         {
             var ab = sender as Button;
             this.Swap(Program.family);
-            Program.family.ShowFamily((int)ab.Tag);
+            Program.family.ShowFamily((int)ab.Tag, 1);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
@@ -61,5 +64,15 @@ namespace CmsCheckin
             if (e.KeyChar == 27)
                 this.GoHome(string.Empty);
         }
+        private void ClearControls()
+        {
+            foreach (var c in controls)
+            {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            controls.Clear();
+        }
+
     }
 }

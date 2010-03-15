@@ -57,7 +57,6 @@ namespace CMSWeb.Models
                     Class = om.Organization.OrganizationName,
                     Leader = om.Organization.LeaderName,
                     OrgId = om.OrganizationId,
-                    //OrgId = (om.Organization.CanSelfCheckin ?? false) ? om.OrganizationId : 0,
                     Location = om.Organization.Location,
                     Age = om.Person.Age ?? 0,
                     Gender = om.Person.Gender.Code,
@@ -66,11 +65,20 @@ namespace CMSWeb.Models
                             (om.Organization.NumCheckInLabels ?? 1)
                             : (om.Organization.NumWorkerCheckInLabels ?? 0),
                     Hour = Hour,
-                    CheckedIn = CheckedIn ?? false
+                    CheckedIn = CheckedIn ?? false,
+
+                    goesby = om.Person.NickName,
+                    email = om.Person.EmailAddress,
+                    addr = om.Person.Family.AddressLineOne,
+                    zip = om.Person.Family.ZipCode,
+                    home = om.Person.Family.HomePhone,
+                    cell = om.Person.CellPhone,
+                    marital = om.Person.MaritalStatusId,
+                    gender = om.Person.GenderId,
+                    CampusId = om.Person.CampusId,
                 };
 
             // now get recent visitors
-            var threeweeksago = Util.Now.AddDays(-27);
 
             var visitors =
                 from a in DbUtil.Db.Attends
@@ -103,7 +111,17 @@ namespace CMSWeb.Models
                     Gender = a.Person.Gender.Code,
                     NumLabels = a.Organization.NumCheckInLabels ?? 1,
                     Hour = DbUtil.Db.GetTodaysMeetingHour(a.OrganizationId, thisday),
-                    CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(a.OrganizationId, thisday, a.PeopleId) ?? false
+                    CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(a.OrganizationId, thisday, a.PeopleId) ?? false,
+
+                    goesby = a.Person.NickName,
+                    email = a.Person.EmailAddress,
+                    addr = a.Person.Family.AddressLineOne,
+                    zip = a.Person.Family.ZipCode,
+                    home = a.Person.Family.HomePhone,
+                    cell = a.Person.CellPhone,
+                    marital = a.Person.MaritalStatusId,
+                    gender = a.Person.GenderId,
+                    CampusId = a.Person.CampusId,
                 };
 
             var list = members.ToList();
@@ -149,6 +167,16 @@ namespace CMSWeb.Models
                     Gender = p.Gender.Code,
                     NumLabels = 1,
                     Hour = VisitorOrgHour,
+
+                    goesby = p.NickName,
+                    email = p.EmailAddress,
+                    addr = p.Family.AddressLineOne,
+                    zip = p.Family.ZipCode,
+                    home = p.Family.HomePhone,
+                    cell = p.CellPhone,
+                    marital = p.MaritalStatusId,
+                    gender = p.GenderId,
+                    CampusId = p.CampusId,
                 };
             list.AddRange(otherfamily.ToList());
             return list.OrderByDescending(a => a.Age).ToList();

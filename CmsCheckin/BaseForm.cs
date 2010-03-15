@@ -69,7 +69,7 @@ namespace CmsCheckin
             Program.email.GoNext += new EventHandler(email_GoNext);
             ControlsAdd(Program.email);
 
-            Program.addr = new EnterText("Address");
+            Program.addr = new EnterText("Address", true);
             Program.addr.GoBack += new EventHandler(addr_GoBack);
             Program.addr.GoNext += new EventHandler(addr_GoNext);
             ControlsAdd(Program.addr);

@@ -25,12 +25,13 @@ namespace CmsCheckin
         private bool hasprinter;
         private int Row;
         DateTime time;
+        int? next, prev;
         List<Control> controls = new List<Control>();
         List<Control> sucontrols = new List<Control>();
 
-        public void ShowFamily(int fid)
+        public void ShowFamily(int fid, int page)
         {
-            var x = this.GetDocument("Checkin/Family/" + fid + Program.QueryString);
+            var x = this.GetDocument("Checkin/Family/" + fid + Program.QueryString + "&page=" + page);
             ShowFamily(x);
         }
         public void ShowFamily(XDocument x)
@@ -40,18 +41,20 @@ namespace CmsCheckin
             Print.Focus();
             time = DateTime.Now;
 
+            next = x.Root.Attribute("next").Value.ToInt2();
+            prev = x.Root.Attribute("prev").Value.ToInt2();
+            pgdn.Visible = next.HasValue;
+            pgup.Visible = prev.HasValue;
+
             var points = 14F;
-            const int sep = 15;
-            const int MaxRows = 13;
+            const int sep = 10;
             const int rowheight = 50;
-            const int top = 50;
-            const int buttonheight = 45;
-            const int buttonwidth = 65;
+            int top = 50;
+            const int bsize = 45;
+            const int bwid = 65;
 
             string Verdana = "Verdana";
             var pfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            //var font = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            //var labfont = new Font(Verdana, points, ((FontStyle)((FontStyle.Italic | FontStyle.Underline))), GraphicsUnit.Point, ((byte)(0)));
             Font font;
             Font labfont;
             string Present = "Present";
@@ -73,8 +76,10 @@ namespace CmsCheckin
 
             var cols = new int[6];
 
-            int[] wids;
             int maxheight;
+            int twidab, widname, widorg, twidlb, widcb, wideb;
+            twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
+            int totalwid;
             while (true)
             {
                 font = new Font(Verdana, points, FontStyle.Regular,
@@ -82,102 +87,105 @@ namespace CmsCheckin
                 labfont = new Font(Verdana, points,
                     ((FontStyle)((FontStyle.Italic | FontStyle.Underline))),
                     GraphicsUnit.Point, ((byte)(0)));
-                wids = new int[5];
                 maxheight = 0;
-                foreach (var e in x.Descendants("attendee").Take(MaxRows))
+                foreach (var e in x.Descendants("attendee"))
                 {
-                    var n = 0;
+                    twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
 
                     var size = g.MeasureString(Present, labfont);
-                    wids[n] = Math.Max(wids[n], Math.Max((int)size.Width, buttonwidth));
-                    n++;
+                    twidab = Math.Max(twidab, Math.Max((int)size.Width, bwid));
 
                     size = g.MeasureString(e.Attribute("name").Value, font);
-                    wids[n] = Math.Max(wids[n], (int)size.Width);
-                    n++;
+                    widname = Math.Max(widname, (int)size.Width);
 
                     size = g.MeasureString(e.Attribute("org").Value, font);
-                    wids[n] = Math.Max(wids[n], (int)g.MeasureString(e.Attribute("org").Value, font).Width);
-                    n++;
+                    widorg = Math.Max(widorg, (int)size.Width);
 
                     size = g.MeasureString(Labels, labfont);
-                    wids[n] = Math.Max(wids[n], Math.Max((int)size.Width, buttonwidth));
-                    n++;
+                    twidlb = Math.Max(twidlb, Math.Max((int)size.Width, bsize));
 
-                    size = g.MeasureString("|", font);
-                    wids[n] = Math.Max(wids[n], buttonwidth/2);
-                    n++;
+                    widcb = Math.Max(widcb, bsize);
 
+                    size = g.MeasureString("|", labfont);
                     maxheight = Math.Max(maxheight, (int)size.Height);
                 }
-                for (var i = 1; i < 6; i++)
-                    cols[i] = cols[i - 1] + wids[i - 1] + sep;
-                cols[5] -= sep;
-                if (cols[5] > 1024)
+
+                totalwid = sep + twidab + sep + widname + sep + widorg
+                                    + sep + twidlb + sep + widcb + sep + wideb + sep;
+                if (totalwid > 1024)
                 {
                     points -= 1F;
                     continue;
                 }
                 break;
             }
-            Row = 0;
-            var col = 0;
-            var LeftEdge = (1024 - cols[5]) / 2;
             var labtop = top - rowheight;
+            var LeftEdge = (1024 - totalwid) / 2;
 
             var head = new Label();
-            head.Size = new Size(wids[col] + sep, maxheight);
+            LeftEdge += sep;
+            head.Location = new Point(LeftEdge, labtop);
+            head.Size = new Size(twidab, maxheight);
             head.Font = labfont;
-            head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = Present;
             this.Controls.Add(head);
             controls.Add(head);
-            col++;
 
             head = new Label();
-            head.Size = new Size(wids[col] + sep, maxheight);
+            LeftEdge += twidab + sep;
+            head.Location = new Point(LeftEdge, labtop);
+            head.Size = new Size(widname, maxheight);
             head.Font = labfont;
-            head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Name";
             this.Controls.Add(head);
             controls.Add(head);
-            col++;
 
             head = new Label();
-            head.Size = new Size(wids[col] + sep, maxheight);
+            LeftEdge += widname + sep;
+            head.Location = new Point(LeftEdge, labtop);
+            head.Size = new Size(widorg, maxheight);
             head.Font = labfont;
-            head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Meeting";
             this.Controls.Add(head);
             controls.Add(head);
-            col++;
 
             head = new Label();
-            head.Size = new Size(wids[col] + sep, maxheight);
+            LeftEdge += widorg + sep;
+            head.Location = new Point(LeftEdge, labtop);
+            head.Size = new Size(twidlb, maxheight);
             head.Font = labfont;
-            head.Location = new Point(LeftEdge + cols[col], labtop);
             head.Text = "Labels";
             this.Controls.Add(head);
             controls.Add(head);
-            col++;
 
-            foreach (var e in x.Descendants("attendee").Take(MaxRows))
+            Row = 0;
+            foreach (var e in x.Descendants("attendee"))
             {
-                col = 0;
+                LeftEdge = (1024 - totalwid) / 2;
+                top += rowheight;
 
                 var c = new AttendLabel
                 {
                     cinfo = new ClassInfo
                     {
-                         OrgId = e.Attribute("orgid").Value.ToInt(),
-                         PeopleId = e.Attribute("id").Value.ToInt()
+                        oid = e.Attribute("orgid").Value.ToInt(),
+                        pid = e.Attribute("id").Value.ToInt()
                     },
-                    Name = e.Attribute("name").Value,
-                    First = e.Attribute("first").Value,
-                    Last = e.Attribute("last").Value,
-                    Birthday = e.Attribute("bday").Value,
-                    Gender = e.Attribute("gender").Value,
-                    Class = e.Attribute("org").Value,
+                    name = e.Attribute("name").Value,
+                    first = e.Attribute("first").Value,
+                    last = e.Attribute("last").Value,
+                    dob = e.Attribute("dob").Value,
+
+                    goesby = e.Attribute("goesby").Value,
+                    email = e.Attribute("email").Value,
+                    addr = e.Attribute("addr").Value,
+                    zip = e.Attribute("zip").Value,
+                    home = e.Attribute("home").Value.FmtFone(),
+                    cell = e.Attribute("cell").Value.FmtFone(),
+                    gender = e.Attribute("gender").Value.ToInt(),
+                    marital = e.Attribute("marital").Value.ToInt(),
+
+                    @class = e.Attribute("org").Value,
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
                     Row = Row,
                     CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
@@ -185,9 +193,13 @@ namespace CmsCheckin
                 };
 
                 var ab = new Button();
+                LeftEdge += sep;
+                ab.Location = new Point(LeftEdge, top - 5);
+                ab.Size = new Size(bwid, bsize);
+
                 ab.FlatStyle = FlatStyle.Flat;
                 ab.FlatAppearance.BorderSize = 1;
-                if (c.cinfo.OrgId != 0 && c.leadtime <= Program.LeadTime)
+                if (c.cinfo.oid != 0 && c.leadtime <= Program.LeadTime)
                 {
                     ab.BackColor = Color.CornflowerBlue;
                     ab.FlatAppearance.BorderColor = Color.Black;
@@ -197,12 +209,11 @@ namespace CmsCheckin
                     ab.Enabled = false;
                     ab.FlatAppearance.BorderColor = SystemColors.ButtonShadow;
                 }
+
                 ab.ForeColor = Color.White;
                 ab.Font = new Font("Wingdings", 24, FontStyle.Bold,
                     GraphicsUnit.Point, ((byte)(2)));
-                ab.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
                 ab.Name = "attend" + Row;
-                ab.Size = new Size(buttonwidth, buttonheight);
                 ab.TextAlign = ContentAlignment.TopCenter;
                 ab.UseVisualStyleBackColor = false;
                 this.Controls.Add(ab);
@@ -210,65 +221,86 @@ namespace CmsCheckin
                 ab.Click += new EventHandler(ab_Click);
                 ab.Text = c.CheckedIn ? "ü" : String.Empty;
                 ab.Tag = c;
-                col++;
                 controls.Add(ab);
 
                 var label = new Label();
+                LeftEdge += bwid + sep;
+                label.Location = new Point(LeftEdge, top);
+                label.Size = new Size(widname, maxheight);
+
                 label.Font = font;
-                label.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight));
-                label.Size = new Size(wids[col] + sep, maxheight);
                 label.UseMnemonic = false;
-                label.Text = c.Name;
+                label.Text = c.name;
                 label.TextAlign = ContentAlignment.MiddleLeft;
-                if (c.cinfo.OrgId != 0)
+                if (c.cinfo.oid != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
                 controls.Add(label);
-                col++;
 
                 label = new Label();
+                LeftEdge += widname + sep;
+                label.Location = new Point(LeftEdge, top);
+                label.Size = new Size(widorg, maxheight);
+
                 label.Font = font;
-                label.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight));
-                label.Size = new Size(wids[col] + sep, maxheight);
                 label.UseMnemonic = false;
-                label.Text = c.Class;
+                label.Text = c.@class;
                 label.TextAlign = ContentAlignment.MiddleLeft;
-                if (c.cinfo.OrgId != 0)
+                if (c.cinfo.oid != 0)
                     label.ForeColor = Color.Blue;
                 this.Controls.Add(label);
                 controls.Add(label);
-                col++;
 
-                var eb = new Button();
-                eb.BackColor = Color.Yellow;
-                eb.Font = pfont;
-                eb.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
-                eb.Name = "print" + Row;
-                eb.Tag = Row;
-                eb.Size = new Size(buttonwidth, buttonheight);
-                eb.TextAlign = ContentAlignment.TopCenter;
-                eb.UseVisualStyleBackColor = false;
-                this.Controls.Add(eb);
-                eb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
-                eb.Click += new EventHandler(eb_Click);
-                controls.Add(eb);
-                col++;
+                var lb = new Button();
+                LeftEdge += widorg + sep;
+                lb.Location = new Point(LeftEdge, top - 5);
+                lb.Size = new Size(bwid, bsize);
+
+                lb.BackColor = Color.Yellow;
+                lb.Font = pfont;
+                lb.Name = "print" + Row;
+                lb.Tag = Row;
+                lb.TextAlign = ContentAlignment.TopCenter;
+                lb.UseVisualStyleBackColor = false;
+                this.Controls.Add(lb);
+                lb.KeyPress += new KeyPressEventHandler(AttendeeKeyPress);
+                lb.Click += new EventHandler(lb_Click);
+                controls.Add(lb);
+                controls.Add(label);
 
                 var cb = new Button();
-                cb.BackColor = Color.LightGray;
+                LeftEdge += twidlb + sep;
+                cb.Location = new Point(LeftEdge, top - 5);
+                cb.Size = new Size(bsize, bsize);
+                cb.Text = "c";
+                cb.BackColor = SystemColors.Control;
                 cb.Enabled = false;
                 cb.Font = pfont;
-                cb.Location = new Point(LeftEdge + cols[col], top + (Row * rowheight) - 5);
                 cb.Name = "visit" + Row;
                 cb.Tag = Row;
-                cb.Size = new Size(buttonwidth/2, buttonheight/2);
                 cb.TextAlign = ContentAlignment.TopCenter;
                 cb.UseVisualStyleBackColor = false;
                 this.Controls.Add(cb);
                 cb.Click += new EventHandler(cb_Click);
                 controls.Add(cb);
                 sucontrols.Add(cb);
-                col++;
+
+                var eb = new Button();
+                LeftEdge += bsize + sep;
+                eb.Location = new Point(LeftEdge, top - 5);
+                eb.Size = new Size(bsize, bsize);
+                eb.Text = "e";
+                eb.BackColor = SystemColors.Control;
+                eb.Enabled = false;
+                eb.Font = pfont;
+                eb.Name = "edit" + Row;
+                eb.Tag = Row;
+                eb.TextAlign = ContentAlignment.TopCenter;
+                eb.UseVisualStyleBackColor = false;
+                this.Controls.Add(eb);
+                eb.Click += new EventHandler(eb_Click);
+                controls.Add(eb);
+                sucontrols.Add(eb);
 
                 Row++;
             }
@@ -280,7 +312,7 @@ namespace CmsCheckin
                 this.GoHome(string.Empty);
         }
 
-        void eb_Click(object sender, EventArgs e)
+        void lb_Click(object sender, EventArgs e)
         {
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
@@ -308,7 +340,7 @@ namespace CmsCheckin
             var c = ab.Tag as AttendLabel;
             c.Clicked = true;
             var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
-            if (c.cinfo.OrgId == 0)
+            if (c.cinfo.oid == 0)
                 return;
             if (ab.Text == String.Empty)
             {
@@ -332,7 +364,26 @@ namespace CmsCheckin
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + cb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
             this.Swap(Program.classes);
-            Program.classes.ShowResults(c.cinfo.PeopleId, 1);
+            Program.classes.ShowResults(c.cinfo.pid, 1);
+        }
+
+        void eb_Click(object sender, EventArgs e)
+        {
+            var eb = sender as Button;
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
+            var c = ab.Tag as AttendLabel;
+
+            Program.PeopleId = c.cinfo.pid;
+            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home);
+            Program.first.textBox1.Text = c.first;
+            Program.goesby.textBox1.Text = c.goesby;
+            Program.dob.textBox1.Text = c.dob;
+            Program.cellphone.textBox1.Text = c.cell.FmtFone();
+            Program.gendermarital.Marital = c.marital;
+            Program.gendermarital.Gender = c.gender;
+
+            Program.editing = true;
+            this.Swap(Program.first);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
@@ -389,16 +440,36 @@ namespace CmsCheckin
                 c.BackColor = Color.Coral;
             }
         }
+
+        private void pgup_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pgdn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     public class AttendLabel
     {
         public ClassInfo cinfo { get; set; }
-        public string Name { get; set; }
-        public string First { get; set; }
-        public string Last { get; set; }
-        public string Birthday { get; set; }
-        public string Gender { get; set; }
-        public string Class { get; set; }
+        public string name { get; set; }
+        public string first { get; set; }
+        public string last { get; set; }
+        public string dob { get; set; }
+
+        public string goesby { get; set; }
+        public string email { get; set; }
+        public string addr { get; set; }
+        public string zip { get; set; }
+        public string home { get; set; }
+        public string cell { get; set; }
+
+        public int gender { get; set; }
+        public int marital { get; set; }
+
+        public string @class { get; set; }
         public int NumLabels { get; set; }
         public int Row { get; set; }
         public bool CheckedIn { get; set; }
