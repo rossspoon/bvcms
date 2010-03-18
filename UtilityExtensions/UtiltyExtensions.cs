@@ -193,6 +193,18 @@ namespace UtilityExtensions
         {
             return dt.ToString("M/d/yy H:mm");
         }
+        public static string ToString2(this decimal? d, string fmt)
+        {
+            if (d.HasValue)
+                return d.Value.ToString(fmt);
+            return "";
+        }
+        public static string ToString2(this DateTime? d, string fmt)
+        {
+            if (d.HasValue)
+                return d.Value.ToString(fmt);
+            return "";
+        }
         public static bool DateTryParse(this string date, out DateTime dt)
         {
             return DateTime.TryParse(date, out dt);

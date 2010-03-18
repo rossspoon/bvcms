@@ -1,5 +1,0 @@
-INSERT INTO [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (0, 'NSP', '')
-INSERT INTO [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (10, '1stReq', '1st Request')
-INSERT INTO [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (20, '2ndReq', '2nd Request')
-INSERT INTO [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (30, 'Non-Resp', 'Non-Responsive')
-INSERT INTO [lookup].[MemberLetterStatus] ([Id], [Code], [Description]) VALUES (40, 'Complete', 'Complete')

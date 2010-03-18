@@ -43,7 +43,8 @@ namespace CmsCheckin
             var marital = Marital;
             if (Program.editing)
                 this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
-            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
+            else
+                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
 
             string ph;
             if (!string.IsNullOrEmpty(homephone.Text))
@@ -128,7 +129,7 @@ namespace CmsCheckin
                 }
             }
         }
-        private void button11_Click(object sender, EventArgs e)
+        private void GoBack_Click(object sender, EventArgs e)
         {
             this.Swap(Program.homephone);
         }

@@ -57,6 +57,14 @@ namespace CmsData
 		
 		private string _Comments;
 		
+		private bool? _Tylenol;
+		
+		private bool? _Advil;
+		
+		private bool? _Maalox;
+		
+		private bool? _Robitussin;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -127,6 +135,18 @@ namespace CmsData
 		
 		partial void OnCommentsChanging(string value);
 		partial void OnCommentsChanged();
+		
+		partial void OnTylenolChanging(bool? value);
+		partial void OnTylenolChanged();
+		
+		partial void OnAdvilChanging(bool? value);
+		partial void OnAdvilChanged();
+		
+		partial void OnMaaloxChanging(bool? value);
+		partial void OnMaaloxChanged();
+		
+		partial void OnRobitussinChanging(bool? value);
+		partial void OnRobitussinChanged();
 		
     #endregion
 		public RecReg()
@@ -577,6 +597,94 @@ namespace CmsData
 					this._Comments = value;
 					this.SendPropertyChanged("Comments");
 					this.OnCommentsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Tylenol", UpdateCheck=UpdateCheck.Never, Storage="_Tylenol", DbType="bit")]
+		public bool? Tylenol
+		{
+			get { return this._Tylenol; }
+
+			set
+			{
+				if (this._Tylenol != value)
+				{
+				
+                    this.OnTylenolChanging(value);
+					this.SendPropertyChanging();
+					this._Tylenol = value;
+					this.SendPropertyChanged("Tylenol");
+					this.OnTylenolChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Advil", UpdateCheck=UpdateCheck.Never, Storage="_Advil", DbType="bit")]
+		public bool? Advil
+		{
+			get { return this._Advil; }
+
+			set
+			{
+				if (this._Advil != value)
+				{
+				
+                    this.OnAdvilChanging(value);
+					this.SendPropertyChanging();
+					this._Advil = value;
+					this.SendPropertyChanged("Advil");
+					this.OnAdvilChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Maalox", UpdateCheck=UpdateCheck.Never, Storage="_Maalox", DbType="bit")]
+		public bool? Maalox
+		{
+			get { return this._Maalox; }
+
+			set
+			{
+				if (this._Maalox != value)
+				{
+				
+                    this.OnMaaloxChanging(value);
+					this.SendPropertyChanging();
+					this._Maalox = value;
+					this.SendPropertyChanged("Maalox");
+					this.OnMaaloxChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Robitussin", UpdateCheck=UpdateCheck.Never, Storage="_Robitussin", DbType="bit")]
+		public bool? Robitussin
+		{
+			get { return this._Robitussin; }
+
+			set
+			{
+				if (this._Robitussin != value)
+				{
+				
+                    this.OnRobitussinChanging(value);
+					this.SendPropertyChanging();
+					this._Robitussin = value;
+					this.SendPropertyChanged("Robitussin");
+					this.OnRobitussinChanged();
 				}
 
 			}

@@ -46,7 +46,7 @@ namespace CMSWeb.Models.PersonPage
 
         public string Campus
         {
-            get { return cv.AllCampuses0().ItemValue(CampusId); }
+            get { return cv.AllCampuses0().ItemValue(CampusId ?? 0); }
 
         }
         public string Gender

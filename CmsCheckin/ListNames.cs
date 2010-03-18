@@ -184,6 +184,7 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
+            Program.namesearch.textBox1.Text = name;
             this.Swap(Program.namesearch);
         }
         private void ResultKeyPress(object sender, KeyPressEventArgs e)
@@ -209,6 +210,7 @@ namespace CmsCheckin
             controls.Clear();
             sucontrols.Clear();
             sucontrols.Add(bAddNewFamily);
+            bAddNewFamily.BackColor = SystemColors.Control;
             bAddNewFamily.Enabled = false;
         }
         private void pgdn_Click(object sender, EventArgs e)

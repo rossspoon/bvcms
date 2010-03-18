@@ -414,7 +414,7 @@ namespace CmsData
                 p.BirthDay = dt.Day;
                 p.BirthMonth = dt.Month;
                 p.BirthYear = dt.Year;
-                if (p.GetAge() < 18)
+                if (p.GetAge() < 18 && MarriedCode == 0)
                     p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
             }
             else if (DateTime.TryParse(dob, out dt))
@@ -424,7 +424,7 @@ namespace CmsData
                 if (Regex.IsMatch(dob, @"\d+[-/]\d+[-/]\d+"))
                 {
                     p.BirthYear = dt.Year;
-                    if (p.GetAge() < 18)
+                    if (p.GetAge() < 18 && MarriedCode == 0)
                         p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
                 }
             }

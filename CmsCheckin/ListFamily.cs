@@ -57,7 +57,7 @@ namespace CmsCheckin
             var pfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             Font font;
             Font labfont;
-            string Present = "Present";
+            string Present = "Attend";
             string Labels = "Labels";
             var g = this.CreateGraphics();
             Print.Text = "Print Labels, Return";
@@ -78,10 +78,10 @@ namespace CmsCheckin
 
             int maxheight;
             int twidab, widname, widorg, twidlb, widcb, wideb;
-            twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
             int totalwid;
             while (true)
             {
+                twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
                 font = new Font(Verdana, points, FontStyle.Regular,
                     GraphicsUnit.Point, ((byte)(0)));
                 labfont = new Font(Verdana, points,
@@ -90,24 +90,24 @@ namespace CmsCheckin
                 maxheight = 0;
                 foreach (var e in x.Descendants("attendee"))
                 {
-                    twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
-
                     var size = g.MeasureString(Present, labfont);
-                    twidab = Math.Max(twidab, Math.Max((int)size.Width, bwid));
+                    twidab = Math.Max(twidab, (int)Math.Ceiling(size.Width));
+                    twidab = Math.Max(twidab, bwid);
 
                     size = g.MeasureString(e.Attribute("name").Value, font);
-                    widname = Math.Max(widname, (int)size.Width);
+                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width));
 
                     size = g.MeasureString(e.Attribute("org").Value, font);
-                    widorg = Math.Max(widorg, (int)size.Width);
+                    widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
 
                     size = g.MeasureString(Labels, labfont);
-                    twidlb = Math.Max(twidlb, Math.Max((int)size.Width, bsize));
+                    twidlb = Math.Max(twidlb, (int)Math.Ceiling(size.Width));
+                    twidlb = Math.Max(twidlb, bsize);
 
                     widcb = Math.Max(widcb, bsize);
 
                     size = g.MeasureString("|", labfont);
-                    maxheight = Math.Max(maxheight, (int)size.Height);
+                    maxheight = Math.Max(maxheight, (int)Math.Ceiling(size.Height));
                 }
 
                 totalwid = sep + twidab + sep + widname + sep + widorg
@@ -125,7 +125,7 @@ namespace CmsCheckin
             var head = new Label();
             LeftEdge += sep;
             head.Location = new Point(LeftEdge, labtop);
-            head.Size = new Size(twidab, maxheight);
+            head.Size = new Size(twidab + 5, maxheight);
             head.Font = labfont;
             head.Text = Present;
             this.Controls.Add(head);
@@ -134,7 +134,7 @@ namespace CmsCheckin
             head = new Label();
             LeftEdge += twidab + sep;
             head.Location = new Point(LeftEdge, labtop);
-            head.Size = new Size(widname, maxheight);
+            head.Size = new Size(widname + 5, maxheight);
             head.Font = labfont;
             head.Text = "Name";
             this.Controls.Add(head);
@@ -143,7 +143,7 @@ namespace CmsCheckin
             head = new Label();
             LeftEdge += widname + sep;
             head.Location = new Point(LeftEdge, labtop);
-            head.Size = new Size(widorg, maxheight);
+            head.Size = new Size(widorg + 5, maxheight);
             head.Font = labfont;
             head.Text = "Meeting";
             this.Controls.Add(head);
@@ -152,7 +152,7 @@ namespace CmsCheckin
             head = new Label();
             LeftEdge += widorg + sep;
             head.Location = new Point(LeftEdge, labtop);
-            head.Size = new Size(twidlb, maxheight);
+            head.Size = new Size(twidlb + 5, maxheight);
             head.Font = labfont;
             head.Text = "Labels";
             this.Controls.Add(head);
@@ -224,9 +224,9 @@ namespace CmsCheckin
                 controls.Add(ab);
 
                 var label = new Label();
-                LeftEdge += bwid + sep;
+                LeftEdge += twidab + sep;
                 label.Location = new Point(LeftEdge, top);
-                label.Size = new Size(widname, maxheight);
+                label.Size = new Size(widname + 5, maxheight);
 
                 label.Font = font;
                 label.UseMnemonic = false;
@@ -240,7 +240,7 @@ namespace CmsCheckin
                 label = new Label();
                 LeftEdge += widname + sep;
                 label.Location = new Point(LeftEdge, top);
-                label.Size = new Size(widorg, maxheight);
+                label.Size = new Size(widorg + 5, maxheight);
 
                 label.Font = font;
                 label.UseMnemonic = false;

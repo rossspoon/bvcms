@@ -101,10 +101,13 @@ namespace CmsCheckin
         void namesearch_GoNext(object sender, EventArgs e)
         {
             Program.namesearch.Swap(Program.names);
-            Program.names.ShowResults(Program.namesearch.textBox1.Text, 1);
+            string name = Program.namesearch.textBox1.Text;
+            Program.namesearch.textBox1.Text = String.Empty;
+            Program.names.ShowResults(name, 1);
         }
         void namesearch_GoBack(object sender, EventArgs e)
         {
+            Program.namesearch.textBox1.Text = String.Empty;
             Program.namesearch.GoHome(string.Empty);
         }
         void first_GoNext(object sender, EventArgs e)

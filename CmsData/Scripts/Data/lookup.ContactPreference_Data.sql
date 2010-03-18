@@ -1,5 +1,0 @@
-INSERT INTO [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (0, 'NO', 'Do Not Contact')
-INSERT INTO [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (10, 'PST', 'Mail')
-INSERT INTO [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (20, 'PHN', 'Phone')
-INSERT INTO [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (30, 'EML', 'Email')
-INSERT INTO [lookup].[ContactPreference] ([Id], [Code], [Description]) VALUES (40, 'VST', 'Visit')

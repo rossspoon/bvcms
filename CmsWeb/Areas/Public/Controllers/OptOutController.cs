@@ -22,7 +22,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 ViewData["key"] = id;
                 return View();
             }
-            if (optout.StartsWith("Yes"))
+            if (optout.HasValue() && optout.StartsWith("Yes"))
             {
                 var oo = new CmsData.EmailOptOut
                 {

@@ -117,6 +117,30 @@ namespace CmsData
 		
 		private DateTime? _VisitorDate;
 		
+		private decimal? _Deposit;
+		
+		private decimal? _ShirtFee;
+		
+		private decimal? _ExtraFee;
+		
+		private DateTime? _LastDayBeforeExtra;
+		
+		private bool? _AskAboutTylenolEtc;
+		
+		private bool? _AskAboutAllergies;
+		
+		private bool? _AskAboutShirtSize;
+		
+		private bool? _AskAboutRequest;
+		
+		private bool? _AskForParents;
+		
+		private bool? _AskForEmContact;
+		
+		private bool? _AskForMedical;
+		
+		private bool? _AskForInsurance;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -311,6 +335,42 @@ namespace CmsData
 		
 		partial void OnVisitorDateChanging(DateTime? value);
 		partial void OnVisitorDateChanged();
+		
+		partial void OnDepositChanging(decimal? value);
+		partial void OnDepositChanged();
+		
+		partial void OnShirtFeeChanging(decimal? value);
+		partial void OnShirtFeeChanged();
+		
+		partial void OnExtraFeeChanging(decimal? value);
+		partial void OnExtraFeeChanged();
+		
+		partial void OnLastDayBeforeExtraChanging(DateTime? value);
+		partial void OnLastDayBeforeExtraChanged();
+		
+		partial void OnAskAboutTylenolEtcChanging(bool? value);
+		partial void OnAskAboutTylenolEtcChanged();
+		
+		partial void OnAskAboutAllergiesChanging(bool? value);
+		partial void OnAskAboutAllergiesChanged();
+		
+		partial void OnAskAboutShirtSizeChanging(bool? value);
+		partial void OnAskAboutShirtSizeChanged();
+		
+		partial void OnAskAboutRequestChanging(bool? value);
+		partial void OnAskAboutRequestChanged();
+		
+		partial void OnAskForParentsChanging(bool? value);
+		partial void OnAskForParentsChanged();
+		
+		partial void OnAskForEmContactChanging(bool? value);
+		partial void OnAskForEmContactChanged();
+		
+		partial void OnAskForMedicalChanging(bool? value);
+		partial void OnAskForMedicalChanged();
+		
+		partial void OnAskForInsuranceChanging(bool? value);
+		partial void OnAskForInsuranceChanged();
 		
     #endregion
 		public Organization()
@@ -1473,6 +1533,270 @@ namespace CmsData
 					this._VisitorDate = value;
 					this.SendPropertyChanged("VisitorDate");
 					this.OnVisitorDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Deposit", UpdateCheck=UpdateCheck.Never, Storage="_Deposit", DbType="money")]
+		public decimal? Deposit
+		{
+			get { return this._Deposit; }
+
+			set
+			{
+				if (this._Deposit != value)
+				{
+				
+                    this.OnDepositChanging(value);
+					this.SendPropertyChanging();
+					this._Deposit = value;
+					this.SendPropertyChanged("Deposit");
+					this.OnDepositChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ShirtFee", UpdateCheck=UpdateCheck.Never, Storage="_ShirtFee", DbType="money")]
+		public decimal? ShirtFee
+		{
+			get { return this._ShirtFee; }
+
+			set
+			{
+				if (this._ShirtFee != value)
+				{
+				
+                    this.OnShirtFeeChanging(value);
+					this.SendPropertyChanging();
+					this._ShirtFee = value;
+					this.SendPropertyChanged("ShirtFee");
+					this.OnShirtFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraFee", UpdateCheck=UpdateCheck.Never, Storage="_ExtraFee", DbType="money")]
+		public decimal? ExtraFee
+		{
+			get { return this._ExtraFee; }
+
+			set
+			{
+				if (this._ExtraFee != value)
+				{
+				
+                    this.OnExtraFeeChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraFee = value;
+					this.SendPropertyChanged("ExtraFee");
+					this.OnExtraFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LastDayBeforeExtra", UpdateCheck=UpdateCheck.Never, Storage="_LastDayBeforeExtra", DbType="datetime")]
+		public DateTime? LastDayBeforeExtra
+		{
+			get { return this._LastDayBeforeExtra; }
+
+			set
+			{
+				if (this._LastDayBeforeExtra != value)
+				{
+				
+                    this.OnLastDayBeforeExtraChanging(value);
+					this.SendPropertyChanging();
+					this._LastDayBeforeExtra = value;
+					this.SendPropertyChanged("LastDayBeforeExtra");
+					this.OnLastDayBeforeExtraChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskAboutTylenolEtc", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutTylenolEtc", DbType="bit")]
+		public bool? AskAboutTylenolEtc
+		{
+			get { return this._AskAboutTylenolEtc; }
+
+			set
+			{
+				if (this._AskAboutTylenolEtc != value)
+				{
+				
+                    this.OnAskAboutTylenolEtcChanging(value);
+					this.SendPropertyChanging();
+					this._AskAboutTylenolEtc = value;
+					this.SendPropertyChanged("AskAboutTylenolEtc");
+					this.OnAskAboutTylenolEtcChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskAboutAllergies", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutAllergies", DbType="bit")]
+		public bool? AskAboutAllergies
+		{
+			get { return this._AskAboutAllergies; }
+
+			set
+			{
+				if (this._AskAboutAllergies != value)
+				{
+				
+                    this.OnAskAboutAllergiesChanging(value);
+					this.SendPropertyChanging();
+					this._AskAboutAllergies = value;
+					this.SendPropertyChanged("AskAboutAllergies");
+					this.OnAskAboutAllergiesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskAboutShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutShirtSize", DbType="bit")]
+		public bool? AskAboutShirtSize
+		{
+			get { return this._AskAboutShirtSize; }
+
+			set
+			{
+				if (this._AskAboutShirtSize != value)
+				{
+				
+                    this.OnAskAboutShirtSizeChanging(value);
+					this.SendPropertyChanging();
+					this._AskAboutShirtSize = value;
+					this.SendPropertyChanged("AskAboutShirtSize");
+					this.OnAskAboutShirtSizeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskAboutRequest", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutRequest", DbType="bit")]
+		public bool? AskAboutRequest
+		{
+			get { return this._AskAboutRequest; }
+
+			set
+			{
+				if (this._AskAboutRequest != value)
+				{
+				
+                    this.OnAskAboutRequestChanging(value);
+					this.SendPropertyChanging();
+					this._AskAboutRequest = value;
+					this.SendPropertyChanged("AskAboutRequest");
+					this.OnAskAboutRequestChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskForParents", UpdateCheck=UpdateCheck.Never, Storage="_AskForParents", DbType="bit")]
+		public bool? AskForParents
+		{
+			get { return this._AskForParents; }
+
+			set
+			{
+				if (this._AskForParents != value)
+				{
+				
+                    this.OnAskForParentsChanging(value);
+					this.SendPropertyChanging();
+					this._AskForParents = value;
+					this.SendPropertyChanged("AskForParents");
+					this.OnAskForParentsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskForEmContact", UpdateCheck=UpdateCheck.Never, Storage="_AskForEmContact", DbType="bit")]
+		public bool? AskForEmContact
+		{
+			get { return this._AskForEmContact; }
+
+			set
+			{
+				if (this._AskForEmContact != value)
+				{
+				
+                    this.OnAskForEmContactChanging(value);
+					this.SendPropertyChanging();
+					this._AskForEmContact = value;
+					this.SendPropertyChanged("AskForEmContact");
+					this.OnAskForEmContactChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskForMedical", UpdateCheck=UpdateCheck.Never, Storage="_AskForMedical", DbType="bit")]
+		public bool? AskForMedical
+		{
+			get { return this._AskForMedical; }
+
+			set
+			{
+				if (this._AskForMedical != value)
+				{
+				
+                    this.OnAskForMedicalChanging(value);
+					this.SendPropertyChanging();
+					this._AskForMedical = value;
+					this.SendPropertyChanged("AskForMedical");
+					this.OnAskForMedicalChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskForInsurance", UpdateCheck=UpdateCheck.Never, Storage="_AskForInsurance", DbType="bit")]
+		public bool? AskForInsurance
+		{
+			get { return this._AskForInsurance; }
+
+			set
+			{
+				if (this._AskForInsurance != value)
+				{
+				
+                    this.OnAskForInsuranceChanging(value);
+					this.SendPropertyChanging();
+					this._AskForInsurance = value;
+					this.SendPropertyChanged("AskForInsurance");
+					this.OnAskForInsuranceChanged();
 				}
 
 			}

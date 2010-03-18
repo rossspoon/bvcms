@@ -43,22 +43,30 @@ namespace CmsData
         }
         partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
+            var RequiredAttendTypesForVisitor = new List<int> 
+            { 
+                (int)Attend.AttendTypeCode.VisitingMember, 
+                (int)Attend.AttendTypeCode.RecentVisitor, 
+                (int)Attend.AttendTypeCode.NewVisitor,
+                (int)Attend.AttendTypeCode.OtherClass
+            };
             var o = HttpContext.Current.Items["attendinfo"] as CMSDataContext.AttendMeetingInfo1;
-            if (MemberTypeId == (int)OrganizationMember.MemberTypeCode.Visitor && AttendanceTypeId != 40 && AttendanceTypeId != 50 && AttendanceTypeId != 60 && AttendanceTypeId != 110)
-            {
-                var tw = new StringWriter();
-                ObjectDumper.Write(o, 1, tw);
-                var smtp = new SmtpClient();
-                var u = DbUtil.Db.CurrentUser;
-                var email = u.EmailAddress;
-                var from = new MailAddress(u.EmailAddress, u.Name);
-                var msg = new MailMessage();
-                msg.From = from;
-                msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
-                msg.Subject = "Attendance Oddity({0}, {1}, {2})".Fmt(MemberTypeId, AttendanceTypeId, o.path);
-                msg.Body = "\n{0} ({1}, {2})\n".Fmt(u.EmailAddress, u.UserId, u.Name) + tw.ToString();
-                smtp.Send(msg);
-            }
+            if (MemberTypeId == (int)OrganizationMember.MemberTypeCode.Visitor)
+                if (AttendanceTypeId.HasValue && !RequiredAttendTypesForVisitor.Contains(AttendanceTypeId.Value))
+                {
+                    var tw = new StringWriter();
+                    ObjectDumper.Write(o, 1, tw);
+                    var smtp = new SmtpClient();
+                    var u = DbUtil.Db.CurrentUser;
+                    var email = u.EmailAddress;
+                    var from = new MailAddress(u.EmailAddress, u.Name);
+                    var msg = new MailMessage();
+                    msg.From = from;
+                    msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
+                    msg.Subject = "Attendance Oddity({0}, {1}, {2})".Fmt(MemberTypeId, AttendanceTypeId, o.path);
+                    msg.Body = "\n{0} ({1}, {2})\n".Fmt(u.EmailAddress, u.UserId, u.Name) + tw.ToString();
+                    smtp.Send(msg);
+                }
         }
         public static string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {

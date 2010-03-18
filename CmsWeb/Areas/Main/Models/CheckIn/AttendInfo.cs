@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CMSWeb.Models
+namespace CMSWeb.Models.OrganizationPage
 {
-    public class AttendInfo
+    public class MeetingInfo
     {
         public int MeetingId { get; set; }
         public DateTime? MeetingDate { get; set; }

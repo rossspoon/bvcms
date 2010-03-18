@@ -196,12 +196,17 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, (int)Person.OriginCode.Visit, 0);
-                    var ce = new Contactee
+                    var ctee = DbUtil.Db.Contactees.SingleOrDefault(c => 
+                        c.ContactId == id && c.PeopleId == p.person.PeopleId);
+                    if (ctee == null)
                     {
-                        ContactId = id,
-                        PeopleId = p.person.PeopleId,
-                    };
-                    DbUtil.Db.Contactees.InsertOnSubmit(ce);
+                        ctee = new Contactee
+                        {
+                            ContactId = id,
+                            PeopleId = p.person.PeopleId,
+                        };
+                        DbUtil.Db.Contactees.InsertOnSubmit(ctee);
+                    }
                 }
                 DbUtil.Db.SubmitChanges();
             }
@@ -214,12 +219,17 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, 0, 0);
-                    var ce = new Contactor
+                    var ctor = DbUtil.Db.Contactors.SingleOrDefault(c => 
+                        c.ContactId == id && c.PeopleId == p.person.PeopleId);
+                    if (ctor == null)
                     {
-                        ContactId = id,
-                        PeopleId = p.person.PeopleId,
-                    };
-                    DbUtil.Db.Contactors.InsertOnSubmit(ce);
+                        ctor = new Contactor
+                        {
+                            ContactId = id,
+                            PeopleId = p.person.PeopleId,
+                        };
+                        DbUtil.Db.Contactors.InsertOnSubmit(ctor);
+                    }
                 }
                 DbUtil.Db.SubmitChanges();
             }

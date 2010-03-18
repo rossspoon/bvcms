@@ -17,74 +17,41 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
-                return Content("no person");
-            var m = new PersonModel(id);
-            if (m.displayperson == null)
-                return Content("person not found");
-            if (Util.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
+                return Content("no org");
+            var m = new OrganizationModel(id.Value);
+            if (m.org == null)
+                return Content("organization not found");
+            if (Util.OrgMembersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.org.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId))
             {
-                DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
+                DbUtil.LogActivity("Trying to view Organization ({0})".Fmt(m.org.OrganizationName));
                 return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
-                    .Fmt("You must be a member one of this person's organizations to have access to this page",
+                    .Fmt("You must be a member of this organization to have access to this page",
                     "javascript: history.go(-1)", "Go Back"));
             }
-            Util.CurrentPeopleId = id.Value;
-            Session["ActivePerson"] = m.displayperson.Name;
-            DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name));
-            var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
-            ViewData["queryid"] = qb.QueryId;
-            ViewData["TagAction"] = "/Person/Tag/" + id;
-            ViewData["UnTagAction"] = "/Person/UnTag/" + id;
+            DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
+
+            if (Util.CurrentOrgId != m.org.OrganizationId)
+                Util.CurrentGroupId = 0;
+            Util.CurrentOrgId = m.org.OrganizationId;
+            Session["ActiveOrganization"] = m.org.OrganizationName;
+
             return View(m);
-        }
-        [Authorize(Roles="Admin")]
-        public ActionResult Move(int id, int to)
-        {
-            var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
-            try
-            {
-                p.MovePersonStuff(to);
-                DbUtil.Db.SubmitChanges();
-            }
-            catch
-            {
-                return Content("error");
-            }
-            return new EmptyResult();
         }
         [Authorize(Roles="Admin")]
         public ActionResult Delete(int id)
         {
-            Util.Auditing = false;
-            var person = DbUtil.Db.LoadPersonById(id);
-            if (person == null)
-                return Content("error, bad peopleid");
-            if (!person.PurgePerson())
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            if (org == null)
+                return Content("error, bad orgid");
+            if (!org.PurgeOrg())
                 return Content("error, not deleted");
-            Util.CurrentPeopleId = 0;
-            Session.Remove("ActivePerson");
-            return new EmptyResult();
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Tag(int id)
-        {
-            Person.Tag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
-            DbUtil.Db.SubmitChanges();
-            return new EmptyResult();
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UnTag(int id)
-        {
-            Person.UnTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
-            DbUtil.Db.SubmitChanges();
-            return new EmptyResult();
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EnrollGrid(int id)
-        {
-            var m = new PersonEnrollmentsModel(id);
-            UpdateModel(m.Pager);
-            return View(m);
+            Util.CurrentOrgId = 0;
+            Util.CurrentGroupId = 0;
+            Session.Remove("ActiveOrganization");
+            return Content("<h3 style='color:red'>Organization Deleted</h3>\n<a href='/'>Go Home</a>");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PrevEnrollGrid(int id)
@@ -102,7 +69,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AttendanceGrid(int id, bool? future)
         {
-            var m = new PersonAttendHistoryModel(id, future == true);
+            var m = new MeetingsModel(id, future == true);
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -127,224 +94,25 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(m.TasksAboutList(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddContactMade(int id)
+        public ActionResult Settings(int id)
         {
-            var p = DbUtil.Db.LoadPersonById(id);
-            DbUtil.LogActivity("Adding contact from: {0}".Fmt(p.Name));
-            var c = new NewContact
-            {
-                CreatedDate = Util.Now,
-                CreatedBy = Util.UserId1,
-                ContactDate = Util.Now.Date,
-                ContactTypeId = 99,
-                ContactReasonId = 99,
-            };
-
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
-            DbUtil.Db.SubmitChanges();
-
-            var cp = new Contactor
-            {
-                PeopleId = p.PeopleId,
-                ContactId = c.ContactId
-            };
-
-            DbUtil.Db.Contactors.InsertOnSubmit(cp);
-            DbUtil.Db.SubmitChanges();
-
-            return Content("/Contact.aspx?id=" + c.ContactId);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddContactReceived(int id)
-        {
-            var p = DbUtil.Db.LoadPersonById(id);
-            DbUtil.LogActivity("Adding contact to: {0}".Fmt(p.Name));
-            var c = new NewContact
-            {
-                CreatedDate = Util.Now,
-                CreatedBy = Util.UserId1,
-                ContactDate = Util.Now.Date,
-                ContactTypeId = 99,
-                ContactReasonId = 99,
-            };
-
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
-            DbUtil.Db.SubmitChanges();
-
-            var pc = new Contactee
-            {
-                PeopleId = p.PeopleId,
-                ContactId = c.ContactId
-            };
-
-            DbUtil.Db.Contactees.InsertOnSubmit(pc);
-            DbUtil.Db.SubmitChanges();
-
-            return Content("/Contact.aspx?id=" + c.ContactId);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddAboutTask(int id)
-        {
-            var p = DbUtil.Db.LoadPersonById(id);
-
-            var pid = Util.UserPeopleId.Value;
-            var active = (int)Task.StatusCode.Active;
-            var t = new Task
-            {
-                OwnerId = pid,
-                Description = "NewTask",
-                ListId = TaskModel.InBoxId(pid),
-                StatusId = active,
-            };
-            p.TasksAboutPerson.Add(t);
-            DbUtil.Db.SubmitChanges();
-            return Content("/Task/List/{0}".Fmt(t.Id));
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BusinessCard(int id)
-        {
-            var m = new PersonModel(id);
-            return View(m.displayperson);
-        }
-        public ContentResult Schools(string q, int limit)
-        {
-            var qu = from p in DbUtil.Db.People
-                     where p.SchoolOther.Contains(q)
-                     group p by p.SchoolOther into g
-                     select g.Key;
-            return Content(string.Join("\n", qu.Take(limit).ToArray()));
-        }
-        public ContentResult Employers(string q, int limit)
-        {
-            var qu = from p in DbUtil.Db.People
-                     where p.EmployerOther.Contains(q)
-                     group p by p.EmployerOther into g
-                     select g.Key;
-            return Content(string.Join("\n", qu.Take(limit).ToArray()));
-        }
-        public ContentResult Occupations(string q, int limit)
-        {
-            var qu = from p in DbUtil.Db.People
-                     where p.OccupationOther.Contains(q)
-                     group p by p.OccupationOther into g
-                     select g.Key;
-            return Content(string.Join("\n", qu.Take(limit).ToArray()));
-        }
-        public ContentResult Churches(string q, int limit)
-        {
-            var qu = from r in DbUtil.Db.ViewChurches
-                     where r.C.Contains(q)
-                     select r.C;
-            return Content(string.Join("\n", qu.Take(limit).ToArray()));
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicDisplay(int id)
-        {
-            var m = BasicPersonInfo.GetBasicPersonInfo(id);
+            var m = new OrganizationModel(id);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicEdit(int id)
+        public ActionResult SettingsEdit(int id)
         {
-            var m = BasicPersonInfo.GetBasicPersonInfo(id);
-            return View(m);
+            var m = new OrganizationModel(id);
+            return View(m.org);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BasicUpdate(int id)
+        public ActionResult SettingsUpdate(int id)
         {
-            var m = BasicPersonInfo.GetBasicPersonInfo(id);
-            UpdateModel(m);
-            m.UpdatePerson();
-            m = BasicPersonInfo.GetBasicPersonInfo(id);
-            return View("BasicDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddressDisplay(int id, string type)
-        {
-            var m = AddressInfo.GetAddressInfo(id, type);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddressEdit(int id, string type)
-        {
-            var m = AddressInfo.GetAddressInfo(id, type);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddressUpdate(int id, string type)
-        {
-            var m = AddressInfo.GetAddressInfo(id, type);
-            UpdateModel(m);
-            m.UpdateAddress();
-            m = AddressInfo.GetAddressInfo(id, type);
-            return View("AddressDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberDisplay(int id)
-        {
-            var m = MemberInfo.GetMemberInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberEdit(int id)
-        {
-            var m = MemberInfo.GetMemberInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberUpdate(int id)
-        {
-            var m = MemberInfo.GetMemberInfo(id);
-            UpdateModel(m);
-            m.UpdateMember();
-            m = MemberInfo.GetMemberInfo(id);
-            return View("MemberDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GrowthDisplay(int id)
-        {
-            var m = GrowthInfo.GetGrowthInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GrowthEdit(int id)
-        {
-            var m = GrowthInfo.GetGrowthInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GrowthUpdate(int id)
-        {
-            var m = GrowthInfo.GetGrowthInfo(id);
-            UpdateModel(m);
-            m.UpdateGrowth();
-            return View("GrowthDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberNotesDisplay(int id)
-        {
-            var m = MemberNotesInfo.GetMemberNotesInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberNotesEdit(int id)
-        {
-            var m = MemberNotesInfo.GetMemberNotesInfo(id);
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MemberNotesUpdate(int id)
-        {
-            var m = MemberNotesInfo.GetMemberNotesInfo(id);
-            UpdateModel(m);
-            m.UpdateMemberNotes();
-            return View("MemberNotesDisplay", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)
-        {
-            var r = CMSPresenter.PersonController.LookupAddress(Address1, Address2, City, State, Zip);
-            return Json(r);
+            var m = new OrganizationModel(id);
+            UpdateModel(m.org);
+            m.UpdateOrganization();
+            m = new OrganizationModel(id);
+            return View("Settings", m);
         }
     }
 }
