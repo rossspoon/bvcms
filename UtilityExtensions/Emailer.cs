@@ -22,7 +22,7 @@ namespace UtilityExtensions
             if (!from.HasValue())
                 return;
             var fr = FirstAddress(from);
-#if DEBUG
+#if NOEMAIL
 #else
             SendMsg(smtp, fr, subject, message, name, addrs, null);
 #endif
@@ -32,7 +32,7 @@ namespace UtilityExtensions
             var fr = FirstAddress(from);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-#if DEBUG
+#if NOEMAIL
 #else
             SendMsg(smtp, fr, subject, message, null, addrs, null);
 #endif

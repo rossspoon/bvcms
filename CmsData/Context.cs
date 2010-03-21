@@ -481,6 +481,15 @@ namespace CmsData
             HttpContext.Current.Session["pref-" + pref] = p.ValueX;
             SubmitChanges();
         }
+        public ExtraDatum GetDatum<T>(T m)
+        {
+            var s = Util.Serialize<T>(m);
+            var d = new ExtraDatum { Data = s, Stamp = Util.Now };
+            ExtraDatas.InsertOnSubmit(d);
+            SubmitChanges();
+            return d;
+        }
+
         [Function(Name = "dbo.LinkEnrollmentTransaction")]
         public int LinkEnrollmentTransaction([Parameter(DbType = "Int")] int? tid, [Parameter(DbType = "DateTime")] DateTime? trandt, [Parameter(DbType = "Int")] int? typeid, [Parameter(DbType = "Int")] int? orgid, [Parameter(DbType = "Int")] int? pid)
         {

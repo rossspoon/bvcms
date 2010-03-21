@@ -103,13 +103,13 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult SettingsEdit(int id)
         {
             var m = new OrganizationModel(id);
-            return View(m.org);
+            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SettingsUpdate(int id)
         {
             var m = new OrganizationModel(id);
-            UpdateModel(m.org);
+            UpdateModel(m);
             m.UpdateOrganization();
             m = new OrganizationModel(id);
             return View("Settings", m);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace UtilityExtensions
 {
@@ -26,15 +27,22 @@ namespace UtilityExtensions
         {
             if (s == null || s.Length == 0)
                 return string.Empty;
-            string result = string.Empty;
-            byte[] buffer = Convert.FromBase64String(s);
-            var des = new TripleDESCryptoServiceProvider();
-            var MD5 = new MD5CryptoServiceProvider();
-            des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(cryptoKey));
-            des.IV = IV;
-            result = Encoding.ASCII.GetString(
-                des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length));
-            return result;
+            try
+            {
+                string result = string.Empty;
+                byte[] buffer = Convert.FromBase64String(s);
+                var des = new TripleDESCryptoServiceProvider();
+                var MD5 = new MD5CryptoServiceProvider();
+                des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(cryptoKey));
+                des.IV = IV;
+                result = Encoding.ASCII.GetString(
+                    des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length));
+                return result;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

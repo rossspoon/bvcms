@@ -54,7 +54,7 @@
                             Campus:
                         </th>
                         <td>
-                            <%=Model.Campus %>
+                            <%=Html.CodeDesc("org.CampusId", Model.CampusList()) %>
                         </td>
                     </tr>
                     <tr>
@@ -62,7 +62,7 @@
                             Status:
                         </th>
                         <td>
-                            <%=Model.OrgStatus%>
+                            <%=Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList()) %>
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +70,7 @@
                             Leader Type:
                         </th>
                         <td>
-                            <%=Model.LeaderType%>
+                            <%=Html.CodeDesc("org.LeaderTypeId", Model.LeaderTypeList()) %>
                         </td>
                     </tr>
                 </table>

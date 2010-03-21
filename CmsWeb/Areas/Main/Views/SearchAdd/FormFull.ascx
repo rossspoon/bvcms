@@ -18,7 +18,7 @@
     np.index = n;
 %>
 <input type="hidden" name="m.List.Index" value="<%=n %>" />
-<input type="hidden" name="m.list[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
+<input type="hidden" name="m.List[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
 <table width="100%">
     <tr><th colspan="2">Add Person To New Family</th>
         <td align="right"><a href="/SearchAdd/PersonCancel/<%=n %>" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "back to search person"%>">go back</a></td>

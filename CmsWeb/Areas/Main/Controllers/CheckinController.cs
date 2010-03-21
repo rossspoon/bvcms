@@ -115,7 +115,15 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             CmsData.Family f;
             if (id > 0)
+            {
                 f = DbUtil.Db.Families.Single(fam => fam.FamilyId == id);
+                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
+                f.HomePhone = home.GetDigits();
+                f.AddressLineOne = addr;
+                f.CityName = z != null ? z.City : null;
+                f.StateCode = z != null ? z.State : null;
+                f.ZipCode = zip;
+            }
             else
             {
                 var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
@@ -144,6 +152,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
                     (int)Person.OriginCode.Visit, null);
             p.MaritalStatusId = marital;
+            p.FixTitle();
             p.EmailAddress = email;
             p.CampusId = campusid;
             p.CellPhone = cell.GetDigits();

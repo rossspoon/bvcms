@@ -76,12 +76,10 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
                     smtp = new SmtpClient();
       
                 n++;
-                var debug = false;
-#if DEBUG
-                debug = true;
+#if NOEMAIL
+#else
+                smtp.Send(msg);
 #endif
-                if (!debug)
-                    smtp.Send(msg);
             }
         }
 

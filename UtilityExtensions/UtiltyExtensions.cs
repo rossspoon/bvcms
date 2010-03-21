@@ -752,6 +752,10 @@ namespace UtilityExtensions
                 return null;
             s = HttpUtility.HtmlEncode(s);
 
+
+            //s = Regex.Replace(s, "([^ ]*)=(https?://[^ ]*)", "<a target=\"_new\" href=\"$2\">$1</a>", RegexOptions.Singleline);
+            //s = Regex.Replace(s, "[^=](https?://[^\\s]*)", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
+
             s = Regex.Replace(s, "(http://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
             s = Regex.Replace(s, "(https://([^\\s]*))", "<a target=\"_new\" href=\"$1\">$1</a>", RegexOptions.Singleline);
             s = HtmlFormat(s, "\\*\\*\\*", "u");
@@ -929,6 +933,11 @@ namespace UtilityExtensions
         public static string ResolveServerUrl(string serverUrl)
         {
             return ResolveServerUrl(serverUrl, false);
+        }
+        public static string ServerLink(string path)
+        {
+            var Request = HttpContext.Current.Request;
+            return Request.Url.Scheme + "://" + Request.Url.Authority + path;
         }
         public static string PickFirst(params string[] args)
         {

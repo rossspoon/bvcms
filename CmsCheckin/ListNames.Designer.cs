@@ -43,7 +43,7 @@
             this.GoBackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GoBackButton.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GoBackButton.ForeColor = System.Drawing.Color.Black;
-            this.GoBackButton.Location = new System.Drawing.Point(682, 689);
+            this.GoBackButton.Location = new System.Drawing.Point(648, 689);
             this.GoBackButton.Margin = new System.Windows.Forms.Padding(4);
             this.GoBackButton.Name = "GoBackButton";
             this.GoBackButton.Size = new System.Drawing.Size(269, 66);
@@ -59,7 +59,7 @@
             this.bAddNewFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bAddNewFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bAddNewFamily.ForeColor = System.Drawing.Color.Black;
-            this.bAddNewFamily.Location = new System.Drawing.Point(975, 704);
+            this.bAddNewFamily.Location = new System.Drawing.Point(962, 707);
             this.bAddNewFamily.Margin = new System.Windows.Forms.Padding(4);
             this.bAddNewFamily.Name = "bAddNewFamily";
             this.bAddNewFamily.Size = new System.Drawing.Size(45, 45);

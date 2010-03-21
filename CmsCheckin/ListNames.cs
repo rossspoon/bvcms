@@ -53,6 +53,7 @@ namespace CmsCheckin
                 lab.AutoSize = true;
                 lab.Text = "Not Found, try another name?";
                 this.Controls.Add(lab);
+                controls.Add(lab);
                 GoBackButton.Text = "Try again";
                 return;
             }
@@ -215,13 +216,11 @@ namespace CmsCheckin
         }
         private void pgdn_Click(object sender, EventArgs e)
         {
-            ClearControls();
             ShowResults(name, next.Value);
         }
 
         private void pgup_Click(object sender, EventArgs e)
         {
-            ClearControls();
             ShowResults(name, prev.Value);
         }
 

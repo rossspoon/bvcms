@@ -19,6 +19,7 @@ namespace CMSWeb.Areas.Public
             AddRoute(context, "LoveRespect");
             AddRoute(context, "MOBS");
             AddRoute(context, "Retreat");
+            AddRoute(context, "OnlineReg");
             AddRoute(context, "Prayer");
             AddRoute(context, "RecReg");
             AddRoute(context, "Register");

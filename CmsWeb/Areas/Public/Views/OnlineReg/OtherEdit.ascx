@@ -1,0 +1,160 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
+<table>
+<% if (Model.index > 0)
+   { %>
+    <tr><th>Other Information</th><td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td></tr>
+<% }
+   if (Model.org.AskShirtSize == true)
+   { %>
+    <tr>
+        <td><label for="shirtsize">ShirtSize</label></td>
+        <td><%= Html.DropDownList3("", "m.List[" + Model.index + "].shirtsize", Model.ShirtSizes(), Model.shirtsize)%></td>
+        <td><%= Html.ValidationMessage("shirtsize")%></td>
+    </tr>
+<% } 
+   if (Model.org.AskRequest == true)
+   { %>
+    <tr>
+        <td><label for="request">Request</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].request" value="<%=Model.request%>" maxlength="100" /></td>
+        <td><%= Html.ValidationMessage("request") %></td>
+    </tr>
+<% } 
+   if (Model.org.AskEmContact == true)
+   { %>
+    <tr>
+        <td><label for="emcontact">Emergency Friend</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].emcontact" value="<%=Model.emcontact%>" maxlength="100" /></td>
+        <td><%= Html.ValidationMessage("emcontact")%></td>
+    </tr>
+    <tr>
+        <td><label for="emphone">Emergency Phone</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].emphone" value="<%=Model.emphone%>" maxlength="15" /></td>
+        <td><%= Html.ValidationMessage("emphone")%></td>
+    </tr>
+<% } 
+   if (Model.org.AskInsurance == true)
+   { %>
+    <tr>
+        <td><label for="insurance">Health Insurance Carrier</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].insurance" value="<%=Model.insurance%>" maxlength="100" /></td>
+        <td><%= Html.ValidationMessage("insurance")%></td>
+    </tr>
+    <tr>
+        <td><label for="policy">Policy #</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].policy" value="<%=Model.policy%>" maxlength="100" /></td>
+        <td><%= Html.ValidationMessage("policy")%></td>
+    </tr>
+<% } 
+   if (Model.org.AskDoctor == true)
+   { %>
+    <tr>
+        <td><label for="doctor">Family Physician Name</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].doctor" value="<%=Model.doctor%>" maxlength="100" /></td>
+        <td><%= Html.ValidationMessage("doctor")%></td>
+    </tr>
+    <tr>
+        <td><label for="docphone">Family Physician Phone</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].docphone" value="<%=Model.docphone%>" maxlength="15" /></td>
+        <td><%= Html.ValidationMessage("docphone")%></td>
+    </tr>
+<% } 
+   if (Model.org.AskAllergies == true)
+   { %>
+    <tr>
+        <td><label for="medical">Allergies or<br />
+               Medical Problems</label></td>
+        <td colspan="2"><textarea name="m.List[<%=Model.index%>].medical"><%=Model.medical %></textarea>
+        <span class="blue"> Leave blank if none</span></td>
+    </tr>
+<% }
+   if (Model.org.AskTylenolEtc == true)
+   { %>
+    <tr>
+        <td><label for="medical">May we give your child</label></td>
+        <td>
+            <table>
+            <tr>
+                <td>Tylenol?:</td>
+                <td>
+                    <input type="radio" name="m.List[<%=Model.index%>].tylenol" value="true" <%=Model.tylenol == true ? "checked='checked'" : "" %> />Yes
+                    <input type="radio" name="m.List[<%=Model.index%>].tylenol" value="false" <%=Model.tylenol == false ? "checked='checked'" : "" %> />No
+                    <%=Html.ValidationMessage("tylenol") %>
+                </td>
+            </tr>
+            <tr>
+                <td>Advil?:</td>
+                <td>
+                    <input type="radio" name="m.List[<%=Model.index%>].advil" value="true" <%=Model.advil == true ? "checked='checked'" : "" %> />Yes
+                    <input type="radio" name="m.List[<%=Model.index%>].advil" value="false" <%=Model.advil == false ? "checked='checked'" : "" %> />No
+                    <%=Html.ValidationMessage("advil")%>
+                </td>
+            </tr>
+            <tr>
+                <td>Maalox?:</td>
+                <td>
+                    <input type="radio" name="m.List[<%=Model.index%>].maalox" value="true" <%=Model.maalox == true ? "checked='checked'" : "" %> />Yes
+                    <input type="radio" name="m.List[<%=Model.index%>].maalox" value="false" <%=Model.maalox == false ? "checked='checked'" : "" %> />No
+                    <%=Html.ValidationMessage("maalox")%>
+                </td>
+            </tr>
+            <tr>
+                <td>Robitussin?:</td>
+                <td>
+                    <input type="radio" name="m.List[<%=Model.index%>].robitussin" value="true" <%=Model.robitussin == true ? "checked='checked'" : "" %> />Yes
+                    <input type="radio" name="m.List[<%=Model.index%>].robitussin" value="false" <%=Model.robitussin == false ? "checked='checked'" : "" %> />No
+                    <%=Html.ValidationMessage("robitussin")%>
+                </td>
+            </tr>
+            </table>
+        </td>
+        <td></td>
+    </tr>
+<% }
+   if (Model.org.AskParents == true)
+   { %>
+    <tr>
+        <td><label for="mname">Mother's Name (first last)</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].mname" value="<%=Model.mname%>" maxlength="80" /></td>
+        <td><%= Html.ValidationMessage("mname")%></td>
+    </tr>
+    <tr>
+        <td><label for="fname">Father's Name (first last)</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].fname" value="<%=Model.fname%>" maxlength="80" /></td>
+        <td><%= Html.ValidationMessage("fname")%></td>
+    </tr>
+<% }
+   if (Model.org.AskCoaching == true)
+   { %>
+     <tr>
+        <td><label for="coaching">Interested in Coaching?</label></td>
+        <td><input type="radio" name="m.List[" + Model.index + "].coaching" value = "true" /> Yes
+            <input type="radio" name="m.List[" + Model.index + "].coaching" value = "false" /> No</td>
+        <td><%= Html.ValidationMessage("coaching") %></td>
+    </tr>
+<% }
+   if (Model.org.AskChurch == true)
+   { %>
+    <tr>
+        <td><label for="church"><%= Model.org.AskParents == true ? "Parent's Church" : "Church" %></label></td>
+        <td><input type="checkbox" name="m.List[<%=Model.index %>].member" 
+            <%=Model.member == true ? "checked='checked'" : "" %> /> Member of Bellevue<br />
+            <input type="checkbox" name="m.List[<%=Model.index %>].otherchurch" 
+            <%=Model.otherchurch == true ? "checked='checked'" : "" %> /> Active in another Local Church</td>
+        <td><%=Html.ValidationMessage("member")%></td>
+    </tr>
+<% }
+   if (Model.org.Deposit > 0)
+   { %>
+    <tr>
+        <td><label for="deposit">Payment</label></td>
+        <td><input type="radio" name="m.List[<%=Model.index%>].paydeposit" value="true" <%=Model.paydeposit == true ? "checked='checked'" : "" %> />Pay Deposit Only
+            <input type="radio" name="m.List[<%=Model.index%>].paydeposit" value="false" <%=Model.paydeposit == false ? "checked='checked'" : "" %> />Pay Full Amount
+        </td>
+        <td><%=Html.ValidationMessage("paydeposit")%></td>
+    </tr>
+<% } %>
+    <tr><td></td>
+        <td><a href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
+    </tr>
+</table>

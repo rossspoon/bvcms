@@ -135,7 +135,7 @@ namespace CmsCheckin
             var resp = wc.UploadValues(url, "POST", coll);
 
             var s = Encoding.ASCII.GetString(resp);
-            Program.PeopleId = s.ToInt();
+            Program.FamilyId = s.ToInt();
             if (Program.HideCursor)
                 Cursor.Hide();
             f.Cursor = Cursors.Default;

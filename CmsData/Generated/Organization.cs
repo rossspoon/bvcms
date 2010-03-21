@@ -125,21 +125,29 @@ namespace CmsData
 		
 		private DateTime? _LastDayBeforeExtra;
 		
-		private bool? _AskAboutTylenolEtc;
+		private bool? _AskTylenolEtc;
 		
-		private bool? _AskAboutAllergies;
+		private bool? _AskAllergies;
 		
-		private bool? _AskAboutShirtSize;
+		private bool? _AskShirtSize;
 		
-		private bool? _AskAboutRequest;
+		private bool? _AskRequest;
 		
-		private bool? _AskForParents;
+		private bool? _AskParents;
 		
-		private bool? _AskForEmContact;
+		private bool? _AskEmContact;
 		
-		private bool? _AskForMedical;
+		private bool? _AskMedical;
 		
-		private bool? _AskForInsurance;
+		private bool? _AskInsurance;
+		
+		private bool? _AllowLastYearShirt;
+		
+		private bool? _AskDoctor;
+		
+		private bool? _AskCoaching;
+		
+		private bool? _AskChurch;
 		
    		
    		private EntitySet< Person> _BFMembers;
@@ -348,29 +356,41 @@ namespace CmsData
 		partial void OnLastDayBeforeExtraChanging(DateTime? value);
 		partial void OnLastDayBeforeExtraChanged();
 		
-		partial void OnAskAboutTylenolEtcChanging(bool? value);
-		partial void OnAskAboutTylenolEtcChanged();
+		partial void OnAskTylenolEtcChanging(bool? value);
+		partial void OnAskTylenolEtcChanged();
 		
-		partial void OnAskAboutAllergiesChanging(bool? value);
-		partial void OnAskAboutAllergiesChanged();
+		partial void OnAskAllergiesChanging(bool? value);
+		partial void OnAskAllergiesChanged();
 		
-		partial void OnAskAboutShirtSizeChanging(bool? value);
-		partial void OnAskAboutShirtSizeChanged();
+		partial void OnAskShirtSizeChanging(bool? value);
+		partial void OnAskShirtSizeChanged();
 		
-		partial void OnAskAboutRequestChanging(bool? value);
-		partial void OnAskAboutRequestChanged();
+		partial void OnAskRequestChanging(bool? value);
+		partial void OnAskRequestChanged();
 		
-		partial void OnAskForParentsChanging(bool? value);
-		partial void OnAskForParentsChanged();
+		partial void OnAskParentsChanging(bool? value);
+		partial void OnAskParentsChanged();
 		
-		partial void OnAskForEmContactChanging(bool? value);
-		partial void OnAskForEmContactChanged();
+		partial void OnAskEmContactChanging(bool? value);
+		partial void OnAskEmContactChanged();
 		
-		partial void OnAskForMedicalChanging(bool? value);
-		partial void OnAskForMedicalChanged();
+		partial void OnAskMedicalChanging(bool? value);
+		partial void OnAskMedicalChanged();
 		
-		partial void OnAskForInsuranceChanging(bool? value);
-		partial void OnAskForInsuranceChanged();
+		partial void OnAskInsuranceChanging(bool? value);
+		partial void OnAskInsuranceChanged();
+		
+		partial void OnAllowLastYearShirtChanging(bool? value);
+		partial void OnAllowLastYearShirtChanged();
+		
+		partial void OnAskDoctorChanging(bool? value);
+		partial void OnAskDoctorChanged();
+		
+		partial void OnAskCoachingChanging(bool? value);
+		partial void OnAskCoachingChanged();
+		
+		partial void OnAskChurchChanging(bool? value);
+		partial void OnAskChurchChanged();
 		
     #endregion
 		public Organization()
@@ -1628,21 +1648,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskAboutTylenolEtc", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutTylenolEtc", DbType="bit")]
-		public bool? AskAboutTylenolEtc
+		[Column(Name="AskTylenolEtc", UpdateCheck=UpdateCheck.Never, Storage="_AskTylenolEtc", DbType="bit")]
+		public bool? AskTylenolEtc
 		{
-			get { return this._AskAboutTylenolEtc; }
+			get { return this._AskTylenolEtc; }
 
 			set
 			{
-				if (this._AskAboutTylenolEtc != value)
+				if (this._AskTylenolEtc != value)
 				{
 				
-                    this.OnAskAboutTylenolEtcChanging(value);
+                    this.OnAskTylenolEtcChanging(value);
 					this.SendPropertyChanging();
-					this._AskAboutTylenolEtc = value;
-					this.SendPropertyChanged("AskAboutTylenolEtc");
-					this.OnAskAboutTylenolEtcChanged();
+					this._AskTylenolEtc = value;
+					this.SendPropertyChanged("AskTylenolEtc");
+					this.OnAskTylenolEtcChanged();
 				}
 
 			}
@@ -1650,21 +1670,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskAboutAllergies", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutAllergies", DbType="bit")]
-		public bool? AskAboutAllergies
+		[Column(Name="AskAllergies", UpdateCheck=UpdateCheck.Never, Storage="_AskAllergies", DbType="bit")]
+		public bool? AskAllergies
 		{
-			get { return this._AskAboutAllergies; }
+			get { return this._AskAllergies; }
 
 			set
 			{
-				if (this._AskAboutAllergies != value)
+				if (this._AskAllergies != value)
 				{
 				
-                    this.OnAskAboutAllergiesChanging(value);
+                    this.OnAskAllergiesChanging(value);
 					this.SendPropertyChanging();
-					this._AskAboutAllergies = value;
-					this.SendPropertyChanged("AskAboutAllergies");
-					this.OnAskAboutAllergiesChanged();
+					this._AskAllergies = value;
+					this.SendPropertyChanged("AskAllergies");
+					this.OnAskAllergiesChanged();
 				}
 
 			}
@@ -1672,21 +1692,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskAboutShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutShirtSize", DbType="bit")]
-		public bool? AskAboutShirtSize
+		[Column(Name="AskShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_AskShirtSize", DbType="bit")]
+		public bool? AskShirtSize
 		{
-			get { return this._AskAboutShirtSize; }
+			get { return this._AskShirtSize; }
 
 			set
 			{
-				if (this._AskAboutShirtSize != value)
+				if (this._AskShirtSize != value)
 				{
 				
-                    this.OnAskAboutShirtSizeChanging(value);
+                    this.OnAskShirtSizeChanging(value);
 					this.SendPropertyChanging();
-					this._AskAboutShirtSize = value;
-					this.SendPropertyChanged("AskAboutShirtSize");
-					this.OnAskAboutShirtSizeChanged();
+					this._AskShirtSize = value;
+					this.SendPropertyChanged("AskShirtSize");
+					this.OnAskShirtSizeChanged();
 				}
 
 			}
@@ -1694,21 +1714,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskAboutRequest", UpdateCheck=UpdateCheck.Never, Storage="_AskAboutRequest", DbType="bit")]
-		public bool? AskAboutRequest
+		[Column(Name="AskRequest", UpdateCheck=UpdateCheck.Never, Storage="_AskRequest", DbType="bit")]
+		public bool? AskRequest
 		{
-			get { return this._AskAboutRequest; }
+			get { return this._AskRequest; }
 
 			set
 			{
-				if (this._AskAboutRequest != value)
+				if (this._AskRequest != value)
 				{
 				
-                    this.OnAskAboutRequestChanging(value);
+                    this.OnAskRequestChanging(value);
 					this.SendPropertyChanging();
-					this._AskAboutRequest = value;
-					this.SendPropertyChanged("AskAboutRequest");
-					this.OnAskAboutRequestChanged();
+					this._AskRequest = value;
+					this.SendPropertyChanged("AskRequest");
+					this.OnAskRequestChanged();
 				}
 
 			}
@@ -1716,21 +1736,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskForParents", UpdateCheck=UpdateCheck.Never, Storage="_AskForParents", DbType="bit")]
-		public bool? AskForParents
+		[Column(Name="AskParents", UpdateCheck=UpdateCheck.Never, Storage="_AskParents", DbType="bit")]
+		public bool? AskParents
 		{
-			get { return this._AskForParents; }
+			get { return this._AskParents; }
 
 			set
 			{
-				if (this._AskForParents != value)
+				if (this._AskParents != value)
 				{
 				
-                    this.OnAskForParentsChanging(value);
+                    this.OnAskParentsChanging(value);
 					this.SendPropertyChanging();
-					this._AskForParents = value;
-					this.SendPropertyChanged("AskForParents");
-					this.OnAskForParentsChanged();
+					this._AskParents = value;
+					this.SendPropertyChanged("AskParents");
+					this.OnAskParentsChanged();
 				}
 
 			}
@@ -1738,21 +1758,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskForEmContact", UpdateCheck=UpdateCheck.Never, Storage="_AskForEmContact", DbType="bit")]
-		public bool? AskForEmContact
+		[Column(Name="AskEmContact", UpdateCheck=UpdateCheck.Never, Storage="_AskEmContact", DbType="bit")]
+		public bool? AskEmContact
 		{
-			get { return this._AskForEmContact; }
+			get { return this._AskEmContact; }
 
 			set
 			{
-				if (this._AskForEmContact != value)
+				if (this._AskEmContact != value)
 				{
 				
-                    this.OnAskForEmContactChanging(value);
+                    this.OnAskEmContactChanging(value);
 					this.SendPropertyChanging();
-					this._AskForEmContact = value;
-					this.SendPropertyChanged("AskForEmContact");
-					this.OnAskForEmContactChanged();
+					this._AskEmContact = value;
+					this.SendPropertyChanged("AskEmContact");
+					this.OnAskEmContactChanged();
 				}
 
 			}
@@ -1760,21 +1780,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskForMedical", UpdateCheck=UpdateCheck.Never, Storage="_AskForMedical", DbType="bit")]
-		public bool? AskForMedical
+		[Column(Name="AskMedical", UpdateCheck=UpdateCheck.Never, Storage="_AskMedical", DbType="bit")]
+		public bool? AskMedical
 		{
-			get { return this._AskForMedical; }
+			get { return this._AskMedical; }
 
 			set
 			{
-				if (this._AskForMedical != value)
+				if (this._AskMedical != value)
 				{
 				
-                    this.OnAskForMedicalChanging(value);
+                    this.OnAskMedicalChanging(value);
 					this.SendPropertyChanging();
-					this._AskForMedical = value;
-					this.SendPropertyChanged("AskForMedical");
-					this.OnAskForMedicalChanged();
+					this._AskMedical = value;
+					this.SendPropertyChanged("AskMedical");
+					this.OnAskMedicalChanged();
 				}
 
 			}
@@ -1782,21 +1802,109 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskForInsurance", UpdateCheck=UpdateCheck.Never, Storage="_AskForInsurance", DbType="bit")]
-		public bool? AskForInsurance
+		[Column(Name="AskInsurance", UpdateCheck=UpdateCheck.Never, Storage="_AskInsurance", DbType="bit")]
+		public bool? AskInsurance
 		{
-			get { return this._AskForInsurance; }
+			get { return this._AskInsurance; }
 
 			set
 			{
-				if (this._AskForInsurance != value)
+				if (this._AskInsurance != value)
 				{
 				
-                    this.OnAskForInsuranceChanging(value);
+                    this.OnAskInsuranceChanging(value);
 					this.SendPropertyChanging();
-					this._AskForInsurance = value;
-					this.SendPropertyChanged("AskForInsurance");
-					this.OnAskForInsuranceChanged();
+					this._AskInsurance = value;
+					this.SendPropertyChanged("AskInsurance");
+					this.OnAskInsuranceChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AllowLastYearShirt", UpdateCheck=UpdateCheck.Never, Storage="_AllowLastYearShirt", DbType="bit")]
+		public bool? AllowLastYearShirt
+		{
+			get { return this._AllowLastYearShirt; }
+
+			set
+			{
+				if (this._AllowLastYearShirt != value)
+				{
+				
+                    this.OnAllowLastYearShirtChanging(value);
+					this.SendPropertyChanging();
+					this._AllowLastYearShirt = value;
+					this.SendPropertyChanged("AllowLastYearShirt");
+					this.OnAllowLastYearShirtChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskDoctor", UpdateCheck=UpdateCheck.Never, Storage="_AskDoctor", DbType="bit")]
+		public bool? AskDoctor
+		{
+			get { return this._AskDoctor; }
+
+			set
+			{
+				if (this._AskDoctor != value)
+				{
+				
+                    this.OnAskDoctorChanging(value);
+					this.SendPropertyChanging();
+					this._AskDoctor = value;
+					this.SendPropertyChanged("AskDoctor");
+					this.OnAskDoctorChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskCoaching", UpdateCheck=UpdateCheck.Never, Storage="_AskCoaching", DbType="bit")]
+		public bool? AskCoaching
+		{
+			get { return this._AskCoaching; }
+
+			set
+			{
+				if (this._AskCoaching != value)
+				{
+				
+                    this.OnAskCoachingChanging(value);
+					this.SendPropertyChanging();
+					this._AskCoaching = value;
+					this.SendPropertyChanged("AskCoaching");
+					this.OnAskCoachingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskChurch", UpdateCheck=UpdateCheck.Never, Storage="_AskChurch", DbType="bit")]
+		public bool? AskChurch
+		{
+			get { return this._AskChurch; }
+
+			set
+			{
+				if (this._AskChurch != value)
+				{
+				
+                    this.OnAskChurchChanging(value);
+					this.SendPropertyChanging();
+					this._AskChurch = value;
+					this.SendPropertyChanged("AskChurch");
+					this.OnAskChurchChanged();
 				}
 
 			}

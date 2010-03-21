@@ -32,6 +32,10 @@ namespace CMSWeb
 		   </div>
 		</div>".Fmt(logoimg, headertext);
         }
+        protected override void ExecuteCore()
+        {
+            base.ExecuteCore();
+        }
     }
     public class CmsStaffController : System.Web.Mvc.Controller
     {

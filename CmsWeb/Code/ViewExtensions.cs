@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum ListType
 {
@@ -23,7 +24,7 @@ public enum ListType
 }
 public static class ViewExtensions
 {
-    public static string RegisterScript(this System.Web.Mvc.HtmlHelper helper, string scriptFileName)
+    public static string RegisterScript(this HtmlHelper helper, string scriptFileName)
     {
         string scriptRoot = VirtualPathUtility.ToAbsolute("~/Scripts");
         string scriptFormat = "<script src=\"{0}/{1}\" type=\"text/javascript\"></script>\r\n";
@@ -86,7 +87,7 @@ public static class ViewExtensions
         string sOut = Protocol + pg.ViewContext.HttpContext.Request.ServerVariables["SERVER_NAME"] + Port + appPath;
         return sOut;
     }
-    public static string HyperLink(this System.Web.Mvc.HtmlHelper helper, string link, string text)
+    public static string HyperLink(this HtmlHelper helper, string link, string text)
     {
         var tb = new TagBuilder("a");
         tb.InnerHtml = HttpUtility.HtmlEncode(text);
@@ -94,9 +95,9 @@ public static class ViewExtensions
         b.MergeAttribute("href", link);
         return b.ToString(TagRenderMode.Normal);
     }
-    public static string HyperLink(this System.Web.Mvc.HtmlHelper helper, 
+    public static string HyperLink(this HtmlHelper helper,
         string link,
-        string text, 
+        string text,
         object htmlAttributes)
     {
         var attr = new RouteValueDictionary(htmlAttributes);
@@ -107,14 +108,14 @@ public static class ViewExtensions
         b.MergeAttributes<string, object>(attr);
         return b.ToString(TagRenderMode.Normal);
     }
-    public static string HyperLink(this System.Web.Mvc.HtmlHelper helper,
+    public static string HyperLink(this HtmlHelper helper,
         string link,
         string text,
         string onclick)
     {
         return helper.HyperLink(link, text, onclick, null);
     }
-    public static string HyperLink(this System.Web.Mvc.HtmlHelper helper,
+    public static string HyperLink(this HtmlHelper helper,
         string link,
         string text,
         string onclick,
@@ -130,7 +131,7 @@ public static class ViewExtensions
         b.MergeAttributes<string, object>(attr);
         return b.ToString(TagRenderMode.Normal);
     }
-    public static string PageSizesDropDown(this System.Web.Mvc.HtmlHelper helper, string id, string onchange)
+    public static string PageSizesDropDown(this HtmlHelper helper, string id, string onchange)
     {
         var tb = new TagBuilder("select");
         tb.MergeAttribute("id", id);
@@ -149,7 +150,7 @@ public static class ViewExtensions
         tb.InnerHtml = sb.ToString();
         return tb.ToString();
     }
-    public static IEnumerable<SelectListItem> PageSizes(this System.Web.Mvc.HtmlHelper helper)
+    public static IEnumerable<SelectListItem> PageSizes(this HtmlHelper helper)
     {
         var sizes = new int[] { 10, 25, 50, 75, 100, 200 };
         var list = new List<SelectListItem>();
@@ -157,7 +158,7 @@ public static class ViewExtensions
             list.Add(new SelectListItem { Text = size.ToString() });
         return list;
     }
-    public static string HyperlinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
+    public static string HyperlinkIf(this HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
     {
         if (!condition)
             return null;
@@ -169,7 +170,7 @@ public static class ViewExtensions
     //        return null;
     //    return helper.ActionLink(linkText, controllerName, routeValues, htmlAttributes);
     //}
-    public static string SpanIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string text, object htmlAttributes)
+    public static string SpanIf(this HtmlHelper helper, bool condition, string text, object htmlAttributes)
     {
         if (!condition)
             return null;
@@ -179,7 +180,7 @@ public static class ViewExtensions
         tb.MergeAttributes<string, object>(attr);
         return tb.ToString();
     }
-    public static string Span(this System.Web.Mvc.HtmlHelper helper, string text, object htmlAttributes)
+    public static string Span(this HtmlHelper helper, string text, object htmlAttributes)
     {
         var tb = new TagBuilder("span");
         var attr = new RouteValueDictionary(htmlAttributes);
@@ -187,7 +188,7 @@ public static class ViewExtensions
         tb.MergeAttributes<string, object>(attr);
         return tb.ToString();
     }
-    public static bool IsDebug(this System.Web.Mvc.HtmlHelper helper)
+    public static bool IsDebug(this HtmlHelper helper)
     {
         var d = false;
 #if DEBUG
@@ -204,7 +205,7 @@ public static class ViewExtensions
             s = val.Value.AttemptedValue;
         return s;
     }
-    public static string DropDownList2(this System.Web.Mvc.HtmlHelper helper, string name, IEnumerable<SelectListItem> list, bool visible)
+    public static string DropDownList2(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list, bool visible)
     {
         var tb = new TagBuilder("select");
         tb.MergeAttribute("id", name);
@@ -223,14 +224,14 @@ public static class ViewExtensions
             else if (o.Selected)
                 selected = true;
             if (selected)
-               ot.MergeAttribute("selected", "selected");
+                ot.MergeAttribute("selected", "selected");
             ot.SetInnerText(o.Text);
             sb.Append(ot.ToString());
         }
         tb.InnerHtml = sb.ToString();
         return tb.ToString();
     }
-    public static string DropDownList3(this System.Web.Mvc.HtmlHelper helper, string id, string name, IEnumerable<SelectListItem> list, string value)
+    public static string DropDownList3(this HtmlHelper helper, string id, string name, IEnumerable<SelectListItem> list, string value)
     {
         var tb = new TagBuilder("select");
         if (id.HasValue())
@@ -249,7 +250,7 @@ public static class ViewExtensions
         tb.InnerHtml = sb.ToString();
         return tb.ToString();
     }
-    public static string TextBox2(this System.Web.Mvc.HtmlHelper helper, string name, bool visible)
+    public static string TextBox2(this HtmlHelper helper, string name, bool visible)
     {
         var tb = new TagBuilder("input");
         tb.MergeAttribute("type", "text");
@@ -262,7 +263,7 @@ public static class ViewExtensions
         tb.MergeAttribute("value", s ?? viewDataValue);
         return tb.ToString();
     }
-    public static string TextBoxClass(this System.Web.Mvc.HtmlHelper helper, string name, string @class)
+    public static string TextBoxClass(this HtmlHelper helper, string name, string @class)
     {
         var tb = new TagBuilder("input");
         tb.MergeAttribute("type", "text");
@@ -273,5 +274,75 @@ public static class ViewExtensions
         var viewDataValue = Convert.ToString(helper.ViewData.Eval(name));
         tb.MergeAttribute("value", s ?? viewDataValue);
         return tb.ToString();
+    }
+    public static string DatePicker(this HtmlHelper helper, string name)
+    {
+        var tb = new TagBuilder("input");
+        tb.MergeAttribute("type", "text");
+        tb.MergeAttribute("id", name);
+        tb.MergeAttribute("name", name);
+        tb.MergeAttribute("class", "datepicker");
+        var s = helper.TryGetModel(name);
+        var viewDataValue = (DateTime?)helper.ViewData.Eval(name);
+        tb.MergeAttribute("value", viewDataValue.FormatDate2());
+        return tb.ToString();
+    }
+    public static string CheckBoxReadonly(this HtmlHelper helper, bool? ck)
+    {
+        var tb = new TagBuilder("input");
+        tb.MergeAttribute("type", "checkbox");
+        tb.MergeAttribute("disabled", "disabled");
+        if (ck == true)
+            tb.MergeAttribute("checked", "checked");
+        return tb.ToString();
+    }
+    public static string CodeDesc(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list)
+    {
+        var tb = new TagBuilder("span");
+        var viewDataValue = helper.ViewData.Eval(name);
+        var i = (int?)viewDataValue ?? 0;
+        tb.InnerHtml = list.Single(v => v.Value == i.ToString()).Text;
+        return tb.ToString();
+    }
+    public static string Hidden3(this HtmlHelper helper, string id, string name, object value)
+    {
+        var tb = new TagBuilder("input");
+        if (id.HasValue())
+            tb.MergeAttribute("id", id);
+        tb.MergeAttribute("type", "hidden");
+        tb.MergeAttribute("name", name);
+        tb.MergeAttribute("value", value != null ? value.ToString() : "");
+        return tb.ToString();
+    }
+    public static string Hidden3(this HtmlHelper helper, string name, object value)
+    {
+        return helper.Hidden3(null, name, value);
+    }
+    public static string HiddenIf(this HtmlHelper helper, string name, bool? include)
+    {
+        if (include == true)
+        {
+            var tb = new TagBuilder("input");
+            tb.MergeAttribute("type", "hidden");
+            tb.MergeAttribute("id", name);
+            tb.MergeAttribute("name", name);
+            var viewDataValue = helper.ViewData.Eval(name);
+            tb.MergeAttribute("value", viewDataValue.ToString());
+            return tb.ToString();
+        }
+        return "";
+    }
+    public static string HiddenIf(this HtmlHelper helper, string name, object value, bool? include)
+    {
+        if (include == true)
+        {
+            var tb = new TagBuilder("input");
+            tb.MergeAttribute("type", "hidden");
+            tb.MergeAttribute("id", name);
+            tb.MergeAttribute("name", name);
+            tb.MergeAttribute("value", value.ToString());
+            return tb.ToString();
+        }
+        return "";
     }
 }

@@ -23,7 +23,15 @@ namespace CmsCheckin
             LeadTime = int.Parse(f.LeadTime.Text);
             f.Dispose();
 
-            Application.Run(new BaseForm());
+            var b = new BaseForm();
+
+#if DEBUG
+#else
+            b.WindowState = FormWindowState.Maximized;
+            b.FormBorderStyle = FormBorderStyle.None;
+#endif
+
+            Application.Run(b);
         }
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }

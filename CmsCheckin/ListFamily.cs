@@ -77,11 +77,11 @@ namespace CmsCheckin
             var cols = new int[6];
 
             int maxheight;
-            int twidab, widname, widorg, twidlb, widcb, wideb;
+            int twidab, widname, widorg, twidlb;
             int totalwid;
             while (true)
             {
-                twidab = widname = widorg = twidlb = widcb = wideb = maxheight = 0;
+                twidab = widname = widorg = twidlb = maxheight = 0;
                 font = new Font(Verdana, points, FontStyle.Regular,
                     GraphicsUnit.Point, ((byte)(0)));
                 labfont = new Font(Verdana, points,
@@ -104,14 +104,12 @@ namespace CmsCheckin
                     twidlb = Math.Max(twidlb, (int)Math.Ceiling(size.Width));
                     twidlb = Math.Max(twidlb, bsize);
 
-                    widcb = Math.Max(widcb, bsize);
-
                     size = g.MeasureString("|", labfont);
                     maxheight = Math.Max(maxheight, (int)Math.Ceiling(size.Height));
                 }
 
                 totalwid = sep + twidab + sep + widname + sep + widorg
-                                    + sep + twidlb + sep + widcb + sep + wideb + sep;
+                                    + sep + twidlb + sep + bsize + sep + bsize + sep;
                 if (totalwid > 1024)
                 {
                     points -= 1F;

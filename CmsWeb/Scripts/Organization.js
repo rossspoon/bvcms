@@ -84,7 +84,7 @@
             return false;
     });
     $.validator.addMethod("time", function(value, element) {
-        return this.optional(element) || /^\d{1,2}:\d{2}\s(?:AM|PM)/.test(value);
+        return this.optional(element) || /^\d{1,2}:\d{2}\s(?:AM|am|PM|pm)/.test(value);
     }, "time format h:mm AM/PM");
     $.validator.setDefaults({
         highlight: function(input) {
@@ -97,20 +97,20 @@
     // validate signup form on keyup and submit
     $("#settingsForm").validate({
         rules: {
-            SchedTime: { time: true },
-            OnLineCatalogSort: { digits: true },
-            Limit: { digits: true },
-            NumCheckInLabels: { digits: true },
-            NumWorkerCheckInLabels: { digits: true },
-            FirstMeetingDate: { date: true },
-            LastMeetingDate: { date: true },
-            RollSheetVisitorWks: { digits: true },
-            GradeAgeStart: { digits: true },
-            GradeAgeEnd: { digits: true },
-            Fee: { number: true },
-            Deposit: { number: true },
-            ExtraFee: { number: true },
-            ShirtFee: { number: true }
+            "org.SchedTime": { time: true },
+            "org.OnLineCatalogSort": { digits: true },
+            "org.Limit": { digits: true },
+            "org.NumCheckInLabels": { digits: true },
+            "org.NumWorkerCheckInLabels": { digits: true },
+            "org.FirstMeetingDate": { date: true },
+            "org.LastMeetingDate": { date: true },
+            "org.RollSheetVisitorWks": { digits: true },
+            "org.GradeAgeStart": { digits: true },
+            "org.GradeAgeEnd": { digits: true },
+            "org.Fee": { number: true },
+            "org.Deposit": { number: true },
+            "org.ExtraFee": { number: true },
+            "org.ShirtFee": { number: true }
         }
     });
 });

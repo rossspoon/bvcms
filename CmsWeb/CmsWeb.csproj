@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NOEMAIL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -135,9 +135,12 @@
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
+    <Compile Include="Areas\Public\Controllers\OnlineRegController.cs" />
     <Compile Include="Areas\Public\Controllers\RetreatController.cs" />
     <Compile Include="Areas\Public\Controllers\EventController.cs" />
     <Compile Include="Areas\Public\Controllers\OptOutController.cs" />
+    <Compile Include="Areas\Public\Models\OnlineRegPersonModel.cs" />
+    <Compile Include="Areas\Public\Models\OnlineRegModel.cs" />
     <Compile Include="Areas\Public\Models\RetreatModel.cs" />
     <Compile Include="Areas\Public\Models\EventModel.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
@@ -1273,6 +1276,19 @@
     <Content Include="Areas\Manage\Views\Display\LeagueContent.aspx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\AddressDisplay.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\AddressEdit.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Confirm.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Confirm2.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Index.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\List.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\NoLeague.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\OtherDisplay.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\OtherEdit.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Payment.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\PersonDisplay.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\PersonEdit.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Public\Views\RecReg\AddressDisplay.ascx" />
     <Content Include="Areas\Public\Views\RecReg\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\RecReg\OtherDisplay.ascx" />
@@ -2104,6 +2120,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\OnlineReg.js" />
     <Content Include="Scripts\Organization.js" />
     <Content Include="Scripts\OrgSearch.js" />
     <Content Include="Scripts\SearchAdd.js" />

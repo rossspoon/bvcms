@@ -17,7 +17,7 @@
     var np = Model.List[n];
 %>
 <input type="hidden" name="m.List.Index" value="<%=n%>" />
-<input type="hidden" name="m.list[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
+<input type="hidden" name="m.List[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
 <input type="hidden" name="m.List[<%=n %>].homephone" value="<%=np.homephone%>" />
 <input type="hidden" name="m.List[<%=n %>].address" value="<%=np.address%>" />
 <input type="hidden" name="m.List[<%=n %>].address2" value="<%=np.address2%>" />

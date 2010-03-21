@@ -85,9 +85,9 @@ namespace CmsCheckin
             else if(e.KeyChar == '\r')
             {
                 var d = textBox1.Text.GetDigits().Length;
-                if (d != 10 && d != 7)
-                    return;
-                GoNext(sender, e);
+                if (d == 0 || d == 10 || d == 7)
+                    GoNext(sender, e);
+                return;
             }
             e.Handled = true;
         }
