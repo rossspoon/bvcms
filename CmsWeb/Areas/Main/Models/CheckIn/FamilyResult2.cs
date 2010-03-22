@@ -31,6 +31,7 @@ namespace CMSWeb.Models
                 w.WriteStartElement("Attendees");
                 var m = new CheckInModel();
                 var q = m.FamilyMembers(fid, campus, thisday);
+                w.WriteAttributeString("familyid", fid.ToString());
 
                 var count = q.Count();
                 const int INT_PageSize = 10;
@@ -55,6 +56,7 @@ namespace CMSWeb.Models
                     }
                     w.WriteStartElement("attendee");
                     w.WriteAttributeString("id", c.Id.ToString());
+                    w.WriteAttributeString("mv", c.MemberVisitor);
                     w.WriteAttributeString("name", c.DisplayName);
                     w.WriteAttributeString("first", c.First);
                     w.WriteAttributeString("last", c.Last);

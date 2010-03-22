@@ -48,7 +48,7 @@ namespace CmsCheckin
                 return string.Format("?campus={0}&thisday={1}", CampusId, ThisDay);
             }
         }
-
+        public const int Interval = 60000;
         public static Home home;
         public static ListFamilies families;
         public static ListFamily family;

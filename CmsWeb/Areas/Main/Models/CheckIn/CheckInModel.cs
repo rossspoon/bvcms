@@ -48,6 +48,7 @@ namespace CMSWeb.Models
                 select new Attendee
                 {
                     Id = om.PeopleId,
+                    MemberVisitor = "M",
                     Name = om.Person.Name,
                     First = om.Person.PreferredName,
                     Last = om.Person.LastName,
@@ -96,6 +97,7 @@ namespace CMSWeb.Models
                 select new Attendee
                 {
                     Id = a.PeopleId,
+                    MemberVisitor = "V",
                     Name = a.Person.Name,
                     First = a.Person.PreferredName,
                     Last = a.Person.LastName,

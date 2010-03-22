@@ -270,6 +270,20 @@ namespace CmsCheckin
             Program.home.textBox1.Focus();
             Program.home.textBox1.Select(Program.home.textBox1.Text.Length, 0);
         }
+        public static string Age(this string birthday)
+        {
+            DateTime bd;
+            if (!DateTime.TryParse(birthday, out bd))
+                return "?";
+            DateTime td = DateTime.Now;
+            int age = td.Year - bd.Year;
+            if (td.Month < bd.Month || (td.Month == bd.Month && td.Day < bd.Day))
+                age--;
+            if (age < 0)
+                return "?";
+            return age.ToString();
+        }
+
     }
     public class EventArgs<T> : EventArgs
     {

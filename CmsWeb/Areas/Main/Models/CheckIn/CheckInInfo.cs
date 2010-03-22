@@ -21,6 +21,7 @@ namespace CMSWeb.Models
             get { return Util.FormatBirthday(BYear, BMon, BDay); }
         }
         public string Class { get; set; }
+        public string MemberVisitor { get; set; }
         public DateTime? Hour { get; set; }
         public int OrgId { get; set; }
         public string Location { get; set; }

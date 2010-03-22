@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Print = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // Print
@@ -42,7 +44,7 @@
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
             this.Print.Location = new System.Drawing.Point(422, 674);
-            this.Print.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(583, 66);
             this.Print.TabIndex = 11;
@@ -61,13 +63,13 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Choose a Family";
             // 
-            // Families
+            // ListFamilies
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Print);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "Families";
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "ListFamilies";
             this.Size = new System.Drawing.Size(1024, 768);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -78,5 +80,6 @@
 
         private System.Windows.Forms.Button Print;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Timer timer1;
     }
 }

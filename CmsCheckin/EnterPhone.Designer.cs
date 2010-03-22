@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonbs = new System.Windows.Forms.Button();
@@ -43,6 +44,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.bgo = new System.Windows.Forms.Button();
             this.GoBackButton = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -246,8 +248,7 @@
             // 
             // EnterPhone
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.bgo);
             this.Controls.Add(this.GoBackButton);
             this.Controls.Add(this.label2);
@@ -290,5 +291,6 @@
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button bgo;
         private System.Windows.Forms.Button GoBackButton;
+        public System.Windows.Forms.Timer timer1;
     }
 }

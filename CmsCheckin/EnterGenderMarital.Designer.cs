@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttongo = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -58,6 +59,7 @@
             this.addr = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.zip = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -501,5 +503,6 @@
         private System.Windows.Forms.Label addr;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label zip;
+        public System.Windows.Forms.Timer timer1;
     }
 }

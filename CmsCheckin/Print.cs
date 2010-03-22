@@ -110,9 +110,9 @@ namespace CmsCheckin
             PrintRawHelper.SendDocToPrinter(PrinterName(), ms);
             st.Close();
         }
-        public static void Label(AttendLabel c, int n, DateTime time)
+        public static void Label(LabelInfo li, DateTime time)
         {
-            if (!HasPrinter() || n == 0)
+            if (!HasPrinter() || li.n == 0)
                 return;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
@@ -130,11 +130,11 @@ namespace CmsCheckin
             sw.WriteLine("SG");
             sw.WriteLine("ySPM");
             sw.WriteLine("A2");
-            sw.WriteLine("1911A3000450009" + c.first);
-            sw.WriteLine("1911A1000300011" + c.last);
-            sw.WriteLine("1911A1000060008" + " (" + c.cinfo.pid + " " + c.gender + ")" + time.ToString("  M/d/yy"));
+            sw.WriteLine("1911A3000450009" + li.first);
+            sw.WriteLine("1911A1000300011" + li.last);
+            sw.WriteLine("1911A1000060008" + " (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
             sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
-            sw.WriteLine("Q" + n.ToString("0000"));
+            sw.WriteLine("Q" + li.n.ToString("0000"));
             sw.WriteLine("E");
             sw.Flush();
 

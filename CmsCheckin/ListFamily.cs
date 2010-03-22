@@ -19,6 +19,8 @@ namespace CmsCheckin
         public ListFamily()
         {
             InitializeComponent();
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Interval = Program.Interval;
         }
 
         private string printer = ConfigurationSettings.AppSettings["PrinterName"];
@@ -41,6 +43,7 @@ namespace CmsCheckin
             Print.Focus();
             time = DateTime.Now;
 
+            Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
             next = x.Root.Attribute("next").Value.ToInt2();
             prev = x.Root.Attribute("prev").Value.ToInt2();
             pgdn.Visible = next.HasValue;
@@ -167,7 +170,8 @@ namespace CmsCheckin
                     cinfo = new ClassInfo
                     {
                         oid = e.Attribute("orgid").Value.ToInt(),
-                        pid = e.Attribute("id").Value.ToInt()
+                        pid = e.Attribute("id").Value.ToInt(),
+                        mv = e.Attribute("mv").Value,
                     },
                     name = e.Attribute("name").Value,
                     first = e.Attribute("first").Value,
@@ -302,16 +306,28 @@ namespace CmsCheckin
 
                 Row++;
             }
+            timer1.Start();
+        }
+
+        void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            Program.ClearFields();
+            this.GoHome("");
         }
 
         void ab_KeyDown(object sender, KeyEventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             if (e.KeyValue == 27)
                 this.GoHome(string.Empty);
         }
 
         void lb_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
@@ -334,6 +350,8 @@ namespace CmsCheckin
 
         void ab_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             var ab = sender as Button;
             var c = ab.Tag as AttendLabel;
             c.Clicked = true;
@@ -358,6 +376,7 @@ namespace CmsCheckin
 
         void cb_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             var cb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + cb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
@@ -367,6 +386,7 @@ namespace CmsCheckin
 
         void eb_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
@@ -386,12 +406,14 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             PrintLabels();
+            Program.FamilyId = 0;
             this.GoHome(string.Empty);
         }
         private void PrintLabels()
         {
-            var printed = false;
+            var list = new List<AttendLabel>();
             for (var r = 0; r < Row; r++)
             {
                 var eb = this.Controls[this.Controls.IndexOfKey("print" + r.ToString())] as Button;
@@ -400,11 +422,23 @@ namespace CmsCheckin
                 var n = 0;
                 if (int.TryParse(eb.Text, out n) && n > 0)
                 {
-                    CmsCheckin.Print.Label(c, n, time);
-                    printed = true;
+                    c.NumLabels = n;
+                    list.Add(c);
                 }
             }
-            if (printed)
+            var q = from li in list
+                    group li by new { li.cinfo.pid, li.cinfo.mv } into g
+                    select new LabelInfo
+                    {
+                        pid = g.Key.pid,
+                        mv = g.Key.mv,
+                        n = Math.Max(g.Sum(i => i.NumLabels), 5),
+                        first = g.First().first,
+                        last = g.First().last,
+                    };
+            foreach (var li in q)
+                CmsCheckin.Print.Label(li, time);
+            if (q.Sum(li => li.n) > 0)
                 CmsCheckin.Print.BlankLabel();
         }
         private void ClearControls()
@@ -415,12 +449,15 @@ namespace CmsCheckin
                 c.Dispose();
             }
             controls.Clear();
+            Row = 0;
         }
 
 
 
         private void AttendeeKeyPress(object sender, KeyPressEventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             if (e.KeyChar == 27)
                 this.GoHome(string.Empty);
             if (e.KeyChar == 13)
@@ -432,6 +469,8 @@ namespace CmsCheckin
 
         private void button1_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             foreach (var c in sucontrols)
             {
                 c.Enabled = true;
@@ -441,12 +480,14 @@ namespace CmsCheckin
 
         private void pgup_Click(object sender, EventArgs e)
         {
-
+            timer1.Stop();
+            ShowFamily(Program.FamilyId, prev.Value);
         }
 
         private void pgdn_Click(object sender, EventArgs e)
         {
-
+            timer1.Stop();
+            ShowFamily(Program.FamilyId, next.Value);
         }
     }
     public class AttendLabel
@@ -473,5 +514,13 @@ namespace CmsCheckin
         public bool CheckedIn { get; set; }
         public bool Clicked { get; set; }
         public double leadtime { get; set; }
+    }
+    public class LabelInfo
+    {
+        public int pid { get; set; }
+        public string mv { get; set; }
+        public int n { get; set; }
+        public string first { get; set; }
+        public string last { get; set; }
     }
 }

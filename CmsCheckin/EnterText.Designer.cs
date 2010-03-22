@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.bq = new System.Windows.Forms.Button();
             this.bbs = new System.Windows.Forms.Button();
@@ -75,6 +76,8 @@
             this.b_ = new System.Windows.Forms.Button();
             this.bdash = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
+            this.bsharp = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -437,7 +440,7 @@
             this.bspace.Location = new System.Drawing.Point(204, 550);
             this.bspace.Margin = new System.Windows.Forms.Padding(4);
             this.bspace.Name = "bspace";
-            this.bspace.Size = new System.Drawing.Size(423, 85);
+            this.bspace.Size = new System.Drawing.Size(315, 85);
             this.bspace.TabIndex = 52;
             this.bspace.Text = "space";
             this.bspace.UseVisualStyleBackColor = false;
@@ -697,9 +700,24 @@
             this.clear.UseVisualStyleBackColor = false;
             this.clear.Click += new System.EventHandler(this.clear_Click);
             // 
+            // bsharp
+            // 
+            this.bsharp.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.bsharp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bsharp.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bsharp.Location = new System.Drawing.Point(527, 550);
+            this.bsharp.Margin = new System.Windows.Forms.Padding(4);
+            this.bsharp.Name = "bsharp";
+            this.bsharp.Size = new System.Drawing.Size(100, 85);
+            this.bsharp.TabIndex = 69;
+            this.bsharp.Text = "#";
+            this.bsharp.UseVisualStyleBackColor = false;
+            this.bsharp.Click += new System.EventHandler(this.bsharp_Click);
+            // 
             // EnterText
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.bsharp);
             this.Controls.Add(this.clear);
             this.Controls.Add(this.bdash);
             this.Controls.Add(this.b_);
@@ -806,5 +824,7 @@
         private System.Windows.Forms.Button b_;
         private System.Windows.Forms.Button bdash;
         private System.Windows.Forms.Button clear;
+        private System.Windows.Forms.Button bsharp;
+        public System.Windows.Forms.Timer timer1;
     }
 }

@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.GoBackButton = new System.Windows.Forms.Button();
             this.bAddNewFamily = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // GoBackButton
@@ -141,6 +143,7 @@
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
         private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Timer timer1;
 
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonbs = new System.Windows.Forms.Button();
@@ -44,6 +45,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.GoBackButton = new System.Windows.Forms.Button();
             this.bgo = new System.Windows.Forms.Button();
+            this.Age = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -259,10 +262,21 @@
             this.bgo.UseVisualStyleBackColor = false;
             this.bgo.Click += new System.EventHandler(this.buttongo_Click);
             // 
+            // Age
+            // 
+            this.Age.Font = new System.Drawing.Font("Verdana", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Age.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Age.Location = new System.Drawing.Point(726, 194);
+            this.Age.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Age.Name = "Age";
+            this.Age.Size = new System.Drawing.Size(125, 49);
+            this.Age.TabIndex = 58;
+            this.Age.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // EnterDate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.Age);
             this.Controls.Add(this.bgo);
             this.Controls.Add(this.GoBackButton);
             this.Controls.Add(this.label2);
@@ -282,7 +296,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EnterDate";
             this.Size = new System.Drawing.Size(1024, 768);
-            this.Load += new System.EventHandler(this.PhoneNumber_Load);
+            this.Load += new System.EventHandler(this.Date_Load);
             this.VisibleChanged += new System.EventHandler(this.EnterText_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -307,5 +321,7 @@
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button GoBackButton;
         private System.Windows.Forms.Button bgo;
+        private System.Windows.Forms.Label Age;
+        public System.Windows.Forms.Timer timer1;
     }
 }

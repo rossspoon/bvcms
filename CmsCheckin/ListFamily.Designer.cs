@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Print = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // Print
@@ -149,6 +151,7 @@
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
+        public System.Windows.Forms.Timer timer1;
 
     }
 }

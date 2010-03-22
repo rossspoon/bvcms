@@ -15,6 +15,8 @@ namespace CmsCheckin
         public ListFamilies()
         {
             InitializeComponent();
+            timer1.Interval = Program.Interval;
+            timer1.Tick += new EventHandler(timer1_Tick);
         }
         List<Control> controls = new List<Control>();
         public void ShowFamilies(XDocument x)
@@ -47,9 +49,18 @@ namespace CmsCheckin
 
                 row++;
             }
+            timer1.Start();
         }
+        void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            Program.ClearFields();
+            this.GoHome("");
+        }
+
         void ab_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             var ab = sender as Button;
             this.Swap(Program.family);
             Program.family.ShowFamily((int)ab.Tag, 1);
@@ -57,10 +68,13 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             this.GoHome(string.Empty);
         }
         private void FamilyKeyPress(object sender, KeyPressEventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
             if (e.KeyChar == 27)
                 this.GoHome(string.Empty);
         }
@@ -73,6 +87,5 @@ namespace CmsCheckin
             }
             controls.Clear();
         }
-
     }
 }

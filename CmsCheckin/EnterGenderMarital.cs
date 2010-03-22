@@ -15,6 +15,8 @@ namespace CmsCheckin
         public EnterGenderMarital()
         {
             InitializeComponent();
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Interval = Program.Interval;
         }
         public void ShowScreen()
         {
@@ -28,10 +30,21 @@ namespace CmsCheckin
             addr.Text = Program.addr.textBox1.Text;
             zip.Text = Program.zip.textBox1.Text;
             AddAnother.Visible = !Program.editing;
+            if (dob.Text.Age().ToInt() < 18)
+                single.Checked = true;
+            timer1.Start();
+        }
+
+        void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            Program.ClearFields();
+            this.GoHome("");
         }
 
         private void buttongo_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             if (Marital == 0 || Gender == 0)
                 return;
             
@@ -131,6 +144,7 @@ namespace CmsCheckin
         }
         private void GoBack_Click(object sender, EventArgs e)
         {
+            timer1.Stop();
             this.Swap(Program.homephone);
         }
 
@@ -138,6 +152,7 @@ namespace CmsCheckin
         {
             if (Marital == 0 || Gender == 0)
                 return;
+            timer1.Stop();
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, Marital, Gender);
             Program.ClearFields();
             Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text);
