@@ -5,6 +5,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(document).bind("idle.idleTimer", function() {
+                window.location.href = '/Volunteer/' + $('#View').val();
+            });
+            $.idleTimer(<%=ViewData["timeout"] %>);
+        });
+    </script>
+    <%=Html.Hidden("View") %>
 
     <h2>Volunteer Information Received</h2>
     <p>

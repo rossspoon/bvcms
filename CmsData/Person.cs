@@ -57,8 +57,8 @@ namespace CmsData
             DeletedProspect = 120,
             ProspectActive = 130,
             ProspectInactive = 140,
-            MiscNameActive = 150,
-            MiscNameInactive = 160,
+            MiscActive = 150,
+            MiscInactive = 160,
             Unknown = 170
         }
         public enum DiscoveryClassStatusCode
@@ -146,11 +146,11 @@ namespace CmsData
         }
         public string AddrCityStateZip
         {
-            get { return PrimaryAddress + ";" + CityStateZip; }
+            get { return PrimaryAddress + " " + CityStateZip; }
         }
         public string Addr2CityStateZip
         {
-            get { return PrimaryAddress2 + ";" + CityStateZip; }
+            get { return PrimaryAddress2 + " " + CityStateZip; }
         }
         public string SpouseName
         {

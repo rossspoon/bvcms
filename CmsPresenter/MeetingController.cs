@@ -191,7 +191,7 @@ namespace CMSPresenter
                          p.BirthYear,
                          p.BirthMonth,
                          p.BirthDay,
-                         p.EmailAddress,
+                         EmailAddress = p.EmailAddress,
                          p.HomePhone,
                          p.PrimaryCity,
                          p.PrimaryState,

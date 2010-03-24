@@ -185,6 +185,20 @@ namespace CmsData
                     mt.OrgMemMemTags.Add(new OrgMemMemTag { PeopleId = pid, OrgId = oi.OrgId });
                 DbUtil.Db.SubmitChanges();
             }
+            public void RemoveSmallGroups(int pid)
+            {
+                if (oi == null || !smallgroup.HasValue())
+                    return;
+                var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == smallgroup && t.OrgId == oi.OrgId);
+                if (mt == null)
+                    return;
+                var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == pid && t.MemberTagId == mt.Id);
+                if (omt == null)
+                    return;
+                DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(omt);
+                DbUtil.Db.SubmitChanges();
+            }
+
         }
         private static DateTime Sunday(int month, int year)
         {
@@ -197,18 +211,19 @@ namespace CmsData
             if (orgs == null)
                 ReadConfig(this, view);
             foreach (var oi in orgs.Values)
-                oi.CleanAttends(PeopleId);
-            foreach (var vol in VolList.Values)
             {
-                if (vol.oi == null)
-                    continue;
-                if (vol.oi.nodrop == true)
-                {
-                    vol.AddMember(PeopleId);
-                    vol.CreateAttends(PeopleId, year);
-                }
+                oi.CleanAttends(PeopleId);
+                var q = from v in VolList.Values
+                        where v.oi != null && v.oi.OrgId == oi.OrgId
+                        select v;
+                if (q.Count() == 0)
+                    oi.Drop(PeopleId);
                 else
-                    vol.oi.Drop(PeopleId);
+                    foreach (var vol in q)
+                    {
+                        vol.AddMember(PeopleId);
+                        vol.CreateAttends(PeopleId, year);
+                    }
             }
         }
         public void ReplaceInterestCodes(IEnumerable<string> newcodes, string view)
@@ -219,14 +234,22 @@ namespace CmsData
             if (newcodes == null)
                 return;
 
-            var dict = (from v in DbUtil.Db.VolInterestCodes where orgs.Keys.Contains(v.Org) select v)
-                .ToDictionary(v => v.Org + (v.Code ?? ""));
+            var q = from v in DbUtil.Db.VolInterestCodes
+                    where orgs.Keys.Contains(v.Org)
+                    select v;
+            var list = q.ToList();
+            var q2 = from v in list
+                     where v.Description.Replace(' ', '_').StartsWith(v.Org)
+                     select v;
+            var dict = q2.ToDictionary(v => v.Org + (v.Code ?? ""));
             foreach (var i in newcodes)
             {
                 if (!dict.ContainsKey(i))
                 {
                     var desc = i.Replace('_', ' ');
-                    var org = orgs.Keys.Where(k => i.StartsWith(k)).Single();
+                    var org = orgs.Keys.Where(k => i.StartsWith(k)).SingleOrDefault();
+                    if (org == null)
+                        org = orgs.First().Key;
                     var vic = new VolInterestCode
                     {
                         Description = desc,
@@ -278,7 +301,10 @@ namespace CmsData
                            select v;
                 var dlist = dels.ToList();
                 foreach (var d in dlist)
+                {
+                    d.Value.RemoveSmallGroups(PeopleId);
                     _vollist.Remove(d.Key);
+                }
             }
             else
                 _vollist = new Dictionary<string, VolInfo>();
@@ -362,13 +388,6 @@ namespace CmsData
                 p.year = doc.Root.Attribute("year").Value.ToInt();
             else
                 p.year = Util.Now.Year;
-            //p.times = doc.Root.Descendants("times").Descendants("time").ToDictionary(
-            //    t => t.Attribute("name").Value,
-            //    t => new DayTime
-            //    {
-            //        Day = t.Attribute("day").Value.ToInt(),
-            //        Time = DateTime.Parse(t.Attribute("hour").Value)
-            //    });
             p.orgs = doc.Root.Descendants("org").ToDictionary(
                 o => o.Attribute("name").Value,
                 o => new OrgInfo

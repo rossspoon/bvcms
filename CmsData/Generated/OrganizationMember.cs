@@ -49,6 +49,8 @@ namespace CmsData
 		
 		private string _Request;
 		
+		private string _ShirtSize;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -113,6 +115,9 @@ namespace CmsData
 		
 		partial void OnRequestChanging(string value);
 		partial void OnRequestChanged();
+		
+		partial void OnShirtSizeChanging(string value);
+		partial void OnShirtSizeChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -487,6 +492,28 @@ namespace CmsData
 					this._Request = value;
 					this.SendPropertyChanged("Request");
 					this.OnRequestChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_ShirtSize", DbType="varchar(20)")]
+		public string ShirtSize
+		{
+			get { return this._ShirtSize; }
+
+			set
+			{
+				if (this._ShirtSize != value)
+				{
+				
+                    this.OnShirtSizeChanging(value);
+					this.SendPropertyChanging();
+					this._ShirtSize = value;
+					this.SendPropertyChanged("ShirtSize");
+					this.OnShirtSizeChanged();
 				}
 
 			}

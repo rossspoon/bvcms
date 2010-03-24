@@ -103,13 +103,13 @@
             </tr>
             <tr>
                 <td valign="top">
-                    <asp:ListView ID="BaptismsByGenderView" runat="server" 
-                        DataSourceID="ODSBaptismsByGender" onitemcommand="ItemCommand">
+                    <asp:ListView ID="BaptismsByAgeView" runat="server" 
+                        DataSourceID="ODSBaptismsByAge" onitemcommand="ItemCommand">
                         <LayoutTemplate>
                             <table id="itemPlaceholderContainer" runat="server" border="0" style="">
                                 <tr id="Tr9" runat="server" style="">
                                     <th class="HeaderLine" id="Th15" runat="server" colspan="2">
-                                        Baptisms by Gender
+                                        Baptisms by Age
                                     </th>
                                 </tr>
                                 <tr id="itemPlaceholder" runat="server">
@@ -273,7 +273,7 @@
             <asp:ControlParameter ControlID="ToDate" Name="dt2" PropertyName="Text" Type="DateTime" />
         </SelectParameters>
     </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="ODSBaptismsByGender" runat="server" SelectMethod="BaptismsByGender"
+    <asp:ObjectDataSource ID="ODSBaptismsByAge" runat="server" SelectMethod="BaptismsByAge"
         TypeName="CMSPresenter.DecisionSummaryController">
         <SelectParameters>
             <asp:ControlParameter ControlID="FromDate" Name="dt1" PropertyName="Text" Type="DateTime" />

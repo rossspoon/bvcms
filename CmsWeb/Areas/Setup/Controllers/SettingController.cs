@@ -88,8 +88,6 @@ namespace CMSWeb.Areas.Setup.Controllers
                        select s;
 
             DbUtil.Db.Settings.DeleteAllOnSubmit(dels);
-
-            
             DbUtil.Db.SubmitChanges();            
 
             return RedirectToAction("Index");
@@ -121,12 +119,6 @@ namespace CMSWeb.Areas.Setup.Controllers
             }
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("BatchReportSpecs");
-        }
-        public ActionResult OrphanedImages()
-        {
-            var m = from i in DbUtil.Db.ViewOrphanedImages
-                    select i;
-            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult DeleteImage(string id)

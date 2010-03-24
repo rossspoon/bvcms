@@ -42,7 +42,7 @@ namespace CMSWeb
             Count.Text = q.Count().ToString();
             if (!Page.IsPostBack)
             {
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.NoCache();
                 Response.Cache.SetAllowResponseInBrowserHistory(false);
 
                 var body = this.QueryString<string>("body");

@@ -116,7 +116,7 @@ namespace CMSWeb.Areas.Public.Controllers
         }
         private static void FillPriorInfo(OnlineRegPersonModel p)
         {
-#if DEBUG2
+#if DEBUG
             p.shirtsize = "YT-L";
             p.request = "tommy";
             p.emcontact = "test";
@@ -173,7 +173,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     if (p.org.AskChurch == true)
                     {
                         p.otherchurch = rr.ActiveInAnotherChurch ?? false;
-                        p.member = rr.Member ?? false;
+                        p.memberus = rr.Member ?? false;
                     }
                 }
             }
@@ -284,7 +284,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Address = ti.Address,
                 Amount = ti.AmountDue,
                 City = ti.City,
-                Email = Util.FirstAddress(ti.Email).Address,
+                Email = ti.Email,
                 Phone = ti.Phone.FmtFone(),
                 State = ti.State,
                 PostalCode = ti.Zip,

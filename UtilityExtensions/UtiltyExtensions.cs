@@ -894,6 +894,19 @@ namespace UtilityExtensions
             head.Controls.Add(new LiteralControl("<link type='text/css' href='"
                 + url + "' rel=\"stylesheet\"></script>"));
         }
+        public static void NoCache(this HttpResponse Response)
+        {
+            Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetValidUntilExpires(false);
+        }
+        public static void NoCache(this HttpResponseBase Response)
+        {
+            Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetValidUntilExpires(false);
+        }
+
         public static string AppRoot
         {
             get

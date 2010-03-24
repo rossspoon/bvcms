@@ -57,7 +57,7 @@ namespace CMSPresenter
                         LastName = p.LastName,
                         FirstName = p.PreferredName,
                         Street = p.PrimaryAddress,
-                        Birthday = UtilityExtensions.Util.FormatBirthday(p.BirthYear.Value, p.BirthMonth.Value, p.BirthDay.Value),
+                        Birthday = Util.FormatBirthday(p.BirthYear.Value, p.BirthMonth.Value, p.BirthDay.Value),
                         EmailHome = p.EmailAddress,
                         Phone = p.HomePhone.FmtFone(),
                         City = p.PrimaryCity,

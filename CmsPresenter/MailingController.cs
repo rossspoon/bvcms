@@ -29,7 +29,7 @@ namespace CMSPresenter
 
             var q2 = from p in q
                      where p.DeceasedDate == null
-                     where (p.BadAddressFlag == null || p.BadAddressFlag == false)
+                     where p.PrimaryBadAddrFlag != 1
                      where p.DoNotMailFlag == false
                      select new MailingInfo
                      {
@@ -68,7 +68,7 @@ namespace CMSPresenter
             var q2 = from h in q
                      let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
                      where h.DeceasedDate == null
-                     where (h.BadAddressFlag == null || h.BadAddressFlag == false)
+                     where h.PrimaryBadAddrFlag != 1
                      where h.DoNotMailFlag == false
                      select new MailingInfo
                      {
@@ -109,7 +109,7 @@ namespace CMSPresenter
             var q = DbUtil.Db.People.Where(Qb.Predicate());
             var q2 = from p in q
                      where p.DeceasedDate == null
-                     where (p.BadAddressFlag == null || p.BadAddressFlag == false)
+                     where p.PrimaryBadAddrFlag != 1
                      where p.DoNotMailFlag == false
                      select new MailingInfo
                      {
@@ -291,7 +291,7 @@ namespace CMSPresenter
             return (from h in q
                     let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == h.SpouseId)
                     where h.DeceasedDate == null
-                    where (h.BadAddressFlag == null || h.BadAddressFlag == false)
+                    where h.PrimaryBadAddrFlag != 1
                     where h.DoNotMailFlag == false
                     select new
                     {
@@ -319,7 +319,7 @@ namespace CMSPresenter
             var q = DbUtil.Db.People.Where(Qb.Predicate());
             var q2 = from p in q
                      where p.DeceasedDate == null
-                     where (p.BadAddressFlag == null || p.BadAddressFlag == false)
+                     where p.PrimaryBadAddrFlag != 1
                      where p.DoNotMailFlag == false
                      let hohemail = p.Family.HeadOfHousehold.EmailAddress
                      select new

@@ -1499,12 +1499,6 @@ namespace CmsData
 
 	    }
 
-	    public Table< View.OrphanedImage> ViewOrphanedImages
-	    {
-		    get { return this.GetTable< View.OrphanedImage>(); }
-
-	    }
-
 	    public Table< View.PodcastSummary> ViewPodcastSummaries
 	    {
 		    get { return this.GetTable< View.PodcastSummary>(); }
@@ -1786,6 +1780,18 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.BaptismAgeRange", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string BaptismAgeRange(
+            [Parameter(Name = "age", DbType="int")] int? age
+            )
+		{
+			return ((String)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                age
                 ).ReturnValue));
 		}
 

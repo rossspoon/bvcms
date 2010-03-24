@@ -26,11 +26,11 @@ namespace CmsData
         }
         public string AddrCityStateZip
         {
-            get { return AddressLineOne + ";" + CityStateZip; }
+            get { return AddressLineOne + " " + CityStateZip; }
         }
         public string Addr2CityStateZip
         {
-            get { return AddressLineTwo + ";" + CityStateZip; }
+            get { return AddressLineTwo + " " + CityStateZip; }
         }
 
 

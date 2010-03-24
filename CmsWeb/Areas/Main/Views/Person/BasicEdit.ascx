@@ -75,10 +75,13 @@
             <th>Birthday:</th>
             <td><%=Html.TextBox("Birthday", Model.Birthday, new { @class = "datepicker" }) %></td>
         </tr>
+<% if(Page.User.IsInRole("Membership"))
+  { %>
         <tr>
             <th>Deceased:</th>
             <td><%=Html.TextBox("DeceasedDate", Model.DeceasedDate.FormatDate(), new { @class = "datepicker" })%></td>
         </tr>
+<% } %>
 <tr><td></td></tr>
         <tr><td>Do Not Call</td><td><%=Html.CheckBox("DoNotCallFlag") %> </td></tr>
         <tr><td>Do Not Visit</td><td><%=Html.CheckBox("DoNotVisitFlag") %> </td></tr>

@@ -22,7 +22,7 @@ namespace CMSWeb.Areas.Main.Controllers
         private const string STR_OrgSearch = "OrgSearch2";
         public ActionResult Index(int? div, int? progid)
         {
-            NoCache();
+            Response.NoCache();
             var m = new OrgSearchModel();
 
             if (div.HasValue && progid.HasValue)
@@ -80,16 +80,6 @@ namespace CMSWeb.Areas.Main.Controllers
                 Sched = m.ScheduleId,
                 Status = m.StatusId,
             };
-        }
-        private void NoCache()
-        {
-            var seconds = 10;
-            Response.Cache.SetExpires(DateTime.Now.AddSeconds(seconds));
-            Response.Cache.SetMaxAge(new TimeSpan(0, 0, seconds));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
-            Response.Cache.SetValidUntilExpires(true);
-            Response.Cache.SetSlidingExpiration(true);
-            Response.Cache.SetETagFromFileDependencies();
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Edit(string id, string value)

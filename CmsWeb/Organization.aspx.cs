@@ -44,6 +44,7 @@ namespace CMSWeb
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.NoCache();
             ((CMSWeb.Site)Page.Master).ScriptManager.EnablePageMethods = true;
             organization = DbUtil.Db.Organizations.Single(o => o.OrganizationId == this.QueryString<int>("id"));
 

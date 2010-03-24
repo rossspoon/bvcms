@@ -108,7 +108,8 @@ namespace CmsData
             var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
             if (list == null)
             {
-                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX);
+                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX,
+                    StringComparer.OrdinalIgnoreCase);
                 HttpContext.Current.Cache[Util.Host + "Settings"] = list;
             }
             if (list.ContainsKey(name))

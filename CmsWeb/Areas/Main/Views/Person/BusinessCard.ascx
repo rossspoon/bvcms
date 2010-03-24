@@ -29,7 +29,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2"><a href="mailto:<%=Model.basic.EmailAddress %>"><%=Model.basic.EmailAddress%></a></td>
+        <td colspan="2"><a href="mailto:<%=Model.basic.EmailAddress %>"><%=Util.FirstAddress(Model.basic.EmailAddress).Address%></a></td>
     </tr>
     <tr>
         <td colspan="2"><%=Model.basic.HomePhone.FmtFone("h")%></a></td>

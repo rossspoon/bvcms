@@ -31,6 +31,7 @@ namespace CMSPresenter
         public string Name { get; set; }
         public DateTime Date { get; set; }
     }
+
     [DataObject]
     public class DecisionSummaryController
     {
@@ -81,16 +82,16 @@ namespace CMSPresenter
             return q.ToList().Union(Total(q.Sum(t => t.Count))).Union(q2);
         }
         [DataObjectMethod(DataObjectMethodType.Select, true)]
-        public IEnumerable<TypeCountInfo> BaptismsByGender(DateTime? dt1, DateTime? dt2)
+        public IEnumerable<TypeCountInfo> BaptismsByAge(DateTime? dt1, DateTime? dt2)
         {
             var q = from p in DbUtil.Db.People
+                    let agerange = DbUtil.Db.BaptismAgeRange(p.Age ?? 0)
                     where p.BaptismDate >= dt1 && p.BaptismDate < (dt2 ?? dt1).Value.AddDays(1)
-                    group p by p.GenderId + "," + p.Gender.Code into g
+                    group p by agerange into g
                     orderby g.Key
                     select new TypeCountInfo
                     {
-                        Id = g.Key,
-                        Desc = g.First().Gender.Description,
+                        Desc = g.Key,
                         Count = g.Count(),
                     };
             return q.ToList().Union(Total(q.Sum(t => t.Count)));

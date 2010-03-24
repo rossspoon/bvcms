@@ -7,15 +7,21 @@
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="/content/js/jquery.treeview.min.js"></script>
+    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-        $("ul.treeview").treeview({
+        $(function() {
+            $(document).bind("idle.idleTimer", function() {
+                window.location.href = '/Volunteer/' + $('#View').val();
+            });
+            $.idleTimer(<%=ViewData["timeout"] %>);
+            $("ul.treeview").treeview({
                 control: "#treecontrol",
                 animated: "fast",
                 collapsed: true
             });
         });
     </script>
+    <%=Html.Hidden("View") %>
     <%=Model.FormInitialize() %>
     <h4><%=Model.person.Name %></h4>
     <% using (Html.BeginForm()) { %>

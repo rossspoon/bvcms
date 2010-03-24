@@ -24,7 +24,7 @@ namespace CMSWeb.StaffOnly
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             DecisionsView.DataBind();
-            BaptismsByGenderView.DataBind();
+            BaptismsByAgeView.DataBind();
             BaptismsByTypeView.DataBind();
             NewMemberView.DataBind();
             DroppedMemberView.DataBind();

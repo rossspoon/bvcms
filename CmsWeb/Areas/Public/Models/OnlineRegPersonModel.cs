@@ -214,7 +214,7 @@ namespace CMSWeb.Models
         public string medical { get; set; }
         public string mname { get; set; }
         public string fname { get; set; }
-        public bool member { get; set; }
+        public bool memberus { get; set; }
         public bool otherchurch { get; set; }
         public bool? coaching { get; set; }
         public bool? tylenol { get; set; }
@@ -408,7 +408,7 @@ namespace CMSWeb.Models
             if (org.AskChurch == true)
             {
                 reg.ActiveInAnotherChurch = otherchurch;
-                reg.Member = member;
+                reg.Member = memberus;
             }
             if (org.AskAllergies == true)
             {

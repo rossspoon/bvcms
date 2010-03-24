@@ -90,7 +90,7 @@ Org Members: <asp:HyperLink ID="AddMember" runat="server" CssClass="thickbox3" T
                             <%# Eval("BirthDate") %>
                         </td>
                         <td>
-                            <asp:HyperLink ID="AddressLink" runat="server" Target="_blank" NavigateUrl='<%# "http://www.google.com/maps?q=" + Eval("Address") + ",+" + Eval("CityStateZip") %>'
+                            <asp:HyperLink ID="AddressLink" runat="server" Target="_blank" NavigateUrl='<%# "http://www.bing.com/maps?q=" + Eval("Address") + ",+" + Eval("CityStateZip") %>'
                                 Text='<%# Eval("Address") %>'></asp:HyperLink>
                             <br />
                             <%# Eval("CityStateZip") %>

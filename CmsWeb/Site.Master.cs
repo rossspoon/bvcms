@@ -33,11 +33,7 @@ namespace CMSWeb
                 urgentNotice.Text = (string)Application["getoff"];
 
             if (NoCache)
-            {
-                Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.Cache.SetValidUntilExpires(false);
-            }
+                Response.NoCache();
 
             FooterEntity.ToolTip = HttpContext.Current.Request.UserHostAddress.ToString();
             if (Util.SessionStarting)

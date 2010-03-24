@@ -2073,11 +2073,16 @@
     <Content Include="Content\images\tr.gif" />
     <Content Include="Content\images\tr.png" />
     <Content Include="Content\images\wait.gif" />
+    <Content Include="Content\jquery-ui-1.8.custom.css" />
     <Content Include="Content\jquery.cluetip.css" />
     <Content Include="Content\js\additional-methods.js" />
+    <Content Include="Content\js\jquery-1.4.2.min.js" />
+    <Content Include="Content\js\jquery-idleTimeout.js" />
+    <Content Include="Content\js\jquery-ui-1.8.custom.min.js" />
     <Content Include="Content\js\jquery.cluetip.min.js" />
     <Content Include="Content\js\jquery.hoverIntent.js" />
     <Content Include="Content\js\jquery.validate.min.js" />
+    <Content Include="Content\js\jquery.idle-timer.js" />
     <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />
     <Content Include="Content\fg.menu.css" />

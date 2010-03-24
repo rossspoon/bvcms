@@ -23,6 +23,9 @@ namespace CMSWeb.Areas.Public.Controllers
         }
         private void SetHeader(string view)
         {
+#if DEBUG
+            ViewData["timeout"] = 600000;
+#endif
             ViewData["head"] = HeaderHtml("Volunteer-" + view,
                             DbUtil.Settings("VolHeader", "change VolHeader setting"),
                             DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
@@ -33,6 +36,13 @@ namespace CMSWeb.Areas.Public.Controllers
             if (!m.formcontent.HasValue())
                 return Content("view not found");
             SetHeader(id);
+#if DEBUG
+            m.first = "David";
+            m.last = "Carroll";
+            m.dob = "5/30/52";
+            m.phone = "4890611";
+            m.email = "david@davidcarroll.name";
+#endif
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -96,7 +106,7 @@ namespace CMSWeb.Areas.Public.Controllers
                         body = "<p>NO EMAIL</p>\n" + body;
                     }
                     Util.Email(smtp, email, m.person.Name, em,
-                         id, body);
+                         c.Title, body);
                 }
             }
             return RedirectToAction("Confirm", new { id = id });
@@ -105,7 +115,9 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             ViewData["url"] = Session["continuelink"];
             SetHeader(id);
-            return View();
+            //Response.AppendHeader("Refresh", "30; URL=/Volunteer/" + id);
+            var m = new Models.VolunteerModel { View = id };
+            return View(m);
         }
     }
 }

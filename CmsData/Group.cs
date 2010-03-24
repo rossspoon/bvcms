@@ -285,16 +285,10 @@ namespace CmsData
 
             foreach (var mu in GetUsersInRole(GroupType.Admin))
             {
-                var to = new MailAddress(mu.EmailAddress, mu.Name);
-                var msg = new MailMessage(from, to);
-                msg.ReplyTo = new MailAddress(u.EmailAddress);
-                msg.Subject = subject;
-                msg.Body = body;
-                msg.IsBodyHtml = true;
                 if (n % 20 == 0)
                     smtp = new SmtpClient();
                 n++;
-                smtp.Send(msg);
+                Util.SendMsg(smtp, from, subject, body, mu.Name, mu.EmailAddress, null);
             }
         }
     }

@@ -5,7 +5,19 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-
+    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(document).bind("idle.idleTimer", function() {
+                window.location.href = '/Volunteer/' + $('#View').val();
+            });
+            $(document).bind("keydown", function() {
+                $(document).unbind("keydown");
+            $.idleTimer('<%=ViewData["timeout"] %>');
+            });
+        });
+    </script>
+    <%=Html.Hidden("View") %>
     <%= Html.ValidationMessage("find") %>
     <% using (Html.BeginForm()) { %>
         <div>

@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <th>Email:</th>
-            <td><%=Model.EmailAddress %></td>
+            <td><%=Model.EmailAddress.Replace(",","<br/>") %></td>
         </tr>
         <tr>
             <th>School:</th>

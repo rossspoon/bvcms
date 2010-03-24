@@ -17,7 +17,7 @@ namespace CMSWeb.Areas.Main.Controllers
     {
         public ActionResult Match(string id, int campus, int thisday, int? page)
         {
-            NoCache();
+            Response.NoCache();
 
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);
@@ -41,7 +41,7 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         public ActionResult Family(int id, int campus, int thisday, int? page)
         {
-            NoCache();
+            Response.NoCache();
             if (page.HasValue)
                 return new FamilyResult2(id, campus, thisday, page.Value);
             else
@@ -55,7 +55,7 @@ namespace CMSWeb.Areas.Main.Controllers
             var org = DbUtil.Db.LoadOrganizationById(id);
             if (org == null)
                 return new EmptyResult();
-            NoCache();
+            Response.NoCache();
             return new ClassResult(id, thisday);
         }
         public ActionResult Classes(int id, int campus, int thisday, int page)
@@ -63,12 +63,12 @@ namespace CMSWeb.Areas.Main.Controllers
             var p = DbUtil.Db.LoadPersonById(id);
             if (p == null)
                 return new EmptyResult();
-            NoCache();
+            Response.NoCache();
             return new ClassesResult(p, thisday, campus, page);
         }
         public ActionResult NameSearch(string id, int? page)
         {
-            NoCache();
+            Response.NoCache();
             if (page.HasValue)
                 return new NameSearchResult2(id, page.Value);
 
@@ -117,7 +117,7 @@ namespace CMSWeb.Areas.Main.Controllers
             if (id > 0)
             {
                 f = DbUtil.Db.Families.Single(fam => fam.FamilyId == id);
-                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
+                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip.Zip5());
                 f.HomePhone = home.GetDigits();
                 f.AddressLineOne = addr;
                 f.CityName = z != null ? z.City : null;
@@ -175,7 +175,7 @@ namespace CMSWeb.Areas.Main.Controllers
             int campusid)
         {
             var p = DbUtil.Db.LoadPersonById(id);
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip.Zip5());
             p.Family.HomePhone = home.GetDigits();
             p.Family.AddressLineOne = addr;
             p.Family.CityName = z != null ? z.City : null;
@@ -192,16 +192,6 @@ namespace CMSWeb.Areas.Main.Controllers
             p.CampusId = campusid;
             DbUtil.Db.SubmitChanges();
             return Content(p.FamilyId.ToString());
-        }
-        private void NoCache()
-        {
-            var seconds = 10;
-            Response.Cache.SetExpires(DateTime.Now.AddSeconds(seconds));
-            Response.Cache.SetMaxAge(new TimeSpan(0, 0, seconds));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
-            Response.Cache.SetValidUntilExpires(true);
-            Response.Cache.SetSlidingExpiration(true);
-            Response.Cache.SetETagFromFileDependencies();
         }
         public ActionResult Campuses()
         {

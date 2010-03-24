@@ -219,12 +219,21 @@ namespace UtilityExtensions
             else if (typBindingSource == typeof(double))
                 value = double.Parse(textvalue);
             else if (typBindingSource == typeof(bool))
-                value = bool.Parse(textvalue);
-            else if (typBindingSource == typeof(bool?))
             {
                 bool b;
                 if (bool.TryParse(textvalue, out b))
                     value = b;
+                else
+                    value = int.Parse(textvalue) != 0;
+            }
+            else if (typBindingSource == typeof(bool?))
+            {
+                int i;
+                bool b;
+                if (bool.TryParse(textvalue, out b))
+                    value = b;
+                else if (int.TryParse(textvalue, out i))
+                    value = i != 0;
             }
             else if (typBindingSource == typeof(DateTime))
             {

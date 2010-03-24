@@ -28,11 +28,11 @@ namespace CMSWeb.Models.PersonPage
         }
         public string AddrCityStateZip()
         {
-            return Address1 + ";" + CityStateZip();
+            return Address1 + " " + CityStateZip();
         }
         public string Addr2CityStateZip()
         {
-            return Address2 + ";" + CityStateZip();
+            return Address2 + " " + CityStateZip(); 
         }
         public bool? BadAddress { get; set; }
         public int? ResCodeId { get; set; }
