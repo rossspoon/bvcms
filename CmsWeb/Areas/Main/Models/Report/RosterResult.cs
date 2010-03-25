@@ -90,7 +90,10 @@ namespace CMSWeb.Areas.Main.Models.Report
                         doc.Add(new Phrase("no data"));
                 }
             if (!pagesetstarted)
+            {
+                w.PageEvent = null;
                 doc.Add(new Phrase("no data"));
+            }
             pageEvents.EndPageSet();
             doc.Close();
             Response.End();
@@ -234,17 +237,20 @@ namespace CMSWeb.Areas.Main.Models.Report
                 //---Header left
                 text = HeadText;
                 const float HeadFontSize = 11f;
-                len = font.GetWidthPoint(text, HeadFontSize);
-                dc.BeginText();
-                dc.SetFontAndSize(font, HeadFontSize);
-                dc.SetTextMatrix(30, document.PageSize.Height - 30);
-                dc.ShowText(text);
-                dc.EndText();
-                dc.BeginText();
-                dc.SetFontAndSize(font, HeadFontSize);
-                dc.SetTextMatrix(30, document.PageSize.Height - 30 - (HeadFontSize * 1.5f));
-                dc.ShowText(HeadText2);
-                dc.EndText();
+                if (text != null)
+                {
+                    len = font.GetWidthPoint(text, HeadFontSize);
+                    dc.BeginText();
+                    dc.SetFontAndSize(font, HeadFontSize);
+                    dc.SetTextMatrix(30, document.PageSize.Height - 30);
+                    dc.ShowText(text);
+                    dc.EndText();
+                    dc.BeginText();
+                    dc.SetFontAndSize(font, HeadFontSize);
+                    dc.SetTextMatrix(30, document.PageSize.Height - 30 - (HeadFontSize * 1.5f));
+                    dc.ShowText(HeadText2);
+                    dc.EndText();
+                }
 
                 //---Column 1
                 text = "Page " + (writer.PageNumber + 1) + " of ";
