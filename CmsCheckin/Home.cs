@@ -110,7 +110,7 @@ namespace CmsCheckin
         {
             if (textBox1.Text == "411")
                 this.Swap(Program.namesearch);
-            else if (textBox1.Text.StartsWith("0"))
+            else if (textBox1.Text.StartsWith("0") && textBox1.Text.Length > 1)
                 Print.MemberList(textBox1.Text.Substring(1));
             else
             {

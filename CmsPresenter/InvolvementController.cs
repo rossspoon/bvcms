@@ -179,37 +179,34 @@ namespace CMSPresenter
             var qB = Db.LoadQueryById(queryid);
             var q = Db.People.Where(qB.Predicate());
             var q2 = from p in q
-                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let recreg = p.RecRegs.FirstOrDefault()
                      select new
                      {
-                         PeopleId = p.PeopleId,
-                         Title = p.TitleCode,
                          FirstName = p.PreferredName,
                          LastName = p.LastName,
-                         Address = p.PrimaryAddress,
-                         Address2 = p.PrimaryAddress2,
-                         City = p.PrimaryCity,
-                         State = p.PrimaryState,
-                         Zip = p.PrimaryZip.FmtZip(),
+                         Gender = p.Gender,
+                         Grade = om.Grade.ToString(),
+                         ShirtSize = om.ShirtSize,
+                         Request = om.Request,
+                         Amount = om.Amount ?? 0,
+                         Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray()),
                          Email = p.EmailAddress,
-                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
-                         JoinDate = p.JoinDate.FormatDate(),
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),
                          WorkPhone = p.WorkPhone.FmtFone(),
-                         MemberStatus = p.MemberStatus.Description,
                          Age = p.Age.ToString(),
+                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                         JoinDate = p.JoinDate.FormatDate(),
+                         MemberStatus = p.MemberStatus.Description,
                          School = p.SchoolOther,
-                         LastAttend = bfm.LastAttended.ToString(),
-                         AttendPct = bfm.AttendPct.ToString(),
-                         AttendStr = bfm.AttendStr,
-                         MemberType = bfm.MemberType.Description,
-                         MemberInfo = bfm.UserData,
-                         ShirtSize = recreg == null ? "na" : recreg.ShirtSize,
-                         Request = bfm.Request,
-                         Amount = bfm.Amount ?? 0,
-                         Groups = string.Join(",", bfm.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray())
+                         LastAttend = om.LastAttended.ToString(),
+                         AttendPct = om.AttendPct.ToString(),
+                         AttendStr = om.AttendStr,
+                         MemberType = om.MemberType.Description,
+                         MemberInfo = om.UserData,
+                         Medical = recreg.MedicalDescription,
+                         PeopleId = p.PeopleId,
                      };
             return q2.Take(maximumRows);
         }

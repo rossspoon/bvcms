@@ -21,14 +21,34 @@
         <th>Pending:</th>
         <td><input type="checkbox" disabled="disabled" <%=Model.Pending == true ? "checked='checked'" : "" %> /></td>
     </tr>
+<% if (Model.Organization.AskRequest == true)
+   { %>    
     <tr>
         <th>Request:</th>
         <td><%=Model.Request%></td>
     </tr>
+<% }
+   if(Model.Organization.AskGrade == true) 
+   { %>    
+    <tr>
+        <th>Grade:</th>
+        <td><%=Model.Grade %></td>
+    </tr>
+<% }    
+   if (Model.Organization.Fee > 0 || Model.Organization.ShirtFee > 0)
+   { %>    
     <tr>
         <th>Amount:</th>
-        <td><%=Model.Amount.HasValue ? Model.Amount.Value.ToString("C") : "" %></td>
+        <td><%=Model.Amount.HasValue ? Model.Amount.Value.ToString("C") : ""%></td>
     </tr>
+<% }
+   if(Model.Organization.AskShirtSize == true) 
+   { %>    
+    <tr>
+        <th>ShirtSize:</th>
+        <td><%=Model.ShirtSize %></td>
+    </tr>
+<% } %>    
     <tr>
         <th>Extra Member Info:</th>
         <td><%=Util.SafeFormat(Model.UserData) %></td>

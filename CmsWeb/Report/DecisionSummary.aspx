@@ -119,7 +119,7 @@
                         <ItemTemplate>
                             <tr>
                                 <td align="left" class='<%# Eval("CssClass") %>'>
-                                    <asp:LinkButton ID="DetailButton" CommandName="ForBaptismGender" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
+                                    <asp:LinkButton ID="DetailButton" CommandName="ForBaptismAge" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
                                 <td align="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />

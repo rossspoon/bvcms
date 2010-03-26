@@ -373,6 +373,7 @@ namespace CMSWeb.Models
                 person.RecRegs.Add(reg);
             }
             reg.ShirtSize = shirtsize;
+            om.ShirtSize = shirtsize;
             reg.ActiveInAnotherChurch = otherchurch;
             reg.MedAllergy = medical.HasValue();
             reg.Member = member;

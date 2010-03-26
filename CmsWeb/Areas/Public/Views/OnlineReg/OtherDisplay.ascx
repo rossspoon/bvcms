@@ -18,6 +18,15 @@
         </td>
     </tr>
 <% }
+   if (Model.org.AskGrade == true)
+   { %>
+    <tr>
+        <td><label for="request">Grade</label></td>
+        <td><%=Model.grade %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].grade", Model.grade)%>
+        </td>
+    </tr>
+<% }
    if (Model.org.AskEmContact == true)
    { %>
     <tr>
@@ -78,34 +87,15 @@
     <tr>
         <td><label for="medical">May we give your child</label></td>
         <td>
-            <table>
-            <tr>
-                <td>Tylenol?:</td>
-                <td><%=Model.tylenol == true ? "Yes" : "No" %>
-                <%=Html.Hidden3("m.list[" + Model.index + "].tylenol", Model.tylenol) %>
-                </td>
-            </tr>
-            <tr>
-                <td>Advil?:</td>
-                <td><%=Model.advil == true ? "Yes" : "No" %>
-                <%=Html.Hidden3("m.list[" + Model.index + "].advil", Model.advil)%>
-                </td>
-            </tr>
-            <tr>
-                <td>Maalox?:</td>
-                <td><%=Model.maalox == true ? "Yes" : "No" %>
-                <%=Html.Hidden3("m.list[" + Model.index + "].maalox", Model.maalox)%>
-                </td>
-            </tr>
-            <tr>
-                <td>Robitussin?:</td>
-                <td><%=Model.robitussin == true ? "Yes" : "No" %>
-                <%=Html.Hidden3("m.list[" + Model.index + "].robitussin", Model.robitussin)%>
-                </td>
-            </tr>
-            </table>
+        Tylenol?: <%=Model.tylenol == true ? "Yes" : Model.tylenol == false ? "No" : "" %>,
+        Advil?: <%=Model.advil == true ? "Yes" : Model.advil == true ? "No" : "" %>,
+        Robitussin?: <%=Model.robitussin == true ? "Yes" : Model.robitussin == false ? "No" : "" %>,
+        Maalox?: <%=Model.maalox == true ? "Yes" : Model.maalox == false ? "No" : "" %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].tylenol", Model.tylenol) %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].advil", Model.advil)%>
+        <%=Html.Hidden3("m.list[" + Model.index + "].maalox", Model.maalox)%>
+        <%=Html.Hidden3("m.list[" + Model.index + "].robitussin", Model.robitussin)%>
         </td>
-        <td></td>
     </tr>
 <% }
    if (Model.org.AskParents == true)

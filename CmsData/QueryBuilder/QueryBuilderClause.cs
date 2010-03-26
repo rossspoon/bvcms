@@ -359,6 +359,7 @@ namespace CmsData
                     break;
                 case FieldType.Number:
                 case FieldType.NullNumber:
+                case FieldType.NullInteger:
                 case FieldType.String:
                 case FieldType.StringEqual:
                 case FieldType.Integer:

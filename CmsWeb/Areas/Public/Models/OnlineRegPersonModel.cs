@@ -28,6 +28,8 @@ namespace CMSWeb.Models
             {
                 if (_org == null && orgid.HasValue)
                     _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
+                if (_org == null && divid.HasValue)
+                    _org = GetAppropriateOrg();
                 return _org;
             }
         }
@@ -222,8 +224,8 @@ namespace CMSWeb.Models
         public bool? maalox { get; set; }
         public bool? robitussin { get; set; }
         public bool? paydeposit { get; set; }
-
         public string request { get; set; }
+        public string grade { get; set; }
 
         public decimal Amount()
         {
@@ -285,6 +287,15 @@ namespace CMSWeb.Models
                 if (shirtsize == "0")
                     modelState.AddModelError("shirtsize", "please select a shirt size");
 
+            if (org.AskGrade == true)
+            {
+                int g = 0;
+                if (!int.TryParse(grade, out g))
+                    modelState.AddModelError("grade", "please enter a grade");
+                else if (g < org.GradeAgeStart || g > org.GradeAgeEnd)
+                    modelState.AddModelError("grade", "only grades from {0} to {1}".Fmt(org.GradeAgeStart, org.GradeAgeEnd));
+            }
+
             if (org.AskCoaching == true)
                 if (!coaching.HasValue)
                     modelState.AddModelError("coaching", "please indicate");
@@ -313,6 +324,10 @@ namespace CMSWeb.Models
 
         public List<SelectListItem> ShirtSizes()
         {
+            return ShirtSizes(org);
+        }
+        public static List<SelectListItem> ShirtSizes(CmsData.Organization org)
+        {
             var q = from ss in DbUtil.Db.ShirtSizes
                     orderby ss.Id
                     select new SelectListItem
@@ -326,6 +341,7 @@ namespace CMSWeb.Models
                 list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;
         }
+
         public string PrepareSummaryText()
         {
             var sb = new StringBuilder();
@@ -342,10 +358,11 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Home Phone:</td><td>{0}</td></tr>\n", person.Family.HomePhone.FmtFone());
             sb.AppendFormat("<tr><td>Cell Phone:</td><td>{0}</td></tr>\n", person.CellPhone.FmtFone());
 
+            var om = GetOrgMember();
             var rr = person.RecRegs.Single();
 
             if (org.AskShirtSize == true)
-                sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", rr.ShirtSize);
+                sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", om.ShirtSize);
             if (org.AskEmContact == true)
             {
                 sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", rr.Emcontact);
@@ -362,16 +379,16 @@ namespace CMSWeb.Models
                 sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", rr.Policy);
             }
             if (org.AskRequest == true)
-                sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", request);
+                sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", om.Request);
             if (org.AskAllergies == true)
                 sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", rr.MedicalDescription);
 
             if (org.AskTylenolEtc == true)
             {
-                sb.AppendFormat("<tr><td>Tylenol:</td><td>{0}</td></tr>\n", rr.Tylenol == true ? "OK" : "Not OK");
-                sb.AppendFormat("<tr><td>Advil:</td><td>{0}</td></tr>\n", rr.Advil == true ? "OK" : "Not OK");
-                sb.AppendFormat("<tr><td>Maalox:</td><td>{0}</td></tr>\n", rr.Maalox == true ? "OK" : "Not OK");
-                sb.AppendFormat("<tr><td>Robitussin:</td><td>{0}</td></tr>\n", rr.Robitussin == true ? "OK" : "Not OK");
+                sb.AppendFormat("<tr><td>Tylenol?: {0},", tylenol == true ? "Yes" : tylenol == false ? "No" : "");
+                sb.AppendFormat(" Advil?: {0},", advil == true ? "Yes" : advil == false ? "No" : "");
+                sb.AppendFormat(" Robitussin?: {0},", robitussin == true ? "Yes" : robitussin == false ? "No" : "");
+                sb.AppendFormat(" Maalox?: {0}</td></tr>\n", maalox == true ? "Yes" : maalox == false ? "No" : "");
             }
             if (org.AskChurch == true)
             {
@@ -385,16 +402,19 @@ namespace CMSWeb.Models
             }
             if (org.AskCoaching == true)
                 sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", rr.Coaching);
+            if (org.AskGrade == true)
+                sb.AppendFormat("<tr><td>Grade:</td><td>{0}</td></tr>\n", om.Grade);
 
             sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0}</td></tr>\n", Amount());
             sb.Append("</table>");
 
             return sb.ToString();
         }
-        public OrganizationMember Enroll(string TransactionID, string paylink)
+        public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing)
         {
             var om = OrganizationMember.InsertOrgMembers(orgid.Value, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+            om.Amount = (om.Amount ?? 0) + Amount();
 
             var reg = person.RecRegs.SingleOrDefault();
 
@@ -404,7 +424,10 @@ namespace CMSWeb.Models
                 person.RecRegs.Add(reg);
             }
             if (org.AskShirtSize == true)
+            {
+                om.ShirtSize = shirtsize;
                 reg.ShirtSize = shirtsize;
+            }
             if (org.AskChurch == true)
             {
                 reg.ActiveInAnotherChurch = otherchurch;
@@ -437,12 +460,20 @@ namespace CMSWeb.Models
                 reg.Insurance = insurance;
                 reg.Policy = policy;
             }
+            if (org.AskGrade == true)
+                om.Grade = grade.ToInt();
+            string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+            AddToMemberData(tstamp, om);
+            AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
+            if (testing == true)
+                AddToMemberData("(test transaction)", om);
+
             if (org.AskTylenolEtc == true)
             {
-                reg.Advil = advil;
-                reg.Maalox = maalox;
-                reg.Robitussin = robitussin;
-                reg.Tylenol = tylenol;
+                AddToMemberData("Tylenol: " + (tylenol == true ? "Yes" : "No"), om);
+                AddToMemberData("Advil: " + (advil == true ? "Yes" : "No"), om);
+                AddToMemberData("Robitussin: " + (robitussin == true ? "Yes" : "No"), om);
+                AddToMemberData("Maalox: " + (maalox == true ? "Yes" : "No"), om);
             }
 
             AddToRegistrationComments("-------------", reg);
@@ -452,11 +483,13 @@ namespace CMSWeb.Models
                 AddToRegistrationComments("Request: " + request, reg);
                 om.Request = request;
             }
-            om.Amount = Amount();
+
+            if (testing == true)
+                AddToRegistrationComments("(test transaction)", reg);
             AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
             if (paylink.HasValue())
                 AddToRegistrationComments(paylink, reg);
-            AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
+            AddToRegistrationComments(tstamp, reg);
             AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
 
             DbUtil.Db.SubmitChanges();
@@ -472,10 +505,8 @@ namespace CMSWeb.Models
         {
             rr.Comments = s + "\n" + rr.Comments;
         }
-        public CmsData.Organization GetAppropriateOrg()
+        private CmsData.Organization GetAppropriateOrg()
         {
-            if (org != null)
-                return org;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivisionId == divid
                     where gender == null || o.GenderId == gender || o.GenderId == 0

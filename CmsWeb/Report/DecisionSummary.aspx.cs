@@ -53,11 +53,21 @@ namespace CMSWeb.StaffOnly
                     if (NotAll)
                         qb.AddNewClause(QueryType.DecisionTypeId, CompareType.Equal, e.CommandArgument);
                     break;
-                case "ForBaptismGender":
+                case "ForBaptismAge":
                     qb.AddNewClause(QueryType.BaptismDate, CompareType.GreaterEqual, FromDt);
                     qb.AddNewClause(QueryType.BaptismDate, CompareType.Less, ToDt);
                     if (NotAll)
-                        qb.AddNewClause(QueryType.GenderId, CompareType.Equal, e.CommandArgument);
+                    {
+                        var a = e.CommandArgument.ToString().Split('-');
+                        if (a[0].StartsWith("Over "))
+                        {
+                            a = e.CommandArgument.ToString().Split(' ');
+                            a[0] = (a[1].ToInt() + 1).ToString();
+                            a[1] = "120";
+                        }
+                        qb.AddNewClause(QueryType.Age, CompareType.GreaterEqual, a[0].ToInt());
+                        qb.AddNewClause(QueryType.Age, CompareType.LessEqual, a[1].ToInt());
+                    }
                     break;
                 case "ForBaptismType":
                     qb.AddNewClause(QueryType.BaptismDate, CompareType.GreaterEqual, FromDt);

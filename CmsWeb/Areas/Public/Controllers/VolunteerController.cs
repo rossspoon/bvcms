@@ -25,6 +25,8 @@ namespace CMSWeb.Areas.Public.Controllers
         {
 #if DEBUG
             ViewData["timeout"] = 600000;
+#else
+            ViewData["timeout"] = 60000;
 #endif
             ViewData["head"] = HeaderHtml("Volunteer-" + view,
                             DbUtil.Settings("VolHeader", "change VolHeader setting"),

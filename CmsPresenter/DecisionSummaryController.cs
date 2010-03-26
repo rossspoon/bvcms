@@ -91,6 +91,7 @@ namespace CMSPresenter
                     orderby g.Key
                     select new TypeCountInfo
                     {
+                        Id = g.Key,
                         Desc = g.Key,
                         Count = g.Count(),
                     };

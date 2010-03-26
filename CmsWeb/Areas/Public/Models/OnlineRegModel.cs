@@ -175,7 +175,7 @@ namespace CMSWeb.Models
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
-                p.Enroll(TransactionID, paylink);
+                p.Enroll(TransactionID, paylink, testing);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>
 <tr><th valign='top'>{0}</th><td>

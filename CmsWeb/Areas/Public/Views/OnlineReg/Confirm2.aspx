@@ -9,7 +9,7 @@
     <h2>Transaction Completed</h2>
     <p>
         Thank you for your payment of <%=Model.AmountDue.ToString("c") %> for <%=Model.Header %>  
-        You should receive a confirmation email at <%=Util.FirstAddress(Model.Email) %> shortly.
+        You should receive a confirmation email at <%=Model.Email %> shortly.
     </p>
 
 </asp:Content>

@@ -51,6 +51,8 @@ namespace CmsData
 		
 		private string _ShirtSize;
 		
+		private int? _Grade;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -118,6 +120,9 @@ namespace CmsData
 		
 		partial void OnShirtSizeChanging(string value);
 		partial void OnShirtSizeChanged();
+		
+		partial void OnGradeChanging(int? value);
+		partial void OnGradeChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -514,6 +519,28 @@ namespace CmsData
 					this._ShirtSize = value;
 					this.SendPropertyChanged("ShirtSize");
 					this.OnShirtSizeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Grade", UpdateCheck=UpdateCheck.Never, Storage="_Grade", DbType="int")]
+		public int? Grade
+		{
+			get { return this._Grade; }
+
+			set
+			{
+				if (this._Grade != value)
+				{
+				
+                    this.OnGradeChanging(value);
+					this.SendPropertyChanging();
+					this._Grade = value;
+					this.SendPropertyChanged("Grade");
+					this.OnGradeChanged();
 				}
 
 			}

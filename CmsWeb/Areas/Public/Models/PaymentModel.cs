@@ -46,6 +46,16 @@ namespace CMSWeb.Models
 #endif
             }
         }
+        public string Terms
+        {
+            get
+            {
+                var c = DbUtil.Content("OnlineRegTerms");
+                if (c == null)
+                    return "OnlineRegTerms Special Content needed";
+                return c.Body;
+            }
+        }
 
         public string NameOnAccount { get; set; }
         public string Address { get; set; }

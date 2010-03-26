@@ -50,52 +50,51 @@ namespace CMSWeb
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             IEnumerable d = null;
+            var dg = new DataGrid();
+            dg.EnableViewState = false;
             switch (labelNameFormat)
             {
                 case "Individual":
-                    d = PersonSearchController.FetchExcelList(qid.Value, maxExcelRows);
+                    dg.DataSource = PersonSearchController.FetchExcelList(qid.Value, maxExcelRows);
                     break;
                 case "Family":
-                    d = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
+                    dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
                     break;
                 case "ParentsOf":
-                    d = ctl.FetchExcelParents(qid.Value, maxExcelRows);
+                    dg.DataSource = ctl.FetchExcelParents(qid.Value, maxExcelRows);
                     break;
                 case "CouplesEither":
-                    d = ctl.FetchExcelCouplesEither(qid.Value, maxExcelRows);
+                    dg.DataSource = ctl.FetchExcelCouplesEither(qid.Value, maxExcelRows);
                     break;
                 case "CouplesBoth":
-                    d = ctl.FetchExcelCouplesBoth(qid.Value, maxExcelRows);
+                    dg.DataSource = ctl.FetchExcelCouplesBoth(qid.Value, maxExcelRows);
                     break;
                 case "Involvement":
-                    d = InvolvementController.InvolvementList(qid.Value);
+                    dg.DataSource = InvolvementController.InvolvementList(qid.Value);
                     break;
                 case "Children":
-                    d = InvolvementController.ChildrenList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.ChildrenList(qid.Value, maxExcelRows);
                     break;
                 case "Church":
-                    d = InvolvementController.ChurchList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.ChurchList(qid.Value, maxExcelRows);
                     break;
                 case "Attend":
-                    d = InvolvementController.AttendList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.AttendList(qid.Value, maxExcelRows);
                     break;
                 case "Organization":
-                    d = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
                     break;
                 case "Promotion":
-                    d = InvolvementController.PromoList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.PromoList(qid.Value, maxExcelRows);
                     break;
                 case "SML":
-                    d = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
+                    dg.DataSource = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
                     break;
                 case "LR":
-                    d = CMSWeb.Models.LoveRespectModel
+                    dg.DataSource = CMSWeb.Models.LoveRespectModel
                         .LoveRespectList(qid.Value, maxExcelRows);
                     break;
             }
-            var dg = new DataGrid();
-            dg.EnableViewState = false;
-            dg.DataSource = d;
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(r.Output));
             r.Write("</body></HTML>");

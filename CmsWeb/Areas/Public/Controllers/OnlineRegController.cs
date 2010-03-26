@@ -125,8 +125,8 @@ namespace CMSWeb.Areas.Public.Controllers
             p.doctor = "test";
             p.insurance = "test";
             p.policy = "test";
-            p.mname = "test";
-            p.fname = "test";
+            p.mname = "";
+            p.fname = "test t";
             p.tylenol = true;
             p.advil = true;
             p.robitussin = false;

@@ -11,10 +11,15 @@
             $(document).bind("idle.idleTimer", function() {
                 window.location.href = '/Volunteer/' + $('#View').val();
             });
-            $(document).bind("keydown", function() {
-                $(document).unbind("keydown");
-            $.idleTimer('<%=ViewData["timeout"] %>');
-            });
+            var tmout = parseInt('<%=ViewData["timeout"] %>');
+
+            if ($('input:text[value!=""]').length == 0)
+                $(document).bind("keydown", function() {
+                    $(document).unbind("keydown");
+                    $.idleTimer(tmout);
+                });
+            else
+                $.idleTimer(tmout);
         });
     </script>
     <%=Html.Hidden("View") %>

@@ -149,6 +149,8 @@ namespace CmsData
 		
 		private bool? _AskChurch;
 		
+		private bool? _AskGrade;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -391,6 +393,9 @@ namespace CmsData
 		
 		partial void OnAskChurchChanging(bool? value);
 		partial void OnAskChurchChanged();
+		
+		partial void OnAskGradeChanging(bool? value);
+		partial void OnAskGradeChanged();
 		
     #endregion
 		public Organization()
@@ -800,7 +805,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrganizationName", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationName", DbType="varchar(60) NOT NULL")]
+		[Column(Name="OrganizationName", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationName", DbType="varchar(100) NOT NULL")]
 		public string OrganizationName
 		{
 			get { return this._OrganizationName; }
@@ -1905,6 +1910,28 @@ namespace CmsData
 					this._AskChurch = value;
 					this.SendPropertyChanged("AskChurch");
 					this.OnAskChurchChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskGrade", UpdateCheck=UpdateCheck.Never, Storage="_AskGrade", DbType="bit")]
+		public bool? AskGrade
+		{
+			get { return this._AskGrade; }
+
+			set
+			{
+				if (this._AskGrade != value)
+				{
+				
+                    this.OnAskGradeChanging(value);
+					this.SendPropertyChanging();
+					this._AskGrade = value;
+					this.SendPropertyChanged("AskGrade");
+					this.OnAskGradeChanged();
 				}
 
 			}
