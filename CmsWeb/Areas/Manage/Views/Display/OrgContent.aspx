@@ -18,6 +18,7 @@
 <hr />
 <%=Html.Hidden("id")%>
 <%=Html.Hidden("what")%>
+<%=Html.Hidden("div")%>
 <div>Title: <%=Html.TextBox("title")%></div>
 <div><%=Html.TextArea("html", new { rows = "16", style = "width:90%" })%>
 </div>

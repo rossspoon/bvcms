@@ -152,6 +152,14 @@
         <td><%=Html.ValidationMessage("member")%></td>
     </tr>
 <% }
+   if (Model.org.AskTickets == true)
+   { %>
+    <tr>
+        <td><label for="ntickets">No. of Items</label></td>
+        <td><input type="text" name="m.List[<%=Model.index%>].ntickets" value="<%=Model.ntickets%>" /></td>
+        <td><%= Html.ValidationMessage("ntickets") %></td>
+    </tr>
+<% } 
    if (Model.org.Deposit > 0)
    { %>
     <tr>

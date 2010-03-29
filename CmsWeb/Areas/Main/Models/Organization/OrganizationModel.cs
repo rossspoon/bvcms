@@ -6,6 +6,7 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Models.OrganizationPage
 {
@@ -77,6 +78,23 @@ namespace CMSWeb.Models.OrganizationPage
         public IEnumerable<SelectListItem> SecurityTypeList()
         {
             return QueryModel.ConvertToSelect(cv.SecurityTypeCodes(), "Id");
+        }
+        public static string SpaceCamelCase(string s)
+        {
+            return Regex.Replace(s, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+        }
+        public IEnumerable<SelectListItem> RegistrationTypes()
+        {
+            var et = typeof(CMSWeb.Models.RegistrationEnum);
+            var na = Enum.GetNames(et);
+            var q = from int v in Enum.GetValues(et)
+                    let n = Enum.GetName(et, v)
+                    select new SelectListItem
+                    {
+                        Value = v.ToString(),
+                        Text = SpaceCamelCase(n)
+                    };
+            return q;
         }
     }
 }

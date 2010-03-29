@@ -25,12 +25,11 @@ namespace CmsCheckin
 
         private void BaseForm_Load(object sender, EventArgs e)
         {
-            if (Program.HideCursor)
-                Cursor.Hide();
-
             Program.home = new Home();
+            Program.CursorHide();
             ControlsAdd(Program.home);
             Program.home.Visible = true;
+            Program.home.textBox1.Focus();
 
             Program.namesearch = new EnterText("Name Search", true);
             Program.namesearch.GoBack += new EventHandler(namesearch_GoBack);

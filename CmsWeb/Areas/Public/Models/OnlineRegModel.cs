@@ -11,6 +11,7 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Models
 {
@@ -76,7 +77,10 @@ namespace CMSWeb.Models
 
         public decimal TotalAmount()
         {
-            return List.Sum(p => p.Amount());
+            var amt = List.Sum(p => p.Amount());
+            if (org.MaximumFee > 0 && amt > org.MaximumFee)
+                amt = org.MaximumFee.Value;
+            return amt;
         }
         public decimal TotalAmountDue()
         {
@@ -92,7 +96,24 @@ namespace CMSWeb.Models
                 return p.first + " " + p.last;
             }
         }
-
+        private CmsData.Meeting _meeting;
+        public CmsData.Meeting meeting()
+        {
+            if (_meeting == null)
+            {
+                var q = from m in DbUtil.Db.Meetings
+                        where m.Organization.OrganizationId == orgid
+                        where m.MeetingDate > Util.Now.AddHours(-12)
+                        orderby m.MeetingDate
+                        select m;
+                _meeting = q.FirstOrDefault();
+            }
+            return _meeting;
+        }
+        public string MeetingTime
+        {
+            get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
+        }
         public List<SelectListItem> ShirtSizes()
         {
             var q = from ss in DbUtil.Db.ShirtSizes
@@ -135,11 +156,11 @@ namespace CMSWeb.Models
                                 p.person.Name, p.person.PeopleId, p.email, p.person.EmailAddress));
                 }
                 participants.Append(p.ToString());
-                pids.Add(new TransactionInfo.PeopleInfo 
-                { 
-                    name = p.person.Name, 
-                    pid = p.person.PeopleId, 
-                    amt = p.Amount() + p.AmountDue() 
+                pids.Add(new TransactionInfo.PeopleInfo
+                {
+                    name = p.person.Name,
+                    pid = p.person.PeopleId,
+                    amt = p.Amount() + p.AmountDue()
                 });
             }
             var emails = string.Join(",", elist.ToArray());
@@ -195,8 +216,8 @@ namespace CMSWeb.Models
             details.Append("\n</table>\n");
             DbUtil.Db.SubmitChanges();
 
-            var subject = org.EmailSubject;
-            var message = org.EmailMessage;
+            var subject = Util.PickFirst(org.EmailSubject, org.Division.EmailSubject, "no subject");
+            var message = Util.PickFirst(org.EmailMessage, org.Division.EmailMessage, "no message");
             message = message.Replace("{division}", org.Division.Name);
             message = message.Replace("{org}", org.OrganizationName);
             message = message.Replace("{cmshost}", Util.CmsHost);
@@ -234,7 +255,7 @@ namespace CMSWeb.Models
         public PeopleInfo[] people { get; set; }
         public class PeopleInfo
         {
-            public int pid { get; set;  }
+            public int pid { get; set; }
             public string name { get; set; }
             public decimal amt { get; set; }
         }

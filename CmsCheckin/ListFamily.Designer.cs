@@ -28,14 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.Print = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.bAddToFamily = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Print
@@ -45,7 +44,7 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(588, 696);
+            this.Print.Location = new System.Drawing.Point(517, 696);
             this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(432, 66);
@@ -53,7 +52,6 @@
             this.Print.Text = "Print Labels, Return";
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.GoBack_Click);
-            this.Print.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AttendeeKeyPress);
             // 
             // label1
             // 
@@ -125,10 +123,27 @@
             this.pgup.UseVisualStyleBackColor = false;
             this.pgup.Click += new System.EventHandler(this.pgup_Click);
             // 
+            // bAddToFamily
+            // 
+            this.bAddToFamily.BackColor = System.Drawing.SystemColors.Control;
+            this.bAddToFamily.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+            this.bAddToFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bAddToFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bAddToFamily.ForeColor = System.Drawing.Color.Black;
+            this.bAddToFamily.Location = new System.Drawing.Point(966, 708);
+            this.bAddToFamily.Margin = new System.Windows.Forms.Padding(4);
+            this.bAddToFamily.Name = "bAddToFamily";
+            this.bAddToFamily.Size = new System.Drawing.Size(45, 45);
+            this.bAddToFamily.TabIndex = 16;
+            this.bAddToFamily.Text = "a";
+            this.bAddToFamily.UseVisualStyleBackColor = false;
+            this.bAddToFamily.Click += new System.EventHandler(this.bAddToFamily_Click);
+            // 
             // ListFamily
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.bAddToFamily);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.button1);
@@ -151,7 +166,7 @@
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
-        public System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.Button bAddToFamily;
 
     }
 }

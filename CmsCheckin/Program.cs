@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace CmsCheckin
 {
@@ -48,7 +50,8 @@ namespace CmsCheckin
                 return string.Format("?campus={0}&thisday={1}", CampusId, ThisDay);
             }
         }
-        public const int Interval = 60000;
+        public static int MaxLabels { get; set; }
+        public static Timer timer1;
         public static Home home;
         public static ListFamilies families;
         public static ListFamily family;
@@ -87,6 +90,47 @@ namespace CmsCheckin
             addr.textBox1.Text = Addr;
             zip.textBox1.Text = Zip;
             homephone.textBox1.Text = Home;
+        }
+        public static void TimerReset()
+        {
+            if (timer1 == null)
+                return;
+            timer1.Stop();
+            timer1.Start();
+        }
+        public static void TimerStart(EventHandler t)
+        {
+            if (timer1 != null)
+                TimerStop();
+            timer1 = new Timer();
+            timer1.Interval = 60000;
+            timer1.Tick += t;
+            timer1.Start();
+        }
+        public static void TimerStop()
+        {
+            if (timer1 == null)
+                return;
+            timer1.Stop();
+            timer1.Dispose();
+            timer1 = null;
+        }
+        private static bool showing = true;
+        public static void CursorShow()
+        {
+            if (showing)
+                return;
+            Cursor.Show();
+            showing = true;
+        }
+        public static void CursorHide()
+        {
+            if (!Program.HideCursor)
+                return;
+            if (!showing)
+                return;
+            Cursor.Hide();
+            showing = false;
         }
     }
 }

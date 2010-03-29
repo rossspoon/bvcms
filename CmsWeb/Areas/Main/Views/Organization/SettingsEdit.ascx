@@ -27,10 +27,6 @@
         <td><%=Html.TextBox("org.EmailAddresses")%></td>
     </tr>
     <tr>
-        <th>Online Reg Type:</th>
-        <td><%=Html.TextBox("org.RegType")%></td>
-    </tr>
-    <tr>
         <td></td>
     </tr>
     <tr>
@@ -98,20 +94,44 @@
         <td><%=Html.DropDownList("org.GenderId", Model.GenderList())%></td>
     </tr>
     <tr>
+        <th>Registration Type:</th>
+        <td><%=Html.DropDownList("org.RegistrationTypeId", Model.RegistrationTypes())%></td>
+    </tr>
+    <tr>
         <th>Fee:</th>
-        <td><%=Html.TextBox("org.Fee")%></td>
+        <td><%=Html.TextBox("org.Fee", Model.org.Fee.ToString2("n2"))%></td>
     </tr>
     <tr>
         <th>Deposit:</th>
-        <td><%=Html.TextBox("org.Deposit")%></td>
+        <td><%=Html.TextBox("org.Deposit", Model.org.Deposit.ToString2("n2"))%></td>
     </tr>
     <tr>
         <th>Shirt Fee:</th>
-        <td><%=Html.TextBox("org.ShirtFee")%></td>
+        <td><%=Html.TextBox("org.ShirtFee", Model.org.ShirtFee.ToString2("n2"))%></td>
     </tr>
     <tr>
         <th>Extra Fee:</th>
-        <td><%=Html.TextBox("org.ExtraFee")%></td>
+        <td><%=Html.TextBox("org.ExtraFee", Model.org.ExtraFee.ToString2("n2"))%></td>
+    </tr>
+    <tr>
+        <th>Maximum Fee:</th>
+        <td><%=Html.TextBox("org.MaximumFee", Model.org.MaximumFee.ToString2("n2"))%></td>
+    </tr>
+    <tr>
+        <th>Ask How Many Items:</th>
+        <td><%=Html.CheckBox("org.AskTickets")%></td>
+    </tr>
+    <tr>
+        <th>Allow Only One:</th>
+        <td><%=Html.CheckBox("org.AllowOnlyOne")%></td>
+    </tr>
+    <tr>
+        <th>Ask Options:</th>
+        <td><%=Html.TextBox("org.AskOptions")%></td>
+    </tr>
+    <tr>
+        <th>Age Fees:</th>
+        <td><%=Html.TextBox("org.AgeFee")%></td>
     </tr>
     <tr>
         <th>Last Day Before Extra:</th>
@@ -124,6 +144,10 @@
     <tr>
         <th>Ask About Tylenol, Etc:</th>
         <td><%=Html.CheckBox("org.AskTylenolEtc")%></td>
+    </tr>
+    <tr>
+        <th>Ask For Grade:</th>
+        <td><%=Html.CheckBox("org.AskGrade")%></td>
     </tr>
     <tr>
         <th>Ask About Shirt Size:</th>

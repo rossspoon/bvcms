@@ -33,10 +33,13 @@
     if (last.OtherOK)
     {
 %>
-    <tr><td colspan="2">
+<tr><td colspan="2">
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration and Pay <%=Model.TotalAmount().ToString("c") %>' />
-        or <a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a></td>
-    </tr>
+<% if (Model.org.AllowOnlyOne != true && Model.org.AskTickets != true)
+   { %>
+        or <a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a>
+<% } %>
+</td></tr>
 <%  } %>
 </table>

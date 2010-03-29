@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.buttongo = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -59,7 +58,7 @@
             this.addr = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.zip = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -71,10 +70,10 @@
             this.buttongo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttongo.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttongo.ForeColor = System.Drawing.Color.White;
-            this.buttongo.Location = new System.Drawing.Point(701, 691);
+            this.buttongo.Location = new System.Drawing.Point(778, 683);
             this.buttongo.Margin = new System.Windows.Forms.Padding(4);
             this.buttongo.Name = "buttongo";
-            this.buttongo.Size = new System.Drawing.Size(275, 73);
+            this.buttongo.Size = new System.Drawing.Size(231, 73);
             this.buttongo.TabIndex = 29;
             this.buttongo.Text = "Finish";
             this.buttongo.UseVisualStyleBackColor = false;
@@ -87,10 +86,10 @@
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button11.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Location = new System.Drawing.Point(46, 691);
+            this.button11.Location = new System.Drawing.Point(4, 683);
             this.button11.Margin = new System.Windows.Forms.Padding(4);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(256, 73);
+            this.button11.Size = new System.Drawing.Size(231, 73);
             this.button11.TabIndex = 35;
             this.button11.Text = "Go Back";
             this.button11.UseVisualStyleBackColor = false;
@@ -380,12 +379,12 @@
             this.AddAnother.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AddAnother.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddAnother.ForeColor = System.Drawing.Color.White;
-            this.AddAnother.Location = new System.Drawing.Point(332, 691);
+            this.AddAnother.Location = new System.Drawing.Point(520, 683);
             this.AddAnother.Margin = new System.Windows.Forms.Padding(4);
             this.AddAnother.Name = "AddAnother";
-            this.AddAnother.Size = new System.Drawing.Size(344, 73);
+            this.AddAnother.Size = new System.Drawing.Size(231, 73);
             this.AddAnother.TabIndex = 50;
-            this.AddAnother.Text = "Add Another";
+            this.AddAnother.Text = "Another";
             this.AddAnother.UseVisualStyleBackColor = false;
             this.AddAnother.Click += new System.EventHandler(this.AddAnother_Click);
             // 
@@ -435,9 +434,26 @@
             this.zip.TabIndex = 53;
             this.zip.Text = "label1";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.LimeGreen;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Green;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(262, 683);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(231, 73);
+            this.button1.TabIndex = 55;
+            this.button1.Text = "Cancel";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // EnterGenderMarital
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.zip);
             this.Controls.Add(this.label8);
@@ -503,6 +519,6 @@
         private System.Windows.Forms.Label addr;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label zip;
-        public System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button1;
     }
 }

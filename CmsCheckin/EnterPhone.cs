@@ -25,12 +25,16 @@ namespace CmsCheckin
                 switch (keyData)
                 {
                     case Keys.Tab:
-                        timer1.Stop();
+                        Program.TimerStop();
                         GoNext(this, new EventArgs());
                         return true;
                     case Keys.Shift | Keys.Tab:
-                        timer1.Stop();
+                        Program.TimerStop();
                         GoBack(this, new EventArgs());
+                        return true;
+                    case Keys.S | Keys.Alt:
+                        Program.TimerReset();
+                        Program.CursorShow();
                         return true;
                 }
             }
@@ -40,13 +44,11 @@ namespace CmsCheckin
         {
             InitializeComponent();
             label2.Text = title;
-            timer1.Tick += new EventHandler(timer1_Tick);
-            timer1.Interval = Program.Interval;
+            Program.TimerStart(timer1_Tick);
         }
         void buttonclick(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            Program.TimerReset();
             var b = sender as Button;
             var d = b.Name[6];
             KeyStroke(d);
@@ -70,32 +72,32 @@ namespace CmsCheckin
 
         void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             Program.ClearFields();
             this.GoHome("");
         }
 
         private void buttongo_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             var d = textBox1.Text.GetDigits().Length;
             GoNext(sender, e);
         }
 
         private void buttonbs_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            Program.TimerReset();
             var b = sender as Button;
             BackSpace();
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
             if (e.KeyChar == 27)
+            {
+                Program.TimerStop();
                 GoBack(sender, e);
+            }
             else if (e.KeyChar == '\b')
                 BackSpace();
             else if (e.KeyChar >= '0' && e.KeyChar <= '9')
@@ -104,9 +106,13 @@ namespace CmsCheckin
             {
                 var d = textBox1.Text.GetDigits().Length;
                 if (d == 0 || d == 10 || d == 7)
+                {
+                    Program.TimerStop();
                     GoNext(sender, e);
+                }
                 return;
             }
+            Program.TimerReset();
             e.Handled = true;
         }
         private void KeyStroke(char d)
@@ -131,21 +137,20 @@ namespace CmsCheckin
 
         private void bslash_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            Program.TimerReset();
             KeyStroke('/');
         }
 
         private void button_goback_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             GoBack(sender, e);
         }
         private void EnterText_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible == true)
             {
-                timer1.Start();
+                Program.TimerStart(timer1_Tick);
                 textBox1.Focus();
                 textBox1.Select(textBox1.Text.Length, 0);
             }

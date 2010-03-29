@@ -9,6 +9,7 @@ namespace CMSWeb.Models
     public class Attendee
     {
         public int Id { get; set; }
+        public int Position { get; set; }
         public string Name { get; set; }
         public string First { get; set; }
         public string Last { get; set; }
@@ -76,5 +77,6 @@ namespace CMSWeb.Models
         public int FamilyId { get; set; }
         public string Name { get; set; }
         public string AreaCode { get; set; }
+        public string Phone { get; set; }
     }
 }

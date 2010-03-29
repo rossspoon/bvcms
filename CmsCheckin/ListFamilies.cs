@@ -15,15 +15,56 @@ namespace CmsCheckin
         public ListFamilies()
         {
             InitializeComponent();
-            timer1.Interval = Program.Interval;
-            timer1.Tick += new EventHandler(timer1_Tick);
         }
-        List<Control> controls = new List<Control>();
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            const int WM_KEYDOWN = 0x100;
+            const int WM_SYSKEYDOWN = 0x104;
+
+            if ((msg.Msg == WM_KEYDOWN) || (msg.Msg == WM_SYSKEYDOWN))
+            {
+                switch (keyData)
+                {
+                    case Keys.PageUp:
+                        if (pgup.Visible)
+                            ShowFamilies(prev);
+                        return true;
+                    case Keys.PageDown:
+                        if (pgdn.Visible)
+                            ShowFamilies(next);
+                        return true;
+                    case Keys.Escape:
+                        Program.TimerStop();
+                        this.GoHome(string.Empty);
+                        return true;
+                    case Keys.S | Keys.Alt:
+                        Program.TimerReset();
+                        Program.CursorShow();
+                        return true;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private List<Control> controls = new List<Control>();
+        private string phone;
+        int? next, prev;
+
+        private void ShowFamilies(int? page)
+        {
+            var x = this.GetDocument("Checkin/Match/" + phone.GetDigits() + Program.QueryString + "&page=" + page);
+            ShowFamilies(x);
+        }
         public void ShowFamilies(XDocument x)
         {
             ClearControls();
-            Print.Focus();
-            Print.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
+            this.Focus();
+
+            phone = x.Root.Attribute("phone").Value;
+            next = x.Root.Attribute("next").Value.ToInt2();
+            prev = x.Root.Attribute("prev").Value.ToInt2();
+            pgdn.Visible = next.HasValue;
+            pgup.Visible = prev.HasValue;
 
             var font = new Font("Verdana", 14F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             var g = this.CreateGraphics();
@@ -44,23 +85,21 @@ namespace CmsCheckin
                 ab.Text = e.Attribute("name").Value;
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
-                ab.KeyPress += new KeyPressEventHandler(FamilyKeyPress);
                 controls.Add(ab);
 
                 row++;
             }
-            timer1.Start();
+            Program.TimerStart(timer1_Tick);
         }
         void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             Program.ClearFields();
             this.GoHome("");
         }
 
         void ab_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             var ab = sender as Button;
             this.Swap(Program.family);
             Program.family.ShowFamily((int)ab.Tag, 1);
@@ -68,15 +107,8 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             this.GoHome(string.Empty);
-        }
-        private void FamilyKeyPress(object sender, KeyPressEventArgs e)
-        {
-            timer1.Stop();
-            timer1.Start();
-            if (e.KeyChar == 27)
-                this.GoHome(string.Empty);
         }
         private void ClearControls()
         {
@@ -86,6 +118,16 @@ namespace CmsCheckin
                 c.Dispose();
             }
             controls.Clear();
+        }
+
+        private void pgup_Click(object sender, EventArgs e)
+        {
+            ShowFamilies(prev);
+        }
+
+        private void pgdn_Click(object sender, EventArgs e)
+        {
+            ShowFamilies(next);
         }
     }
 }

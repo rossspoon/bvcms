@@ -29,6 +29,7 @@ namespace CMSWeb.Areas.Public.Controllers
         }
         public ActionResult Index(int id, bool? testing)
         {
+            return Redirect("/OnlineReg/Index/" + id);
             var org = DbUtil.Db.LoadOrganizationById(id);
             if (org == null)
                 return Content("invalid organization");
@@ -174,6 +175,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc2 = org.OrganizationName,
                 Misc3 = id.ToString(),
                 Misc4 = guests,
+                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "no terms")
             };
             return View("Payment", pm);
         }

@@ -92,8 +92,7 @@ namespace CMSWeb
             NewMeetingLink.Visible = User.IsInRole("Attendance");
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
             ManageGroups.Visible = User.IsInRole("ManageGroups");
-            emailmessagelink.NavigateUrl = "/Display/OrgContent/{0}?what=message".Fmt(organization.OrganizationId);
-            instructionslink.NavigateUrl = "/Display/OrgContent/{0}?what=instructions".Fmt(organization.OrganizationId);
+            editcontent.Visible = User.IsInRole("Admin");
         }
 
         void RebindGrids(object sender, EventArgs e)

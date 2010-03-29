@@ -85,7 +85,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult2.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult2.cs" />
@@ -124,6 +124,7 @@
     <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
     <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\CouponsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetResult.cs" />
@@ -201,7 +202,6 @@
     <Compile Include="Contributions\Reports\TotalsByFundAgeRange.aspx.designer.cs">
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Dialog\AddContactee.aspx.cs">
       <DependentUpon>AddContactee.aspx</DependentUpon>
@@ -1273,7 +1273,6 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Display\LeagueContent.aspx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\AddressDisplay.ascx" />

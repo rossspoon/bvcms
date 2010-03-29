@@ -241,6 +241,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = m.testing ?? false,
                 PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
+                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "no terms")
             };
             pm.Misc1 = pm.NameOnAccount;
 

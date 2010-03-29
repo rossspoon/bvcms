@@ -20,6 +20,7 @@ namespace CMSWeb.Models
         public string Email { get; set; }
         public string TransactionId { get; set; }
         public string PostbackURL { get; set; }
+        public string Terms { get; set; }
         public string OrgID
         {
             get
@@ -44,16 +45,6 @@ namespace CMSWeb.Models
                     return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
                 return DbUtil.Settings("ServiceUOrgAccountID", "0");
 #endif
-            }
-        }
-        public string Terms
-        {
-            get
-            {
-                var c = DbUtil.Content("OnlineRegTerms");
-                if (c == null)
-                    return "OnlineRegTerms Special Content needed";
-                return c.Body;
             }
         }
 

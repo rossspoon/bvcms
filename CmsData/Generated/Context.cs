@@ -158,6 +158,10 @@ namespace CmsData
         partial void UpdateCountryLookup(CountryLookup instance);
         partial void DeleteCountryLookup(CountryLookup instance);
         
+        partial void InsertCoupon(Coupon instance);
+        partial void UpdateCoupon(Coupon instance);
+        partial void DeleteCoupon(Coupon instance);
+        
         partial void InsertDecisionType(DecisionType instance);
         partial void UpdateDecisionType(DecisionType instance);
         partial void DeleteDecisionType(DecisionType instance);
@@ -815,6 +819,12 @@ namespace CmsData
 		public Table< CountryLookup> CountryLookups
 		{
 			get	{ return this.GetTable< CountryLookup>(); }
+
+		}
+
+		public Table< Coupon> Coupons
+		{
+			get	{ return this.GetTable< Coupon>(); }
 
 		}
 

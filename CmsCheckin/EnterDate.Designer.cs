@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonbs = new System.Windows.Forms.Button();
@@ -46,7 +45,6 @@
             this.GoBackButton = new System.Windows.Forms.Button();
             this.bgo = new System.Windows.Forms.Button();
             this.Age = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -322,6 +320,5 @@
         private System.Windows.Forms.Button GoBackButton;
         private System.Windows.Forms.Button bgo;
         private System.Windows.Forms.Label Age;
-        public System.Windows.Forms.Timer timer1;
     }
 }

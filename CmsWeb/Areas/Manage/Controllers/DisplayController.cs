@@ -76,18 +76,36 @@ namespace CMSWeb.Areas.Manage.Controllers
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index", "Display");
         }
-        public ActionResult OrgContent(int id, string what)
+        public ActionResult OrgContent(int id, string what, bool? div)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
             switch (what)
             {
                 case "message":
-                    ViewData["html"] = org.EmailMessage;
-                    ViewData["title"] = org.EmailSubject;
+                    if (div == true)
+                    {
+                        ViewData["html"] = org.Division.EmailMessage;
+                        ViewData["title"] = org.Division.EmailSubject;
+                    }
+                    else
+                    {
+                        ViewData["html"] = org.EmailMessage;
+                        ViewData["title"] = org.EmailSubject;
+                    }
                     break;
                 case "instructions":
-                    ViewData["html"] = org.Instructions;
+                    if (div == true)
+                        ViewData["html"] = org.Division.Instructions;
+                    else
+                        ViewData["html"] = org.Instructions;
                     ViewData["title"] = "Instructions";
+                    break;
+                case "terms":
+                    if (div == true)
+                        ViewData["html"] = org.Division.Terms;
+                    else
+                        ViewData["html"] = org.Terms;
+                    ViewData["title"] = "Terms";
                     break;
             }
             ViewData["id"] = id;
@@ -95,39 +113,38 @@ namespace CMSWeb.Areas.Manage.Controllers
         }
         [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UpdateOrgContent(int id, string what, string title, string html)
+        public ActionResult UpdateOrgContent(int id, bool? div, string what, string title, string html)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
             switch (what)
             {
                 case "message":
-                    org.EmailMessage = html;
-                    org.EmailSubject = title;
+                    if (div == true)
+                    {
+                        org.Division.EmailMessage = html;
+                        org.Division.EmailSubject = title;
+                    }
+                    else
+                    {
+                        org.EmailMessage = html;
+                        org.EmailSubject = title;
+                    }
                     break;
                 case "instructions":
-                    org.Instructions = html;
+                    if (div == true)
+                        org.Division.Instructions = html;
+                    else
+                        org.Instructions = html;
+                    break;
+                case "terms":
+                    if (div == true)
+                        org.Division.Terms = html;
+                    else
+                        org.Terms = html;
                     break;
             }
             DbUtil.Db.SubmitChanges();
             return Redirect("/Organization.aspx?id=" + id);
-        }
-        public ActionResult LeagueContent(int id)
-        {
-            var league = DbUtil.Db.RecLeagues.Single(rl => rl.DivId == id);
-            ViewData["html"] = league.EmailMessage;
-            ViewData["title"] = league.EmailSubject;
-            ViewData["id"] = id;
-            return View();
-        }
-        [ValidateInput(false)]
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UpdateLeagueContent(int id, string title, string html)
-        {
-            var league = DbUtil.Db.RecLeagues.Single(rl => rl.DivId == id);
-            league.EmailMessage = html;
-            league.EmailSubject = title;
-            DbUtil.Db.SubmitChanges();
-            return Redirect("/Setup/Recreation/");
         }
     }
 }

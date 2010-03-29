@@ -25,7 +25,8 @@ namespace CMSWeb.Models
                      {
                          FamilyId = f.FamilyId,
                          AreaCode = f.HomePhoneAC,
-                         Name = f.HeadOfHousehold.Name
+                         Name = f.HeadOfHousehold.Name,
+                         Phone = id
                      };
             var matches = q1.ToList();
             if (matches.Count > 1)
@@ -48,6 +49,7 @@ namespace CMSWeb.Models
                 select new Attendee
                 {
                     Id = om.PeopleId,
+                    Position = om.Person.PositionInFamilyId,
                     MemberVisitor = "M",
                     Name = om.Person.Name,
                     First = om.Person.PreferredName,
@@ -97,6 +99,7 @@ namespace CMSWeb.Models
                 select new Attendee
                 {
                     Id = a.PeopleId,
+                    Position = a.Person.PositionInFamilyId,
                     MemberVisitor = "V",
                     Name = a.Person.Name,
                     First = a.Person.PreferredName,
@@ -157,6 +160,7 @@ namespace CMSWeb.Models
                 select new Attendee
                 {
                     Id = p.PeopleId,
+                    Position = p.PositionInFamilyId,
                     Name = p.Name,
                     First = p.PreferredName,
                     Last = p.LastName,
@@ -181,7 +185,10 @@ namespace CMSWeb.Models
                     CampusId = p.CampusId,
                 };
             list.AddRange(otherfamily.ToList());
-            return list.OrderByDescending(a => a.Age).ToList();
+            var list2 = list.OrderBy(a => a.Position)
+                .ThenByDescending(a => a.Position == 10 ? a.Gender : "U")
+                .ThenByDescending(a => a.Age).ToList();
+            return list2;
         }
         public IEnumerable<Campu> Campuses()
         {

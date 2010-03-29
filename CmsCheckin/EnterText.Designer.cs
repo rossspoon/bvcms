@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.bq = new System.Windows.Forms.Button();
             this.bbs = new System.Windows.Forms.Button();
@@ -77,7 +76,6 @@
             this.bdash = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.bsharp = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -825,6 +823,5 @@
         private System.Windows.Forms.Button bdash;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.Button bsharp;
-        public System.Windows.Forms.Timer timer1;
     }
 }

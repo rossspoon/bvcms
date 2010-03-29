@@ -36,6 +36,7 @@ namespace CMSWeb.Models
 
         public int? divid { get; set; }
         public int? orgid { get; set; }
+        public int? classid { get; set; }
 
         public string first { get; set; }
         public string last { get; set; }
@@ -137,6 +138,18 @@ namespace CMSWeb.Models
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
+        public IEnumerable<SelectListItem> Classes()
+        {
+            var q = from o in org.Division.Organizations
+                    where o.ClassFilled != true
+                    where o.Limit > o.MemberCount
+                    select new SelectListItem
+                    {
+                        Value = o.OrganizationId.ToString(),
+                        Text = o.OrganizationName,
+                    };
+            return q;
+        }
 
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
@@ -202,6 +215,7 @@ namespace CMSWeb.Models
             }
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
+            PeopleId = person.PeopleId;
         }
 
         public bool IsFilled { get; set; }
@@ -226,13 +240,38 @@ namespace CMSWeb.Models
         public bool? paydeposit { get; set; }
         public string request { get; set; }
         public string grade { get; set; }
+        public int? ntickets { get; set; }
+        public string option { get; set; }
 
         public decimal Amount()
         {
-            decimal amt;
+            decimal amt = 0;
             if (paydeposit == true && org.Deposit.HasValue && org.Deposit > 0)
                 amt = org.Deposit.Value;
-            else
+            if (amt == 0 && org.AskTickets == true)
+                amt = (org.Fee ?? 0) * (ntickets ?? 0);
+            if (amt == 0 && org.AskOptions.HasValue())
+            {
+                var q = from o in org.AskOptions.Split(',')
+                        let a = o.Split('=')
+                        where option == a[0] && a.Length > 0
+                        select decimal.Parse(a[1]);
+                if (q.Count() > 0)
+                    amt = q.First();
+            }
+            if (amt == 0 && org.AgeFee.HasValue())
+            {
+                var q = from o in org.AgeFee.Split(',')
+                        let b = o.Split('=')
+                        let a = b[0].Split('-')
+                        where b.Length > 1
+                        where age >= a[0].ToInt()
+                        where a.Length > 1 && age <= a[1].ToInt()
+                        select decimal.Parse(b[1]);
+                if (q.Count() > 0)
+                    amt = q.First();
+            }
+            if (amt == 0)
                 amt = org.Fee ?? 0;
             if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
                 if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
@@ -316,6 +355,10 @@ namespace CMSWeb.Models
                         modelState.AddModelError("fname", "provide first and last names");
                 }
             }
+            if (org.AskTickets == true)
+                if ((ntickets ?? 0) == 0)
+                    modelState.AddModelError("ntickets", "please enter a number of tickets");
+
 
             if (org.Deposit > 0)
                 if (!paydeposit.HasValue)
@@ -412,6 +455,11 @@ namespace CMSWeb.Models
         }
         public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing)
         {
+            
+                //(int)RegistrationEnum.AttendMeeting)
+                //(int)RegistrationEnum.ComputeOrganizationByAge)
+                //(int)RegistrationEnum.UserSelectsOrganization)
+
             var om = OrganizationMember.InsertOrgMembers(orgid.Value, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             om.Amount = (om.Amount ?? 0) + Amount();
@@ -462,6 +510,9 @@ namespace CMSWeb.Models
             }
             if (org.AskGrade == true)
                 om.Grade = grade.ToInt();
+            if (org.AskTickets == true)
+                om.Tickets = ntickets;
+
             string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
             AddToMemberData(tstamp, om);
             AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
@@ -518,5 +569,12 @@ namespace CMSWeb.Models
                      select o;
             return q2.FirstOrDefault();
         }
+    }
+    public enum RegistrationEnum
+    {
+        JoinOrganization,
+        AttendMeeting,
+        UserSelectsOrganization,
+        ComputeOrganizationByAge
     }
 }

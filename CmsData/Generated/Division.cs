@@ -25,7 +25,17 @@ namespace CmsData
 		
 		private int? _SortOrder;
 		
+		private string _EmailMessage;
+		
+		private string _EmailSubject;
+		
+		private string _Instructions;
+		
+		private string _Terms;
+		
    		
+   		private EntitySet< Coupon> _Coupons;
+		
    		private EntitySet< DivOrg> _DivOrgs;
 		
    		private EntitySet< Organization> _Organizations;
@@ -58,9 +68,23 @@ namespace CmsData
 		partial void OnSortOrderChanging(int? value);
 		partial void OnSortOrderChanged();
 		
+		partial void OnEmailMessageChanging(string value);
+		partial void OnEmailMessageChanged();
+		
+		partial void OnEmailSubjectChanging(string value);
+		partial void OnEmailSubjectChanged();
+		
+		partial void OnInstructionsChanging(string value);
+		partial void OnInstructionsChanged();
+		
+		partial void OnTermsChanging(string value);
+		partial void OnTermsChanged();
+		
     #endregion
 		public Division()
 		{
+			
+			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
@@ -172,10 +196,108 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar(4000)")]
+		public string EmailMessage
+		{
+			get { return this._EmailMessage; }
+
+			set
+			{
+				if (this._EmailMessage != value)
+				{
+				
+                    this.OnEmailMessageChanging(value);
+					this.SendPropertyChanging();
+					this._EmailMessage = value;
+					this.SendPropertyChanged("EmailMessage");
+					this.OnEmailMessageChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailSubject", UpdateCheck=UpdateCheck.Never, Storage="_EmailSubject", DbType="varchar(80)")]
+		public string EmailSubject
+		{
+			get { return this._EmailSubject; }
+
+			set
+			{
+				if (this._EmailSubject != value)
+				{
+				
+                    this.OnEmailSubjectChanging(value);
+					this.SendPropertyChanging();
+					this._EmailSubject = value;
+					this.SendPropertyChanged("EmailSubject");
+					this.OnEmailSubjectChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(1000)")]
+		public string Instructions
+		{
+			get { return this._Instructions; }
+
+			set
+			{
+				if (this._Instructions != value)
+				{
+				
+                    this.OnInstructionsChanging(value);
+					this.SendPropertyChanging();
+					this._Instructions = value;
+					this.SendPropertyChanged("Instructions");
+					this.OnInstructionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar(4000)")]
+		public string Terms
+		{
+			get { return this._Terms; }
+
+			set
+			{
+				if (this._Terms != value)
+				{
+				
+                    this.OnTermsChanging(value);
+					this.SendPropertyChanging();
+					this._Terms = value;
+					this.SendPropertyChanged("Terms");
+					this.OnTermsChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_Coupons_Division", Storage="_Coupons", OtherKey="DivId")]
+   		public EntitySet< Coupon> Coupons
+   		{
+   		    get { return this._Coupons; }
+
+			set	{ this._Coupons.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_DivOrg_Division", Storage="_DivOrgs", OtherKey="DivId")]
    		public EntitySet< DivOrg> DivOrgs
    		{
@@ -289,6 +411,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = this;
+		}
+
+		private void detach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = null;
+		}
+
+		
 		private void attach_DivOrgs(DivOrg entity)
 		{
 			this.SendPropertyChanging();

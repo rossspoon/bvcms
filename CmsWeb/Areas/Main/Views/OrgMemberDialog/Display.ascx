@@ -35,6 +35,13 @@
         <td><%=Model.Grade %></td>
     </tr>
 <% }    
+   if(Model.Organization.AskTickets == true) 
+   { %>    
+    <tr>
+        <th>No. Items:</th>
+        <td><%=Model.Tickets %></td>
+    </tr>
+<% }    
    if (Model.Organization.Fee > 0 || Model.Organization.ShirtFee > 0)
    { %>    
     <tr>

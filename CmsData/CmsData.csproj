@@ -83,6 +83,7 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="MemberRules.cs" />
     <Compile Include="EmailOptOut.cs" />

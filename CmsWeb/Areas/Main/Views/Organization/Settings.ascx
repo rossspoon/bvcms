@@ -31,18 +31,26 @@
             <th>Online Notify Emails:</th>
             <td><%=Model.org.EmailAddresses%></td>
         </tr>
+<% if (Page.User.IsInRole("Admin"))
+   { %>
         <tr>
-            <th>Online Reg Type:</th>
-            <td><%=Model.org.RegType%></td>
-        </tr>
-        <tr>
-            <th>Edit Online messages</th>
-            <td><a id="emailmessagelink" href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message">
-                   registration notification</a><br />
-                <a id="instructionslink" href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions">
-                    registration instructions</a>
+            <th>Edit Online Reg Messages</th>
+            <td>
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message">
+                   confirmation (org)</a>
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message&div=true">
+                   (div)</a><br />
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions">
+                   instructions (org)</a>
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions&div=true">
+                   (div)</a><br />
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms">
+                   terms (org)</a>
+                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms&div=true">
+                   (div)</a>
             </td>
         </tr>
+<% } %>
         <tr>
             <td></td>
         </tr>
@@ -114,6 +122,10 @@
         <td><%=Html.CodeDesc("org.GenderId", Model.GenderList()) %></td>
     </tr>
     <tr>
+        <th>Registration Type:</th>
+        <td><%=Html.CodeDesc("org.RegistrationTypeId", Model.RegistrationTypes())%></td>
+    </tr>
+    <tr>
         <th>Fee:</th>
         <td><%=Model.org.Fee.ToString2("n2")%></td>
     </tr>
@@ -130,6 +142,26 @@
         <td><%=Model.org.ExtraFee.ToString2("n2")%></td>
     </tr>
     <tr>
+        <th>Maximum Fee:</th>
+        <td><%=Model.org.MaximumFee.ToString2("n2")%></td>
+    </tr>
+    <tr>
+        <th>Ask How Many Items:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AskTickets)%></td>
+    </tr>
+    <tr>
+        <th>Allow Only One:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AllowOnlyOne)%></td>
+    </tr>
+    <tr>
+        <th>Ask Options:</th>
+        <td><%=Model.org.AskOptions%></td>
+    </tr>
+    <tr>
+        <th>Age Fees:</th>
+        <td><%=Model.org.AgeFee%></td>
+    </tr>
+    <tr>
         <th>Last Day Before Extra:</th>
         <td><%=Model.org.LastDayBeforeExtra.FormatDate2()%></td>
     </tr>
@@ -140,6 +172,10 @@
     <tr>
         <th>Ask About Tylenol, Etc:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskTylenolEtc) %></td>
+    </tr>
+    <tr>
+        <th>Ask For Grade:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AskGrade) %></td>
     </tr>
     <tr>
         <th>Ask About Shirt Size:</th>

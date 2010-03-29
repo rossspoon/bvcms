@@ -133,6 +133,15 @@
         </td>
     </tr>
 <% }
+   if (Model.org.AskTickets == true)
+   { %>
+    <tr>
+        <td><label for="ntickets">No. of Items</label></td>
+        <td><%=Model.ntickets %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].ntickets", Model.ntickets)%>
+        </td>
+    </tr>
+<% }
    if (Model.org.Deposit > 0)
    { %>
     <tr>

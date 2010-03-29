@@ -108,9 +108,9 @@
                 <td>
                     <table class="modalPopup">
                         <tr>
-                        <td><asp:LinkButton ID="NewSearch" runat="server" OnClick="NewSearch_Click">clear</asp:LinkButton></td>
-                        <td align="right" colspan="3"><asp:LinkButton ID="LinkButton6" runat="server" OnClick="UseNewOrgSearch_Click">Use the <span style="color:Red; font-style:italic">New!</span> Organization Search</asp:LinkButton></td>
-                        </tr>
+                        <td colspan="4"><asp:LinkButton ID="NewSearch" runat="server" OnClick="NewSearch_Click">clear</asp:LinkButton></td>
+<%--                        <td align="right" colspan="3"><asp:LinkButton ID="LinkButton6" runat="server" OnClick="UseNewOrgSearch_Click">Use the <span style="color:Red; font-style:italic">New!</span> Organization Search</asp:LinkButton></td>
+--%>                        </tr>
                         <tr>
                             <th>
                                 Name:

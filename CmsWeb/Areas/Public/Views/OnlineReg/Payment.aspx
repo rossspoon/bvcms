@@ -2,6 +2,20 @@
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
 	<title>Complete Registration Payment</title>
+	<style>
+div.terms {
+   width:600px;
+   height:200px;
+   border:1px solid #ccc;
+   background:#f2f2f2;
+   padding:6px;
+   overflow:auto;
+}
+div.terms p,
+div.terms li {font:normal 11px/15px arial;color:#333;}
+div.terms h3 {font:bold 14px/19px arial;color:#000;}
+div.terms h4 {font:bold 12px/17px arial;color:#000;}
+div.terms strong {color:#000;}	</style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -20,14 +34,13 @@
     </script>
 
     <h2>Payment Processing</h2>
-    <p>
-        You will now be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
-        After you are finished there, you will be redirected back here to get your confirmation.
-    </p>
-    <%=Html.TextArea("Terms") %><br />
+<div class="terms">
+<%=Model.Terms %>
+</div>
     <%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.
-    <p>If you have a coupon, please enter that number here:
+<%--    <p>If you have a coupon, please enter that number here:
     <%=Html.TextBox("Coupon") %></p>
+--%>    
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID") %>
     <%=Html.Hidden("OrgAccountID") %>
@@ -44,6 +57,13 @@
     <%=Html.Hidden("Misc2") %>
     <%=Html.Hidden("Misc3") %>
     <%=Html.Hidden("Misc4") %>
+    <p>
+        You must agree to the terms above for you or your minor child before you can continue.</p>
+    <p>
+        When you click the Next button will be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
+        After you are finished there, you will be redirected back here to get your confirmation.
+        Your information will not be committed until you complete the transaction on the next page.
+    </p>
     <p><%=Html.SubmitButton("Submit", "Next") %></p>
     </form>
 

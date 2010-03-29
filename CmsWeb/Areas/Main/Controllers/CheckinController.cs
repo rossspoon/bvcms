@@ -22,33 +22,16 @@ namespace CMSWeb.Areas.Main.Controllers
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);
 
-            if (page.HasValue)
-            {
-                if (matches.Count() == 0)
-                    return new FamilyResult2(0, campus, thisday, 1); // not found
-                if (matches.Count() == 1)
-                    return new FamilyResult2(matches.Single().FamilyId, campus, thisday, 1);
-                return new MultipleResult(matches);
-            }
-            else
-            {
-                if (matches.Count() == 0)
-                    return new FamilyResult(m.FamilyMembers(0, campus, thisday)); // not found
-                if (matches.Count() == 1)
-                    return new FamilyResult(m.FamilyMembers(matches.Single().FamilyId, campus, thisday));
-                return new MultipleResult(matches);
-            }
+            if (matches.Count() == 0)
+                return new FamilyResult(0, campus, thisday, 1); // not found
+            if (matches.Count() == 1)
+                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 1);
+            return new MultipleResult(matches, page);
         }
         public ActionResult Family(int id, int campus, int thisday, int? page)
         {
             Response.NoCache();
-            if (page.HasValue)
-                return new FamilyResult2(id, campus, thisday, page.Value);
-            else
-            {
-                var m = new CheckInModel();
-                return new FamilyResult(m.FamilyMembers(id, campus, thisday));
-            }
+            return new FamilyResult(id, campus, thisday, page.Value);
         }
         public ActionResult Class(int id, int thisday)
         {

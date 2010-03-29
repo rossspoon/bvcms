@@ -22,37 +22,44 @@
         <td><%=Html.CheckBox("Pending") %></td>
     </tr>
 <% if (Model.Organization.AskRequest == true)
-   { %>    
+   { %>
     <tr>
         <th>Request:</th>
         <td><%=Html.TextBox("Request") %></td>
     </tr>
 <% }
    if (Model.Organization.AskGrade == true)
-   { %>    
+   { %>
     <tr>
         <th>Grade:</th>
         <td><%=Html.TextBox("Grade", Model.Grade) %></td>
     </tr>
 <% }
+   if (Model.Organization.AskTickets == true)
+   { %>
+    <tr>
+        <th>No. Items:</th>
+        <td><%=Html.TextBox("Tickets", Model.Tickets) %></td>
+    </tr>
+<% }
    if (Model.Organization.Fee > 0 || Model.Organization.ShirtFee > 0)
-   { %>    
+   { %>
     <tr>
         <th>Amount:</th>
         <td><%=Html.TextBox("Amount", Model.Amount.HasValue ? Model.Amount.Value.ToString("f2") : "") %></td>
     </tr>
 <% }
    if(Model.Organization.AskShirtSize == true) 
-   { %>    
+   { %>
     <tr>
         <th>ShirtSize:</th>
         <td><%=Html.DropDownList("ShirtSize", 
                 CMSWeb.Models.OnlineRegPersonModel.ShirtSizes(Model.Organization)) %></td>
     </tr>
-<% } %>    
+<% } %>
     <tr>
         <th>Extra Member Info:</th>
-        <td><%=Html.TextArea("UserData") %></td>
+        <td><%=Html.TextArea("UserData", new { style = "height:100px;width:100%" })%></td>
     </tr>
 <tr><td></td></tr>
      <tr><td></td><td><a href="/OrgMemberDialog/Update/<%=Model.OrganizationId %>?pid=<%=Model.PeopleId %>" class="submitbutton">Save Changes</a></td></tr>

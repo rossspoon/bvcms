@@ -53,6 +53,8 @@ namespace CmsData
 		
 		private int? _Grade;
 		
+		private int? _Tickets;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -123,6 +125,9 @@ namespace CmsData
 		
 		partial void OnGradeChanging(int? value);
 		partial void OnGradeChanged();
+		
+		partial void OnTicketsChanging(int? value);
+		partial void OnTicketsChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -541,6 +546,28 @@ namespace CmsData
 					this._Grade = value;
 					this.SendPropertyChanged("Grade");
 					this.OnGradeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Tickets", UpdateCheck=UpdateCheck.Never, Storage="_Tickets", DbType="int")]
+		public int? Tickets
+		{
+			get { return this._Tickets; }
+
+			set
+			{
+				if (this._Tickets != value)
+				{
+				
+                    this.OnTicketsChanging(value);
+					this.SendPropertyChanging();
+					this._Tickets = value;
+					this.SendPropertyChanged("Tickets");
+					this.OnTicketsChanged();
 				}
 
 			}

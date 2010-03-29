@@ -42,12 +42,7 @@ namespace CmsCheckin
             var wc = new WebClient();
             var url = new Uri(new Uri(Util.ServiceUrl()), page);
 
-            f.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
             var str = wc.DownloadString(url);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            f.Cursor = Cursors.Default;
 
             var x = XDocument.Parse(str);
             return x;
@@ -73,7 +68,6 @@ namespace CmsCheckin
                 return false;
             try
             {
-                f.Cursor = Cursors.WaitCursor;
                 var wc = new WebClient();
                 var coll = new NameValueCollection();
                 coll.Add("PeopleId", c.pid.ToString());
@@ -82,8 +76,6 @@ namespace CmsCheckin
                 coll.Add("thisday", Program.ThisDay.ToString());
                 var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
 
-                f.Cursor = Cursors.WaitCursor;
-                Cursor.Show();
                 var resp = wc.UploadValues(url, "POST", coll);
 
                 var s = Encoding.ASCII.GetString(resp);
@@ -91,12 +83,6 @@ namespace CmsCheckin
             catch (Exception)
             {
                 return false;
-            }
-            finally
-            {
-                if (Program.HideCursor)
-                    Cursor.Hide();
-                f.Cursor = Cursors.Default;
             }
             return true;
         }
@@ -113,7 +99,6 @@ namespace CmsCheckin
             int marital,
             int gender)
         {
-            f.Cursor = Cursors.WaitCursor;
             var wc = new WebClient();
             var coll = new NameValueCollection();
             coll.Add("first", first);
@@ -130,15 +115,10 @@ namespace CmsCheckin
             coll.Add("campusid", Program.CampusId.ToString());
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
 
-            f.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
             var resp = wc.UploadValues(url, "POST", coll);
 
             var s = Encoding.ASCII.GetString(resp);
             Program.FamilyId = s.ToInt();
-            if (Program.HideCursor)
-                Cursor.Hide();
-            f.Cursor = Cursors.Default;
         }
         public static void EditPerson(this Control f,
             int id,
@@ -154,7 +134,6 @@ namespace CmsCheckin
             int marital,
             int gender)
         {
-            f.Cursor = Cursors.WaitCursor;
             var wc = new WebClient();
             var coll = new NameValueCollection();
             coll.Add("first", first);
@@ -171,14 +150,9 @@ namespace CmsCheckin
             coll.Add("campusid", Program.CampusId.ToString());
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id );
 
-            f.Cursor = Cursors.WaitCursor;
-            Cursor.Show();
             var resp = wc.UploadValues(url, "POST", coll);
 
             var s = Encoding.ASCII.GetString(resp);
-            if (Program.HideCursor)
-                Cursor.Hide();
-            f.Cursor = Cursors.Default;
         }
         public static bool AllDigits(string str)
         {
@@ -260,12 +234,14 @@ namespace CmsCheckin
         }
         public static void Swap(this UserControl c1, UserControl c2)
         {
+            Program.TimerStop();
             c1.Visible = false;
             c2.Visible = true;
         }
         public static void GoHome(this UserControl c, string s)
         {
             c.Swap(Program.home);
+            Program.CursorHide();
             Program.home.textBox1.Text = s.FmtFone();
             Program.home.textBox1.Focus();
             Program.home.textBox1.Select(Program.home.textBox1.Text.Length, 0);

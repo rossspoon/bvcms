@@ -1,5 +1,12 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
 <table>
+<% if (Model.org.RegistrationTypeId == (int)CMSWeb.Models.RegistrationEnum.UserSelectsOrganization)
+   { %>
+    <tr>
+        <td colspan="3">Choose Class
+        <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%></td>
+    </tr>
+<% } %>
     <tr>
         <td><label for="first">First Name</label></td>
         <td><input type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" />

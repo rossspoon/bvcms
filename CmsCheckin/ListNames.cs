@@ -19,8 +19,43 @@ namespace CmsCheckin
         public ListNames()
         {
             InitializeComponent();
-            timer1.Tick += new EventHandler(timer1_Tick);
-            timer1.Interval = Program.Interval;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            const int WM_KEYDOWN = 0x100;
+            const int WM_SYSKEYDOWN = 0x104;
+
+            if ((msg.Msg == WM_KEYDOWN) || (msg.Msg == WM_SYSKEYDOWN))
+            {
+                switch (keyData)
+                {
+                    case Keys.PageUp:
+                        if (pgup.Visible)
+                            ShowResults(name, prev.Value);
+                        return true;
+                    case Keys.PageDown:
+                        if (pgdn.Visible)
+                            ShowResults(name, next.Value);
+                        return true;
+                    case Keys.Escape:
+                        Program.TimerStop();
+                        if (Program.HideCursor)
+                            Cursor.Hide();
+                        this.GoHome(string.Empty);
+                        return true;
+                    case Keys.S | Keys.Alt:
+                        Program.TimerReset();
+                        Program.CursorShow();
+                        foreach (var c in sucontrols)
+                        {
+                            c.Enabled = true;
+                            c.BackColor = Color.Coral;
+                        }
+                        return true;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         int? next, prev;
@@ -95,7 +130,6 @@ namespace CmsCheckin
                 ab.Text = e.Attribute("display").Value;
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
-                ab.KeyPress += new KeyPressEventHandler(ResultKeyPress);
                 controls.Add(ab);
 
                 var an = new Button();
@@ -152,25 +186,25 @@ namespace CmsCheckin
 
                 row++;
             }
-            timer1.Start();
+            Program.TimerStart(timer1_Tick);
+            this.Focus();
         }
 
         void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             Program.ClearFields();
             this.GoHome("");
         }
 
         void ab_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             var ab = sender as Button;
             this.GoHome((string)ab.Tag);
         }
         void an_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             var an = sender as Button;
             var fi = (AddFamilyInfo)an.Tag;
             Program.FamilyId = fi.fid;
@@ -180,7 +214,6 @@ namespace CmsCheckin
         }
         void ed_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             var ed = sender as Button;
             var pi = (PersonInfo)ed.Tag;
             Program.PeopleId = pi.pid;
@@ -198,21 +231,12 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             Program.namesearch.textBox1.Text = name;
             this.Swap(Program.namesearch);
-        }
-        private void ResultKeyPress(object sender, KeyPressEventArgs e)
-        {
-            timer1.Stop();
-            timer1.Start();
-            if (e.KeyChar == 27)
-                this.GoHome(string.Empty);
         }
 
         private void AddNewFamily_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             Program.FamilyId = 0;
             Program.editing = false;
             this.Swap(Program.first);
@@ -233,20 +257,17 @@ namespace CmsCheckin
         }
         private void pgdn_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             ShowResults(name, next.Value);
         }
 
         private void pgup_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             ShowResults(name, prev.Value);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            Program.TimerReset();
             foreach (var c in sucontrols)
             {
                 c.Enabled = true;

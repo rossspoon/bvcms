@@ -455,22 +455,13 @@ namespace CMSWeb {
         protected global::CustomControls.DisplayOrEditText RegType;
         
         /// <summary>
-        /// emailmessagelink control.
+        /// editcontent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink emailmessagelink;
-        
-        /// <summary>
-        /// instructionslink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink instructionslink;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow editcontent;
         
         /// <summary>
         /// CanSelfCheckIn control.

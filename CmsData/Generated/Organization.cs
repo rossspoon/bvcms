@@ -151,6 +151,20 @@ namespace CmsData
 		
 		private bool? _AskGrade;
 		
+		private string _Terms;
+		
+		private bool? _AskTickets;
+		
+		private decimal? _MaximumFee;
+		
+		private string _AskOptions;
+		
+		private string _AgeFee;
+		
+		private bool? _AllowOnlyOne;
+		
+		private int? _RegistrationTypeId;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -163,6 +177,8 @@ namespace CmsData
    		private EntitySet< BadET> _BadETs;
 		
    		private EntitySet< CheckInTime> _CheckInTimes;
+		
+   		private EntitySet< Coupon> _Coupons;
 		
    		private EntitySet< DivOrg> _DivOrgs;
 		
@@ -397,6 +413,27 @@ namespace CmsData
 		partial void OnAskGradeChanging(bool? value);
 		partial void OnAskGradeChanged();
 		
+		partial void OnTermsChanging(string value);
+		partial void OnTermsChanged();
+		
+		partial void OnAskTicketsChanging(bool? value);
+		partial void OnAskTicketsChanged();
+		
+		partial void OnMaximumFeeChanging(decimal? value);
+		partial void OnMaximumFeeChanged();
+		
+		partial void OnAskOptionsChanging(string value);
+		partial void OnAskOptionsChanged();
+		
+		partial void OnAgeFeeChanging(string value);
+		partial void OnAgeFeeChanged();
+		
+		partial void OnAllowOnlyOneChanging(bool? value);
+		partial void OnAllowOnlyOneChanged();
+		
+		partial void OnRegistrationTypeIdChanging(int? value);
+		partial void OnRegistrationTypeIdChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -412,6 +449,8 @@ namespace CmsData
 			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
 			
 			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
+			
+			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
@@ -1364,7 +1403,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar(4000)")]
 		public string EmailMessage
 		{
 			get { return this._EmailMessage; }
@@ -1408,7 +1447,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(1000)")]
 		public string Instructions
 		{
 			get { return this._Instructions; }
@@ -1939,6 +1978,160 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar(4000)")]
+		public string Terms
+		{
+			get { return this._Terms; }
+
+			set
+			{
+				if (this._Terms != value)
+				{
+				
+                    this.OnTermsChanging(value);
+					this.SendPropertyChanging();
+					this._Terms = value;
+					this.SendPropertyChanged("Terms");
+					this.OnTermsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskTickets", UpdateCheck=UpdateCheck.Never, Storage="_AskTickets", DbType="bit")]
+		public bool? AskTickets
+		{
+			get { return this._AskTickets; }
+
+			set
+			{
+				if (this._AskTickets != value)
+				{
+				
+                    this.OnAskTicketsChanging(value);
+					this.SendPropertyChanging();
+					this._AskTickets = value;
+					this.SendPropertyChanged("AskTickets");
+					this.OnAskTicketsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MaximumFee", UpdateCheck=UpdateCheck.Never, Storage="_MaximumFee", DbType="money")]
+		public decimal? MaximumFee
+		{
+			get { return this._MaximumFee; }
+
+			set
+			{
+				if (this._MaximumFee != value)
+				{
+				
+                    this.OnMaximumFeeChanging(value);
+					this.SendPropertyChanging();
+					this._MaximumFee = value;
+					this.SendPropertyChanged("MaximumFee");
+					this.OnMaximumFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskOptions", UpdateCheck=UpdateCheck.Never, Storage="_AskOptions", DbType="varchar(200)")]
+		public string AskOptions
+		{
+			get { return this._AskOptions; }
+
+			set
+			{
+				if (this._AskOptions != value)
+				{
+				
+                    this.OnAskOptionsChanging(value);
+					this.SendPropertyChanging();
+					this._AskOptions = value;
+					this.SendPropertyChanged("AskOptions");
+					this.OnAskOptionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AgeFee", UpdateCheck=UpdateCheck.Never, Storage="_AgeFee", DbType="varchar(60)")]
+		public string AgeFee
+		{
+			get { return this._AgeFee; }
+
+			set
+			{
+				if (this._AgeFee != value)
+				{
+				
+                    this.OnAgeFeeChanging(value);
+					this.SendPropertyChanging();
+					this._AgeFee = value;
+					this.SendPropertyChanged("AgeFee");
+					this.OnAgeFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AllowOnlyOne", UpdateCheck=UpdateCheck.Never, Storage="_AllowOnlyOne", DbType="bit")]
+		public bool? AllowOnlyOne
+		{
+			get { return this._AllowOnlyOne; }
+
+			set
+			{
+				if (this._AllowOnlyOne != value)
+				{
+				
+                    this.OnAllowOnlyOneChanging(value);
+					this.SendPropertyChanging();
+					this._AllowOnlyOne = value;
+					this.SendPropertyChanged("AllowOnlyOne");
+					this.OnAllowOnlyOneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegistrationTypeId", UpdateCheck=UpdateCheck.Never, Storage="_RegistrationTypeId", DbType="int")]
+		public int? RegistrationTypeId
+		{
+			get { return this._RegistrationTypeId; }
+
+			set
+			{
+				if (this._RegistrationTypeId != value)
+				{
+				
+                    this.OnRegistrationTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._RegistrationTypeId = value;
+					this.SendPropertyChanged("RegistrationTypeId");
+					this.OnRegistrationTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1999,6 +2192,16 @@ namespace CmsData
    		    get { return this._CheckInTimes; }
 
 			set	{ this._CheckInTimes.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="OrgId")]
+   		public EntitySet< Coupon> Coupons
+   		{
+   		    get { return this._Coupons; }
+
+			set	{ this._Coupons.Assign(value); }
 
    		}
 
@@ -2440,6 +2643,19 @@ namespace CmsData
 		}
 
 		private void detach_CheckInTimes(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+
+		
+		private void attach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+
+		private void detach_Coupons(Coupon entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

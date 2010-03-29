@@ -64,11 +64,14 @@
         <%= Html.CheckBox("otherchurch") %> Active in another Local Church</td>
         <td><%= Html.ValidationMessage("member")%></td>
     </tr>
+<% if(Page.User.IsInRole("Admin"))
+   { %>
     <tr>
         <td><label for="comments">History</label></td>
         <td><%= Html.TextArea("comments", Model.Comments)%></td>
         <td></td>
     </tr>
+<% } %>
 <tr><td></td></tr>
      <tr><td></td><td><a href="/Person/RecRegUpdate/<%=Model.PeopleId %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

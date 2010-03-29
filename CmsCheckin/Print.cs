@@ -114,6 +114,9 @@ namespace CmsCheckin
         {
             if (!HasPrinter() || li.n == 0)
                 return;
+            var n = li.n;
+            if (n > Program.MaxLabels)
+                n = Program.MaxLabels;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
             sw.WriteLine("\x02n");
@@ -134,7 +137,7 @@ namespace CmsCheckin
             sw.WriteLine("1911A1000300011" + li.last);
             sw.WriteLine("1911A1000060008" + " (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
             sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
-            sw.WriteLine("Q" + li.n.ToString("0000"));
+            sw.WriteLine("Q" + n.ToString("0000"));
             sw.WriteLine("E");
             sw.Flush();
 

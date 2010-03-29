@@ -381,11 +381,21 @@
                             Width="135px"></cc1:DisplayOrEditText>
                     </td>
                 </tr>
-                <tr>
-                    <th></th>
+                <tr runat="server" id="editcontent">
+                    <th>Online Notices</th>
                     <td>
-                        <asp:HyperLink runat="server" ID="emailmessagelink">online registration notification message</asp:HyperLink><br />
-                        <asp:HyperLink runat="server" ID="instructionslink">online registration instructions</asp:HyperLink>
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=message">
+                   confirmation (org)</a>
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=message&div=true">
+                   (div)</a><br />
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=instructions">
+                   instructions (org)</a>
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=instructions&div=true">
+                   (div)</a><br />
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=terms">
+                   terms (org)</a>
+                <a href="/Display/OrgContent/<%=organization.OrganizationId %>?what=terms&div=true">
+                   (div)</a>
                     </td>
                 </tr>
                 <tr>

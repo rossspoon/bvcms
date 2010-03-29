@@ -117,6 +117,10 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("no query");
             return new Avery3Result { id = id };
         }
+        public ActionResult Coupons()
+        {
+            return new CouponsResult(null, null);
+        }
         public ActionResult AveryAddress(int? id, string format, bool? titles)
         {
             if (!id.HasValue)

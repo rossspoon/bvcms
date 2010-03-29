@@ -72,9 +72,9 @@ namespace CMSWeb
                 CurrentOrgLink.NavigateUrl = "Organization.aspx?id={0}".Fmt(Util.CurrentOrgId);
                 CurrentOrgLink.Text = Session["ActiveOrganization"].ToString();
             }
-            if (DbUtil.Db.UserPreference("neworgsearch").ToBool())
-                OrgLink.NavigateUrl = "/OrgSearch/";
-            else
+            //if (DbUtil.Db.UserPreference("neworgsearch").ToBool())
+            //    OrgLink.NavigateUrl = "/OrgSearch/";
+            //else
                 OrgLink.NavigateUrl = "/OrganizationSearch.aspx";
             OrgSearchLink.NavigateUrl = OrgLink.NavigateUrl;
             //HomeDrop.Visible = Page.User.IsInRole("Developer");

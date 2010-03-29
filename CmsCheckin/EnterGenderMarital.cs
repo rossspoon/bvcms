@@ -15,8 +15,6 @@ namespace CmsCheckin
         public EnterGenderMarital()
         {
             InitializeComponent();
-            timer1.Tick += new EventHandler(timer1_Tick);
-            timer1.Interval = Program.Interval;
         }
         public void ShowScreen()
         {
@@ -32,22 +30,21 @@ namespace CmsCheckin
             AddAnother.Visible = !Program.editing;
             if (dob.Text.Age().ToInt() < 18)
                 single.Checked = true;
-            timer1.Start();
+            Program.TimerStart(timer1_Tick);
         }
 
         void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             Program.ClearFields();
             this.GoHome("");
         }
 
         private void buttongo_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
+            Program.TimerStop();
             if (Marital == 0 || Gender == 0)
                 return;
-            
            AddPersonGoHome();
         }
         private void AddPersonGoHome()
@@ -73,10 +70,7 @@ namespace CmsCheckin
 
         public int Gender
         {
-            get
-            {
-                return Male.Checked ? 1 : Female.Checked ? 2 : 0;
-            }
+            get { return Male.Checked ? 1 : Female.Checked ? 2 : 0; }
             set
             {
                 switch (value)
@@ -144,7 +138,6 @@ namespace CmsCheckin
         }
         private void GoBack_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             this.Swap(Program.homephone);
         }
 
@@ -152,11 +145,15 @@ namespace CmsCheckin
         {
             if (Marital == 0 || Gender == 0)
                 return;
-            timer1.Stop();
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, Marital, Gender);
             Program.ClearFields();
             Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text);
             this.Swap(Program.first);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.GoHome(string.Empty);
         }
     }
 }
