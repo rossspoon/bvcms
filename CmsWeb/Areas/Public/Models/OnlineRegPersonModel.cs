@@ -409,7 +409,7 @@ namespace CMSWeb.Models
             if (org.AskEmContact == true)
             {
                 sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", rr.Emcontact);
-                sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", rr.Emphone.FmtFone());
+                sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", rr.Emphone);
             }
             if (org.AskDoctor == true)
             {

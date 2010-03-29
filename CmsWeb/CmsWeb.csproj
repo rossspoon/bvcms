@@ -1279,6 +1279,7 @@
     <Content Include="Areas\Public\Views\OnlineReg\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\Confirm.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Confirm2.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Payment2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Index.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\List.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\NoLeague.aspx" />

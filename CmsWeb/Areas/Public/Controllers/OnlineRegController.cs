@@ -294,7 +294,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc2 = ti.Header,
                 Misc1 = ti.Name,
             };
-            return View("Payment", pm);
+            return View("Payment2", pm);
         }
         [ValidateInput(false)]
         public ActionResult Confirm2(int? id, string TransactionID)
@@ -319,6 +319,13 @@ namespace CMSWeb.Areas.Public.Controllers
                 {
                     var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
                     om.Amount = pi.amt;
+
+                    string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+                    AddToMemberData(tstamp, om);
+                    AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
+                    if (ti.testing == true)
+                        AddToMemberData("(test transaction)", om);
+
                     var reg = p.RecRegs.Single();
                     AddToRegistrationComments("-------------", reg);
                     AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
@@ -335,6 +342,12 @@ namespace CMSWeb.Areas.Public.Controllers
             Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
                 "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
             return View(ti);
+        }
+        private static void AddToMemberData(string s, OrganizationMember om)
+        {
+            if (om.UserData.HasValue())
+                om.UserData += "\n";
+            om.UserData += s;
         }
         private static void AddToRegistrationComments(string s, RecReg rr)
         {

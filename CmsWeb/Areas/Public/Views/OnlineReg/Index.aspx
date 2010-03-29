@@ -24,6 +24,7 @@ tr.alt
     <% }
        else
        { %>
+    <%=Model.Instructions%>
     <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/<%=Model.qtesting %>" method="post">
     <% Html.RenderPartial("List", Model); %>
     </form>
