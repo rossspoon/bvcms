@@ -2,7 +2,7 @@
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Event Registration</title>
-    <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">

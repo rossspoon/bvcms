@@ -24,6 +24,14 @@ namespace CmsData
         {
             Normal = 0,
         }
+        public enum RegistrationEnum
+        {
+            None = 0,
+            JoinOrganization = 1,
+            AttendMeeting = 2,
+            UserSelectsOrganization = 3,
+            ComputeOrganizationByAge = 4
+        }
         public static string FormatOrgName(string name, string leader, string loc)
         {
             if (loc.HasValue())

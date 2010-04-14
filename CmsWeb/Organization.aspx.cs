@@ -93,6 +93,8 @@ namespace CMSWeb
             DeleteOrg.Visible = User.IsInRole("OrgTagger");
             ManageGroups.Visible = User.IsInRole("ManageGroups");
             editcontent.Visible = User.IsInRole("Admin");
+            NewOrgPage.Visible = User.IsInRole("Admin");
+            NewOrgPage.NavigateUrl = "/Organization/Index/" + organization.OrganizationId;
         }
 
         void RebindGrids(object sender, EventArgs e)

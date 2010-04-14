@@ -11,6 +11,7 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
 using System.Net.Mail;
+using System.Collections;
 
 namespace CMSWeb.Models
 {
@@ -28,6 +29,8 @@ namespace CMSWeb.Models
             {
                 if (_org == null && orgid.HasValue)
                     _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
+                if (_org == null && classid.HasValue)
+                    _org = DbUtil.Db.LoadOrganizationById(classid.Value);
                 if (_org == null && divid.HasValue)
                     _org = GetAppropriateOrg();
                 return _org;
@@ -56,6 +59,18 @@ namespace CMSWeb.Models
         public bool IsNew { get; set; }
         public bool OtherOK { get; set; }
         public bool ShowAddress { get; set; }
+        private Dictionary<string, bool?> _YesNoQuestion = new Dictionary<string, bool?>();
+        public Dictionary<string, bool?> YesNoQuestion
+        {
+            get { return _YesNoQuestion; }
+            set { _YesNoQuestion = value; }
+        }
+        public string YesNoChecked(string key, bool value)
+        {
+            if (YesNoQuestion.ContainsKey(key))
+                return YesNoQuestion[key] == value ? "checked='checked'" : "";
+            return "";
+        }
 
         [NonSerialized]
         private DateTime _Birthday;
@@ -80,10 +95,14 @@ namespace CMSWeb.Models
         {
             get { return married == 10 ? "Single" : "Married"; }
         }
+        public bool IsValidForExisting { get; set; }
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
             CMSWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
+            if (UserSelectsOrganization())
+                if ((classid ?? 0) == 0)
+                    ModelState.AddModelError("classid", "choose a class");
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))
@@ -93,19 +112,37 @@ namespace CMSWeb.Models
                 Found = person != null;
                 if (count == 1)
                 {
-                    address = person.PrimaryAddress;
-                    city = person.PrimaryCity;
-                    state = person.PrimaryState;
-                    zip = person.PrimaryZip;
-                    gender = person.GenderId;
-                    married = person.MaritalStatusId == 2 ? 2 : 1;
+                    if (MemberOnly() && person.MemberStatusId != (int)Person.MemberStatusCode.Member)
+                        ModelState.AddModelError("find", "Sorry, must be a member of church");
+                    else if (org != null && org.ValidateOrgs.HasValue())
+                    {
+                        var q = from s in org.ValidateOrgs.Split(',')
+                                select s.ToInt();
+                        var a = q.ToArray();
+                        if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
+                            ModelState.AddModelError("find", "Must be member of specified organization");
+                    }
+                    else
+                    {
+                        address = person.PrimaryAddress;
+                        city = person.PrimaryCity;
+                        state = person.PrimaryState;
+                        zip = person.PrimaryZip;
+                        gender = person.GenderId;
+                        married = person.MaritalStatusId == 2 ? 2 : 1;
+                    }
                 }
                 else if (count > 1)
                     ModelState.AddModelError("find", "More than one match, sorry");
                 else if (count == 0)
+                {
                     ModelState.AddModelError("find", "record not found");
+                    NotFoundText = CMSWeb.Models.SearchPeopleModel.NotFoundText;
+                }
             }
+            IsValidForExisting = ModelState.IsValid;
         }
+        public string NotFoundText;
         public int? PeopleId { get; set; }
         private int count;
         [NonSerialized]
@@ -140,17 +177,23 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Classes()
         {
-            var q = from o in org.Division.Organizations
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivisionId == divid
                     where o.ClassFilled != true
-                    where o.Limit > o.MemberCount
+                    where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
+                    where (o.Limit ?? 0) == 0 || o.Limit > o.MemberCount
+                    orderby o.OrganizationName
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
                         Text = o.OrganizationName,
                     };
-            return q;
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specifed)" });
+            return list;
         }
 
+        public bool IsValidForNew { get; set; }
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
             CMSWeb.Models.SearchPeopleModel
@@ -171,6 +214,7 @@ namespace CMSWeb.Models
                 ModelState.AddModelError("gender", "Please specify gender");
             if (!married.HasValue)
                 ModelState.AddModelError("married", "Please specify marital status");
+            IsValidForNew = ModelState.IsValid;
         }
         public override string ToString()
         {
@@ -245,6 +289,8 @@ namespace CMSWeb.Models
 
         public decimal Amount()
         {
+            if (org == null)
+                return 0;
             decimal amt = 0;
             if (paydeposit == true && org.Deposit.HasValue && org.Deposit > 0)
                 amt = org.Deposit.Value;
@@ -254,7 +300,7 @@ namespace CMSWeb.Models
             {
                 var q = from o in org.AskOptions.Split(',')
                         let a = o.Split('=')
-                        where option == a[0] && a.Length > 0
+                        where option == a[0] && a.Length > 1
                         select decimal.Parse(a[1]);
                 if (q.Count() > 0)
                     amt = q.First();
@@ -271,6 +317,16 @@ namespace CMSWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
+            if (amt == 0 && org.OrgMemberFees.HasValue())
+            {
+                var q = from o in org.OrgMemberFees.Split(',')
+                        let b = o.Split('=')
+                        where b.Length > 1
+                        where DbUtil.Db.OrganizationMembers.Any(om => om.OrganizationId == b[0].ToInt())
+                        select decimal.Parse(b[1]);
+                if (q.Count() > 0)
+                    amt = q.First();
+            }
             if (amt == 0)
                 amt = org.Fee ?? 0;
             if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
@@ -282,7 +338,10 @@ namespace CMSWeb.Models
         }
         public decimal AmountDue()
         {
-            return (org.Fee ?? 0) - Amount();
+            if (org.Deposit > 0)
+                return (org.Fee ?? 0) - Amount();
+            else
+                return 0;
         }
 
         public void ValidateModelForOther(ModelStateDictionary modelState)
@@ -339,6 +398,10 @@ namespace CMSWeb.Models
                 if (!coaching.HasValue)
                     modelState.AddModelError("coaching", "please indicate");
 
+            if (org.AskOptions.HasValue())
+                if (option == "0")
+                    modelState.AddModelError("option", "please select an option");
+
             if (org.AskParents == true)
             {
                 if (!mname.HasValue() && !fname.HasValue())
@@ -359,15 +422,66 @@ namespace CMSWeb.Models
                 if ((ntickets ?? 0) == 0)
                     modelState.AddModelError("ntickets", "please enter a number of tickets");
 
-
             if (org.Deposit > 0)
                 if (!paydeposit.HasValue)
                     modelState.AddModelError("paydeposit", "please indicate");
+
+            foreach (var a in YesNoQuestions())
+            {
+                if (YesNoQuestion == null || !YesNoQuestion.ContainsKey(a.name))
+                    modelState.AddModelError(a.name + "-YNError", "please select yes or no");
+            }
         }
 
         public List<SelectListItem> ShirtSizes()
         {
             return ShirtSizes(org);
+        }
+        public class YesNoQuestionItem
+        {
+            public string name { get; set; }
+            public string desc { get; set; }
+            public int n { get; set; }
+        }
+        public IEnumerable<YesNoQuestionItem> YesNoQuestions()
+        {
+            var i = 0;
+            var q = from s in (org.YesNoQuestions ?? string.Empty).Split(',')
+                    let a = s.Split('=')
+                    where s.HasValue()
+                    select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
+            return q;
+        }
+        public IEnumerable<SelectListItem> Options()
+        {
+            var q = from s in (org.AskOptions ?? string.Empty).Split(',')
+                    let a = s.Split('=')
+                    where s.HasValue()
+                    let amt = a.Length > 1 ? " ({0:C})".Fmt(decimal.Parse(a[1])) : ""
+                    select new SelectListItem { Text = a[0].Trim() + amt, Value = a[0].Trim() };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+        public class AgeGroupItem
+        {
+            public int StartAge { get; set; }
+            public int EndAge { get; set; }
+            public string Name { get; set; }
+        }
+        public IEnumerable<AgeGroupItem> AgeGroups()
+        {
+            var q = from o in (org.AgeGroups ?? string.Empty).Split(',')
+                    where o.HasValue()
+                    let b = o.Split('=')
+                    let a = b[0].Split('-')
+                    select new AgeGroupItem
+                    {
+                        StartAge = a[0].ToInt(),
+                        EndAge = a[1].ToInt(),
+                        Name = b[1]
+                    };
+            return q;
         }
         public static List<SelectListItem> ShirtSizes(CmsData.Organization org)
         {
@@ -448,21 +562,38 @@ namespace CMSWeb.Models
             if (org.AskGrade == true)
                 sb.AppendFormat("<tr><td>Grade:</td><td>{0}</td></tr>\n", om.Grade);
 
-            sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0}</td></tr>\n", Amount());
+            if (org.AgeGroups.HasValue())
+                sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
+
+            if (org.AskOptions.HasValue())
+                sb.AppendFormat("<tr><td>Option:</td><td>{0}</td></tr>\n", option);
+            if (org.YesNoQuestions.HasValue())
+                foreach (var a in YesNoQuestions())
+                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, YesNoQuestion[a.name] == true ? "Yes" : "No"));
+
+            if (Amount() > 0)
+                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0}</td></tr>\n", Amount());
             sb.Append("</table>");
 
             return sb.ToString();
         }
+        private string AgeGroup()
+        {
+            foreach (var i in AgeGroups())
+                if (person.Age >= i.StartAge && person.Age <= i.EndAge)
+                    return i.Name;
+            return string.Empty;
+        }
         public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing)
         {
-            
-                //(int)RegistrationEnum.AttendMeeting)
-                //(int)RegistrationEnum.ComputeOrganizationByAge)
-                //(int)RegistrationEnum.UserSelectsOrganization)
+
+            //(int)RegistrationEnum.AttendMeeting)
+            //(int)RegistrationEnum.ComputeOrganizationByAge)
 
             var om = OrganizationMember.InsertOrgMembers(orgid.Value, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
-            om.Amount = (om.Amount ?? 0) + Amount();
+            var amt = Amount();
+            om.Amount = (om.Amount ?? 0) + amt;
 
             var reg = person.RecRegs.SingleOrDefault();
 
@@ -513,11 +644,24 @@ namespace CMSWeb.Models
             if (org.AskTickets == true)
                 om.Tickets = ntickets;
 
+            if (org.YesNoQuestions.HasValue())
+                foreach (var g in YesNoQuestion)
+                    om.AddToGroup((g.Value == true ? "Yes:" : "No:") + g.Key);
+
+            if (org.AskOptions.HasValue())
+                om.AddToGroup(option);
+
+            if (org.AgeGroups.HasValue())
+                om.AddToGroup(AgeGroup());
+
             string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
             AddToMemberData(tstamp, om);
-            AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
-            if (testing == true)
-                AddToMemberData("(test transaction)", om);
+            if (amt > 0)
+            {
+                AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
+                if (testing == true)
+                    AddToMemberData("(test transaction)", om);
+            }
 
             if (org.AskTylenolEtc == true)
             {
@@ -535,9 +679,12 @@ namespace CMSWeb.Models
                 om.Request = request;
             }
 
-            if (testing == true)
-                AddToRegistrationComments("(test transaction)", reg);
-            AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
+            if (amt > 0)
+            {
+                if (testing == true)
+                    AddToRegistrationComments("(test transaction)", reg);
+                AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
+            }
             if (paylink.HasValue())
                 AddToRegistrationComments(paylink, reg);
             AddToRegistrationComments(tstamp, reg);
@@ -556,9 +703,27 @@ namespace CMSWeb.Models
         {
             rr.Comments = s + "\n" + rr.Comments;
         }
+        public bool UserSelectsOrganization()
+        {
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization);
+        }
+        public bool ComputesOrganizationByAge()
+        {
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge);
+        }
+        public bool MemberOnly()
+        {
+            if (org != null)
+                return org.MemberOnly == true;
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+                    o.MemberOnly == true);
+        }
         private CmsData.Organization GetAppropriateOrg()
         {
             var q = from o in DbUtil.Db.Organizations
+                    where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge
                     where o.DivisionId == divid
                     where gender == null || o.GenderId == gender || o.GenderId == 0
                     select o;
@@ -569,12 +734,43 @@ namespace CMSWeb.Models
                      select o;
             return q2.FirstOrDefault();
         }
-    }
-    public enum RegistrationEnum
-    {
-        JoinOrganization,
-        AttendMeeting,
-        UserSelectsOrganization,
-        ComputeOrganizationByAge
+        public bool AnyOtherInfo()
+        {
+            if (org != null)
+                return (org.AskShirtSize == true ||
+                    org.AskRequest == true ||
+                    org.AskGrade == true ||
+                    org.AskEmContact == true ||
+                    org.AskInsurance == true ||
+                    org.AskDoctor == true ||
+                    org.AskAllergies == true ||
+                    org.AskTylenolEtc == true ||
+                    org.AskParents == true ||
+                    org.AskCoaching == true ||
+                    org.AskChurch == true ||
+                    org.AskTickets == true ||
+                    org.AskOptions.HasValue() ||
+                    org.YesNoQuestions.HasValue() ||
+                    org.Deposit > 0);
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivisionId == divid
+                    where o.AskShirtSize == true ||
+                        o.AskRequest == true ||
+                        o.AskGrade == true ||
+                        o.AskEmContact == true ||
+                        o.AskInsurance == true ||
+                        o.AskDoctor == true ||
+                        o.AskAllergies == true ||
+                        o.AskTylenolEtc == true ||
+                        o.AskParents == true ||
+                        o.AskCoaching == true ||
+                        o.AskChurch == true ||
+                        o.AskTickets == true ||
+                        o.AskOptions.HasValue() ||
+                        o.YesNoQuestions.Length > 0 ||
+                        o.Deposit > 0
+                    select o;
+            return q.Count() > 0;
+        }
     }
 }

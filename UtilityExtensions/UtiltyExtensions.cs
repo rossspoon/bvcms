@@ -959,6 +959,12 @@ namespace UtilityExtensions
                     return s;
             return "";
         }
+        public static string Disallow(this string value, string dissallow)
+        {
+            if (value == dissallow)
+                return "";
+            return value;
+        }
         public static SmtpClient Smtp()
         {
             var smtp = new SmtpClient();

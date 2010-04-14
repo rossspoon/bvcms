@@ -1,0 +1,47 @@
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrganizationPage.PrevMemberModel>" %>
+<% Html.RenderPartial("ExportToolBar"); %>
+&nbsp;<div style="clear: both"></div>
+<p style="bottom-margin:5px">
+Count: <strong><%=Model.Count() %></strong></p>
+<table id="MemberGrid" class="grid" cellpadding="4">
+<thead>
+<tr>
+    <th><br /><a href="#" class="sortable">Name</a></th>
+    <th><br /><a title="Sort by Organization Member Type" href="#" class="sortable">Member</a></th>
+    <th align="left">
+        <a title="Sort by Church Member Status" href="#" class="sortable">Church</a><br />
+        <a href="#" class="sortable">Age</a> - <a title="Sort by Birthday" href="#" class="sortable">Bday</a>
+    </th>
+    <th><br /><a href="#" class="sortable">Primary Address</a></th>
+    <th><br />Communication</th>
+    <th><br /><a href="#" class="sortable">% Att.</a></th>
+</tr>
+</thead>
+<tbody>
+<% foreach(var om in Model.PrevMembers())
+   { %>
+<tr>
+    <td><img src="/images/individual.gif" border="0" /> <a href="/Person/Index/<%=om.PeopleId %>"><%=om.Name %></a></td>
+    <td><%=om.MemberType %></td>
+    <td><%=om.MemberStatus %><br />
+        <%=om.Age %> - <%=om.BirthDate %>
+    </td>
+    <td><a href="http://bing.com/maps/default.aspx?q=<%=om.Address %>,<%=om.CityStateZip %>" target="_blank">
+            <%=om.Address %></a><br />
+        <%=om.CityStateZip %>
+    </td>
+    <td>
+<% foreach (var ph in om.Phones)
+   { %>    
+        <%=ph%><br />
+<% } %>        
+        <a href="mailto:<%=om.Name %> <<%=om.EmailAddress %>>"><%=om.EmailAddress %></a>
+    </td>
+    <td>
+        <span><%=om.AttendPct.ToString2("N1") %>%</span>
+    </td>
+</tr>
+<% } %>
+</tbody>
+</table>
+<% Html.RenderPartial("Pager2", Model.Pager); %>

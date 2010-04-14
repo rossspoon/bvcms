@@ -175,7 +175,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc2 = org.OrganizationName,
                 Misc3 = id.ToString(),
                 Misc4 = guests,
-                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "no terms")
+                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "")
             };
             return View("Payment", pm);
         }

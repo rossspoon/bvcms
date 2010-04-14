@@ -1,9 +1,27 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
 <table>
-<% if (Model.index > 0)
-   { %>
-    <tr><th>Other Information</th><td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td></tr>
-<% }
+<% if (Model.LastItem)
+   {
+       var needother = Model.AnyOtherInfo();
+       if (needother)
+       { %>
+    <tr>
+        <td></td>
+        <td colspan="2"><p class="blue">OK, we have your new record, please continue below.</p></td>
+    </tr>
+    <% }
+       else
+       { %>
+    <tr>
+        <td></td>
+        <td colspan="2"><p class="blue">OK, we found your record, that's all we need. Please continue below.</p></td>
+    </tr>
+    <% }
+       if (Model.index > 0 && needother)
+       { %>
+        <tr><th>Other Information</th><td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td></tr>
+    <% }
+   }
    if (Model.org.AskShirtSize == true)
    { %>
     <tr>
@@ -159,7 +177,27 @@
         <td><input type="text" name="m.List[<%=Model.index%>].ntickets" value="<%=Model.ntickets%>" /></td>
         <td><%= Html.ValidationMessage("ntickets") %></td>
     </tr>
-<% } 
+<% }
+   if(Model.org.AskOptions.HasValue())
+   { %>
+    <tr>
+        <td>Options</td>
+        <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option", Model.Options(), "0")%></td>
+        <td><%=Html.ValidationMessage("option")%></td>
+    </tr>
+<% }
+   foreach (var a in Model.YesNoQuestions())
+   { %>
+    <tr>
+        <td><%=a.desc%></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" /> Yes
+            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="true" <%=Model.YesNoChecked(a.name, true) %> /> Yes
+            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="false" <%=Model.YesNoChecked(a.name, false) %> /> No
+        </td>
+        <td><%=Html.ValidationMessage(a.name + "-YNError")%></td>
+    </tr>
+<% }
    if (Model.org.Deposit > 0)
    { %>
     <tr>
@@ -171,6 +209,6 @@
     </tr>
 <% } %>
     <tr><td></td>
-        <td><a href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
+        <td colspan="2"><a href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
     </tr>
 </table>

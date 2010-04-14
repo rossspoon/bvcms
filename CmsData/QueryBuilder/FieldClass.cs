@@ -88,9 +88,9 @@ namespace CmsData
         }
         internal string Display(QueryBuilderClause c)
         {
-            if (!DisplayAs.HasValue() || !Params.HasValue())
-                return Name;
-            return formatArgs(DisplayAs, c);
+            if (DisplayAs.HasValue() && Params.HasValue())
+                return formatArgs(DisplayAs, c);
+            return Util.PickFirst(DisplayAs, Name);
         }
         public bool HasParam(string p)
         {

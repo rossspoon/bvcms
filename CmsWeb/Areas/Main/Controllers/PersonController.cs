@@ -33,10 +33,7 @@ namespace CMSWeb.Areas.Main.Controllers
             Util.CurrentPeopleId = id.Value;
             Session["ActivePerson"] = m.displayperson.Name;
             DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name));
-            var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
-            ViewData["queryid"] = qb.QueryId;
-            ViewData["TagAction"] = "/Person/Tag/" + id;
-            ViewData["UnTagAction"] = "/Person/UnTag/" + id;
+            InitExportToolbar(id);
             return View(m);
         }
         [Authorize(Roles="Admin")]
@@ -242,6 +239,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult BasicDisplay(int id)
         {
+            InitExportToolbar(id);
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
             return View(m);
         }
@@ -367,6 +365,13 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var r = CMSPresenter.PersonController.LookupAddress(Address1, Address2, City, State, Zip);
             return Json(r);
+        }
+        private void InitExportToolbar(int? id)
+        {
+            var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
+            ViewData["queryid"] = qb.QueryId;
+            ViewData["TagAction"] = "/Person/Tag/" + id;
+            ViewData["UnTagAction"] = "/Person/UnTag/" + id;
         }
     }
 }

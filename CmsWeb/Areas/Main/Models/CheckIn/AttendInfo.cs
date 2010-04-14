@@ -20,14 +20,10 @@ namespace CMSWeb.Models.OrganizationPage
             }
         }
         public int OrganizationId { get; set; }
-        public string OrganizationName { get; set; }
-        public string MeetingName { get; set; }
-        public int PeopleId { get; set; }
-        public string Name { get; set; }
-        public string MemberType { get; set; }
-        public string AttendType { get; set; }
-        public bool AttendFlag { get; set; }
-        public bool RegisteredFlag { get; set; }
-        public int RollSheetSectionId { get; set; }
+        public int NumPresent { get; set; }
+        public int NumVisitors { get; set; }
+        public string Location { get; set; }
+        public bool GroupMeeting { get; set; }
+        public string Description { get; set; }
     }
 }

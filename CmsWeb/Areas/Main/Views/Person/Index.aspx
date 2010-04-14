@@ -16,8 +16,6 @@
             <td>&nbsp;</td>
         </tr>
     </table>
-    <% Html.RenderPartial("ExportToolBar"); %>
-    <div style="clear: both; margin-top: 8px;">
         <table>
             <tr>
                 <td>

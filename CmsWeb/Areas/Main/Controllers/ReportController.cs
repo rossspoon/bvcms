@@ -50,7 +50,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value);
         }
-        public ActionResult Rollsheet(int? id, string org, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup)
+        public ActionResult Rollsheet(int? id, string org, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix)
         {
             return new RollsheetResult
             {
@@ -62,6 +62,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 schedule = schedule,
                 meetingid = meetingid,
                 bygroup = bygroup.HasValue,
+                sgprefix = sgprefix,
                 dt = dt,
             };
         }

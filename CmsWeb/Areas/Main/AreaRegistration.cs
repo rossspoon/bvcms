@@ -23,6 +23,7 @@ namespace CMSWeb.Areas.Main
             AddRoute(context, "Task");
             AddRoute(context, "Organization");
             AddRoute(context, "OrgMemberDialog");
+            AddRoute(context, "OrgMembersDialog");
             AddRoute(context, "Reports");
             AddRoute(context, "Person");
             AddRoute(context, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");

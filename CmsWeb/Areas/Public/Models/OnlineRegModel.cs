@@ -57,6 +57,16 @@ namespace CMSWeb.Models
             else
                 return org.ClassFilled == true;
         }
+        public bool OnlyOneAllowed()
+        {
+            if (org != null)
+                return org.AllowOnlyOne == true || org.AskTickets == true;
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivisionId == divid
+                    where o.AllowOnlyOne == true || o.AskTickets == true
+                    select o;
+            return q.Count() > 0;
+        }
         public string Header
         {
             get
@@ -69,7 +79,12 @@ namespace CMSWeb.Models
         }
         public string Instructions
         {
-            get { return Util.PickFirst(org.Instructions, div != null ? div.Instructions : ""); }
+            get
+            {
+                if (org != null)
+                    return Util.PickFirst(org.Instructions, div != null ? div.Instructions : "");
+                return div.Instructions;
+            }
         }
 
         private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
@@ -82,6 +97,8 @@ namespace CMSWeb.Models
         public decimal TotalAmount()
         {
             var amt = List.Sum(p => p.Amount());
+            if (org == null)
+                return amt;
             if (org.MaximumFee > 0 && amt > org.MaximumFee)
                 amt = org.MaximumFee.Value;
             return amt;
@@ -222,6 +239,8 @@ namespace CMSWeb.Models
 
             var subject = Util.PickFirst(org.EmailSubject, org.Division.EmailSubject, "no subject");
             var message = Util.PickFirst(org.EmailMessage, org.Division.EmailMessage, "no message");
+            message = message.Replace("{first}", p0.first);
+            message = message.Replace("{tickets}", p0.ntickets.ToString());
             message = message.Replace("{division}", org.Division.Name);
             message = message.Replace("{org}", org.OrganizationName);
             message = message.Replace("{cmshost}", Util.CmsHost);

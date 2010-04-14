@@ -75,7 +75,7 @@ By logging in below, you agree that you understand this purpose and will abide b
         {
             if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
-                NotifyAdmins("user loggedin without a role",
+                NotifyAdmins("user loggedin without a role on " + Util.Host,
                     string.Format("{0} visited site at {1} but does not have Staff role",
                         name, Util.Now));
                 FormsAuthentication.SignOut();

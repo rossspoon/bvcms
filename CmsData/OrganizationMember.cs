@@ -127,10 +127,12 @@ namespace CmsData
         }
         public void AddToGroup(string name)
         {
-            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
+            if (!name.HasValue())
+                return;
+            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
             if (mt == null)
             {
-                mt = new MemberTag { Name = name, OrgId = OrganizationId };
+                mt = new MemberTag { Name = name.Trim(), OrgId = OrganizationId };
                 DbUtil.Db.MemberTags.InsertOnSubmit(mt);
                 DbUtil.Db.SubmitChanges();
             }

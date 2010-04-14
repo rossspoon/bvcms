@@ -142,6 +142,27 @@
         </td>
     </tr>
 <% }
+   if(Model.org.AskOptions.HasValue())
+   { %>
+    <tr>
+        <td>Option</td>
+        <td><%=Model.option %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].option", Model.option)%>
+        </td>
+    </tr>
+<% }
+   foreach (var a in Model.YesNoQuestions())
+   { %>
+    <tr>
+        <td><%=a.desc%></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
+            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />
+            <%=Model.YesNoQuestion[a.name] == true ? "Yes" : "No" %>
+        </td>
+        <td><%=Html.ValidationMessage(a.name + "-YNError")%></td>
+    </tr>
+<% }
    if (Model.org.Deposit > 0)
    { %>
     <tr>

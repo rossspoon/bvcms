@@ -252,6 +252,11 @@ namespace CMSWeb
                 if (b.Enabled)
                     b.OnClientClick = "PageMethods.ToggleTag({0},{1},this.id,$('#maindiv').is(':checked'),ToggleTagCallback); return false;"
                         .Fmt(d.OrganizationId, OrganizationSearchController.TagSubDiv(Tags.SelectedValue));
+                var h = e.Row.FindControl("OrgLink") as HyperLink;
+                if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
+                    h.NavigateUrl = "~/Organization.aspx?id={0}".Fmt(d.OrganizationId);
+                else
+                    h.NavigateUrl = "/Organization/Index/{0}".Fmt(d.OrganizationId);
             }
         }
 

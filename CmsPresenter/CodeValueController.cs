@@ -739,7 +739,7 @@ namespace CMSPresenter
 	                new CodeValueItem { Id =  3, Value = "Decision", Code = "DecisionDate" },
 	                new CodeValueItem { Id =  4, Value = "Baptism", Code = "BaptismDate" },
 	                new CodeValueItem { Id =  5, Value = "Wedding", Code = "WeddingDate" },
-	                new CodeValueItem { Id =  6, Value = "Discovery Class", Code = "DiscoveryClassDate" },
+	                new CodeValueItem { Id =  6, Value = "New Member Class", Code = "DiscoveryClassDate" },
 	                new CodeValueItem { Id =  7, Value = "Letter Req'd", Code = "LetterDateRequested" },
 	                new CodeValueItem { Id =  8, Value = "Letter Rec'd", Code = "LetterDateReceived" },
 	                new CodeValueItem { Id =  9, Value = "Addr From", Code = "AddressFromDate" },
@@ -894,6 +894,25 @@ namespace CMSPresenter
             if (list == null)
             {
                 var q = from c in DbUtil.Db.AttendTrackLevels
+                        select new CodeValueItem
+                        {
+                            Id = c.Id,
+                            Code = c.Code,
+                            Value = c.Description,
+                        };
+                list = q.ToList();
+                HttpRuntime.Cache[Util.Host + NAME] = list;
+            }
+            return list;
+        }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<CodeValueItem> RegistrationTypes()
+        {
+            const string NAME = "RegistrationTypes";
+            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            if (list == null)
+            {
+                var q = from c in DbUtil.Db.RegistrationTypes
                         select new CodeValueItem
                         {
                             Id = c.Id,

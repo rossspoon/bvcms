@@ -5,7 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery-1.4.1.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
 <% if(Model.shownew)
    { %>
     <script type="text/javascript">

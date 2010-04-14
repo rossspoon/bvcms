@@ -4,6 +4,7 @@
 <%=Html.Hidden("m.testing", Model.testing) %>
 <table cellpadding="0" cellspacing="0">
 <% 
+    bool ShowDisplay = false;
     for (var i = 0; i < Model.List.Count; i++)
     {
         var p = Model.List[i];
@@ -16,7 +17,11 @@
 <%=Html.Hidden3("m.List[" + p.index + "].ShowAddress", p.ShowAddress) %>
 <%
         p.LastItem = i == (Model.List.Count - 1);
-        if (p.org != null && (p.Found == true || p.IsNew) && p.IsFilled != true)
+       
+        ShowDisplay = p.org != null && !p.IsFilled
+            && ((p.Found == true && p.IsValidForExisting)
+                || (p.IsNew && p.IsValidForNew));
+        if (ShowDisplay)
         {
             Html.RenderPartial("PersonDisplay", p);
             if (p.OtherOK)
@@ -30,16 +35,25 @@
 </td></tr>
 <%  }
     var last = Model.List[Model.List.Count - 1];
-    if (last.OtherOK)
+    last.LastItem = true;
+    if (last.OtherOK && ShowDisplay)
     {
 %>
 <tr><td colspan="2">
+    <% if (Model.TotalAmount() > 0)
+       { %>
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration and Pay <%=Model.TotalAmount().ToString("c") %>' />
-<% if (Model.org.AllowOnlyOne != true && Model.org.AskTickets != true)
-   { %>
+    <% }
+       else
+       { %>
+        <input id="submitit" type="submit"
+             class="submitbutton" value='Complete Registration' />
+    <% }
+       if (!Model.OnlyOneAllowed())
+       { %>
         or <a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a>
-<% } %>
+    <% } %>
 </td></tr>
-<%  } %>
+<% } %>
 </table>

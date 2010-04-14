@@ -10,7 +10,7 @@
         closeOnEscape: true,
         width: 400
     });
-    $(".ChooseLabelType").click(function(ev) {
+    $(".ChooseLabelType").live("click", function(ev) {
         $("#ChooseLabelType").dialog("open");
         var sep = ev.target.href.search(/\?/) == -1 ? "?" : "&";
         $("#cmdOK").click(function() {

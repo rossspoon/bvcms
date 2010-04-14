@@ -25,26 +25,18 @@ namespace CMSWeb.Models
         {
             get
             {
-#if DEBUG
-                return DbUtil.Settings("ServiceUOrgIDTest", "0");
-#else
                 if (testing)
                     return DbUtil.Settings("ServiceUOrgIDTest", "0");
                 return DbUtil.Settings("ServiceUOrgID", "0");
-#endif
             }
         }
         public string OrgAccountID
         {
             get
             {
-#if DEBUG
-                return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
-#else
                 if (testing)
                     return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
                 return DbUtil.Settings("ServiceUOrgAccountID", "0");
-#endif
             }
         }
 

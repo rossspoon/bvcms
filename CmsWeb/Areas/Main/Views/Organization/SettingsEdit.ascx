@@ -134,8 +134,20 @@
         <td><%=Html.TextBox("org.AgeFee")%></td>
     </tr>
     <tr>
+        <th>Age Groups:</th>
+        <td><%=Html.TextBox("org.AgeGroups")%></td>
+    </tr>
+    <tr>
         <th>Last Day Before Extra:</th>
         <td><%=Html.DatePicker("org.LastDayBeforeExtra")%></td>
+    </tr>
+    <tr>
+        <th>Yes No Questions:</th>
+        <td><%=Html.TextBox("org.YesNoQuestions")%></td>
+    </tr>
+    <tr>
+        <th>Validate Member in OrgIds:</th>
+        <td><%=Html.TextBox("org.ValidateOrgs")%></td>
     </tr>
     <tr>
         <th>Ask About Allergies:</th>
@@ -188,6 +200,10 @@
     <tr>
         <th>Ask About Church:</th>
         <td><%=Html.CheckBox("org.AskChurch")%></td>
+    </tr>
+    <tr>
+        <th>Members Only:</th>
+        <td><%=Html.CheckBox("org.MemberOnly")%></td>
     </tr>
 
     <tr><td></td><td><a href="/Organization/SettingsUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>

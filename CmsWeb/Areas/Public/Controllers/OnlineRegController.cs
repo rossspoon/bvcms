@@ -26,17 +26,32 @@ namespace CMSWeb.Areas.Public.Controllers
                 divid = div,
                 orgid = id,
             };
-#if DEBUG
-            m.testing = true;
+            if (m.org != null)
+            {
+                if ((m.org.RegistrationTypeId ?? 0) == (int)CmsData.Organization.RegistrationEnum.None)
+                    return Content("no registration allowed on this org");
+            }
+            else if (m.div != null)
+            {
+                var a = new int?[]
+                {
+                    (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge,
+                    (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
+                };
+                if (!m.div.Organizations.Any(o => a.Contains(o.RegistrationTypeId)))
+                    return Content("no registration allowed on this div");
+            }
+#if DEBUG2
+            //m.testing = true;
             m.List = new List<OnlineRegPersonModel>
             {
                 new OnlineRegPersonModel
                 {
                     divid = div,
                     orgid = id,
-                    first = "Kia",
-                    last = "Carro",
-                    dob = "5/30/02",
+                    first = "David",
+                    last = "Carrolls",
+                    dob = "5/30/52",
                     email = "david@davidcarroll.name",
                     phone = "9017581862",
                     homecell = "h",
@@ -57,7 +72,7 @@ namespace CMSWeb.Areas.Public.Controllers
         public ActionResult ShowMoreInfo(int id, OnlineRegModel m)
         {
             var p = m.List[id];
-#if DEBUG
+#if DEBUG2
             p.address = "235 Riveredge Cv.";
             p.city = "Cordova";
             p.state = "TN";
@@ -82,15 +97,20 @@ namespace CMSWeb.Areas.Public.Controllers
             var p = m.List[id];
             p.ValidateModelForFind(ModelState);
             if (p.org == null)
-                ModelState.AddModelError("dob", "Sorry, cannot find an appropriate age group");
+            {
+                if (p.ComputesOrganizationByAge())
+                    ModelState.AddModelError("dob", "Sorry, cannot find an appropriate age group");
+            }
             else
             {
-                p.IsFilled = m.org.OrganizationMembers.Count() >= m.org.Limit;
+                p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, that age group is filled");
             }
             if (p.Found == true)
                 FillPriorInfo(p);
+            if (!p.AnyOtherInfo())
+                p.OtherOK = true;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -110,13 +130,14 @@ namespace CMSWeb.Areas.Public.Controllers
                 }
                 p.IsNew = true;
             }
+            p.IsValidForExisting = ModelState.IsValid == false;
             if (p.IsNew)
                 FillPriorInfo(p);
             return View("list", m);
         }
         private static void FillPriorInfo(OnlineRegPersonModel p)
         {
-#if DEBUG
+#if DEBUG2
             p.shirtsize = "YT-L";
             p.request = "tommy";
             p.emcontact = "test";
@@ -192,7 +213,7 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             if (!ModelState.IsValid)
                 return View("list", m.List);
-#if DEBUG
+#if DEBUG2
             m.List.Add(new OnlineRegPersonModel
             {
                 divid = m.divid,
@@ -241,7 +262,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = m.testing ?? false,
                 PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
-                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "no terms")
+                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "")
             };
             pm.Misc1 = pm.NameOnAccount;
 
@@ -262,11 +283,13 @@ namespace CMSWeb.Areas.Public.Controllers
             var s = ed.Data;
             var m = Util.DeSerialize<OnlineRegModel>(s);
 
-            
+
             m.EnrollAndConfirm(TransactionID);
 
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
+            ViewData["email"] = m.List[0].email;
+            ViewData["orgname"] = m.org.OrganizationName;
             return View(m);
         }
         public ActionResult PayDue(string q)

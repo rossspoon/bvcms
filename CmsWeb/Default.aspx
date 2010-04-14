@@ -100,7 +100,7 @@
                                         SkinID="GridViewSkin" EmptyDataText="No Current Enrollments Found."
                                         ShowHeader="false">
                                         <Columns>
-                                            <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Organization.aspx?id={0}"
+                                            <asp:HyperLinkField DataNavigateUrlFields="Id" 
                                                 DataTextField="Name" DataTextFormatString="{0}" />                                          
                                             <asp:BoundField DataField="MemberType" />
                                         </Columns>
@@ -110,6 +110,7 @@
                         </tr>
                     </table>
                     <p><asp:LinkButton ID="UseOldNewDialog" runat="server" OnClick="UseDialog_Click"></asp:LinkButton></p>
+                    <p><asp:LinkButton ID="UseOldNewOrgPage" runat="server" OnClick="UseOrgPage_Click"></asp:LinkButton></p>
                 </td>
                 <td>
                     <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">

@@ -64,7 +64,7 @@
     <table class="PersonHead" border="0">
         <tr>
             <td>
-                <cc1:DisplayHyperlink ID="OrgName" runat="server" BindingUrlFormat="~/Organization.aspx?id={0}"
+                <cc1:DisplayHyperlink ID="OrgName" runat="server"
                     BindingUrlMember="OrganizationId" BindingMember="OrganizationName" BindingSource="meeting.Organization"
                     BindingMode="OneWay" ForeColor="White">[OrgName]</cc1:DisplayHyperlink>
             </td>

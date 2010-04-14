@@ -426,6 +426,10 @@ namespace CmsData
         partial void UpdateRecReg(RecReg instance);
         partial void DeleteRecReg(RecReg instance);
         
+        partial void InsertRegistrationType(RegistrationType instance);
+        partial void UpdateRegistrationType(RegistrationType instance);
+        partial void DeleteRegistrationType(RegistrationType instance);
+        
         partial void InsertRelatedFamily(RelatedFamily instance);
         partial void UpdateRelatedFamily(RelatedFamily instance);
         partial void DeleteRelatedFamily(RelatedFamily instance);
@@ -1221,6 +1225,12 @@ namespace CmsData
 		public Table< RecReg> RecRegs
 		{
 			get	{ return this.GetTable< RecReg>(); }
+
+		}
+
+		public Table< RegistrationType> RegistrationTypes
+		{
+			get	{ return this.GetTable< RegistrationType>(); }
 
 		}
 

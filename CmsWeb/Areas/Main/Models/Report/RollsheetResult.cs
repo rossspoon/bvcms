@@ -27,7 +27,7 @@ namespace CMSWeb.Areas.Main.Models.Report
     {
         public int? qid, div, schedule, meetingid, groupid, orgid;
         public bool? bygroup;
-        public string name;
+        public string name, sgprefix;
         public DateTime? dt;
 
         public override void ExecuteResult(ControllerContext context)
@@ -46,7 +46,7 @@ namespace CMSWeb.Areas.Main.Models.Report
 
             IEnumerable<OrgInfo> list1;
             if (bygroup == true)
-                list1 = ReportList2(orgid, div, schedule, name);
+                list1 = ReportList2(orgid, div, schedule, name, sgprefix);
             else
                 list1 = ReportList(orgid, groupid, div, schedule, name);
 
@@ -184,10 +184,11 @@ namespace CMSWeb.Areas.Main.Models.Report
                     };
             return q;
         }
-        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? divid, int? schedule, string name)
+        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? divid, int? schedule, string name, string sgprefix)
         {
             var q = from o in DbUtil.Db.Organizations
                     from sg in o.MemberTags
+                    where sgprefix == null || sgprefix == "" || sg.Name.StartsWith(sgprefix)
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.ScheduleId == schedule || schedule == 0 || schedule == null

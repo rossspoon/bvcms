@@ -153,6 +153,7 @@ namespace CmsCheckin
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Program.ClearFields();
             this.GoHome(string.Empty);
         }
     }

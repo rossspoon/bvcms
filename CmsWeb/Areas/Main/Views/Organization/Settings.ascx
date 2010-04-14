@@ -4,84 +4,79 @@
    { %>
 <a class="displayedit" href="/Organization/SettingsEdit/<%=Model.OrganizationId %>">Edit</a>
 <% } %>
-<div style="float: left">
-    <table class="Design2">
-        <tr>
-            <th>Schedule:</th>
-            <td><%=Html.CodeDesc("org.SchedDay", Model.DaysOfWeek()) %> 
-            <%=Model.org.SchedTime.ToString2("h:mm tt") %></td>
-        </tr>
-        <tr>
-            <th>Allow Attendance Overlap:</th>
-            <td><%=Html.CheckBoxReadonly(Model.org.AllowAttendOverlap) %></td>
-        </tr>
-        <tr>
-            <th>Class Filled:</th>
-            <td><%=Html.CheckBoxReadonly(Model.org.ClassFilled) %></td>
-        </tr>
-        <tr>
-            <th>Online Catalog Sort:</th>
-            <td><%=Model.org.OnLineCatalogSort %></td>
-        </tr>
-        <tr>
-            <th>Max Limit:</th>
-            <td><%=Model.org.Limit%></td>
-        </tr>
-        <tr>
-            <th>Online Notify Emails:</th>
-            <td><%=Model.org.EmailAddresses%></td>
-        </tr>
+<table class="Design2">
+    <tr>
+        <th>Schedule:</th>
+        <td><%=Html.CodeDesc("org.SchedDay", Model.DaysOfWeek()) %> 
+        <%=Model.org.SchedTime.ToString2("h:mm tt") %></td>
+    </tr>
+    <tr>
+        <th>Allow Attendance Overlap:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AllowAttendOverlap) %></td>
+    </tr>
+    <tr>
+        <th>Class Filled:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.ClassFilled) %></td>
+    </tr>
+    <tr>
+        <th>Online Catalog Sort:</th>
+        <td><%=Model.org.OnLineCatalogSort %></td>
+    </tr>
+    <tr>
+        <th>Max Limit:</th>
+        <td><%=Model.org.Limit%></td>
+    </tr>
+    <tr>
+        <th>Online Notify Emails:</th>
+        <td><%=Model.org.EmailAddresses%></td>
+    </tr>
 <% if (Page.User.IsInRole("Admin"))
    { %>
-        <tr>
-            <th>Edit Online Reg Messages</th>
-            <td>
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message">
-                   confirmation (org)</a>
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message&div=true">
-                   (div)</a><br />
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions">
-                   instructions (org)</a>
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions&div=true">
-                   (div)</a><br />
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms">
-                   terms (org)</a>
-                <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms&div=true">
-                   (div)</a>
-            </td>
-        </tr>
+    <tr>
+        <th>Edit Online Reg Messages</th>
+        <td>
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message">
+               confirmation (org)</a>
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message&div=true">
+               (div)</a><br />
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions">
+               instructions (org)</a>
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=instructions&div=true">
+               (div)</a><br />
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms">
+               terms (org)</a>
+            <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=terms&div=true">
+               (div)</a>
+        </td>
+    </tr>
 <% } %>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Allow Self Check-In:</th>
-            <td><%=Html.CheckBoxReadonly(Model.org.CanSelfCheckin) %></td>
-        </tr>
-        <tr>
-            <th>Allow Non-Campus Check-In:</th>
-            <td><%=Html.CheckBoxReadonly(Model.org.AllowNonCampusCheckIn) %></td>
-        </tr>
-        <tr>
-            <th>Number of CheckIn Labels:</th>
-            <td><%=Model.org.NumCheckInLabels%></td>
-        </tr>
-        <tr>
-            <th>Number of Worker CheckIn Labels:</th>
-            <td><%=Model.org.NumWorkerCheckInLabels%></td>
-        </tr>
-        <tr>
-            <th>First Meeting Date:</th>
-            <td><%=Model.org.FirstMeetingDate.FormatDate2()%></td>
-        </tr>
-        <tr>
-            <th>Last Meeting Date:</th>
-            <td><%=Model.org.LastMeetingDate.FormatDate2()%></td>
-        </tr>
-    </table>
-</div>
-<div style="float: left">
-    <table class="Design2">
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <th>Allow Self Check-In:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.CanSelfCheckin) %></td>
+    </tr>
+    <tr>
+        <th>Allow Non-Campus Check-In:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AllowNonCampusCheckIn) %></td>
+    </tr>
+    <tr>
+        <th>Number of CheckIn Labels:</th>
+        <td><%=Model.org.NumCheckInLabels%></td>
+    </tr>
+    <tr>
+        <th>Number of Worker CheckIn Labels:</th>
+        <td><%=Model.org.NumWorkerCheckInLabels%></td>
+    </tr>
+    <tr>
+        <th>First Meeting Date:</th>
+        <td><%=Model.org.FirstMeetingDate.FormatDate2()%></td>
+    </tr>
+    <tr>
+        <th>Last Meeting Date:</th>
+        <td><%=Model.org.LastMeetingDate.FormatDate2()%></td>
+    </tr>
     <tr>
         <th>Attendance Tracking Level:</th>
         <td><%=Html.CodeDesc("org.AttendTrkLevelId", Model.AttendTrkLevelList()) %></td>
@@ -162,8 +157,20 @@
         <td><%=Model.org.AgeFee%></td>
     </tr>
     <tr>
+        <th>Age Groups:</th>
+        <td><%=Model.org.AgeGroups%></td>
+    </tr>
+    <tr>
         <th>Last Day Before Extra:</th>
         <td><%=Model.org.LastDayBeforeExtra.FormatDate2()%></td>
+    </tr>
+    <tr>
+        <th>Yes No Questions:</th>
+        <td><%=Model.org.YesNoQuestions%></td>
+    </tr>
+    <tr>
+        <th>Validate Member in OrgIds:</th>
+        <td><%=Model.org.ValidateOrgs %></td>
     </tr>
     <tr>
         <th>Ask About Allergies:</th>
@@ -217,7 +224,8 @@
         <th>Ask About Church:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskChurch)%></td>
     </tr>
-    </table>
-</div>
-<div style="clear: both">
-</div>
+    <tr>
+        <th>Members Only:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.MemberOnly)%></td>
+    </tr>
+</table>

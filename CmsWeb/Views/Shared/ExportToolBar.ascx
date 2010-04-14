@@ -18,6 +18,21 @@
             <li><a href='/bulkmail.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Comma separated values text file, opens in excel, for bulk mailings"><img src="/images/Excel.png" /> 
                 Bulk (csv)</a></li>
+<% if ((bool?)ViewData["OrganizationContext"] ?? false)
+   { %>
+            <li>
+                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 
+                    Member Export</a></li>
+            <li>
+                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=LR' title="Includes LoveRespect info"><img src="/images/Excel.png" />
+                    LoveResp Export</a></li>
+            <li>
+                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=SML' title="Includes Soulmate Live info"><img src="/images/Excel.png" />
+                    Soulmate Export</a></li>
+            <li>
+                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=Promotion' title="Just for Promotion Mail Merge"><img src="/images/Excel.png" />
+                    Promotion Export</a></li>
+<% } %>
         </ul>
     </li>
     <li class="headlink"><a href=''><img src="/images/Report.png" /> 
@@ -61,6 +76,12 @@
             <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Labels (pdf for Datamax label printer)" target="_blank"><img src="/images/tags.png" /> 
                 Roll Labels</a></li>
+<% if ((bool?)ViewData["OrganizationContext"] ?? false)
+   { %>                
+            <li id="RollsheetItem">
+                <a href='#' title="Rollsheet Report" href="#" onclick="$.OpenRollsheet();return false;"><img src="/images/tags.png" />
+                Rollsheet Report</a></li>
+<% } %>
             <li><a href='/Reports/BarCodeLabels/<%=ViewData["queryid"]%>' 
                 target="_blank" title="Labels for Choir Attendance" target="_blank"><img src="/images/tags.png" />
                 Barcode Labels</a></li>

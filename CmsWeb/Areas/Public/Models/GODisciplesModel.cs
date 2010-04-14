@@ -93,7 +93,10 @@ namespace CMSWeb.Models
             get
             {
                 var r = HttpContext.Current.Request;
-                return "{0}://{1}/Organization.aspx?id={2}".Fmt(
+                if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
+                    return "{0}://{1}/Organization.aspx?id={2}".Fmt(
+                        r.Url.Scheme, r.Url.Authority, neworg.OrganizationId);
+                return "{0}://{1}/Organization/Index/{2}".Fmt(
                     r.Url.Scheme, r.Url.Authority, neworg.OrganizationId);
             }
         }

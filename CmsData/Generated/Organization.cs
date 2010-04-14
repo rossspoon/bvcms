@@ -165,6 +165,16 @@ namespace CmsData
 		
 		private int? _RegistrationTypeId;
 		
+		private string _AgeGroups;
+		
+		private string _ValidateOrgs;
+		
+		private bool? _MemberOnly;
+		
+		private string _YesNoQuestions;
+		
+		private string _OrgMemberFees;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -200,6 +210,8 @@ namespace CmsData
 		private EntityRef< Division> _Division;
 		
 		private EntityRef< Gender> _Gender;
+		
+		private EntityRef< RegistrationType> _RegistrationType;
 		
 		private EntityRef< EntryPoint> _EntryPoint;
 		
@@ -434,6 +446,21 @@ namespace CmsData
 		partial void OnRegistrationTypeIdChanging(int? value);
 		partial void OnRegistrationTypeIdChanged();
 		
+		partial void OnAgeGroupsChanging(string value);
+		partial void OnAgeGroupsChanged();
+		
+		partial void OnValidateOrgsChanging(string value);
+		partial void OnValidateOrgsChanged();
+		
+		partial void OnMemberOnlyChanging(bool? value);
+		partial void OnMemberOnlyChanged();
+		
+		partial void OnYesNoQuestionsChanging(string value);
+		partial void OnYesNoQuestionsChanged();
+		
+		partial void OnOrgMemberFeesChanging(string value);
+		partial void OnOrgMemberFeesChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -472,6 +499,8 @@ namespace CmsData
 			this._Division = default(EntityRef< Division>); 
 			
 			this._Gender = default(EntityRef< Gender>); 
+			
+			this._RegistrationType = default(EntityRef< RegistrationType>); 
 			
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
 			
@@ -2120,11 +2149,124 @@ namespace CmsData
 				if (this._RegistrationTypeId != value)
 				{
 				
+					if (this._RegistrationType.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnRegistrationTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._RegistrationTypeId = value;
 					this.SendPropertyChanged("RegistrationTypeId");
 					this.OnRegistrationTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AgeGroups", UpdateCheck=UpdateCheck.Never, Storage="_AgeGroups", DbType="varchar(100)")]
+		public string AgeGroups
+		{
+			get { return this._AgeGroups; }
+
+			set
+			{
+				if (this._AgeGroups != value)
+				{
+				
+                    this.OnAgeGroupsChanging(value);
+					this.SendPropertyChanging();
+					this._AgeGroups = value;
+					this.SendPropertyChanged("AgeGroups");
+					this.OnAgeGroupsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ValidateOrgs", UpdateCheck=UpdateCheck.Never, Storage="_ValidateOrgs", DbType="varchar(60)")]
+		public string ValidateOrgs
+		{
+			get { return this._ValidateOrgs; }
+
+			set
+			{
+				if (this._ValidateOrgs != value)
+				{
+				
+                    this.OnValidateOrgsChanging(value);
+					this.SendPropertyChanging();
+					this._ValidateOrgs = value;
+					this.SendPropertyChanged("ValidateOrgs");
+					this.OnValidateOrgsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MemberOnly", UpdateCheck=UpdateCheck.Never, Storage="_MemberOnly", DbType="bit")]
+		public bool? MemberOnly
+		{
+			get { return this._MemberOnly; }
+
+			set
+			{
+				if (this._MemberOnly != value)
+				{
+				
+                    this.OnMemberOnlyChanging(value);
+					this.SendPropertyChanging();
+					this._MemberOnly = value;
+					this.SendPropertyChanged("MemberOnly");
+					this.OnMemberOnlyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="YesNoQuestions", UpdateCheck=UpdateCheck.Never, Storage="_YesNoQuestions", DbType="varchar(200)")]
+		public string YesNoQuestions
+		{
+			get { return this._YesNoQuestions; }
+
+			set
+			{
+				if (this._YesNoQuestions != value)
+				{
+				
+                    this.OnYesNoQuestionsChanging(value);
+					this.SendPropertyChanging();
+					this._YesNoQuestions = value;
+					this.SendPropertyChanged("YesNoQuestions");
+					this.OnYesNoQuestionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OrgMemberFees", UpdateCheck=UpdateCheck.Never, Storage="_OrgMemberFees", DbType="varchar(30)")]
+		public string OrgMemberFees
+		{
+			get { return this._OrgMemberFees; }
+
+			set
+			{
+				if (this._OrgMemberFees != value)
+				{
+				
+                    this.OnOrgMemberFeesChanging(value);
+					this.SendPropertyChanging();
+					this._OrgMemberFees = value;
+					this.SendPropertyChanged("OrgMemberFees");
+					this.OnOrgMemberFeesChanged();
 				}
 
 			}
@@ -2463,6 +2605,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Gender");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_RegistrationType", Storage="_RegistrationType", ThisKey="RegistrationTypeId", IsForeignKey=true)]
+		public RegistrationType RegistrationType
+		{
+			get { return this._RegistrationType.Entity; }
+
+			set
+			{
+				RegistrationType previousValue = this._RegistrationType.Entity;
+				if (((previousValue != value) 
+							|| (this._RegistrationType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._RegistrationType.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._RegistrationType.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._RegistrationTypeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._RegistrationTypeId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("RegistrationType");
 				}
 
 			}

@@ -7,7 +7,7 @@ html object{
 
 html{
   height: 100%;
-  background: #c77a57 url(background_html.jpg) center top fixed;
+  background: url(black_bg_main_cm.jpg) center top fixed repeat-x;
 }
 
 body{
@@ -15,7 +15,7 @@ body{
   margin: 0px;
   padding: 0px;
   font: 13px Arial, Helvetica, sans-serif;
-  background: url(background_body.png) center top repeat-x;
+  background: url(background_body.png) repeat-x center top;
 }
 
 form{

@@ -1,10 +1,11 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
 <table>
-<% if (Model.org.RegistrationTypeId == (int)CMSWeb.Models.RegistrationEnum.UserSelectsOrganization)
+<% if (Model.UserSelectsOrganization())
    { %>
     <tr>
-        <td colspan="3">Choose Class
-        <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%></td>
+        <td colspan="3"><label for="classid">Choose Class</label>
+        <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%>
+        <%=Html.ValidationMessage("classid") %></td>
     </tr>
 <% } %>
     <tr>
@@ -46,9 +47,12 @@
         <% }
            else
            { %>
-           <p class="blue"><%=CMSWeb.Models.SearchPeopleModel.NotFoundText %></p>
+           <p class="blue"><%=Model.NotFoundText %></p>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
+            <% if ((Model.org.MemberOnly ?? false) == false)
+               { %>            
             or <a href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
+            <% } %>
         <% } %>
         </td>
     </tr>

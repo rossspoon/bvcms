@@ -187,7 +187,7 @@ namespace CMSWeb.Models
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)
                 .ThenByDescending(a => a.Position == 10 ? a.Gender : "U")
-                .ThenByDescending(a => a.Age).ToList();
+                .ThenBy(a => a.Age).ToList();
             return list2;
         }
         public IEnumerable<Campu> Campuses()

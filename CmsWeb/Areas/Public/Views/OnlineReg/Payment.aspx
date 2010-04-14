@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PaymentModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PaymentModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
 	<title>Complete Registration Payment</title>
@@ -22,7 +22,8 @@ div.terms strong {color:#000;}	</style>
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script>
         $(function() {
-            $("#Submit").attr("disabled", "disabled");
+            if ($('#IAgree').attr("id"))
+                $("#Submit").attr("disabled", "disabled");
             $("#IAgree").click(function() {
                 var checked_status = this.checked;
                 if (checked_status == true)
@@ -34,10 +35,12 @@ div.terms strong {color:#000;}	</style>
     </script>
 
     <h2>Payment Processing</h2>
-<div class="terms">
+<%--<div class="terms"></div>--%>
+<% if(Model.Terms.HasValue())
+   { %>
 <%=Model.Terms %>
-</div>
-    <%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.
+<p><%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.</p>
+<% } %>
 <%--    <p>If you have a coupon, please enter that number here:
     <%=Html.TextBox("Coupon") %></p>
 --%>    
@@ -57,8 +60,11 @@ div.terms strong {color:#000;}	</style>
     <%=Html.Hidden("Misc2") %>
     <%=Html.Hidden("Misc3") %>
     <%=Html.Hidden("Misc4") %>
+<% if (Model.Terms.HasValue())
+   { %>
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
+<% } %>
     <p>
         When you click the Next button will be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
         After you are finished there, you will be redirected back here to get your confirmation.

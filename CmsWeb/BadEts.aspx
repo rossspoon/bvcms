@@ -56,7 +56,7 @@
                 Target="AttendStrDetail"
                 DataTextField="Name" HeaderText="Name" />
             <asp:BoundField DataField="OrgId" HeaderText="OrgId" />
-            <asp:HyperLinkField DataNavigateUrlFields="OrgId" DataNavigateUrlFormatString="/Organization.aspx?id={0}"
+            <asp:HyperLinkField DataNavigateUrlFields="OrgId" DataNavigateUrlFormatString="/Organization/Index/{0}"
                 DataTextField="OrgName" HeaderText="OrgName" />
             <asp:TemplateField ShowHeader="False">
                 <ItemTemplate>

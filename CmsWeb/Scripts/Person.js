@@ -54,35 +54,30 @@
         });
         return false;
     });
-    if ($("#ui-widget-iframe").length == 0) {
-        $('<div id="ui-widget-iframe-outer"><iframe id="ui-widget-iframe" src="" frameborder="0" /></div>')
-		.appendTo(document.body)
-		.hide();
-    }
+    //    if ($("#ui-widget-iframe").length == 0) {
+    //        $('<div id="ui-widget-iframe-outer"><iframe id="ui-widget-iframe" src="" frameborder="0" /></div>')
+    //		.appendTo(document.body)
+    //		.hide();
+    //    }
 
     $('#current-tab form a.membertype').live("click", function(e) {
         e.preventDefault();
         var $this = $(this);
-        var horizontalPadding = 30;
-        var verticalPadding = 30;
-        $('<iframe id="memberDialog" class="externalSite" src="' + this.href + '" />').dialog({
+        var w = 650;
+        var h = 500;
+        var padding = 30;
+        $('<iframe id="memberDialog" src="' + this.href + '" />').dialog({
             title: 'Member Dialog',
             bgiframe: true,
             autoOpen: true,
-            position: 'center',
-            width: 600,
-            height: 400,
+            width: w,
+            height: h,
             modal: true,
-            resizable: true,
-            autoResize: true,
             overlay: {
                 opacity: 0.5,
                 background: "black"
-            },
-            close: function(ev, ui) {
-                $.getTable($('#current-tab form'));
             }
-        }).width(600 - horizontalPadding).height(400 - verticalPadding);
+        }).width(w - padding).height(h - padding);
     });
 
     $(".CreateAndGo").click(function() {
@@ -183,5 +178,7 @@
 
 });
 function RebindMemberGrids(from) {
-    $("#ui-widget-iframe-outer").dialog('close');
+    $("#memberDialog").dialog('destroy');
+    $("#memberDialog").remove();
+    $.updateTable($('#current-tab form'));
 }

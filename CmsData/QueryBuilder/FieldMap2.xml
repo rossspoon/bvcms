@@ -197,11 +197,11 @@
     <Field Name="OtherNewChurch" Title="New Church" Type="String">
       Destination Church after leaving Us
     </Field>
-    <Field Name="DiscoveryClassDate" Title="Step 1 Date" Type="Date">
+    <Field Name="DiscoveryClassDate" Title="New Member Class Date" Type="Date" DisplayAs="NewMemberClassDate">
       Todo: explain how unknown dates work
     </Field>
-    <Field Name="DiscoveryClassStatusId" Title="Step 1 Status" Type="Code" DataSource="DiscoveryClassStatusCodes" DataValueField="IdCode">
-      Step 1 Class Status: Pending, Attended, Exempted Child, Admin Approval, Grandfathered (formerly Discovery class)
+    <Field Name="DiscoveryClassStatusId" Title="New Member Class Status" DisplayAs="NewMemberClassStatusId" Type="Code" DataSource="DiscoveryClassStatusCodes" DataValueField="IdCode">
+      New Member Class Status: Pending, Attended, Exempted Child, Admin Approval, Grandfathered
     </Field>
     <Field Name="BaptismDate" Title="Baptism Date" Type="Date">
       Baptism Date

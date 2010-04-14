@@ -148,17 +148,18 @@ namespace CMSWeb.Models
         internal void AddPerson(int origin, int entrypoint)
         {
             Family f;
+            string na = "na";
             if (FamilyId > 0)
                 f = family;
             else
                 f = new Family
                 {
                     HomePhone = homephone.GetDigits(),
-                    AddressLineOne = address,
+                    AddressLineOne = address.Disallow(na),
                     AddressLineTwo = address2,
-                    CityName = city,
-                    StateCode = state,
-                    ZipCode = zip,
+                    CityName = city.Disallow(na),
+                    StateCode = state.Disallow(na),
+                    ZipCode = zip.Disallow(na),
                 };
 
             if (goesby != null)
@@ -168,17 +169,16 @@ namespace CMSWeb.Models
                 if (f.People.Count(per =>
                      per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
                      < 2)
-                position = (int)Family.PositionInFamily.PrimaryAdult;
-            else
-                position = (int)Family.PositionInFamily.SecondaryAdult;
+                    position = (int)Family.PositionInFamily.PrimaryAdult;
+                else
+                    position = (int)Family.PositionInFamily.SecondaryAdult;
 
             _Person = Person.Add(f, position,
                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
                     origin, entrypoint);
             if (title.HasValue())
                 person.TitleCode = title;
-            if (email != "na")
-                person.EmailAddress = email;
+            person.EmailAddress = email.Disallow(na);
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;

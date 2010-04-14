@@ -43,7 +43,7 @@
                     <asp:Label ID="Label1" runat="server" Text='<%# Eval("Division") %>' ToolTip='<%# Eval("Program") %>'></asp:Label>
                 </td>
                 <td>
-                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("OrganizationId", "~/Organization.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("OrganizationId", "/Organization/Index/{0}") %>'
                         Text='<%# Eval("Organization") %>' ToolTip='<%# Eval("Tracking") %>'></asp:HyperLink>
                 </td>
                 <td>

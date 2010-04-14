@@ -18,9 +18,9 @@ namespace CMSWeb.Models.OrganizationPage
         {
             OrganizationId = id;
             org = DbUtil.Db.LoadOrganizationById(id);
-            MemberModel = new OrganizationMemberModel(id, 0, OrganizationMemberModel.GroupSelect.Active);
+            MemberModel = new MemberModel(id, 0, MemberModel.GroupSelect.Active);
         }
-        public OrganizationMemberModel MemberModel;
+        public MemberModel MemberModel;
         
         private CodeValueController cv = new CodeValueController();
 
@@ -30,6 +30,12 @@ namespace CMSWeb.Models.OrganizationPage
         }
         public void UpdateOrganization()
         {
+            org.TagString = DivisionsList;
+            var divorg = org.DivOrgs.SingleOrDefault(d => d.DivId == org.DivisionId);
+            if (divorg == null && org.DivisionId.HasValue)
+                org.DivOrgs.Add(new DivOrg { DivId = org.DivisionId.Value });
+            if (org.CampusId == 0)
+                org.CampusId = null;
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, org);
         }
@@ -45,6 +51,45 @@ namespace CMSWeb.Models.OrganizationPage
                 new SelectListItem { Text = "Friday", Value = "5" },
                 new SelectListItem { Text = "Saturday", Value = "6" },
             };
+        }
+        public IEnumerable<SelectListItem> Groups()
+        {
+            var q = from g in DbUtil.Db.MemberTags
+                    where g.OrgId == OrganizationId
+                    orderby g.Name
+                    select new SelectListItem
+                    {
+                        Text = g.Name,
+                        Value = g.Id.ToString()
+                    };
+            return q;
+        }
+        public IEnumerable<SelectListItem> Tags()
+        {
+            var cv = new CodeValueController();
+            var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
+            tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return tg;
+        }
+        public string DivisionsList { get; set; }
+        public List<SelectListItem> DivisionPickList()
+        {
+            var q1 = from d in DbUtil.Db.DivOrgs
+                     where d.OrgId == OrganizationId
+                     orderby d.Division.Name
+                     select d.Division.Name;
+            var q2 = from p in DbUtil.Db.Programs
+                     from d in p.Divisions
+                     where !q1.Contains(d.Name)
+                     orderby d.Name
+                     select d.Name;
+            var list = q1.Select(name => new SelectListItem { Text = name, Selected = true }).ToList();
+            list.AddRange(q2.Select(name => new SelectListItem { Text = name }).ToList());
+            return list;
+        }
+        public IEnumerable<SelectListItem> Divisions()
+        {
+            return QueryModel.ConvertToSelect(cv.AllOrgDivTags(), "Id");
         }
         public IEnumerable<SelectListItem> CampusList()
         { 
@@ -85,16 +130,32 @@ namespace CMSWeb.Models.OrganizationPage
         }
         public IEnumerable<SelectListItem> RegistrationTypes()
         {
-            var et = typeof(CMSWeb.Models.RegistrationEnum);
-            var na = Enum.GetNames(et);
-            var q = from int v in Enum.GetValues(et)
-                    let n = Enum.GetName(et, v)
-                    select new SelectListItem
-                    {
-                        Value = v.ToString(),
-                        Text = SpaceCamelCase(n)
-                    };
-            return q;
+            return QueryModel.ConvertToSelect(cv.RegistrationTypes(), "Id");
+        }
+        public string NewMeetingTime
+        {
+            get
+            {
+                if (org.SchedTime != null)
+                    return org.SchedTime.Value.ToShortTimeString();
+                return "8:00 AM";
+            }
+        }
+        public DateTime NewMeetingDate
+        {
+            get
+            {
+                if (org.SchedTime != null)
+                {
+                    var d = Util.Now.Date;
+                    d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
+                    d = d.AddDays(org.SchedDay ?? 0);
+                    if (d > Util.Now.Date)
+                        d = d.AddDays(-7);
+                    return d;
+                }
+                return Util.Now.Date;
+            }
         }
     }
 }

@@ -126,7 +126,7 @@
             <td valign="top">
                 <table class="Design2" width="100%">
                     <tr>
-                        <th colspan="2" class="Design2Head">Step 1 Class</th>
+                        <th colspan="2" class="Design2Head">New Member Class</th>
                     </tr>
                     <tr>
                         <th>Status:</th>

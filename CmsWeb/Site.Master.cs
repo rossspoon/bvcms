@@ -69,7 +69,10 @@ namespace CMSWeb
             if (Util.CurrentOrgId > 0)
             {
                 CurrentOrgMenuItem.Visible = true;
-                CurrentOrgLink.NavigateUrl = "Organization.aspx?id={0}".Fmt(Util.CurrentOrgId);
+                if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
+                    CurrentOrgLink.NavigateUrl = "Organization.aspx?id={0}".Fmt(Util.CurrentOrgId);
+                else
+                    CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util.CurrentOrgId);
                 CurrentOrgLink.Text = Session["ActiveOrganization"].ToString();
             }
             //if (DbUtil.Db.UserPreference("neworgsearch").ToBool())
