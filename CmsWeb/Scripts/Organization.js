@@ -96,7 +96,31 @@
     $("#meetings-link").click(function() {
         $.showTable($('#Meetings-tab form'));
     });
+    $.maxZIndex = $.fn.maxZIndex = function(opt) {
+        var def = { inc: 10, group: "*" };
+        $.extend(def, opt);
+        var zmax = 0;
+        $(def.group).each(function() {
+            var cur = parseInt($(this).css('z-index'));
+            zmax = cur > zmax ? cur : zmax;
+        });
+        if (!this.jquery)
+            return zmax;
 
+        return this.each(function() {
+            zmax += def.inc;
+            $(this).css("z-index", zmax);
+        });
+    }
+    $.initDatePicker = function() {
+        $(".datepicker").datepicker({
+            dateFormat: 'm/d/yy',
+            changeMonth: true,
+            changeYear: true,
+            beforeShow: function() {$('#ui-datepicker-div').maxZIndex(); }
+        });
+    }
+    $.initDatePicker();
     $("a.displayedit,a.displayedit2").live('click', function() {
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
@@ -105,11 +129,7 @@
                     minChars: 3,
                     matchContains: 1
                 };
-                $(".datepicker").datepicker({
-                    dateFormat: 'm/d/yy',
-                    changeMonth: true,
-                    changeYear: true
-                });
+                $.initDatePicker();
                 $("#DivisionsList").multiSelect();
             });
         });

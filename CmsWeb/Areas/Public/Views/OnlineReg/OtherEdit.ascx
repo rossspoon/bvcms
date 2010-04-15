@@ -191,9 +191,9 @@
     <tr>
         <td><%=a.desc%></td>
         <td>
-            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" /> Yes
-            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="true" <%=Model.YesNoChecked(a.name, true) %> /> Yes
-            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="false" <%=Model.YesNoChecked(a.name, false) %> /> No
+            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
+            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="true" <%=Model.YesNoChecked(a.name, true) %> />Yes
+            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="false" <%=Model.YesNoChecked(a.name, false) %> />No
         </td>
         <td><%=Html.ValidationMessage(a.name + "-YNError")%></td>
     </tr>

@@ -246,6 +246,11 @@ namespace CMSWeb.Areas.Main.Controllers
                 OrganizationMember.InsertOrgMembers(id, pid, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, pending ?? false);
             return new EmptyResult();
         }
-
+        [Authorize(Roles = "Admin")]
+        public ActionResult CopySettings()
+        {
+            Session["OrgCopySettings"] = Util.CurrentOrgId;
+            return Redirect("/OrgSearch/");
+        }
     }
 }

@@ -129,5 +129,56 @@ namespace CMSWeb.Areas.Main.Controllers
             DbUtil.Db.SetUserPreference("neworgsearch", "false");
             return Redirect("/OrganizationSearch.aspx");
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PasteSettings(OrgSearchModel m)
+        {
+            var frorg = DbUtil.Db.LoadOrganizationById((int)Session["OrgCopySettings"]);
+            foreach (var o in m.OrganizationList())
+            {
+                var toorg = DbUtil.Db.LoadOrganizationById(o.Id);
+                toorg.AgeFee = frorg.AgeFee;
+                toorg.AgeGroups = frorg.AgeGroups;
+                toorg.AllowLastYearShirt = frorg.AllowLastYearShirt;
+                toorg.AllowOnlyOne = frorg.AllowOnlyOne;
+                toorg.AskAllergies = frorg.AskAllergies;
+                toorg.AskChurch = frorg.AskChurch;
+                toorg.AskCoaching = frorg.AskCoaching;
+                toorg.AskDoctor = frorg.AskDoctor;
+                toorg.AskEmContact = frorg.AskEmContact;
+                toorg.AskGrade = frorg.AskGrade;
+                toorg.AskInsurance = frorg.AskInsurance;
+                toorg.AskMedical = frorg.AskMedical;
+                toorg.AskOptions = frorg.AskOptions;
+                toorg.AskParents = frorg.AskParents;
+                toorg.AskRequest = frorg.AskRequest;
+                toorg.AskShirtSize = frorg.AskShirtSize;
+                toorg.AskTickets = frorg.AskTickets;
+                toorg.AskTylenolEtc = frorg.AskTylenolEtc;
+                toorg.BirthDayEnd = frorg.BirthDayEnd;
+                toorg.BirthDayStart = frorg.BirthDayStart;
+                toorg.CanSelfCheckin = frorg.CanSelfCheckin;
+                toorg.EmailAddresses = frorg.EmailAddresses;
+                toorg.EmailMessage = frorg.EmailMessage;
+                toorg.EmailSubject = frorg.EmailSubject;
+                toorg.ExtraFee = frorg.ExtraFee;
+                toorg.Fee = frorg.Fee;
+                toorg.GenderId = frorg.GenderId;
+                toorg.GradeAgeStart = frorg.GradeAgeStart;
+                toorg.GradeAgeEnd = frorg.GradeAgeEnd;
+                toorg.Instructions = frorg.Instructions;
+                toorg.LastDayBeforeExtra = frorg.LastDayBeforeExtra;
+                toorg.MaximumFee = frorg.MaximumFee;
+                toorg.MemberOnly = frorg.MemberOnly;
+                toorg.NumCheckInLabels = frorg.NumCheckInLabels;
+                toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
+                toorg.RegistrationTypeId = frorg.RegistrationTypeId;
+                toorg.ShirtFee = frorg.ShirtFee;
+                toorg.Terms = frorg.Terms;
+                toorg.ValidateOrgs = frorg.ValidateOrgs;
+                toorg.YesNoQuestions = frorg.YesNoQuestions;
+            }
+            DbUtil.Db.SubmitChanges();
+            return new EmptyResult();
+        }
     }
 }

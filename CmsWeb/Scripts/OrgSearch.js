@@ -210,6 +210,16 @@
         var args = "?div=" + did + "&schedule=" + $('#ScheduleId').val();
         window.open("/Reports/Roster/" + args);
     });
+    $('#PasteSettings').click(function() {
+        if (!confirm("Are you sure you want to replace all these settings?"))
+            return false;
+        var f = $('form');
+        var q = f.serialize();
+        $.post(this.href, q, function(ret) {
+            $.growlUI("Completed", "Settings Replaced");
+        });
+        return false;
+    });
     $('a.ViewReport').click(function() {
         var did = $('#DivisionId').val();
         if (did == '0') {

@@ -77,6 +77,11 @@
         <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a> | 
         <a class="ViewReport" href="/Reports/ClassList/">Class List</a> | 
         <a id="AttDetail" href='#'>Meetings Attendance</a>
+<% if (Session["OrgCopySettings"] != null)
+   { %>
+        | <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>
+
+<% } %>
     </div>
     <div id="PanelRollsheet" class="modalDiv dialog" style="display: none">
         <table>
