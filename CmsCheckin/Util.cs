@@ -109,7 +109,10 @@ namespace CmsCheckin
             coll.Add("addr", addr);
             coll.Add("zip", zip);
             coll.Add("cell", cell);
-            coll.Add("home", home);
+            if (home.HasValue())
+                coll.Add("home", home);
+            else
+                coll.Add("home", cell);
             coll.Add("marital", marital.ToString());
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
@@ -144,7 +147,10 @@ namespace CmsCheckin
             coll.Add("addr", addr);
             coll.Add("zip", zip);
             coll.Add("cell", cell);
-            coll.Add("home", home);
+            if (home.HasValue())
+                coll.Add("home", home);
+            else
+                coll.Add("home", cell);
             coll.Add("marital", marital.ToString());
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
@@ -241,6 +247,7 @@ namespace CmsCheckin
         public static void GoHome(this UserControl c, string s)
         {
             c.Swap(Program.home);
+            Program.ClearFields();
             Program.CursorHide();
             Program.home.textBox1.Text = s.FmtFone();
             Program.home.textBox1.Focus();
@@ -259,7 +266,6 @@ namespace CmsCheckin
                 return "?";
             return age.ToString();
         }
-
     }
     public class EventArgs<T> : EventArgs
     {

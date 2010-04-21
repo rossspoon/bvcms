@@ -85,6 +85,8 @@ namespace CmsData
 		
 		private string _HomePhoneAC;
 		
+		private string _Comments;
+		
    		
    		private EntitySet< Person> _People;
 		
@@ -209,6 +211,9 @@ namespace CmsData
 		
 		partial void OnHomePhoneACChanging(string value);
 		partial void OnHomePhoneACChanged();
+		
+		partial void OnCommentsChanging(string value);
+		partial void OnCommentsChanged();
 		
     #endregion
 		public Family()
@@ -988,6 +993,28 @@ namespace CmsData
 					this._HomePhoneAC = value;
 					this.SendPropertyChanged("HomePhoneAC");
 					this.OnHomePhoneACChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar(3000)")]
+		public string Comments
+		{
+			get { return this._Comments; }
+
+			set
+			{
+				if (this._Comments != value)
+				{
+				
+                    this.OnCommentsChanging(value);
+					this.SendPropertyChanging();
+					this._Comments = value;
+					this.SendPropertyChanged("Comments");
+					this.OnCommentsChanged();
 				}
 
 			}

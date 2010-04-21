@@ -12,7 +12,7 @@
    if (Model.org.AskRequest == true)
    { %>
     <tr>
-        <td><label for="request">Request Teammate</label></td>
+        <td><label for="request">Request</label></td>
         <td><%=Model.request %>
         <%=Html.Hidden3("m.list[" + Model.index + "].request", Model.request)%>
         </td>
@@ -151,6 +151,17 @@
         </td>
     </tr>
 <% }
+   foreach (var a in Model.ExtraQuestions())
+   { %>
+    <tr>
+        <td><%=a.question%></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
+            <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestion[a.question] %>" />
+            <%=Model.ExtraQuestion[a.question] %>
+        </td>
+    </tr>
+<% }
    foreach (var a in Model.YesNoQuestions())
    { %>
     <tr>
@@ -160,7 +171,6 @@
             <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />
             <%=Model.YesNoQuestion[a.name] == true ? "Yes" : "No" %>
         </td>
-        <td><%=Html.ValidationMessage(a.name + "-YNError")%></td>
     </tr>
 <% }
    if (Model.org.Deposit > 0)

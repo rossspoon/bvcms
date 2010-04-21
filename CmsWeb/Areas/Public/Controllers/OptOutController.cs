@@ -10,16 +10,16 @@ namespace CMSWeb.Areas.Public.Controllers
 {
     public class OptOutController : CmsController
     {
-        public ActionResult UnSubscribe(string id, string optout, string cancel)
+        public ActionResult UnSubscribe(string optout, string cancel)
         {
-            var s = Util.Decrypt(id);
+            var s = Util.Decrypt(Request["id"]);
             var a = s.SplitStr("|");
             ViewData["fromemail"] = a[1];
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 var p = DbUtil.Db.LoadPersonById(a[0].ToInt());
                 ViewData["toemail"] = p.EmailAddress;
-                ViewData["key"] = id;
+                ViewData["key"] = Request["id"];
                 return View();
             }
             if (optout.HasValue() && optout.StartsWith("Yes"))

@@ -37,6 +37,8 @@
             this.TestMode = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.LeadTime = new System.Windows.Forms.ComboBox();
+            this.Printer = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -60,7 +62,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(275, 187);
+            this.button1.Location = new System.Drawing.Point(275, 266);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 64);
             this.button1.TabIndex = 2;
@@ -91,7 +93,7 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(22, 210);
+            this.HideCursor.Location = new System.Drawing.Point(22, 289);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
             this.HideCursor.TabIndex = 5;
@@ -103,7 +105,7 @@
             this.TestMode.AutoSize = true;
             this.TestMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TestMode.ForeColor = System.Drawing.Color.Gray;
-            this.TestMode.Location = new System.Drawing.Point(22, 250);
+            this.TestMode.Location = new System.Drawing.Point(22, 329);
             this.TestMode.Name = "TestMode";
             this.TestMode.Size = new System.Drawing.Size(91, 21);
             this.TestMode.TabIndex = 5;
@@ -144,11 +146,31 @@
             this.LeadTime.TabIndex = 7;
             this.LeadTime.Text = "5";
             // 
+            // Printer
+            // 
+            this.Printer.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Printer.FormattingEnabled = true;
+            this.Printer.Location = new System.Drawing.Point(142, 187);
+            this.Printer.Name = "Printer";
+            this.Printer.Size = new System.Drawing.Size(260, 39);
+            this.Printer.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 203);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(50, 17);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Printer";
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(459, 287);
+            this.ClientSize = new System.Drawing.Size(459, 367);
+            this.Controls.Add(this.Printer);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.LeadTime);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TestMode);
@@ -178,5 +200,7 @@
         public System.Windows.Forms.CheckBox TestMode;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.ComboBox LeadTime;
+        public System.Windows.Forms.ComboBox Printer;
+        private System.Windows.Forms.Label label4;
     }
 }

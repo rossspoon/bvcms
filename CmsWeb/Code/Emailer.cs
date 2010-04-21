@@ -139,7 +139,7 @@ namespace CMSWeb
                 var text = bhtml.Replace("{name}", p.Name);
                 text = text.Replace("{first}", p.PreferredName);
                 text = text.Replace("{unsubscribe}",
-                    "<a href=\"{0}OptOut/UnSubscribe/{1}\">Unsubscribe</a>"
+                    "<a href=\"{0}OptOut/UnSubscribe/?id={1}\">Unsubscribe</a>"
                     .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
 
                 Util.SendMsg(smtp, From, subject, text, p.Name, p.EmailAddress, a);

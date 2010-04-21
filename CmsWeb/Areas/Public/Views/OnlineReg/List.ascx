@@ -40,10 +40,11 @@
     {
 %>
 <tr><td colspan="2">
-    <% if (Model.TotalAmount() > 0)
+    <% var amt = Model.Amount();
+       if (amt > 0)
        { %>
         <input id="submitit" type="submit"
-             class="submitbutton" value='Complete Registration and Pay <%=Model.TotalAmount().ToString("c") %>' />
+             class="submitbutton" value='Complete Registration and Pay <%=amt.ToString("c") %>' />
     <% }
        else
        { %>

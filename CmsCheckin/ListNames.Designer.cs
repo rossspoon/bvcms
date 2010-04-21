@@ -59,7 +59,7 @@
             this.bAddNewFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bAddNewFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bAddNewFamily.ForeColor = System.Drawing.Color.Black;
-            this.bAddNewFamily.Location = new System.Drawing.Point(962, 707);
+            this.bAddNewFamily.Location = new System.Drawing.Point(948, 700);
             this.bAddNewFamily.Margin = new System.Windows.Forms.Padding(4);
             this.bAddNewFamily.Name = "bAddNewFamily";
             this.bAddNewFamily.Size = new System.Drawing.Size(45, 45);

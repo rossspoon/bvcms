@@ -58,7 +58,7 @@
     </tr>
 <% } %>
     <tr>
-        <th>Extra Member Info:</th>
+        <th valign="top">Extra Member Info:</th>
         <td><%=Html.TextArea("UserData", new { style = "height:100px;width:100%" })%></td>
     </tr>
 <tr><td></td></tr>

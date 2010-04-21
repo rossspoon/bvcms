@@ -12,7 +12,8 @@
         <div>Your email address: <strong><%=ViewData["toemail"] %></strong></div>
         <div>(If this is not you, you have not been added to any lists)</div>
         <p>Are you sure you wish to stop ALL emails from <%=ViewData["fromemail"] %> sent to your email address?</p>
-        <form method="post" action="/OptOut/UnSubscribe/<%=ViewData["key"] %>">
+        <form method="post" action="/OptOut/UnSubscribe">
+        <%=Html.Hidden("id", ViewData["key"]) %>
         <div style="padding-left: 10px">
             <div style="margin: 12px 0px 15px 0px">
                 <input name="optout" type="submit" value="Yes, unsubscribe me" />

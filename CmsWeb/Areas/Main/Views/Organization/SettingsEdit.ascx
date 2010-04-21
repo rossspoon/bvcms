@@ -90,6 +90,14 @@
         <td><%=Html.TextBox("org.GradeAgeEnd")%></td>
     </tr>
     <tr>
+        <th>Start Birthday:</th>
+        <td><%=Html.DatePicker("org.BirthDayStart")%></td>
+    </tr>
+    <tr>
+        <th>End Birthday:</th>
+        <td><%=Html.DatePicker("org.BirthDayEnd")%></td>
+    </tr>
+    <tr>
         <th>Gender:</th>
         <td><%=Html.DropDownList("org.GenderId", Model.GenderList())%></td>
     </tr>
@@ -118,6 +126,10 @@
         <td><%=Html.TextBox("org.MaximumFee", Model.org.MaximumFee.ToString2("n2"))%></td>
     </tr>
     <tr>
+        <th>Org Member Fees:</th>
+        <td><%=Html.TextBox("org.OrgMemberFees")%></td>
+    </tr>
+    <tr>
         <th>Ask How Many Items:</th>
         <td><%=Html.CheckBox("org.AskTickets")%></td>
     </tr>
@@ -144,6 +156,10 @@
     <tr>
         <th>Yes No Questions:</th>
         <td><%=Html.TextBox("org.YesNoQuestions")%></td>
+    </tr>
+    <tr>
+        <th>Extra Questions:</th>
+        <td><%=Html.TextBox("org.ExtraQuestions")%></td>
     </tr>
     <tr>
         <th>Validate Member in OrgIds:</th>

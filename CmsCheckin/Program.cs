@@ -22,6 +22,7 @@ namespace CmsCheckin
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
             TestMode = f.TestMode.Checked;
+            Printer = f.Printer.Text;
             LeadTime = int.Parse(f.LeadTime.Text);
             f.Dispose();
 
@@ -35,6 +36,7 @@ namespace CmsCheckin
 
             Application.Run(b);
         }
+        public static string Printer { get; set; }
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }
         public static int CampusId { get; set; }

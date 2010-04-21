@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
 <table>
-<% if (Model.LastItem)
+<% var needother = Model.AnyOtherInfo();
+   if (needother && Model.LastItem)
    {
-       var needother = Model.AnyOtherInfo();
-       if (needother)
+       if (Model.IsNew)
        { %>
     <tr>
         <td></td>
@@ -14,7 +14,7 @@
        { %>
     <tr>
         <td></td>
-        <td colspan="2"><p class="blue">OK, we found your record, that's all we need. Please continue below.</p></td>
+        <td colspan="2"><p class="blue">OK, we found your record, please continue below.</p></td>
     </tr>
     <% }
        if (Model.index > 0 && needother)
@@ -184,6 +184,17 @@
         <td>Options</td>
         <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option", Model.Options(), "0")%></td>
         <td><%=Html.ValidationMessage("option")%></td>
+    </tr>
+<% }
+   foreach (var a in Model.ExtraQuestions())
+   { %>
+    <tr>
+        <td><%=a.question%></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
+            <input type="text" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestionValue(a.question) %>" />
+        </td>
+        <td></td>
     </tr>
 <% }
    foreach (var a in Model.YesNoQuestions())

@@ -60,7 +60,6 @@ namespace CmsCheckin
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private string printer = ConfigurationSettings.AppSettings["PrinterName"];
         private bool hasprinter;
         private int Row;
         DateTime time;
@@ -76,7 +75,7 @@ namespace CmsCheckin
         public void ShowFamily(XDocument x)
         {
             ClearControls();
-            hasprinter = PrintRawHelper.HasPrinter(printer);
+            hasprinter = PrintRawHelper.HasPrinter(Program.Printer);
             this.Focus();
             time = DateTime.Now;
 

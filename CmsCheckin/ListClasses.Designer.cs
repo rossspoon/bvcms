@@ -31,6 +31,7 @@
             this.GoBackButton = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
+            this.allclasses = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GoBackButton
@@ -84,10 +85,25 @@
             this.pgdn.UseVisualStyleBackColor = false;
             this.pgdn.Click += new System.EventHandler(this.pgdn_Click);
             // 
+            // allclasses
+            // 
+            this.allclasses.FlatAppearance.BorderSize = 0;
+            this.allclasses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.allclasses.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allclasses.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.allclasses.Location = new System.Drawing.Point(3, 677);
+            this.allclasses.Name = "allclasses";
+            this.allclasses.Size = new System.Drawing.Size(81, 88);
+            this.allclasses.TabIndex = 14;
+            this.allclasses.Text = ".";
+            this.allclasses.UseVisualStyleBackColor = true;
+            this.allclasses.Click += new System.EventHandler(this.allclasses_Click);
+            // 
             // ListClasses
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.allclasses);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.GoBackButton);
@@ -104,6 +120,7 @@
         public System.Windows.Forms.Button GoBackButton;
         public System.Windows.Forms.Button pgup;
         public System.Windows.Forms.Button pgdn;
+        private System.Windows.Forms.Button allclasses;
 
     }
 }

@@ -987,6 +987,13 @@ namespace UtilityExtensions
             var ms = new MemoryStream(Encoding.Default.GetBytes(s));
             return (T)ser.ReadObject(ms);
         }
+        public static string MaxString(this string s, int length)
+        {
+            if (s != null)
+                if (s.Length > length)
+                    s = s.Substring(0, length);
+            return s;
+        }
     }
     public class EventArg<T> : EventArgs
     {

@@ -63,7 +63,7 @@ text-transform: none;
    <body>
      <div class="frame">
  <div id="header">
-   <div id="logo"><a href="http://www.bellevue.org"><img src="/content/bvorgfiles/logo.png"></a></div>
+   <div id="logo"><img src="/content/bvorgfiles/logo.png"></div>
 	  <div id="nav">
 	  </div><!--/nav-->
  </div><!--/header-->

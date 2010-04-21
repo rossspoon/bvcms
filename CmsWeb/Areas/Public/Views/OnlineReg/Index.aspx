@@ -16,7 +16,25 @@ tr.alt
 }
 </style>
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script src="/Scripts/OnlineReg.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(document).bind("idle.idleTimer", function() {
+                window.location.href = $('#url').val();
+            });
+            var tmout = parseInt('<%=ViewData["timeout"] %>');
+
+            if ($('input:text[value!=""]').length == 0)
+                $(document).bind("keydown", function() {
+                    $(document).unbind("keydown");
+                    $.idleTimer(tmout);
+                });
+            else
+                $.idleTimer(tmout);
+        });
+    </script>
+    <%=Html.Hidden("url", ViewData["url"]) %>
     <h2><%=Model.Header%></h2>
     <% if (Model.IsEnded())
        { %>

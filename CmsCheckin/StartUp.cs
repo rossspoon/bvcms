@@ -46,6 +46,16 @@ namespace CmsCheckin
             TestMode.Checked = true;
             HideCursor.Checked = false;
 #endif
+            if (PrintRawHelper.HasPrinter(Print.datamax1))
+                Printer.Items.Add(Print.datamax1);
+            if (PrintRawHelper.HasPrinter(Print.datamax2))
+                Printer.Items.Add(Print.datamax2);
+            if (PrintRawHelper.HasPrinter(Print.zebra))
+                Printer.Items.Add(Print.zebra);
+            if (PrintRawHelper.HasPrinter(Print.zebra2))
+                Printer.Items.Add(Print.zebra2);
+            Printer.SelectedIndex = 0;
+
 
             var wc = new WebClient();
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Campuses");

@@ -175,6 +175,8 @@ namespace CmsData
 		
 		private string _OrgMemberFees;
 		
+		private string _ExtraQuestions;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -460,6 +462,9 @@ namespace CmsData
 		
 		partial void OnOrgMemberFeesChanging(string value);
 		partial void OnOrgMemberFeesChanged();
+		
+		partial void OnExtraQuestionsChanging(string value);
+		partial void OnExtraQuestionsChanged();
 		
     #endregion
 		public Organization()
@@ -2267,6 +2272,28 @@ namespace CmsData
 					this._OrgMemberFees = value;
 					this.SendPropertyChanged("OrgMemberFees");
 					this.OnOrgMemberFeesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraQuestions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraQuestions", DbType="varchar(200)")]
+		public string ExtraQuestions
+		{
+			get { return this._ExtraQuestions; }
+
+			set
+			{
+				if (this._ExtraQuestions != value)
+				{
+				
+                    this.OnExtraQuestionsChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraQuestions = value;
+					this.SendPropertyChanged("ExtraQuestions");
+					this.OnExtraQuestionsChanged();
 				}
 
 			}

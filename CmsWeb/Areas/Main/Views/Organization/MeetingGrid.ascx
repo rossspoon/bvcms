@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrganizationPage.MeetingModel>" %>
-<p><%=Html.CheckBox("future") %> Show Future Meetings</p>
+<p><a id="NewMeeting" href="Organization/NewMeeting">Create New Meeting</a> | 
+<%=Html.CheckBox("future") %> Show Future Meetings</p>
 <table id="MemberGrid" class="grid" cellpadding="4">
 <thead>
 <tr>
@@ -22,7 +23,7 @@
     <td><%=m.NumVisitors %></td>
     <td><%=m.Location %></td>
     <td><%=m.Description %></td>
-    <td><a href='#' class="delmeeting"><img border="0" src="/images/delete.gif" /></a></td>
+    <td><a id="m.<%=m.MeetingId %>" href="#" class="delmeeting"><img border="0" src="/images/delete.gif" /></a></td>
 </tr>
 <% } %>
 </tbody>

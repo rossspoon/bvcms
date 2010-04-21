@@ -57,7 +57,7 @@
     </tr>
 <% } %>    
     <tr>
-        <th>Extra Member Info:</th>
+        <th valign="top">Extra Member Info:</th>
         <td><%=Util.SafeFormat(Model.UserData) %></td>
     </tr>
     <tr>

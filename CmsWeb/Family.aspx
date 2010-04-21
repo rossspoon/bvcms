@@ -67,7 +67,7 @@
                 <table>
                     <tr>
                         <td>
-                            <cc1:DisplayHyperlink ID="AddressLineOne" runat="server" BindingSource="family" BindingUrlFormat="http://www.bing.com/maps?q={0}"
+                            <cc1:DisplayHyperlink ID="AddressLineOne" runat="server" BindingSource="family" BindingUrlFormat="http://www.google.com/maps?q={0}"
                                 BindingUrlMember="AddrCityStateZip" Target="_blank" />
                             &nbsp;
                         </td>
@@ -78,7 +78,7 @@
                     </tr>
                     <tr runat="server" id="trAddressLineTwo">
                         <td>
-                            <cc1:DisplayHyperlink ID="AddressLineTwo" runat="server" BindingSource="family" BindingUrlFormat="http://www.bing.com/maps?q={0}"
+                            <cc1:DisplayHyperlink ID="AddressLineTwo" runat="server" BindingSource="family" BindingUrlFormat="http://www.google.com/maps?q={0}"
                                 BindingUrlMember="Addr2CityStateZip" Target="_blank">[Address]</cc1:DisplayHyperlink>
                         </td>
                         <td>
@@ -90,7 +90,7 @@
                             <cc1:DisplayLabel ID="CityStateZip" BindingSource="family" runat="server"></cc1:DisplayLabel>
                         </td>
                         <td>
-                            <a href='<%="http://bing.com/maps/default.aspx?rtp=adr." + DbUtil.StartAddress + "~adr." + family.AddrCityStateZip %>'
+                            <a href='<%="http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=" + family.AddrCityStateZip %>'
                                 target="_blank">driving directions</a>
                         </td>
                     </tr>

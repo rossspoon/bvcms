@@ -42,7 +42,7 @@ namespace CmsData
                 return _Db;
             }
         }
-        public void Drop()
+        public EnrollmentTransaction Drop()
         {
             var q = from o in Db.Organizations
                     where o.OrganizationId == OrganizationId
@@ -57,6 +57,7 @@ namespace CmsData
                         MeetingCt = o.Meetings.Count()
                     };
             var i = q.Single();
+            EnrollmentTransaction droptrans = null;
             if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
             {
                 var qe = from et in Db.EnrollmentTransactions
@@ -86,7 +87,7 @@ namespace CmsData
             }
             else
             {
-                var et = new EnrollmentTransaction
+                droptrans = new EnrollmentTransaction
                 {
                     OrganizationId = OrganizationId,
                     PeopleId = PeopleId,
@@ -99,11 +100,11 @@ namespace CmsData
                     Pending = Pending,
                     AttendancePercentage = AttendPct,
                 };
-                Db.EnrollmentTransactions.InsertOnSubmit(et);
+                Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
             }
             Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
             Db.OrganizationMembers.DeleteOnSubmit(this);
-
+            return droptrans;
         }
         public static void UpdateMeetingsToUpdate()
         {

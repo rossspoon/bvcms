@@ -2649,7 +2649,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LetterStatusNotes", UpdateCheck=UpdateCheck.Never, Storage="_LetterStatusNotes", DbType="varchar(256)")]
+		[Column(Name="LetterStatusNotes", UpdateCheck=UpdateCheck.Never, Storage="_LetterStatusNotes", DbType="varchar(3000)")]
 		public string LetterStatusNotes
 		{
 			get { return this._LetterStatusNotes; }
@@ -2671,7 +2671,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar(256)")]
+		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar(3000)")]
 		public string Comments
 		{
 			get { return this._Comments; }

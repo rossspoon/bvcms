@@ -56,11 +56,15 @@ namespace CmsCheckin
         int PeopleId;
         int? next, prev;
         List<Control> controls = new List<Control>();
+        bool ShowAllClasses;
 
         public void ShowResults(int pid, int page)
         {
             ClearControls();
-            var x = this.GetDocument("Checkin/Classes/" + pid + Program.QueryString + "&page=" + page);
+            var url = "Checkin/Classes/" + pid + Program.QueryString + "&page=" + page;
+            if (ShowAllClasses)
+                url += "&noagecheck=true";
+            var x = this.GetDocument(url);
 
             time = DateTime.Now;
 
@@ -135,6 +139,7 @@ namespace CmsCheckin
         {
             Program.TimerStop();
             Program.ClearFields();
+            ShowAllClasses = false;
             this.GoHome("");
         }
 
@@ -143,6 +148,7 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             this.RecordAttend(c, true);
+            ShowAllClasses = false;
             this.Swap(Program.family);
             Program.family.ShowFamily(FamilyId, 1);
         }
@@ -150,6 +156,7 @@ namespace CmsCheckin
         private void GoBack_Click(object sender, EventArgs e)
         {
             this.Swap(Program.family);
+            ShowAllClasses = false;
             Program.family.ShowFamily(FamilyId, 1);
         }
         private void ClearControls()
@@ -170,11 +177,18 @@ namespace CmsCheckin
         {
             ShowResults(PeopleId, prev.Value);
         }
+
+        private void allclasses_Click(object sender, EventArgs e)
+        {
+            ShowAllClasses = true;
+            ShowResults(PeopleId, 1);
+        }
     }
     public class ClassInfo
     {
         public int oid { get; set; }
         public int pid { get; set; }
         public string mv { get; set; }
+        public string bdays { get; set; }
     }
 }

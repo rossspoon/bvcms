@@ -44,7 +44,7 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(517, 696);
+            this.Print.Location = new System.Drawing.Point(507, 687);
             this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(432, 66);
@@ -130,7 +130,7 @@
             this.bAddToFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bAddToFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bAddToFamily.ForeColor = System.Drawing.Color.Black;
-            this.bAddToFamily.Location = new System.Drawing.Point(966, 708);
+            this.bAddToFamily.Location = new System.Drawing.Point(957, 696);
             this.bAddToFamily.Margin = new System.Windows.Forms.Padding(4);
             this.bAddToFamily.Name = "bAddToFamily";
             this.bAddToFamily.Size = new System.Drawing.Size(45, 45);
@@ -147,9 +147,9 @@
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Print);
+            this.Controls.Add(this.label2);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListFamily";
             this.Size = new System.Drawing.Size(1024, 768);

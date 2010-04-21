@@ -165,7 +165,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="FundId", UpdateCheck=UpdateCheck.Never, Storage="_FundId", DbType="int NOT NULL", IsPrimaryKey=true)]
 		public int FundId
 		{
 			get { return this._FundId; }

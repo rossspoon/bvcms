@@ -36,8 +36,9 @@ namespace CmsData
         {
             if (loc.HasValue())
                 loc = ", " + loc;
-            //return "{0}:{1}{2} ({3})".Fmt(name, leader, loc, count);
-            return "{0}:{1}{2}".Fmt(name, leader, loc);
+            if (leader.HasValue())
+                leader = ":" + leader;
+            return "{0}{1}{2}".Fmt(name, leader, loc);
         }
 
         public string FullName

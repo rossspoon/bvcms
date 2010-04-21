@@ -43,7 +43,7 @@
         <%=p.BirthDate %>
     </td>
     <td>
-        <a href='<%="http://bing.com/maps/default.aspx?q=" + p.Address + "," + p.CityStateZip %>'><%=p.Address %></a>
+        <a href='<%="http://www.google.com/maps?q=" + p.Address + ",+" + p.CityStateZip %>'><%=p.Address %></a>
         <br />
         <%=p.CityStateZip %>
     </td>

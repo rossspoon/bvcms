@@ -26,7 +26,7 @@ Count: <strong><%=Model.Count() %></strong></p>
     <td><%=om.MemberStatus %><br />
         <%=om.Age %> - <%=om.BirthDate %>
     </td>
-    <td><a href="http://bing.com/maps/default.aspx?q=<%=om.Address %>,<%=om.CityStateZip %>" target="_blank">
+    <td><a href="http://www.google.com/maps?q=<%=om.Address %>,<%=om.CityStateZip %>" target="_blank">
             <%=om.Address %></a><br />
         <%=om.CityStateZip %>
     </td>

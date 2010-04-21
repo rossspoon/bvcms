@@ -42,7 +42,7 @@ namespace CMSWeb.Areas.Main.Controllers
             Session["ActiveOrganization"] = m.org.OrganizationName;
             return View(m);
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
@@ -63,9 +63,9 @@ namespace CMSWeb.Areas.Main.Controllers
             return Content("/Organization/Index/" + neworg.OrganizationId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NewMeeting(int id, string d, string t, bool group)
+        public ActionResult NewMeeting(string d, string t, bool group)
         {
-            var organization = DbUtil.Db.LoadOrganizationById(id);
+            var organization = DbUtil.Db.LoadOrganizationById(Util.CurrentOrgId);
             DateTime dt;
             if (!DateTime.TryParse(d + " " + t, out dt))
                 return new EmptyResult();
@@ -87,7 +87,7 @@ namespace CMSWeb.Areas.Main.Controllers
             DbUtil.Db.Meetings.InsertOnSubmit(mt);
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
-            return Redirect("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
+            return Content("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CurrMemberGrid(int id, int smallgroupid)
@@ -117,9 +117,9 @@ namespace CMSWeb.Areas.Main.Controllers
             Util.CurrentOrgId = id;
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
             ViewData["queryid"] = qb.QueryId;
-            var m = new VisitorModel(qb.QueryId);
+            var m = new VisitorModel(id, qb.QueryId);
             UpdateModel(m.Pager);
-            return View(m);
+            return View("VisitorGrid", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PendingMemberGrid(int id)
@@ -187,14 +187,14 @@ namespace CMSWeb.Areas.Main.Controllers
             return View("OrgInfo", m);
         }
 
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakeNewGroup(int id, string GroupName)
         {
             var Db = DbUtil.Db;
             var group = Db.MemberTags.SingleOrDefault(g =>
                 g.Name == GroupName && g.OrgId == id);
-            if (group == null) 
+            if (group == null)
             {
                 group = new MemberTag
                 {
@@ -251,6 +251,44 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             Session["OrgCopySettings"] = Util.CurrentOrgId;
             return Redirect("/OrgSearch/");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DeleteMeeting(string id, bool future)
+        {
+            var aa = id.Split('.');
+            var mid = aa[1].ToInt2();
+            if (!mid.HasValue)
+                return new EmptyResult();
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
+            if (meeting == null)
+                return new EmptyResult();
+            var orgid = meeting.OrganizationId;
+            var q = from a in DbUtil.Db.Attends
+                    where a.MeetingId == mid
+                    select a.PeopleId;
+            var list = q.ToList();
+            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == mid);
+            foreach (var a in attendees)
+                if (a.AttendanceFlag == true)
+                    Attend.RecordAttendance(a.PeopleId, mid.Value, false);
+            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
+            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
+            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
+            DbUtil.Db.SubmitChanges();
+            return Content("true");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Join(string id)
+        {
+            var aa = id.Split('.');
+            if (aa.Length != 3)
+                return new EmptyResult();
+            var pid = aa[1].ToInt();
+            var oid = aa[2].ToInt();
+            OrganizationMember.InsertOrgMembers(oid, pid,
+                (int)OrganizationMember.MemberTypeCode.Member,
+                DateTime.Now, null, false);
+            return Content("true");
         }
     }
 }

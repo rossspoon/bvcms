@@ -21,11 +21,11 @@ Count: <strong><%=Model.Count() %></strong></p>
    { %>
 <tr>
     <td><img src="/images/individual.gif" border="0" /> <a href="/Person/Index/<%=om.PeopleId %>"><%=om.Name %></a></td>
-    <td>Join</td>
+    <td><a id="j.<%=om.PeopleId %>.<%=Model.OrganizationId %>" href="#" class="joinlink">Join</a></td>
     <td><%=om.MemberStatus %><br />
         <%=om.Age %> - <%=om.BirthDate %>
     </td>
-    <td><a href="http://bing.com/maps/default.aspx?q=<%=om.Address %>,<%=om.CityStateZip %>" target="_blank">
+    <td><a href="http://www.google.com/maps?q=<%=om.Address %>,<%=om.CityStateZip %>" target="_blank">
             <%=om.Address %></a><br />
         <%=om.CityStateZip %>
     </td>

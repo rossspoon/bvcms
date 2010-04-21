@@ -10,10 +10,12 @@ namespace CMSWeb.Models.OrganizationPage
     public class VisitorModel
     {
         private int queryid;
+        public int OrganizationId { get; set; }
         public PagerModel2 Pager { get; set; }
-        public VisitorModel(int id)
+        public VisitorModel(int id, int qid)
         {
-            queryid = id;
+            OrganizationId = id;
+            queryid = qid;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";

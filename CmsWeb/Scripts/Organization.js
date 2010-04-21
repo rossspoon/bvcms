@@ -117,7 +117,7 @@
             dateFormat: 'm/d/yy',
             changeMonth: true,
             changeYear: true,
-            beforeShow: function() {$('#ui-datepicker-div').maxZIndex(); }
+            beforeShow: function() { $('#ui-datepicker-div').maxZIndex(); }
         });
     }
     $.initDatePicker();
@@ -248,13 +248,17 @@
                 if (!dt.valid)
                     return false;
                 var url = "?d=" + dt.date + "&t=" + dt.time +
-                "&group=" + ($('#group').is(":checked")) ? "true" : "false";
-                window.open("/Reports/Rollsheet/" + args);
+                "&group=" + ($('#group').is(":checked") ? "true" : "false");
+                $.post("/Organization/NewMeeting" + url, null, function(ret) {
+                    window.location = ret;
+                });
                 $(this).dialog("close");
             }
         });
         $("#NewMeetingDialog").dialog('open');
+        return false;
     };
+    $('#NewMeeting').live("click", $.NewMeeting);
     $.GetMeetingDateTime = function() {
         var reTime = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
         var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
@@ -271,11 +275,30 @@
         }
         return { date: d, time: t, valid: v };
     };
+    $('.delmeeting').live('click', function() {
+        if (confirm("delete meeting for sure?")) {
+            $.post("/Organization/DeleteMeeting/",
+                { id: this.id, future: $('#future').is(":checked") },
+                function(ret) {
+                    if (ret)
+                        $.updateTable($('#Meetings-tab form'));
+                });
+        }
+        return false;
+    });
+    $('.joinlink').live('click', function() {
+        $.post("/Organization/Join/", { id: this.id },
+            function(ret) {
+                if (ret)
+                    RebindMemberGrids();
+            });
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
     $.updateTable($('#Inactive-tab form'));
     $.updateTable($('#Pending-tab form'));
     $.updateTable($('#Priors-tab form'));
+    $.updateTable($('#Visitors-tab form'));
     $("#memberDialog").dialog("close");
 }

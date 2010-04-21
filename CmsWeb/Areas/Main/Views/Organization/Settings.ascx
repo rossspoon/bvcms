@@ -113,6 +113,14 @@
         <td><%=Model.org.GradeAgeEnd%></td>
     </tr>
     <tr>
+        <th>Start Birthday:</th>
+        <td><%=Model.org.BirthDayStart.FormatDate()%></td>
+    </tr>
+    <tr>
+        <th>End Birthday:</th>
+        <td><%=Model.org.BirthDayEnd.FormatDate()%></td>
+    </tr>
+    <tr>
         <th>Gender:</th>
         <td><%=Html.CodeDesc("org.GenderId", Model.GenderList()) %></td>
     </tr>
@@ -141,6 +149,10 @@
         <td><%=Model.org.MaximumFee.ToString2("n2")%></td>
     </tr>
     <tr>
+        <th>Org Member Fees:</th>
+        <td><%=Model.org.OrgMemberFees %></td>
+    </tr>
+    <tr>
         <th>Ask How Many Items:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskTickets)%></td>
     </tr>
@@ -167,6 +179,10 @@
     <tr>
         <th>Yes No Questions:</th>
         <td><%=Model.org.YesNoQuestions%></td>
+    </tr>
+    <tr>
+        <th>Extra Questions:</th>
+        <td><%=Model.org.ExtraQuestions %></td>
     </tr>
     <tr>
         <th>Validate Member in OrgIds:</th>

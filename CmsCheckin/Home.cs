@@ -125,6 +125,8 @@ namespace CmsCheckin
         }
         private void Go()
         {
+            if (textBox1.Text == "010")
+                Application.Exit();
             if (textBox1.Text == "411")
                 this.Swap(Program.namesearch);
             else if (textBox1.Text.StartsWith("0") && textBox1.Text.Length > 1)

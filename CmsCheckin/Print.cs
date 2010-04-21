@@ -44,105 +44,145 @@ namespace CmsCheckin
         }
         private static void PrintLabel5(List<string> list, int n)
         {
-            string printer = ConfigurationSettings.AppSettings["PrinterName"];
-            if (!PrintRawHelper.HasPrinter(printer))
-                return;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02n");
-            sw.WriteLine("\x02M0500");
-            sw.WriteLine("\x02O0220");
-            sw.WriteLine("\x02V0");
-            sw.WriteLine("\x02SG");
-            sw.WriteLine("\x02d");
-            sw.WriteLine("\x01D");
-            sw.WriteLine("\x02L");
-            sw.WriteLine("D11");
-            sw.WriteLine("PG");
-            sw.WriteLine("pC");
-            sw.WriteLine("SG");
-            sw.WriteLine("ySPM");
-            sw.WriteLine("A2");
-            if (list.Count > n)
-                sw.WriteLine("1911A1000040010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000210010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000370010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000540010" + list[n]);
-            n--;
-            if (list.Count > n)
-                sw.WriteLine("1911A1000700010" + list[n]);
-            n--;
-            sw.WriteLine("Q0001");
-            sw.WriteLine("E");
+            if (Program.Printer.StartsWith("Datamax"))
+            {
+                sw.WriteLine("\x02n");
+                sw.WriteLine("\x02M0500");
+                sw.WriteLine("\x02O0220");
+                sw.WriteLine("\x02V0");
+                sw.WriteLine("\x02SG");
+                sw.WriteLine("\x02d");
+                sw.WriteLine("\x01D");
+                sw.WriteLine("\x02L");
+                sw.WriteLine("D11");
+                sw.WriteLine("PG");
+                sw.WriteLine("pC");
+                sw.WriteLine("SG");
+                sw.WriteLine("ySPM");
+                sw.WriteLine("A2");
+                if (list.Count > n)
+                    sw.WriteLine("1911A1000040010" + list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine("1911A1000210010" + list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine("1911A1000370010" + list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine("1911A1000540010" + list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine("1911A1000700010" + list[n]);
+                n--;
+                sw.WriteLine("Q0001");
+                sw.WriteLine("E");
+            }
+            if (Program.Printer.StartsWith("ZDesigner"))
+            {
+                sw.WriteLine(@"^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                sw.WriteLine(@"^XA");
+                sw.WriteLine(@"^MMT");
+                sw.WriteLine(@"^PW609");
+                sw.WriteLine(@"^LL0406");
+                sw.WriteLine(@"^LS0");
+                if (list.Count > n)
+                    sw.WriteLine(string.Format(@"^FT24,179^A0N,28,28^FH\^FD{0}^FS", list[n]));
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(string.Format(@"^FT24,144^A0N,28,28^FH\^FD{0}^FS", list[n]));
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(string.Format(@"^FT24,110^A0N,28,28^FH\^FD{0}^FS", list[n]));
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(string.Format(@"^FT24,76^A0N,28,28^FH\^FD{0}^FS", list[n]));
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(string.Format(@"^FT24,41^A0N,28,28^FH\^FD{0}^FS", list[n]));
+                n--;
+                sw.WriteLine(string.Format(@"^PQ1,0,1,Y^XZ"));
+            }
             sw.Flush();
 
             memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(printer, memStrm);
+            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
             sw.Close();
         }
-        public static string PrinterName()
-        {
-            return ConfigurationSettings.AppSettings["PrinterName"];
-        }
-        public static bool HasPrinter()
-        {
-            string printer = PrinterName();
-            return PrintRawHelper.HasPrinter(printer);
-        }
+        public const string datamax1 = "Datamax E-4203";
+        public const string datamax2 = "Datamax E-4204";
+        public const string zebra = "ZDesigner LP 2844-Z";
+        public const string zebra2 = "ZDesigner LP 2844";
+
         public static void BlankLabel()
         {
-            if (!HasPrinter())
-                return;
-            var ms = new MemoryStream();
-            var st = new StreamWriter(ms);
-            st.WriteLine("\x02L");
-            st.WriteLine("H07");
-            st.WriteLine("D11");
-            st.WriteLine("E");
-            st.Flush();
-            ms.Position = 0;
-            PrintRawHelper.SendDocToPrinter(PrinterName(), ms);
-            st.Close();
+            if (Program.Printer.StartsWith("Datamax"))
+            {
+                var ms = new MemoryStream();
+                var st = new StreamWriter(ms);
+                st.WriteLine("\x02L");
+                st.WriteLine("H07");
+                st.WriteLine("D11");
+                st.WriteLine("E");
+                st.Flush();
+                ms.Position = 0;
+                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+                st.Close();
+            }
         }
         public static void Label(LabelInfo li, DateTime time)
         {
-            if (!HasPrinter() || li.n == 0)
+            if (li.n == 0)
                 return;
             var n = li.n;
             if (n > Program.MaxLabels)
                 n = Program.MaxLabels;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
-            sw.WriteLine("\x02n");
-            sw.WriteLine("\x02M0500");
-            sw.WriteLine("\x02O0220");
-            sw.WriteLine("\x02V0");
-            sw.WriteLine("\x02SG");
-            sw.WriteLine("\x02d");
-            sw.WriteLine("\x01D");
-            sw.WriteLine("\x02L");
-            sw.WriteLine("D11");
-            sw.WriteLine("PG");
-            sw.WriteLine("pC");
-            sw.WriteLine("SG");
-            sw.WriteLine("ySPM");
-            sw.WriteLine("A2");
-            sw.WriteLine("1911A3000450009" + li.first);
-            sw.WriteLine("1911A1000300011" + li.last);
-            sw.WriteLine("1911A1000060008" + " (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
-            sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
-            sw.WriteLine("Q" + n.ToString("0000"));
-            sw.WriteLine("E");
+            if (Program.Printer.StartsWith("Datamax"))
+            {
+                sw.WriteLine("\x02n");
+                sw.WriteLine("\x02M0500");
+                sw.WriteLine("\x02O0220");
+                sw.WriteLine("\x02V0");
+                sw.WriteLine("\x02SG");
+                sw.WriteLine("\x02d");
+                sw.WriteLine("\x01D");
+                sw.WriteLine("\x02L");
+                sw.WriteLine("D11");
+                sw.WriteLine("PG");
+                sw.WriteLine("pC");
+                sw.WriteLine("SG");
+                sw.WriteLine("ySPM");
+                sw.WriteLine("A2");
+                sw.WriteLine("1911A3000450009" + li.first);
+                sw.WriteLine("1911A1000300011" + li.last);
+                sw.WriteLine("1911A1000060008" + " (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
+                sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
+                sw.WriteLine("Q" + n.ToString("0000"));
+                sw.WriteLine("E");
+            }
+            if (Program.Printer.StartsWith("ZDesigner"))
+            {
+                //sw.WriteLine("CT~~CD,~CC^~CT~");
+                sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                sw.WriteLine("^XA");
+                sw.WriteLine("^MMT");
+                sw.WriteLine("^PW609");
+                sw.WriteLine("^LL0203");
+                sw.WriteLine("^LS0");
+                sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
+                sw.WriteLine(string.Format(@"^FT583,69^A0I,34,33^FH\^FD{0}^FS", li.last));
+                sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FD{0} {1}   {2:M/d/yy}^FS", li.pid, li.mv, time));
+                sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0:HHmmss}^FS", time));
+                sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
+            }
             sw.Flush();
 
             memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(PrinterName(), memStrm);
+            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
             sw.Close();
         }
 

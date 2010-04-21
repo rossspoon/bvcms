@@ -94,14 +94,18 @@ namespace CMSWeb.Models
             set { list = value; }
         }
 
-        public decimal TotalAmount()
+        public decimal Amount()
         {
-            var amt = List.Sum(p => p.Amount());
+            var amt = List.Sum(p => p.AmountToPay());
             if (org == null)
                 return amt;
             if (org.MaximumFee > 0 && amt > org.MaximumFee)
                 amt = org.MaximumFee.Value;
             return amt;
+        }
+        public decimal TotalAmount()
+        {
+            return List.Sum(p => p.TotalAmount());
         }
         public decimal TotalAmountDue()
         {
@@ -181,13 +185,13 @@ namespace CMSWeb.Models
                 {
                     name = p.person.Name,
                     pid = p.person.PeopleId,
-                    amt = p.Amount() + p.AmountDue()
+                    amt = p.AmountToPay() + p.AmountDue()
                 });
             }
             var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
             var amtdue = TotalAmountDue();
-            var amtpaid = TotalAmount();
+            var amtpaid = Amount();
 
             if (amtdue > 0)
             {

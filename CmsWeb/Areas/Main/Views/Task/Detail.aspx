@@ -104,8 +104,8 @@
                    { %>
                 <%=Html.HyperLink(Model.ProspectReportLink(), "Prospect Report", new { target = "_blank" })%>
                 <div>
-                    <%=Html.HyperLink("http://bing.com/maps/default.aspx?q=" + Model.WhoAddrCityStateZip, Model.WhoAddress, new { target = "_blank" })%>
-                    | <%=Html.HyperLink("http://bing.com/maps/default.aspx?rtp=adr." + DbUtil.StartAddress + "~adr." + Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
+                    <%=Html.HyperLink("http://www.google.com/maps?q=" + Model.WhoAddrCityStateZip, Model.WhoAddress, new { target = "_blank" })%>
+                    | <%=Html.HyperLink("http://www.google.com/maps?f=d&saddr=" + DbUtil.StartAddress + "&pw=2&daddr=" + Model.WhoAddrCityStateZip, "driving directions", new { target = "_blank" })%><br />
                     <%=Html.HyperLink("mailto:" + Model.WhoEmail, Model.WhoEmail2)%>
                     | <%=Model.WhoPhone%> 
                 </div>

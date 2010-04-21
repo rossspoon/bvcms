@@ -69,6 +69,6 @@
         $("input:last[name$='.fname']").val($("input:hidden:last[name$='.fname']").val());
         $("input:last[name$='.paydeposit']").val($("input:hidden:last[name$='.paydeposit']").val());
         return false;
-    });
+    }); 
 });
 

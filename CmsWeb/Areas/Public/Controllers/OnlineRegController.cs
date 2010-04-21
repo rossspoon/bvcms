@@ -41,8 +41,15 @@ namespace CMSWeb.Areas.Public.Controllers
                 if (!m.div.Organizations.Any(o => a.Contains(o.RegistrationTypeId)))
                     return Content("no registration allowed on this div");
             }
-#if DEBUG2
-            //m.testing = true;
+            ViewData["url"] = Request.Path + Request.QueryString;
+#if DEBUG
+            ViewData["timeout"] = 106000;
+#else
+            ViewData["timeout"] = 60000;
+#endif
+
+#if DEBUG
+            m.testing = true;
             m.List = new List<OnlineRegPersonModel>
             {
                 new OnlineRegPersonModel
@@ -50,7 +57,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     divid = div,
                     orgid = id,
                     first = "David",
-                    last = "Carrolls",
+                    last = "Carroll",
                     dob = "5/30/52",
                     email = "david@davidcarroll.name",
                     phone = "9017581862",
@@ -72,7 +79,7 @@ namespace CMSWeb.Areas.Public.Controllers
         public ActionResult ShowMoreInfo(int id, OnlineRegModel m)
         {
             var p = m.List[id];
-#if DEBUG2
+#if DEBUG
             p.address = "235 Riveredge Cv.";
             p.city = "Cordova";
             p.state = "TN";
@@ -137,7 +144,7 @@ namespace CMSWeb.Areas.Public.Controllers
         }
         private static void FillPriorInfo(OnlineRegPersonModel p)
         {
-#if DEBUG2
+#if DEBUG
             p.shirtsize = "YT-L";
             p.request = "tommy";
             p.emcontact = "test";
@@ -213,7 +220,7 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             if (!ModelState.IsValid)
                 return View("list", m.List);
-#if DEBUG2
+#if DEBUG
             m.List.Add(new OnlineRegPersonModel
             {
                 divid = m.divid,
@@ -240,7 +247,7 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             var d = DbUtil.Db.GetDatum<OnlineRegModel>(m);
 
-            if (m.TotalAmount() == 0)
+            if (m.Amount() == 0)
                 return RedirectToAction("Confirm",
                     new
                     {
@@ -253,7 +260,7 @@ namespace CMSWeb.Areas.Public.Controllers
             {
                 NameOnAccount = m.NameOnAccount,
                 Address = p.address,
-                Amount = m.TotalAmount(),
+                Amount = m.Amount(),
                 City = p.city,
                 Email = p.email,
                 Phone = p.phone.FmtFone(),

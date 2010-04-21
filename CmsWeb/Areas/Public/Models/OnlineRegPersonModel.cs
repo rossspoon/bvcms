@@ -59,6 +59,18 @@ namespace CMSWeb.Models
         public bool IsNew { get; set; }
         public bool OtherOK { get; set; }
         public bool ShowAddress { get; set; }
+        private Dictionary<string, string> _ExtraQuestion = new Dictionary<string, string>();
+        public Dictionary<string, string> ExtraQuestion
+        {
+            get { return _ExtraQuestion; }
+            set { _ExtraQuestion = value; }
+        }
+        public string ExtraQuestionValue(string s)
+        {
+            if (ExtraQuestion.ContainsKey(s))
+                return ExtraQuestion[s];
+            return null;
+        }
         private Dictionary<string, bool?> _YesNoQuestion = new Dictionary<string, bool?>();
         public Dictionary<string, bool?> YesNoQuestion
         {
@@ -67,7 +79,7 @@ namespace CMSWeb.Models
         }
         public string YesNoChecked(string key, bool value)
         {
-            if (YesNoQuestion.ContainsKey(key))
+            if (YesNoQuestion != null && YesNoQuestion.ContainsKey(key))
                 return YesNoQuestion[key] == value ? "checked='checked'" : "";
             return "";
         }
@@ -122,15 +134,12 @@ namespace CMSWeb.Models
                         if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
                             ModelState.AddModelError("find", "Must be member of specified organization");
                     }
-                    else
-                    {
-                        address = person.PrimaryAddress;
-                        city = person.PrimaryCity;
-                        state = person.PrimaryState;
-                        zip = person.PrimaryZip;
-                        gender = person.GenderId;
-                        married = person.MaritalStatusId == 2 ? 2 : 1;
-                    }
+                    address = person.PrimaryAddress;
+                    city = person.PrimaryCity;
+                    state = person.PrimaryState;
+                    zip = person.PrimaryZip;
+                    gender = person.GenderId;
+                    married = person.MaritalStatusId == 2 ? 2 : 1;
                 }
                 else if (count > 1)
                     ModelState.AddModelError("find", "More than one match, sorry");
@@ -287,13 +296,21 @@ namespace CMSWeb.Models
         public int? ntickets { get; set; }
         public string option { get; set; }
 
-        public decimal Amount()
+        public decimal AmountToPay()
+        {
+            if (paydeposit == true && org.Deposit.HasValue && org.Deposit > 0)
+                return org.Deposit.Value;
+            return TotalAmount();
+        }
+        public decimal AmountDue()
+        {
+            return TotalAmount() - AmountToPay();
+        }
+        public decimal TotalAmount()
         {
             if (org == null)
                 return 0;
             decimal amt = 0;
-            if (paydeposit == true && org.Deposit.HasValue && org.Deposit > 0)
-                amt = org.Deposit.Value;
             if (amt == 0 && org.AskTickets == true)
                 amt = (org.Fee ?? 0) * (ntickets ?? 0);
             if (amt == 0 && org.AskOptions.HasValue())
@@ -322,7 +339,7 @@ namespace CMSWeb.Models
                 var q = from o in org.OrgMemberFees.Split(',')
                         let b = o.Split('=')
                         where b.Length > 1
-                        where DbUtil.Db.OrganizationMembers.Any(om => om.OrganizationId == b[0].ToInt())
+                        where person.OrganizationMembers.Any(om => om.OrganizationId == b[0].ToInt())
                         select decimal.Parse(b[1]);
                 if (q.Count() > 0)
                     amt = q.First();
@@ -335,13 +352,6 @@ namespace CMSWeb.Models
             if (shirtsize != "lastyear" && org.ShirtFee.HasValue)
                 amt += org.ShirtFee.Value;
             return amt;
-        }
-        public decimal AmountDue()
-        {
-            if (org.Deposit > 0)
-                return (org.Fee ?? 0) - Amount();
-            else
-                return 0;
         }
 
         public void ValidateModelForOther(ModelStateDictionary modelState)
@@ -450,6 +460,19 @@ namespace CMSWeb.Models
                     let a = s.Split('=')
                     where s.HasValue()
                     select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
+            return q;
+        }
+        public class ExtraQuestionItem
+        {
+            public string question { get; set; }
+            public int n { get; set; }
+        }
+        public IEnumerable<ExtraQuestionItem> ExtraQuestions()
+        {
+            var i = 0;
+            var q = from s in (org.ExtraQuestions ?? string.Empty).Split(',')
+                    where s.HasValue()
+                    select new ExtraQuestionItem { question = s, n = i++ };
             return q;
         }
         public IEnumerable<SelectListItem> Options()
@@ -570,9 +593,14 @@ namespace CMSWeb.Models
             if (org.YesNoQuestions.HasValue())
                 foreach (var a in YesNoQuestions())
                     sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, YesNoQuestion[a.name] == true ? "Yes" : "No"));
+            if (org.ExtraQuestions.HasValue())
+                foreach (var a in ExtraQuestion)
+                    if (a.Value.HasValue())
+                        sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 
-            if (Amount() > 0)
-                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0}</td></tr>\n", Amount());
+            var amt = AmountToPay();
+            if (amt > 0)
+                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0:c}</td></tr>\n", amt);
             sb.Append("</table>");
 
             return sb.ToString();
@@ -592,7 +620,7 @@ namespace CMSWeb.Models
 
             var om = OrganizationMember.InsertOrgMembers(orgid.Value, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
-            var amt = Amount();
+            var amt = AmountToPay();
             om.Amount = (om.Amount ?? 0) + amt;
 
             var reg = person.RecRegs.SingleOrDefault();
@@ -647,6 +675,10 @@ namespace CMSWeb.Models
             if (org.YesNoQuestions.HasValue())
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup((g.Value == true ? "Yes:" : "No:") + g.Key);
+            if (org.ExtraQuestions.HasValue())
+                foreach (var g in ExtraQuestion)
+                    if (g.Value.HasValue())
+                        AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value), om);
 
             if (org.AskOptions.HasValue())
                 om.AddToGroup(option);
@@ -661,6 +693,8 @@ namespace CMSWeb.Models
                 AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
                 if (testing == true)
                     AddToMemberData("(test transaction)", om);
+                if (AmountDue() > 0)
+                    AddToMemberData("{0:C} due".Fmt(AmountDue().ToString("C")), om);
             }
 
             if (org.AskTylenolEtc == true)
@@ -681,6 +715,8 @@ namespace CMSWeb.Models
 
             if (amt > 0)
             {
+                if (AmountDue() > 0)
+                    AddToRegistrationComments("{0:C} due".Fmt(AmountDue().ToString("C")), reg);
                 if (testing == true)
                     AddToRegistrationComments("(test transaction)", reg);
                 AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);

@@ -42,10 +42,12 @@ namespace CmsCheckin
 
         private void buttongo_Click(object sender, EventArgs e)
         {
+            if (!ValidateFields())
+                return;
             Program.TimerStop();
             if (Marital == 0 || Gender == 0)
                 return;
-           AddPersonGoHome();
+            AddPersonGoHome();
         }
         private void AddPersonGoHome()
         {
@@ -58,7 +60,7 @@ namespace CmsCheckin
 
             string ph;
             if (!string.IsNullOrEmpty(homephone.Text))
-                ph =homephone.Text;
+                ph = homephone.Text;
             else
                 if (!string.IsNullOrEmpty(cellphone.Text))
                     ph = cellphone.Text;
@@ -141,9 +143,25 @@ namespace CmsCheckin
             this.Swap(Program.homephone);
         }
 
+        private bool ValidateFields()
+        {
+            var sb = new StringBuilder();
+            if (Marital == 0)
+                sb.AppendLine("marital status needed");
+            if (Gender == 0)
+                sb.AppendLine("gender needed");
+            if (!first.Text.HasValue())
+                sb.AppendLine("first name needed");
+            if (sb.Length > 0)
+            {
+                MessageBox.Show(sb.ToString());
+                return false;
+            }
+            return true;
+        }
         private void AddAnother_Click(object sender, EventArgs e)
         {
-            if (Marital == 0 || Gender == 0)
+            if (!ValidateFields())
                 return;
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, Marital, Gender);
             Program.ClearFields();
