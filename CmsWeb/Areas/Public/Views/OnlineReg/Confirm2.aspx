@@ -5,7 +5,6 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
     <h2>Transaction Completed</h2>
     <p>
         Thank you for your payment of <%=Model.AmountDue.ToString("c") %> for <%=Model.Header %>  

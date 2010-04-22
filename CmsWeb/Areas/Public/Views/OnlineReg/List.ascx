@@ -2,6 +2,7 @@
 <%=Html.Hidden("m.divid", Model.divid) %>
 <%=Html.Hidden("m.orgid", Model.orgid) %>
 <%=Html.Hidden("m.testing", Model.testing) %>
+<%=Html.Hidden("m.URL", Model.URL) %>
 <table cellpadding="0" cellspacing="0">
 <% 
     bool ShowDisplay = false;

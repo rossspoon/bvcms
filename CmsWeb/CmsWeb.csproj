@@ -139,6 +139,8 @@
     </Compile>
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
+    <Compile Include="Areas\Manage\Controllers\OrgMembersController.cs" />
+    <Compile Include="Areas\Manage\Models\OrgMembersModel.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\OnlineRegController.cs" />
     <Compile Include="Areas\Public\Controllers\RetreatController.cs" />
@@ -1289,6 +1291,8 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
+    <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
+    <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\AddressDisplay.ascx" />
@@ -1678,6 +1682,7 @@
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Config\AppSettings.config" />
+    <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />
     <Content Include="Scripts\OnlineReg.js" />
     <Content Include="Scripts\Organization.js" />

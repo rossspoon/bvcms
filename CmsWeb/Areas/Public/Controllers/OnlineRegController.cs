@@ -17,6 +17,12 @@ namespace CMSWeb.Areas.Public.Controllers
 {
     public class OnlineRegController : CmsController
     {
+#if DEBUG
+        private const int INT_timeout = 16000;
+#else
+        private const int INT_timeout = 60000;
+#endif
+
         public ActionResult Index(int? id, int? div, bool? testing)
         {
             if (!id.HasValue && !div.HasValue)
@@ -41,12 +47,8 @@ namespace CMSWeb.Areas.Public.Controllers
                 if (!m.div.Organizations.Any(o => a.Contains(o.RegistrationTypeId)))
                     return Content("no registration allowed on this div");
             }
-            ViewData["url"] = Request.Path + Request.QueryString;
-#if DEBUG
-            ViewData["timeout"] = 106000;
-#else
-            ViewData["timeout"] = 60000;
-#endif
+            m.URL = Request.Url.OriginalString;
+            ViewData["timeout"] = INT_timeout;
 
 #if DEBUG
             m.testing = true;
@@ -273,6 +275,8 @@ namespace CMSWeb.Areas.Public.Controllers
             };
             pm.Misc1 = pm.NameOnAccount;
 
+            ViewData["URL"] = m.URL;
+            ViewData["timeout"] = INT_timeout;
             return View("Payment", pm);
         }
         [ValidateInput(false)]
@@ -290,13 +294,14 @@ namespace CMSWeb.Areas.Public.Controllers
             var s = ed.Data;
             var m = Util.DeSerialize<OnlineRegModel>(s);
 
-
             m.EnrollAndConfirm(TransactionID);
 
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             ViewData["email"] = m.List[0].email;
             ViewData["orgname"] = m.org.OrganizationName;
+            ViewData["URL"] = m.URL;
+            ViewData["timeout"] = INT_timeout;
             return View(m);
         }
         public ActionResult PayDue(string q)
@@ -324,6 +329,8 @@ namespace CMSWeb.Areas.Public.Controllers
                 Misc2 = ti.Header,
                 Misc1 = ti.Name,
             };
+            ViewData["URL"] = ti.URL;
+            ViewData["timeout"] = INT_timeout;
             return View("Payment2", pm);
         }
         [ValidateInput(false)]
@@ -371,6 +378,8 @@ namespace CMSWeb.Areas.Public.Controllers
                 "Thank you for paying the balance of {0:c} for {1}.".Fmt(ti.AmountDue, ti.Header));
             Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
                 "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
+            ViewData["URL"] = ti.URL;
+            ViewData["timeout"] = INT_timeout;
             return View(ti);
         }
         private static void AddToMemberData(string s, OrganizationMember om)
@@ -383,6 +392,5 @@ namespace CMSWeb.Areas.Public.Controllers
         {
             rr.Comments = s + "\n" + rr.Comments;
         }
-
     }
 }

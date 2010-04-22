@@ -20,7 +20,22 @@ div.terms strong {color:#000;}	</style>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script>
+    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(document).bind("idle.idleTimer", function() {
+                window.location.href = '<%=ViewData["URL"] %>';
+            });
+            var tmout = parseInt('<%=ViewData["timeout"] %>');
+
+            $(document).bind("keydown", function() {
+                $(document).unbind("keydown");
+                $.idleTimer(tmout);
+            });
+            $.idleTimer(tmout);
+        });
+    </script>
+    <script type="text/javascript">
         $(function() {
             if ($('#IAgree').attr("id"))
                 $("#Submit").attr("disabled", "disabled");

@@ -21,7 +21,7 @@ tr.alt
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
-                window.location.href = $('#url').val();
+                window.location.href = '<%=Model.URL %>';
             });
             var tmout = parseInt('<%=ViewData["timeout"] %>');
 
@@ -34,7 +34,6 @@ tr.alt
                 $.idleTimer(tmout);
         });
     </script>
-    <%=Html.Hidden("url", ViewData["url"]) %>
     <h2><%=Model.Header%></h2>
     <% if (Model.IsEnded())
        { %>

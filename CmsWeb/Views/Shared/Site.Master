@@ -158,7 +158,7 @@
                         <li><a href="/Setup/Division/">Divisions</a></li>
                         <li><a href="/Setup/Ministry/">Ministries</a></li>
                         <li><a href="/Setup/MetroZip/">MetroZips</a></li>
-                        <li><a href="/Fund/">Funds</a></li>
+                        <li><a href="/Setup/Fund/">Funds</a></li>
                         <li><a href="/Setup/MemberType/">MemberTypes</a></li>
                         <li><a href="/Setup/Setting/">Settings</a></li>
                         <li><a href="/Setup/Lookup/">Lookups</a></li>

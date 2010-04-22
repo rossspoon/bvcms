@@ -29,6 +29,7 @@ namespace CMSWeb.Models
                 return _div;
             }
         }
+        public string URL { get; set; }
 
         [NonSerialized]
         private CmsData.Organization _org;
@@ -197,6 +198,7 @@ namespace CMSWeb.Models
             {
                 var ti = new TransactionInfo
                 {
+                    URL = URL,
                     Header = Header,
                     Name = NameOnAccount,
                     Address = p0.address,
@@ -267,6 +269,7 @@ namespace CMSWeb.Models
     public class TransactionInfo
     {
         public string Header { get; set; }
+        public string URL { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
