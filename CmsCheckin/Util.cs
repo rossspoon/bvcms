@@ -62,30 +62,6 @@ namespace CmsCheckin
             return r;
         }
 
-        public static bool RecordAttend(this Control f, ClassInfo c, bool present)
-        {
-            if (c.oid == 0)
-                return false;
-            try
-            {
-                var wc = new WebClient();
-                var coll = new NameValueCollection();
-                coll.Add("PeopleId", c.pid.ToString());
-                coll.Add("OrgId", c.oid.ToString());
-                coll.Add("Present", present.ToString());
-                coll.Add("thisday", Program.ThisDay.ToString());
-                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
-
-                var resp = wc.UploadValues(url, "POST", coll);
-
-                var s = Encoding.ASCII.GetString(resp);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
         public static void AddPerson(this Control f,
             string first,
             string last,
@@ -266,6 +242,36 @@ namespace CmsCheckin
                 return "?";
             return age.ToString();
         }
+        public class RecordAttendInfo
+        {
+            public bool present { get; set; }
+            public ClassInfo c { get; set; }
+        }
+        public static void RecordAttend(RecordAttendInfo ra)
+        {
+            if (ra.c.oid == 0)
+                return;
+            try
+            {
+                var wc = new WebClient();
+                var coll = new NameValueCollection();
+                coll.Add("PeopleId", ra.c.pid.ToString());
+                coll.Add("OrgId", ra.c.oid.ToString());
+                coll.Add("Present", ra.present.ToString());
+                coll.Add("thisday", Program.ThisDay.ToString());
+                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
+
+                var resp = wc.UploadValues(url, "POST", coll);
+#if DEBUG
+                //System.Threading.Thread.Sleep(1500);
+#endif
+                var s = Encoding.ASCII.GetString(resp);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
     }
     public class EventArgs<T> : EventArgs
     {

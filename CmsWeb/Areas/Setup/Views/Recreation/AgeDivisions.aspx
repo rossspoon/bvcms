@@ -60,14 +60,7 @@
     <% foreach (var item in Model) 
        { %>
         <tr>
-            <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-               { %>        
-            <td><a href="/Organization.aspx?id=<%=item.OrganizationId %>"><%=item.OrganizationName%></a></td>
-            <% } 
-               else
-               { %>
             <td><a href="/Organization/Index/<%=item.OrganizationId %>"><%=item.OrganizationName%></a></td>
-            <% } %>
             <td>
                 <span id='s<%=item.OrganizationId %>' 
                     class='clickEdit'><%=item.GradeAgeStart%></span>

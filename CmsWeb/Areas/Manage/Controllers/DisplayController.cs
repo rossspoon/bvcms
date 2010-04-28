@@ -144,8 +144,6 @@ namespace CMSWeb.Areas.Manage.Controllers
                     break;
             }
             DbUtil.Db.SubmitChanges();
-            if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-                return Redirect("/Organization.aspx?id=" + id);
             return Redirect("/Organization/Index/" + id);
         }
     }

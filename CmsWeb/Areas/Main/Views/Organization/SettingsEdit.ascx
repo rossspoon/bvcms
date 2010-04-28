@@ -27,6 +27,10 @@
         <td><%=Html.TextBox("org.EmailAddresses")%></td>
     </tr>
     <tr>
+        <th>Organization Phone Number:</th>
+        <td><%=Html.TextBox("org.PhoneNumber")%></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>
@@ -142,6 +146,10 @@
         <td><%=Html.TextBox("org.AskOptions")%></td>
     </tr>
     <tr>
+        <th>Grade Options:</th>
+        <td><%=Html.TextBox("org.GradeOptions")%></td>
+    </tr>
+    <tr>
         <th>Age Fees:</th>
         <td><%=Html.TextBox("org.AgeFee")%></td>
     </tr>
@@ -164,6 +172,10 @@
     <tr>
         <th>Validate Member in OrgIds:</th>
         <td><%=Html.TextBox("org.ValidateOrgs")%></td>
+    </tr>
+    <tr>
+        <th>Link Groups from Orgs:</th>
+        <td><%=Html.TextBox("org.LinkGroupsFromOrgs")%></td>
     </tr>
     <tr>
         <th>Ask About Allergies:</th>

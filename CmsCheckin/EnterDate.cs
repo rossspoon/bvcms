@@ -155,7 +155,7 @@ namespace CmsCheckin
                 Program.TimerStart(timer1_Tick);
                 textBox1.Focus();
                 textBox1.Select(textBox1.Text.Length, 0);
-                Age.Text = "";
+                Age.Text = textBox1.Text.Age();
             }
         }
     }

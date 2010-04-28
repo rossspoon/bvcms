@@ -75,7 +75,7 @@ namespace CMSWeb.Models
                 if (div != null)
                     return div.Name;
                 else
-                    return org.OrganizationName;
+                    return org != null ? org.OrganizationName : "no organization";
             }
         }
         public string Instructions
@@ -158,7 +158,6 @@ namespace CMSWeb.Models
 
         public void EnrollAndConfirm(string TransactionID)
         {
-            var smtp = Util.Smtp();
             var elist = new List<string>();
             var participants = new StringBuilder();
             var pids = new List<TransactionInfo.PeopleInfo>();
@@ -173,14 +172,9 @@ namespace CMSWeb.Models
                     elist.Add(p.email);
 
                 if (!p.IsNew)
-                {
-                    if (p.person.EmailAddress.HasValue() && !elist.Contains(p.person.EmailAddress))
-                        elist.Add(p.person.EmailAddress);
-                    if (string.Compare(p.email, p.person.EmailAddress, true) != 0)
-                        Util.Email2(smtp, p.person.EmailAddress, org.EmailAddresses, "different email address than one on record",
-                                "<p>{0}({1}) registered  with '{2}' but has '{3}' in record.</p>".Fmt(
-                                p.person.Name, p.person.PeopleId, p.email, p.person.EmailAddress));
-                }
+                    if (p.person.EmailAddress.HasValue())
+                        if (!elist.Contains(p.person.EmailAddress))
+                            elist.Add(p.person.EmailAddress);
                 participants.Append(p.ToString());
                 pids.Add(new TransactionInfo.PeopleInfo
                 {
@@ -215,7 +209,7 @@ namespace CMSWeb.Models
                     orgid = orgid.Value,
                 };
                 var td = DbUtil.Db.GetDatum<TransactionInfo>(ti);
-                var estr = HttpContext.Current.Server.UrlEncode(Util.Encrypt(td.Id.ToString()));
+                var estr = HttpUtility.UrlEncode(Util.Encrypt(td.Id.ToString()));
                 paylink = Util.ResolveServerUrl("/OnlineReg/PayDue?q=" + estr);
             }
 
@@ -223,22 +217,19 @@ namespace CMSWeb.Models
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
-                p.Enroll(TransactionID, paylink, testing);
+                var om = p.Enroll(TransactionID, paylink, testing);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>
 <tr><th valign='top'>{0}</th><td>
 {1}
 </td></tr>", i + 1, p.PrepareSummaryText());
 
-                if (!elist.Contains(p.email))
-                    elist.Add(p.email);
-                if (p.person.EmailAddress.HasValue())
-                    if (!elist.Contains(p.person.EmailAddress))
-                        elist.Add(p.person.EmailAddress);
-                if (string.Compare(p.email, p.person.EmailAddress, true) != 0)
-                    Util.Email2(smtp, p.person.EmailAddress, org.EmailAddresses, "different email address than one on record",
-                            "<p>{0}({1}) registered  with '{2}' but has '{3}' in record.</p>".Fmt(
-                            p.person.Name, p.person.PeopleId, p.email, p.person.EmailAddress));
+                om.RegisterEmail = p.email;
+                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person, 
+                    org.EmailAddresses, 
+                    p.email, 
+                    org.OrganizationName, 
+                    org.PhoneNumber);
             }
             details.Append("\n</table>\n");
             DbUtil.Db.SubmitChanges();
@@ -258,9 +249,10 @@ namespace CMSWeb.Models
             else
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
+            var smtp = Util.Smtp();
             Util.Email2(smtp, org.EmailAddresses, emails, subject, message);
             Util.Email2(smtp, emails, org.EmailAddresses,
-                "{0} Registration".Fmt(Header),
+                "{0}".Fmt(Header),
                 "{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}"
                 .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue));
         }

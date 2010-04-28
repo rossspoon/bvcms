@@ -21,14 +21,21 @@
         <th>Pending:</th>
         <td><input type="checkbox" disabled="disabled" <%=Model.Pending == true ? "checked='checked'" : "" %> /></td>
     </tr>
-<% if (Model.Organization.AskRequest == true)
+<% if (Model.RegisterEmail.HasValue())
+   { %>    
+    <tr>
+        <th>RegisterEmail:</th>
+        <td><%=Model.RegisterEmail %></td>
+    </tr>
+<% }
+   if (Model.Organization.AskRequest == true)
    { %>    
     <tr>
         <th>Request:</th>
         <td><%=Model.Request%></td>
     </tr>
 <% }
-   if(Model.Organization.AskGrade == true) 
+   if(Model.Grade.HasValue)
    { %>    
     <tr>
         <th>Grade:</th>

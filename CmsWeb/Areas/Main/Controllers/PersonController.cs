@@ -256,6 +256,7 @@ namespace CMSWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdatePerson();
             m = BasicPersonInfo.GetBasicPersonInfo(id);
+            InitExportToolbar(id);
             return View("BasicDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

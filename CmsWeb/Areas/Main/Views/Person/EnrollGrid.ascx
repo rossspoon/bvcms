@@ -15,14 +15,7 @@
 <% foreach(var om in Model.Enrollments())
    { %>
     <tr>
-    <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-       { %>        
-    <td><a href="/Organization.aspx?id=<%=om.OrgId %>" title="<%=om.DivisionName %>"><%=om.Name %></a></td>
-    <% } 
-       else
-       { %>
     <td><a href="/Organization/Index/<%=om.OrgId %>" title="<%=om.DivisionName %>"><%=om.Name %></a></td>
-    <% } %>
     <td><%=om.Location %></td>
     <td><a href="/Person/Index/<%=om.LeaderId %>"><%=om.LeaderName %></a></td>
     <td><%=om.Schedule %></td>

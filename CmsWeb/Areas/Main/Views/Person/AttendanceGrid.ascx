@@ -14,14 +14,7 @@ Show Future Meetings: <%=Html.CheckBox("future") %>
    { %>
     <tr>
     <td><a href="/Meeting.aspx?id=<%=a.MeetingId %>"><%=a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt") %></a></td>
-    <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-       { %>        
-    <td><a href="/Organization.aspx?id=<%=a.OrganizationId %>"><%=a.OrganizationName %></a></td>
-    <% } 
-       else
-       { %>
     <td><a href="/Organization/Index/<%=a.OrganizationId %>"><%=a.OrganizationName %></a></td>
-    <% } %>
     <td><%=a.MemberType %></td>
     <td><%=a.AttendType %></td>
     </tr>

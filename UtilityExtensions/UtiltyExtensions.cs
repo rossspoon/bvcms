@@ -460,10 +460,15 @@ namespace UtilityExtensions
                 return h.Replace("{church}", Host1);
             }
         }
+        private const string STR_ConnectionString = "ConnectionString";
         public static string ConnectionString
         {
             get
             {
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_ConnectionString] != null)
+                            return HttpContext.Current.Session[STR_ConnectionString].ToString();
                 var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
                 if (cs == null)
                     return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
@@ -471,6 +476,11 @@ namespace UtilityExtensions
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
                 cb.InitialCatalog = "CMS_{0}".Fmt(Host1);
                 return cb.ConnectionString;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_ConnectionString] = value;
             }
         }
         public static string ConnectionStringImage
@@ -843,6 +853,8 @@ namespace UtilityExtensions
         }
         public static MailAddress TryGetMailAddress(string address, string name)
         {
+            if (address.HasValue())
+                address = address.Trim();
             if (ValidEmail(address))
                 return Util.FirstAddress(address, name);
             else

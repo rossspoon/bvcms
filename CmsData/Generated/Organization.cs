@@ -177,6 +177,12 @@ namespace CmsData
 		
 		private string _ExtraQuestions;
 		
+		private string _PhoneNumber;
+		
+		private string _GradeOptions;
+		
+		private string _LinkGroupsFromOrgs;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -465,6 +471,15 @@ namespace CmsData
 		
 		partial void OnExtraQuestionsChanging(string value);
 		partial void OnExtraQuestionsChanged();
+		
+		partial void OnPhoneNumberChanging(string value);
+		partial void OnPhoneNumberChanged();
+		
+		partial void OnGradeOptionsChanging(string value);
+		partial void OnGradeOptionsChanged();
+		
+		partial void OnLinkGroupsFromOrgsChanging(string value);
+		partial void OnLinkGroupsFromOrgsChanged();
 		
     #endregion
 		public Organization()
@@ -1481,7 +1496,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(1000)")]
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(4000)")]
 		public string Instructions
 		{
 			get { return this._Instructions; }
@@ -2294,6 +2309,72 @@ namespace CmsData
 					this._ExtraQuestions = value;
 					this.SendPropertyChanged("ExtraQuestions");
 					this.OnExtraQuestionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="varchar(20)")]
+		public string PhoneNumber
+		{
+			get { return this._PhoneNumber; }
+
+			set
+			{
+				if (this._PhoneNumber != value)
+				{
+				
+                    this.OnPhoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._PhoneNumber = value;
+					this.SendPropertyChanged("PhoneNumber");
+					this.OnPhoneNumberChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GradeOptions", UpdateCheck=UpdateCheck.Never, Storage="_GradeOptions", DbType="varchar(300)")]
+		public string GradeOptions
+		{
+			get { return this._GradeOptions; }
+
+			set
+			{
+				if (this._GradeOptions != value)
+				{
+				
+                    this.OnGradeOptionsChanging(value);
+					this.SendPropertyChanging();
+					this._GradeOptions = value;
+					this.SendPropertyChanged("GradeOptions");
+					this.OnGradeOptionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LinkGroupsFromOrgs", UpdateCheck=UpdateCheck.Never, Storage="_LinkGroupsFromOrgs", DbType="varchar(50)")]
+		public string LinkGroupsFromOrgs
+		{
+			get { return this._LinkGroupsFromOrgs; }
+
+			set
+			{
+				if (this._LinkGroupsFromOrgs != value)
+				{
+				
+                    this.OnLinkGroupsFromOrgsChanging(value);
+					this.SendPropertyChanging();
+					this._LinkGroupsFromOrgs = value;
+					this.SendPropertyChanged("LinkGroupsFromOrgs");
+					this.OnLinkGroupsFromOrgsChanged();
 				}
 
 			}

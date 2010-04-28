@@ -24,6 +24,7 @@ namespace CmsCheckin
             TestMode = f.TestMode.Checked;
             Printer = f.Printer.Text;
             LeadTime = int.Parse(f.LeadTime.Text);
+            EarlyCheckin = int.Parse(f.EarlyCheckin.Text);
             f.Dispose();
 
             var b = new BaseForm();
@@ -42,6 +43,7 @@ namespace CmsCheckin
         public static int CampusId { get; set; }
         public static int ThisDay { get; set; }
         public static int LeadTime { get; set; }
+        public static int EarlyCheckin { get; set; }
         public static bool HideCursor { get; set; }
         public static bool TestMode { get; set; }
         public static bool editing { get; set; }

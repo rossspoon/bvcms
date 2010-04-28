@@ -65,14 +65,7 @@
        <%=Html.SubmitButton("submit", "Assign to Team") %>
        <% if((Model.AgeDivId ?? 0) > 0)
           { %>
-            <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-               { %>        
-       <%=Html.HyperLink("/Organization.aspx?id=" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>
-            <% } 
-               else
-               { %>
        <%=Html.HyperLink("/Organization/Index/" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>
-            <% } %>
        <% } %>
     </div>
     <%=Html.Hidden("Sort", Model.Sort) %>

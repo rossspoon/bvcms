@@ -62,10 +62,7 @@ namespace CMSWeb
 				if (Page.Request.Params["__EVENTTARGET"] == "CreateMeeting")
 					CreateMeeting(Page.Request.Params["__EVENTARGUMENT"]);
 
-            if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-                OrgName.BindingUrlFormat = "~/Organization.aspx?id={0}";
-            else
-                OrgName.BindingUrlFormat = "/Organization/Index/{0}";
+            OrgName.BindingUrlFormat = "/Organization/Index/{0}";
 
 			EditUpdateButton1.DataBind();
 			if (EditUpdateButton1.Editing)

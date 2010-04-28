@@ -186,6 +186,14 @@
         <td><%=Html.ValidationMessage("option")%></td>
     </tr>
 <% }
+   if(Model.org.GradeOptions.HasValue())
+   { %>
+    <tr>
+        <td>Grade</td>
+        <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].gradeoption", Model.GradeOptions(), Model.gradeoption)%></td>
+        <td><%=Html.ValidationMessage("gradeoption")%></td>
+    </tr>
+<% }
    foreach (var a in Model.ExtraQuestions())
    { %>
     <tr>

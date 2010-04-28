@@ -18,9 +18,9 @@ namespace CMSWeb.Areas.Public.Controllers
     public class OnlineRegController : CmsController
     {
 #if DEBUG
-        private const int INT_timeout = 16000;
+        private const int INT_timeout = 1600000;
 #else
-        private const int INT_timeout = 60000;
+        private const int INT_timeout = 120000;
 #endif
 
         public ActionResult Index(int? id, int? div, bool? testing)
@@ -32,6 +32,9 @@ namespace CMSWeb.Areas.Public.Controllers
                 divid = div,
                 orgid = id,
             };
+            if (m.org == null && m.div == null)
+                return Content("invalid registration");
+
             if (m.org != null)
             {
                 if ((m.org.RegistrationTypeId ?? 0) == (int)CmsData.Organization.RegistrationEnum.None)
@@ -47,6 +50,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 if (!m.div.Organizations.Any(o => a.Contains(o.RegistrationTypeId)))
                     return Content("no registration allowed on this div");
             }
+
             m.URL = Request.Url.OriginalString;
             ViewData["timeout"] = INT_timeout;
 
@@ -103,6 +107,7 @@ namespace CMSWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PersonFind(int id, OnlineRegModel m)
         {
+            DbUtil.Db.SetNoLock();
             var p = m.List[id];
             p.ValidateModelForFind(ModelState);
             if (p.org == null)
@@ -247,6 +252,7 @@ namespace CMSWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CompleteRegistration(OnlineRegModel m)
         {
+            DbUtil.Db.SetNoLock();
             var d = DbUtil.Db.GetDatum<OnlineRegModel>(m);
 
             if (m.Amount() == 0)

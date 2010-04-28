@@ -71,7 +71,6 @@ namespace CMSWeb.Models
             return "";
         }
 
-
         public int FindMember()
         {
             int count;
@@ -84,9 +83,10 @@ namespace CMSWeb.Models
         {
             CMSWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, phone);
-
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");
+            if (!email.HasValue() || !Util.ValidEmail(email))
+                modelState.AddModelError("email", "valid email required");
         }
         public void ValidateModel2(ModelStateDictionary ModelState)
         {

@@ -262,9 +262,16 @@ namespace CmsData
                         AttendStr = om.AttendStr,
                         LastAttended = om.LastAttended,
                         Pending = om.Pending,
+                        Request = om.Request,
+                        Grade = om.Grade,
+                        Amount = om.Amount,
+                        RegisterEmail = om.RegisterEmail,
+                        ShirtSize = om.ShirtSize,
+                        Tickets = om.Tickets,
+                        UserData = om.UserData,
                     };
                     om.Organization.OrganizationMembers.Add(om2);
-                    foreach(var m in om.OrgMemMemTags)
+                    foreach (var m in om.OrgMemMemTags)
                     {
                         om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
                         Db.OrgMemMemTags.DeleteOnSubmit(m);
@@ -326,7 +333,7 @@ namespace CmsData
                 sm.HimId = otherid;
             foreach (var sm in this.HerSoulMates)
                 sm.HerId = otherid;
-            
+
             var torecreg = toperson.RecRegs.SingleOrDefault();
             var frrecreg = RecRegs.SingleOrDefault();
             if (torecreg == null && frrecreg != null)
@@ -454,8 +461,8 @@ namespace CmsData
             p.EntryPointId = EntryPointId;
             p.FixTitle();
             DbUtil.Db.SubmitChanges();
-            if (Util.UserPeopleId.HasValue 
-                    && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId 
+            if (Util.UserPeopleId.HasValue
+                    && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId
                     && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
                 Task.AddNewPerson(p.PeopleId);
             else
@@ -468,10 +475,11 @@ namespace CmsData
                     em = npm.EmailAddress;
                     name = npm.Name;
                 }
-                Util.Email(em, name, em,
-                        "Just Added Person on " + Util.Host,
-                        "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
-                        .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
+                if (em != null)
+                    Util.Email(em, name, em,
+                            "Just Added Person on " + Util.Host,
+                            "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
+                            .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
             }
             return p;
         }

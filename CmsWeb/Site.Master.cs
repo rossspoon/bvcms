@@ -69,7 +69,7 @@ namespace CMSWeb
             if (Util.CurrentOrgId > 0)
             {
                 CurrentOrgMenuItem.Visible = true;
-                if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
+                if (DbUtil.Db.UserPreference("oldorgpage").ToBool())
                     CurrentOrgLink.NavigateUrl = "Organization.aspx?id={0}".Fmt(Util.CurrentOrgId);
                 else
                     CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util.CurrentOrgId);
@@ -83,6 +83,7 @@ namespace CMSWeb
             //HomeDrop.Visible = Page.User.IsInRole("Developer");
             SavedQueriesLink.Enabled = !Util.OrgMembersOnly;
             AdminMenuItem.Visible = Page.User.IsInRole("Admin");
+            OrgMembersMenuItem.Visible = Page.User.IsInRole("Edit");
             ContributionsMenuItem.Visible = Page.User.IsInRole("Finance");
             OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;

@@ -14,14 +14,7 @@
    { %>
 <div class="blogbody">
 <h2 class="title"><%=ViewData["title"]%></h2>
-<% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-   { %>        
-<a href="/Organization.aspx?id=<%=ViewData["id"] %>">organization</a>
-<% } 
-   else
-   { %>
 <a href="/Organization/Index/<%=ViewData["id"] %>">organization</a>
-<% } %>
 <hr />
 <%=Html.Hidden("id")%>
 <%=Html.Hidden("what")%>

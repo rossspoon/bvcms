@@ -55,6 +55,10 @@ namespace CmsData
 		
 		private int? _Tickets;
 		
+		private bool? _Moved;
+		
+		private string _RegisterEmail;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -128,6 +132,12 @@ namespace CmsData
 		
 		partial void OnTicketsChanging(int? value);
 		partial void OnTicketsChanged();
+		
+		partial void OnMovedChanging(bool? value);
+		partial void OnMovedChanged();
+		
+		partial void OnRegisterEmailChanging(string value);
+		partial void OnRegisterEmailChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -568,6 +578,50 @@ namespace CmsData
 					this._Tickets = value;
 					this.SendPropertyChanged("Tickets");
 					this.OnTicketsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Moved", UpdateCheck=UpdateCheck.Never, Storage="_Moved", DbType="bit")]
+		public bool? Moved
+		{
+			get { return this._Moved; }
+
+			set
+			{
+				if (this._Moved != value)
+				{
+				
+                    this.OnMovedChanging(value);
+					this.SendPropertyChanging();
+					this._Moved = value;
+					this.SendPropertyChanged("Moved");
+					this.OnMovedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegisterEmail", UpdateCheck=UpdateCheck.Never, Storage="_RegisterEmail", DbType="varchar(50)")]
+		public string RegisterEmail
+		{
+			get { return this._RegisterEmail; }
+
+			set
+			{
+				if (this._RegisterEmail != value)
+				{
+				
+                    this.OnRegisterEmailChanging(value);
+					this.SendPropertyChanging();
+					this._RegisterEmail = value;
+					this.SendPropertyChanged("RegisterEmail");
+					this.OnRegisterEmailChanged();
 				}
 
 			}

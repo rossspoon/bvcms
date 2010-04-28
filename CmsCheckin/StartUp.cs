@@ -45,6 +45,7 @@ namespace CmsCheckin
             cbDayOfWeek.SelectedIndex = 0;
             TestMode.Checked = true;
             HideCursor.Checked = false;
+            EarlyCheckin.SelectedIndex = EarlyCheckin.Items.Count - 1;
 #endif
             if (PrintRawHelper.HasPrinter(Print.datamax1))
                 Printer.Items.Add(Print.datamax1);

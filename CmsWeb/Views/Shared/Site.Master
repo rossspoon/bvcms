@@ -90,16 +90,13 @@
                         </li>
                         <li><a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a></li>
                         <li><a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a></li>
-<% if (Util.CurrentOrgId != 0)
-   { 
-        if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-        { %>                            
-                        <li><a href="/Organization.aspx?id=<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
-     <% }
-        else
-        { %>
+<% if (Page.User.IsInRole("Edit"))
+   { %>
+                        <li><a href="/OrgMembers">Org Members Management</a></li>
+<% }
+   if (Util.CurrentOrgId != 0)
+   { %>
                         <li><a href="/Organization/Index/<%=Util.CurrentOrgId%>"><%=Session["ActiveOrganization"]%></a></li>
-     <% } %>
 <% } %>
                     </ul>
                 </li>
@@ -147,8 +144,8 @@
                         </li>
                     </ul>
                 </li>
-<% } %>
-<% if (Page.User.IsInRole("Admin"))
+<% } 
+   if (Page.User.IsInRole("Admin"))
    { %>
                 <li class="headlink">
                     <a href="#">Admin</a>

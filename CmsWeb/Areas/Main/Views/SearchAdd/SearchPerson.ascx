@@ -9,7 +9,7 @@
         <a href="/SearchAdd/SearchCancel/" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "quit the dialog"%>"><%=Model.List.Count > 0 ? "go back" : "close"%></a></td>
 </tr>
 <tr><td colspan="2">
-    <table width="100%">
+    <table width="100%" class="searchenter">
         <tr>
             <td><label for="name">Name</label></td>
             <td><input id="name" type="text" name="m.name" value="<%=Model.name%>" /></td>

@@ -60,10 +60,10 @@ namespace CMSWeb.Areas.Public.Controllers
             }
             if (!ModelState.IsValid)
                 return View(m);
-            return RedirectToAction("PickList2", new { id = id, pid = m.person.PeopleId });
+            return RedirectToAction("PickList2", new { id = id, pid = m.person.PeopleId, regemail = m.email });
         }
 
-        public ActionResult PickList2(string id, int? pid)
+        public ActionResult PickList2(string id, int? pid, string regemail)
         {
             var person = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == pid);
             if (person == null)
@@ -88,7 +88,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 var summary = m.PrepareSummaryText2();
                 var smtp = Util.Smtp();
                 Util.Email2(smtp,
-                    m.person.EmailAddress,
+                    Util.PickFirst(regemail, m.person.EmailAddress),
                     email,
                     "{0} volunteer registration".Fmt(id),
                     "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
@@ -101,7 +101,11 @@ namespace CMSWeb.Areas.Public.Controllers
                     var p = m.person;
                     body = body.Replace("{first}", p.PreferredName);
                     body = body.Replace("{serviceareas}", summary);
-                    var em = m.person.EmailAddress;
+                    var elist = new List<string>();
+                    elist.Add(regemail);
+                    if (m.person.EmailAddress.HasValue())
+                        elist.Add(m.person.EmailAddress);
+                    var em = string.Join(",", elist.ToArray());
                     if (!Util.ValidEmail(email))
                     {
                         em = email;
@@ -109,6 +113,8 @@ namespace CMSWeb.Areas.Public.Controllers
                     }
                     Util.Email(smtp, email, m.person.Name, em,
                          c.Title, body);
+                    OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, "Volunteer", "");
+
                 }
             }
             return RedirectToAction("Confirm", new { id = id });

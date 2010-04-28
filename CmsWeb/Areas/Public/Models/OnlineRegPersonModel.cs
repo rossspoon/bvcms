@@ -209,6 +209,7 @@ namespace CMSWeb.Models
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
+            email = email.Trim();
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (!address.HasValue())
@@ -295,6 +296,7 @@ namespace CMSWeb.Models
         public string grade { get; set; }
         public int? ntickets { get; set; }
         public string option { get; set; }
+        public string gradeoption { get; set; }
 
         public decimal AmountToPay()
         {
@@ -412,6 +414,10 @@ namespace CMSWeb.Models
                 if (option == "0")
                     modelState.AddModelError("option", "please select an option");
 
+            if (org.GradeOptions.HasValue())
+                if (gradeoption == "00")
+                    modelState.AddModelError("gradeoption", "please select a grade option");
+
             if (org.AskParents == true)
             {
                 if (!mname.HasValue() && !fname.HasValue())
@@ -484,6 +490,16 @@ namespace CMSWeb.Models
                     select new SelectListItem { Text = a[0].Trim() + amt, Value = a[0].Trim() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+        public IEnumerable<SelectListItem> GradeOptions()
+        {
+            var q = from s in (org.GradeOptions ?? string.Empty).Split(',')
+                    where s.HasValue()
+                    let a = s.Split('=')
+                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
         }
         public class AgeGroupItem
@@ -590,6 +606,9 @@ namespace CMSWeb.Models
 
             if (org.AskOptions.HasValue())
                 sb.AppendFormat("<tr><td>Option:</td><td>{0}</td></tr>\n", option);
+            if (org.GradeOptions.HasValue())
+                sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n", 
+                    GradeOptions().SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
             if (org.YesNoQuestions.HasValue())
                 foreach (var a in YesNoQuestions())
                     sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, YesNoQuestion[a.name] == true ? "Yes" : "No"));
@@ -672,6 +691,11 @@ namespace CMSWeb.Models
             if (org.AskTickets == true)
                 om.Tickets = ntickets;
 
+            foreach (var yn in YesNoQuestions())
+            {
+                om.RemoveFromGroup("Yes:" + yn.name);
+                om.RemoveFromGroup("No:" + yn.name);
+            }
             if (org.YesNoQuestions.HasValue())
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup((g.Value == true ? "Yes:" : "No:") + g.Key);
@@ -680,11 +704,28 @@ namespace CMSWeb.Models
                     if (g.Value.HasValue())
                         AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value), om);
 
+            foreach (var op in Options())
+                om.RemoveFromGroup(op.Value);
             if (org.AskOptions.HasValue())
                 om.AddToGroup(option);
 
+            if (org.GradeOptions.HasValue())
+                om.Grade = gradeoption.ToInt();
+
+            foreach (var ag in AgeGroups())
+                om.RemoveFromGroup(ag.Name);
             if (org.AgeGroups.HasValue())
                 om.AddToGroup(AgeGroup());
+
+            if (org.LinkGroupsFromOrgs.HasValue())
+            {
+                var a = org.LinkGroupsFromOrgs.Split(',').Select(s => s.ToInt()).ToArray();
+                var q = from omt in DbUtil.Db.OrgMemMemTags
+                        where a.Contains(omt.OrgId) && omt.PeopleId == om.PeopleId
+                        select omt.MemberTag.Name;
+                foreach(var name in q)
+                    om.AddToGroup(name);
+            }
 
             string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
             AddToMemberData(tstamp, om);
@@ -807,6 +848,34 @@ namespace CMSWeb.Models
                         o.Deposit > 0
                     select o;
             return q.Count() > 0;
+        }
+        public static void CheckNotifyDiffEmails(Person person, string fromemail, string regemail, string orgname, string phone)
+        {
+            if (person.EmailAddress.HasValue() && string.Compare(regemail, person.EmailAddress.Trim(), true) == 0)
+                return;
+            var flist = (from fm in person.Family.People
+                         where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
+                         select fm.EmailAddress).ToList();
+            if (flist.Any(e => string.Compare(trim(e), regemail, true) == 0))
+                return;
+
+            var smtp = Util.Smtp();
+            string subj = "{0}, different email address than one on record".Fmt(orgname);
+            string msg = @"Hi {0},
+		                <p>You registered for {1} using a different email address than the one we have on record.
+		                It is important that you call the church <strong>{2}</strong> to update our records
+		                so that you will receive future important notices regarding this registration.</p>"
+                .Fmt(person.Name, orgname, phone.FmtFone());
+
+            Util.Email2(smtp, fromemail, regemail, subj, msg);
+            if (person.EmailAddress.HasValue())
+                Util.Email2(smtp, fromemail, person.EmailAddress, subj, msg);
+        }
+        private static string trim(string s)
+        {
+            if (s != null)
+                return s.Trim();
+            return s;
         }
     }
 }

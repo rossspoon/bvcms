@@ -19,23 +19,24 @@ namespace UtilityExtensions
         }
         public static void Email(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
-            if (!from.HasValue())
-                return;
-            var fr = FirstAddress(from);
-#if DEBUG
-#else
-            SendMsg(smtp, fr, subject, message, name, addrs, null);
-#endif
-        }
-        public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)
-        {
             var fr = FirstAddress(from);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
 #if DEBUG
 #else
-            SendMsg(smtp, fr, subject, message, null, addrs, null);
+            SendMsg(smtp, fr, subject, message, name, addrs, null);
 #endif
+        }
+        public static void EmailAlways(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
+        {
+            var fr = FirstAddress(from);
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            SendMsg(smtp, fr, subject, message, name, addrs, null);
+        }
+        public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)
+        {
+            Email(smtp, from, null, addrs, subject, message);
         }
         public static MailAddress FirstAddress(string addrs)
         {
@@ -111,8 +112,8 @@ namespace UtilityExtensions
             htmlStream.Dispose();
         }
         public static void SendIfEmailDifferent(
-            SmtpClient smtp, string staff, string to, 
-            int peopleid, string name, string emailonrecord, 
+            SmtpClient smtp, string staff, string to,
+            int peopleid, string name, string emailonrecord,
             string subject, string message)
         {
             if (string.Compare(to, emailonrecord, true) == 0)

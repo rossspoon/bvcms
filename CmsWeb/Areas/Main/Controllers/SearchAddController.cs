@@ -29,11 +29,13 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Results(SearchModel m)
         {
+            DbUtil.Db.SetNoLock();
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ResultsFamily(SearchModel m)
         {
+            DbUtil.Db.SetNoLock();
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

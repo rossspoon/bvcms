@@ -21,14 +21,7 @@
         }
     </script>
 
-    <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-       { %>        
-    <h2>Attendance for <a href="/Organization.aspx?id=<%=Model.OrgId %>"><%=Model.OrgName %></a></h2>
-    <% } 
-       else
-       { %>
     <h2>Attendance for <a href="/Organization/Index/<%=Model.OrgId %>"><%=Model.OrgName %></a></h2>
-    <% } %>
     <% using (Html.BeginForm()) 
        { %>
         <div>

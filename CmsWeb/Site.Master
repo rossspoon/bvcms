@@ -92,6 +92,8 @@
                             <asp:HyperLink ID="HyperLink15" NavigateUrl="~/EmailAttendanceNotices.aspx" runat="server">Email Attendance Notices</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="HyperLink20" NavigateUrl="~/EnrollmentControlReport.aspx" runat="server">Enrollment Control Report</asp:HyperLink></li>
+                        <li id="OrgMembersMenuItem" runat="server">
+                            <asp:HyperLink ID="HyperLink19" NavigateUrl="~/OrgMembers" runat="server">Org Members Management</asp:HyperLink></li>
                         <li id="CurrentOrgMenuItem" runat="server" visible="false">
                             <asp:HyperLink ID="CurrentOrgLink" runat="server"></asp:HyperLink></li>
                     </ul>

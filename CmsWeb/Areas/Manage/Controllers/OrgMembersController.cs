@@ -10,12 +10,14 @@ using UtilityExtensions;
 
 namespace CMSWeb.Areas.Manage.Controllers
 {
+    [Authorize(Roles="Edit")]
     public class OrgMembersController : CmsStaffController
     {
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Index()
         {
             var m = new OrgMembersModel();
-            UpdateModel(m);
+            m.FetchSavedIds();
             return View(m);
         }
 
@@ -28,10 +30,27 @@ namespace CMSWeb.Areas.Manage.Controllers
             return View("List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EmailNotices()
+        {
+            var m = new OrgMembersModel();
+            UpdateModel(m);
+            m.SendMovedNotices();
+            return View("List", m);
+        }
+        public ActionResult GradeList(int id)
+        {
+            var m = new OrgMembersModel();
+            UpdateModel(m);
+            return new OrgMembersModel.OrgExcelResult(id);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult List()
         {
             var m = new OrgMembersModel();
             UpdateModel(m);
+            m.ValidateIds();
+            DbUtil.Db.SetUserPreference("OrgMembersModelIds", "{0}.{1}.{2}".Fmt(m.ProgId,m.DivId,m.SourceId));
             return View(m);
         }
     }

@@ -18,7 +18,6 @@ namespace CmsData
         BaptismSchedDate,
         BaptismStatusId,
         BaptismTypeId,
-        BibleFellowshipTeacher,
         Birthday,
         CampusId,
         CellPhone,

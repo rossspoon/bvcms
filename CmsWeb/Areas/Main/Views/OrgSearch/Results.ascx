@@ -21,14 +21,7 @@
    { %>
     <tr>
         <td class="tip" title="<%=o.ToolTip %>"><img alt="group" src="/content/images/group.png" /></td>
-    <% if (!DbUtil.Db.UserPreference("neworgpage").ToBool())
-       { %>        
-        <td><a href="/Organization.aspx?id=<%=o.Id %>"><%=o.OrganizationName%></a></td>
-    <% } 
-       else
-       { %>
         <td><a href="/Organization/Index/<%=o.Id %>"><%=o.OrganizationName%></a></td>
-    <% } %>
         <td><a href="/Person/Index/<%=o.LeaderId %>"><%=o.LeaderName %></a></td>
         <td align="right"><%=o.MemberCount %></td>
         <td><%=o.Schedule %></td>

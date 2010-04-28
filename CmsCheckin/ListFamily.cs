@@ -238,14 +238,17 @@ namespace CmsCheckin
 
                 ab.FlatStyle = FlatStyle.Flat;
                 ab.FlatAppearance.BorderSize = 1;
-                if (c.cinfo.oid != 0 && c.leadtime <= Program.LeadTime)
-                {
-                    ab.BackColor = Color.CornflowerBlue;
-                    ab.FlatAppearance.BorderColor = Color.Black;
-                }
-                else
+
+                ab.BackColor = Color.CornflowerBlue;
+                ab.FlatAppearance.BorderColor = Color.Black;
+
+                double howlate  = -(Program.EarlyCheckin / 60d);
+                if (c.cinfo.oid == 0
+                    || c.leadtime > Program.LeadTime
+                    || c.leadtime < howlate)
                 {
                     ab.Enabled = false;
+                    ab.BackColor = SystemColors.Control;
                     ab.FlatAppearance.BorderColor = SystemColors.ButtonShadow;
                 }
 
@@ -400,19 +403,21 @@ namespace CmsCheckin
             var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
             if (c.cinfo.oid == 0)
                 return;
+            Cursor.Current = Cursors.WaitCursor;
+            Program.CursorShow();
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
                 eb.Text = c.NumLabels.ToString();
-                Refresh();
-                this.RecordAttend(c.cinfo, true);
+                var ra = new Util.RecordAttendInfo { c = c.cinfo, present = true };
+                backgroundWorker1.RunWorkerAsync(ra);
             }
             else
             {
                 ab.Text = String.Empty;
                 eb.Text = String.Empty;
-                Refresh();
-                this.RecordAttend(c.cinfo, false);
+                var ra = new Util.RecordAttendInfo { c = c.cinfo, present = false };
+                backgroundWorker1.RunWorkerAsync(ra);
             }
         }
 
@@ -524,6 +529,18 @@ namespace CmsCheckin
             Program.SetFields(c.last, c.email, c.addr, c.zip, c.home);
             Program.editing = false;
             this.Swap(Program.first);
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var ra= e.Argument as Util.RecordAttendInfo;
+            Util.RecordAttend(ra);
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Cursor.Current = Cursors.Default;
+            Program.CursorHide();
         }
     }
     public class AttendLabel

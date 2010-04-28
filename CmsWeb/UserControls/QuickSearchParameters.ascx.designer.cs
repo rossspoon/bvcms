@@ -13,6 +13,15 @@
 public partial class QuickSearchParameters {
     
     /// <summary>
+    /// QSPanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel QSPanel;
+    
+    /// <summary>
     /// ClearSearch control.
     /// </summary>
     /// <remarks>

@@ -54,6 +54,7 @@ namespace CMSWeb.Models
                         var midnight = c.Hour.Value.Date;
                         var now = midnight.Add(Util.Now2.TimeOfDay);
                         leadtime = c.Hour.Value.Subtract(now).TotalHours;
+                        leadtime -= DbUtil.Settings("TZOffset", "0").ToInt(); // positive to the east, negative to the west
                     }
                     w.WriteStartElement("attendee");
                     w.WriteAttributeString("id", c.Id.ToString());

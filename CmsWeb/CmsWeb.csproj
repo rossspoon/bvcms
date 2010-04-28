@@ -1396,6 +1396,8 @@
     <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchReportSpecs.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\BatchGrade.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\BatchRegMail.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
     <Content Include="Areas\Setup\Views\Setting\OrphanedImages.aspx" />
     <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.aspx" />

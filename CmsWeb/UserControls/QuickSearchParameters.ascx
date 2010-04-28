@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="True" CodeBehind="QuickSearchParameters.ascx.cs"
     Inherits="QuickSearchParameters" %>
-<table class="modalPopup">
+<asp:Panel runat="server" ID="QSPanel" DefaultButton="SearchButton"><table class="modalPopup">
     <tr style="font-size: small">
         <td colspan="2">
             <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
@@ -87,7 +87,7 @@
                 TabIndex="6" />
         </td>
     </tr>
-</table>
+</table></asp:Panel>
 <asp:ObjectDataSource ID="MemberStatusData" runat="server" SelectMethod="MemberStatusCodes0"
     TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 <asp:ObjectDataSource ID="UserTags" runat="server" SelectMethod="UserTagsWithUnspecified"

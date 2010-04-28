@@ -63,6 +63,7 @@
                             <td><%=m.SpouseIndicator %></td>
                             <td><%=m.Age %></td>
                             <td><%=m.PositionInFamily %></td>
+                            <td><%=m.Email %></td>
                         </tr>
                     <% } %>
                     </table>

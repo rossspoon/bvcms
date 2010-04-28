@@ -53,6 +53,7 @@ namespace CMSWeb.Models.PersonPage
             public string Color { get; set; }
             public string PositionInFamily { get; set; }
             public string SpouseIndicator { get; set; }
+            public string Email { get; set; }
         }
         public IEnumerable<FamilyMember> FamilyMembers()
         {
@@ -69,7 +70,8 @@ namespace CMSWeb.Models.PersonPage
                         Age = m.Age,
                         Color = m.DeceasedDate != null ? "red" : "#336699",
                         PositionInFamily = m.FamilyPosition.Code,
-                        SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;"
+                        SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;",
+                        Email = m.EmailAddress
                     };
             return q;
         }

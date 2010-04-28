@@ -131,5 +131,47 @@ namespace CMSWeb.Areas.Setup.Controllers
             ImageData.DbUtil.Db.SubmitChanges();
             return Content("#r" + iid);
         }
+        public ActionResult BatchGrade(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var batch = from s in text.Split('\n')
+                        where s.HasValue()
+                        let a = s.SplitStr("\t", 3)
+                        select new { pid = a[0].ToInt(), oid = a[1].ToInt(), grade = a[2].ToInt() };
+            foreach (var i in batch)
+            {
+                var m = DbUtil.Db.OrganizationMembers.Single(om => om.OrganizationId == i.oid && om.PeopleId == i.pid);
+                m.Grade = i.grade;
+            }
+            DbUtil.Db.SubmitChanges();
+
+            return Content("done");
+        }
+        public ActionResult BatchRegMail(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var batch = from s in text.Split('\n')
+                        where s.HasValue()
+                        let a = s.SplitStr("\t", 2)
+                        select new { pid = a[0].ToInt(), em = a[1] };
+            foreach (var i in batch)
+            {
+                var m = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == 88485 && om.PeopleId == i.pid);
+                if (m == null)
+                    continue;
+                m.RegisterEmail = i.em;
+            }
+            DbUtil.Db.SubmitChanges();
+
+            return Content("done");
+        }
     }
 }

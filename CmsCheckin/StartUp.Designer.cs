@@ -39,13 +39,15 @@
             this.LeadTime = new System.Windows.Forms.ComboBox();
             this.Printer = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.EarlyCheckin = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cbCampusId
             // 
             this.cbCampusId.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCampusId.FormattingEnabled = true;
-            this.cbCampusId.Location = new System.Drawing.Point(142, 22);
+            this.cbCampusId.Location = new System.Drawing.Point(158, 18);
             this.cbCampusId.Name = "cbCampusId";
             this.cbCampusId.Size = new System.Drawing.Size(260, 39);
             this.cbCampusId.TabIndex = 0;
@@ -54,7 +56,7 @@
             // 
             this.cbDayOfWeek.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbDayOfWeek.FormattingEnabled = true;
-            this.cbDayOfWeek.Location = new System.Drawing.Point(142, 77);
+            this.cbDayOfWeek.Location = new System.Drawing.Point(158, 73);
             this.cbDayOfWeek.Name = "cbDayOfWeek";
             this.cbDayOfWeek.Size = new System.Drawing.Size(260, 39);
             this.cbDayOfWeek.TabIndex = 1;
@@ -62,7 +64,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(275, 266);
+            this.button1.Location = new System.Drawing.Point(291, 293);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 64);
             this.button1.TabIndex = 2;
@@ -73,7 +75,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 38);
+            this.label1.Location = new System.Drawing.Point(78, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 17);
             this.label1.TabIndex = 3;
@@ -82,7 +84,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 93);
+            this.label2.Location = new System.Drawing.Point(60, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 17);
             this.label2.TabIndex = 4;
@@ -93,7 +95,7 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(22, 289);
+            this.HideCursor.Location = new System.Drawing.Point(22, 316);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
             this.HideCursor.TabIndex = 5;
@@ -105,7 +107,7 @@
             this.TestMode.AutoSize = true;
             this.TestMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TestMode.ForeColor = System.Drawing.Color.Gray;
-            this.TestMode.Location = new System.Drawing.Point(22, 329);
+            this.TestMode.Location = new System.Drawing.Point(22, 356);
             this.TestMode.Name = "TestMode";
             this.TestMode.Size = new System.Drawing.Size(91, 21);
             this.TestMode.TabIndex = 5;
@@ -115,11 +117,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 147);
+            this.label3.Location = new System.Drawing.Point(12, 143);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(117, 17);
+            this.label3.Size = new System.Drawing.Size(140, 17);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Hours Lead Time";
+            this.label3.Text = "Early Check In Hours";
             // 
             // LeadTime
             // 
@@ -140,7 +142,7 @@
             "12",
             "24",
             "36"});
-            this.LeadTime.Location = new System.Drawing.Point(142, 131);
+            this.LeadTime.Location = new System.Drawing.Point(158, 127);
             this.LeadTime.Name = "LeadTime";
             this.LeadTime.Size = new System.Drawing.Size(260, 39);
             this.LeadTime.TabIndex = 7;
@@ -150,7 +152,7 @@
             // 
             this.Printer.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Printer.FormattingEnabled = true;
-            this.Printer.Location = new System.Drawing.Point(142, 187);
+            this.Printer.Location = new System.Drawing.Point(158, 235);
             this.Printer.Name = "Printer";
             this.Printer.Size = new System.Drawing.Size(260, 39);
             this.Printer.TabIndex = 9;
@@ -158,17 +160,46 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 203);
+            this.label4.Location = new System.Drawing.Point(102, 251);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(50, 17);
             this.label4.TabIndex = 8;
             this.label4.Text = "Printer";
             // 
+            // EarlyCheckin
+            // 
+            this.EarlyCheckin.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EarlyCheckin.FormattingEnabled = true;
+            this.EarlyCheckin.Items.AddRange(new object[] {
+            "30",
+            "60",
+            "90",
+            "120",
+            "180",
+            "240",
+            "1440"});
+            this.EarlyCheckin.Location = new System.Drawing.Point(158, 181);
+            this.EarlyCheckin.Name = "EarlyCheckin";
+            this.EarlyCheckin.Size = new System.Drawing.Size(260, 39);
+            this.EarlyCheckin.TabIndex = 11;
+            this.EarlyCheckin.Text = "90";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 197);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(147, 17);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Late Check In Minutes";
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(459, 367);
+            this.ClientSize = new System.Drawing.Size(464, 388);
+            this.Controls.Add(this.EarlyCheckin);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.Printer);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.LeadTime);
@@ -202,5 +233,7 @@
         public System.Windows.Forms.ComboBox LeadTime;
         public System.Windows.Forms.ComboBox Printer;
         private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.ComboBox EarlyCheckin;
+        private System.Windows.Forms.Label label5;
     }
 }

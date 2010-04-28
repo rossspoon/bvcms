@@ -27,15 +27,12 @@
         <th>Request:</th>
         <td><%=Html.TextBox("Request") %></td>
     </tr>
-<% }
-   if (Model.Organization.AskGrade == true)
-   { %>
+<% } %>
     <tr>
         <th>Grade:</th>
         <td><%=Html.TextBox("Grade", Model.Grade) %></td>
     </tr>
-<% }
-   if (Model.Organization.AskTickets == true)
+<% if (Model.Organization.AskTickets == true)
    { %>
     <tr>
         <th>No. Items:</th>

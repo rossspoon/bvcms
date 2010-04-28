@@ -13,6 +13,7 @@ namespace CMSWeb.Models
     {
         public List<FamilyInfo> Match(string id, int campus, int thisday)
         {
+            DbUtil.Db.SetNoLock();
             var ph = Util.GetDigits(id).PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
@@ -35,6 +36,7 @@ namespace CMSWeb.Models
         }
         public List<Attendee> FamilyMembers(int id, int campus, int thisday)
         {
+            DbUtil.Db.SetNoLock();
             var now = Util.Now;
             // get org members first
             var members =
@@ -90,7 +92,7 @@ namespace CMSWeb.Models
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
                 where a.Organization.CampusId == campus || campus == null
-                where a.AttendanceFlag && a.MeetingDate > a.Organization.VisitorDate
+                where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
                 where Hour1 != null

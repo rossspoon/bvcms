@@ -10,7 +10,7 @@
         <a href="/SearchAdd/SearchFamilyCancel/" class="formlink" title="back to person search">go back</a></td>
 </tr>
 <tr><td colspan="2">
-    <table width="100%">
+    <table width="100%" class="searchenter">
         <tr>
             <td><label for="name">Last Name</label></td>
             <td><input id="name" type="text" name="m.name" value="<%=Model.name%>" /></td>

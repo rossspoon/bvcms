@@ -2,9 +2,11 @@
     $.RefreshPage = function() {
         var f = $('form');
         var q = f.serialize();
+        $.blockUI();
         $.post("/OrgMembers/List", q, function(ret) {
             $(f).html(ret).ready(function() {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
+                $.unblockUI();
             });
         });
     }
@@ -13,16 +15,61 @@
     $("form").delegate('#SourceId', "change", $.RefreshPage);
     $("form").delegate('#TargetId', "change", $.RefreshPage);
     $("form").delegate('#MembersOnly', "change", $.RefreshPage);
+    $("form").delegate('#Grades', "change", $.RefreshPage);
     $("form").delegate('#move', "click", function(e) {
         e.preventDefault();
         var f = $('#form');
         var q = f.serialize();
+        $.blockUI();
         $.post("/OrgMembers/Move", q, function(ret) {
             $(f).html(ret).ready(function() {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
+                $.unblockUI();
+                $.growlUI("Move", "Completed");
             });
         });
     });
+    $.blockUI.defaults.growlCSS = {
+        width: '350px',
+        top: '40%',
+        left: '35%',
+        right: '10px',
+        border: 'none',
+        padding: '5px',
+        opacity: '0.7',
+        cursor: null,
+        color: '#fff',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px'
+    };
+    $.growlUI = function(title, message, timeout) {
+        var $m = $('<div class="growlUI"></div>');
+        if (title) $m.append('<h1>' + title + '</h1>');
+        if (message) $m.append('<h2>' + message + '</h2>');
+        if (timeout == undefined) timeout = 3000;
+        $.blockUI({
+            message: $m, fadeIn: 400, fadeOut: 700, centerY: false,
+            timeout: timeout, showOverlay: false,
+            css: $.blockUI.defaults.growlCSS
+        });
+    };
+    $("#EmailNotices").live("click", function(e) {
+        e.preventDefault();
+        var f = $("#form");
+        var q = f.serialize();
+        $.post("/OrgMembers/EmailNotices", q, function(ret) {
+            $(f).html(ret).ready(function() {
+                $('table.grid > tbody > tr:even', f).addClass('alt');
+            });
+            $.growlUI("Email Notices", "emails sent");
+        });
+        return false;
+    });
+    $("form").submit(function() {
+        return false;
+    });
+
     //    $('input.check').click(UpdateTotals);
     //    $('form table.grid a.sortable').click(function(ev) {
     //        var newsort = $(this).text();

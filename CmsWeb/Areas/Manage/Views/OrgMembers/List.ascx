@@ -1,6 +1,6 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgMembersModel>" %>
 <%=Html.Hidden("Sort") %>
-<%=Html.Hidden("Dir") %>
+<%=Html.Hidden("Direction") %>
 <div class="modalPopup">
     <table>
         <tr>
@@ -16,15 +16,18 @@
             <td><%=Html.DropDownList("TargetId", Model.Organizations2())%></td>
         </tr>
         <tr>
-            <td></td><td></td>
-            <td colspan="2">
+            <td></td>
+            <td colspan="3">
+                Grades: <%=Html.TextBox("Grades") %>&nbsp;&nbsp;&nbsp;
                 <%=Html.CheckBox("MembersOnly")%> Exclude Teachers&nbsp;&nbsp;&nbsp;
                 <%=Html.SubmitButton("move", "Move") %>
+                <a href="#" id="EmailNotices">Email Room Notices(<%=Model.MovedCount() %>)</a>
             </td>
         </tr>
     </table>
 </div>
 <br />
+Count: <%=Model.Count() %>
 <table class="grid">
 <thead>
 <tr>
@@ -32,8 +35,10 @@
     <th align="left"><a href="#" class="sortable">Name</a></th>
     <th align="left"><a href="#" class="sortable">Organization</a></th>
     <th>Type</th>
+    <th><a href="#" class="sortable">Gender</a></th>
     <th><a href="#" class="sortable">Grade</a></th>
     <th>Age</th>
+    <th><a href="#" class="sortable">DOB</a></th>
     <th align="left">Request</th>
 </tr>
 </thead>
@@ -45,8 +50,10 @@
     <td><a href="/Person/Index/<%=m.PeopleId %>"><%=m.Name%></a></td>
     <td><a href="/Organization/Index/<%=m.OrgId %>"><%=m.OrgName %></a></td>
     <td><%=m.MemberStatus %></td>
-    <td><%=m.Grade %></td>
+    <td align="center"><%=m.Gender %></td>
+    <td align="center"><%=m.Grade %></td>
     <td><%=m.Age %></td>
+    <td><%=m.DOB %></td>
     <td><%=m.Request %></td>
 </tr>
 <% } %>

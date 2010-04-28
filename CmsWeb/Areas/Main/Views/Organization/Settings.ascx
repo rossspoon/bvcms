@@ -30,6 +30,10 @@
         <th>Online Notify Emails:</th>
         <td><%=Model.org.EmailAddresses%></td>
     </tr>
+    <tr>
+        <th>Organization Phone Number:</th>
+        <td><%=Model.org.PhoneNumber.FmtFone() %></td>
+    </tr>
 <% if (Page.User.IsInRole("Admin"))
    { %>
     <tr>
@@ -165,6 +169,10 @@
         <td><%=Model.org.AskOptions%></td>
     </tr>
     <tr>
+        <th>Grade Options:</th>
+        <td><%=Model.org.GradeOptions %></td>
+    </tr>
+    <tr>
         <th>Age Fees:</th>
         <td><%=Model.org.AgeFee%></td>
     </tr>
@@ -187,6 +195,10 @@
     <tr>
         <th>Validate Member in OrgIds:</th>
         <td><%=Model.org.ValidateOrgs %></td>
+    </tr>
+    <tr>
+        <th>Link Groups from Orgs:</th>
+        <td><%=Model.org %></td>
     </tr>
     <tr>
         <th>Ask About Allergies:</th>

@@ -151,6 +151,15 @@
         </td>
     </tr>
 <% }
+   if(Model.org.GradeOptions.HasValue())
+   { %>
+    <tr>
+        <td>Grade Option</td>
+        <td><%=Model.GradeOptions().SingleOrDefault(s => s.Value == (Model.gradeoption ?? "00")).Text %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].gradeoption", Model.gradeoption)%>
+        </td>
+    </tr>
+<% }
    foreach (var a in Model.ExtraQuestions())
    { %>
     <tr>

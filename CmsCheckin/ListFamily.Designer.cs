@@ -35,6 +35,7 @@
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
             this.bAddToFamily = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // Print
@@ -139,6 +140,11 @@
             this.bAddToFamily.UseVisualStyleBackColor = false;
             this.bAddToFamily.Click += new System.EventHandler(this.bAddToFamily_Click);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // ListFamily
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -167,6 +173,7 @@
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
         public System.Windows.Forms.Button bAddToFamily;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
 
     }
 }

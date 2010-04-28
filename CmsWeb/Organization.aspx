@@ -254,7 +254,7 @@
                 | &nbsp
                 <cc1:LinkButtonConfirm ID="CloneOrg1" OnClick="CloneOrg_Click" Confirm="This will make a copy of the org. Are you sure?"
                     runat="server">Copy this Organization</cc1:LinkButtonConfirm>
-                <asp:HyperLink ID="NewOrgPage" runat="server">New Org Page</asp:HyperLink>
+                <asp:HyperLink ID="oldorgpage" runat="server">Old Org Page</asp:HyperLink>
             </td>
         </tr>
     </table>
