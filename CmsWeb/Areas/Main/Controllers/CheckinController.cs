@@ -137,7 +137,8 @@ namespace CMSWeb.Areas.Main.Controllers
             p.MaritalStatusId = marital;
             p.FixTitle();
             p.EmailAddress = email;
-            p.CampusId = campusid;
+            if (campusid > 0)
+                p.CampusId = campusid;
             p.CellPhone = cell.GetDigits();
             DbUtil.Db.SubmitChanges();
             return Content(f.FamilyId.ToString());
@@ -172,7 +173,8 @@ namespace CMSWeb.Areas.Main.Controllers
             p.CellPhone = cell.GetDigits();
             p.MaritalStatusId = marital;
             p.GenderId = gender;
-            p.CampusId = campusid;
+            if (campusid > 0)
+                p.CampusId = campusid;
             DbUtil.Db.SubmitChanges();
             return Content(p.FamilyId.ToString());
         }

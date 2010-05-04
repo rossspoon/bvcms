@@ -192,7 +192,7 @@ namespace CMSWeb.Models
             {
                 var ti = new TransactionInfo
                 {
-                    URL = URL,
+                    //URL = URL,
                     Header = Header,
                     Name = NameOnAccount,
                     Address = p0.address,
@@ -255,6 +255,30 @@ namespace CMSWeb.Models
                 "{0}".Fmt(Header),
                 "{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}"
                 .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue));
+        }
+    }
+    [Serializable]
+    public class TransactionInfo0
+    {
+        public string Header { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal AmountDue { get; set; }
+        public string Participants { get; set; }
+        public bool testing { get; set; }
+        public int orgid { get; set; }
+        public PeopleInfo[] people { get; set; }
+        public class PeopleInfo
+        {
+            public int pid { get; set; }
+            public string name { get; set; }
+            public decimal amt { get; set; }
         }
     }
     [Serializable]

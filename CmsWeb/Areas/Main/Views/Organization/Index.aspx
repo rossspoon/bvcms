@@ -18,10 +18,26 @@
         <%=o.OrganizationName %>,
         <%=o.LeaderName %>
     </div>
+
+<table>
+<tr>
+<td valign="top">
     <form action="/Organization/OrgInfoUpdate/<%=Model.OrganizationId %>" class="DisplayEdit" method="post">
         <% Html.RenderPartial("OrgInfo", Model); %>
     </form>
-    <div style="margin-bottom: 20px">
+</td>
+<% if (Page.User.IsInRole("ManageGroups"))
+   { %>
+<td valign="top">
+    <form action="" method="post">
+    <% Html.RenderPartial("ManageGroups", Model); %>
+    </form>
+</td>
+<% } %>
+</tr>
+</table>
+
+<div style="margin-bottom: 20px">
 <% if (Page.User.IsInRole("Admin"))
    { %>
 <a id="deleteorg" href="/Organization/Delete/<%=o.OrganizationId %>">
@@ -30,7 +46,8 @@
         <a id="RecentAttendRpt" href="/Report/PastAttendeeRpt.aspx?id=<%=o.OrganizationId %>" target="_blank">Recent Attendance Report</a> |
         <a id="AttendanceRpt" href="/Reports/Attendance/<%=o.OrganizationId %>">Attendance Percentages</a> | 
         <a id="VolunteerCalendar" href="/Volunteers/Calendar/<%=o.OrganizationId %>">Volunteer Calendar</a> | 
-        <a class="CreateAndGo" href="/Organization/Clone/<%=o.OrganizationId %>" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
+        <a class="CreateAndGo" href="/Organization/Clone/<%=o.OrganizationId %>" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a> |
+        <a href="/Organization.aspx?id=<%=o.OrganizationId %>">Old Org Page</a>
 <% if (Page.User.IsInRole("Admin"))
    { %>
         | <a href="/Organization/CopySettings/<%=o.OrganizationId %>">Copy Settings</a>
@@ -77,7 +94,7 @@
             <%=Html.Hidden("future", false) %>
             </form>
         </div>
-    </div>
+</div>
     <div id="NewMeetingDialog" class="modalDiv" style="display:none">
     <table>
         <tr>

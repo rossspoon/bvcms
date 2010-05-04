@@ -221,15 +221,6 @@ namespace CMSWeb {
         protected global::CustomControls.LinkButtonConfirm CloneOrg1;
         
         /// <summary>
-        /// oldorgpage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink oldorgpage;
-        
-        /// <summary>
         /// EditUpdateButton1 control.
         /// </summary>
         /// <remarks>

@@ -91,7 +91,7 @@ namespace CMSWeb.Models
                 where a.Person.FamilyId == id
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
-                where a.Organization.CampusId == campus || campus == null
+                where a.Organization.CampusId == campus || campus == 0
                 where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
@@ -141,7 +141,7 @@ namespace CMSWeb.Models
             var VisitorOrgHour = (DateTime?)null;
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
-                     where o.CampusId == campus
+                     where o.CampusId == campus || campus == 0
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
                      where o.SchedDay == thisday
@@ -158,7 +158,7 @@ namespace CMSWeb.Models
                 where p.FamilyId == id
                 where p.DeceasedDate == null
                 where !list.Select(a => a.Id).Contains(p.PeopleId)
-                let oldervisitor = p.CampusId != campus && p.Age > 12
+                let oldervisitor = (p.CampusId != campus || campus == 0) && p.Age > 12
                 select new Attendee
                 {
                     Id = p.PeopleId,

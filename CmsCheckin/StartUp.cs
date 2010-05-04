@@ -18,7 +18,9 @@ namespace CmsCheckin
             get
             {
                 var c = cbCampusId.SelectedItem as Campus;
-                return c.Id;
+                if (c!=null)
+                    return c.Id;
+                return 0;
             }
         }
         public int DayOfWeek
@@ -43,7 +45,7 @@ namespace CmsCheckin
 
 #if DEBUG
             cbDayOfWeek.SelectedIndex = 0;
-            TestMode.Checked = true;
+            Program.TestMode = true;
             HideCursor.Checked = false;
             EarlyCheckin.SelectedIndex = EarlyCheckin.Items.Count - 1;
 #endif
@@ -55,7 +57,8 @@ namespace CmsCheckin
                 Printer.Items.Add(Print.zebra);
             if (PrintRawHelper.HasPrinter(Print.zebra2))
                 Printer.Items.Add(Print.zebra2);
-            Printer.SelectedIndex = 0;
+            if (Printer.Items.Count > 0)
+                Printer.SelectedIndex = 0;
 
 
             var wc = new WebClient();
@@ -68,7 +71,8 @@ namespace CmsCheckin
                     Id = int.Parse(e.Attribute("id").Value),
                     Name = e.Attribute("name").Value
                 });
-            cbCampusId.SelectedIndex = 0;
+            if (cbCampusId.Items.Count > 0)
+                cbCampusId.SelectedIndex = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -22,10 +22,7 @@ namespace UtilityExtensions
             var fr = FirstAddress(from);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-#if DEBUG
-#else
             SendMsg(smtp, fr, subject, message, name, addrs, null);
-#endif
         }
         public static void EmailAlways(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
@@ -47,7 +44,14 @@ namespace UtilityExtensions
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",");
-            return new MailAddress(a[0], name);
+            try
+            {
+                return new MailAddress(a[0], name);
+            }
+            catch (Exception)
+            {
+                return null;    
+            }
         }
         private static void TrySend(SmtpClient smtp, MailMessage msg)
         {
@@ -106,7 +110,10 @@ namespace UtilityExtensions
             if (attach != null)
                 msg.Attachments.Add(attach);
 
+#if DEBUG
+#else
             smtp.Send(msg);
+#endif
 
             htmlView.Dispose();
             htmlStream.Dispose();

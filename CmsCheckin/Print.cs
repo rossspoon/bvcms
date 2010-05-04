@@ -134,7 +134,7 @@ namespace CmsCheckin
         }
         public static void Label(LabelInfo li, DateTime time)
         {
-            if (li.n == 0)
+            if (li.n == 0 || !Program.Printer.HasValue())
                 return;
             var n = li.n;
             if (n > Program.MaxLabels)

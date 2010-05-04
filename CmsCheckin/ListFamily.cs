@@ -405,20 +405,23 @@ namespace CmsCheckin
                 return;
             Cursor.Current = Cursors.WaitCursor;
             Program.CursorShow();
+            Util.RecordAttendInfo ra = null;
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
                 eb.Text = c.NumLabels.ToString();
-                var ra = new Util.RecordAttendInfo { c = c.cinfo, present = true };
-                backgroundWorker1.RunWorkerAsync(ra);
+                ra = new Util.RecordAttendInfo { c = c.cinfo, present = true };
             }
             else
             {
                 ab.Text = String.Empty;
                 eb.Text = String.Empty;
-                var ra = new Util.RecordAttendInfo { c = c.cinfo, present = false };
-                backgroundWorker1.RunWorkerAsync(ra);
+                ra = new Util.RecordAttendInfo { c = c.cinfo, present = false };
             }
+            var bw = new BackgroundWorker();
+            bw.DoWork += backgroundWorker1_DoWork;
+            bw.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+            bw.RunWorkerAsync(ra);
         }
 
         void cb_Click(object sender, EventArgs e)

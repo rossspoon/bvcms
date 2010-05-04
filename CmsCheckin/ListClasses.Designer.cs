@@ -32,7 +32,6 @@
             this.pgup = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.allclasses = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // GoBackButton
@@ -100,11 +99,6 @@
             this.allclasses.UseVisualStyleBackColor = true;
             this.allclasses.Click += new System.EventHandler(this.allclasses_Click);
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
             // ListClasses
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -127,7 +121,6 @@
         public System.Windows.Forms.Button pgup;
         public System.Windows.Forms.Button pgdn;
         private System.Windows.Forms.Button allclasses;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
 
     }
 }

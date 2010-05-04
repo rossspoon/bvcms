@@ -101,7 +101,7 @@ namespace CMSWeb.Models.OrganizationPage
         }
         public IEnumerable<SelectListItem> LeaderTypeList()
         {
-            var items = CodeValueController.MemberTypeCodes0().Cast<CodeValueItem>();
+            var items = CodeValueController.MemberTypeCodes0().Select(c => new CodeValueItem { Code = c.Code, Id = c.Id, Value = c.Value });
             return QueryModel.ConvertToSelect(items, "Id");
         }
         public IEnumerable<SelectListItem> EntryPointList()

@@ -45,67 +45,86 @@ namespace CmsData
         }
         public EnrollmentTransaction Drop()
         {
-            var q = from o in Db.Organizations
-                    where o.OrganizationId == OrganizationId
-                    let count = Db.Attends.Count(a => a.PeopleId == PeopleId 
-                        && a.OrganizationId == OrganizationId
-                        && (a.MeetingDate < DateTime.Today || a.AttendanceFlag == true))
-                    select new
-                    {
-                        FirstMeetingDt = o.FirstMeetingDate,
-                        AttendCount = count,
-                        TrackAttendance = o.AttendTrkLevelId == 20,
-                        MeetingCt = o.Meetings.Count()
-                    };
-            var i = q.Single();
-            EnrollmentTransaction droptrans = null;
-            if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
+            DbUtil.Db.SubmitChanges();
+            int ntries = 2;
+            while (true)
             {
-                var qe = from et in Db.EnrollmentTransactions
-                         where et.PeopleId == PeopleId
-                            && et.OrganizationId == OrganizationId
-                            && et.EnrollmentDate == this.EnrollmentDate
-                            && et.TransactionTypeId == 1
-                         orderby et.TransactionId
-                         select et.TransactionId;
-                var enrollid = qe.FirstOrDefault();
-
-                var qt = from et in Db.EnrollmentTransactions
-                         where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
-                         where et.TransactionId >= enrollid
-                         select et;
-                Db.EnrollmentTransactions.DeleteAllOnSubmit(qt);
-                var qa = from et in Db.Attends
-                         where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
-                         select et;
-                var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
-                var mids = qa.Select(a => a.MeetingId).ToList();
-                if (smids != null)
-                    smids.AddRange(mids);
-                else
-                    HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
-                Db.Attends.DeleteAllOnSubmit(qa);
-            }
-            else
-            {
-                droptrans = new EnrollmentTransaction
+                try
                 {
-                    OrganizationId = OrganizationId,
-                    PeopleId = PeopleId,
-                    MemberTypeId = MemberTypeId,
-                    OrganizationName = Organization.OrganizationName,
-                    TransactionDate = Util.Now,
-                    TransactionTypeId = 5, // drop
-                    CreatedBy = Util.UserId1,
-                    CreatedDate = Util.Now,
-                    Pending = Pending,
-                    AttendancePercentage = AttendPct,
-                };
-                Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
+                    var q = from o in Db.Organizations
+                            where o.OrganizationId == OrganizationId
+                            let count = Db.Attends.Count(a => a.PeopleId == PeopleId
+                                && a.OrganizationId == OrganizationId
+                                && (a.MeetingDate < DateTime.Today || a.AttendanceFlag == true))
+                            select new
+                            {
+                                FirstMeetingDt = o.FirstMeetingDate,
+                                AttendCount = count,
+                                TrackAttendance = o.AttendTrkLevelId == 20,
+                                MeetingCt = o.Meetings.Count()
+                            };
+                    var i = q.Single();
+                    EnrollmentTransaction droptrans = null;
+                    if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
+                    {
+                        var qe = from et in Db.EnrollmentTransactions
+                                 where et.PeopleId == PeopleId
+                                    && et.OrganizationId == OrganizationId
+                                    && et.EnrollmentDate == this.EnrollmentDate
+                                    && et.TransactionTypeId == 1
+                                 orderby et.TransactionId
+                                 select et.TransactionId;
+                        var enrollid = qe.FirstOrDefault();
+
+                        var qt = from et in Db.EnrollmentTransactions
+                                 where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
+                                 where et.TransactionId >= enrollid
+                                 select et;
+                        Db.EnrollmentTransactions.DeleteAllOnSubmit(qt);
+                        var qa = from et in Db.Attends
+                                 where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
+                                 select et;
+                        var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
+                        var mids = qa.Select(a => a.MeetingId).ToList();
+                        if (smids != null)
+                            smids.AddRange(mids);
+                        else
+                            HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
+                        Db.Attends.DeleteAllOnSubmit(qa);
+                    }
+                    else
+                    {
+                        droptrans = new EnrollmentTransaction
+                        {
+                            OrganizationId = OrganizationId,
+                            PeopleId = PeopleId,
+                            MemberTypeId = MemberTypeId,
+                            OrganizationName = Organization.OrganizationName,
+                            TransactionDate = Util.Now,
+                            TransactionTypeId = 5, // drop
+                            CreatedBy = Util.UserId1,
+                            CreatedDate = Util.Now,
+                            Pending = Pending,
+                            AttendancePercentage = AttendPct,
+                        };
+                        Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
+                    }
+                    Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
+                    Db.OrganizationMembers.DeleteOnSubmit(this);
+                    return droptrans;
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 1205)
+                        if (--ntries > 0)
+                        {
+                            DbUtil.DbDispose();
+                            System.Threading.Thread.Sleep(500);
+                            continue;
+                        }
+                    throw;
+                }
             }
-            Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
-            Db.OrganizationMembers.DeleteOnSubmit(this);
-            return droptrans;
         }
         public static void UpdateMeetingsToUpdate()
         {
@@ -213,6 +232,7 @@ namespace CmsData
                         if (--ntries > 0)
                         {
                             DbUtil.DbDispose();
+                            System.Threading.Thread.Sleep(500);
                             continue;
                         }
                     throw;

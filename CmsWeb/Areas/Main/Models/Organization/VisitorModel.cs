@@ -64,6 +64,7 @@ namespace CMSWeb.Models.OrganizationPage
                          BFTeacher = p.BFClass.LeaderName,
                          BFTeacherId = p.BFClass.LeaderId,
                          Age = p.Age.ToString(),
+                         LastAttended = DbUtil.Db.LastAttended(OrganizationId, p.PeopleId),
                      };
             return q2;
         }
@@ -105,6 +106,11 @@ namespace CMSWeb.Models.OrganizationPage
                             p.Name2
                             select p;
                         break;
+                    case "Last Attended":
+                        q = from p in q
+                            orderby DbUtil.Db.LastAttended(OrganizationId, p.PeopleId)
+                            select p;
+                        break;
                 }
             else
                 switch (Pager.Sort)
@@ -139,6 +145,11 @@ namespace CMSWeb.Models.OrganizationPage
                     case "Age":
                         q = from p in q
                             orderby p.BirthYear descending, p.BirthMonth descending, p.BirthDay descending
+                            select p;
+                        break;
+                    case "Last Attended":
+                        q = from p in q
+                            orderby DbUtil.Db.LastAttended(OrganizationId, p.PeopleId) descending
                             select p;
                         break;
                 }

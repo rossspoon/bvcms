@@ -14,6 +14,8 @@ Count: <strong><%=Model.Count() %></strong></p>
     </th>
     <th><br /><a href="#" class="sortable">Primary Address</a></th>
     <th><br />Communication</th>
+    <th><br /><a href="#" class="sortable">Last Attended</a></th>
+    <th><br />Tag</th>
 </tr>
 </thead>
 <tbody>
@@ -35,6 +37,10 @@ Count: <strong><%=Model.Count() %></strong></p>
         <%=ph%><br />
 <% } %>        
         <a href="mailto:<%=om.Name %> <<%=om.EmailAddress %>>"><%=om.EmailAddress %></a>
+    </td>
+    <td><%=om.LastAttended.FormatDate2() %></td>
+    <td>
+        <a pid='<%=om.PeopleId %>' title="Add to/Remove from Active Tag" class="taguntag" href="#"><%=om.HasTag? "Remove" : "Add" %></a>
     </td>
 </tr>
 <% } %>

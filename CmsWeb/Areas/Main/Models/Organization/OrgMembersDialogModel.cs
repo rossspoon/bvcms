@@ -16,6 +16,7 @@ namespace CMSWeb.Models
         public bool inactives { get; set; }
         public bool pendings { get; set; }
         public int? sg { get; set; }
+        public int? groupid { get; set; }
 
         public int memtype { get; set; }
         public int tag { get; set; }
@@ -73,15 +74,15 @@ namespace CMSWeb.Models
         public int count;
         public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList()
         {
-            int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
-            var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.OrganizationId == orgid
-                    where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
-                    where (om.Pending ?? false) == pendings
-                    where (inactives && om.MemberTypeId == inactive)
-                        || (!inactives && om.MemberTypeId != inactive)
-                    select om;
-
+            if (groupid.HasValue)
+            {
+                var q3 = from om in DbUtil.Db.OrganizationMembers
+                         where om.OrganizationId == orgid
+                         where om.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
+                         select om.PeopleId;
+                list = q3.ToList();
+            }
+            var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);
             if (tag > 0)
@@ -111,6 +112,18 @@ namespace CMSWeb.Models
                          ischecked = list.Contains(m.PeopleId)
                      };
             return q2;
+        }
+        public IQueryable<OrganizationMember> OrgMembers()
+        {
+            int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    where om.OrganizationId == orgid
+                    where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
+                    where (om.Pending ?? false) == pendings
+                    where (inactives && om.MemberTypeId == inactive)
+                        || (!inactives && om.MemberTypeId != inactive)
+                    select om;
+            return q;
         }
         public class PersonDialogSearchInfo
         {

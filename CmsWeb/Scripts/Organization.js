@@ -63,6 +63,8 @@
         var src = this.href;
         if (this.id == 'currMembersUpdate')
             src += '?sg=' + $("#smallgroupid").val();
+        else if (this.id == 'groupMembersUpdate')
+            src += '?groupid=' + $("#groupid").val();
         $('<iframe id="memberDialog" src="' + src + '" />').dialog({
             title: this.title || 'Edit Member Dialog',
             bgiframe: true,
@@ -152,23 +154,31 @@
             $(f).html(ret);
         });
     });
-    $(".groupmanager").live("click", function() {
+    $("a.groupmanager").live("click", function() {
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr("href"), q, function(ret) {
-            $(f).html(ret);
-            $.post('/Organization/SmallGroups/', null, function(ret) {
-                var op = $('#smallgroupid');
-                var id = $(op).val();
-                $(op).replaceWith(ret);
-                $('#smallgroupid').val(id);
-            });
+            if (ret) {
+                $(f).html(ret);
+                $.post('/Organization/SmallGroups/', null, function(ret) {
+                    var op = $('#smallgroupid');
+                    var id = $(op).val();
+                    $(op).replaceWith(ret);
+                    $('#smallgroupid').val(id);
+                });
+            }
         });
         return false;
     });
     $("form.DisplayEdit").submit(function() {
         if (!$("#submitit").val())
             return false;
+    });
+    $('a.taguntag').live("click", function(ev) {
+        $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function(ret) {
+            $(ev.target).text(ret);
+        });
+        return false;
     });
     $.validator.addMethod("time", function(value, element) {
         return this.optional(element) || /^\d{1,2}:\d{2}\s(?:AM|am|PM|pm)/.test(value);
@@ -286,7 +296,7 @@
         }
         return false;
     });
-    $('.joinlink').live('click', function() {
+    $('a.joinlink').live('click', function() {
         $.post("/Organization/Join/", { id: this.id },
             function(ret) {
                 if (ret)

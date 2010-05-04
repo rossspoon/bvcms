@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchAddController.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
@@ -128,7 +130,6 @@
     <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
     <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
-    <Compile Include="Areas\Main\Models\Report\CouponsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetResult.cs" />
@@ -1231,6 +1232,7 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\Coupon\Index.aspx" />
     <Content Include="Areas\Main\Views\Organization\OrgInfo.ascx" />
     <Content Include="Areas\Main\Views\Organization\OrgInfoEdit.ascx" />
     <Content Include="Areas\Main\Views\Organization\ManageGroups.ascx" />

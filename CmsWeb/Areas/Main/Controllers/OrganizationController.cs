@@ -43,6 +43,7 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(m);
         }
         [Authorize(Roles = "Admin")]
+
         public ActionResult Delete(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
@@ -63,6 +64,7 @@ namespace CMSWeb.Areas.Main.Controllers
             return Content("/Organization/Index/" + neworg.OrganizationId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult NewMeeting(string d, string t, bool group)
         {
             var organization = DbUtil.Db.LoadOrganizationById(Util.CurrentOrgId);
@@ -90,6 +92,32 @@ namespace CMSWeb.Areas.Main.Controllers
             return Content("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DeleteMeeting(string id, bool future)
+        {
+            var aa = id.Split('.');
+            var mid = aa[1].ToInt2();
+            if (!mid.HasValue)
+                return new EmptyResult();
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
+            if (meeting == null)
+                return new EmptyResult();
+            var orgid = meeting.OrganizationId;
+            var q = from a in DbUtil.Db.Attends
+                    where a.MeetingId == mid
+                    select a.PeopleId;
+            var list = q.ToList();
+            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == mid);
+            foreach (var a in attendees)
+                if (a.AttendanceFlag == true)
+                    Attend.RecordAttendance(a.PeopleId, mid.Value, false);
+            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
+            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
+            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
+            DbUtil.Db.SubmitChanges();
+            return Content("true");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult CurrMemberGrid(int id, int smallgroupid)
         {
             var m = new MemberModel(id, smallgroupid, MemberModel.GroupSelect.Active);
@@ -143,6 +171,7 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult Settings(int id)
         {
             var m = new OrganizationModel(id);
@@ -191,6 +220,8 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakeNewGroup(int id, string GroupName)
         {
+            if (!GroupName.HasValue())
+                return new EmptyResult();
             var Db = DbUtil.Db;
             var group = Db.MemberTags.SingleOrDefault(g =>
                 g.Name == GroupName && g.OrgId == id);
@@ -208,8 +239,10 @@ namespace CMSWeb.Areas.Main.Controllers
             return View("ManageGroups", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult RenameGroup(int id, string GroupName, int groupid)
+        public ActionResult RenameGroup(int id, string GroupName, int? groupid)
         {
+            if (!GroupName.HasValue() || !groupid.HasValue)
+                return new EmptyResult();
             var group = DbUtil.Db.MemberTags.Single(d => d.Id == groupid);
             group.Name = GroupName;
             DbUtil.Db.SubmitChanges();
@@ -236,6 +269,7 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+
         public EmptyResult AddFromTag(int id, int tagid, bool? pending)
         {
             var o = DbUtil.Db.LoadOrganizationById(id);
@@ -253,31 +287,6 @@ namespace CMSWeb.Areas.Main.Controllers
             return Redirect("/OrgSearch/");
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteMeeting(string id, bool future)
-        {
-            var aa = id.Split('.');
-            var mid = aa[1].ToInt2();
-            if (!mid.HasValue)
-                return new EmptyResult();
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
-            if (meeting == null)
-                return new EmptyResult();
-            var orgid = meeting.OrganizationId;
-            var q = from a in DbUtil.Db.Attends
-                    where a.MeetingId == mid
-                    select a.PeopleId;
-            var list = q.ToList();
-            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == mid);
-            foreach (var a in attendees)
-                if (a.AttendanceFlag == true)
-                    Attend.RecordAttendance(a.PeopleId, mid.Value, false);
-            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
-            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
-            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
-            DbUtil.Db.SubmitChanges();
-            return Content("true");
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Join(string id)
         {
             var aa = id.Split('.');
@@ -289,6 +298,14 @@ namespace CMSWeb.Areas.Main.Controllers
                 (int)OrganizationMember.MemberTypeCode.Member,
                 DateTime.Now, null, false);
             return Content("true");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ToggleTag(int id)
+        {
+            var t = Person.ToggleTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return Content(t ? "Remove" : "Add");
         }
     }
 }

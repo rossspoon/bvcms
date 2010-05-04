@@ -34,7 +34,7 @@ namespace CMSWeb.Models
                 w.WriteStartElement("Results");
                 w.WriteAttributeString("pid", p.PeopleId.ToString());
                 w.WriteAttributeString("fid", p.FamilyId.ToString());
-                var bd = DateTime.Parse(p.DOB);
+                var bd = p.BirthDate;
                 var q = from o in DbUtil.Db.Organizations
                         let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
@@ -42,7 +42,7 @@ namespace CMSWeb.Models
                         where bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where o.CanSelfCheckin == true
                         where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid
+                        where o.CampusId == campusid || campusid == 0
                         where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                         where Hour1 != null
                         orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName

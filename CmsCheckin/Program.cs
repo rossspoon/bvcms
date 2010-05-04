@@ -14,6 +14,8 @@ namespace CmsCheckin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            if (args.Length > 0)
+                TestMode = args[0] == "test";
             var f = new StartUp();
             var r = f.ShowDialog();
             if (r == DialogResult.Cancel)
@@ -21,7 +23,6 @@ namespace CmsCheckin
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
-            TestMode = f.TestMode.Checked;
             Printer = f.Printer.Text;
             LeadTime = int.Parse(f.LeadTime.Text);
             EarlyCheckin = int.Parse(f.EarlyCheckin.Text);
@@ -56,6 +57,7 @@ namespace CmsCheckin
         }
         public static int MaxLabels { get; set; }
         public static Timer timer1;
+        public static Timer timer2;
         public static Home home;
         public static ListFamilies families;
         public static ListFamily family;
@@ -94,6 +96,30 @@ namespace CmsCheckin
             addr.textBox1.Text = Addr;
             zip.textBox1.Text = Zip;
             homephone.textBox1.Text = Home;
+        }
+        public static void Timer2Reset()
+        {
+            if (timer2 == null)
+                return;
+            timer2.Stop();
+            timer2.Start();
+        }
+        public static void Timer2Start(EventHandler t)
+        {
+            if (timer2 != null)
+                Timer2Stop();
+            timer2 = new Timer();
+            timer2.Interval = 60000;
+            timer2.Tick += t;
+            timer2.Start();
+        }
+        public static void Timer2Stop()
+        {
+            if (timer2 == null)
+                return;
+            timer2.Stop();
+            timer2.Dispose();
+            timer2 = null;
         }
         public static void TimerReset()
         {

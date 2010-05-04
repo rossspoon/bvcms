@@ -85,7 +85,7 @@ namespace CMSWeb.Models
                          Tracking = o.AttendTrackLevel.Description,
                          Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
-                         MeetingTime = o.MeetingTime,
+                         Schedule  = "{0:dddd h:mm tt}".Fmt(o.MeetingTime),
                          o.Location,
                          o.AgeFee,
                          o.AgeGroups,

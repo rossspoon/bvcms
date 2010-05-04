@@ -49,6 +49,7 @@ namespace CMSWeb.Models.OrganizationPage
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from om in q
                      let p = om.Person
+                     let att = om.Person.Attends.Where(a => a.OrganizationId == om.OrganizationId).Max(a => a.MeetingDate)
                      select new PersonMemberInfo
                      {
                          PeopleId = p.PeopleId,
@@ -75,6 +76,7 @@ namespace CMSWeb.Models.OrganizationPage
                          MemberType = om.MemberType.Description,
                          MemberTypeId = om.MemberTypeId,
                          AttendPct = om.AttendancePercentage,
+                         LastAttended = att,
                          Joined = om.EnrollmentDate,
                      };
             return q2;

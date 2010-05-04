@@ -45,7 +45,7 @@
         <span><%=om.LastAttended.FormatDate2() %></span>
     </td>
     <td>
-        <a title="Add to/Remove from Active Tag" href="#">Add</a>
+        <a pid='<%=om.PeopleId %>' title="Add to/Remove from Active Tag" class="taguntag" href="#"><%=om.HasTag? "Remove" : "Add" %></a>
     </td>
 </tr>
 <% } %>

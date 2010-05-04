@@ -15,6 +15,8 @@ Count: <strong><%=Model.Count() %></strong></p>
     <th><br /><a href="#" class="sortable">Primary Address</a></th>
     <th><br />Communication</th>
     <th><br /><a href="#" class="sortable">% Att.</a></th>
+    <th><br /><a href="#" class="sortable">Last Att.</a></th>
+    <th><br />Tag</th>
 </tr>
 </thead>
 <tbody>
@@ -39,6 +41,12 @@ Count: <strong><%=Model.Count() %></strong></p>
     </td>
     <td>
         <span><%=om.AttendPct.ToString2("N1") %>%</span>
+    </td>
+    <td>
+        <span><%=om.LastAttended.FormatDate2() %></span>
+    </td>
+    <td>
+        <a pid='<%=om.PeopleId %>' title="Add to/Remove from Active Tag" class="taguntag" href="#"><%=om.HasTag? "Remove" : "Add" %></a>
     </td>
 </tr>
 <% } %>

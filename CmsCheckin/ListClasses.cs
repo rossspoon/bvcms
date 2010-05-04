@@ -148,7 +148,10 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             var ra = new Util.RecordAttendInfo { c = c, present = true };
-            backgroundWorker1.RunWorkerAsync(ra);
+            Util.RecordAttend(ra);
+            ShowAllClasses = false;
+            this.Swap(Program.family);
+            Program.family.ShowFamily(FamilyId, 1);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
@@ -182,18 +185,6 @@ namespace CmsCheckin
             ShowResults(PeopleId, 1);
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var ra = e.Argument as Util.RecordAttendInfo;
-            Util.RecordAttend(ra);
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            ShowAllClasses = false;
-            this.Swap(Program.family);
-            Program.family.ShowFamily(FamilyId, 1);
-        }
     }
     public class ClassInfo
     {

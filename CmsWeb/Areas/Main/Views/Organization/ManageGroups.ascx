@@ -4,8 +4,7 @@
     <tr>
         <th align="right">Change Active Group:</th>
         <td><%=Html.DropDownList("groupid", Model.Groups())%>
-            <a class="groupmanager" href="/Organization/DeleteGroup/<%=Model.OrganizationId %>">Delete Group</a> |
-            <a href="#" title='Update Group Members'>Group Members</a>
+            <a id="groupMembersUpdate" href="/OrgMembersDialog/Index/<%=Model.OrganizationId %>" title="Update Group Members" class="memberdialog">Group Members</a>
         </td>
     </tr>
     <tr>
@@ -15,7 +14,8 @@
     <tr>
         <th></th>
         <td><a class="groupmanager" href="/Organization/MakeNewGroup/<%=Model.OrganizationId %>">Make New Group</a> |
-            <a class="groupmanager" href="/Organization/RenameGroup/<%=Model.OrganizationId %>">Rename Group</a>
+            <a class="groupmanager" href="/Organization/RenameGroup/<%=Model.OrganizationId %>">Rename Group</a> |
+            <a class="groupmanager" href="/Organization/DeleteGroup/<%=Model.OrganizationId %>">Delete Group</a>
         </td>
     </tr>
 </table>

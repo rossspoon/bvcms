@@ -207,6 +207,7 @@ namespace CMSPresenter
                          MemberInfo = om.UserData,
                          Medical = recreg.MedicalDescription,
                          PeopleId = p.PeopleId,
+                         EnrollDate = om.EnrollmentDate.FormatDate(),
                      };
             return q2.Take(maximumRows);
         }

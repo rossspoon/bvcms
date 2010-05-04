@@ -318,26 +318,51 @@ namespace CMSWeb.Areas.Public.Controllers
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id.ToInt());
             if (ed == null)
                 return Content("no outstanding transaction");
-            var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
-
-            var pm = new PaymentModel
+            if (ed.Stamp > DateTime.Parse("4/22/10"))
             {
-                NameOnAccount = ti.Name,
-                Address = ti.Address,
-                Amount = ti.AmountDue,
-                City = ti.City,
-                Email = ti.Email,
-                Phone = ti.Phone.FmtFone(),
-                State = ti.State,
-                PostalCode = ti.Zip,
-                testing = ti.testing,
-                PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
-                Misc2 = ti.Header,
-                Misc1 = ti.Name,
-            };
-            ViewData["URL"] = ti.URL;
-            ViewData["timeout"] = INT_timeout;
-            return View("Payment2", pm);
+                var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
+                ViewData["URL"] = ti.URL;
+                var pm = new PaymentModel
+                {
+                    NameOnAccount = ti.Name,
+                    Address = ti.Address,
+                    Amount = ti.AmountDue,
+                    City = ti.City,
+                    Email = ti.Email,
+                    Phone = ti.Phone.FmtFone(),
+                    State = ti.State,
+                    PostalCode = ti.Zip,
+                    testing = ti.testing,
+                    PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
+                    Misc2 = ti.Header,
+                    Misc1 = ti.Name,
+                };
+                ViewData["timeout"] = INT_timeout;
+                return View("Payment2", pm);
+            }
+            else
+            {
+                var s = ed.Data.Replace("TransactionInfo", "TransactionInfo0");
+                var ti = Util.DeSerialize<TransactionInfo0>(s);
+                ViewData["URL"] = Request.Url.OriginalString;
+                var pm = new PaymentModel
+                {
+                    NameOnAccount = ti.Name,
+                    Address = ti.Address,
+                    Amount = ti.AmountDue,
+                    City = ti.City,
+                    Email = ti.Email,
+                    Phone = ti.Phone.FmtFone(),
+                    State = ti.State,
+                    PostalCode = ti.Zip,
+                    testing = ti.testing,
+                    PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
+                    Misc2 = ti.Header,
+                    Misc1 = ti.Name,
+                };
+                ViewData["timeout"] = INT_timeout;
+                return View("Payment2", pm);
+            }
         }
         [ValidateInput(false)]
         public ActionResult Confirm2(int? id, string TransactionID)
@@ -351,42 +376,90 @@ namespace CMSWeb.Areas.Public.Controllers
             if (ed == null)
                 return Content("no pending transaction found");
 
-            var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
-            var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
-            DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
-            var smtp = Util.Smtp();
-            foreach (var pi in ti.people)
+            if (ed.Stamp > DateTime.Parse("4/22/10"))
             {
-                var p = DbUtil.Db.LoadPersonById(pi.pid);
-                if (p != null)
+                var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
+                var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
+                DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+                var smtp = Util.Smtp();
+                foreach (var pi in ti.people)
                 {
-                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
-                    om.Amount = pi.amt;
+                    var p = DbUtil.Db.LoadPersonById(pi.pid);
+                    if (p != null)
+                    {
+                        var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
+                        om.Amount = pi.amt;
 
-                    string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
-                    AddToMemberData(tstamp, om);
-                    AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
-                    if (ti.testing == true)
-                        AddToMemberData("(test transaction)", om);
+                        string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+                        AddToMemberData(tstamp, om);
+                        AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
+                        if (ti.testing == true)
+                            AddToMemberData("(test transaction)", om);
 
-                    var reg = p.RecRegs.Single();
-                    AddToRegistrationComments("-------------", reg);
-                    AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
-                    AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
-                    AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+                        var reg = p.RecRegs.Single();
+                        AddToRegistrationComments("-------------", reg);
+                        AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
+                        AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
+                        AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+                    }
+                    else
+                        Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
+                                "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
                 }
-                else
-                    Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
-                            "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
+                DbUtil.Db.SubmitChanges();
+                Util.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
+                    "Thank you for paying the balance of {0:c} for {1}.".Fmt(ti.AmountDue, ti.Header));
+                Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
+                    "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
+                ViewData["URL"] = ti.URL;
+                ViewData["timeout"] = INT_timeout;
+                ViewData["AmountDue"] = ti.AmountDue.ToString("c");
+                ViewData["Header"] = ti.Header;
+                ViewData["Email"] = ti.Email;
             }
-            DbUtil.Db.SubmitChanges();
-            Util.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
-                "Thank you for paying the balance of {0:c} for {1}.".Fmt(ti.AmountDue, ti.Header));
-            Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
-                "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
-            ViewData["URL"] = ti.URL;
-            ViewData["timeout"] = INT_timeout;
-            return View(ti);
+            else
+            {
+                var s = ed.Data.Replace("TransactionInfo", "TransactionInfo0");
+                var ti = Util.DeSerialize<TransactionInfo0>(ed.Data);
+                var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
+                DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+                var smtp = Util.Smtp();
+                foreach (var pi in ti.people)
+                {
+                    var p = DbUtil.Db.LoadPersonById(pi.pid);
+                    if (p != null)
+                    {
+                        var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
+                        om.Amount = pi.amt;
+
+                        string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+                        AddToMemberData(tstamp, om);
+                        AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
+                        if (ti.testing == true)
+                            AddToMemberData("(test transaction)", om);
+
+                        var reg = p.RecRegs.Single();
+                        AddToRegistrationComments("-------------", reg);
+                        AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
+                        AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
+                        AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+                    }
+                    else
+                        Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
+                                "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
+                }
+                DbUtil.Db.SubmitChanges();
+                Util.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
+                    "Thank you for paying the balance of {0:c} for {1}.".Fmt(ti.AmountDue, ti.Header));
+                Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
+                    "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
+                ViewData["URL"] = Request.Url.OriginalString;
+                ViewData["timeout"] = INT_timeout;
+                ViewData["AmountDue"] = ti.AmountDue.ToString("c");
+                ViewData["Header"] = ti.Header;
+                ViewData["Email"] = ti.Email;
+            }
+            return View();
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {

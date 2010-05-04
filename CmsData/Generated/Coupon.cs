@@ -17,11 +17,9 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Id;
+		private string _Id;
 		
 		private DateTime? _Created;
-		
-		private DateTime? _Activated;
 		
 		private DateTime? _Used;
 		
@@ -50,14 +48,11 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnIdChanging(int value);
+		partial void OnIdChanging(string value);
 		partial void OnIdChanged();
 		
 		partial void OnCreatedChanging(DateTime? value);
 		partial void OnCreatedChanged();
-		
-		partial void OnActivatedChanging(DateTime? value);
-		partial void OnActivatedChanged();
 		
 		partial void OnUsedChanging(DateTime? value);
 		partial void OnUsedChanged();
@@ -94,8 +89,8 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int Id
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		public string Id
 		{
 			get { return this._Id; }
 
@@ -131,28 +126,6 @@ namespace CmsData
 					this._Created = value;
 					this.SendPropertyChanged("Created");
 					this.OnCreatedChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Activated", UpdateCheck=UpdateCheck.Never, Storage="_Activated", DbType="datetime")]
-		public DateTime? Activated
-		{
-			get { return this._Activated; }
-
-			set
-			{
-				if (this._Activated != value)
-				{
-				
-                    this.OnActivatedChanging(value);
-					this.SendPropertyChanging();
-					this._Activated = value;
-					this.SendPropertyChanged("Activated");
-					this.OnActivatedChanged();
 				}
 
 			}

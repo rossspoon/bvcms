@@ -19,6 +19,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace UtilityExtensions
 {
@@ -1005,6 +1006,26 @@ namespace UtilityExtensions
                 if (s.Length > length)
                     s = s.Substring(0, length);
             return s;
+        }
+        public static string RandomPassword(int length)
+        {
+            var pchars = "ABCDEFGHJKMNPQRSTWXYZ".ToCharArray();
+            var pdigits = "23456789".ToCharArray();
+            var b = new byte[4];
+            (new RNGCryptoServiceProvider()).GetBytes(b);
+            var seed = (b[0] & 0x7f) << 24 | b[1] << 16 | b[2] << 8 | b[3];
+            var random = new Random(seed);
+            var password = new char[length];
+
+            for (int i = 0; i < password.Length; i++)
+            {
+                var r = i % 4;
+                if (r == 1 || r == 2)
+                    password[i] = pdigits[random.Next(pdigits.Length - 1)];
+                else
+                    password[i] = pchars[random.Next(pchars.Length - 1)];
+            }
+            return new string(password);
         }
     }
     public class EventArg<T> : EventArgs

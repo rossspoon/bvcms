@@ -15,6 +15,7 @@ namespace CMSWeb.Areas.Main
         public override void RegisterArea(AreaRegistrationContext context)
         {
             AddRoute(context, "Checkin");
+            AddRoute(context, "Coupon");
             AddRoute(context, "SearchPeople");
             AddRoute(context, "UserPref");
             AddRoute(context, "OrgSearch");
