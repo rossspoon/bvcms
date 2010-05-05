@@ -183,6 +183,8 @@ namespace CmsData
 		
 		private string _LinkGroupsFromOrgs;
 		
+		private bool? _RegistrationClosed;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -480,6 +482,9 @@ namespace CmsData
 		
 		partial void OnLinkGroupsFromOrgsChanging(string value);
 		partial void OnLinkGroupsFromOrgsChanged();
+		
+		partial void OnRegistrationClosedChanging(bool? value);
+		partial void OnRegistrationClosedChanged();
 		
     #endregion
 		public Organization()
@@ -2382,6 +2387,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="RegistrationClosed", UpdateCheck=UpdateCheck.Never, Storage="_RegistrationClosed", DbType="bit")]
+		public bool? RegistrationClosed
+		{
+			get { return this._RegistrationClosed; }
+
+			set
+			{
+				if (this._RegistrationClosed != value)
+				{
+				
+                    this.OnRegistrationClosedChanging(value);
+					this.SendPropertyChanging();
+					this._RegistrationClosed = value;
+					this.SendPropertyChanged("RegistrationClosed");
+					this.OnRegistrationClosedChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -2446,7 +2473,7 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="OrgId")]
+   		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="Orgid")]
    		public EntitySet< Coupon> Coupons
    		{
    		    get { return this._Coupons; }

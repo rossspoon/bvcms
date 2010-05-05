@@ -297,7 +297,10 @@ namespace CMSWeb.Areas.Main.Controllers
                 var meeting = DbUtil.Db.Meetings.SingleOrDefault(me => me.MeetingId == id);
                 foreach (var p in m.List)
                 {
+                    var isnew = p.IsNew;
                     AddPerson(p, m.List, (int)Person.OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
+                    if (isnew)
+                        p.person.CampusId = meeting.Organization.CampusId;
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
                     if (err.HasValue())
                         sb.AppendLine(err);

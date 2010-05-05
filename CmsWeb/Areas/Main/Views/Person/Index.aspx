@@ -7,7 +7,7 @@
     <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
     <script src="/Scripts/Person.js" type="text/javascript"></script>
-    <script src="/Scripts/Pager.js" type="text/javascript"></script>
+    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
     <table class="PersonHead" border="0">
         <tr>

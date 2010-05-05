@@ -5,7 +5,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script src="/Scripts/Pager.js" type="text/javascript"></script>
+    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <script src="/Scripts/OrgMembers.js" type="text/javascript"></script>
     
     <form id="form" method="post" action="/OrgMembers/Move">

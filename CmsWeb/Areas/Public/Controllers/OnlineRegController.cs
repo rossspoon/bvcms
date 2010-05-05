@@ -420,7 +420,7 @@ namespace CMSWeb.Areas.Public.Controllers
             else
             {
                 var s = ed.Data.Replace("TransactionInfo", "TransactionInfo0");
-                var ti = Util.DeSerialize<TransactionInfo0>(ed.Data);
+                var ti = Util.DeSerialize<TransactionInfo0>(s);
                 var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
                 DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
                 var smtp = Util.Smtp();

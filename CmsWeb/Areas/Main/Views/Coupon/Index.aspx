@@ -2,25 +2,30 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Coupons</h2>
-    <% using (Html.BeginForm()) 
-       { %>
+    <form action="/Coupon/Create" method="post">
         <div>
             <fieldset>
                 <table style="empty-cells:show">
-                <col style="width: 13em; text-align:right" />
-                <col />
-                <col />
                  <tr>
-                    <td><label for="end">Start Date</label></td>
-                    <td><%=Html.DropDownList("Div", Model.OnlineRegs()) %></td>
+                    <td>Registration Type</td>
+                    <td><%=Html.DropDownList("regid", Model.OnlineRegs()) %></td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td><td><input type="submit" value="Run" /></td>
+                    <td>Name</td>
+                    <td><%=Html.TextBox("name") %></td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td><%=Html.TextBox("amount") %></td>
+                </tr>
+                <tr>
+                    <td></td><td><input type="submit" value="Create Label" /></td>
                 </tr>
                 </table>
             </fieldset>
         </div>
-    <% } %>
+        <%=Html.ActionLink("List", "List") %>
+    </form>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">

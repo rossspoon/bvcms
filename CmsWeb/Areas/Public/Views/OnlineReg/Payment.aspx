@@ -56,8 +56,13 @@ div.terms strong {color:#000;}	</style>
 <%=Model.Terms %>
 <p><%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.</p>
 <% } %>
-<%--    <p>If you have a coupon, please enter that number here:
-    <%=Html.TextBox("Coupon") %></p>
+<%--    <form action="<%=Model.PostbackURL %>" method="post">
+    <%=Html.Hidden("PostbackURL") %>
+    <p>If you have a coupon, please enter that number here:
+    <%=Html.TextBox("Coupon") %> 
+    <%=Html.SubmitButton("Submit", "Pay with Coupon") %>
+    </p>
+    </form>
 --%>    
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID") %>
@@ -85,7 +90,7 @@ div.terms strong {color:#000;}	</style>
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
-    <p><%=Html.SubmitButton("Submit", "Next") %></p>
+    <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
     </form>
 
 </asp:Content>

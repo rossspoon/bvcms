@@ -288,7 +288,7 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_Coupons_Division", Storage="_Coupons", OtherKey="DivId")]
+   		[Association(Name="FK_Coupons_Division", Storage="_Coupons", OtherKey="Divid")]
    		public EntitySet< Coupon> Coupons
    		{
    		    get { return this._Coupons; }

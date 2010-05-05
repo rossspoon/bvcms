@@ -13,11 +13,20 @@ namespace CMSWeb.Areas.Main.Controllers
     {
         public ActionResult Index()
         {
-            //string c = Util.RandomPassword(12);
-            //c = c.Insert(8, " ").Insert(4, " ");
-            //return Content("<span style='font-family:courier new'>{0}</span>".Fmt(c));
             var c = new CouponModel();
             return View(c);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create(CouponModel m)
+        {
+            m.CreateCoupon();
+            return View(m);
+        }
+        public ActionResult List()
+        {
+            var c = new CouponModel();
+            return View(c);
+        }
+
     }
 }

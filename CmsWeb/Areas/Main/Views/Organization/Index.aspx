@@ -6,11 +6,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-
     <script src="/Content/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="/Scripts/Pager.js" type="text/javascript"></script>
+    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
-    <script src="/Scripts/Organization.js" type="text/javascript"></script>
+    <script src="/Scripts/Organization.js?v=2" type="text/javascript"></script>
 
     <% CmsData.Organization o = Model.org; %>
     <%=Html.Hidden("OrganizationId") %>

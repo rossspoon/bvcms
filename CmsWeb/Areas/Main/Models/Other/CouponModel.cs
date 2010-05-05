@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -18,41 +19,125 @@ namespace CMSWeb.Models
 {
     public class CouponModel
     {
-        public int? orgid { get; set; }
-        public decimal amount {get; set;}
+        public string regid { get; set; }
+        public decimal amount { get; set; }
+        public string name { get; set; }
+        public string couponcode { get; set; }
+        public string Registration()
+        {
+            return OnlineRegs().Single(r => r.Value == regid).Text;
+        }
 
-        public IEnumerable<Coupon> Coupons()
+        public IEnumerable<CouponInfo> Coupons()
         {
             var q = from c in DbUtil.Db.Coupons
-                    where c.OrgId == orgid
-                    select c;
-            return q;
-        }
-        public IEnumerable<SelectListItem> OnlineRegs()
-        {
-            var q = from o in DbUtil.Db.Organizations
-                    where o.RegistrationTypeId > (int)CmsData.Organization.RegistrationEnum.None
-                    where o.ClassFilled != true
-                    orderby o.Division.Name, o.OrganizationName
-                    select new SelectListItem
+                    //where c.DivOrg == regid || regid == "0"
+                    orderby c.Created descending
+                    select new CouponInfo
                     {
-                        Text = o.Division.Name + ": " + o.OrganizationName,
-                        Value = o.OrganizationId.ToString()
+                        Amount = c.Amount,
+                        Canceled = c.Canceled,
+                        Code = c.Id,
+                        Created = c.Created,
+                        OrgDivName = c.Orgid != null ? c.Organization.OrganizationName : c.Division.Name,
+                        Used = c.Used,
+                        PeopleId = c.PeopleId,
+                        Name = c.Name,
+                        Person = c.Person.Name,
                     };
             return q;
         }
+        public List<SelectListItem> OnlineRegs()
+        {
+            var orgregtypes = new int[] { 1, 2 };
+            var divregtypes = new int[] { 3, 4 };
+            var q = from o in DbUtil.Db.Organizations
+                    where orgregtypes.Contains(o.RegistrationTypeId.Value)
+                    where o.ClassFilled != true
+                    where (o.RegistrationClosed ?? false) == false
+                    where o.Fee > 0
+                    select new SelectListItem
+                    {
+                        Text = o.Division.Name + ": " + o.OrganizationName,
+                        Value = "org." + o.OrganizationId
+                    };
+            var q2 = from o in DbUtil.Db.Organizations
+                     where divregtypes.Contains(o.RegistrationTypeId.Value)
+                     where o.ClassFilled != true
+                     where (o.RegistrationClosed ?? false) == false
+                     where o.Fee > 0
+                     group o.Division by o.DivisionId into g
+                     from d in g
+                     select new SelectListItem
+                     {
+                         Text = d.Name,
+                         Value = "div." + d.Id
+                     };
+            var list = q.Union(q2).OrderBy(n => n.Text).ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
         public Coupon CreateCoupon()
         {
+            var existing = true;
+            string code;
+            do
+            {
+                code = Util.RandomPassword(12);
+                var q = from cp in DbUtil.Db.Coupons
+                        where cp.Id == code
+                        where cp.Used == null && cp.Canceled == null
+                        select cp;
+                existing = q.SingleOrDefault() != null;
+            }
+            while (existing);
+
             var c = new Coupon
             {
-                Id = Util.RandomPassword(12),
-                OrgId = orgid,
+                Id = code,
                 Created = DateTime.Now,
                 Amount = amount,
+                Name = name,
             };
+            SetDivOrgIds(c);
             DbUtil.Db.Coupons.InsertOnSubmit(c);
             DbUtil.Db.SubmitChanges();
+            couponcode = c.Id.Insert(8, " ").Insert(4, " ");
+
             return c;
+        }
+        private void SetDivOrgIds(Coupon c)
+        {
+            if (regid.HasValue())
+            {
+                var a = regid.Split('.');
+                switch (a[0])
+                {
+                    case "org":
+                        c.Orgid = a[1].ToInt();
+                        break;
+                    case "div":
+                        c.Divid = a[1].ToInt();
+                        break;
+                }
+            }
+        }
+        public class CouponInfo
+        {
+            public string Code { get; set; }
+            public string Coupon
+            {
+                get { return Code.Insert(8, " ").Insert(4, " "); }
+            }
+            public string OrgDivName { get; set; }
+            public DateTime Created { get; set; }
+            public DateTime? Used { get; set; }
+            public DateTime? Canceled { get; set; }
+            public decimal? Amount { get; set; }
+            public int? PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Person { get; set; }
+            public int row { get; set; }
         }
     }
 }

@@ -19,19 +19,21 @@ namespace CmsData
 		
 		private string _Id;
 		
-		private DateTime? _Created;
-		
 		private DateTime? _Used;
 		
 		private DateTime? _Canceled;
 		
 		private decimal? _Amount;
 		
-		private int? _DivId;
-		
-		private int? _OrgId;
-		
 		private int? _PeopleId;
+		
+		private string _Name;
+		
+		private int? _Divid;
+		
+		private int? _Orgid;
+		
+		private DateTime _Created;
 		
    		
     	
@@ -51,9 +53,6 @@ namespace CmsData
 		partial void OnIdChanging(string value);
 		partial void OnIdChanged();
 		
-		partial void OnCreatedChanging(DateTime? value);
-		partial void OnCreatedChanged();
-		
 		partial void OnUsedChanging(DateTime? value);
 		partial void OnUsedChanged();
 		
@@ -63,14 +62,20 @@ namespace CmsData
 		partial void OnAmountChanging(decimal? value);
 		partial void OnAmountChanged();
 		
-		partial void OnDivIdChanging(int? value);
-		partial void OnDivIdChanged();
-		
-		partial void OnOrgIdChanging(int? value);
-		partial void OnOrgIdChanged();
-		
 		partial void OnPeopleIdChanging(int? value);
 		partial void OnPeopleIdChanged();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
+		
+		partial void OnDividChanging(int? value);
+		partial void OnDividChanged();
+		
+		partial void OnOrgidChanging(int? value);
+		partial void OnOrgidChanged();
+		
+		partial void OnCreatedChanging(DateTime value);
+		partial void OnCreatedChanged();
 		
     #endregion
 		public Coupon()
@@ -104,28 +109,6 @@ namespace CmsData
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Created", UpdateCheck=UpdateCheck.Never, Storage="_Created", DbType="datetime")]
-		public DateTime? Created
-		{
-			get { return this._Created; }
-
-			set
-			{
-				if (this._Created != value)
-				{
-				
-                    this.OnCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._Created = value;
-					this.SendPropertyChanged("Created");
-					this.OnCreatedChanged();
 				}
 
 			}
@@ -199,56 +182,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DivId", UpdateCheck=UpdateCheck.Never, Storage="_DivId", DbType="int")]
-		public int? DivId
-		{
-			get { return this._DivId; }
-
-			set
-			{
-				if (this._DivId != value)
-				{
-				
-					if (this._Division.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnDivIdChanging(value);
-					this.SendPropertyChanging();
-					this._DivId = value;
-					this.SendPropertyChanged("DivId");
-					this.OnDivIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
-		public int? OrgId
-		{
-			get { return this._OrgId; }
-
-			set
-			{
-				if (this._OrgId != value)
-				{
-				
-					if (this._Organization.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnOrgIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrgId = value;
-					this.SendPropertyChanged("OrgId");
-					this.OnOrgIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int")]
 		public int? PeopleId
 		{
@@ -274,6 +207,100 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(80)")]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="divid", UpdateCheck=UpdateCheck.Never, Storage="_Divid", DbType="int")]
+		public int? Divid
+		{
+			get { return this._Divid; }
+
+			set
+			{
+				if (this._Divid != value)
+				{
+				
+					if (this._Division.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnDividChanging(value);
+					this.SendPropertyChanging();
+					this._Divid = value;
+					this.SendPropertyChanged("Divid");
+					this.OnDividChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="orgid", UpdateCheck=UpdateCheck.Never, Storage="_Orgid", DbType="int")]
+		public int? Orgid
+		{
+			get { return this._Orgid; }
+
+			set
+			{
+				if (this._Orgid != value)
+				{
+				
+					if (this._Organization.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnOrgidChanging(value);
+					this.SendPropertyChanging();
+					this._Orgid = value;
+					this.SendPropertyChanged("Orgid");
+					this.OnOrgidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Created", UpdateCheck=UpdateCheck.Never, Storage="_Created", DbType="datetime NOT NULL")]
+		public DateTime Created
+		{
+			get { return this._Created; }
+
+			set
+			{
+				if (this._Created != value)
+				{
+				
+                    this.OnCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._Created = value;
+					this.SendPropertyChanged("Created");
+					this.OnCreatedChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -282,7 +309,7 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_Coupons_Division", Storage="_Division", ThisKey="DivId", IsForeignKey=true)]
+		[Association(Name="FK_Coupons_Division", Storage="_Division", ThisKey="Divid", IsForeignKey=true)]
 		public Division Division
 		{
 			get { return this._Division.Entity; }
@@ -305,14 +332,14 @@ namespace CmsData
 					{
 						value.Coupons.Add(this);
 						
-						this._DivId = value.Id;
+						this._Divid = value.Id;
 						
 					}
 
 					else
 					{
 						
-						this._DivId = default(int?);
+						this._Divid = default(int?);
 						
 					}
 
@@ -324,7 +351,7 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_Coupons_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
+		[Association(Name="FK_Coupons_Organizations", Storage="_Organization", ThisKey="Orgid", IsForeignKey=true)]
 		public Organization Organization
 		{
 			get { return this._Organization.Entity; }
@@ -347,14 +374,14 @@ namespace CmsData
 					{
 						value.Coupons.Add(this);
 						
-						this._OrgId = value.OrganizationId;
+						this._Orgid = value.OrganizationId;
 						
 					}
 
 					else
 					{
 						
-						this._OrgId = default(int?);
+						this._Orgid = default(int?);
 						
 					}
 
