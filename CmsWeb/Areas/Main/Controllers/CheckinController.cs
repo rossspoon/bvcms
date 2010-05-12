@@ -23,15 +23,15 @@ namespace CMSWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(0, campus, thisday, 1); // not found
+                return new FamilyResult(0, campus, thisday, 1, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 1);
+                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
             return new MultipleResult(matches, page);
         }
         public ActionResult Family(int id, int campus, int thisday, int? page)
         {
             Response.NoCache();
-            return new FamilyResult(id, campus, thisday, page.Value);
+            return new FamilyResult(id, campus, thisday, page.Value, false);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -92,6 +92,7 @@ namespace CMSWeb.Areas.Main.Controllers
             string email,
             string cell,
             string home,
+            string allergies,
             int marital,
             int gender,
             int campusid)
@@ -137,6 +138,8 @@ namespace CMSWeb.Areas.Main.Controllers
             p.MaritalStatusId = marital;
             p.FixTitle();
             p.EmailAddress = email;
+            if (allergies.HasValue())
+                GetRecReg(p).MedicalDescription = allergies;
             if (campusid > 0)
                 p.CampusId = campusid;
             p.CellPhone = cell.GetDigits();
@@ -154,6 +157,7 @@ namespace CMSWeb.Areas.Main.Controllers
             string email,
             string cell,
             string home,
+            string allergies,
             int marital,
             int gender,
             int campusid)
@@ -170,13 +174,26 @@ namespace CMSWeb.Areas.Main.Controllers
             p.LastName = last;
             p.DOB = dob;
             p.EmailAddress = email;
+            p.RecRegs.First().MedicalDescription = allergies;
             p.CellPhone = cell.GetDigits();
             p.MaritalStatusId = marital;
             p.GenderId = gender;
+            if (allergies.HasValue())
+                GetRecReg(p).MedicalDescription = allergies;
             if (campusid > 0)
                 p.CampusId = campusid;
             DbUtil.Db.SubmitChanges();
             return Content(p.FamilyId.ToString());
+        }
+        RecReg GetRecReg(Person p)
+        {
+            var rr = p.RecRegs.SingleOrDefault();
+            if (rr == null)
+            {
+                rr = new RecReg();
+                p.RecRegs.Add(rr);
+            }
+            return rr;
         }
         public ActionResult Campuses()
         {
@@ -303,6 +320,17 @@ namespace CMSWeb.Areas.Main.Controllers
                     orderby t.CheckInTimeX descending
                     select t;
             return View(m.Take(200));
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UnLockFamily(int fid)
+        {
+            var lockf = DbUtil.Db.FamilyCheckinLocks.SingleOrDefault(f => f.FamilyId == fid);
+            if (lockf != null)
+            {
+                lockf.Locked = false;
+                DbUtil.Db.SubmitChanges();
+            }
+            return new EmptyResult();
         }
     }
 }

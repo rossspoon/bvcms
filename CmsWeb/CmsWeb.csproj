@@ -140,7 +140,9 @@
     </Compile>
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
+    <Compile Include="Areas\Manage\Controllers\GroupMembersController.cs" />
     <Compile Include="Areas\Manage\Controllers\OrgMembersController.cs" />
+    <Compile Include="Areas\Manage\Models\GroupMembersModel.cs" />
     <Compile Include="Areas\Manage\Models\OrgMembersModel.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\OnlineRegController.cs" />
@@ -1295,6 +1297,8 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
+    <Content Include="Areas\Manage\Views\GroupMembers\Index.aspx" />
+    <Content Include="Areas\Manage\Views\GroupMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
@@ -1687,6 +1691,7 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Views\Shared\online.Master" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />
@@ -1735,7 +1740,6 @@
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Report\Reports.Master" />
     <Content Include="Scripts\ExportToolBar.js" />
-    <Content Include="Scripts\ExportToolbar2.js" />
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Scripts\Task.js" />
     <Content Include="StaffOnly\Web.config" />

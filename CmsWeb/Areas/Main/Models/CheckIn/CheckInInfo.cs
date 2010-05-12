@@ -78,5 +78,7 @@ namespace CMSWeb.Models
         public string Name { get; set; }
         public string AreaCode { get; set; }
         public string Phone { get; set; }
+        public bool Locked { get; set; }
+        public int seconds { get; set; }
     }
 }

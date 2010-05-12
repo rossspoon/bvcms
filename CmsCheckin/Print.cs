@@ -80,7 +80,7 @@ namespace CmsCheckin
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }
-            if (Program.Printer.StartsWith("ZDesigner"))
+            else if (Program.Printer.StartsWith("ZDesigner"))
             {
                 sw.WriteLine(@"^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
                 sw.WriteLine(@"^XA");
@@ -104,6 +104,24 @@ namespace CmsCheckin
                     sw.WriteLine(string.Format(@"^FT24,41^A0N,28,28^FH\^FD{0}^FS", list[n]));
                 n--;
                 sw.WriteLine(string.Format(@"^PQ1,0,1,Y^XZ"));
+            }
+            else
+            {
+                if (list.Count > n)
+                    sw.WriteLine(list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(list[n]);
+                n--;
+                if (list.Count > n)
+                    sw.WriteLine(list[n]);
+                n--;
             }
             sw.Flush();
 
@@ -141,7 +159,22 @@ namespace CmsCheckin
                 n = Program.MaxLabels;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
-            if (Program.Printer.StartsWith("Datamax"))
+            if (Program.Printer.StartsWith("ZDesigner"))
+            {
+                //sw.WriteLine("CT~~CD,~CC^~CT~");
+                sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                sw.WriteLine("^XA");
+                sw.WriteLine("^MMT");
+                sw.WriteLine("^PW609");
+                sw.WriteLine("^LL0203");
+                sw.WriteLine("^LS0");
+                sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
+                sw.WriteLine(string.Format(@"^FT583,69^A0I,34,33^FH\^FD{0}^FS", li.last));
+                sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FD{0} {1}   {2:M/d/yy}^FS", li.pid, li.mv, time));
+                sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0:HHmmss}^FS", time));
+                sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
+            }
+            else if (Program.Printer.StartsWith("Datamax"))
             {
                 sw.WriteLine("\x02n");
                 sw.WriteLine("\x02M0500");
@@ -164,21 +197,14 @@ namespace CmsCheckin
                 sw.WriteLine("Q" + n.ToString("0000"));
                 sw.WriteLine("E");
             }
-            if (Program.Printer.StartsWith("ZDesigner"))
+            else 
             {
-                //sw.WriteLine("CT~~CD,~CC^~CT~");
-                sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
-                sw.WriteLine("^XA");
-                sw.WriteLine("^MMT");
-                sw.WriteLine("^PW609");
-                sw.WriteLine("^LL0203");
-                sw.WriteLine("^LS0");
-                sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
-                sw.WriteLine(string.Format(@"^FT583,69^A0I,34,33^FH\^FD{0}^FS", li.last));
-                sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FD{0} {1}   {2:M/d/yy}^FS", li.pid, li.mv, time));
-                sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0:HHmmss}^FS", time));
-                sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
+                sw.WriteLine(li.first);
+                sw.WriteLine(li.last);
+                sw.WriteLine(" (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
+                sw.WriteLine(time.ToString("HHmmss"));
             }
+
             sw.Flush();
 
             memStrm.Position = 0;

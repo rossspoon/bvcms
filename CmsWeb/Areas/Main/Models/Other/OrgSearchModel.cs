@@ -97,7 +97,6 @@ namespace CMSWeb.Models
                          AskEmContact = o.AskEmContact ?? false,
                          AskGrade = o.AskGrade ?? false,
                          AskInsurance = o.AskInsurance ?? false,
-                         AskMedical = o.AskMedical ?? false,
                          o.AskOptions,
                          AskParents = o.AskParents ?? false,
                          AskRequest = o.AskRequest ?? false,

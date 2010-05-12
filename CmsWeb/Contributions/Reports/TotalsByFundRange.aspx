@@ -9,6 +9,18 @@
         <h1>
             <asp:Label ID="Label1" runat="server" Text="Totals by Range for Fund"></asp:Label></h1>
         <table style="font-size: large; text-align: left">
+                <tr>
+                    <td style="text-align: right">
+                        CampusId:
+                    </td>
+                    <td>
+                        <asp:DropDownList runat="server" ID="CampusId" DataSourceID="CampusIds"  DataTextField="Value"
+                        DataValueField="Id"></asp:DropDownList>
+                    </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                </tr>
             <tr>
                 <td style="text-align: right">
                     Fund:
@@ -26,8 +38,6 @@
                 <td>
                     <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: large"
                         Width="100"></asp:TextBox>
-                    <cc2:CalendarExtender ID="FromExtender" runat="server" TargetControlID="FromDate">
-                    </cc2:CalendarExtender>
                 </td>
                 <td>
                     &nbsp;
@@ -40,8 +50,6 @@
                 <td>
                     <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: large"
                         Width="100"></asp:TextBox>
-                    <cc2:CalendarExtender ID="ToDateExtender" runat="server" TargetControlID="ToDate">
-                    </cc2:CalendarExtender>
                 </td>
                 <td>
                     <asp:Button ID="btnSubmit" ToolTip="Press to run report" CausesValidation="true"
@@ -145,8 +153,10 @@
             <asp:ControlParameter Name="dt2" ControlID="ToDate" Type="DateTime" />
             <asp:QueryStringParameter Name="Pledges" Type="string" QueryStringField="pledged"
                 DefaultValue="false" />
+            <asp:ControlParameter Name="CampusId" ControlID="CampusId" Type="Int32" PropertyName="SelectedValue" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSFunds" runat="server" OldValuesParameterFormatString="original_{0}"
         SelectMethod="Funds" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 </asp:Content>

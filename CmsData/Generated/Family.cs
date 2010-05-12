@@ -88,6 +88,8 @@ namespace CmsData
 		private string _Comments;
 		
    		
+   		private EntitySet< FamilyCheckinLock> _FamilyCheckinLocks;
+		
    		private EntitySet< Person> _People;
 		
    		private EntitySet< RelatedFamily> _RelatedFamilies1;
@@ -218,6 +220,8 @@ namespace CmsData
     #endregion
 		public Family()
 		{
+			
+			this._FamilyCheckinLocks = new EntitySet< FamilyCheckinLock>(new Action< FamilyCheckinLock>(this.attach_FamilyCheckinLocks), new Action< FamilyCheckinLock>(this.detach_FamilyCheckinLocks)); 
 			
 			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
@@ -1026,6 +1030,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_FamilyCheckinLock_FamilyCheckinLock1", Storage="_FamilyCheckinLocks", OtherKey="FamilyId")]
+   		public EntitySet< FamilyCheckinLock> FamilyCheckinLocks
+   		{
+   		    get { return this._FamilyCheckinLocks; }
+
+			set	{ this._FamilyCheckinLocks.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_People_Families", Storage="_People", OtherKey="FamilyId")]
    		public EntitySet< Person> People
    		{
@@ -1245,6 +1259,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_FamilyCheckinLocks(FamilyCheckinLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.Family = this;
+		}
+
+		private void detach_FamilyCheckinLocks(FamilyCheckinLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.Family = null;
+		}
+
+		
 		private void attach_People(Person entity)
 		{
 			this.SendPropertyChanging();

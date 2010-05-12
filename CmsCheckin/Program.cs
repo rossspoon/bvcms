@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.ComponentModel;
+using System.Drawing.Printing;
 
 namespace CmsCheckin
 {
@@ -26,7 +27,11 @@ namespace CmsCheckin
             Printer = f.Printer.Text;
             LeadTime = int.Parse(f.LeadTime.Text);
             EarlyCheckin = int.Parse(f.EarlyCheckin.Text);
+            AskEmFriend = f.AskEmFriend.Checked;
+            JoinOrgNotAttend = f.JoinOrgNotAttend.Checked;
+
             f.Dispose();
+
 
             var b = new BaseForm();
 
@@ -48,6 +53,8 @@ namespace CmsCheckin
         public static bool HideCursor { get; set; }
         public static bool TestMode { get; set; }
         public static bool editing { get; set; }
+        public static bool JoinOrgNotAttend { get; set; }
+        public static bool AskEmFriend { get; set; }
         public static string QueryString
         {
             get
@@ -65,6 +72,9 @@ namespace CmsCheckin
         public static EnterText namesearch;
         public static ListNames names;
 
+        public static EnterText allergy;
+        public static EnterText emfriend;
+        public static EnterPhone emphone;
         public static EnterText first;
         public static EnterText goesby;
         public static EnterText last;
@@ -84,6 +94,12 @@ namespace CmsCheckin
             addr.textBox1.Text = null;
             zip.textBox1.Text = null;
             dob.textBox1.Text = null;
+            allergy.textBox1.Text = null;
+            if (Program.AskEmFriend)
+            {
+                emfriend.textBox1.Text = null;
+                emphone.textBox1.Text = null;
+            }
             cellphone.textBox1.Text = null;
             homephone.textBox1.Text = null;
             gendermarital.Gender = 0;

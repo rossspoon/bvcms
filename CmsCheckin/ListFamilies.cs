@@ -74,7 +74,10 @@ namespace CmsCheckin
 
             foreach (var e in x.Descendants("family"))
             {
+
                 var ab = new Button();
+                var locked = bool.Parse(e.Attribute("waslocked").Value);
+                ab.Enabled = !locked;
                 ab.BackColor = SystemColors.ControlLight;
                 ab.Font = labfont;
                 ab.Location = new Point(230, 100 + (row * 50));

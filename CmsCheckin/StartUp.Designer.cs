@@ -40,6 +40,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.EarlyCheckin = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.AskEmFriend = new System.Windows.Forms.CheckBox();
+            this.JoinOrgNotAttend = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -63,7 +65,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(286, 297);
+            this.button1.Location = new System.Drawing.Point(286, 420);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 64);
             this.button1.TabIndex = 2;
@@ -94,7 +96,7 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(17, 320);
+            this.HideCursor.Location = new System.Drawing.Point(17, 443);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
             this.HideCursor.TabIndex = 5;
@@ -169,7 +171,7 @@
             this.EarlyCheckin.Name = "EarlyCheckin";
             this.EarlyCheckin.Size = new System.Drawing.Size(260, 39);
             this.EarlyCheckin.TabIndex = 11;
-            this.EarlyCheckin.Text = "90";
+            this.EarlyCheckin.Text = "1440";
             // 
             // label5
             // 
@@ -180,11 +182,33 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Late Check In Minutes";
             // 
+            // AskEmFriend
+            // 
+            this.AskEmFriend.AutoSize = true;
+            this.AskEmFriend.Location = new System.Drawing.Point(153, 310);
+            this.AskEmFriend.Name = "AskEmFriend";
+            this.AskEmFriend.Size = new System.Drawing.Size(224, 21);
+            this.AskEmFriend.TabIndex = 12;
+            this.AskEmFriend.Text = "Ask For Emergency Friend Info";
+            this.AskEmFriend.UseVisualStyleBackColor = true;
+            // 
+            // JoinOrgNotAttend
+            // 
+            this.JoinOrgNotAttend.AutoSize = true;
+            this.JoinOrgNotAttend.Location = new System.Drawing.Point(153, 356);
+            this.JoinOrgNotAttend.Name = "JoinOrgNotAttend";
+            this.JoinOrgNotAttend.Size = new System.Drawing.Size(252, 21);
+            this.JoinOrgNotAttend.TabIndex = 13;
+            this.JoinOrgNotAttend.Text = "Join Organization Instead of Attend";
+            this.JoinOrgNotAttend.UseVisualStyleBackColor = true;
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(462, 384);
+            this.ClientSize = new System.Drawing.Size(462, 496);
+            this.Controls.Add(this.JoinOrgNotAttend);
+            this.Controls.Add(this.AskEmFriend);
             this.Controls.Add(this.EarlyCheckin);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.Printer);
@@ -220,5 +244,7 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.ComboBox EarlyCheckin;
         private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.CheckBox AskEmFriend;
+        public System.Windows.Forms.CheckBox JoinOrgNotAttend;
     }
 }

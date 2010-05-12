@@ -14,7 +14,11 @@ namespace CMSWeb.Report
         protected void Page_Load(object sender, EventArgs e)
         {
             var dt1 = this.QueryString<DateTime>("dt1");
-            var dt2 = this.QueryString<DateTime>("dt2").AddDays(1);
+            var dt2 = this.QueryString<DateTime?>("dt2");
+            if (dt2.HasValue)
+                dt2 = dt2.Value.AddDays(1);
+            else
+                dt2 = dt1.AddDays(1);
             var name = this.QueryString<string>("name");
             name = Server.UrlDecode(name);
             var divid = this.QueryString<int?>("divid");
@@ -30,14 +34,24 @@ namespace CMSWeb.Report
                     orderby m.Organization.OrganizationName, m.MeetingDate
                     select new
                     {
-                        OrgName = m.Organization.OrganizationName, 
-                        Leader = m.Organization.LeaderName, 
+                        OrgName = m.Organization.OrganizationName,
+                        Leader = m.Organization.LeaderName,
                         location = m.Organization.Location,
-                        Date = m.MeetingDate.Value,
+                        Date = m.MeetingDate,
                         Count = m.NumPresent,
                         Description = m.Description
                     };
             var list = q.ToList();
+            var t = new
+            {
+                OrgName = "Total",
+                Leader = string.Empty,
+                location = string.Empty,
+                Date = (DateTime?)null,
+                Count = list.Sum(i => i.Count),
+                Description = string.Empty
+            };
+            list.Add(t);
 
             var dg = new DataGrid();
             bd.Controls.Add(dg);

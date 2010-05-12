@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CMSWeb.Areas.Public.Controllers
 {
@@ -20,7 +21,7 @@ namespace CMSWeb.Areas.Public.Controllers
 #if DEBUG
         private const int INT_timeout = 1600000;
 #else
-        private const int INT_timeout = 120000;
+        private const int INT_timeout = 60000;
 #endif
 
         public ActionResult Index(int? id, int? div, bool? testing)
@@ -277,14 +278,48 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = m.testing ?? false,
                 PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
-                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, "")
+                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, ""),
+                _URL = m.URL,
+                _timeout = INT_timeout,
+                _datumid = d.Id,
+                _confirm = "confirm"
             };
             pm.Misc1 = pm.NameOnAccount;
 
-            ViewData["URL"] = m.URL;
-            ViewData["timeout"] = INT_timeout;
             return View("Payment", pm);
         }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PayWithCoupon(PaymentModel pm)
+        {
+            if (!pm._Coupon.HasValue())
+                return Json(new { error = "empty coupon" });
+            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
+            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            string coupon = pm._Coupon.ToUpper().Replace(" ", "");
+            var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
+            if (c == null)
+                return Json(new { error = "coupon not found" });
+            if (m.divid.HasValue)
+            {
+                if (c.Divid != m.divid)
+                    return Json(new { error = "coupon div not valid" });
+            }
+            else if (m.orgid != c.Orgid)
+                return Json(new { error = "coupon org not valid" });
+            if (DateTime.Now.Subtract(c.Created).TotalHours > 24)
+                return Json(new { error = "coupon expired" });
+            if (c.Used.HasValue)
+                return Json(new { error = "coupon already used" });
+            if (c.Canceled.HasValue)
+                return Json(new { error = "coupon canceled" });
+
+            return Json(new
+            {
+                confirm = "/onlinereg/{0}/{1}?TransactionID=Coupon({2})"
+                    .Fmt(pm._confirm, pm._datumid, coupon.Insert(8, " ").Insert(4, " ")) });
+        }
+        
         [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID)
         {
@@ -301,6 +336,7 @@ namespace CMSWeb.Areas.Public.Controllers
             var m = Util.DeSerialize<OnlineRegModel>(s);
 
             m.EnrollAndConfirm(TransactionID);
+            UseCoupon(TransactionID, m.List[0].PeopleId.Value, m.Amount());
 
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
@@ -318,11 +354,11 @@ namespace CMSWeb.Areas.Public.Controllers
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id.ToInt());
             if (ed == null)
                 return Content("no outstanding transaction");
+            PaymentModel pm = null;
             if (ed.Stamp > DateTime.Parse("4/22/10"))
             {
                 var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
-                ViewData["URL"] = ti.URL;
-                var pm = new PaymentModel
+                pm = new PaymentModel
                 {
                     NameOnAccount = ti.Name,
                     Address = ti.Address,
@@ -336,16 +372,17 @@ namespace CMSWeb.Areas.Public.Controllers
                     PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
                     Misc2 = ti.Header,
                     Misc1 = ti.Name,
+                    _URL = ti.URL,
+                    _timeout = INT_timeout,
+                    _datumid = ed.Id,
+                    _confirm = "confirm2"
                 };
-                ViewData["timeout"] = INT_timeout;
-                return View("Payment2", pm);
             }
             else
             {
                 var s = ed.Data.Replace("TransactionInfo", "TransactionInfo0");
                 var ti = Util.DeSerialize<TransactionInfo0>(s);
-                ViewData["URL"] = Request.Url.OriginalString;
-                var pm = new PaymentModel
+                pm = new PaymentModel
                 {
                     NameOnAccount = ti.Name,
                     Address = ti.Address,
@@ -359,10 +396,13 @@ namespace CMSWeb.Areas.Public.Controllers
                     PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
                     Misc2 = ti.Header,
                     Misc1 = ti.Name,
+                    _URL = Request.Url.OriginalString,
+                    _timeout = INT_timeout,
+                    _datumid = ed.Id,
+                    _confirm = "confirm2"
                 };
-                ViewData["timeout"] = INT_timeout;
-                return View("Payment2", pm);
             }
+            return View("Payment2", pm);
         }
         [ValidateInput(false)]
         public ActionResult Confirm2(int? id, string TransactionID)
@@ -460,6 +500,19 @@ namespace CMSWeb.Areas.Public.Controllers
                 ViewData["Email"] = ti.Email;
             }
             return View();
+        }
+        private static void UseCoupon(string TransactionID, int PeopleId, decimal Amount)
+        {
+            string matchcoupon = @"Coupon\((?<coupon>.*)\)";
+            if (Regex.IsMatch(TransactionID, matchcoupon, RegexOptions.IgnoreCase))
+            {
+                var coupon = Regex.Match(TransactionID, matchcoupon, RegexOptions.IgnoreCase)
+                        .Groups["coupon"].Value.Replace(" ", "");
+                var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);
+                c.RegAmount = Amount;
+                c.Used = DateTime.Now;
+                c.PeopleId = PeopleId;
+            }
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {

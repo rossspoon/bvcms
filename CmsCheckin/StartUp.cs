@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Xml.Linq;
+using System.Drawing.Printing;
 
 namespace CmsCheckin
 {
@@ -18,7 +19,7 @@ namespace CmsCheckin
             get
             {
                 var c = cbCampusId.SelectedItem as Campus;
-                if (c!=null)
+                if (c != null)
                     return c.Id;
                 return 0;
             }
@@ -49,16 +50,22 @@ namespace CmsCheckin
             HideCursor.Checked = false;
             EarlyCheckin.SelectedIndex = EarlyCheckin.Items.Count - 1;
 #endif
-            if (PrintRawHelper.HasPrinter(Print.datamax1))
-                Printer.Items.Add(Print.datamax1);
-            if (PrintRawHelper.HasPrinter(Print.datamax2))
-                Printer.Items.Add(Print.datamax2);
-            if (PrintRawHelper.HasPrinter(Print.zebra))
-                Printer.Items.Add(Print.zebra);
-            if (PrintRawHelper.HasPrinter(Print.zebra2))
-                Printer.Items.Add(Print.zebra2);
-            if (Printer.Items.Count > 0)
-                Printer.SelectedIndex = 0;
+            var prtdoc = new PrintDocument();
+            var defp = prtdoc.PrinterSettings.PrinterName;
+            foreach (var s in PrinterSettings.InstalledPrinters)
+                Printer.Items.Add(s);
+            Printer.SelectedIndex = Printer.FindStringExact(defp);
+
+            //if (PrintRawHelper.HasPrinter(Print.datamax1))
+            //    Printer.Items.Add(Print.datamax1);
+            //if (PrintRawHelper.HasPrinter(Print.datamax2))
+            //    Printer.Items.Add(Print.datamax2);
+            //if (PrintRawHelper.HasPrinter(Print.zebra))
+            //    Printer.Items.Add(Print.zebra);
+            //if (PrintRawHelper.HasPrinter(Print.zebra2))
+            //    Printer.Items.Add(Print.zebra2);
+            //if (Printer.Items.Count > 0)
+            //    Printer.SelectedIndex = 0;
 
 
             var wc = new WebClient();
@@ -66,8 +73,8 @@ namespace CmsCheckin
             var str = wc.DownloadString(url);
             var x = XDocument.Parse(str);
             foreach (var e in x.Descendants("campus"))
-                cbCampusId.Items.Add(new Campus 
-                { 
+                cbCampusId.Items.Add(new Campus
+                {
                     Id = int.Parse(e.Attribute("id").Value),
                     Name = e.Attribute("name").Value
                 });
@@ -78,6 +85,10 @@ namespace CmsCheckin
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
         }
     }
     class DayOfWeek

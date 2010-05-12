@@ -12,13 +12,28 @@ namespace CMSWeb.Models
     public class FamilyResult : ActionResult
     {
         int fid, campus, thisday, page;
+        bool waslocked;
 
-        public FamilyResult(int fid, int campus, int thisday, int page)
+        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked)
         {
             this.fid = fid;
             this.campus = campus;
             this.thisday = thisday;
             this.page = page;
+            this.waslocked = waslocked;
+            if (fid > 0)
+            {
+                var lockf = DbUtil.Db.FamilyCheckinLocks.SingleOrDefault(f => f.FamilyId == fid);
+                if (lockf == null)
+                {
+                    lockf = new FamilyCheckinLock { FamilyId = fid, Created = DateTime.Now };
+                    DbUtil.Db.FamilyCheckinLocks.InsertOnSubmit(lockf);
+                }
+                lockf.Locked = true;
+                if (!waslocked)
+                    lockf.Created = DateTime.Now;
+                DbUtil.Db.SubmitChanges();
+            }
         }
         public override void ExecuteResult(ControllerContext context)
         {
@@ -32,6 +47,7 @@ namespace CMSWeb.Models
                 var m = new CheckInModel();
                 var q = m.FamilyMembers(fid, campus, thisday);
                 w.WriteAttributeString("familyid", fid.ToString());
+                w.WriteAttributeString("waslocked", waslocked.ToString());
 
                 var count = q.Count();
                 const int INT_PageSize = 10;
@@ -45,7 +61,7 @@ namespace CMSWeb.Models
                 else
                     w.WriteAttributeString("prev", "");
                 w.WriteAttributeString("maxlabels", DbUtil.Settings("MaxLabels", "6"));
-                
+
                 foreach (var c in q.Skip(startrow).Take(INT_PageSize))
                 {
                     double leadtime = 0;

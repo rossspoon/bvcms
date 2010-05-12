@@ -102,8 +102,9 @@ namespace CmsData
                                 JoinCodeId = (int)Person.JoinTypeCode.BaptismBIO;
                             else
                                 JoinCodeId = (int)Person.JoinTypeCode.BaptismPOF;
-                            JoinDate = (DiscoveryClassDate.HasValue && DiscoveryClassDate.Value > BaptismDate.Value) ?
-                                DiscoveryClassDate.Value : BaptismDate.Value;
+                            if (DiscoveryClassDate.HasValue && BaptismDate.HasValue)
+                                JoinDate = DiscoveryClassDate.Value > BaptismDate.Value ?
+                                    DiscoveryClassDate.Value : BaptismDate.Value;
                         }
                         break;
                     case (int)Person.DecisionCode.Letter:
@@ -220,7 +221,9 @@ namespace CmsData
                         spouse.EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.Individual;
             }
             EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.None;
-            foreach (var om in OrganizationMembers)
+
+            var list = OrganizationMembers.ToList();
+            foreach(var om in list)
                 om.Drop();
         }
     }

@@ -35,6 +35,12 @@ namespace CmsData
 		
 		private DateTime _Created;
 		
+		private int? _UserId;
+		
+		private decimal? _RegAmount;
+		
+		private string _DivOrg;
+		
    		
     	
 		private EntityRef< Division> _Division;
@@ -42,6 +48,8 @@ namespace CmsData
 		private EntityRef< Organization> _Organization;
 		
 		private EntityRef< Person> _Person;
+		
+		private EntityRef< User> _User;
 		
 	#endregion
 	
@@ -77,6 +85,15 @@ namespace CmsData
 		partial void OnCreatedChanging(DateTime value);
 		partial void OnCreatedChanged();
 		
+		partial void OnUserIdChanging(int? value);
+		partial void OnUserIdChanged();
+		
+		partial void OnRegAmountChanging(decimal? value);
+		partial void OnRegAmountChanged();
+		
+		partial void OnDivOrgChanging(string value);
+		partial void OnDivOrgChanged();
+		
     #endregion
 		public Coupon()
 		{
@@ -87,6 +104,8 @@ namespace CmsData
 			this._Organization = default(EntityRef< Organization>); 
 			
 			this._Person = default(EntityRef< Person>); 
+			
+			this._User = default(EntityRef< User>); 
 			
 			OnCreated();
 		}
@@ -301,6 +320,75 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="UserId", UpdateCheck=UpdateCheck.Never, Storage="_UserId", DbType="int")]
+		public int? UserId
+		{
+			get { return this._UserId; }
+
+			set
+			{
+				if (this._UserId != value)
+				{
+				
+					if (this._User.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegAmount", UpdateCheck=UpdateCheck.Never, Storage="_RegAmount", DbType="money")]
+		public decimal? RegAmount
+		{
+			get { return this._RegAmount; }
+
+			set
+			{
+				if (this._RegAmount != value)
+				{
+				
+                    this.OnRegAmountChanging(value);
+					this.SendPropertyChanging();
+					this._RegAmount = value;
+					this.SendPropertyChanged("RegAmount");
+					this.OnRegAmountChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DivOrg", UpdateCheck=UpdateCheck.Never, Storage="_DivOrg", DbType="varchar(34)", IsDbGenerated=true)]
+		public string DivOrg
+		{
+			get { return this._DivOrg; }
+
+			set
+			{
+				if (this._DivOrg != value)
+				{
+				
+                    this.OnDivOrgChanging(value);
+					this.SendPropertyChanging();
+					this._DivOrg = value;
+					this.SendPropertyChanged("DivOrg");
+					this.OnDivOrgChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -428,6 +516,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Coupons_Users", Storage="_User", ThisKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get { return this._User.Entity; }
+
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._User.Entity = null;
+						previousValue.Coupons.Remove(this);
+					}
+
+					this._User.Entity = value;
+					if (value != null)
+					{
+						value.Coupons.Add(this);
+						
+						this._UserId = value.UserId;
+						
+					}
+
+					else
+					{
+						
+						this._UserId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("User");
 				}
 
 			}

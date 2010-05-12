@@ -164,7 +164,7 @@
     <tr>
         <td><label for="church"><%= Model.org.AskParents == true ? "Parent's Church" : "Church" %></label></td>
         <td><input type="checkbox" name="m.List[<%=Model.index %>].memberus" value = "true" 
-            <%=Model.memberus == true ? "checked='checked'" : "" %> /> Member of Bellevue<br />
+            <%=Model.memberus == true ? "checked='checked'" : "" %> /> Member of this Church<br />
             <input type="checkbox" name="m.List[<%=Model.index %>].otherchurch" value="true"
             <%=Model.otherchurch == true ? "checked='checked'" : "" %> /> Active in another Local Church</td>
         <td><%=Html.ValidationMessage("member")%></td>

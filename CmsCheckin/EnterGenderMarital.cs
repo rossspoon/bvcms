@@ -27,10 +27,19 @@ namespace CmsCheckin
             homephone.Text = Program.homephone.textBox1.Text;
             addr.Text = Program.addr.textBox1.Text;
             zip.Text = Program.zip.textBox1.Text;
+            allergies.Text = Program.allergy.textBox1.Text;
             AddAnother.Visible = !Program.editing;
+            
+            emfriendlab.Visible = Program.AskEmFriend;
+            emphonelab.Visible = Program.AskEmFriend;
+            emergencylab.Visible = Program.AskEmFriend;
+            EmPhone.Visible = Program.AskEmFriend;
+            EmFriend.Visible = Program.AskEmFriend;
+
             if (dob.Text.Age().ToInt() < 18)
                 single.Checked = true;
             Program.TimerStart(timer1_Tick);
+
         }
 
         void timer1_Tick(object sender, EventArgs e)
@@ -54,9 +63,10 @@ namespace CmsCheckin
             var gender = Gender;
             var marital = Marital;
             if (Program.editing)
-                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
+                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, marital, gender);
             else
-                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, marital, gender);
+                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, marital, gender);
+            Util.UnLockFamily();
 
             string ph;
             if (!string.IsNullOrEmpty(homephone.Text))
@@ -140,7 +150,7 @@ namespace CmsCheckin
         }
         private void GoBack_Click(object sender, EventArgs e)
         {
-            this.Swap(Program.homephone);
+            this.Swap(Program.allergy);
         }
 
         private bool ValidateFields()
@@ -163,7 +173,7 @@ namespace CmsCheckin
         {
             if (!ValidateFields())
                 return;
-            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, Marital, Gender);
+            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, Marital, Gender);
             Program.ClearFields();
             Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text);
             this.Swap(Program.first);
@@ -174,5 +184,6 @@ namespace CmsCheckin
             Program.ClearFields();
             this.GoHome(string.Empty);
         }
+
     }
 }

@@ -229,10 +229,6 @@
         <td><%=Html.CheckBoxReadonly(Model.org.AskEmContact) %></td>
     </tr>
     <tr>
-        <th>Ask About Medical:</th>
-        <td><%=Html.CheckBoxReadonly(Model.org.AskMedical) %></td>
-    </tr>
-    <tr>
         <th>Ask For Insurance:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskInsurance) %></td>
     </tr>

@@ -23,6 +23,15 @@ namespace CMSWeb.Reports {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
+        /// CampusId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList CampusId;
+        
+        /// <summary>
         /// Fund control.
         /// </summary>
         /// <remarks>
@@ -41,15 +50,6 @@ namespace CMSWeb.Reports {
         protected global::System.Web.UI.WebControls.TextBox FromDate;
         
         /// <summary>
-        /// FromExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender FromExtender;
-        
-        /// <summary>
         /// ToDate control.
         /// </summary>
         /// <remarks>
@@ -57,15 +57,6 @@ namespace CMSWeb.Reports {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ToDate;
-        
-        /// <summary>
-        /// ToDateExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ToDateExtender;
         
         /// <summary>
         /// btnSubmit control.
@@ -111,5 +102,14 @@ namespace CMSWeb.Reports {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource ODSFunds;
+        
+        /// <summary>
+        /// CampusIds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource CampusIds;
     }
 }

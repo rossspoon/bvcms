@@ -14,6 +14,7 @@ using System.Web.Routing;
 using UtilityExtensions;
 using System.Text;
 using CmsData;
+using System.Data.Linq.SqlClient;
 
 namespace CMSWeb.Models
 {
@@ -23,6 +24,11 @@ namespace CMSWeb.Models
         public decimal amount { get; set; }
         public string name { get; set; }
         public string couponcode { get; set; }
+
+        public int useridfilter { get; set; }
+        public string regidfilter { get; set; }
+        public string usedfilter { get; set; }
+
         public string Registration()
         {
             return OnlineRegs().Single(r => r.Value == regid).Text;
@@ -31,21 +37,40 @@ namespace CMSWeb.Models
         public IEnumerable<CouponInfo> Coupons()
         {
             var q = from c in DbUtil.Db.Coupons
-                    //where c.DivOrg == regid || regid == "0"
-                    orderby c.Created descending
-                    select new CouponInfo
-                    {
-                        Amount = c.Amount,
-                        Canceled = c.Canceled,
-                        Code = c.Id,
-                        Created = c.Created,
-                        OrgDivName = c.Orgid != null ? c.Organization.OrganizationName : c.Division.Name,
-                        Used = c.Used,
-                        PeopleId = c.PeopleId,
-                        Name = c.Name,
-                        Person = c.Person.Name,
-                    };
-            return q;
+                    where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
+                    where c.UserId == useridfilter || useridfilter == 0
+                    select c;
+            switch (usedfilter)
+            {
+                case "Used":
+                    q = q.Where(c => c.Used != null);
+                    break;
+                case "UnUsed":
+                    q = q.Where(c => c.Used == null);
+                    break;
+                case "Expired":
+                    q = q.Where(c => SqlMethods.DateDiffHour(c.Created, DateTime.Now) >= 24);
+                    break;
+            }
+
+            var q2 = from c in q
+                     orderby c.Created descending
+                     select new CouponInfo
+                     {
+                         Amount = c.Amount,
+                         Canceled = c.Canceled,
+                         Code = c.Id,
+                         Created = c.Created,
+                         OrgDivName = c.Orgid != null ? c.Organization.OrganizationName : c.Division.Name,
+                         Used = c.Used,
+                         PeopleId = c.PeopleId,
+                         Name = c.Name,
+                         Person = c.Person.Name,
+                         UserId = c.UserId,
+                         UserName = c.User.Name,
+                         RegAmt = c.RegAmount
+                     };
+            return q2.Take(200);
         }
         public List<SelectListItem> OnlineRegs()
         {
@@ -77,6 +102,30 @@ namespace CMSWeb.Models
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
+        public List<SelectListItem> Users()
+        {
+            var q = from c in DbUtil.Db.Coupons
+                    group c by new { c.UserId, c.User.Name } into g
+                    from u in g
+                    select new SelectListItem
+                    {
+                        Value = g.Key.UserId.ToString(),
+                        Text = g.Key.Name,
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+        public List<SelectListItem> CouponStatus()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "(not specified)" },
+                new SelectListItem { Text = "Used" },
+                new SelectListItem { Text = "UnUsed" },
+                new SelectListItem { Text = "Expired" },
+            };
+        }
         public Coupon CreateCoupon()
         {
             var existing = true;
@@ -98,6 +147,7 @@ namespace CMSWeb.Models
                 Created = DateTime.Now,
                 Amount = amount,
                 Name = name,
+                UserId = Util.UserId,
             };
             SetDivOrgIds(c);
             DbUtil.Db.Coupons.InsertOnSubmit(c);
@@ -134,10 +184,12 @@ namespace CMSWeb.Models
             public DateTime? Used { get; set; }
             public DateTime? Canceled { get; set; }
             public decimal? Amount { get; set; }
+            public decimal? RegAmt { get; set; }
             public int? PeopleId { get; set; }
             public string Name { get; set; }
             public string Person { get; set; }
-            public int row { get; set; }
+            public int? UserId { get; set; }
+            public string UserName { get; set; }
         }
     }
 }

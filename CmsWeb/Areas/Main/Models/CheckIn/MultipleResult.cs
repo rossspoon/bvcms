@@ -46,6 +46,7 @@ namespace CMSWeb.Models
                     w.WriteStartElement("family");
                     w.WriteAttributeString("id", f.FamilyId.ToString());
                     w.WriteAttributeString("name", f.Name);
+                    w.WriteAttributeString("waslocked", f.Locked.ToString());
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

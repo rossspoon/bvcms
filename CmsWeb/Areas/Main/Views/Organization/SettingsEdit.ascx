@@ -206,10 +206,6 @@
         <td><%=Html.CheckBox("org.AskEmContact")%></td>
     </tr>
     <tr>
-        <th>Ask About Medical:</th>
-        <td><%=Html.CheckBox("org.AskMedical")%></td>
-    </tr>
-    <tr>
         <th>Ask For Doctor:</th>
         <td><%=Html.CheckBox("org.AskDoctor")%></td>
     </tr>

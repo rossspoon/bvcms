@@ -25,8 +25,8 @@
     });
     $('#TagAll,#UnTagAll').click(function(ev) {
         $.block();
-        $.post($(this).attr("href"), null, function(ret) {
-            $(".taguntag").text(ret);
+        $.post(this.href, null, function(ret) {
+            $(".taguntag:visible").text(ret);
             $.unblock();
             return false;
         });

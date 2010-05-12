@@ -80,6 +80,7 @@ namespace CmsCheckin
             time = DateTime.Now;
 
             Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
+
             next = x.Root.Attribute("next").Value.ToInt2();
             prev = x.Root.Attribute("prev").Value.ToInt2();
             pgdn.Visible = next.HasValue;
@@ -111,6 +112,7 @@ namespace CmsCheckin
                 this.Controls.Add(lab);
                 Print.Text = "Try again";
                 controls.Add(lab);
+                button1.Enabled = false;
                 return;
             }
 
@@ -357,6 +359,7 @@ namespace CmsCheckin
         void timer1_Tick(object sender, EventArgs e)
         {
             Program.TimerStop();
+            Util.UnLockFamily();
             Program.ClearFields();
             this.GoHome("");
         }
@@ -367,6 +370,7 @@ namespace CmsCheckin
             if (e.KeyValue == 27)
             {
                 Program.TimerStop();
+                Util.UnLockFamily();
                 this.GoHome(string.Empty);
             }
         }
@@ -452,10 +456,27 @@ namespace CmsCheckin
             this.Swap(Program.first);
         }
 
+        PleaseWait PleaseWaitForm = null;
         private void GoBack_Click(object sender, EventArgs e)
         {
             Program.TimerStop();
+            PleaseWaitForm = new PleaseWait();
+            PleaseWaitForm.Show();
+            var bw = new BackgroundWorker();
+            bw.DoWork += new DoWorkEventHandler(backgroundWorker2_DoWork);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker2_RunWorkerCompleted);
+            bw.RunWorkerAsync();
+        }
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Util.UnLockFamily();
             PrintLabels();
+        }
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            PleaseWaitForm.Hide();
+            PleaseWaitForm.Dispose();
+            PleaseWaitForm = null;
             Program.FamilyId = 0;
             this.GoHome(string.Empty);
         }
@@ -531,6 +552,7 @@ namespace CmsCheckin
 
             Program.SetFields(c.last, c.email, c.addr, c.zip, c.home);
             Program.editing = false;
+            Util.UnLockFamily();
             this.Swap(Program.first);
         }
 

@@ -10,22 +10,15 @@
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
-                window.location.href = '<%=ViewData["URL"] %>';
+                window.location.href = '<%=Model._URL %>';
             });
-            var tmout = parseInt('<%=ViewData["timeout"] %>');
-
-            $(document).bind("keydown", function() {
-                $(document).unbind("keydown");
-                $.idleTimer(tmout);
-            });
+            var tmout = parseInt('<%=Model._timeout %>');
             $.idleTimer(tmout);
         });
     </script>
     
     <h2>Payment Processing</h2>
-<%--    <p>If you have a coupon, please enter that number here:
-    <%=Html.TextBox("Coupon") %></p>
---%>    
+    
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID") %>
     <%=Html.Hidden("OrgAccountID") %>
@@ -42,12 +35,20 @@
     <%=Html.Hidden("Misc2") %>
     <%=Html.Hidden("Misc3") %>
     <%=Html.Hidden("Misc4") %>
+    <%=Html.Hidden("_datumid") %>
+    <%=Html.Hidden("_timeout") %>
+    <%=Html.Hidden("_URL") %>
+    <%=Html.Hidden("_confirm") %>
     <p>
-        When you click the Next button will be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
+        When you click the 'Pay with Credit Card' button button will be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
-    <p><%=Html.SubmitButton("Submit", "Next") %></p>
+    <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
+    <%=Html.TextBox("_Coupon") %>
+    <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>
+    <span style="color:Red" id="validatecoupon"></span>
     </form>
 
 </asp:Content>

@@ -74,7 +74,7 @@
             this.buttonbs.BackColor = System.Drawing.SystemColors.ControlLight;
             this.buttonbs.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonbs.Font = new System.Drawing.Font("Wingdings", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.buttonbs.Location = new System.Drawing.Point(719, 91);
+            this.buttonbs.Location = new System.Drawing.Point(719, 101);
             this.buttonbs.Margin = new System.Windows.Forms.Padding(4);
             this.buttonbs.Name = "buttonbs";
             this.buttonbs.Size = new System.Drawing.Size(132, 84);
@@ -204,10 +204,10 @@
             // 
             this.label2.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label2.Location = new System.Drawing.Point(272, 24);
+            this.label2.Location = new System.Drawing.Point(186, 24);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(412, 73);
+            this.label2.Size = new System.Drawing.Size(776, 73);
             this.label2.TabIndex = 34;
             this.label2.Text = "label";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

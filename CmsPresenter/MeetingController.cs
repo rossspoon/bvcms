@@ -128,8 +128,13 @@ namespace CMSPresenter
                     q2 = q2.OrderByDescending(m => m.Organization);
                     break;
             }
-
-            return q2;
+            var list = q2.ToList();
+            list.Add(new MeetingInfo2 
+            { 
+                Attended = list.Sum(m => m.Attended),
+                Division = "Total" 
+            });
+            return list;
         }
         public IEnumerable<MeetingInfo> Meeting(int mtgid)
         {

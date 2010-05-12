@@ -85,6 +85,7 @@
     <Compile Include="ContentService.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Generated\Coupon.cs" />
+    <Compile Include="Generated\FamilyCheckinLock.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\RegistrationType.cs" />
     <Compile Include="MemberRules.cs" />

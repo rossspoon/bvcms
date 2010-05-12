@@ -72,6 +72,7 @@ namespace CmsCheckin
             string zip,
             string cell,
             string home,
+            string allergies, 
             int marital,
             int gender)
         {
@@ -92,6 +93,7 @@ namespace CmsCheckin
             coll.Add("marital", marital.ToString());
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
+            coll.Add("allergies", allergies);
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
 
             var resp = wc.UploadValues(url, "POST", coll);
@@ -110,6 +112,7 @@ namespace CmsCheckin
             string zip,
             string cell,
             string home,
+            string allergies,
             int marital,
             int gender)
         {
@@ -130,6 +133,7 @@ namespace CmsCheckin
             coll.Add("marital", marital.ToString());
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
+            coll.Add("allergies", allergies);
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id );
 
             var resp = wc.UploadValues(url, "POST", coll);
@@ -265,6 +269,23 @@ namespace CmsCheckin
 #if DEBUG
                 //System.Threading.Thread.Sleep(1500);
 #endif
+                var s = Encoding.ASCII.GetString(resp);
+            }
+            catch (Exception)
+            {
+            }
+        }
+        public static void UnLockFamily()
+        {
+            if (Program.FamilyId == 0)
+                return;
+            try
+            {
+                var wc = new WebClient();
+                var coll = new NameValueCollection();
+                coll.Add("fid", Program.FamilyId.ToString());
+                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/UnLockFamily/");
+                var resp = wc.UploadValues(url, "POST", coll);
                 var s = Encoding.ASCII.GetString(resp);
             }
             catch (Exception)

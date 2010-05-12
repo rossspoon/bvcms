@@ -19,7 +19,7 @@
                     <td><%=Html.TextBox("amount") %></td>
                 </tr>
                 <tr>
-                    <td></td><td><input type="submit" value="Create Label" /></td>
+                    <td></td><td><input type="submit" value="Create Coupon" /></td>
                 </tr>
                 </table>
             </fieldset>

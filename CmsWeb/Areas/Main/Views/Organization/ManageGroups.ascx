@@ -4,7 +4,7 @@
     <tr>
         <th align="right">Change Active Group:</th>
         <td><%=Html.DropDownList("groupid", Model.Groups())%>
-            <a id="groupMembersUpdate" href="/OrgMembersDialog/Index/<%=Model.OrganizationId %>" title="Update Group Members" class="memberdialog">Group Members</a>
+            <a id="groupMembersUpdate" href="/OrgMembersDialog/Index/<%=Model.OrganizationId %>" class="memberdialog">Group Members</a>
         </td>
     </tr>
     <tr>

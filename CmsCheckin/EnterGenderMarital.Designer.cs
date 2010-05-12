@@ -59,6 +59,13 @@
             this.label10 = new System.Windows.Forms.Label();
             this.zip = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.allergies = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.emfriendlab = new System.Windows.Forms.Label();
+            this.emphonelab = new System.Windows.Forms.Label();
+            this.EmFriend = new System.Windows.Forms.Label();
+            this.EmPhone = new System.Windows.Forms.Label();
+            this.emergencylab = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -214,70 +221,70 @@
             // first
             // 
             this.first.AutoSize = true;
-            this.first.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.first.Location = new System.Drawing.Point(302, 24);
+            this.first.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.first.Location = new System.Drawing.Point(162, 22);
             this.first.Name = "first";
-            this.first.Size = new System.Drawing.Size(117, 40);
+            this.first.Size = new System.Drawing.Size(102, 34);
             this.first.TabIndex = 38;
             this.first.Text = "label1";
             // 
             // goesby
             // 
             this.goesby.AutoSize = true;
-            this.goesby.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goesby.Location = new System.Drawing.Point(302, 65);
+            this.goesby.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goesby.Location = new System.Drawing.Point(162, 56);
             this.goesby.Name = "goesby";
-            this.goesby.Size = new System.Drawing.Size(117, 40);
+            this.goesby.Size = new System.Drawing.Size(102, 34);
             this.goesby.TabIndex = 39;
             this.goesby.Text = "label1";
             // 
             // last
             // 
             this.last.AutoSize = true;
-            this.last.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.last.Location = new System.Drawing.Point(302, 106);
+            this.last.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.last.Location = new System.Drawing.Point(162, 90);
             this.last.Name = "last";
-            this.last.Size = new System.Drawing.Size(117, 40);
+            this.last.Size = new System.Drawing.Size(102, 34);
             this.last.TabIndex = 40;
             this.last.Text = "label1";
             // 
             // email
             // 
             this.email.AutoSize = true;
-            this.email.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.email.Location = new System.Drawing.Point(302, 147);
+            this.email.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.email.Location = new System.Drawing.Point(162, 124);
             this.email.Name = "email";
-            this.email.Size = new System.Drawing.Size(117, 40);
+            this.email.Size = new System.Drawing.Size(102, 34);
             this.email.TabIndex = 41;
             this.email.Text = "label1";
             // 
             // dob
             // 
             this.dob.AutoSize = true;
-            this.dob.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dob.Location = new System.Drawing.Point(302, 188);
+            this.dob.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dob.Location = new System.Drawing.Point(781, 24);
             this.dob.Name = "dob";
-            this.dob.Size = new System.Drawing.Size(117, 40);
+            this.dob.Size = new System.Drawing.Size(102, 34);
             this.dob.TabIndex = 42;
             this.dob.Text = "label1";
             // 
             // cellphone
             // 
             this.cellphone.AutoSize = true;
-            this.cellphone.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cellphone.Location = new System.Drawing.Point(302, 229);
+            this.cellphone.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cellphone.Location = new System.Drawing.Point(781, 92);
             this.cellphone.Name = "cellphone";
-            this.cellphone.Size = new System.Drawing.Size(117, 40);
+            this.cellphone.Size = new System.Drawing.Size(102, 34);
             this.cellphone.TabIndex = 42;
             this.cellphone.Text = "label1";
             // 
             // homephone
             // 
             this.homephone.AutoSize = true;
-            this.homephone.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.homephone.Location = new System.Drawing.Point(302, 270);
+            this.homephone.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.homephone.Location = new System.Drawing.Point(781, 58);
             this.homephone.Name = "homephone";
-            this.homephone.Size = new System.Drawing.Size(117, 40);
+            this.homephone.Size = new System.Drawing.Size(102, 34);
             this.homephone.TabIndex = 42;
             this.homephone.Text = "label1";
             // 
@@ -285,11 +292,11 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Location = new System.Drawing.Point(178, 270);
+            this.label1.Location = new System.Drawing.Point(677, 58);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 40);
+            this.label1.Size = new System.Drawing.Size(97, 34);
             this.label1.TabIndex = 47;
             this.label1.Text = "Home";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -298,11 +305,11 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label2.Location = new System.Drawing.Point(216, 229);
+            this.label2.Location = new System.Drawing.Point(704, 92);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 40);
+            this.label2.Size = new System.Drawing.Size(70, 34);
             this.label2.TabIndex = 48;
             this.label2.Text = "Cell";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -311,11 +318,11 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label3.Location = new System.Drawing.Point(135, 188);
+            this.label3.Location = new System.Drawing.Point(639, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(158, 40);
+            this.label3.Size = new System.Drawing.Size(135, 34);
             this.label3.TabIndex = 49;
             this.label3.Text = "Birthday";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -324,11 +331,11 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label4.Location = new System.Drawing.Point(185, 147);
+            this.label4.Location = new System.Drawing.Point(60, 124);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(108, 40);
+            this.label4.Size = new System.Drawing.Size(95, 34);
             this.label4.TabIndex = 46;
             this.label4.Text = "Email";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -337,11 +344,11 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label5.Location = new System.Drawing.Point(208, 106);
+            this.label5.Location = new System.Drawing.Point(81, 90);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 40);
+            this.label5.Size = new System.Drawing.Size(74, 34);
             this.label5.TabIndex = 45;
             this.label5.Text = "Last";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -350,11 +357,11 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label6.Location = new System.Drawing.Point(140, 65);
+            this.label6.Location = new System.Drawing.Point(25, 56);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(153, 40);
+            this.label6.Size = new System.Drawing.Size(130, 34);
             this.label6.TabIndex = 44;
             this.label6.Text = "Goes by";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -363,11 +370,11 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label7.Location = new System.Drawing.Point(203, 24);
+            this.label7.Location = new System.Drawing.Point(77, 22);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 40);
+            this.label7.Size = new System.Drawing.Size(78, 34);
             this.label7.TabIndex = 43;
             this.label7.Text = "First";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -392,11 +399,11 @@
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label8.Location = new System.Drawing.Point(146, 310);
+            this.label8.Location = new System.Drawing.Point(28, 166);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(150, 40);
+            this.label8.Size = new System.Drawing.Size(127, 34);
             this.label8.TabIndex = 52;
             this.label8.Text = "Address";
             this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -404,10 +411,10 @@
             // addr
             // 
             this.addr.AutoSize = true;
-            this.addr.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addr.Location = new System.Drawing.Point(302, 310);
+            this.addr.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addr.Location = new System.Drawing.Point(162, 166);
             this.addr.Name = "addr";
-            this.addr.Size = new System.Drawing.Size(117, 40);
+            this.addr.Size = new System.Drawing.Size(102, 34);
             this.addr.TabIndex = 51;
             this.addr.Text = "label1";
             // 
@@ -415,11 +422,11 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label10.Location = new System.Drawing.Point(226, 350);
+            this.label10.Location = new System.Drawing.Point(714, 166);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 40);
+            this.label10.Size = new System.Drawing.Size(60, 34);
             this.label10.TabIndex = 54;
             this.label10.Text = "Zip";
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -427,10 +434,10 @@
             // zip
             // 
             this.zip.AutoSize = true;
-            this.zip.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zip.Location = new System.Drawing.Point(302, 350);
+            this.zip.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.zip.Location = new System.Drawing.Point(781, 166);
             this.zip.Name = "zip";
-            this.zip.Size = new System.Drawing.Size(117, 40);
+            this.zip.Size = new System.Drawing.Size(102, 34);
             this.zip.TabIndex = 53;
             this.zip.Text = "label1";
             // 
@@ -450,9 +457,98 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // allergies
+            // 
+            this.allergies.AutoSize = true;
+            this.allergies.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allergies.Location = new System.Drawing.Point(162, 220);
+            this.allergies.Name = "allergies";
+            this.allergies.Size = new System.Drawing.Size(102, 34);
+            this.allergies.TabIndex = 56;
+            this.allergies.Text = "label1";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label11.Location = new System.Drawing.Point(16, 220);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(139, 34);
+            this.label11.TabIndex = 57;
+            this.label11.Text = "Allergies";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // emfriendlab
+            // 
+            this.emfriendlab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.emfriendlab.AutoSize = true;
+            this.emfriendlab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emfriendlab.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.emfriendlab.Location = new System.Drawing.Point(53, 304);
+            this.emfriendlab.Name = "emfriendlab";
+            this.emfriendlab.Size = new System.Drawing.Size(104, 34);
+            this.emfriendlab.TabIndex = 58;
+            this.emfriendlab.Text = "Friend";
+            this.emfriendlab.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // emphonelab
+            // 
+            this.emphonelab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.emphonelab.AutoSize = true;
+            this.emphonelab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emphonelab.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.emphonelab.Location = new System.Drawing.Point(53, 338);
+            this.emphonelab.Name = "emphonelab";
+            this.emphonelab.Size = new System.Drawing.Size(102, 34);
+            this.emphonelab.TabIndex = 59;
+            this.emphonelab.Text = "Phone";
+            this.emphonelab.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // EmFriend
+            // 
+            this.EmFriend.AutoSize = true;
+            this.EmFriend.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EmFriend.Location = new System.Drawing.Point(162, 304);
+            this.EmFriend.Name = "EmFriend";
+            this.EmFriend.Size = new System.Drawing.Size(102, 34);
+            this.EmFriend.TabIndex = 60;
+            this.EmFriend.Text = "label1";
+            // 
+            // EmPhone
+            // 
+            this.EmPhone.AutoSize = true;
+            this.EmPhone.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EmPhone.Location = new System.Drawing.Point(162, 338);
+            this.EmPhone.Name = "EmPhone";
+            this.EmPhone.Size = new System.Drawing.Size(102, 34);
+            this.EmPhone.TabIndex = 61;
+            this.EmPhone.Text = "label1";
+            // 
+            // emergencylab
+            // 
+            this.emergencylab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.emergencylab.AutoSize = true;
+            this.emergencylab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emergencylab.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.emergencylab.Location = new System.Drawing.Point(3, 270);
+            this.emergencylab.Name = "emergencylab";
+            this.emergencylab.Size = new System.Drawing.Size(173, 34);
+            this.emergencylab.TabIndex = 62;
+            this.emergencylab.Text = "Emergency";
+            this.emergencylab.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // EnterGenderMarital
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.emergencylab);
+            this.Controls.Add(this.EmPhone);
+            this.Controls.Add(this.EmFriend);
+            this.Controls.Add(this.emphonelab);
+            this.Controls.Add(this.emfriendlab);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.allergies);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.zip);
@@ -520,5 +616,12 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label zip;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label allergies;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label emfriendlab;
+        private System.Windows.Forms.Label emphonelab;
+        private System.Windows.Forms.Label EmFriend;
+        private System.Windows.Forms.Label EmPhone;
+        private System.Windows.Forms.Label emergencylab;
     }
 }

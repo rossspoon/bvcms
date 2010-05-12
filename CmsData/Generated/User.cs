@@ -86,6 +86,8 @@ namespace CmsData
 		
    		private EntitySet< BlogPost> _BlogPosts;
 		
+   		private EntitySet< Coupon> _Coupons;
+		
    		private EntitySet< Forum> _Forums;
 		
    		private EntitySet< ForumEntry> _ForumEntries;
@@ -225,6 +227,8 @@ namespace CmsData
 			this._BlogNotifications = new EntitySet< BlogNotify>(new Action< BlogNotify>(this.attach_BlogNotifications), new Action< BlogNotify>(this.detach_BlogNotifications)); 
 			
 			this._BlogPosts = new EntitySet< BlogPost>(new Action< BlogPost>(this.attach_BlogPosts), new Action< BlogPost>(this.detach_BlogPosts)); 
+			
+			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
 			this._Forums = new EntitySet< Forum>(new Action< Forum>(this.attach_Forums), new Action< Forum>(this.detach_Forums)); 
 			
@@ -948,6 +952,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_Coupons_Users", Storage="_Coupons", OtherKey="UserId")]
+   		public EntitySet< Coupon> Coupons
+   		{
+   		    get { return this._Coupons; }
+
+			set	{ this._Coupons.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Forum_Users", Storage="_Forums", OtherKey="CreatedBy")]
    		public EntitySet< Forum> Forums
    		{
@@ -1233,6 +1247,19 @@ namespace CmsData
 		}
 
 		private void detach_BlogPosts(BlogPost entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_Coupons(Coupon entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;

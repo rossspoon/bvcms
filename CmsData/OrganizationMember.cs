@@ -157,9 +157,16 @@ namespace CmsData
                 DbUtil.Db.MemberTags.InsertOnSubmit(mt);
                 DbUtil.Db.SubmitChanges();
             }
-            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id);
+            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => 
+                t.PeopleId == PeopleId 
+                && t.MemberTagId == mt.Id
+                && t.OrgId == OrganizationId);
             if (omt == null)
-                mt.OrgMemMemTags.Add(new OrgMemMemTag { PeopleId = PeopleId, OrgId = OrganizationId });
+                mt.OrgMemMemTags.Add(new OrgMemMemTag 
+                { 
+                    PeopleId = PeopleId, 
+                    OrgId = OrganizationId 
+                });
             DbUtil.Db.SubmitChanges();
         }
         public void RemoveFromGroup(string name)
@@ -167,7 +174,7 @@ namespace CmsData
             var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
             if (mt == null)
                 return;
-            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id);
+            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id && t.OrgId == OrganizationId);
             if (omt != null)
             {
                 OrgMemMemTags.Remove(omt);

@@ -60,13 +60,16 @@
         var w = 650;
         var h = 550;
         var padding = 30;
+        var title;
         var src = this.href;
         if (this.id == 'currMembersUpdate')
             src += '?sg=' + $("#smallgroupid").val();
-        else if (this.id == 'groupMembersUpdate')
+        else if (this.id == 'groupMembersUpdate') {
             src += '?groupid=' + $("#groupid").val();
+            title = "Update members of: " + $('#groupid :selected').text();
+        }
         $('<iframe id="memberDialog" src="' + src + '" />').dialog({
-            title: this.title || 'Edit Member Dialog',
+            title: this.title || title || 'Edit Member Dialog',
             bgiframe: true,
             autoOpen: true,
             width: w,

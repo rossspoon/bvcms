@@ -76,6 +76,7 @@
             this.bdash = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.bsharp = new System.Windows.Forms.Button();
+            this.bcomma = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -240,10 +241,10 @@
             // 
             this.label2.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label2.Location = new System.Drawing.Point(55, 29);
+            this.label2.Location = new System.Drawing.Point(64, 29);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(503, 73);
+            this.label2.Size = new System.Drawing.Size(763, 73);
             this.label2.TabIndex = 34;
             this.label2.Text = "label";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -488,7 +489,7 @@
             this.bat.BackColor = System.Drawing.SystemColors.ControlLight;
             this.bat.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bat.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bat.Location = new System.Drawing.Point(635, 550);
+            this.bat.Location = new System.Drawing.Point(527, 643);
             this.bat.Margin = new System.Windows.Forms.Padding(4);
             this.bat.Name = "bat";
             this.bat.Size = new System.Drawing.Size(100, 85);
@@ -502,7 +503,7 @@
             this.bdot.BackColor = System.Drawing.SystemColors.ControlLight;
             this.bdot.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bdot.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bdot.Location = new System.Drawing.Point(743, 550);
+            this.bdot.Location = new System.Drawing.Point(635, 550);
             this.bdot.Margin = new System.Windows.Forms.Padding(4);
             this.bdot.Name = "bdot";
             this.bdot.Size = new System.Drawing.Size(100, 85);
@@ -662,7 +663,7 @@
             this.b_.BackColor = System.Drawing.SystemColors.ControlLight;
             this.b_.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.b_.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.b_.Location = new System.Drawing.Point(635, 643);
+            this.b_.Location = new System.Drawing.Point(743, 643);
             this.b_.Margin = new System.Windows.Forms.Padding(4);
             this.b_.Name = "b_";
             this.b_.Size = new System.Drawing.Size(100, 85);
@@ -675,7 +676,7 @@
             this.bdash.BackColor = System.Drawing.SystemColors.ControlLight;
             this.bdash.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bdash.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bdash.Location = new System.Drawing.Point(743, 643);
+            this.bdash.Location = new System.Drawing.Point(743, 550);
             this.bdash.Margin = new System.Windows.Forms.Padding(4);
             this.bdash.Name = "bdash";
             this.bdash.Size = new System.Drawing.Size(100, 85);
@@ -703,7 +704,7 @@
             this.bsharp.BackColor = System.Drawing.SystemColors.ControlLight;
             this.bsharp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bsharp.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bsharp.Location = new System.Drawing.Point(527, 550);
+            this.bsharp.Location = new System.Drawing.Point(635, 643);
             this.bsharp.Margin = new System.Windows.Forms.Padding(4);
             this.bsharp.Name = "bsharp";
             this.bsharp.Size = new System.Drawing.Size(100, 85);
@@ -712,9 +713,24 @@
             this.bsharp.UseVisualStyleBackColor = false;
             this.bsharp.Click += new System.EventHandler(this.bsharp_Click);
             // 
+            // bcomma
+            // 
+            this.bcomma.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.bcomma.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bcomma.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bcomma.Location = new System.Drawing.Point(527, 550);
+            this.bcomma.Margin = new System.Windows.Forms.Padding(4);
+            this.bcomma.Name = "bcomma";
+            this.bcomma.Size = new System.Drawing.Size(100, 85);
+            this.bcomma.TabIndex = 70;
+            this.bcomma.Text = ",";
+            this.bcomma.UseVisualStyleBackColor = false;
+            this.bcomma.Click += new System.EventHandler(this.bcomma_Click);
+            // 
             // EnterText
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.bcomma);
             this.Controls.Add(this.bsharp);
             this.Controls.Add(this.clear);
             this.Controls.Add(this.bdash);
@@ -823,5 +839,6 @@
         private System.Windows.Forms.Button bdash;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.Button bsharp;
+        private System.Windows.Forms.Button bcomma;
     }
 }

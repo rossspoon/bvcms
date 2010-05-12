@@ -6,6 +6,8 @@ using System.Web;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
+using System.Data.Linq.SqlClient;
+
 
 namespace CMSWeb.Models
 {
@@ -21,13 +23,16 @@ namespace CMSWeb.Models
                      where f.HeadOfHousehold.DeceasedDate == null
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.People.Any(p => p.CellPhoneLU.StartsWith(p7))
+                     let flock = f.FamilyCheckinLocks
+                        .SingleOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 120)
                      orderby f.FamilyId
                      select new FamilyInfo
                      {
                          FamilyId = f.FamilyId,
                          AreaCode = f.HomePhoneAC,
                          Name = f.HeadOfHousehold.Name,
-                         Phone = id
+                         Phone = id,
+                         Locked = flock == null ? false : flock.Locked,
                      };
             var matches = q1.ToList();
             if (matches.Count > 1)

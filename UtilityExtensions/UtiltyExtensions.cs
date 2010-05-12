@@ -32,7 +32,7 @@ namespace UtilityExtensions
         }
         public static T QueryString<T>(this System.Web.HttpRequest req, string param)
         {
-            if (req.QueryString[param].IsNotNull())
+            if (req.QueryString[param].HasValue())
                 return (T)req.QueryString[param].ChangeType(typeof(T));
             return default(T);
         }
@@ -192,7 +192,17 @@ namespace UtilityExtensions
         }
         public static string FormatDateTm(this DateTime dt)
         {
-            return dt.ToString("M/d/yy H:mm");
+            return dt.ToString("M/d/yy h:mm");
+        }
+        public static string FormatDateTm(this DateTime? dt)
+        {
+            return dt.FormatDateTm(null);
+        }
+        public static string FormatDateTm(this DateTime? dt, string def)
+        {
+            if (dt.HasValue)
+                return dt.ToString2("M/d/yy h:mm");
+            return def;
         }
         public static string ToString2(this decimal? d, string fmt)
         {

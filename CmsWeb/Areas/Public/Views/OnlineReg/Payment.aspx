@@ -2,7 +2,7 @@
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
 	<title>Complete Registration Payment</title>
-	<style>
+	<style type="text/css">
 div.terms {
    width:600px;
    height:200px;
@@ -15,7 +15,16 @@ div.terms p,
 div.terms li {font:normal 11px/15px arial;color:#333;}
 div.terms h3 {font:bold 14px/19px arial;color:#000;}
 div.terms h4 {font:bold 12px/17px arial;color:#000;}
-div.terms strong {color:#000;}	</style>
+div.terms strong {color:#000;}	
+a.submitbutton,a.button {
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
+</style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -24,46 +33,53 @@ div.terms strong {color:#000;}	</style>
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
-                window.location.href = '<%=ViewData["URL"] %>';
+                window.location.href = '<%=Model._URL %>';
             });
-            var tmout = parseInt('<%=ViewData["timeout"] %>');
+            var tmout = parseInt('<%=Model._timeout %>');
 
-            $(document).bind("keydown", function() {
-                $(document).unbind("keydown");
-                $.idleTimer(tmout);
+            $("a.submitbutton").click(function() {
+                var f = $(this).closest('form');
+                var q = f.serialize();
+                $.post(this.href, q, function(ret) {
+                    if (ret.error) {
+                        $('#validatecoupon').text(ret.error);
+                    }
+                    else {
+                        window.location = ret.confirm;
+                    }
+                }, "json");
+                return false;
             });
             $.idleTimer(tmout);
         });
     </script>
     <script type="text/javascript">
         $(function() {
-            if ($('#IAgree').attr("id"))
+            if ($('#IAgree').attr("id")) {
                 $("#Submit").attr("disabled", "disabled");
+                $("a.submitbutton").attr("disabled", "disabled");
+            }
             $("#IAgree").click(function() {
                 var checked_status = this.checked;
-                if (checked_status == true)
+                if (checked_status == true) {
                     $("#Submit").removeAttr("disabled");
-                else
+                    $("a.submitbutton").removeAttr("disabled");
+                }
+                else {
                     $("#Submit").attr("disabled", "disabled");
+                    $("a.submitbutton").attr("disabled", "disabled");
+                }
             });
         });
     </script>
 
     <h2>Payment Processing</h2>
-<%--<div class="terms"></div>--%>
 <% if(Model.Terms.HasValue())
    { %>
 <%=Model.Terms %>
 <p><%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.</p>
 <% } %>
-<%--    <form action="<%=Model.PostbackURL %>" method="post">
-    <%=Html.Hidden("PostbackURL") %>
-    <p>If you have a coupon, please enter that number here:
-    <%=Html.TextBox("Coupon") %> 
-    <%=Html.SubmitButton("Submit", "Pay with Coupon") %>
-    </p>
-    </form>
---%>    
+
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID") %>
     <%=Html.Hidden("OrgAccountID") %>
@@ -80,17 +96,26 @@ div.terms strong {color:#000;}	</style>
     <%=Html.Hidden("Misc2") %>
     <%=Html.Hidden("Misc3") %>
     <%=Html.Hidden("Misc4") %>
+    <%=Html.Hidden("_datumid") %>
+    <%=Html.Hidden("_timeout") %>
+    <%=Html.Hidden("_URL") %>
+    <%=Html.Hidden("_confirm") %>
+
 <% if (Model.Terms.HasValue())
    { %>
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 <% } %>
     <p>
-        When you click the Next button will be redirected to ServiceU.com to process your credit card payment of <%=Model.Amount.ToString("C") %>.
+        When you click the 'Pay with Credit Card' button you will be redirected to ServiceU.com to process your payment of <%=Model.Amount.ToString("C") %>.
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
+    <%=Html.TextBox("_Coupon") %>
+    <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>
+    <span style="color:Red" id="validatecoupon"></span>
     </form>
 
 </asp:Content>

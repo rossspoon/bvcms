@@ -38,7 +38,7 @@ namespace CMSWeb.Areas.Main.Controllers
             Util.CurrentOrgId = m.org.OrganizationId;
             ViewData["OrganizationContext"] = true;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-            ViewData["queryid"] = qb.QueryId;
+            InitExportToolbar(id.Value, qb.QueryId);
             Session["ActiveOrganization"] = m.org.OrganizationName;
             return View(m);
         }
@@ -118,33 +118,38 @@ namespace CMSWeb.Areas.Main.Controllers
         }
         [AcceptVerbs(HttpVerbs.Post)]
 
+        private void InitExportToolbar(int oid, int qid)
+        {
+            Util.CurrentOrgId = oid;
+            ViewData["queryid"] = qid;
+            ViewData["TagAction"] = "/Organization/TagAll/{0}?m=tag".Fmt(qid);
+            ViewData["UnTagAction"] = "/Organization/TagAll/{0}?m=untag".Fmt(qid);
+            ViewData["OrganizationContext"] = true;
+        }
+
         public ActionResult CurrMemberGrid(int id, int smallgroupid)
         {
-            var m = new MemberModel(id, smallgroupid, MemberModel.GroupSelect.Active);
-            Util.CurrentOrgId = id;
             Util.CurrentGroupId = smallgroupid;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-            ViewData["queryid"] = qb.QueryId;
-            ViewData["OrganizationContext"] = true;
+            InitExportToolbar(id, qb.QueryId);
+            var m = new MemberModel(id, smallgroupid, MemberModel.GroupSelect.Active);
             UpdateModel(m.Pager);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PrevMemberGrid(int id)
         {
-            var m = new PrevMemberModel(id);
-            Util.CurrentOrgId = id;
             var qb = DbUtil.Db.QueryBuilderPreviousCurrentOrg();
-            ViewData["queryid"] = qb.QueryId;
+            InitExportToolbar(id, qb.QueryId);
+            var m = new PrevMemberModel(id);
             UpdateModel(m.Pager);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult VisitorGrid(int id)
         {
-            Util.CurrentOrgId = id;
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
-            ViewData["queryid"] = qb.QueryId;
+            InitExportToolbar(id, qb.QueryId);
             var m = new VisitorModel(id, qb.QueryId);
             UpdateModel(m.Pager);
             return View("VisitorGrid", m);
@@ -152,6 +157,8 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PendingMemberGrid(int id)
         {
+            var qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
+            InitExportToolbar(id, qb.QueryId);
             var m = new MemberModel(id, 0, MemberModel.GroupSelect.Pending);
             UpdateModel(m.Pager);
             return View(m);
@@ -159,6 +166,8 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult InactiveMemberGrid(int id)
         {
+            var qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
+            InitExportToolbar(id, qb.QueryId);
             var m = new MemberModel(id, 0, MemberModel.GroupSelect.Inactive);
             UpdateModel(m.Pager);
             return View(m);
@@ -250,7 +259,7 @@ namespace CMSWeb.Areas.Main.Controllers
             return View("ManageGroups", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteGroup(int id, string GroupName, int groupid)
+        public ActionResult DeleteGroup(int id, string GroupName, int? groupid)
         {
             var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Id == groupid);
             if (group != null)
@@ -306,6 +315,23 @@ namespace CMSWeb.Areas.Main.Controllers
             var t = Person.ToggleTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Content(t ? "Remove" : "Add");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult TagAll(int id, string m)
+        {
+            DbUtil.Db.SetNoLock();
+            var Qb = DbUtil.Db.LoadQueryById(id);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            switch (m)
+            {
+                case "tag":
+                    DbUtil.Db.TagAll(q);
+                    return Content("Remove");
+                case "untag":
+                    DbUtil.Db.UnTagAll(q);
+                    return Content("Add");
+            }
+            return Content("?");
         }
     }
 }

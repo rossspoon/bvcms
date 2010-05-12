@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace CmsCheckin
 {
@@ -123,8 +124,10 @@ namespace CmsCheckin
             textBox1.Focus();
             textBox1.Select(textBox1.Text.Length, 0);
         }
+        private PleaseWait PleaseWaitForm;
         private void Go()
         {
+
             if (textBox1.Text == "010")
                 Application.Exit();
             if (textBox1.Text == "411")
@@ -133,19 +136,46 @@ namespace CmsCheckin
                 Print.MemberList(textBox1.Text.Substring(1));
             else
             {
-                var x = this.GetDocument("Checkin/Match/" + textBox1.Text.GetDigits() + Program.QueryString + "&page=1");
-                if (x.Document.Root.Name == "Families")
-                {
-                    this.Swap(Program.families);
-                    Program.families.ShowFamilies(x);
-                }
+                PleaseWaitForm = new PleaseWait();
+                PleaseWaitForm.Show();
+                buttongo.Enabled = false;
+                var bw = new BackgroundWorker();
+                bw.DoWork += backgroundWorker1_DoWork;
+                bw.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+                bw.RunWorkerAsync(textBox1.Text);
+            }
+            textBox1.Text = string.Empty;
+        }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var ph = e.Argument as string;
+            var x = this.GetDocument("Checkin/Match/" + ph.GetDigits() + Program.QueryString + "&page=1");
+            e.Result = x;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            PleaseWaitForm.Hide();
+            PleaseWaitForm.Dispose();
+            PleaseWaitForm = null;
+            buttongo.Enabled = true;
+            var x = e.Result as XDocument;
+            if (x.Document.Root.Name == "Families")
+            {
+                this.Swap(Program.families);
+                Program.families.ShowFamilies(x);
+            }
+            else
+            {
+                var locked = bool.Parse(x.Document.Root.Attribute("waslocked").Value);
+                if (locked)
+                    MessageBox.Show("Family is already being viewed");
                 else
                 {
                     this.Swap(Program.family);
                     Program.family.ShowFamily(x);
                 }
             }
-            textBox1.Text = string.Empty;
         }
 
         private void button13_Click(object sender, EventArgs e)

@@ -644,7 +644,7 @@ namespace CMSPresenter
         }
         public FundTotalInfo FundTotal;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<FundTotalInfo> TotalsByFund(DateTime dt1, DateTime dt2, bool Pledges)
+        public IEnumerable<FundTotalInfo> TotalsByFund(DateTime dt1, DateTime dt2, bool Pledges, int CampusId)
         {
             var contributionTypes = new int[] 
             { 
@@ -658,6 +658,7 @@ namespace CMSPresenter
                     where !contributionTypes.Contains(c.ContributionTypeId)
                     where c.PledgeFlag == Pledges
                     where Pledges || c.PostingDate != null
+                    where CampusId == 0 || c.Person.CampusId == CampusId
                     group c by c.FundId into g
                     orderby g.Key
                     select new FundTotalInfo
@@ -676,7 +677,7 @@ namespace CMSPresenter
         }
         public RangeInfo RangeTotal;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<RangeInfo> TotalsByFundRange(int fundid, DateTime dt1, DateTime dt2, string Pledges)
+        public IEnumerable<RangeInfo> TotalsByFundRange(int fundid, DateTime dt1, DateTime dt2, string Pledges, int CampusId)
         {
             var contributionTypes = new int[] 
             { 
@@ -688,6 +689,7 @@ namespace CMSPresenter
                      where c.ContributionDate.Value.Date <= dt2
                      where !contributionTypes.Contains(c.ContributionTypeId)
                      where c.FundId == fundid || fundid == 0
+                     where CampusId == 0 || c.Person.CampusId == CampusId
                      select c;
             switch (Pledges)
             {
@@ -743,7 +745,7 @@ namespace CMSPresenter
             return q2;
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<AgeRangeInfo> TotalsByFundAgeRange(int fundid, DateTime dt1, DateTime dt2, string Pledges)
+        public IEnumerable<AgeRangeInfo> TotalsByFundAgeRange(int fundid, DateTime dt1, DateTime dt2, string Pledges, int CampusId)
         {
             var contributionTypes = new int[] 
             { 
@@ -755,6 +757,7 @@ namespace CMSPresenter
                      where c.ContributionDate.Value.Date <= dt2
                      where !contributionTypes.Contains(c.ContributionTypeId)
                      where c.FundId == fundid || fundid == 0
+                     where CampusId == 0 || c.Person.CampusId == CampusId
                      select c;
             switch (Pledges)
             {

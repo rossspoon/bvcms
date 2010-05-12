@@ -46,6 +46,24 @@ namespace CmsCheckin
             InitializeComponent();
             label2.Text = title;
         }
+        public void SetBackNext(UserControl c1, UserControl c2)
+        {
+            this.c1 = c1;
+            this.c2 = c2;
+            if (c1 != null)
+                GoBack += new EventHandler(EnterPhone_GoBack);
+            if (c2 != null)
+                GoNext += new EventHandler(EnterPhone_GoNext);
+        }
+        private UserControl c1, c2;
+        void EnterPhone_GoBack(object sender, EventArgs e)
+        {
+            this.Swap(c1);
+        }
+        void EnterPhone_GoNext(object sender, EventArgs e)
+        {
+            this.Swap(c2);
+        }
         void buttonclick(object sender, EventArgs e)
         {
             Program.TimerStop();

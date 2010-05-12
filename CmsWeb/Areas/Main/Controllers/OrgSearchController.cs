@@ -147,7 +147,6 @@ namespace CMSWeb.Areas.Main.Controllers
                 toorg.AskEmContact = frorg.AskEmContact;
                 toorg.AskGrade = frorg.AskGrade;
                 toorg.AskInsurance = frorg.AskInsurance;
-                toorg.AskMedical = frorg.AskMedical;
                 toorg.AskOptions = frorg.AskOptions;
                 toorg.AskParents = frorg.AskParents;
                 toorg.AskRequest = frorg.AskRequest;

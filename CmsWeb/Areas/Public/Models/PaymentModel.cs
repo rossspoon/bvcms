@@ -49,6 +49,10 @@ namespace CMSWeb.Models
         public string Misc2 { get; set; }
         public string Misc3 { get; set; }
         public string Misc4 { get; set; }
-
+        public string _URL { get; set; }
+        public string _Coupon { get; set; }
+        public int _timeout { get; set; }
+        public int _datumid { get; set; }
+        public string _confirm { get; set; }
     }
 }
