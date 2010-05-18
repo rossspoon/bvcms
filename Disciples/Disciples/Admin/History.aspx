@@ -7,24 +7,20 @@
         DataSourceID="LinqDataSource1">
         <PagerSettings Position="TopAndBottom" />
     <Columns>
-        <asp:TemplateField HeaderText="Name" SortExpression="Name">
-            <ItemTemplate>
-                <asp:Label ID="Label1" runat="server" Text='<%# Eval("FirstName") + " " + Eval("LastName") %>'></asp:Label>
-            </ItemTemplate>
-        </asp:TemplateField>
-        <asp:BoundField DataField="PageUrl" HeaderText="PageUrl" ReadOnly="True" 
-            SortExpression="PageUrl" />
+        <asp:BoundField DataField="Name2" HeaderText="Name" 
+            SortExpression="Name2" ReadOnly="True" />
+        <asp:BoundField DataField="PageUrl" HeaderText="PageUrl" 
+            SortExpression="PageUrl" ReadOnly="True" />
         <asp:BoundField DataField="PageTitle" HeaderText="PageTitle" ReadOnly="True" 
             SortExpression="PageTitle" />
-        <asp:BoundField DataField="VisitTime" HeaderText="VisitTime" 
-            ReadOnly="True" SortExpression="VisitTime" />
+        <asp:BoundField DataField="VisitTime" HeaderText="VisitTime" ReadOnly="True" 
+            SortExpression="VisitTime" />
     </Columns>
         <AlternatingRowStyle BackColor="#CCFFCC" />
     </asp:GridView>
-<asp:LinqDataSource ID="LinqDataSource1" runat="server" 
-    ContextTypeName="CmsData.DiscDataContext" EnableViewState="False" OrderBy="VisitTime desc" 
-    Select="new (FirstName, LastName, PageTitle, CreatedOn, PageUrl, VisitTime)" 
-    StoreOriginalValuesInViewState="False" TableName="ViewViewPageVisits">
-</asp:LinqDataSource>
+    <asp:LinqDataSource ID="LinqDataSource1" runat="server" 
+        ContextTypeName="CmsData.CMSDataContext" OrderBy="VisitTime desc" 
+        Select="new (User.Name2, PageUrl, PageTitle, VisitTime)" TableName="PageVisits">
+    </asp:LinqDataSource>
 </asp:Content>
 

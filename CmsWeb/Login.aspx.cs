@@ -75,15 +75,16 @@ By logging in below, you agree that you understand this purpose and will abide b
         {
             if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
-                NotifyAdmins("user loggedin without a role on " + Util.Host,
-                    string.Format("{0} visited site at {1} but does not have Staff role",
-                        name, Util.Now));
+                if (name.HasValue())
+                    NotifyAdmins("user loggedin without a role on " + Util.Host,
+                        string.Format("{0} visited site at {1} but does not have Staff role",
+                            name, Util.Now));
                 FormsAuthentication.SignOut();
                 HttpContext.Current.Response.Redirect("Errors/AccessDenied.htm");
             }
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
             {
-                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, 
+                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name,
                     HttpContext.Current.Request.UserHostAddress));
                 HttpContext.Current.Response.Redirect("NoRemoteAccess.htm");
             }
@@ -104,8 +105,8 @@ By logging in below, you agree that you understand this purpose and will abide b
                 if (Login1.Password == DbUtil.Settings("ImpersonatePassword", null))
                 {
                     e.Authenticated = true;
-                    Notify(WebConfigurationManager.AppSettings["senderrorsto"], 
-                        "{0} is being impersonated".Fmt(Login1.UserName), 
+                    Notify(WebConfigurationManager.AppSettings["senderrorsto"],
+                        "{0} is being impersonated".Fmt(Login1.UserName),
                         Util.Now.ToString());
                 }
                 else

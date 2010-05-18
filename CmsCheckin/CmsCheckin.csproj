@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnterNumber.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterNumber.Designer.cs">
+      <DependentUpon>EnterNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="EnterGenderMarital.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -139,6 +145,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EnterNumber.resx">
+      <DependentUpon>EnterNumber.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnterGenderMarital.resx">
       <DependentUpon>EnterGenderMarital.cs</DependentUpon>
     </EmbeddedResource>
@@ -187,7 +196,16 @@
     <None Include="app.config" />
     <None Include="CmsCheckin_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\Match.datasource" />
+    <None Include="Settings1.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
     <Compile Include="PrintRawHelper.cs" />
+    <Compile Include="Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings1.settings</DependentUpon>
+    </Compile>
     <Compile Include="StartUp.cs">
       <SubType>Form</SubType>
     </Compile>

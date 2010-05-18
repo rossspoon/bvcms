@@ -14,15 +14,17 @@ namespace CMSWeb.Models
         private int thisday;
         private int campusid;
         private int page;
+        private bool? kioskmode;
         Person p;
         public bool noagecheck { get; set; }
-        public ClassesResult(Person p, int thisday, int campusid, int page, bool noagecheck)
+        public ClassesResult(bool? kioskmode, Person p, int thisday, int campusid, int page, bool noagecheck)
         {
             this.thisday = thisday;
             this.campusid = campusid;
             this.p = p;
             this.page = page;
             this.noagecheck = noagecheck;
+            this.kioskmode = kioskmode;
         }
         public override void ExecuteResult(ControllerContext context)
         {
@@ -35,7 +37,23 @@ namespace CMSWeb.Models
                 w.WriteAttributeString("pid", p.PeopleId.ToString());
                 w.WriteAttributeString("fid", p.FamilyId.ToString());
                 var bd = p.BirthDate;
-                var q = from o in DbUtil.Db.Organizations
+                var grade = p.Grade;
+                var q = DbUtil.Db.Organizations.AsQueryable();
+                if (kioskmode == true)
+                    q = from o in q
+                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                        where bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                        where bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                        where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
+                        where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
+                        where o.AllowKioskRegister == true
+                        where (o.ClassFilled ?? false) == false
+                        where o.CampusId == campusid || campusid == 0
+                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                        orderby bdaystart, o.OrganizationName
+                        select o;
+                else
+                    q = from o in q
                         let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
                         where bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
@@ -73,8 +91,13 @@ namespace CMSWeb.Models
                     var bdays = " [{0:M/d/yy}-{1:M/d/yy}]".Fmt(o.BirthDayStart, o.BirthDayEnd);
                     if (bdays == " [-]")
                         bdays = null;
-                    string display = "{0:hh:mm tt} {1}{2}{3}{4}"
-                        .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays); 
+                    string display = null;
+                    if (kioskmode == true)
+                        display = "{0:hh:mm tt} {1}{2}{3}({4},{5})"
+                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, o.Limit, o.MemberCount);
+                    else
+                        display = "{0:hh:mm tt} {1}{2}{3}{4}"
+                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays);
                     w.WriteAttributeString("display", display);
                     w.WriteEndElement();
                 }

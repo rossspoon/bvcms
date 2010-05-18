@@ -18,7 +18,7 @@ namespace CMSWeb.Models
             var mid = DbUtil.Db.GetTodaysMeetingId(OrgId, thisday);
             if (mid != null)
             {
-                meeting = DbUtil.Db.Meetings.Single(m => m.MeetingId == mid);
+                meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
                 if (meeting != null)
                 {
                     var q = from a in meeting.Attends
@@ -31,6 +31,8 @@ namespace CMSWeb.Models
         }
         public override void ExecuteResult(ControllerContext context)
         {
+            if (meeting == null)
+                return;
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);

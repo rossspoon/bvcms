@@ -22,10 +22,12 @@ namespace Disciples.Admin
             foreach (GridViewRow row in GridView1.Rows)
             {
                 string u = (string)GridView1.DataKeys[row.RowIndex].Value;
-                var user = DbUtil.Db.Users.Single(uu => uu.Username == u);
-                g.SetAdmin(user, ((CheckBox)row.FindControl("cbAdmin")).Checked);
-                g.SetMember(user, ((CheckBox)row.FindControl("cbMember")).Checked);
-                g.SetBlogger(user, ((CheckBox)row.FindControl("cbBlogger")).Checked);
+                foreach(var user in DbUtil.Db.Users.Where(uu => uu.Username == u))
+                {
+                    g.SetAdmin(user, ((CheckBox)row.FindControl("cbAdmin")).Checked);
+                    g.SetMember(user, ((CheckBox)row.FindControl("cbMember")).Checked);
+                    g.SetBlogger(user, ((CheckBox)row.FindControl("cbBlogger")).Checked);
+                }
             }
             DbUtil.Db.SubmitChanges();
             GridView1.DataBind();

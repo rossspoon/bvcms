@@ -35,8 +35,8 @@
     });
     $('a.addmembers').live("click", function(e) {
         e.preventDefault();
-        var w = 650;
-        var h = 500;
+        var w = 700;
+        var h = 600;
         var padding = 30;
         $('<iframe id="memberDialog" src="' + this.href + '" />').dialog({
             title: 'Add Members Dialog',

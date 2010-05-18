@@ -24,9 +24,6 @@
                 <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 
                     Member Export</a></li>
             <li>
-                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=LR' title="Includes LoveRespect info"><img src="/images/Excel.png" />
-                    LoveResp Export</a></li>
-            <li>
                 <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=SML' title="Includes Soulmate Live info"><img src="/images/Excel.png" />
                     Soulmate Export</a></li>
             <li>

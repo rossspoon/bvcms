@@ -88,6 +88,7 @@
     <Compile Include="Generated\FamilyCheckinLock.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\RegistrationType.cs" />
+    <Compile Include="Generated\Views\DiscActivityLog.cs" />
     <Compile Include="MemberRules.cs" />
     <Compile Include="EmailOptOut.cs" />
     <Compile Include="Generated\Address.cs" />

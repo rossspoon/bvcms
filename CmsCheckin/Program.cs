@@ -25,13 +25,14 @@ namespace CmsCheckin
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
             Printer = f.Printer.Text;
-            LeadTime = int.Parse(f.LeadTime.Text);
-            EarlyCheckin = int.Parse(f.EarlyCheckin.Text);
+            AskGrade = f.AskGrade.Checked;
+            LeadTime = int.Parse(f.LeadHours.Text);
+            EarlyCheckin = int.Parse(f.LateMinutes.Text);
             AskEmFriend = f.AskEmFriend.Checked;
-            JoinOrgNotAttend = f.JoinOrgNotAttend.Checked;
+            KioskMode = f.KioskMode.Checked;
+            AskChurch = f.AskChurch.Checked;
 
             f.Dispose();
-
 
             var b = new BaseForm();
 
@@ -50,16 +51,21 @@ namespace CmsCheckin
         public static int ThisDay { get; set; }
         public static int LeadTime { get; set; }
         public static int EarlyCheckin { get; set; }
+        public static int? Grade { get; set; }
         public static bool HideCursor { get; set; }
         public static bool TestMode { get; set; }
         public static bool editing { get; set; }
-        public static bool JoinOrgNotAttend { get; set; }
+        public static bool KioskMode { get; set; }
         public static bool AskEmFriend { get; set; }
+        public static bool AskGrade { get; set; }
+        public static bool AskChurch { get; set; }
+
         public static string QueryString
         {
             get
             {
-                return string.Format("?campus={0}&thisday={1}", CampusId, ThisDay);
+                return string.Format("?campus={0}&thisday={1}&kioskmode={2}", 
+                    CampusId, ThisDay, KioskMode);
             }
         }
         public static int MaxLabels { get; set; }
@@ -74,7 +80,10 @@ namespace CmsCheckin
 
         public static EnterText allergy;
         public static EnterText emfriend;
+        public static EnterNumber grade;
         public static EnterPhone emphone;
+        public static EnterText parent;
+        
         public static EnterText first;
         public static EnterText goesby;
         public static EnterText last;
@@ -94,16 +103,21 @@ namespace CmsCheckin
             addr.textBox1.Text = null;
             zip.textBox1.Text = null;
             dob.textBox1.Text = null;
+            if (AskGrade)
+                grade.textBox1.Text = null;
             allergy.textBox1.Text = null;
-            if (Program.AskEmFriend)
+            if (AskEmFriend)
             {
                 emfriend.textBox1.Text = null;
                 emphone.textBox1.Text = null;
+                parent.textBox1.Text = null;
             }
             cellphone.textBox1.Text = null;
             homephone.textBox1.Text = null;
             gendermarital.Gender = 0;
             gendermarital.Marital = 0;
+            if (AskChurch)
+                gendermarital.ActiveOther.CheckState = CheckState.Indeterminate;
         }
         public static void SetFields(string Last, string Email, string Addr, string Zip, string Home)
         {

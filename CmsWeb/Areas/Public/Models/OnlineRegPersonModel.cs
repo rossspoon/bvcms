@@ -209,7 +209,8 @@ namespace CMSWeb.Models
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
-            email = email.Trim();
+            if (email.HasValue())
+                email = email.Trim();
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (!address.HasValue())
@@ -341,7 +342,7 @@ namespace CMSWeb.Models
                 var q = from o in org.OrgMemberFees.Split(',')
                         let b = o.Split('=')
                         where b.Length > 1
-                        where person.OrganizationMembers.Any(om => om.OrganizationId == b[0].ToInt())
+                        where person != null && person.OrganizationMembers.Any(om => om.OrganizationId.ToString() == b[0])
                         select decimal.Parse(b[1]);
                 if (q.Count() > 0)
                     amt = q.First();

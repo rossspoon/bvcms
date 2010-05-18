@@ -15,7 +15,7 @@ namespace CMSWeb.Areas.Main.Controllers
 {
     public class CheckinController : CmsController
     {
-        public ActionResult Match(string id, int campus, int thisday, int? page)
+        public ActionResult Match(string id, int campus, int thisday, int? page, bool? kioskmode)
         {
             Response.NoCache();
 
@@ -23,15 +23,15 @@ namespace CMSWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(0, campus, thisday, 1, false); // not found
+                return new FamilyResult(kioskmode, 0, campus, thisday, 1, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
+                return new FamilyResult(kioskmode, matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
             return new MultipleResult(matches, page);
         }
-        public ActionResult Family(int id, int campus, int thisday, int? page)
+        public ActionResult Family(int id, int campus, int thisday, int? page, bool? kioskmode)
         {
             Response.NoCache();
-            return new FamilyResult(id, campus, thisday, page.Value, false);
+            return new FamilyResult(kioskmode, id, campus, thisday, page.Value, false);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -41,13 +41,13 @@ namespace CMSWeb.Areas.Main.Controllers
             Response.NoCache();
             return new ClassResult(id, thisday);
         }
-        public ActionResult Classes(int id, int campus, int thisday, int page, bool? noagecheck)
+        public ActionResult Classes(int id, int campus, int thisday, int page, bool? noagecheck, bool? kioskmode)
         {
             var p = DbUtil.Db.LoadPersonById(id);
             if (p == null)
                 return new EmptyResult();
             Response.NoCache();
-            return new ClassesResult(p, thisday, campus, page, noagecheck ?? false);
+            return new ClassesResult(kioskmode, p, thisday, campus, page, noagecheck ?? false);
         }
         public ActionResult NameSearch(string id, int? page)
         {
@@ -81,50 +81,38 @@ namespace CMSWeb.Areas.Main.Controllers
                      };
             return new NameSearchResult(q2.Take(20));
         }
+        public class PersonInfo
+        {
+            public string addr { get; set; }
+            public string zip { get; set; }
+            public string first { get; set; }
+            public string last { get; set; }
+            public string goesby { get; set; }
+            public string dob { get; set; }
+            public string email { get; set; }
+            public string cell { get; set; }
+            public string home { get; set; }
+            public string allergies { get; set; }
+            public string grade { get; set; }
+            public string parent { get; set; }
+            public string emfriend { get; set; }
+            public string emphone { get; set; }
+            public int marital { get; set; }
+            public int gender { get; set; }
+            public int campusid { get; set; }
+            public string activeother { get; set; }
+        }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddPerson(int id,
-            string addr,
-            string zip,
-            string first,
-            string last,
-            string goesby,
-            string dob,
-            string email,
-            string cell,
-            string home,
-            string allergies,
-            int marital,
-            int gender,
-            int campusid)
+        public ActionResult AddPerson(int id, PersonInfo m)
         {
             CmsData.Family f;
             if (id > 0)
-            {
                 f = DbUtil.Db.Families.Single(fam => fam.FamilyId == id);
-                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip.Zip5());
-                f.HomePhone = home.GetDigits();
-                f.AddressLineOne = addr;
-                f.CityName = z != null ? z.City : null;
-                f.StateCode = z != null ? z.State : null;
-                f.ZipCode = zip;
-            }
             else
-            {
-                var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip);
-                f = new CmsData.Family
-                {
-                    HomePhone = home.GetDigits(),
-                    AddressLineOne = addr,
-                    CityName = z != null ? z.City : null,
-                    StateCode = z != null ? z.State : null,
-                    ZipCode = zip,
-                };
-            }
+                f = new CmsData.Family();
 
-            if (goesby != null)
-                goesby = goesby.Trim();
             var position = (int)CmsData.Family.PositionInFamily.Child;
-            if (Util.Age0(dob) >= 18)
+            if (Util.Age0(m.dob) >= 18)
                 if (f.People.Count(per =>
                      per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
                      < 2)
@@ -133,59 +121,60 @@ namespace CMSWeb.Areas.Main.Controllers
                     position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
 
             var p = Person.Add(f, position,
-                null, first.Trim(), goesby, last.Trim(), dob, false, gender,
+                null, m.first, m.goesby, m.last, m.dob, false, m.gender,
                     (int)Person.OriginCode.Visit, null);
-            p.MaritalStatusId = marital;
-            p.FixTitle();
-            p.EmailAddress = email;
-            if (allergies.HasValue())
-                GetRecReg(p).MedicalDescription = allergies;
-            if (campusid > 0)
-                p.CampusId = campusid;
-            p.CellPhone = cell.GetDigits();
-            DbUtil.Db.SubmitChanges();
+
+            UpdatePerson(p, m);
             return Content(f.FamilyId.ToString());
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditPerson(int id,
-            string addr,
-            string zip,
-            string first,
-            string last,
-            string goesby,
-            string dob,
-            string email,
-            string cell,
-            string home,
-            string allergies,
-            int marital,
-            int gender,
-            int campusid)
+        public ActionResult EditPerson(int id, PersonInfo m)
         {
             var p = DbUtil.Db.LoadPersonById(id);
-            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == zip.Zip5());
-            p.Family.HomePhone = home.GetDigits();
-            p.Family.AddressLineOne = addr;
-            p.Family.CityName = z != null ? z.City : null;
-            p.Family.StateCode = z != null ? z.State : null;
-            p.Family.ZipCode = zip;
-            p.NickName = goesby;
-            p.FirstName = first;
-            p.LastName = last;
-            p.DOB = dob;
-            p.EmailAddress = email;
-            p.RecRegs.First().MedicalDescription = allergies;
-            p.CellPhone = cell.GetDigits();
-            p.MaritalStatusId = marital;
-            p.GenderId = gender;
-            if (allergies.HasValue())
-                GetRecReg(p).MedicalDescription = allergies;
-            if (campusid > 0)
-                p.CampusId = campusid;
-            DbUtil.Db.SubmitChanges();
+            UpdatePerson(p, m);
             return Content(p.FamilyId.ToString());
         }
-        RecReg GetRecReg(Person p)
+        string Trim(string s)
+        {
+            if (s.HasValue())
+                return s.Trim();
+            else
+                return s;
+        }
+        private void UpdatePerson(Person p, PersonInfo m)
+        {
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
+            p.Family.HomePhone = m.home.GetDigits();
+            p.Family.AddressLineOne = m.addr;
+            p.Family.CityName = z != null ? z.City : null;
+            p.Family.StateCode = z != null ? z.State : null;
+            p.Family.ZipCode = m.zip;
+
+            p.NickName = Trim(m.goesby);
+            p.FirstName = Trim(m.first);
+            p.LastName = Trim(m.last);
+            p.DOB = m.dob;
+            p.EmailAddress = Trim(m.email);
+            p.CellPhone = m.cell.GetDigits();
+            p.MaritalStatusId = m.marital;
+            p.GenderId = m.gender;
+            if (m.allergies.HasValue())
+                GetRecReg(p).MedicalDescription = m.allergies;
+            if (m.grade.HasValue())
+                p.Grade = m.grade.ToInt2();
+            if (m.parent.HasValue())
+                GetRecReg(p).Mname = m.parent;
+            if (m.emfriend.HasValue())
+                GetRecReg(p).Emcontact = m.emfriend;
+            if (m.emphone.HasValue())
+                GetRecReg(p).Emphone = m.emphone;
+            if (m.campusid > 0)
+                p.CampusId = m.campusid;
+            if (m.activeother.HasValue())
+                GetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
+            DbUtil.Db.SubmitChanges();
+        }
+        private RecReg GetRecReg(Person p)
         {
             var rr = p.RecRegs.SingleOrDefault();
             if (rr == null)
@@ -208,6 +197,15 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var m = new CheckInModel();
             m.RecordAttend(PeopleId, OrgId, Present, thisday);
+            var r = new ContentResult();
+            r.Content = "success";
+            return r;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Membership(int PeopleId, int OrgId, bool Member)
+        {
+            var m = new CheckInModel();
+            m.JoinUnJoinOrg(PeopleId, OrgId, Member);
             var r = new ContentResult();
             r.Content = "success";
             return r;

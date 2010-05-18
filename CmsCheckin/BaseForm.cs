@@ -89,18 +89,34 @@ namespace CmsCheckin
             Program.email.SetBackNext(Program.last, Program.addr);
             Program.addr.SetBackNext(Program.email, Program.zip);
             Program.zip.SetBackNext(Program.addr, Program.dob);
-            Program.dob.SetBackNext(Program.zip, Program.cellphone);
-            Program.cellphone.SetBackNext(Program.dob, Program.homephone);
+
+            if (Program.AskGrade)
+            {
+                Program.grade = new EnterNumber("Grade");
+                ControlsAdd(Program.grade);
+
+                Program.dob.SetBackNext(Program.zip, Program.grade);
+                Program.grade.SetBackNext(Program.dob, Program.cellphone);
+                Program.cellphone.SetBackNext(Program.grade, Program.homephone);
+            }
+            else
+            {
+                Program.dob.SetBackNext(Program.zip, Program.cellphone);
+                Program.cellphone.SetBackNext(Program.dob, Program.homephone);
+            }
 
             if (Program.AskEmFriend)
             {
-                Program.emfriend = new EnterText("Emergency Friend");
-                Controls.Add(Program.emfriend);
+                Program.parent = new EnterText("Parent Name", true);
+                ControlsAdd(Program.parent);
+                Program.emfriend = new EnterText("Emergency Friend", true);
+                ControlsAdd(Program.emfriend);
                 Program.emphone = new EnterPhone("Emergency Phone");
-                Controls.Add(Program.emphone);
+                ControlsAdd(Program.emphone);
 
-                Program.homephone.SetBackNext(Program.cellphone, Program.emfriend);
-                Program.emfriend.SetBackNext(Program.homephone, Program.emphone);
+                Program.homephone.SetBackNext(Program.cellphone, Program.parent);
+                Program.parent.SetBackNext(Program.homephone, Program.emfriend);
+                Program.emfriend.SetBackNext(Program.parent, Program.emphone);
                 Program.emphone.SetBackNext(Program.emfriend, Program.allergy);
                 Program.allergy.SetBackNext(Program.emphone, null);
             }

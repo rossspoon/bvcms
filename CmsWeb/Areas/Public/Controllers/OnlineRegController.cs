@@ -302,10 +302,10 @@ namespace CMSWeb.Areas.Public.Controllers
                 return Json(new { error = "coupon not found" });
             if (m.divid.HasValue)
             {
-                if (c.Divid != m.divid)
+                if (c.DivId != m.divid)
                     return Json(new { error = "coupon div not valid" });
             }
-            else if (m.orgid != c.Orgid)
+            else if (m.orgid != c.OrgId)
                 return Json(new { error = "coupon org not valid" });
             if (DateTime.Now.Subtract(c.Created).TotalHours > 24)
                 return Json(new { error = "coupon expired" });

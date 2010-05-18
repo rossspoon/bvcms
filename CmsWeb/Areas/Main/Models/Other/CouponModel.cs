@@ -61,7 +61,7 @@ namespace CMSWeb.Models
                          Canceled = c.Canceled,
                          Code = c.Id,
                          Created = c.Created,
-                         OrgDivName = c.Orgid != null ? c.Organization.OrganizationName : c.Division.Name,
+                         OrgDivName = c.OrgId != null ? c.Organization.OrganizationName : c.Division.Name,
                          Used = c.Used,
                          PeopleId = c.PeopleId,
                          Name = c.Name,
@@ -105,12 +105,12 @@ namespace CMSWeb.Models
         public List<SelectListItem> Users()
         {
             var q = from c in DbUtil.Db.Coupons
-                    group c by new { c.UserId, c.User.Name } into g
-                    from u in g
+                    where c.UserId != null
+                    group c by c.UserId into g
                     select new SelectListItem
                     {
-                        Value = g.Key.UserId.ToString(),
-                        Text = g.Key.Name,
+                        Value = g.Key.ToString(),
+                        Text = g.First().User.Name,
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
@@ -164,10 +164,10 @@ namespace CMSWeb.Models
                 switch (a[0])
                 {
                     case "org":
-                        c.Orgid = a[1].ToInt();
+                        c.OrgId = a[1].ToInt();
                         break;
                     case "div":
-                        c.Divid = a[1].ToInt();
+                        c.DivId = a[1].ToInt();
                         break;
                 }
             }

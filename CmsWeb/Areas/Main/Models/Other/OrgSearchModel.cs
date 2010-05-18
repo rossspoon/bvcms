@@ -78,17 +78,19 @@ namespace CMSWeb.Models
                      select new
                      {
                          OrgId = o.OrganizationId,
-                         Status = o.OrganizationStatus.Description,
                          Name = o.OrganizationName,
                          Leader = o.LeaderName,
                          Members = o.MemberCount ?? 0,
                          Tracking = o.AttendTrackLevel.Description,
                          Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
-                         Schedule  = "{0:dddd h:mm tt}".Fmt(o.MeetingTime),
+                         Schedule = "{0:dddd h:mm tt}".Fmt(o.MeetingTime),
                          o.Location,
                          o.AgeFee,
                          o.AgeGroups,
+                         Limit = o.Limit.ToString(),
+                         CanSelfCheckin = o.CanSelfCheckin ?? false,
+                         AllowKioskRegister = o.AllowKioskRegister ?? false,
                          AllowLastYearShirt = o.AllowLastYearShirt ?? false,
                          AskAllergies = o.AskAllergies ?? false,
                          AskChurch = o.AskChurch ?? false,
@@ -105,14 +107,12 @@ namespace CMSWeb.Models
                          AskTylenolEtc = o.AskTylenolEtc ?? false,
                          BirthDayStart = o.BirthDayStart.FormatDate2(),
                          BirthDayEnd = o.BirthDayEnd.FormatDate2(),
-                         CanSelfCheckin = o.CanSelfCheckin ?? false,
                          Deposit = o.Deposit ?? 0,
                          Fee = o.Fee ?? 0,
                          GenderId = o.GenderId ?? 0,
                          GradeAgeStart = o.GradeAgeStart ?? 0,
                          GradeAgeEnd = o.GradeAgeEnd ?? 0,
                          o.EmailAddresses,
-                         o.Instructions,
                          LastDayBeforeExtra = o.LastDayBeforeExtra.FormatDate2(),
                          MaximumFee = o.MaximumFee ?? 0,
                          MemberOnly = o.MemberOnly ?? false,
@@ -120,7 +120,6 @@ namespace CMSWeb.Models
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          RegistrationTypeId = o.RegistrationTypeId ?? 0,
                          ShirtFee = o.ShirtFee ?? 0,
-                         o.Terms,
                          o.YesNoQuestions,
                      };
             return q2;
@@ -340,6 +339,7 @@ namespace CMSWeb.Models
         public IEnumerable<SelectListItem> ProgramIds()
         {
             var q = from c in DbUtil.Db.Programs
+                    orderby c.Name
                     select new SelectListItem
                     {
                         Value = c.Id.ToString(),
@@ -357,6 +357,7 @@ namespace CMSWeb.Models
         {
             var q = from d in DbUtil.Db.Divisions
                     where d.ProgId == ProgId
+                    orderby d.Name
                     select new SelectListItem
                     {
                         Value = d.Id.ToString(),

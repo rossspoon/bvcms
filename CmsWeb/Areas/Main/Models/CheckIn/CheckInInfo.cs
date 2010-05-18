@@ -71,6 +71,12 @@ namespace CMSWeb.Models
         public string cell { get; set; }
         public int gender { get; set; }
         public int marital { get; set; }
+        public string allergies { get; set; }
+        public int? grade { get; set; }
+        public string parent { get; set; }
+        public string emfriend { get; set; }
+        public string emphone { get; set; }
+        public bool activeother { get; set; }
     }
     public class FamilyInfo
     {

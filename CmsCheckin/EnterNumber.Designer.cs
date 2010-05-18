@@ -1,6 +1,6 @@
 ﻿namespace CmsCheckin
 {
-    partial class EnterDate
+    partial class EnterNumber
     {
         /// <summary> 
         /// Required designer variable.
@@ -40,11 +40,11 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.bslash = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.GoBackButton = new System.Windows.Forms.Button();
             this.bgo = new System.Windows.Forms.Button();
-            this.Age = new System.Windows.Forms.Label();
+            this.bdot = new System.Windows.Forms.Button();
+            this.bminus = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -202,20 +202,6 @@
             this.button8.Text = "8";
             this.button8.UseVisualStyleBackColor = false;
             // 
-            // bslash
-            // 
-            this.bslash.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.bslash.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.bslash.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bslash.Location = new System.Drawing.Point(719, 221);
-            this.bslash.Margin = new System.Windows.Forms.Padding(4);
-            this.bslash.Name = "bslash";
-            this.bslash.Size = new System.Drawing.Size(132, 84);
-            this.bslash.TabIndex = 32;
-            this.bslash.Text = "/";
-            this.bslash.UseVisualStyleBackColor = false;
-            this.bslash.Click += new System.EventHandler(this.bslash_Click);
-            // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -260,25 +246,42 @@
             this.bgo.UseVisualStyleBackColor = false;
             this.bgo.Click += new System.EventHandler(this.buttongo_Click);
             // 
-            // Age
+            // bdot
             // 
-            this.Age.Font = new System.Drawing.Font("Verdana", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Age.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Age.Location = new System.Drawing.Point(874, 256);
-            this.Age.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.Age.Name = "Age";
-            this.Age.Size = new System.Drawing.Size(125, 49);
-            this.Age.TabIndex = 58;
-            this.Age.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.bdot.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.bdot.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bdot.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bdot.Location = new System.Drawing.Point(565, 495);
+            this.bdot.Margin = new System.Windows.Forms.Padding(4);
+            this.bdot.Name = "bdot";
+            this.bdot.Size = new System.Drawing.Size(132, 84);
+            this.bdot.TabIndex = 32;
+            this.bdot.Text = ".";
+            this.bdot.UseVisualStyleBackColor = false;
+            this.bdot.Click += new System.EventHandler(this.bdot_Click);
             // 
-            // EnterDate
+            // bminus
+            // 
+            this.bminus.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.bminus.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bminus.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bminus.Location = new System.Drawing.Point(719, 221);
+            this.bminus.Margin = new System.Windows.Forms.Padding(4);
+            this.bminus.Name = "bminus";
+            this.bminus.Size = new System.Drawing.Size(132, 84);
+            this.bminus.TabIndex = 59;
+            this.bminus.Text = "-";
+            this.bminus.UseVisualStyleBackColor = false;
+            this.bminus.Click += new System.EventHandler(this.bminus_Click);
+            // 
+            // EnterNumber
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.Controls.Add(this.Age);
+            this.Controls.Add(this.bminus);
             this.Controls.Add(this.bgo);
             this.Controls.Add(this.GoBackButton);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.bslash);
+            this.Controls.Add(this.bdot);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonbs);
@@ -292,7 +295,7 @@
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "EnterDate";
+            this.Name = "EnterNumber";
             this.Size = new System.Drawing.Size(1024, 768);
             this.Load += new System.EventHandler(this.Date_Load);
             this.VisibleChanged += new System.EventHandler(this.EnterText_VisibleChanged);
@@ -314,11 +317,11 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button bslash;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button GoBackButton;
         private System.Windows.Forms.Button bgo;
-        private System.Windows.Forms.Label Age;
+        private System.Windows.Forms.Button bdot;
+        private System.Windows.Forms.Button bminus;
     }
 }

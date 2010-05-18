@@ -52,7 +52,8 @@ namespace CmsCheckin
 
         private void ShowFamilies(int? page)
         {
-            var x = this.GetDocument("Checkin/Match/" + phone.GetDigits() + Program.QueryString + "&page=" + page);
+            var x = this.GetDocument("Checkin/Match/" + phone.GetDigits() 
+                + Program.QueryString + "&page=" + page);
             ShowFamilies(x);
         }
         public void ShowFamilies(XDocument x)

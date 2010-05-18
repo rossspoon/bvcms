@@ -103,6 +103,14 @@ namespace UtilityExtensions
                 return 0;
             return (int)o.ChangeType(typeof(int));
         }
+        public static decimal? ToDecimal(this string s)
+        {
+            decimal? r = null;
+            decimal i;
+            if (decimal.TryParse(s, out i))
+                r = i;
+            return r;
+        }
         public static bool IsNull(this object o)
         {
             return o == null;

@@ -48,6 +48,7 @@ namespace CMSWeb.Models
                 from om in DbUtil.Db.OrganizationMembers
                 let Hour = DbUtil.Db.GetTodaysMeetingHour(om.OrganizationId, thisday)
                 let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
+                let recreg = om.Person.RecRegs.FirstOrDefault()
                 where om.Organization.CanSelfCheckin.Value
                 where om.Organization.CampusId == campus || campus == 0
                 where om.Person.FamilyId == id
@@ -86,6 +87,12 @@ namespace CMSWeb.Models
                     marital = om.Person.MaritalStatusId,
                     gender = om.Person.GenderId,
                     CampusId = om.Person.CampusId,
+                    allergies = recreg.MedicalDescription,
+                    emfriend = recreg.Emcontact,
+                    emphone = recreg.Emphone,
+                    activeother = recreg.ActiveInAnotherChurch ?? false,
+                    parent = recreg.Mname ?? recreg.Fname,
+                    grade = om.Person.Grade,
                 };
 
             // now get recent visitors
@@ -103,6 +110,7 @@ namespace CMSWeb.Models
                 where Hour1 != null
                 group a by new { a.PeopleId, a.OrganizationId } into g
                 let a = g.OrderByDescending(att => att.MeetingDate).First()
+                let recreg = a.Person.RecRegs.FirstOrDefault()
                 select new Attendee
                 {
                     Id = a.PeopleId,
@@ -134,6 +142,12 @@ namespace CMSWeb.Models
                     marital = a.Person.MaritalStatusId,
                     gender = a.Person.GenderId,
                     CampusId = a.Person.CampusId,
+                    allergies = recreg.MedicalDescription,
+                    emfriend = recreg.Emcontact,
+                    emphone = recreg.Emphone,
+                    activeother = recreg.ActiveInAnotherChurch ?? false,
+                    parent = recreg.Mname ?? recreg.Fname,
+                    grade = a.Person.Grade,
                 };
 
             var list = members.ToList();
@@ -164,6 +178,7 @@ namespace CMSWeb.Models
                 where p.DeceasedDate == null
                 where !list.Select(a => a.Id).Contains(p.PeopleId)
                 let oldervisitor = (p.CampusId != campus || campus == 0) && p.Age > 12
+                let recreg = p.RecRegs.FirstOrDefault()
                 select new Attendee
                 {
                     Id = p.PeopleId,
@@ -190,6 +205,112 @@ namespace CMSWeb.Models
                     marital = p.MaritalStatusId,
                     gender = p.GenderId,
                     CampusId = p.CampusId,
+                    allergies = recreg.MedicalDescription,
+                    emfriend = recreg.Emcontact,
+                    emphone = recreg.Emphone,
+                    activeother = recreg.ActiveInAnotherChurch ?? false,
+                    parent = recreg.Mname ?? recreg.Fname,
+                    grade = p.Grade,
+                };
+            list.AddRange(otherfamily.ToList());
+            var list2 = list.OrderBy(a => a.Position)
+                .ThenByDescending(a => a.Position == 10 ? a.Gender : "U")
+                .ThenBy(a => a.Age).ToList();
+            return list2;
+        }
+        public List<Attendee> FamilyMembersKiosk(int id, int campus)
+        {
+            DbUtil.Db.SetNoLock();
+            var now = Util.Now;
+            // get org members first
+            var members =
+                from om in DbUtil.Db.OrganizationMembers
+                where om.Organization.AllowKioskRegister == true
+                where om.Organization.CampusId == campus || campus == 0
+                where om.Person.FamilyId == id
+                where om.Person.DeceasedDate == null
+                let recreg = om.Person.RecRegs.FirstOrDefault()
+                select new Attendee
+                {
+                    Id = om.PeopleId,
+                    Position = om.Person.PositionInFamilyId,
+                    MemberVisitor = "M",
+                    Name = om.Person.Name,
+                    First = om.Person.PreferredName,
+                    Last = om.Person.LastName,
+                    BYear = om.Person.BirthYear,
+                    BMon = om.Person.BirthMonth,
+                    BDay = om.Person.BirthDay,
+                    Class = om.Organization.OrganizationName,
+                    Leader = om.Organization.LeaderName,
+                    OrgId = om.OrganizationId,
+                    Location = om.Organization.Location,
+                    Age = om.Person.Age ?? 0,
+                    Gender = om.Person.Gender.Code,
+                    NumLabels = om.MemberTypeId ==
+                        (int)CmsData.OrganizationMember.MemberTypeCode.Member ?
+                            (om.Organization.NumCheckInLabels ?? 1)
+                            : (om.Organization.NumWorkerCheckInLabels ?? 0),
+                    CheckedIn = true,
+
+                    goesby = om.Person.NickName,
+                    email = om.Person.EmailAddress,
+                    addr = om.Person.Family.AddressLineOne,
+                    zip = om.Person.Family.ZipCode,
+                    home = om.Person.Family.HomePhone,
+                    cell = om.Person.CellPhone,
+                    marital = om.Person.MaritalStatusId,
+                    gender = om.Person.GenderId,
+                    CampusId = om.Person.CampusId,
+                    allergies = recreg.MedicalDescription,
+                    emfriend = recreg.Emcontact,
+                    emphone = recreg.Emphone,
+                    activeother = recreg.ActiveInAnotherChurch ?? false,
+                    parent = recreg.Mname ?? recreg.Fname,
+                    grade = om.Person.Grade,
+                };
+
+            var list = members.ToList();
+
+            // now get rest of family
+            const string PleaseVisit = "No class assigned yet";
+            var otherfamily =
+                from p in DbUtil.Db.People
+                where p.FamilyId == id
+                where p.DeceasedDate == null
+                where !list.Select(a => a.Id).Contains(p.PeopleId)
+                let recreg = p.RecRegs.FirstOrDefault()
+                select new Attendee
+                {
+                    Id = p.PeopleId,
+                    Position = p.PositionInFamilyId,
+                    Name = p.Name,
+                    First = p.PreferredName,
+                    Last = p.LastName,
+                    BYear = p.BirthYear,
+                    BMon = p.BirthMonth,
+                    BDay = p.BirthDay,
+                    Class = PleaseVisit,
+                    OrgId = 0,
+                    Age = p.Age ?? 0,
+                    Gender = p.Gender.Code,
+                    NumLabels = 1,
+
+                    goesby = p.NickName,
+                    email = p.EmailAddress,
+                    addr = p.Family.AddressLineOne,
+                    zip = p.Family.ZipCode,
+                    home = p.Family.HomePhone,
+                    cell = p.CellPhone,
+                    marital = p.MaritalStatusId,
+                    gender = p.GenderId,
+                    CampusId = p.CampusId,
+                    allergies = recreg.MedicalDescription,
+                    emfriend = recreg.Emcontact,
+                    emphone = recreg.Emphone,
+                    activeother = recreg.ActiveInAnotherChurch ?? false,
+                    parent = recreg.Mname ?? recreg.Fname,
+                    grade = p.Grade,
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)
@@ -226,7 +347,7 @@ namespace CMSWeb.Models
                     MeetingDate = info.MeetingTime,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = info.AttendTrkLevelId 
+                    GroupMeetingFlag = info.AttendTrkLevelId
                         == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
                     Location = info.Location,
                 };
@@ -235,6 +356,15 @@ namespace CMSWeb.Models
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
+        }
+        public void JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)
+        {
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
+            if (om == null && Member)
+                OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+            else if (om != null && !Member)
+                om.Drop();
+            DbUtil.Db.SubmitChanges();
         }
     }
 }

@@ -173,5 +173,139 @@ namespace CMSWeb.Areas.Setup.Controllers
 
             return Content("done");
         }
+        public ActionResult BatchUpdateOrg(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var lines = text.Split('\n');
+            var names = lines[0].Split('\t');
+
+            for (var i = 1; i < lines.Length; i++)
+            {
+                var a = lines[i].Split('\t');
+                var oid = a[0].ToInt();
+                var o = DbUtil.Db.LoadOrganizationById(oid);
+                for(var c = 1; c < a.Length; c++)
+                    switch (names[c])
+                    {
+                        case "Name":
+                            o.OrganizationName = a[c];
+                            break;
+                        case "FirstMeeting":
+                            o.FirstMeetingDate = a[c].ToDate();
+                            break;
+                        case "Location":
+                            o.Location = a[c];
+                            break;
+                        case "AgeFee":
+                            o.AgeFee = a[c];
+                            break;
+                        case "AgeGroups":
+                            o.AgeGroups = a[c];
+                            break;
+                        case "CanSelfCheckin":
+                            o.CanSelfCheckin = a[c].ToBool();
+                            break;
+                        case "AllowKioskRegister":
+                            o.AllowKioskRegister = a[c].ToBool();
+                            break;
+                        case "AllowLastYearShirt":
+                            o.AllowLastYearShirt = a[c].ToBool();
+                            break;
+                        case "AskAllergies":
+                            o.AskAllergies = a[c].ToBool();
+                            break;
+                        case "AskChurch":
+                            o.AskChurch = a[c].ToBool();
+                            break;
+                        case "AskCoaching":
+                            o.AskCoaching = a[c].ToBool();
+                            break;
+                        case "AskDoctor":
+                            o.AskDoctor = a[c].ToBool();
+                            break;
+                        case "AskEmContact":
+                            o.AskEmContact = a[c].ToBool();
+                            break;
+                        case "AskGrade":
+                            o.AskGrade = a[c].ToBool();
+                            break;
+                        case "AskInsurance":
+                            o.AskInsurance = a[c].ToBool();
+                            break;
+                        case "AskOptions":
+                            o.AskOptions = a[c];
+                            break;
+                        case "AskParents":
+                            o.AskParents = a[c].ToBool();
+                            break;
+                        case "AskRequest":
+                            o.AskRequest = a[c].ToBool();
+                            break;
+                        case "AskShirtSize":
+                            o.AskShirtSize = a[c].ToBool();
+                            break;
+                        case "AskTickets":
+                            o.AskTickets = a[c].ToBool();
+                            break;
+                        case "AskTylenolEtc":
+                            o.AskTylenolEtc = a[c].ToBool();
+                            break;
+                        case "BirthDayStart":
+                            o.BirthDayStart = a[c].ToDate();
+                            break;
+                        case "":
+                            o.BirthDayEnd = a[c].ToDate();
+                            break;
+                        case "Deposit":
+                            o.Deposit = a[c].ToDecimal();
+                            break;
+                        case "GradeAgeEnd":
+                            o.GradeAgeEnd = a[c].ToInt();
+                            break;
+                        case "Limit":
+                            o.Limit = a[c].ToInt();
+                            break;
+                        case "Fee":
+                            o.Fee = a[c].ToDecimal();
+                            break;
+                        case "GenderId":
+                            o.GenderId = a[c] == "Male" ? (int?)1 : a[c] == "Female" ? (int?)2 : null;
+                            break;
+                        case "GradeAgeStart":
+                            o.GradeAgeStart = a[c].ToInt();
+                            break;
+                        case "EmailAddresses":
+                            o.EmailAddresses = a[c];
+                            break;
+                        case "MaximumFee":
+                            o.MaximumFee = a[c].ToDecimal();
+                            break;
+                        case "MemberOnly":
+                            o.MemberOnly = a[c].ToBool();
+                            break;
+                        case "NumCheckInLabels":
+                            o.NumCheckInLabels = a[c].ToInt();
+                            break;
+                        case "NumWorkerCheckInLabels":
+                            o.NumWorkerCheckInLabels = a[c].ToInt();
+                            break;
+                        case "ShirtFee":
+                            o.ShirtFee = a[c].ToDecimal();
+                            break;
+                        case "YesNoQuestions":
+                            o.YesNoQuestions = a[c];
+                            break;
+                        case "LastDayBeforeExtra":
+                            o.LastDayBeforeExtra = a[c].ToDate();
+                            break;
+                    }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Content("done");
+        }
     }
 }

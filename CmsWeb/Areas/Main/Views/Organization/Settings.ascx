@@ -62,6 +62,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.CanSelfCheckin) %></td>
     </tr>
     <tr>
+        <th>Allow Kiosk Registration:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AllowKioskRegister) %></td>
+    </tr>
+    <tr>
         <th>Allow Non-Campus Check-In:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AllowNonCampusCheckIn) %></td>
     </tr>
@@ -198,7 +202,7 @@
     </tr>
     <tr>
         <th>Link Groups from Orgs:</th>
-        <td><%=Model.org %></td>
+        <td><%=Model.org.LinkGroupsFromOrgs %></td>
     </tr>
     <tr>
         <th>Ask About Allergies:</th>

@@ -102,6 +102,7 @@ namespace CmsCheckin
             string Labels = "Labels";
             var g = this.CreateGraphics();
             Print.Text = "Print Labels, Return";
+            button1.Enabled = true;
             if (x.Descendants("attendee").Count() == 0)
             {
                 var lab = new Label();
@@ -225,8 +226,15 @@ namespace CmsCheckin
                     cell = e.Attribute("cell").Value.FmtFone(),
                     gender = e.Attribute("gender").Value.ToInt(),
                     marital = e.Attribute("marital").Value.ToInt(),
+                    emphone = e.Attribute("emphone").Value.FmtFone(),
+                    emfriend = e.Attribute("emfriend").Value,
+                    allergies = e.Attribute("allergies").Value,
+                    grade = e.Attribute("grade").Value,
+                    activeother = e.Attribute("activeother").Value,
+                    parent = e.Attribute("parent").Value,
 
                     @class = e.Attribute("org").Value,
+                    location = e.Attribute("loc").Value,
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
                     Row = Row,
                     CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
@@ -244,7 +252,7 @@ namespace CmsCheckin
                 ab.BackColor = Color.CornflowerBlue;
                 ab.FlatAppearance.BorderColor = Color.Black;
 
-                double howlate  = -(Program.EarlyCheckin / 60d);
+                double howlate = -(Program.EarlyCheckin / 60d);
                 if (c.cinfo.oid == 0
                     || c.leadtime > Program.LeadTime
                     || c.leadtime < howlate)
@@ -409,23 +417,23 @@ namespace CmsCheckin
                 return;
             Cursor.Current = Cursors.WaitCursor;
             Program.CursorShow();
-            Util.RecordAttendInfo ra = null;
+            var info = new Util.ClassCheckedInfo { c = c.cinfo };
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
                 eb.Text = c.NumLabels.ToString();
-                ra = new Util.RecordAttendInfo { c = c.cinfo, present = true };
+                info.ischecked = true;
             }
             else
             {
                 ab.Text = String.Empty;
                 eb.Text = String.Empty;
-                ra = new Util.RecordAttendInfo { c = c.cinfo, present = false };
+                info.ischecked = false;
             }
             var bw = new BackgroundWorker();
-            bw.DoWork += backgroundWorker1_DoWork;
-            bw.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
-            bw.RunWorkerAsync(ra);
+            bw.DoWork += CheckUnCheckDoWork;
+            bw.RunWorkerCompleted += CheckUncheckCompleted;
+            bw.RunWorkerAsync(info);
         }
 
         void cb_Click(object sender, EventArgs e)
@@ -451,6 +459,20 @@ namespace CmsCheckin
             Program.cellphone.textBox1.Text = c.cell.FmtFone();
             Program.gendermarital.Marital = c.marital;
             Program.gendermarital.Gender = c.gender;
+            if (Program.AskChurch)
+                Program.gendermarital.ActiveOther.CheckState = 
+                    c.activeother == bool.TrueString ? CheckState.Checked : 
+                    c.activeother == bool.FalseString ? CheckState.Unchecked : CheckState.Indeterminate;
+            if (Program.AskGrade)
+                Program.grade.textBox1.Text = c.grade;
+            Program.allergy.textBox1.Text = c.allergies;
+            if (Program.AskEmFriend)
+            {
+                Program.parent.textBox1.Text = c.parent;
+                Program.emfriend.textBox1.Text = c.emfriend;
+                Program.emphone.textBox1.Text = c.emphone.FmtFone();
+            }
+            Util.UnLockFamily();
 
             Program.editing = true;
             this.Swap(Program.first);
@@ -495,20 +517,40 @@ namespace CmsCheckin
                     list.Add(c);
                 }
             }
-            var q = from c in list
-                    group c by new { c.cinfo.pid, c.cinfo.mv } into g
-                    select new LabelInfo
-                    {
-                        pid = g.Key.pid,
-                        mv = g.Key.mv,
-                        n = g.Sum(i => i.NumLabels),
-                        first = g.First().first,
-                        last = g.First().last,
-                    };
-            foreach (var li in q)
-                CmsCheckin.Print.Label(li, time);
-            if (q.Sum(li => li.n) > 0)
-                CmsCheckin.Print.BlankLabel();
+            if (Program.KioskMode)
+            {
+                var q = from c in list
+                        select new LabelInfoKiosk
+                        {
+                            allergies = c.allergies,
+                            n = c.NumLabels,
+                            first = c.first,
+                            last = c.last,
+                            location = c.location,
+                            @class = c.@class,
+                        };
+                foreach (var li in q)
+                    CmsCheckin.Print.LabelKiosk(li);
+                if (q.Sum(li => li.n) > 0)
+                    CmsCheckin.Print.BlankLabel();
+            }
+            else
+            {
+                var q = from c in list
+                        group c by new { c.cinfo.pid, c.cinfo.mv } into g
+                        select new LabelInfo
+                        {
+                            pid = g.Key.pid,
+                            mv = g.Key.mv,
+                            n = g.Sum(i => i.NumLabels),
+                            first = g.First().first,
+                            last = g.First().last,
+                        };
+                foreach (var li in q)
+                    CmsCheckin.Print.Label(li, time);
+                if (q.Sum(li => li.n) > 0)
+                    CmsCheckin.Print.BlankLabel();
+            }
         }
         private void ClearControls()
         {
@@ -537,11 +579,13 @@ namespace CmsCheckin
 
         private void pgup_Click(object sender, EventArgs e)
         {
+            PrintLabels();
             ShowFamily(Program.FamilyId, prev.Value);
         }
 
         private void pgdn_Click(object sender, EventArgs e)
         {
+            PrintLabels();
             ShowFamily(Program.FamilyId, next.Value);
         }
 
@@ -556,13 +600,12 @@ namespace CmsCheckin
             this.Swap(Program.first);
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
         {
-            var ra= e.Argument as Util.RecordAttendInfo;
-            Util.RecordAttend(ra);
+            var info = e.Argument as Util.ClassCheckedInfo;
+            Util.CheckUnCheckClass(info);
         }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Cursor.Current = Cursors.Default;
             Program.CursorHide();
@@ -582,11 +625,18 @@ namespace CmsCheckin
         public string zip { get; set; }
         public string home { get; set; }
         public string cell { get; set; }
+        public string emfriend { get; set; }
+        public string emphone { get; set; }
+        public string allergies { get; set; }
+        public string grade { get; set; }
+        public string activeother { get; set; }
+        public string parent { get; set; }
 
         public int gender { get; set; }
         public int marital { get; set; }
 
         public string @class { get; set; }
+        public string location { get; set; }
         public int NumLabels { get; set; }
         public int Row { get; set; }
         public bool CheckedIn { get; set; }
@@ -598,6 +648,15 @@ namespace CmsCheckin
         public int pid { get; set; }
         public string mv { get; set; }
         public int n { get; set; }
+        public string first { get; set; }
+        public string last { get; set; }
+    }
+    public class LabelInfoKiosk
+    {
+        public int n { get; set; }
+        public string location { get; set; }
+        public string allergies { get; set; }
+        public string @class { get; set; }
         public string first { get; set; }
         public string last { get; set; }
     }

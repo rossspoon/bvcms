@@ -259,9 +259,15 @@ namespace CMSWeb.Models
         {
             foreach (var i in List)
             {
+                if (!i.HasValue())
+                    continue;
                 var a = i.Split('.');
+                if (a.Length != 2)
+                    continue;
                 var pid = a[0].ToInt();
                 var oid = a[1].ToInt();
+                if (oid == TargetId)
+                    continue;
                 var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == oid);
                 var sg = om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToList();
                 var tom = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == pid && m.OrganizationId == TargetId);
@@ -298,7 +304,9 @@ namespace CMSWeb.Models
                      where o.EmailAddresses.Length > 0
                      where o.RegistrationTypeId > 0
                      select o;
-            var onlineorg = q0.First();
+            var onlineorg = q0.FirstOrDefault();
+            if (onlineorg == null)
+                return;
 
             var smtp = new SmtpClient();
             var q = from om in DbUtil.Db.OrganizationMembers

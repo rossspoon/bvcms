@@ -128,6 +128,7 @@ namespace CmsCheckin
                 ab.TextAlign = ContentAlignment.MiddleLeft;
                 ab.UseVisualStyleBackColor = false;
                 ab.Text = e.Attribute("display").Value;
+                ab.Enabled = ab.Tag.ToString().HasValue();
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
                 controls.Add(ab);

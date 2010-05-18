@@ -49,6 +49,9 @@
             }).superfish();
             $("#extra.front .panel").corner();
 
+            $("a.flowplayerhd,a.flowplayer").click(function() {
+                return false;
+            });
             $("a.flowplayerhd,a.flowplayer").each(function() {
                 flashembed(this, {
                     src: "/flowplayer-3.1.5.swf", wmode: "transparent"

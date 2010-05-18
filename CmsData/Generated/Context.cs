@@ -1499,6 +1499,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.DiscActivityLog> ViewDiscActivityLogs
+	    {
+		    get { return this.GetTable< View.DiscActivityLog>(); }
+
+	    }
+
 	    public Table< View.FirstName> ViewFirstNames
 	    {
 		    get { return this.GetTable< View.FirstName>(); }

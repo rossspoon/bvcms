@@ -13,14 +13,16 @@ namespace CMSWeb.Models
     {
         int fid, campus, thisday, page;
         bool waslocked;
+        bool? kioskmode;
 
-        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked)
+        public FamilyResult(bool? kioskmode, int fid, int campus, int thisday, int page, bool waslocked)
         {
             this.fid = fid;
             this.campus = campus;
             this.thisday = thisday;
             this.page = page;
             this.waslocked = waslocked;
+            this.kioskmode = kioskmode;
             if (fid > 0)
             {
                 var lockf = DbUtil.Db.FamilyCheckinLocks.SingleOrDefault(f => f.FamilyId == fid);
@@ -45,7 +47,11 @@ namespace CMSWeb.Models
             {
                 w.WriteStartElement("Attendees");
                 var m = new CheckInModel();
-                var q = m.FamilyMembers(fid, campus, thisday);
+                List<Attendee> q;
+                if (kioskmode == true)
+                    q = m.FamilyMembersKiosk(fid, campus);
+                else
+                    q = m.FamilyMembers(fid, campus, thisday);
                 w.WriteAttributeString("familyid", fid.ToString());
                 w.WriteAttributeString("waslocked", waslocked.ToString());
 
@@ -95,6 +101,12 @@ namespace CMSWeb.Models
                     w.WriteAttributeString("home", c.home);
                     w.WriteAttributeString("cell", c.cell);
                     w.WriteAttributeString("marital", c.marital.ToString());
+                    w.WriteAttributeString("allergies", c.allergies);
+                    w.WriteAttributeString("grade", c.grade.ToString());
+                    w.WriteAttributeString("parent", c.parent);
+                    w.WriteAttributeString("emfriend", c.emfriend);
+                    w.WriteAttributeString("emphone", c.emphone);
+                    w.WriteAttributeString("activeother", c.activeother.ToString());
 
                     w.WriteEndElement();
                 }

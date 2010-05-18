@@ -264,10 +264,10 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, link));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot password".Fmt(user.Name), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} user: {1} forgot password".Fmt(Util.Host, user.Name), "no content");
             }
             else
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown user: {0} forgot password".Fmt(username), "no content");
+                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} unknown user: {1} forgot password".Fmt(Util.Host, username), "no content");
 
             return RedirectToAction("RequestPassword");
 

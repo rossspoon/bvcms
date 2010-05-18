@@ -90,10 +90,6 @@ namespace CMSWeb
                 case "SML":
                     dg.DataSource = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
                     break;
-                case "LR":
-                    dg.DataSource = CMSWeb.Models.LoveRespectModel
-                        .LoveRespectList(qid.Value, maxExcelRows);
-                    break;
             }
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(r.Output));

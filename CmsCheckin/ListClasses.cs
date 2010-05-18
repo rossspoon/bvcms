@@ -147,8 +147,8 @@ namespace CmsCheckin
         {
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
-            var ra = new Util.RecordAttendInfo { c = c, present = true };
-            Util.RecordAttend(ra);
+            var ra = new Util.ClassCheckedInfo { c = c, ischecked = true };
+            Util.CheckUnCheckClass(ra);
             ShowAllClasses = false;
             this.Swap(Program.family);
             Program.family.ShowFamily(FamilyId, 1);

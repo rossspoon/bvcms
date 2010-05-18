@@ -185,6 +185,8 @@ namespace CmsData
 		
 		private bool? _RegistrationClosed;
 		
+		private bool? _AllowKioskRegister;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -485,6 +487,9 @@ namespace CmsData
 		
 		partial void OnRegistrationClosedChanging(bool? value);
 		partial void OnRegistrationClosedChanged();
+		
+		partial void OnAllowKioskRegisterChanging(bool? value);
+		partial void OnAllowKioskRegisterChanged();
 		
     #endregion
 		public Organization()
@@ -2409,6 +2414,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="AllowKioskRegister", UpdateCheck=UpdateCheck.Never, Storage="_AllowKioskRegister", DbType="bit")]
+		public bool? AllowKioskRegister
+		{
+			get { return this._AllowKioskRegister; }
+
+			set
+			{
+				if (this._AllowKioskRegister != value)
+				{
+				
+                    this.OnAllowKioskRegisterChanging(value);
+					this.SendPropertyChanging();
+					this._AllowKioskRegister = value;
+					this.SendPropertyChanged("AllowKioskRegister");
+					this.OnAllowKioskRegisterChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -2473,7 +2500,7 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="Orgid")]
+   		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="OrgId")]
    		public EntitySet< Coupon> Coupons
    		{
    		    get { return this._Coupons; }

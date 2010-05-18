@@ -29,12 +29,23 @@ namespace CmsCheckin
             zip.Text = Program.zip.textBox1.Text;
             allergies.Text = Program.allergy.textBox1.Text;
             AddAnother.Visible = !Program.editing;
-            
+            if (Program.AskGrade)
+                grade.Text = Program.grade.textBox1.Text;
+            if (Program.AskEmFriend)
+            {
+                ParentName.Text = Program.parent.textBox1.Text;
+                EmFriend.Text = Program.emfriend.textBox1.Text;
+                EmPhone.Text = Program.emphone.textBox1.Text;
+            }
+
+            ActiveOther.Visible = Program.AskChurch;
             emfriendlab.Visible = Program.AskEmFriend;
             emphonelab.Visible = Program.AskEmFriend;
             emergencylab.Visible = Program.AskEmFriend;
             EmPhone.Visible = Program.AskEmFriend;
             EmFriend.Visible = Program.AskEmFriend;
+            grade.Visible = Program.AskGrade;
+            gradelab.Visible = Program.AskGrade;
 
             if (dob.Text.Age().ToInt() < 18)
                 single.Checked = true;
@@ -63,9 +74,9 @@ namespace CmsCheckin
             var gender = Gender;
             var marital = Marital;
             if (Program.editing)
-                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, marital, gender);
+                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
             else
-                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, marital, gender);
+                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
             Util.UnLockFamily();
 
             string ph;
@@ -162,6 +173,8 @@ namespace CmsCheckin
                 sb.AppendLine("gender needed");
             if (!first.Text.HasValue())
                 sb.AppendLine("first name needed");
+            if (Program.AskChurch && ActiveOther.CheckState == CheckState.Indeterminate)
+                sb.AppendLine("Active Other Church needed");
             if (sb.Length > 0)
             {
                 MessageBox.Show(sb.ToString());
@@ -173,7 +186,7 @@ namespace CmsCheckin
         {
             if (!ValidateFields())
                 return;
-            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, Marital, Gender);
+            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, Marital, Gender);
             Program.ClearFields();
             Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text);
             this.Swap(Program.first);
@@ -184,6 +197,5 @@ namespace CmsCheckin
             Program.ClearFields();
             this.GoHome(string.Empty);
         }
-
     }
 }

@@ -72,7 +72,12 @@ namespace CmsCheckin
             string zip,
             string cell,
             string home,
-            string allergies, 
+            string allergies,
+            string grade,
+            string parent, 
+            string emfriend,
+            string emphone,
+            CheckState activeother,
             int marital,
             int gender)
         {
@@ -94,6 +99,12 @@ namespace CmsCheckin
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
             coll.Add("allergies", allergies);
+            coll.Add("grade", grade);
+            coll.Add("parent", parent);
+            coll.Add("emfriend", emfriend);
+            coll.Add("emphone", emphone.GetDigits());
+            coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
 
             var resp = wc.UploadValues(url, "POST", coll);
@@ -113,6 +124,11 @@ namespace CmsCheckin
             string cell,
             string home,
             string allergies,
+            string grade,
+            string parent, 
+            string emfriend,
+            string emphone,
+            CheckState activeother,
             int marital,
             int gender)
         {
@@ -134,7 +150,12 @@ namespace CmsCheckin
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
             coll.Add("allergies", allergies);
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id );
+            coll.Add("grade", grade);
+            coll.Add("parent", parent);
+            coll.Add("emfriend", emfriend);
+            coll.Add("emphone", emphone.GetDigits());
+            coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id);
 
             var resp = wc.UploadValues(url, "POST", coll);
 
@@ -246,24 +267,33 @@ namespace CmsCheckin
                 return "?";
             return age.ToString();
         }
-        public class RecordAttendInfo
+        public class ClassCheckedInfo
         {
-            public bool present { get; set; }
+            public bool ischecked { get; set; }
             public ClassInfo c { get; set; }
         }
-        public static void RecordAttend(RecordAttendInfo ra)
+        public static void CheckUnCheckClass(ClassCheckedInfo info)
         {
-            if (ra.c.oid == 0)
+            if (info.c.oid == 0)
                 return;
             try
             {
                 var wc = new WebClient();
                 var coll = new NameValueCollection();
-                coll.Add("PeopleId", ra.c.pid.ToString());
-                coll.Add("OrgId", ra.c.oid.ToString());
-                coll.Add("Present", ra.present.ToString());
-                coll.Add("thisday", Program.ThisDay.ToString());
-                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
+                coll.Add("PeopleId", info.c.pid.ToString());
+                coll.Add("OrgId", info.c.oid.ToString());
+                Uri url = null;
+                if (Program.KioskMode)
+                {
+                    coll.Add("Member", info.ischecked.ToString());
+                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Membership/");
+                }
+                else
+                {
+                    coll.Add("Present", info.ischecked.ToString());
+                    coll.Add("thisday", Program.ThisDay.ToString());
+                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
+                }
 
                 var resp = wc.UploadValues(url, "POST", coll);
 #if DEBUG

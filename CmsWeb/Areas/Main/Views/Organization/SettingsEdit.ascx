@@ -38,6 +38,10 @@
         <td><%=Html.CheckBox("org.CanSelfCheckin")%></td>
     </tr>
     <tr>
+        <th>Allow Kiosk Registration:</th>
+        <td><%=Html.CheckBox("org.AllowKioskRegister") %></td>
+    </tr>
+    <tr>
         <th>Allow Non-Campus Check-In:</th>
         <td><%=Html.CheckBox("org.AllowNonCampusCheckin")%></td>
     </tr>

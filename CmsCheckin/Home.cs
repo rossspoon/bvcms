@@ -127,9 +127,11 @@ namespace CmsCheckin
         private PleaseWait PleaseWaitForm;
         private void Go()
         {
-
             if (textBox1.Text == "010")
+            {
                 Application.Exit();
+                return;
+            }
             if (textBox1.Text == "411")
                 this.Swap(Program.namesearch);
             else if (textBox1.Text.StartsWith("0") && textBox1.Text.Length > 1)
@@ -149,7 +151,8 @@ namespace CmsCheckin
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var ph = e.Argument as string;
-            var x = this.GetDocument("Checkin/Match/" + ph.GetDigits() + Program.QueryString + "&page=1");
+            var x = this.GetDocument("Checkin/Match/" + ph.GetDigits() 
+                + Program.QueryString + "&page=1");
             e.Result = x;
         }
 
