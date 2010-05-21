@@ -43,7 +43,7 @@ namespace UtilityExtensions
         {
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-            var a = addrs.SplitStr(",");
+            var a = addrs.SplitStr(",;");
             try
             {
                 return new MailAddress(a[0], name);

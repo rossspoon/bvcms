@@ -136,21 +136,24 @@ namespace CMSWeb
                 catch (WebException)
                 {
                 }
-                XDocument rssFeed = XDocument.Parse(feed.Data);
+                if (feed.Data != null)
+                {
+                    XDocument rssFeed = XDocument.Parse(feed.Data);
 
-                var posts = from item in rssFeed.Descendants("item")
-                            let au = item.Element("author")
-                            select new
-                            {
-                                Title = item.Element("title").Value,
-                                Published = DateTime.Parse(item.Element("pubDate").Value),
-                                Url = item.Element("link").Value,
-                                Author = au != null ? au.Value : "David Carroll",
-                            };
+                    var posts = from item in rssFeed.Descendants("item")
+                                let au = item.Element("author")
+                                select new
+                                {
+                                    Title = item.Element("title").Value,
+                                    Published = DateTime.Parse(item.Element("pubDate").Value),
+                                    Url = item.Element("link").Value,
+                                    Author = au != null ? au.Value : "David Carroll",
+                                };
 
-                NewsGrid.DataSource = posts;
-                NewsGrid.DataBind();
-           }
+                    NewsGrid.DataSource = posts;
+                    NewsGrid.DataBind();
+                }
+            }
         }
     }
 }

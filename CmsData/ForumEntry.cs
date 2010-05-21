@@ -44,15 +44,15 @@ namespace CmsData
             var mp = Membership.Providers["AdminMembershipProvider"];
             var list = new Dictionary<string, MailAddress>();
             foreach (var mu in Group.GetUsersInRole("Administrator"))
-                list.Add(mu.Username, new MailAddress(mu.EmailAddress, mu.Name));
+                list.Add(mu.Username, Util.FirstAddress(mu.EmailAddress, mu.Name));
             foreach (User mu in Group.GetUsersInGroup(Forum.GroupId.Value))
                 if (!list.ContainsKey(mu.Username))
-                    list.Add(mu.Username, new MailAddress(mu.EmailAddress, mu.Name));
+                    list.Add(mu.Username, Util.FirstAddress(mu.EmailAddress, mu.Name));
             foreach (var fn in ForumNotifications)
                 if (!list.ContainsKey(fn.UserId))
                 {
                     var u = DbUtil.Db.Users.Single(uu => uu.Username == fn.UserId);
-                    list.Add(fn.UserId, new MailAddress(u.EmailAddress, u.Name));
+                    list.Add(fn.UserId, Util.FirstAddress(u.EmailAddress, u.Name));
                 }
             if (Util.IsLocalNetworkRequest)
             {

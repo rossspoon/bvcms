@@ -59,7 +59,7 @@ namespace CmsData
                     var smtp = new SmtpClient();
                     var u = DbUtil.Db.CurrentUser;
                     var email = u.EmailAddress;
-                    var from = new MailAddress(u.EmailAddress, u.Name);
+                    var from = Util.FirstAddress(u.EmailAddress, u.Name);
                     var msg = new MailMessage();
                     msg.From = from;
                     msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);

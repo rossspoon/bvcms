@@ -164,7 +164,7 @@ namespace CMSWeb
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
-            From = new MailAddress(from.EmailAddress, from.Name);
+            From = Util.FirstAddress(from.EmailAddress, from.Name);
             Addresses.Clear();
             LoadAddress(to.EmailAddress, to.Name);
             if (Addresses.Count > 0)

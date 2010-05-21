@@ -121,7 +121,7 @@ namespace CMSWeb
             msg.Subject = "bvcms error on " + Request.Url.Authority;
             if (u != null)
             {
-                msg.From = new MailAddress(u.EmailAddress, u.Name);
+                msg.From = Util.FirstAddress(u.EmailAddress, u.Name);
                 msg.Body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.UserId, u.Name, Request.Url.OriginalString) 
                     + ex.ToString() + sb.ToString();
             }
@@ -132,7 +132,7 @@ namespace CMSWeb
                     + ex.ToString() + sb.ToString();
             }
             foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
-                msg.To.Add(new MailAddress(a.Person.EmailAddress, a.Name));
+                msg.To.Add(Util.FirstAddress(a.Person.EmailAddress, a.Name));
             smtp.Send(msg);
         }
    }

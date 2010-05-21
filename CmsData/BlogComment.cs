@@ -58,7 +58,7 @@ namespace CmsData
                 .Fmt(this.BlogPost.BlogCached.Id);
             var from = new MailAddress("bbcms01@bellevue.org");
             var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, User.Username);
-            var reply = new MailAddress(PosterEmail);
+            var reply = Util.FirstAddress(PosterEmail);
             foreach (var i in BlogPost.BlogCached.GetNotificationList())
             {
                 var ma = Util.TryGetMailAddress(i.Value.Email, i.Value.Name);

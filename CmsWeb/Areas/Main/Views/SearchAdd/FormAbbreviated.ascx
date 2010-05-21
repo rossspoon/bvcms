@@ -15,6 +15,7 @@
         Html.RenderPartial("HiddenPerson", p);
     }
     var np = Model.List[n];
+    np.index = n;
 %>
 <input type="hidden" name="m.List.Index" value="<%=n%>" />
 <input type="hidden" name="m.List[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />

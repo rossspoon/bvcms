@@ -71,7 +71,7 @@ namespace CmsData
             var n = 0;
             var from = new MailAddress("bbcms01@bellevue.org");
             var subject = "New Blog Post: " + Title + ", From: " + PosterName;
-            var reply = new MailAddress(PosterEmail);
+            var reply = Util.FirstAddress(PosterEmail);
             var sb = new StringBuilder();
             foreach (var i in BlogCached.GetNotificationList())
             {
