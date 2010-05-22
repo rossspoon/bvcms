@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
+using UtilityExtensions;
 
 namespace CMSWeb.Admin
 {
@@ -20,13 +21,24 @@ namespace CMSWeb.Admin
             if (FileUpload1.HasFile)
                 try
                 {
-                    FileUpload1.SaveAs(Server.MapPath("~/Upload/") +
-                         FileUpload1.FileName);
-                    Label1.Text = "File name: " +
-                         FileUpload1.PostedFile.FileName + "<br>" +
-                         FileUpload1.PostedFile.ContentLength + " kb<br>" +
-                         "Content type: " +
-                         FileUpload1.PostedFile.ContentType;
+                    var fpath = Server.MapPath("~/Upload/" + Util.Host1 + "/");
+                    if (!Directory.Exists(fpath))
+                        Directory.CreateDirectory(fpath);
+                    FileUpload1.SaveAs(fpath + FileUpload1.FileName);
+                    var url = Util.CmsHost + "Upload/" + Util.Host1 + "/";
+                    if (Path.GetExtension(FileUpload1.FileName) == ".zip")
+                    {
+                        string fn = Path.GetFileNameWithoutExtension(FileUpload1.FileName);
+                        url += fn;
+                        UnZipFiles(fpath + FileUpload1.FileName, fpath);
+                    }
+                    else
+                        url += FileUpload1.PostedFile.FileName;
+
+                    Label1.Text = "File name: " + url + "<br>" +
+                             FileUpload1.PostedFile.ContentLength + " kb<br>" +
+                             "Content type: " +
+                             FileUpload1.PostedFile.ContentType;
                 }
                 catch (Exception ex)
                 {
@@ -41,21 +53,17 @@ namespace CMSWeb.Admin
         {
             var s = new ZipInputStream(File.OpenRead(zipPathAndFile));
             ZipEntry theEntry;
-            string tmpEntry = String.Empty;
+            var tmpEntry = String.Empty;
             while ((theEntry = s.GetNextEntry()) != null)
             {
-                string directoryName = outputFolder;
-                string fileName = Path.GetFileName(theEntry.Name);
-                // create directory 
+                var directoryName = outputFolder;
+                var fileName = Path.GetFileName(theEntry.Name);
                 if (directoryName != "")
-                {
                     Directory.CreateDirectory(directoryName);
-                }
                 if (fileName != String.Empty)
-                {
                     if (theEntry.Name.IndexOf(".ini") < 0)
                     {
-                        string fullPath = directoryName + "\\" + theEntry.Name;
+                        var fullPath = directoryName + "\\" + theEntry.Name;
                         fullPath = fullPath.Replace("\\ ", "\\");
                         string fullDirPath = Path.GetDirectoryName(fullPath);
                         if (!Directory.Exists(fullDirPath)) Directory.CreateDirectory(fullDirPath);
@@ -66,17 +74,12 @@ namespace CMSWeb.Admin
                         {
                             size = s.Read(data, 0, data.Length);
                             if (size > 0)
-                            {
                                 streamWriter.Write(data, 0, size);
-                            }
                             else
-                            {
                                 break;
-                            }
                         }
                         streamWriter.Close();
                     }
-                }
             }
             s.Close();
             File.Delete(zipPathAndFile);

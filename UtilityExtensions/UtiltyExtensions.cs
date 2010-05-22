@@ -462,11 +462,11 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_Host] = value;
             }
         }
-        private static string Host1
+        public static string Host1
         {
             get
             {
-                var a = Host.Split('.');
+                var a = Host.SplitStr(".:");
                 return a[0];
             }
         }

@@ -89,7 +89,6 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult2.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
@@ -1653,7 +1652,6 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
-    <Content Include="Views\Shared\online.Master" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />

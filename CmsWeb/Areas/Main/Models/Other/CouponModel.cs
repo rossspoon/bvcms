@@ -39,6 +39,7 @@ namespace CMSWeb.Models
             var q = from c in DbUtil.Db.Coupons
                     where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
                     where c.UserId == useridfilter || useridfilter == 0
+                    where c.Canceled == null
                     select c;
             switch (usedfilter)
             {

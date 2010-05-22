@@ -52,34 +52,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult NameSearch(string id, int? page)
         {
             Response.NoCache();
-            if (page.HasValue)
-                return new NameSearchResult2(id, page.Value);
-
-            string first;
-            string last;
-            var q = DbUtil.Db.People.Select(p => p);
-            Person.NameSplit(id, out first, out last);
-            if (first.HasValue())
-                q = from p in q
-                    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
-                        && (p.FirstName.StartsWith(first) || p.NickName.StartsWith(first) || p.MiddleName.StartsWith(first))
-                    select p;
-            else
-                q = from p in q
-                    where p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last)
-                    select p;
-
-            var q2 = from p in q
-                     orderby p.Name2
-                     select new SearchInfo
-                     {
-                         CellPhone = p.CellPhone,
-                         HomePhone = p.HomePhone,
-                         Address = p.PrimaryAddress,
-                         Age = p.Age,
-                         Name = p.Name
-                     };
-            return new NameSearchResult(q2.Take(20));
+            return new NameSearchResult2(id, page.Value);
         }
         public class PersonInfo
         {

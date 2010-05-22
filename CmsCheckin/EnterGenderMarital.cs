@@ -187,8 +187,9 @@ namespace CmsCheckin
             if (!ValidateFields())
                 return;
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, Marital, Gender);
+            var s = this.ActiveOther.CheckState.ToString();
             Program.ClearFields();
-            Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text);
+            Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, s);
             this.Swap(Program.first);
         }
 

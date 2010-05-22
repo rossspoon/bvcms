@@ -22,6 +22,14 @@ namespace CMSWeb.Models
         public int? age { get; set; }
         public int fid { get; set; }
         public int pid { get; set; }
+
+        public string allergies { get; set; }
+        public int? grade { get; set; }
+        public string parent { get; set; }
+        public string emfriend { get; set; }
+        public string emphone { get; set; }
+        public bool activeother { get; set; }
+
         public string GetDisplay()
         {
             return "{0} {1}({2}) {3} {4} / {5}".Fmt(

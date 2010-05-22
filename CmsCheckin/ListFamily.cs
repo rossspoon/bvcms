@@ -452,7 +452,7 @@ namespace CmsCheckin
             var c = ab.Tag as AttendLabel;
 
             Program.PeopleId = c.cinfo.pid;
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home);
+            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother);
             Program.first.textBox1.Text = c.first;
             Program.goesby.textBox1.Text = c.goesby;
             Program.dob.textBox1.Text = c.dob;
@@ -594,7 +594,7 @@ namespace CmsCheckin
             var ab = this.Controls[this.Controls.IndexOfKey("attend0")] as Button;
             var c = ab.Tag as AttendLabel;
 
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home);
+            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother);
             Program.editing = false;
             Util.UnLockFamily();
             this.Swap(Program.first);

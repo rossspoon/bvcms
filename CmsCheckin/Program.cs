@@ -119,13 +119,22 @@ namespace CmsCheckin
             if (AskChurch)
                 gendermarital.ActiveOther.CheckState = CheckState.Indeterminate;
         }
-        public static void SetFields(string Last, string Email, string Addr, string Zip, string Home)
+        public static CheckState ActiveOther(string s)
+        {
+            return s == bool.TrueString || s == "Checked" ? CheckState.Checked :
+            s == bool.FalseString || s == "Unchecked" ? CheckState.Unchecked : CheckState.Indeterminate;
+        }
+        public static void SetFields(string Last, string Email, string Addr, string Zip, string Home, string Parent, string EmFriend, string EmPhone, string AnotherChurch)
         {
             last.textBox1.Text = Last;
             email.textBox1.Text = Email;
             addr.textBox1.Text = Addr;
             zip.textBox1.Text = Zip;
             homephone.textBox1.Text = Home;
+            emfriend.textBox1.Text = EmFriend;
+            parent.textBox1.Text = Parent;
+            emphone.textBox1.Text = EmPhone;
+            gendermarital.ActiveOther.CheckState = ActiveOther(AnotherChurch);
         }
         public static void Timer2Reset()
         {

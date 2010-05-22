@@ -123,7 +123,9 @@ namespace CMSWeb.Areas.Public.Controllers
                     ModelState.AddModelError("dob", "Sorry, that age group is filled");
             }
             if (p.Found == true)
+            {
                 FillPriorInfo(p);
+            }
             if (!p.AnyOtherInfo())
                 p.OtherOK = true;
             return View("list", m);
@@ -297,6 +299,12 @@ namespace CMSWeb.Areas.Public.Controllers
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
             string coupon = pm._Coupon.ToUpper().Replace(" ", "");
+            if (coupon == DbUtil.Settings("AdminCoupon", "ifj4ijweoij"))
+                return Json(new
+                {
+                    confirm = "/onlinereg/{0}/{1}?TransactionID=Coupon(Admin)"
+                        .Fmt(pm._confirm, pm._datumid)
+                });
             var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
             if (c == null)
                 return Json(new { error = "coupon not found" });
@@ -313,13 +321,13 @@ namespace CMSWeb.Areas.Public.Controllers
                 return Json(new { error = "coupon already used" });
             if (c.Canceled.HasValue)
                 return Json(new { error = "coupon canceled" });
-
             return Json(new
             {
                 confirm = "/onlinereg/{0}/{1}?TransactionID=Coupon({2})"
-                    .Fmt(pm._confirm, pm._datumid, coupon.Insert(8, " ").Insert(4, " ")) });
+                    .Fmt(pm._confirm, pm._datumid, coupon.Insert(8, " ").Insert(4, " "))
+            });
         }
-        
+
         [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID)
         {
@@ -508,10 +516,13 @@ namespace CMSWeb.Areas.Public.Controllers
             {
                 var coupon = Regex.Match(TransactionID, matchcoupon, RegexOptions.IgnoreCase)
                         .Groups["coupon"].Value.Replace(" ", "");
-                var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);
-                c.RegAmount = Amount;
-                c.Used = DateTime.Now;
-                c.PeopleId = PeopleId;
+                if (coupon != "Admin")
+                {
+                    var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);
+                    c.RegAmount = Amount;
+                    c.Used = DateTime.Now;
+                    c.PeopleId = PeopleId;
+                }
             }
         }
         private static void AddToMemberData(string s, OrganizationMember om)

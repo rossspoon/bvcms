@@ -99,7 +99,14 @@ namespace CmsData
         }
         public static Content Content(string name)
         {
-            return DbUtil.Db.Contents.SingleOrDefault(c => c.Name == name); 
+            return DbUtil.Db.Contents.SingleOrDefault(c => c.Name == name);
+        }
+        public static string Content(string name, string def)
+        {
+            var content = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == name);
+            if (content != null)
+                return content.Body;
+            return def;
         }
         public static string Settings(string name, string defaultvalue)
         {

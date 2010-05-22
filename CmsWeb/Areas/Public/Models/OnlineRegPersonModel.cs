@@ -108,8 +108,10 @@ namespace CMSWeb.Models
             get { return married == 10 ? "Single" : "Married"; }
         }
         public bool IsValidForExisting { get; set; }
+        public bool IsValidForContinue { get; set; }
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
+            IsValidForContinue = true; // true till proven false
             CMSWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (UserSelectsOrganization())
@@ -134,6 +136,13 @@ namespace CMSWeb.Models
                         if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
                             ModelState.AddModelError("find", "Must be member of specified organization");
                     }
+                    var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
+                    if (m != null)
+                    {
+                        ModelState.AddModelError("find", "This person is already registered");
+                        IsValidForContinue = false;
+                    }
+
                     address = person.PrimaryAddress;
                     city = person.PrimaryCity;
                     state = person.PrimaryState;

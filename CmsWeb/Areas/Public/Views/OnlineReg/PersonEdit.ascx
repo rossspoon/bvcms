@@ -49,7 +49,7 @@
            { %>
            <p class="blue"><%=Model.NotFoundText %></p>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
-            <% if ((Model.org.MemberOnly ?? false) == false)
+            <% if ((Model.org.MemberOnly ?? false) == false && Model.IsValidForContinue)
                { %>            
             or <a href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
             <% } %>

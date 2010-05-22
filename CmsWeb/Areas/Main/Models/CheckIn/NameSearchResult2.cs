@@ -43,6 +43,7 @@ namespace CMSWeb.Models
                         select p;
 
                 var q2 = from p in q
+                         let recreg = p.RecRegs.FirstOrDefault()
                          orderby p.Name2, p.PeopleId
                          select new SearchInfo2
                          {
@@ -60,6 +61,13 @@ namespace CMSWeb.Models
                              fid = p.FamilyId,
                              pid = p.PeopleId,
                              zip = p.Family.ZipCode,
+
+                             allergies = recreg.MedicalDescription,
+                             emfriend = recreg.Emcontact,
+                             emphone = recreg.Emphone,
+                             activeother = recreg.ActiveInAnotherChurch ?? false,
+                             parent = recreg.Mname ?? recreg.Fname,
+                             grade = p.Grade,
                          };
 
                 var count = q.Count();
@@ -92,6 +100,14 @@ namespace CMSWeb.Models
                     w.WriteAttributeString("fid", p.fid.ToString());
                     w.WriteAttributeString("pid", p.pid.ToString());
                     w.WriteAttributeString("display", p.GetDisplay());
+
+                    w.WriteAttributeString("allergies", p.allergies);
+                    w.WriteAttributeString("grade", p.grade.ToString());
+                    w.WriteAttributeString("parent", p.parent);
+                    w.WriteAttributeString("emfriend", p.emfriend);
+                    w.WriteAttributeString("emphone", p.emphone);
+                    w.WriteAttributeString("activeother", p.activeother.ToString());
+                    
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();
