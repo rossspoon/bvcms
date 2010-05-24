@@ -35,6 +35,7 @@ namespace CMSWeb
             AveryLabels.NavigateUrl = GoTo2("NewWindow", "Reports/Avery/" + queryId);
             AveryLabels3.NavigateUrl = GoTo2("NewWindow", "Reports/Avery3/" + queryId);
             AveryAddressLabels.NavigateUrl = "/Reports/AveryAddress/" + queryId;
+            RegistrationLink.NavigateUrl = "/Reports/Registration/" + queryId;
             InvolvementLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Involvement&");
             AttendLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Attend&");
             AttendanceLink.NavigateUrl = GoTo2("NewWindow", "/Reports/WeeklyAttendance/" + queryId);

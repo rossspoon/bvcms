@@ -37,6 +37,30 @@
         <td><%=Model.medical %></td>
     </tr>
     <tr>
+        <td colspan="2">
+        <table>
+        <tr>
+        <% if (Model.tylenol.HasValue)
+           { %>
+        <td>Tylenol: <%=Model.tylenol == true ? "Yes" : "No"%></td>
+        <% } 
+           if (Model.advil.HasValue)
+           { %>
+        <td>Advil: <%=Model.advil == true ? "Yes" : "No" %></td>
+        <% } 
+           if (Model.robitussin.HasValue)
+           { %>
+        <td>Robitussin: <%=Model.robitussin == true ? "Yes" : "No" %></td>
+        <% } 
+           if (Model.maalox.HasValue)
+           { %>
+        <td>Maalox: <%=Model.maalox == true ? "Yes" : "No" %></td>
+        <% } %>
+        </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
         <td><label for="mname">Mother's Name (first last)</label></td>
         <td><%=Model.mname %></td>
     </tr>

@@ -22,6 +22,10 @@ namespace CMSWeb.Models.PersonPage
         public string doctor { get; set; }
         public string docphone { get; set; }
         public string medical { get; set; }
+        public bool? tylenol { get; set; }
+        public bool? advil { get; set; }
+        public bool? robitussin { get; set; }
+        public bool? maalox { get; set; }
         public string mname { get; set; }
         public string fname { get; set; }
         public bool member { get; set; }
@@ -45,6 +49,10 @@ namespace CMSWeb.Models.PersonPage
                         fname = r.Fname,
                         insurance = r.Insurance,
                         medical = r.MedicalDescription,
+                        tylenol = r.Tylenol,
+                        advil = r.Advil,
+                        robitussin = r.Robitussin,
+                        maalox = r.Maalox,
                         member = r.Member ?? false,
                         mname = r.Mname,
                         otherchurch = r.ActiveInAnotherChurch ?? false,
@@ -76,6 +84,10 @@ namespace CMSWeb.Models.PersonPage
             rr.Insurance = insurance;
             rr.MedAllergy = medical.HasValue();
             rr.MedicalDescription = medical;
+            rr.Tylenol = tylenol;
+            rr.Advil = advil;
+            rr.Robitussin = robitussin;
+            rr.Maalox = maalox;
             rr.Member = member;
             rr.Mname = mname;
             rr.Policy = policy;

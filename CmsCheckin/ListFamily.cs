@@ -520,7 +520,7 @@ namespace CmsCheckin
             if (Program.KioskMode)
             {
                 var q = from c in list
-                        select new LabelInfoKiosk
+                        select new LabelInfo
                         {
                             allergies = c.allergies,
                             n = c.NumLabels,
@@ -540,11 +540,14 @@ namespace CmsCheckin
                         group c by new { c.cinfo.pid, c.cinfo.mv } into g
                         select new LabelInfo
                         {
+                            allergies = g.First().allergies,
                             pid = g.Key.pid,
                             mv = g.Key.mv,
                             n = g.Sum(i => i.NumLabels),
                             first = g.First().first,
                             last = g.First().last,
+                            location = g.First().location,
+                            @class = g.First().@class,
                         };
                 foreach (var li in q)
                     CmsCheckin.Print.Label(li, time);
@@ -645,18 +648,12 @@ namespace CmsCheckin
     }
     public class LabelInfo
     {
-        public int pid { get; set; }
-        public string mv { get; set; }
-        public int n { get; set; }
-        public string first { get; set; }
-        public string last { get; set; }
-    }
-    public class LabelInfoKiosk
-    {
         public int n { get; set; }
         public string location { get; set; }
         public string allergies { get; set; }
         public string @class { get; set; }
+        public int pid { get; set; }
+        public string mv { get; set; }
         public string first { get; set; }
         public string last { get; set; }
     }

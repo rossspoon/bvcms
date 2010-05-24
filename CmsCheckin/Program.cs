@@ -131,9 +131,12 @@ namespace CmsCheckin
             addr.textBox1.Text = Addr;
             zip.textBox1.Text = Zip;
             homephone.textBox1.Text = Home;
-            emfriend.textBox1.Text = EmFriend;
-            parent.textBox1.Text = Parent;
-            emphone.textBox1.Text = EmPhone;
+            if (AskEmFriend)
+            {
+                emfriend.textBox1.Text = EmFriend;
+                parent.textBox1.Text = Parent;
+                emphone.textBox1.Text = EmPhone;
+            }
             gendermarital.ActiveOther.CheckState = ActiveOther(AnotherChurch);
         }
         public static void Timer2Reset()

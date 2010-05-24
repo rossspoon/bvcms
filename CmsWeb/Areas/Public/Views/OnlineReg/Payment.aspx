@@ -1,8 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PaymentModel>" %>
-
-<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-	<title>Complete Registration Payment</title>
-	<style type="text/css">
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PaymentModel>" %>
+<asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+<style type="text/css">
 div.terms {
    width:600px;
    height:200px;
@@ -25,9 +23,6 @@ a.submitbutton,a.button {
   text-decoration:none;
 }
 </style>
-</asp:Content>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -117,5 +112,4 @@ a.submitbutton,a.button {
     <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>
     <span style="color:Red" id="validatecoupon"></span>
     </form>
-
 </asp:Content>

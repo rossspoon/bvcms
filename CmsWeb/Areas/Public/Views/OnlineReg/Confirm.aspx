@@ -1,10 +1,5 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-	<title><%=ViewData["orgname"] %> Event Registration</title>
-</asp:Content>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -28,5 +23,4 @@
         You should receive a confirmation email at <%=ViewData["email"] %> shortly.
     </p>
     <p><a href='<%=ViewData["URL"] %>'>Start a New Registration</a></p>
-
 </asp:Content>

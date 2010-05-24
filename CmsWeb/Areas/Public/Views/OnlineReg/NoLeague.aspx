@@ -1,7 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/bvorg.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h2>Sorry, no league specified! </h2>
-
-</asp:Content>
+<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage" %>
+<html>
+<body>
+<h2>Sorry, no league specified! </h2>
+</body>
+</html>

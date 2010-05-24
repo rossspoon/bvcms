@@ -88,6 +88,7 @@ namespace CMSWeb
             OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;
             UserHeader.Text = DbUtil.Header();
+            HelpLink.NavigateUrl = "http://wiki.bvcms.com/help.{0}.ashx".Fmt(Request.Url.AbsolutePath.Replace('/','_'));
         }
         protected void NewQuery_Click(object sender, EventArgs e)
         {

@@ -129,6 +129,7 @@
     <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
     <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\RegistrationResult.cs" />
     <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetResult.cs" />
@@ -849,6 +850,13 @@
     </Compile>
     <Compile Include="UserControls\VisitorGrid.ascx.designer.cs">
       <DependentUpon>VisitorGrid.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\onlinereg.Master.cs">
+      <DependentUpon>onlinereg.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\onlinereg.Master.designer.cs">
+      <DependentUpon>onlinereg.Master</DependentUpon>
     </Compile>
     <Compile Include="WebService.asmx.cs">
       <DependentUpon>WebService.asmx</DependentUpon>
@@ -1652,6 +1660,7 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Views\Shared\onlinereg.Master" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />

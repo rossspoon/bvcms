@@ -32,6 +32,13 @@ namespace CMSWeb
 		   </div>
 		</div>".Fmt(logoimg, headertext);
         }
+        protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            Util.Helpfile = "{0}_{1}".Fmt(
+                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
+                filterContext.ActionDescriptor.ActionName);
+        }
         protected override void ExecuteCore()
         {
             base.ExecuteCore();
@@ -48,6 +55,13 @@ namespace CMSWeb
         {
             //base.HandleUnknownAction(actionName);
             throw new HttpException(404, "404");
+        }
+        protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            Util.Helpfile = "{0}_{1}".Fmt(
+                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
+                filterContext.ActionDescriptor.ActionName);
         }
     }
 }

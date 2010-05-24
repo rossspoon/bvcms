@@ -157,7 +157,6 @@ namespace CmsCheckin
             var sw = new StreamWriter(memStrm);
             if (Program.Printer.Contains("ZDesigner"))
             {
-                //sw.WriteLine("CT~~CD,~CC^~CT~");
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
                 sw.WriteLine("^XA");
                 sw.WriteLine("^MMT");
@@ -169,6 +168,32 @@ namespace CmsCheckin
                 sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FD{0} {1}   {2:M/d/yy}^FS", li.pid, li.mv, time));
                 sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0:HHmmss}^FS", time));
                 sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
+                if (li.mv.Contains("V"))
+                {
+                    sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                    sw.WriteLine("^XA");
+                    sw.WriteLine("^MMT");
+                    sw.WriteLine("^PW609");
+                    sw.WriteLine("^LL0203");
+                    sw.WriteLine("^LS0");
+                    sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
+                    sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0}^FS", li.location));
+                    sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", 1));
+
+                    if (li.allergies.HasValue())
+                    {
+                        sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                        sw.WriteLine("^XA");
+                        sw.WriteLine("^MMT");
+                        sw.WriteLine("^PW609");
+                        sw.WriteLine("^LL0203");
+                        sw.WriteLine("^LS0");
+                        sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
+                        sw.WriteLine(string.Format(@"^FT583,69^A0I,34,33^FH\^FD{0}^FS", li.last));
+                        sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FDAllergies: {0}^FS", li.allergies));
+                        sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", 1));
+                    }
+                }
             }
             else if (Program.Printer.Contains("Datamax"))
             {
@@ -192,13 +217,63 @@ namespace CmsCheckin
                 sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
                 sw.WriteLine("Q" + n.ToString("0000"));
                 sw.WriteLine("E");
+                if (li.mv.Contains("V"))
+                {
+                    sw.WriteLine("\x02n");
+                    sw.WriteLine("\x02M0500");
+                    sw.WriteLine("\x02O0220");
+                    sw.WriteLine("\x02V0");
+                    sw.WriteLine("\x02SG");
+                    sw.WriteLine("\x02d");
+                    sw.WriteLine("\x01D");
+                    sw.WriteLine("\x02L");
+                    sw.WriteLine("D11");
+                    sw.WriteLine("PG");
+                    sw.WriteLine("pC");
+                    sw.WriteLine("SG");
+                    sw.WriteLine("ySPM");
+                    sw.WriteLine("A2");
+                    sw.WriteLine("1911A3000450009" + li.first);
+                    sw.WriteLine("1911A2400040179" + li.location);
+                    sw.WriteLine("Q0001");
+                    sw.WriteLine("E");
+
+                    if (li.allergies.HasValue())
+                    {
+                        sw.WriteLine("\x02n");
+                        sw.WriteLine("\x02M0500");
+                        sw.WriteLine("\x02O0220");
+                        sw.WriteLine("\x02V0");
+                        sw.WriteLine("\x02SG");
+                        sw.WriteLine("\x02d");
+                        sw.WriteLine("\x01D");
+                        sw.WriteLine("\x02L");
+                        sw.WriteLine("D11");
+                        sw.WriteLine("PG");
+                        sw.WriteLine("pC");
+                        sw.WriteLine("SG");
+                        sw.WriteLine("ySPM");
+                        sw.WriteLine("A2");
+                        sw.WriteLine("1911A3000450009" + li.first);
+                        sw.WriteLine("1911A1000300011" + li.last);
+                        sw.WriteLine("1911A1000060008" + "Allergies: " + li.allergies);
+                        sw.WriteLine("Q0001");
+                        sw.WriteLine("E");
+                    }
+                }
             }
-            else 
+            else
             {
                 sw.WriteLine(li.first);
                 sw.WriteLine(li.last);
                 sw.WriteLine(" (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
                 sw.WriteLine(time.ToString("HHmmss"));
+                if (li.mv.Contains("V"))
+                {
+                    sw.WriteLine(li.location);
+                    if (li.allergies.HasValue())
+                        sw.WriteLine("Allergies: " + li.allergies);
+                }
             }
 
             sw.Flush();
@@ -207,7 +282,7 @@ namespace CmsCheckin
             PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
             sw.Close();
         }
-        public static void LabelKiosk(LabelInfoKiosk li)
+        public static void LabelKiosk(LabelInfo li)
         {
             if (!Program.Printer.HasValue())
                 return;

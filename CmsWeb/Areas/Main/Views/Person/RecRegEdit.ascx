@@ -43,6 +43,18 @@
         <td><%= Html.ValidationMessage("medical")%>Leave blank if none</td>
     </tr>
     <tr>
+        <td colspan="2">
+        <table>
+        <tr>
+        <td>Tylenol: <%=Html.CheckBox("tylenol") %></td>
+        <td>Advil: <%=Html.CheckBox("advil") %></td>
+        <td>Robitussin: <%=Html.CheckBox("robitussin") %></td>
+        <td>Maalox: <%=Html.CheckBox("maalox") %></td>
+        </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
         <td><label for="mname">Mother's Name (first last)</label></td>
         <td><%= Html.TextBox("mname", Model.mname, new { maxlength = 80 })%></td>
         <td><%= Html.ValidationMessage("mname")%></td>

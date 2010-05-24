@@ -775,6 +775,22 @@ namespace UtilityExtensions
             }
             set { HttpContext.Current.Items[STR_Auditing] = value; }
         }
+        private const string STR_Helpfile = "Helpfile";
+        public static string Helpfile
+        {
+            get
+            {
+                var tag = "MainPage";
+                if (HttpContext.Current.Session[STR_Helpfile] != null)
+                    tag = HttpContext.Current.Session[STR_Helpfile].ToString();
+                return tag;
+            }
+            set
+            {
+                HttpContext.Current.Session[STR_Helpfile] = value;
+            }
+        }
+
         public static string SafeFormat(string s)
         {
             if (s == null)

@@ -213,6 +213,13 @@ namespace CMSWeb.Areas.Public.Controllers
                         p.otherchurch = rr.ActiveInAnotherChurch ?? false;
                         p.memberus = rr.Member ?? false;
                     }
+                    if (p.org.AskTylenolEtc == true)
+                    {
+                        p.tylenol = rr.Tylenol;
+                        p.advil = rr.Advil;
+                        p.robitussin = rr.Robitussin;
+                        p.maalox = rr.Maalox;
+                    }
                 }
             }
         }

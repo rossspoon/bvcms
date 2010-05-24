@@ -86,6 +86,11 @@
                     <asp:Image ID="Image18" ImageUrl="~/images/Report.png" runat="server" />
                     Volunteer Report</asp:HyperLink></li>
             <li>
+                <asp:HyperLink ID="RegistrationLink" ToolTip="One Page Per Registratant"
+                    runat="server">
+                    <asp:Image ID="Image24" ImageUrl="~/images/Report.png" runat="server" />
+                    Registration Report</asp:HyperLink></li>
+            <li>
                 <asp:HyperLink ID="AttendLink" ToolTip="Contains attendance information for their class"
                     runat="server">
                     <asp:Image ID="Image11" ImageUrl="~/images/Excel.png" runat="server" />

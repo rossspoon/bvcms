@@ -128,5 +128,11 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("no query");
             return new AveryAddressResult { id = id, format = format, titles = titles };
         }
+        public ActionResult Registration(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new RegistrationResult(id);
+        }
     }
 }

@@ -1,24 +1,5 @@
-﻿<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OnlineRegModel>" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-<title>Online Registration</title>
-<%=DbUtil.Content("OnlineRegHeader", @"
-<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-<link rel='shortcut icon' href='/Content/favicon.ico' type='image/x-icon' />
-<link href='/Content/Site2.css?v=2' rel='stylesheet' type='text/css' />
-") %>
-</head>
-<body>
-<%=DbUtil.Content("OnlineRegTop", @"
-<div class='page'>
-<div id='header'>
-<div id='title'>
-<h1><img alt='logo' src='/Content/Crosses.png' align='middle' />&nbsp;Online Registration</h1>
-</div>
-</div>
-<div id='main'>
-") %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OnlineRegModel>" %>
+<asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
 <style type="text/css">
 tr.alt
 {
@@ -61,10 +42,4 @@ tr.alt
     <% Html.RenderPartial("List", Model); %>
     </form>
     <% } %>
-<%=DbUtil.Content("OnlineRegBottom", @"
-<div id='footer'></div>
-</div>
-</div>
-") %>
-</body>
-</html>
+</asp:Content>

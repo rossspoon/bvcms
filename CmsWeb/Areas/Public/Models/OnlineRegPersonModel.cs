@@ -750,10 +750,14 @@ namespace CMSWeb.Models
 
             if (org.AskTylenolEtc == true)
             {
-                AddToMemberData("Tylenol: " + (tylenol == true ? "Yes" : "No"), om);
-                AddToMemberData("Advil: " + (advil == true ? "Yes" : "No"), om);
-                AddToMemberData("Robitussin: " + (robitussin == true ? "Yes" : "No"), om);
-                AddToMemberData("Maalox: " + (maalox == true ? "Yes" : "No"), om);
+                //AddToMemberData("Tylenol: " + (tylenol == true ? "Yes" : "No"), om);
+                //AddToMemberData("Advil: " + (advil == true ? "Yes" : "No"), om);
+                //AddToMemberData("Robitussin: " + (robitussin == true ? "Yes" : "No"), om);
+                //AddToMemberData("Maalox: " + (maalox == true ? "Yes" : "No"), om);
+                reg.Tylenol = tylenol;
+                reg.Advil = advil;
+                reg.Robitussin = robitussin;
+                reg.Maalox = maalox;
             }
 
             AddToRegistrationComments("-------------", reg);

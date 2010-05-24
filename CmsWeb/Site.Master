@@ -206,6 +206,9 @@
                             <asp:HyperLink ID="LastActivity" NavigateUrl="~/Admin/LastActivity.aspx" runat="server">Last Activity</asp:HyperLink></li>
                     </ul>
                 </li>
+                <li id="HelpItem" class="headlink" runat="server">
+                    <asp:HyperLink ID="HelpLink" NavigateUrl="#" Target="_blank" runat="server">Help</asp:HyperLink>
+                </li>
             </ul>
             <asp:TextBox CssClass="CommonNavigationSearch" ID="SearchText" runat="server" OnTextChanged="SearchText_TextChanged"
                 Width="100px" Text="Quick Search" defaultValue="Quick Search" onclick="if(this.defaultValue==this.value) this.value='';"
