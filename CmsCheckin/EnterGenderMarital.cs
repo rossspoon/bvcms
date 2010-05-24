@@ -56,6 +56,7 @@ namespace CmsCheckin
         void timer1_Tick(object sender, EventArgs e)
         {
             Program.TimerStop();
+            Util.UnLockFamily();
             Program.ClearFields();
             this.GoHome("");
         }
@@ -73,6 +74,8 @@ namespace CmsCheckin
         {
             var gender = Gender;
             var marital = Marital;
+            if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
+                Program.homephone.textBox1.Text = cellphone.Text;
             if (Program.editing)
                 this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
             else
@@ -186,6 +189,8 @@ namespace CmsCheckin
         {
             if (!ValidateFields())
                 return;
+            if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
+                Program.homephone.textBox1.Text = cellphone.Text;
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, Marital, Gender);
             var s = this.ActiveOther.CheckState.ToString();
             Program.ClearFields();

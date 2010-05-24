@@ -411,6 +411,8 @@ namespace CmsCheckin
             Program.TimerReset();
             var ab = sender as Button;
             var c = ab.Tag as AttendLabel;
+            if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 2)
+                return;
             c.Clicked = true;
             var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
             if (c.cinfo.oid == 0)
@@ -430,6 +432,7 @@ namespace CmsCheckin
                 eb.Text = String.Empty;
                 info.ischecked = false;
             }
+            c.lastpress = DateTime.Now;
             var bw = new BackgroundWorker();
             bw.DoWork += CheckUnCheckDoWork;
             bw.RunWorkerCompleted += CheckUncheckCompleted;
@@ -616,6 +619,7 @@ namespace CmsCheckin
     }
     public class AttendLabel
     {
+        public DateTime? lastpress { get; set; }
         public ClassInfo cinfo { get; set; }
         public string name { get; set; }
         public string first { get; set; }

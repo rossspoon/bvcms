@@ -162,7 +162,11 @@ namespace CmsData
 					return Expressions.HasContacts(parm,
 							   CompType,
 							   c.CodeIds == "1");
-				// I -----------------
+                case QueryType.HasTaskWithName:
+                    return Expressions.HasTaskWithName(parm,
+                                CompType,
+                                c.TextValue);
+                // I -----------------
                 case QueryType.IsCurrentPerson:
                     return Expressions.IsCurrentPerson(parm,
                                CompType,

@@ -78,7 +78,7 @@ namespace CMSWeb
             //if (DbUtil.Db.UserPreference("neworgsearch").ToBool())
             //    OrgLink.NavigateUrl = "/OrgSearch/";
             //else
-                OrgLink.NavigateUrl = "/OrganizationSearch.aspx";
+            OrgLink.NavigateUrl = "/OrganizationSearch.aspx";
             OrgSearchLink.NavigateUrl = OrgLink.NavigateUrl;
             //HomeDrop.Visible = Page.User.IsInRole("Developer");
             SavedQueriesLink.Enabled = !Util.OrgMembersOnly;
@@ -88,7 +88,9 @@ namespace CMSWeb
             OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;
             UserHeader.Text = DbUtil.Header();
-            HelpLink.NavigateUrl = "http://wiki.bvcms.com/help.{0}.ashx".Fmt(Request.Url.AbsolutePath.Replace('/','_'));
+            string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath,"");
+            pa = pa.Substring(0, pa.Length - 1);
+            HelpLink.NavigateUrl = "http://wiki.bvcms.com/help.{0}.ashx".Fmt(pa.Replace('/', '_'));
         }
         protected void NewQuery_Click(object sender, EventArgs e)
         {

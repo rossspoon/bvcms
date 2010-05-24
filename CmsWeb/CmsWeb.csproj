@@ -96,6 +96,7 @@
     <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />

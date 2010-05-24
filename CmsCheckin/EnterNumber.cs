@@ -91,6 +91,7 @@ namespace CmsCheckin
         void timer1_Tick(object sender, EventArgs e)
         {
             Program.TimerStop();
+            Util.UnLockFamily();
             Program.ClearFields();
             this.GoHome("");
         }

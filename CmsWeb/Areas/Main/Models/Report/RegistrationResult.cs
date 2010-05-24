@@ -93,7 +93,9 @@ namespace CMSWeb.Areas.Main.Models.Report
 
                     var t2 = new PdfPTable(new float[] { 35, 65 });
                     SetDefaults(t2);
-                    if (i.h != null && i.h.PeopleId != i.p.PeopleId)
+                    if (i.h != null 
+                        && i.h.PeopleId != i.p.PeopleId 
+                        && i.h.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
                     {
                         t2.AddCell(i.h.Name);
                         if (i.h.CellPhone.HasValue())
@@ -116,12 +118,15 @@ namespace CMSWeb.Areas.Main.Models.Report
                     t2.AddCell(" ");
                     t2.AddCell(" ");
                     
+                    var rr = GetRecReg(i.p);
+
                     t2.AddCell("Date of Birth");
                     t2.AddCell(i.p.DOB);
+                    t2.AddCell("Shirt Size:");
+                    t2.AddCell(rr.ShirtSize);
                     t2.SpacingAfter = FLOAT_t1SpacingAfter;
                     doc.Add(t2);
 
-                    var rr = GetRecReg(i.p);
                     if (rr.MedicalDescription.HasValue())
                         doc.Add(new Phrase("Allergies or Medical Problems: " + rr.MedicalDescription));
                     var t4 = new PdfPTable(new float[] { 20, 80 });

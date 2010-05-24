@@ -527,6 +527,7 @@ namespace CMSWeb.Models
                 c.MinistryId = min.MinistryId;
             c.contactees.Add(new Contactee { PeopleId = task.WhoId.Value });
             c.contactsMakers.Add(new Contactor { PeopleId = PeopleId });
+            c.Comments = task.Notes;
             task.CompletedContact = c;
             task.StatusId = (int)Task.StatusCode.Complete;
             if (task.CoOwnerId == PeopleId)

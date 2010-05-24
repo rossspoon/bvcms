@@ -190,6 +190,20 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression HasTaskWithName(
+            ParameterExpression parm,
+            CompareType op,
+            string task)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.TasksAboutPerson.Any(t => t.Description.Contains(task)
+                    && t.StatusId != (int)Task.StatusCode.Complete);
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+
         internal static Expression RecentContactType(
             ParameterExpression parm,
             int days,

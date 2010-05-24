@@ -78,7 +78,24 @@ namespace CMSWeb.Models
                 else
                     w.WriteAttributeString("prev", "");
 
-                foreach (var o in q.Skip(startrow).Take(INT_PageSize))
+                var q2 = from o in q
+                         select new
+                         {
+                             o.LeaderName,
+                             o.OrganizationId,
+                             o.Location,
+                             o.BirthDayStart,
+                             o.BirthDayEnd,
+                             o.MeetingTime,
+                             o.OrganizationName,
+                             o.Limit,
+                             MemberCount = o.OrganizationMembers.Count(om =>
+                                 om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                                 && om.Pending != true
+                                 ),
+                         };
+
+                foreach (var o in q2.Skip(startrow).Take(INT_PageSize))
                 {
                     w.WriteStartElement("class");
                     w.WriteAttributeString("orgid", o.OrganizationId.ToString());

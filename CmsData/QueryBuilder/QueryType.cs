@@ -55,6 +55,7 @@ namespace CmsData
         HasPicture,
 		HasContacts,
         HasRelatedFamily,
+        HasTaskWithName,
         HasVolunteered,
         HaveVolunteerApplications,
         HomePhone,

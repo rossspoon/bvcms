@@ -115,6 +115,8 @@
             <li><a href='#' 
                 onclick='confirm("Are you sure you want to add a contact for all these people?")'><img src="/images/Tag.png" />
                 Add Contact</a></li>
+            <li><a href='/Task/NotesExcel/<%=ViewData["queryid"] %>'><img src="/images/Excel.png" />
+                Export Task Notes to Excel</a></li>
         </ul>
     </li>
 </ul>
