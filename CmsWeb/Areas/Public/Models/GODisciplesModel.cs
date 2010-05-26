@@ -405,7 +405,7 @@ namespace CMSWeb.Models
         private void MakeUserOnCms()
         {
             const string STR_Attendance = "Attendance";
-            const string STR_Staff = "Staff";
+            const string STR_Staff = "Access";
             discuser = DbUtil.Db.Users.FirstOrDefault(u => u.Username == username);
             if (discuser == null)
             {

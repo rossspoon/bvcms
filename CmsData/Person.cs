@@ -144,6 +144,10 @@ namespace CmsData
         {
             get { return Util.FormatCSZ4(PrimaryCity, PrimaryState, PrimaryZip); }
         }
+        public string CityStateZip5
+        {
+            get { return Util.FormatCSZ(PrimaryCity, PrimaryState, PrimaryZip); }
+        }
         public string AddrCityStateZip
         {
             get { return PrimaryAddress + " " + CityStateZip; }

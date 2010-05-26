@@ -81,12 +81,13 @@
                     </ul>
                 </li>
                 <li class="headlink">
-<%--                    <a href="/OrgSearch">Organization</a>
---%>                    <a href="/OrganizationSearch.aspx">Organization</a>
+                    <a href="/OrganizationSearch.aspx">Organization</a>
                     <ul>
                         <li>
-<%--                            <a href="/OrgSearch">Search</a>
---%>                            <a href="/OrganizationSearch.aspx">Search</a>
+                            <a href="/OrganizationSearch.aspx">Search</a>
+                        </li>
+                        <li>
+                            <a href="/OrgSearch">New Search</a>
                         </li>
                         <li><a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a></li>
                         <li><a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a></li>

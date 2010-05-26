@@ -7,7 +7,6 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 
-
 namespace CmsCheckin
 {
     public class Print
@@ -170,15 +169,18 @@ namespace CmsCheckin
                 sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
                 if (li.mv.Contains("V"))
                 {
-                    sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
-                    sw.WriteLine("^XA");
-                    sw.WriteLine("^MMT");
-                    sw.WriteLine("^PW609");
-                    sw.WriteLine("^LL0203");
-                    sw.WriteLine("^LS0");
-                    sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
-                    sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0}^FS", li.location));
-                    sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", 1));
+                    if (li.location.HasValue())
+                    {
+                        sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                        sw.WriteLine("^XA");
+                        sw.WriteLine("^MMT");
+                        sw.WriteLine("^PW609");
+                        sw.WriteLine("^LL0203");
+                        sw.WriteLine("^LS0");
+                        sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
+                        sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0}^FS", li.location));
+                        sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", 1));
+                    }
 
                     if (li.allergies.HasValue())
                     {
@@ -219,24 +221,27 @@ namespace CmsCheckin
                 sw.WriteLine("E");
                 if (li.mv.Contains("V"))
                 {
-                    sw.WriteLine("\x02n");
-                    sw.WriteLine("\x02M0500");
-                    sw.WriteLine("\x02O0220");
-                    sw.WriteLine("\x02V0");
-                    sw.WriteLine("\x02SG");
-                    sw.WriteLine("\x02d");
-                    sw.WriteLine("\x01D");
-                    sw.WriteLine("\x02L");
-                    sw.WriteLine("D11");
-                    sw.WriteLine("PG");
-                    sw.WriteLine("pC");
-                    sw.WriteLine("SG");
-                    sw.WriteLine("ySPM");
-                    sw.WriteLine("A2");
-                    sw.WriteLine("1911A3000450009" + li.first);
-                    sw.WriteLine("1911A2400040179" + li.location);
-                    sw.WriteLine("Q0001");
-                    sw.WriteLine("E");
+                    if (li.location.HasValue())
+                    {
+                        sw.WriteLine("\x02n");
+                        sw.WriteLine("\x02M0500");
+                        sw.WriteLine("\x02O0220");
+                        sw.WriteLine("\x02V0");
+                        sw.WriteLine("\x02SG");
+                        sw.WriteLine("\x02d");
+                        sw.WriteLine("\x01D");
+                        sw.WriteLine("\x02L");
+                        sw.WriteLine("D11");
+                        sw.WriteLine("PG");
+                        sw.WriteLine("pC");
+                        sw.WriteLine("SG");
+                        sw.WriteLine("ySPM");
+                        sw.WriteLine("A2");
+                        sw.WriteLine("1911A3000450009" + li.first);
+                        sw.WriteLine("1911A2400040179" + li.location);
+                        sw.WriteLine("Q0001");
+                        sw.WriteLine("E");
+                    }
 
                     if (li.allergies.HasValue())
                     {

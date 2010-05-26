@@ -37,13 +37,14 @@ namespace CMSWeb.Models
             GetCount = Count;
         }
 
+        private IQueryable<CmsData.Organization> organizations;
         public IEnumerable<OrganizationInfo> OrganizationList()
         {
-            var query = ApplySearch();
+            organizations = FetchOrgs();
             if (!_count.HasValue)
-                _count = query.Count();
-            query = ApplySort(query).Skip(StartRow).Take(PageSize);
-            return OrganizationList(query);
+                _count = organizations.Count();
+            organizations = ApplySort(organizations).Skip(StartRow).Take(PageSize);
+            return OrganizationList(organizations);
         }
         public IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query)
         {
@@ -73,7 +74,7 @@ namespace CMSWeb.Models
         public IEnumerable OrganizationExcelList()
         {
             var q = from o in DbUtil.Db.Organizations select o;
-            q = ApplySearch();
+            q = FetchOrgs();
             var q2 = from o in q
                      select new
                      {
@@ -139,51 +140,55 @@ namespace CMSWeb.Models
         public int Count()
         {
             if (!_count.HasValue)
-                _count = ApplySearch().Count();
+                _count = FetchOrgs().Count();
             return _count.Value;
         }
-        public IQueryable<CmsData.Organization> ApplySearch()
+        private IQueryable<CmsData.Organization> FetchOrgs()
         {
-            var query = DbUtil.Db.Organizations.AsQueryable();
+            if (organizations != null)
+                return organizations;
+
+            organizations = DbUtil.Db.Organizations.AsQueryable();
             if (Name.HasValue())
             {
                 if (Name.AllDigits())
-                    query = from o in query
-                            where o.OrganizationId == Name.ToInt()
-                            select o;
+                    organizations = from o in organizations
+                                    where o.OrganizationId == Name.ToInt()
+                                    select o;
                 else
-                    query = from o in query
-                            where o.OrganizationName.Contains(Name)
-                                || o.LeaderName.Contains(Name)
-                                || o.Location.Contains(Name)
-                                || o.DivOrgs.Any(t => t.Division.Name.Contains(Name))
-                            select o;
+                    organizations = from o in organizations
+                                    where o.OrganizationName.Contains(Name)
+                                        || o.LeaderName.Contains(Name)
+                                        || o.Location.Contains(Name)
+                                        || o.DivOrgs.Any(t => t.Division.Name.Contains(Name))
+                                    select o;
             }
             if (DivisionId > 0)
-                query = from o in query
-                        where o.DivOrgs.Any(t => t.DivId == DivisionId)
-                        select o;
+                organizations = from o in organizations
+                                where o.DivOrgs.Any(t => t.DivId == DivisionId)
+                                select o;
             else if (ProgramId > 0)
-                query = from o in query
-                        where o.DivOrgs.Any(t => t.Division.ProgId == ProgramId)
-                        select o;
+                organizations = from o in organizations
+                                where o.DivOrgs.Any(t => t.Division.ProgId == ProgramId)
+                                || o.Division.ProgId == ProgramId
+                                select o;
 
             if (ScheduleId > 0)
-                query = from o in query
-                        where o.ScheduleId == ScheduleId
-                        select o;
+                organizations = from o in organizations
+                                where o.ScheduleId == ScheduleId
+                                select o;
 
             if (StatusId > 0)
-                query = from o in query
-                        where o.OrganizationStatusId == StatusId
-                        select o;
+                organizations = from o in organizations
+                                where o.OrganizationStatusId == StatusId
+                                select o;
 
             if (CampusId > 0)
-                query = from o in query
-                        where o.CampusId == CampusId
-                        select o;
+                organizations = from o in organizations
+                                where o.CampusId == CampusId
+                                select o;
 
-            return query;
+            return organizations;
         }
         public IQueryable<CmsData.Organization> ApplySort(IQueryable<CmsData.Organization> query)
         {
@@ -353,6 +358,10 @@ namespace CMSWeb.Models
             });
             return list;
         }
+        public IEnumerable<SelectListItem> DivisionIds()
+        {
+            return DivisionIds(ProgramId ?? 0);
+        }
         public static IEnumerable<SelectListItem> DivisionIds(int ProgId)
         {
             var q = from d in DbUtil.Db.Divisions
@@ -367,7 +376,7 @@ namespace CMSWeb.Models
             list.Insert(0, new SelectListItem
             {
                 Value = "0",
-                Text = "(not specified)",
+                Text = ProgId == 0 ? "(select a program)" : "(not specified)",
             });
             return list;
         }

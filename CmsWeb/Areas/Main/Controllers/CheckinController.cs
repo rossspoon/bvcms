@@ -183,7 +183,7 @@ namespace CMSWeb.Areas.Main.Controllers
             r.Content = "success";
             return r;
         }
-        [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Access")]
         public ActionResult CheckIn(int? id, int? pid)
         {
             Session.Timeout = 1000;

@@ -174,7 +174,7 @@
                 </tr>
                 </table>
             </fieldset>
-            <p>If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp", "[create SmlHelp setting]") %></p>
         </div>
     <% } %>
+    <p style="color:Black;">If you are having difficulty registering online, <%=DbUtil.Settings("SmlHelp", "[create SmlHelp setting]") %></p>
 </asp:Content>

@@ -257,7 +257,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                         case "BirthDayStart":
                             o.BirthDayStart = a[c].ToDate();
                             break;
-                        case "":
+                        case "BirthDayEnd":
                             o.BirthDayEnd = a[c].ToDate();
                             break;
                         case "Deposit":
@@ -309,3 +309,9 @@ namespace CMSWeb.Areas.Setup.Controllers
         }
     }
 }
+
+
+
+
+
+

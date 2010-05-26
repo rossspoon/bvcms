@@ -31,7 +31,7 @@ namespace CMSWeb.Models
                     _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
                     _org = DbUtil.Db.LoadOrganizationById(classid.Value);
-                if (_org == null && divid.HasValue)
+                if (_org == null && divid.HasValue && (Found == true || IsValidForNew))
                     _org = GetAppropriateOrg();
                 return _org;
             }
@@ -103,7 +103,7 @@ namespace CMSWeb.Models
         {
             get { return gender == 1 ? "Male" : "Female"; }
         }
-        public string marrieddisplay
+       public string marrieddisplay
         {
             get { return married == 10 ? "Single" : "Married"; }
         }
@@ -126,32 +126,49 @@ namespace CMSWeb.Models
                 Found = person != null;
                 if (count == 1)
                 {
-                    if (MemberOnly() && person.MemberStatusId != (int)Person.MemberStatusCode.Member)
-                        ModelState.AddModelError("find", "Sorry, must be a member of church");
-                    else if (org != null && org.ValidateOrgs.HasValue())
-                    {
-                        var q = from s in org.ValidateOrgs.Split(',')
-                                select s.ToInt();
-                        var a = q.ToArray();
-                        if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
-                            ModelState.AddModelError("find", "Must be member of specified organization");
-                    }
-                    var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
-                    if (m != null)
-                    {
-                        ModelState.AddModelError("find", "This person is already registered");
-                        IsValidForContinue = false;
-                    }
-
                     address = person.PrimaryAddress;
                     city = person.PrimaryCity;
                     state = person.PrimaryState;
                     zip = person.PrimaryZip;
                     gender = person.GenderId;
                     married = person.MaritalStatusId == 2 ? 2 : 1;
+
+                    if (ComputesOrganizationByAge() && org == null)
+                    {
+                        ModelState.AddModelError("dob", "Sorry, cannot find an appropriate age group");
+                        IsValidForContinue = false;
+                    }
+                    else if (MemberOnly() && person.MemberStatusId != (int)Person.MemberStatusCode.Member)
+                    {
+                        ModelState.AddModelError("find", "Sorry, must be a member of church");
+                        IsValidForContinue = false;
+                    }
+                    else if (org != null)
+                    {
+                        var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
+                        if (m != null)
+                        {
+                            ModelState.AddModelError("find", "This person is already registered");
+                            IsValidForContinue = false;
+                        }
+                        else if (org.ValidateOrgs.HasValue())
+                        {
+                            var q = from s in org.ValidateOrgs.Split(',')
+                                    select s.ToInt();
+                            var a = q.ToArray();
+                            if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
+                            {
+                                ModelState.AddModelError("find", "Must be member of specified organization");
+                                IsValidForContinue = false;
+                            }
+                        }
+                    }
                 }
                 else if (count > 1)
+                {
                     ModelState.AddModelError("find", "More than one match, sorry");
+                    IsValidForContinue = false;
+                }
                 else if (count == 0)
                 {
                     ModelState.AddModelError("find", "record not found");

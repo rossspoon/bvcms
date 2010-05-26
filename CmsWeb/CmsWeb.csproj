@@ -130,6 +130,7 @@
     <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
     <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\RosterListResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RegistrationResult.cs" />
     <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlResult.cs" />
@@ -141,9 +142,9 @@
     </Compile>
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
-    <Compile Include="Areas\Manage\Controllers\GroupMembersController.cs" />
+    <Compile Include="Areas\Manage\Controllers\GroupsController.cs" />
     <Compile Include="Areas\Manage\Controllers\OrgMembersController.cs" />
-    <Compile Include="Areas\Manage\Models\GroupMembersModel.cs" />
+    <Compile Include="Areas\Manage\Models\GroupsModel.cs" />
     <Compile Include="Areas\Manage\Models\OrgMembersModel.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\OnlineRegController.cs" />
@@ -1295,8 +1296,10 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
-    <Content Include="Areas\Manage\Views\GroupMembers\Index.aspx" />
-    <Content Include="Areas\Manage\Views\GroupMembers\List.ascx" />
+    <Content Include="Areas\Manage\Views\Groups\All.aspx" />
+    <Content Include="Areas\Manage\Views\Groups\Coaches.aspx" />
+    <Content Include="Areas\Manage\Views\Groups\Index.aspx" />
+    <Content Include="Areas\Manage\Views\Groups\List.ascx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
@@ -1582,6 +1585,7 @@
     <Content Include="Config\CustomErrors.config" />
     <Content Include="Config\smtp.config" />
     <Content Include="Content\attention48.png" />
+    <Content Include="Content\blackredgradient.png" />
     <Content Include="Content\bvorgfiles\black_bg_main_cm.jpg" />
     <Content Include="Content\check48.png" />
     <Content Include="Content\checkboxtree.css" />
@@ -1622,6 +1626,7 @@
     <Content Include="Content\js\jquery.styledButton.js" />
     <Content Include="Content\js\jquery.validate.min.js" />
     <Content Include="Content\js\jquery.idle-timer.js" />
+    <Content Include="Content\smlbackgroundredgradient.jpg" />
     <Content Include="Content\styledButton.css" />
     <Content Include="Content\supertabfish2.css" />
     <Content Include="Content\dropdown_hover.gif" />

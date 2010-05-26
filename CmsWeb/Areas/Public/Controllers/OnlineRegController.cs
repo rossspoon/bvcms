@@ -111,23 +111,18 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
             p.ValidateModelForFind(ModelState);
-            if (p.org == null)
-            {
-                if (p.ComputesOrganizationByAge())
-                    ModelState.AddModelError("dob", "Sorry, cannot find an appropriate age group");
-            }
-            else
+            if (p.org != null)
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, that age group is filled");
+                if (p.Found == true)
+                {
+                    FillPriorInfo(p);
+                }
+                if (!p.AnyOtherInfo())
+                    p.OtherOK = true;
             }
-            if (p.Found == true)
-            {
-                FillPriorInfo(p);
-            }
-            if (!p.AnyOtherInfo())
-                p.OtherOK = true;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

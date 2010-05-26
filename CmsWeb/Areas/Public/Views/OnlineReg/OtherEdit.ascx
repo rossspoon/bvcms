@@ -154,8 +154,8 @@
    { %>
      <tr>
         <td><label for="coaching">Interested in Coaching?</label></td>
-        <td><input type="radio" name="m.List[" + Model.index + "].coaching" value = "true" /> Yes
-            <input type="radio" name="m.List[" + Model.index + "].coaching" value = "false" /> No</td>
+        <td><input type="radio" name="m.List[<%=Model.index%>].coaching" value = "true"  <%=Model.coaching == true ? "checked='checked'" : "" %> /> Yes
+            <input type="radio" name="m.List[<%=Model.index%>].coaching" value = "false" <%=Model.coaching == false ? "checked='checked'" : "" %> /> No</td>
         <td><%= Html.ValidationMessage("coaching") %></td>
     </tr>
 <% }

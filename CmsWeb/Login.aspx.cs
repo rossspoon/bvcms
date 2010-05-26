@@ -73,7 +73,7 @@ By logging in below, you agree that you understand this purpose and will abide b
         }
         public static void CheckStaffRole(string name)
         {
-            if (!Roles.IsUserInRole(name, "Staff") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
+            if (!Roles.IsUserInRole(name, "Access") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
                 if (name.HasValue())
                     NotifyAdmins("user loggedin without a role on " + Util.Host,

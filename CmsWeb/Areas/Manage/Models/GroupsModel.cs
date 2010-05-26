@@ -11,55 +11,55 @@ using CMSPresenter;
 
 namespace CMSWeb.Models
 {
-    public class GroupMembersModel
+    public class GroupsModel
     {
-        private int? _AgeDivId;
-        public int? AgeDivId
+        private int? _OrgId;
+        public int? OrgId
         {
             get
             {
-                if (_AgeDivId != null)
-                    return _AgeDivId;
-                _AgeDivId = DbUtil.Db.UserPreference("AgeDivId", "0").ToInt2();
-                return _AgeDivId;
+                if (_OrgId != null)
+                    return _OrgId;
+                _OrgId = DbUtil.Db.UserPreference("GroupsOrgId", "0").ToInt2();
+                return _OrgId;
             }
             set
             {
-                _AgeDivId = value;
-                DbUtil.Db.SetUserPreference("AgeDivId", value);
+                _OrgId = value;
+                DbUtil.Db.SetUserPreference("GroupsOrgId", value);
             }
         }
 
-        private CmsData.Organization _AgeDiv;
-        public CmsData.Organization AgeDiv
+        private CmsData.Organization _org;
+        public CmsData.Organization Org
         {
             get
             {
-                if (_AgeDiv == null)
+                if (_org == null)
                 {
-                    _AgeDiv = DbUtil.Db.Organizations.SingleOrDefault(p => p.OrganizationId == AgeDivId);
+                    _org = DbUtil.Db.Organizations.SingleOrDefault(p => p.OrganizationId == OrgId);
                 }
-                return _AgeDiv;
+                return _org;
             }
         }
-        private int? _LeagueId;
-        public int? LeagueId
+        private int? _DivId;
+        public int? DivId
         {
             get
             {
-                if (_LeagueId != null)
-                    return _LeagueId;
-                _LeagueId = DbUtil.Db.UserPreference("LeagueId", "0").ToInt2();
-                return _LeagueId;
+                if (_DivId != null)
+                    return _DivId;
+                _DivId = DbUtil.Db.UserPreference("GroupsDivId", "0").ToInt2();
+                return _DivId;
             }
             set
             {
-                _LeagueId = value;
-                DbUtil.Db.SetUserPreference("LeagueId", value);
+                _DivId = value;
+                DbUtil.Db.SetUserPreference("GroupsDivId", value);
             }
         }
 
-        public string TargetTeamName { get; set; }
+        public string TargetGroupName { get; set; }
 
         private bool? _FilterUnassigned;
         public bool FilterUnassigned
@@ -68,13 +68,13 @@ namespace CMSWeb.Models
             {
                 if (_FilterUnassigned != null)
                     return _FilterUnassigned.Value;
-                _FilterUnassigned = DbUtil.Db.UserPreference("RecFilterUnassigned", "false").ToBool();
+                _FilterUnassigned = DbUtil.Db.UserPreference("GroupsFilterUnassigned", "false").ToBool();
                 return _FilterUnassigned.Value;
             }
             set
             {
                 _FilterUnassigned = value;
-                DbUtil.Db.SetUserPreference("RecFilterUnassigned", value);
+                DbUtil.Db.SetUserPreference("GroupsFilterUnassigned", value);
             }
         }
 
@@ -85,13 +85,13 @@ namespace CMSWeb.Models
             {
                 if (_NormalMembersOnly != null)
                     return _NormalMembersOnly.Value;
-                _NormalMembersOnly = DbUtil.Db.UserPreference("RecNormalMembersOnly", "false").ToBool();
+                _NormalMembersOnly = DbUtil.Db.UserPreference("GroupsNormalMembersOnly", "false").ToBool();
                 return _NormalMembersOnly.Value;
             }
             set
             {
                 _NormalMembersOnly = value;
-                DbUtil.Db.SetUserPreference("RecNormalMembersOnly", value);
+                DbUtil.Db.SetUserPreference("GroupsNormalMembersOnly", value);
             }
         }
 
@@ -138,15 +138,15 @@ namespace CMSWeb.Models
             }
             return list2;
         }
-        public IEnumerable<ParticipantInfo> FetchParticipants()
+        public IEnumerable<MemberInfo> FetchMembers()
         {
             var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.OrganizationId == AgeDivId
+                    where om.OrganizationId == OrgId
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
-                    let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith("TM:")) > 0
+                    let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith(Prefix)) > 0
                     let recreg = om.Person.RecRegs.Single()
                     where !FilterUnassigned || team == false
-                    select new ParticipantInfo
+                    select new MemberInfo
                     {
                         IsSelected = selected.Contains(om.PeopleId),
                         PeopleId = om.PeopleId,
@@ -158,7 +158,7 @@ namespace CMSWeb.Models
                         BYear = om.Person.BirthYear,
                         MemberType = om.MemberType.Description,
                         MemberStatus = "p=" + (om.Person.MemberStatusId == 10 ? "Yes" : "no") + ", hh=" + ((DbUtil.Db.OneHeadOfHouseholdIsMember(om.Person.FamilyId) ?? false) ? "Yes" : "no"),
-                        TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith("TM:")).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
+                        TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith(Prefix)).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
                         FeePaid = om.Amount > 0,
                         Request = om.Request,
                         ShirtSize = recreg.ShirtSize,
@@ -167,14 +167,14 @@ namespace CMSWeb.Models
             q = ApplySort(q);
             return q;
         }
-        public IEnumerable<ParticipantInfo> FetchAll()
+        public IEnumerable<MemberInfo> FetchAll()
         {
             var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.Organization.DivOrgs.Any(di => di.DivId == LeagueId)
-                    let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith("TM:")) > 0
+                    where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
+                    let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith(Prefix)) > 0
                     let recreg = om.Person.RecRegs.SingleOrDefault()
                     where recreg != null
-                    select new ParticipantInfo
+                    select new MemberInfo
                     {
                         PeopleId = om.PeopleId,
                         OrgId = om.OrganizationId,
@@ -185,7 +185,7 @@ namespace CMSWeb.Models
                         BYear = om.Person.BirthYear,
                         MemberType = om.MemberType.Description,
                         MemberStatus = "p=" + (om.Person.MemberStatusId == 10 ? "Yes" : "no") + ", hh=" + ((DbUtil.Db.OneHeadOfHouseholdIsMember(om.Person.FamilyId) ?? false) ? "Yes" : "no"),
-                        TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith("TM:")).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
+                        TeamName = om.OrgMemMemTags.Where(mt => mt.MemberTag.Name.StartsWith(Prefix)).Select(mt => mt.MemberTag.Name).SingleOrDefault(),
                         FeePaid = om.Amount > 0,
                         Request = om.Request,
                         ShirtSize = recreg.ShirtSize,
@@ -197,7 +197,7 @@ namespace CMSWeb.Models
         public IEnumerable<SelectListItem> ShirtSizes()
         {
             var q = from om in DbUtil.Db.OrganizationMembers
-                    where om.Organization.DivOrgs.Any(di => di.DivId == LeagueId)
+                    where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
                     let recreg = om.Person.RecRegs.SingleOrDefault()
                     where recreg != null
                     group om by recreg.ShirtSize into g
@@ -208,37 +208,8 @@ namespace CMSWeb.Models
                     };
             return q;
         }
-        //public IEnumerable<ParticipantInfo> FetchParticipants0()
-        //{
-        //    var q = from recreg in DbUtil.Db.RecRegs
-        //            where (recreg.DivId ?? 0) == 0
-        //            select new ParticipantInfo
-        //            {
-        //                IsSelected = selected.Contains(recreg.PeopleId ?? 0),
-        //                PeopleId = recreg.PeopleId,
-        //                Hash = 0,
-        //                Name = recreg.PeopleId.HasValue? recreg.Person.Name : "",
-        //                Request = recreg.Request,
-        //                ShirtSize = recreg.ShirtSize,
-        //            };
-        //    if (Dir == "asc")
-        //        switch (Sort)
-        //        {
-        //            case "Uploaded":
-        //                q = q.OrderBy(i => i.Uploaded);
-        //                break;
-        //        }
-        //    else
-        //        switch (Sort)
-        //        {
-        //            case "Uploaded":
-        //                q = q.OrderByDescending(i => i.Uploaded);
-        //                break;
-        //        }
-        //    return q;
-        //}
 
-        private IQueryable<ParticipantInfo> ApplySort(IQueryable<ParticipantInfo> q)
+        private IQueryable<MemberInfo> ApplySort(IQueryable<MemberInfo> q)
         {
             if (Dir == "asc")
                 switch (Sort)
@@ -314,48 +285,60 @@ namespace CMSWeb.Models
                 }
             return q;
         }
-        public void AssignToTeam()
+        private string _Prefix;
+        public string Prefix
+        {
+            get
+            {
+                return _Prefix ?? string.Empty;
+            }
+            set
+            {
+                _Prefix = value;
+            }
+        }
+        public void AssignToGroup()
         {
             foreach (var pid in selected)
             {
                 var team = (from mt in DbUtil.Db.OrgMemMemTags
-                            where mt.PeopleId == pid && mt.OrganizationMember.OrganizationId == AgeDivId
-                            where mt.MemberTag.Name.StartsWith("TM:")
+                            where mt.PeopleId == pid && mt.OrganizationMember.OrganizationId == OrgId
+                            where mt.MemberTag.Name.StartsWith(Prefix)
                             select mt).SingleOrDefault();
                 if (team != null)
                 {
                     DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(team);
                     DbUtil.Db.SubmitChanges();
                 }
-                var jointeam = DbUtil.Db.MemberTags.SingleOrDefault(mt => mt.Name == TargetTeamName && mt.OrgId == AgeDivId);
+                var jointeam = DbUtil.Db.MemberTags.SingleOrDefault(mt => mt.Name == TargetGroupName && mt.OrgId == OrgId);
                 team = new OrgMemMemTag
                 {
                     MemberTagId = jointeam.Id,
-                    OrgId = AgeDivId.Value,
+                    OrgId = OrgId.Value,
                     PeopleId = pid
                 };
                 DbUtil.Db.OrgMemMemTags.InsertOnSubmit(team);
                 DbUtil.Db.SubmitChanges();
             }
         }
-        public IEnumerable<SelectListItem> Leagues()
+        public IEnumerable<SelectListItem> Divisions()
         {
-            var q = from league in DbUtil.Db.RecLeagues
-                    where league.Division.Organizations.Count() > 0
-                    orderby league.Division.Name
+            var q = from div in DbUtil.Db.Divisions
+                    where div.Organizations.Count() > 0
+                    orderby div.Name
                     select new SelectListItem
                     {
-                        Text = league.Division.Name,
-                        Value = league.DivId.ToString(),
+                        Text = div.Name,
+                        Value = div.Id.ToString(),
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(Select League)", Value = "0", Selected = true });
+            list.Insert(0, new SelectListItem { Text = "(Select division)", Value = "0", Selected = true });
             return list;
         }
-        public IEnumerable<SelectListItem> AgeDivisions()
+        public IEnumerable<SelectListItem> Organizations()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == LeagueId
+                    where o.DivisionId == DivId
                     orderby o.OrganizationName
                     select new SelectListItem
                     {
@@ -364,16 +347,16 @@ namespace CMSWeb.Models
                     };
             var list = q.ToList();
             if (list.Count == 0)
-                list.Insert(0, new SelectListItem { Text = "(Select League First)", Value = "0", Selected = true });
+                list.Insert(0, new SelectListItem { Text = "(Select division First)", Value = "0", Selected = true });
             else
-                list.Insert(0, new SelectListItem { Text = "(Select Age Division)", Value = "0", Selected = true });
+                list.Insert(0, new SelectListItem { Text = "(Select organization)", Value = "0", Selected = true });
             return list;
         }
-        public IEnumerable<SelectListItem> TargetTeams()
+        public IEnumerable<SelectListItem> TargetGroups()
         {
             var q = from mt in DbUtil.Db.MemberTags
-                    where mt.OrgId == AgeDivId
-                    where mt.Name.StartsWith("TM:")
+                    where mt.OrgId == OrgId
+                    where mt.Name.StartsWith(Prefix)
                     orderby mt.Name
                     select new SelectListItem
                     {
@@ -381,20 +364,33 @@ namespace CMSWeb.Models
                     };
             return q;
         }
-        //public void DeleteRecReg(int id)
-        //{
-        //    var r = DbUtil.Db.RecRegs.Single(vb => vb.Id == id);
-        //    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o => o.OrganizationId == r.OrgId && o.PeopleId == r.PeopleId);
-        //    if (om != null)
-        //        om.Drop();
-        //    var img = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == r.ImgId);
-        //    DbUtil.Db.RecRegs.DeleteOnSubmit(r);
-        //    DbUtil.Db.SubmitChanges();
-        //    if (img != null)
-        //    {
-        //        ImageData.DbUtil.Db.Images.DeleteOnSubmit(img);
-        //        ImageData.DbUtil.Db.SubmitChanges();
-        //    }
-        //}
+
+        public class MemberInfo
+        {
+            public bool IsSelected { get; set; }
+            public string Checked
+            {
+                get { return IsSelected ? "checked='checked'" : ""; }
+            }
+            public int? PeopleId { get; set; }
+            public int? OrgId { get; set; }
+            public string Name { get; set; }
+            public string Name2 { get; set; }
+            public string MemberType { get; set; }
+            public string MemberStatus { get; set; }
+            public string TeamName { get; set; }
+            public bool? FeePaid { get; set; }
+            public string Request { get; set; }
+            public string ShirtSize { get; set; }
+            public int? BDay { get; set; }
+            public int? BMon { get; set; }
+            public int? BYear { get; set; }
+            public string Birthday
+            {
+                get { return Util.FormatBirthday(BYear, BMon, BDay); }
+            }
+            public int? Hash { get; set; }
+            public DateTime? Uploaded { get; set; }
+        }
     }
 }

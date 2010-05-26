@@ -41,7 +41,7 @@
        { %>
     <tr><td></td>
         <td>
-        <% if (!Model.Found.HasValue || Model.org == null)
+        <% if (!Model.Found.HasValue)
            { %>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Find Record</a>
         <% }
@@ -49,7 +49,7 @@
            { %>
            <p class="blue"><%=Model.NotFoundText %></p>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
-            <% if ((Model.org.MemberOnly ?? false) == false && Model.IsValidForContinue)
+            <% if (Model.IsValidForContinue && !Model.MemberOnly())
                { %>            
             or <a href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
             <% } %>

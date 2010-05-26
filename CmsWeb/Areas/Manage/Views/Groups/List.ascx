@@ -1,6 +1,5 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.GroupsModel>" %>
-<% IEnumerable<CMSWeb.Models.ParticipantInfo> participants;
-   participants = Model.FetchParticipants();
+<% var participants = Model.FetchMembers();
    foreach (var r in participants)
    { %>
 <tr>

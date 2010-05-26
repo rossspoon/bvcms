@@ -89,6 +89,8 @@
                         <li>
                             <asp:HyperLink ID="OrgSearchLink" runat="server">Search</asp:HyperLink></li>
                         <li>
+                            <asp:HyperLink ID="OrgSearchLink2" runat="server" NavigateUrl="/OrgSearch">New Search</asp:HyperLink></li>
+                        <li>
                             <asp:HyperLink ID="HyperLink15" NavigateUrl="~/EmailAttendanceNotices.aspx" runat="server">Email Attendance Notices</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="HyperLink20" NavigateUrl="~/EnrollmentControlReport.aspx" runat="server">Enrollment Control Report</asp:HyperLink></li>

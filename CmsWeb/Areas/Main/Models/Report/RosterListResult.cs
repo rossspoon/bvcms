@@ -23,9 +23,24 @@ using System.Diagnostics;
 
 namespace CMSWeb.Areas.Main.Models.Report
 {
-    public class ClassListResult : ActionResult
+    class MemberInfo
     {
-        public int? div, schedule, meetingid, orgid;
+        public int PeopleId { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Address2 { get; set; }
+        public string CityStateZip { get; set; }
+        public string HomePhone { get; set; }
+        public string CellPhone { get; set; }
+        public string MemberStatus { get; set; }
+        public bool ThisChurch { get; set; }
+        public bool ActiveOther { get; set; }
+        public string MemberType { get; set; }
+        public string Medical { get; set; }
+    }
+    public class RosterListResult : ActionResult
+    {
+        public int? div, schedule, orgid;
         public string name;
 
         public override void ExecuteResult(ControllerContext context)
@@ -48,19 +63,41 @@ namespace CMSWeb.Areas.Main.Models.Report
             doc.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetController();
             foreach (var o in list1)
             {
                 var t = StartPageSet(o);
 
                 var color = Color.BLACK;
-                foreach (var m in ctl.FetchOrgMembers(o.OrgId, null))
+
+                var q = from om in DbUtil.Db.OrganizationMembers
+                        where om.OrganizationId == o.OrgId
+                        where (om.Pending ?? false) == false
+                        where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        let rr = om.Person.RecRegs.FirstOrDefault()
+                        orderby om.Person.Name2
+                        select new MemberInfo
+                        {
+                            ActiveOther = rr.ActiveInAnotherChurch ?? false,
+                            ThisChurch = rr.Member ?? false,
+                            Address = om.Person.PrimaryAddress,
+                            Address2 = om.Person.PrimaryAddress2,
+                            CityStateZip = om.Person.CityStateZip5,
+                            CellPhone = om.Person.CellPhone,
+                            HomePhone = om.Person.HomePhone,
+                            MemberStatus = om.Person.MemberStatus.Description,
+                            MemberType = om.MemberType.Description,
+                            Name = om.Person.Name,
+                            Medical = rr.MedicalDescription,
+                            PeopleId = om.PeopleId
+                        };
+
+                foreach (var m in q)
                 {
                     if (color == Color.WHITE)
                         color = new GrayColor(240);
                     else
                         color = Color.WHITE;
-                    AddRow(t, m,  color);
+                    AddRow(t, m, color);
                 }
                 doc.Add(t);
             }
@@ -69,15 +106,14 @@ namespace CMSWeb.Areas.Main.Models.Report
             Response.End();
         }
 
-        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
-        private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
+        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+        private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 9);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
-        private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private PageEvent pageEvents = new PageEvent();
         private Document doc;
         private PdfContentByte dc;
 
-        float[] HeaderWids = new float[] { 45, 35, 15 };
+        float[] HeaderWids = new float[] { 35, 43, 53, 22, 30 };
 
         private PdfPTable StartPageSet(OrgInfo o)
         {
@@ -87,36 +123,39 @@ namespace CMSWeb.Areas.Main.Models.Report
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
             t.WidthPercentage = 100;
             t.DefaultCell.Padding = 5;
-            pageEvents.StartPageSet("Class List: {0} - {1} ({2})".Fmt(o.Division, o.Name, o.Teacher));
+            pageEvents.StartPageSet("{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher));
 
-            t.AddCell(new Phrase("Name\nAddress", boldfont));
-            t.AddCell(new Phrase("Phones\nEmail", boldfont));
-            t.AddCell(new Phrase("\nMember Type", boldfont));
+            t.AddCell(new Phrase("\nName", boldfont));
+            t.AddCell(new Phrase("\nContact Info", boldfont));
+            t.AddCell(new Phrase("\nChurch", boldfont));
+            t.AddCell(new Phrase("Member\nType", boldfont));
+            t.AddCell(new Phrase("\nMedical", boldfont));
             return t;
         }
 
-        private void AddRow(PdfPTable t, PersonMemberInfo p, Color color)
+        private void AddRow(PdfPTable t, MemberInfo p, Color color)
         {
             t.DefaultCell.BackgroundColor = color;
 
-            var c = new Phrase();
-            c.Add(new Chunk(p.Name, boldfont));
-            c.Add(new Chunk("  ({0})\n".Fmt(p.PeopleId), smallfont));
+            var ph = new Phrase();
+            ph.Add(new Chunk(p.Name, font));
+            ph.Add(new Chunk("\n  ({0})".Fmt(p.PeopleId), smallfont));
+            t.AddCell(ph);
+
             var sb = new StringBuilder();
             AddLine(sb, p.Address);
             AddLine(sb, p.Address2);
             AddLine(sb, p.CityStateZip);
-            c.Add(new Chunk(sb.ToString(), font));
-            t.AddCell(c);
-
-            sb = new StringBuilder();
             AddPhone(sb, p.HomePhone, "h ");
             AddPhone(sb, p.CellPhone, "c ");
-            AddPhone(sb, p.WorkPhone, "w ");
-            AddLine(sb, p.Email);
             t.AddCell(new Phrase(sb.ToString(), font));
 
-            t.AddCell(new Phrase(p.MemberType));
+            sb = new StringBuilder();
+            AddLine(sb, p.MemberStatus);
+            AddLine(sb, p.ActiveOther ? "Active in another church" : "Not Active in another church");
+            t.AddCell(new Phrase(sb.ToString(), font));
+            t.AddCell(new Phrase(p.MemberType, font));
+            t.AddCell(new Phrase(p.Medical, font));
         }
         private void AddLine(StringBuilder sb, string value)
         {
@@ -258,20 +297,6 @@ namespace CMSWeb.Areas.Main.Models.Report
                 dc.EndText();
                 return font.GetWidthPoint(text, size);
             }
-        }
-        class MemberInfo
-        {
-            public string Name { get; set; }
-            public string Addr1 { get; set; }
-            public string Addr2 { get; set; }
-            public string CSZ { get; set; }
-            public string HomePhone { get; set; }
-            public string Cell { get; set; }
-            public string MemberStatus { get; set; }
-            public string ThisChurch { get; set; }
-            public string ActiveOther { get; set; }
-            public string MemberType { get; set; }
-            public string PropertyName { get; set; }
         }
     }
 }

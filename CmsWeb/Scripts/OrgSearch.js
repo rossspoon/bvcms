@@ -19,7 +19,7 @@
         var q = f.serialize();
         $.blockUI();
         $.post($('#search').attr('href'), q, function(ret) {
-            $('#results').html(ret).ready(function() {
+            $('#results').replaceWith(ret).ready(function() {
                 $.fmtTable();
                 $.unblockUI();
             });

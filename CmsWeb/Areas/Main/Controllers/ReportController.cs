@@ -86,7 +86,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 schedule = schedule,
             };
         }
-        public ActionResult Roster(int? queryid, int? org, int? div, int? schedule, string name, string tm)
+        public ActionResult Roster1(int? queryid, int? org, int? div, int? schedule, string name, string tm)
         {
             return new RosterResult
             {
@@ -95,6 +95,16 @@ namespace CMSWeb.Areas.Main.Controllers
                 div = div,
                 schedule = schedule,
                 tm = tm,
+            };
+        }
+        public ActionResult Roster(int? org, int? div, int? schedule, string name)
+        {
+            return new RosterListResult
+            {
+                 orgid = org,
+                div = div,
+                schedule = schedule,
+                name = name,
             };
         }
         public ActionResult EnrollmentControl(int div, int subdiv, int schedule)

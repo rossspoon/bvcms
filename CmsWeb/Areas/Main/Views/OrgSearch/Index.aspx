@@ -32,9 +32,7 @@
                     <tr>
                         <th>Division:</th>
                         <td colspan="3">
-                            <select id="DivisionId" name="DivisionId">
-                                <option value="0">(select a program)</option>
-                            </select>
+                        <%=Html.DropDownList("DivisionId", Model.DivisionIds()) %>
                         </td>
                     </tr>
                     <tr>
