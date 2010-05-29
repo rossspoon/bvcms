@@ -197,8 +197,6 @@
                         <li>
                             <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx" runat="server">Delete Special Tags</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="SessionState" NavigateUrl="~/Admin/SessionState.aspx" runat="server">Session State</asp:HyperLink></li>
-                        <li>
                             <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
                         <li ID="NewUserItem" runat="server" visible="false">
                             <asp:HyperLink ID="NewUser" runat="server">Add As New User</asp:HyperLink></li>

@@ -43,7 +43,7 @@ namespace CMSPresenter
                         MemberCount = o.MemberCount,
                         AttendanceTrackingLevel = dict[o.AttendTrkLevelId].Value,
                         DivisionId = o.Division.Id,
-                        DivisionName = o.Division.Name,
+                        DivisionName = o.DivisionName,
                         FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
                         LastMeetingDate = o.LastMeetingDate.FormatDate(),
                         MeetingTime = o.MeetingTime,

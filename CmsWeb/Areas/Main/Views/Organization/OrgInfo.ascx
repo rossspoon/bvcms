@@ -12,7 +12,7 @@
     </tr>
     <tr>
         <th>Main Division:</th>
-        <td><span title="<%=Model.DivisionsTitle() %>"><%=o.Division.Name %></span></td>
+        <td><span title="<%=Model.DivisionsTitle() %>"><%=o.DivisionName %></span></td>
     </tr>
     <tr>
         <th>Location:</th>

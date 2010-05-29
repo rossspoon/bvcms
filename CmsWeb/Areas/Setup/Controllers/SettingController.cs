@@ -189,7 +189,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                 var oid = a[0].ToInt();
                 var o = DbUtil.Db.LoadOrganizationById(oid);
                 for(var c = 1; c < a.Length; c++)
-                    switch (names[c])
+                    switch (names[c].Trim())
                     {
                         case "Name":
                             o.OrganizationName = a[c];
@@ -207,52 +207,52 @@ namespace CMSWeb.Areas.Setup.Controllers
                             o.AgeGroups = a[c];
                             break;
                         case "CanSelfCheckin":
-                            o.CanSelfCheckin = a[c].ToBool();
+                            o.CanSelfCheckin = a[c].ToBool2();
                             break;
                         case "AllowKioskRegister":
-                            o.AllowKioskRegister = a[c].ToBool();
+                            o.AllowKioskRegister = a[c].ToBool2();
                             break;
                         case "AllowLastYearShirt":
-                            o.AllowLastYearShirt = a[c].ToBool();
+                            o.AllowLastYearShirt = a[c].ToBool2();
                             break;
                         case "AskAllergies":
-                            o.AskAllergies = a[c].ToBool();
+                            o.AskAllergies = a[c].ToBool2();
                             break;
                         case "AskChurch":
-                            o.AskChurch = a[c].ToBool();
+                            o.AskChurch = a[c].ToBool2();
                             break;
                         case "AskCoaching":
-                            o.AskCoaching = a[c].ToBool();
+                            o.AskCoaching = a[c].ToBool2();
                             break;
                         case "AskDoctor":
-                            o.AskDoctor = a[c].ToBool();
+                            o.AskDoctor = a[c].ToBool2();
                             break;
                         case "AskEmContact":
-                            o.AskEmContact = a[c].ToBool();
+                            o.AskEmContact = a[c].ToBool2();
                             break;
                         case "AskGrade":
-                            o.AskGrade = a[c].ToBool();
+                            o.AskGrade = a[c].ToBool2();
                             break;
                         case "AskInsurance":
-                            o.AskInsurance = a[c].ToBool();
+                            o.AskInsurance = a[c].ToBool2();
                             break;
                         case "AskOptions":
                             o.AskOptions = a[c];
                             break;
                         case "AskParents":
-                            o.AskParents = a[c].ToBool();
+                            o.AskParents = a[c].ToBool2();
                             break;
                         case "AskRequest":
-                            o.AskRequest = a[c].ToBool();
+                            o.AskRequest = a[c].ToBool2();
                             break;
                         case "AskShirtSize":
-                            o.AskShirtSize = a[c].ToBool();
+                            o.AskShirtSize = a[c].ToBool2();
                             break;
                         case "AskTickets":
-                            o.AskTickets = a[c].ToBool();
+                            o.AskTickets = a[c].ToBool2();
                             break;
                         case "AskTylenolEtc":
-                            o.AskTylenolEtc = a[c].ToBool();
+                            o.AskTylenolEtc = a[c].ToBool2();
                             break;
                         case "BirthDayStart":
                             o.BirthDayStart = a[c].ToDate();
@@ -264,19 +264,19 @@ namespace CMSWeb.Areas.Setup.Controllers
                             o.Deposit = a[c].ToDecimal();
                             break;
                         case "GradeAgeEnd":
-                            o.GradeAgeEnd = a[c].ToInt();
+                            o.GradeAgeEnd = a[c].ToInt2();
                             break;
                         case "Limit":
-                            o.Limit = a[c].ToInt();
+                            o.Limit = a[c].ToInt2();
                             break;
                         case "Fee":
                             o.Fee = a[c].ToDecimal();
                             break;
-                        case "GenderId":
-                            o.GenderId = a[c] == "Male" ? (int?)1 : a[c] == "Female" ? (int?)2 : null;
+                        case "Gender":
+                            o.GenderId = a[c].ToInt2();
                             break;
                         case "GradeAgeStart":
-                            o.GradeAgeStart = a[c].ToInt();
+                            o.GradeAgeStart = a[c].ToInt2();
                             break;
                         case "EmailAddresses":
                             o.EmailAddresses = a[c];
@@ -285,13 +285,13 @@ namespace CMSWeb.Areas.Setup.Controllers
                             o.MaximumFee = a[c].ToDecimal();
                             break;
                         case "MemberOnly":
-                            o.MemberOnly = a[c].ToBool();
+                            o.MemberOnly = a[c].ToBool2();
                             break;
                         case "NumCheckInLabels":
-                            o.NumCheckInLabels = a[c].ToInt();
+                            o.NumCheckInLabels = a[c].ToInt2();
                             break;
                         case "NumWorkerCheckInLabels":
-                            o.NumWorkerCheckInLabels = a[c].ToInt();
+                            o.NumWorkerCheckInLabels = a[c].ToInt2();
                             break;
                         case "ShirtFee":
                             o.ShirtFee = a[c].ToDecimal();
@@ -305,7 +305,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                     }
                 DbUtil.Db.SubmitChanges();
             }
-            return Content("done");
+            return Redirect("/");
         }
     }
 }

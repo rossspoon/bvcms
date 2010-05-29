@@ -166,7 +166,7 @@ namespace CMSWeb.Models
             {
                 var p = List[i];
                 if (p.IsNew)
-                    p.AddPerson(i == 0 ? null : p0.person, org.EntryPointId ?? 0);
+                    p.AddPerson(i == 0 ? null : p0.person, p.org.EntryPointId ?? 0);
 
                 if (!elist.Contains(p.email))
                     elist.Add(p.email);
@@ -226,20 +226,23 @@ namespace CMSWeb.Models
 
                 om.RegisterEmail = p.email;
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person, 
-                    org.EmailAddresses, 
+                    p.org.EmailAddresses, 
                     p.email, 
-                    org.OrganizationName, 
-                    org.PhoneNumber);
+                    p.org.OrganizationName, 
+                    p.org.PhoneNumber);
             }
             details.Append("\n</table>\n");
             DbUtil.Db.SubmitChanges();
 
-            var subject = Util.PickFirst(org.EmailSubject, org.Division.EmailSubject, "no subject");
-            var message = Util.PickFirst(org.EmailMessage, org.Division.EmailMessage, "no message");
+            var o = org;
+            if (o == null)
+                o = p0.org;
+            var subject = Util.PickFirst(o.EmailSubject, o.Division.EmailSubject, "no subject");
+            var message = Util.PickFirst(o.EmailMessage, o.Division.EmailMessage, "no message");
             message = message.Replace("{first}", p0.first);
             message = message.Replace("{tickets}", p0.ntickets.ToString());
-            message = message.Replace("{division}", org.Division.Name);
-            message = message.Replace("{org}", org.OrganizationName);
+            message = message.Replace("{division}", o.DivisionName);
+            message = message.Replace("{org}", o.OrganizationName);
             message = message.Replace("{cmshost}", Util.CmsHost);
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
@@ -250,8 +253,8 @@ namespace CMSWeb.Models
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
             var smtp = Util.Smtp();
-            Util.Email2(smtp, org.EmailAddresses, emails, subject, message);
-            Util.Email2(smtp, emails, org.EmailAddresses,
+            Util.Email2(smtp, o.EmailAddresses, emails, subject, message);
+            Util.Email2(smtp, emails, o.EmailAddresses,
                 "{0}".Fmt(Header),
                 "{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}"
                 .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue));

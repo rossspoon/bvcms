@@ -282,7 +282,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = m.testing ?? false,
                 PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
-                Terms = Util.PickFirst(m.org.Terms, m.org.Division.Terms, ""),
+                Terms = Util.PickFirst(p.org.Terms, p.org.Division.Terms, ""),
                 _URL = m.URL,
                 _timeout = INT_timeout,
                 _datumid = d.Id,
@@ -351,7 +351,7 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             ViewData["email"] = m.List[0].email;
-            ViewData["orgname"] = m.org.OrganizationName;
+            ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
             ViewData["URL"] = m.URL;
             ViewData["timeout"] = INT_timeout;
             return View(m);
@@ -450,7 +450,7 @@ namespace CMSWeb.Areas.Public.Controllers
                         AddToRegistrationComments("-------------", reg);
                         AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
                         AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
-                        AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+                        AddToRegistrationComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName), reg);
                     }
                     else
                         Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
@@ -492,7 +492,7 @@ namespace CMSWeb.Areas.Public.Controllers
                         AddToRegistrationComments("-------------", reg);
                         AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
                         AddToRegistrationComments(Util.Now.ToString("MMM d yyyy h:mm tt"), reg);
-                        AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+                        AddToRegistrationComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName), reg);
                     }
                     else
                         Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",

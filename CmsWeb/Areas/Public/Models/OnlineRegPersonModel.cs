@@ -201,9 +201,9 @@ namespace CMSWeb.Models
 
         public OrganizationMember GetOrgMember()
         {
-            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m2 =>
-                m2.PeopleId == PeopleId && m2.OrganizationId == orgid);
-            return om;
+            if (org != null)
+                return org.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId);
+            return null;
         }
         public IEnumerable<SelectListItem> StateCodes()
         {
@@ -664,7 +664,7 @@ namespace CMSWeb.Models
             //(int)RegistrationEnum.AttendMeeting)
             //(int)RegistrationEnum.ComputeOrganizationByAge)
 
-            var om = OrganizationMember.InsertOrgMembers(orgid.Value, person.PeopleId,
+            var om = OrganizationMember.InsertOrgMembers(org.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             var amt = AmountToPay();
             om.Amount = (om.Amount ?? 0) + amt;
@@ -796,7 +796,7 @@ namespace CMSWeb.Models
             if (paylink.HasValue())
                 AddToRegistrationComments(paylink, reg);
             AddToRegistrationComments(tstamp, reg);
-            AddToRegistrationComments("{0} - {1}".Fmt(org.Division.Name, org.OrganizationName), reg);
+            AddToRegistrationComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName), reg);
 
             DbUtil.Db.SubmitChanges();
             return om;

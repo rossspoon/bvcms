@@ -61,8 +61,8 @@
         $.post("/OrgMembers/EmailNotices", q, function(ret) {
             $(f).html(ret).ready(function() {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
+                $.growlUI("Email Notices", "emails sent");
             });
-            $.growlUI("Email Notices", "emails sent");
         });
         return false;
     });

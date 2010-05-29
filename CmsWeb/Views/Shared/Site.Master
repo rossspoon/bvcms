@@ -164,7 +164,6 @@
                         <li><a href="/Setup/Recreation/">Recreation Setup</a></li>
                         <li><a href="/Admin/ToggleOrgMembersOnly.ashx"><%=Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On"  %></a></li>
                         <li><a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
-                        <li><a href="/Admin/SessionState.aspx">Session State</a></li>
                         <li><a href="/Admin/UrgentMessage.aspx">Urgent Message</a></li>
 <% if (Util.CurrentPeopleId != 0 && Page.User.IsInRole("Admin"))
    { %>

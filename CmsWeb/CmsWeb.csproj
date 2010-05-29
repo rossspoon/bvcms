@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgSearchController.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult2.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendInfo.cs" />
+    <Compile Include="Areas\Main\Models\Organization\OrgGroupsModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
@@ -142,9 +144,7 @@
     </Compile>
     <Compile Include="Areas\Main\Models\Report\FamilyResult.cs" />
     <Compile Include="Areas\Manage\AreaRegistration.cs" />
-    <Compile Include="Areas\Manage\Controllers\GroupsController.cs" />
     <Compile Include="Areas\Manage\Controllers\OrgMembersController.cs" />
-    <Compile Include="Areas\Manage\Models\GroupsModel.cs" />
     <Compile Include="Areas\Manage\Models\OrgMembersModel.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\OnlineRegController.cs" />
@@ -284,13 +284,6 @@
     </Compile>
     <Compile Include="Admin\OneTimeETStudy.aspx.designer.cs">
       <DependentUpon>OneTimeETStudy.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\SessionState.aspx.cs">
-      <DependentUpon>SessionState.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\SessionState.aspx.designer.cs">
-      <DependentUpon>SessionState.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ToggleOrgMembersOnly.ashx.cs">
       <DependentUpon>ToggleOrgMembersOnly.ashx</DependentUpon>
@@ -921,7 +914,6 @@
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\OneTimeETStudy.aspx" />
-    <Content Include="Admin\SessionState.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
     <Content Include="Admin\UrgentMessage.aspx" />
     <Content Include="Admin\Users.aspx" />
@@ -1233,6 +1225,9 @@
     <Content Include="App_Themes\Standard\jquery-ui-1.7.2.custom.css" />
     <Content Include="App_Themes\Standard\Skin1.skin" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgGroups\Index.aspx" />
+    <Content Include="Areas\Main\Views\OrgGroups\Rows.ascx" />
+    <Content Include="Areas\Main\Views\OrgGroups\Update.aspx" />
     <Content Include="Areas\Main\Views\Coupon\Create.aspx" />
     <Content Include="Areas\Main\Views\Coupon\Index.aspx" />
     <Content Include="Areas\Main\Views\Coupon\List.aspx" />
@@ -1296,10 +1291,6 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Groups\All.aspx" />
-    <Content Include="Areas\Manage\Views\Groups\Coaches.aspx" />
-    <Content Include="Areas\Manage\Views\Groups\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Groups\List.ascx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
@@ -1308,6 +1299,7 @@
     <Content Include="Areas\Public\Views\OnlineReg\AddressEdit.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\Confirm.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Confirm2.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Index.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\List.ascx" />

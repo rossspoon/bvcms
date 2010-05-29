@@ -47,7 +47,7 @@ namespace CmsData
         }
         public string FullName2
         {
-            get { return Division.Name + ", " + FormatOrgName(OrganizationName, LeaderName, Location); }
+            get { return DivisionName + ", " + FormatOrgName(OrganizationName, LeaderName, Location); }
         }
         private CMSDataContext _Db;
         public CMSDataContext Db
@@ -195,6 +195,13 @@ namespace CmsData
             if(hour > 0)
                 return new DateTime(1900, 1, dw, hour, min, 0);
             return null;
+        }
+        public string DivisionName
+        {
+            get
+            {
+                return Division != null ? Division.Name : "need a main division";
+            }
         }
     }
 }

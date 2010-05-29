@@ -30,7 +30,7 @@
             });
             $("a.createdetail").click(function(ev) {
                 $.post("/Recreation/Create/" + $(this).attr("pid"), { oid: $(this).attr("oid") }, function(ret) {
-                    window.location = "/Recreation/Detail/" + ret.id;
+                window.location = "/Recreation/Detail/" + ret.id;
                 }, "json");
                 return false;
             });
@@ -62,7 +62,7 @@
        <%=Html.CheckBox("FilterUnassigned") %> Unassigned Only
        <%=Html.CheckBox("NormalMembersOnly")%> Exclude Teachers<br />
        Target Team: <%=Html.DropDownList("TargetTeamName", Model.TargetTeams())%>
-       <%=Html.SubmitButton("submit", "Assign to Team") %>
+       <%=Html.SubmitButton("submit", "Assign to Group") %>
        <% if((Model.AgeDivId ?? 0) > 0)
           { %>
        <%=Html.HyperLink("/Organization/Index/" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>
