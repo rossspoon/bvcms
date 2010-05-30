@@ -903,7 +903,11 @@ namespace UtilityExtensions
             var a = email.SplitStr(",;");
             var b = true;
             foreach (var m in a)
+            {
                 b = b && re.IsMatch(m);
+                if (m.Contains("@."))
+                    b = false;
+            }
             return b;
         }
         public static bool IsLocalNetworkRequest

@@ -202,7 +202,8 @@ namespace CMSWeb.Models
         public OrganizationMember GetOrgMember()
         {
             if (org != null)
-                return org.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId);
+                return DbUtil.Db.OrganizationMembers.SingleOrDefault(m2 => 
+                    m2.PeopleId == PeopleId && m2.OrganizationId == org.OrganizationId);
             return null;
         }
         public IEnumerable<SelectListItem> StateCodes()

@@ -110,11 +110,22 @@ namespace UtilityExtensions
             if (attach != null)
                 msg.Attachments.Add(attach);
 
-#if DEBUG
+#if DEBUG2
 #else
-            smtp.Send(msg);
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                SendMsg(smtp, From, 
+                    "(smtp error) " + subject, 
+                    "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
+                    Name,
+                    WebConfigurationManager.AppSettings["senderrorsto"], 
+                    attach);
+            }
 #endif
-
             htmlView.Dispose();
             htmlStream.Dispose();
         }
