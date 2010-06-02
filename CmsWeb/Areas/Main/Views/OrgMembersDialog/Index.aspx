@@ -15,6 +15,7 @@
 <form action="/OrgMembersDialog/Update" method="post">
 <%=Html.Hidden("orgid") %>
 <%=Html.Hidden("groupid") %>
+<%=Html.Hidden("pendings") %>
 <table class="modalPopup">
 	<tr>
 		<td colspan="2"><a id="ClearSearch" href="#">clear</a></td>

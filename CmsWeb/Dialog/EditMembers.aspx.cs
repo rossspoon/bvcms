@@ -82,7 +82,7 @@ namespace CMSWeb.Dialog
                 var r = new ToggleTagReturn { ControlId = controlid };
                 r.HasTag = m.ToggleGroup(GroupId);
                 Db.SubmitChanges();
-                return Search.JsonReturnStr(r);
+                return JsonReturnStr(r);
             }
             else
                 return Search.ToggleTag(PeopleId, controlid);
@@ -93,7 +93,7 @@ namespace CMSWeb.Dialog
                 return;
             int membertype = MemberType.SelectedValue.ToInt();
             DateTime? inactivedate = InactiveDate.Text.ToDate();
-            var q = from p in Search.SelectedPeople()
+            var q = from p in AddTagShareds.SelectedPeople()
                     from om in p.OrganizationMembers.Where(om => om.OrganizationId == OrgId)
                     select om;
             var list = new List<int>();
@@ -115,7 +115,7 @@ namespace CMSWeb.Dialog
             OrganizationMember.UpdateMeetingsToUpdate();
             foreach (var pid in list)
                 DbUtil.Db.UpdateSchoolGrade(pid);
-            this.Page.ClientScript.RegisterStartupScript(typeof(AddMember),
+            this.Page.ClientScript.RegisterStartupScript(typeof(EditMembers),
                 "closeThickBox", "self.parent.RebindMemberGrids('{0}');".Fmt(from), true);
         }
 
@@ -181,6 +181,14 @@ namespace CMSWeb.Dialog
             var r = e.Item as ListViewDataItem;
             var d = r.DataItem as PersonDialogSearchInfo;
             cb.Checked = members.Contains(d.PeopleId);
+        }
+        internal static string JsonReturnStr(ToggleTagReturn r)
+        {
+            var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
+            var ms = new MemoryStream();
+            jss.WriteObject(ms, r);
+            var s = Encoding.Default.GetString(ms.ToArray());
+            return s;
         }
     }
 }

@@ -86,7 +86,7 @@ namespace CMSPresenter
 
 
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonController.OrganizationView> EnrollData(int pid)
+        public IEnumerable<OrganizationView> EnrollData(int pid)
         {
             var dt = Util.Now.Date.AddDays(1);
             var q = from o in Db.Organizations
@@ -95,7 +95,7 @@ namespace CMSPresenter
                        && dt > om.EnrollmentDate
                     let l = Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
                     orderby o.OrganizationName
-                    select new PersonController.OrganizationView
+                    select new OrganizationView
                     {
                         Id = o.OrganizationId,
                         Name = o.OrganizationName,
@@ -111,7 +111,7 @@ namespace CMSPresenter
         }
 
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonController.OrganizationView> PreviousEnrollData(int pid)
+        public IEnumerable<OrganizationView> PreviousEnrollData(int pid)
         {
             var q = from o in Db.Organizations
                     from etd in o.EnrollmentTransactions
@@ -119,7 +119,7 @@ namespace CMSPresenter
                     where etd.TransactionStatus == false
                     let ete = Db.EnrollmentTransactions.SingleOrDefault(ete => ete.TransactionId == etd.EnrollmentTransactionId)
                     orderby o.OrganizationName
-                    select new PersonController.OrganizationView
+                    select new OrganizationView
                     {
                         Id = etd.OrganizationId,
                         Name = etd.OrganizationName,
@@ -134,7 +134,7 @@ namespace CMSPresenter
             return q;
         }
         //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<PersonController.OrganizationView> PendingEnrollData(int pid)
+        public IEnumerable<OrganizationView> PendingEnrollData(int pid)
         {
             var dt = Util.Now;
             var q = from o in Db.Organizations
@@ -143,7 +143,7 @@ namespace CMSPresenter
                         && et.TransactionDate > dt
                     where et.TransactionStatus == false
                     orderby o.OrganizationName
-                    select new PersonController.OrganizationView
+                    select new OrganizationView
                     {
                         Id = et.OrganizationId,
                         Name = et.OrganizationName,
@@ -177,6 +177,21 @@ namespace CMSPresenter
                          MemberType = MemberCodes.ItemValue(a.MemberTypeId),
                      };
             return q2.Take(10);
+        }
+        public class OrganizationView
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public string Location { get; set; }
+            public string LeaderName { get; set; }
+            public DateTime? MeetingTime { get; set; }
+            public string Schedule { get { return "{0:dddd h:mm tt}".Fmt(MeetingTime); } }
+            public int? LeaderId { get; set; }
+            public string MemberType { get; set; }
+            public DateTime? EnrollDate { get; set; }
+            public DateTime? DropDate { get; set; }
+            public string DivisionName { get; set; }
+            public decimal? AttendPct { get; set; }
         }
     }
 }

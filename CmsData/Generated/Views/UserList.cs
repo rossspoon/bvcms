@@ -32,9 +32,11 @@ namespace CmsData.View
 		
 		private string _EmailAddress;
 		
-		private DateTime? _LastVisit;
+		private DateTime? _LastActivityDate;
 		
 		private int? _PeopleId;
+		
+		private string _Roles;
 		
 		
 		public UserList()
@@ -162,7 +164,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(50)")]
+		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(150)")]
 		public string EmailAddress
 		{
 			get
@@ -179,18 +181,18 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="LastVisit", Storage="_LastVisit", DbType="datetime")]
-		public DateTime? LastVisit
+		[Column(Name="LastActivityDate", Storage="_LastActivityDate", DbType="datetime")]
+		public DateTime? LastActivityDate
 		{
 			get
 			{
-				return this._LastVisit;
+				return this._LastActivityDate;
 			}
 
 			set
 			{
-				if (this._LastVisit != value)
-					this._LastVisit = value;
+				if (this._LastActivityDate != value)
+					this._LastActivityDate = value;
 			}
 
 		}
@@ -208,6 +210,23 @@ namespace CmsData.View
 			{
 				if (this._PeopleId != value)
 					this._PeopleId = value;
+			}
+
+		}
+
+		
+		[Column(Name="Roles", Storage="_Roles", DbType="varchar(500)")]
+		public string Roles
+		{
+			get
+			{
+				return this._Roles;
+			}
+
+			set
+			{
+				if (this._Roles != value)
+					this._Roles = value;
 			}
 
 		}

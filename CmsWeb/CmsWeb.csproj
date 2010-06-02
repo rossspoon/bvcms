@@ -153,6 +153,7 @@
     <Compile Include="Areas\Public\Models\OnlineRegModel.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
+    <Compile Include="Code\AddressVerify.cs" />
     <Compile Include="Code\CmsController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
@@ -204,51 +205,12 @@
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
-    <Compile Include="Dialog\AddContactee.aspx.cs">
-      <DependentUpon>AddContactee.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddContactee.aspx.designer.cs">
-      <DependentUpon>AddContactee.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddContactor.aspx.cs">
-      <DependentUpon>AddContactor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddContactor.aspx.designer.cs">
-      <DependentUpon>AddContactor.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddFamily.aspx.cs">
-      <DependentUpon>AddFamily.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddFamily.aspx.designer.cs">
-      <DependentUpon>AddFamily.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddFamilyMembers.aspx.cs">
-      <DependentUpon>AddFamilyMembers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddFamilyMembers.aspx.designer.cs">
-      <DependentUpon>AddFamilyMembers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddMember.aspx.cs">
-      <DependentUpon>AddMember.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddMember.aspx.designer.cs">
-      <DependentUpon>AddMember.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Dialog\AddTagShareds.aspx.cs">
       <DependentUpon>AddTagShareds.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Dialog\AddTagShareds.aspx.designer.cs">
       <DependentUpon>AddTagShareds.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\AddVisitor.aspx.cs">
-      <DependentUpon>AddVisitor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\Activity.aspx.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
@@ -369,13 +331,6 @@
     <Compile Include="ContactSearch.aspx.designer.cs">
       <DependentUpon>ContactSearch.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\AddVisitor.aspx.designer.cs">
-      <DependentUpon>AddVisitor.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\ContactSearch.aspx.cs">
-      <DependentUpon>ContactSearch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Contributions\All.aspx.cs">
       <DependentUpon>All.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -492,9 +447,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\ContactSearch.aspx.designer.cs">
-      <DependentUpon>ContactSearch.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Dialog\EditMember.aspx.cs">
       <DependentUpon>EditMember.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -508,12 +460,6 @@
     </Compile>
     <Compile Include="Dialog\EditMembers.aspx.designer.cs">
       <DependentUpon>EditMembers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\MovePerson.aspx.designer.cs">
-      <DependentUpon>MovePerson.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\Search.aspx.designer.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
@@ -613,10 +559,6 @@
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
     <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
-    <Compile Include="Dialog\MovePerson.aspx.cs">
-      <DependentUpon>MovePerson.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="MyTags.aspx.cs">
       <DependentUpon>MyTags.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -758,10 +700,6 @@
     <Compile Include="Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\Search.aspx.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -860,13 +798,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Errors\AccessDenied.htm" />
-    <Content Include="Dialog\AddContactee.aspx" />
-    <Content Include="Dialog\AddContactor.aspx" />
-    <Content Include="Dialog\AddFamily.aspx" />
-    <Content Include="Dialog\AddFamilyMembers.aspx" />
-    <Content Include="Dialog\AddMember.aspx" />
     <Content Include="Dialog\AddTagShareds.aspx" />
-    <Content Include="Dialog\AddVisitor.aspx" />
     <Content Include="App_Offline1.htm" />
     <Content Include="AttendStrDetail.aspx" />
     <Content Include="BadEts.aspx" />
@@ -882,7 +814,6 @@
     <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="ContactSearch.aspx" />
-    <Content Include="Dialog\ContactSearch.aspx" />
     <Content Include="Dialog\EditMember.aspx" />
     <Content Include="Dialog\EditMembers.aspx" />
     <Content Include="EmailAttendanceNotices.aspx" />
@@ -898,7 +829,6 @@
     <Content Include="Meeting.aspx" />
     <Content Include="Meetings.aspx" />
     <Content Include="MemberMap.aspx" />
-    <Content Include="Dialog\MovePerson.aspx" />
     <Content Include="MyTags.aspx" />
     <Content Include="NoRemoteAccess.htm" />
     <Content Include="Organization.aspx" />
@@ -906,7 +836,6 @@
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
     <Content Include="Search.aspx" />
-    <Content Include="Dialog\Search.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />

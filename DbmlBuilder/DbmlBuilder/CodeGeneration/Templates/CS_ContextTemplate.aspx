@@ -138,7 +138,7 @@ namespace <%=Db.Service.GeneratedNamespace %>
         %>
             )
 		{
-			return ((<%=fn.dbType%>)(this.ExecuteMethodCall(this, 
+			return ((<%=fnType%>)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod()))<%=comma%><%
             for (int i = 0; i < n; i++)
             {

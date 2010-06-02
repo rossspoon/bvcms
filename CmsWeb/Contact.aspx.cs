@@ -61,16 +61,8 @@ namespace CMSWeb
                 TaskLink.NavigateUrl = "~/Task/List/{0}".Fmt(task.Id);
             }
             CommentsSection.Visible = ctrl.CanViewComments((int)id);
-            if (DbUtil.Db.UserPreference("olddialog").ToBool())
-            {
-                AddContacteeLink.NavigateUrl = "~/Dialog/AddContactee.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(contact.ContactId);
-                AddContactorLink.NavigateUrl = "~/Dialog/AddContactor.aspx?id={0}&TB_iframe=true&height=450&width=600".Fmt(contact.ContactId);
-            }
-            else
-            {
-                AddContacteeLink.NavigateUrl = "/SearchAdd/Index/{0}?type=contactee&TB_iframe=true&height=550&width=650".Fmt(contact.ContactId);
-                AddContactorLink.NavigateUrl = "/SearchAdd/Index/{0}?type=contactor&TB_iframe=true&height=550&width=650".Fmt(contact.ContactId);
-            }
+            AddContacteeLink.NavigateUrl = "/SearchAdd/Index/{0}?type=contactee&TB_iframe=true&height=550&width=650".Fmt(contact.ContactId);
+            AddContactorLink.NavigateUrl = "/SearchAdd/Index/{0}?type=contactor&TB_iframe=true&height=550&width=650".Fmt(contact.ContactId);
         }
 
         protected void RefreshGrids_Click(object sender, EventArgs e)

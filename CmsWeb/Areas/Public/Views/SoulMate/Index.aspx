@@ -45,7 +45,7 @@
         });
     </script>    
 <% } %>
-    <h2>Register for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</h2>
+    <div class="smlheader">Register for the <%=Model.NextEvent.ToString("MMM d, yyyy") %> Event</div>
 
     <% using (Html.BeginForm()) { %>
         <div>

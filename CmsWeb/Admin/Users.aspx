@@ -12,18 +12,6 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
 
-    <script type="text/javascript">
-        function showDialog(parentButtonId) {
-            var modalPopupBehaviorCtrl = $find('<%= searchpopup.ClientID %>');
-            modalPopupBehaviorCtrl.show();
-            $get('<%= sd.ClientID %>').src = "/Dialog/Search.aspx?selectSingle=1&parentButton=" + parentButtonId;
-        }
-        function AddSelected(parentButtonId) // called by Search.aspx inside iframe
-        {
-            $get(parentButtonId).click();
-        }
-    </script>
-
     <asp:HyperLink ID="HyperLink1" NavigateUrl="~/" runat="server">HomePage</asp:HyperLink>
             <asp:TextBox runat="server" ID="TextBox1" BorderStyle="Solid" />
             <asp:Button ID="Button1" runat="server" Text="Search for Users" OnClick="SearchForUsers" />
@@ -160,7 +148,6 @@
                         <td colspan="8">
                             Password:<asp:TextBox ID="PasswordTextBox" runat="server" Text='<%# Bind("PasswordSetOnly") %>'></asp:TextBox>
                             PeopleId:<asp:TextBox ID="PeopleIdTextBox" runat="server" Text='<%# Bind("PeopleId") %>'></asp:TextBox>
-                            <a href="javascript:showDialog('<%= AddSelectedPerson.ClientID %>')">search</a>
                         </td>
                     </tr>
                 </EditItemTemplate>

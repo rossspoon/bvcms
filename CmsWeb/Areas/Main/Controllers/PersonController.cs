@@ -364,7 +364,7 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)
         {
-            var r = CMSPresenter.PersonController.LookupAddress(Address1, Address2, City, State, Zip);
+            var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
             return Json(r);
         }
         private void InitExportToolbar(int? id)

@@ -327,7 +327,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public JsonResult VerifyAddress(SearchModel m)
         {
             var p = m.List[m.List.Count - 1];
-            var r = CMSPresenter.PersonController.LookupAddress(p.address, p.address2, p.city, p.state, p.zip);
+            var r = AddressVerify.LookupAddress(p.address, p.address2, p.city, p.state, p.zip);
             return Json(r);
         }
     }

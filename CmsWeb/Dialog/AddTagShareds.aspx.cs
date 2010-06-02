@@ -56,7 +56,7 @@ namespace CMSWeb.Dialog
         protected void AddSelectedUsers_Click(object sender, EventArgs e)
         {
             var tag = DbUtil.Db.TagCurrent();
-            var selected_pids = Search.SelectedPeople().Select(p => p.PeopleId).ToArray();
+            var selected_pids = SelectedPeople().Select(p => p.PeopleId).ToArray();
             var userDeletes = tag.TagShares.Where(ts => !selected_pids.Contains(ts.PeopleId));
             DbUtil.Db.TagShares.DeleteAllOnSubmit(userDeletes);
             var tag_pids = tag.TagShares.Select(ts => ts.PeopleId).ToArray();
@@ -68,8 +68,13 @@ namespace CMSWeb.Dialog
             foreach (var pid in userAdds)
                 tag.TagShares.Add(new TagShare { PeopleId = pid });
             DbUtil.Db.SubmitChanges();
-            this.Page.ClientScript.RegisterStartupScript(typeof(AddContactor), 
+            this.Page.ClientScript.RegisterStartupScript(typeof(AddTagShareds), 
                 "closeThickBox", "self.parent.ShareWith('{0}');".Fmt(tag.SharedWithCountString()), true);
+        }
+        public static IQueryable<Person> SelectedPeople()
+        {
+            var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+            return DbUtil.Db.People.Where(p => p.Tags.Any(t => t.Id == tag.Id));
         }
     }
 }

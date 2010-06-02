@@ -98,6 +98,7 @@ h5, h6
 #main > form
 {
     background: black url(/Content/blackredgradient.png) repeat-y;
+    border: solid 2px black;
 }
 #footer
 {
@@ -162,7 +163,7 @@ div#title
 }
 .field-validation-error
 {
-    color: #FF0000;
+    color: #FF99FF;
 }
 .input-validation-error
 {
@@ -173,4 +174,16 @@ div#title
 {
     color: #FF0000;
     font-weight: bold;
+}
+.smlheader
+{
+background-image: url(star.png);
+background-position: 0% 50%;
+background-repeat: no-repeat;
+color: #BD0000;
+font-size: 18px;
+margin: 15px 0px 0px;
+padding: 0px 0px 0px 20px;
+text-align: left;
+text-transform: uppercase;
 }

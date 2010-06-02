@@ -143,7 +143,6 @@
     <Compile Include="UserController.cs" />
     <Compile Include="OrganizationController.cs" />
     <Compile Include="OrganizationSearchController.cs" />
-    <Compile Include="PersonController.cs" />
     <Compile Include="PersonSearchController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
