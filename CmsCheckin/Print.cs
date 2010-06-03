@@ -327,10 +327,10 @@ namespace CmsCheckin
                 sw.WriteLine("SG");
                 sw.WriteLine("ySPM");
                 sw.WriteLine("A2");
-                sw.WriteLine("1911A2400660004" + li.first);
-                sw.WriteLine("1911A1200330008" + li.last);
-                sw.WriteLine(string.Format("1911A0800130007{0}, ({1})", li.@class, li.allergies));
-                sw.WriteLine("1911A2400040179" + li.location);
+                sw.WriteLine("1911A2400490006" + li.first);
+                sw.WriteLine("1911A1200280008" + li.last);
+                sw.WriteLine(string.Format("1911A0800050007{0}, ({1})", li.@class, li.allergies));
+                sw.WriteLine("1911A2400280190" + li.location);
                 sw.WriteLine("Q" + li.n.ToString("0000"));
                 sw.WriteLine("E");
             }
