@@ -22,7 +22,8 @@
                 <asp:ScriptReference Path="~/Content/js/jquery-cookie.js" />
                 <asp:ScriptReference Path="~/Content/js/jquery.blockUI.js" />
                 <asp:ScriptReference Path="~/Content/js/thickbox-compressed.js" />
-                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=5" />
+                <asp:ScriptReference Path="~/Content/js/center-plugin_1.0.1.js" />
+                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=6" />
             </Scripts>
     </asp:ScriptManager>
 <script type="text/javascript">
@@ -221,7 +222,7 @@
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
     </div>
-    <div id="ChooseLabelType" class="modalPopup" style="display:none; width: 400px; padding: 10px">
+    <div id="ChooseLabelType" class="modalPopup" style="width: 400px; padding: 10px">
         <table>
             <tr>
                 <td style="margin: 3px; border: solid thin black" nowrap="nowrap">

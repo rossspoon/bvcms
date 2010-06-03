@@ -11,9 +11,12 @@
         width: 400
     });
     $(".ChooseLabelType").live("click", function(ev) {
-        $("#ChooseLabelType").dialog("open");
+        var d = $("#ChooseLabelType");
+        d.dialog("open");
+        d.parent().center();
+
         var sep = ev.target.href.search(/\?/) == -1 ? "?" : "&";
-        $("#cmdOK").click(function() {
+        $("#cmdOK").unbind("click").click(function() {
             var url = ev.target.href
                 + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()

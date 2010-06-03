@@ -568,8 +568,10 @@ namespace CMSWeb.Models
 
         public string PrepareSummaryText()
         {
+            var om = GetOrgMember();
             var sb = new StringBuilder();
             sb.Append("<table>");
+            sb.AppendFormat("<tr><td>Org:</td><td>{0}</td></tr>\n", org.OrganizationName);
             sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", person.PreferredName);
             sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", person.LastName);
 
@@ -582,7 +584,6 @@ namespace CMSWeb.Models
             sb.AppendFormat("<tr><td>Home Phone:</td><td>{0}</td></tr>\n", person.Family.HomePhone.FmtFone());
             sb.AppendFormat("<tr><td>Cell Phone:</td><td>{0}</td></tr>\n", person.CellPhone.FmtFone());
 
-            var om = GetOrgMember();
             var rr = person.RecRegs.Single();
 
             if (org.AskShirtSize == true)

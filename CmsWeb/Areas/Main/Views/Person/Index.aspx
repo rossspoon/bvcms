@@ -6,7 +6,6 @@
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="/Content/js/center-plugin_1.0.1.js" type="text/javascript"></script>
     <script src="/Scripts/Person.js?v=2" type="text/javascript"></script>
     <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>

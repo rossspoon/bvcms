@@ -143,6 +143,8 @@ namespace CmsCheckin
         }
         public static void Timer2Reset()
         {
+            if (!EnableTimer)
+                return;
             if (timer2 == null)
                 return;
             timer2.Stop();
@@ -150,7 +152,7 @@ namespace CmsCheckin
         }
         public static void Timer2Start(EventHandler t)
         {
-            if (EnableTimer)
+            if (!EnableTimer)
                 return;
             if (timer2 != null)
                 Timer2Stop();
@@ -169,6 +171,8 @@ namespace CmsCheckin
         }
         public static void TimerReset()
         {
+            if (!EnableTimer)
+                return;
             if (timer1 == null)
                 return;
             timer1.Stop();
@@ -176,7 +180,7 @@ namespace CmsCheckin
         }
         public static void TimerStart(EventHandler t)
         {
-            if (EnableTimer)
+            if (!EnableTimer)
                 return;
             if (timer1 != null)
                 TimerStop();
@@ -187,6 +191,8 @@ namespace CmsCheckin
         }
         public static void TimerStop()
         {
+            if (!EnableTimer)
+                return;
             if (timer1 == null)
                 return;
             timer1.Stop();

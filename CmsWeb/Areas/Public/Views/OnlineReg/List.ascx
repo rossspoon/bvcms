@@ -54,7 +54,7 @@
     <% }
        else
        { %>
-        <input id="submit1" type="submit"
+        <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration' />
     <% }
        if (!Model.OnlyOneAllowed())

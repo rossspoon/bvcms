@@ -54,7 +54,6 @@
         d.dialog("option", "title", "Add Members");
         d.dialog("open");
         d.parent().center();
-        //d.parent().css("top", 150).css("left", 70);
     });
     $('a.memberdialog').live("click", function(e) {
         e.preventDefault();

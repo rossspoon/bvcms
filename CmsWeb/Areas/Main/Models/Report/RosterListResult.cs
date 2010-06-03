@@ -35,6 +35,7 @@ namespace CMSWeb.Areas.Main.Models.Report
         public string MemberStatus { get; set; }
         public bool ThisChurch { get; set; }
         public bool ActiveOther { get; set; }
+        public bool FamMemberThis { get; set; }
         public string MemberType { get; set; }
         public string Medical { get; set; }
     }
@@ -86,6 +87,7 @@ namespace CMSWeb.Areas.Main.Models.Report
                             HomePhone = om.Person.HomePhone,
                             MemberStatus = om.Person.MemberStatus.Description,
                             MemberType = om.MemberType.Description,
+                            FamMemberThis = om.Person.Family.People.Any(f => f.PositionInFamilyId == 10 && f.MemberStatusId == (int)Person.MemberStatusCode.Member),
                             Name = om.Person.Name,
                             Medical = rr.MedicalDescription,
                             PeopleId = om.PeopleId
@@ -152,6 +154,7 @@ namespace CMSWeb.Areas.Main.Models.Report
 
             sb = new StringBuilder();
             AddLine(sb, p.MemberStatus);
+            AddLine(sb, p.FamMemberThis ? "Family member is member here" : "");
             AddLine(sb, p.ActiveOther ? "Active in another church" : "Not Active in another church");
             t.AddCell(new Phrase(sb.ToString(), font));
             t.AddCell(new Phrase(p.MemberType, font));

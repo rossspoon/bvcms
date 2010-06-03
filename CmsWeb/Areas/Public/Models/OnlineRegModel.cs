@@ -256,8 +256,9 @@ namespace CMSWeb.Models
             Util.Email2(smtp, o.EmailAddresses, emails, subject, message);
             Util.Email2(smtp, emails, o.EmailAddresses,
                 "{0}".Fmt(Header),
-                "{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}"
-                .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue));
+                @"{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}
+<pre>{5}</pre>"
+                .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue, details.ToString()));
         }
     }
     [Serializable]
