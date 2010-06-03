@@ -12,7 +12,7 @@
    if (Model.org.AskRequest == true)
    { %>
     <tr>
-        <td><label for="request">Request</label></td>
+        <td><label for="request"><%=Util.PickFirst(Model.org.RequestLabel, "Request") %></label></td>
         <td><%=Model.request %>
         <%=Html.Hidden3("m.list[" + Model.index + "].request", Model.request)%>
         </td>

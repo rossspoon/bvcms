@@ -9,7 +9,8 @@
     <script src="/Content/js/jquery.validate.min.js" type="text/javascript"></script>
     <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
-    <script src="/Scripts/Organization.js?v=4" type="text/javascript"></script>
+    <script src="/Content/js/center-plugin_1.0.1.js" type="text/javascript"></script>
+    <script src="/Scripts/Organization.js?v=5" type="text/javascript"></script>
 
     <% CmsData.Organization o = Model.org; %>
     <%=Html.Hidden("OrganizationId") %>
@@ -117,5 +118,8 @@
     </div>
     <div id="AddFromTag" class="modalDiv" style="display:none">
         <%=Html.DropDownList("addfromtagid", Model.Tags()) %>
+    </div>
+    <div id="memberDialog">
+    <iframe id="memberDialogiframe" style="width:100%;height:100%" />
     </div>
 </asp:Content>

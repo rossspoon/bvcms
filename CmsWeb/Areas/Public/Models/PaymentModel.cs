@@ -18,7 +18,6 @@ namespace CMSWeb.Models
         public decimal Amount { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string TransactionId { get; set; }
         public string PostbackURL { get; set; }
         public string Terms { get; set; }
         public string OrgID

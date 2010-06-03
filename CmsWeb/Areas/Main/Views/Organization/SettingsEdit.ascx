@@ -202,6 +202,10 @@
         <td><%=Html.CheckBox("org.AskRequest")%></td>
     </tr>
     <tr>
+        <th>Request Label:</th>
+        <td><%=Html.TextBox("org.RequestLabel")%></td>
+    </tr>
+    <tr>
         <th>Ask For Parents:</th>
         <td><%=Html.CheckBox("org.AskParents")%></td>
     </tr>

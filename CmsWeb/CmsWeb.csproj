@@ -1535,11 +1535,14 @@
     <Content Include="Content\images\tr.gif" />
     <Content Include="Content\images\tr.png" />
     <Content Include="Content\images\wait.gif" />
+    <Content Include="Content\jquery-ui-1.8.1.custom.css" />
     <Content Include="Content\jquery-ui-1.8.custom.css" />
     <Content Include="Content\jquery.cluetip.css" />
     <Content Include="Content\js\additional-methods.js" />
+    <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-1.4.2.min.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
+    <Content Include="Content\js\jquery-ui-1.8.1.custom.min.js" />
     <Content Include="Content\js\jquery-ui-1.8.custom.js" />
     <Content Include="Content\js\jquery-ui-1.8.custom.min.js" />
     <Content Include="Content\js\jquery.cluetip.min.js" />

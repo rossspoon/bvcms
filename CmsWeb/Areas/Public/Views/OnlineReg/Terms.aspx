@@ -68,12 +68,13 @@ a.submitbutton,a.button {
         });
     </script>
 
-    <h2>Payment Processing</h2>
+    <h2>Terms of Agreement</h2>
 <%=Model.Terms %>
-    <form action="/OnlineReg/Confirm" method="post">
+    <form action="<%=Model.PostbackURL %>" method="post">
+    <%=Html.Hidden("TransactionID", "zero due") %>
 <p><%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.</p>
     <p>
         You must agree to the terms above for you or your minor child before you can continue with confirmation.</p>
-    <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <p><%=Html.SubmitButton("Submit", "Complete Registration") %></p>
     </form>
 </asp:Content>

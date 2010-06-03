@@ -6,7 +6,8 @@
     <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
     <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="/Scripts/Person.js" type="text/javascript"></script>
+    <script src="/Content/js/center-plugin_1.0.1.js" type="text/javascript"></script>
+    <script src="/Scripts/Person.js?v=2" type="text/javascript"></script>
     <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
     <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
     <table class="PersonHead" border="0">
@@ -198,5 +199,8 @@
         </div>
     </div>
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
+    </div>
+    <div id="memberDialog">
+    <iframe style="width:100%;height:100%" />
     </div>
 </asp:Content>

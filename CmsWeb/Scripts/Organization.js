@@ -33,33 +33,31 @@
             });
         return false;
     });
+    $('#memberDialog').dialog({
+        title: 'Add Members Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 700,
+        height: 600,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function() {
+            $('iframe', this).attr("src", "");
+        }
+    });
     $('a.addmembers').live("click", function(e) {
         e.preventDefault();
-        var w = 700;
-        var h = 600;
-        var padding = 30;
-        $('<iframe id="memberDialog" src="' + this.href + '" />').dialog({
-            title: 'Add Members Dialog',
-            bgiframe: true,
-            autoOpen: true,
-            width: w,
-            height: h,
-            modal: true,
-            overlay: {
-                opacity: 0.5,
-                background: "black"
-            },
-            close: function() {
-                $("#memberDialog").dialog('destroy');
-                $("#memberDialog").remove();
-            }
-        }).width(w - padding).height(h - padding);
+        var d = $('#memberDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Add Members");
+        d.dialog("open");
+        d.parent().center();
+        //d.parent().css("top", 150).css("left", 70);
     });
     $('a.memberdialog').live("click", function(e) {
         e.preventDefault();
-        var w = 650;
-        var h = 550;
-        var padding = 30;
         var title;
         var src = this.href;
         if (this.id == 'currMembersUpdate')
@@ -68,22 +66,11 @@
             src += '?groupid=' + $("#groupid").val();
             title = "Update members of: " + $('#groupid :selected').text();
         }
-        $('<iframe id="memberDialog" src="' + src + '" />').dialog({
-            title: this.title || title || 'Edit Member Dialog',
-            bgiframe: true,
-            autoOpen: true,
-            width: w,
-            height: h,
-            modal: true,
-            overlay: {
-                opacity: 0.5,
-                background: "black"
-            },
-            close: function() {
-                $("#memberDialog").dialog('destroy');
-                $("#memberDialog").remove();
-            }
-        }).width(w - padding).height(h - padding);
+        var d = $('#memberDialog');
+        $('iframe', d).attr("src", src);
+        d.dialog("option", "title", this.title || title || 'Edit Member Dialog');
+        d.dialog("open");
+        d.parent().center();
     });
 
     $("#inactive-link").click(function() {
@@ -233,13 +220,15 @@
                 }
             }
         });
+        $("#AddFromTag").parent().center();
         return false;
     });
 
     $("#NewMeetingDialog").dialog({ autoOpen: false });
     $.OpenRollsheet = function() {
         $('#grouplabel').text("By Group");
-        $("#NewMeetingDialog").dialog("option", "buttons", {
+        var d = $("#NewMeetingDialog");
+        d.dialog("option", "buttons", {
             "Ok": function() {
                 var dt = $.GetMeetingDateTime();
                 if (!dt.valid)
@@ -251,11 +240,13 @@
                 $(this).dialog("close");
             }
         });
-        $("#NewMeetingDialog").dialog('open');
+        d.dialog('open');
+        d.parent().center();
     };
     $.NewMeeting = function() {
         $('#grouplabel').text("Group Meeting");
-        $("#NewMeetingDialog").dialog("option", "buttons", {
+        var d = $("#NewMeetingDialog");
+        d.dialog("option", "buttons", {
             "Ok": function() {
                 var dt = $.GetMeetingDateTime();
                 if (!dt.valid)
@@ -268,7 +259,8 @@
                 $(this).dialog("close");
             }
         });
-        $("#NewMeetingDialog").dialog('open');
+        d.dialog('open');
+        d.parent().center();
         return false;
     };
     $('#NewMeeting').live("click", $.NewMeeting);

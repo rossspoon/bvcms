@@ -4,12 +4,12 @@
 <head runat="server">
     <title>Index</title>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.8.1.custom.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
     <script src="/Scripts/OrgMembersDialog.js" type="text/javascript"></script>
 <form action="/OrgMembersDialog/Update" method="post">

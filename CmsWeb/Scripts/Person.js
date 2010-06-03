@@ -60,24 +60,26 @@
     //		.hide();
     //    }
 
+    $('#memberDialog').dialog({
+        title: 'Member Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 600,
+        height: 550,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function() {
+            $('iframe', this).attr("src", "");
+        }
+    });
     $('#current-tab form a.membertype').live("click", function(e) {
         e.preventDefault();
-        var $this = $(this);
-        var w = 650;
-        var h = 500;
-        var padding = 30;
-        $('<iframe id="memberDialog" src="' + this.href + '" />').dialog({
-            title: 'Member Dialog',
-            bgiframe: true,
-            autoOpen: true,
-            width: w,
-            height: h,
-            modal: true,
-            overlay: {
-                opacity: 0.5,
-                background: "black"
-            }
-        }).width(w - padding).height(h - padding);
+        var d = $('#memberDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
+        d.parent().center();
     });
 
     $(".CreateAndGo").click(function() {

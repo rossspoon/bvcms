@@ -33,7 +33,7 @@
    if (Model.org.AskRequest == true)
    { %>
     <tr>
-        <td><label for="request">Request</label></td>
+        <td><label for="request"><%=Util.PickFirst(Model.org.RequestLabel, "Request") %></label></td>
         <td><input type="text" name="m.List[<%=Model.index%>].request" value="<%=Model.request%>" maxlength="100" /></td>
         <td><%= Html.ValidationMessage("request") %></td>
     </tr>

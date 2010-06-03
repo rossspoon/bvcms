@@ -260,7 +260,7 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.SetNoLock();
             var d = DbUtil.Db.GetDatum<OnlineRegModel>(m);
 
-            if (m.Amount() == 0)
+            if (m.Amount() == 0 && !m.org.Terms.HasValue())
                 return RedirectToAction("Confirm",
                     new
                     {
@@ -290,6 +290,8 @@ namespace CMSWeb.Areas.Public.Controllers
             };
             pm.Misc1 = pm.NameOnAccount;
 
+            if (m.Amount() == 0 && m.org.Terms.HasValue())
+                return View("Terms", pm);
             return View("Payment", pm);
         }
 

@@ -31,6 +31,7 @@ namespace CmsCheckin
             AskEmFriend = f.AskEmFriend.Checked;
             KioskMode = f.KioskMode.Checked;
             AskChurch = f.AskChurch.Checked;
+            EnableTimer = f.EnableTimer.Checked;
 
             f.Dispose();
 
@@ -55,6 +56,7 @@ namespace CmsCheckin
         public static bool HideCursor { get; set; }
         public static bool TestMode { get; set; }
         public static bool editing { get; set; }
+        public static bool EnableTimer { get; set; }
         public static bool KioskMode { get; set; }
         public static bool AskEmFriend { get; set; }
         public static bool AskGrade { get; set; }
@@ -148,6 +150,8 @@ namespace CmsCheckin
         }
         public static void Timer2Start(EventHandler t)
         {
+            if (EnableTimer)
+                return;
             if (timer2 != null)
                 Timer2Stop();
             timer2 = new Timer();
@@ -172,6 +176,8 @@ namespace CmsCheckin
         }
         public static void TimerStart(EventHandler t)
         {
+            if (EnableTimer)
+                return;
             if (timer1 != null)
                 TimerStop();
             timer1 = new Timer();

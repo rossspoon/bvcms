@@ -187,6 +187,8 @@ namespace CmsData
 		
 		private bool? _AllowKioskRegister;
 		
+		private string _RequestLabel;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -490,6 +492,9 @@ namespace CmsData
 		
 		partial void OnAllowKioskRegisterChanging(bool? value);
 		partial void OnAllowKioskRegisterChanged();
+		
+		partial void OnRequestLabelChanging(string value);
+		partial void OnRequestLabelChanged();
 		
     #endregion
 		public Organization()
@@ -2429,6 +2434,28 @@ namespace CmsData
 					this._AllowKioskRegister = value;
 					this.SendPropertyChanged("AllowKioskRegister");
 					this.OnAllowKioskRegisterChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RequestLabel", UpdateCheck=UpdateCheck.Never, Storage="_RequestLabel", DbType="varchar(50)")]
+		public string RequestLabel
+		{
+			get { return this._RequestLabel; }
+
+			set
+			{
+				if (this._RequestLabel != value)
+				{
+				
+                    this.OnRequestLabelChanging(value);
+					this.SendPropertyChanging();
+					this._RequestLabel = value;
+					this.SendPropertyChanged("RequestLabel");
+					this.OnRequestLabelChanged();
 				}
 
 			}

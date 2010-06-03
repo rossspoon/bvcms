@@ -225,6 +225,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.AskRequest) %></td>
     </tr>
     <tr>
+        <th>Request Label:</th>
+        <td><%=Util.PickFirst(Model.org.RequestLabel, "Request") %></td>
+    </tr>
+    <tr>
         <th>Ask For Parents:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskParents) %></td>
     </tr>
