@@ -1,10 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-	<title>Received</title>
-</asp:Content>
-
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
@@ -16,7 +12,8 @@
     </script>
     <%=Html.Hidden("View") %>
 
-    <h2>Volunteer Information Received</h2>
+    <h2><%=Model.formtitle %></h2>
+    <h4>Information Received</h4>
     <p>
         Thank you for being willing to volunteer.  
         You should receive an email with more information shortly.

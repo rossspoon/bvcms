@@ -34,6 +34,7 @@ tr.alt
     <% if (Model.IsEnded())
        { %>
     <h4 style="color:Red">Registration has ended</h4>
+    <%=Model.Instructions%>
     <% }
        else
        { %>

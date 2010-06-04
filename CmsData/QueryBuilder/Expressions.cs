@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Collections;
 using System.Data.Linq.SqlClient;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace CmsData
 {
@@ -314,6 +315,58 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression RecentContributionCount(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int cnt)
+        {
+            int[] ReturnedReversedTypes = new int[] 
+            { 
+                (int)Contribution.TypeCode.ReturnedCheck, 
+                (int)Contribution.TypeCode.Reversed 
+            };
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, int>> pred = p =>
+                p.Contributions.Count(c => c.ContributionDate >= mindt
+                    && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
+                        || (p.Family.HeadOfHouseholdId == p.PeopleId 
+                            && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
+                    && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+                    && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            if (HttpContext.Current.User.IsInRole("Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
+        internal static Expression RecentContributionAmount(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            decimal amt)
+        {
+            int[] ReturnedReversedTypes = new int[] 
+            { 
+                (int)Contribution.TypeCode.ReturnedCheck, 
+                (int)Contribution.TypeCode.Reversed 
+            };
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, decimal?>> pred = p =>
+                p.Contributions.Where(c => c.ContributionDate >= mindt
+                    && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
+                        || (p.Family.HeadOfHouseholdId == p.PeopleId
+                            && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
+                    && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+                    && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                ).Sum(c => c.ContributionAmount);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(amt), left.Type);
+            if (HttpContext.Current.User.IsInRole("Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
         internal static Expression NumberOfFamilyMembers(
             ParameterExpression parm,
             CompareType op,
@@ -334,7 +387,7 @@ namespace CmsData
             int cnt)
         {
             Expression<Func<Person, int>> pred = p =>
-                p.OrganizationMembers.Count(m => 
+                p.OrganizationMembers.Count(m =>
                     (m.OrganizationId == org || org == 0)
                     && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
@@ -364,7 +417,7 @@ namespace CmsData
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Util.CurrentOrgId
                     )
-                && !p.OrganizationMembers.Any(m => m.OrganizationId == Util.CurrentOrgId 
+                && !p.OrganizationMembers.Any(m => m.OrganizationId == Util.CurrentOrgId
                     && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -1097,7 +1150,7 @@ namespace CmsData
             bool tf)
         {
             Expression<Func<Person, bool>> pred;
-            if (View == "ns") 
+            if (View == "ns")
                 pred = p => p.VolInterestInterestCodes.Count() > 0;
             else
             {

@@ -1,11 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
-
-<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>Volunteer</title>
-    <link rel="stylesheet" href="/content/jquery.treeview.css" type="text/css" media="screen" />
-</asp:Content>
-
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <link rel="stylesheet" href="/content/jquery.treeview.css" type="text/css" media="screen" />
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
     <script type="text/javascript" src="/content/js/jquery.treeview.min.js"></script>
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -21,6 +17,7 @@
             });
         });
     </script>
+    <h2><%=Model.formtitle %></h2>
     <%=Html.Hidden("View") %>
     <%=Model.FormInitialize() %>
     <h4><%=Model.person.Name %></h4>

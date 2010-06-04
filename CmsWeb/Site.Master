@@ -23,7 +23,7 @@
                 <asp:ScriptReference Path="~/Content/js/jquery.blockUI.js" />
                 <asp:ScriptReference Path="~/Content/js/thickbox-compressed.js" />
                 <asp:ScriptReference Path="~/Content/js/center-plugin_1.0.1.js" />
-                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=6" />
+                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=7" />
             </Scripts>
     </asp:ScriptManager>
 <script type="text/javascript">

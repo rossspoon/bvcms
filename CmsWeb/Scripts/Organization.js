@@ -296,6 +296,7 @@
                 if (ret)
                     RebindMemberGrids();
             });
+        return false;
     });
 });
 function RebindMemberGrids(from) {

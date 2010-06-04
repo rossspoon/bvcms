@@ -402,6 +402,12 @@
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
       Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
     </Field>
+    <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="Integer" DisplayAs="RecentContributionCount({0})" Params="Days">
+      Must have Finance role for this to work.
+    </Field>
+    <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0})" Params="Days">
+      Must have Finance role for this to work.
+    </Field>
     <Field Name="PeopleExtra" Title="ExtraValue" Type="StringEqual">
       ExtraValue field = (field:value)
     </Field>

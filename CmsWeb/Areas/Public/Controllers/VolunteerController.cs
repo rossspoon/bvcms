@@ -28,9 +28,9 @@ namespace CMSWeb.Areas.Public.Controllers
 #else
             ViewData["timeout"] = 60000;
 #endif
-            ViewData["head"] = HeaderHtml("Volunteer-" + view,
-                            DbUtil.Settings("VolHeader", "change VolHeader setting"),
-                            DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
+            //ViewData["head"] = HeaderHtml("Volunteer-" + view,
+            //                DbUtil.Settings("VolHeader", "change VolHeader setting"),
+            //                DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
         }
         public ActionResult Index(string id)
         {

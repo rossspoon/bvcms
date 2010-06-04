@@ -341,6 +341,16 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecentContributionCount:
+                    return Expressions.RecentContributionCount(parm,
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
+                case QueryType.RecentContributionAmount:
+                    return Expressions.RecentContributionAmount(parm,
+                               c.Days,
+                               CompType,
+                               Decimal.Parse(c.TextValue));
                 case QueryType.RecentAttendCount:
                     return Expressions.RecentAttendCount(parm,
                                c.Program,

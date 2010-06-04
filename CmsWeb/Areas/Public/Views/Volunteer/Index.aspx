@@ -1,10 +1,6 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
-
-<asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
-    <title>Volunteer</title>
-</asp:Content>
-
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
@@ -23,6 +19,7 @@
         });
     </script>
     <%=Html.Hidden("View") %>
+    <h2><%=Model.formtitle %></h2>
     <%= Html.ValidationMessage("find") %>
     <% using (Html.BeginForm()) { %>
         <div>

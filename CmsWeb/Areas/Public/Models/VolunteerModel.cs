@@ -26,7 +26,10 @@ namespace CMSWeb.Models
                 _view = value;
                 var c = DbUtil.Content("Volunteer-" + View + ".view");
                 if (c != null)
+                {
                     formcontent = c.Body;
+                    formtitle = c.Title;
+                }
             }
         }
         public string first { get; set; }
@@ -43,6 +46,7 @@ namespace CMSWeb.Models
             }
         }
         public string formcontent { get; set; }
+        public string formtitle { get; set; }
         public string FormInitialize()
         {
             var q = from vi in person.FetchVolInterestInterestCodes(View)
