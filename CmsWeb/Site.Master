@@ -6,53 +6,41 @@
 <head runat="server">
     <title>CMS2</title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
+    <asp:Literal ID="cssbundle" runat="server"></asp:Literal>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-            <Scripts>
-                <asp:ScriptReference Path="~/Content/js/jquery-1.4.2.min.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery-ui-1.8.1.custom.min.js" />
-                <asp:ScriptReference Path="~/Content/js/hoverIntent.js" />
-                <asp:ScriptReference Path="~/Content/js/superfish.js" />
-                <asp:ScriptReference Path="~/Content/js/supersubs.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery.bgiframe.min.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery-cookie.js" />
-                <asp:ScriptReference Path="~/Content/js/jquery.blockUI.js" />
-                <asp:ScriptReference Path="~/Content/js/thickbox-compressed.js" />
-                <asp:ScriptReference Path="~/Content/js/center-plugin_1.0.1.js" />
-                <asp:ScriptReference Path="~/Scripts/ExportToolBar.js?v=7" />
-            </Scripts>
-    </asp:ScriptManager>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("ul.sf-menu").supersubs({
-            minWidth: 8,
-            maxWidth: 27,
-            extraWidth: 1,
-            autoArrows: false
-        }).superfish();
-    });
-    function EnterSubmit(e, myform) {
-        var key = window.event ? e.keyCode : e.which;
-        if (key == 13) {
-            var s = $get('<%=SearchText.ClientID%>');
-            if (s.value != "Quick Search")
-                window.location = '<%=ResolveUrl("~/Search.aspx?name=")%>' + s.value;
+    <asp:Literal ID="jsbundle" runat="server"></asp:Literal>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("ul.sf-menu").supersubs({
+                minWidth: 8,
+                maxWidth: 27,
+                extraWidth: 1,
+                autoArrows: false
+            }).superfish();
+        });
+        function EnterSubmit(e, myform) {
+            var key = window.event ? e.keyCode : e.which;
+            if (key == 13) {
+                var s = $get('<%=SearchText.ClientID%>');
+                if (s.value != "Quick Search")
+                    window.location = '<%=ResolveUrl("~/Search.aspx?name=")%>' + s.value;
+            }
+            else
+                return true;
         }
-        else
-            return true;
-    }
-    function TBNewWindow(url) {
-        window.open(url, "_blank");
-    }
-    function TBNavWindow(url) {
-        window.open(url, "_self");
-    }
-</script>
-<asp:Label ID="urgentNotice" class="urgentNotice" runat="server" Visible="false">System is shutting down in 5 minutes, back up in 15</asp:Label>
+        function TBNewWindow(url) {
+            window.open(url, "_blank");
+        }
+        function TBNavWindow(url) {
+            window.open(url, "_self");
+        }
+    </script>
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:Label ID="urgentNotice" class="urgentNotice" runat="server" Visible="false">System is shutting down in 5 minutes, back up in 15</asp:Label>
     <div id="CommonHeader">
         <div>
             <asp:Label ID="UserHeader" runat="server"></asp:Label>
@@ -161,45 +149,36 @@
                         <li>
                             <asp:HyperLink ID="HyperLink6" NavigateUrl="~/Admin/Users.aspx" runat="server">Users</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Programs" NavigateUrl="/Setup/Program/"
-                                runat="server">Programs</asp:HyperLink></li>
+                            <asp:HyperLink ID="Programs" NavigateUrl="/Setup/Program/" runat="server">Programs</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Divisions" NavigateUrl="/Setup/Division/"
-                                runat="server">Divisions</asp:HyperLink></li>
+                            <asp:HyperLink ID="Divisions" NavigateUrl="/Setup/Division/" runat="server">Divisions</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/"
-                                runat="server">Ministries</asp:HyperLink></li>
+                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/" runat="server">Ministries</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="MetroZips" NavigateUrl="/Setup/MetroZip/" 
-                                runat="server">MetroZips</asp:HyperLink></li>
+                            <asp:HyperLink ID="MetroZips" NavigateUrl="/Setup/MetroZip/" runat="server">MetroZips</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Funds" NavigateUrl="/Setup/Fund/"
-                                runat="server">Funds</asp:HyperLink></li>
+                            <asp:HyperLink ID="Funds" NavigateUrl="/Setup/Fund/" runat="server">Funds</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/"
-                                runat="server">MemberTypes</asp:HyperLink></li>
+                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/" runat="server">MemberTypes</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/"
-                                runat="server">Settings</asp:HyperLink></li>
+                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/" runat="server">Settings</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Lookups" NavigateUrl="/Setup/Lookup/"
-                                runat="server">Lookups</asp:HyperLink></li>
+                            <asp:HyperLink ID="Lookups" NavigateUrl="/Setup/Lookup/" runat="server">Lookups</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/"
-                                runat="server">Special Content</asp:HyperLink></li>
+                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/" runat="server">Special Content</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Recreation" NavigateUrl="/Setup/Recreation/"
-                                runat="server">Recreation Setup</asp:HyperLink></li>
+                            <asp:HyperLink ID="Recreation" NavigateUrl="/Setup/Recreation/" runat="server">Recreation Setup</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
                                 runat="server">OrgMembersOnly</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx" runat="server">Delete Special Tags</asp:HyperLink></li>
+                            <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx"
+                                runat="server">Delete Special Tags</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
-                        <li ID="NewUserItem" runat="server" visible="false">
+                        <li id="NewUserItem" runat="server" visible="false">
                             <asp:HyperLink ID="NewUser" runat="server">Add As New User</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="ActivityLog" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
@@ -226,19 +205,24 @@
         <table>
             <tr>
                 <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
-                    <input type="radio" id="addressedto1" name="addressedto" value="Individual" checked="checked" 
-                        title="Addressed to individuals" /> Individual<br />
-                    <input type="radio" id="addressedto2" name="addressedto" value="Family" 
-                        title="Addressed as a family when there are children" /> Family<br />
-                    <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" 
-                        title="Addressed to a couple, if both are in selection" /> Couples (both)<br />
-                    <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" 
-                        title="Addressed to a couple, if one or both are in selection" /> Couples (either)<br />
-                    <input type="radio" id="addressedto5" name="addressedto" value="ParentsOf" 
-                        title="Addressed to parents or parent" /> Parents Of<br />
+                    <input type="radio" id="addressedto1" name="addressedto" value="Individual" checked="checked"
+                        title="Addressed to individuals" />
+                    Individual<br />
+                    <input type="radio" id="addressedto2" name="addressedto" value="Family" title="Addressed as a family when there are children" />
+                    Family<br />
+                    <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" title="Addressed to a couple, if both are in selection" />
+                    Couples (both)<br />
+                    <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" title="Addressed to a couple, if one or both are in selection" />
+                    Couples (either)<br />
+                    <input type="radio" id="addressedto5" name="addressedto" value="ParentsOf" title="Addressed to parents or parent" />
+                    Parents Of<br />
                 </td>
-                <td><input type="checkbox" id="UseTitle" name="UseTitle" /> Use Titles<br />
-                <input type="checkbox" id="WebView" name="WebView" /> Web View (experimental)</td>
+                <td>
+                    <input type="checkbox" id="UseTitle" name="UseTitle" />
+                    Use Titles<br />
+                    <input type="checkbox" id="WebView" name="WebView" />
+                    Web View (experimental)
+                </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">

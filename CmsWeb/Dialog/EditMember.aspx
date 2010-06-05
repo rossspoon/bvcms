@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="EditMember.aspx.cs"
-    Inherits="CMSWeb.Dialog.EditMember" StylesheetTheme="Minimal" %>
+    Inherits="CMSWeb.Dialog.EditMember" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
@@ -8,6 +8,7 @@
 <head runat="server">
     <base target="_self" />
     <title>Edit Member Dialog</title>
+    <link href="/Content/Common2.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <form id="form1" runat="server">

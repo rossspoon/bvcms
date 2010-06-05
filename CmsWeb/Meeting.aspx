@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master"
     AutoEventWireup="true" CodeBehind="Meeting.aspx.cs" Inherits="CMSWeb.Meeting"
     Title="Meeting" %>
 

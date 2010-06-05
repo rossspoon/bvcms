@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="OrganizationSearch.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="OrganizationSearch.aspx.cs"
     Inherits="CMSWeb.OrganizationSearch" Title="Organization Search" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
@@ -213,10 +213,19 @@
     </div>
     Count:
     <asp:Label ID="GridCount" runat="server" Text="0"></asp:Label>
-        <asp:GridView ID="OrganizationGrid" SkinID="GridViewSkin" runat="server" AllowPaging="True"
+        <asp:GridView ID="OrganizationGrid" runat="server" AllowPaging="True"
     PagerSettings-Position="Bottom" AutoGenerateColumns="False" PageSize="10" 
         AllowSorting="True" DataSourceID="OrganizationData" 
-        onrowdatabound="OrganizationGrid_RowDataBound">
+        onrowdatabound="OrganizationGrid_RowDataBound"
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
     <Columns>
         <asp:TemplateField HeaderText="Division" SortExpression="Division">
             <ItemTemplate>

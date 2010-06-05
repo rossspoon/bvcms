@@ -2,9 +2,18 @@
 <%@ Register Src="GridPager.ascx" TagName="GridPager" TagPrefix="uc1" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:GridView ID="Grid" runat="server" PageSize="10" AllowPaging="True" DataKeyNames="MeetingId"
-    SkinID="GridViewSkin" PagerSettings-Position="Bottom"
+    PagerSettings-Position="Bottom"
     AllowSorting="True" AutoGenerateColumns="False" 
-    onrowdeleting="Grid_RowDeleting" OnRowCommand="ttt" >
+    onrowdeleting="Grid_RowDeleting" OnRowCommand="ttt" 
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
     <Columns>
         <asp:HyperLinkField DataNavigateUrlFields="MeetingId" 
             DataNavigateUrlFormatString="~/Meeting.aspx?id={0}" 

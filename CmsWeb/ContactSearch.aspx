@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ContactSearch.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ContactSearch.aspx.cs"
     Inherits="CMSWeb.ContactSearch" Title="Contact Search" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
@@ -95,9 +95,18 @@
     </div>
     Count:
     <asp:Label ID="GridCount" runat="server" Text="0"></asp:Label>
-    <asp:GridView ID="ContactGrid" SkinID="GridViewSkin" runat="server" AllowPaging="True"
+    <asp:GridView ID="ContactGrid" runat="server" AllowPaging="True"
         PagerSettings-Position="Bottom" AutoGenerateColumns="False" PageSize="10" 
-        AllowSorting="True" DataSourceID="ContactData">
+        AllowSorting="True" DataSourceID="ContactData"
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
     <Columns>
         <asp:TemplateField HeaderText="Date" SortExpression="Date">
             <ItemTemplate>

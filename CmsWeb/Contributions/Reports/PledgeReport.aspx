@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" StylesheetTheme="Standard" MasterPageFile="~/Contributions/Reports/Reports.Master" CodeBehind="PledgeReport.aspx.cs" Inherits="CMSWeb.Contributions.Reports.PledgeReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Contributions/Reports/Reports.Master" CodeBehind="PledgeReport.aspx.cs" Inherits="CMSWeb.Contributions.Reports.PledgeReport" %>
 
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -28,7 +28,16 @@
         </div>
         <hr />
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
-            DataSourceID="ObjectDataSource1" SkinID="GridViewSkin">
+            DataSourceID="ObjectDataSource1"
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
             <Columns>
                 <asp:BoundField DataField="FundId" HeaderText="FundId" 
                     SortExpression="FundId" />

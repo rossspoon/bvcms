@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="AddTagShareds.aspx.cs"
-    Inherits="CMSWeb.Dialog.AddTagShareds" StylesheetTheme="Minimal" %>
+    Inherits="CMSWeb.Dialog.AddTagShareds" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register TagPrefix="user" TagName="QuickSearchParameters" Src="~/UserControls/QuickSearchParameters.ascx" %>
@@ -9,6 +9,7 @@
 <head runat="server">
     <base target="_self" />
     <title>Add Contactor Dialog</title>
+    <link href="/Content/Common2.css" rel="stylesheet" type="text/css" />
 </head>
 
 <script type="text/javascript">

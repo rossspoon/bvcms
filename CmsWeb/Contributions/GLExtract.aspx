@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" StylesheetTheme="Standard" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="GLExtract.aspx.cs" Inherits="CMSWeb.Contributions.GLExtract" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

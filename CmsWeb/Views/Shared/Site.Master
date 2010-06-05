@@ -7,27 +7,34 @@
     <title>
         <%= Html.Encode(ViewData["Title"]) %></title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
-    <link href="/Content/jquery-ui-1.8.1.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/pager.css?v=2" rel="stylesheet" type="text/css" />
-    <link href="/Content/style.css?v=5" rel="stylesheet" type="text/css" />
-    <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/supertabfish.css" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
+    <%= SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.1.custom.css")
+        .Add("/Content/pager.css")
+        .Add("/Content/style.css")
+        .Add("/Content/superfish.css")
+        .Add("/Content/supertabfish.css")
+        .Render("/Content/AllMVC_#.css")
+    %>
 </head>
 <body>
-    <div>
-        <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-        <script src="/Content/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
-        <script src="/Content/js/superfish.js" type="text/javascript"></script>
-        <script src="/Content/js/supersubs.js" type="text/javascript"></script>
-        <script src="/Content/js/jquery.bgiframe.min.js" type="text/javascript"></script>
-        <script src="/Content/js/hoverIntent.js" type="text/javascript"></script>
-        <script src="/Content/js/jQuery-cookie.js" type="text/javascript"></script>
-        <script src="/Content/js/jQuery.blockUI.js" type="text/javascript"></script>
-        <script src="/Content/js/jquery.dimensions.min.js" type="text/javascript"></script>
-        <script src="/Content/js/center-plugin_1.0.1.js" type="text/javascript"></script>
-        <script src="/Scripts/ExportToolBar.js?v=7" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.4.2.js")
+        .Add("/Content/js/jquery-ui-1.8.1.custom.js")
+        .Add("/Content/js/jquery.bgiframe-2.1.1.js")
+        .Add("/Content/js/hoverIntent.js")
+        .Add("/Content/js/jquery-cookie.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Content/js/jquery.dimensions.js")
+        .Add("/Content/js/center-plugin_1.0.1.js")
+        .Add("/Content/js/superfish.js")
+        .Add("/Content/js/supersubs.js")
+        .Add("/Content/js/thickbox.js")
+        .Add("/Content/js/center-plugin_1.0.1.js")
+        .Add("/Scripts/ExportToolBar.js")
+        .Render("/Content/combined_#.js")          
+    %>
         <script type="text/javascript">
             $(document).ready(function() {
                 $("ul.sf-menu").supersubs({
@@ -47,7 +54,6 @@
                 return true;
             }
         </script>
-    </div>
     <div>
         <% if (((string)Application["getoff"]).HasValue())
            { %>

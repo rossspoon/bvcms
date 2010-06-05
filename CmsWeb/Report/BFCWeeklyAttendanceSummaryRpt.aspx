@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" AutoEventWireup="true" CodeBehind="BFCWeeklyAttendanceSummaryRpt.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BFCWeeklyAttendanceSummaryRpt.aspx.cs"
     MasterPageFile="~/Report/Reports.Master" Inherits="CMSWeb.Reports.BFCWeeklyAttendanceSummaryRpt" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

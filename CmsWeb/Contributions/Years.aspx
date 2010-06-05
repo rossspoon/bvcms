@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Years.aspx.cs" Inherits="CMSWeb.Contributions.Years" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Years.aspx.cs" Inherits="CMSWeb.Contributions.Years" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

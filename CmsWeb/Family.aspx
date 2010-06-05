@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="Family.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="Family.aspx.cs"
     Inherits="CMSWeb.FamilyPage" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
@@ -152,8 +152,17 @@
                     <td>
                         <asp:GridView ID="FamilyGrid" runat="server" AutoGenerateColumns="False" CellPadding="3"
                             EmptyDataText="No Family Members" OnRowDataBound="GridView1_RowDataBound"
-                            SkinID="GridViewSkin" DataSourceID="FamilyMembersODS" 
-                            DataKeyNames="PeopleId">
+                            DataSourceID="FamilyMembersODS" 
+                            DataKeyNames="PeopleId"
+        ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="Id" HeaderText="Id" SortExpression="Id" Visible="False">
                                     <ItemStyle HorizontalAlign="Right" />
@@ -244,8 +253,17 @@
                     <td>
                         <asp:GridView ID="RelatedFamilyGrid" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                             CellPadding="3" EmptyDataText="No Related Families Found" 
-                            OnRowDataBound="RelatedFamilyGrid_RowDataBound" SkinID="GridViewSkin" 
-                            DataKeyNames="FamilyId,RelatedFamilyId" DataSourceID="RelatedFamiliesODS">
+                            OnRowDataBound="RelatedFamilyGrid_RowDataBound"  
+                            DataKeyNames="FamilyId,RelatedFamilyId" DataSourceID="RelatedFamiliesODS"
+        ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="FamilyId" HeaderText="Id" SortExpression="Id" Visible="False">
                                     <ItemStyle HorizontalAlign="Right" />

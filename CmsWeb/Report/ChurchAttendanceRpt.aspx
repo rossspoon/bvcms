@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" AutoEventWireup="true" CodeBehind="ChurchAttendanceRpt.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChurchAttendanceRpt.aspx.cs"
     MasterPageFile="~/Report/Reports.Master" Inherits="CMSWeb.Reports.ChurchAttendanceRpt" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SavedQueries.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SavedQueries.aspx.cs"
     Inherits="CMSWeb.SavedQueries" Title="Saved Queries" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
@@ -9,8 +9,17 @@
     <asp:CheckBox ID="OnlyMyQueries" runat="server" AutoPostBack="true" Text="Show only my queries" />
     <asp:CheckBox ID="ShowScratchPads" runat="server" AutoPostBack="true" Text="Show Scratch pad queries" /><br />
     <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AllowPaging="True"
-        AutoGenerateColumns="False" SkinID="GridViewSkin" AllowSorting="True" DataKeyNames="QueryId"
-        PageSize="10">
+        AutoGenerateColumns="False" AllowSorting="True" DataKeyNames="QueryId"
+        PageSize="10"
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
         <Columns>
             <asp:TemplateField ShowHeader="False">
                 <EditItemTemplate>

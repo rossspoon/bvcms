@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyTags.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyTags.aspx.cs"
     Inherits="CMSWeb.MyTags" Title="Tag Management" %>
 
 <%@ Register Src="UserControls/PersonGrid.ascx" TagName="PersonGrid" TagPrefix="uc1" %>

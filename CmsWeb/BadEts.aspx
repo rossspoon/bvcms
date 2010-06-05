@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" StylesheetTheme="Standard" Language="C#" MasterPageFile="~/Site.Master"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master"
     AutoEventWireup="true" CodeBehind="BadEts.aspx.cs" Inherits="CMSWeb.BadEts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -40,8 +40,17 @@
     <br />
     <asp:GridView ID="GridView1" runat="server" AllowPaging="True"
         AutoGenerateColumns="False" DataSourceID="ObjectDataSource2" 
-        PageSize="200" SkinID="GridViewSkin" onrowcommand="GridView1_RowCommand" 
-        onrowdatabound="GridView1_RowDataBound" EnableViewState="false">
+        PageSize="200" onrowcommand="GridView1_RowCommand" 
+        onrowdatabound="GridView1_RowDataBound" EnableViewState="false"
+        CellPadding="4" ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
         <Columns>
             <asp:BoundField DataField="Flag" HeaderText="Flag" />
             <asp:BoundField DataField="TranId" HeaderText="TranId" />

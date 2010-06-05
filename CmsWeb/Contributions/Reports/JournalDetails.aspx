@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Contributions/Reports/Reports.Master"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Contributions/Reports/Reports.Master"
     AutoEventWireup="true" CodeBehind="JournalDetails.aspx.cs" Inherits="CMSWeb.Contributions.Reports.JournalDetails" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Enrollment Control" StylesheetTheme="Standard" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Title="Enrollment Control" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="EnrollmentControlReport.aspx.cs" Inherits="CMSWeb.EnrollmentControlReport" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

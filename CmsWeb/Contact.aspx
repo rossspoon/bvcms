@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
     Inherits="CMSWeb.Contact" Title="Person" EnableEventValidation="false" %>
 
 <%@ Register Src="UserControls/GridPager.ascx" TagName="GridPager" TagPrefix="uc1" %>
@@ -151,7 +151,16 @@
                         <td style="vertical-align: top">
                             <asp:GridView ID="ContactorGrid" runat="server" AllowPaging="True" AllowSorting="True"
                                 AutoGenerateColumns="False" CellPadding="3" EmptyDataText="No Contactors Found"
-                                PageSize="10" SkinID="GridViewSkin" DataSourceID="ContactorList" DataKeyNames="ContactId, PeopleId">
+                                PageSize="10" DataSourceID="ContactorList" DataKeyNames="ContactId, PeopleId"
+        ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:BoundField DataField="PeopleId" HeaderText="PeopleId" SortExpression="Id" Visible="False">
                                         <ItemStyle HorizontalAlign="Right" />
@@ -195,8 +204,17 @@
                         <td style="vertical-align: top">
                             <asp:GridView ID="ContacteeGrid" runat="server" AllowPaging="True" AllowSorting="True"
                                 AutoGenerateColumns="False" CellPadding="3" EmptyDataText="No Conactees Found"
-                                PageSize="10" SkinID="GridViewSkin" DataSourceID="ContacteeList" DataKeyNames="ContactId,PeopleId"
-                                OnRowCreated="ContacteeGrid_RowCreated">
+                                PageSize="10" DataSourceID="ContacteeList" DataKeyNames="ContactId,PeopleId"
+                                OnRowCreated="ContacteeGrid_RowCreated"
+        ForeColor="#333333" GridLines="None" >
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:TemplateField ShowHeader="False">
                                         <EditItemTemplate>

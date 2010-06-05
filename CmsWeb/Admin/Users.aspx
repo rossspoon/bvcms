@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="CMSWeb.Admin.Users" %>
+﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="CMSWeb.Admin.Users" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>User Management</title>
+    <%=ViewExtensions2.StandardCss() %>
 </head>
 <body>
     <form id="form1" runat="server">

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async="true" AsyncTimeout="1000" StylesheetTheme="Standard" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
+﻿<%@ Page Language="C#" Async="true" AsyncTimeout="1000" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
     Inherits="CMSWeb.EmailPeople" Title="Email People" validateRequest="false"  %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

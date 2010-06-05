@@ -5,19 +5,19 @@
  * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
 */
 		  
-var tb_pathToImage = "images/loading.gif";
+var tb_pathToImage = "images/loadingAnimation.gif";
 
 /*!!!!!!!!!!!!!!!!! edit below this line at your own risk !!!!!!!!!!!!!!!!!!!!!!!*/
 
 //on page load call tb_init
-$(document).ready(function() { 
+$(document).ready(function(){   
 	tb_init('a.thickbox, area.thickbox, input.thickbox');//pass where to apply thickbox
 	imgLoader = new Image();// preload image
 	imgLoader.src = tb_pathToImage;
 });
 
 //add thickbox to href & area elements that have a class of .thickbox
-function tb_init(domChunk) {
+function tb_init(domChunk){
 	$(domChunk).click(function(){
 	var t = this.title || this.name || null;
 	var a = this.href || this.alt;
@@ -29,6 +29,7 @@ function tb_init(domChunk) {
 }
 
 function tb_show(caption, url, imageGroup) {//function called when the user clicks on a thickbox link
+
 	try {
 		if (typeof document.body.style.maxHeight === "undefined") {//if IE 6
 			$("body","html").css({height: "100%", width: "100%"});

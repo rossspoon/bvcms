@@ -28,6 +28,23 @@ namespace CMSWeb
             if (ScriptManager.IsInAsyncPostBack)
                 return;
 
+            cssbundle.Text = ViewExtensions2.StandardCss();
+            jsbundle.Text = SquishIt.Framework.Bundle.JavaScript()
+                .Add("/Content/js/jquery-1.4.2.js")
+                .Add("/Content/js/jquery-ui-1.8.1.custom.js")
+                .Add("/Content/js/jquery.bgiframe-2.1.1.js")
+                .Add("/Content/js/hoverIntent.js")
+                .Add("/Content/js/jquery-cookie.js")
+                .Add("/Content/js/jquery.blockUI.js")
+                .Add("/Content/js/jquery.dimensions.js")
+                .Add("/Content/js/center-plugin_1.0.1.js")
+                .Add("/Content/js/superfish.js")
+                .Add("/Content/js/supersubs.js")
+                .Add("/Content/js/thickbox.js")
+                .Add("/Content/js/center-plugin_1.0.1.js")
+                .Add("/Scripts/ExportToolBar.js")
+                .Render("/Content/combined_#.js");     
+
             urgentNotice.Visible = ((string)Application["getoff"]).HasValue();
             if (urgentNotice.Visible)
                 urgentNotice.Text = (string)Application["getoff"];

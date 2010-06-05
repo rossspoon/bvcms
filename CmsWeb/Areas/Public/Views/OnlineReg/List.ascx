@@ -30,7 +30,7 @@
             else
                 Html.RenderPartial("OtherEdit", p);
         }
-        else if (
+        else if (!Model.IsEnded())
             Html.RenderPartial("PersonEdit", p);
 %>
 </td></tr>

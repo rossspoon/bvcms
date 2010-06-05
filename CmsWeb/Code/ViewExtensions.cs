@@ -22,8 +22,19 @@ public enum ListType
     Unordered,
     TableCell
 }
-public static class ViewExtensions
+public static class ViewExtensions2
 {
+    public static string StandardCss()
+    {
+        return SquishIt.Framework.Bundle.Css()
+                       .Add("/Content/jquery-ui-1.8.1.custom.css")
+                       .Add("/Content/pager.css")
+                       .Add("/Content/style2.css")
+                       .Add("/Content/superfish.css")
+                       .Add("/Content/supertabfish.css")
+                       .Add("/Content/thickbox.css")
+                       .Render("/Content/AllWebForm_#.css");
+    }
     public static string RegisterScript(this HtmlHelper helper, string scriptFileName)
     {
         string scriptRoot = VirtualPathUtility.ToAbsolute("~/Scripts");

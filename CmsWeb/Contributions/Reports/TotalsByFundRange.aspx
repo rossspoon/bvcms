@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" AutoEventWireup="true" CodeBehind="TotalsByFundRange.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TotalsByFundRange.aspx.cs"
     MasterPageFile="~/Contributions/Reports/Reports.Master" Inherits="CMSWeb.Reports.TotalsByFundRange" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

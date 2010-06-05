@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" StylesheetTheme="Standard" MasterPageFile="~/Site.Master"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master"
     AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CMSWeb.Default"
     Title="CMS2 Home" %>
 
@@ -20,7 +20,15 @@
                                 <asp:HyperLink ID="BFClass" runat="server">BFClass</asp:HyperLink>
                                 <div style="overflow: auto; height: 100px">
                                     <asp:GridView ID="Birthdays" runat="server" AutoGenerateColumns="False" ShowHeader="False"
-                                        SkinID="GridViewSkin">
+        CellPadding="4" ForeColor="#333333" GridLines="None">
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                         <Columns>
                                             <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person/Index/{0}"
                                                 DataTextField="Name" DataTextFormatString="{0}" />
@@ -88,7 +96,15 @@
                             <td>
                                 <div style="overflow: auto; height: 105px;">
                                      <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" ShowHeader="False"
-                                        SkinID="GridViewSkin">
+        CellPadding="4" ForeColor="#333333" GridLines="None">
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                         <Columns>
                                             <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Person/Index/{0}"
                                                 DataTextField="Name" DataTextFormatString="{0}" />
@@ -97,8 +113,17 @@
                                     </asp:GridView>
 
                                     <asp:GridView ID="grdMyInvolvement" runat="server" AutoGenerateColumns="False"
-                                        SkinID="GridViewSkin" EmptyDataText="No Current Enrollments Found."
-                                        ShowHeader="false">
+                                        EmptyDataText="No Current Enrollments Found."
+                                        ShowHeader="false"
+        CellPadding="4" ForeColor="#333333" GridLines="None">
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                         <Columns>
                                             <asp:HyperLinkField DataNavigateUrlFields="Id" 
                                                 DataTextField="Name" DataTextFormatString="{0}" />                                          
@@ -125,7 +150,15 @@
                                 </h4>
                                 <div style="overflow: auto; height: 600px;">
                                     <asp:GridView ID="NewsGrid" runat="server" AutoGenerateColumns="False" ShowHeader="False"
-                                        SkinID="GridViewSkin">
+        CellPadding="4" ForeColor="#333333" GridLines="None">
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                         <Columns>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
@@ -163,7 +196,16 @@
                                 </h4>
                                 <div style="overflow: auto; height: 522px;">
                                     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" ShowHeader="False"
-                                        SkinID="GridViewSkin" DataSourceID="ObjectDataSource1">
+                                        DataSourceID="ObjectDataSource1"
+        CellPadding="4" ForeColor="#333333" GridLines="None">
+        <PagerSettings Position="TopAndBottom" />
+        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <RowStyle BackColor="#EFF3FB" />
+        <PagerStyle CssClass="pagerstyle" />
+        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle BackColor="#EFF3FB"/>
+        <AlternatingRowStyle BackColor="White" />
                                         <Columns>
                                             <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Task/List/{0}#detail"
                                                 DataTextField="Description" HeaderText="Task" />
