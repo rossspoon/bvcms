@@ -58,16 +58,10 @@
     $('a.memberdialog').live("click", function(e) {
         e.preventDefault();
         var title;
-        var src = this.href;
-        if (this.id == 'currMembersUpdate')
-            src += '?sg=' + $("#smallgroupid").val();
-        else if (this.id == 'groupMembersUpdate') {
-            src += '?groupid=' + $("#groupid").val();
-            title = "Update members of: " + $('#groupid :selected').text();
-        }
+        var src = this.href + '?sg=' + $("#smallgroupid").val();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", src);
-        d.dialog("option", "title", this.title || title || 'Edit Member Dialog');
+        d.dialog("option", "title", this.title || 'Edit Member Dialog');
         d.dialog("open");
         d.parent().center();
     });

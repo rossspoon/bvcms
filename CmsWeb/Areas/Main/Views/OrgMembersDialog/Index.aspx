@@ -14,7 +14,6 @@
     <script src="/Scripts/OrgMembersDialog.js" type="text/javascript"></script>
 <form action="/OrgMembersDialog/Update" method="post">
 <%=Html.Hidden("orgid") %>
-<%=Html.Hidden("groupid") %>
 <%=Html.Hidden("pendings") %>
 <table class="modalPopup">
 	<tr>
@@ -33,15 +32,12 @@
 		<td valign="top"><%=Html.TextBox("inactivedt", "", new { @class="filter datepicker" }) %></td>
 	</tr>
 </table>
-<% if (!Model.groupid.HasValue)
-   { %>
 <div id="EditSection">
     New Values: 
     Membertype <%=Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())%>
     InActive Date <%=Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })%>
     Pending <%=Html.CheckBox("Pending")%>
 </div>
-<% } %>
 <input id="SelectAll" type="checkbox" /> Select All
 <%=Html.SubmitButton("Update", "Update Selected")%>
 <div>

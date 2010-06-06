@@ -14,18 +14,7 @@ namespace CMSWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             var context = HttpContext.Current;
-            var r = context.Response;
-            r.Clear();
-            r.ContentType = "text/plain";
-            r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.csv");
-            r.Charset = "";
             int? qid = context.Request.QueryString["id"].ToInt2();
-            if (!qid.HasValue)
-            {
-                r.Write("no queryid");
-                r.Flush();
-                r.End();
-            }
             var labelNameFormat = context.Request.QueryString["format"];
             var ctl = new MailingController();
             var useTitles = context.Request.QueryString["titles"];
@@ -49,7 +38,23 @@ namespace CMSWeb
                     q = ctl.FetchCouplesBothList("Name", qid.Value);
                     break;
             }
+            var r = context.Response;
+            if (q == null)
+            {
+                r.Write("no format");
+                return;
+            }
 
+            r.Clear();
+            r.ContentType = "text/plain";
+            r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.csv");
+            r.Charset = "";
+            if (!qid.HasValue)
+            {
+                r.Write("no queryid");
+                r.Flush();
+                r.End();
+            }
             foreach (var mi in q)
                 r.Write(string.Format("{0},{1},{2},{3},{4},{5},{6}\n",
                     mi.LabelName, mi.Address, mi.Address2, mi.City, mi.State, mi.Zip.FmtZip(), mi.PeopleId));

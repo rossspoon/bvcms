@@ -1,46 +1,20 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OrgGroupsModel>" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title>Index</title>
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.8.1.custom.css" rel="stylesheet" type="text/css" />
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OrgGroupsModel>" %>
+<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>    
-    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
-    <script src="/Scripts/OrgMembersDialog.js" type="text/javascript"></script>
-<form action="/OrgMembersDialog/Update" method="post">
+</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery.dimensions.js")
+        .Add("/Content/js/jquery.tooltip.js")
+        .Add("/Scripts/OrgGroups.js")
+        .Render("/Content/OrgGroups_#.js")
+            %>        
+<form id="groupsform" action="/OrgGroups/Update" method="post">
 <%=Html.Hidden("orgid") %>
-<%=Html.Hidden("groupid") %>
-<table class="modalPopup">
-	<tr>
-		<td colspan="2"><a id="ClearSearch" href="#">clear</a></td>
-	</tr>
-	<tr>
-		<th>Tag: </th>
-		<td><%=Html.DropDownList("tag", Model.Tags(), new { @class="filter" }) %></td>
-	</tr>
-	<tr>
-		<th>Member Type:</th>
-		<td><%=Html.DropDownList("memtype", Model.MemberTypeCodesWithNotSpecified(), new { @class = "filter" })%></td>
-	</tr>
-	<tr>
-		<th>Inactive Date: </th>
-		<td valign="top"><%=Html.TextBox("inactivedt", "", new { @class="filter datepicker" }) %></td>
-	</tr>
+<h2><a href="/Organization/Index/<%=Model.orgid %>"><%=Model.OrgName %></a></h2>
+<table id="ManageGroups" class="modalPopup">
+<% Html.RenderPartial("ManageGroups", Model); %>
 </table>
-<% if (!Model.groupid.HasValue)
-   { %>
-<div id="EditSection">
-    New Values: 
-    Membertype <%=Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())%>
-    InActive Date <%=Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })%>
-    Pending <%=Html.CheckBox("Pending")%>
-</div>
-<% } %>
 <input id="SelectAll" type="checkbox" /> Select All
 <%=Html.SubmitButton("Update", "Update Selected")%>
 <div>
@@ -48,10 +22,13 @@
     <thead>
 	<tr>
 		<th>Select </th>
-		<th>Name </th>
-		<th>Address </th>
-		<th>CityStateZip </th>
+		<th align="left">Name </th>
+		<th align="left">Address </th>
+		<th align="left">CityStateZip </th>
 		<th>Age </th>
+		<th>Gender </th>
+		<th width="5%"></th>
+		<th align="left" width="25%">Groups </th>
 	</tr>
 	</thead>
 	<tbody>
@@ -60,5 +37,5 @@
 </table>
 </div>
 </form>
-</body>
-</html>
+</asp:Content>
+

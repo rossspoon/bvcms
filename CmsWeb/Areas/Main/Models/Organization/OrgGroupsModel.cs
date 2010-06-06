@@ -13,18 +13,16 @@ namespace CMSWeb.Models
     public class OrgGroupsModel
     {
         public int orgid { get; set; }
-        public bool inactives { get; set; }
-        public bool pendings { get; set; }
-        public int? sg { get; set; }
         public int? groupid { get; set; }
+        public string GroupName { get; set; }
+
+        public string OrgName
+        {
+            get { return DbUtil.Db.LoadOrganizationById(orgid).OrganizationName; }
+        }
+        
 
         public int memtype { get; set; }
-        public int tag { get; set; }
-        public DateTime? inactivedt { get; set; }
-
-        public int MemberType { get; set; }
-        public DateTime? InactiveDate { get; set; }
-        public bool Pending { get; set; }
 
         private IList<int> list = new List<int>();
         public IList<int> List
@@ -32,37 +30,39 @@ namespace CMSWeb.Models
             get { return list; }
             set { list = value; }
         }
-        public IEnumerable<SelectListItem> Tags()
+        public IEnumerable<SelectListItem> Groups()
         {
-            var cv = new CodeValueController();
-            var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
-            tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            return tg;
+            var q = from g in DbUtil.Db.MemberTags
+                    where g.OrgId == orgid
+                    orderby g.Name
+                    select new SelectListItem
+                    {
+                        Text = g.Name,
+                        Value = g.Id.ToString()
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return list;
         }
         private List<SelectListItem> mtypes;
         private List<SelectListItem> MemberTypes()
         {
             if (mtypes == null)
             {
-                var q = from mt in DbUtil.Db.MemberTypes
-                        where mt.Id != (int)OrganizationMember.MemberTypeCode.Visitor
-                        where mt.Id != (int)OrganizationMember.MemberTypeCode.VisitingMember
-                        orderby mt.Description
+                var q = from om in DbUtil.Db.OrganizationMembers
+                        where om.OrganizationId == orgid
+                        where om.Pending ?? false == false
+                        where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        group om by om.MemberType into g
+                        orderby g.Key.Description
                         select new SelectListItem
                         {
-                            Value = mt.Id.ToString(),
-                            Text = mt.Description,
+                            Value = g.Key.Id.ToString(),
+                            Text = g.Key.Description,
                         };
                 mtypes = q.ToList();
             }
             return mtypes;
-        }
-        public IEnumerable<SelectListItem> MemberTypeCodesWithDrop()
-        {
-            var mt = MemberTypes().ToList();
-            mt.Insert(0, new SelectListItem { Value = "-1", Text = "Drop" });
-            mt.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            return mt;
         }
         public IEnumerable<SelectListItem> MemberTypeCodesWithNotSpecified()
         {
@@ -72,29 +72,19 @@ namespace CMSWeb.Models
         }
 
         public int count;
-        public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList()
+        public IEnumerable<PersonInfo> FetchOrgMemberList()
         {
-            if (groupid.HasValue)
-            {
-                var q3 = from om in DbUtil.Db.OrganizationMembers
-                         where om.OrganizationId == orgid
-                         where om.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
-                         select om.PeopleId;
-                list = q3.ToList();
-            }
             var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);
-            if (tag > 0)
-                q = q.Where(om => om.Person.Tags.Any(t => t.Id == tag));
-            if (inactivedt.HasValue)
-                q = q.Where(om => om.InactiveDate == inactivedt);
 
             count = q.Count();
             var q1 = q.OrderBy(m => m.Person.Name2);
             var q2 = from m in q1
                      let p = m.Person
-                     select new PersonDialogSearchInfo
+                     let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
+                     orderby !ck, p.Name2
+                     select new PersonInfo
                      {
                          PeopleId = m.PeopleId,
                          Name = p.Name,
@@ -109,23 +99,22 @@ namespace CMSWeb.Models
                          Email = p.EmailAddress,
                          Age = p.Age,
                          MemberStatus = p.MemberStatus.Description,
-                         ischecked = list.Contains(m.PeopleId)
+                         ischecked = ck,
+                         Gender = p.Gender.Description,
+                         Groups = string.Join(",~", 
+                            m.OrgMemMemTags.Select(mt => mt.MemberTag.Name).OrderBy(s => s).ToArray())
                      };
             return q2;
         }
         public IQueryable<OrganizationMember> OrgMembers()
         {
-            int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
-                    where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
-                    where (om.Pending ?? false) == pendings
-                    where (inactives && om.MemberTypeId == inactive)
-                        || (!inactives && om.MemberTypeId != inactive)
+                    //where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
                     select om;
             return q;
         }
-        public class PersonDialogSearchInfo
+        public class PersonInfo
         {
             public int PeopleId { get; set; }
             public string Name { get; set; }
@@ -140,12 +129,20 @@ namespace CMSWeb.Models
             public string WorkPhone { get; set; }
             public int? Age { get; set; }
             public string MemberStatus { get; set; }
+            public string Gender { get; set; }
+            public string Groups { get; set; }
+            public string GroupsDisplay
+            {
+                get
+                {
+                    return Groups.Replace(" ", "&nbsp;").Replace(",~", ", ");
+                }
+            }
             public bool ischecked { get; set; }
             public string Checked()
             {
                 return ischecked ? "checked='checked'" : "";
             }
-
             public string ToolTip
             {
                 get

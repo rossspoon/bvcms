@@ -227,51 +227,6 @@ namespace CMSWeb.Areas.Main.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MakeNewGroup(int id, string GroupName)
-        {
-            if (!GroupName.HasValue())
-                return new EmptyResult();
-            var Db = DbUtil.Db;
-            var group = Db.MemberTags.SingleOrDefault(g =>
-                g.Name == GroupName && g.OrgId == id);
-            if (group == null)
-            {
-                group = new MemberTag
-                {
-                    Name = GroupName,
-                    OrgId = id
-                };
-                Db.MemberTags.InsertOnSubmit(group);
-                Db.SubmitChanges();
-            }
-            var m = new OrganizationModel(id);
-            return View("ManageGroups", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult RenameGroup(int id, string GroupName, int? groupid)
-        {
-            if (!GroupName.HasValue() || !groupid.HasValue)
-                return new EmptyResult();
-            var group = DbUtil.Db.MemberTags.Single(d => d.Id == groupid);
-            group.Name = GroupName;
-            DbUtil.Db.SubmitChanges();
-            var m = new OrganizationModel(id);
-            return View("ManageGroups", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteGroup(int id, string GroupName, int? groupid)
-        {
-            var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Id == groupid);
-            if (group != null)
-            {
-                DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
-                DbUtil.Db.MemberTags.DeleteOnSubmit(group);
-                DbUtil.Db.SubmitChanges();
-            }
-            var m = new OrganizationModel(id);
-            return View("ManageGroups", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SmallGroups()
         {
             var m = new OrganizationModel(Util.CurrentOrgId);

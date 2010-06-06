@@ -12,7 +12,7 @@ namespace CMSWeb.Areas.Main.Controllers
 {
     public class OrgMembersDialogController : CmsStaffController
     {
-        public ActionResult Index(int id, bool? inactives, bool? pendings, int? sg, int? groupid)
+        public ActionResult Index(int id, bool? inactives, bool? pendings, int? sg)
         {
             var m = new OrgMembersDialogModel
             {
@@ -21,7 +21,6 @@ namespace CMSWeb.Areas.Main.Controllers
                 pendings = pendings ?? false,
                 Pending = pendings ?? false,
                 sg = sg,
-                groupid = groupid,
             };
             return View(m);
         }
@@ -40,40 +39,23 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Update(OrgMembersDialogModel m)
         {
             var a = m.List.ToArray();
-            if (m.groupid.HasValue)
+            var q = from om in m.OrgMembers()
+                    where a.Contains(om.PeopleId)
+                    select om;
+            foreach (var om in q)
             {
-                var sgname = DbUtil.Db.MemberTags.Single(mt => mt.Id == m.groupid).Name;
-                var q1 = from om in m.OrgMembers()
-                        where !a.Contains(om.PeopleId)
-                        select om;
-                foreach(var om in q1)
-                    om.RemoveFromGroup(sgname);
-                var q2 = from om in m.OrgMembers()
-                        where a.Contains(om.PeopleId)
-                        select om;
-                foreach (var om in q2)
-                    om.AddToGroup(sgname);
-            }
-            else
-            {
-                var q = from om in m.OrgMembers()
-                        where a.Contains(om.PeopleId)
-                        select om;
-                foreach (var om in q)
+                if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
+                    om.Drop();
+                else
                 {
-                    if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
-                        om.Drop();
-                    else
-                    {
-                        if (m.MemberType > 0)
-                            om.MemberTypeId = m.MemberType;
-                        if (m.InactiveDate.HasValue)
-                            om.InactiveDate = m.InactiveDate;
-                        om.Pending = m.Pending;
-                    }
+                    if (m.MemberType > 0)
+                        om.MemberTypeId = m.MemberType;
+                    if (m.InactiveDate.HasValue)
+                        om.InactiveDate = m.InactiveDate;
+                    om.Pending = m.Pending;
                 }
-                DbUtil.Db.SubmitChanges();
             }
+            DbUtil.Db.SubmitChanges();
             return View();
         }
     }

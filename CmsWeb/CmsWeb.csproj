@@ -1117,15 +1117,14 @@
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgGroups\ManageGroups.ascx" />
     <Content Include="Areas\Main\Views\OrgGroups\Index.aspx" />
     <Content Include="Areas\Main\Views\OrgGroups\Rows.ascx" />
-    <Content Include="Areas\Main\Views\OrgGroups\Update.aspx" />
     <Content Include="Areas\Main\Views\Coupon\Create.aspx" />
     <Content Include="Areas\Main\Views\Coupon\Index.aspx" />
     <Content Include="Areas\Main\Views\Coupon\List.aspx" />
     <Content Include="Areas\Main\Views\Organization\OrgInfo.ascx" />
     <Content Include="Areas\Main\Views\Organization\OrgInfoEdit.ascx" />
-    <Content Include="Areas\Main\Views\Organization\ManageGroups.ascx" />
     <Content Include="Areas\Main\Views\Organization\MeetingGrid.ascx" />
     <Content Include="Areas\Main\Views\Organization\SmallGroups.ascx" />
     <Content Include="Areas\Main\Views\Organization\VisitorGrid.ascx" />
@@ -1565,6 +1564,7 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Scripts\OrgGroups.js" />
     <Content Include="Views\Shared\onlinereg.Master" />
     <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMembers.js" />

@@ -12,16 +12,11 @@ namespace CMSWeb.Areas.Main.Controllers
 {
     public class OrgGroupsController : CmsStaffController
     {
-        public ActionResult Index(int id, bool? inactives, bool? pendings, int? sg, int? groupid)
+        public ActionResult Index(int id)
         {
             var m = new OrgGroupsModel
             {
                 orgid = id,
-                inactives = inactives ?? false,
-                pendings = pendings ?? false,
-                Pending = pendings ?? false,
-                sg = sg,
-                groupid = groupid,
             };
             return View(m);
         }
@@ -40,41 +35,64 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Update(OrgGroupsModel m)
         {
             var a = m.List.ToArray();
-            if (m.groupid.HasValue)
+            var sgname = DbUtil.Db.MemberTags.Single(mt => mt.Id == m.groupid).Name;
+            var q1 = from omt in DbUtil.Db.OrgMemMemTags
+                     where omt.OrgId == m.orgid
+                     where omt.MemberTag.Name == sgname
+                     where !a.Contains(omt.PeopleId)
+                     select omt;
+            DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(q1);
+            var q2 = from om in m.OrgMembers()
+                     where !om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sgname)
+                     where a.Contains(om.PeopleId)
+                     select om;
+            foreach (var om in q2)
+                om.AddToGroup(sgname);
+            DbUtil.Db.SubmitChanges();
+            return View("Rows", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MakeNewGroup(OrgGroupsModel m)
+        {
+            if (!m.GroupName.HasValue())
+                return new EmptyResult();
+            var Db = DbUtil.Db;
+            var group = Db.MemberTags.SingleOrDefault(g =>
+                g.Name == m.GroupName && g.OrgId == m.orgid);
+            if (group == null)
             {
-                var sgname = DbUtil.Db.MemberTags.Single(mt => mt.Id == m.groupid).Name;
-                var q1 = from om in m.OrgMembers()
-                        where !a.Contains(om.PeopleId)
-                        select om;
-                foreach(var om in q1)
-                    om.RemoveFromGroup(sgname);
-                var q2 = from om in m.OrgMembers()
-                        where a.Contains(om.PeopleId)
-                        select om;
-                foreach (var om in q2)
-                    om.AddToGroup(sgname);
-            }
-            else
-            {
-                var q = from om in m.OrgMembers()
-                        where a.Contains(om.PeopleId)
-                        select om;
-                foreach (var om in q)
+                group = new MemberTag
                 {
-                    if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
-                        om.Drop();
-                    else
-                    {
-                        if (m.MemberType > 0)
-                            om.MemberTypeId = m.MemberType;
-                        if (m.InactiveDate.HasValue)
-                            om.InactiveDate = m.InactiveDate;
-                        om.Pending = m.Pending;
-                    }
-                }
+                    Name = m.GroupName,
+                    OrgId = m.orgid
+                };
+                Db.MemberTags.InsertOnSubmit(group);
+                Db.SubmitChanges();
+            }
+            return View("ManageGroups", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RenameGroup(OrgGroupsModel m)
+        {
+            if (!m.GroupName.HasValue() || !m.groupid.HasValue)
+                return new EmptyResult();
+            var group = DbUtil.Db.MemberTags.Single(d => d.Id == m.groupid);
+            group.Name = m.GroupName;
+            DbUtil.Db.SubmitChanges();
+            return View("ManageGroups", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DeleteGroup(OrgGroupsModel m)
+        {
+            var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Id == m.groupid);
+            if (group != null)
+            {
+                DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
+                DbUtil.Db.MemberTags.DeleteOnSubmit(group);
                 DbUtil.Db.SubmitChanges();
             }
-            return View();
+            return View("ManageGroups", m);
         }
+
     }
 }

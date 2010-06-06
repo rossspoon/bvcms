@@ -16,7 +16,6 @@ namespace CMSWeb.Models
         public bool inactives { get; set; }
         public bool pendings { get; set; }
         public int? sg { get; set; }
-        public int? groupid { get; set; }
 
         public int memtype { get; set; }
         public int tag { get; set; }
@@ -74,14 +73,6 @@ namespace CMSWeb.Models
         public int count;
         public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList()
         {
-            if (groupid.HasValue)
-            {
-                var q3 = from om in DbUtil.Db.OrganizationMembers
-                         where om.OrganizationId == orgid
-                         where om.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
-                         select om.PeopleId;
-                list = q3.ToList();
-            }
             var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);

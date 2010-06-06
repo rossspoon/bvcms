@@ -28,9 +28,7 @@
 <% if (Page.User.IsInRole("ManageGroups"))
    { %>
 <td valign="top">
-    <form action="" method="post">
-    <% Html.RenderPartial("ManageGroups", Model); %>
-    </form>
+    <a href="/OrgGroups/Index/<%=Model.OrganizationId %>">Group Member Management</a>
 </td>
 <% } %>
 </tr>

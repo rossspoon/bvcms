@@ -23,6 +23,7 @@
                 + "&web=" + $('#WebView')[0].checked;
             $("#ChooseLabelType").dialog("close");
             window.open(url, "_blank");
+            return false;
         });
         return false;
     });
