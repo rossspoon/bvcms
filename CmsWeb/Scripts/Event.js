@@ -29,7 +29,8 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function() {
+    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
@@ -42,7 +43,8 @@
             return false;
         return true;
     });
-    $("form.DisplayEdit a.cancel").live('click', function() {
+    $("form.DisplayEdit a.cancel").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {

@@ -5,10 +5,13 @@
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 <div>
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.contextMenu.js" type="text/javascript"></script>
-    <script src="/Scripts/QueryBuilder.js" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery.pagination.js")
+            .Add("/Content/js/jquery.multiSelect.js")
+            .Add("/Content/js/jquery.contextMenu.js")
+            .Add("/Scripts/QueryBuilder.js")
+        .Render("/Content/QueryBuilder_#.js")
+            %>
 </div>
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <h3 id="Description"><%=Model.Description %></h3>

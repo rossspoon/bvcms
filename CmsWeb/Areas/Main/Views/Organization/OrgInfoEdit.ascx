@@ -11,7 +11,7 @@
     </tr>
     <tr>
         <th>Multiple Divisions:</th>
-        <td><select id="DivisionsList" name="DivisionsList">
+        <td><select id="DivisionsList" name="DivisionsList" multiple="multiple">
 <% foreach(var s in Model.DivisionPickList())
    { %>
             <option <%=s.Selected ? "selected='selected'" : "" %> value='<%=s.Text %>'><%=s.Text %></option>

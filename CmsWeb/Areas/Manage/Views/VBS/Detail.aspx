@@ -16,7 +16,8 @@
     	$(function() {
     		$('#SearchPeopleDialog').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     		$('a.searchpeople').click(function(ev) {
-    			$('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
+    		    ev.preventDefault();
+    		    $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
     				$.post('/VBS/Assign/' + id + "?PeopleId=" + peopleid, null, function(ret) {
     					$('#' + id).text(ret.pid);
     					$("#namelink").replaceWith("<a id='namelink' href='/Person/Index/" + ret.pid + "'>" + ret.name + "</a>");

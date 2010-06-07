@@ -35,7 +35,8 @@
                     }
                 }, 'json');
             });
-            $('#same').click(function() {
+            $('#same').click(function(ev) {
+                ev.preventDefault();
                 $('#addr2').val($('#addr1').val());
                 $('#state2').val($('#state1').val());
                 $('#city2').val($('#city1').val());

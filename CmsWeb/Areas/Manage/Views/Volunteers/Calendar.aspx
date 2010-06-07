@@ -4,7 +4,8 @@
 
     <script language="javascript">
         $(function() {
-            $(".reminder").click(function() {
+            $(".reminder").click(function(ev) {
+                ev.preventDefault();
                 window.location = "/Volunteers/EmailReminders/" + $(this).attr("mid");
             });
         });

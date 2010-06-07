@@ -5,7 +5,8 @@
         });
         return true;
     });
-    $("a.display").live('click', function() {
+    $("a.display").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
             $(f).html(ret).ready(function() {
@@ -30,7 +31,8 @@
             });
         return false;
     });
-    $("a.move").live('click', function() {
+    $("a.move").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         if (confirm("are you sure?"))
             $.post($(this).attr('href'), null, function(ret) {
@@ -38,7 +40,8 @@
             });
         return false;
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function() {
+    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {

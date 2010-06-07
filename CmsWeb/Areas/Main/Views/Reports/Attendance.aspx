@@ -4,6 +4,7 @@
     <script type="text/javascript">
         $(function() {
             $('#Attendances > thead a.sortable').click(function(ev) {
+                ev.preventDefault();
                 var newsort = $(this).text();
                 var oldsort = $("#Sort").val();
                 $("#Sort").val(newsort);

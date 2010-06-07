@@ -201,7 +201,7 @@
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
     </div>
-    <div id="ChooseLabelType" class="modalPopup" style="width: 400px; padding: 10px">
+    <div id="ChooseLabelType" class="modalPopup" style="display:none; width: 400px; padding: 10px">
         <table>
             <tr>
                 <td style="margin: 3px; border: solid thin black" nowrap="nowrap">

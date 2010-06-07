@@ -11,12 +11,14 @@
         width: 400
     });
     $(".ChooseLabelType").live("click", function(ev) {
+        ev.preventDefault();
         var d = $("#ChooseLabelType");
         d.dialog("open");
         d.parent().center();
 
         var sep = ev.target.href.search(/\?/) == -1 ? "?" : "&";
-        $("#cmdOK").unbind("click").click(function() {
+        $("#cmdOK").unbind("click").click(function(ev2) {
+            ev2.preventDefault();
             var url = ev.target.href
                 + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()
@@ -28,6 +30,7 @@
         return false;
     });
     $('#TagAll,#UnTagAll').click(function(ev) {
+        ev.preventDefault();
         $.block();
         $.post(this.href, null, function(ret) {
             $(".taguntag:visible").text(ret);

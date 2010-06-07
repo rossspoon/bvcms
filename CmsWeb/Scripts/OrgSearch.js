@@ -83,7 +83,8 @@
         });
     }
     $.fmtTable();
-    $('#results > thead a.sortable').live('click', function() {
+    $('#results > thead a.sortable').live('click', function(ev) {
+        ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");
         var dir = $("#Direction");
@@ -95,7 +96,8 @@
         $.getTable();
         return false;
     });
-    $('#clear').click(function() {
+    $('#clear').click(function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         $(f).find(':input').each(function() {
             $(this).val('');
@@ -143,19 +145,26 @@
         return true;
     });
     $('div.dialog').dialog({ autoOpen: false });
-    $('#Rollsheet').click(function() {
+    $('#rollsheet1').click(function(ev) {
+        ev.preventDefault();
         $.post('/OrgSearch/DefaultMeetingDate/' + $('#ScheduleId').val(), null, function(ret) {
             $('#MeetingDate').val(ret.date);
             $('#MeetingTime').val(ret.time);
-            $('#PanelRollsheet').dialog('open');
+            var d = $('#PanelRollsheet')
+            d.dialog('open');
+            d.parent().center();
         }, "json");
         return false;
     });
-    $('#AttDetail').click(function() {
-        $('#PanelAttDetail').dialog('open');
+    $('#attdetail1').click(function(ev) {
+        ev.preventDefault();
+        var d = $('#PanelAttDetail');
+        d.dialog('open');
+        d.parent().center();
         return false;
     });
-    $('#Rollsheet').click(function() {
+    $('#rollsheet2').click(function(ev) {
+        ev.preventDefault();
         $('div.dialog').dialog('close');
         var did = $('#DivisionId').val();
         if (did == '0') {
@@ -167,8 +176,10 @@
                "&name=" + $('#Name').val() +
                "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         window.open("/Reports/Rollsheet/" + args);
+        return false;
     });
-    $('#ExportExcel').click(function() {
+    $('#ExportExcel').click(function(ev) {
+        ev.preventDefault();
         $('div.dialog').dialog('close');
         var args = "?prog=" + $('#ProgramId').val() +
                "&div=" + $('#DivisionId').val() +
@@ -177,8 +188,10 @@
                "&campus=" + $('#CampusId').val() +
                "&name=" + $('#Name').val();
         window.open("/OrgSearch/ExportExcel/" + args);
+        return false;
     });
-    $('#Meetings').click(function() {
+    $('#Meetings').click(function(ev) {
+        $ev.preventDefault();
         $('div.dialog').dialog('close');
         var args = "?progid=" + $('#ProgramId').val() +
                "&divid=" + $('#DivisionId').val() +
@@ -186,8 +199,10 @@
                "&campusid=" + $('#CampusId').val() +
                "&name=" + $('#Name').val();
         window.open("/Meetings.aspx" + args);
+        return false;
     });
-    $('#AttDetail').click(function() {
+    $('#attdetail2').click(function(ev) {
+        ev.preventDefault();
         $('div.dialog').dialog('close');
         var did = $('#DivisionId').val();
         if (did == '0') {
@@ -200,8 +215,10 @@
                "&dt1=" + $('#MeetingDate1').val() +
                "&dt2=" + $('#MeetingDate2').val();
         window.open("/Report/AttendanceDetail.aspx" + args);
+        return false;
     });
-    $('#Roster').click(function() {
+    $('#Roster').click(function(ev) {
+        ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
             alert('must choose division');
@@ -209,8 +226,10 @@
         }
         var args = "?div=" + did + "&schedule=" + $('#ScheduleId').val();
         window.open("/Reports/Roster/" + args);
+        return false;
     });
-    $('#PasteSettings').click(function() {
+    $('#PasteSettings').click(function(ev) {
+        ev.preventDefault();
         if (!confirm("Are you sure you want to replace all these settings?"))
             return false;
         var f = $('form');
@@ -220,7 +239,8 @@
         });
         return false;
     });
-    $('a.ViewReport').click(function() {
+    $('a.ViewReport').click(function(ev) {
+        ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
             alert('must choose division');
@@ -230,8 +250,10 @@
             "&schedule=" + $('#ScheduleId').val() +
             "&name=" + $('#Name').val();
         window.open($(this).attr("href") + args);
+        return false;
     });
-    $('a.taguntag').live('click', function() {
+    $('a.taguntag').live('click', function(ev) {
+        ev.preventDefault();
         $.post($(this).attr('href'), {
             tagdiv: $('#TagDiv').val(),
             element: $(this).attr('id'),

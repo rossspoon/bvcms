@@ -106,7 +106,8 @@
         });
     }
     $.initDatePicker();
-    $("a.displayedit,a.displayedit2").live('click', function() {
+    $("a.displayedit,a.displayedit2").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
             $(f).html(ret).ready(function() {
@@ -120,7 +121,8 @@
         });
         return false;
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function() {
+    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
             return false;
@@ -137,7 +139,8 @@
             $(f).html(ret);
         });
     });
-    $("a.groupmanager").live("click", function() {
+    $("a.groupmanager").live("click", function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr("href"), q, function(ret) {
@@ -273,7 +276,8 @@
         }
         return { date: d, time: t, valid: v };
     };
-    $('.delmeeting').live('click', function() {
+    $('.delmeeting').live('click', function(ev) {
+        ev.preventDefault();
         if (confirm("delete meeting for sure?")) {
             $.post("/Organization/DeleteMeeting/",
                 { id: this.id, future: $('#future').is(":checked") },
@@ -284,7 +288,8 @@
         }
         return false;
     });
-    $('a.joinlink').live('click', function() {
+    $('a.joinlink').live('click', function(ev) {
+        ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },
             function(ret) {
                 if (ret)

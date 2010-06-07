@@ -11,6 +11,7 @@
                 width: '200px'
             });
             $("a.delete").click(function(ev) {
+                ev.preventDefault();
                 if (confirm("are you sure?"))
                     $.post("/Setup/Lookup/Delete/" + $(this).attr("id"), { type: $('#type').val() }, function(ret) {
                         window.location = "/Setup/Lookup/Index/" + $('#type').val();

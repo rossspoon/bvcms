@@ -4,9 +4,12 @@
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />    
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery.jeditable.mini.js" type="text/javascript"></script>    
-    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
-    <script src="/Scripts/OrgSearch.js" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery.jeditable.js")
+        .Add("/Content/js/jquery.tooltip.js")
+        .Add("/Scripts/OrgSearch.js")
+        .Render("/Content/OrgSearch_#.js")
+            %>  
     <form>
     <table>
         <tr>
@@ -67,12 +70,12 @@
     </form>
     <div>
         <a id="ExportExcel" href="#">Export to Excel</a> | 
-        <a id="Rollsheet" href='#'>Create Roll Sheet(s)</a> | 
+        <a id="rollsheet1" href='#'>Create Roll Sheet(s)</a> | 
         <a id="Meetings" href="#">Meetings</a> | 
         <a id="Roster" href="#">Roster</a> | 
         <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a> | 
         <a class="ViewReport" href="/Reports/ClassList/">Class List</a> | 
-        <a id="AttDetail" href='#'>Meetings Attendance</a>
+        <a id="attdetail1" href='#'>Meetings Attendance</a>
 <% if (Session["OrgCopySettings"] != null)
    { %>
         | <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>
@@ -85,7 +88,7 @@
         <tr><th>Meeting Date</th><td><input id="MeetingDate" type="text" class='datepicker' /></td></tr>
         <tr><th>Meeting Time</th><td><input id="MeetingTime" title="Time in Format hh:mm am or pm" type="text" /></td></tr>
         <tr><td align="right" colspan="2">
-            <a class="bt" id="rollsheet" href="#">create</a>
+            <a class="bt" id="rollsheet2" href="#">create</a>
         </tr>
         </table>
     </div>
@@ -95,7 +98,7 @@
         <tr><th>Meetings Start Date</th><td><input id="MeetingDate1" type="text"  class='datepicker' /></td></tr>
         <tr><th>Meetings End Date</th><td><input id="MeetingDate2" type="text" class='datepicker' /></td></tr>
         <tr><td align="right" colspan="2">
-            <a class="bt" id="attdetail" href="#"> run </a>
+            <a class="bt" id="attdetail2" href="#"> run </a>
         </tr>
         </table>
     </div>

@@ -10,11 +10,13 @@
         $(function() {
             $('#Org').change(RefreshList);
             $('#View').change(RefreshList);
-            $('#query').click(function() {
+            $('#query').click(function(ev) {
+                ev.preventDefault();
                 var q = $('#form').serialize();
                 $.navigate("/Volunteers/Query/" + $('#QueryId').val(), q);
             });
             $('#Volunteers > thead a.sortable').click(function(ev) {
+                ev.preventDefault();
                 var newsort = $(this).text();
                 var oldsort = $("#Sort").val();
                 $("#Sort").val(newsort);

@@ -3,11 +3,14 @@
     <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="/Scripts/Person.js?v=2" type="text/javascript"></script>
-    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery.pagination.js")
+            .Add("/Scripts/SearchPeople.js")
+            .Add("/Content/js/jquery.autocomplete.js")
+            .Add("/Scripts/Pager.js")
+            .Add("/Scripts/Person.js")
+        .Render("/Content/Person_#.js")
+            %>        
     <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
     <table class="PersonHead" border="0">
         <tr>
@@ -200,6 +203,6 @@
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
     </div>
     <div id="memberDialog">
-    <iframe style="width:100%;height:100%" />
+    <iframe style="width:100%;height:100%"></iframe>
     </div>
 </asp:Content>

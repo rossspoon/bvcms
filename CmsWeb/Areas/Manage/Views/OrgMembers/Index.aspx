@@ -4,10 +4,11 @@
     <title>Org Members Management</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
-    <script src="/Scripts/OrgMembers.js?v=2" type="text/javascript"></script>
-    
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Scripts/Pager.js")
+        .Add("/Scripts/OrgMembers.js")
+        .Render("/Content/OrgMembers_#.js")
+            %>
     <form id="form" method="post" action="/OrgMembers/Move">
     <% Html.RenderPartial("List", Model); %>
     </form>

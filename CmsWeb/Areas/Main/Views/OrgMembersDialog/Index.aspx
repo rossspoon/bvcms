@@ -8,10 +8,13 @@
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>    
-    <script src="/Content/js/jquery.tooltip.min.js" type="text/javascript"></script>
-    <script src="/Scripts/OrgMembersDialog.js" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery-1.4.2.js")
+            .Add("/Content/js/jquery-ui-1.8.1.custom.js")
+            .Add("/Content/js/jquery.tooltip.js")
+            .Add("/Scripts/OrgMembersDialog.js")
+        .Render("/Content/OrgMembersDialog_#.js")
+            %>        
 <form action="/OrgMembersDialog/Update" method="post">
 <%=Html.Hidden("orgid") %>
 <%=Html.Hidden("pendings") %>

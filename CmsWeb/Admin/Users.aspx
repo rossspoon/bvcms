@@ -248,7 +248,7 @@
     <asp:Panel runat="server" ID="Panel1" CssClass="modalPopup SearchDialog" Style="display: none">
         <div>
             <iframe id="sd" runat="server" width="600" height="450" frameborder="0" scrolling="yes"
-                marginheight="0" marginwidth="0" />
+                marginheight="0" marginwidth="0" ></iframe>
         </div>
         <asp:Button ID="AddSelectedPerson" runat="server" OnClick="AddSelectedPerson_Click"
             Text="Add Selected" />

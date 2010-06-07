@@ -1,5 +1,6 @@
 ﻿$(function() {
-    $("a.formlink").live('click', function() {
+    $("a.formlink").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
@@ -33,7 +34,8 @@
         });
         return false;
     });
-    $('a.clear').live('click', function() {
+    $('a.clear').live('click', function(ev) {
+        ev.preventDefault();
         $("#name").val('');
         $("#phone").val('');
         $("#address").val('');

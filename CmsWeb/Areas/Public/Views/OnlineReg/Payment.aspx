@@ -32,7 +32,8 @@ a.submitbutton,a.button {
             });
             var tmout = parseInt('<%=Model._timeout %>');
 
-            $("a.submitbutton").click(function() {
+            $("a.submitbutton").click(function(ev) {
+                ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();
                 $.post(this.href, q, function(ret) {

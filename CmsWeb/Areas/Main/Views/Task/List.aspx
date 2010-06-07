@@ -4,11 +4,14 @@
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
-        <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-        <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
-        <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
-        <script src="/Scripts/Task.js" type="text/javascript"></script>
-        <script src="/Scripts/SearchPeople.js" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery.pagination.js")
+        .Add("/Content/js/jquery.form.js")
+        .Add("/Content/js/jquery.form2.js")
+        .Add("/Scripts/Task.js")
+        .Add("/Scripts/SearchPeople.js")
+        .Render("/Content/Task_#.js")
+            %>
     </div>
     <form id="form" action="/Task/List" method="get">
     <%=Html.Hidden("SortTask")%>

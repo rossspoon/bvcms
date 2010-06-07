@@ -11,9 +11,12 @@ tr.alt
     color: blue;
 }
 </style>
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
-    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
-    <script src="/Scripts/OnlineReg.js" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.4.2.js")
+        .Add("/Content/js/jquery.idle-timer.js")
+        .Add("/Scripts/OnlineReg.js")
+        .Render("/Content/OnLineReg_#.js")
+            %>  
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {

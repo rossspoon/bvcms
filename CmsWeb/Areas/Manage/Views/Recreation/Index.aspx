@@ -13,6 +13,7 @@
             $('#NormalMembersOnly').click(RefreshPage);
             $('input.check').click(UpdateTotals);
             $('#Participants > thead a.sortable').click(function(ev) {
+                ev.preventDefault();
                 var newsort = $(this).text();
                 var oldsort = $("#Sort").val();
                 $("#Sort").val(newsort);
@@ -29,8 +30,9 @@
                 $.navigate("/Recreation/All/" + $('#LeagueId').val());
             });
             $("a.createdetail").click(function(ev) {
+                ev.preventDefault();
                 $.post("/Recreation/Create/" + $(this).attr("pid"), { oid: $(this).attr("oid") }, function(ret) {
-                window.location = "/Recreation/Detail/" + ret.id;
+                    window.location = "/Recreation/Detail/" + ret.id;
                 }, "json");
                 return false;
             });

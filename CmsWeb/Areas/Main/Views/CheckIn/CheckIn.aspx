@@ -6,9 +6,12 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.autocomplete.min.js" type="text/javascript"></script>
-    <script src="/Scripts/CheckIn.js?v=2" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+                .Add("/Content/js/jquery.jeditable.js")
+                .Add("/Content/js/jquery.autocomplete.js")
+                .Add("/Scripts/CheckIn.js")
+                .Render("/Content/CheckIn_#.js")
+            %>        
 
     <%=Html.Hidden("OrgId") %>
     <%=Html.Hidden("PeopleId", Model.person.PeopleId) %>

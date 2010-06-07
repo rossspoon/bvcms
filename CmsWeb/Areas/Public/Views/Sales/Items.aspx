@@ -11,6 +11,7 @@
                 width: '200px'
             });
             $("a.delete").click(function(ev) {
+                ev.preventDefault();
                 if (confirm("are you sure?"))
                     $.post("/Sales/ItemDelete/" + $(this).attr("id"), null, function(ret) {
                         window.location = "/Sales/Items";

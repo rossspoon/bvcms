@@ -19,6 +19,7 @@
                 style: 'display: inline'
             });
             $("a.delete").click(function(ev) {
+                ev.preventDefault();
                 if (confirm("are you sure?"))
                     $.post("/Setup/Division/Delete/" + $(this).attr("id"), null, function(ret) {
                         window.location = "/Setup/Division/";

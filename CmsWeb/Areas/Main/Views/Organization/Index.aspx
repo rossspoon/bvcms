@@ -5,11 +5,14 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script src="/Content/js/jquery.pagination.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="/Scripts/Pager.js?v=1" type="text/javascript"></script>
-    <script src="/Content/js/jquery.multiSelect.js" type="text/javascript"></script>
-    <script src="/Scripts/Organization.js?v=5" type="text/javascript"></script>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+                .Add("/Content/js/jquery.pagination.js")
+                .Add("/Scripts/Pager.js")
+                .Add("/Content/js/jquery.multiSelect.js")
+                .Add("/Content/js/jquery.validate.js")
+                .Add("/Scripts/Organization.js")
+                .Render("/Content/Organization_#.js")
+            %>        
 
     <% CmsData.Organization o = Model.org; %>
     <%=Html.Hidden("OrganizationId") %>
@@ -27,7 +30,7 @@
 </td>
 <% if (Page.User.IsInRole("ManageGroups"))
    { %>
-<td valign="top">
+<td>
     <a href="/OrgGroups/Index/<%=Model.OrganizationId %>">Group Member Management</a>
 </td>
 <% } %>
