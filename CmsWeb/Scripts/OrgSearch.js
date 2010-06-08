@@ -191,7 +191,7 @@
         return false;
     });
     $('#Meetings').click(function(ev) {
-        $ev.preventDefault();
+        ev.preventDefault();
         $('div.dialog').dialog('close');
         var args = "?progid=" + $('#ProgramId').val() +
                "&divid=" + $('#DivisionId').val() +

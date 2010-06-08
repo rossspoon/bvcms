@@ -11,8 +11,9 @@
     <%= SquishIt.Framework.Bundle.JavaScript()
                 .Add("/Content/js/jquery-1.4.2.js")
                 .Add("/Content/js/jquery-ui-1.8.1.custom.js")
+                .Add("/Content/js/jquery.tooltip.js")
                 .Add("/Scripts/OrgMemberDialog.js")
-                .Render("/Content/OrgMemberDialog_#.js")
+        .Render("/Content/OrgMemberDialog_#.js")
             %>        
 
 <% string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; %>

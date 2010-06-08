@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div>
+<div>
         <table cellpadding="6" cellspacing="0" border="0" style="width: 100%; height: 100%">
             <tr valign="top">
                 <td>
@@ -134,7 +134,6 @@
                             </td>
                         </tr>
                     </table>
-                    <p><asp:LinkButton ID="UseOldNewDialog" runat="server" OnClick="UseDialog_Click"></asp:LinkButton></p>
                 </td>
                 <td>
                     <table class="dashbox" cellpadding="2" cellspacing="0" width="100%">

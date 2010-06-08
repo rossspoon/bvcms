@@ -73,7 +73,7 @@ namespace CMSWeb
                     where m.PositionInFamilyId == 10
                     select m;
             }
-            q = from p in q
+            q = from p in q.Distinct()
                 where p.EmailAddress != null && p.EmailAddress != ""
                 where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
                 orderby p.PeopleId

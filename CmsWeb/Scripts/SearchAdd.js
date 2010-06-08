@@ -19,16 +19,9 @@
             else
                 $(f).html(ret).ready(function() {
                     $(".addrcol").tooltip({
+                        showURL: false,
                         showBody: "|"
                     });
-                    //$('.addrcol').cluetip({
-                    //                        splitTitle: '|',
-                    //                        hoverIntent: {
-                    //                            sensitivity: 7,
-                    //                            interval: 50,
-                    //                            timeout: 0
-                    //                        }
-                    //                    });
                     $('#people > tbody > tr:even').addClass('altrow');
                 });
         });

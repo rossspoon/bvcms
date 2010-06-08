@@ -41,18 +41,12 @@ namespace CMSWeb
                     DbUtil.LogActivity("Viewing Family for {0}".Fmt(person.Name));
             }
 
-            bool canUpdate = User.IsInRole("Edit");
-            AddRelatedFamily2.Visible = canUpdate;
-            AddMembers2.Visible = canUpdate;
-
             FamilyPrimaryAddr.showPreferredAddress = false;
 
             FamilyAltAddr.showPreferredAddress = false;
             trAddressLineTwo.Visible = family.AddressLineTwo.HasValue();
 
             EditUpdateButton1.DataBind();
-            AddMembers2.NavigateUrl = "/SearchAdd/Index/{0}?type=family&TB_iframe=true&height=550&width=650".Fmt(family.FamilyId);
-            AddRelatedFamily2.NavigateUrl = "/SearchAdd/Index/{0}?type=relatedfamily&TB_iframe=true&height=550&width=650".Fmt(family.FamilyId);
         }
 
         protected void GridView1_RowDataBound(object sender, System.Web.UI.WebControls.GridViewRowEventArgs e)

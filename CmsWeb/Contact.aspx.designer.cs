@@ -194,15 +194,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.GridView ContactorGrid;
         
         /// <summary>
-        /// AddContactorLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink AddContactorLink;
-        
-        /// <summary>
         /// AddTeamContact control.
         /// </summary>
         /// <remarks>
@@ -219,15 +210,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView ContacteeGrid;
-        
-        /// <summary>
-        /// AddContacteeLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink AddContacteeLink;
         
         /// <summary>
         /// ContacteeList control.

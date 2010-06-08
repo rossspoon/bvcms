@@ -9,17 +9,33 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <script type="text/javascript">
-         $(function() {
-            if ('<%=EditUpdateButton1.Editing?"true":"false"%>' == 'true')
-                $('a.thickbox2').unbind("click")
-            else
-                tb_init('a.thickbox2');
-            imgLoader = new Image();
-            imgLoader.src = tb_pathToImage;
+        $(function() {
+            $('#contactDialog').dialog({
+                bgiframe: true,
+                autoOpen: false,
+                width: 700,
+                height: 600,
+                modal: true,
+                overlay: {
+                    opacity: 0.5,
+                    background: "black"
+                }, close: function() {
+                    $('iframe', this).attr("src", "");
+                }
+            });
+            $('#AddContacteeLink,#AddContactorLink').live("click", function(e) {
+                e.preventDefault();
+                var d = $('#contactDialog');
+                $('iframe', d).attr("src", this.href);
+                d.dialog("option", "title", this.title);
+                d.dialog("open");
+                d.parent().center();
+            });
         });
        function AddSelected() {
-            tb_remove();
-            $('#<%= RefreshGrids.ClientID %>').click();
+           var d = $('#contactDialog');
+           d.dialog("close");
+           $('#<%= RefreshGrids.ClientID %>').click();
         }
     </script>
 
@@ -187,7 +203,7 @@
                     </tr>
                     <tr>
                         <td style="text-align: right; border-top-style: solid">
-                            <asp:HyperLink runat="server" ID="AddContactorLink" CssClass="thickbox2" ToolTip="Person doing ministry">Add Contactor</asp:HyperLink>
+                            <a id="AddContactorLink" href="/SearchAdd/Index/<%=contact.ContactId %>?type=contactor" title="AddContactor">Add Contactor</a>
                             <p>
                                 <asp:LinkButton ID="AddTeamContact" runat="server" OnClick="AddTeamContact_Click">Add another Contact for this team</asp:LinkButton>
                             </p>
@@ -268,13 +284,16 @@
                     </tr>
                     <tr>
                         <td style="text-align: right; border-top-style: solid">
-                          <asp:HyperLink runat="server" ID="AddContacteeLink" CssClass="thickbox2" ToolTip="Person ministered to">Add Contactee</asp:HyperLink>
+                          <a id="AddContacteeLink" href="/SearchAdd/Index/<%=contact.ContactId %>?type=contactee" title="Add Contactee">Add Contactee</a>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
+    <div id="contactDialog">
+    <iframe style="width:100%;height:100%"></iframe>
+    </div>
     <asp:ObjectDataSource ID="ContacteeList" runat="server" EnablePaging="True" SelectCountMethod="ContacteeCount"
         SelectMethod="ContacteeList" SortParameterName="sortExpression" TypeName="CMSPresenter.ContactController"
         DeleteMethod="DeleteContactee" UpdateMethod="UpdateContactee">

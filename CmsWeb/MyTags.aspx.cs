@@ -75,13 +75,13 @@ namespace CMSWeb
         private void EnableDisableButtons()
         {
             //ShareLink.Enabled = Util.UserPeopleId == Util.CurrentTagOwnerId;
-            delTag.Enabled = ShareLink.Enabled;
+            //delTag.Enabled = ShareLink.Enabled;
         }
         protected void Tags_SelectedIndexChanged(object sender, EventArgs e)
         {
             var a = Tags.SelectedValue.SplitStr(",", 2);
             Util.CurrentTag = a[1];
-            ShareLink.Text = ctl.SharedCount();
+            ShareLinkText = ctl.SharedCount();
             PersonGrid1.DataBind();
             EnableDisableButtons();
         }
@@ -92,8 +92,9 @@ namespace CMSWeb
             if (item != null)
                 item.Selected = true;
             PeopleData.SelectParameters.UpdateValues(HttpContext.Current, Tags);
-            ShareLink.Text = ctl.SharedCount();
+            ShareLinkText = ctl.SharedCount();
         }
+        public string ShareLinkText { get; set; }
         [System.Web.Services.WebMethod]
         public static string ToggleTag(int PeopleId, string controlid)
         {

@@ -51,7 +51,13 @@ namespace CMSWeb.Dialog
         [System.Web.Services.WebMethod]
         public static string ToggleTag(int PeopleId, string controlid)
         {
-            return Search.ToggleTag(PeopleId, controlid);
+            var r = new ToggleTagReturn { ControlId = controlid };
+            r.HasTag = Person.ToggleTag(PeopleId, Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+            DbUtil.Db.SubmitChanges();
+            var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
+            var ms = new MemoryStream();
+            jss.WriteObject(ms, r);
+            return Encoding.Default.GetString(ms.ToArray());
         }
         protected void AddSelectedUsers_Click(object sender, EventArgs e)
         {

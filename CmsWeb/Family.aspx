@@ -11,13 +11,6 @@
 
     <script type="text/javascript">
          $(function() {
-            if (<%=EditUpdateButton1.Editing?"true":"false"%>)
-                $('a.thickbox2').unbind("click")
-            else
-                tb_init('a.thickbox2');
-            imgLoader = new Image();
-            imgLoader.src = tb_pathToImage;
-
             var $maintabs = $("#main-tab").tabs();
             var $addrtabs = $("#Address-tab").tabs();
             var t = $.cookie('maintab2');
@@ -27,18 +20,32 @@
                 var selected = $maintabs.data('selected.tabs');
                 $.cookie('maintab2', selected);
             });
+            $('#memberDialog').dialog({
+                title: 'Add Members Dialog',
+                bgiframe: true,
+                autoOpen: false,
+                width: 700,
+                height: 600,
+                modal: true,
+                overlay: {
+                    opacity: 0.5,
+                    background: "black"
+                }, close: function() {
+                    $('iframe', this).attr("src", "");
+                }
+            });
+            $('#AddMembers2,#AddRelatedFamily2').live("click", function(e) {
+                e.preventDefault();
+                var d = $('#memberDialog');
+                $('iframe', d).attr("src", this.href);
+                d.dialog("option", "title", this.title);
+                d.dialog("open");
+                d.parent().center();
+            });
         });
        function AddSelected() {
-            tb_remove();
-            $('#<%= RefreshGrids.ClientID %>').click();
-        }
-        function pageLoad(sender, args) {
-            if (args.get_isPartialLoad()) {
-                if (<%=EditUpdateButton1.Editing?"true":"false"%>)
-                    $('a.thickbox2').unbind("click")
-                else
-                    tb_init('a.thickbox2');
-            }
+           $('#memberDialog').dialog("close");
+           $('#<%= RefreshGrids.ClientID %>').click();
         }
     </script>
 
@@ -228,11 +235,14 @@
                         </asp:GridView>
                     </td>
                 </tr>
+                <% if (User.IsInRole("Edit"))
+                   { %>
                 <tr>
                     <td style="text-align: right; border-top-style: solid">
-                        <asp:HyperLink ID="AddMembers2" CssClass="thickbox2" runat="server">Add Member(s)</asp:HyperLink>
+                        <a id="AddMembers2" title="Add Family Member" href="/SearchAdd/Index/<%=family.FamilyId %>?type=family">Add Member(s)</a>
                     </td>
                 </tr>
+                <% } %>
             </table>
         </div>
         <div id="Address-tab" class="ui-tabs-panel ui-tabs-hide">
@@ -315,14 +325,21 @@
                         </asp:GridView>
                     </td>
                 </tr>
+                <% if (User.IsInRole("Edit"))
+                   { %>
                 <tr>
                     <td style="text-align: right; border-top-style: solid">
-                        <asp:HyperLink ID="AddRelatedFamily2" CssClass="thickbox2" runat="server">Add Related Family</asp:HyperLink>
+                        <a id="AddRelatedFamily2" title="Add Related Family" href="/SearchAdd/Index/<%=family.FamilyId %>?type=relatedfamily">Add Related Family</a>
                     </td>
                 </tr>
+                <% } %>
             </table>
         </div>
     </div>
+    <div id="memberDialog">
+    <iframe id="memberDialogiframe" style="width:100%;height:100%"></iframe>
+    </div>
+
     <asp:ObjectDataSource ID="FamilyMembersODS" runat="server" SelectMethod="GetFamilyMembers"
         TypeName="CMSPresenter.FamilyController" UpdateMethod="UpdateFamilyMember">
         <UpdateParameters>

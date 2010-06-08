@@ -70,7 +70,7 @@ if(jQuery) (function($){
 	// render the html for a single option
 	function renderOption(id, option)
 	{
-		var html = '<label><input type="checkbox" name="' + id + '[]" value="' + option.value + '"';
+		var html = '<label><input type="checkbox" name="' + id + '" value="' + option.value + '"';
 		if( option.selected ){
 			html += ' checked="checked"';
 		}

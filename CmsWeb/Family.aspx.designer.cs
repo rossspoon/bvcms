@@ -122,15 +122,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.GridView FamilyGrid;
         
         /// <summary>
-        /// AddMembers2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink AddMembers2;
-        
-        /// <summary>
         /// FamilyPrimaryAddr control.
         /// </summary>
         /// <remarks>
@@ -156,15 +147,6 @@ namespace CMSWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView RelatedFamilyGrid;
-        
-        /// <summary>
-        /// AddRelatedFamily2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink AddRelatedFamily2;
         
         /// <summary>
         /// FamilyMembersODS control.

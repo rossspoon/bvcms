@@ -95,15 +95,6 @@ namespace CMSWeb {
         protected global::System.Web.UI.WebControls.GridView grdMyInvolvement;
         
         /// <summary>
-        /// UseOldNewDialog control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton UseOldNewDialog;
-        
-        /// <summary>
         /// BlogLink control.
         /// </summary>
         /// <remarks>

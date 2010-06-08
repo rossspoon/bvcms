@@ -8,14 +8,33 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <script type="text/javascript">
-        $(function() {
-            tb_init('a.thickbox2');
-            imgLoader = new Image();
-            imgLoader.src = tb_pathToImage;
-        });
+         $(function() {
+             $('#sharewithDialog').dialog({
+                 title: 'Share Tag with',
+                 bgiframe: true,
+                 autoOpen: false,
+                 width: 700,
+                 height: 600,
+                 modal: true,
+                 overlay: {
+                     opacity: 0.5,
+                     background: "black"
+                 }, close: function() {
+                     $('iframe', this).attr("src", "");
+                 }
+             });
+             $('#ShareLink').live("click", function(e) {
+                 e.preventDefault();
+                 var d = $('#sharewithDialog');
+                 $('iframe', d).attr("src", this.href);
+                 d.dialog("open");
+                 d.parent().center();
+             });
+         });
         function ShareWith(countstring) {
-            tb_remove();
-            $('<%= "#" + ShareLink.ClientID %>').text(countstring);
+            var d = $('#sharewithDialog');
+            d.dialog("close");
+            $('#ShareLink').text(countstring);
         }
     </script>
 
@@ -59,7 +78,7 @@
                 <th>
                 </th>
                 <td>
-                    <asp:HyperLink nodisable="true" runat="server" ID="ShareLink" class="thickbox2" NavigateUrl="~/Dialog/AddTagShareds.aspx?TB_iframe=true&height=450&width=600"></asp:HyperLink>
+                    <a id="ShareLink" href="/Dialog/AddTagShareds.aspx"><%=ShareLinkText %></a>
                 </td>
                 <td>
                 </td>
@@ -73,6 +92,10 @@
     <div style="clear: both">
         <uc1:PersonGrid ID="PersonGrid1" runat="server" DataSourceID="PeopleData" />
     </div>
+    <div id="sharewithDialog">
+    <iframe style="width:100%;height:100%"></iframe>
+    </div>
+
     <asp:ObjectDataSource ID="PeopleData" runat="server" EnablePaging="True" SelectMethod="FetchPeopleList"
         TypeName="CMSPresenter.TagController" SelectCountMethod="Count" SortParameterName="sortExpression">
         <SelectParameters>

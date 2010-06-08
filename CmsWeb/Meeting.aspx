@@ -12,12 +12,28 @@
         var $editing;
         $(function() {
             $editing = $('#<%= EditUpdateButton1.ClientID %>')[0].value == 'Update';
-            if ($editing)
-                $('a.thickbox2').unbind("click");
-            else
-                tb_init('a.thickbox2');
-            imgLoader = new Image();
-            imgLoader.src = tb_pathToImage;
+            $('#visitorDialog').dialog({
+                title: 'Add Visitors Dialog',
+                bgiframe: true,
+                autoOpen: false,
+                width: 700,
+                height: 600,
+                modal: true,
+                overlay: {
+                    opacity: 0.5,
+                    background: "black"
+                }, close: function() {
+                    $('iframe', this).attr("src", "");
+                }
+            });
+            $('#AddVisitorLink').live("click", function(e) {
+                e.preventDefault();
+                var d = $('#visitorDialog');
+                $('iframe', d).attr("src", this.href);
+                d.dialog("option", "title", this.title);
+                d.dialog("open");
+                d.parent().center();
+            });
         });
         function ToggleCallback(e) {
             var result = eval('(' + e + ')');
@@ -49,7 +65,8 @@
             return false;
         }
         function AddSelected(err) {
-            tb_remove();
+            var d = $('#visitorDialog');
+            d.dialog("close");
             if (err)
                 alert(err);
             else
@@ -167,7 +184,10 @@
         Text="Label" Visible="False"></asp:Label>
     <br />
     <asp:HiddenField ID="ShowAttendanceFlag1" runat="server" />
-    <asp:HyperLink runat="server" class="thickbox2" ID="AddVisitorLink">Add Visitor</asp:HyperLink>
+    <% if (User.IsInRole("Attendance"))
+       { %>
+    <a id="AddVisitorLink" href="/SearchAdd/Index/<%=meeting.MeetingId %>?type=visitor">Add Visitor</a>
+    <% } %>
     <br />
     Count:
     <asp:Label ID="GridCount" runat="server" Text="0"></asp:Label>
@@ -276,6 +296,9 @@
         PopupControlID="MeetingInputPanel" CancelControlID="MeetingCancel" DropShadow="true"
         BackgroundCssClass="modalBackground">
     </cc2:ModalPopupExtender>
+    <div id="visitorDialog">
+    <iframe style="width:100%;height:100%"></iframe>
+    </div>
     <asp:ObjectDataSource ID="AttendData" runat="server" SelectCountMethod="Count" SelectMethod="Attendees"
         TypeName="CMSPresenter.AttendController" OnSelected="AttendData_Selected">
         <SelectParameters>

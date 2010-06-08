@@ -134,7 +134,9 @@ namespace CMSWeb.Models
         public bool IsPublic { get; set; }
 
         public string CodeValue { get; set; }
+
         public string[] CodeValues { get; set; }
+
         public string TextValue { get; set; }
         public string DateValue { get; set; }
         public string NumberValue { get; set; }

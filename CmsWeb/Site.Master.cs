@@ -39,7 +39,6 @@ namespace CMSWeb
                 .Add("/Content/js/jquery.dimensions.js")
                 .Add("/Content/js/superfish.js")
                 .Add("/Content/js/supersubs.js")
-                .Add("/Content/js/thickbox.js")
                 .Add("/Content/js/center-plugin_1.0.1.js")
                 .Add("/Scripts/ExportToolBar.js")
                 .Render("/Content/combined_#.js");     
@@ -85,10 +84,7 @@ namespace CMSWeb
             if (Util.CurrentOrgId > 0)
             {
                 CurrentOrgMenuItem.Visible = true;
-                if (DbUtil.Db.UserPreference("oldorgpage").ToBool())
-                    CurrentOrgLink.NavigateUrl = "Organization.aspx?id={0}".Fmt(Util.CurrentOrgId);
-                else
-                    CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util.CurrentOrgId);
+                CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util.CurrentOrgId);
                 if (Session["ActiveOrganization"] != null)
                     CurrentOrgLink.Text = Session["ActiveOrganization"].ToString();
                 else
