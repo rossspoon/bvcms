@@ -182,7 +182,7 @@ namespace CMSPresenter
                      {
                          FirstName = p.PreferredName,
                          LastName = p.LastName,
-                         Gender = p.Gender,
+                         Gender = p.GenderId,
                          Grade = om.Grade.ToString(),
                          ShirtSize = om.ShirtSize,
                          Request = om.Request,

@@ -35,6 +35,7 @@
                     <th runat="server">
                         <asp:LinkButton CommandName="Sort" CommandArgument="PostingDate" runat="Server">Posting Date</asp:LinkButton>
                     </th>
+                    <th></th>
                 </tr>
                 <tr id="itemPlaceholder" runat="server">
                 </tr>
@@ -65,6 +66,10 @@
                 </td>
                 <td>
                     <asp:Label ID="PostingDateLabel" runat="server" Text='<%# Eval("PostingDate", "{0:d}") %>' />
+                </td>
+                <td>
+                    <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# Eval("BundleId", "~/PostBundle/Index/{0}") %>'
+                        runat="server">edit</asp:HyperLink>
                 </td>
             </tr>
         </ItemTemplate>

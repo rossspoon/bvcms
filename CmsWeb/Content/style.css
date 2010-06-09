@@ -286,20 +286,6 @@ input#GradeCompleted
 {
     width: 2em;
 }
-div#VBS
-{
-    border: 1px solid #999999;
-    display: inline-block;
-    margin-bottom: 1em;
-}
-#VBS img
-{
-    vertical-align: bottom;
-}
-#VBS form
-{
-    background-color: #eee;
-}
 tr.alt td
 {
     background-color: #eee;

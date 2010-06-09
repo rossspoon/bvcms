@@ -16,6 +16,7 @@ namespace CMSWeb.Areas.Main
         {
             AddRoute(context, "Checkin");
             AddRoute(context, "Coupon");
+            AddRoute(context, "PostBundle");
             AddRoute(context, "SearchPeople");
             AddRoute(context, "UserPref");
             AddRoute(context, "OrgSearch");

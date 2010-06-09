@@ -20,7 +20,6 @@ namespace CMSWeb.Areas.Manage
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Promotion");
             AddRoute(context, "Recreation");
-            AddRoute(context, "VBS");
             AddRoute(context, "Volunteers");
             context.MapRoute(
                 "Manage_default",

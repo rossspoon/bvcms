@@ -24,7 +24,7 @@
                 + "&format=" + $('input[name=addressedto]:checked').val()
                 + "&web=" + $('#WebView')[0].checked;
             $("#ChooseLabelType").dialog("close");
-            window.open(url, "_blank");
+            window.open(url);
             return false;
         });
         return false;

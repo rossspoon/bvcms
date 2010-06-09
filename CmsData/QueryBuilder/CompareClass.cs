@@ -395,18 +395,6 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 // V -------------------
-				case QueryType.VBSActiveOtherChurch:
-					return Expressions.VBSActiveOtherChurch(parm,
-							   CompType,
-							   c.CodeIds == "1");
-                case QueryType.VBSPubPhoto:
-                    return Expressions.VBSPubPhoto(parm,
-                               CompType,
-                               c.CodeIds == "1");
-                case QueryType.VBSMedAllergy:
-                    return Expressions.VBSMedAllergy(parm,
-                               CompType,
-                               c.CodeIds == "1");
                 case QueryType.VisitedCurrentOrg:
                     return Expressions.VisitedCurrentOrg(parm,
                                CompType,

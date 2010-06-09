@@ -572,7 +572,7 @@ namespace CmsData
                     (m.OrganizationId == org || org == 0)
                     && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
                     && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && m.EnrollmentDate == date);
+                    && m.EnrollmentDate.Value.Date == date);
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
@@ -883,21 +883,6 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        //internal static Expression RecFeePaid(
-        //    ParameterExpression parm,
-        //    CompareType op,
-        //    bool tf)
-        //{
-        //    Expression<Func<Person, bool>> hasreg = p => p.RecRegs.Count() > 0;
-        //    Expression<Func<Person, bool>> pred = p =>
-        //            p.RecRegs.Any(r => r.FeePaid == true);
-        //    Expression expr1 = Expression.Convert(Expression.Invoke(hasreg, parm), typeof(bool));
-        //    Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-
-        //    if (!(op == CompareType.Equal && tf))
-        //        expr2 = Expression.Not(expr2);
-        //    return Expression.And(expr1, expr2);
-        //}
         internal static Expression RecActiveOtherChurch(
             ParameterExpression parm,
             CompareType op,
@@ -909,51 +894,6 @@ namespace CmsData
                     && p.RecRegs.Count() > 0;
             Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
             Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-            if (!(op == CompareType.Equal && tf))
-                expr2 = Expression.Not(expr2);
-            return Expression.And(expr1, expr2);
-        }
-        internal static Expression VBSActiveOtherChurch(
-            ParameterExpression parm,
-            CompareType op,
-            bool tf)
-        {
-            Expression<Func<Person, bool>> hasapp = p => p.VBSApps.Count() > 0;
-            Expression<Func<Person, bool>> pred = p =>
-                    p.VBSApps.Any(v => v.ActiveInAnotherChurch == true)
-                    && p.VBSApps.Count() > 0;
-            Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
-            Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-            if (!(op == CompareType.Equal && tf))
-                expr2 = Expression.Not(expr2);
-            return Expression.And(expr1, expr2);
-        }
-        internal static Expression VBSPubPhoto(
-            ParameterExpression parm,
-            CompareType op,
-            bool tf)
-        {
-            Expression<Func<Person, bool>> hasapp = p => p.VBSApps.Count() > 0;
-            Expression<Func<Person, bool>> pred = p =>
-                    p.VBSApps.Any(v => v.PubPhoto == true);
-            Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
-            Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-
-            if (!(op == CompareType.Equal && tf))
-                expr2 = Expression.Not(expr2);
-            return Expression.And(expr1, expr2);
-        }
-        internal static Expression VBSMedAllergy(
-            ParameterExpression parm,
-            CompareType op,
-            bool tf)
-        {
-            Expression<Func<Person, bool>> hasapp = p => p.VBSApps.Count() > 0;
-            Expression<Func<Person, bool>> pred = p =>
-                    p.VBSApps.Any(v => v.MedAllergy == true);
-            Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
-            Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-
             if (!(op == CompareType.Equal && tf))
                 expr2 = Expression.Not(expr2);
             return Expression.And(expr1, expr2);
