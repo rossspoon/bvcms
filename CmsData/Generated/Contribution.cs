@@ -45,6 +45,8 @@ namespace CmsData
 		
 		private DateTime? _PostingDate;
 		
+		private string _BankAccount;
+		
    		
    		private EntitySet< BundleDetail> _BundleDetails;
 		
@@ -105,6 +107,9 @@ namespace CmsData
 		
 		partial void OnPostingDateChanging(DateTime? value);
 		partial void OnPostingDateChanged();
+		
+		partial void OnBankAccountChanging(string value);
+		partial void OnBankAccountChanged();
 		
     #endregion
 		public Contribution()
@@ -440,6 +445,28 @@ namespace CmsData
 					this._PostingDate = value;
 					this.SendPropertyChanged("PostingDate");
 					this.OnPostingDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BankAccount", UpdateCheck=UpdateCheck.Never, Storage="_BankAccount", DbType="varchar(50)")]
+		public string BankAccount
+		{
+			get { return this._BankAccount; }
+
+			set
+			{
+				if (this._BankAccount != value)
+				{
+				
+                    this.OnBankAccountChanging(value);
+					this.SendPropertyChanging();
+					this._BankAccount = value;
+					this.SendPropertyChanged("BankAccount");
+					this.OnBankAccountChanged();
 				}
 
 			}

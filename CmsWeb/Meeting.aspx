@@ -297,7 +297,7 @@
         BackgroundCssClass="modalBackground">
     </cc2:ModalPopupExtender>
     <div id="visitorDialog">
-    <iframe style="width:100%;height:100%"></iframe>
+    <iframe style="width:99%;height:99%"></iframe>
     </div>
     <asp:ObjectDataSource ID="AttendData" runat="server" SelectCountMethod="Count" SelectMethod="Attendees"
         TypeName="CMSPresenter.AttendController" OnSelected="AttendData_Selected">

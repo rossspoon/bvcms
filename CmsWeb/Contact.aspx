@@ -292,7 +292,7 @@
         </tr>
     </table>
     <div id="contactDialog">
-    <iframe style="width:100%;height:100%"></iframe>
+    <iframe style="width:99%;height:99%"></iframe>
     </div>
     <asp:ObjectDataSource ID="ContacteeList" runat="server" EnablePaging="True" SelectCountMethod="ContacteeCount"
         SelectMethod="ContacteeList" SortParameterName="sortExpression" TypeName="CMSPresenter.ContactController"

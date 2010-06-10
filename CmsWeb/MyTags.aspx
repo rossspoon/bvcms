@@ -93,7 +93,7 @@
         <uc1:PersonGrid ID="PersonGrid1" runat="server" DataSourceID="PeopleData" />
     </div>
     <div id="sharewithDialog">
-    <iframe style="width:100%;height:100%"></iframe>
+    <iframe style="width:99%;height:99%"></iframe>
     </div>
 
     <asp:ObjectDataSource ID="PeopleData" runat="server" EnablePaging="True" SelectMethod="FetchPeopleList"

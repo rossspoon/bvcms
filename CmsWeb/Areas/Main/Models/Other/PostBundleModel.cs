@@ -21,12 +21,22 @@ namespace CMSWeb.Models
     public class PostBundleModel
     {
         public int id { get; set; }
+        public int? editid { get; set; }
         public int? pid { get; set; }
         public decimal? amt { get; set; }
-        public DateTime? dt { get; set; }
-        public string fund { get; set; }
-        public bool? pledge { get; set; }
+        public int fund { get; set; }
+        public bool pledge { get; set; }
         public string notes { get; set; }
+        private BundleHeader _bundle;
+        public BundleHeader bundle
+        {
+            get
+            {
+                if (_bundle == null)
+                    _bundle = DbUtil.Db.BundleHeaders.SingleOrDefault(bh => bh.BundleHeaderId == id);
+                return _bundle;
+            }
+        }
         public PostBundleModel()
         {
 
@@ -43,18 +53,32 @@ namespace CMSWeb.Models
                     orderby d.CreatedDate descending
                     select new ContributionInfo
                     {
+                        ContributionId = d.ContributionId,
                         PeopleId = d.Contribution.PeopleId.Value,
                         Name = d.Contribution.Person.Name2,
                         Amt = d.Contribution.ContributionAmount ?? 0,
-                        Fund = d.Contribution.ContributionFund.FundDescription,
+                        Fund = d.Contribution.ContributionFund.FundName,
                         FundId = d.Contribution.FundId,
                         Notes = d.Contribution.ContributionDesc
                     };
             return q;
         }
+        public IEnumerable<SelectListItem> Funds()
+        {
+            var q = from f in DbUtil.Db.ContributionFunds
+                    where f.FundStatusId == 1
+                    orderby f.FundId
+                    select new SelectListItem
+                    {
+                        Text = "{0} - {1}".Fmt(f.FundId, f.FundName),
+                        Value = f.FundId.ToString()
+                    };
+            return q;
+        }
         public class ContributionInfo
         {
-            public int PeopleId { get; set; }
+            public int ContributionId { get; set; }
+            public int? PeopleId { get; set; }
             public string Name { get; set; }
             public decimal Amt { get; set; }
             public string AmtDisplay

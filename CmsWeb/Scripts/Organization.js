@@ -58,9 +58,8 @@
     $('a.memberdialog').live("click", function(e) {
         e.preventDefault();
         var title;
-        var src = this.href + '?sg=' + $("#smallgroupid").val();
         var d = $('#memberDialog');
-        $('iframe', d).attr("src", src);
+        $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", this.title || 'Edit Member Dialog');
         d.dialog("open");
         d.parent().center();

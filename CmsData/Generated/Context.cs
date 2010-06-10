@@ -2389,6 +2389,34 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.LastMemberTypeInTrans", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? LastMemberTypeInTrans(
+            [Parameter(Name = "oid", DbType="int")] int? oid,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid,
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.MemberTypeAtLastDrop", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? MemberTypeAtLastDrop(
+            [Parameter(Name = "oid", DbType="int")] int? oid,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid,
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.OrganizationMemberCount2", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? OrganizationMemberCount2(
@@ -2398,6 +2426,20 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 oid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.LastIdInTrans", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? LastIdInTrans(
+            [Parameter(Name = "oid", DbType="int")] int? oid,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid,
+                pid
                 ).ReturnValue));
 		}
 

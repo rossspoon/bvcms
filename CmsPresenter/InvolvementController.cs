@@ -171,7 +171,6 @@ namespace CMSPresenter
         }
         public static IEnumerable OrgMemberList(int queryid, int maximumRows)
         {
-
             var Db = DbUtil.Db;
             var qB = Db.LoadQueryById(queryid);
             var q = Db.People.Where(qB.Predicate());
@@ -182,7 +181,7 @@ namespace CMSPresenter
                      {
                          FirstName = p.PreferredName,
                          LastName = p.LastName,
-                         Gender = p.GenderId,
+                         Gender = p.Gender.Code,
                          Grade = om.Grade.ToString(),
                          ShirtSize = om.ShirtSize,
                          Request = om.Request,

@@ -203,6 +203,6 @@
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
     </div>
     <div id="memberDialog">
-    <iframe style="width:100%;height:100%"></iframe>
+    <iframe style="width:99%;height:99%"></iframe>
     </div>
 </asp:Content>

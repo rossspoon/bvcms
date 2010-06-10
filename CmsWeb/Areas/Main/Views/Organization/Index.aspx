@@ -120,6 +120,6 @@
         <%=Html.DropDownList("addfromtagid", Model.Tags()) %>
     </div>
     <div id="memberDialog">
-    <iframe id="memberDialogiframe" style="width:100%;height:100%"></iframe>
+    <iframe id="memberDialogiframe" style="width:99%;height:99%"></iframe>
     </div>
 </asp:Content>

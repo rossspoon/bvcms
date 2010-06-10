@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParseCSV.cs" />
     <Compile Include="Emailer.cs" />
     <Compile Include="EnDeCrypt.cs" />
     <Compile Include="GenericConfigCollection.cs" />
