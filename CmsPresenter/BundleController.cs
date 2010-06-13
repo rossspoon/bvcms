@@ -37,9 +37,11 @@ namespace CMSPresenter
         public string HeaderType { get; set; }
         public DateTime? DepositDate { get; set; }
         public decimal TotalBundle { get; set; }
+        public decimal TotalItems { get; set; }
         public int? FundId { get; set; }
         public string Fund { get; set; }
         public string Status { get; set; }
+        public bool open { get; set; }
     }
     public class DepositInfo
     {
@@ -197,9 +199,11 @@ namespace CMSPresenter
                          PostingDate = b.BundleDetails.Max(bd => bd.Contribution.PostingDate),
                          DepositDate = b.DepositDate,
                          TotalBundle = (b.TotalCash ?? 0) + (b.TotalChecks ?? 0) + (b.TotalEnvelopes ?? 0),
+                         TotalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount) ?? 0,
                          FundId = b.FundId,
-                         Fund = b.Fund.FundDescription,
+                         Fund = b.Fund.FundName,
                          Status = b.BundleStatusType.Description,
+                         open = b.BundleStatusId == 1
                      };
             _count = q2.Count();
             q2 = ApplySort(q2, sortExpression);
@@ -279,6 +283,7 @@ namespace CMSPresenter
                         StatusId = d.Contribution.ContributionStatusId.Value,
                         Status = d.Contribution.ContributionStatus.Description,
                         Name = d.Contribution.Person.Name2,
+                        Description = d.Contribution.ContributionDesc
                     };
             return q;
         }

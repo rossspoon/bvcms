@@ -24,6 +24,8 @@ namespace CmsData
 		private DateTime? _Stamp;
 		
    		
+   		private EntitySet< Contribution> _Contributions;
+		
     	
 	#endregion
 	
@@ -44,6 +46,8 @@ namespace CmsData
     #endregion
 		public ExtraDatum()
 		{
+			
+			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
 			
 			
 			OnCreated();
@@ -122,6 +126,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_Contribution_ExtraData", Storage="_Contributions", OtherKey="ExtraDataId")]
+   		public EntitySet< Contribution> Contributions
+   		{
+   		    get { return this._Contributions; }
+
+			set	{ this._Contributions.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -143,6 +157,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_Contributions(Contribution entity)
+		{
+			this.SendPropertyChanging();
+			entity.ExtraDatum = this;
+		}
+
+		private void detach_Contributions(Contribution entity)
+		{
+			this.SendPropertyChanging();
+			entity.ExtraDatum = null;
+		}
+
+		
 	}
 
 }

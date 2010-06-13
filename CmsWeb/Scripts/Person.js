@@ -183,7 +183,6 @@
 
 });
 function RebindMemberGrids(from) {
-    $("#memberDialog").dialog('destroy');
-    $("#memberDialog").remove();
     $.updateTable($('#current-tab form'));
+    $("#memberDialog").dialog('close');
 }

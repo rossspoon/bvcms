@@ -117,6 +117,7 @@
         OnClick="Delete_Click" OnClientClick="return confirm('Are you sure you want to delete?')" />
     &nbsp;|
     <asp:LinkButton ID="NewBundle" runat="server" OnClick="NewBundle_Click">Create New Bundle</asp:LinkButton>
+    | <a href="/PostBundle/Index/<%=bundleheader.BundleHeaderId %>">PostBundle (edit)</a>
     <table style="font-size: large">
         <tr>
             <td>
@@ -163,6 +164,9 @@
                                 <th runat="server">
                                     Pledge
                                 </th>
+                                <th runat="server">
+                                    Notes
+                                </th>
                             </tr>
                             <tr id="itemPlaceholder" runat="server">
                             </tr>
@@ -199,6 +203,9 @@
                 <td>
                     <asp:CheckBox ID="PledgeCheckBox" runat="server" Checked='<%# Eval("Pledge") %>'
                         Enabled="false" />
+                </td>
+                <td>
+                    <asp:Label ID="NotesLabel" runat="server" Text='<%# Eval("Description") %>' />
                 </td>
             </tr>
         </ItemTemplate>

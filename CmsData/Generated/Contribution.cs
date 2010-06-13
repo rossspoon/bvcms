@@ -47,6 +47,8 @@ namespace CmsData
 		
 		private string _BankAccount;
 		
+		private int? _ExtraDataId;
+		
    		
    		private EntitySet< BundleDetail> _BundleDetails;
 		
@@ -56,6 +58,8 @@ namespace CmsData
 		private EntityRef< ContributionStatus> _ContributionStatus;
 		
 		private EntityRef< ContributionType> _ContributionType;
+		
+		private EntityRef< ExtraDatum> _ExtraDatum;
 		
 		private EntityRef< Person> _Person;
 		
@@ -111,6 +115,9 @@ namespace CmsData
 		partial void OnBankAccountChanging(string value);
 		partial void OnBankAccountChanged();
 		
+		partial void OnExtraDataIdChanging(int? value);
+		partial void OnExtraDataIdChanged();
+		
     #endregion
 		public Contribution()
 		{
@@ -123,6 +130,8 @@ namespace CmsData
 			this._ContributionStatus = default(EntityRef< ContributionStatus>); 
 			
 			this._ContributionType = default(EntityRef< ContributionType>); 
+			
+			this._ExtraDatum = default(EntityRef< ExtraDatum>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -474,6 +483,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ExtraDataId", UpdateCheck=UpdateCheck.Never, Storage="_ExtraDataId", DbType="int")]
+		public int? ExtraDataId
+		{
+			get { return this._ExtraDataId; }
+
+			set
+			{
+				if (this._ExtraDataId != value)
+				{
+				
+					if (this._ExtraDatum.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnExtraDataIdChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraDataId = value;
+					this.SendPropertyChanged("ExtraDataId");
+					this.OnExtraDataIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -611,6 +645,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("ContributionType");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Contribution_ExtraData", Storage="_ExtraDatum", ThisKey="ExtraDataId", IsForeignKey=true)]
+		public ExtraDatum ExtraDatum
+		{
+			get { return this._ExtraDatum.Entity; }
+
+			set
+			{
+				ExtraDatum previousValue = this._ExtraDatum.Entity;
+				if (((previousValue != value) 
+							|| (this._ExtraDatum.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ExtraDatum.Entity = null;
+						previousValue.Contributions.Remove(this);
+					}
+
+					this._ExtraDatum.Entity = value;
+					if (value != null)
+					{
+						value.Contributions.Add(this);
+						
+						this._ExtraDataId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._ExtraDataId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("ExtraDatum");
 				}
 
 			}

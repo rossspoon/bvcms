@@ -187,6 +187,8 @@ namespace CMSWeb.Areas.Main.Controllers
                     return AddContactees(id.Value, m);
                 case "contactor":
                     return AddContactors(id.Value, m);
+                case "contributor":
+                    return AddContributor(id.Value, m);
             }
             return new EmptyResult();
         }
@@ -198,7 +200,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, (int)Person.OriginCode.Visit, 0);
-                    var ctee = DbUtil.Db.Contactees.SingleOrDefault(c => 
+                    var ctee = DbUtil.Db.Contactees.SingleOrDefault(c =>
                         c.ContactId == id && c.PeopleId == p.person.PeopleId);
                     if (ctee == null)
                     {
@@ -221,7 +223,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, 0, 0);
-                    var ctor = DbUtil.Db.Contactors.SingleOrDefault(c => 
+                    var ctor = DbUtil.Db.Contactors.SingleOrDefault(c =>
                         c.ContactId == id && c.PeopleId == p.person.PeopleId);
                     if (ctor == null)
                     {
@@ -288,6 +290,34 @@ namespace CMSWeb.Areas.Main.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             return Json(new { close = true, how = "rebindgrids" });
+        }
+        private JsonResult AddContributor(int id, SearchModel m)
+        {
+            if (id > 0)
+            {
+                var p = m.List[0];
+                var c = DbUtil.Db.Contributions.Single(cc => cc.ContributionId == id);
+                AddPerson(p, m.List, (int)Person.OriginCode.Contribution, 0);
+                c.PeopleId = p.PeopleId;
+
+                if (c.BankAccount.HasValue())
+                {
+                    var ci = DbUtil.Db.CardIdentifiers.SingleOrDefault(k => k.Id == c.BankAccount);
+                    if (ci == null)
+                    {
+                        ci = new CardIdentifier
+                        {
+                            Id = c.BankAccount,
+                            CreatedOn = Util.Now,
+                        };
+                        DbUtil.Db.CardIdentifiers.InsertOnSubmit(ci);
+                    }
+                    ci.PeopleId = p.PeopleId;
+                }
+                DbUtil.Db.SubmitChanges();
+                return Json(new { close = true, how = "addselected", cid = id, pid = p.PeopleId, name = p.person.Name2 });
+            }
+            return Json(new { close = true, how = "addselected" });
         }
         private JsonResult AddVisitors(int id, SearchModel m)
         {

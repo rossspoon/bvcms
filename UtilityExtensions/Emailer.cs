@@ -110,7 +110,7 @@ namespace UtilityExtensions
             if (attach != null)
                 msg.Attachments.Add(attach);
 
-#if DEBUG2
+#if DEBUG
 #else
             try
             {
@@ -118,12 +118,13 @@ namespace UtilityExtensions
             }
             catch (Exception ex)
             {
-                SendMsg(smtp, From, 
-                    "(smtp error) " + subject, 
-                    "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
-                    Name,
-                    WebConfigurationManager.AppSettings["senderrorsto"], 
-                    attach);
+                if (!msg.Subject.StartsWith("(smtp error)"))
+                    SendMsg(smtp, From, 
+                        "(smtp error) " + subject, 
+                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
+                        Name,
+                        WebConfigurationManager.AppSettings["senderrorsto"], 
+                        attach);
             }
 #endif
             htmlView.Dispose();

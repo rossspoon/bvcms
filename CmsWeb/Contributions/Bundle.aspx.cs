@@ -30,6 +30,14 @@ namespace CMSWeb.Contributions
             if (bundleheader == null)
                 Response.EndShowMessage("no bundle");
             Delete.Enabled = bundleheader.BundleStatusId == (int)BundleHeader.StatusCode.Open;
+
+            EditUpdateButton1.DataBind();
+            BundleId.Text = bundleheader.BundleHeaderId.ToString();
+
+            var ctl = new BundleController();
+            TotalItems.Text = ctl.TotalItems(bundleheader.BundleHeaderId).ToString("c");
+            TotalHeader.Text = ctl.TotalHeader(bundleheader.BundleHeaderId).ToString("c");
+
             EditUpdateButton1.Enabled = Delete.Enabled;
             if (User.IsInRole("Admin"))
                 EditUpdateButton1.Enabled = true;
@@ -40,12 +48,8 @@ namespace CMSWeb.Contributions
             ReqTotalChecks.Enabled = EditUpdateButton1.Editing;
             ReqTotalEnv.Enabled = EditUpdateButton1.Editing;
 
-            EditUpdateButton1.DataBind();
-            BundleId.Text = bundleheader.BundleHeaderId.ToString();
-
-            var ctl = new BundleController();
-            TotalItems.Text = ctl.TotalItems(bundleheader.BundleHeaderId).ToString("c");
-            TotalHeader.Text = ctl.TotalHeader(bundleheader.BundleHeaderId).ToString("c");
+            var nopid = bundleheader.BundleDetails.Any(bd => bd.Contribution.PeopleId == null);
+            BundleStatusIdDropDown.Enabled = nopid == false && TotalItems.Text == TotalHeader.Text;
         }
 
         protected void EditUpdateButton1_Click(object sender, EventArgs e)

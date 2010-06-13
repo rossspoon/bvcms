@@ -24,13 +24,6 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <script type="text/javascript">
-         $(function() {
-             tb_init('a.thickbox2');
-             imgLoader = new Image();
-             imgLoader.src = tb_pathToImage;
-         });
-    </script>
    <asp:HyperLink ID="PersonLink" runat="server"></asp:HyperLink>
     <asp:Literal runat="server" id="litContributionStatement" Visible="false">&nbsp; | &nbsp;</asp:Literal> 
     <asp:HyperLink ID="hlContributionStatement" runat="server" 

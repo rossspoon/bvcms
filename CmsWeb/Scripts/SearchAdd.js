@@ -12,7 +12,7 @@
                         break;
                     case 'addselected':
                         if (self.parent.AddSelected)
-                            self.parent.AddSelected(ret.error);
+                            self.parent.AddSelected(ret);
                         break;
                 }
             }

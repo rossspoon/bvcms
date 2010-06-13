@@ -26,6 +26,9 @@
                     <th runat="server">
                         <asp:LinkButton CommandName="Sort" CommandArgument="TotalCash" runat="Server">Total Bundle</asp:LinkButton>
                     </th>
+                    <th id="Th5" runat="server">
+                        Total Items
+                    </th>
                     <th id="Th1" runat="server">
                         <asp:LinkButton ID="LinkButton1" CommandName="Sort" CommandArgument="Fund" runat="Server">Fund</asp:LinkButton>
                     </th>
@@ -58,6 +61,9 @@
                 <td align="right">
                     <asp:Label ID="Label2" runat="server" Text='<%# Eval("TotalBundle", "{0:c}") %>' />
                 </td>
+                <td align="right">
+                    <asp:Label ID="Label3" runat="server" Text='<%# Eval("TotalItems", "{0:c}") %>' />
+                </td>
                 <td>
                     <asp:Label ID="FundLabel" runat="server" ToolTip='<%# Eval("FundId") %>' Text='<%# Eval("Fund") %>' />
                 </td>
@@ -68,7 +74,7 @@
                     <asp:Label ID="PostingDateLabel" runat="server" Text='<%# Eval("PostingDate", "{0:d}") %>' />
                 </td>
                 <td>
-                    <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# Eval("BundleId", "~/PostBundle/Index/{0}") %>'
+                    <asp:HyperLink ID="HyperLink2" Visible=<%# (bool)Eval("open") %> NavigateUrl='<%# Eval("BundleId", "~/PostBundle/Index/{0}") %>'
                         runat="server">edit</asp:HyperLink>
                 </td>
             </tr>

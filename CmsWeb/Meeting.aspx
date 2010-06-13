@@ -64,11 +64,11 @@
             }
             return false;
         }
-        function AddSelected(err) {
+        function AddSelected(ret) {
             var d = $('#visitorDialog');
             d.dialog("close");
-            if (err)
-                alert(err);
+            if (ret.error)
+                alert(ret.error);
             else
                 $('#<%= AddedSelectedVisitors.ClientID %>').click();
         }

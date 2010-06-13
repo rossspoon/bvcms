@@ -1143,6 +1143,8 @@
     <Content Include="Areas\Main\Views\OrgSearch\Index.aspx" />
     <Content Include="Areas\Main\Views\OrgSearch\Results.ascx" />
     <Content Include="Areas\Main\Views\PostBundle\Batch.aspx" />
+    <Content Include="Areas\Main\Views\PostBundle\FundTotals.ascx" />
+    <Content Include="Areas\Main\Views\PostBundle\FundTotals.aspx" />
     <Content Include="Areas\Main\Views\PostBundle\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormAbbreviated.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\EditAddress.ascx" />
