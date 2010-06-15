@@ -200,6 +200,9 @@ namespace CMSWeb.Areas.Setup.Controllers
                         case "Location":
                             o.Location = a[c];
                             break;
+                        case "RollSheetVisitorWks":
+                            o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
+                            break;
                         case "AgeFee":
                             o.AgeFee = a[c];
                             break;

@@ -61,11 +61,14 @@
         $('#editid').val(tr.attr("cid"));
         $('#pid').val($("a.pid", tr).text());
         $('#name').val($("td.name", tr).text());
-        $('#amt').val($("td.amt", tr).attr("val"));
+        var a = $('#amt');
+        a.val($("td.amt", tr).attr("val"));
         $('#fund').val($("td.fund", tr).attr("val"));
         $('#notes').val($("td.notes", tr).text());
         tr.remove();
-        $('#amt').focus();
+        if (a.val() == '0.00')
+            a.val('');
+        a.focus();
         $('a.edit').hide();
         $.Stripe();
     });
@@ -93,6 +96,20 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
         d.parent().center();
+    });
+    $(".clickEdit").editable("/PostBundle/Edit/", {
+        indicator: "<img src='/images/loading.gif'>",
+        tooltip: "Click to edit...",
+        style: 'display: inline',
+        width: '200px'
+    });
+    $(".clickSelect").editable("/PostBundle/Edit/", {
+        indicator: '<img src="/images/loading.gif">',
+        loadtype: 'post',
+        loadurl: "/PostBundle/Funds/",
+        type: "select",
+        submit: "OK",
+        style: 'display: inline'
     });
     $.PostRow = function() {
         var n = parseFloat($('#amt').val());
@@ -156,5 +173,6 @@ function AddSelected(ret) {
     var tr = $('tr[cid=' + ret.cid + ']');
     $('a.pid', tr).text(ret.pid);
     $('td.name', tr).text(ret.name);
+    $('a.edit', tr).click();
 }
 

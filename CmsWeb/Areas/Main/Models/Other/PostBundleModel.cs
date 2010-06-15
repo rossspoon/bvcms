@@ -16,6 +16,8 @@ using System.Text;
 using CmsData;
 using System.Data.Linq.SqlClient;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace CMSWeb.Models
 {
@@ -62,7 +64,7 @@ namespace CMSWeb.Models
                         ContributionId = d.ContributionId,
                         PeopleId = d.Contribution.PeopleId,
                         Name = d.Contribution.Person.Name2,
-                        Amt = d.Contribution.ContributionAmount ?? 0,
+                        Amt = d.Contribution.ContributionAmount,
                         Fund = d.Contribution.ContributionFund.FundName,
                         FundId = d.Contribution.FundId,
                         Notes = d.Contribution.ContributionDesc,
@@ -73,7 +75,11 @@ namespace CMSWeb.Models
                         Zip = d.Contribution.Person.PrimaryZip,
                         Age = d.Contribution.Person.Age
                     };
-            return q;
+            var list = q.ToList();
+            foreach (var c in list)
+                if (!c.Name.HasValue() && c.eac.HasValue())
+                    c.Name = Util.Decrypt(c.eac);
+            return list;
         }
         public IEnumerable<FundTotal> TotalsByFund()
         {
@@ -99,6 +105,18 @@ namespace CMSWeb.Models
                         Value = f.FundId.ToString()
                     };
             return q;
+        }
+        public IEnumerable Funds2()
+        {
+            var q = from f in DbUtil.Db.ContributionFunds
+                    where f.FundStatusId == 1
+                    orderby f.FundId
+                    select new
+                    {
+                        Code = f.FundId.ToString(),
+                        Value = "{0} - {1}".Fmt(f.FundId, f.FundName),
+                    };
+            return q.ToDictionary(k => k.Code, v => v.Value);
         }
         public string GetNameFromPid()
         {
@@ -202,6 +220,7 @@ namespace CMSWeb.Models
         }
         private static string[] _Regions = { "Submit Date", "Post Amount", "Check Number", "Item Id", "R/T", "Account Number" };
         private static string[] _ServiceU = { "Date Entered", "Total", "First Name", "Last Name", "Address", "City", "State", "Zip", "Phone Number", "Email Address", "ProfileID" };
+        private static string[] _MagTek = { "From MICR :" };
 
         private static bool CheckNames(string[] names, string[] lookfor)
         {
@@ -219,7 +238,72 @@ namespace CMSWeb.Models
                 return BatchProcessRegions(lines, names);
             else if (CheckNames(names, _ServiceU))
                 return BatchProcessServiceU(lines, names);
+            else if (CheckNames(names, _MagTek))
+                return BatchProcessMagTek(lines, names);
             return null;
+        }
+        private static int? BatchProcessMagTek(String[] lines, String[] names)
+        {
+            var now = DateTime.Now;
+            var dt = Util.Now.Date;
+            dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
+            var bh = new BundleHeader
+            {
+                BundleHeaderTypeId = (int)BundleHeader.TypeCode.ChecksAndCash,
+                BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                ContributionDate = dt,
+                CreatedBy = Util.UserId,
+                CreatedDate = now,
+                FundId = 1
+            };
+            DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
+            Regex re = new Regex(@"T(?<rt>\d+)T\s*(?<ac>[\d ]*)U\s*(?<ck>\d+)", RegexOptions.IgnoreCase);
+            for (var i = 1; i < lines.Length; i += 2)
+            {
+                var a = lines[i].Trim();
+                var m = re.Match(a);
+                var rt = m.Groups["rt"].Value;
+                var ac = m.Groups["ac"].Value;
+                var ck = m.Groups["ck"].Value;
+
+                var bd = new CmsData.BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = now,
+                };
+                bh.BundleDetails.Add(bd);
+                var qf = from f in DbUtil.Db.ContributionFunds
+                         where f.FundStatusId == 1
+                         orderby f.FundId
+                         select f.FundId;
+
+                bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = now,
+                    FundId = qf.First(),
+                    ContributionStatusId = 0,
+                    ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+                };
+                bd.Contribution.ContributionDesc = ck;
+                var eac = Util.Encrypt(rt + "," + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                else
+                {
+                    bd.Contribution.BankAccount = eac;
+                    bd.Contribution.ContributionDesc = ck;
+                }
+            }
+            bh.TotalChecks = 0;
+            bh.TotalCash = 0;
+            bh.TotalEnvelopes = 0;
+            DbUtil.Db.SubmitChanges();
+            return bh.BundleHeaderId;
         }
         private static int? BatchProcessServiceU(String[] lines, String[] names)
         {
@@ -409,12 +493,12 @@ namespace CMSWeb.Models
                 }
             }
             public string Name { get; set; }
-            public decimal Amt { get; set; }
+            public decimal? Amt { get; set; }
             public string AmtDisplay
             {
                 get
                 {
-                    return Amt.ToString("c");
+                    return Amt.ToString2("c");
                 }
             }
             public string Fund { get; set; }

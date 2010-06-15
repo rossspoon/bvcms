@@ -50,9 +50,13 @@
         return false;
     });
     $("form").submit(function() {
+        if ($('#groupid').val() <= 0) {
+            alert("select active group first");
+            return false;
+        }
         var f = $(this).closest('form');
         var q = f.serialize();
-         $.post("/OrgGroups/Update", q, function(ret) {
+        $.post("/OrgGroups/Update", q, function(ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
         });
         return false;

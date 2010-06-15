@@ -60,39 +60,39 @@
                 </cc2:CalendarExtender>
             </td>
         </tr>
-        <tr id="TR_TotalCash" runat="server">
+        <tr>
             <th>
                 Total Cash:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalCash" runat="server" BindingSource="bundleheader"
-                    BindingMode="TwoWay" AssociatedRowId="TR_TotalCash" />
+                    BindingMode="TwoWay" />
                 <asp:RequiredFieldValidator ID="ReqTotalCash" runat="server" 
                     ErrorMessage="required" ControlToValidate="TotalCash"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="ValTotalCash" runat="server" ControlToValidate="TotalCash"
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
-        <tr id="TR_TotalChecks" runat="server">
+        <tr>
             <th>
                 Total Checks:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalChecks" runat="server" BindingSource="bundleheader"
-                    BindingMode="TwoWay" AssociatedRowId="TR_TotalChecks" />
+                    BindingMode="TwoWay" />
                 <asp:RequiredFieldValidator ID="ReqTotalChecks" runat="server" 
                     ErrorMessage="required" ControlToValidate="TotalChecks"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="TotalChecks"
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
-        <tr id="TR_TotalEnvelopes" runat="server">
+        <tr>
             <th>
                 Total Coin:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalEnvelopes" runat="server" BindingSource="bundleheader"
-                    BindingMode="TwoWay" AssociatedRowId="TR_TotalEnvelopes" />
+                    BindingMode="TwoWay" />
                 <asp:RequiredFieldValidator ID="ReqTotalEnv" runat="server" 
                     ErrorMessage="required" ControlToValidate="TotalEnvelopes"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="TotalEnvelopes"

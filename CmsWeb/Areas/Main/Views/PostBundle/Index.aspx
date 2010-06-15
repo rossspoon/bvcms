@@ -57,8 +57,13 @@
        <tr cid="<%=c.ContributionId %>">
             <td><a href="/SearchAdd/Index/<%=c.ContributionId %>?type=contributor" class="pid"><%=c.PeopleId == null? "select" : c.PeopleId.ToString() %></a></td>
             <td class="name" title="<%=c.tip %>"><%=c.Name %></td>
-            <td class="amt" val="<%=c.Amt %>" align="right"><%=c.AmtDisplay %></td>
-            <td class="fund" val="<%=c.FundId %>"><%=c.FundDisplay %></td>
+            <td class="amt" val="<%=c.Amt %>" align="right">
+            <span id='a<%=c.ContributionId %>' class='clickEdit'><%=c.AmtDisplay %></span>            
+            </td>
+            <td class="fund" val="<%=c.FundId %>">
+                <span id='f<%=c.ContributionId %>' 
+                    class='clickSelect'><%=c.FundDisplay%></span>
+            </td>
             <td class="notes"><%=c.Notes %></td>
             <td><a class="edit" href='#'>edit</a></td>
             <td><a class="delete" href='#'>delete</a></td>

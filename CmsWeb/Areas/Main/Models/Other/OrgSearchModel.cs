@@ -87,6 +87,7 @@ namespace CMSWeb.Models
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
                          Schedule = "{0:dddd h:mm tt}".Fmt(o.MeetingTime),
                          o.Location,
+                         RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
                          o.AgeFee,
                          o.AgeGroups,
                          Limit = o.Limit.ToString(),

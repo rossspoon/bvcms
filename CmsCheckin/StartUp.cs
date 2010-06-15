@@ -50,7 +50,8 @@ namespace CmsCheckin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Settings1.Default.Campus = ((Campus)(cbCampusId.SelectedItem)).Name;
+            if (cbCampusId.Items.Count > 0)
+                Settings1.Default.Campus = ((Campus)(cbCampusId.SelectedItem)).Name;
             Settings1.Default.Printer = Printer.Text;
             Settings1.Default.AskChurch = AskChurch.Checked;
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;

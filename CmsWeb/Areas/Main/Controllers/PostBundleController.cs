@@ -64,5 +64,31 @@ namespace CMSWeb.Areas.Main.Controllers
             var id = PostBundleModel.BatchProcess(text);
             return Redirect("/PostBundle/Index/" + id);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult Funds()
+        {
+            var m = new PostBundleModel();
+            return Json(m.Funds2());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Edit(string id, string value)
+        {
+            var iid = id.Substring(1).ToInt();
+            var c = DbUtil.Db.Contributions.SingleOrDefault(co => co.ContributionId == iid);
+            if (c != null)
+                switch (id.Substring(0, 1))
+                {
+                    case "a":
+                        c.ContributionAmount = value.ToDecimal();
+                        DbUtil.Db.SubmitChanges();
+                        return Content(c.ContributionAmount.ToString2("c"));
+                    case "f":
+                        c.FundId = value.ToInt();
+                        DbUtil.Db.SubmitChanges();
+                        return Content("{0} - {1}".Fmt(c.ContributionFund.FundId, c.ContributionFund.FundName));
+                }
+            return new EmptyResult();
+        }
+
     }
 }
