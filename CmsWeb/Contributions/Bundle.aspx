@@ -48,13 +48,13 @@
                     AssociatedRowId="TR_BundleHeaderTypeId" DataSourceID="HeaderTypesODS" MakeDefault0="False" />
             </td>
         </tr>
-        <tr id="TR_DepositDate" runat="server">
+        <tr>
             <th>
                 Deposit Date:
             </th>
             <td>
                 <cc1:DisplayOrEditDate ID="DepositDate" runat="server" BindingSource="bundleheader"
-                    BindingMode="TwoWay" AssociatedRowId="TR_DepositDate" />
+                    BindingMode="TwoWay" />
                 <cc2:CalendarExtender ID="DepositDate_CalendarExtender" runat="server" Enabled="True"
                     TargetControlID="DepositDate">
                 </cc2:CalendarExtender>

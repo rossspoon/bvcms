@@ -134,7 +134,7 @@ namespace CMSWeb.Models
                      where p.Name2.StartsWith(q)
                      orderby p.Name2
                      select p.Name2 +
-                     "|" + p.PeopleId + "|" + p.Age + "|" + p.PrimaryAddress;
+                     "|" + p.PeopleId + "|" + (p.Age ?? 0) + "|" + p.PrimaryAddress;
             return string.Join("\n", qu.Take(limit).ToArray());
         }
         private object ContributionRowData(int id)
@@ -172,7 +172,7 @@ namespace CMSWeb.Models
             {
                 CreatedBy = Util.UserId,
                 CreatedDate = bd.CreatedDate,
-                FundId = fund.ToInt(),
+                FundId = fund,
                 PeopleId = pid,
                 ContributionDate = bundle.ContributionDate,
                 ContributionAmount = amt,
@@ -204,19 +204,21 @@ namespace CMSWeb.Models
         }
         public object DeleteContribution()
         {
-            var bd = bundle.BundleDetails.Single(d => d.ContributionId == editid);
-            var c = bd.Contribution;
-            DbUtil.Db.BundleDetails.DeleteOnSubmit(bd);
-            bundle.BundleDetails.Remove(bd);
-            DbUtil.Db.Contributions.DeleteOnSubmit(c);
-            DbUtil.Db.SubmitChanges();
+            var bd = bundle.BundleDetails.SingleOrDefault(d => d.ContributionId == editid);
+            if (bd != null)
+            {
+                var c = bd.Contribution;
+                DbUtil.Db.BundleDetails.DeleteOnSubmit(bd);
+                bundle.BundleDetails.Remove(bd);
+                DbUtil.Db.Contributions.DeleteOnSubmit(c);
+                DbUtil.Db.SubmitChanges();
+            }
             return new
             {
                 totalitems = bundle.BundleDetails.Sum(d => 
                     d.Contribution.ContributionAmount).ToString2("c"),
                 itemcount = bundle.BundleDetails.Count(),
             };
-
         }
         private static string[] _Regions = { "Submit Date", "Post Amount", "Check Number", "Item Id", "R/T", "Account Number" };
         private static string[] _ServiceU = { "Date Entered", "Total", "First Name", "Last Name", "Address", "City", "State", "Zip", "Phone Number", "Email Address", "ProfileID" };
@@ -257,7 +259,9 @@ namespace CMSWeb.Models
                 FundId = 1
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
-            Regex re = new Regex(@"T(?<rt>\d+)T\s*(?<ac>[\d ]*)U\s*(?<ck>\d+)", RegexOptions.IgnoreCase);
+            var re = new Regex(DbUtil.Content("PostBundleBatchRegex", 
+                    @"[TU](?<rt>[\d?]+)[TU]\s*(?<ac>[\d ?]*)U\s*(?<ck>[\d?]+)"), 
+                    RegexOptions.IgnoreCase);
             for (var i = 1; i < lines.Length; i += 2)
             {
                 var a = lines[i].Trim();

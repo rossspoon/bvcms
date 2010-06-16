@@ -525,6 +525,7 @@ namespace CMSWeb.Models
             var q = from s in (org.GradeOptions ?? string.Empty).Split(',')
                     where s.HasValue()
                     let a = s.Split('=')
+                    where a.Length > 1
                     select new SelectListItem { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });

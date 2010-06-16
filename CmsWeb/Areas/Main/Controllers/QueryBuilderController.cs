@@ -231,6 +231,8 @@ namespace CMSWeb.Areas.Main.Controllers
 
             if (m.QuartersVisible && !Regex.IsMatch(m.Quarters, "^(1|2|3|4)(,(1|2|3|4))*$"))
                 m.Errors.Add("Quarters", "need quarters separated by ,");
+            if (m.ViewVisible && !m.View.HasValue())
+                m.Errors.Add("View", "choose View");
 
             if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
                 m.Errors.Add("IntegerValue", "need integer");

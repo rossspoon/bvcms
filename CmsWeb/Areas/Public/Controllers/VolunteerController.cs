@@ -90,7 +90,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 Util.Email2(smtp,
                     Util.PickFirst(regemail, m.person.EmailAddress),
                     email,
-                    "{0} volunteer registration".Fmt(id),
+                    "{0} treeview registration".Fmt(id),
                     "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
                     .Fmt(m.person.Name, m.person.PeopleId, summary));
 

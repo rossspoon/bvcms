@@ -176,8 +176,11 @@ namespace CMSWeb
             sb.Append(Message);
 
             Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address, null);
-            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, 
+            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null,
                 WebConfigurationManager.AppSettings["senderrorsto"], null);
+            var notices = DbUtil.Settings("NotifySentEmails", null);
+            if (notices.HasValue())
+            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices, null);
 
             sb.Length = 0;
             sb.Append("<pre>\r\n");

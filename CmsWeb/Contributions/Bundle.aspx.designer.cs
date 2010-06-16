@@ -95,15 +95,6 @@ namespace CMSWeb.Contributions {
         protected global::CustomControls.DisplayOrEditDropDown BundleHeaderTypeIdDropDown;
         
         /// <summary>
-        /// TR_DepositDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow TR_DepositDate;
-        
-        /// <summary>
         /// DepositDate control.
         /// </summary>
         /// <remarks>

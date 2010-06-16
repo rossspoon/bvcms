@@ -15,7 +15,7 @@
     <h2><%=Model.formtitle %></h2>
     <h4>Information Received</h4>
     <p>
-        Thank you for being willing to volunteer.  
+        Thank you for registering.  
         You should receive an email with more information shortly.
     </p>
     <p>

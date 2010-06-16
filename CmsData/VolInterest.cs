@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Text;
-using UtilityExtensions;
 using System.Text.RegularExpressions;
-using System.Data.Linq;
 using System.Xml.Linq;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -381,7 +381,8 @@ namespace CmsData
 
         private static void ReadConfig(Person p, string view)
         {
-            string config = DbUtil.Content("Volunteer-" + view + ".xml").Body;
+            var c = DbUtil.Content("Volunteer-" + view + ".xml");
+            var config = c.Body;
             var doc = XDocument.Parse(config);
             var a = doc.Root.Attribute("year");
             if (a != null)
