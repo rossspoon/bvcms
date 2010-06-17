@@ -1185,6 +1185,8 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\EnrollGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
+    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
