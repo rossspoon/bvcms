@@ -15,6 +15,9 @@ namespace CMSWeb.Models
         public int orgid { get; set; }
         public int? groupid { get; set; }
         public string GroupName { get; set; }
+        public string ingroup { get; set; }
+        public string notgroup { get; set; }
+        public bool notgroupactive { get; set; }
 
         public string OrgName
         {
@@ -77,10 +80,16 @@ namespace CMSWeb.Models
             var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);
+            if (ingroup.HasValue())
+                q = q.Where(om => om.OrgMemMemTags.Any(omt => omt.MemberTag.Name.StartsWith(ingroup)));
+            if (notgroupactive)
+                if (notgroup.HasValue())
+                    q = q.Where(om => !om.OrgMemMemTags.Any(omt => omt.MemberTag.Name.StartsWith(notgroup)));
+                else
+                    q = q.Where(om => om.OrgMemMemTags.Count() == 0);
 
             count = q.Count();
-            var q1 = q.OrderBy(m => m.Person.Name2);
-            var q2 = from m in q1
+            var q2 = from m in q
                      let p = m.Person
                      let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
                      orderby !ck, p.Name2
@@ -139,9 +148,9 @@ namespace CMSWeb.Models
                 }
             }
             public bool ischecked { get; set; }
-            public string Checked()
+            public string IsInGroup()
             {
-                return ischecked ? "checked='checked'" : "";
+                return ischecked ? "style='color:blue;'" : "";
             }
             public string ToolTip
             {

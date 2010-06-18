@@ -4,17 +4,23 @@
         $('table.grid > tbody > tr:even').addClass('alt');
     }
     $.fmtTable();
-    $(".filter").change(function(ev) {
-        var q = $("form").serialize();
-        $.post("/OrgGroups/Filter", q, function(ret) {
-            $("table.grid > tbody").html(ret).ready($.fmtTable);
-        });
+    $.loadTable = function() {
+        $.getTable($('#groupsform'));
+    }
+    $('#Filter').live("click", function(ev) {
+        ev.preventDefault();
+        $.loadTable();
+    });
+    $("#groupsform").delegate("#memtype", "change", $.loadTable);
+
+    $("#ingroup, #notgroup").keypress(function(ev) {
+        if (ev.keyCode == '13') {
+            ev.preventDefault();
+            $.loadTable();
+        }
     });
 
-    $("#groupsform").delegate("#groupid", "change", function() {
-        $.getTable($('#groupsform'));
-        return false;
-    });
+    $("#groupsform").delegate("#groupid", "change", $.loadTable);
     $.getTable = function(f) {
         var q = f.serialize();
         $.post("/OrgGroups/Filter", q, function(ret) {
@@ -49,18 +55,26 @@
             });
         return false;
     });
-    $("form").submit(function() {
+    $("form").submit(function(ev) {
+        ev.preventDefault();
+        return false;
+    });
+    $.performAction = function(action) {
         if ($('#groupid').val() <= 0) {
-            alert("select active group first");
+            alert("select target group first");
             return false;
         }
-        var f = $(this).closest('form');
-        var q = f.serialize();
-        $.post("/OrgGroups/Update", q, function(ret) {
+        var q = $('form').serialize();
+        $.post(action, q, function(ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
         });
         return false;
+    };
+    $('#AssignSelectedToTargetGroup').live('click', function(ev) {
+        $.performAction("/OrgGroups/AssignSelectedToTargetGroup");
     });
-
+    $('#RemoveSelectedFromTargetGroup').live('click', function(ev) {
+        $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
+    });
 });
 

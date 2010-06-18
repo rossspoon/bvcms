@@ -32,22 +32,30 @@ namespace CMSWeb.Areas.Main.Controllers
             return View(om);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update(OrgGroupsModel m)
+        public ActionResult AssignSelectedToTargetGroup(OrgGroupsModel m)
         {
             var a = m.List.ToArray();
             var sgname = DbUtil.Db.MemberTags.Single(mt => mt.Id == m.groupid).Name;
-            var q1 = from omt in DbUtil.Db.OrgMemMemTags
-                     where omt.OrgId == m.orgid
-                     where omt.MemberTag.Name == sgname
-                     where !a.Contains(omt.PeopleId)
-                     select omt;
-            DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(q1);
             var q2 = from om in m.OrgMembers()
                      where !om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sgname)
                      where a.Contains(om.PeopleId)
                      select om;
             foreach (var om in q2)
                 om.AddToGroup(sgname);
+            DbUtil.Db.SubmitChanges();
+            return View("Rows", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RemoveSelectedFromTargetGroup(OrgGroupsModel m)
+        {
+            var a = m.List.ToArray();
+            var sgname = DbUtil.Db.MemberTags.Single(mt => mt.Id == m.groupid).Name;
+            var q1 = from omt in DbUtil.Db.OrgMemMemTags
+                     where omt.OrgId == m.orgid
+                     where omt.MemberTag.Name == sgname
+                     where a.Contains(omt.PeopleId)
+                     select omt;
+            DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(q1);
             DbUtil.Db.SubmitChanges();
             return View("Rows", m);
         }
