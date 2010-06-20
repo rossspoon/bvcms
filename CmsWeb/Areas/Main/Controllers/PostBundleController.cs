@@ -54,14 +54,17 @@ namespace CMSWeb.Areas.Main.Controllers
             var m = new PostBundleModel(id);
             return View(m);
         }
-        public ActionResult Batch(string text)
+        public ActionResult Batch(string text, DateTime? date)
         {
-            if (Request.HttpMethod.ToUpper() == "GET")
+            if (Request.HttpMethod.ToUpper() == "GET" || !date.HasValue)
             {
+                var dt = Util.Now.Date;
+                dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
+                ViewData["date"] = dt;
                 ViewData["text"] = "";
                 return View();
             }
-            var id = PostBundleModel.BatchProcess(text);
+            var id = PostBundleModel.BatchProcess(text, date.Value);
             return Redirect("/PostBundle/Index/" + id);
         }
         [AcceptVerbs(HttpVerbs.Post)]

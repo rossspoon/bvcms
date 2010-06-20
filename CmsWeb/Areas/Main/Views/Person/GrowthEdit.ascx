@@ -37,8 +37,7 @@
 <tr><td></td></tr>
     <tr>
         <th>Comments:</th>
-        <td>
-            <%=Html.TextArea("Comments") %>
+        <td><%=Html.TextArea("Comments", new { rows = "16", style = "width:90%" })%>
         </td>
     </tr>
 <tr><td></td></tr>

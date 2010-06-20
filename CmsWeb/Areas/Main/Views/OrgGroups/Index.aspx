@@ -25,10 +25,9 @@
 		<th>Select </th>
 		<th align="left">Name </th>
 		<th align="left">Address </th>
-		<th align="left">CityStateZip </th>
-		<th>Age </th>
 		<th>Gender </th>
-		<th width="5%"></th>
+		<th>Age </th>
+		<th align="left">Request</th>
 		<th align="left" width="25%">Groups </th>
 	</tr>
 	</thead>

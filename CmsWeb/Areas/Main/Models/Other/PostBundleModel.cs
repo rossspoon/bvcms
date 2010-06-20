@@ -89,7 +89,7 @@ namespace CMSWeb.Models
                     orderby g.Key
                     select new FundTotal
                     {
-                        Name = g.Key, 
+                        Name = g.Key,
                         Total = g.Sum(d => d.Contribution.ContributionAmount)
                     };
             return q;
@@ -215,52 +215,65 @@ namespace CMSWeb.Models
             }
             return new
             {
-                totalitems = bundle.BundleDetails.Sum(d => 
+                totalitems = bundle.BundleDetails.Sum(d =>
                     d.Contribution.ContributionAmount).ToString2("c"),
                 itemcount = bundle.BundleDetails.Count(),
             };
         }
-        private static string[] _Regions = { "Submit Date", "Post Amount", "Check Number", "Item Id", "R/T", "Account Number" };
-        private static string[] _ServiceU = { "Date Entered", "Total", "First Name", "Last Name", "Address", "City", "State", "Zip", "Phone Number", "Email Address", "ProfileID" };
+        private static string[] columns = 
+        { 
+            "Submit Date=Date,Post Amount=Amount,Check Number=Check,R/T=Route,Account Number=Account,Deposit Number=Bundle",
+            "Date Entered=Date,Total=Amount,ProfileID=Account"
+        };
         private static string[] _MagTek = { "From MICR :" };
 
-        private static bool CheckNames(string[] names, string[] lookfor)
+        private static bool CheckNames(string[] names, IEnumerable<string> lookfor)
         {
             var q = from n in names
                     join r in lookfor on n equals r
                     select n;
-            return q.Count() == lookfor.Length;
+            return q.Count() == lookfor.Count();
         }
-        
-        public static int? BatchProcess(string text)
+
+        private static Dictionary<string, string> GetNames(string[] names)
+        {
+            foreach (var s in columns)
+            {
+                var rq = from c in s.Split(',')
+                         let a = c.Split('=')
+                         select new { col = a[0], name = a[1] };
+                var rd = rq.ToDictionary(d => d.col, d => d.name);
+                if (CheckNames(names, rd.Keys))
+                    return rd;
+            }
+            return null;
+        }
+        public static int? BatchProcess(string text, DateTime date)
         {
             var lines = text.Replace("\r\n", "\n").Split('\n');
             var names = lines[0].Trim().Split(',');
-            if(CheckNames(names, _Regions))
-                return BatchProcessRegions(lines, names);
-            else if (CheckNames(names, _ServiceU))
-                return BatchProcessServiceU(lines, names);
-            else if (CheckNames(names, _MagTek))
-                return BatchProcessMagTek(lines, names);
-            return null;
+            if (names[0] == "From MICR :")
+                return BatchProcessMagTek(lines, names, date);
+            var rd = GetNames(names);
+            if (rd == null)
+                return null;
+            return BatchProcessCSV(lines, rd, date);
         }
-        private static int? BatchProcessMagTek(String[] lines, String[] names)
+        private static int? BatchProcessMagTek(String[] lines, String[] names, DateTime date)
         {
             var now = DateTime.Now;
-            var dt = Util.Now.Date;
-            dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
             var bh = new BundleHeader
             {
                 BundleHeaderTypeId = (int)BundleHeader.TypeCode.ChecksAndCash,
                 BundleStatusId = (int)BundleHeader.StatusCode.Open,
-                ContributionDate = dt,
+                ContributionDate = date,
                 CreatedBy = Util.UserId,
                 CreatedDate = now,
                 FundId = 1
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
-            var re = new Regex(DbUtil.Content("PostBundleBatchRegex", 
-                    @"[TU](?<rt>[\d?]+)[TU]\s*(?<ac>[\d ?]*)U\s*(?<ck>[\d?]+)"), 
+            var re = new Regex(DbUtil.Content("PostBundleBatchRegex",
+                    @"[TU](?<rt>[\d?]+)[TU]\s*(?<ac>[\d ?]*)U\s*(?<ck>[\d?]+)"),
                     RegexOptions.IgnoreCase);
             for (var i = 1; i < lines.Length; i += 2)
             {
@@ -285,6 +298,7 @@ namespace CMSWeb.Models
                 {
                     CreatedBy = Util.UserId,
                     CreatedDate = now,
+                    ContributionDate = date,
                     FundId = qf.First(),
                     ContributionStatusId = 0,
                     ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
@@ -309,106 +323,38 @@ namespace CMSWeb.Models
             DbUtil.Db.SubmitChanges();
             return bh.BundleHeaderId;
         }
-        private static int? BatchProcessServiceU(String[] lines, String[] names)
-        {
-            var now = DateTime.Now;
-            var dt = Util.Now.Date;
-            dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
-            var bh = new BundleHeader
-            {
-                BundleHeaderTypeId = (int)BundleHeader.TypeCode.PreprintedEnvelope,
-                BundleStatusId = (int)BundleHeader.StatusCode.Open,
-                ContributionDate = dt,
-                CreatedBy = Util.UserId,
-                CreatedDate = now,
-                FundId = 1
-            };
-            DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
-            bh.BundleStatusId = (int)BundleHeader.StatusCode.Open;
-            bh.BundleHeaderTypeId = (int)BundleHeader.TypeCode.Online;
-            for (var i = 1; i < lines.Length; i++)
-            {
-                var a = lines[i].Trim().SplitCSV();
-                var bd = new CmsData.BundleDetail
-                {
-                    CreatedBy = Util.UserId,
-                    CreatedDate = now,
-                };
-                bh.BundleDetails.Add(bd);
-                var qf = from f in DbUtil.Db.ContributionFunds
-                         where f.FundStatusId == 1
-                         orderby f.FundId
-                         select f.FundId;
 
-                bd.Contribution = new Contribution
-                {
-                    CreatedBy = Util.UserId,
-                    CreatedDate = now,
-                    FundId = qf.First(),
-                    ContributionStatusId = 0,
-                    ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
-                };
-                string ac = null, rt = null;
-                for (var c = 1; c < a.Length; c++)
-                {
-                    switch (names[c].Trim())
-                    {
-                        case "Submit Date":
-                            bd.Contribution.ContributionDate = a[c].ToDate();
-                            break;
-                        case "Post Amount":
-                            bd.Contribution.ContributionAmount = a[c].ToDecimal();
-                            break;
-                        case "Check Number":
-                            bd.Contribution.ContributionDesc = a[c];
-                            break;
-                        case "Item Id":
-                            bd.Contribution.ContributionDesc = a[c];
-                            break;
-                        case "R/T":
-                            rt = a[c];
-                            break;
-                        case "Account Number":
-                            ac = a[c];
-                            break;
-                    }
-                    if (c == a.Length - 1)
-                    {
-                        var eac = Util.Encrypt(rt + "|" + ac);
-                        var q = from kc in DbUtil.Db.CardIdentifiers
-                                where kc.Id == eac
-                                select kc.PeopleId;
-                        var pid = q.SingleOrDefault();
-                        if (pid != null)
-                            bd.Contribution.PeopleId = pid;
-                        else
-                            bd.Contribution.BankAccount = eac;
-                    }
-                }
-            }
-            bh.TotalChecks = bh.BundleDetails.Sum(d => d.Contribution.ContributionAmount);
-            bh.TotalCash = 0;
-            bh.TotalEnvelopes = 0;
-            DbUtil.Db.SubmitChanges();
-            return bh.BundleHeaderId;
-        }
-        public static int? BatchProcessRegions(string[] lines, string[] names)
+        private static BundleHeader GetBundleHeader(DateTime date, DateTime now)
         {
-            var now = DateTime.Now;
-            var dt = Util.Now.Date;
-            dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
             var bh = new BundleHeader
-            {
-                BundleHeaderTypeId = (int)BundleHeader.TypeCode.PreprintedEnvelope,
-                BundleStatusId = (int)BundleHeader.StatusCode.Open,
-                ContributionDate = dt,
-                CreatedBy = Util.UserId,
-                CreatedDate = now,
-                FundId = 1
-            };
+                        {
+                            BundleHeaderTypeId = (int)BundleHeader.TypeCode.PreprintedEnvelope,
+                            BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                            ContributionDate = date,
+                            CreatedBy = Util.UserId,
+                            CreatedDate = now,
+                            FundId = 1
+                        };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
             bh.BundleStatusId = (int)BundleHeader.StatusCode.Open;
             bh.BundleHeaderTypeId = (int)BundleHeader.TypeCode.ChecksAndCash;
+            return bh;
+        }
+        private static void FinishBundle(BundleHeader bh)
+        {
+            bh.TotalChecks = bh.BundleDetails.Sum(d => d.Contribution.ContributionAmount);
+            bh.TotalCash = 0;
+            bh.TotalEnvelopes = 0;
+            DbUtil.Db.SubmitChanges();
+        }
+        public static int? BatchProcessCSV(string[] lines, Dictionary<string, string> Names, DateTime date)
+        {
+            var cols = lines[0].Trim().Split(',');
+            var now = DateTime.Now;
+            var prevbundle = -1;
+            var curbundle = 0;
+
+            var bh = GetBundleHeader(date, now);
             for (var i = 1; i < lines.Length; i++)
             {
                 var a = lines[i].Trim().SplitCSV();
@@ -417,7 +363,6 @@ namespace CMSWeb.Models
                     CreatedBy = Util.UserId,
                     CreatedDate = now,
                 };
-                bh.BundleDetails.Add(bd);
                 var qf = from f in DbUtil.Db.ContributionFunds
                          where f.FundStatusId == 1
                          orderby f.FundId
@@ -427,6 +372,7 @@ namespace CMSWeb.Models
                 {
                     CreatedBy = Util.UserId,
                     CreatedDate = now,
+                    ContributionDate = date,
                     FundId = qf.First(),
                     ContributionStatusId = 0,
                     ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
@@ -434,45 +380,48 @@ namespace CMSWeb.Models
                 string ac = null, rt = null;
                 for (var c = 1; c < a.Length; c++)
                 {
-                    switch (names[c].Trim())
+                    var col = cols[c].Trim();
+                    if (!Names.ContainsKey(col))
+                        continue;
+                    switch (Names[col])
                     {
-                        case "Submit Date":
+                        case "Bundle":
+                            curbundle = a[c].ToInt();
+                            if (curbundle != prevbundle)
+                            {
+                                FinishBundle(bh);
+                                bh = GetBundleHeader(date, now);
+                            }
+                            break;
+                        case "Date":
                             bd.Contribution.ContributionDate = a[c].ToDate();
                             break;
-                        case "Post Amount":
+                        case "Amount":
                             bd.Contribution.ContributionAmount = a[c].ToDecimal();
                             break;
-                        case "Check Number":
+                        case "Check":
                             bd.Contribution.ContributionDesc = a[c];
                             break;
-                        case "Item Id":
-                            bd.Contribution.ContributionDesc = a[c];
-                            break;
-                        case "R/T":
+                        case "Route":
                             rt = a[c];
                             break;
-                        case "Account Number":
+                        case "Account":
                             ac = a[c];
                             break;
                     }
-                    if (c == a.Length - 1)
-                    {
-                        var eac = Util.Encrypt(rt + "|" + ac);
-                        var q = from kc in DbUtil.Db.CardIdentifiers
-                                where kc.Id == eac
-                                select kc.PeopleId;
-                        var pid = q.SingleOrDefault();
-                        if (pid != null)
-                            bd.Contribution.PeopleId = pid;
-                        else
-                            bd.Contribution.BankAccount = eac;
-                    }
+                    var eac = Util.Encrypt(rt + "|" + ac);
+                    var q = from kc in DbUtil.Db.CardIdentifiers
+                            where kc.Id == eac
+                            select kc.PeopleId;
+                    var pid = q.SingleOrDefault();
+                    if (pid != null)
+                        bd.Contribution.PeopleId = pid;
+                    else
+                        bd.Contribution.BankAccount = eac;
                 }
+                bh.BundleDetails.Add(bd);
             }
-            bh.TotalChecks = bh.BundleDetails.Sum(d => d.Contribution.ContributionAmount);
-            bh.TotalCash = 0;
-            bh.TotalEnvelopes = 0;
-            DbUtil.Db.SubmitChanges();
+            FinishBundle(bh);
             return bh.BundleHeaderId;
         }
         public static string Tip(int? pid, int? age, string address, string city, string state, string zip)
@@ -489,7 +438,7 @@ namespace CMSWeb.Models
             public string City { get; set; }
             public string State { get; set; }
             public string Zip { get; set; }
-            public string CityStateZip 
+            public string CityStateZip
             {
                 get
                 {

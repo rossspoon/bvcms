@@ -52,14 +52,14 @@ namespace CmsData
             Pending = 30,
             Previous = 40,
             JustAdded = 50,
-            InactiveMember = 100,
-            DeletedMember = 110,
-            DeletedProspect = 120,
-            ProspectActive = 130,
-            ProspectInactive = 140,
-            MiscActive = 150,
-            MiscInactive = 160,
-            Unknown = 170
+            //InactiveMember = 100,
+            //DeletedMember = 110,
+            //DeletedProspect = 120,
+            //ProspectActive = 130,
+            //ProspectInactive = 140,
+            //MiscActive = 150,
+            //MiscInactive = 160,
+            //Unknown = 170
         }
         public enum DiscoveryClassStatusCode
         {
@@ -604,6 +604,32 @@ namespace CmsData
         partial void OnAltZipCodeChanged()
         {
             AltResCodeId = FindResCode(AltZipCode);
+        }
+        public RecReg GetRecReg()
+        {
+            var rr = RecRegs.SingleOrDefault();
+            if (rr == null)
+            {
+                rr = new RecReg();
+                RecRegs.Add(rr);
+            }
+            return rr;
+        }
+        public NewContact AddContactReceived(DateTime dt, NewContact.ContactTypeCode type, NewContact.ContactReasonCode reason, string notes)
+        {
+            var c = new NewContact
+            {
+                CreatedDate = Util.Now,
+                CreatedBy = Util.UserId1,
+                ContactDate = dt,
+                ContactTypeId = (int)type,
+                ContactReasonId = (int)reason,
+                Comments = notes
+            };
+            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            c.contactees.Add(new Contactee { PeopleId = PeopleId });
+            DbUtil.Db.SubmitChanges();
+            return c;
         }
     }
 }

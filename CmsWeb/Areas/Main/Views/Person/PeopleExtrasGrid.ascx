@@ -13,7 +13,18 @@
    { %>
     <tr>
         <td><%=c.Field%></td>
-        <td><%=c.StrValue.HasValue() ? c.StrValue : c.DateValue.FormatDate()%></td>
+<% if (c.StrValue.HasValue())
+   { %>        
+        <td><%=c.StrValue %></td>
+<% }
+   else if (c.DateValue.HasValue)
+   { %>
+        <td><%=c.DateValue.FormatDate() %></td>
+ <% }
+   else
+   { %>   
+        <td><%=c.IntValue %> <%=c.IntValue2 %></td>
+<% } %>
     </tr>
 <% } %>
 </tbody>

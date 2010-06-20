@@ -117,6 +117,8 @@ namespace CMSWeb.Areas.Main.Controllers
         private void UpdatePerson(Person p, PersonInfo m)
         {
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
+            if (!m.home.HasValue() && m.cell.HasValue())
+                m.home = m.cell;
             p.Family.HomePhone = m.home.GetDigits();
             p.Family.AddressLineOne = m.addr;
             p.Family.CityName = z != null ? z.City : null;
@@ -131,23 +133,31 @@ namespace CMSWeb.Areas.Main.Controllers
             p.CellPhone = m.cell.GetDigits();
             p.MaritalStatusId = m.marital;
             p.GenderId = m.gender;
-            if (m.allergies.HasValue())
-                GetRecReg(p).MedicalDescription = m.allergies;
-            if (m.grade.HasValue())
+            var rr = GetRecReg(p);
+            if (m.allergies != rr.MedicalDescription)
+                SetRecReg(p).MedicalDescription = m.allergies;
+            if (m.grade.ToInt2() != p.Grade)
                 p.Grade = m.grade.ToInt2();
-            if (m.parent.HasValue())
-                GetRecReg(p).Mname = m.parent;
-            if (m.emfriend.HasValue())
-                GetRecReg(p).Emcontact = m.emfriend;
-            if (m.emphone.HasValue())
-                GetRecReg(p).Emphone = m.emphone;
+            if (m.parent != rr.Mname)
+                SetRecReg(p).Mname = m.parent;
+            if (m.emfriend != rr.Emcontact)
+                SetRecReg(p).Emcontact = m.emfriend;
+            if (m.emphone != rr.Emphone)
+                SetRecReg(p).Emphone = m.emphone;
             if (m.campusid > 0)
                 p.CampusId = m.campusid;
-            if (m.activeother.HasValue())
-                GetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
+            if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
+                SetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
             DbUtil.Db.SubmitChanges();
         }
         private RecReg GetRecReg(Person p)
+        {
+            var rr = p.RecRegs.SingleOrDefault();
+            if (rr == null)
+                return new RecReg();
+            return rr;
+        }
+        private RecReg SetRecReg(Person p)
         {
             var rr = p.RecRegs.SingleOrDefault();
             if (rr == null)

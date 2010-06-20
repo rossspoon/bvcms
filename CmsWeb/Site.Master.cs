@@ -90,8 +90,6 @@ namespace CMSWeb
                 else
                     CurrentOrgLink.Text = "Current Org";
             }
-            OrgLink.NavigateUrl = "/OrganizationSearch.aspx";
-            OrgSearchLink.NavigateUrl = OrgLink.NavigateUrl;
             //HomeDrop.Visible = Page.User.IsInRole("Developer");
             SavedQueriesLink.Enabled = !Util.OrgMembersOnly;
             AdminMenuItem.Visible = Page.User.IsInRole("Admin");

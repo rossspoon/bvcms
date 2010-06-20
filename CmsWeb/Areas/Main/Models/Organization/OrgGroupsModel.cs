@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace CMSWeb.Models
 {
@@ -101,7 +102,7 @@ namespace CMSWeb.Models
                          JoinDate = p.JoinDate,
                          BirthDate = p.DOB,
                          Address = p.PrimaryAddress,
-                         CityStateZip = p.CityStateZip,
+                         CityStateZip = p.CityStateZip5,
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),
                          WorkPhone = p.WorkPhone.FmtFone(),
@@ -110,8 +111,8 @@ namespace CMSWeb.Models
                          MemberStatus = p.MemberStatus.Description,
                          ischecked = ck,
                          Gender = p.Gender.Description,
-                         Groups = string.Join(",~", 
-                            m.OrgMemMemTags.Select(mt => mt.MemberTag.Name).OrderBy(s => s).ToArray())
+                         Request = m.Request,
+                         Groups = m.OrgMemMemTags.Select(mt => new GroupInfo { Name = mt.MemberTag.Name, Count = mt.MemberTag.OrgMemMemTags.Count() }).OrderBy(s => s.Name)
                      };
             return q2;
         }
@@ -122,6 +123,11 @@ namespace CMSWeb.Models
                     //where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
                     select om;
             return q;
+        }
+        public class GroupInfo
+        {
+            public string Name { get; set; }
+            public int Count { get; set; }
         }
         public class PersonInfo
         {
@@ -139,12 +145,14 @@ namespace CMSWeb.Models
             public int? Age { get; set; }
             public string MemberStatus { get; set; }
             public string Gender { get; set; }
-            public string Groups { get; set; }
+            public string Request { get; set; }
+            public IEnumerable<GroupInfo> Groups { get; set; }
             public string GroupsDisplay
             {
                 get
                 {
-                    return Groups.Replace(" ", "&nbsp;").Replace(",~", ", ");
+                    var s = string.Join(",~", Groups.Select(g => "{0}({1})".Fmt(g.Name, g.Count)).ToArray());
+                    return s.Replace(" ", "&nbsp;").Replace(",~", "<br />\n");
                 }
             }
             public bool ischecked { get; set; }

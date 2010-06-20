@@ -47,17 +47,5 @@
                 </tr>
             </table>
         </td>
-        <td>
-        </td>
-        <td valign="top" style="border-style: groove; border-width: thin;">
-            <table class="Design2">
-                <tr>
-                    <td height="100%" width="100%">
-                        <strong>Comments:</strong><br />
-                        <%=Model.Comments %>
-                    </td>
-                </tr>
-            </table>
-        </td>
     </tr>
 </table>

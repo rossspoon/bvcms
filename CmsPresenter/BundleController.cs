@@ -177,8 +177,8 @@ namespace CMSPresenter
         public class YearInfo
         {
             public int PeopleId { get; set; }
-            public int Year { get; set; }
-            public int Count { get; set; }
+            public int? Year { get; set; }
+            public int? Count { get; set; }
             public decimal? Amount { get; set; }
         }
         public static int[] ReturnedReversedTypes = new int[] 

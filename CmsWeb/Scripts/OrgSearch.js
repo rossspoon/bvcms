@@ -1,6 +1,12 @@
 ﻿$(function() {
     $('#Name').focus();
     $("#search").click(function() {
+        var name = $('#Name').val();
+        if (name.match("^" + "M\.") == "M.") {
+            var f = $('#results').closest('form');
+            f.attr("action", "/OrgSearch/CreateMeeting/");
+            f.submit();
+        }
         $.getTable();
         return false;
     });

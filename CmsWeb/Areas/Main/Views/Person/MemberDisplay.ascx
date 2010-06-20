@@ -140,7 +140,3 @@
             </td>
     </tr>
 </table>
-<% 
-    CmsData.Person p = DbUtil.Db.LoadPersonById(Model.PeopleId);
-    Html.RenderPartial("PeopleExtrasGrid", p); 
-%>

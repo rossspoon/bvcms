@@ -182,6 +182,13 @@ namespace CmsData
                 DbUtil.Db.SubmitChanges();
             }
         }
+        public void AddToMemberData(string s)
+        {
+            if (UserData.HasValue())
+                UserData += "\n";
+            UserData += s;
+        }
+
         public static OrganizationMember InsertOrgMembers
             (int OrganizationId,
             int PeopleId,
@@ -199,7 +206,10 @@ namespace CmsData
                     var Db = DbUtil.Db;
                     var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
                     if (m != null)
+                    {
+                        m.AddToMemberData("insert: {0}".Fmt(EnrollmentDate.ToString()));
                         return m;
+                    }
                     var om = new OrganizationMember
                     {
                         OrganizationId = OrganizationId,

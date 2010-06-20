@@ -166,6 +166,7 @@
             <ul class="ui-tabs-nav">
                 <li><a href="#entry-tab"><span>Entry</span></a></li>
                 <li><a href="#contacts-tab"><span>Contacts</span></a></li>
+                <li><a href="#comments-tab"><span>Comments</span></a></li>
             </ul>
             <div id="entry-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
@@ -174,6 +175,11 @@
             </div>
             <div id="contacts-tab" class="ui-tabs-hide ui-tabs-panel">
                 <% Html.RenderPartial("ContactsDisplay", p.PeopleId); %>
+            </div>
+            <div id="comments-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form class="DisplayEdit" action="">
+                <% Html.RenderPartial("CommentsDisplay"); %>
+                </form>
             </div>
         </div>
         <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">

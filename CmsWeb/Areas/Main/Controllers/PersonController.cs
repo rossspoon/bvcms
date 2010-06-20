@@ -30,6 +30,8 @@ namespace CMSWeb.Areas.Main.Controllers
                     .Fmt("You must be a member one of this person's organizations to have access to this page",
                     "javascript: history.go(-1)", "Go Back"));
             }
+            ViewData["Comments"] = Util.SafeFormat(m.Person.Comments);
+            ViewData["PeopleId"] = id.Value;
             Util.CurrentPeopleId = id.Value;
             Session["ActivePerson"] = m.displayperson.Name;
             DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name));
@@ -320,6 +322,30 @@ namespace CMSWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdateGrowth();
             return View("GrowthDisplay", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CommentsDisplay(int id)
+        {
+            ViewData["Comments"] = Util.SafeFormat(DbUtil.Db.People.Single(p => p.PeopleId == id).Comments);
+            ViewData["PeopleId"] = id;
+            return View();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CommentsEdit(int id)
+        {
+            ViewData["Comments"] = DbUtil.Db.People.Single(p => p.PeopleId == id).Comments;
+            ViewData["PeopleId"] = id;
+            return View();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CommentsUpdate(int id, string Comments)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            p.Comments = Comments;
+            DbUtil.Db.SubmitChanges();
+            ViewData["Comments"] = Util.SafeFormat(Comments);
+            ViewData["PeopleId"] = id;
+            return View("CommentsDisplay");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MemberNotesDisplay(int id)
