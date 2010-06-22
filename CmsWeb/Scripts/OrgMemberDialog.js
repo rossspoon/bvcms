@@ -9,18 +9,7 @@
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function(ret) {
-            $(f).html(ret).ready(function() {
-                var acopts = {
-                    minChars: 3,
-                    matchContains: 1
-                };
-                $(".datepicker").datepicker({
-                    dateFormat: 'm/d/yy',
-                    changeMonth: true,
-                    changeYear: true
-                });
-                return false;
-            });
+            $.displayEdit(f, ret);
         });
         return false;
     });
@@ -45,9 +34,25 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function(ret) {
-            self.parent.RebindMemberGrids($("#from").val());
+            if (ret)
+                $.displayEdit(f, ret);
+            else
+                self.parent.RebindMemberGrids($("#from").val());
         });
         return false;
     });
+    $.displayEdit = function(f, ret) {
+        $(f).html(ret).ready(function() {
+            var acopts = {
+                minChars: 3,
+                matchContains: 1
+            };
+            $(".datepicker").datepicker({
+                dateFormat: 'm/d/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    }
 });
 

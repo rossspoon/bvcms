@@ -249,7 +249,8 @@
                 var url = "?d=" + dt.date + "&t=" + dt.time +
                 "&group=" + ($('#group').is(":checked") ? "true" : "false");
                 $.post("/Organization/NewMeeting" + url, null, function(ret) {
-                    window.location = ret;
+                    if(ret)
+                        window.location = ret;
                 });
                 $(this).dialog("close");
             }

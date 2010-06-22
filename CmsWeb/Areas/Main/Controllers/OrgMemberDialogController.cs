@@ -52,8 +52,16 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult Update(int id, int pid)
         {
             var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
-            UpdateModel(om);
-            DbUtil.Db.SubmitChanges();
+            try
+            {
+                UpdateModel(om);
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (Exception)
+            {
+                ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueController.MemberTypeCodes(), "Id");
+                return View("Edit", om);
+            }
             return View("Display", om);
         }
         [AcceptVerbs(HttpVerbs.Post)]

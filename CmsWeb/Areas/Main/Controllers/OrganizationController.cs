@@ -63,11 +63,13 @@ namespace CMSWeb.Areas.Main.Controllers
             DbUtil.LogActivity("Cloning new org from {0}".Fmt(org.FullName));
             return Content("/Organization/Index/" + neworg.OrganizationId);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NewMeeting(string d, string t, bool group)
         {
             var organization = DbUtil.Db.LoadOrganizationById(Util.CurrentOrgId);
+            if (organization == null)
+                return Content("");
             DateTime dt;
             if (!DateTime.TryParse(d + " " + t, out dt))
                 return new EmptyResult();

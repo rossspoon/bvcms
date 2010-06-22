@@ -46,13 +46,13 @@ By logging in below, you agree that you understand this purpose and will abide b
         protected void Login1_LoggedIn(object sender, EventArgs e)
         {
             var user = Membership.GetUser(Login1.UserName);
-            var u = DbUtil.Db.Users.Single(us => us.Username == Login1.UserName);
+            var u = DbUtil.Db.Users.Single(us => us.Username == user.UserName);
             Util.UserId = u.UserId;
             Util.UserPeopleId = u.PeopleId;
             if (CMSMembershipProvider.provider.UserMustChangePassword)
                 Response.Redirect("~/ChangePassword.aspx");
             Util.FormsBasedAuthentication = true;
-            CheckStaffRole(Login1.UserName);
+            CheckStaffRole(user.UserName);
         }
 
         protected void Login1_LoginError(object sender, EventArgs e)

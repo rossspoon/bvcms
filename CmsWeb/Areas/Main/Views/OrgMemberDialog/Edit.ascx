@@ -43,7 +43,8 @@
    { %>
     <tr>
         <th>Amount:</th>
-        <td><%=Html.TextBox("Amount", Model.Amount.HasValue ? Model.Amount.Value.ToString("f2") : "") %></td>
+        <td><%=Html.TextBox("Amount", Model.Amount.HasValue ? Model.Amount.Value.ToString("f2") : "") %>
+        <br /><span style="color:Red"><%=Html.ValidationMessage("Amount") %></span></td>
     </tr>
 <% }
    if(Model.Organization.AskShirtSize == true) 

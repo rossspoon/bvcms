@@ -28,7 +28,7 @@ namespace CMSWeb.Models
 
                 var qB = DbUtil.Db.LoadQueryById(qid);
                 var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        let t = p.TasksAboutPerson.FirstOrDefault(t => t.Notes != null)
+                        let t = p.TasksAboutPerson.OrderByDescending(t => t.CreatedOn).FirstOrDefault(t => t.Notes != null)
                         where t != null
                         select new
                         {
