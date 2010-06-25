@@ -1,6 +1,7 @@
 ﻿$(function() {
     var maintabs = $("#main-tab").tabs();
-    $('#deleteorg').click(function() {
+    $('#deleteorg').click(function(ev) {
+        ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
             $.post(href, null, function(ret) {
@@ -26,7 +27,8 @@
 
     $('table.grid > tbody > tr:even').addClass('alt');
 
-    $(".CreateAndGo").click(function() {
+    $(".CreateAndGo").click(function(ev) {
+        ev.preventDefault();
         if (confirm($(this).attr("confirm")))
             $.post($(this).attr("href"), null, function(ret) {
                 window.location = ret;
@@ -199,7 +201,8 @@
         $.getTable($('#Members-tab form'));
         return false;
     });
-    $("#addfromtaglink").live("click", function() {
+    $("#addfromtaglink").live("click", function(ev) {
+        ev.preventDefault();
         var link = this;
         $("#AddFromTag").dialog({
             title: this.title,
@@ -220,7 +223,8 @@
     });
 
     $("#NewMeetingDialog").dialog({ autoOpen: false });
-    $.OpenRollsheet = function() {
+    $('#RollsheetLink').live("click", function(ev) {
+        ev.preventDefault();
         $('#grouplabel').text("By Group");
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
@@ -237,8 +241,9 @@
         });
         d.dialog('open');
         d.parent().center();
-    };
-    $.NewMeeting = function() {
+    });
+    $('#NewMeeting').live("click", function(ev) {
+        ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
@@ -249,7 +254,7 @@
                 var url = "?d=" + dt.date + "&t=" + dt.time +
                 "&group=" + ($('#group').is(":checked") ? "true" : "false");
                 $.post("/Organization/NewMeeting" + url, null, function(ret) {
-                    if(ret)
+                    if (ret)
                         window.location = ret;
                 });
                 $(this).dialog("close");
@@ -258,8 +263,7 @@
         d.dialog('open');
         d.parent().center();
         return false;
-    };
-    $('#NewMeeting').live("click", $.NewMeeting);
+    });
     $.GetMeetingDateTime = function() {
         var reTime = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
         var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;

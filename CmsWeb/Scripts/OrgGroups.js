@@ -5,7 +5,9 @@
     }
     $.fmtTable();
     $.loadTable = function() {
+        $.blockUI();
         $.getTable($('#groupsform'));
+        $.unblockUI();
     }
     $('#Filter').live("click", function(ev) {
         ev.preventDefault();
@@ -37,7 +39,8 @@
     $("#SelectAll").click(function() {
         $("input[name='list']").attr('checked', $(this).attr('checked'));
     });
-    $("a.display").live('click', function() {
+    $("a.display").live('click', function(ev) {
+        ev.preventDefault();
         var f = $(this).closest('form');
         $.post(this.href, q, function(ret) {
             $(f).html(ret).ready(function() {
@@ -46,14 +49,24 @@
         });
         return false;
     });
-    $("a.groupmanager").live('click', function() {
-        var f = $(this).closest('form');
-        var q = f.serialize();
-        if (confirm("are you sure?"))
+    $("a.groupmanager").live('click', function(ev) {
+        ev.preventDefault();
+        if (confirm("are you sure?")) {
+            var f = $(this).closest('form');
+            var q = f.serialize();
+            $.blockUI();
             $.post($(this).attr('href'), q, function(ret) {
-                $("#ManageGroups").html(ret);
+                if (ret) {
+                    f.html(ret).ready(function() {
+                        if ($('#newgid').val())
+                            $('#groupid').val($('#newgid').val());
+                        $('#GroupName').val('');
+                        $.fmtTable();
+                    });
+                }
+                $.unblockUI();
             });
-        return false;
+        }
     });
     $("form").submit(function(ev) {
         ev.preventDefault();
@@ -64,9 +77,11 @@
             alert("select target group first");
             return false;
         }
+        $.blockUI();
         var q = $('form').serialize();
         $.post(action, q, function(ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
+            $.unblockUI();
         });
         return false;
     };
@@ -75,6 +90,6 @@
     });
     $('#RemoveSelectedFromTargetGroup').live('click', function(ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
-    });
+    }); 
 });
 

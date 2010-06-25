@@ -250,16 +250,16 @@ namespace CMSWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date)
         {
+            if (text.StartsWith("From MICR :"))
+                return BatchProcessMagTek(text, date);
             var lines = text.Replace("\r\n", "\n").Split('\n');
             var names = lines[0].Trim().Split(',');
-            if (names[0] == "From MICR :")
-                return BatchProcessMagTek(lines, names, date);
             var rd = GetNames(names);
             if (rd == null)
                 return null;
             return BatchProcessCSV(lines, rd, date);
         }
-        private static int? BatchProcessMagTek(String[] lines, String[] names, DateTime date)
+        private static int? BatchProcessMagTek(string lines, DateTime date)
         {
             var now = DateTime.Now;
             var bh = new BundleHeader
@@ -272,17 +272,15 @@ namespace CMSWeb.Models
                 FundId = 1
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
-            var re = new Regex(DbUtil.Content("PostBundleBatchRegex",
-                    @"[TU](?<rt>[\d?]+)[TU]\s*(?<ac>[\d ?]*)U\s*(?<ck>[\d?]+)"),
-                    RegexOptions.IgnoreCase);
-            for (var i = 1; i < lines.Length; i += 2)
+
+            var re = new Regex(@"CT(?<rt>[\d?]+)A(?<ac>[\d ?]*)C(?<ck>[\d?]+)M", 
+                RegexOptions.IgnoreCase);
+            var m = re.Match(lines);
+            while (m.Success)
             {
-                var a = lines[i].Trim();
-                var m = re.Match(a);
                 var rt = m.Groups["rt"].Value;
                 var ac = m.Groups["ac"].Value;
                 var ck = m.Groups["ck"].Value;
-
                 var bd = new CmsData.BundleDetail
                 {
                     CreatedBy = Util.UserId,
@@ -316,7 +314,8 @@ namespace CMSWeb.Models
                     bd.Contribution.BankAccount = eac;
                     bd.Contribution.ContributionDesc = ck;
                 }
-            }
+                m = m.NextMatch();
+            } 
             bh.TotalChecks = 0;
             bh.TotalCash = 0;
             bh.TotalEnvelopes = 0;

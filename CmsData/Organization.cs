@@ -82,7 +82,10 @@ namespace CmsData
             set
             {
                 if (!value.HasValue())
+                {
+                    Db.DivOrgs.DeleteAllOnSubmit(DivOrgs);
                     return;
+                }
                 var a = value.Split(',');
                 var qdelete = from d in DivOrgs
                               where !a.Contains(d.Division.Name)

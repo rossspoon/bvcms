@@ -74,7 +74,7 @@
     </tr>
     <tr>
         <td><label for="church"><%="Church" %></label></td>
-        <td><%=Model.member? "Member of Bellevue" : "not member of bellevue" %> <br />
+        <td><%=Model.member? "Member of our church" : "not member of our church" %> <br />
         <%=Model.otherchurch? "Active in another Local Church" : "not active in another church" %>
         </td>
     </tr>

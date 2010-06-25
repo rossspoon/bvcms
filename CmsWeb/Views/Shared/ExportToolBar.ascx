@@ -78,12 +78,12 @@
                 Roll Labels</a></li>
 <% if ((bool?)ViewData["OrganizationContext"] ?? false)
    { %>                
-            <li id="RollsheetItem">
-                <a href='#' title="Rollsheet Report" href="#" onclick="$.OpenRollsheet();return false;"><img src="/images/tags.png" />
+            <li>
+                <a id="RollsheetLink" href='#' title="Rollsheet Report"><img src="/images/tags.png" />
                 Rollsheet Report</a></li>
 <% } %>
             <li><a href='/Reports/BarCodeLabels/<%=ViewData["queryid"]%>' 
-                target="_blank" title="Labels for Choir Attendance" target="_blank"><img src="/images/tags.png" />
+                target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
                 Barcode Labels</a></li>
             <li>
                 <a href='/Reports/Avery/<%=ViewData["queryid"] %>' 

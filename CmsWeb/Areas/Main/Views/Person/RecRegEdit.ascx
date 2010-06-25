@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td><label for="church">Church</label></td>
-        <td><%= Html.CheckBox("member") %> Member of Bellevue<br />
+        <td><%= Html.CheckBox("member") %> Member of our church<br />
         <%= Html.CheckBox("otherchurch") %> Active in another Local Church</td>
         <td><%= Html.ValidationMessage("member")%></td>
     </tr>

@@ -31,6 +31,8 @@ namespace CMSWeb.Models.OrganizationPage
         public void UpdateOrganization()
         {
             org.TagString = DivisionsList;
+            if (org.DivisionId == 0)
+                org.DivisionId = null;
             var divorg = org.DivOrgs.SingleOrDefault(d => d.DivId == org.DivisionId);
             if (divorg == null && org.DivisionId.HasValue)
                 org.DivOrgs.Add(new DivOrg { DivId = org.DivisionId.Value });

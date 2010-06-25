@@ -21,7 +21,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("no bundle");
             if (m.bundle.BundleStatusId == (int)BundleHeader.StatusCode.Closed)
                 return Content("bundle closed");
-            m.fund = m.bundle.FundId.Value;
+            m.fund = m.bundle.FundId ?? 1;
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

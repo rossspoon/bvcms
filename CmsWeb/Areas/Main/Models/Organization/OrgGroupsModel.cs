@@ -34,19 +34,19 @@ namespace CMSWeb.Models
             get { return list; }
             set { list = value; }
         }
-        public IEnumerable<SelectListItem> Groups()
+        public SelectList Groups()
         {
             var q = from g in DbUtil.Db.MemberTags
                     where g.OrgId == orgid
                     orderby g.Name
-                    select new SelectListItem
+                    select new
                     {
+                        Value = g.Id,
                         Text = g.Name,
-                        Value = g.Id.ToString()
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            return list;
+            list.Insert(0, new { Value = 0, Text = "(not specified)" });
+            return new SelectList(list, "Value", "Text", groupid);
         }
         private List<SelectListItem> mtypes;
         private List<SelectListItem> MemberTypes()
@@ -92,7 +92,7 @@ namespace CMSWeb.Models
             count = q.Count();
             var q2 = from m in q
                      let p = m.Person
-                     let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid)
+                     let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
                      orderby !ck, p.Name2
                      select new PersonInfo
                      {

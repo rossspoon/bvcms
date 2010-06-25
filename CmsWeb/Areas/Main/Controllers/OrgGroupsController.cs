@@ -16,7 +16,7 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var m = new OrgGroupsModel
             {
-                orgid = id,
+                orgid = id
             };
             return View(m);
         }
@@ -77,17 +77,20 @@ namespace CMSWeb.Areas.Main.Controllers
                 Db.MemberTags.InsertOnSubmit(group);
                 Db.SubmitChanges();
             }
-            return View("ManageGroups", m);
+            m.groupid = group.Id;
+            ViewData["newgid"] = group.Id;
+            return View("Form", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RenameGroup(OrgGroupsModel m)
         {
-            if (!m.GroupName.HasValue() || !m.groupid.HasValue)
-                return new EmptyResult();
-            var group = DbUtil.Db.MemberTags.Single(d => d.Id == m.groupid);
+            if (!m.GroupName.HasValue() || m.groupid == 0)
+                return new EmptyResult(); ;
+            var group = DbUtil.Db.MemberTags.SingleOrDefault(d => d.Id == m.groupid);
             group.Name = m.GroupName;
             DbUtil.Db.SubmitChanges();
-            return View("ManageGroups", m);
+            m.GroupName = null;
+            return View("Form", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DeleteGroup(OrgGroupsModel m)
@@ -99,8 +102,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 DbUtil.Db.MemberTags.DeleteOnSubmit(group);
                 DbUtil.Db.SubmitChanges();
             }
-            return View("ManageGroups", m);
+            return View("Form", m);
         }
-
     }
 }

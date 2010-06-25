@@ -29,7 +29,7 @@
         });
         return false;
     });
-    $('#TagAll,#UnTagAll').click(function(ev) {
+    $('#TagAll,#UnTagAll').live("click", function(ev) {
         ev.preventDefault();
         $.block();
         $.post(this.href, null, function(ret) {

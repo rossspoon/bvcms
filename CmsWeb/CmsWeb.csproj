@@ -1116,6 +1116,7 @@
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
     <Content Include="Areas\Main\Views\CheckIn\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\OrgGroups\Form.ascx" />
     <Content Include="Areas\Main\Views\OrgGroups\ManageGroups.ascx" />
     <Content Include="Areas\Main\Views\OrgGroups\Index.aspx" />
     <Content Include="Areas\Main\Views\OrgGroups\Rows.ascx" />
@@ -1189,6 +1190,7 @@
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
+    <Content Include="Areas\Manage\Views\Home\DoDrops.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />

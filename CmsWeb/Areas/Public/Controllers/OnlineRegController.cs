@@ -54,6 +54,12 @@ namespace CMSWeb.Areas.Public.Controllers
 
             m.URL = Request.Url.OriginalString;
             ViewData["timeout"] = INT_timeout;
+            ViewData["header"] = DbUtil.Content("OnlineRegHeader-" + (m.divid ?? m.orgid).ToString(),
+                DbUtil.Content("OnlineRegHeader", ""));
+            ViewData["top"] = DbUtil.Content("OnlineRegTop-" + (m.divid ?? m.orgid).ToString(),
+                DbUtil.Content("OnlineRegTop", ""));
+            ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + (m.divid ?? m.orgid).ToString(),
+                DbUtil.Content("OnlineRegBottom", ""));
 
 #if DEBUG
             m.testing = true;

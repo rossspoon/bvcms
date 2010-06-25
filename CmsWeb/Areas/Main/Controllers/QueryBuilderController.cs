@@ -223,9 +223,11 @@ namespace CMSWeb.Areas.Main.Controllers
             if (m.EndDateVisible && m.EndDate.HasValue())
                 if (!DateTime.TryParse(m.EndDate, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
                     m.Errors.Add("EndDate", "invalid");
-            int i;
+            int i = 0;
             if (m.DaysVisible && !int.TryParse(m.Days, out i))
                 m.Errors.Add("Days", "must be integer");
+            if (i>10000)
+                m.Errors.Add("Days", "days > 1000");
             if (m.AgeVisible && !int.TryParse(m.Age, out i))
                 m.Errors.Add("Age", "must be integer");
 

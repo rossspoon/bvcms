@@ -11,7 +11,7 @@ namespace CMSWeb.Reports
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            cssbundle.Text = ViewExtensions2.StandardCss();
         }
     }
 }
