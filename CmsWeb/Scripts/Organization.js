@@ -140,7 +140,7 @@
             $(f).html(ret);
         });
     });
-    $("a.groupmanager").live("click", function(ev) {
+    $("a.groupmanager").live("click", function(ev) { // this is no longer needed?
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -162,6 +162,7 @@
             return false;
     });
     $('a.taguntag').live("click", function(ev) {
+        ev.preventDefault;
         $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function(ret) {
             $(ev.target).text(ret);
         });

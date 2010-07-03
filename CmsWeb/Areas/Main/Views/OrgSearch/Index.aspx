@@ -16,7 +16,7 @@
             <td>
                 <table class="modalPopup">
                 <tr><td><a href="/OrgSearch/Results?clear=true" id="clear">clear</a></td>
-                    <td align="right" colspan="3"><a href="/OrgSearch/UseOldOrgSearch">Use Old Org Search</a></td>
+                    <td colspan="3"></td>
                     </tr>
                     <tr>
                         <th>Name:</th>
@@ -51,13 +51,12 @@
                         <th colspan="2">Manage Divisions</th>
                     </tr>
                     <tr>
-                        <th align="right">Tag Division:</th>
-                        <td><%=Html.DropDownList("TagProgramId", Model.ProgramIds())%><br />
-                            <select id="TagDiv">
-                                <option value="0">(select a program)</option>
-                            </select><br />
-                            <input type="checkbox" id="maindiv" /> make this the main Division when tagging<br />
-                        </td>
+                        <th align="right">Program:</th>
+                        <td><%=Html.DropDownList("TagProgramId", Model.ProgramIds())%></td>
+                    </tr>
+                    <tr>
+                        <th align="right">Target Division:</th>
+                        <td><%=Html.DropDownList("TagDiv", Model.DivisionIds())%></td>
                     </tr>
                 </table>
 <% } %>

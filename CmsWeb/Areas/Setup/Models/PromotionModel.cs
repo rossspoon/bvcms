@@ -22,13 +22,12 @@ namespace CMSWeb.Areas.Setup.Models
         public IEnumerable<SelectListItem> Programs()
         {
             var q = from c in DbUtil.Db.Programs
-                    orderby c.BFProgram descending, c.Name
+                    orderby c.Name
                     select new 
                     SelectListItem
                     {
                         Value = c.Id.ToString(),
                         Text = c.Name,
-                        Selected = (c.BFProgram ?? false) == true
                     };
             return q;
         }

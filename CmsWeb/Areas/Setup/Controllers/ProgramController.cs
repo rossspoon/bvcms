@@ -14,16 +14,18 @@ namespace CMSWeb.Areas.Setup.Controllers
     {
         public ActionResult Index()
         {
-            var m = DbUtil.Db.Programs.AsEnumerable();
+            var m = from p in DbUtil.Db.Programs
+                    orderby p.RptGroup, p.Name
+                    select p;
             return View(m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create()
         {
-            var p = new Program { Name = "NEW PROGRAM", BFProgram = false };
+            var p = new Program { Name = "new program" };
             DbUtil.Db.Programs.InsertOnSubmit(p);
-            p.Divisions.Add(new Division {  Name = "NEW DIVISION" });
+            //p.Divisions.Add(new Division {  Name = "new division" });
             DbUtil.Db.SubmitChanges();
             return Redirect("/Setup/Program/");
         }
@@ -42,10 +44,14 @@ namespace CMSWeb.Areas.Setup.Controllers
                 case "ProgramName":
                     p.Name = value;
                     break;
-                case "MainFellowship": 
-                    p.BFProgram = bool.Parse(value);
-                    if (p.BFProgram.Value)
-                        DbUtil.Db.ExecuteCommand("update Program set BFProgram = 0");
+                case "RptGroup":
+                    p.RptGroup = value.ToInt2();
+                    break;
+                case "StartHours":
+                    p.StartHoursOffset = value.ToDecimal();
+                    break;
+                case "EndHours":
+                    p.EndHoursOffset = value.ToDecimal();
                     break;
             }
             DbUtil.Db.SubmitChanges();

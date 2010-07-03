@@ -1,16 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.OnlineRegModel>" %>
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-<style type="text/css">
-tr.alt
-{
-    background-color: #ddd;
-    width: 100%;
-}
-.blue
-{
-    color: blue;
-}
-</style>
     <%= SquishIt.Framework.Bundle.JavaScript()
         .Add("/Content/js/jquery-1.4.2.js")
         .Add("/Content/js/jquery.idle-timer.js")

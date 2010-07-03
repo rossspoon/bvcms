@@ -3,7 +3,7 @@
 <%=Html.Hidden("m.orgid", Model.orgid) %>
 <%=Html.Hidden("m.testing", Model.testing) %>
 <%=Html.Hidden("m.URL", Model.URL) %>
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="2" width="100%">
 <% 
     bool ShowDisplay = false;
     for (var i = 0; i < Model.List.Count; i++)
@@ -11,7 +11,7 @@
         var p = Model.List[i];
         p.index = i;
 %>
-<tr <%=p.index % 2 == 1 ? "class='alt'" : "" %>><td>
+<tr><td class="alt<%=p.index % 2 %>">
 <%=Html.Hidden("m.List.index", p.index) %>
 <%=Html.Hidden3("m.List[" + p.index + "].orgid", p.orgid) %>
 <%=Html.Hidden3("m.List[" + p.index + "].divid", p.divid) %>

@@ -33,12 +33,16 @@ namespace CmsData
 		
 		private string _Terms;
 		
+		private int? _ReportLine;
+		
    		
    		private EntitySet< Coupon> _Coupons;
 		
    		private EntitySet< DivOrg> _DivOrgs;
 		
    		private EntitySet< Organization> _Organizations;
+		
+   		private EntitySet< ProgDiv> _ProgDivs;
 		
    		private EntitySet< RecLeague> _RecLeagues;
 		
@@ -80,6 +84,9 @@ namespace CmsData
 		partial void OnTermsChanging(string value);
 		partial void OnTermsChanged();
 		
+		partial void OnReportLineChanging(int? value);
+		partial void OnReportLineChanged();
+		
     #endregion
 		public Division()
 		{
@@ -89,6 +96,8 @@ namespace CmsData
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
 			
 			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
+			
+			this._ProgDivs = new EntitySet< ProgDiv>(new Action< ProgDiv>(this.attach_ProgDivs), new Action< ProgDiv>(this.detach_ProgDivs)); 
 			
 			this._RecLeagues = new EntitySet< RecLeague>(new Action< RecLeague>(this.attach_RecLeagues), new Action< RecLeague>(this.detach_RecLeagues)); 
 			
@@ -284,6 +293,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ReportLine", UpdateCheck=UpdateCheck.Never, Storage="_ReportLine", DbType="int")]
+		public int? ReportLine
+		{
+			get { return this._ReportLine; }
+
+			set
+			{
+				if (this._ReportLine != value)
+				{
+				
+                    this.OnReportLineChanging(value);
+					this.SendPropertyChanging();
+					this._ReportLine = value;
+					this.SendPropertyChanged("ReportLine");
+					this.OnReportLineChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -314,6 +345,16 @@ namespace CmsData
    		    get { return this._Organizations; }
 
 			set	{ this._Organizations.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_ProgDiv_Division", Storage="_ProgDivs", OtherKey="DivId")]
+   		public EntitySet< ProgDiv> ProgDivs
+   		{
+   		    get { return this._ProgDivs; }
+
+			set	{ this._ProgDivs.Assign(value); }
 
    		}
 
@@ -444,6 +485,19 @@ namespace CmsData
 		}
 
 		private void detach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = null;
+		}
+
+		
+		private void attach_ProgDivs(ProgDiv entity)
+		{
+			this.SendPropertyChanging();
+			entity.Division = this;
+		}
+
+		private void detach_ProgDivs(ProgDiv entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

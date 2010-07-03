@@ -18,9 +18,9 @@
     </script>
 
     <h2>Event Registration Received</h2>
-    <p>
+    <p style="color: Black">
         Thank you for registering for the <%=ViewData["orgname"] %> event.  
         You should receive a confirmation email at <%=ViewData["email"] %> shortly.
     </p>
-    <p><a href='<%=ViewData["URL"] %>'>Start a New Registration</a></p>
+    <p style="color: Blue"><a href='<%=ViewData["URL"] %>'>Start a New Registration</a></p>
 </asp:Content>

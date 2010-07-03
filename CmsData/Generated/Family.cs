@@ -558,7 +558,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="varchar(20)")]
+		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="varchar(30)")]
 		public string CityName
 		{
 			get { return this._CityName; }
@@ -712,7 +712,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AltCityName", UpdateCheck=UpdateCheck.Never, Storage="_AltCityName", DbType="varchar(20)")]
+		[Column(Name="AltCityName", UpdateCheck=UpdateCheck.Never, Storage="_AltCityName", DbType="varchar(30)")]
 		public string AltCityName
 		{
 			get { return this._AltCityName; }

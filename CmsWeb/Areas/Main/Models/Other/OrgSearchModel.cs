@@ -58,8 +58,10 @@ namespace CMSWeb.Models
                         LeaderId = o.LeaderId,
                         MemberCount = o.MemberCount,
                         AttendanceTrackingLevel = o.AttendTrackLevel.Description,
-                        DivisionId = o.Division.Id,
+                        ProgramName = o.Division.Program.Name,
+                        DivisionId = o.DivisionId,
                         DivisionName = o.Division.Name,
+                        Divisions = string.Join(",", o.DivOrgs.Select(d => d.Division.Name).ToArray()),
                         FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
                         LastMeetingDate = o.LastMeetingDate.FormatDate(),
                         MeetingTime = o.MeetingTime,
@@ -68,6 +70,7 @@ namespace CMSWeb.Models
                         BDayStart = o.BirthDayStart.FormatDate("na"),
                         BDayEnd = o.BirthDayEnd.FormatDate("na"),
                         Tag = TagDiv == null ? "" : o.DivOrgs.Any(ot => ot.DivId == TagDiv) ? "Remove" : "Add",
+                        ChangeMain = (o.DivisionId == null || o.DivisionId != TagDiv) && o.DivOrgs.Any(d => d.DivId == TagDiv),
                     };
             return q;
         }
@@ -123,6 +126,7 @@ namespace CMSWeb.Models
                          RegistrationTypeId = o.RegistrationTypeId ?? 0,
                          ShirtFee = o.ShirtFee ?? 0,
                          o.YesNoQuestions,
+                         IsBibleFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
                      };
             return q2;
         }
@@ -170,7 +174,7 @@ namespace CMSWeb.Models
                                 select o;
             else if (ProgramId > 0)
                 organizations = from o in organizations
-                                where o.DivOrgs.Any(t => t.Division.ProgId == ProgramId)
+                                where o.DivOrgs.Any(d=> d.Division.ProgDivs.Any(p => p.ProgId == ProgramId))
                                 || o.Division.ProgId == ProgramId
                                 select o;
 
@@ -367,6 +371,7 @@ namespace CMSWeb.Models
         {
             var q = from d in DbUtil.Db.Divisions
                     where d.ProgId == ProgId
+                    || d.ProgDivs.Any(p => p.ProgId == ProgId)
                     orderby d.Name
                     select new SelectListItem
                     {
@@ -422,8 +427,10 @@ namespace CMSWeb.Models
             public int? LeaderId { get; set; }
             public int? MemberCount { get; set; }
             public string AttendanceTrackingLevel { get; set; }
+            public string ProgramName { get; set; }
             public int? DivisionId { get; set; }
             public string DivisionName { get; set; }
+            public string Divisions { get; set; }
             public string FirstMeetingDate { get; set; }
             public string LastMeetingDate { get; set; }
             public int SchedDay { get; set; }
@@ -431,6 +438,7 @@ namespace CMSWeb.Models
             public string Schedule { get { return "{0:ddd h:mm tt}".Fmt(MeetingTime); } }
             public string Location { get; set; }
             public string Tag { get; set; }
+            public bool? ChangeMain { get; set; }
             public int? VisitorCount { get; set; }
             public bool AllowSelfCheckIn { get; set; }
             public string BDayStart { get; set; }
@@ -439,9 +447,10 @@ namespace CMSWeb.Models
             {
                 get
                 {
-                    return "{0} ({1})|Division: {2} ({3})|Leader: {4}|Tracking: {5}|First Meeting: {6}|Last Meeting: {7}|Schedule: {8}|Location: {9}".Fmt(
+                    return "{0} ({1})|Program:{2}|Division: {3} ({4})|Leader: {5}|Tracking: {6}|First Meeting: {7}|Last Meeting: {8}|Schedule: {9}|Location: {10}|Divisions: {11}".Fmt(
                                OrganizationName,
                                Id,
+                               ProgramName,
                                DivisionName,
                                DivisionId,
                                LeaderName,
@@ -449,7 +458,8 @@ namespace CMSWeb.Models
                                FirstMeetingDate,
                                LastMeetingDate,
                                Schedule,
-                               Location
+                               Location,
+                               Divisions
                                );
                 }
             }

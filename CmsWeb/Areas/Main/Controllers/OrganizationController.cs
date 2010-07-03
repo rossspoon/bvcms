@@ -199,7 +199,7 @@ namespace CMSWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id);
             UpdateModel(m);
-            m.UpdateOrganization();
+            DbUtil.Db.SubmitChanges();
             m = new OrganizationModel(id);
             return View("Settings", m);
         }

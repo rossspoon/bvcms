@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegPersonModel>" %>
-<table>
+<table cellspacing="6">
 <% if (Model.UserSelectsOrganization())
    { %>
     <tr>

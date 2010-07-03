@@ -12,6 +12,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CMSPresenter;
 using UtilityExtensions;
+using CmsData;
 
 namespace CMSWeb
 {
@@ -29,6 +30,7 @@ namespace CMSWeb
                 DivOrg.DataSource = CVController.OrgDivTags();
                 DivOrg.DataBind();
             }
+            Button1.Enabled = DbUtil.Settings("emailer", "on") != "off";
         }
         private void ReBindDivOrg()
         {

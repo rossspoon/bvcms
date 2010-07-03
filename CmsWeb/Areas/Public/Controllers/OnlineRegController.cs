@@ -54,12 +54,7 @@ namespace CMSWeb.Areas.Public.Controllers
 
             m.URL = Request.Url.OriginalString;
             ViewData["timeout"] = INT_timeout;
-            ViewData["header"] = DbUtil.Content("OnlineRegHeader-" + (m.divid ?? m.orgid).ToString(),
-                DbUtil.Content("OnlineRegHeader", ""));
-            ViewData["top"] = DbUtil.Content("OnlineRegTop-" + (m.divid ?? m.orgid).ToString(),
-                DbUtil.Content("OnlineRegTop", ""));
-            ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + (m.divid ?? m.orgid).ToString(),
-                DbUtil.Content("OnlineRegBottom", ""));
+            SetHeaders(m.divid ?? m.orgid ?? 0);
 
 #if DEBUG
             m.testing = true;
@@ -296,6 +291,7 @@ namespace CMSWeb.Areas.Public.Controllers
             };
             pm.Misc1 = pm.NameOnAccount;
 
+            SetHeaders(m.orgid ?? m.divid ?? 0);
             if (m.Amount() == 0 && m.org.Terms.HasValue())
                 return View("Terms", pm);
             return View("Payment", pm);
@@ -362,6 +358,8 @@ namespace CMSWeb.Areas.Public.Controllers
             ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
             ViewData["URL"] = m.URL;
             ViewData["timeout"] = INT_timeout;
+
+            SetHeaders(m.divid ?? m.orgid ?? 0);
             return View(m);
         }
         public ActionResult PayDue(string q)
@@ -420,6 +418,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     _confirm = "confirm2"
                 };
             }
+
             return View("Payment2", pm);
         }
         [ValidateInput(false)]
@@ -517,6 +516,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 ViewData["Header"] = ti.Header;
                 ViewData["Email"] = ti.Email;
             }
+            
             return View();
         }
         private static void UseCoupon(string TransactionID, int PeopleId, decimal Amount)
@@ -534,6 +534,15 @@ namespace CMSWeb.Areas.Public.Controllers
                     c.PeopleId = PeopleId;
                 }
             }
+        }
+        private void SetHeaders(int id)
+        {
+            ViewData["header"] = DbUtil.Content("OnlineRegHeader-" + id,
+                 DbUtil.Content("OnlineRegHeader", ""));
+            ViewData["top"] = DbUtil.Content("OnlineRegTop-" + id,
+                DbUtil.Content("OnlineRegTop", ""));
+            ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + id,
+                DbUtil.Content("OnlineRegBottom", ""));
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {

@@ -21,10 +21,16 @@ namespace CmsData
 		
 		private string _Name;
 		
-		private bool? _BFProgram;
+		private int? _RptGroup;
+		
+		private decimal? _StartHoursOffset;
+		
+		private decimal? _EndHoursOffset;
 		
    		
    		private EntitySet< Division> _Divisions;
+		
+   		private EntitySet< ProgDiv> _ProgDivs;
 		
     	
 	#endregion
@@ -40,14 +46,22 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
-		partial void OnBFProgramChanging(bool? value);
-		partial void OnBFProgramChanged();
+		partial void OnRptGroupChanging(int? value);
+		partial void OnRptGroupChanged();
+		
+		partial void OnStartHoursOffsetChanging(decimal? value);
+		partial void OnStartHoursOffsetChanged();
+		
+		partial void OnEndHoursOffsetChanging(decimal? value);
+		partial void OnEndHoursOffsetChanged();
 		
     #endregion
 		public Program()
 		{
 			
 			this._Divisions = new EntitySet< Division>(new Action< Division>(this.attach_Divisions), new Action< Division>(this.detach_Divisions)); 
+			
+			this._ProgDivs = new EntitySet< ProgDiv>(new Action< ProgDiv>(this.attach_ProgDivs), new Action< ProgDiv>(this.detach_ProgDivs)); 
 			
 			
 			OnCreated();
@@ -100,21 +114,65 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BFProgram", UpdateCheck=UpdateCheck.Never, Storage="_BFProgram", DbType="bit")]
-		public bool? BFProgram
+		[Column(Name="RptGroup", UpdateCheck=UpdateCheck.Never, Storage="_RptGroup", DbType="int")]
+		public int? RptGroup
 		{
-			get { return this._BFProgram; }
+			get { return this._RptGroup; }
 
 			set
 			{
-				if (this._BFProgram != value)
+				if (this._RptGroup != value)
 				{
 				
-                    this.OnBFProgramChanging(value);
+                    this.OnRptGroupChanging(value);
 					this.SendPropertyChanging();
-					this._BFProgram = value;
-					this.SendPropertyChanged("BFProgram");
-					this.OnBFProgramChanged();
+					this._RptGroup = value;
+					this.SendPropertyChanged("RptGroup");
+					this.OnRptGroupChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="StartHoursOffset", UpdateCheck=UpdateCheck.Never, Storage="_StartHoursOffset", DbType="real")]
+		public decimal? StartHoursOffset
+		{
+			get { return this._StartHoursOffset; }
+
+			set
+			{
+				if (this._StartHoursOffset != value)
+				{
+				
+                    this.OnStartHoursOffsetChanging(value);
+					this.SendPropertyChanging();
+					this._StartHoursOffset = value;
+					this.SendPropertyChanged("StartHoursOffset");
+					this.OnStartHoursOffsetChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EndHoursOffset", UpdateCheck=UpdateCheck.Never, Storage="_EndHoursOffset", DbType="real")]
+		public decimal? EndHoursOffset
+		{
+			get { return this._EndHoursOffset; }
+
+			set
+			{
+				if (this._EndHoursOffset != value)
+				{
+				
+                    this.OnEndHoursOffsetChanging(value);
+					this.SendPropertyChanging();
+					this._EndHoursOffset = value;
+					this.SendPropertyChanged("EndHoursOffset");
+					this.OnEndHoursOffsetChanged();
 				}
 
 			}
@@ -132,6 +190,16 @@ namespace CmsData
    		    get { return this._Divisions; }
 
 			set	{ this._Divisions.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_ProgDiv_Program", Storage="_ProgDivs", OtherKey="ProgId")]
+   		public EntitySet< ProgDiv> ProgDivs
+   		{
+   		    get { return this._ProgDivs; }
+
+			set	{ this._ProgDivs.Assign(value); }
 
    		}
 
@@ -164,6 +232,19 @@ namespace CmsData
 		}
 
 		private void detach_Divisions(Division entity)
+		{
+			this.SendPropertyChanging();
+			entity.Program = null;
+		}
+
+		
+		private void attach_ProgDivs(ProgDiv entity)
+		{
+			this.SendPropertyChanging();
+			entity.Program = this;
+		}
+
+		private void detach_ProgDivs(ProgDiv entity)
 		{
 			this.SendPropertyChanging();
 			entity.Program = null;

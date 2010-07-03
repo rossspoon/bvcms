@@ -23,15 +23,15 @@ namespace CmsData
 		
 		private string _StrValue;
 		
-		private int? _IntValue;
-		
-		private int? _IntValue2;
-		
 		private DateTime? _DateValue;
 		
 		private DateTime _TransactionTime;
 		
 		private string _Data;
+		
+		private int? _IntValue;
+		
+		private int? _IntValue2;
 		
    		
     	
@@ -53,12 +53,6 @@ namespace CmsData
 		partial void OnStrValueChanging(string value);
 		partial void OnStrValueChanged();
 		
-		partial void OnIntValueChanging(int? value);
-		partial void OnIntValueChanged();
-		
-		partial void OnIntValue2Changing(int? value);
-		partial void OnIntValue2Changed();
-		
 		partial void OnDateValueChanging(DateTime? value);
 		partial void OnDateValueChanged();
 		
@@ -67,6 +61,12 @@ namespace CmsData
 		
 		partial void OnDataChanging(string value);
 		partial void OnDataChanged();
+		
+		partial void OnIntValueChanging(int? value);
+		partial void OnIntValueChanged();
+		
+		partial void OnIntValue2Changing(int? value);
+		partial void OnIntValue2Changed();
 		
     #endregion
 		public PeopleExtra()
@@ -150,50 +150,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="IntValue", UpdateCheck=UpdateCheck.Never, Storage="_IntValue", DbType="int")]
-		public int? IntValue
-		{
-			get { return this._IntValue; }
-
-			set
-			{
-				if (this._IntValue != value)
-				{
-				
-                    this.OnIntValueChanging(value);
-					this.SendPropertyChanging();
-					this._IntValue = value;
-					this.SendPropertyChanged("IntValue");
-					this.OnIntValueChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="IntValue2", UpdateCheck=UpdateCheck.Never, Storage="_IntValue2", DbType="int")]
-		public int? IntValue2
-		{
-			get { return this._IntValue2; }
-
-			set
-			{
-				if (this._IntValue2 != value)
-				{
-				
-                    this.OnIntValue2Changing(value);
-					this.SendPropertyChanging();
-					this._IntValue2 = value;
-					this.SendPropertyChanged("IntValue2");
-					this.OnIntValue2Changed();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="DateValue", UpdateCheck=UpdateCheck.Never, Storage="_DateValue", DbType="datetime")]
 		public DateTime? DateValue
 		{
@@ -253,6 +209,50 @@ namespace CmsData
 					this._Data = value;
 					this.SendPropertyChanged("Data");
 					this.OnDataChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IntValue", UpdateCheck=UpdateCheck.Never, Storage="_IntValue", DbType="int")]
+		public int? IntValue
+		{
+			get { return this._IntValue; }
+
+			set
+			{
+				if (this._IntValue != value)
+				{
+				
+                    this.OnIntValueChanging(value);
+					this.SendPropertyChanging();
+					this._IntValue = value;
+					this.SendPropertyChanged("IntValue");
+					this.OnIntValueChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IntValue2", UpdateCheck=UpdateCheck.Never, Storage="_IntValue2", DbType="int")]
+		public int? IntValue2
+		{
+			get { return this._IntValue2; }
+
+			set
+			{
+				if (this._IntValue2 != value)
+				{
+				
+                    this.OnIntValue2Changing(value);
+					this.SendPropertyChanging();
+					this._IntValue2 = value;
+					this.SendPropertyChanged("IntValue2");
+					this.OnIntValue2Changed();
 				}
 
 			}

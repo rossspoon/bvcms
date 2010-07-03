@@ -19,7 +19,7 @@
 <%=Html.Hidden3("m.List[" + Model.index + "].gender", Model.gender) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].married", Model.married) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].classid", Model.classid) %>
-<table>
+<table cellspacing="6">
 <% if (Model.UserSelectsOrganization())
    { %>
     <tr>

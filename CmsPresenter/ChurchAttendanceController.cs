@@ -36,7 +36,7 @@ namespace CMSPresenter
             public int NumPresent { get; set; }
             public DateTime MeetingDate { get; set; }
             public string Name { get; set; }
-            public int ProgramId { get; set; }
+            public int? ProgramId { get; set; }
         }
         private List<MeetInfo> qlist;
         private void LoadMeetings(DateTime sunday)
@@ -53,7 +53,7 @@ namespace CMSPresenter
                         Name = m.Organization.OrganizationName,
                         NumPresent = m.NumPresent,
                         MeetingDate = m.MeetingDate.Value,
-                        ProgramId = m.Organization.DivOrgs.First(t => t.Division.Program.Name != misctag).Division.ProgId.Value
+                        ProgramId = m.Organization.Division.ProgId.Value
                     };
             qlist = q.ToList();
         }
@@ -68,7 +68,7 @@ namespace CMSPresenter
                      where m.MeetingDate < sunday1200
                      where MorningWorship.Contains(m.OrganizationId)
                          || ExtendedSessions.Contains(m.OrganizationId)
-                         || ChoirTags.Contains(m.ProgramId)
+                         || ChoirTags.Contains(m.ProgramId ?? 0)
                      let m1 = ExtendedSessions.Contains(m.OrganizationId) ? "dExtended Session" :
                         m.ProgramId == VocalTagId ? "bChoir" :
                         m.ProgramId == OrchestraTagId ? "cOrchestra" :
@@ -110,7 +110,7 @@ namespace CMSPresenter
                      where m.MeetingDate < sunday1200
                      where MorningWorship.Contains(m.OrganizationId)
                          || ExtendedSessions.Contains(m.OrganizationId)
-                         || ChoirTags.Contains(m.ProgramId)
+                         || ChoirTags.Contains(m.ProgramId ?? 0)
                      let m1 = ExtendedSessions.Contains(m.OrganizationId) ? "dExtended Session" :
                         m.ProgramId == VocalTagId ? "bChoir" :
                         m.ProgramId == OrchestraTagId ? "cOrchestra" :

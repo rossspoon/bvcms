@@ -12,7 +12,11 @@
     </tr>
     <tr>
         <th>Main Division:</th>
-        <td><span title="<%=Model.DivisionsTitle() %>"><%=o.DivisionName %></span></td>
+        <td><%=o.DivisionName %></td>
+    </tr>
+    <tr>
+        <th>Other Divisions:</th>
+        <td><%=string.Join(", ", o.DivOrgs.Where(d => d.DivId != o.DivisionId).Select(d => d.Division.Program.Name + ":" + d.Division.Name).ToArray()) %></td>
     </tr>
     <tr>
         <th>Location:</th>
@@ -29,5 +33,9 @@
     <tr>
         <th>Leader Type:</th>
         <td><%=Html.CodeDesc("org.LeaderMemberTypeId", Model.LeaderTypeList())%></td>
+    </tr>
+    <tr>
+        <th>Main Fellowship:</th>
+        <td><%=Html.CheckBoxReadonly(o.IsBibleFellowshipOrg)%></td>
     </tr>
 </table>

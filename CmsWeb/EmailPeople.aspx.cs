@@ -15,6 +15,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+using System.Configuration;
 
 namespace CMSWeb
 {
@@ -55,6 +56,7 @@ namespace CMSWeb
                 IsHtml.Checked = ishtml ?? false;
             }
             CKEditPanel.Visible = IsHtml.Checked;
+            SendEmail.Enabled = DbUtil.Settings("emailer", "on") != "off";
         }
 
         public void DoJob(object data2)

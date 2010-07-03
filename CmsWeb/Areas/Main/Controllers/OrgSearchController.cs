@@ -110,20 +110,31 @@ namespace CMSWeb.Areas.Main.Controllers
         public class ToggleTagReturn
         {
             public string value;
-            public string element;
+            public string ChangeMain;
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ToggleTag(int id, int tagdiv, string element, bool main)
+        public JsonResult ToggleTag(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
             var organization = Db.LoadOrganizationById(id);
-            var r = new ToggleTagReturn 
-            { 
-                element = element,
-                value = organization.ToggleTag(tagdiv, main) ? "Remove" : "Add"
+            bool t = organization.ToggleTag(tagdiv);
+            var r = new ToggleTagReturn
+            {
+                value = t ? "Remove" : "Add",
             };
+            if (t)
+                r.ChangeMain = "Make Main";
             Db.SubmitChanges();
             return Json(r);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MainDiv(int id, int tagdiv)
+        {
+            var Db = DbUtil.Db;
+            var o = Db.LoadOrganizationById(id);
+            o.DivisionId = tagdiv;
+            Db.SubmitChanges();
+            return new EmptyResult();
         }
         public ActionResult UseOldOrgSearch()
         {

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgSearchModel>" %>
 <table id="results" <%=Page.User.IsInRole("Edit") ? "class='edit'" : "" %>>
 <thead>
-    <tr><td colspan="9">
+    <tr><td colspan="10">
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
     <tr>
@@ -13,7 +13,8 @@
         <th><a href="#" class="sortable">Self CheckIn</a></th>
         <th><a href="#" class="sortable">BDay Start</a></th>
         <th><a href="#" class="sortable">BDay End</a></th>
-        <th><a href="#" class="sortable">Tag</a></th>
+        <th><a href="#" class="sortable">TargetDiv</a></th>
+        <th><a href="#" class="sortable">MainDiv</a></th>
     </tr>
 </thead>
 <tbody>
@@ -28,11 +29,12 @@
         <td><span id='ck-<%=o.Id %>' class='yesno'><%=o.AllowSelfCheckIn ? "yes" : "no" %></span></td>
         <td><span id='bs-<%=o.Id %>' class='bday'><%=o.BDayStart%></span></td>
         <td><span id='be-<%=o.Id %>' class='bday'><%=o.BDayEnd%></span></td>
-        <td><a id='tt-<%=o.Id %>' href="/OrgSearch/ToggleTag/<%=o.Id %>" class="taguntag" title="Add to/Remove from Tag Division"><%=o.Tag %></a></td>
+        <td><a id='tt-<%=o.Id %>' href="/OrgSearch/ToggleTag/<%=o.Id %>" class="taguntag" title="Add to/Remove from Target Division"><%=o.Tag %></a></td>
+        <td><a id='mm-<%=o.Id %>' href="/OrgSearch/MainDiv/<%=o.Id %>" class="maindiv" title="Make Target Main Division"><%=o.ChangeMain == true ? "Make Main" : "" %></a></td>
     </tr>
 <% } %>
 </tbody>
-    <tr><td colspan="9">
+    <tr><td colspan="10">
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
 </table>

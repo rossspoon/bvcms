@@ -118,14 +118,12 @@ namespace CmsData
                 _TagString = value;
             }
         }
-        public bool ToggleTag(int divid, bool main)
+        public bool ToggleTag(int divid)
         {
             var divorg = DivOrgs.SingleOrDefault(d => d.DivId == divid);
             if (divorg == null)
             {
                 DivOrgs.Add(new DivOrg { DivId = divid });
-                if (main)
-                    DivisionId = divid;
                 return true;
             }
             DivOrgs.Remove(divorg);
@@ -203,7 +201,7 @@ namespace CmsData
         {
             get
             {
-                return Division != null ? Division.Name : "need a main division";
+                return Division != null ? Division.Program.Name + ":" + Division.Name : "need a main division";
             }
         }
     }

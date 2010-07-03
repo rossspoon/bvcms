@@ -212,6 +212,12 @@ namespace UtilityExtensions
                 return dt.ToString2("M/d/yy h:mm");
             return def;
         }
+        public static string ToString2(this int? i, string fmt)
+        {
+            if (i.HasValue)
+                return i.Value.ToString(fmt);
+            return "";
+        }
         public static string ToString2(this decimal? d, string fmt)
         {
             if (d.HasValue)
@@ -400,6 +406,16 @@ namespace UtilityExtensions
                 if (Char.IsDigit(c))
                     digits.Append(c);
             return digits.ToString();
+        }
+        public static decimal? GetAmount(this string s)
+        {
+            if (!s.HasValue())
+                return null;
+            var digits = new StringBuilder();
+            foreach (var c in s.ToCharArray())
+                if (Char.IsDigit(c) || c == '.')
+                    digits.Append(c);
+            return digits.ToString().ToDecimal();
         }
         public static string FmtZip(this string zip)
         {

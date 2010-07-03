@@ -24,10 +24,6 @@ namespace CMSWeb.Models.OrganizationPage
         
         private CodeValueController cv = new CodeValueController();
 
-        public string DivisionsTitle()
-        {
-            return "";
-        }
         public void UpdateOrganization()
         {
             org.TagString = DivisionsList;

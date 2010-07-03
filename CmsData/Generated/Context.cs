@@ -406,6 +406,10 @@ namespace CmsData
         partial void UpdatePreference(Preference instance);
         partial void DeletePreference(Preference instance);
         
+        partial void InsertProgDiv(ProgDiv instance);
+        partial void UpdateProgDiv(ProgDiv instance);
+        partial void DeleteProgDiv(ProgDiv instance);
+        
         partial void InsertProgram(Program instance);
         partial void UpdateProgram(Program instance);
         partial void DeleteProgram(Program instance);
@@ -1199,6 +1203,12 @@ namespace CmsData
 		public Table< Preference> Preferences
 		{
 			get	{ return this.GetTable< Preference>(); }
+
+		}
+
+		public Table< ProgDiv> ProgDivs
+		{
+			get	{ return this.GetTable< ProgDiv>(); }
 
 		}
 
@@ -2440,6 +2450,18 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 oid,
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.FindResCode", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? FindResCode(
+            [Parameter(Name = "zipcode", DbType="varchar")] string zipcode
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                zipcode
                 ).ReturnValue));
 		}
 

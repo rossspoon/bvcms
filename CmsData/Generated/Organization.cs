@@ -189,6 +189,10 @@ namespace CmsData
 		
 		private string _RequestLabel;
 		
+		private string _WorshipGroupCodes;
+		
+		private bool? _IsBibleFellowshipOrg;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -495,6 +499,12 @@ namespace CmsData
 		
 		partial void OnRequestLabelChanging(string value);
 		partial void OnRequestLabelChanged();
+		
+		partial void OnWorshipGroupCodesChanging(string value);
+		partial void OnWorshipGroupCodesChanged();
+		
+		partial void OnIsBibleFellowshipOrgChanging(bool? value);
+		partial void OnIsBibleFellowshipOrgChanged();
 		
     #endregion
 		public Organization()
@@ -2108,7 +2118,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AskOptions", UpdateCheck=UpdateCheck.Never, Storage="_AskOptions", DbType="varchar(200)")]
+		[Column(Name="AskOptions", UpdateCheck=UpdateCheck.Never, Storage="_AskOptions", DbType="varchar(300)")]
 		public string AskOptions
 		{
 			get { return this._AskOptions; }
@@ -2265,7 +2275,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="YesNoQuestions", UpdateCheck=UpdateCheck.Never, Storage="_YesNoQuestions", DbType="varchar(200)")]
+		[Column(Name="YesNoQuestions", UpdateCheck=UpdateCheck.Never, Storage="_YesNoQuestions", DbType="varchar(500)")]
 		public string YesNoQuestions
 		{
 			get { return this._YesNoQuestions; }
@@ -2309,7 +2319,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ExtraQuestions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraQuestions", DbType="varchar(200)")]
+		[Column(Name="ExtraQuestions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraQuestions", DbType="varchar(500)")]
 		public string ExtraQuestions
 		{
 			get { return this._ExtraQuestions; }
@@ -2456,6 +2466,50 @@ namespace CmsData
 					this._RequestLabel = value;
 					this.SendPropertyChanged("RequestLabel");
 					this.OnRequestLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="WorshipGroupCodes", UpdateCheck=UpdateCheck.Never, Storage="_WorshipGroupCodes", DbType="varchar(100)")]
+		public string WorshipGroupCodes
+		{
+			get { return this._WorshipGroupCodes; }
+
+			set
+			{
+				if (this._WorshipGroupCodes != value)
+				{
+				
+                    this.OnWorshipGroupCodesChanging(value);
+					this.SendPropertyChanging();
+					this._WorshipGroupCodes = value;
+					this.SendPropertyChanged("WorshipGroupCodes");
+					this.OnWorshipGroupCodesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IsBibleFellowshipOrg", UpdateCheck=UpdateCheck.Never, Storage="_IsBibleFellowshipOrg", DbType="bit")]
+		public bool? IsBibleFellowshipOrg
+		{
+			get { return this._IsBibleFellowshipOrg; }
+
+			set
+			{
+				if (this._IsBibleFellowshipOrg != value)
+				{
+				
+                    this.OnIsBibleFellowshipOrgChanging(value);
+					this.SendPropertyChanging();
+					this._IsBibleFellowshipOrg = value;
+					this.SendPropertyChanged("IsBibleFellowshipOrg");
+					this.OnIsBibleFellowshipOrgChanged();
 				}
 
 			}

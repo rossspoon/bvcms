@@ -89,7 +89,7 @@
     <Compile Include="Areas\Main\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
-    <Compile Include="Areas\Main\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Main\Controllers\ReportsController.cs" />
     <Compile Include="Areas\Main\Controllers\UserPrefController.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
@@ -103,13 +103,14 @@
     <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\OrgSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\PostBundleModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\OrgSearchModel.cs" />
+    <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\ContactsMadeModel.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Areas\Main\Models\Report\Avery3Result.cs" />
     <Compile Include="Areas\Main\Models\Report\AveryAddressResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ClassListResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\ChurchAttendanceModel.cs" />
     <Compile Include="Areas\Main\Models\Report\RosterListResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RegistrationResult.cs" />
     <Compile Include="Areas\Main\Models\Report\OrgLeadersResult.cs" />
@@ -569,20 +571,6 @@
     <Compile Include="MyTags.aspx.designer.cs">
       <DependentUpon>MyTags.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Organization.aspx.cs">
-      <DependentUpon>Organization.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Organization.aspx.designer.cs">
-      <DependentUpon>Organization.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationSearch.aspx.cs">
-      <DependentUpon>OrganizationSearch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationSearch.aspx.designer.cs">
-      <DependentUpon>OrganizationSearch.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurgeProgress.aspx.cs">
       <DependentUpon>PurgeProgress.aspx</DependentUpon>
@@ -827,8 +815,6 @@
     <Content Include="MemberMap.aspx" />
     <Content Include="MyTags.aspx" />
     <Content Include="NoRemoteAccess.htm" />
-    <Content Include="Organization.aspx" />
-    <Content Include="OrganizationSearch.aspx" />
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
     <Content Include="Search.aspx" />
@@ -1139,16 +1125,18 @@
     <Content Include="Areas\Main\Views\OrgMembersDialog\Update.aspx" />
     <Content Include="Areas\Main\Views\OrgMembersDialog\Rows.ascx" />
     <Content Include="Areas\Main\Views\OrgMembersDialog\Index.aspx" />
+    <Content Include="Areas\Main\Views\OrgSearch\Results.ascx" />
     <Content Include="Areas\Main\Views\OrgSearch\TagDivIds.ascx" />
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.ascx" />
     <Content Include="Areas\Main\Views\OrgSearch\Index.aspx" />
-    <Content Include="Areas\Main\Views\OrgSearch\Results.ascx" />
+    <Content Include="Areas\Setup\Views\Division\Results.ascx" />
     <Content Include="Areas\Main\Views\Person\CommentsDisplay.ascx" />
     <Content Include="Areas\Main\Views\Person\CommentsEdit.ascx" />
     <Content Include="Areas\Main\Views\PostBundle\Batch.aspx" />
     <Content Include="Areas\Main\Views\PostBundle\FundTotals.ascx" />
     <Content Include="Areas\Main\Views\PostBundle\FundTotals.aspx" />
     <Content Include="Areas\Main\Views\PostBundle\Index.aspx" />
+    <Content Include="Areas\Main\Views\Reports\ChurchAttendance.aspx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormAbbreviated.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\EditAddress.ascx" />
     <Content Include="Areas\Main\Views\SearchAdd\FormFull.ascx" />
@@ -1251,6 +1239,7 @@
     <Content Include="Areas\Manage\Views\Display\Index.aspx" />
     <Content Include="Areas\Manage\Views\Display\Page.aspx" />
     <Content Include="Areas\Setup\Views\Division\Index.aspx" />
+    <Content Include="Areas\Setup\Views\Division\Row.ascx" />
     <Content Include="Areas\Setup\Views\Fund\Edit.aspx" />
     <Content Include="Areas\Setup\Views\Fund\Index.aspx" />
     <Content Include="Areas\Setup\Views\Lookup\List.aspx" />
@@ -1573,6 +1562,9 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Report\ChurchAttendance.aspx" />
+    <Content Include="Scripts\Divisions.js" />
+    <Content Include="Views\Shared\Reports.Master" />
     <Content Include="Scripts\PostBundle.js" />
     <Content Include="Scripts\OrgGroups.js" />
     <Content Include="Views\Shared\onlinereg.Master" />

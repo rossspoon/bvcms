@@ -1,72 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 using System.Drawing;
+using CMSWeb.Models;
 
 namespace CMSWeb.Areas.Setup.Controllers
 {
     public class DivisionController : CmsStaffController
     {
-        public class DivisionInfo
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public int? ProgId { get; set; }
-            public string Program { get; set; }
-            public int OrgCount { get; set; }
-            public int DivOrgsCount { get; set; }
-            public int RecAgeDivCount { get; set; }
-            public int RecRegCount { get; set; }
-            public int ToPromotionsCount { get; set; }
-            public int FromPromotionsCount { get; set; }
-            public string NoZero(int arg)
-            {
-                if (arg == 0)
-                    return "";
-                return arg.ToString();
-            }
-            public bool CanDelete
-            {
-                get
-                {
-                    return OrgCount + DivOrgsCount + RecAgeDivCount + RecRegCount 
-                        + ToPromotionsCount + FromPromotionsCount == 0;
-                }
-            }
-            
-        }
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var m = from d in DbUtil.Db.Divisions
-                    orderby d.Program.Name, d.Name
-                    select new DivisionInfo
-                    {
-                        Id = d.Id,
-                        Name = d.Name,
-                        ProgId = d.ProgId,
-                        Program = d.Program.Name,
-                        OrgCount = d.Organizations.Count(),
-                        DivOrgsCount = d.DivOrgs.Count(),
-                        RecAgeDivCount = d.RecLeagues.Count(),
-                        FromPromotionsCount = d.FromPromotions.Count(),
-                        ToPromotionsCount = d.ToPromotions.Count(),
-                    };
+            var m = new DivisionModel();
             return View(m);
         }
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create()
+        public ActionResult Results(DivisionModel m)
+        {
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create(DivisionModel m)
         {
             var d = new Division { Name = "New Division" };
+            if (m.ProgramId > 0)
+            {
+                d.ProgId = m.ProgramId;
+                d.ProgDivs.Add(new ProgDiv { ProgId = m.ProgramId });
+            }
             DbUtil.Db.Divisions.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
-            return Redirect("/Setup/Division/");
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, d);
+            var di = m.DivisionItem(d.Id).Single();
+            return View("Row", di); 
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -85,6 +57,10 @@ namespace CMSWeb.Areas.Setup.Controllers
                         div.ProgId = value.ToInt();
                         DbUtil.Db.SubmitChanges();
                         return Content(div.Program.Name);
+                    case "r":
+                        div.ReportLine = value.ToInt2();
+                        DbUtil.Db.SubmitChanges();
+                        return Content(value);
                 }
             return new EmptyResult();
         }
@@ -95,29 +71,41 @@ namespace CMSWeb.Areas.Setup.Controllers
             var div = DbUtil.Db.Divisions.SingleOrDefault(m => m.Id == iid);
             if (div == null)
                 return new EmptyResult();
-            var q = from d in DbUtil.Db.Divisions
-                    where d.Id == iid
-                    where d.Organizations.Count() == 0
-                    where d.RecLeagues.Count() == 0
-                    where d.ToPromotions.Count() == 0
-                    where d.FromPromotions.Count() == 0
-                    select d;
-
+            DbUtil.Db.ProgDivs.DeleteAllOnSubmit(
+                DbUtil.Db.ProgDivs.Where(di => di.DivId == iid));
+            DbUtil.Db.DivOrgs.DeleteAllOnSubmit(
+                DbUtil.Db.DivOrgs.Where(di => di.DivId == iid));
+            foreach (var o in div.Organizations)
+                o.DivisionId = null;
             DbUtil.Db.Divisions.DeleteOnSubmit(div);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ProgramCodes()
+        [Serializable]
+        public class ToggleTagReturn
         {
-            var q = from c in DbUtil.Db.Programs
-                    orderby c.BFProgram descending, c.Name
-                    select new
-                    {
-                        Code = c.Id.ToString(),
-                        Value = c.Name,
-                    };
-            return Json(q.ToDictionary(k => k.Code, v => v.Value));
+            public string value;
+            public string ChangeMain;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ToggleProg(int id, DivisionModel m)
+        {
+            var division = DbUtil.Db.Divisions.Single(d => d.Id == id);
+            bool t = division.ToggleTag(m.TagProgramId.Value);
+            DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, division);
+            var di = m.DivisionItem(id).Single();
+            return View("Row", di);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MainProg(int id, DivisionModel m)
+        {
+            var division = DbUtil.Db.Divisions.Single(d => d.Id == id);
+            division.ProgId = m.TagProgramId;
+            DbUtil.Db.SubmitChanges();
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, division);
+            var di = m.DivisionItem(id).Single();
+            return View("Row", di);
         }
     }
 }

@@ -46,8 +46,7 @@
         <a id="RecentAttendRpt" href="/Report/PastAttendeeRpt.aspx?id=<%=o.OrganizationId %>" target="_blank">Recent Attendance Report</a> |
         <a id="AttendanceRpt" href="/Reports/Attendance/<%=o.OrganizationId %>">Attendance Percentages</a> | 
         <a id="VolunteerCalendar" href="/Volunteers/Calendar/<%=o.OrganizationId %>">Volunteer Calendar</a> | 
-        <a class="CreateAndGo" href="/Organization/Clone/<%=o.OrganizationId %>" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a> |
-        <a href="/Organization.aspx?id=<%=o.OrganizationId %>">Old Org Page</a>
+        <a class="CreateAndGo" href="/Organization/Clone/<%=o.OrganizationId %>" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
 <% if (Page.User.IsInRole("Admin"))
    { %>
         | <a href="/Organization/CopySettings/<%=o.OrganizationId %>">Copy Settings</a>

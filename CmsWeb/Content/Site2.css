@@ -325,3 +325,12 @@ table#leg td
     border: 1px solid #DDDDDD;
     padding: 5px;
 }
+td.alt1
+{
+    background-color: #ddd;
+    width: 100%;
+}
+.blue
+{
+    color: blue;
+}

@@ -305,6 +305,9 @@ namespace CMSWeb.Areas.Setup.Controllers
                         case "LastDayBeforeExtra":
                             o.LastDayBeforeExtra = a[c].ToDate();
                             break;
+                        case "IsBibleFellowshipOrg":
+                            o.IsBibleFellowshipOrg = a[c].ToBool2();
+                            break;
                     }
                 DbUtil.Db.SubmitChanges();
             }

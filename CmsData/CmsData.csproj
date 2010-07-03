@@ -82,9 +82,11 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
+    <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\RegistrationType.cs" />
     <Compile Include="Generated\Views\DiscActivityLog.cs" />

@@ -36,12 +36,17 @@ namespace CMSWeb.Models
         public bool pledge { get; set; }
         public string notes { get; set; }
         private BundleHeader _bundle;
+        public string FundDescription { get; set; }
         public BundleHeader bundle
         {
             get
             {
                 if (_bundle == null)
+                {
                     _bundle = DbUtil.Db.BundleHeaders.SingleOrDefault(bh => bh.BundleHeaderId == id);
+                    if (_bundle != null && _bundle.FundId.HasValue)
+                        FundDescription = _bundle.Fund.FundDescription;
+                }
                 return _bundle;
             }
         }
@@ -239,7 +244,7 @@ namespace CMSWeb.Models
         {
             foreach (var s in columns)
             {
-                var rq = from c in s.Split(',')
+                var rq = from c in s.SplitStr(",\t")
                          let a = c.Split('=')
                          select new { col = a[0], name = a[1] };
                 var rd = rq.ToDictionary(d => d.col, d => d.name);
@@ -253,7 +258,7 @@ namespace CMSWeb.Models
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
             var lines = text.Replace("\r\n", "\n").Split('\n');
-            var names = lines[0].Trim().Split(',');
+            var names = lines[0].Trim().SplitStr(",\t");
             var rd = GetNames(names);
             if (rd == null)
                 return null;
@@ -348,7 +353,7 @@ namespace CMSWeb.Models
         }
         public static int? BatchProcessCSV(string[] lines, Dictionary<string, string> Names, DateTime date)
         {
-            var cols = lines[0].Trim().Split(',');
+            var cols = lines[0].Trim().SplitStr(",\t");
             var now = DateTime.Now;
             var prevbundle = -1;
             var curbundle = 0;
@@ -396,7 +401,7 @@ namespace CMSWeb.Models
                             bd.Contribution.ContributionDate = a[c].ToDate();
                             break;
                         case "Amount":
-                            bd.Contribution.ContributionAmount = a[c].ToDecimal();
+                            bd.Contribution.ContributionAmount = a[c].GetAmount();
                             break;
                         case "Check":
                             bd.Contribution.ContributionDesc = a[c];

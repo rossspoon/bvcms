@@ -138,10 +138,10 @@
     $('#TagProgramId').change(function() {
         $.post('/OrgSearch/TagDivIds/' + $('#TagProgramId').val(), null, function(ret) {
             $('#TagDiv').replaceWith(ret);
+            $('#TagDiv').change(function() {
+                $.getTable();
+            });
         });
-    });
-    $('#TagDiv').live('change', function() {
-        $.getTable();
     });
     $("form input").live("keypress", function(e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
@@ -260,12 +260,17 @@
     });
     $('a.taguntag').live('click', function(ev) {
         ev.preventDefault();
-        $.post($(this).attr('href'), {
-            tagdiv: $('#TagDiv').val(),
-            element: $(this).attr('id'),
-            main: $('#maindiv').attr("checked")
-        }, function(ret) {
-            $('#' + ret.element).text(ret.value);
+        var a = $(this);
+        $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function(ret) {
+            a.text(ret.value);
+        }, "json");
+        return false;
+    });
+    $('a.maindiv').live('click', function(ev) {
+        ev.preventDefault();
+        var a = $(this);
+        $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function(ret) {
+            a.text("");
         }, "json");
         return false;
     });

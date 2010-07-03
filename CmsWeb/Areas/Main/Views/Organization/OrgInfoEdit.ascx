@@ -35,5 +35,9 @@
         <th>Leader Type:</th>
         <td><%=Html.DropDownList("org.LeaderMemberTypeId", Model.LeaderTypeList())%></td>
     </tr>
+    <tr>
+        <th>Main Fellowship:</th>
+        <td><%=Html.CheckBox("org.IsBibleFellowshipOrg")%></td>
+    </tr>
     <tr><td></td><td align="right"><a href="/Organization/OrgInfoUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

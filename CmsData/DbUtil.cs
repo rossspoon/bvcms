@@ -137,7 +137,6 @@ namespace CmsData
             }
             list[name] = value;
         }
-        public static int BFClassOrgTagId { get { return Settings("BFClassOrgTagId", "").ToInt(); } }
         public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
         public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
         public static string StartAddress { get { return Settings("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }

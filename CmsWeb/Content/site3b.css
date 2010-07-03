@@ -1,6 +1,6 @@
 ﻿body
 {
-    color: #ddd;
+    color: #333;
     font-family: Verdana,Helvetica,Sans-Serif;
     font-size: 0.75em;
     margin: 0;
@@ -99,6 +99,7 @@ h5, h6
 {
     background: black url(/Content/blackredgradient.png) repeat-y;
     border: solid 2px black;
+    color: #ddd;
 }
 #footer
 {
@@ -199,3 +200,28 @@ padding: 0px 0px 0px 20px;
 text-align: left;
 text-transform: uppercase;
 }
+a.submitbutton, a.button
+{
+    padding: 5px;
+    background-color: #E0E0E0;
+    border: 1px solid #000000;
+    color: #333333;
+    text-decoration: none;
+    margin-top: 10px;
+}
+td.alt1
+{
+    border: thin solid #999999;
+    width: 100%;
+}
+td.alt0
+{
+    border: thin solid #CCCCCC;
+    width: 100%;
+}
+form.DisplayEdit input.short 
+{
+    width: 1.5em;
+}
+
+

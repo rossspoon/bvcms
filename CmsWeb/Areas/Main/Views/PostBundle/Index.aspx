@@ -21,7 +21,7 @@
 <table>
     <tr><th>BundleId</th><td><a href="/Contributions/Bundle.aspx?id=<%=Model.id %>"><%=Model.id %><%=Html.Hidden("id") %></a></td></tr>
     <tr><th>Date</th><td><%=Model.bundle.ContributionDate.ToShortDateString() %></td></tr>
-    <tr><th>Fund</th><td><a target="_blank" href='/PostBundle/FundTotals/<%=Model.id %>'><%="{0} ({1})".Fmt(Model.bundle.Fund.FundDescription, Model.bundle.FundId) %></a></td></tr>
+    <tr><th>Fund</th><td><a target="_blank" href='/PostBundle/FundTotals/<%=Model.id %>'><%="{0} ({1})".Fmt(Model.FundDescription, Model.bundle.FundId) %></a></td></tr>
     <tr><th>Pledge</th><td><%=Html.CheckBox("pledge") %></td></tr>
     <tr><th>Total</th><td><%=(b.TotalCash + b.TotalChecks + b.TotalEnvelopes).ToString2("c") %></td></tr>
     <tr><th>Total Items</th><td><span id="totalitems"><%=b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount).ToString2("c") %></span></td></tr>

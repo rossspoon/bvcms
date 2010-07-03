@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
@@ -546,7 +547,7 @@ namespace CMSWeb.Models
         public IEnumerable<SelectListItem> Divisions(int? progid)
         {
             var q = from div in Db.Divisions
-                    where div.ProgId == progid
+                    where div.ProgDivs.Any(d => d.ProgId == progid)
                     orderby div.Name
                     select new SelectListItem
                     {

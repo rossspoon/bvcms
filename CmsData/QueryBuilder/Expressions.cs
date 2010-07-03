@@ -33,10 +33,10 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
                     ids.Contains(m.MemberTypeId)
-                    && (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && (m.Organization.ScheduleId == sched || sched == 0)
+                    && (sched == 0 || m.Organization.ScheduleId == sched)
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -55,9 +55,9 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
                     ids.Contains(m.Organization.ScheduleId.Value)
-                    && (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -65,24 +65,24 @@ namespace CmsData
             return expr;
         }
 
-        internal static Expression WasMemberAsOf1(ParameterExpression parm,
-            CMSDataContext Db,
-            DateTime? from,
-            DateTime? to,
-            int? progid,
-            int? divid,
-            int? org,
-            CompareType op,
-            bool tf)
-        {
-            to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
-            Expression<Func<Person, bool>> pred = p =>
-                Db.MembersAsOf(from, to, progid, divid, org).Select(m => m.PeopleId).Contains(p.PeopleId);
-            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-            if (!(op == CompareType.Equal && tf))
-                expr = Expression.Not(expr);
-            return expr;
-        }
+        //internal static Expression WasMemberAsOf1(ParameterExpression parm,
+        //    CMSDataContext Db,
+        //    DateTime? from,
+        //    DateTime? to,
+        //    int? progid,
+        //    int? divid,
+        //    int? org,
+        //    CompareType op,
+        //    bool tf)
+        //{
+        //    to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
+        //    Expression<Func<Person, bool>> pred = p =>
+        //        Db.MembersAsOf(from, to, progid, divid, org).Select(m => m.PeopleId).Contains(p.PeopleId);
+        //    Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+        //    if (!(op == CompareType.Equal && tf))
+        //        expr = Expression.Not(expr);
+        //    return expr;
+        //}
         internal static Expression WasMemberAsOf(
             ParameterExpression parm, CMSDataContext Db,
             DateTime? startdt,
@@ -101,9 +101,9 @@ namespace CmsData
                     && et.TransactionDate <= enddt // transaction starts <= looked for end
                     && (et.Pending ?? false) == false
                     && (et.NextTranChangeDate ?? Util.Now) >= startdt // transaction ends >= looked for start
-                    && (et.OrganizationId == orgid || orgid == 0)
-                    && (et.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (et.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (orgid == 0 || et.OrganizationId == orgid)
+                    && (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -131,9 +131,9 @@ namespace CmsData
                     && et.TransactionDate <= to // where it begins
                     && (et.Pending ?? false) == false
                     && ids.Contains(et.MemberTypeId)  // what it's type was during that time
-                    && (et.OrganizationId == org || org == 0)
-                    && (et.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (et.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || et.OrganizationId == org)
+                    && (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -157,9 +157,9 @@ namespace CmsData
                     && a.MeetingDate < to
                     && a.AttendanceFlag == true
                     && ids.Contains(a.AttendanceTypeId.Value)
-                    && (a.Meeting.OrganizationId == org || org == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -181,9 +181,9 @@ namespace CmsData
                 p.Attends.Any(a => a.MeetingDate >= mindt
                     && a.AttendanceFlag == true
                     && ids.Contains(a.AttendanceTypeId.Value)
-                    && (a.Meeting.OrganizationId == org || org == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -293,9 +293,9 @@ namespace CmsData
             Expression<Func<Person, int>> pred = p =>
                 p.Attends.Count(a => a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
-                    && (a.Meeting.OrganizationId == org || org == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
@@ -330,7 +330,7 @@ namespace CmsData
             Expression<Func<Person, int>> pred = p =>
                 p.Contributions.Count(c => c.ContributionDate >= mindt
                     && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
-                        || (p.Family.HeadOfHouseholdId == p.PeopleId 
+                        || (p.Family.HeadOfHouseholdId == p.PeopleId
                             && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
                     && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
@@ -388,10 +388,10 @@ namespace CmsData
         {
             Expression<Func<Person, int>> pred = p =>
                 p.OrganizationMembers.Count(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && (m.Organization.ScheduleId == sched || sched == 0)
+                    (sched == 0 || m.Organization.ScheduleId == sched)
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
@@ -459,9 +459,9 @@ namespace CmsData
                 p.Attends.Any(a => a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
                     && ids.Contains(a.MemberTypeId)
-                    && (a.Meeting.OrganizationId == org || org == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -479,10 +479,10 @@ namespace CmsData
         {
             Expression<Func<Person, DateTime?>> pred = p =>
                 p.OrganizationMembers.Where(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                .First().CreatedDate.Value.Date;
+                    (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    ).First().CreatedDate.Value.Date;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Constant(date, typeof(DateTime?));
             return Compare(left, op, right);
@@ -508,18 +508,20 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred1 = p =>
                     p.OrganizationMembers.Any(m =>
-                        (m.OrganizationId == org || org == 0)
-                        && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                        && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                        (org == 0 || m.OrganizationId == org)
+                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                        );
             var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
             if (name.HasValue())
             {
                 Expression<Func<Person, bool>> pred = p =>
                         p.OrganizationMembers.Any(m =>
-                            (m.OrganizationId == org || org == 0)
-                            && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                            && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                            && m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.Contains(name)));
+                            m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.Contains(name))
+                            && (org == 0 || m.OrganizationId == org)
+                            && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                            && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                            );
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
                 if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                     expr = Expression.Not(expr);
@@ -529,10 +531,11 @@ namespace CmsData
             {
                 Expression<Func<Person, bool>> pred = p =>
                         p.OrganizationMembers.Any(m =>
-                            (m.OrganizationId == org || org == 0)
-                            && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                            && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                            && m.OrgMemMemTags.Count() == 0);
+                            m.OrgMemMemTags.Count() == 0
+                            && (org == 0 || m.OrganizationId == org)
+                            && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                            && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                            );
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
                 if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                     expr = Expression.Not(expr);
@@ -550,10 +553,10 @@ namespace CmsData
         {
             Expression<Func<Person, DateTime?>> pred = p =>
                 p.OrganizationMembers.Where(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                .Min(m => m.EnrollmentDate);
+                    (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    ).Min(m => m.EnrollmentDate);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Property(parm, prop2);
             return Compare(left, op, right);
@@ -569,10 +572,11 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && m.EnrollmentDate.Value.Date == date);
+                    m.EnrollmentDate.Value.Date == date
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
@@ -588,10 +592,10 @@ namespace CmsData
         {
             Expression<Func<Person, int?>> pred = p =>
                 SqlMethods.DateDiffDay(p.OrganizationMembers.Where(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                .Min(m => m.EnrollmentDate), Util.Now);
+                    (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    ).Min(m => m.EnrollmentDate), Util.Now);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Constant(days, typeof(int?));
             return Compare(left, op, right);
@@ -658,10 +662,10 @@ namespace CmsData
         {
             Expression<Func<Person, DateTime?>> pred = p =>
                 p.OrganizationMembers.Where(m =>
-                    (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                .First().InactiveDate;
+                    (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    ).First().InactiveDate;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Constant(date, typeof(DateTime?));
             return Compare(left, op, right);
@@ -724,11 +728,10 @@ namespace CmsData
         {
             Expression<Func<Person, decimal>> pred = p =>
                 p.OrganizationMembers.Where(om =>
-                    (om.OrganizationId == org || org == 0)
-                    && (om.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (om.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
-                    .Average(om => om.AttendPct).Value;
-
+                    (org == 0 || om.OrganizationId == org)
+                    && (divid == 0 || om.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || om.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    ).Average(om => om.AttendPct).Value;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(pct), left.Type);
             return Compare(left, op, right);
@@ -745,17 +748,16 @@ namespace CmsData
             int cnt)
         {
             var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
-
             Expression<Func<Person, int>> pred = p =>
-
                 p.Attends.Count(a =>
                     a.AttendanceFlag == true
                     && a.MeetingDate >= start && a.MeetingDate <= end
-                    && (a.Meeting.OrganizationId == org || org == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.Meeting.OrganizationId)
-                        .DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.Meeting.OrganizationId)
-                        .DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.Meeting.OrganizationId)
+                        .DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.Meeting.OrganizationId)
+                        .DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
 
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
@@ -778,33 +780,33 @@ namespace CmsData
                 p.Attends.Count(a =>
                     a.EffAttendFlag != null
                     && a.MeetingDate >= start && a.MeetingDate <= end
-                    && (a.OrganizationId == org || org == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
+                    && (org == 0 || a.OrganizationId == org)
+                    && (divid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))))
 
                     == 0 ? 0 :
 
                 p.Attends.Count(a =>
                     a.EffAttendFlag == true
                     && a.MeetingDate >= start && a.MeetingDate <= end
-                    && (a.OrganizationId == org || org == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0))
+                    && (org == 0 || a.OrganizationId == org)
+                    && (divid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))))
 
                     * 100.0 /
 
                 p.Attends.Count(a =>
                     a.EffAttendFlag != null
                     && a.MeetingDate >= start && a.MeetingDate <= end
-                    && (a.OrganizationId == org || org == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
-                        .DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                    && (org == 0 || a.OrganizationId == org)
+                    && (divid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || Db.Organizations.Single(o => o.OrganizationId == a.OrganizationId)
+                        .DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))));
 
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(pct), left.Type);
@@ -822,10 +824,11 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                     m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
-                    && (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0)
-                    && (m.Pending ?? false) == false);
+                    && (m.Pending ?? false) == false
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -842,9 +845,10 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                     m.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive
-                    && (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -861,9 +865,10 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                     (m.Pending ?? false) == true
-                    && (m.OrganizationId == org || org == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0)
-                    && (m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0));
+                    && (org == 0 || m.OrganizationId == org)
+                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -876,7 +881,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                    m.Organization.DivOrgs.Any(t => t.Division.ProgId == DbUtil.BFClassOrgTagId)
+                    m.Organization.IsBibleFellowshipOrg == true
                     && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
