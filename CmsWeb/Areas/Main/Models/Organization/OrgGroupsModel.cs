@@ -19,6 +19,7 @@ namespace CMSWeb.Models
         public string ingroup { get; set; }
         public string notgroup { get; set; }
         public bool notgroupactive { get; set; }
+        public string sort { get; set; }
 
         public string OrgName
         {
@@ -90,10 +91,26 @@ namespace CMSWeb.Models
                     q = q.Where(om => om.OrgMemMemTags.Count() == 0);
 
             count = q.Count();
+            if (!sort.HasValue())
+                sort = "Name";
+            switch(sort)
+            {
+                case "Request":
+                    q = from m in q
+                         let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
+                        orderby !ck, m.Request == null ? 2 : 1, m.Request
+                        select m;
+                    break;
+                case "Name":
+                    q = from m in q
+                        let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
+                        orderby !ck, m.Person.Name2
+                        select m;
+                    break;
+            }
             var q2 = from m in q
                      let p = m.Person
                      let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
-                     orderby !ck, p.Name2
                      select new PersonInfo
                      {
                          PeopleId = m.PeopleId,

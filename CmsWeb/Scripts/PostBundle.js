@@ -61,6 +61,7 @@
         $('#editid').val(tr.attr("cid"));
         $('#pid').val($("a.pid", tr).text());
         $('#name').val($("td.name", tr).text());
+        $('#fund').val($("td.fund", tr).attr('val'));
         var a = $('#amt');
         a.val($("td.amt", tr).attr("val"));
         $('#fund').val($("td.fund", tr).attr("val"));
@@ -97,20 +98,23 @@
         d.dialog("open");
         d.parent().center();
     });
-    $(".clickEdit").editable("/PostBundle/Edit/", {
-        indicator: "<img src='/images/loading.gif'>",
-        tooltip: "Click to edit...",
-        style: 'display: inline',
-        width: '200px'
-    });
-    $(".clickSelect").editable("/PostBundle/Edit/", {
-        indicator: '<img src="/images/loading.gif">',
-        loadtype: 'post',
-        loadurl: "/PostBundle/Funds/",
-        type: "select",
-        submit: "OK",
-        style: 'display: inline'
-    });
+    $.MakeEditable = function() {
+        $(".clickEdit").editable("/PostBundle/Edit/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: '200px'
+        });
+        $(".clickSelect").editable("/PostBundle/Edit/", {
+            indicator: '<img src="/images/loading.gif">',
+            loadtype: 'post',
+            loadurl: "/PostBundle/Funds/",
+            type: "select",
+            submit: "OK",
+            style: 'display: inline'
+        });
+    }
+    $.MakeEditable();
     $.PostRow = function() {
         var n = parseFloat($('#amt').val());
         if (!n > 0) {
@@ -134,8 +138,9 @@
                     + '</td><td class="amt" val="' + $('#amt').val()
                     + '" align="right">' + ret.amt
                     + '</td><td val="' + $('#fund').val()
-                    + '" class="fund">' + ret.fund
-                    + '</td><td class="notes">' + $('#notes').val()
+                    + '"class="fund"><span id="f' + ret.cid
+                    + '" class="clickSelect">' + ret.fund
+                    + '</span></td><td class="notes">' + $('#notes').val()
                     + '</td><td><a class="edit" href="#">edit</a>'
                     + '</td><td><a class="delete" href="#">delete</a></td>'
                     + '</tr>');
@@ -143,6 +148,7 @@
             $('#editid').val('');
             $('#entry input').val('');
             $('#fund').val($('#fundid').val());
+            $.MakeEditable();
             $('#pid').focus();
             $('a.edit').show();
             $('a.update').show();

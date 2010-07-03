@@ -47,7 +47,7 @@
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration and Pay <%=amt.ToString("c") %>' />
     <% }
-       else if(Model.org.Terms.HasValue())
+       else if(Model.Terms.HasValue())
        { %>
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration and Read Terms' />

@@ -66,7 +66,7 @@ namespace CMSWeb.Areas.Public.Controllers
                     orgid = id,
                     first = "David",
                     last = "Carroll",
-                    dob = "5/30/52",
+                    dob = "3/2/07",
                     email = "david@davidcarroll.name",
                     phone = "9017581862",
                     homecell = "h",
@@ -261,7 +261,7 @@ namespace CMSWeb.Areas.Public.Controllers
             DbUtil.Db.SetNoLock();
             var d = DbUtil.Db.GetDatum<OnlineRegModel>(m);
 
-            if (m.Amount() == 0 && !m.org.Terms.HasValue())
+            if (m.Amount() == 0 && !m.Terms.HasValue())
                 return RedirectToAction("Confirm",
                     new
                     {
@@ -283,7 +283,7 @@ namespace CMSWeb.Areas.Public.Controllers
                 testing = m.testing ?? false,
                 PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
-                Terms = Util.PickFirst(p.org.Terms, p.org.Division.Terms, ""),
+                Terms = Util.PickFirst(m.Terms, ""),
                 _URL = m.URL,
                 _timeout = INT_timeout,
                 _datumid = d.Id,
@@ -292,7 +292,7 @@ namespace CMSWeb.Areas.Public.Controllers
             pm.Misc1 = pm.NameOnAccount;
 
             SetHeaders(m.orgid ?? m.divid ?? 0);
-            if (m.Amount() == 0 && m.org.Terms.HasValue())
+            if (m.Amount() == 0 && m.Terms.HasValue())
                 return View("Terms", pm);
             return View("Payment", pm);
         }

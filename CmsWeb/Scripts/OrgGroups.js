@@ -13,6 +13,11 @@
         ev.preventDefault();
         $.loadTable();
     });
+    $('a.sortable').live("click", function(ev) {
+        ev.preventDefault();
+        $('#sort').val($(this).text());
+        $.loadTable();
+    });
     $("#groupsform").delegate("#memtype", "change", $.loadTable);
 
     $("#ingroup, #notgroup").keypress(function(ev) {
@@ -90,6 +95,6 @@
     });
     $('#RemoveSelectedFromTargetGroup').live('click', function(ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
-    }); 
+    });
 });
 

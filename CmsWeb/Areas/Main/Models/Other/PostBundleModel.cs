@@ -78,12 +78,22 @@ namespace CMSWeb.Models
                         City = d.Contribution.Person.PrimaryCity,
                         State = d.Contribution.Person.PrimaryState,
                         Zip = d.Contribution.Person.PrimaryZip,
-                        Age = d.Contribution.Person.Age
+                        Age = d.Contribution.Person.Age,
+                        extra = d.Contribution.ExtraDatum.Data
                     };
             var list = q.ToList();
             foreach (var c in list)
-                if (!c.Name.HasValue() && c.eac.HasValue())
-                    c.Name = Util.Decrypt(c.eac);
+            {
+                string s = null;
+                if (!c.PeopleId.HasValue && c.extra.HasValue())
+                {
+                    s = c.extra;
+                    if(c.eac.HasValue())
+                        s += " (" + Util.Decrypt(c.eac) + ")";
+                    if (s.HasValue())
+                        c.Name = s;
+                }
+            }
             return list;
         }
         public IEnumerable<FundTotal> TotalsByFund()
@@ -262,7 +272,9 @@ namespace CMSWeb.Models
             var rd = GetNames(names);
             if (rd == null)
                 return null;
-            return BatchProcessCSV(lines, rd, date);
+            if (rd.ContainsKey("ProfileID"))
+                return BatchProcessServiceU(lines, date);
+            return BatchProcess(lines, rd, date);
         }
         private static int? BatchProcessMagTek(string lines, DateTime date)
         {
@@ -278,7 +290,7 @@ namespace CMSWeb.Models
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 
-            var re = new Regex(@"CT(?<rt>[\d?]+)A(?<ac>[\d ?]*)C(?<ck>[\d?]+)M", 
+            var re = new Regex(@"CT(?<rt>[\d?]+)A(?<ac>[\d ?]*)C(?<ck>[\d?]+)M",
                 RegexOptions.IgnoreCase);
             var m = re.Match(lines);
             while (m.Success)
@@ -320,7 +332,7 @@ namespace CMSWeb.Models
                     bd.Contribution.ContributionDesc = ck;
                 }
                 m = m.NextMatch();
-            } 
+            }
             bh.TotalChecks = 0;
             bh.TotalCash = 0;
             bh.TotalEnvelopes = 0;
@@ -351,7 +363,7 @@ namespace CMSWeb.Models
             bh.TotalEnvelopes = 0;
             DbUtil.Db.SubmitChanges();
         }
-        public static int? BatchProcessCSV(string[] lines, Dictionary<string, string> Names, DateTime date)
+        public static int? BatchProcess(string[] lines, Dictionary<string, string> Names, DateTime date)
         {
             var cols = lines[0].Trim().SplitStr(",\t");
             var now = DateTime.Now;
@@ -361,7 +373,7 @@ namespace CMSWeb.Models
             var bh = GetBundleHeader(date, now);
             for (var i = 1; i < lines.Length; i++)
             {
-                var a = lines[i].Trim().SplitCSV();
+                var a = lines[i].Trim().SplitStr(",\t");
                 var bd = new CmsData.BundleDetail
                 {
                     CreatedBy = Util.UserId,
@@ -428,6 +440,107 @@ namespace CMSWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
+        private static int? FindFund(string s)
+        {
+            var qf = from f in DbUtil.Db.ContributionFunds
+                     where f.FundName == s
+                     select f;
+            var fund = qf.FirstOrDefault();
+            if (fund == null)
+                return null;
+            return fund.FundId;
+        }
+        private static CmsData.BundleDetail CreateContribution(DateTime date, int fundid)
+        {
+            var bd = new CmsData.BundleDetail
+            {
+                CreatedBy = Util.UserId,
+                CreatedDate = Util.Now,
+            };
+            bd.Contribution = new Contribution
+            {
+                CreatedBy = Util.UserId,
+                CreatedDate = Util.Now,
+                ContributionDate = date,
+                FundId = fundid,
+                ContributionStatusId = 0,
+                ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+            };
+            return bd;
+        }
+        public static int? BatchProcessServiceU(string[] lines, DateTime date)
+        {
+            var cols = lines[0].Trim().SplitStr(",");
+            var now = DateTime.Now;
+
+            var bh = GetBundleHeader(date, now);
+            for (var i = 1; i < lines.Length; i++)
+            {
+                var a = lines[i].Trim().SplitCSV();
+
+                string ac = null, oth = null, first = null, last = null, addr = null;
+                var dt = date;
+                for (var c = 1; c < a.Length; c++)
+                {
+                    var col = cols[c].Trim();
+                    switch (col)
+                    {
+                        case "Date Entered":
+                            dt = a[c].ToDate() ?? date;
+                            break;
+                        case "ProfileID":
+                            ac = a[c];
+                            break;
+                        case "First Name":
+                            first = a[c];
+                            break;
+                        case "Last Name":
+                            last = a[c];
+                            break;
+                        case "Address":
+                            addr = a[c];
+                            break;
+                        case "Designation for &quot;Other&quot;":
+                            oth = a[c];
+                            break;
+                    }
+                }
+                var eac = Util.Encrypt(ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                string bankac = null;
+                ExtraDatum ed = null;
+                if (pid == null)
+                {
+                    bankac = eac;
+                    ed = new ExtraDatum { Data = "{1}, {0}; {2}".Fmt(first, last, addr), Stamp = Util.Now };
+                }
+                CmsData.BundleDetail bd = null;
+                for (var c = 1; c < a.Length; c++)
+                {
+                    var col = cols[c].Trim();
+                    if (col != "Total" && a[c].StartsWith("$") && a[c].GetAmount() > 0)
+                    {
+                        var fundid = FindFund(col);
+                        bd = CreateContribution(date, fundid ?? 1);
+                        bd.Contribution.ContributionAmount = a[c].GetAmount();
+                        if (col == "Other")
+                            col = oth;
+                        if (!fundid.HasValue)
+                            bd.Contribution.ContributionDesc = col;
+                        bd.Contribution.BankAccount = bankac;
+                        bd.Contribution.PeopleId = pid;
+                        bh.BundleDetails.Add(bd);
+                        if (ed != null)
+                            bd.Contribution.ExtraDatum = ed;
+                    }
+                }
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
         public static string Tip(int? pid, int? age, string address, string city, string state, string zip)
         {
             return "PeopleId: {0}|Age: {1}|{2}|{3}".Fmt(pid, age, address, Util.FormatCSZ(city, state, zip));
@@ -436,6 +549,7 @@ namespace CMSWeb.Models
         {
             public int ContributionId { get; set; }
             public string eac { get; set; }
+            public string extra { get; set; }
             public int? PeopleId { get; set; }
             public int? Age { get; set; }
             public string Address { get; set; }

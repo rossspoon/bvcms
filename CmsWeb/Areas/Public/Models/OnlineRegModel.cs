@@ -87,6 +87,15 @@ namespace CMSWeb.Models
                 return div.Instructions;
             }
         }
+        public string Terms
+        {
+            get
+            {
+                if (org != null)
+                    return Util.PickFirst(org.Terms, div != null ? div.Terms : "");
+                return div.Terms;
+            }
+        }
 
         private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
         public IList<OnlineRegPersonModel> List
