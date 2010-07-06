@@ -18,6 +18,7 @@
             }
             else
                 $(f).html(ret).ready(function() {
+                    $("a.bt").button();
                     $(".addrcol").tooltip({
                         showURL: false,
                         showBody: "|"
@@ -27,6 +28,7 @@
         });
         return false;
     });
+    $("a.bt").button();
     $('a.clear').live('click', function(ev) {
         ev.preventDefault();
         $("#name").val('');

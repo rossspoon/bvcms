@@ -31,7 +31,7 @@ namespace CMSWeb
             cssbundle.Text = ViewExtensions2.StandardCss();
             jsbundle.Text = SquishIt.Framework.Bundle.JavaScript()
                 .Add("/Content/js/jquery-1.4.2.js")
-                .Add("/Content/js/jquery-ui-1.8.1.custom.js")
+                .Add("/Content/js/jquery-ui-1.8.2.custom.js")
                 .Add("/Content/js/jquery.bgiframe-2.1.1.js")
                 .Add("/Content/js/hoverIntent.js")
                 .Add("/Content/js/jquery-cookie.js")

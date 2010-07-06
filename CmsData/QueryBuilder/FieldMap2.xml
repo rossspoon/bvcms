@@ -405,5 +405,8 @@
     <Field Name="PeopleExtraDate" Title="ExtraValueDate" Type="String">
       ExtraValue field = (field:value)
     </Field>
+    <Field Name="PeopleExtraInt" Title="ExtraValueInt" Type="String">
+      ExtraValue field = (field:value)
+    </Field>
   </Category>
 </Fields>

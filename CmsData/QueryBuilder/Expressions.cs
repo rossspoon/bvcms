@@ -266,6 +266,20 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression PeopleExtraInt(
+            ParameterExpression parm,
+            CompareType op,
+            string value)
+        {
+            var a = value.Split(new char[] { ':' }, 2);
+            Expression<Func<Person, bool>> pred = p =>
+                p.PeopleExtras.Any(e =>
+                    e.Field == a[0] && e.IntValue == a[1].ToInt());
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression PeopleExtraDate(
             ParameterExpression parm,
             CompareType op,

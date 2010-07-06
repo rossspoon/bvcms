@@ -46,6 +46,9 @@ namespace CMSWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SearchFamily(SearchModel m)
         {
+            m.dob = null;
+            var a = m.name.SplitStr(" ");
+            m.name = a[a.Length - 1];
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -96,7 +99,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult AddNewFamily(SearchModel m)
         {
             var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState);
+            p.ValidateModelForNew(ModelState, true);
             if (!ModelState.IsValid)
                 return View("FormFull", m);
             return View("list", m);
@@ -105,7 +108,7 @@ namespace CMSWeb.Areas.Main.Controllers
         public ActionResult AddToFamily(SearchModel m)
         {
             var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState);
+            p.ValidateModelForNew(ModelState, false);
             if (!ModelState.IsValid)
                 return View("FormAbbreviated", m);
             return View("list", m);

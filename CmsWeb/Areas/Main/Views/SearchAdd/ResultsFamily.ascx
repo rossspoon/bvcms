@@ -14,40 +14,33 @@
         Html.RenderPartial("HiddenPerson", p);
     } 
 %>
-<table width="100%">
-<tr><th colspan="4" align="left">Showing <%=Model.Showcount %> of <%=Model.Count %></th></tr>
-<tr><td rowspan="2">
-    <table id="people" class="grid" style="font-size:12px;" cellpadding="3">
-    <tr class="headrow">
-        <th>Name</th>
-        <th>Address</th>
-        <th>CityStateZip</th>
-        <th>Age</th>
-    </tr>
-    <% if(ViewData.Model.Count == 0)
-       { %>
-    <tr><td colspan="5">No matching records.</td></tr>
-    <% } %>
-    <% foreach (var c in ViewData.Model.PeopleList())
-       { %>
-    <tr>
-        <td><a href="/SearchAdd/FormAbbreviated/<%=c.FamilyId %>" class="formlink"><%=c.Name%></a></td>
-        <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
-        <td><%=c.CityStateZip%></td>
-        <td><%=c.Age%></td>
-    </tr>
-    <% } %>
-    </table>
-</td>
-<td valign="top" align="right">
-    <a class="formlink" href="/SearchAdd/SearchFamily/" title="back to family search">go back</a>
-</td>
+<table id="people" width="100%" class="grid" style="font-size:12px;" cellpadding="3">
+<tr class="headrow">
+    <th>Name</th>
+    <th>Address</th>
+    <th>CityStateZip</th>
+    <th>Age</th>
 </tr>
-<% if (Model.CanAdd)
+<% if(ViewData.Model.Count == 0)
    { %>
-<tr><td valign="bottom" align="right">
-    <a href="/SearchAdd/FormFull/" class="bt formlink">Add<br />New Family</a>
-</td></tr>
+<tr><td colspan="5">No matching records.</td></tr>
+<% } %>
+<% foreach (var c in ViewData.Model.PeopleList())
+   { %>
+<tr>
+    <td><a href="/SearchAdd/FormAbbreviated/<%=c.FamilyId %>" class="formlink"><%=c.Name%></a></td>
+    <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
+    <td><%=c.CityStateZip%></td>
+    <td><%=c.Age%></td>
+</tr>
 <% } %>
 </table>
-
+<p>Showing <%=Model.Showcount %> of <%=Model.Count %></p>
+<div align="right">
+Click a link above to add to that person's family or
+<% if (Model.CanAdd)
+   { %>
+    <a href="/SearchAdd/FormFull/" class="bt formlink">Add New Family</a>
+<% } %>
+    <a class="bt formlink" href="/SearchAdd/SearchFamily/" title="back to family search">Go Back</a>
+</div>

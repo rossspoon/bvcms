@@ -25,12 +25,11 @@
 <input type="hidden" name="m.List[<%=n %>].zip" value="<%=np.zip%>" />
 <input type="hidden" name="m.List[<%=n %>].city" value="<%=np.city%>" />
 <input type="hidden" name="m.List[<%=n %>].state" value="<%=np.state%>" />
+<h4>Add Person To Existing Family</h4>
 <table width="100%">
-    <tr><th colspan="2">Add Person To Existing Family</th>
-        <td align="right"><a href="/SearchAdd/PersonCancel/<%=n %>" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "back to search person"%>">go back</a></td>
-    </tr>
     <% Html.RenderPartial("EditPerson", np);%>
-    <tr><td colspan="2"></td>
-        <td><a href="/SearchAdd/AddToFamily/" class="bt formlink default">Submit</a></td>
-    </tr>
 </table>
+<div align="right" >
+<a href="/SearchAdd/AddToFamily/" class="bt formlink default">Submit</a>
+<a href="/SearchAdd/PersonCancel/<%=n %>" class="bt formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "back to search person"%>">go back</a></td>
+</div>

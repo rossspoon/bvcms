@@ -27,7 +27,7 @@ public static class ViewExtensions2
     public static string StandardCss()
     {
         return SquishIt.Framework.Bundle.Css()
-                       .Add("/Content/jquery-ui-1.8.1.custom.css")
+                       .Add("/Content/jquery-ui-1.8.2.custom.css")
                        .Add("/Content/pager.css")
                        .Add("/Content/style2.css")
                        .Add("/Content/superfish.css")

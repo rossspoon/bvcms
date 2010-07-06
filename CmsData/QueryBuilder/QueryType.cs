@@ -102,6 +102,7 @@ namespace CmsData
         PreviousCurrentOrg,
         PeopleExtra,
         PeopleExtraDate,
+        PeopleExtraInt,
         PeopleId,
         PleaseVisit,
         PositionInFamilyId,

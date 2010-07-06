@@ -14,45 +14,38 @@
         Html.RenderPartial("HiddenPerson", p);
     }
 %>
-<table width="100%">
-<tr><th colspan="4" align="left">Showing <%=Model.Showcount %> of <%=Model.Count %></th></tr>
-<tr>
-<td rowspan="2">
-    <table id="people" class="grid" style="font-size:12px;" cellpadding="3">
-    <tr class="headrow">
-        <th>Name</th>
-        <th>Address</th>
-        <th>CityStateZip</th>
-        <th>Age</th>
-    </tr>
-    <% if(ViewData.Model.Count == 0)
-       { %>
-    <tr><td colspan="5">No matching records.</td></tr>
-    <% } %>
-    <% foreach (var c in ViewData.Model.PeopleList())
-       { %>
-    <tr>
-        <td><a href="/SearchAdd/Select/<%=c.PeopleId %>" class="formlink"><%=c.Name%></a></td>
-        <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
-        <td><%=c.CityStateZip%></td>
-        <td><%=c.Age%></td>
-    </tr>
-    <% } %>
-    </table>
-</td>
-<td valign="top" align="right">
-    <a class="formlink" href="/SearchAdd/SearchPerson/" title="back to person search">go back</a>
-</td>
+<table id="people" width="100%" class="grid" style="font-size:12px;" cellpadding="3">
+<tr class="headrow">
+    <th>Name</th>
+    <th>Address</th>
+    <th>CityStateZip</th>
+    <th>Age</th>
 </tr>
-<tr><td valign="bottom" align="right">
+<% if(ViewData.Model.Count == 0)
+   { %>
+<tr><td colspan="5">No matching records.</td></tr>
+<% } %>
+<% foreach (var c in ViewData.Model.PeopleList())
+   { %>
+<tr>
+    <td><a href="/SearchAdd/Select/<%=c.PeopleId %>" class="formlink"><%=c.Name%></a></td>
+    <td class="addrcol" title="<%=c.ToolTip %>"><%=c.Address%></td>
+    <td><%=c.CityStateZip%></td>
+    <td><%=c.Age%></td>
+</tr>
+<% } %>
+</table>
+<p>Showing <%=Model.Showcount %> of <%=Model.Count %>
+</p>
+<div align="right">
+Click a link above to select that person or
 <% if (Model.type == "family")
    { %>
-    <a href="/SearchAdd/FormAbbreviated/<%=Model.typeid %>" class="bt formlink">Add<br />Add New<br />Person</a>
+    <a href="/SearchAdd/FormAbbreviated/<%=Model.typeid %>" class="bt formlink">Add New Person</a>
 <% }
    else
    { %>
-    <a href="/SearchAdd/SearchFamily/" class="bt formlink">Search for<br />Family</a>
+    <a href="/SearchAdd/SearchFamily/" class="bt formlink">Search for Family</a>
 <% } %>
-</td></tr>
-</table>
-
+<a class="bt formlink" href="/SearchAdd/SearchPerson/" title="back to person search">go back</a>
+</div>

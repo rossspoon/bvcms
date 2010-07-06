@@ -1,5 +1,5 @@
 /*!
- * jQuery UI 1.8.1
+ * jQuery UI 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -7,11 +7,20 @@
  *
  * http://docs.jquery.com/UI
  */
-;jQuery.ui || (function($) {
+
+(function($) {
+
+// prevent duplicate loading
+// this is only a problem because we proxy existing functions
+// and we don't want to double proxy them
+$.ui = $.ui || {};
+if ($.ui.version) {
+	return;
+}
 
 //Helper functions and ui object
-$.ui = {
-	version: "1.8.1",
+$.extend($.ui, {
+	version: "1.8.2",
 
 	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
 	plugin: {
@@ -74,6 +83,9 @@ $.ui = {
 		BACKSPACE: 8,
 		CAPS_LOCK: 20,
 		COMMA: 188,
+		COMMAND: 91,
+		COMMAND_LEFT: 91, // COMMAND
+		COMMAND_RIGHT: 93,
 		CONTROL: 17,
 		DELETE: 46,
 		DOWN: 40,
@@ -83,6 +95,7 @@ $.ui = {
 		HOME: 36,
 		INSERT: 45,
 		LEFT: 37,
+		MENU: 93, // COMMAND_RIGHT
 		NUMPAD_ADD: 107,
 		NUMPAD_DECIMAL: 110,
 		NUMPAD_DIVIDE: 111,
@@ -96,9 +109,10 @@ $.ui = {
 		SHIFT: 16,
 		SPACE: 32,
 		TAB: 9,
-		UP: 38
+		UP: 38,
+		WINDOWS: 91 // COMMAND
 	}
-};
+});
 
 //jQuery plugins
 $.fn.extend({
@@ -201,7 +215,7 @@ $.extend($.expr[':'], {
 
 })(jQuery);
 /*!
- * jQuery UI Widget 1.8.1
+ * jQuery UI Widget 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -437,7 +451,7 @@ $.Widget.prototype = {
 
 })( jQuery );
 /*!
- * jQuery UI Mouse 1.8.1
+ * jQuery UI Mouse 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -588,7 +602,7 @@ $.widget("ui.mouse", {
 
 })(jQuery);
 /*
- * jQuery UI Position 1.8.1
+ * jQuery UI Position 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -821,7 +835,7 @@ if ( !$.offset.setOffset ) {
 
 }( jQuery ));
 /*
- * jQuery UI Draggable 1.8.1
+ * jQuery UI Draggable 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -1281,7 +1295,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 });
 
 $.extend($.ui.draggable, {
-	version: "1.8.1"
+	version: "1.8.2"
 });
 
 $.ui.plugin.add("draggable", "connectToSortable", {
@@ -1618,7 +1632,7 @@ $.ui.plugin.add("draggable", "zIndex", {
 
 })(jQuery);
 /*
- * jQuery UI Resizable 1.8.1
+ * jQuery UI Resizable 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -2138,7 +2152,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 });
 
 $.extend($.ui.resizable, {
-	version: "1.8.1"
+	version: "1.8.2"
 });
 
 /*
@@ -2417,505 +2431,7 @@ var isNumber = function(value) {
 
 })(jQuery);
 /*
- * jQuery UI Autocomplete 1.8.1
- *
- * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
- *
- * http://docs.jquery.com/UI/Autocomplete
- *
- * Depends:
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *	jquery.ui.position.js
- */
-(function( $ ) {
-
-$.widget( "ui.autocomplete", {
-	options: {
-		minLength: 1,
-		delay: 300
-	},
-	_create: function() {
-		var self = this,
-			doc = this.element[ 0 ].ownerDocument;
-		this.element
-			.addClass( "ui-autocomplete-input" )
-			.attr( "autocomplete", "off" )
-			// TODO verify these actually work as intended
-			.attr({
-				role: "textbox",
-				"aria-autocomplete": "list",
-				"aria-haspopup": "true"
-			})
-			.bind( "keydown.autocomplete", function( event ) {
-				var keyCode = $.ui.keyCode;
-				switch( event.keyCode ) {
-				case keyCode.PAGE_UP:
-					self._move( "previousPage", event );
-					break;
-				case keyCode.PAGE_DOWN:
-					self._move( "nextPage", event );
-					break;
-				case keyCode.UP:
-					self._move( "previous", event );
-					// prevent moving cursor to beginning of text field in some browsers
-					event.preventDefault();
-					break;
-				case keyCode.DOWN:
-					self._move( "next", event );
-					// prevent moving cursor to end of text field in some browsers
-					event.preventDefault();
-					break;
-				case keyCode.ENTER:
-					// when menu is open or has focus
-					if ( self.menu.active ) {
-						event.preventDefault();
-					}
-					//passthrough - ENTER and TAB both select the current element
-				case keyCode.TAB:
-					if ( !self.menu.active ) {
-						return;
-					}
-					self.menu.select( event );
-					break;
-				case keyCode.ESCAPE:
-					self.element.val( self.term );
-					self.close( event );
-					break;
-				case keyCode.LEFT:
-				case keyCode.RIGHT:
-				case keyCode.SHIFT:
-				case keyCode.CONTROL:
-				case keyCode.ALT:
-					// ignore metakeys (shift, ctrl, alt)
-					break;
-				default:
-					// keypress is triggered before the input value is changed
-					clearTimeout( self.searching );
-					self.searching = setTimeout(function() {
-						self.search( null, event );
-					}, self.options.delay );
-					break;
-				}
-			})
-			.bind( "focus.autocomplete", function() {
-				self.selectedItem = null;
-				self.previous = self.element.val();
-			})
-			.bind( "blur.autocomplete", function( event ) {
-				clearTimeout( self.searching );
-				// clicks on the menu (or a button to trigger a search) will cause a blur event
-				// TODO try to implement this without a timeout, see clearTimeout in search()
-				self.closing = setTimeout(function() {
-					self.close( event );
-					self._change( event );
-				}, 150 );
-			});
-		this._initSource();
-		this.response = function() {
-			return self._response.apply( self, arguments );
-		};
-		this.menu = $( "<ul></ul>" )
-			.addClass( "ui-autocomplete" )
-			.appendTo( "body", doc )
-			.menu({
-				focus: function( event, ui ) {
-					var item = ui.item.data( "item.autocomplete" );
-					if ( false !== self._trigger( "focus", null, { item: item } ) ) {
-						// use value to match what will end up in the input, if it was a key event
-						if ( /^key/.test(event.originalEvent.type) ) {
-							self.element.val( item.value );
-						}
-					}
-				},
-				selected: function( event, ui ) {
-					var item = ui.item.data( "item.autocomplete" );
-					if ( false !== self._trigger( "select", event, { item: item } ) ) {
-						self.element.val( item.value );
-					}
-					self.close( event );
-					// only trigger when focus was lost (click on menu)
-					var previous = self.previous;
-					if ( self.element[0] !== doc.activeElement ) {
-						self.element.focus();
-						self.previous = previous;
-					}
-					self.selectedItem = item;
-				},
-				blur: function( event, ui ) {
-					if ( self.menu.element.is(":visible") ) {
-						self.element.val( self.term );
-					}
-				}
-			})
-			.zIndex( this.element.zIndex() + 1 )
-			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
-			.css({ top: 0, left: 0 })
-			.hide()
-			.data( "menu" );
-		if ( $.fn.bgiframe ) {
-			 this.menu.element.bgiframe();
-		}
-	},
-
-	destroy: function() {
-		this.element
-			.removeClass( "ui-autocomplete-input" )
-			.removeAttr( "autocomplete" )
-			.removeAttr( "role" )
-			.removeAttr( "aria-autocomplete" )
-			.removeAttr( "aria-haspopup" );
-		this.menu.element.remove();
-		$.Widget.prototype.destroy.call( this );
-	},
-
-	_setOption: function( key ) {
-		$.Widget.prototype._setOption.apply( this, arguments );
-		if ( key === "source" ) {
-			this._initSource();
-		}
-	},
-
-	_initSource: function() {
-		var array,
-			url;
-		if ( $.isArray(this.options.source) ) {
-			array = this.options.source;
-			this.source = function( request, response ) {
-				response( $.ui.autocomplete.filter(array, request.term) );
-			};
-		} else if ( typeof this.options.source === "string" ) {
-			url = this.options.source;
-			this.source = function( request, response ) {
-				$.getJSON( url, request, response );
-			};
-		} else {
-			this.source = this.options.source;
-		}
-	},
-
-	search: function( value, event ) {
-		value = value != null ? value : this.element.val();
-		if ( value.length < this.options.minLength ) {
-			return this.close( event );
-		}
-
-		clearTimeout( this.closing );
-		if ( this._trigger("search") === false ) {
-			return;
-		}
-
-		return this._search( value );
-	},
-
-	_search: function( value ) {
-		this.term = this.element
-			.addClass( "ui-autocomplete-loading" )
-			// always save the actual value, not the one passed as an argument
-			.val();
-
-		this.source( { term: value }, this.response );
-	},
-
-	_response: function( content ) {
-		if ( content.length ) {
-			content = this._normalize( content );
-			this._suggest( content );
-			this._trigger( "open" );
-		} else {
-			this.close();
-		}
-		this.element.removeClass( "ui-autocomplete-loading" );
-	},
-
-	close: function( event ) {
-		clearTimeout( this.closing );
-		if ( this.menu.element.is(":visible") ) {
-			this._trigger( "close", event );
-			this.menu.element.hide();
-			this.menu.deactivate();
-		}
-	},
-	
-	_change: function( event ) {
-		if ( this.previous !== this.element.val() ) {
-			this._trigger( "change", event, { item: this.selectedItem } );
-		}
-	},
-
-	_normalize: function( items ) {
-		// assume all items have the right format when the first item is complete
-		if ( items.length && items[0].label && items[0].value ) {
-			return items;
-		}
-		return $.map( items, function(item) {
-			if ( typeof item === "string" ) {
-				return {
-					label: item,
-					value: item
-				};
-			}
-			return $.extend({
-				label: item.label || item.value,
-				value: item.value || item.label
-			}, item );
-		});
-	},
-
-	_suggest: function( items ) {
-		var ul = this.menu.element
-				.empty()
-				.zIndex( this.element.zIndex() + 1 ),
-			menuWidth,
-			textWidth;
-		this._renderMenu( ul, items );
-		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
-		this.menu.deactivate();
-		this.menu.refresh();
-		this.menu.element.show().position({
-			my: "left top",
-			at: "left bottom",
-			of: this.element,
-			collision: "none"
-		});
-
-		menuWidth = ul.width( "" ).width();
-		textWidth = this.element.width();
-		ul.width( Math.max( menuWidth, textWidth ) );
-	},
-	
-	_renderMenu: function( ul, items ) {
-		var self = this;
-		$.each( items, function( index, item ) {
-			self._renderItem( ul, item );
-		});
-	},
-
-	_renderItem: function( ul, item) {
-		return $( "<li></li>" )
-			.data( "item.autocomplete", item )
-			.append( "<a>" + item.label + "</a>" )
-			.appendTo( ul );
-	},
-
-	_move: function( direction, event ) {
-		if ( !this.menu.element.is(":visible") ) {
-			this.search( null, event );
-			return;
-		}
-		if ( this.menu.first() && /^previous/.test(direction) ||
-				this.menu.last() && /^next/.test(direction) ) {
-			this.element.val( this.term );
-			this.menu.deactivate();
-			return;
-		}
-		this.menu[ direction ]( event );
-	},
-
-	widget: function() {
-		return this.menu.element;
-	}
-});
-
-$.extend( $.ui.autocomplete, {
-	escapeRegex: function( value ) {
-		return value.replace( /([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1" );
-	},
-	filter: function(array, term) {
-		var matcher = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
-		return $.grep( array, function(value) {
-			return matcher.test( value.label || value.value || value );
-		});
-	}
-});
-
-}( jQuery ));
-
-/*
- * jQuery UI Menu (not officially released)
- * 
- * This widget isn't yet finished and the API is subject to change. We plan to finish
- * it for the next release. You're welcome to give it a try anyway and give us feedback,
- * as long as you're okay with migrating your code later on. We can help with that, too.
- *
- * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
- *
- * http://docs.jquery.com/UI/Menu
- *
- * Depends:
- *	jquery.ui.core.js
- *  jquery.ui.widget.js
- */
-(function($) {
-
-$.widget("ui.menu", {
-	_create: function() {
-		var self = this;
-		this.element
-			.addClass("ui-menu ui-widget ui-widget-content ui-corner-all")
-			.attr({
-				role: "listbox",
-				"aria-activedescendant": "ui-active-menuitem"
-			})
-			.click(function( event ) {
-				if ( !$( event.target ).closest( ".ui-menu-item a" ).length ) {
-					return;
-				}
-				// temporary
-				event.preventDefault();
-				self.select( event );
-			});
-		this.refresh();
-	},
-	
-	refresh: function() {
-		var self = this;
-
-		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item):has(a)")
-			.addClass("ui-menu-item")
-			.attr("role", "menuitem");
-		
-		items.children("a")
-			.addClass("ui-corner-all")
-			.attr("tabindex", -1)
-			// mouseenter doesn't work with event delegation
-			.mouseenter(function( event ) {
-				self.activate( event, $(this).parent() );
-			})
-			.mouseleave(function() {
-				self.deactivate();
-			});
-	},
-
-	activate: function( event, item ) {
-		this.deactivate();
-		if (this.hasScroll()) {
-			var offset = item.offset().top - this.element.offset().top,
-				scroll = this.element.attr("scrollTop"),
-				elementHeight = this.element.height();
-			if (offset < 0) {
-				this.element.attr("scrollTop", scroll + offset);
-			} else if (offset > elementHeight) {
-				this.element.attr("scrollTop", scroll + offset - elementHeight + item.height());
-			}
-		}
-		this.active = item.eq(0)
-			.children("a")
-				.addClass("ui-state-hover")
-				.attr("id", "ui-active-menuitem")
-			.end();
-		this._trigger("focus", event, { item: item });
-	},
-
-	deactivate: function() {
-		if (!this.active) { return; }
-
-		this.active.children("a")
-			.removeClass("ui-state-hover")
-			.removeAttr("id");
-		this._trigger("blur");
-		this.active = null;
-	},
-
-	next: function(event) {
-		this.move("next", ".ui-menu-item:first", event);
-	},
-
-	previous: function(event) {
-		this.move("prev", ".ui-menu-item:last", event);
-	},
-
-	first: function() {
-		return this.active && !this.active.prev().length;
-	},
-
-	last: function() {
-		return this.active && !this.active.next().length;
-	},
-
-	move: function(direction, edge, event) {
-		if (!this.active) {
-			this.activate(event, this.element.children(edge));
-			return;
-		}
-		var next = this.active[direction + "All"](".ui-menu-item").eq(0);
-		if (next.length) {
-			this.activate(event, next);
-		} else {
-			this.activate(event, this.element.children(edge));
-		}
-	},
-
-	// TODO merge with previousPage
-	nextPage: function(event) {
-		if (this.hasScroll()) {
-			// TODO merge with no-scroll-else
-			if (!this.active || this.last()) {
-				this.activate(event, this.element.children(":first"));
-				return;
-			}
-			var base = this.active.offset().top,
-				height = this.element.height(),
-				result = this.element.children("li").filter(function() {
-					var close = $(this).offset().top - base - height + $(this).height();
-					// TODO improve approximation
-					return close < 10 && close > -10;
-				});
-
-			// TODO try to catch this earlier when scrollTop indicates the last page anyway
-			if (!result.length) {
-				result = this.element.children(":last");
-			}
-			this.activate(event, result);
-		} else {
-			this.activate(event, this.element.children(!this.active || this.last() ? ":first" : ":last"));
-		}
-	},
-
-	// TODO merge with nextPage
-	previousPage: function(event) {
-		if (this.hasScroll()) {
-			// TODO merge with no-scroll-else
-			if (!this.active || this.first()) {
-				this.activate(event, this.element.children(":last"));
-				return;
-			}
-
-			var base = this.active.offset().top,
-				height = this.element.height();
-				result = this.element.children("li").filter(function() {
-					var close = $(this).offset().top - base + height - $(this).height();
-					// TODO improve approximation
-					return close < 10 && close > -10;
-				});
-
-			// TODO try to catch this earlier when scrollTop indicates the last page anyway
-			if (!result.length) {
-				result = this.element.children(":first");
-			}
-			this.activate(event, result);
-		} else {
-			this.activate(event, this.element.children(!this.active || this.first() ? ":last" : ":first"));
-		}
-	},
-
-	hasScroll: function() {
-		return this.element.height() < this.element.attr("scrollHeight");
-	},
-
-	select: function( event ) {
-		this._trigger("selected", event, { item: this.active });
-	}
-});
-
-}(jQuery));
-/*
- * jQuery UI Button 1.8.1
+ * jQuery UI Button 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -2931,8 +2447,8 @@ $.widget("ui.menu", {
 
 var lastActive,
 	baseClasses = "ui-button ui-widget ui-state-default ui-corner-all",
-	otherClasses = "ui-state-hover ui-state-active " +
-		"ui-button-icons-only ui-button-icon-only ui-button-text-icons ui-button-text-icon ui-button-text-only",
+	stateClasses = "ui-state-hover ui-state-active ",
+	typeClasses = "ui-button-icons-only ui-button-icon-only ui-button-text-icons ui-button-text-icon ui-button-text-only",
 	formResetHandler = function( event ) {
 		$( ":ui-button", event.target.form ).each(function() {
 			var inst = $( this ).data( "button" );
@@ -3133,7 +2649,7 @@ $.widget( "ui.button", {
 		this.element
 			.removeClass( "ui-helper-hidden-accessible" );
 		this.buttonElement
-			.removeClass( baseClasses + " " + otherClasses )
+			.removeClass( baseClasses + " " + stateClasses + " " + typeClasses )
 			.removeAttr( "role" )
 			.removeAttr( "aria-pressed" )
 			.html( this.buttonElement.find(".ui-button-text").html() );
@@ -3194,7 +2710,7 @@ $.widget( "ui.button", {
 			}
 			return;
 		}
-		var buttonElement = this.buttonElement,
+		var buttonElement = this.buttonElement.removeClass( typeClasses ),
 			buttonText = $( "<span></span>" )
 				.addClass( "ui-button-text" )
 				.html( this.options.label )
@@ -3272,7 +2788,7 @@ $.widget( "ui.buttonset", {
 			})
 				.removeClass( "ui-corner-left ui-corner-right" )
 			.end()
-			.button( "destroy" )
+			.button( "destroy" );
 
 		$.Widget.prototype.destroy.call( this );
 	}
@@ -3280,7 +2796,7 @@ $.widget( "ui.buttonset", {
 
 }( jQuery ) );
 /*
- * jQuery UI Dialog 1.8.1
+ * jQuery UI Dialog 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -3934,7 +3450,7 @@ $.widget("ui.dialog", {
 });
 
 $.extend($.ui.dialog, {
-	version: "1.8.1",
+	version: "1.8.2",
 
 	uuid: 0,
 	maxZ: 0,
@@ -4103,7 +3619,7 @@ $.extend($.ui.dialog.overlay.prototype, {
 
 }(jQuery));
 /*
- * jQuery UI Tabs 1.8.1
+ * jQuery UI Tabs 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4119,6 +3635,14 @@ $.extend($.ui.dialog.overlay.prototype, {
 
 var tabId = 0,
 	listId = 0;
+
+function getNextTabId() {
+	return ++tabId;
+}
+
+function getNextListId() {
+	return ++listId;
+}
 
 $.widget("ui.tabs", {
 	options: {
@@ -4160,7 +3684,7 @@ $.widget("ui.tabs", {
 
 	_tabId: function(a) {
 		return a.title && a.title.replace(/\s/g, '_').replace(/[^A-Za-z0-9\-_:\.]/g, '') ||
-			this.options.idPrefix + (++tabId);
+			this.options.idPrefix + getNextTabId();
 	},
 
 	_sanitizeSelector: function(hash) {
@@ -4168,7 +3692,7 @@ $.widget("ui.tabs", {
 	},
 
 	_cookie: function() {
-		var cookie = this.cookie || (this.cookie = this.options.cookie.name || 'ui-tabs-' + (++listId));
+		var cookie = this.cookie || (this.cookie = this.options.cookie.name || 'ui-tabs-' + getNextListId());
 		return $.cookie.apply(null, [cookie].concat($.makeArray(arguments)));
 	},
 
@@ -4764,7 +4288,7 @@ $.widget("ui.tabs", {
 });
 
 $.extend($.ui.tabs, {
-	version: '1.8.1'
+	version: '1.8.2'
 });
 
 /*
@@ -4824,7 +4348,7 @@ $.extend($.ui.tabs.prototype, {
 
 })(jQuery);
 /*
- * jQuery UI Datepicker 1.8.1
+ * jQuery UI Datepicker 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4838,7 +4362,7 @@ $.extend($.ui.tabs.prototype, {
 
 (function($) { // hide the namespace
 
-$.extend($.ui, { datepicker: { version: "1.8.1" } });
+$.extend($.ui, { datepicker: { version: "1.8.2" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -4886,7 +4410,7 @@ function Datepicker() {
 	this._defaults = { // Global defaults for all the date picker instances
 		showOn: 'focus', // 'focus' for popup on focus,
 			// 'button' for trigger button, or 'both' for either
-		showAnim: 'show', // Name of jQuery animation for popup
+		showAnim: 'fadeIn', // Name of jQuery animation for popup
 		showOptions: {}, // Options for enhanced animations
 		defaultDate: null, // Used when field is blank: actual date,
 			// +/-number for offset from today, null for today
@@ -4913,7 +4437,7 @@ function Datepicker() {
 			// string value starting with '+' for current year + value
 		minDate: null, // The earliest selectable date, or null for no limit
 		maxDate: null, // The latest selectable date, or null for no limit
-		duration: '_default', // Duration of display/closure
+		duration: 'fast', // Duration of display/closure
 		beforeShowDay: null, // Function that takes a date and returns an array with
 			// [0] = true if selectable, false if not, [1] = custom CSS class name(s) or '',
 			// [2] = cell title (optional), e.g. $.datepicker.noWeekends
@@ -4978,8 +4502,10 @@ $.extend(Datepicker.prototype, {
 		}
 		var nodeName = target.nodeName.toLowerCase();
 		var inline = (nodeName == 'div' || nodeName == 'span');
-		if (!target.id)
-			target.id = 'dp' + (++this.uuid);
+		if (!target.id) {
+			this.uuid += 1;
+			target.id = 'dp' + this.uuid;
+		}
 		var inst = this._newInst($(target), inline);
 		inst.settings = $.extend({}, settings || {}, inlineSettings || {});
 		if (nodeName == 'input') {
@@ -5110,7 +4636,8 @@ $.extend(Datepicker.prototype, {
 	_dialogDatepicker: function(input, date, onSelect, settings, pos) {
 		var inst = this._dialogInst; // internal instance
 		if (!inst) {
-			var id = 'dp' + (++this.uuid);
+			this.uuid += 1;
+			var id = 'dp' + this.uuid;
 			this._dialogInput = $('<input type="text" id="' + id +
 				'" style="position: absolute; top: -100px; width: 0px; z-index: -10;"/>');
 			this._dialogInput.keydown(this._doKeyDown);
@@ -6543,7 +6070,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8.1";
+$.datepicker.version = "1.8.2";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
@@ -6551,7 +6078,7 @@ window['DP_jQuery_' + dpuuid] = $;
 
 })(jQuery);
 /*
- * jQuery UI Effects 1.8.1
+ * jQuery UI Effects 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -6853,7 +6380,7 @@ $.fn.extend({
 /******************************************************************************/
 
 $.extend($.effects, {
-	version: "1.8.1",
+	version: "1.8.2",
 
 	// Saves a set of properties in a data storage
 	save: function(element, set) {
@@ -7265,7 +6792,7 @@ $.extend($.easing,
 
 })(jQuery);
 /*
- * jQuery UI Effects Highlight 1.8.1
+ * jQuery UI Effects Highlight 1.8.2
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)

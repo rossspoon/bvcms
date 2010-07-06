@@ -19,14 +19,14 @@
 %>
 <input type="hidden" name="m.List.Index" value="<%=n %>" />
 <input type="hidden" name="m.List[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
+<h4>Add Person To New Family</h4>
 <table width="100%">
-    <tr><th colspan="2">Add Person To New Family</th>
-        <td align="right"><a href="/SearchAdd/PersonCancel/<%=n %>" class="formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "back to search person"%>">go back</a></td>
     </tr>
 <% Html.RenderPartial("EditPerson", np);
    Html.RenderPartial("EditAddress", np);
 %>
-    <tr><td colspan="2"></td>
-        <td><a href="/SearchAdd/AddNewFamily/" class="bt formlink default">Submit</a></td>
-    </tr>
 </table>
+<div align="right" >
+<a href="/SearchAdd/AddNewFamily/" class="bt formlink default">Submit</a>
+<a href="/SearchAdd/PersonCancel/<%=n %>" class="bt formlink" title="<%=Model.List.Count > 0 ? "back to selections" : "back to search person"%>">go back</a></td>
+</div>

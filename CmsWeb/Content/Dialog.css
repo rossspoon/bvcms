@@ -49,14 +49,6 @@ form.DisplayEdit input[type=text]
 {
     width: 20em;
 }
-a.submitbutton{
-  padding:5px;
-    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
-    background-color:#3B5998;
-  border: 1px solid;
-    color:#FFFFFF;
-  text-decoration:none;
-}
 .modalPopup
 {
 	background-color: #eff3fb;
@@ -68,7 +60,19 @@ a.submitbutton{
 .field-validation-error
 { color: Red;
 }
-a.bt {
+a.bt 
+{
+    font-size: 11pt;
+}
+/*
+a.submitbutton{
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
   border-radius:            3px;
   -moz-border-radius:       3px;
   -webkit-border-radius:    3px; 
@@ -76,7 +80,7 @@ a.bt {
   display:                  inline-block;
   padding:                  4px 6px 2px;
   .padding-bottom:          4px; /* IE hack to fix spacing issue. */
-  
+  /*
   text-decoration:          none;
   text-align:               center;
   
@@ -92,4 +96,4 @@ a.bt {
   
   a.bt:hover { 
     border-color:           #99ccff;  
-  }
+  }*/

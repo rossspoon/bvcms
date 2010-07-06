@@ -7,7 +7,7 @@
     <tr>
         <td><label for="address">Address</label></td>
         <td><input id="address" type="text" name="m.List[<%=Model.index%>].address" value="<%=Model.address%>" /></td>
-        <td><a id="verifyaddress" href="/SearchAdd/VerifyAddress/" class="bt" tabindex="7" >Verify</a>
+        <td><a id="verifyaddress" href="/SearchAdd/VerifyAddress/" tabindex="7" >Verify</a>
         <%= Html.ValidationMessage("address")%></td>
     </tr>
     <tr>

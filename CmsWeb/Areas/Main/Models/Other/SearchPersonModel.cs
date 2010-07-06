@@ -109,7 +109,7 @@ namespace CMSWeb.Models
             }
         }
 
-        internal void ValidateModelForNew(ModelStateDictionary ModelState)
+        internal void ValidateModelForNew(ModelStateDictionary ModelState, bool checkaddress)
         {
             if (!first.HasValue())
                 ModelState.AddModelError("first", "first name required");
@@ -124,6 +124,11 @@ namespace CMSWeb.Models
             if (d != 7 && d != 10 && phone != "na")
                 ModelState.AddModelError("phone", "7 or 10 digits (or \"na\")");
 
+            int count = 0;
+            SearchPeopleModel.FindPerson(phone.GetDigits(), first, last, birthday ?? DateTime.MinValue, out count);
+            if (count > 0)
+                ModelState.AddModelError("first", "name/dob already exists in db");
+
             if (!Util.ValidEmail(email) && email != "na")
                 ModelState.AddModelError("email", "valid email address (or \"na\")");
 
@@ -133,17 +138,20 @@ namespace CMSWeb.Models
             if (marital == 99)
                 ModelState.AddModelError("marital", "specify marital status");
 
-            if (!address.HasValue())
-                ModelState.AddModelError("address", "address required (or \"na\")");
+            if (checkaddress)
+            {
+                if (!address.HasValue())
+                    ModelState.AddModelError("address", "address required (or \"na\")");
 
-            if (!city.HasValue())
-                ModelState.AddModelError("city", "city required (or \"na\")");
+                if (!city.HasValue())
+                    ModelState.AddModelError("city", "city required (or \"na\")");
 
-            if (!state.HasValue())
-                ModelState.AddModelError("state", "state required");
+                if (!state.HasValue())
+                    ModelState.AddModelError("state", "state required");
 
-            if (zip.GetDigits().Length < 5 && zip != "na")
-                ModelState.AddModelError("zip", "valid zip (or \"na\")");
+                if (zip.GetDigits().Length < 5 && zip != "na")
+                    ModelState.AddModelError("zip", "valid zip (or \"na\")");
+            }
         }
         internal void AddPerson(int origin, int entrypoint)
         {

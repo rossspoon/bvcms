@@ -40,7 +40,7 @@
         bgiframe: true,
         autoOpen: false,
         width: 700,
-        height: 600,
+        height: 650,
         modal: true,
         overlay: {
             opacity: 0.5,

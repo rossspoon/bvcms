@@ -271,9 +271,9 @@ namespace CMSWeb.Models
                         Text = c.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem 
-            { 
-                Value = "0", 
+            list.Insert(0, new SelectListItem
+            {
+                Value = "0",
                 Text = "(not specified)"
             });
             return list;
@@ -287,9 +287,9 @@ namespace CMSWeb.Models
                         Text = c.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem 
-            { 
-                Value = "99", 
+            list.Insert(0, new SelectListItem
+            {
+                Value = "99",
                 Text = "(not specified)",
                 Selected = true
             });
@@ -305,9 +305,9 @@ namespace CMSWeb.Models
                         Text = ms.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem 
-            { 
-                Value = "99", 
+            list.Insert(0, new SelectListItem
+            {
+                Value = "99",
                 Text = "(not specified)",
                 Selected = true
             });
@@ -413,13 +413,18 @@ namespace CMSWeb.Models
             var fone = Util.GetDigits(phone);
             var ctx = new CMSDataContext(Util.ConnectionString);
             ctx.SetNoLock();
-            if (DOB > Util.Now)
-                DOB = DOB.AddYears(-100);
             var q = from p in ctx.People
-                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                    where (p.LastName == last || p.MaidenName == last)
+                where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
+                where (p.LastName == last || p.MaidenName == last)
+                select p;
+            if (DOB > DateTime.MinValue)
+            {
+                if (DOB > Util.Now)
+                    DOB = DOB.AddYears(-100);
+                q = from p in q
                     where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
                     select p;
+            }
             count = q.Count();
             if (count > 1)
             {
@@ -437,10 +442,10 @@ namespace CMSWeb.Models
             }
             return person;
         }
-        public static void ValidateFindPerson(ModelStateDictionary modelState, 
-            string first, 
-            string last, 
-            DateTime birthday, 
+        public static void ValidateFindPerson(ModelStateDictionary modelState,
+            string first,
+            string last,
+            DateTime birthday,
             string phone)
         {
             if (!first.HasValue())

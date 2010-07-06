@@ -318,6 +318,10 @@ namespace CmsData
                     return Expressions.PeopleExtraDate(parm,
                                 CompType,
                                 c.TextValue);
+                case QueryType.PeopleExtraInt:
+                    return Expressions.PeopleExtraInt(parm,
+                                CompType,
+                                c.TextValue);
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(parm,
                                CompType,
