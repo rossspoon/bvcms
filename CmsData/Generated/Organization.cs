@@ -2341,7 +2341,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="varchar(20)")]
+		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="varchar(25)")]
 		public string PhoneNumber
 		{
 			get { return this._PhoneNumber; }

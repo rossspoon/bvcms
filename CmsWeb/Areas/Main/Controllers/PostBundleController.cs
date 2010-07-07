@@ -7,6 +7,7 @@ using CmsData;
 using UtilityExtensions;
 using CMSWeb.Models;
 using System.Web.Script.Serialization;
+using System.IO;
 
 namespace CMSWeb.Areas.Main.Controllers
 {
@@ -54,18 +55,30 @@ namespace CMSWeb.Areas.Main.Controllers
             var m = new PostBundleModel(id);
             return View(m);
         }
-        public ActionResult Batch(string text, DateTime? date)
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Batch()
         {
-            if (Request.HttpMethod.ToUpper() == "GET" || !date.HasValue)
+            var dt = Util.Now.Date;
+            dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
+            ViewData["date"] = dt;
+            return View();
+        }
+        public ActionResult BatchUpload(DateTime date, HttpPostedFileBase file, string text)
+        {
+            string s;
+            if (file != null)
             {
-                var dt = Util.Now.Date;
-                dt = Util.Now.Date.AddDays(-(int)dt.DayOfWeek);
-                ViewData["date"] = dt;
-                ViewData["text"] = "";
-                return View();
+                byte[] buffer = new byte[file.ContentLength];
+                file.InputStream.Read(buffer, 0, file.ContentLength);
+                var enc = new System.Text.ASCIIEncoding();
+                s = enc.GetString(buffer);
             }
-            var id = PostBundleModel.BatchProcess(text, date.Value);
-            return Redirect("/PostBundle/Index/" + id);
+            else
+                s = text;
+            var id = PostBundleModel.BatchProcess(s, date);
+            if (id.HasValue)
+                return Redirect("/PostBundle/Index/" + id);
+            return RedirectToAction("Batch");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Funds()

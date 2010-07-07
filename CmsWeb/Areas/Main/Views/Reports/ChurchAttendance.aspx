@@ -44,6 +44,7 @@
            { %>
         <div>
         <table align="center" cellpadding="2">
+        <thead>
            <tr>
            <th colspan="3"><%=p.Name %></th>
            </tr>
@@ -52,6 +53,7 @@
            <td align="right">Present</td>
            <td align="right">Visitors</td>
            </tr>
+        </thead>
         <% foreach (var d in p.Divs)
            { %>
            <tr>

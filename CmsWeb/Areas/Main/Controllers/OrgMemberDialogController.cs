@@ -87,6 +87,7 @@ namespace CMSWeb.Areas.Main.Controllers
                 return View((IEnumerable<OrgMove>)null);
             var q = from o in om.Organization.Division.Organizations
                     where o.OrganizationId != id
+                    where o.OrganizationStatusId == (int)Organization.OrgStatusCode.Active
                     orderby o.OrganizationName
                     select new OrgMove
                     {

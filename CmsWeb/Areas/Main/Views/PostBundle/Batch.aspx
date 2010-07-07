@@ -12,11 +12,12 @@
 </script>
     <h2>Batch Load Bundle</h2>
     
-    <%using(Html.BeginForm())
-    { %>
-    <%=Html.TextArea("text", ViewData["text"].ToString(), new { rows = "30", cols = "1000", wrap = "off", style = "width:90%" }) %><br />
-    Contribution Date: <%=Html.DatePicker("date") %> <input type="submit" value="Submit" />
- <% } %>
+<form action="/PostBundle/BatchUpload" method="post" enctype="multipart/form-data">
+    <label>Filename: <input type="file" name="file" /></label>
+    <label>Contribution Date: </label> <%=Html.DatePicker("date") %>
+    <input type="submit" value="Submit" />
+    <%=Html.TextArea("text", "", new { rows = "10", cols = "1000", wrap = "off", style = "width:90%" }) %><br />
+</form>
 
 </asp:Content>
 

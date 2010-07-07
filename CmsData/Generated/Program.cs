@@ -21,7 +21,7 @@ namespace CmsData
 		
 		private string _Name;
 		
-		private int? _RptGroup;
+		private string _RptGroup;
 		
 		private decimal? _StartHoursOffset;
 		
@@ -46,7 +46,7 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
-		partial void OnRptGroupChanging(int? value);
+		partial void OnRptGroupChanging(string value);
 		partial void OnRptGroupChanged();
 		
 		partial void OnStartHoursOffsetChanging(decimal? value);
@@ -114,8 +114,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RptGroup", UpdateCheck=UpdateCheck.Never, Storage="_RptGroup", DbType="int")]
-		public int? RptGroup
+		[Column(Name="RptGroup", UpdateCheck=UpdateCheck.Never, Storage="_RptGroup", DbType="varchar(50)")]
+		public string RptGroup
 		{
 			get { return this._RptGroup; }
 

@@ -470,7 +470,7 @@ namespace CMSWeb.Models
         }
         public static int? BatchProcessServiceU(string[] lines, DateTime date)
         {
-            var cols = lines[0].Trim().SplitStr(",");
+            var cols = lines[0].Trim().SplitCSV();
             var now = DateTime.Now;
 
             var bh = GetBundleHeader(date, now);

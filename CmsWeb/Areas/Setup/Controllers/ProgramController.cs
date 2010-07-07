@@ -45,7 +45,7 @@ namespace CMSWeb.Areas.Setup.Controllers
                     p.Name = value;
                     break;
                 case "RptGroup":
-                    p.RptGroup = value.ToInt2();
+                    p.RptGroup = value;
                     break;
                 case "StartHours":
                     p.StartHoursOffset = value.ToDecimal();
