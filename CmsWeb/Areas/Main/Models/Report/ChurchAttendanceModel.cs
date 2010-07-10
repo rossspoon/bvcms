@@ -24,20 +24,20 @@ namespace CMSWeb.Areas.Main.Models.Report
             public string Name { get; set; }
             public IEnumerable<DivInfo> Divs { get; set; }
             public string RptGroup { get; set; }
-            List<TimeSpan> _cols;
-            public List<TimeSpan> Cols
+            List<DateTime> _cols;
+            public List<DateTime> Cols
             {
                 get
                 {
                     if (_cols == null)
                     {
-                        _cols = new List<TimeSpan>();
-	                    var re = new Regex(@"(\d+:\d+ [AP]M),?");
-	                    var m = re.Match(RptGroup);
-	                    while (m.Success) 
+                        _cols = new List<DateTime>();
+                        var re = new Regex(@"(\d+:\d+ [AP]M),?");
+                        var m = re.Match(RptGroup);
+                        while (m.Success)
                         {
-		                    _cols.Add(TimeSpan.Parse(m.Groups[1].Value));
-		                    m = m.NextMatch();
+                            _cols.Add(DateTime.Parse(m.Groups[1].Value));
+                            m = m.NextMatch();
                         }
                     }
                     return _cols;
@@ -60,15 +60,21 @@ namespace CMSWeb.Areas.Main.Models.Report
             public string Name { get; set; }
             public IEnumerable<MeetInfo> Meetings { get; set; }
         }
+        private static int[] MetroMarg = new int[] { 10, 20 };
         public class MeetInfo
         {
             public int OrgId { get; set; }
             public string OrgName { get; set; }
             public DateTime date { get; set; }
-            public TimeSpan time { get; set; }
             public int Present { get; set; }
             public int Visitors { get; set; }
+            public int OutTowners { get; set; }
         }
+        public int[] Guests = new int[] 
+        { 
+            (int)CmsData.Attend.AttendTypeCode.NewVisitor, 
+            (int)CmsData.Attend.AttendTypeCode.RecentVisitor 
+        };
         public IEnumerable<ProgInfo> FetchInfo()
         {
             var q = from p in DbUtil.Db.Programs
@@ -96,13 +102,13 @@ namespace CMSWeb.Areas.Main.Models.Report
                                               select new MeetInfo
                                               {
                                                   date = m.MeetingDate.Value,
-                                                  time = m.MeetingDate.Value.TimeOfDay,
                                                   OrgId = m.OrganizationId,
                                                   OrgName = m.Organization.OrganizationName,
                                                   Present = m.NumPresent,
-                                                  Visitors = m.NumNewVisit + m.NumRepeatVst
+                                                  Visitors = m.NumNewVisit + m.NumRepeatVst,
+                                                  OutTowners = m.NumOutTown ?? 0
                                               }
-                               }
+                               },
                     };
             return q;
         }
@@ -111,6 +117,7 @@ namespace CMSWeb.Areas.Main.Models.Report
             var q = from m in DbUtil.Db.Meetings
                     where m.MeetingDate.Value.Date.DayOfWeek == 0
                     where m.NumPresent > 0
+                    where m.MeetingDate < Util.Now
                     orderby m.MeetingDate descending
                     select m.MeetingDate.Value.Date;
             var dt = q.FirstOrDefault();

@@ -50,6 +50,8 @@ namespace CMSWeb.Contributions
 
             var nopid = bundleheader.BundleDetails.Any(bd => bd.Contribution.PeopleId == null);
             BundleStatusIdDropDown.Enabled = nopid == false && TotalItems.Text == TotalHeader.Text;
+
+            FundsLink.NavigateUrl = "/PostBundle/FundTotals/" + bundleheader.BundleHeaderId;
         }
 
         protected void EditUpdateButton1_Click(object sender, EventArgs e)

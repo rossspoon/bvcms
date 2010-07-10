@@ -398,6 +398,10 @@ namespace CmsData
         partial void UpdatePostalLookup(PostalLookup instance);
         partial void DeletePostalLookup(PostalLookup instance);
         
+        partial void InsertPrayerItem(PrayerItem instance);
+        partial void UpdatePrayerItem(PrayerItem instance);
+        partial void DeletePrayerItem(PrayerItem instance);
+        
         partial void InsertPrayerSlot(PrayerSlot instance);
         partial void UpdatePrayerSlot(PrayerSlot instance);
         partial void DeletePrayerSlot(PrayerSlot instance);
@@ -1191,6 +1195,12 @@ namespace CmsData
 		public Table< PostalLookup> PostalLookups
 		{
 			get	{ return this.GetTable< PostalLookup>(); }
+
+		}
+
+		public Table< PrayerItem> PrayerItems
+		{
+			get	{ return this.GetTable< PrayerItem>(); }
 
 		}
 

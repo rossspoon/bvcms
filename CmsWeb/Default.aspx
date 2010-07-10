@@ -52,26 +52,26 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Report/ChurchAttendanceSummaryRpt.aspx"
+                                                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="/Reports/ChurchAttendance"
+                                                    Target="_blank">Church Attendance <span style="color:red">(new)</span></asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Report/ChurchAttendanceSummaryRpt.aspx"
                                                     Target="_blank">Church Attendance Summary</asp:HyperLink>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Report/ChurchAttendanceRpt.aspx"
-                                                    Target="_blank">Church Attendance</asp:HyperLink>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/Report/BFCWeeklyAttendanceSummaryRpt.aspx"
-                                                    Target="_blank">BFC Weekly Attendance Summary</asp:HyperLink>
-                                            </td>
-                                        </tr>
-                                        <tr>
+<%--                                        <tr>
                                             <td>
                                                 <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/Report/BFCAvgWeeklyAttendanceRpt.aspx"
                                                     Target="_blank">BFC Average Weekly Attendance</asp:HyperLink>
+                                            </td>
+                                        </tr>
+--%>                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/Report/ChurchAttendanceRpt.aspx"
+                                                    Target="_blank">Weekly Decisions</asp:HyperLink>
                                             </td>
                                         </tr>
                                         <tr>

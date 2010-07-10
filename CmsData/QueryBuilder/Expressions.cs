@@ -585,11 +585,12 @@ namespace CmsData
             DateTime? date)
         {
             Expression<Func<Person, bool>> pred = p =>
-                p.OrganizationMembers.Any(m =>
-                    m.EnrollmentDate.Value.Date == date
-                    && (org == 0 || m.OrganizationId == org)
-                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                p.EnrollmentTransactions.Any(et =>
+                    et.TransactionDate.Date == date
+                    && et.TransactionTypeId == 1
+                    && (org == 0 || et.OrganizationId == org)
+                    && (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
                     );
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
@@ -917,6 +918,21 @@ namespace CmsData
                 expr2 = Expression.Not(expr2);
             return Expression.And(expr1, expr2);
         }
+        internal static Expression RecInterestedCoaching(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> hasapp = p => p.RecRegs.Count() > 0;
+            Expression<Func<Person, bool>> pred = p =>
+                    p.RecRegs.Any(v => v.Coaching == true)
+                    && p.RecRegs.Count() > 0;
+            Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
+            Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr2 = Expression.Not(expr2);
+            return Expression.And(expr1, expr2);
+        }
         internal static Expression FamilyHasChildren(
             ParameterExpression parm,
             CompareType op,
@@ -937,6 +953,20 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Family.People.Any(m => m.Age <= age);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression FamilyHasChildrenAged2(
+            ParameterExpression parm,
+            string range,
+            CompareType op,
+            bool tf)
+        {
+            var a = range.Split('-');
+            Expression<Func<Person, bool>> pred = p =>
+                p.Family.People.Any(m => m.Age >= a[0].ToInt() && m.Age <= a[1].ToInt());
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -1009,6 +1039,24 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == Util.CurrentTagOwnerId);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression HasBalanceInCurrentOrg(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                        m.OrganizationId == Util.CurrentOrgId
+                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroupId != -1)
+                        && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        && (m.Pending ?? false) == false
+                        && (m.AmountPaid > 0 && m.AmountPaid < m.Amount));
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

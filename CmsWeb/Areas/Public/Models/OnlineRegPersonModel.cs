@@ -661,7 +661,7 @@ namespace CMSWeb.Models
                     return i.Name;
             return string.Empty;
         }
-        public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing)
+        public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing, string others)
         {
 
             //(int)RegistrationEnum.AttendMeeting)
@@ -669,8 +669,8 @@ namespace CMSWeb.Models
 
             var om = OrganizationMember.InsertOrgMembers(org.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
-            var amt = AmountToPay();
-            om.Amount = (om.Amount ?? 0) + amt;
+            om.Amount = TotalAmount();
+            om.AmountPaid = AmountToPay();
 
             var reg = person.RecRegs.SingleOrDefault();
 
@@ -759,21 +759,17 @@ namespace CMSWeb.Models
 
             string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
             AddToMemberData(tstamp, om);
-            if (amt > 0)
+            var tran = "{0:C} ({1}{2})".Fmt(
+                    om.AmountPaid.ToString2("C"), TransactionID, testing == true ? " test" : "");
+            if (om.AmountPaid > 0)
             {
-                AddToMemberData("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), om);
-                if (testing == true)
-                    AddToMemberData("(test transaction)", om);
-                if (AmountDue() > 0)
-                    AddToMemberData("{0:C} due".Fmt(AmountDue().ToString("C")), om);
+                AddToMemberData(tran, om);
+                if (others.HasValue())
+                    AddToMemberData("Others: " + others, om);
             }
 
             if (org.AskTylenolEtc == true)
             {
-                //AddToMemberData("Tylenol: " + (tylenol == true ? "Yes" : "No"), om);
-                //AddToMemberData("Advil: " + (advil == true ? "Yes" : "No"), om);
-                //AddToMemberData("Robitussin: " + (robitussin == true ? "Yes" : "No"), om);
-                //AddToMemberData("Maalox: " + (maalox == true ? "Yes" : "No"), om);
                 reg.Tylenol = tylenol;
                 reg.Advil = advil;
                 reg.Robitussin = robitussin;
@@ -788,16 +784,17 @@ namespace CMSWeb.Models
                 om.Request = request;
             }
 
-            if (amt > 0)
+            if (om.AmountPaid > 0)
             {
                 if (AmountDue() > 0)
                     AddToRegistrationComments("{0:C} due".Fmt(AmountDue().ToString("C")), reg);
-                if (testing == true)
-                    AddToRegistrationComments("(test transaction)", reg);
-                AddToRegistrationComments("{0:C} ({1})".Fmt(om.Amount.ToString2("C"), TransactionID), reg);
+                AddToRegistrationComments(tran, reg);
             }
             if (paylink.HasValue())
+            {
+                om.PayLink = paylink;
                 AddToRegistrationComments(paylink, reg);
+            }
             AddToRegistrationComments(tstamp, reg);
             AddToRegistrationComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName), reg);
 

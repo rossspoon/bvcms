@@ -51,7 +51,7 @@ namespace UtilityExtensions
             }
             catch (Exception)
             {
-                return null;    
+                return null;
             }
         }
         private static void TrySend(SmtpClient smtp, MailMessage msg)
@@ -112,6 +112,9 @@ namespace UtilityExtensions
                 msg.Attachments.Add(attach);
 
 #if DEBUG
+            msg.To.Clear();
+            msg.To.Add("david@davidcarroll.name");
+            smtp.Send(msg);
 #else
             try
             {

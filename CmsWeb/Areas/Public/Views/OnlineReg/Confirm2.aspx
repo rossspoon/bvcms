@@ -2,7 +2,8 @@
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
    <h2>Transaction Completed</h2>
     <p>
-        Thank you for your payment of <%=ViewData["AmountDue"] %> for <%=ViewData["Header"] %>  
+        Thank you for your payment of <%=ViewData["Amount"] %> for <%=ViewData["Desc"] %>.<br />
+        Your balance is <%=ViewData["AmountDue"] %>.</br>
         You should receive a confirmation email at <%=ViewData["Email"] %> shortly.
     </p>
 </asp:Content>

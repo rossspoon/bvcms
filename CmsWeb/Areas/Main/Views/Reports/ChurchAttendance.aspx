@@ -9,10 +9,12 @@
         {
             border-top: 2px solid black;
             font-weight: bold;
+            text-align: right;
         }
         .headerrow th
         {
             border-bottom: 2px solid black;
+            text-align: center;
         }
         input#SundayDate
         {
@@ -46,26 +48,45 @@
         <table align="center" cellpadding="2">
         <thead>
            <tr>
-           <th colspan="3"><%=p.Name %></th>
+               <th colspan="<%=p.Cols.Count+4 %>"><%=p.Name %></th>
+           </tr>
+           <tr>
+                <th colspan=<%=p.Cols.Count+2 %>"></th>
+                <th colspan="2">Guests</th>
            </tr>
            <tr class="headerrow">
-           <td></td>
-           <td align="right">Present</td>
-           <td align="right">Visitors</td>
+               <td></td>
+                   <% foreach (var c in p.Cols)
+                      { %>
+               <th><%="{0:h:mm tt}".Fmt(c) %></th>
+                   <% } %>
+               <th>Total</th>
+               <th>Local</th>
+               <th>Non</th>
            </tr>
         </thead>
-        <% foreach (var d in p.Divs)
-           { %>
+                <% foreach (var d in p.Divs)
+                   { %>
            <tr>
-           <td align="left"><%=d.Name %></td>
-           <td align="right"><%=d.Meetings.Sum(m => m.Present).ToString("n0") %></td>
-           <td align="right"><%=d.Meetings.Sum(m => m.Visitors).ToString("n0") %></td>
+           <td align="left"><%=d.Name%></td>
+               <% foreach (var c in p.Cols)
+                  { %>
+           <td align="right"><%=d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present).ToString("n0") %></td>
+               <% } %>
+           <td align="right"><%=d.Meetings.Sum(m => m.Present).ToString("n0")%></td>
+           <td align="right"><%=d.Meetings.Sum(m => m.Visitors).ToString("n0")%></td>
+           <td align="right"><%=d.Meetings.Sum(m => m.OutTowners).ToString("n0")%></td>
            </tr>
-        <% } %>
+                <% } %>
            <tr class="totalrow">
            <td align="left">Total</td>
-           <td align="right"><%=p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")%></td>
-           <td align="right"><%=p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")%></td>
+               <% foreach (var c in p.Cols)
+                  { %>
+           <td><%=p.Divs.Sum(d => d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present)).ToString("n0") %></td>
+               <% } %>
+           <td><%=p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")%></td>
+           <td><%=p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")%></td>
+           <td><%=p.Divs.Sum(d => d.Meetings.Sum(m => m.OutTowners)).ToString("n0")%></td>
            </tr>
         </table>
         </div>

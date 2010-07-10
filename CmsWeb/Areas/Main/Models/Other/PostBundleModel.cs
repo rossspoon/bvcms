@@ -254,7 +254,7 @@ namespace CMSWeb.Models
         {
             foreach (var s in columns)
             {
-                var rq = from c in s.SplitStr(",\t")
+                var rq = from c in s.Split(',')
                          let a = c.Split('=')
                          select new { col = a[0], name = a[1] };
                 var rd = rq.ToDictionary(d => d.col, d => d.name);
@@ -268,7 +268,7 @@ namespace CMSWeb.Models
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
             var lines = text.Replace("\r\n", "\n").Split('\n');
-            var names = lines[0].Trim().SplitStr(",\t");
+            var names = lines[0].Trim().SplitCSV();
             var rd = GetNames(names);
             if (rd == null)
                 return null;

@@ -28,7 +28,7 @@
         <cc2:CalendarExtender ID="SundayDateExtender" runat="server" TargetControlID="SundayDate">
         </cc2:CalendarExtender>
         <hr />
-        <asp:ListView ID="ListView1" runat="server" DataSourceID="dsAttendanceSummary">
+<%--        <asp:ListView ID="ListView1" runat="server" DataSourceID="dsAttendanceSummary">
             <LayoutTemplate>
                 <table id="itemPlaceholderContainer" runat="server" border="0" cellspacing="0" cellpadding="2"
                     style="width: 400px" align="center">
@@ -60,7 +60,7 @@
             </EmptyDataTemplate>
         </asp:ListView>
         <br />
-        <h2>
+--%>        <h2>
             Information Source</h2>
         <asp:ListView ID="InterestPointInfo" runat="server" DataSourceID="dsInterestPointInfo">
             <LayoutTemplate>
@@ -161,14 +161,14 @@
             </EmptyDataTemplate>
         </asp:ListView>
     </div>
-    <asp:ObjectDataSource ID="dsAttendanceSummary" runat="server" SelectMethod="AttendanceSummary"
+<%--    <asp:ObjectDataSource ID="dsAttendanceSummary" runat="server" SelectMethod="AttendanceSummary"
         TypeName="CMSPresenter.ChurchAttendanceSummaryController" 
         onobjectcreating="ODS_ObjectCreating">
         <SelectParameters>
             <asp:ControlParameter Name="sunday" Type="DateTime" ControlID="SundayDate" />
         </SelectParameters>
     </asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="dsInterestPointInfo" runat="server" SelectMethod="GuestInterestPoints"
+--%>    <asp:ObjectDataSource ID="dsInterestPointInfo" runat="server" SelectMethod="GuestInterestPoints"
         TypeName="CMSPresenter.ChurchAttendanceSummaryController" onobjectcreating="ODS_ObjectCreating">
         <SelectParameters>
             <asp:ControlParameter Name="sunday" Type="DateTime" ControlID="SundayDate" />

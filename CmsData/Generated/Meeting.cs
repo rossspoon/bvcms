@@ -43,6 +43,8 @@ namespace CmsData
 		
 		private string _Description;
 		
+		private int? _NumOutTown;
+		
    		
    		private EntitySet< SoulMate> _ChildSoulMates;
 		
@@ -100,6 +102,9 @@ namespace CmsData
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
+		
+		partial void OnNumOutTownChanging(int? value);
+		partial void OnNumOutTownChanged();
 		
     #endregion
 		public Meeting()
@@ -404,6 +409,28 @@ namespace CmsData
 					this._Description = value;
 					this.SendPropertyChanged("Description");
 					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NumOutTown", UpdateCheck=UpdateCheck.Never, Storage="_NumOutTown", DbType="int")]
+		public int? NumOutTown
+		{
+			get { return this._NumOutTown; }
+
+			set
+			{
+				if (this._NumOutTown != value)
+				{
+				
+                    this.OnNumOutTownChanging(value);
+					this.SendPropertyChanging();
+					this._NumOutTown = value;
+					this.SendPropertyChanged("NumOutTown");
+					this.OnNumOutTownChanged();
 				}
 
 			}

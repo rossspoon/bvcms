@@ -138,6 +138,20 @@ namespace CMSWeb
 
                 var text = bhtml.Replace("{name}", p.Name);
                 text = text.Replace("{first}", p.PreferredName);
+                if (Util.CurrentOrgId > 0 && text.Contains("{paylink}"))
+                {
+                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o =>
+                        o.OrganizationId == Util.CurrentOrgId && o.PeopleId == p.PeopleId);
+                    if (om != null)
+                    {
+                        if (om.PayLink.HasValue())
+                            text = text.Replace("{paylink}",
+                                "<a href=\"{0}\">payment link</a>".Fmt(om.PayLink));
+                        text = text.Replace("{amtdue}", (om.Amount - om.AmountPaid).ToString2("c"));
+                        if (om.RegisterEmail.HasValue() && string.Compare(om.RegisterEmail, em, true) == 0)
+                            em += (";" + om.RegisterEmail);
+                    }
+                }
                 text = text.Replace("{unsubscribe}",
                     "<a href=\"{0}OptOut/UnSubscribe/?id={1}\">Unsubscribe</a>"
                     .Fmt(Util.CmsHost, HttpUtility.UrlEncode(p.OptOutKey(From.Address))));

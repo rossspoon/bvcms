@@ -11,7 +11,8 @@
     </tr>
     <tr>
         <th>Inactive Date:</th>
-        <td><%=Html.TextBox("InactiveDate", Model.InactiveDate.FormatDate(), new { @class = "datepicker" })%></td>
+        <td><%=Html.TextBox("InactiveDate", Model.InactiveDate.FormatDate(), new { @class = "datepicker" })%>
+        <br /><span style="color:Red"><%=Html.ValidationMessage("InactiveDate") %></span></td>
     </tr>
     <tr>
         <th>Enrollment Date:</th>
@@ -42,9 +43,14 @@
    if (Model.Organization.Fee > 0 || Model.Organization.ShirtFee > 0)
    { %>
     <tr>
-        <th>Amount:</th>
-        <td><%=Html.TextBox("Amount", Model.Amount.HasValue ? Model.Amount.Value.ToString("f2") : "") %>
+        <th>Total Amount:</th>
+        <td><%=Html.TextBox("Amount", Model.Amount.ToString2("f2")) %>
         <br /><span style="color:Red"><%=Html.ValidationMessage("Amount") %></span></td>
+    </tr>
+    <tr>
+        <th>Amount Paid:</th>
+        <td><%=Html.TextBox("AmountPaid", Model.AmountPaid.ToString2("f2")) %>
+        <br /><span style="color:Red"><%=Html.ValidationMessage("AmountPaid") %></span></td>
     </tr>
 <% }
    if(Model.Organization.AskShirtSize == true) 

@@ -186,6 +186,7 @@ namespace CMSPresenter
                          ShirtSize = om.ShirtSize,
                          Request = om.Request,
                          Amount = om.Amount ?? 0,
+                         AmountPaid = om.AmountPaid ?? 0,
                          Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray()),
                          Email = p.EmailAddress,
                          HomePhone = p.HomePhone.FmtFone(),

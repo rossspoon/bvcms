@@ -17,7 +17,6 @@
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     <%=Html.Hidden("OrgID") %>
     <%=Html.Hidden("OrgAccountID") %>
-    <%=Html.Hidden("Amount") %>
     <%=Html.Hidden("PostbackURL") %>
     <%=Html.Hidden("NameOnAccount") %> 
     <%=Html.Hidden("Address") %>
@@ -39,7 +38,9 @@
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
-    <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <p>
+    <%=Html.TextBox("Amount", Model.Amount.ToString("n2")) %>
+    <%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
     <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
     <%=Html.TextBox("_Coupon") %>
     <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>

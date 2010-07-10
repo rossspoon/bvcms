@@ -226,7 +226,8 @@ namespace CMSWeb.Models
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
-                var om = p.Enroll(TransactionID, paylink, testing);
+                var others = string.Join(",", pids.Where(po => po.pid != p.PeopleId).Select(po => po.name).ToArray());
+                var om = p.Enroll(TransactionID, paylink, testing, others);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>
 <tr><th valign='top'>{0}</th><td>
@@ -268,30 +269,6 @@ namespace CMSWeb.Models
                 @"{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}
 <pre>{5}</pre>"
                 .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue, details.ToString()));
-        }
-    }
-    [Serializable]
-    public class TransactionInfo0
-    {
-        public string Header { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Zip { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public decimal AmountPaid { get; set; }
-        public decimal AmountDue { get; set; }
-        public string Participants { get; set; }
-        public bool testing { get; set; }
-        public int orgid { get; set; }
-        public PeopleInfo[] people { get; set; }
-        public class PeopleInfo
-        {
-            public int pid { get; set; }
-            public string name { get; set; }
-            public decimal amt { get; set; }
         }
     }
     [Serializable]

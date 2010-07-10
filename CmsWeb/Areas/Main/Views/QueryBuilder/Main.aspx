@@ -43,7 +43,7 @@
                     </td>
                 </tr>
                 <tr id="QuartersDiv" style="display:none">
-                    <td align="right">Quarters:</td>
+                    <td align="right"><span id="QuartersLabel">Quarters</span>:</td>
                     <td>
                         <%=Html.TextBoxClass("Quarters", "validate") %>
                     </td>

@@ -109,6 +109,7 @@
                     AssociatedRowId="TR_FundId" DataSourceID="FundsODS" MakeDefault0="True" AppendDataBoundItems="true">
                     <asp:ListItem Value="0">(not specified)</asp:ListItem>
                 </cc1:DisplayOrEditDropDown>
+                <asp:HyperLink ID="FundsLink" runat="server" Target="_blank">fund totals</asp:HyperLink>
             </td>
         </tr>
     </table>

@@ -55,6 +55,15 @@
         <th>Amount:</th>
         <td><%=Model.Amount.HasValue ? Model.Amount.Value.ToString("C") : ""%></td>
     </tr>
+    <tr>
+        <th>AmountPaid:</th>
+        <td><%=Model.AmountPaid.HasValue ? Model.AmountPaid.Value.ToString("C") : "" %>
+        <% if (Model.PayLink.HasValue())
+           { %>
+        <a href="<%=Model.PayLink %>" target="_blank">paylink</a>
+        <% } %>
+        </td>
+    </tr>
 <% }
    if(Model.Organization.AskShirtSize == true) 
    { %>    

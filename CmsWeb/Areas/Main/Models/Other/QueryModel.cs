@@ -126,6 +126,7 @@ namespace CMSWeb.Models
         public string Days { get; set; }
         public string Age { get; set; }
         public string Quarters { get; set; }
+        public string QuartersLabel { get; set; }
         public string View { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
@@ -182,6 +183,8 @@ namespace CMSWeb.Models
             AgeVisible = fieldMap.HasParam("Age");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
+            if (QuartersVisible)
+                QuartersLabel = fieldMap.Title;
             ViewVisible = fieldMap.HasParam("View");
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)

@@ -359,6 +359,7 @@ function UpdateView(vs) {
     $('#AgeDiv').showhide(vs.AgeVisible);
     $('#SavedQueryDiv').showhide(vs.SavedQueryVisible);
     $('#QuartersDiv').showhide(vs.QuartersVisible);
+    $('#QuartersLabel').text(vs.QuartersLabel);
     $('#TagsDiv').showhide(vs.TagsVisible);
 
     $('#RightPanel').showhide(vs.RightPanelVisible);

@@ -126,7 +126,13 @@ namespace CmsData
                     return Expressions.FamilyHasChildren(parm, CompType, c.CodeIds == "1");
                 case QueryType.FamilyHasChildrenAged:
                     return Expressions.FamilyHasChildrenAged(parm, c.Age.ToInt(), CompType, c.CodeIds == "1");
+                case QueryType.FamilyHasChildrenAged2:
+                    return Expressions.FamilyHasChildrenAged2(parm, c.Quarters, CompType, c.CodeIds == "1");
                 // H --------------------
+                case QueryType.HasBalanceInCurrentOrg:
+                    return Expressions.HasBalanceInCurrentOrg(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.HasCurrentTag:
                     return Expressions.HasCurrentTag(parm,
                                CompType,
@@ -371,12 +377,12 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
-                //case QueryType.RecFeePaid:
-                //    return Expressions.RecFeePaid(parm,
-                //               CompType,
-                //               c.CodeIds == "1");
                 case QueryType.RecActiveOtherChurch:
                     return Expressions.RecActiveOtherChurch(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.RecInterestedCoaching:
+                    return Expressions.RecInterestedCoaching(parm,
                                CompType,
                                c.CodeIds == "1");
                 // S -------------------------

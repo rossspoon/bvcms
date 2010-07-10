@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>FundTotals</h2>
+    <h2>FundTotals For Bundle Id <%=Model.bundle.BundleHeaderId %> <%=Model.bundle.ContributionDate.ToShortDateString() %></h2>
 <table>
 <% foreach (var f in Model.TotalsByFund())
    { %>

@@ -177,6 +177,11 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<GuestCentralInfo> GuestCentral(DateTime sunday)
         {
+            if (qlist == null)
+            {
+                var sunday1200 = sunday.AddHours(12);
+                LoadMeetings(sunday);
+            }
             var q = from m in qlist
                     where GuestCentralMetroOrgs.Contains(m.OrganizationId) || GuestCentralOutsideOrgs.Contains(m.OrganizationId)
                     group m by m.MeetingDate.TimeOfDay into g

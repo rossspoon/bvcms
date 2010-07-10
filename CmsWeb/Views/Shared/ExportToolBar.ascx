@@ -56,9 +56,18 @@
             <li><a href='/Volunteers/Index/<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Volunteer Report</a></li>
+<% if ((bool?)ViewData["OrganizationContext"] ?? false)
+   { %>
+            <li><a href='/Reports/Registration/<%=ViewData["queryid"]%>?oid=<%=Util.CurrentOrgId %>' 
+                target="_blank"><img src="/images/Report.png" /> 
+                Registration Report</a></li>
+<% }
+   else
+   { %>
             <li><a href='/Reports/Registration/<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Registration Report</a></li>
+<% } %>   
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
                 BF Attendance</a></li>

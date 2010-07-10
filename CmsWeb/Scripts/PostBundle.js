@@ -46,9 +46,33 @@
     }
     $.Stripe();
     $('#notes').keydown(function(event) {
-        if (event.keyCode == 9 && !event.shiftKey) {
+        if ((event.keyCode == 9 || event.keyCode == 13) && !event.shiftKey) {
             event.preventDefault();
             $.PostRow();
+        }
+    });
+    $('#pid').keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            $('#name').focus();
+        }
+    });
+    $('#name').keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            $('#amt').focus();
+        }
+    });
+    $('#amt').keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            $('#fund').focus();
+        }
+    });
+    $('#fund').keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            $('#notes').focus();
         }
     });
     $('a.update').click(function(event) {

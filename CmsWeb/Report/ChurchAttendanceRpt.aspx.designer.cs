@@ -32,33 +32,6 @@ namespace CMSWeb.Reports {
         protected global::AjaxControlToolkit.CalendarExtender SundayDateExtender;
         
         /// <summary>
-        /// WorshipLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink WorshipLink;
-        
-        /// <summary>
-        /// ChurchAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView ChurchAttendance;
-        
-        /// <summary>
-        /// BFCAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView BFCAttendance;
-        
-        /// <summary>
         /// Decisions control.
         /// </summary>
         /// <remarks>
@@ -77,33 +50,6 @@ namespace CMSWeb.Reports {
         protected global::System.Web.UI.WebControls.ListView Baptisms;
         
         /// <summary>
-        /// WednesdayAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView WednesdayAttendance;
-        
-        /// <summary>
-        /// dsChurchAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource dsChurchAttendance;
-        
-        /// <summary>
-        /// dsBFCAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource dsBFCAttendance;
-        
-        /// <summary>
         /// dsBaptisms control.
         /// </summary>
         /// <remarks>
@@ -120,14 +66,5 @@ namespace CMSWeb.Reports {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource dsDecisions;
-        
-        /// <summary>
-        /// dsWednesdayAttendance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource dsWednesdayAttendance;
     }
 }

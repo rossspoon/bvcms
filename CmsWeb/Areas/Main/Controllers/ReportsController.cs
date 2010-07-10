@@ -138,11 +138,11 @@ namespace CMSWeb.Areas.Main.Controllers
                 return Content("no query");
             return new AveryAddressResult { id = id, format = format, titles = titles };
         }
-        public ActionResult Registration(int? id)
+        public ActionResult Registration(int? id, int? oid)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new RegistrationResult(id);
+            return new RegistrationResult(id, oid);
         }
         public ActionResult ChurchAttendance(DateTime? id)
         {

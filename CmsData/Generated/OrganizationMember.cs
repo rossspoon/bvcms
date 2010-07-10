@@ -59,6 +59,10 @@ namespace CmsData
 		
 		private string _RegisterEmail;
 		
+		private decimal? _AmountPaid;
+		
+		private string _PayLink;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -138,6 +142,12 @@ namespace CmsData
 		
 		partial void OnRegisterEmailChanging(string value);
 		partial void OnRegisterEmailChanged();
+		
+		partial void OnAmountPaidChanging(decimal? value);
+		partial void OnAmountPaidChanged();
+		
+		partial void OnPayLinkChanging(string value);
+		partial void OnPayLinkChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -622,6 +632,50 @@ namespace CmsData
 					this._RegisterEmail = value;
 					this.SendPropertyChanged("RegisterEmail");
 					this.OnRegisterEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AmountPaid", UpdateCheck=UpdateCheck.Never, Storage="_AmountPaid", DbType="money")]
+		public decimal? AmountPaid
+		{
+			get { return this._AmountPaid; }
+
+			set
+			{
+				if (this._AmountPaid != value)
+				{
+				
+                    this.OnAmountPaidChanging(value);
+					this.SendPropertyChanging();
+					this._AmountPaid = value;
+					this.SendPropertyChanged("AmountPaid");
+					this.OnAmountPaidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PayLink", UpdateCheck=UpdateCheck.Never, Storage="_PayLink", DbType="varchar(80)")]
+		public string PayLink
+		{
+			get { return this._PayLink; }
+
+			set
+			{
+				if (this._PayLink != value)
+				{
+				
+                    this.OnPayLinkChanging(value);
+					this.SendPropertyChanging();
+					this._PayLink = value;
+					this.SendPropertyChanged("PayLink");
+					this.OnPayLinkChanged();
 				}
 
 			}

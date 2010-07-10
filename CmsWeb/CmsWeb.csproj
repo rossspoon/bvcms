@@ -1507,8 +1507,10 @@
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-1.4.2.js" />
+    <Content Include="Content\js\jquery-1.4.2.min.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
     <Content Include="Content\js\jquery-ui-1.8.2.custom.js" />
+    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.1.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.dimensions.min.js" />

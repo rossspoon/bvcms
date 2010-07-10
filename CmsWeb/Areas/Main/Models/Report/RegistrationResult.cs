@@ -37,9 +37,11 @@ namespace CMSWeb.Areas.Main.Models.Report
         private PdfContentByte dc;
 
         private int? qid;
-        public RegistrationResult(int? id)
+        private int? oid;
+        public RegistrationResult(int? id, int? oid)
         {
             qid = id;
+            this.oid = oid;
         }
 
         private static void SetDefaults(PdfPTable t)
@@ -73,6 +75,8 @@ namespace CMSWeb.Areas.Main.Models.Report
                             p,
                             h = p.Family.HeadOfHousehold,
                             s = p.Family.HeadOfHouseholdSpouse,
+                            m = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid),
+                            o = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid).Organization
                         };
                 foreach (var i in q)
                 {
@@ -122,45 +126,69 @@ namespace CMSWeb.Areas.Main.Models.Report
 
                     t2.AddCell("Date of Birth");
                     t2.AddCell(i.p.DOB);
-                    t2.AddCell("Shirt Size:");
-                    t2.AddCell(rr.ShirtSize);
+                    if (i.o == null || i.o.AskShirtSize == true)
+                    {
+                        t2.AddCell("Shirt Size:");
+                        t2.AddCell(rr.ShirtSize);
+                    }
                     t2.SpacingAfter = FLOAT_t1SpacingAfter;
                     doc.Add(t2);
 
                     if (rr.MedicalDescription.HasValue())
                         doc.Add(new Phrase("Allergies or Medical Problems: " + rr.MedicalDescription));
-                    var t4 = new PdfPTable(new float[] { 20, 80 });
-                    SetDefaults(t4);
-                    t4.AddCell("Tylenol:");
-                    t4.AddCell(rr.Tylenol == true ? "Yes" : "No");
-                    t4.AddCell("Advil:");
-                    t4.AddCell(rr.Advil == true ? "Yes" : "No");
-                    t4.AddCell("Robitussin:");
-                    t4.AddCell(rr.Robitussin == true ? "Yes" : "No");
-                    t4.AddCell("Maalox:");
-                    t4.AddCell(rr.Maalox == true ? "Yes" : "No");
-                    t4.SpacingAfter = FLOAT_t1SpacingAfter;
-                    doc.Add(t4);
 
+                    if (i.o == null || i.o.AskTylenolEtc == true)
+                    {
+                        var t4 = new PdfPTable(new float[] { 20, 80 });
+                        SetDefaults(t4);
+                        t4.AddCell("Tylenol:");
+                        t4.AddCell(rr.Tylenol == true ? "Yes" : "No");
+                        t4.AddCell("Advil:");
+                        t4.AddCell(rr.Advil == true ? "Yes" : "No");
+                        t4.AddCell("Robitussin:");
+                        t4.AddCell(rr.Robitussin == true ? "Yes" : "No");
+                        t4.AddCell("Maalox:");
+                        t4.AddCell(rr.Maalox == true ? "Yes" : "No");
+                        t4.SpacingAfter = FLOAT_t1SpacingAfter;
+                        doc.Add(t4);
+                    }
                     var t5 = new PdfPTable(new float[] { 45, 55 });
                     SetDefaults(t5);
-                    t5.AddCell("Emergency Friend:");
-                    t5.AddCell(rr.Emcontact);
-                    t5.AddCell("Emergency Phone:");
-                    t5.AddCell(rr.Emphone.FmtFone());
-                    t5.AddCell("Health Insurance Carrier:");
-                    t5.AddCell(rr.Insurance);
-                    t5.AddCell("Policy #:");
-                    t5.AddCell(rr.Policy);
-                    t5.AddCell("Family Physician Name:");
-                    t5.AddCell(rr.Doctor);
-                    t5.AddCell("Family Physician Phone:");
-                    t5.AddCell(rr.Docphone.FmtFone());
-                    t5.AddCell("Mother's Name:");
-                    t5.AddCell(rr.Mname);
-                    t5.AddCell("Father's Name:");
-                    t5.AddCell(rr.Fname);
+
+                    if (i.o == null || i.o.AskEmContact == true)
+                    {
+                        t5.AddCell("Emergency Friend:");
+                        t5.AddCell(rr.Emcontact);
+                        t5.AddCell("Emergency Phone:");
+                        t5.AddCell(rr.Emphone.FmtFone());
+                    }
+                    if (i.o == null || i.o.AskInsurance == true)
+                    {
+                        t5.AddCell("Health Insurance Carrier:");
+                        t5.AddCell(rr.Insurance);
+                        t5.AddCell("Policy #:");
+                        t5.AddCell(rr.Policy);
+                    }
+                    if (i.o == null || i.o.AskDoctor == true)
+                    {
+                        t5.AddCell("Family Physician Name:");
+                        t5.AddCell(rr.Doctor);
+                        t5.AddCell("Family Physician Phone:");
+                        t5.AddCell(rr.Docphone.FmtFone());
+                    }
+                    if (i.o == null || i.o.AskParents == true)
+                    {
+                        t5.AddCell("Mother's Name:");
+                        t5.AddCell(rr.Mname);
+                        t5.AddCell("Father's Name:");
+                        t5.AddCell(rr.Fname);
+                    }
                     doc.Add(t5);
+                    if (i.m != null)
+                    {
+                        var groups = string.Join(", ", i.m.OrgMemMemTags.Select(om => om.MemberTag.Name).ToArray());
+                        doc.Add(new Paragraph("Groups: " + groups));
+                    }
                     doc.Add(Chunk.NEXTPAGE);
                 }
             }
