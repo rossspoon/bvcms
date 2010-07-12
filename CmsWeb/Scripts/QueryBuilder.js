@@ -316,6 +316,7 @@ function UpdateView(vs) {
     $('#Division').fillOptions(vs.DivisionData);
     CascadeDivision();
     $('#Organization').fillOptions(vs.OrganizationData);
+    $('#TagsDiv').showhide(vs.TagsVisible);
     if (vs.TagsVisible) {
         $('#tagvalues').multiSelectRemove();
         $('#Tags').remove();
@@ -360,7 +361,6 @@ function UpdateView(vs) {
     $('#SavedQueryDiv').showhide(vs.SavedQueryVisible);
     $('#QuartersDiv').showhide(vs.QuartersVisible);
     $('#QuartersLabel').text(vs.QuartersLabel);
-    $('#TagsDiv').showhide(vs.TagsVisible);
 
     $('#RightPanel').showhide(vs.RightPanelVisible);
     $('#TextValue').showhide(vs.TextVisible);

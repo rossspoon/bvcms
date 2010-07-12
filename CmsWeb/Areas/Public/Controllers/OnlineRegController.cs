@@ -311,8 +311,17 @@ namespace CMSWeb.Areas.Public.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PayWithCoupon(PaymentModel pm)
+        public ActionResult PayWithCoupon()
         {
+            var pm = new PaymentModel();
+            try
+            {
+                UpdateModel(pm);
+            }
+            catch(Exception)
+            {
+                return Json(new { error = "problem coupon" });
+            }
             if (!pm._Coupon.HasValue())
                 return Json(new { error = "empty coupon" });
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
@@ -464,16 +473,17 @@ namespace CMSWeb.Areas.Public.Controllers
                         AddToRegistrationComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName), reg);
                     }
                     amt -= pay;
-               }
+                }
                 else
                     Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
                             "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
             }
             DbUtil.Db.SubmitChanges();
+            var names = string.Join(", ", ti.people.Select(i => i.name).ToArray());
             Util.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
-                "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}.".Fmt(Amount, ti.Header, ti.AmountDue));
+                "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Header, ti.AmountDue, names));
             Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
-                "{0} paid a balance of {1:c} for {2}.".Fmt(ti.Name, ti.AmountDue, ti.Header));
+                "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Header, ti.AmountDue, names));
             ViewData["URL"] = ti.URL;
             ViewData["timeout"] = INT_timeout;
             ViewData["Amount"] = Amount.ToString("c");

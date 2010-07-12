@@ -54,6 +54,8 @@
     $('#pid').keydown(function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
+            if (!$.browser.msie)
+                $('#pid').blur();
             $('#name').focus();
         }
     });

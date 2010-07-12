@@ -388,6 +388,20 @@ namespace CMSWeb.Areas.Main.Controllers
             return View("RecRegDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddContact(int id)
+        {
+            var c = new ContentResult();
+            c.Content = NewContact.AddContact(id).ToString();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddTasks(int id)
+        {
+            var c = new ContentResult();
+            c.Content = Task.AddTasks(id).ToString();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)
         {
             var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
@@ -399,6 +413,8 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["queryid"] = qb.QueryId;
             ViewData["TagAction"] = "/Person/Tag/" + id;
             ViewData["UnTagAction"] = "/Person/UnTag/" + id;
+            ViewData["AddContact"] = "/Person/AddContact/" + qb.QueryId;
+            ViewData["AddTasks"] = "/Person/AddTasks/" + qb.QueryId;
         }
     }
 }

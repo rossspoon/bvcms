@@ -126,6 +126,8 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["queryid"] = qid;
             ViewData["TagAction"] = "/Organization/TagAll/{0}?m=tag".Fmt(qid);
             ViewData["UnTagAction"] = "/Organization/TagAll/{0}?m=untag".Fmt(qid);
+            ViewData["AddContact"] = "/Organization/AddContact/" + qid;
+            ViewData["AddTasks"] = "/Organization/AddTasks/" + qid;
             ViewData["OrganizationContext"] = true;
         }
 
@@ -290,5 +292,21 @@ namespace CMSWeb.Areas.Main.Controllers
             }
             return Content("?");
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddContact(int id)
+        {
+            var c = new ContentResult();
+            c.Content = NewContact.AddContact(id).ToString();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddTasks(int id)
+        {
+            var c = new ContentResult();
+            c.Content = Task.AddTasks(id).ToString();
+            return c;
+        }
+
+
     }
 }

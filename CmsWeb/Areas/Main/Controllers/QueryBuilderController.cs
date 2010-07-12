@@ -33,6 +33,8 @@ namespace CMSWeb.Areas.Main.Controllers
             ViewData["OnQueryBuilder"] = "true";
             ViewData["TagAction"] = "/QueryBuilder/TagAll/";
             ViewData["UnTagAction"] = "/QueryBuilder/UnTagAll/";
+            ViewData["AddContact"] = "/QueryBuilder/AddContact/";
+            ViewData["AddTasks"] = "/QueryBuilder/AddTasks/";
             var m = new QueryModel { QueryId = id };
             DbUtil.LogActivity("QueryBuilder");
             if (run.HasValue)
@@ -210,6 +212,24 @@ namespace CMSWeb.Areas.Main.Controllers
             m.UnTagAll();
             var c = new ContentResult();
             c.Content = "Add";
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult AddContact()
+        {
+            var m = new QueryModel();
+            m.LoadScratchPad();
+            var c = new ContentResult();
+            c.Content = NewContact.AddContact(m.QueryId.Value).ToString();
+            return c;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddTasks()
+        {
+            var m = new QueryModel();
+            m.LoadScratchPad();
+            var c = new ContentResult();
+            c.Content = Task.AddTasks(m.QueryId.Value).ToString();
             return c;
         }
 

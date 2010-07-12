@@ -35,7 +35,38 @@
         $.post(this.href, null, function(ret) {
             $(".taguntag:visible").text(ret);
             $.unblock();
+        });
+        return false;
+    });
+    $('#AddContact').live("click", function(ev) {
+        ev.preventDefault();
+        if (!confirm("Are you sure you want to add a contact for all these people?"))
             return false;
+        $.block();
+        $.post(this.href, null, function(ret) {
+            $.unblock();
+            if (ret < 0)
+                alert("too many people to add to a contact (max 100)");
+            else if (ret == 0)
+                alert("no results");
+            else
+                window.location = "/Contact.aspx?id=" + ret;
+        });
+        return false;
+    });
+    $('#AddTasks').live("click", function(ev) {
+        ev.preventDefault();
+        if (!confirm("Are you sure you want to add a task for each of these people?"))
+            return false;
+        $.block();
+        $.post(this.href, null, function(ret) {
+            $.unblock();
+            if (ret < 0)
+                alert("too many people to add tasks for (max 100)");
+            else if (ret == 0)
+                alert("no results");
+            else
+                window.location = "/Task";
         });
         return false;
     });

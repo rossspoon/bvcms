@@ -121,9 +121,10 @@
     <li class="headlink"><a href=''><img src="/images/Tag.png" />
         Other</a>
         <ul>
-            <li><a href='#' 
-                onclick='confirm("Are you sure you want to add a contact for all these people?")'>
+            <li><a id="AddContact" href='<%=ViewData["AddContact"] %>'>
                 Add Contact</a></li>
+            <li><a id="AddTasks" href='<%=ViewData["AddTasks"] %>'>
+                Add Tasks</a></li>
             <li><a href='/Task/NotesExcel/<%=ViewData["queryid"] %>'>
                 Export Task Notes</a></li>
         </ul>

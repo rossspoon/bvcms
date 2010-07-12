@@ -41,5 +41,25 @@ namespace CmsData
             get { return (ContactReasonCode)ContactReasonId; }
             set { ContactReasonId = (int)value; }
         }
+        public static int AddContact(int qid)
+        {
+            var Qb = DbUtil.Db.LoadQueryById(qid);
+            var q = DbUtil.Db.People.Where(Qb.Predicate());
+
+            if (q.Count() > 100)
+                return -1;
+            if (q.Count() == 0)
+                return 0;
+            var c = new NewContact { ContactDate = DateTime.Now.Date };
+            c.CreatedDate = c.ContactDate;
+            c.ContactTypeId = (int)NewContact.ContactTypeCode.Other;
+            c.ContactReasonId = (int)NewContact.ContactReasonCode.Other;
+            foreach (var p in q)
+                c.contactees.Add(new Contactee { PeopleId = p.PeopleId });
+            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            DbUtil.Db.SubmitChanges();
+            return c.ContactId;
+        }
+
     }
 }
