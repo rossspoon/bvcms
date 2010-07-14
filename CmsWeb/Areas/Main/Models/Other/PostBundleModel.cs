@@ -267,7 +267,8 @@ namespace CMSWeb.Models
         {
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
-            var lines = text.Replace("\r\n", "\n").Split('\n');
+            text = text.Replace("|", "-");
+            var lines = text.Replace("\r\n", "|").Split('|');
             var names = lines[0].Trim().SplitCSV();
             var rd = GetNames(names);
             if (rd == null)
@@ -478,7 +479,7 @@ namespace CMSWeb.Models
             {
                 var a = lines[i].Trim().SplitCSV();
 
-                string ac = null, oth = null, first = null, last = null, addr = null;
+                string ac = null, oth = null, first = null, last = null, addr = null, name = null;
                 var dt = date;
                 for (var c = 1; c < a.Length; c++)
                 {
@@ -496,6 +497,9 @@ namespace CMSWeb.Models
                             break;
                         case "Last Name":
                             last = a[c];
+                            break;
+                        case "Full Name":
+                            name = a[c];
                             break;
                         case "Address":
                             addr = a[c];
@@ -515,7 +519,12 @@ namespace CMSWeb.Models
                 if (pid == null)
                 {
                     bankac = eac;
-                    ed = new ExtraDatum { Data = "{1}, {0}; {2}".Fmt(first, last, addr), Stamp = Util.Now };
+                    string person;
+                    if (last.HasValue())
+                        person = "{1}, {0}; {2}".Fmt(first, last, addr);
+                    else
+                        person = "{0}; {2}".Fmt(name, addr);
+                    ed = new ExtraDatum { Data = person, Stamp = Util.Now };
                 }
                 CmsData.BundleDetail bd = null;
                 for (var c = 1; c < a.Length; c++)

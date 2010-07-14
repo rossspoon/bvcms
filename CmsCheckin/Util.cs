@@ -18,9 +18,9 @@ namespace CmsCheckin
     {
         public static string ServiceUrl()
         {
-            string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
+            string serviceurl = ConfigurationManager.AppSettings["ServiceUrl"];
             if (Program.TestMode)
-                serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
+                serviceurl = ConfigurationManager.AppSettings["ServiceUrlTest"];
             return serviceurl;
         }
         public static string GetDigits(this string s)
