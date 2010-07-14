@@ -90,9 +90,9 @@ namespace PostBundle
         }
         public static string ServiceUrl()
         {
-            string serviceurl = ConfigurationSettings.AppSettings["ServiceUrl"];
+            string serviceurl = ConfigurationManager.AppSettings["ServiceUrl"];
 #if DEBUG
-            serviceurl = ConfigurationSettings.AppSettings["ServiceUrlTest"];
+            serviceurl = ConfigurationManager.AppSettings["ServiceUrlTest"];
 #endif
             return serviceurl;
         }

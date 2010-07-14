@@ -43,7 +43,6 @@ namespace CMSPresenter
         {
             if (qlist != null)
                 return;
-            string misctag = DbUtil.MiscTagsString;
             var q = from m in DbUtil.Db.Meetings
                     where m.MeetingDate.Value.Date == sunday
                     where m.NumPresent > 0

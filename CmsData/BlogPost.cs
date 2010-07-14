@@ -82,7 +82,7 @@ namespace CmsData
                 {
                     sb.AppendFormat("{0}&lt;{1}&gt;<br/>\n", i.Value.Name, i.Value.Email);
                     var msg = new MailMessage(from, ma);
-                    msg.ReplyTo = reply;
+                    msg.ReplyToList.Add(reply);
                     msg.Subject = subject;
                     msg.Body = @"<br>--<br>View this post online at: <a href=""{0}?user={1}"">{0}</a>
 <br>--<br>

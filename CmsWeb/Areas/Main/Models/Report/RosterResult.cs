@@ -113,7 +113,6 @@ namespace CMSWeb.Areas.Main.Models.Report
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
-        private DateTime dt;
         private PdfContentByte dc;
         private bool pagesetstarted = false;
 
@@ -125,7 +124,7 @@ namespace CMSWeb.Areas.Main.Models.Report
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
             pageEvents.StartPageSet(
                                     "{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher),
-                                    "({1})".Fmt(dt, o.OrgId));
+                                    "({1})".Fmt(DateTime.Now, o.OrgId));
 
             var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
             t.AddCell(new Phrase("PeopleId", boldfont));

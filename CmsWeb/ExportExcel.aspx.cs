@@ -49,7 +49,6 @@ namespace CMSWeb
             var ctl = new MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
-            IEnumerable d = null;
             var dg = new DataGrid();
             dg.EnableViewState = false;
             switch (labelNameFormat)

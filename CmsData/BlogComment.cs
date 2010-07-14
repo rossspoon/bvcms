@@ -65,7 +65,7 @@ namespace CmsData
                 if (ma == null)
                     continue;
                 var msg = new MailMessage(from, ma);
-                msg.ReplyTo = reply;
+                msg.ReplyToList.Add(reply);
                 msg.Subject = subject;
                 msg.Body = @"<br>--<br>View this comment online at: <a href=""{0}?user={1}#comments"">{0}</a>
 <br>--<br>

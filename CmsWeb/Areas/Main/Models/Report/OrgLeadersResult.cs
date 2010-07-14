@@ -78,15 +78,12 @@ namespace CMSWeb.Areas.Main.Models.Report
             Response.End();
         }
 
-        private PdfPCell box;
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
         private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private PageEvent pageEvents = new PageEvent();
-        private PdfPTable t;
         private Document doc;
-        private DateTime? dt;
         private PdfContentByte dc;
 
         float[] HeaderWids = new float[] { 12, 40, 25, 20 };
