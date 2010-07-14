@@ -1,13 +1,13 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.MemberInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.MemberInfo>" %>
 <a class="displayedit" href="/Person/MemberDisplay/<%=Model.PeopleId %>">cancel</a>
 <table class="Design2">
     <tr>
         <th>Contribution Statement:</th>
-        <td><%=Html.DropDownList("StatementOptionId", CMSWeb.Models.PersonPage.MemberInfo.EnvelopeOptions())%></td>
+        <td><%=Html.DropDownList("StatementOptionId", CmsWeb.Models.PersonPage.MemberInfo.EnvelopeOptions())%></td>
     </tr>
     <tr>
         <th>Envelope Option</th>
-        <td><%=Html.DropDownList("EnvelopeOptionId", CMSWeb.Models.PersonPage.MemberInfo.EnvelopeOptions())%></td>
+        <td><%=Html.DropDownList("EnvelopeOptionId", CmsWeb.Models.PersonPage.MemberInfo.EnvelopeOptions())%></td>
     </tr>
 <tr><td></td></tr>
     <tr>
@@ -15,7 +15,7 @@
     </tr>
     <tr>
         <th>Type:</th>
-        <td><%=Html.DropDownList("DecisionTypeId", CMSWeb.Models.PersonPage.MemberInfo.DecisionCodes())%></td>
+        <td><%=Html.DropDownList("DecisionTypeId", CmsWeb.Models.PersonPage.MemberInfo.DecisionCodes())%></td>
     </tr>
     <tr>
         <th>Date:</th>
@@ -27,7 +27,7 @@
     </tr>
     <tr>
         <th>Type:</th>
-        <td><%=Html.DropDownList("JoinTypeId", CMSWeb.Models.PersonPage.MemberInfo.JoinTypes())%></td>
+        <td><%=Html.DropDownList("JoinTypeId", CmsWeb.Models.PersonPage.MemberInfo.JoinTypes())%></td>
     </tr>
     <tr>
         <th>Date:</th>
@@ -43,7 +43,7 @@
     </tr>
     <tr>
         <th>Member Status:</th>
-        <td><%=Html.DropDownList("MemberStatusId", CMSWeb.Models.PersonPage.MemberInfo.MemberStatuses())%></td>
+        <td><%=Html.DropDownList("MemberStatusId", CmsWeb.Models.PersonPage.MemberInfo.MemberStatuses())%></td>
     </tr>
     <tr>
         <th>Joined:</th>
@@ -55,11 +55,11 @@
     </tr>
     <tr>
         <th>Type:</th>
-        <td><%=Html.DropDownList("BaptismTypeId", CMSWeb.Models.PersonPage.MemberInfo.BaptismTypes())%></td>
+        <td><%=Html.DropDownList("BaptismTypeId", CmsWeb.Models.PersonPage.MemberInfo.BaptismTypes())%></td>
     </tr>
     <tr>
         <th>Status:</th>
-        <td><%=Html.DropDownList("BaptismStatusId", CMSWeb.Models.PersonPage.MemberInfo.BaptismStatuses())%></td>
+        <td><%=Html.DropDownList("BaptismStatusId", CmsWeb.Models.PersonPage.MemberInfo.BaptismStatuses())%></td>
     </tr>
     <tr>
         <th>Date:</th>
@@ -75,7 +75,7 @@
     </tr>
     <tr>
         <th>Type:</th>
-        <td><%=Html.DropDownList("DropTypeId", CMSWeb.Models.PersonPage.MemberInfo.DropTypes())%></td>
+        <td><%=Html.DropDownList("DropTypeId", CmsWeb.Models.PersonPage.MemberInfo.DropTypes())%></td>
     </tr>
     <tr>
         <th>Date:</th>
@@ -91,7 +91,7 @@
     </tr>
     <tr>
         <th>Status:</th>
-        <td><%=Html.DropDownList("NewMemberClassStatusId", CMSWeb.Models.PersonPage.MemberInfo.NewMemberClassStatuses())%></td>
+        <td><%=Html.DropDownList("NewMemberClassStatusId", CmsWeb.Models.PersonPage.MemberInfo.NewMemberClassStatuses())%></td>
     </tr>
     <tr>
         <th>Date:</th>

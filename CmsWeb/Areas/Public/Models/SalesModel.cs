@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using System.Net.Mail;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class SalesModel
     {

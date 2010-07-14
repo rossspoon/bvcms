@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Report {
+namespace CmsWeb.Report {
     
     
     public partial class AttendanceDetail {

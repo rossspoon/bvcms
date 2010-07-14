@@ -19,7 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
-namespace CMSWeb.Areas.Main.Models.Report
+namespace CmsWeb.Areas.Main.Models.Report
 {
     public class WeeklyAttendanceResult : ActionResult
     {

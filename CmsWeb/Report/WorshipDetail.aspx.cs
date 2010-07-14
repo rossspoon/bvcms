@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 
-namespace CMSWeb.Report
+namespace CmsWeb.Report
 {
     public partial class WorshipDetail : System.Web.UI.Page
     {

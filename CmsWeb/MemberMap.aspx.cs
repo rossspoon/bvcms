@@ -10,7 +10,7 @@ using System.Net;
 using System.Linq;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class MemberMap : System.Web.UI.Page
     {

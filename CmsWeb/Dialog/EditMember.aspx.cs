@@ -16,7 +16,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Web;
 
-namespace CMSWeb.Dialog
+namespace CmsWeb.Dialog
 {
     public partial class EditMember : System.Web.UI.Page
     {

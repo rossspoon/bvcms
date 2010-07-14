@@ -13,7 +13,7 @@ using CMSPresenter;
 using System.Net.Mail;
 using System.Collections;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     [Serializable]
     public class OnlineRegPersonModel
@@ -112,7 +112,7 @@ namespace CMSWeb.Models
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
             IsValidForContinue = true; // true till proven false
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (UserSelectsOrganization())
                 if ((classid ?? 0) == 0)
@@ -172,7 +172,7 @@ namespace CMSWeb.Models
                 else if (count == 0)
                 {
                     ModelState.AddModelError("find", "record not found");
-                    NotFoundText = CMSWeb.Models.SearchPeopleModel.NotFoundText;
+                    NotFoundText = CmsWeb.Models.SearchPeopleModel.NotFoundText;
                 }
             }
             IsValidForExisting = ModelState.IsValid;
@@ -232,7 +232,7 @@ namespace CMSWeb.Models
         public bool IsValidForNew { get; set; }
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");

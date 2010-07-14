@@ -3,7 +3,7 @@ using System.Web.Security;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class ChangePassword : System.Web.UI.Page
     {

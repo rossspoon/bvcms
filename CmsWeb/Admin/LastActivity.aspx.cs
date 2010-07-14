@@ -9,7 +9,7 @@ using UtilityExtensions;
 using System.Text;
 using System.Data.Linq.SqlClient;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class LastActivity : System.Web.UI.Page
     {

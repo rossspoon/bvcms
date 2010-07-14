@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 using System.Configuration;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class SalesController : CmsController
     {

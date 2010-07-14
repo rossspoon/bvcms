@@ -16,7 +16,7 @@ using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
 using System.Transactions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     interface IQBUpdateable
     {
@@ -532,7 +532,7 @@ namespace CMSWeb.Models
         }
         public IEnumerable<SelectListItem> Views()
         {
-            return CMSWeb.Models.VolunteersModel.Views().ToList();
+            return CmsWeb.Models.VolunteersModel.Views().ToList();
         }
         public IEnumerable<SelectListItem> Programs()
         {

@@ -12,14 +12,14 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using UtilityExtensions;
 using System.Web.Routing;
-using CMSWeb;
-using CMSWeb.Models;
+using CmsWeb;
+using CmsWeb.Models;
 using CmsData;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Text;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CmsWeb.Areas.Manage.Controllers
 {
     public class VolunteersController : CmsStaffController
     {
@@ -113,7 +113,7 @@ namespace CMSWeb.Areas.Manage.Controllers
                 select p;
             foreach (var person in q)
             {
-                var m = new CMSWeb.Models
+                var m = new CmsWeb.Models
                     .VolunteerModel { View = id, person = person };
                 m.person.BuildVolInfoList(id); // gets existing
                 m.person.BuildVolInfoList(id); // 2nd time updates existing

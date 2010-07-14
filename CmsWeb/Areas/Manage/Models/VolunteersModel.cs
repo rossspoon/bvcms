@@ -6,7 +6,7 @@ using CmsData;
 using System.Data;
 using System.Web.Mvc;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class VolunteersModel
     {

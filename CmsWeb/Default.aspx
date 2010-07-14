@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CMSWeb.Default"
+    AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CmsWeb.Default"
     Title="CMS2 Home" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -221,6 +221,6 @@
         </table>
     </div>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"
-        SelectMethod="FetchContactTasks" TypeName="CMSWeb.Models.TaskModel">
+        SelectMethod="FetchContactTasks" TypeName="CmsWeb.Models.TaskModel">
     </asp:ObjectDataSource>
 </asp:Content>

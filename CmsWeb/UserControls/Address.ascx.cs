@@ -6,7 +6,7 @@ using CmsData;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Address : System.Web.UI.UserControl
     {

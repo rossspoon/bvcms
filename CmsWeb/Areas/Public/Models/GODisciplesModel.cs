@@ -11,7 +11,7 @@ using UtilityExtensions;
 using System.Net.Mail;
 using System.Web.Security;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class GODisciplesModel
     {
@@ -101,7 +101,7 @@ namespace CMSWeb.Models
         public int FindMember()
         {
             int count;
-            _person = CMSWeb.Models.SearchPeopleModel
+            _person = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone, first, last, birthday, out count);
             if (count == 1)
                 peopleid = _person.PeopleId;
@@ -110,7 +110,7 @@ namespace CMSWeb.Models
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, phone);
 
             if (!phone.HasValue())

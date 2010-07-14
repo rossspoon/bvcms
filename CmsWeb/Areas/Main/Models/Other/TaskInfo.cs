@@ -17,7 +17,7 @@ using System.Web.Mvc;
 using CMSPresenter;
 using CmsData;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class TaskInfo
     {

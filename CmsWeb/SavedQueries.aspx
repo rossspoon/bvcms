@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SavedQueries.aspx.cs"
-    Inherits="CMSWeb.SavedQueries" Title="Saved Queries" %>
+    Inherits="CmsWeb.SavedQueries" Title="Saved Queries" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Src="UserControls/GridPager.ascx" TagName="GridPager" TagPrefix="uc1" %>

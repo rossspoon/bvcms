@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Bundle.aspx.cs" Inherits="CMSWeb.Contributions.Bundle" %>
+    CodeBehind="Bundle.aspx.cs" Inherits="CmsWeb.Contributions.Bundle" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

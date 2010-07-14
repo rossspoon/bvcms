@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="BadEts.aspx.cs" Inherits="CMSWeb.BadEts" %>
+    AutoEventWireup="true" CodeBehind="BadEts.aspx.cs" Inherits="CmsWeb.BadEts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -100,7 +100,7 @@
     </asp:GridView>
     <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" EnablePaging="True" MaximumRowsParameterName="max"
         SelectCountMethod="Count" SelectMethod="FetchBadEts"
-        StartRowIndexParameterName="start" TypeName="CMSWeb.BadEtsController" EnableViewState="false">
+        StartRowIndexParameterName="start" TypeName="CmsWeb.BadEtsController" EnableViewState="false">
         <SelectParameters>
             <asp:ControlParameter ControlID="DropDownList1" Name="flag" PropertyName="SelectedValue"
                 Type="Int32" />

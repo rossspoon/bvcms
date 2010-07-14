@@ -12,12 +12,12 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using UtilityExtensions;
 using System.Web.Routing;
-using CMSWeb;
-using CMSWeb.Models;
+using CmsWeb;
+using CmsWeb.Models;
 using CmsData;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class QueryBuilderController : CmsStaffController
     {

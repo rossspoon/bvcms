@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="VolunteerApp.aspx.cs"
-    Inherits="CMSWeb.VolunteerApp" Title="Volunteer Application Review" %>
+    Inherits="CmsWeb.VolunteerApp" Title="Volunteer Application Review" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

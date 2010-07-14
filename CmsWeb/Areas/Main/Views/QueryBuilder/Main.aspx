@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.QueryModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.QueryModel>" %>
 
 <asp:Content ID="indexHead" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />

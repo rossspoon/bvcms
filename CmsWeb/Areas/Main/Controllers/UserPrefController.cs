@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class UserPrefController : CmsStaffController
     {

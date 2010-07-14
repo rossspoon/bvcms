@@ -7,7 +7,7 @@ using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class PrayerController : CmsController
     {

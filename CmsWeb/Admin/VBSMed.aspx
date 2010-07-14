@@ -1,1 +1,1 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="VBSMed.aspx.cs" Inherits="CMSWeb.Admin.VBSMed" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="VBSMed.aspx.cs" Inherits="CmsWeb.Admin.VBSMed" %>

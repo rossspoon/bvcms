@@ -8,7 +8,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Diagnostics;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class OneTimeETStudy : System.Web.UI.Page
     {

@@ -1,1 +1,1 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MeetingSummaryRpt.aspx.cs" Inherits="CMSWeb.Reports.MeetingSummaryRpt" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MeetingSummaryRpt.aspx.cs" Inherits="CmsWeb.Reports.MeetingSummaryRpt" %>

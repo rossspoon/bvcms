@@ -19,7 +19,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Collections;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class PostBundleModel
     {

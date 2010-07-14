@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteerModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.VolunteerModel>" %>
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <link rel="stylesheet" href="/content/jquery.treeview.css" type="text/css" media="screen" />
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    

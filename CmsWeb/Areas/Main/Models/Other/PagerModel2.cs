@@ -14,7 +14,7 @@ using UtilityExtensions;
 using System.Text;
 using CmsData;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class PagerModel2
     {

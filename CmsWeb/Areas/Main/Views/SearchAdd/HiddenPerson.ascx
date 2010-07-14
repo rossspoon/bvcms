@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchPersonModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.SearchPersonModel>" %>
 
 <input type="hidden" name="m.List.Index" value="<%=Model.index%>" />
 <input type="hidden" name="m.List[<%=Model.index%>].PeopleId" value="<%=Model.PeopleId%>" />

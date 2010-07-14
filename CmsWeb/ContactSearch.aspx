@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ContactSearch.aspx.cs"
-    Inherits="CMSWeb.ContactSearch" Title="Contact Search" %>
+    Inherits="CmsWeb.ContactSearch" Title="Contact Search" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register src="UserControls/GridPager.ascx" tagname="GridPager" tagprefix="uc1" %>

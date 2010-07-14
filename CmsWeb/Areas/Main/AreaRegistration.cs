@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace CMSWeb.Areas.Main
+namespace CmsWeb.Areas.Main
 {
     public class MainAreaRegistration : AreaRegistration
     {

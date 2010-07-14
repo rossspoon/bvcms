@@ -20,7 +20,7 @@ using CmsData;
 using CMSPresenter;
 using System.Collections.Generic;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class QueryConditions : System.Web.UI.UserControl
     {

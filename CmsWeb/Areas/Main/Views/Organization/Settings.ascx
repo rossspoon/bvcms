@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrganizationPage.OrganizationModel>" %>
-<% CMSWeb.Models.OrganizationPage.OrganizationModel m = Model;
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrganizationPage.OrganizationModel>" %>
+<% CmsWeb.Models.OrganizationPage.OrganizationModel m = Model;
    if (Page.User.IsInRole("Edit"))
    { %>
 <a class="displayedit" href="/Organization/SettingsEdit/<%=Model.OrganizationId %>">Edit</a>

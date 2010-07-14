@@ -11,7 +11,7 @@ using CMSPresenter;
 using CmsData;
 using System.Threading;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class ExportToolBar : System.Web.UI.UserControl
     {

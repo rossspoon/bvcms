@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb.Report
+namespace CmsWeb.Report
 {
     public partial class AttendanceDetail : System.Web.UI.Page
     {

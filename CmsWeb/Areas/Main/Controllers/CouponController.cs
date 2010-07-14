@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CmsData;
-using CMSWeb.Models;
+using CmsWeb.Models;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     [Authorize(Roles="Coupon")]
     public class CouponController : CmsStaffController

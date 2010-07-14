@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using CmsData;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class OrgSearchController : CmsStaffController
     {

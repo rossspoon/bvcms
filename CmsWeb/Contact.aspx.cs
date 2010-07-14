@@ -21,7 +21,7 @@ using System.Data;
 using System.Web.Security;
 
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Contact : System.Web.UI.Page
     {

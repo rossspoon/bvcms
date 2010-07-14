@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.MemberNotesInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.MemberNotesInfo>" %>
 <% if (Page.User.IsInRole("Edit"))
    { %>
 <a class="displayedit" href="/Person/MemberNotesEdit/<%=Model.PeopleId %>">Edit</a>

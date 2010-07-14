@@ -13,7 +13,7 @@ using System.Web.UI.WebControls;
 using CMSPresenter;
 using UtilityExtensions;
 
-namespace CMSWeb.Contributions.Reports
+namespace CmsWeb.Contributions.Reports
 {
     public partial class JournalDetails : System.Web.UI.Page
     {

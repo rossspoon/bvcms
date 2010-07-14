@@ -15,7 +15,7 @@ using System.Linq;
 using UtilityExtensions;
 using System.Configuration;
 
-namespace CMSWeb
+namespace CmsWeb
 {
 
     public static class Geocoding

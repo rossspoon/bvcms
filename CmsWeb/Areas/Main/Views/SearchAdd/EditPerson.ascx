@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchPersonModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.SearchPersonModel>" %>
     <tr><td><label for="title">Title</label></td>
         <td><%=Html.DropDownList3(null, "m.List[" + Model.index + "].title", Model.TitleCodes(), Model.title) %></td>
         <td><%= Html.ValidationMessage("title") %></td>

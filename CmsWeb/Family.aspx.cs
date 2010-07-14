@@ -15,7 +15,7 @@ using AjaxControlToolkit;
 using CustomControls;
 using System.Data.Linq;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class FamilyPage : System.Web.UI.Page
     {

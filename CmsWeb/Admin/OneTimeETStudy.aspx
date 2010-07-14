@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OneTimeETStudy.aspx.cs" Inherits="CMSWeb.Admin.OneTimeETStudy" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OneTimeETStudy.aspx.cs" Inherits="CmsWeb.Admin.OneTimeETStudy" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

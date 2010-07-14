@@ -8,7 +8,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using UtilityExtensions;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class UploadFile : System.Web.UI.Page
     {

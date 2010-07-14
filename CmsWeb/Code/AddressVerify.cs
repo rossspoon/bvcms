@@ -17,7 +17,7 @@ using System.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public class AddressVerify
     {

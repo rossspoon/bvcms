@@ -5,7 +5,7 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Models.OrganizationPage
+namespace CmsWeb.Models.OrganizationPage
 {
     public class VisitorModel
     {

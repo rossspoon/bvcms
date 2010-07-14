@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 
-namespace CMSWeb.Areas.Setup.Controllers
+namespace CmsWeb.Areas.Setup.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class UsersCanEmailForController : CmsStaffController

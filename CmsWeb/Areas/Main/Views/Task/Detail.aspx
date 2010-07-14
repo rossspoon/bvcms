@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskDetail>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.TaskDetail>" %>
 <% if (false)
    { %>
     <link href="/Content/style.css" rel="stylesheet" type="text/css" />

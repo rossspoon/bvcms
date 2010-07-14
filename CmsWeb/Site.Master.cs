@@ -15,7 +15,7 @@ using System.Linq;
 using System.Data.Linq;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Site : System.Web.UI.MasterPage
     {

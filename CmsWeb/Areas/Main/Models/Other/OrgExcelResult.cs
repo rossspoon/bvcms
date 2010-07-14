@@ -9,7 +9,7 @@ using CmsData;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class OrgExcelResult : ActionResult
     {

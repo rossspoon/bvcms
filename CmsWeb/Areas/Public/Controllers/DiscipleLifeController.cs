@@ -9,7 +9,7 @@ using UtilityExtensions;
 using System.Configuration;
 using System.Net.Mail;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class DiscipleLifeController : CmsController
     {

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PersonGrid.ascx.cs"
-    Inherits="CMSWeb.PersonGrid" %>
+    Inherits="CmsWeb.PersonGrid" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 
 <script type="text/javascript">

@@ -11,7 +11,7 @@ using CMSPresenter;
 using CmsData;
 using System.Web.SessionState;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     /// <summary>
     /// Summary description for $codebehindclassname$

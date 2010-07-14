@@ -9,7 +9,7 @@ using System.Collections;
 using CmsData;
 using System.Data;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class ChurchAttendanceSummary : System.Web.UI.Page
     {

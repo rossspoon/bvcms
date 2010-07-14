@@ -13,7 +13,7 @@ using CMSPresenter;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     [Serializable]
     public class OnlineRegModel

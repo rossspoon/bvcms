@@ -6,7 +6,7 @@ using CMSPresenter;
 using System.Collections.Generic;
 using CmsData;
 
-namespace CMSWeb.Reports
+namespace CmsWeb.Reports
 {
     public partial class MeetingAttendanceRpt : System.Web.UI.Page
     {

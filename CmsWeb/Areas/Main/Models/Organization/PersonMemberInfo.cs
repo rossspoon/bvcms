@@ -6,7 +6,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
 
-namespace CMSWeb.Models.OrganizationPage
+namespace CmsWeb.Models.OrganizationPage
 {
     public class PersonMemberInfo
     {

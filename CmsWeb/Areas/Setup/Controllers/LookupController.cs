@@ -7,7 +7,7 @@ using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Setup.Controllers
+namespace CmsWeb.Areas.Setup.Controllers
 {
     [Authorize(Roles="Developer")]
     public class LookupController : CmsStaffController

@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.CheckInRecModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.CheckInRecModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />

@@ -6,7 +6,7 @@ using CMSPresenter;
 using System.Collections.Generic;
 using CmsData;
 
-namespace CMSWeb.Reports
+namespace CmsWeb.Reports
 {
     public partial class ProspectCardsRpt : System.Web.UI.Page
     {
@@ -57,7 +57,7 @@ namespace CMSWeb.Reports
         {
             LocalReport localReport = new LocalReport();
             localReport.ReportPath = Server.MapPath("./rdlc/ProspectCardsRpt.rdlc");
-            //localReport.ReportEmbeddedResource = "CMSWeb.Reports.rdlc.ProspectCardsRpt.rdlc";
+            //localReport.ReportEmbeddedResource = "CmsWeb.Reports.rdlc.ProspectCardsRpt.rdlc";
 
             var id = this.QueryString<int?>("id");
 

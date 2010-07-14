@@ -11,7 +11,7 @@ using System.IO;
 using System.Text;
 using System.Data.Linq;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class ContactSearch : System.Web.UI.Page
     {
@@ -19,7 +19,7 @@ namespace CMSWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var site = (CMSWeb.Site)Page.Master;
+            var site = (CmsWeb.Site)Page.Master;
             site.ScriptManager.EnablePageMethods = true;
             if (!IsPostBack)
             {

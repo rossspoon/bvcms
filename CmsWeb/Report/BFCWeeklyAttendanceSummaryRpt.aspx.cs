@@ -8,7 +8,7 @@ using UtilityExtensions;
 using CmsData;
 using CMSPresenter;
 
-namespace CMSWeb.Reports
+namespace CmsWeb.Reports
 {
     public partial class BFCWeeklyAttendanceSummaryRpt : System.Web.UI.Page
     {

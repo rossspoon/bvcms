@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SearchContactModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.SearchContactModel>" %>
 <% if(ViewData.Model.Count == 0)
    { %>
 <tr><td colspan="5">No matching records.</td></tr>

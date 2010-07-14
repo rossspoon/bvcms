@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="DecisionSummary.aspx.cs" Inherits="CMSWeb.StaffOnly.DecisionSummary" %>
+    CodeBehind="DecisionSummary.aspx.cs" Inherits="CmsWeb.StaffOnly.DecisionSummary" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskInfo>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.TaskInfo>" %>
     <td><% if(Model.IsAnOwner) { %><input type="checkbox" value= "<%=Model.Id%>" class = "actionitem" /></td><% } %>
     <td><%=Model.Priority%></td>
     <td><%="{0:d}".Fmt(Model.DueOrCompleted)%></td>

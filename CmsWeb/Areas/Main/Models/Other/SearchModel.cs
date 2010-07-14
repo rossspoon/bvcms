@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data.Linq;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class SearchModel
     {

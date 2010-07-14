@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserArea.ascx.cs" Inherits="CMSWeb.UserArea" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserArea.ascx.cs" Inherits="CmsWeb.UserArea" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:LoginView ID="LoginView1" EnableViewState="false" runat="server">
     <AnonymousTemplate>

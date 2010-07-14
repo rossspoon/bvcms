@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using CMSPresenter;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class OrgMembersDialogController : CmsStaffController
     {

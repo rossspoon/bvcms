@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyTags.aspx.cs"
-    Inherits="CMSWeb.MyTags" Title="Tag Management" %>
+    Inherits="CmsWeb.MyTags" Title="Tag Management" %>
 
 <%@ Register Src="UserControls/PersonGrid.ascx" TagName="PersonGrid" TagPrefix="uc1" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

@@ -8,7 +8,7 @@ using UtilityExtensions;
 using System.Diagnostics;
 using CmsData;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class VBSMed : System.Web.UI.Page
     {

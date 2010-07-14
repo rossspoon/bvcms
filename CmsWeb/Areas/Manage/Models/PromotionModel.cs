@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using CMSPresenter;
 using System.Collections;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class PromotionModel
     {

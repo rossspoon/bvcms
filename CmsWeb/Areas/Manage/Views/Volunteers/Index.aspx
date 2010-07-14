@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.VolunteersModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.VolunteersModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -73,7 +73,7 @@
     <form id="form" method="get" action="/Volunteers/Index">
     <div class="modalPopup">
        Interests: <%=Html.DropDownList("Org", Model.Interests())%>
-       Views: <%=Html.DropDownList("View", CMSWeb.Models.VolunteersModel.Views())%>
+       Views: <%=Html.DropDownList("View", CmsWeb.Models.VolunteersModel.Views())%>
        <a id="query" href="#">QueryBuilder</a>
     </div>
     <%=Html.Hidden("Sort", Model.Sort) %>

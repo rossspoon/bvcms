@@ -1,17 +1,17 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.GrowthInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.GrowthInfo>" %>
 <a class="displayedit" href="/Person/GrowthDisplay/<%=Model.PeopleId %>">cancel</a>
 <table class="Design2">
     <tr>
         <th>How did you hear about our Church?</th>
-        <td><%=Html.DropDownList("InterestPointId", CMSWeb.Models.PersonPage.GrowthInfo.InterestPoints())%></td>
+        <td><%=Html.DropDownList("InterestPointId", CmsWeb.Models.PersonPage.GrowthInfo.InterestPoints())%></td>
     </tr>
     <tr>
         <th>Origin:</th>
-        <td><%=Html.DropDownList("OriginId", CMSWeb.Models.PersonPage.GrowthInfo.Origins())%></td>
+        <td><%=Html.DropDownList("OriginId", CmsWeb.Models.PersonPage.GrowthInfo.Origins())%></td>
     </tr>
     <tr>
         <th>Entry Point:</th>
-        <td><%=Html.DropDownList("EntryPointId", CMSWeb.Models.PersonPage.GrowthInfo.EntryPoints())%></td>
+        <td><%=Html.DropDownList("EntryPointId", CmsWeb.Models.PersonPage.GrowthInfo.EntryPoints())%></td>
     </tr>
 <tr><td></td></tr>
     <tr>

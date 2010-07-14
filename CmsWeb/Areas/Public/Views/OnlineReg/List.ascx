@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OnlineRegModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <%=Html.Hidden("m.divid", Model.divid) %>
 <%=Html.Hidden("m.orgid", Model.orgid) %>
 <%=Html.Hidden("m.testing", Model.testing) %>

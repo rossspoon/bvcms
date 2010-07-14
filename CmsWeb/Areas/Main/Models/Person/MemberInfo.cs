@@ -9,7 +9,7 @@ using CMSPresenter;
 using System.Data.Linq.SqlClient;
 using System.Data.Linq;
 
-namespace CMSWeb.Models.PersonPage
+namespace CmsWeb.Models.PersonPage
 {
     public class MemberInfo
     {

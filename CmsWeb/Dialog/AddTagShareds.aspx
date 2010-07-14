@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="AddTagShareds.aspx.cs"
-    Inherits="CMSWeb.Dialog.AddTagShareds" %>
+    Inherits="CmsWeb.Dialog.AddTagShareds" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register TagPrefix="user" TagName="QuickSearchParameters" Src="~/UserControls/QuickSearchParameters.ascx" %>

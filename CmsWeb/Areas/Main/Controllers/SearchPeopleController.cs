@@ -12,9 +12,9 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
-using CMSWeb.Models;
+using CmsWeb.Models;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class SearchPeopleController : CmsStaffController
     {

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PagerModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.PagerModel>" %>
 <table width="100%">
     <tr>
         <td class="pager">

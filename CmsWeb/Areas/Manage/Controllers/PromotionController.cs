@@ -5,13 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 using System.Collections;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CmsWeb.Areas.Manage.Controllers
 {
     public class PromotionController : CmsStaffController
     {

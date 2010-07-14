@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PersonPage.PersonModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.PersonPage.PersonModel>" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
 </asp:Content>
@@ -11,7 +11,7 @@
             .Add("/Scripts/Person.js")
         .Render("/Content/Person_#.js")
             %>        
-    <% CMSWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
+    <% CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
     <table class="PersonHead" border="0">
         <tr>
             <td><%=Model.Name %></td>

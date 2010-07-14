@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb {
+namespace CmsWeb {
     
     
     public partial class MyTags {
@@ -91,7 +91,7 @@ namespace CMSWeb {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.ExportToolBar ExportToolBar1;
+        protected global::CmsWeb.ExportToolBar ExportToolBar1;
         
         /// <summary>
         /// PersonGrid1 control.
@@ -100,7 +100,7 @@ namespace CMSWeb {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSWeb.PersonGrid PersonGrid1;
+        protected global::CmsWeb.PersonGrid PersonGrid1;
         
         /// <summary>
         /// PeopleData control.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Contributions.Reports {
+namespace CmsWeb.Contributions.Reports {
     
     
     public partial class PledgeReport {

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContributionStatementExtract.aspx.cs" MasterPageFile="~/Site.Master"  Inherits="CMSWeb.Contributions.Reports.ContributionStatementExtract" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContributionStatementExtract.aspx.cs" MasterPageFile="~/Site.Master"  Inherits="CmsWeb.Contributions.Reports.ContributionStatementExtract" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 

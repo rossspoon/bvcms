@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.BasicPersonInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.BasicPersonInfo>" %>
 <% Html.RenderPartial("ExportToolBar"); %><div style="clear:both;padding: 5px"></div>
 <% if (Page.User.IsInRole("Edit"))
    { %>

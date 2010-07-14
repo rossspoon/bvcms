@@ -14,7 +14,7 @@ using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb.Contributions
+namespace CmsWeb.Contributions
 {
    public partial class Bundles : System.Web.UI.Page
     {

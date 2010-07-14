@@ -12,7 +12,7 @@ using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CmsWeb.Areas.Manage.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class DisplayController : CmsStaffController

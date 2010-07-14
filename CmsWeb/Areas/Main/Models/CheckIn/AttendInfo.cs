@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CMSWeb.Models.OrganizationPage
+namespace CmsWeb.Models.OrganizationPage
 {
     public class MeetingInfo
     {

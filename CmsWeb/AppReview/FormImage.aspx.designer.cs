@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb {
+namespace CmsWeb {
     
     
     public partial class FormImage {

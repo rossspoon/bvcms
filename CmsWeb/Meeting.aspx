@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="Meeting.aspx.cs" Inherits="CMSWeb.Meeting"
+    AutoEventWireup="true" CodeBehind="Meeting.aspx.cs" Inherits="CmsWeb.Meeting"
     Title="Meeting" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

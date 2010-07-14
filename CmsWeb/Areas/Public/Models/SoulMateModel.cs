@@ -11,7 +11,7 @@ using UtilityExtensions;
 using System.Threading;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class ChildItem
     {
@@ -154,21 +154,21 @@ namespace CMSWeb.Models
         public int FindMember1()
         {
             int count;
-            _Person1 = CMSWeb.Models.SearchPeopleModel
+            _Person1 = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone1, first1, lastname1, BDay1, out count);
             return count;
         }
         public int FindMember2()
         {
             int count;
-            _Person2 = CMSWeb.Models.SearchPeopleModel
+            _Person2 = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone2, first2, lastname2, BDay2, out count);
             return count;
         }
         public int FindMember(string phone, string first, string last, DateTime dob, out Person person)
         {
             int count;
-            person = CMSWeb.Models.SearchPeopleModel
+            person = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone, first, last, dob, out count);
             return count;
         }

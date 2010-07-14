@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using UtilityExtensions;
 using CMSPresenter;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class BulkMail : System.Web.UI.Page
     {

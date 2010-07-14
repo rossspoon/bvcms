@@ -1,9 +1,9 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.RecRegInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.RecRegInfo>" %>
 <a class="displayedit" href="/Person/RecRegDisplay/<%=Model.PeopleId %>">cancel</a>
 <table class="Design2">
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
-        <td><%= Html.DropDownList("shirtsize", CMSWeb.Models.RecRegModel.ShirtSizes(null))%></td>
+        <td><%= Html.DropDownList("shirtsize", CmsWeb.Models.RecRegModel.ShirtSizes(null))%></td>
         <td><%= Html.ValidationMessage("shirtsize")%></td>
     </tr>
     <tr>

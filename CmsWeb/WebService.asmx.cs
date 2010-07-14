@@ -13,9 +13,9 @@ using System.Web.Services.Protocols;
 using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
-using CMSWeb;
+using CmsWeb;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

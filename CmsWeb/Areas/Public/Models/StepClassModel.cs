@@ -9,7 +9,7 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class StepClassModel
     {
@@ -51,14 +51,14 @@ namespace CMSWeb.Models
         public int FindMember()
         {
             int count;
-            person = CMSWeb.Models.SearchPeopleModel
+            person = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone, first, last, birthday, out count);
             return count;
         }
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, phone);
 
             if (!phone.HasValue())

@@ -17,7 +17,7 @@ using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Configuration;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class EmailPeople : System.Web.UI.Page
     {

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.TaskModel>" %>
 <% Html.RenderPartial("Tabs", Model); %>
 <---------->
 <% foreach(var item in Model.ActionItems())

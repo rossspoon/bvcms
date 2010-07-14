@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchPersonModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.SearchPersonModel>" %>
     <tr>
         <td><label for="homephone">Home Phone</label></td>
         <td><input type="text" name="m.List[<%=Model.index%>].homephone" value="<%=Model.homephone%>" /></td>

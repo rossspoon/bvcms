@@ -14,7 +14,7 @@ using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class EnrollmentControlReport : System.Web.UI.Page
     {

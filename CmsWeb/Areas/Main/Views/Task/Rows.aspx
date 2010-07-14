@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.TaskModel>" %>
 <% if(ViewData.Model.Count == 0)
    { %>
 <tr id="nomatch"><td colspan="7">No matching records.</td></tr>

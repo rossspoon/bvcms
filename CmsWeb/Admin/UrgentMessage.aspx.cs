@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class UrgentMessage : System.Web.UI.Page
     {

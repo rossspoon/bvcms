@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CMSWeb.Areas.Main.Models.Report;
+using CmsWeb.Areas.Main.Models.Report;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class ReportsController : CmsStaffController
     {

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<CMSWeb.Models.TaskModel.TasksAbout>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<CmsWeb.Models.TaskModel.TasksAbout>>" %>
 <table class="grid">
     <thead>
     <tr>

@@ -9,7 +9,7 @@ using UtilityExtensions;
 using System.Web.Mvc;
 using CMSPresenter;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class RecreationModel
     {

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.SearchContactModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.SearchContactModel>" %>
 <form id="searchform" action="/Task/SearchContact/" method="post">
 <div>
     <table class="modalPopup">

@@ -5,7 +5,7 @@ using System.Web;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public class CmsController : System.Web.Mvc.Controller
     {

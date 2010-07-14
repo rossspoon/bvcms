@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.DivisionInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.DivisionInfo>" %>
 <tr>
     <td class="tip" title="<%=Model.ToolTip %>"><img src="/content/images/group.png" /></td>
     <td><a href="/OrgSearch/Index/?div=<%=Model.Id%>&progid=<%=Model.ProgId%>"><%=Model.Id%></a></td>

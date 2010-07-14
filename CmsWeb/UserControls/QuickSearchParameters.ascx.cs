@@ -106,7 +106,7 @@ public partial class QuickSearchParameters : System.Web.UI.UserControl, SearchPa
     {
         get
         {
-            if (GenderSearch.SelectedValue == "")
+            if (GenderSearch.SelectedValue.HasValue())
                 return 99;
             return GenderSearch.SelectedValue.ToInt();
         }

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="QueryConditions.ascx.cs"
-    Inherits="CMSWeb.QueryConditions" %>
+    Inherits="CmsWeb.QueryConditions" %>
 
 <script type="text/javascript">
 

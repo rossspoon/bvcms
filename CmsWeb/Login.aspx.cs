@@ -16,7 +16,7 @@ using CmsData;
 using System.Text;
 using System.Net.Mail;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Login : System.Web.UI.Page
     {

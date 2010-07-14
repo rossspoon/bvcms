@@ -8,7 +8,7 @@ using System.Net;
 using System.IO;
 using System.Web.UI.WebControls;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Default : System.Web.UI.Page
     {

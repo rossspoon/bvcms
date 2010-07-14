@@ -12,7 +12,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 
-namespace CMSWeb.Reports
+namespace CmsWeb.Reports
 {
     public partial class TotalsByFundRange : System.Web.UI.Page
     {

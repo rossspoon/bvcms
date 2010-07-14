@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
-    Inherits="CMSWeb.Contact" Title="Person" EnableEventValidation="false" %>
+    Inherits="CmsWeb.Contact" Title="Person" EnableEventValidation="false" %>
 
 <%@ Register Src="UserControls/GridPager.ascx" TagName="GridPager" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>

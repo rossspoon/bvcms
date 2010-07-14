@@ -6,7 +6,7 @@ using CmsData;
 using System.Text;
 using System.Collections;
 
-namespace CMSWeb.Areas.Main.Models.Report
+namespace CmsWeb.Areas.Main.Models.Report
 {
     public class AttendanceModel
     {

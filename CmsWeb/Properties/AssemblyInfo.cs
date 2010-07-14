@@ -6,11 +6,11 @@ using System.Web.UI;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CMSWeb")]
+[assembly: AssemblyTitle("CmsWeb")]
 [assembly: AssemblyDescription("Church Management System")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bellevue Baptist Church")]
-[assembly: AssemblyProduct("CMSWeb")]
+[assembly: AssemblyProduct("CmsWeb")]
 [assembly: AssemblyCopyright("Copyright © Bellevue Baptist Church 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

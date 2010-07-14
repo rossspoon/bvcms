@@ -12,11 +12,11 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using UtilityExtensions;
 using System.Web.Routing;
-using CMSWeb;
-using CMSWeb.Models;
+using CmsWeb;
+using CmsWeb.Models;
 using CmsData;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class TaskController : CmsStaffController
     {

@@ -11,7 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class ForceError : System.Web.UI.Page
     {

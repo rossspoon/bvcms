@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Contributions/Reports/Reports.Master" CodeBehind="PledgeReport.aspx.cs" Inherits="CMSWeb.Contributions.Reports.PledgeReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Contributions/Reports/Reports.Master" CodeBehind="PledgeReport.aspx.cs" Inherits="CmsWeb.Contributions.Reports.PledgeReport" %>
 
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -65,7 +65,7 @@
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
             OldValuesParameterFormatString="original_{0}" SelectMethod="FetchPledgeData" 
-            TypeName="CMSWeb.Contributions.Reports.PledgeReportODS">
+            TypeName="CmsWeb.Contributions.Reports.PledgeReportODS">
             <SelectParameters>
                 <asp:ControlParameter ControlID="ToDt" Name="dt" PropertyName="Text" 
                     Type="DateTime" />

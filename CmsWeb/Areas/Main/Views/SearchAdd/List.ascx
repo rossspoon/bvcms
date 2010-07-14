@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.SearchModel>" %>
 <input type="hidden" name="m.type" value="<%=Model.type%>" />
 <input type="hidden" name="m.typeid" value="<%=Model.typeid%>" />
 <input type="hidden" name="m.from" value="<%=Model.from%>" />
@@ -22,7 +22,7 @@
 <tbody>
 <% 
    int n = 0;
-   CMSWeb.Models.SearchPersonModel p = null;
+   CmsWeb.Models.SearchPersonModel p = null;
    for (; n < Model.List.Count; n++ )
    {
        p = Model.List[n];

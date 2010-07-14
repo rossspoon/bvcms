@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Contributions {
+namespace CmsWeb.Contributions {
     
     
     public partial class Years {

@@ -12,7 +12,7 @@ using System.Data.Linq.SqlClient;
 using CMSPresenter;
 using System.Net.Mail;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     [Serializable]
     public class RecRegModel
@@ -61,7 +61,7 @@ namespace CMSWeb.Models
         }
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
@@ -114,7 +114,7 @@ namespace CMSWeb.Models
         }
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");

@@ -12,7 +12,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 
-namespace CMSWeb.Contributions
+namespace CmsWeb.Contributions
 {
     public partial class Deposit : System.Web.UI.Page
     {

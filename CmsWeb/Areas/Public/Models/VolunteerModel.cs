@@ -10,7 +10,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class VolunteerModel
     {
@@ -78,14 +78,14 @@ namespace CMSWeb.Models
         public int FindMember()
         {
             int count;
-            person = CMSWeb.Models.SearchPeopleModel
+            person = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone, first, last, birthday, out count);
             return count;
         }
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, phone);
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");

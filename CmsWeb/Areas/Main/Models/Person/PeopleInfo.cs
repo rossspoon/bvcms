@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class PeopleInfo
     {

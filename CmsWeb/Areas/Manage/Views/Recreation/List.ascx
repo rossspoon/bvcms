@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecreationModel>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.RecreationModel>" %>
 <% var participants = Model.FetchParticipants();
    foreach (var r in participants)
    { %>

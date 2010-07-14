@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Contributions
+namespace CmsWeb.Contributions
 {
     public partial class All : System.Web.UI.Page
     {

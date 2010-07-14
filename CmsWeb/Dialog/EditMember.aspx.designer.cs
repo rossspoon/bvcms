@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Dialog {
+namespace CmsWeb.Dialog {
     
     
     public partial class EditMember {

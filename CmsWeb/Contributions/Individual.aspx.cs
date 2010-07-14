@@ -14,7 +14,7 @@ using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
 
-namespace CMSWeb.Contributions
+namespace CmsWeb.Contributions
 {
     public partial class Individual : System.Web.UI.Page
     {

@@ -1,1 +1,1 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BulkMail.aspx.cs" Inherits="CMSWeb.BulkMail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BulkMail.aspx.cs" Inherits="CmsWeb.BulkMail" %>

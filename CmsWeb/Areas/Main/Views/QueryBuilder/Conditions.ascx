@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.QueryModel>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.QueryModel>" %>
 <% foreach(var c in Model.ConditionList())
    { %>
    <li class="conditionPopup" id='<%=c.Clause.QueryId %>'>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Reports {
+namespace CmsWeb.Reports {
     
     
     public partial class TotalsByFundAgeRange {

@@ -15,7 +15,7 @@ using CmsData;
 using CMSPresenter;
 using UtilityExtensions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class PastAttendeeRpt : System.Web.UI.Page
     {

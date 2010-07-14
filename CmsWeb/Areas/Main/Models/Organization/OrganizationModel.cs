@@ -8,7 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Models.OrganizationPage
+namespace CmsWeb.Models.OrganizationPage
 {
     public class OrganizationModel
     {

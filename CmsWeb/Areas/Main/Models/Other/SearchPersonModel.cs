@@ -9,7 +9,7 @@ using System.Text;
 using System.Data.Linq;
 using CMSPresenter;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class SearchPersonModel
     {

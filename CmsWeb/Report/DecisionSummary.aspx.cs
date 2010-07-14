@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.StaffOnly
+namespace CmsWeb.StaffOnly
 {
     public partial class DecisionSummary : System.Web.UI.Page
     {

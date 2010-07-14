@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.TaskInfo>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.TaskInfo>" %>
 <tr id="r<%=ViewData.Model.Id%>">
 <% if (ViewData.Model.IsSelected)
     Html.RenderPartial("Detail", Model.GetDetail());

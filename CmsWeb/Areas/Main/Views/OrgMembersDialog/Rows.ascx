@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgMembersDialogModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrgMembersDialogModel>" %>
 <% foreach(var om in Model.FetchOrgMemberList())
    { %>
 	<tr>

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 
-namespace CMSWeb.Models.PersonPage
+namespace CmsWeb.Models.PersonPage
 {
     public class PersonInfo
     {

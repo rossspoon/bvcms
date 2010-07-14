@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.SearchPersonModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.SearchPersonModel>" %>
 <tr>
     <td><%=Model.first + " " + Model.last%></a></td>
     <td class="addrcol" title="<%=Model.ToolTip %>"><%=Model.address%></td>

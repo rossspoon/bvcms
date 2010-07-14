@@ -8,7 +8,7 @@ using CmsData;
 using System.Web.Mvc;
 using System.Collections;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class CheckInRecModel
     {

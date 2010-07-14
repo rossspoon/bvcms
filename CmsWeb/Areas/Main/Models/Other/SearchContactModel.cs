@@ -13,7 +13,7 @@ using CmsData;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class ContactInfo
     {

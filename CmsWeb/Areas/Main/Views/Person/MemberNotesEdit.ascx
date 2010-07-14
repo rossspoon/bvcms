@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.MemberNotesInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.MemberNotesInfo>" %>
 <a class="displayedit" href="/Person/MemberNotesDisplay/<%=Model.PeopleId %>">cancel</a>
 <table class="Design2">
     <tr>
@@ -6,7 +6,7 @@
     </tr>
     <tr>
         <th>Status:</th>
-        <td><%=Html.DropDownList("LetterStatusId", CMSWeb.Models.PersonPage.MemberNotesInfo.LetterStatuses())%></td>
+        <td><%=Html.DropDownList("LetterStatusId", CmsWeb.Models.PersonPage.MemberNotesInfo.LetterStatuses())%></td>
     </tr>
     <tr>
         <th>Date Requested:</th>

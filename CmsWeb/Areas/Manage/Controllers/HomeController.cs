@@ -12,7 +12,7 @@ using System.IO;
 using System.Data.SqlClient;
 using System.Net.Mail;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CmsWeb.Areas.Manage.Controllers
 {
     public class HomeController : CmsStaffController
     {

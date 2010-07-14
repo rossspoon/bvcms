@@ -7,7 +7,7 @@ using UtilityExtensions;
 using System.Linq;
 using CmsData;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class FamilyResult : ActionResult
     {

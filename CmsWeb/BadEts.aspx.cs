@@ -9,13 +9,13 @@ using CMSPresenter;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class BadEts : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //var site = (CMSWeb.Site)Page.Master;
+            //var site = (CmsWeb.Site)Page.Master;
             //site.ScriptManager.EnablePageMethods = true;
             var q = from et in DbUtil.Db.BadETs
                     group et by new { et.PeopleId, et.OrgId } into g

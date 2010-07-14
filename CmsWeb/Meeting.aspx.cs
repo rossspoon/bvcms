@@ -26,7 +26,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 //using System.Transactions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
 	public partial class Meeting : System.Web.UI.Page
 	{
@@ -40,7 +40,7 @@ namespace CMSWeb
 		public int pagesize { get { return Util.GetPageSizeCookie(); } }
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			var site = (CMSWeb.Site)Page.Master;
+			var site = (CmsWeb.Site)Page.Master;
 			site.ScriptManager.EnablePageMethods = true;
 
 			int? id = this.QueryString<int?>("id");

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace CMSWeb.Contributions.Reports
+namespace CmsWeb.Contributions.Reports
 {
     public partial class Reports : System.Web.UI.MasterPage
     {

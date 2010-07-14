@@ -12,7 +12,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using Drawing = System.Drawing;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class FormImage : System.Web.UI.Page
     {

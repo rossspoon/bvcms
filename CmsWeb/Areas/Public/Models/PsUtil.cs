@@ -7,7 +7,7 @@ using System.Text;
 using System.Net;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public static class PsUtil
     {

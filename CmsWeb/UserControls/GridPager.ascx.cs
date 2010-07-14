@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class GridPager : System.Web.UI.UserControl
     {

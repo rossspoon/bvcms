@@ -15,7 +15,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using CMSPresenter.InfoClasses;
 
-namespace CMSWeb.Contributions.Reports
+namespace CmsWeb.Contributions.Reports
 {
     public partial class ContributionStatementExtract : System.Web.UI.Page
     {

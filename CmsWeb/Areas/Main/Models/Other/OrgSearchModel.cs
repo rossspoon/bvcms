@@ -17,7 +17,7 @@ using System.Data.Linq;
 using CmsData;
 using System.Collections;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class OrgSearchModel : PagerModel2
     {

@@ -1,5 +1,5 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChurchAttendanceSummaryRpt.aspx.cs"
-    MasterPageFile="~/Report/Reports.Master" Inherits="CMSWeb.ChurchAttendanceSummary" %>
+    MasterPageFile="~/Report/Reports.Master" Inherits="CmsWeb.ChurchAttendanceSummary" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

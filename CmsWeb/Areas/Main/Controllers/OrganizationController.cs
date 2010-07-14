@@ -6,11 +6,11 @@ using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
 using System.Text;
-using CMSWeb.Models.OrganizationPage;
-using CMSWeb.Models;
+using CmsWeb.Models.OrganizationPage;
+using CmsWeb.Models;
 using System.Diagnostics;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class OrganizationController : CmsStaffController
     {

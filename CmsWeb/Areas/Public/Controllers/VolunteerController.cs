@@ -7,13 +7,13 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using System.Configuration;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class VolunteerController : CmsController
     {

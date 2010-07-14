@@ -1,11 +1,11 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.RecRegModel>" %>
 <% var IsAdult = Model.IsAdult(); %>
 <tr>
 <td>
 <table>
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
-        <td><%= Html.DropDownList("shirtsize", CMSWeb.Models.RecRegModel.ShirtSizes(Model.RecAgeDiv))%></td>
+        <td><%= Html.DropDownList("shirtsize", CmsWeb.Models.RecRegModel.ShirtSizes(Model.RecAgeDiv))%></td>
         <td><%= Html.ValidationMessage("shirtsize")%></td>
     </tr>
     <tr>

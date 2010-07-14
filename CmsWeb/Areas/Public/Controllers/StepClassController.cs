@@ -9,7 +9,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Net.Mail;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class StepClassController : CmsController
     {

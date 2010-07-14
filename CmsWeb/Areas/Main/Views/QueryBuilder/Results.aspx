@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.QueryModel>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.QueryModel>" %>
 <h4>Total Count: <%=Model.FetchCount().ToString("N0") %></h4>
 <table id="people">
 <thead>

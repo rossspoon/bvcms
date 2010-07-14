@@ -17,7 +17,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 
-namespace CMSWeb.Admin
+namespace CmsWeb.Admin
 {
     public partial class Users : System.Web.UI.Page
     {

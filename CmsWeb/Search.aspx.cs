@@ -13,7 +13,7 @@ using CMSPresenter;
 using System.Diagnostics;
 using System.Web.Configuration;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Search : System.Web.UI.Page
     {
@@ -44,7 +44,7 @@ namespace CMSWeb
         private const string STR_PersonSearch = "PersonSearchInf0";
         protected void Page_Load(object sender, EventArgs e)
         {
-            var site = (CMSWeb.Site)Page.Master;
+            var site = (CmsWeb.Site)Page.Master;
             site.ScriptManager.EnablePageMethods = true;
             if (!Page.IsPostBack)
                 if (!Parameters.Name.HasValue() && Session[STR_PersonSearch].IsNotNull())

@@ -10,10 +10,10 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CmsData;
 using CMSPresenter;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class SearchAddController : CmsStaffController
     {

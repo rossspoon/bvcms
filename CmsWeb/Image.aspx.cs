@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class Image1 : System.Web.UI.Page
     {

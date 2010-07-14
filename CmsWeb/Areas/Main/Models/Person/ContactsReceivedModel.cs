@@ -5,7 +5,7 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Models.PersonPage
+namespace CmsWeb.Models.PersonPage
 {
     public class PersonContactsReceivedModel
     {

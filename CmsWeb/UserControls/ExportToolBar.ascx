@@ -1,6 +1,6 @@
 ﻿<%@ Import Namespace="System" %>
 <%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ExportToolBar.ascx.cs"
-    Inherits="CMSWeb.ExportToolBar" %>
+    Inherits="CmsWeb.ExportToolBar" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc2" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <ul class="sf-tab">

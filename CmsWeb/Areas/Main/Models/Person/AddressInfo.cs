@@ -8,7 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Data.Linq;
 
-namespace CMSWeb.Models.PersonPage
+namespace CmsWeb.Models.PersonPage
 {
     public class AddressInfo
     {

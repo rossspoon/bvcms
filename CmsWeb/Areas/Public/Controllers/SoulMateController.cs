@@ -10,7 +10,7 @@ using UtilityExtensions;
 using System.Text;
 using System.Net.Mail;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class SoulMateController : CmsController
     {

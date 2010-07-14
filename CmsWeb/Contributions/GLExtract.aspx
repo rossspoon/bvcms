@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="GLExtract.aspx.cs" Inherits="CMSWeb.Contributions.GLExtract" %>
+    CodeBehind="GLExtract.aspx.cs" Inherits="CmsWeb.Contributions.GLExtract" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

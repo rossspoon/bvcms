@@ -9,7 +9,7 @@ using System.Data.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
 
-namespace CMSWeb.Contributions.Reports
+namespace CmsWeb.Contributions.Reports
 {
     public partial class PledgeReport : System.Web.UI.Page
     {

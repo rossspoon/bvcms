@@ -6,7 +6,7 @@ using CMSPresenter;
 using System.Collections.Generic;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class InReachRpt : System.Web.UI.Page
     {

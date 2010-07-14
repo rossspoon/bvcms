@@ -13,7 +13,7 @@ using System.Web.UI.WebControls;
 using CMSPresenter;
 using UtilityExtensions;
 
-namespace CMSWeb.Contributions
+namespace CmsWeb.Contributions
 {
     public partial class GLExtract : System.Web.UI.Page
     {

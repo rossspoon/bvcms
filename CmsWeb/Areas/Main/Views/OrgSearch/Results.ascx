@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgSearchModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrgSearchModel>" %>
 <table id="results" <%=Page.User.IsInRole("Edit") ? "class='edit'" : "" %>>
 <thead>
     <tr><td colspan="10">

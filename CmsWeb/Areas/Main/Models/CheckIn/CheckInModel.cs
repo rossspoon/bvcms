@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using System.Data.Linq.SqlClient;
 
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class CheckInModel
     {

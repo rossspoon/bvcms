@@ -6,7 +6,7 @@ using System.Data.Linq;
 using System.Linq;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class UserArea : UserControl
     {

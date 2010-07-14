@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgGroupsModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrgGroupsModel>" %>
     <tr><th colspan="2">Manage Groups</th></tr>
     <tr>
         <th align="right">Change Target Group:</th>

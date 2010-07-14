@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.RecRegModel>" %>
 <tr>
 <td>
 <table>
@@ -43,7 +43,7 @@
         <% }
            else
            { %>
-           <p><%=CMSWeb.Models.SearchPeopleModel.NotFoundText %></p>
+           <p><%=CmsWeb.Models.SearchPeopleModel.NotFoundText %></p>
             <a href="/RecReg/PersonFind" class="submitbutton">Try Find Again</a>
             or <a href="/RecReg/ShowMoreInfo" class="submitbutton">Register as new</a>
         <% } %>

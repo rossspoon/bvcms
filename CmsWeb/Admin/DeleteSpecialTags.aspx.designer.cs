@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.Admin {
+namespace CmsWeb.Admin {
     
     
     public partial class DeleteSpecialTags {

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PersonPage.GrowthInfo>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.GrowthInfo>" %>
 <% if (Page.User.IsInRole("Edit"))
    { %>
 <a class="displayedit" href="/Person/GrowthEdit/<%=Model.PeopleId %>">Edit</a>

@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CmsData;
 using UtilityExtensions;
-using CMSWeb;
+using CmsWeb;
 using System.Net.Mail;
 using System.Web.Configuration;
 using CMSPresenter;
@@ -15,7 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Globalization;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801

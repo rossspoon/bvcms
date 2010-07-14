@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgGroupsModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrgGroupsModel>" %>
 <%=Html.Hidden("orgid") %>
 <%=Html.Hidden("newgid") %>
 <input id="sort" name="sort" type="hidden" />

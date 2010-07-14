@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.PromotionModel>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PromotionModel>" %>
 <% foreach (var r in Model.FetchStudents())
    { %>
 <tr>

@@ -8,7 +8,7 @@ using System.Collections;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Areas.Main.Models.Report
+namespace CmsWeb.Areas.Main.Models.Report
 {
     public class ChurchAttendanceModel
     {

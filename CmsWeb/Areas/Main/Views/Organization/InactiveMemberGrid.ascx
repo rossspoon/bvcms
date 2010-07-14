@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrganizationPage.MemberModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrganizationPage.MemberModel>" %>
 <% Html.RenderPartial("ExportToolBar"); %>
 &nbsp;<div style="clear: both"></div>
 <p style="bottom-margin:5px">

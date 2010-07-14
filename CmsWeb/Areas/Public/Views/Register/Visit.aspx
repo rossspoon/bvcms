@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.RegisterModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site2.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.RegisterModel>" %>
 
 <asp:Content ID="registerHead" ContentPlaceHolderID="TitleContent" runat="server">
     <title>Register</title>
@@ -119,7 +119,7 @@
                 </tr>
                 <tr>
                     <td><label for="state">State</label></td>
-                    <td><%= Html.DropDownList("state", CMSWeb.Models.RegisterModel.StateList())%></td>
+                    <td><%= Html.DropDownList("state", CmsWeb.Models.RegisterModel.StateList())%></td>
                     <td><%= Html.ValidationMessage("state") %></td>
                 </tr>
                 <tr>

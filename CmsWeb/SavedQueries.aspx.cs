@@ -12,7 +12,7 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using UtilityExtensions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class SavedQueries : System.Web.UI.Page
     {

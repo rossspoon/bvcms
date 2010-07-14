@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSWeb.StaffOnly {
+namespace CmsWeb.StaffOnly {
     
     
     public partial class DecisionSummary {

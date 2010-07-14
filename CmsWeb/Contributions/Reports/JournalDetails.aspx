@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Contributions/Reports/Reports.Master"
-    AutoEventWireup="true" CodeBehind="JournalDetails.aspx.cs" Inherits="CMSWeb.Contributions.Reports.JournalDetails" %>
+    AutoEventWireup="true" CodeBehind="JournalDetails.aspx.cs" Inherits="CmsWeb.Contributions.Reports.JournalDetails" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

@@ -13,7 +13,7 @@ using System.Web.UI.WebControls;
 using UtilityExtensions;
 using CmsData;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class AttendStrDetail : System.Web.UI.Page
     {

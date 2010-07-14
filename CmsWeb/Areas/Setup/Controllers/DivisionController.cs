@@ -8,9 +8,9 @@ using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 using System.Drawing;
-using CMSWeb.Models;
+using CmsWeb.Models;
 
-namespace CMSWeb.Areas.Setup.Controllers
+namespace CmsWeb.Areas.Setup.Controllers
 {
     public class DivisionController : CmsStaffController
     {

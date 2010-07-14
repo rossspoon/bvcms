@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CMSWeb.Models.PagerModel2>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.PagerModel2>" %>
 <div class="pager">
     <span class="page-numbers desc">Goto page:</span>
     <% if (Model.Page > 1)

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Public.Controllers
+namespace CmsWeb.Areas.Public.Controllers
 {
     public class OptOutController : CmsController
     {

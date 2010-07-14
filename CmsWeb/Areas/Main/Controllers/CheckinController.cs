@@ -7,11 +7,11 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using System.Xml;
 using System.IO;
 
-namespace CMSWeb.Areas.Main.Controllers
+namespace CmsWeb.Areas.Main.Controllers
 {
     public class CheckinController : CmsController
     {

@@ -58,7 +58,7 @@
     <tr>
         <th>ShirtSize:</th>
         <td><%=Html.DropDownList("ShirtSize", 
-                CMSWeb.Models.OnlineRegPersonModel.ShirtSizes(Model.Organization)) %></td>
+                CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(Model.Organization)) %></td>
     </tr>
 <% } %>
     <tr>

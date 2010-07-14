@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrgMembersModel>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrgMembersModel>" %>
 <%=Html.Hidden("Sort") %>
 <%=Html.Hidden("Direction") %>
 <div class="modalPopup">

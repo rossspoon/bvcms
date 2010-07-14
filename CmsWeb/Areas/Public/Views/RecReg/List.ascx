@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.RecRegModel>" %>
 <table cellpadding="0" cellspacing="0">
 <% 
         if (Model.RecAgeDiv != null && (Model.Found == true || Model.IsNew) && Model.IsFilled != true)

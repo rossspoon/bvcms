@@ -8,7 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class OrgMembersDialogModel
     {

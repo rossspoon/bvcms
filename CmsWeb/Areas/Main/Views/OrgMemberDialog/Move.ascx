@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<List<CMSWeb.Areas.Main.Controllers.OrgMemberDialogController.OrgMove>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<List<CmsWeb.Areas.Main.Controllers.OrgMemberDialogController.OrgMove>>" %>
 <table class="Design2">
     <tr>
         <td><strong><%=ViewData["Name"] %></strong></td>

@@ -21,7 +21,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
 
-namespace CMSWeb.Areas.Main.Models.Report
+namespace CmsWeb.Areas.Main.Models.Report
 {
     public class RosterResult : ActionResult
     {

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GridPager.ascx.cs" Inherits="CMSWeb.GridPager" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GridPager.ascx.cs" Inherits="CmsWeb.GridPager" %>
         <asp:Label ID="Label6" runat="server" Text="Show rows:" />
         <asp:DropDownList ID="PageSize" runat="server" AutoPostBack="true" OnSelectedIndexChanged="PageSize_SelectedIndexChanged">
             <asp:ListItem Value="10" />

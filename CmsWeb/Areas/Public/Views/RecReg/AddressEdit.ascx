@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.RecRegModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.RecRegModel>" %>
     <tr><th colspan="3"><span style="color:Red">Please provide additional information</span></th></tr>
     <tr>
         <td><label for="addr">Address</label></td>

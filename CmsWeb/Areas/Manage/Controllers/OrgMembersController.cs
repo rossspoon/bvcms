@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
-using CMSWeb.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 
-namespace CMSWeb.Areas.Manage.Controllers
+namespace CmsWeb.Areas.Manage.Controllers
 {
     [Authorize(Roles="Edit")]
     public class OrgMembersController : CmsStaffController

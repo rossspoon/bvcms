@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CMSWeb.Models.OrganizationPage.OrganizationModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrganizationPage.OrganizationModel>" %>
 <table class="Design2" style="margin-bottom: 10px">
     <tr><td colspan="2" align='right'><a class="displayedit2" href="/Organization/OrgInfo/<%=Model.OrganizationId %>">cancel</a></td></tr>
     <tr>

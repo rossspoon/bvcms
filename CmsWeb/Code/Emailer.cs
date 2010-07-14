@@ -20,7 +20,7 @@ using System.Web.Configuration;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public class Emailer : ITaskNotify
     {

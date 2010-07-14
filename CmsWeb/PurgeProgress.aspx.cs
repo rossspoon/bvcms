@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class PurgeProgress : System.Web.UI.Page
     {

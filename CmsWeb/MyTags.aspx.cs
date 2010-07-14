@@ -15,7 +15,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class MyTags : System.Web.UI.Page
     {
@@ -30,7 +30,7 @@ namespace CMSWeb
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            var site = (CMSWeb.Site)Page.Master;
+            var site = (CmsWeb.Site)Page.Master;
             site.ScriptManager.EnablePageMethods = true;
             ctl = new TagController();
             if (!IsPostBack)

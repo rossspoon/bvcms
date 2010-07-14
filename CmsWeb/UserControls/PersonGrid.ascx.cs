@@ -11,7 +11,7 @@ using System.Web.UI;
 using UtilityExtensions;
 using System.Web;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class PersonGrid : System.Web.UI.UserControl
     {

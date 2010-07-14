@@ -11,7 +11,7 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
 
-namespace CMSWeb.Areas.Setup.Models
+namespace CmsWeb.Areas.Setup.Models
 {
     public class PromotionModel
     {

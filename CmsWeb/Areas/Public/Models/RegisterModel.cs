@@ -9,7 +9,7 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class RegisterModel
     {
@@ -150,10 +150,10 @@ namespace CMSWeb.Models
         public int FindMember()
         {
             int count;
-            _person = CMSWeb.Models.SearchPeopleModel
+            _person = CmsWeb.Models.SearchPeopleModel
                 .FindPerson(phone, first, last, birthday, out count);
             if (count > 1)
-                _person = CMSWeb.Models.SearchPeopleModel
+                _person = CmsWeb.Models.SearchPeopleModel
                     .FindPerson(cellphone, first, last, birthday, out count);
             return count;
         }
@@ -200,7 +200,7 @@ namespace CMSWeb.Models
         }
         public void ValidateModel2(ModelStateDictionary modelState)
         {
-            CMSWeb.Models.SearchPeopleModel
+            CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, phone);
             if (modelState.IsValid && FindMember() >= 1)
                 modelState.AddModelError("first", "Already Registered");

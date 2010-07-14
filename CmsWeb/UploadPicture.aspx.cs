@@ -13,7 +13,7 @@ using System.Drawing.Imaging;
 using Drawing = System.Drawing;
 using System.Collections.Generic;
 
-namespace CMSWeb
+namespace CmsWeb
 {
     public partial class UploadPicture : System.Web.UI.Page
     {

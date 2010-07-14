@@ -16,7 +16,7 @@ using System.Text;
 using CmsData;
 using System.Data.Linq.SqlClient;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class CouponModel
     {

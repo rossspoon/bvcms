@@ -12,7 +12,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Text;
 
-namespace CMSRegCustom
+namespace CmsWeb.Models.Prayer
 {
     public partial class Report : System.Web.Mvc.ViewPage
     {
@@ -39,7 +39,7 @@ namespace CMSRegCustom
             doc.Open();
 
             var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);
-            var m = new CMSWeb.Models.PrayerModel();
+            var m = new CmsWeb.Models.PrayerModel();
             for (int day = 0; day < 7; day++)
             {
                 var t = new PdfPTable(2);

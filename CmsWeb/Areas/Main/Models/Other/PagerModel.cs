@@ -13,7 +13,7 @@ using System.Web.Routing;
 using UtilityExtensions;
 using System.Text;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class PagerModel
     {

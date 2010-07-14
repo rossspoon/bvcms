@@ -6,7 +6,7 @@ using System.Threading;
 using CmsData;
 using UtilityExtensions;
 
-namespace CMSWeb.Models
+namespace CmsWeb.Models
 {
     public class VolunteerCommitmentsModel
     {

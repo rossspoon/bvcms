@@ -6,7 +6,7 @@ using CMSPresenter;
 using System.Collections.Generic;
 using CmsData;
 
-namespace CMSWeb.Contributions.Reports
+namespace CmsWeb.Contributions.Reports
 {
     public partial class ContributionStatementRpt : System.Web.UI.Page
     {
