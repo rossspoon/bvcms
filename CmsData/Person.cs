@@ -524,7 +524,8 @@ namespace CmsData
             var Db = DbUtil.Db;
             var tag = Db.FetchOrCreateTag(TagName, OwnerId, TagTypeId);
             var tp = Db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == PeopleId);
-            if (tp == null)
+            var isperson = Db.People.Count(p => p.PeopleId == PeopleId) > 0;
+            if (tp == null && isperson)
                 tag.PersonTags.Add(new TagPerson { PeopleId = PeopleId });
         }
         public static void UnTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)

@@ -50,13 +50,14 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value);
         }
-        public ActionResult Rollsheet(int? id, string org, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix)
+        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix)
         {
             return new RollsheetResult
             {
                 qid = id,
                 orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
                 groupid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentGroupId : null,
+                pid = pid,
                 div = div,
                 name = name,
                 schedule = schedule,
@@ -149,6 +150,15 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!id.HasValue)
                 id = ChurchAttendanceModel.MostRecentAttendedSunday();
             var m = new ChurchAttendanceModel(id.Value);
+            return View(m);
+        }
+        public ActionResult ChurchAttendance2(DateTime? Dt1, DateTime? Dt2)
+        {
+            if (!Dt1.HasValue)
+                Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            if (!Dt2.HasValue)
+                Dt2 = DateTime.Today;
+            var m = new ChurchAttendance2Model (Dt1,Dt2 );
             return View(m);
         }
     }

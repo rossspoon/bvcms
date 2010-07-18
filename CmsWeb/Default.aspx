@@ -53,7 +53,13 @@
                                         <tr>
                                             <td>
                                                 <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="/Reports/ChurchAttendance"
-                                                    Target="_blank">Church Attendance <span style="color:red">(new)</span></asp:HyperLink>
+                                                    Target="_blank">Church Attendance</asp:HyperLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="/Reports/ChurchAttendance2"
+                                                    Target="_blank">Average Church Attendance</asp:HyperLink>
                                             </td>
                                         </tr>
                                         <tr>

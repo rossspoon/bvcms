@@ -234,6 +234,7 @@
     <Compile Include="Coupon.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
+    <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />

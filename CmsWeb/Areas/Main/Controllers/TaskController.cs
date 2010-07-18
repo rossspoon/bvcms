@@ -148,6 +148,19 @@ namespace CmsWeb.Areas.Main.Controllers
             return PartialView("Detail", tasks.FetchTask(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DelegateAll(int id, string items)
+        {
+            var tasks = new TaskModel();
+            var a = items.SplitStr(",").Select(i => i.ToInt());
+            foreach (var tid in a)
+            {
+                var t = tasks.Delegate(tid, id, new Emailer());
+                t.ForceCompleteWContact = true;
+            }
+            DbUtil.Db.SubmitChanges();
+            return PartialView("Rows", tasks);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ChangeAbout(int id, int peopleid)
         {
             TaskModel.SetWhoId(id, peopleid);

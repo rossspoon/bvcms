@@ -21,8 +21,6 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new SearchModel { typeid = id, type = type, from = from };
 #if DEBUG
-            m.name = "Da Car";
-            m.address = "";
 #endif
             return View(m);
         }
@@ -192,6 +190,14 @@ namespace CmsWeb.Areas.Main.Controllers
                     return AddContactors(id.Value, m);
                 case "contributor":
                     return AddContributor(id.Value, m);
+                case "taskdelegate":
+                    return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
+                case "taskdelegate2":
+                    return Json(new { close = true, how = "addselected2", url = "/Task/Action/", pid = m.List[0].PeopleId });
+                case "taskabout":
+                    return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                case "taskowner":
+                    return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId });
             }
             return new EmptyResult();
         }

@@ -229,6 +229,8 @@ namespace CmsWeb.Models
             var fromdiv = Promotion.FromDivId;
             var todiv = Promotion.ToDivId;
 
+            var list = FetchStudents().ToDictionary(s => s.PeopleId);
+
             foreach (var pid in selected)
             {
                 var q = from om in DbUtil.Db.OrganizationMembers
@@ -242,10 +244,11 @@ namespace CmsWeb.Models
                     pc.Drop();
                     DbUtil.Db.SubmitChanges();
                 }
+                var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == list[pid].CurrClassId && m.PeopleId == pid);
                 OrganizationMember.InsertOrgMembers(
                     t.OrganizationId,
                     pid,
-                    (int)OrganizationMember.MemberTypeCode.Member,
+                    fom.MemberTypeId,
                     Util.Now,
                     null,
                     true);

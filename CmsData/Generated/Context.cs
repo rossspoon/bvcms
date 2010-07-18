@@ -1688,6 +1688,19 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.SundayDates", IsComposable = true)]
+		public IQueryable< View.SundayDate > SundayDates(
+            [Parameter(DbType="datetime")] DateTime? dt1,
+            [Parameter(DbType="datetime")] DateTime? dt2
+            )
+		{
+			return this.CreateMethodCallQuery< View.SundayDate>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt1,
+                dt2
+                );
+		}
+
 		[Function(Name="dbo.TaggedPeople", IsComposable = true)]
 		public IQueryable< View.TaggedPerson > TaggedPeople(
             [Parameter(DbType="int")] int? tagid
@@ -1819,6 +1832,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.GetPeopleIdFromACS", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? GetPeopleIdFromACS(
+            [Parameter(Name = "famnum", DbType="int")] int? famnum,
+            [Parameter(Name = "indnum", DbType="int")] int? indnum
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                famnum,
+                indnum
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.LastAttended", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastAttended(
@@ -1830,6 +1857,18 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.SundayForDate", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? SundayForDate(
+            [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt
                 ).ReturnValue));
 		}
 

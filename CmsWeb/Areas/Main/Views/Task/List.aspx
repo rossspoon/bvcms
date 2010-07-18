@@ -111,8 +111,10 @@
 <input type="hidden" id="Count" value='<%=Model.Count%>' />
 <%=Html.Hidden("Sort",Model.Sort)%>
     </form>
-    <div id="dialogbox" title="Search Contacts" style="width: 560px; overflow: scroll">
+    <div id="dialogbox">
+    <iframe id="searchDialogiframe" style="width:99%;height:99%"></iframe>
     </div>
-    <div id="SearchPeopleDialog" title="Search People" style="width: 560px; overflow: scroll">
+    <div id="dialogbox2" title="Search Contacts" style="width: 560px; overflow: scroll">
     </div>
+
 </asp:Content>

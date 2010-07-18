@@ -325,7 +325,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!pm._Coupon.HasValue())
                 return Json(new { error = "empty coupon" });
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
-            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            var m = Util.DeSerialize<OnlineRegModel>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
             string coupon = pm._Coupon.ToUpper().Replace(" ", "");
             if (coupon == DbUtil.Settings("AdminCoupon", "ifj4ijweoij"))
                 return Json(new
@@ -368,7 +368,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ed == null)
                 return Content("no pending confirmation found");
 
-            var s = ed.Data;
+            var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
             var m = Util.DeSerialize<OnlineRegModel>(s);
 
             m.EnrollAndConfirm(TransactionID);
@@ -393,29 +393,47 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ed == null)
                 return Content("no outstanding transaction");
             PaymentModel pm = null;
-            var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
-            pm = new PaymentModel
+            try
             {
-                NameOnAccount = ti.Name,
-                Address = ti.Address,
-                Amount = ti.AmountDue,
-                City = ti.City,
-                Email = ti.Email,
-                Phone = ti.Phone.FmtFone(),
-                State = ti.State,
-                PostalCode = ti.Zip,
-                testing = ti.testing,
-                PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
-                Misc2 = ti.Header,
-                Misc1 = ti.Name,
-                _URL = ti.URL,
-                _timeout = INT_timeout,
-                _datumid = ed.Id,
-                _confirm = "confirm2"
-            };
+                var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
+                var ti = Util.DeSerialize<TransactionInfo>(s);
+                pm = new PaymentModel
+                {
+                    NameOnAccount = ti.Name,
+                    Address = ti.Address,
+                    Amount = ti.AmountDue,
+                    City = ti.City,
+                    Email = ti.Email,
+                    Phone = ti.Phone.FmtFone(),
+                    State = ti.State,
+                    PostalCode = ti.Zip,
+                    testing = ti.testing,
+                    PostbackURL = Util.ServerLink("/OnlineReg/Confirm2/" + id),
+                    Misc2 = ti.Header,
+                    Misc1 = ti.Name,
+                    _URL = ti.URL,
+                    _timeout = INT_timeout,
+                    _datumid = ed.Id,
+                    _confirm = "confirm2"
+                };
 
-            SetHeaders(ti.orgid);
-            return View("Payment2", pm);
+                SetHeaders(ti.orgid);
+                return View("Payment2", pm);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Problem in PayDue: " + ed.Data, ex);
+            }
+        }
+        public ActionResult PayDueTest(string q)
+        {
+            if (!q.HasValue())
+                return Content("unknown");
+            var id = Util.Decrypt(q);
+            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id.ToInt());
+            if (ed == null)
+                return Content("no outstanding transaction");
+            return Content(ed.Data);
         }
         [ValidateInput(false)]
         public ActionResult Confirm2(int? id, string TransactionID, decimal Amount)
@@ -429,7 +447,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ed == null)
                 return Content("no pending transaction found");
 
-            var ti = Util.DeSerialize<TransactionInfo>(ed.Data);
+            var ti = Util.DeSerialize<TransactionInfo>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
             var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
             if (ti.AmountDue == Amount)
             {

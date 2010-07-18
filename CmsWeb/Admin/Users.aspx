@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>User Management</title>
-    <%=ViewExtensions2.StandardCss() %>
+    <%=CmsWeb.ViewExtensions2.StandardCss()%>
 </head>
 <body>
     <form id="form1" runat="server">

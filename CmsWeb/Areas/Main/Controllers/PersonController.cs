@@ -416,5 +416,30 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["AddContact"] = "/Person/AddContact/" + qb.QueryId;
             ViewData["AddTasks"] = "/Person/AddTasks/" + qb.QueryId;
         }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult BatchPeopleIds()
+        {
+            return View();
+        }
+        public ActionResult BatchUploadPeopleIds(string name, HttpPostedFileBase file, string text)
+        {
+            string s;
+            if (file != null)
+            {
+                byte[] buffer = new byte[file.ContentLength];
+                file.InputStream.Read(buffer, 0, file.ContentLength);
+                var enc = new System.Text.ASCIIEncoding();
+                s = enc.GetString(buffer);
+            }
+            else
+                s = text;
+
+            var q = from line in s.Split('\n')
+                    select line.ToInt();
+            foreach (var pid in q)
+                Person.Tag(pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/MyTags.aspx");
+        }
     }
 }

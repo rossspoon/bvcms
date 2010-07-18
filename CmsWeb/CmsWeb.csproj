@@ -12,7 +12,7 @@
     <RootNamespace>CmsWeb</RootNamespace>
     <AssemblyName>CmsWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -191,6 +191,7 @@
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -841,6 +842,27 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
+    <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
+    <Content Include="Content\images\calendar.gif" />
+    <Content Include="Content\images\closek.png" />
+    <Content Include="Content\images\file.gif" />
+    <Content Include="Content\images\folder-closed.gif" />
+    <Content Include="Content\images\folder.gif" />
+    <Content Include="Content\images\group.png" />
+    <Content Include="Content\images\minus.gif" />
+    <Content Include="Content\images\person.png" />
+    <Content Include="Content\images\plus.gif" />
+    <Content Include="Content\images\treeview-black-line.gif" />
+    <Content Include="Content\images\treeview-black.gif" />
+    <Content Include="Content\images\treeview-default-line.gif" />
+    <Content Include="Content\images\treeview-default.gif" />
+    <Content Include="Content\images\treeview-famfamfam-line.gif" />
+    <Content Include="Content\images\treeview-famfamfam.gif" />
+    <Content Include="Content\images\treeview-gray-line.gif" />
+    <Content Include="Content\images\treeview-gray.gif" />
+    <Content Include="Content\images\treeview-red-line.gif" />
+    <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Dialog\AddTagShareds.aspx" />
     <Content Include="App_Offline1.htm" />
@@ -1751,22 +1773,54 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc" />
-    <EmbeddedResource Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\AttendanceSummarySubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\ContactNotesSubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\ContactSummarySubReport.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\CurrentEnrollmentSubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\FamilySummarySubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\InReachRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\LabelsRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\MeetingAttendanceRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\MeetingSummaryRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\PastAttendeeRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\PastContactsSummarySubRpt.rdlc" />
-    <EmbeddedResource Include="Report\rdlc\ProspectCardsRpt.rdlc" />
+    <Content Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\AttendanceSummarySubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\ContactNotesSubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\ContactSummarySubReport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\CurrentEnrollmentSubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\FamilySummarySubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\InReachRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\LabelsRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\MeetingAttendanceRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\MeetingSummaryRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\PastAttendeeRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\PastContactsSummarySubRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\rdlc\ProspectCardsRpt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Main\Views\Shared\" />

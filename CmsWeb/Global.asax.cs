@@ -135,6 +135,7 @@ namespace CmsWeb
             }
             foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
                 msg.To.Add(Util.FirstAddress(a.Person.EmailAddress, a.Name));
+
             smtp.Send(msg);
         }
    }

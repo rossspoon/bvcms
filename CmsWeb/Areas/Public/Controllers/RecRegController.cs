@@ -207,7 +207,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ed == null)
                 return Content("no pending confirmation found");
 
-            var s = ed.Data;
+            var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
             var m = Util.DeSerialize<RecRegModel>(s);
             m.Confirm(TransactionID);
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);

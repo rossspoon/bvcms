@@ -1,17 +1,17 @@
-﻿$(function() {
+﻿$(function () {
     var maintabs = $("#main-tab").tabs();
-    $('#deleteorg').click(function(ev) {
+    $('#deleteorg').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
-            $.post(href, null, function(ret) {
+            $.post(href, null, function (ret) {
                 if (ret) {
                     $.blockUI({ message: ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
                 else {
                     $.blockUI({ message: "org deleted" });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click(function() {
+                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
                         window.location = "/";
                     });
@@ -20,17 +20,17 @@
         }
         return false;
     });
-    $("#DivisionsList").delegate("#DivisionsList", "change", function() {
+    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
         $.getTable($('#Members-tab form'));
         return false;
     });
 
     $('table.grid > tbody > tr:even').addClass('alt');
 
-    $(".CreateAndGo").click(function(ev) {
+    $(".CreateAndGo").click(function (ev) {
         ev.preventDefault();
         if (confirm($(this).attr("confirm")))
-            $.post($(this).attr("href"), null, function(ret) {
+            $.post($(this).attr("href"), null, function (ret) {
                 window.location = ret;
             });
         return false;
@@ -45,11 +45,11 @@
         overlay: {
             opacity: 0.5,
             background: "black"
-        }, close: function() {
+        }, close: function () {
             $('iframe', this).attr("src", "");
         }
     });
-    $('a.addmembers').live("click", function(e) {
+    $('a.addmembers').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -57,7 +57,7 @@
         d.dialog("open");
         d.parent().center();
     });
-    $('a.memberdialog').live("click", function(e) {
+    $('a.memberdialog').live("click", function (e) {
         e.preventDefault();
         var title;
         var d = $('#memberDialog');
@@ -67,51 +67,51 @@
         d.parent().center();
     });
 
-    $("#inactive-link").click(function() {
+    $("#inactive-link").click(function () {
         $.showTable($('#Inactive-tab form'));
     });
-    $("#pending-link").click(function() {
+    $("#pending-link").click(function () {
         $.showTable($('#Pending-tab form'));
     });
-    $("#priors-link").click(function() {
+    $("#priors-link").click(function () {
         $.showTable($('#Priors-tab form'));
     });
-    $("#visitors-link").click(function() {
+    $("#visitors-link").click(function () {
         $.showTable($('#Visitors-tab form'));
     });
-    $("#meetings-link").click(function() {
+    $("#meetings-link").click(function () {
         $.showTable($('#Meetings-tab form'));
     });
-    $.maxZIndex = $.fn.maxZIndex = function(opt) {
+    $.maxZIndex = $.fn.maxZIndex = function (opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
         var zmax = 0;
-        $(def.group).each(function() {
+        $(def.group).each(function () {
             var cur = parseInt($(this).css('z-index'));
             zmax = cur > zmax ? cur : zmax;
         });
         if (!this.jquery)
             return zmax;
 
-        return this.each(function() {
+        return this.each(function () {
             zmax += def.inc;
             $(this).css("z-index", zmax);
         });
     }
-    $.initDatePicker = function() {
+    $.initDatePicker = function () {
         $(".datepicker").datepicker({
             dateFormat: 'm/d/yy',
             changeMonth: true,
             changeYear: true,
-            beforeShow: function() { $('#ui-datepicker-div').maxZIndex(); }
+            beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
     }
     $.initDatePicker();
-    $("a.displayedit,a.displayedit2").live('click', function(ev) {
+    $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
-        $.post($(this).attr('href'), null, function(ret) {
-            $(f).html(ret).ready(function() {
+        $.post($(this).attr('href'), null, function (ret) {
+            $(f).html(ret).ready(function () {
                 var acopts = {
                     minChars: 3,
                     matchContains: 1
@@ -122,32 +122,32 @@
         });
         return false;
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
             return false;
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
         });
         return false;
     });
-    $("#future").live('click', function() {
+    $("#future").live('click', function () {
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(f).attr("action"), q, function(ret) {
+        $.post($(f).attr("action"), q, function (ret) {
             $(f).html(ret);
         });
     });
-    $("a.groupmanager").live("click", function(ev) { // this is no longer needed?
+    $("a.groupmanager").live("click", function (ev) { // this is no longer needed?
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(this).attr("href"), q, function(ret) {
+        $.post($(this).attr("href"), q, function (ret) {
             if (ret) {
                 $(f).html(ret);
-                $.post('/Organization/SmallGroups/', null, function(ret) {
+                $.post('/Organization/SmallGroups/', null, function (ret) {
                     var op = $('#smallgroupid');
                     var id = $(op).val();
                     $(op).replaceWith(ret);
@@ -157,25 +157,25 @@
         });
         return false;
     });
-    $("form.DisplayEdit").submit(function() {
+    $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
     });
-    $('a.taguntag').live("click", function(ev) {
+    $('a.taguntag').live("click", function (ev) {
         ev.preventDefault;
-        $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function(ret) {
+        $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function (ret) {
             $(ev.target).text(ret);
         });
         return false;
     });
-    $.validator.addMethod("time", function(value, element) {
+    $.validator.addMethod("time", function (value, element) {
         return this.optional(element) || /^\d{1,2}:\d{2}\s(?:AM|am|PM|pm)/.test(value);
     }, "time format h:mm AM/PM");
     $.validator.setDefaults({
-        highlight: function(input) {
+        highlight: function (input) {
             $(input).addClass("ui-state-highlight");
         },
-        unhighlight: function(input) {
+        unhighlight: function (input) {
             $(input).removeClass("ui-state-highlight");
         }
     });
@@ -198,21 +198,21 @@
             "org.ShirtFee": { number: true }
         }
     });
-    $("#Members-tab").delegate("#smallgroupid", "change", function() {
+    $("#Members-tab").delegate("#smallgroupid", "change", function () {
         $.getTable($('#Members-tab form'));
         return false;
     });
-    $("#addfromtaglink").live("click", function(ev) {
+    $("#addfromtaglink").live("click", function (ev) {
         ev.preventDefault();
         var link = this;
         $("#AddFromTag").dialog({
             title: this.title,
             width: "auto",
             buttons: {
-                Ok: function() {
+                Ok: function () {
                     $.post(link.href, {
                         tagid: $("#addfromtagid").val()
-                    }, function() {
+                    }, function () {
                         RebindMemberGrids();
                         $("#AddFromTag").dialog("destroy");
                     });
@@ -224,12 +224,12 @@
     });
 
     $("#NewMeetingDialog").dialog({ autoOpen: false });
-    $('#RollsheetLink').live("click", function(ev) {
+    $('#RollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
-            "Ok": function() {
+            "Ok": function () {
                 var dt = $.GetMeetingDateTime();
                 if (!dt.valid)
                     return false;
@@ -243,18 +243,18 @@
         d.dialog('open');
         d.parent().center();
     });
-    $('#NewMeeting').live("click", function(ev) {
+    $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
-            "Ok": function() {
+            "Ok": function () {
                 var dt = $.GetMeetingDateTime();
                 if (!dt.valid)
                     return false;
                 var url = "?d=" + dt.date + "&t=" + dt.time +
                 "&group=" + ($('#group').is(":checked") ? "true" : "false");
-                $.post("/Organization/NewMeeting" + url, null, function(ret) {
+                $.post("/Organization/NewMeeting" + url, null, function (ret) {
                     if (ret)
                         window.location = ret;
                 });
@@ -265,7 +265,7 @@
         d.parent().center();
         return false;
     });
-    $.GetMeetingDateTime = function() {
+    $.GetMeetingDateTime = function () {
         var reTime = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
         var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
         var d = $('#NewMeetingDate').val();
@@ -281,22 +281,22 @@
         }
         return { date: d, time: t, valid: v };
     };
-    $('.delmeeting').live('click', function(ev) {
+    $('.delmeeting').live('click', function (ev) {
         ev.preventDefault();
         if (confirm("delete meeting for sure?")) {
             $.post("/Organization/DeleteMeeting/",
                 { id: this.id, future: $('#future').is(":checked") },
-                function(ret) {
+                function (ret) {
                     if (ret)
                         $.updateTable($('#Meetings-tab form'));
                 });
         }
         return false;
     });
-    $('a.joinlink').live('click', function(ev) {
+    $('a.joinlink').live('click', function (ev) {
         ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },
-            function(ret) {
+            function (ret) {
                 if (ret)
                     RebindMemberGrids();
             });

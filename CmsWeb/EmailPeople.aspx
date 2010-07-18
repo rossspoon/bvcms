@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" Async="true" AsyncTimeout="1000" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EmailPeople.aspx.cs"
-    Inherits="CmsWeb.EmailPeople" Title="Email People" validateRequest="false"  %>
+    Inherits="CmsWeb.EmailPeople" Title="Email People" ValidateRequest="false"  %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">

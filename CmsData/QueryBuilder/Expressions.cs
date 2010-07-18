@@ -374,7 +374,7 @@ namespace CmsData
                             && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
                     && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                ).Sum(c => c.ContributionAmount);
+                ).Sum(c => c.ContributionAmount) ?? 0;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))

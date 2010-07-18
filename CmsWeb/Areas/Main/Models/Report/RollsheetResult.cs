@@ -25,7 +25,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class RollsheetResult : ActionResult
     {
-        public int? qid, div, schedule, meetingid, groupid, orgid;
+        public int? qid, pid, div, schedule, meetingid, groupid, orgid;
         public bool? bygroup;
         public string name, sgprefix;
         public DateTime? dt;
@@ -46,9 +46,9 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             IEnumerable<OrgInfo> list1;
             if (bygroup == true)
-                list1 = ReportList2(orgid, div, schedule, name, sgprefix);
+                list1 = ReportList2(orgid, pid, div, schedule, name, sgprefix);
             else
-                list1 = ReportList(orgid, groupid, div, schedule, name);
+                list1 = ReportList(orgid, groupid, pid, div, schedule, name);
 
             if (list1.Count() == 0)
             {
@@ -164,10 +164,11 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Location { get; set; }
             public int? GroupId { get; set; }
         }
-        private IEnumerable<OrgInfo> ReportList(int? orgid, int? groupid, int? divid, int? schedule, string name)
+        private IEnumerable<OrgInfo> ReportList(int? orgid, int? groupid, int? progid, int? divid, int? schedule, string name)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
+                    where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.ScheduleId == schedule || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
@@ -184,12 +185,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                     };
             return q;
         }
-        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? divid, int? schedule, string name, string sgprefix)
+        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? progid, int? divid, int? schedule, string name, string sgprefix)
         {
             var q = from o in DbUtil.Db.Organizations
                     from sg in o.MemberTags
                     where sgprefix == null || sgprefix == "" || sg.Name.StartsWith(sgprefix)
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
+                    where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.ScheduleId == schedule || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active

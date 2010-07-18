@@ -84,7 +84,9 @@ namespace CmsWeb.Models
             {
                 if (org != null)
                     return Util.PickFirst(org.Instructions, div != null ? div.Instructions : "");
-                return div.Instructions;
+                if (div != null)
+                    return div.Instructions;
+                return "";
             }
         }
         public string Terms
@@ -93,7 +95,9 @@ namespace CmsWeb.Models
             {
                 if (org != null)
                     return Util.PickFirst(org.Terms, div != null ? div.Terms : "");
-                return div.Terms;
+                if (div != null)
+                    return div.Terms;
+                return "";
             }
         }
 

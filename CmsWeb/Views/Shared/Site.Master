@@ -109,7 +109,7 @@
                                 <li>
                                     <%=Html.ActionLink("New Query", "NewQuery", "QueryBuilder")%></li>
                                 <li><a href="/SavedQueries.aspx">Saved Queries</a></li>
-                                <% if (ViewData["OnQueryBuilder"] == "true")
+                                <% if ((string)ViewData["OnQueryBuilder"] == "true")
                                    { %>
                                 <li><a id="ShowOpenQuery" href="#">Open Saved Query</a></li>
                                 <li><a id="ShowSaveQuery" href="#">Save Query As</a></li>

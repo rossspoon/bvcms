@@ -14,6 +14,10 @@
                         if (self.parent.AddSelected)
                             self.parent.AddSelected(ret);
                         break;
+                    case 'addselected2':
+                        if (self.parent.AddSelected2)
+                            self.parent.AddSelected2(ret);
+                        break;
                 }
             }
             else

@@ -36,8 +36,7 @@
         $.post($(this).attr('href'), q, function(ret) {
             if (ret)
                 $.displayEdit(f, ret);
-            else
-                self.parent.RebindMemberGrids($("#from").val());
+            self.parent.RebindMemberGrids($("#from").val());
         });
         return false;
     });

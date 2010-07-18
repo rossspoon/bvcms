@@ -1,6 +1,6 @@
 ﻿$(function() {
     SearchClicked = RefreshList;
-    $('#SearchPeopleDialog').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
+//    $('#SearchPeopleDialog').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     $('#tabs').tabs();
     $("#tabs > ul > li > a").click(function() {
         var x = $(this).attr("href").substring(1);
@@ -14,7 +14,47 @@
         $("#Sort").val($(this).text());
         RefreshList();
     });
-    BindSearchPeople();
+    $('#dialogbox').dialog({
+        title: 'Search Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 700,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
+    $('#changeowner').live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Delegate task");
+        d.dialog("open");
+        d.parent().center();
+        return false;
+    });
+    $('#delegate').live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Delegate task");
+        d.dialog("open");
+        d.parent().center();
+        return false;
+    });
+    $('#changeabout').live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Delegate task");
+        d.dialog("open");
+        d.parent().center();
+        return false;
+    });
 });
 function RefreshList() {
     var q = $('#form').formSerialize2();
@@ -65,6 +105,12 @@ function DoAction() {
         case '-':
             return;
         case 'delegate':
+            var d = $('#dialogbox');
+            $('iframe', d).attr("src", "/SearchAdd/Index/1?type=taskdelegate2");
+            d.dialog("option", "title", "Delegate tasks");
+            d.dialog("open");
+            d.parent().center();
+            return;
         case 'sharelist':
             alert('not implemented yet');
             return;
@@ -127,14 +173,12 @@ function ShowDetail(id) {
             $('#r' + drid).html(a[0]);
             $('#r' + drid).removeClass("detailrow");
             $('#r' + id).addClass("detailrow").html(a[1]);
-            BindSearchPeople();
         });
     }
     else {
         $.post('/Task/Detail/' + id, function(ret) {
             $('#r' + id).addClass("detailrow");
             $('#r' + id).html(ret);
-            BindSearchPeople();
         });
     }
 }
@@ -160,12 +204,11 @@ function SetComplete(id) {
 function Accept(id) {
     $.post('/Task/Accept/' + id, null, function(ret) {
         $('#r' + id).html(ret);
-        BindSearchPeople();
     });
     return false;
 }
 $(function() {
-    $("#dialogbox").dialog({
+    $("#dialogbox2").dialog({
         overlay: { background: "#000", opacity: 0.8 },
         bgiframe: true,
         modal: true,
@@ -175,7 +218,7 @@ $(function() {
         height: 525,
         position: 'top',
         close: function(event, ui) {
-            $('#dialogbox').empty();
+            $('#dialogbox2').empty();
             SearchClicked = RefreshList;
         }
     });
@@ -189,8 +232,8 @@ function SelectPerson(id) { }
 function SearchContacts() {
     SearchClicked = SearchContactClicked;
     ChangePage = ChangeContactPage;
-    $('#dialogbox').dialog("option", "title", "Select Contact");
-    $('#dialogbox').load("/Task/SearchContact/", null, function() {
+    $('#dialogbox2').dialog("option", "title", "Select Contact");
+    $('#dialogbox2').load("/Task/SearchContact/", null, function() {
         queryString = $('#searchform').formSerialize2();
         $(".datepicker").datepicker({ changeYear: true, changeMonth: true });
         $("#contacts").initPager();
@@ -203,15 +246,14 @@ function SearchContacts() {
             return false;
         });
     });
-    $('#dialogbox').dialog("open");
+    $('#dialogbox2').dialog("open");
 }
 function AddSourceContact(contactid) {
     var taskid = $('#TaskId').val();
     $.post('/Task/AddSourceContact/' + taskid + "?contactid=" + contactid, null, function(ret) {
         $('#r' + taskid).html(ret);
-        BindSearchPeople();
     });
-    $('#dialogbox').dialog("close");
+    $('#dialogbox2').dialog("close");
 }
 function CompleteWithContact() {
     var taskid = $('#TaskId').val();
@@ -219,31 +261,10 @@ function CompleteWithContact() {
         window.location = "/Contact.aspx?edit=1&id=" + ret.ContactId;
     }, "json");
 }
-function BindSearchPeople() {
-    $('#changeowner').click(function(ev) {
-        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
-            ActOnPerson('/Task/ChangeOwner/', peopleid);
-        });
-        return false;
-    });
-    $('#delegate').click(function(ev) {
-        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
-            ActOnPerson('/Task/Delegate/', peopleid);
-        });
-        return false;
-    });
-    $('#changeabout').click(function(ev) {
-        $('#SearchPeopleDialog').SearchPeople(ev, function(id, peopleid) {
-            ActOnPerson('/Task/ChangeAbout/', peopleid);
-        });
-        return false;
-    });
-}
 function ActOnPerson(action, peopleid) {
     var taskid = $('#TaskId').val();
     $.post(action + taskid + "?peopleid=" + peopleid, null, function(ret) {
         $('#r' + taskid).html(ret);
-        BindSearchPeople();
     });
     $('#dialogbox').dialog("close");
 }
@@ -291,7 +312,19 @@ function Update() {
     var qs = $("#Edit").formSerialize2();
     $.post('/Task/Update/' + id, qs, function(ret) {
         $('#r' + id).html(ret);
-        BindSearchPeople();
     }, "html");
     return false;
+}
+function AddSelected(ret) {
+    ActOnPerson(ret.url, ret.pid);
+}
+function AddSelected2(ret) {
+    var ai = $(".actionitem:checked").getCheckboxVal().join(",");
+    var qs = "items=" + ai;
+    $.block();
+    $.post('/Task/DelegateAll/' + ret.pid, qs, function (ret) {
+        $('#tasks > tbody').html(ret).ready(StripeList);
+        $('#dialogbox').dialog("close");
+        $.unblock();
+    });
 }

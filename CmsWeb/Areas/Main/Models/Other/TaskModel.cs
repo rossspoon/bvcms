@@ -558,10 +558,10 @@ namespace CmsWeb.Models
             task.SourceContact = DbUtil.Db.NewContacts.SingleOrDefault(nc => nc.ContactId == contactid);
             DbUtil.Db.SubmitChanges();
         }
-        public void Delegate(int taskid, int toid, ITaskNotify notify)
+        public Task Delegate(int taskid, int toid, ITaskNotify notify)
         {
             if (toid == Util.UserPeopleId.Value)
-                return; // cannot delegate to self
+                return null; // cannot delegate to self
             var task = DbUtil.Db.Tasks.Single(t => t.Id == taskid);
             task.StatusId = (int)Task.StatusCode.Pending;
             task.CoOwnerId = toid;
@@ -578,6 +578,7 @@ namespace CmsWeb.Models
             notify.EmailNotification(task.Owner, DbUtil.Db.LoadPersonById(toid),
                 "TASK: " + task.Description,
                 TaskLink(task.Description, taskid) + "<br/>" + task.AboutName);
+            return task;
         }
         public void ChangeOwner(int taskid, int toid, ITaskNotify notify)
         {

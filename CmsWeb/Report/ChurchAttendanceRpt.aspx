@@ -46,7 +46,7 @@
                             </table>
                         </LayoutTemplate>
                         <ItemTemplate>
-                            <tr <%# Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
+                            <tr <%# (string)Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
                                 <td align="left">
                                     <asp:Label ID="lblSource" runat="server" Text='<%# Eval("Name")%>'></asp:Label>
                                 </td>
@@ -84,7 +84,7 @@
                             </table>
                         </LayoutTemplate>
                         <ItemTemplate>
-                            <tr <%# Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
+                            <tr <%# (string)Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
                                 <td align="left">
                                     <asp:Label ID="lblSource" runat="server" Text='<%# Eval("Name")%>'></asp:Label>
                                 </td>

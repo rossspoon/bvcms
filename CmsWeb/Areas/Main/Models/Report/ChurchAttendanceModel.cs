@@ -60,7 +60,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Name { get; set; }
             public IEnumerable<MeetInfo> Meetings { get; set; }
         }
-        private static int[] MetroMarg = new int[] { 10, 20 };
         public class MeetInfo
         {
             public int OrgId { get; set; }
@@ -70,11 +69,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             public int Visitors { get; set; }
             public int OutTowners { get; set; }
         }
-        public int[] Guests = new int[] 
-        { 
-            (int)CmsData.Attend.AttendTypeCode.NewVisitor, 
-            (int)CmsData.Attend.AttendTypeCode.RecentVisitor 
-        };
         public IEnumerable<ProgInfo> FetchInfo()
         {
             var q = from p in DbUtil.Db.Programs

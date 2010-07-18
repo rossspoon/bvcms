@@ -172,12 +172,13 @@
     $('#rollsheet2').click(function(ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
+        var pid = $('#ProgramId').val();
         var did = $('#DivisionId').val();
-        if (did == '0') {
-            alert('must choose division');
+        if (pid == '0') {
+            alert('must choose program');
             return false;
         }
-        var args = "?div=" + did +
+        var args = "?div=" + did + "&pid=" + pid +
                "&schedule=" + $('#ScheduleId').val() +
                "&name=" + $('#Name').val() +
                "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();

@@ -21,10 +21,12 @@ namespace CmsWeb.Models
     public class SearchModel
     {
         public string type { get; set; }
-        private string[] noaddtypes = { "relatedfamily", "contactor" };
+        private string[] noaddtypes = { "relatedfamily", "contactor", "taskdelegate", "owner", "taskdelegate2" };
+        private string[] usersonlytypes = { "taskdelegate", "owner", "taskdelegate2" };
         public bool CanAdd { get { return !noaddtypes.Contains(type); } }
         public string from { get; set; }
         public int? typeid { get; set; }
+        public bool UsersOnly { get { return usersonlytypes.Contains(type); } }
 
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
@@ -88,6 +90,10 @@ namespace CmsWeb.Models
                 return query;
             var Db = DbUtil.Db;
             query = Db.People.Select(p => p);
+            if (UsersOnly)
+                query = from p in query
+                        where p.Users.Count() > 0
+                        select p;
 
             if (name.HasValue())
             {
