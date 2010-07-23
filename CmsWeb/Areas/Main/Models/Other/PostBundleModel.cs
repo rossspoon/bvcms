@@ -18,6 +18,10 @@ using System.Data.Linq.SqlClient;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.IO;
+using System.Globalization;
+using System.Threading;
+using LumenWorks.Framework.IO.Csv;
 
 namespace CmsWeb.Models
 {
@@ -79,7 +83,8 @@ namespace CmsWeb.Models
                         State = d.Contribution.Person.PrimaryState,
                         Zip = d.Contribution.Person.PrimaryZip,
                         Age = d.Contribution.Person.Age,
-                        extra = d.Contribution.ExtraDatum.Data
+                        extra = d.Contribution.ExtraDatum.Data,
+                        pledge = d.Contribution.PledgeFlag,
                     };
             var list = q.ToList();
             foreach (var c in list)
@@ -88,7 +93,7 @@ namespace CmsWeb.Models
                 if (!c.PeopleId.HasValue && c.extra.HasValue())
                 {
                     s = c.extra;
-                    if(c.eac.HasValue())
+                    if (c.eac.HasValue())
                         s += " (" + Util.Decrypt(c.eac) + ")";
                     if (s.HasValue())
                         c.Name = s;
@@ -163,6 +168,7 @@ namespace CmsWeb.Models
                         totalitems = bh.BundleDetails.Sum(d =>
                             d.Contribution.ContributionAmount).ToString2("c"),
                         itemcount = bh.BundleDetails.Count(),
+                        pledge = c.PledgeFlag,
                         fund = "{0} - {1}".Fmt(
                             c.FundId, c.ContributionFund.FundName),
                         cid = c.ContributionId,
@@ -267,15 +273,16 @@ namespace CmsWeb.Models
         {
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
-            text = text.Replace("|", "-");
-            var lines = text.Replace("\r\n", "|").Split('|');
-            var names = lines[0].Trim().SplitCSV();
-            var rd = GetNames(names);
-            if (rd == null)
-                return null;
-            if (rd.ContainsKey("ProfileID"))
-                return BatchProcessServiceU(lines, date);
-            return BatchProcess(lines, rd, date);
+            using (var csv = new CsvReader(new StringReader(text), true))
+            {
+                var names = csv.GetFieldHeaders();
+                var rd = GetNames(names);
+                if (rd == null)
+                    return null;
+                if (rd.ContainsKey("ProfileID"))
+                    return BatchProcessServiceU(csv, date);
+                return BatchProcess(csv, rd, date);
+            }
         }
         private static int? BatchProcessMagTek(string lines, DateTime date)
         {
@@ -364,17 +371,19 @@ namespace CmsWeb.Models
             bh.TotalEnvelopes = 0;
             DbUtil.Db.SubmitChanges();
         }
-        public static int? BatchProcess(string[] lines, Dictionary<string, string> Names, DateTime date)
+        public static int? BatchProcess(CsvReader csv, Dictionary<string, string> Names, DateTime date)
         {
-            var cols = lines[0].Trim().SplitStr(",\t");
             var now = DateTime.Now;
             var prevbundle = -1;
             var curbundle = 0;
 
             var bh = GetBundleHeader(date, now);
-            for (var i = 1; i < lines.Length; i++)
+
+            int fieldCount = csv.FieldCount;
+            var cols = csv.GetFieldHeaders();
+
+            while (csv.ReadNextRecord())
             {
-                var a = lines[i].Trim().SplitStr(",\t");
                 var bd = new CmsData.BundleDetail
                 {
                     CreatedBy = Util.UserId,
@@ -395,7 +404,7 @@ namespace CmsWeb.Models
                     ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
                 };
                 string ac = null, rt = null;
-                for (var c = 1; c < a.Length; c++)
+                for (var c = 1; c < fieldCount; c++)
                 {
                     var col = cols[c].Trim();
                     if (!Names.ContainsKey(col))
@@ -403,27 +412,28 @@ namespace CmsWeb.Models
                     switch (Names[col])
                     {
                         case "Bundle":
-                            curbundle = a[c].ToInt();
+                            curbundle = csv[c].ToInt();
                             if (curbundle != prevbundle)
                             {
                                 FinishBundle(bh);
                                 bh = GetBundleHeader(date, now);
+                                prevbundle = curbundle;
                             }
                             break;
-                        case "Date":
-                            bd.Contribution.ContributionDate = a[c].ToDate();
-                            break;
+                        //case "Date": // does not parse TZ correctly
+                        //    bd.Contribution.ContributionDate = a[c].ToDate();
+                        //    break;
                         case "Amount":
-                            bd.Contribution.ContributionAmount = a[c].GetAmount();
+                            bd.Contribution.ContributionAmount = csv[c].GetAmount();
                             break;
                         case "Check":
-                            bd.Contribution.ContributionDesc = a[c];
+                            bd.Contribution.ContributionDesc = csv[c];
                             break;
                         case "Route":
-                            rt = a[c];
+                            rt = csv[c];
                             break;
                         case "Account":
-                            ac = a[c];
+                            ac = csv[c];
                             break;
                     }
                     var eac = Util.Encrypt(rt + "|" + ac);
@@ -440,6 +450,7 @@ namespace CmsWeb.Models
             }
             FinishBundle(bh);
             return bh.BundleHeaderId;
+
         }
         private static int? FindFund(string s)
         {
@@ -469,43 +480,42 @@ namespace CmsWeb.Models
             };
             return bd;
         }
-        public static int? BatchProcessServiceU(string[] lines, DateTime date)
+        public static int? BatchProcessServiceU(CsvReader csv, DateTime date)
         {
-            var cols = lines[0].Trim().SplitCSV();
+            var cols = csv.GetFieldHeaders();
             var now = DateTime.Now;
 
             var bh = GetBundleHeader(date, now);
-            for (var i = 1; i < lines.Length; i++)
-            {
-                var a = lines[i].Trim().SplitCSV();
 
+            while (csv.ReadNextRecord())
+            {
                 string ac = null, oth = null, first = null, last = null, addr = null, name = null;
                 var dt = date;
-                for (var c = 1; c < a.Length; c++)
+                for (var c = 1; c < csv.FieldCount; c++)
                 {
                     var col = cols[c].Trim();
                     switch (col)
                     {
                         case "Date Entered":
-                            dt = a[c].ToDate() ?? date;
+                            dt = csv[c].ToDate() ?? date;
                             break;
                         case "ProfileID":
-                            ac = a[c];
+                            ac = csv[c];
                             break;
                         case "First Name":
-                            first = a[c];
+                            first = csv[c];
                             break;
                         case "Last Name":
-                            last = a[c];
+                            last = csv[c];
                             break;
                         case "Full Name":
-                            name = a[c];
+                            name = csv[c];
                             break;
                         case "Address":
-                            addr = a[c];
+                            addr = csv[c];
                             break;
                         case "Designation for &quot;Other&quot;":
-                            oth = a[c];
+                            oth = csv[c];
                             break;
                     }
                 }
@@ -523,18 +533,18 @@ namespace CmsWeb.Models
                     if (last.HasValue())
                         person = "{1}, {0}; {2}".Fmt(first, last, addr);
                     else
-                        person = "{0}; {2}".Fmt(name, addr);
+                        person = "{0}; {1}".Fmt(name, addr);
                     ed = new ExtraDatum { Data = person, Stamp = Util.Now };
                 }
                 CmsData.BundleDetail bd = null;
-                for (var c = 1; c < a.Length; c++)
+                for (var c = 1; c < csv.FieldCount; c++)
                 {
                     var col = cols[c].Trim();
-                    if (col != "Total" && a[c].StartsWith("$") && a[c].GetAmount() > 0)
+                    if (col != "Total" && csv[c].StartsWith("$") && csv[c].GetAmount() > 0)
                     {
                         var fundid = FindFund(col);
                         bd = CreateContribution(date, fundid ?? 1);
-                        bd.Contribution.ContributionAmount = a[c].GetAmount();
+                        bd.Contribution.ContributionAmount = csv[c].GetAmount();
                         if (col == "Other")
                             col = oth;
                         if (!fundid.HasValue)
@@ -565,6 +575,7 @@ namespace CmsWeb.Models
             public string City { get; set; }
             public string State { get; set; }
             public string Zip { get; set; }
+            public bool pledge { get; set; }
             public string CityStateZip
             {
                 get

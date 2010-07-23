@@ -15,14 +15,20 @@ namespace CmsWeb.Areas.Main.Models.Report
         public DateTime? Dt1 { get; set; }
         public DateTime? Dt2 { get; set; }
 
-        private List<ProgInfo> progs;
         private List<DateTime> weeks;
 
-        public ChurchAttendance2Model(DateTime? dt1, DateTime? dt2)
+        public ChurchAttendance2Model(DateTime? dt1, DateTime? dt2, string SkipWeeks)
         {
             Dt1 = dt1;
             Dt2 = dt2;
             weeks = DbUtil.Db.SundayDates(dt1, dt2).Select(w => w.Dt.Value).ToList();
+            if (SkipWeeks.HasValue())
+                foreach (var wk in SkipWeeks.Split(','))
+                {
+                    var dt = wk.ToDate();
+                    if (dt.HasValue)
+                        weeks.Remove(dt.Value);
+                }
         }
 
 
@@ -79,7 +85,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                            where m.date <= w.AddHours((double)EndHour.Value)
                                            select m
                             };
-                    return  q.Where(w => w.Meetings.Sum(m => m.Present) > 0);
+                    return q.Where(w => w.Meetings.Sum(m => m.Present) > 0);
                 }
             }
 

@@ -10,19 +10,19 @@
 <% } %>
     <tr>
         <td><label for="first">First Name</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" />
+        <td><input id="first" type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" />
         </td>
         <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %></td>
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
+        <td><input id="last" type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
         <td>suffix:<input type="text" name="m.List[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" />
         <%= Html.ValidationMessage("last") %></td>
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
+        <td><input id="dob" type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
         <td><span id="age"><%=Model.age %></span> (m/d/y) <%= Html.ValidationMessage("dob") %></td>
     </tr>
     <tr>
@@ -51,7 +51,7 @@
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
             <% if (Model.IsValidForContinue && !Model.MemberOnly())
                { %>            
-            or <a href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
+            or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
             <% } %>
         <% } %>
         </td>

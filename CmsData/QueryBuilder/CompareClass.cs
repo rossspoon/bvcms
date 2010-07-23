@@ -319,6 +319,10 @@ namespace CmsData
                 case QueryType.PeopleExtra:
                     return Expressions.PeopleExtra(parm,
                                 CompType,
+                                c.CodeStrIds);
+                case QueryType.PeopleExtraData:
+                    return Expressions.PeopleExtraData(parm,
+                                CompType,
                                 c.TextValue);
                 case QueryType.PeopleExtraDate:
                     return Expressions.PeopleExtraDate(parm,

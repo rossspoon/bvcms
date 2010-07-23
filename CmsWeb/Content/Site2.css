@@ -1,6 +1,6 @@
 ﻿body
 {
-    background-color: #5C87B2;
+    background-color: #FFFFFF;
     color: #696969;
     font-family: Verdana,Helvetica,Sans-Serif;
     font-size: 0.75em;
@@ -325,6 +325,58 @@ table#leg td
     border: 1px solid #DDDDDD;
     padding: 5px;
 }
+.DisplayEdit
+{
+    position: relative;
+}
+.DisplayEdit a.displayedit
+{
+    font-size:9px;
+    height:18px;
+    line-height:18px;
+    padding-right:22px;
+    position:absolute;
+    right:0;
+    text-align:right;
+    top:0;
+}
+form.DisplayEdit input[type=text]
+{
+    width: 20em;
+}
+a.submitbutton,a.button {
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
+a.bt {
+  border-radius:            3px;
+  -moz-border-radius:       3px;
+  -webkit-border-radius:    3px; 
+  
+  display:                  inline-block;
+  padding:                  4px 6px 2px;
+  .padding-bottom:          4px; /* IE hack to fix spacing issue. */
+  
+  text-decoration:          none;
+  text-align:               center;
+  
+  background:               #f9f9f9;
+  color:                    black;
+  
+  border:                   1px solid;
+    border-top-color:       #ccc;
+    border-left-color:      #ccc;
+    border-right-color:     #bbb;
+    border-bottom-color:    #bbb;
+}
+  
+  a.bt:hover { 
+    border-color:           #99ccff;  
+  }
 td.alt1
 {
     background-color: #ddd;
@@ -333,4 +385,8 @@ td.alt1
 .blue
 {
     color: blue;
+}
+form.DisplayEdit input.short 
+{
+    width: 1.5em;
 }

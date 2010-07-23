@@ -120,6 +120,10 @@
     <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d" />
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
+    <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -842,8 +846,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
+    <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />
     <Content Include="Content\images\file.gif" />
@@ -1635,6 +1641,7 @@
     <Content Include="Areas\Public\Views\Web.config" />
     <Content Include="Areas\Manage\Views\Web.config" />
     <Content Include="Areas\Main\Views\Web.config" />
+    <None Include="Areas\Main\Controllers\07.22.2010a.csv" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Report\ChurchAttendance.aspx" />

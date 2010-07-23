@@ -150,6 +150,10 @@
         <td><%=Html.TextBox("org.AskOptions")%></td>
     </tr>
     <tr>
+        <th>Extra Options:</th>
+        <td><%=Html.TextBox("org.ExtraOptions")%></td>
+    </tr>
+    <tr>
         <th>Grade Options:</th>
         <td><%=Html.TextBox("org.GradeOptions")%></td>
     </tr>

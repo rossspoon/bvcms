@@ -30,6 +30,7 @@ namespace CmsWeb.Models
         public int? CampusId { get; set; }
         public int? StatusId { get; set; }
         public string tagstr { get; set; }
+        public bool OnlineReg { get; set; }
 
         public OrgSearchModel()
         {
@@ -154,6 +155,11 @@ namespace CmsWeb.Models
                 return organizations;
 
             organizations = DbUtil.Db.Organizations.AsQueryable();
+            //if (OnlineReg)
+            //{
+            //    organizations = from o in organizations
+            //                    where
+            //}
             if (Name.HasValue())
             {
                 if (Name.AllDigits())

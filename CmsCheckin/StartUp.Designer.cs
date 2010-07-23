@@ -54,7 +54,7 @@
             this.cbCampusId.Location = new System.Drawing.Point(229, 22);
             this.cbCampusId.Name = "cbCampusId";
             this.cbCampusId.Size = new System.Drawing.Size(538, 39);
-            this.cbCampusId.TabIndex = 0;
+            this.cbCampusId.TabIndex = 1;
             // 
             // cbDayOfWeek
             // 
@@ -63,15 +63,15 @@
             this.cbDayOfWeek.Location = new System.Drawing.Point(229, 77);
             this.cbDayOfWeek.Name = "cbDayOfWeek";
             this.cbDayOfWeek.Size = new System.Drawing.Size(538, 39);
-            this.cbDayOfWeek.TabIndex = 1;
+            this.cbDayOfWeek.TabIndex = 3;
             // 
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(286, 485);
+            this.button1.Location = new System.Drawing.Point(663, 412);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(127, 64);
-            this.button1.TabIndex = 2;
+            this.button1.Size = new System.Drawing.Size(104, 64);
+            this.button1.TabIndex = 22;
             this.button1.Text = "Start";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -83,7 +83,7 @@
             this.label1.Location = new System.Drawing.Point(107, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 25);
-            this.label1.TabIndex = 3;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Campus Id";
             // 
             // label2
@@ -93,7 +93,7 @@
             this.label2.Location = new System.Drawing.Point(84, 91);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(130, 25);
-            this.label2.TabIndex = 4;
+            this.label2.TabIndex = 2;
             this.label2.Text = "Day Of Week";
             // 
             // HideCursor
@@ -101,10 +101,10 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(17, 508);
+            this.HideCursor.Location = new System.Drawing.Point(494, 455);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
-            this.HideCursor.TabIndex = 5;
+            this.HideCursor.TabIndex = 21;
             this.HideCursor.Text = "Hide Cursor";
             this.HideCursor.UseVisualStyleBackColor = true;
             // 
@@ -115,7 +115,7 @@
             this.label3.Location = new System.Drawing.Point(18, 145);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(196, 25);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 4;
             this.label3.Text = "Early Check In Hours";
             // 
             // LeadHours
@@ -140,7 +140,7 @@
             this.LeadHours.Location = new System.Drawing.Point(229, 131);
             this.LeadHours.Name = "LeadHours";
             this.LeadHours.Size = new System.Drawing.Size(538, 39);
-            this.LeadHours.TabIndex = 7;
+            this.LeadHours.TabIndex = 5;
             this.LeadHours.Text = "5";
             // 
             // Printer
@@ -177,7 +177,7 @@
             this.LateMinutes.Location = new System.Drawing.Point(229, 185);
             this.LateMinutes.Name = "LateMinutes";
             this.LateMinutes.Size = new System.Drawing.Size(538, 39);
-            this.LateMinutes.TabIndex = 11;
+            this.LateMinutes.TabIndex = 7;
             this.LateMinutes.Text = "1440";
             // 
             // label5
@@ -187,28 +187,28 @@
             this.label5.Location = new System.Drawing.Point(7, 201);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(207, 25);
-            this.label5.TabIndex = 10;
+            this.label5.TabIndex = 6;
             this.label5.Text = "Late Check In Minutes";
             // 
             // AskEmFriend
             // 
             this.AskEmFriend.AutoSize = true;
             this.AskEmFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskEmFriend.Location = new System.Drawing.Point(229, 368);
+            this.AskEmFriend.Location = new System.Drawing.Point(229, 376);
             this.AskEmFriend.Name = "AskEmFriend";
-            this.AskEmFriend.Size = new System.Drawing.Size(303, 29);
-            this.AskEmFriend.TabIndex = 12;
-            this.AskEmFriend.Text = "Ask For Emergency Friend Info";
+            this.AskEmFriend.Size = new System.Drawing.Size(232, 29);
+            this.AskEmFriend.TabIndex = 18;
+            this.AskEmFriend.Text = "Ask Emergency Friend";
             this.AskEmFriend.UseVisualStyleBackColor = true;
             // 
             // KioskMode
             // 
             this.KioskMode.AutoSize = true;
             this.KioskMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KioskMode.Location = new System.Drawing.Point(229, 333);
+            this.KioskMode.Location = new System.Drawing.Point(229, 341);
             this.KioskMode.Name = "KioskMode";
             this.KioskMode.Size = new System.Drawing.Size(191, 29);
-            this.KioskMode.TabIndex = 13;
+            this.KioskMode.TabIndex = 17;
             this.KioskMode.Text = "Registration Mode";
             this.KioskMode.UseVisualStyleBackColor = true;
             // 
@@ -216,10 +216,10 @@
             // 
             this.AskGrade.AutoSize = true;
             this.AskGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskGrade.Location = new System.Drawing.Point(229, 403);
+            this.AskGrade.Location = new System.Drawing.Point(229, 411);
             this.AskGrade.Name = "AskGrade";
             this.AskGrade.Size = new System.Drawing.Size(127, 29);
-            this.AskGrade.TabIndex = 14;
+            this.AskGrade.TabIndex = 19;
             this.AskGrade.Text = "Ask Grade";
             this.AskGrade.UseVisualStyleBackColor = true;
             // 
@@ -227,10 +227,10 @@
             // 
             this.AskChurch.AutoSize = true;
             this.AskChurch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskChurch.Location = new System.Drawing.Point(229, 439);
+            this.AskChurch.Location = new System.Drawing.Point(229, 447);
             this.AskChurch.Name = "AskChurch";
             this.AskChurch.Size = new System.Drawing.Size(137, 29);
-            this.AskChurch.TabIndex = 15;
+            this.AskChurch.TabIndex = 20;
             this.AskChurch.Text = "Ask Church";
             this.AskChurch.UseVisualStyleBackColor = true;
             // 
@@ -240,7 +240,7 @@
             this.EnableTimer.Checked = true;
             this.EnableTimer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EnableTimer.Location = new System.Drawing.Point(229, 298);
+            this.EnableTimer.Location = new System.Drawing.Point(229, 306);
             this.EnableTimer.Name = "EnableTimer";
             this.EnableTimer.Size = new System.Drawing.Size(150, 29);
             this.EnableTimer.TabIndex = 16;
@@ -251,7 +251,7 @@
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(788, 569);
+            this.ClientSize = new System.Drawing.Size(796, 506);
             this.Controls.Add(this.EnableTimer);
             this.Controls.Add(this.AskChurch);
             this.Controls.Add(this.AskGrade);

@@ -17,13 +17,17 @@
    { %>        
         <td><%=c.StrValue %></td>
 <% }
+   else if (c.Data.HasValue())
+   { %>
+        <td><%=Util.SafeFormat(c.Data) %></td>
+<% }
    else if (c.DateValue.HasValue)
    { %>
-        <td><%=c.DateValue.FormatDate() %></td>
+        <td><%=c.DateValue.FormatDate()%></td>
  <% }
    else
    { %>   
-        <td><%=c.IntValue %> <%=c.IntValue2 %></td>
+        <td><%=c.IntValue%> <%=c.IntValue2%></td>
 <% } %>
     </tr>
 <% } %>

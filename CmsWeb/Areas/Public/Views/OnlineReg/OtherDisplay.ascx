@@ -151,6 +151,15 @@
         </td>
     </tr>
 <% }
+   if(Model.org.ExtraOptions.HasValue())
+   { %>
+    <tr>
+        <td>Extra Option</td>
+        <td><%=Model.option2 %>
+        <%=Html.Hidden3("m.list[" + Model.index + "].option2", Model.option2)%>
+        </td>
+    </tr>
+<% }
    if(Model.org.GradeOptions.HasValue())
    { %>
     <tr>

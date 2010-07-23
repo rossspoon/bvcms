@@ -50,7 +50,7 @@ namespace CmsWeb.Models
                 let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 where om.Organization.CanSelfCheckin.Value
-                where om.Organization.CampusId == campus || campus == 0
+                where om.Organization.CampusId == campus || om.Organization.CampusId == null
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
                 where Hour != null
@@ -103,7 +103,7 @@ namespace CmsWeb.Models
                 where a.Person.FamilyId == id
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
-                where a.Organization.CampusId == campus || campus == 0
+                where a.Organization.CampusId == campus || a.Organization.CampusId == null
                 where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
@@ -160,7 +160,7 @@ namespace CmsWeb.Models
             var VisitorOrgHour = (DateTime?)null;
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
-                     where o.CampusId == campus || campus == 0
+                     where o.CampusId == campus || o.CampusId == null
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
                      where o.SchedDay == thisday
@@ -177,7 +177,7 @@ namespace CmsWeb.Models
                 where p.FamilyId == id
                 where p.DeceasedDate == null
                 where !list.Select(a => a.Id).Contains(p.PeopleId)
-                let oldervisitor = (p.CampusId != campus || campus == 0) && p.Age > 12
+                let oldervisitor = (p.CampusId != campus || p.CampusId == null) && p.Age > 12
                 let recreg = p.RecRegs.FirstOrDefault()
                 select new Attendee
                 {

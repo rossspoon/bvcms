@@ -18,6 +18,7 @@
             %>        
 <%=Html.Hidden("fundid", Model.bundle.FundId) %>
 <% var b = Model.bundle; %>
+<form id='pbform' action='/PostBundle/InsertRow' method="post">
 <table>
     <tr><th>BundleId</th><td><a href="/Contributions/Bundle.aspx?id=<%=Model.id %>"><%=Model.id %><%=Html.Hidden("id") %></a></td></tr>
     <tr><th>Date</th><td><%=Model.bundle.ContributionDate.ToShortDateString() %></td></tr>
@@ -27,7 +28,6 @@
     <tr><th>Total Items</th><td><span id="totalitems"><%=b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount).ToString2("c") %></span></td></tr>
     <tr><th>Item Count</th><td><span id="itemcount"><%=b.BundleDetails.Count() %></span></td></tr>
 </table>
-<form id='pbform' action='/PostBundle/InsertRow' method="post">
 <%=Html.Hidden("id") %>
 <%=Html.Hidden("editid") %>
 <table id='bundle'>
@@ -60,7 +60,7 @@
             <td class="amt" val="<%=c.Amt %>" align="right">
             <span id='a<%=c.ContributionId %>' class='clickEdit'><%=c.AmtDisplay %></span>            
             </td>
-            <td class="fund" val="<%=c.FundId %>">
+            <td class="fund" val="<%=c.FundId %>" pledge="<%=c.pledge.ToString().ToLower() %>">
                 <span id='f<%=c.ContributionId %>' 
                     class='clickSelect'><%=c.FundDisplay%></span>
             </td>

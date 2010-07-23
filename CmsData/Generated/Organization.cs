@@ -193,6 +193,8 @@ namespace CmsData
 		
 		private bool? _IsBibleFellowshipOrg;
 		
+		private string _ExtraOptions;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -505,6 +507,9 @@ namespace CmsData
 		
 		partial void OnIsBibleFellowshipOrgChanging(bool? value);
 		partial void OnIsBibleFellowshipOrgChanged();
+		
+		partial void OnExtraOptionsChanging(string value);
+		partial void OnExtraOptionsChanged();
 		
     #endregion
 		public Organization()
@@ -2510,6 +2515,28 @@ namespace CmsData
 					this._IsBibleFellowshipOrg = value;
 					this.SendPropertyChanged("IsBibleFellowshipOrg");
 					this.OnIsBibleFellowshipOrgChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraOptions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraOptions", DbType="varchar(300)")]
+		public string ExtraOptions
+		{
+			get { return this._ExtraOptions; }
+
+			set
+			{
+				if (this._ExtraOptions != value)
+				{
+				
+                    this.OnExtraOptionsChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraOptions = value;
+					this.SendPropertyChanged("ExtraOptions");
+					this.OnExtraOptionsChanged();
 				}
 
 			}

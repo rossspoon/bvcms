@@ -38,7 +38,8 @@
             Church Attendance</h1>
         <form action="/Reports/ChurchAttendance2/" method = "post">
         Start Date:
-        <%=Html.DatePicker("Dt1") %> End Date: <%=Html.DatePicker("Dt2") %> <%=Html.SubmitButton("submit", "Run") %>
+        <%=Html.DatePicker("Dt1") %> End Date: <%=Html.DatePicker("Dt2") %><br />
+        Skip Dates (optional, comma separated sundays): <%=Html.TextBox("skipweeks") %> <%=Html.SubmitButton("submit", "Run") %>
         </form> 
        <hr />
         <% foreach (var p in Model.FetchInfo())

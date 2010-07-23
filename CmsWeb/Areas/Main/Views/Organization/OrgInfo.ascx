@@ -16,7 +16,7 @@
     </tr>
     <tr>
         <th>Other Divisions:</th>
-        <td><%=string.Join(", ", o.DivOrgs.Where(d => d.DivId != o.DivisionId).Select(d => d.Division.Program.Name + ":" + d.Division.Name).ToArray()) %></td>
+        <td><%=string.Join(", ", o.DivOrgs.Where(d => d.DivId != o.DivisionId).Select(d => (d.Division.Program != null ? d.Division.Program.Name : "null") + ":" + d.Division.Name).ToArray()) %></td>
     </tr>
     <tr>
         <th>Location:</th>

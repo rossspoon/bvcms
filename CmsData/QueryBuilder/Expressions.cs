@@ -255,12 +255,25 @@ namespace CmsData
         internal static Expression PeopleExtra(
             ParameterExpression parm,
             CompareType op,
+            string[] values)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.PeopleExtras.Any(e =>
+                    values.Contains(e.FieldValue));
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression PeopleExtraData(
+            ParameterExpression parm,
+            CompareType op,
             string value)
         {
             var a = value.Split(new char[] { ':' }, 2);
             Expression<Func<Person, bool>> pred = p =>
                 p.PeopleExtras.Any(e =>
-                    e.Field == a[0] && e.StrValue == a[1]);
+                    e.Field == a[0] && e.Data.Contains(a[1]));
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual)
                 expr = Expression.Not(expr);

@@ -97,13 +97,13 @@ namespace CmsWeb.Models
             }
         }
 
-        private int[] _Selected;
-        public int[] selected
+        private string[] _Selected;
+        public string[] selected
         {
             get
             {
                 if (_Selected == null)
-                    _Selected = new int[0];
+                    _Selected = new string[0];
                 return _Selected;
             }
             set
@@ -132,21 +132,20 @@ namespace CmsWeb.Models
 
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
-                        && om.Organization.ScheduleId == ScheduleId
+                    where om.Organization.ScheduleId == ScheduleId || ScheduleId == 0
                     where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
-                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                       && op.Organization.ScheduleId == ScheduleId)
+                       && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 =>
                         om2.Pending == true
                         && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
                     {
-                        IsSelected = selected.Contains(om.PeopleId),
+                        IsSelected = selected.Contains(om.PeopleId + "," + om.OrganizationId),
                         PeopleId = om.PeopleId,
                         Name = om.Person.Name,
                         Name2 = om.Person.Name2,
@@ -158,11 +157,13 @@ namespace CmsWeb.Models
                         CurrOrgName = om.Organization.OrganizationName,
                         CurrLeader = om.Organization.LeaderName,
                         CurrLoc = om.Organization.Location,
+                        CurrSchedule = om.Organization.MeetingTime.ToString2("H:mm t"),
                         Gender = om.Person.GenderId == 1 ? "M" : "F",
                         PendingClassId = pc == null ? (int?)null : pc.OrganizationId,
                         PendingOrgName = pc == null ? "" : pc.Organization.OrganizationName,
                         PendingLeader = pc == null ? "" : (pt != null ? pt.Person.Name : pc.Organization.LeaderName),
                         PendingLoc = pc == null ? "" : pc.Organization.Location,
+                        PendingSchedule = pc.Organization.MeetingTime.ToString2("H:mm t"),
                         Hash = om.Person.HashNum.Value,
                     };
             if (Dir == "asc")
@@ -229,25 +230,26 @@ namespace CmsWeb.Models
             var fromdiv = Promotion.FromDivId;
             var todiv = Promotion.ToDivId;
 
-            var list = FetchStudents().ToDictionary(s => s.PeopleId);
+            //var list = FetchStudents().ToDictionary(s => s.PeopleId + "," + s.CurrClassId);
 
-            foreach (var pid in selected)
+            foreach (var i in selected)
             {
+                var a = i.Split(',');
                 var q = from om in DbUtil.Db.OrganizationMembers
                         where om.Pending == true
-                        where om.PeopleId == pid
+                        where om.PeopleId == a[0].ToInt()
                         where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                        where om.Organization.ScheduleId == ScheduleId
+                        where om.Organization.ScheduleId == ScheduleId || ScheduleId == 0
                         select om;
                 foreach (var pc in q)
                 {
                     pc.Drop();
                     DbUtil.Db.SubmitChanges();
                 }
-                var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == list[pid].CurrClassId && m.PeopleId == pid);
+                var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == a[1].ToInt() && m.PeopleId == a[0].ToInt());
                 OrganizationMember.InsertOrgMembers(
                     t.OrganizationId,
-                    pid,
+                    a[0].ToInt(),
                     fom.MemberTypeId,
                     Util.Now,
                     null,
@@ -330,18 +332,26 @@ namespace CmsWeb.Models
             var todiv = Promotion.ToDivId;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == todiv)
-                    where o.ScheduleId == ScheduleId
+                    where o.ScheduleId == ScheduleId || ScheduleId == 0
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby o.OrganizationName
                     let pt = o.OrganizationMembers.FirstOrDefault(om2 =>
                         om2.Pending == true
                         && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
-                    select new SelectListItem
+                    select new
                     {
                         Text = CmsData.Organization.FormatOrgName(o.OrganizationName, pt != null ? pt.Person.Name : o.LeaderName, o.Location),
+                        Time = o.MeetingTime,
                         Value = o.OrganizationId.ToString(),
                     };
-            return q;
+            var list = q.ToList();
+            var qq = from i in list
+                     select new SelectListItem
+                     {
+                         Text = i.Text + i.Time.ToString2(", {H:mm t}"),
+                         Value = i.Value
+                     };
+            return qq;
         }
     }
 }

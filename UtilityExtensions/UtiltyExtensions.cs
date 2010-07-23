@@ -764,7 +764,15 @@ namespace UtilityExtensions
         private const string STR_SessionStarting = "SessionStarting";
         public static bool SessionStarting
         {
-            get { return (bool)HttpContext.Current.Session[STR_SessionStarting]; }
+            get
+            {
+                bool tf = false;
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_SessionStarting] != null)
+                            tf = (bool)HttpContext.Current.Session[STR_SessionStarting];
+                return tf;
+            }
             set { HttpContext.Current.Session[STR_SessionStarting] = value; }
         }
         private const string STR_FormsBasedAuthentication = "FormsBasedAuthentication";

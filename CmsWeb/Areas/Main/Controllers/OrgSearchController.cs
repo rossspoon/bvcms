@@ -19,6 +19,7 @@ namespace CmsWeb.Areas.Main.Controllers
             public int? Division { get; set; }
             public int? Sched { get; set; }
             public int? Status { get; set; }
+            public bool OnlineReg { get; set; }
         }
         private const string STR_OrgSearch = "OrgSearch2";
         public ActionResult Index(int? div, int? progid)

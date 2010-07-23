@@ -114,6 +114,14 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 return s;
         }
+        public ActionResult Authenticate(string username, string password)
+        {
+            var a = CMSMembershipProvider.provider.ValidateUser(username, password);
+            if (a)
+                return Content("OK");
+            else
+                return Content("NotOK");
+        }
         private void UpdatePerson(Person p, PersonInfo m)
         {
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());

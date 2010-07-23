@@ -33,6 +33,8 @@ namespace CmsData
 		
 		private int? _IntValue2;
 		
+		private string _FieldValue;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -67,6 +69,9 @@ namespace CmsData
 		
 		partial void OnIntValue2Changing(int? value);
 		partial void OnIntValue2Changed();
+		
+		partial void OnFieldValueChanging(string value);
+		partial void OnFieldValueChanged();
 		
     #endregion
 		public PeopleExtra()
@@ -253,6 +258,28 @@ namespace CmsData
 					this._IntValue2 = value;
 					this.SendPropertyChanged("IntValue2");
 					this.OnIntValue2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FieldValue", UpdateCheck=UpdateCheck.Never, Storage="_FieldValue", DbType="varchar(151)", IsDbGenerated=true)]
+		public string FieldValue
+		{
+			get { return this._FieldValue; }
+
+			set
+			{
+				if (this._FieldValue != value)
+				{
+				
+                    this.OnFieldValueChanging(value);
+					this.SendPropertyChanging();
+					this._FieldValue = value;
+					this.SendPropertyChanged("FieldValue");
+					this.OnFieldValueChanged();
 				}
 
 			}

@@ -64,6 +64,7 @@ namespace CmsCheckin
             this.Hide();
         }
 
+        TextBox current = null;
         private void StartUp_Load(object sender, EventArgs e)
         {
 #if DEBUG
@@ -104,6 +105,7 @@ namespace CmsCheckin
             KioskMode.Checked = Settings1.Default.KioskMode;
             AskGrade.Checked = Settings1.Default.AskGrade;
             AskChurch.Checked = Settings1.Default.AskChurch;
+
         }
     }
     class DayOfWeek

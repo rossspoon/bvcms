@@ -1172,6 +1172,19 @@ namespace CMSPresenter
                     };
             return q;
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public IEnumerable<CodeValueItem> ExtraValues()
+        {
+            var q = from e in DbUtil.Db.PeopleExtras
+                    let v = e.Field + ":" + e.StrValue
+                    group e by v into g
+                    orderby g.Key
+                    select new CodeValueItem
+                    {
+                        Value = g.Key,
+                    };
+            return q;
+        }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<CodeValueItem> VolunteerCodes()

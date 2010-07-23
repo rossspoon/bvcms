@@ -14,14 +14,29 @@ using System.Diagnostics;
 
 namespace CmsCheckin
 {
-    public static class Util
+    public static partial class Util
     {
         public static string ServiceUrl()
         {
-            string serviceurl = ConfigurationManager.AppSettings["ServiceUrl"];
+            //var c = Program.GetQueryStringParameters();
+            //var s = Util.Decrypt(c["s"]);
+            //if (s.HasValue())
+            //    return s;
             if (Program.TestMode)
-                serviceurl = ConfigurationManager.AppSettings["ServiceUrlTest"];
-            return serviceurl;
+                return "http://localhost:58724/";
+            else
+                return Program.URL;
+        }
+        public static bool Authenticate(string username, string password)
+        {
+            var wc = new WebClient();
+            var coll = new NameValueCollection();
+            coll.Add("username", username);
+            coll.Add("password", password);
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Authenticate/");
+            var resp = wc.UploadValues(url, "POST", coll);
+            var s = Encoding.ASCII.GetString(resp);
+            return s == "OK";
         }
         public static string GetDigits(this string s)
         {

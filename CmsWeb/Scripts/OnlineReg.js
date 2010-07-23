@@ -1,5 +1,5 @@
-﻿$(function() {
-    $('form.DisplayEdit input.dob').live("blur", function() {
+﻿$(function () {
+    $('form.DisplayEdit input.dob').live("blur", function () {
         var bd = $(this).val();
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
         var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
@@ -29,38 +29,41 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+//    $("#first").live("change", function () {
+//        $('#regnew').hide();
+//    });
+    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
         });
         return false;
     });
-    $("form.DisplayEdit").submit(function() {
+    $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
         return true;
     });
-    $("form.DisplayEdit a.cancel").live('click', function(ev) {
+    $("form.DisplayEdit a.cancel").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
         });
         return false;
     });
-    $("#zip").live("blur", function() {
-        $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
+    $("#zip").live("blur", function () {
+        $.post('/Register/CityState/' + $(this).val(), null, function (ret) {
             if (ret) {
                 $('#state').val(ret.state);
                 $('#city').val(ret.city);
             }
         }, 'json');
     });
-    $("#copy").live("click", function() {
+    $("#copy").live("click", function () {
         $("input:last[name$='.emcontact']").val($("input:hidden:last[name$='.emcontact']").val());
         $("input:last[name$='.emphone']").val($("input:hidden:last[name$='.emphone']").val());
         $("input:last[name$='.insurance']").val($("input:hidden:last[name$='.insurance']").val());

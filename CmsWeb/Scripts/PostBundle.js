@@ -1,9 +1,9 @@
-﻿$(function() {
-    $('#pid').blur(function() {
+﻿$(function () {
+    $('#pid').blur(function () {
         if ($(this).val() == '')
             return;
         var q = $('#pbform').serialize();
-        $.post("/PostBundle/GetName/", q, function(ret) {
+        $.post("/PostBundle/GetName/", q, function (ret) {
             if (ret == 'not found') {
                 $.growlUI("PeopleId", "Not Found");
                 $('#name').focus();
@@ -23,14 +23,14 @@
         width: 200,
         selectFirst: false,
         autoFill: false,
-        formatItem: function(row, pos, len) {
+        formatItem: function (row, pos, len) {
             return row[0] + " (" + row[2] + ")<br />" + row[3];
         },
-        formatResult: function(row) {
+        formatResult: function (row) {
             return row[0];
         }
     });
-    $("#name").result(function(ev, data, formatted) {
+    $("#name").result(function (ev, data, formatted) {
         if (data) {
             $('#pid').val(data[1]);
         }
@@ -40,18 +40,18 @@
         }
     });
 
-    $.Stripe = function() {
+    $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');
         $('#bundle tbody tr:even').addClass('alt');
     }
     $.Stripe();
-    $('#notes').keydown(function(event) {
+    $('#notes').keydown(function (event) {
         if ((event.keyCode == 9 || event.keyCode == 13) && !event.shiftKey) {
             event.preventDefault();
             $.PostRow();
         }
     });
-    $('#pid').keydown(function(event) {
+    $('#pid').keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             if (!$.browser.msie)
@@ -59,35 +59,36 @@
             $('#name').focus();
         }
     });
-    $('#name').keydown(function(event) {
+    $('#name').keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             $('#amt').focus();
         }
     });
-    $('#amt').keydown(function(event) {
+    $('#amt').keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             $('#fund').focus();
         }
     });
-    $('#fund').keydown(function(event) {
+    $('#fund').keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             $('#notes').focus();
         }
     });
-    $('a.update').click(function(event) {
+    $('a.update').click(function (event) {
         event.preventDefault();
         $.PostRow();
     });
-    $('a.edit').live("click", function(ev) {
+    $('a.edit').live("click", function (ev) {
         ev.preventDefault();
         var tr = $(this).closest("tr");
         $('#editid').val(tr.attr("cid"));
         $('#pid').val($("a.pid", tr).text());
         $('#name').val($("td.name", tr).text());
         $('#fund').val($("td.fund", tr).attr('val'));
+        $('#pledge').attr('checked', $("td.fund", tr).attr('pledge') == 'true');
         var a = $('#amt');
         a.val($("td.amt", tr).attr("val"));
         $('#fund').val($("td.fund", tr).attr("val"));
@@ -99,32 +100,32 @@
         $('a.edit').hide();
         $.Stripe();
     });
-    $('a.delete').live("click", function(ev) {
+    $('a.delete').live("click", function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?")) {
             var tr = $(this).closest("tr");
             $('#editid').val(tr.attr("cid"));
             var q = $('#pbform').serialize();
-            $.post("/PostBundle/DeleteRow/", q, function(ret) {
+            $.post("/PostBundle/DeleteRow/", q, function (ret) {
                 tr.remove();
                 $('#totalitems').text(ret.totalitems);
                 $('#itemcount').text(ret.itemcount);
                 $('#editid').val('');
                 q = $('#pbform').serialize();
-                $.post("/PostBundle/FundTotals/", q, function(ret) {
+                $.post("/PostBundle/FundTotals/", q, function (ret) {
                     $("fundtotals").html(ret);
                 });
             });
         }
     });
-    $('a.pid').live("click", function(event) {
+    $('a.pid').live("click", function (event) {
         event.preventDefault();
         var d = $('#searchDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
         d.parent().center();
     });
-    $.MakeEditable = function() {
+    $.MakeEditable = function () {
         $(".clickEdit").editable("/PostBundle/Edit/", {
             indicator: "<img src='/images/loading.gif'>",
             tooltip: "Click to edit...",
@@ -141,7 +142,7 @@
         });
     }
     $.MakeEditable();
-    $.PostRow = function() {
+    $.PostRow = function () {
         var n = parseFloat($('#amt').val());
         if (!n > 0) {
             $.growlUI("Contribution", "Cannot post, No Amount");
@@ -151,7 +152,7 @@
         var action = "/PostBundle/PostRow/";
         if ($('#editid').val())
             action = "/PostBundle/UpdateRow/";
-        $.post(action, q, function(ret) {
+        $.post(action, q, function (ret) {
             $('#totalitems').text(ret.totalitems);
             $('#itemcount').text(ret.itemcount);
             var pid = $('#pid').val();
@@ -163,10 +164,7 @@
                     + '">' + $('#name').val()
                     + '</td><td class="amt" val="' + $('#amt').val()
                     + '" align="right">' + ret.amt
-                    + '</td><td val="' + $('#fund').val()
-                    + '"class="fund"><span id="f' + ret.cid
-                    + '" class="clickSelect">' + ret.fund
-                    + '</span></td><td class="notes">' + $('#notes').val()
+                    + '</td><td val="' + $('#fund').val() + '"class="fund" pledge="' + ret.pledge + '"><span id="f' + ret.cid + '" class="clickSelect">' + ret.fund + '</span></td><td class="notes">' + $('#notes').val()
                     + '</td><td><a class="edit" href="#">edit</a>'
                     + '</td><td><a class="delete" href="#">delete</a></td>'
                     + '</tr>');
@@ -180,7 +178,7 @@
             $('a.update').show();
             $.Stripe();
             q = $('#pbform').serialize();
-            $.post("/PostBundle/FundTotals/", q, function(ret) {
+            $.post("/PostBundle/FundTotals/", q, function (ret) {
                 $("fundtotals").html(ret);
             });
         });
@@ -195,7 +193,7 @@
         overlay: {
             opacity: 0.5,
             background: "black"
-        }, close: function() {
+        }, close: function () {
             $('iframe', this).attr("src", "");
         }
     });

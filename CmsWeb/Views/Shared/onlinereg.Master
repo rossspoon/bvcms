@@ -2,29 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>Complete Registration Payment</title>
+<title>Online Registration</title>
 <%=Util.PickFirst((string)ViewData["header"], @"
 <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-<link rel='shortcut icon' href='/Content/favicon.ico' type='image/x-icon' />
-<link href='/Content/Site2.css?v=2' rel='stylesheet' type='text/css' />
+<link href='/Content/Site2.css?v=4' rel='stylesheet' type='text/css' />
 ") %>
 </head>
 <body>
 <%=Util.PickFirst((string)ViewData["top"], @"
-<div class='page'>
-<div id='header'>
-<div id='title'>
-<h1><img alt='logo' src='/Content/Crosses.png' align='middle' />&nbsp;Online Registration</h1>
-</div>
-</div>
-<div id='main'>
+
 ") %>
 <asp:ContentPlaceHolder ID="MainContent" runat="server">
 </asp:ContentPlaceHolder>
 <%=Util.PickFirst((string)ViewData["bottom"], @"
-<div id='footer'></div>
-</div>
-</div>
+
 ") %>
 </body>
 </html>

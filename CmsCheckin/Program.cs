@@ -5,6 +5,9 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.ComponentModel;
 using System.Drawing.Printing;
+using System.Deployment.Application;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace CmsCheckin
 {
@@ -17,10 +20,24 @@ namespace CmsCheckin
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length > 0)
                 TestMode = args[0] == "test";
+
+            var login = new Login();
+            do
+            {
+                var r = login.ShowDialog();
+                if (r == DialogResult.Cancel)
+                    return;
+                if (login.URL.Text.StartsWith("http"))
+                    URL = login.URL.Text;
+                else
+                    URL = "https://" + login.URL.Text;
+            } while (!Util.Authenticate(login.username.Text, login.password.Text));
+
             var f = new StartUp();
-            var r = f.ShowDialog();
-            if (r == DialogResult.Cancel)
+            var ret = f.ShowDialog();
+            if (ret == DialogResult.Cancel)
                 return;
+
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
@@ -45,6 +62,7 @@ namespace CmsCheckin
 
             Application.Run(b);
         }
+        public static string URL { get; set; }
         public static string Printer { get; set; }
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }
@@ -66,7 +84,7 @@ namespace CmsCheckin
         {
             get
             {
-                return string.Format("?campus={0}&thisday={1}&kioskmode={2}", 
+                return string.Format("?campus={0}&thisday={1}&kioskmode={2}",
                     CampusId, ThisDay, KioskMode);
             }
         }
@@ -85,7 +103,7 @@ namespace CmsCheckin
         public static EnterNumber grade;
         public static EnterPhone emphone;
         public static EnterText parent;
-        
+
         public static EnterText first;
         public static EnterText goesby;
         public static EnterText last;
@@ -216,5 +234,17 @@ namespace CmsCheckin
             Cursor.Hide();
             showing = false;
         }
+
+        //public static NameValueCollection GetQueryStringParameters()
+        //{
+        //    NameValueCollection col = new NameValueCollection();
+
+        //    if (ApplicationDeployment.IsNetworkDeployed)
+        //    {
+        //        string queryString = ApplicationDeployment.CurrentDeployment.ActivationUri.Query;
+        //        col = HttpUtility.ParseQueryString(queryString);
+        //    }
+        //    return col;
+        //}
     }
 }

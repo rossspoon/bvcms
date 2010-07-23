@@ -112,9 +112,6 @@ namespace UtilityExtensions
                 msg.Attachments.Add(attach);
 
 #if DEBUG
-            msg.To.Clear();
-            msg.To.Add("david@davidcarroll.name");
-            smtp.Send(msg);
 #else
             try
             {

@@ -324,6 +324,7 @@ namespace CmsWeb.Models
         public string grade { get; set; }
         public int? ntickets { get; set; }
         public string option { get; set; }
+        public string option2 { get; set; }
         public string gradeoption { get; set; }
 
         public decimal AmountToPay()
@@ -442,6 +443,10 @@ namespace CmsWeb.Models
                 if (option == "0")
                     modelState.AddModelError("option", "please select an option");
 
+            if (org.ExtraOptions.HasValue())
+                if (option2 == "0")
+                    modelState.AddModelError("option2", "please select an option");
+
             if (org.GradeOptions.HasValue())
                 if (gradeoption == "00")
                     modelState.AddModelError("gradeoption", "please select a grade option");
@@ -518,6 +523,17 @@ namespace CmsWeb.Models
                     select new SelectListItem { Text = a[0].Trim() + amt, Value = a[0].Trim() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+        public IEnumerable<SelectListItem> ExtraOptions()
+        {
+            var q = from s in (org.AskOptions ?? string.Empty).Split(',')
+                    where s.HasValue()
+                    let a = s.Split('=')
+                    where a.Length > 1
+                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
         }
         public IEnumerable<SelectListItem> GradeOptions()
@@ -636,6 +652,8 @@ namespace CmsWeb.Models
 
             if (org.AskOptions.HasValue())
                 sb.AppendFormat("<tr><td>Option:</td><td>{0}</td></tr>\n", option);
+            if (org.ExtraOptions.HasValue())
+                sb.AppendFormat("<tr><td>Extra Option:</td><td>{0}</td></tr>\n", option2);
             if (org.GradeOptions.HasValue())
                 sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n", 
                     GradeOptions().SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
@@ -738,6 +756,11 @@ namespace CmsWeb.Models
                 om.RemoveFromGroup(op.Value);
             if (org.AskOptions.HasValue())
                 om.AddToGroup(option);
+
+            foreach (var op in ExtraOptions())
+                om.RemoveFromGroup(op.Value);
+            if (org.ExtraOptions.HasValue())
+                om.AddToGroup(option2);
 
             if (org.GradeOptions.HasValue())
                 om.Grade = gradeoption.ToInt();

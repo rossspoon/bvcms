@@ -79,6 +79,9 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult OrgContent(int id, string what, bool? div)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
+            if (div == true && org.Division == null)
+                return Content("no main division");
+
             switch (what)
             {
                 case "message":

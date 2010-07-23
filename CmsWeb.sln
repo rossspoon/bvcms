@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeUploadPicture", "TakeUp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostBundle", "PostBundle\PostBundle\PostBundle.csproj", "{7A9FAD1A-2730-4078-9AA1-219BE8355181}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CmsCheckinSetup", "CmsCheckinSetup\CmsCheckinSetup.vdproj", "{E5D770DF-A859-48D6-8ABB-031A1A260443}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		BVCMSProduction|Any CPU = BVCMSProduction|Any CPU
@@ -325,6 +327,27 @@ Global
 		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|Itanium.ActiveCfg = Release|Any CPU
 		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|x86.ActiveCfg = Release|Any CPU
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.BVCMSProduction|Any CPU.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.BVCMSProduction|Itanium.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.BVCMSProduction|x86.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Cms2Production|Any CPU.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Cms2Production|Itanium.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Cms2Production|x86.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsTest|Any CPU.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsTest|Itanium.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsTest|x86.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsWebProduction|Any CPU.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsWebProduction|Itanium.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.CmsWebProduction|x86.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Debug|Any CPU.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Debug|Itanium.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Debug|x86.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Default|Any CPU.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Default|Itanium.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Default|x86.ActiveCfg = Debug
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Release|Any CPU.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Release|Itanium.ActiveCfg = Release
+		{E5D770DF-A859-48D6-8ABB-031A1A260443}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

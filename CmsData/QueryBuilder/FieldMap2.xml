@@ -405,8 +405,11 @@
     <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0})" Params="Days">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="PeopleExtra" Title="ExtraValue" Type="StringEqual">
+    <Field Name="PeopleExtra" Title="ExtraValue" Type="CodeStr" DataSource="ExtraValues">
       ExtraValue field = (field:value)
+    </Field>
+    <Field Name="PeopleExtraData" Title="ExtraValueData" Type="StringEqual">
+      ExtraValue field = (field:value) where value is some value contained in the Data
     </Field>
     <Field Name="PeopleExtraDate" Title="ExtraValueDate" Type="String">
       ExtraValue field = (field:value)

@@ -152,13 +152,13 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new ChurchAttendanceModel(id.Value);
             return View(m);
         }
-        public ActionResult ChurchAttendance2(DateTime? Dt1, DateTime? Dt2)
+        public ActionResult ChurchAttendance2(DateTime? Dt1, DateTime? Dt2, string skipweeks)
         {
             if (!Dt1.HasValue)
                 Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
             if (!Dt2.HasValue)
                 Dt2 = DateTime.Today;
-            var m = new ChurchAttendance2Model (Dt1,Dt2 );
+            var m = new ChurchAttendance2Model (Dt1, Dt2 , skipweeks);
             return View(m);
         }
     }

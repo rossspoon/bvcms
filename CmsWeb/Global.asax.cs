@@ -87,6 +87,10 @@ namespace CmsWeb
             }
             Util.SessionStarting = true;
         }
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)

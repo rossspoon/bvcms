@@ -173,6 +173,10 @@
         <td><%=Model.org.AskOptions%></td>
     </tr>
     <tr>
+        <th>Extra Options:</th>
+        <td><%=Model.org.ExtraOptions%></td>
+    </tr>
+    <tr>
         <th>Grade Options:</th>
         <td><%=Model.org.GradeOptions %></td>
     </tr>

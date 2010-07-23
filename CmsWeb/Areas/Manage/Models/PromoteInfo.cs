@@ -19,19 +19,21 @@ namespace CmsWeb.Models
         public int CurrClassId { get; set; }
         public string CurrClassName 
         { 
-            get { return CmsData.Organization.FormatOrgName(CurrOrgName, CurrLeader, CurrLoc); } 
+            get { return CmsData.Organization.FormatOrgName(CurrOrgName, CurrLeader, CurrLoc) + ", " + CurrSchedule; } 
         }
         public string CurrOrgName { get; set; }
         public string CurrLeader { get; set; }
         public string CurrLoc { get; set; }
+        public string CurrSchedule { get; set; }
         public int? PendingClassId { get; set; }
         public string PendingClassName
         {
-            get { return CmsData.Organization.FormatOrgName(PendingOrgName, PendingLeader, PendingLoc); }
+            get { return CmsData.Organization.FormatOrgName(PendingOrgName, PendingLeader, PendingLoc) + ", " + PendingSchedule; }
         }
         public string PendingOrgName { get; set; }
         public string PendingLeader { get; set; }
         public string PendingLoc { get; set; }
+        public string PendingSchedule { get; set; }
         public decimal? AttendPct { get; set; }
         public string AttendIndicator
         {

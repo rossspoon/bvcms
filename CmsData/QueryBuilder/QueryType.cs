@@ -103,6 +103,7 @@ namespace CmsData
         PendingCurrentOrg,
         PreviousCurrentOrg,
         PeopleExtra,
+        PeopleExtraData,
         PeopleExtraDate,
         PeopleExtraInt,
         PeopleId,

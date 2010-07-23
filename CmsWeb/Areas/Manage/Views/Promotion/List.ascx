@@ -2,7 +2,7 @@
 <% foreach (var r in Model.FetchStudents())
    { %>
 <tr>
-    <td><input name="selected" type="checkbox" <%=r.Checked %> value="<%=r.PeopleId%>" class="check" gender='<%=r.Gender %>' attend='<%=r.AttendIndicator %>' />
+    <td><input name="selected" type="checkbox" <%=r.Checked %> value="<%=r.PeopleId%>,<%=r.CurrClassId %>" class="check" gender='<%=r.Gender %>' attend='<%=r.AttendIndicator %>' />
     </td>
     <td><%=r.Gender%></td>
     <td><%=r.AttendIndicator%></td>
