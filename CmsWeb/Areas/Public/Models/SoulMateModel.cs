@@ -155,21 +155,21 @@ namespace CmsWeb.Models
         {
             int count;
             _Person1 = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone1, first1, lastname1, BDay1, out count);
+                .FindPerson(first1, lastname1, BDay1, string.Empty, phone1, out count);
             return count;
         }
         public int FindMember2()
         {
             int count;
             _Person2 = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone2, first2, lastname2, BDay2, out count);
+                .FindPerson(first2, lastname2, BDay2, string.Empty, phone2, out count);
             return count;
         }
         public int FindMember(string phone, string first, string last, DateTime dob, out Person person)
         {
             int count;
             person = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone, first, last, dob, out count);
+                .FindPerson(first, last, dob, string.Empty, phone, out count);
             return count;
         }
 

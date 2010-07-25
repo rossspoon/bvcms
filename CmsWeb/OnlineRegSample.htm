@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Online Registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css">
+body
+{
+    background-color: #FFFFFF;
+    color: #696969;
+    font-family: Verdana,Helvetica,Sans-Serif;
+    font-size: 0.75em;
+    margin: 0;
+    padding: 0;
+}
+a:link
+{
+    color: #034AF3;
+    text-decoration: underline;
+}
+p
+{
+    line-height: 1.6em;
+    margin-bottom: 20px;
+}
+h2
+{
+    color: #000000;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 1.5em;
+}
+h1
+{
+    font-size: 2em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+h2
+{
+    padding: 0 0 5px;
+}
+h3
+{
+    font-size: 1.2em;
+}
+h4
+{
+    font-size: 1.1em;
+}
+h5, h6
+{
+    font-size: 1em;
+}
+input[type="text"]
+{
+    border: 1px solid #CCCCCC;
+    width: 200px;
+}
+input[type="password"]
+{
+    border: 1px solid #CCCCCC;
+    width: 200px;
+}
+.field-validation-error
+{
+    color: #FF0000;
+}
+.input-validation-error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+.validation-summary-errors
+{
+    color: #FF0000;
+    font-weight: bold;
+}
+.DisplayEdit
+{
+    position: relative;
+}
+form.DisplayEdit input[type=text]
+{
+    width: 20em;
+}
+a.submitbutton
+{
+  padding:5px;
+    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
+    background-color:#3B5998;
+  border: 1px solid;
+    color:#FFFFFF;
+  text-decoration:none;
+}
+.blue
+{
+    color: blue;
+}
+form.DisplayEdit input.short 
+{
+    width: 1.5em;
+}
+</style>
+</head>
+<body>
+<!--FORM START-->
+    <script type="text/javascript" src="/Content/js/jquery-1.4.2.js"></script><script type="text/javascript" src="/Content/js/jquery.idle-timer.js"></script><script type="text/javascript" src="/Scripts/OnlineReg.js"></script>  
+    <script type="text/javascript">
+        $(function () {
+            $(document).bind("idle.idleTimer", function () {
+                window.location.href = 'http://localhost:58724/onlinereg/Index/84624';
+            });
+            var tmout = parseInt('1600000');
+
+            if ($('input:text[value!=""]').length == 0)
+                $(document).bind("keydown", function () {
+                    $(document).unbind("keydown");
+                    $.idleTimer(tmout);
+                });
+            else
+                $.idleTimer(tmout);
+        });
+    </script>
+    <h2>Men - Faithful Men</h2>
+    <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/?testing=true" method="post">
+    <input id="m_divid" name="m.divid" type="hidden" value="" />
+    <input id="m_orgid" name="m.orgid" type="hidden" value="84624" />
+    <input id="m_testing" name="m.testing" type="hidden" value="True" />
+    <input id="m_URL" name="m.URL" type="hidden" value="http://localhost:58724/onlinereg/Index/84624" />
+    <table cellpadding="0" cellspacing="2" width="100%">
+    <tr><td class="alt0">
+    <input id="m_List_index" name="m.List.index" type="hidden" value="0" />
+    <input name="m.List[0].orgid" type="hidden" value="84624"></input>
+    <input name="m.List[0].divid" type="hidden" value=""></input>
+    <input name="m.List[0].ShowAddress" type="hidden" value="False"></input>
+    <table cellspacing="6">
+        <tr>
+            <td><label for="first">First Name</label></td>
+            <td><input id="first" type="text" name="m.List[0].first" value="David" />
+            </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td><label for="last">Last Name</label></td>
+            <td><input id="last" type="text" name="m.List[0].last" value="Carroll" /></td>
+            <td>suffix:<input type="text" name="m.List[0].suffix" class="short" value="" />
+            </td>
+        </tr>
+         <tr>
+            <td><label for="dob">Date of Birth</label></td>
+            <td><input id="dob" type="text" name="m.List[0].dob" value="5/30/52" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
+            <td><span id="age">58</span> (m/d/y) </td>
+        </tr>
+        <tr>
+            <td><label for="phone">Phone</label></td>
+            <td><input type="text" name="m.List[0].phone" value="9017581862" /></td>
+            <td><input type="radio" name="m.List[0].homecell" value="h" checked='checked' /> Home<br />
+            <input type="radio" name="m.List[0].homecell" value="c"  /> Cell
+            </td>
+        </tr>
+        <tr>
+            <td><label for="email">Contact Email</label></td>
+            <td><input type="text" name="m.List[0].email" value="david@davidcarroll.name" /></td>
+            <td></td>
+        </tr>
+        <tr><td></td>
+            <td>
+                <a href="/OnlineReg/PersonFind/0" class="submitbutton">Find Record</a>
+            </td>
+        </tr>
+    </table>
+    </td></tr>
+    </table>
+    </form>
+<!--FORM END-->
+</body>
+</html>

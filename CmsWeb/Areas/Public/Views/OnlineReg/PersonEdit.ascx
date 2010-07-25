@@ -28,9 +28,7 @@
     <tr>
         <td><label for="phone">Phone</label></td>
         <td><input type="text" name="m.List[<%=Model.index%>].phone" value="<%=Model.phone%>" /></td>
-        <td><input type="radio" name="m.List[<%=Model.index%>].homecell" value="h" <%=Model.homecell == "h" ? "checked='checked'" : "" %> /> Home<br />
-        <input type="radio" name="m.List[<%=Model.index%>].homecell" value="c" <%=Model.homecell == "c" ? "checked='checked'" : "" %> /> Cell
-        <%= Html.ValidationMessage("phone")%></td>
+        <td><%= Html.ValidationMessage("phone")%></td>
     </tr>
     <tr>
         <td><label for="email">Contact Email</label></td>
@@ -49,10 +47,11 @@
            { %>
            <p class="blue"><%=Model.NotFoundText %></p>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
-            <% if (Model.IsValidForContinue && !Model.MemberOnly())
-               { %>            
+            <% if (Model.IsValidForContinue && !Model.MemberOnly() && Model.TryCount > 3)
+               { %>
             or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
             <% } %>
+            Number of Tries: <%=Model.TryCount %>
         <% } %>
         </td>
     </tr>

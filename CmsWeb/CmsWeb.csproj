@@ -869,6 +869,7 @@
     <Content Include="Content\images\treeview-gray.gif" />
     <Content Include="Content\images\treeview-red-line.gif" />
     <Content Include="Content\images\treeview-red.gif" />
+    <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Dialog\AddTagShareds.aspx" />
     <Content Include="App_Offline1.htm" />
@@ -876,6 +877,7 @@
     <Content Include="BadEts.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="OnlineRegSample.htm" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="UserControls\ExportToolBar.ascx" />
     <Content Include="Web.config">
@@ -1641,7 +1643,6 @@
     <Content Include="Areas\Public\Views\Web.config" />
     <Content Include="Areas\Manage\Views\Web.config" />
     <Content Include="Areas\Main\Views\Web.config" />
-    <None Include="Areas\Main\Controllers\07.22.2010a.csv" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Report\ChurchAttendance.aspx" />

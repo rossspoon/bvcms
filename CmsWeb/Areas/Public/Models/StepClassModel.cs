@@ -52,14 +52,14 @@ namespace CmsWeb.Models
         {
             int count;
             person = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone, first, last, birthday, out count);
+                .FindPerson(first, last, birthday, email, phone, out count);
             return count;
         }
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(modelState, first, last, birthday, phone);
+                .ValidateFindPerson(modelState, first, last, birthday, email, phone);
 
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");

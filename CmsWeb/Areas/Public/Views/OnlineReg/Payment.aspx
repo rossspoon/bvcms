@@ -25,6 +25,7 @@ a.submitbutton,a.button {
 </style>
     <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.showpassword.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
@@ -47,6 +48,7 @@ a.submitbutton,a.button {
                 return false;
             });
             $.idleTimer(tmout);
+            $('form').showPassword();
         });
     </script>
     <script type="text/javascript">
@@ -109,7 +111,7 @@ a.submitbutton,a.button {
     </p>
     <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
     <p>If you have received a Cash Payment Code, please enter that number here and click the blue link next to it:</p>
-    <%=Html.TextBox("_Coupon") %>
+    <input id="_Coupon" type="password" name="_Coupon" value="<%=Model._Coupon %>" />
     <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>
     <span style="color:Red" id="validatecoupon"></span>
     </form>

@@ -15,18 +15,6 @@
         <td><%=Html.CheckBox("org.ClassFilled") %></td>
     </tr>
     <tr>
-        <th>Online Catalog Sort:</th>
-        <td><%=Html.TextBox("org.OnLineCatalogSort")%></td>
-    </tr>
-    <tr>
-        <th>Max Limit:</th>
-        <td><%=Html.TextBox("org.Limit")%></td>
-    </tr>
-    <tr>
-        <th>Online Notify Emails:</th>
-        <td><%=Html.TextBox("org.EmailAddresses")%></td>
-    </tr>
-    <tr>
         <th>Organization Phone Number:</th>
         <td><%=Html.TextBox("org.PhoneNumber")%></td>
     </tr>
@@ -83,11 +71,23 @@
         <td><%=Html.TextBox("org.PendingLoc")%></td>
     </tr>
     <tr>
+        <th>Rollsheet Visitor Weeks:</th>
+        <td><%=Html.TextBox("org.RollSheetVisitorWks")%></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>
-        <th>Rollsheet Visitor Weeks:</th>
-        <td><%=Html.TextBox("org.RollSheetVisitorWks")%></td>
+        <th>Online Catalog Sort:</th>
+        <td><%=Html.TextBox("org.OnLineCatalogSort")%></td>
+    </tr>
+    <tr>
+        <th>Max Limit:</th>
+        <td><%=Html.TextBox("org.Limit")%></td>
+    </tr>
+    <tr>
+        <th>Online Notify Emails:</th>
+        <td><%=Html.TextBox("org.EmailAddresses")%></td>
     </tr>
     <tr>
         <th>Start Grade/Age:</th>
@@ -112,6 +112,10 @@
     <tr>
         <th>Registration Type:</th>
         <td><%=Html.DropDownList("org.RegistrationTypeId", Model.RegistrationTypes())%></td>
+    </tr>
+    <tr>
+        <th>HTML Shell<br />(blank for default)</th>
+        <td><%=Html.TextBox("org.Shell")%></td>
     </tr>
     <tr>
         <th>Fee:</th>
@@ -147,31 +151,42 @@
     </tr>
     <tr>
         <th>Ask Options:</th>
-        <td><%=Html.TextBox("org.AskOptions")%></td>
+        <td><%=Html.TextBox("org.AskOptions")%> 
+        <%= Html.ValidationMessage("askoptions")%></td>
     </tr>
     <tr>
         <th>Extra Options:</th>
-        <td><%=Html.TextBox("org.ExtraOptions")%></td>
+        <td><%=Html.TextBox("org.ExtraOptions")%> 
+        <%= Html.ValidationMessage("extraoptions")%></td>
     </tr>
     <tr>
         <th>Grade Options:</th>
-        <td><%=Html.TextBox("org.GradeOptions")%></td>
+        <td><%=Html.TextBox("org.GradeOptions")%> 
+        <%= Html.ValidationMessage("gradeoptions")%></td>
     </tr>
     <tr>
         <th>Age Fees:</th>
-        <td><%=Html.TextBox("org.AgeFee")%></td>
+        <td><%=Html.TextBox("org.AgeFee")%> 
+        <%= Html.ValidationMessage("agefee")%></td>
     </tr>
     <tr>
         <th>Age Groups:</th>
-        <td><%=Html.TextBox("org.AgeGroups")%></td>
+        <td><%=Html.TextBox("org.AgeGroups")%> 
+        <%= Html.ValidationMessage("agegroups")%></td>
     </tr>
     <tr>
         <th>Last Day Before Extra:</th>
         <td><%=Html.DatePicker("org.LastDayBeforeExtra")%></td>
     </tr>
     <tr>
+        <th>Shirt Sizes<br />(blank for default)</th>
+        <td><%=Html.TextBox("org.ShirtSizes")%> 
+        <%= Html.ValidationMessage("shirtsizes")%></td>
+    </tr>
+    <tr>
         <th>Yes No Questions:</th>
-        <td><%=Html.TextBox("org.YesNoQuestions")%></td>
+        <td><%=Html.TextBox("org.YesNoQuestions")%> 
+        <%= Html.ValidationMessage("yesnoquestions")%></td>
     </tr>
     <tr>
         <th>Extra Questions:</th>

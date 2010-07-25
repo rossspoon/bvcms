@@ -125,7 +125,7 @@ namespace CmsWeb.Models
                 ModelState.AddModelError("phone", "7 or 10 digits (or \"na\")");
 
             int count = 0;
-            SearchPeopleModel.FindPerson(phone.GetDigits(), first, last, birthday ?? DateTime.MinValue, out count);
+            SearchPeopleModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(), out count);
             if (count > 0)
                 ModelState.AddModelError("first", "name/dob already exists in db");
 

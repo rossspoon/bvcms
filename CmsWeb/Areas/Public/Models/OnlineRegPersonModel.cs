@@ -46,7 +46,6 @@ namespace CmsWeb.Models
         public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
-        public string homecell { get; set; }
         public string email { get; set; }
         public string address { get; set; }
         public string city { get; set; }
@@ -58,6 +57,7 @@ namespace CmsWeb.Models
         public bool? Found { get; set; }
         public bool IsNew { get; set; }
         public bool OtherOK { get; set; }
+        public int TryCount { get; set; }
         public bool ShowAddress { get; set; }
         private Dictionary<string, string> _ExtraQuestion = new Dictionary<string, string>();
         public Dictionary<string, string> ExtraQuestion
@@ -86,18 +86,23 @@ namespace CmsWeb.Models
 
         [NonSerialized]
         private DateTime _Birthday;
-        public DateTime birthday
+        public DateTime? birthday
         {
             get
             {
                 if (_Birthday == DateTime.MinValue)
                     Util.DateValid(dob, out _Birthday);
-                return _Birthday;
+                return _Birthday == DateTime.MinValue ? (DateTime?)null : _Birthday;
             }
         }
         public int age
         {
-            get { return birthday.AgeAsOf(Util.Now); }
+            get
+            {
+                if (person != null && person.BirthDate.HasValue)
+                    return person.BirthDate.Value.AgeAsOf(Util.Now);
+                return _Birthday.AgeAsOf(Util.Now);
+            }
         }
         public string genderdisplay
         {
@@ -113,7 +118,7 @@ namespace CmsWeb.Models
         {
             IsValidForContinue = true; // true till proven false
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(ModelState, first, last, birthday, phone);
+                .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
             if (UserSelectsOrganization())
                 if ((classid ?? 0) == 0)
                     ModelState.AddModelError("classid", "choose a class");
@@ -191,7 +196,7 @@ namespace CmsWeb.Models
                         _Person = DbUtil.Db.LoadPersonById(PeopleId.Value);
                     else
                     {
-                        _Person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+                        _Person = SearchPeopleModel.FindPerson(first, last, birthday, email, phone, out count);
                         if (_Person != null)
                             PeopleId = _Person.PeopleId;
                     }
@@ -233,7 +238,9 @@ namespace CmsWeb.Models
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(ModelState, first, last, birthday, phone);
+                .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
+            if (!birthday.HasValue && DbUtil.Settings("DobNotRequired", "true") == "true")
+                ModelState.AddModelError("DOB", "birthday required");
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (email.HasValue())
@@ -259,7 +266,7 @@ namespace CmsWeb.Models
             var sb = new StringBuilder();
             sb.AppendFormat("{0}({1},{2},{3}), Birthday: {4}({5}), Phone: {6}, {7}<br />\n".Fmt(
                 person.Name, person.PeopleId, person.Gender.Code, person.MaritalStatus.Code,
-                person.DOB, person.Age, phone.FmtFone(homecell), email));
+                person.DOB, person.Age, phone.FmtFone(), email));
             if (ShowAddress)
                 sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);
             return sb.ToString();
@@ -286,15 +293,11 @@ namespace CmsWeb.Models
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-            switch (homecell)
-            {
-                case "h":
-                    f.HomePhone = phone.GetDigits();
-                    break;
-                case "c":
-                    person.CellPhone = phone.GetDigits();
-                    break;
-            }
+            if (f.HomePhone.HasValue())
+                person.CellPhone = phone.GetDigits();
+            else
+                f.HomePhone = phone.GetDigits();
+
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
             PeopleId = person.PeopleId;
@@ -527,7 +530,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> ExtraOptions()
         {
-            var q = from s in (org.AskOptions ?? string.Empty).Split(',')
+            var q = from s in (org.ExtraOptions ?? string.Empty).Split(',')
                     where s.HasValue()
                     let a = s.Split('=')
                     where a.Length > 1
@@ -569,12 +572,14 @@ namespace CmsWeb.Models
         }
         public static List<SelectListItem> ShirtSizes(CmsData.Organization org)
         {
-            var q = from ss in DbUtil.Db.ShirtSizes
-                    orderby ss.Id
+            const string sizes = "YT-S=Youth: Small (6-8),YT-M=Youth: Medium (10-12),YT-L=Youth: Large (14-16),AD-S=Adult: Small,AD-M=Adult: Medium,AD-L=Adult: Large,AD-XL=Adult: X-Large,AD-XXL=Adult: XX-Large,AD-XXXL=Adult: XXX-Large";
+            var shirtsizes = Util.PickFirst(org.ShirtSizes, sizes);
+            var q = from ss in shirtsizes.Split(',')
+                    let a = ss.Split('=')
                     select new SelectListItem
                     {
-                        Value = ss.Code,
-                        Text = ss.Description
+                        Value = a[0],
+                        Text = a[1]
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
@@ -681,10 +686,7 @@ namespace CmsWeb.Models
         }
         public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing, string others)
         {
-
             //(int)RegistrationEnum.AttendMeeting)
-            //(int)RegistrationEnum.ComputeOrganizationByAge)
-
             var om = OrganizationMember.InsertOrgMembers(org.OrganizationId, person.PeopleId,
                 (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             om.Amount = TotalAmount();

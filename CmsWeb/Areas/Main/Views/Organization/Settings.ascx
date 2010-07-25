@@ -19,18 +19,6 @@
         <td><%=Html.CheckBoxReadonly(Model.org.ClassFilled) %></td>
     </tr>
     <tr>
-        <th>Online Catalog Sort:</th>
-        <td><%=Model.org.OnLineCatalogSort %></td>
-    </tr>
-    <tr>
-        <th>Max Limit:</th>
-        <td><%=Model.org.Limit%></td>
-    </tr>
-    <tr>
-        <th>Online Notify Emails:</th>
-        <td><%=Model.org.EmailAddresses%></td>
-    </tr>
-    <tr>
         <th>Organization Phone Number:</th>
         <td><%=Model.org.PhoneNumber.FmtFone() %></td>
     </tr>
@@ -106,11 +94,23 @@
         <td><%=Model.org.PendingLoc%></td>
     </tr>
     <tr>
+        <th>Rollsheet Visitor Weeks:</th>
+        <td><%=Model.org.RollSheetVisitorWks%></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>
-        <th>Rollsheet Visitor Weeks:</th>
-        <td><%=Model.org.RollSheetVisitorWks%></td>
+        <th>Online Catalog Sort:</th>
+        <td><%=Model.org.OnLineCatalogSort %></td>
+    </tr>
+    <tr>
+        <th>Max Limit:</th>
+        <td><%=Model.org.Limit%></td>
+    </tr>
+    <tr>
+        <th>Online Notify Emails:</th>
+        <td><%=Model.org.EmailAddresses%></td>
     </tr>
     <tr>
         <th>Start Grade/Age:</th>
@@ -135,6 +135,10 @@
     <tr>
         <th>Registration Type:</th>
         <td><%=Html.CodeDesc("org.RegistrationTypeId", Model.RegistrationTypes())%></td>
+    </tr>
+    <tr>
+        <th>HTML Shell<br />(blank for default)</th>
+        <td><%=Model.org.Shell %></td>
     </tr>
     <tr>
         <th>Fee:</th>
@@ -191,6 +195,10 @@
     <tr>
         <th>Last Day Before Extra:</th>
         <td><%=Model.org.LastDayBeforeExtra.FormatDate2()%></td>
+    </tr>
+    <tr>
+        <th>Shirt Sizes<br />(blank for default)</th>
+        <td><%=Model.org.ShirtSizes%></td>
     </tr>
     <tr>
         <th>Yes No Questions:</th>

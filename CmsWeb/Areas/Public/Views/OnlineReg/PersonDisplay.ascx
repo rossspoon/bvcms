@@ -10,7 +10,6 @@
 <%=Html.Hidden3("m.List[" + Model.index + "].last", Model.last) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].dob", Model.dob) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].phone", Model.phone) %>
-<%=Html.Hidden3("m.List[" + Model.index + "].homecell", Model.homecell) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].address", Model.address) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].email", Model.email) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].zip", Model.zip) %>
@@ -37,13 +36,11 @@
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
-        <td><%=Model.birthday.ToShortDateString() %> <span><%=Model.age %></span>
-        </td>
+        <td><%=Model.birthday.FormatDate("not given") %> <span><%=Model.age %></span></td>
     </tr>
     <tr>
         <td><label for="phone">Phone</label></td>
-        <td><%=Model.phone.FmtFone(Model.homecell) %>
-        </td>
+        <td><%=Model.phone.FmtFone() %></td>
     </tr>
     <% if (Model.email.HasValue())
        { %>

@@ -195,6 +195,10 @@ namespace CmsData
 		
 		private string _ExtraOptions;
 		
+		private string _Shell;
+		
+		private string _ShirtSizes;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -510,6 +514,12 @@ namespace CmsData
 		
 		partial void OnExtraOptionsChanging(string value);
 		partial void OnExtraOptionsChanged();
+		
+		partial void OnShellChanging(string value);
+		partial void OnShellChanged();
+		
+		partial void OnShirtSizesChanging(string value);
+		partial void OnShirtSizesChanged();
 		
     #endregion
 		public Organization()
@@ -1482,7 +1492,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar(4000)")]
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
 		public string EmailMessage
 		{
 			get { return this._EmailMessage; }
@@ -1526,7 +1536,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(4000)")]
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
 		public string Instructions
 		{
 			get { return this._Instructions; }
@@ -2057,7 +2067,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar(4000)")]
+		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar")]
 		public string Terms
 		{
 			get { return this._Terms; }
@@ -2537,6 +2547,50 @@ namespace CmsData
 					this._ExtraOptions = value;
 					this.SendPropertyChanged("ExtraOptions");
 					this.OnExtraOptionsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Shell", UpdateCheck=UpdateCheck.Never, Storage="_Shell", DbType="varchar(20)")]
+		public string Shell
+		{
+			get { return this._Shell; }
+
+			set
+			{
+				if (this._Shell != value)
+				{
+				
+                    this.OnShellChanging(value);
+					this.SendPropertyChanging();
+					this._Shell = value;
+					this.SendPropertyChanged("Shell");
+					this.OnShellChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ShirtSizes", UpdateCheck=UpdateCheck.Never, Storage="_ShirtSizes", DbType="varchar(300)")]
+		public string ShirtSizes
+		{
+			get { return this._ShirtSizes; }
+
+			set
+			{
+				if (this._ShirtSizes != value)
+				{
+				
+                    this.OnShirtSizesChanging(value);
+					this.SendPropertyChanging();
+					this._ShirtSizes = value;
+					this.SendPropertyChanged("ShirtSizes");
+					this.OnShirtSizesChanged();
 				}
 
 			}

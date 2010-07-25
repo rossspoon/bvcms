@@ -1832,20 +1832,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.GetPeopleIdFromACS", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? GetPeopleIdFromACS(
-            [Parameter(Name = "famnum", DbType="int")] int? famnum,
-            [Parameter(Name = "indnum", DbType="int")] int? indnum
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                famnum,
-                indnum
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.LastAttended", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastAttended(
@@ -1857,18 +1843,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.SundayForDate", IsComposable = true)]
-		[return: Parameter(DbType = "datetime")]
-		public DateTime? SundayForDate(
-            [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
-            )
-		{
-			return ((DateTime?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                dt
                 ).ReturnValue));
 		}
 
@@ -2535,6 +2509,32 @@ namespace CmsData
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 peopleid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetPeopleIdFromACS", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? GetPeopleIdFromACS(
+            [Parameter(Name = "famnum", DbType="int")] int? famnum,
+            [Parameter(Name = "indnum", DbType="int")] int? indnum
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                famnum,
+                indnum
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.SundayForDate", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? SundayForDate(
+            [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt
                 ).ReturnValue));
 		}
 

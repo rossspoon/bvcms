@@ -49,7 +49,7 @@
         <td><%=Model.Tickets %></td>
     </tr>
 <% }    
-   if (Model.Organization.Fee > 0 || Model.Organization.ShirtFee > 0)
+   if (Model.Organization.RegistrationTypeId > 0)
    { %>    
     <tr>
         <th>Amount:</th>

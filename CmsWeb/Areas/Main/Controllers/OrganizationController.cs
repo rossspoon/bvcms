@@ -203,7 +203,10 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m);
             DbUtil.Db.SubmitChanges();
             m = new OrganizationModel(id);
-            return View("Settings", m);
+            m.ValidateSettings(ModelState);
+            if (ModelState.IsValid)
+                return View("Settings", m);
+            return View("SettingsEdit", m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

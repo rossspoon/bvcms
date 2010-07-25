@@ -50,6 +50,7 @@ namespace CmsWeb.Models
                 let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 where om.Organization.CanSelfCheckin.Value
+                where om.Pending ?? false == false
                 where om.Organization.CampusId == campus || om.Organization.CampusId == null
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
@@ -228,6 +229,7 @@ namespace CmsWeb.Models
                 where om.Organization.AllowKioskRegister == true
                 where om.Organization.CampusId == campus || campus == 0
                 where om.Person.FamilyId == id
+                where om.Pending ?? false == false
                 where om.Person.DeceasedDate == null
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 select new Attendee

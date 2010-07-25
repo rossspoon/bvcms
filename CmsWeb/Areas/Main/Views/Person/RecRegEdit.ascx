@@ -3,7 +3,7 @@
 <table class="Design2">
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
-        <td><%= Html.DropDownList("shirtsize", CmsWeb.Models.RecRegModel.ShirtSizes(null))%></td>
+        <td><%= Html.TextBox("shirtsize")%></td>
         <td><%= Html.ValidationMessage("shirtsize")%></td>
     </tr>
     <tr>

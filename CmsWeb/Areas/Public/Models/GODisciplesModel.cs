@@ -102,7 +102,7 @@ namespace CmsWeb.Models
         {
             int count;
             _person = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone, first, last, birthday, out count);
+                .FindPerson(first, last, birthday, email, phone, out count);
             if (count == 1)
                 peopleid = _person.PeopleId;
             return count;
@@ -111,7 +111,7 @@ namespace CmsWeb.Models
         public void ValidateModel(ModelStateDictionary modelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(modelState, first, last, birthday, phone);
+                .ValidateFindPerson(modelState, first, last, birthday, email, phone);
 
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");

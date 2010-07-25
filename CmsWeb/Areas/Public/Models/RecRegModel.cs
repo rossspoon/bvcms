@@ -62,7 +62,7 @@ namespace CmsWeb.Models
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(ModelState, first, last, birthday, phone);
+                .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))
@@ -98,7 +98,7 @@ namespace CmsWeb.Models
                         _Person = DbUtil.Db.LoadPersonById(PeopleId.Value);
                     else
                     {
-                        _Person = SearchPeopleModel.FindPerson(phone, first, last, birthday, out count);
+                        _Person = SearchPeopleModel.FindPerson(first, last, birthday, string.Empty, phone, out count);
                         if (_Person != null)
                             PeopleId = _Person.PeopleId;
                     }
@@ -115,7 +115,7 @@ namespace CmsWeb.Models
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(ModelState, first, last, birthday, phone);
+                .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))

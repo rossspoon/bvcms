@@ -151,10 +151,12 @@ namespace CmsWeb.Models
         {
             int count;
             _person = CmsWeb.Models.SearchPeopleModel
-                .FindPerson(phone, first, last, birthday, out count);
+                .FindPerson(first, last, birthday, email, phone, out count);
             if (count > 1)
+            {
                 _person = CmsWeb.Models.SearchPeopleModel
-                    .FindPerson(cellphone, first, last, birthday, out count);
+                                    .FindPerson(first, last, birthday, email, cellphone, out count);
+            }
             return count;
         }
         public int FindFamily()
@@ -201,7 +203,7 @@ namespace CmsWeb.Models
         public void ValidateModel2(ModelStateDictionary modelState)
         {
             CmsWeb.Models.SearchPeopleModel
-                .ValidateFindPerson(modelState, first, last, birthday, phone);
+                .ValidateFindPerson(modelState, first, last, birthday, email, phone);
             if (modelState.IsValid && FindMember() >= 1)
                 modelState.AddModelError("first", "Already Registered");
 

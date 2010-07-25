@@ -16,6 +16,7 @@
 <%=Html.Hidden3("m.List[" + p.index + "].orgid", p.orgid) %>
 <%=Html.Hidden3("m.List[" + p.index + "].divid", p.divid) %>
 <%=Html.Hidden3("m.List[" + p.index + "].ShowAddress", p.ShowAddress) %>
+<%=Html.Hidden3("m.List[" + p.index + "].TryCount", p.TryCount) %>
 <%
         p.LastItem = i == (Model.List.Count - 1);
        

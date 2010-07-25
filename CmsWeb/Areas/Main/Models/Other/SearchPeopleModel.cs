@@ -403,7 +403,7 @@ namespace CmsWeb.Models
 
             return null;
         }
-        public static Person FindPerson(string phone, string first, string last, DateTime DOB, out int count)
+        public static Person FindPerson(string first, string last, DateTime? DOB, string email, string phone, out int count)
         {
             count = 0;
             if (!first.HasValue() || !last.HasValue())
@@ -414,59 +414,92 @@ namespace CmsWeb.Models
             var ctx = new CMSDataContext(Util.ConnectionString);
             ctx.SetNoLock();
             var q = from p in ctx.People
-                where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
-                where (p.LastName == last || p.MaidenName == last)
-                select p;
-            if (DOB > DateTime.MinValue)
-            {
-                if (DOB > Util.Now)
-                    DOB = DOB.AddYears(-100);
-                q = from p in q
-                    where p.BirthDay == DOB.Day && p.BirthMonth == DOB.Month && p.BirthYear == DOB.Year
+                    where (p.FirstName == first || p.NickName == first || p.MiddleName == first)
+                    where (p.LastName == last || p.MaidenName == last)
                     select p;
-            }
-            count = q.Count();
-            if (count > 1)
+            var list = q.ToList();
+            count = list.Count;
+            if (count == 0) // not going to find anything
             {
-                q = from p in q
-                    where p.CellPhone.Contains(fone) || p.Family.HomePhone.Contains(fone)
-                    select p;
-                count = q.Count();
-            }
-            Person person = null;
-            if (count == 1)
-            {
-                var pid = q.Select(p => p.PeopleId).Single();
                 ctx.Dispose();
-                person = DbUtil.Db.LoadPersonById(pid);
+                return null;
             }
-            return person;
+
+            if (DOB.HasValue && DOB > DateTime.MinValue)
+            {
+                var dt = DOB.Value;
+                if (dt > Util.Now)
+                    dt = dt.AddYears(-100);
+                var q2 = from p in q
+                         where p.BirthDay == dt.Day && p.BirthMonth == dt.Month && p.BirthYear == dt.Year
+                         select p;
+                count = q2.Count();
+                if (count <= 1) // use only birthday if there and unique
+                    return PersonFound(ctx, q2);
+            }
+            if (email.HasValue())
+            {
+                var q2 = from p in q
+                         where p.EmailAddress == email
+                         select p;
+                count = q2.Count();
+                if (count == 1)
+                    return PersonFound(ctx, q2);
+            }
+            if (phone.HasValue())
+            {
+                var q2 = from p in q
+                         where p.CellPhone.Contains(fone) || p.Family.HomePhone.Contains(fone)
+                         select p;
+                count = q2.Count();
+                if (count == 1)
+                    return PersonFound(ctx, q2);
+            }
+            return null;
+        }
+        private static Person PersonFound(CMSDataContext ctx, IQueryable<Person> q)
+        {
+            var pid = q.Select(p => p.PeopleId).SingleOrDefault();
+            ctx.Dispose();
+            return DbUtil.Db.LoadPersonById(pid);
         }
         public static void ValidateFindPerson(ModelStateDictionary modelState,
             string first,
             string last,
-            DateTime birthday,
+            DateTime? birthday,
+            string email, 
             string phone)
         {
             if (!first.HasValue())
                 modelState.AddModelError("first", "first name required");
             if (!last.HasValue())
                 modelState.AddModelError("last", "last name required");
-            if (birthday.Equals(DateTime.MinValue))
-                modelState.AddModelError("dob", "valid birth date required");
+
+            int n = 0;
+            if (birthday.HasValue && birthday > DateTime.MinValue)
+                n++;
+            if (Util.ValidEmail(email))
+                n++;
             var d = phone.GetDigits().Length;
-            if (phone.HasValue() && d != 7 && d != 10)
-                modelState.AddModelError("phone", "7 or 10 digits");
+            if (phone.HasValue() && d == 10)
+                n++;
+            if(n == 0)
+                modelState.AddModelError("dob", "valid birth date, email or phone required");
+
+            if (!Util.ValidEmail(email))
+                modelState.AddModelError("email", "valid email required");
+            if (phone.HasValue() && d != 10)
+                modelState.AddModelError("phone", "10 digits required");
         }
         public static string NotFoundText
         {
             get
             {
                 return @"We could not find this person's record.<br />
-The first name of the individual,<br />
-the last name and the birthday<br />
-must all match a record we have in our system.<br />
-Try a different first name if you are using a nickname.";
+The first and last names of the individual must match a record.<br />
+Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />
+We may not have your birthday, so try leaving it blank.<br />
+Try different spellings or a nickname too.";
             }
         }
     }

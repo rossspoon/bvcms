@@ -82,7 +82,6 @@ namespace CmsWeb.Areas.Public.Controllers
                     dob = "5/30/52",
                     email = "david@davidcarroll.name",
                     phone = "9017581862",
-                    homecell = "h",
                 }
             };
 #else
@@ -99,7 +98,20 @@ namespace CmsWeb.Areas.Public.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ShowMoreInfo(int id, OnlineRegModel m)
         {
+            DbUtil.Db.SetNoLock();
             var p = m.List[id];
+            p.ValidateModelForFind(ModelState);
+            if (p.org != null && p.Found == true)
+            {
+                p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
+                if (p.IsFilled)
+                    ModelState.AddModelError("dob", "Sorry, that age group is filled");
+                if (p.Found == true)
+                    FillPriorInfo(p);
+                if (!p.AnyOtherInfo())
+                    p.OtherOK = true;
+                return View("list", m);
+           }
 #if DEBUG
             p.address = "235 Riveredge Cv.";
             p.city = "Cordova";
@@ -137,6 +149,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
             }
+            p.TryCount++;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -256,7 +269,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 dob = "1/29/86",
                 email = "davcar@pobox.com",
                 phone = "9017581862".FmtFone(),
-                homecell = "h"
             });
 #else
             m.List.Add(new OnlineRegPersonModel
@@ -317,17 +329,18 @@ namespace CmsWeb.Areas.Public.Controllers
             try
             {
                 UpdateModel(pm);
+                if (!pm._Coupon.HasValue())
+                    return Json(new { error = "empty coupon" });
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return Json(new { error = "problem coupon" });
             }
-            if (!pm._Coupon.HasValue())
-                return Json(new { error = "empty coupon" });
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
             string coupon = pm._Coupon.ToUpper().Replace(" ", "");
-            if (coupon == DbUtil.Settings("AdminCoupon", "ifj4ijweoij"))
+            string admincoupon = DbUtil.Settings("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
+            if (coupon == admincoupon)
                 return Json(new
                 {
                     confirm = "/onlinereg/{0}/{1}?TransactionID=Coupon(Admin)"
@@ -530,12 +543,31 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         private void SetHeaders(int id)
         {
-            ViewData["header"] = DbUtil.Content("OnlineRegHeader-" + id,
-                 DbUtil.Content("OnlineRegHeader", ""));
-            ViewData["top"] = DbUtil.Content("OnlineRegTop-" + id,
-                DbUtil.Content("OnlineRegTop", ""));
-            ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + id,
-                DbUtil.Content("OnlineRegBottom", ""));
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            var s = DbUtil.Content(org.Shell, DbUtil.Content("ShellDefault", ""));
+            if (s.HasValue())
+            {
+                ViewData["hasshell"] = true;
+                Regex re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);
+
+                var t = re.Match(s).Groups[1].Value;
+                ViewData["top"] = t;
+                var b = re.Match(s).Groups[2].Value;
+                ViewData["bottom"] = b; 
+            }
+            else
+            {
+                ViewData["hasshell"] = false;
+                ViewData["header"] = DbUtil.Content("OnlineRegHeader-" + id,
+                     DbUtil.Content("OnlineRegHeader", ""));
+                ViewData["top"] = DbUtil.Content("OnlineRegTop-" + id,
+                    DbUtil.Content("OnlineRegTop", ""));
+                ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + id,
+                    DbUtil.Content("OnlineRegBottom", ""));
+            }
+        
+        
+        
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {
