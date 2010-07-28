@@ -19,6 +19,9 @@
         <tr><th>Suffix:</th>
             <td><%=Html.TextBox("Suffix") %></td>
         </tr>
+        <tr><th>Alt Name:</th>
+            <td><%=Html.TextBox("AltName") %></td>
+        </tr>
         <tr><th>Former:</th>
             <td><%=Html.TextBox("Maiden") %></td>
         </tr>

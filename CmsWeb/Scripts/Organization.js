@@ -55,7 +55,6 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Add Members");
         d.dialog("open");
-        d.parent().center();
     });
     $('a.memberdialog').live("click", function (e) {
         e.preventDefault();
@@ -64,7 +63,6 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", this.title || 'Edit Member Dialog');
         d.dialog("open");
-        d.parent().center();
     });
 
     $("#inactive-link").click(function () {
@@ -219,7 +217,6 @@
                 }
             }
         });
-        $("#AddFromTag").parent().center();
         return false;
     });
 
@@ -241,7 +238,6 @@
             }
         });
         d.dialog('open');
-        d.parent().center();
     });
     $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
@@ -262,7 +258,6 @@
             }
         });
         d.dialog('open');
-        d.parent().center();
         return false;
     });
     $.GetMeetingDateTime = function () {

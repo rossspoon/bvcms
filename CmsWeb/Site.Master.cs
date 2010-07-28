@@ -36,10 +36,8 @@ namespace CmsWeb
                 .Add("/Content/js/hoverIntent.js")
                 .Add("/Content/js/jquery-cookie.js")
                 .Add("/Content/js/jquery.blockUI.js")
-                .Add("/Content/js/jquery.dimensions.js")
                 .Add("/Content/js/superfish.js")
                 .Add("/Content/js/supersubs.js")
-                .Add("/Content/js/center-plugin_1.0.1.js")
                 .Add("/Scripts/ExportToolBar.js")
                 .Render("/Content/combined_#.js");     
 

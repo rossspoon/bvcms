@@ -29,7 +29,7 @@
                         <tr>
                             <td><%=p.basic.DoNotCall %></td>
                             <td>
-                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Contributions/Years.aspx?id=" + p.PeopleId, "Contributions", null, null)%>
+                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Reports/ContributionYears/" + p.PeopleId, "Contributions", null, null)%>
 <%--                                <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
 --%>                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
                             </td>

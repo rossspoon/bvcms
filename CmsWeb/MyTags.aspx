@@ -28,7 +28,6 @@
                  var d = $('#sharewithDialog');
                  $('iframe', d).attr("src", this.href);
                  d.dialog("open");
-                 d.parent().center();
              });
          });
         function ShareWith(countstring) {

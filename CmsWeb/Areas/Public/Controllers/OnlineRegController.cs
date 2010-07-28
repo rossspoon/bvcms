@@ -544,7 +544,7 @@ namespace CmsWeb.Areas.Public.Controllers
         private void SetHeaders(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
-            var s = DbUtil.Content(org.Shell, DbUtil.Content("ShellDefault", ""));
+            var s = DbUtil.Content(org != null ? org.Shell : null, DbUtil.Content("ShellDefault", ""));
             if (s.HasValue())
             {
                 ViewData["hasshell"] = true;

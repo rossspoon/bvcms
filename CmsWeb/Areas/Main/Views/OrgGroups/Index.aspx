@@ -4,7 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery.dimensions.js")
         .Add("/Content/js/jquery.tooltip.js")
         .Add("/Scripts/OrgGroups.js")
         .Render("/Content/OrgGroups_#.js")

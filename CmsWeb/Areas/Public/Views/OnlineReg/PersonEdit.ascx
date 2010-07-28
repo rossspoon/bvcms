@@ -47,7 +47,7 @@
            { %>
            <p class="blue"><%=Model.NotFoundText %></p>
             <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
-            <% if (Model.IsValidForContinue && !Model.MemberOnly() && Model.TryCount > 3)
+            <% if (Model.IsValidForContinue && !Model.MemberOnly() && Model.TryCount >= 3)
                { %>
             or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Register as new</a>
             <% } %>

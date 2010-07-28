@@ -79,7 +79,6 @@
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
-        d.parent().center();
     });
 
     $(".CreateAndGo").click(function() {

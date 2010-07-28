@@ -14,7 +14,6 @@
         ev.preventDefault();
         var d = $("#ChooseLabelType");
         d.dialog("open");
-        d.parent().center();
 
         var sep = ev.target.href.search(/\?/) == -1 ? "?" : "&";
         $("#cmdOK").unbind("click").click(function(ev2) {

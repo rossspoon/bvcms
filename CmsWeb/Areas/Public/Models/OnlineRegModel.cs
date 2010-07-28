@@ -239,10 +239,10 @@ namespace CmsWeb.Models
 </td></tr>", i + 1, p.PrepareSummaryText());
 
                 om.RegisterEmail = p.email;
-                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person, 
-                    p.org.EmailAddresses, 
-                    p.email, 
-                    p.org.OrganizationName, 
+                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
+                    p.org.EmailAddresses,
+                    p.email,
+                    p.org.OrganizationName,
                     p.org.PhoneNumber);
             }
             details.Append("\n</table>\n");
@@ -251,8 +251,8 @@ namespace CmsWeb.Models
             var o = org;
             if (o == null)
                 o = p0.org;
-            var subject = Util.PickFirst(o.EmailSubject, o.Division.EmailSubject, "no subject");
-            var message = Util.PickFirst(o.EmailMessage, o.Division.EmailMessage, "no message");
+            var subject = Util.PickFirst(o.EmailSubject, o.Division != null ? o.Division.EmailSubject : null, "no subject");
+            var message = Util.PickFirst(o.EmailMessage, o.Division != null ? o.Division.EmailMessage : null, "no message");
             message = message.Replace("{first}", p0.first);
             message = message.Replace("{tickets}", p0.ntickets.ToString());
             message = message.Replace("{division}", o.DivisionName);

@@ -391,7 +391,6 @@ namespace CMSPresenter
             var q = from c in DbUtil.Db.Contributions
                     where peopleId == c.PeopleId || peopleId == 0
                     where c.PledgeFlag == false
-                    //where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
                     group c by c.ContributionDate.Value.Year into g

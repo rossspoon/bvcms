@@ -101,6 +101,7 @@ namespace CmsWeb.Models.PersonPage
                             HomePhone = p.Family.HomePhone,
                             JoinDate = p.JoinDate,
                             Last = p.LastName,
+                            AltName = p.AltName,
                             Maiden = p.MaidenName,
                             MaritalStatusId = p.MaritalStatusId,
                             MemberStatusId = p.MemberStatusId,

@@ -123,7 +123,6 @@
         var d = $('#searchDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
-        d.parent().center();
     });
     $.MakeEditable = function () {
         $(".clickEdit").editable("/PostBundle/Edit/", {

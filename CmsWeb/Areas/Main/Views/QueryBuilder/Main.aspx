@@ -170,6 +170,8 @@
        Html.RenderPartial("Results", Model); %>
 </div>
 </form>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="PopupsPlaceholder" runat="server">
 <div id="QueryConditionSelect" class="modalPopup" title="Select a Condition" style="font-size: smaller;">
     <div>
         <a id="NewGroup" href="#">Or start a new group of conditions</a><br />

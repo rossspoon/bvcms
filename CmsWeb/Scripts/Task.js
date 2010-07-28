@@ -34,7 +34,6 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Delegate task");
         d.dialog("open");
-        d.parent().center();
         return false;
     });
     $('#delegate').live("click", function (ev) {
@@ -43,7 +42,6 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Delegate task");
         d.dialog("open");
-        d.parent().center();
         return false;
     });
     $('#changeabout').live("click", function (ev) {
@@ -52,7 +50,6 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Delegate task");
         d.dialog("open");
-        d.parent().center();
         return false;
     });
 });
@@ -109,7 +106,6 @@ function DoAction() {
             $('iframe', d).attr("src", "/SearchAdd/Index/1?type=taskdelegate2");
             d.dialog("option", "title", "Delegate tasks");
             d.dialog("open");
-            d.parent().center();
             return;
         case 'sharelist':
             alert('not implemented yet');

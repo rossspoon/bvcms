@@ -9,9 +9,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $('#contactDialog').dialog({
-                bgiframe: true,
                 autoOpen: false,
                 width: 700,
                 height: 600,
@@ -19,17 +18,16 @@
                 overlay: {
                     opacity: 0.5,
                     background: "black"
-                }, close: function() {
+                }, close: function () {
                     $('iframe', this).attr("src", "");
                 }
             });
-            $('#AddContacteeLink,#AddContactorLink').live("click", function(e) {
+            $('#AddContacteeLink,#AddContactorLink').live("click", function (e) {
                 e.preventDefault();
                 var d = $('#contactDialog');
                 $('iframe', d).attr("src", this.href);
                 d.dialog("option", "title", this.title);
                 d.dialog("open");
-                d.parent().center();
             });
         });
        function AddSelected() {
@@ -291,9 +289,6 @@
             </td>
         </tr>
     </table>
-    <div id="contactDialog">
-    <iframe style="width:99%;height:99%"></iframe>
-    </div>
     <asp:ObjectDataSource ID="ContacteeList" runat="server" EnablePaging="True" SelectCountMethod="ContacteeCount"
         SelectMethod="ContacteeList" SortParameterName="sortExpression" TypeName="CMSPresenter.ContactController"
         DeleteMethod="DeleteContactee" UpdateMethod="UpdateContactee">
@@ -335,4 +330,12 @@
     <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="PopupsPlaceholder" runat="server">
+    <div id="contactDialog" style="display:none">
+    <iframe style="width:99%;height:99%"></iframe>
+    </div>
+    <div id="ttt" style="display:none">
+        this is a test
+    </div>
 </asp:Content>

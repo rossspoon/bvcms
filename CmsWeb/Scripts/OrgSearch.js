@@ -158,7 +158,6 @@
             $('#MeetingTime').val(ret.time);
             var d = $('#PanelRollsheet')
             d.dialog('open');
-            d.parent().center();
         }, "json");
         return false;
     });
@@ -166,7 +165,6 @@
         ev.preventDefault();
         var d = $('#PanelAttDetail');
         d.dialog('open');
-        d.parent().center();
         return false;
     });
     $('#rollsheet2').click(function(ev) {

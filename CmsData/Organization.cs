@@ -201,7 +201,9 @@ namespace CmsData
         {
             get
             {
-                return Division != null ? Division.Program.Name + ":" + Division.Name : "need a main division";
+                return Division != null ? 
+                           Division.Program.Name + ":" + Division.Name : 
+                           "<span style='color:red'>need a main division</span>";
             }
         }
     }

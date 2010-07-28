@@ -239,5 +239,7 @@
         </div>
     </div>
     </form>
+    <asp:ContentPlaceHolder ID="PopupsPlaceholder" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
 </html>

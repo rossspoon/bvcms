@@ -53,7 +53,7 @@ namespace CMSPresenter
                     || ( // visitors who attended in recent weeks
                         inEditMode &&
                         p.Attends.Any(a =>
-                            a.AttendanceFlag != false
+                            a.AttendanceFlag == true
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                             && a.OrganizationId == meeting.OrganizationId
@@ -63,7 +63,8 @@ namespace CMSPresenter
                     || // members
                         (inEditMode && !meeting.GroupMeetingFlag
                         && p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId
-                            && om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
+                            && om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                            && (om.Pending ?? false) == false))
                     || // intended
                         (attend.Registered == true)
 
@@ -118,7 +119,7 @@ namespace CMSPresenter
                         p.Attends.Any(a => a.MeetingId == meetid && a.AttendanceFlag == true)
                     || (// visitors who attended in recent weeks
                         p.Attends.Any(a =>
-                            a.AttendanceFlag != false
+                            a.AttendanceFlag == true
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
                             && a.MeetingDate >= a.Organization.FirstMeetingDate
                             && a.OrganizationId == meeting.OrganizationId
@@ -126,7 +127,8 @@ namespace CMSPresenter
                             )
                         )
                     || // members
-                        (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId && (om.Pending ?? false) == false))
+                        (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId 
+                            && (om.Pending ?? false) == false))
                     select new AttendedInfo
                     {
                         PeopleId = p.PeopleId,

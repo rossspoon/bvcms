@@ -145,6 +145,17 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RegistrationResult(id, oid);
         }
+        [Authorize(Roles="Finance")]
+        public ActionResult ContributionYears(int id)
+        {
+            var m = new ContributionModel(id);
+            return View(m);
+        }
+        [Authorize(Roles = "Finance")]
+        public ActionResult ContributionStatement(int id) //, DateTime FromDate, DateTime ToDate)
+        {
+            return new ContributionStatementResult(id);
+        }
         public ActionResult ChurchAttendance(DateTime? id)
         {
             if (!id.HasValue)

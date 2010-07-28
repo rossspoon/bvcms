@@ -123,6 +123,8 @@ namespace CmsData
 		
 		private string _LastName;
 		
+		private string _AltName;
+		
 		private string _SuffixCode;
 		
 		private string _NickName;
@@ -526,6 +528,9 @@ namespace CmsData
 		
 		partial void OnLastNameChanging(string value);
 		partial void OnLastNameChanged();
+		
+		partial void OnAltNameChanging(string value);
+		partial void OnAltNameChanged();
 		
 		partial void OnSuffixCodeChanging(string value);
 		partial void OnSuffixCodeChanged();
@@ -2048,6 +2053,28 @@ namespace CmsData
 					this._LastName = value;
 					this.SendPropertyChanged("LastName");
 					this.OnLastNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AltName", UpdateCheck=UpdateCheck.Never, Storage="_AltName", DbType="nvarchar(100)")]
+		public string AltName
+		{
+			get { return this._AltName; }
+
+			set
+			{
+				if (this._AltName != value)
+				{
+				
+                    this.OnAltNameChanging(value);
+					this.SendPropertyChanging();
+					this._AltName = value;
+					this.SendPropertyChanged("AltName");
+					this.OnAltNameChanged();
 				}
 
 			}

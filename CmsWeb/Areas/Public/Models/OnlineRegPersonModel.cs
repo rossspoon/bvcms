@@ -223,7 +223,7 @@ namespace CmsWeb.Models
                     where o.ClassFilled != true
                     where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
                     where (o.Limit ?? 0) == 0 || o.Limit > o.MemberCount
-                    orderby o.OrganizationName
+                    orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),

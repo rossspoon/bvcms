@@ -40,7 +40,6 @@
                 $('iframe', d).attr("src", this.href);
                 d.dialog("option", "title", this.title);
                 d.dialog("open");
-                d.parent().center();
             });
         });
        function AddSelected() {

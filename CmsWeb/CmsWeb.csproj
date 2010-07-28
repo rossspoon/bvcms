@@ -196,6 +196,8 @@
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
+    <Compile Include="Areas\Main\Models\Report\ContributionModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\ContributionStatementResult.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -849,6 +851,7 @@
     <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
+    <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />

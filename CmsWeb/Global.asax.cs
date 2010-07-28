@@ -76,20 +76,24 @@ namespace CmsWeb
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            if (Util.UserId == 0 && Util.UserName.HasValue())
-            {
-                var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == Util.UserName);
-                if (u != null)
-                {
-                    Util.UserId = u.UserId;
-                    Util.UserPeopleId = u.PeopleId;
-                }
-            }
+            if (User.Identity.IsAuthenticated)
+                GetPeopleId();
             Util.SessionStarting = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            //if (!Util.UserPeopleId.HasValue && User != null && User.Identity.IsAuthenticated)
+            //    GetPeopleId();
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+        private static void GetPeopleId()
+        {
+            var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == Util.UserName);
+            if (u != null)
+            {
+                Util.UserId = u.UserId;
+                Util.UserPeopleId = u.PeopleId;
+            }
         }
         protected void Application_EndRequest(object sender, EventArgs e)
         {

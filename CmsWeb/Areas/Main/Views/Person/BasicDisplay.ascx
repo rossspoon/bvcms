@@ -24,6 +24,9 @@
         <tr><th>Suffix:</th>
             <td><%=Model.Suffix %></td>
         </tr>
+        <tr><th>Alt Name:</th>
+            <td><%=Model.AltName %></td>
+        </tr>
         <tr><th>Former:</th>
             <td><%=Model.Maiden %></td>
         </tr>

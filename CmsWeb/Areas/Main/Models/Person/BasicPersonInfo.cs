@@ -6,6 +6,7 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
@@ -18,6 +19,7 @@ namespace CmsWeb.Models.PersonPage
         public string First { get; set; }
         public string Middle { get; set; }
         public string Last { get; set; }
+        public string AltName { get; set; }
         public string Suffix { get; set; }
         public string Maiden { get; set; }
         public int GenderId { get; set; }
@@ -102,6 +104,7 @@ namespace CmsWeb.Models.PersonPage
                         HomePhone = p.Family.HomePhone.FmtFone(),
                         JoinDate = p.JoinDate,
                         Last = p.LastName,
+                        AltName = p.AltName,
                         Maiden = p.MaidenName,
                         MaritalStatusId = p.MaritalStatusId,
                         MemberStatusId = p.MemberStatusId,
@@ -133,6 +136,7 @@ namespace CmsWeb.Models.PersonPage
             p.EmailAddress = EmailAddress;
             p.FirstName = First;
             p.LastName = Last;
+            p.AltName = AltName;
             p.GenderId = GenderId;
             p.Grade = Grade.ToInt2();
             p.CellPhone = CellPhone.GetDigits();
