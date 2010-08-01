@@ -43,6 +43,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -166,7 +187,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CmsCheckinSetup"
         "ProductCode" = "8:{0EB0ABB3-5FA9-4A9A-96C0-D9BD0362C7B5}"
-        "PackageCode" = "8:{07BE180D-E9B4-4C11-BA69-DA85E92D02C2}"
+        "PackageCode" = "8:{D042F81B-BA93-4E98-9D42-BF507A1DF2E5}"
         "UpgradeCode" = "8:{319427ED-2F2A-49E5-88AD-2BE303385DE6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -286,7 +307,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2A3D1081E25E43768F102087DB09E1EB"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1B97FB7A9CC142B7BB1804C7C11C50DF"
             {
             "Name" = "8:CmsCheckin"
             "Arguments" = "8:"
@@ -294,9 +315,9 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_4161BFFA091C428A92ECB443248E4655"
+            "Target" = "8:_A07AFA5427C847E1B4CA2EBF2ED04472"
             "Folder" = "8:_4161BFFA091C428A92ECB443248E4655"
-            "WorkingFolder" = "8:_4161BFFA091C428A92ECB443248E4655"
+            "WorkingFolder" = "8:_A44762B773F245999F6E635A3EB3037D"
             "Icon" = "8:"
             "Feature" = "8:"
             }
@@ -701,7 +722,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A07AFA5427C847E1B4CA2EBF2ED04472"
             {
-            "SourcePath" = "8:..\\CmsCheckin\\obj\\Debug\\CmsCheckin.exe"
+            "SourcePath" = "8:..\\CmsCheckin\\obj\\Release\\CmsCheckin.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_A44762B773F245999F6E635A3EB3037D"

@@ -56,7 +56,7 @@ namespace CmsWeb.Models
             {
                 var q = from om in DbUtil.Db.OrganizationMembers
                         where om.OrganizationId == orgid
-                        where om.Pending ?? false == false
+                        where (om.Pending ?? false) == false
                         where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         group om by om.MemberType into g
                         orderby g.Key.Description

@@ -74,7 +74,13 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('#current-tab form a.membertype').live("click", function(e) {
+    $('form a.membertype').live("click", function(e) {
+        e.preventDefault();
+        var d = $('#memberDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
+    });
+    $('#previous-tab form a.membertype').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -183,5 +189,6 @@
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));
+    $.updateTable($('#pending-tab form'));
     $("#memberDialog").dialog('close');
 }

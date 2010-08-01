@@ -70,10 +70,21 @@ namespace CmsWeb.Models.OrganizationPage
                            where om.OrganizationId == OrganizationId
                            where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId <= 0
                            where om.OrgMemMemTags.Count() == 0 || GroupId != -1
-                           where (Active && om.MemberTypeId != inactive)
-                               || (!Active && om.MemberTypeId == inactive)
-                           where (Pending && om.Pending == true)
-                               || (!Pending && (om.Pending ?? false) == false)
+                           select om;
+            if (Active == true)
+                if (Pending == false) // current
+                    _members = from om in _members
+                               where om.MemberTypeId != inactive
+                               where (om.Pending ?? false) == false
+                               select om;
+                else // pending
+                    _members = from om in _members
+                               where om.MemberTypeId != inactive
+                               where (om.Pending ?? false) == true
+                               select om;
+            else // inactive
+                _members = from om in _members
+                           where om.MemberTypeId == inactive
                            select om;
             return _members;
         }

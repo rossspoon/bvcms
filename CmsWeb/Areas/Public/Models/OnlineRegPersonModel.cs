@@ -534,7 +534,7 @@ namespace CmsWeb.Models
                     where s.HasValue()
                     let a = s.Split('=')
                     where a.Length > 1
-                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
+                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].Trim() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
@@ -916,16 +916,35 @@ namespace CmsWeb.Models
                 return;
 
             var smtp = Util.Smtp();
-            string subj = "{0}, different email address than one on record".Fmt(orgname);
-            string msg = @"Hi {0},
-		                <p>You registered for {1} using a different email address than the one we have on record.
-		                It is important that you call the church <strong>{2}</strong> to update our records
-		                so that you will receive future important notices regarding this registration.</p>"
-                .Fmt(person.Name, orgname, phone.FmtFone());
-
-            Util.Email2(smtp, fromemail, regemail, subj, msg);
             if (person.EmailAddress.HasValue())
+            {
+                string subj = "{0}, different email address than one on record".Fmt(orgname);
+                string msg = @"Hi {0},
+<p>You registered for {1} using a different email address than the one we have on record.
+It is important that you call the church <strong>{2}</strong> to update our records
+so that you will receive future important notices regarding this registration.</p>"
+                    .Fmt(person.Name, orgname, phone.FmtFone());
+
+                Util.Email2(smtp, fromemail, regemail, subj, msg);
                 Util.Email2(smtp, fromemail, person.EmailAddress, subj, msg);
+            }
+            else
+            {
+                string subj = "{0}, no email on your record".Fmt(orgname);
+                string msg = @"Hi {0},
+<p>You registered for {1}, and we found your record, 
+but there was no email address on your existing record in our database.
+If you would like for us to update your record with this email address or another,
+Please contact the church at <strong>{2}</strong> to let us know.
+It is important that we have your email address so that
+you will receive future important notices regarding this registration.
+But we won't add that to your record without your permission.
+
+Thank you</p>"
+                    .Fmt(person.Name, orgname, phone.FmtFone());
+
+                Util.Email2(smtp, fromemail, regemail, subj, msg);
+            }
         }
         private static string trim(string s)
         {

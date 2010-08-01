@@ -79,7 +79,11 @@ namespace CmsCheckin
             if (Program.editing)
                 this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
             else
+            {
+                if (Program.FamilyId == 0 && !homephone.Text.HasValue() && cellphone.Text.HasValue())
+                    homephone.Text = cellphone.Text;
                 this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
+            }
             Util.UnLockFamily();
 
             string ph;
@@ -202,6 +206,12 @@ namespace CmsCheckin
         {
             Program.ClearFields();
             this.GoHome(string.Empty);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var f = new TakePicture();
+            f.ShowDialog();
         }
     }
 }

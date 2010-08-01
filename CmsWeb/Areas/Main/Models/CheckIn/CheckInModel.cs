@@ -24,7 +24,7 @@ namespace CmsWeb.Models
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.People.Any(p => p.CellPhoneLU.StartsWith(p7))
                      let flock = f.FamilyCheckinLocks
-                        .SingleOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 120)
+                        .SingleOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 60)
                      orderby f.FamilyId
                      select new FamilyInfo
                      {
@@ -50,7 +50,7 @@ namespace CmsWeb.Models
                 let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 where om.Organization.CanSelfCheckin.Value
-                where om.Pending ?? false == false
+                where (om.Pending ?? false) == false
                 where om.Organization.CampusId == campus || om.Organization.CampusId == null
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
@@ -94,6 +94,7 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = om.Person.Grade,
+                    HasPicture = om.Person.PictureId != null,
                 };
 
             // now get recent visitors
@@ -149,6 +150,7 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = a.Person.Grade,
+                    HasPicture = a.Person.PictureId != null,
                 };
 
             var list = members.ToList();
@@ -212,6 +214,7 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = p.Grade,
+                    HasPicture = p.PictureId != null,
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)
@@ -229,7 +232,7 @@ namespace CmsWeb.Models
                 where om.Organization.AllowKioskRegister == true
                 where om.Organization.CampusId == campus || campus == 0
                 where om.Person.FamilyId == id
-                where om.Pending ?? false == false
+                where (om.Pending ?? false) == false
                 where om.Person.DeceasedDate == null
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 select new Attendee

@@ -314,7 +314,12 @@ namespace CmsWeb
             var tb = new TagBuilder("span");
             var viewDataValue = helper.ViewData.Eval(name);
             var i = (int?)viewDataValue ?? 0;
-            tb.InnerHtml = list.Single(v => v.Value == i.ToString()).Text;
+            
+            var si = list.SingleOrDefault(v => v.Value == i.ToString());
+            if (si != null)
+                tb.InnerHtml = si.Text;
+            else
+                tb.InnerHtml = "?";
             return tb.ToString();
         }
         public static string Hidden3(this HtmlHelper helper, string id, string name, object value)

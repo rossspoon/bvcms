@@ -35,6 +35,7 @@
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
             this.bAddToFamily = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Print
@@ -139,10 +140,20 @@
             this.bAddToFamily.UseVisualStyleBackColor = false;
             this.bAddToFamily.Click += new System.EventHandler(this.bAddToFamily_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 634);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 17);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "label3";
+            // 
             // ListFamily
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.bAddToFamily);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
@@ -167,6 +178,7 @@
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
         public System.Windows.Forms.Button bAddToFamily;
+        private System.Windows.Forms.Label label3;
 
     }
 }

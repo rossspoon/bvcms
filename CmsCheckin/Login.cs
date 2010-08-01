@@ -70,6 +70,7 @@ namespace CmsCheckin
             username.Enter += textbox_Enter;
             password.Enter += textbox_Enter;
             URL.Enter += textbox_Enter;
+            password.Focus();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -130,6 +131,26 @@ namespace CmsCheckin
         private void textbox_Enter(object sender, EventArgs e)
         {
             current = (TextBox)sender;
+        }
+
+        private void bbs_Click(object sender, EventArgs e)
+        {
+            BackSpace();
+        }
+
+        private void bang_Click(object sender, EventArgs e)
+        {
+            KeyStroke('!');
+        }
+
+        private void bslash_Click(object sender, EventArgs e)
+        {
+            KeyStroke('/');
+        }
+
+        private void bcolon_Click(object sender, EventArgs e)
+        {
+            KeyStroke(':');
         }
     }
 }

@@ -67,6 +67,8 @@ namespace CmsWeb.Models
                 else
                     w.WriteAttributeString("prev", "");
                 w.WriteAttributeString("maxlabels", DbUtil.Settings("MaxLabels", "6"));
+                var code = DbUtil.Db.NextSecurityCode(DateTime.Today).Select(c => c.Code).Single();
+                w.WriteAttributeString("securitycode", code);
 
                 foreach (var c in q.Skip(startrow).Take(INT_PageSize))
                 {
@@ -107,6 +109,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("emfriend", c.emfriend);
                     w.WriteAttributeString("emphone", c.emphone);
                     w.WriteAttributeString("activeother", c.activeother.ToString());
+                    w.WriteAttributeString("haspicture", c.HasPicture.ToString());
 
                     w.WriteEndElement();
                 }

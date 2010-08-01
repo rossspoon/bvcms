@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <th>Pending:</th>
-        <td><input type="checkbox" disabled="disabled" <%=Model.Pending == true ? "checked='checked'" : "" %> /></td>
+        <td><input type="checkbox" disabled="disabled" <%=(Model.Pending ?? false) == true ? "checked='checked'" : "" %> /></td>
     </tr>
 <% if (Model.RegisterEmail.HasValue())
    { %>    

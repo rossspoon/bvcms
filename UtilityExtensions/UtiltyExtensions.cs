@@ -20,6 +20,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Net;
 using System.Security.Cryptography;
+using System.Web.Configuration;
 
 namespace UtilityExtensions
 {
@@ -1047,7 +1048,26 @@ namespace UtilityExtensions
             if (a != null)
                 smtp.Credentials = new NetworkCredential(a[0], a[1]);
             return smtp;
+        }        
+        private const string STR_SysFromEmail = "UnNamed";
+        public static string SysFromEmail
+        {
+            get
+            {
+                var tag = WebConfigurationManager.AppSettings["sysfromemail"];
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_SysFromEmail] != null)
+                            tag = HttpContext.Current.Session[STR_SysFromEmail].ToString();
+                return tag;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_SysFromEmail] = value;
+            }
         }
+
         public static string Serialize<T>(T m)
         {
             var ser = new DataContractSerializer(typeof(T));

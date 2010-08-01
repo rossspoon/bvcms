@@ -145,7 +145,7 @@ namespace CmsCheckin
                 st.Close();
             }
         }
-        public static void Label(LabelInfo li, DateTime time)
+        public static void Label(LabelInfo li, DateTime time, string code)
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return;
@@ -165,7 +165,7 @@ namespace CmsCheckin
                 sw.WriteLine(string.Format(@"^FT592,122^A0I,79,79^FH\^FD{0}^FS", li.first));
                 sw.WriteLine(string.Format(@"^FT583,69^A0I,34,33^FH\^FD{0}^FS", li.last));
                 sw.WriteLine(string.Format(@"^FT583,25^A0I,34,33^FH\^FD{0} {1}   {2:M/d/yy}^FS", li.pid, li.mv, time));
-                sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0:HHmmss}^FS", time));
+                sw.WriteLine(string.Format(@"^FT203,26^A0I,68,67^FH\^FD{0}^FS", code));
                 sw.WriteLine(string.Format("^PQ{0},0,1,Y^XZ", n));
                 if (li.mv.Contains("V"))
                 {
@@ -216,7 +216,7 @@ namespace CmsCheckin
                 sw.WriteLine("1911A3000450009" + li.first);
                 sw.WriteLine("1911A1000300011" + li.last);
                 sw.WriteLine("1911A1000060008" + " (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
-                sw.WriteLine("1911A2400040179" + time.ToString("HHmmss"));
+                sw.WriteLine("1911A2400040179" + code);
                 sw.WriteLine("Q" + n.ToString("0000"));
                 sw.WriteLine("E");
                 if (li.mv.Contains("V"))
@@ -272,7 +272,7 @@ namespace CmsCheckin
                 sw.WriteLine(li.first);
                 sw.WriteLine(li.last);
                 sw.WriteLine(" (" + li.pid + " " + li.mv + ")" + time.ToString("  M/d/yy"));
-                sw.WriteLine(time.ToString("HHmmss"));
+                sw.WriteLine(code);
                 if (li.mv.Contains("V"))
                 {
                     sw.WriteLine(li.location);

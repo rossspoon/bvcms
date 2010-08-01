@@ -55,6 +55,7 @@ namespace CmsWeb.Areas.Main.Controllers
             try
             {
                 UpdateModel(om);
+                om.ShirtSize = om.ShirtSize.MaxString(20);
                 DbUtil.Db.SubmitChanges();
             }
             catch (Exception)

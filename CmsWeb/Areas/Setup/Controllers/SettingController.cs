@@ -308,6 +308,9 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "IsBibleFellowshipOrg":
                             o.IsBibleFellowshipOrg = a[c].ToBool2();
                             break;
+                        case "RegistrationTypeId":
+                            o.RegistrationTypeId = a[c].ToInt();
+                            break;
                     }
                 DbUtil.Db.SubmitChanges();
             }

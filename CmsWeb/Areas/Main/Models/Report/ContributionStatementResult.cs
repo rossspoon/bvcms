@@ -50,40 +50,43 @@ namespace CmsWeb.Areas.Main.Models.Report
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var document = new Document(PageSize.LETTER);
-            document.SetMargins(36f, 36f, 33f, 36f);
-            var w = PdfWriter.GetInstance(document, Response.OutputStream);
-            document.Open();
+            var doc = new Document(PageSize.LETTER);
+            doc.SetMargins(36f, 36f, 33f, 36f);
+            var w = PdfWriter.GetInstance(doc, Response.OutputStream);
+            doc.Open();
             dc = w.DirectContent;
 
-            //writer - have our own path!!! and see you have write permissions...
-            document.Open();
-            //html -text - kan be from database or editor too
-            String htmlText = @"<font  
+            var mct = new MultiColumnText();
+            mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
+            var t = new PdfPTable(new float[] { 10f, 19f, 6f });
+            t.WidthPercentage = 100;
+            t.SetWidths(new int[] { 30, 4, 6, 30 });
+            t.DefaultCell.Border = PdfPCell.NO_BORDER;
+
+
+
+
+
+
+            doc.Open();
+            String html = @"<font  
 color=""#0000FF""><b><i>Title One</i></b></font><font   
 color=""black""><br><br>Some text here<br><br><br><font  
 color=""#0000FF""><b><i>Another title here   
 </i></b></font><font   
 color=""black""><br><br>Text1<br>Text2<br><OL><LI>hi</LI><LI>how are u</LI></OL>";
 
-            //make an arraylist ....with STRINGREADER since its no IO reading file...
-            var htmlarraylist = HTMLWorker.ParseToList(new StringReader(htmlText), null);
-            //add the collection to the document
-            for (int k = 0; k < htmlarraylist.Count; k++)
-            {
-                document.Add((IElement)htmlarraylist[k]);
-            }
+            var list = HTMLWorker.ParseToList(new StringReader(html), null);
+            for (int k = 0; k < list.Count; k++)
+                doc.Add((IElement)list[k]);
 
-            document.Add(new Paragraph("And the same with indentation...."));
+            doc.Add(new Paragraph("And the same with indentation...."));
 
-            // or add the collection to an paragraph 
-            // if you add it to an existing non emtpy paragraph it will insert it from
-            //the point youwrite -
-            Paragraph mypara = new Paragraph();//make an emtphy paragraph as "holder"
-            mypara.IndentationLeft = 36;
-            mypara.InsertRange(0, htmlarraylist);
-            document.Add(mypara);
-            document.Close();
+            var p = new Paragraph();
+            p.IndentationLeft = 36;
+            p.InsertRange(0, list);
+            doc.Add(p);
+            doc.Close();
 
         }
     }

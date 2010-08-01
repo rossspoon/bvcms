@@ -19,7 +19,8 @@
     <td><a href="/Person/Index/<%=om.LeaderId %>"><%=om.LeaderName %></a></td>
     <td><%=om.Schedule %></td>
     <td><%=om.EnrollDate.FormatDate() %></td>
-    <td><a class="membertype" pid="<%=om.PeopleId %>" oid="<%=om.OrgId %>" href="#"><%=om.MemberType %></a></td>
+    <td><a class="membertype" pid="<%=om.PeopleId %>" oid="<%=om.OrgId %>" 
+        href="<%="/OrgMemberDialog/Index/{0}?pid={1}&from={2}".Fmt(om.OrgId, om.PeopleId, "na") %>"><%=om.MemberType %></a></td>
     </tr>
 <% } %>
 </tbody>

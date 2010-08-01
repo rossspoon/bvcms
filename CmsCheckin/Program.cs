@@ -22,6 +22,7 @@ namespace CmsCheckin
                 TestMode = args[0] == "test";
 
             var login = new Login();
+            login.password.Focus();
             do
             {
                 var r = login.ShowDialog();

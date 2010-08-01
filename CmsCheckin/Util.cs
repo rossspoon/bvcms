@@ -176,6 +176,7 @@ namespace CmsCheckin
 
             var s = Encoding.ASCII.GetString(resp);
         }
+
         public static bool AllDigits(string str)
         {
             Regex patt = new Regex("[^0-9]");

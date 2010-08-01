@@ -20,7 +20,8 @@
     <td><a href="/Person/Index/<%=om.LeaderId %>"><%=om.LeaderName %></a></td>
     <td><%=om.Schedule %></td>
     <td><%=om.EnrollDate.FormatDate() %></td>
-    <td><a class="membertype" pid="<%=om.PeopleId %>" oid="<%=om.OrgId %>" href="#"><%=om.MemberType %></a></td>
+    <td><a target="_blank" 
+        href='<%="/AttendStrDetail.aspx?id={0}&oid={1}".Fmt(om.PeopleId, om.OrgId) %>'><%=om.MemberType %></a></td>
     <td><%=om.AttendPct.HasValue ? om.AttendPct.Value.ToString("N1") : "" %></td>
     </tr>
 <% } %>

@@ -78,6 +78,8 @@ namespace CmsWeb
         {
             if (User.Identity.IsAuthenticated)
                 GetPeopleId();
+            Util.SysFromEmail = DbUtil.Settings("SysFromEmail", 
+                WebConfigurationManager.AppSettings["sysfromemail"]);
             Util.SessionStarting = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)

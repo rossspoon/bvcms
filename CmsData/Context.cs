@@ -16,6 +16,7 @@ using System.Data.Linq.Mapping;
 using System.Data.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Data;
 
 namespace CmsData
 {

@@ -466,6 +466,10 @@ namespace CmsData
         partial void UpdateSaleTransaction(SaleTransaction instance);
         partial void DeleteSaleTransaction(SaleTransaction instance);
         
+        partial void InsertSecurityCode(SecurityCode instance);
+        partial void UpdateSecurityCode(SecurityCode instance);
+        partial void DeleteSecurityCode(SecurityCode instance);
+        
         partial void InsertSetting(Setting instance);
         partial void UpdateSetting(Setting instance);
         partial void DeleteSetting(Setting instance);
@@ -1300,6 +1304,12 @@ namespace CmsData
 
 		}
 
+		public Table< SecurityCode> SecurityCodes
+		{
+			get	{ return this.GetTable< SecurityCode>(); }
+
+		}
+
 		public Table< Setting> Settings
 		{
 			get	{ return this.GetTable< Setting>(); }
@@ -1552,6 +1562,12 @@ namespace CmsData
 	    public Table< View.PodcastSummary> ViewPodcastSummaries
 	    {
 		    get { return this.GetTable< View.PodcastSummary>(); }
+
+	    }
+
+	    public Table< View.RandNumber> ViewRandNumbers
+	    {
+		    get { return this.GetTable< View.RandNumber>(); }
 
 	    }
 
@@ -2102,6 +2118,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.DecToBase", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string DecToBase(
+            [Parameter(Name = "val", DbType="bigint")] long? val,
+            [Parameter(Name = "baseX", DbType="int")] int? baseX
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                val,
+                baseX
+                ).ReturnValue));
+		}
+
 		[Function(Name="disc.VerseInCategory", IsComposable = true)]
 		[return: Parameter(DbType = "bit")]
 		public bool? VerseInCategory(
@@ -2197,6 +2227,16 @@ namespace CmsData
                 oid,
                 tid,
                 typeid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetSecurityCode", IsComposable = true)]
+		[return: Parameter(DbType = "char")]
+		public string GetSecurityCode(
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
                 ).ReturnValue));
 		}
 
@@ -2615,6 +2655,17 @@ namespace CmsData
     #endregion
 	#region Stored Procedures
 		
+		[Function(Name="dbo.NextSecurityCode")]
+		public ISingleResult< SecurityCode> NextSecurityCode(
+            [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
+            )
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt
+			);
+			return ((ISingleResult< SecurityCode>)(result.ReturnValue));
+		}
+
 		[Function(Name="dbo.ForumNewEntry")]
 		public ISingleResult< ForumEntry> ForumNewEntry(
             [Parameter(Name = "forumid", DbType="int")] int? forumid,

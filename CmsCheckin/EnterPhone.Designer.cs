@@ -43,6 +43,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.bgo = new System.Windows.Forms.Button();
             this.GoBackButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -244,9 +245,20 @@
             this.GoBackButton.UseVisualStyleBackColor = false;
             this.GoBackButton.Click += new System.EventHandler(this.button_goback_Click);
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Blue;
+            this.label1.Location = new System.Drawing.Point(733, 226);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(207, 79);
+            this.label1.TabIndex = 60;
+            this.label1.Text = "Please enter area code too";
+            // 
             // EnterPhone
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.bgo);
             this.Controls.Add(this.GoBackButton);
             this.Controls.Add(this.label2);
@@ -289,5 +301,6 @@
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button bgo;
         private System.Windows.Forms.Button GoBackButton;
+        private System.Windows.Forms.Label label1;
     }
 }

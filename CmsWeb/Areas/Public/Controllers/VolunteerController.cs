@@ -31,6 +31,7 @@ namespace CmsWeb.Areas.Public.Controllers
             //ViewData["head"] = HeaderHtml("Volunteer-" + view,
             //                DbUtil.Settings("VolHeader", "change VolHeader setting"),
             //                DbUtil.Settings("VolLogo", "/Content/Crosses.png"));
+            SetHeaders(view);
         }
         public ActionResult Index(string id)
         {
@@ -90,7 +91,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 Util.Email2(smtp,
                     Util.PickFirst(regemail, m.person.EmailAddress),
                     email,
-                    "{0} treeview registration".Fmt(id),
+                    "{0} registration".Fmt(id),
                     "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
                     .Fmt(m.person.Name, m.person.PeopleId, summary));
 
@@ -113,7 +114,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     }
                     Util.Email(smtp, email, m.person.Name, em,
                          c.Title, body);
-                    OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, "Volunteer", "");
+                    OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }
             }
@@ -127,5 +128,20 @@ namespace CmsWeb.Areas.Public.Controllers
             var m = new Models.VolunteerModel { View = id };
             return View(m);
         }
+        private void SetHeaders(string id)
+        {
+            var s = DbUtil.Content("Shell-" + id, DbUtil.Content("ShellDefault", ""));
+            if (s.HasValue())
+            {
+                ViewData["hasshell"] = true;
+                Regex re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);
+
+                var t = re.Match(s).Groups[1].Value;
+                ViewData["top"] = t;
+                var b = re.Match(s).Groups[2].Value;
+                ViewData["bottom"] = b;
+            }
+        }
+
     }
 }

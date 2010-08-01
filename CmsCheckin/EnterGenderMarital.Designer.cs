@@ -585,7 +585,7 @@
             this.ActiveOther.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActiveOther.Location = new System.Drawing.Point(14, 413);
             this.ActiveOther.Name = "ActiveOther";
-            this.ActiveOther.Size = new System.Drawing.Size(406, 45);
+            this.ActiveOther.Size = new System.Drawing.Size(394, 44);
             this.ActiveOther.TabIndex = 63;
             this.ActiveOther.Text = "Active Other Church?";
             this.ActiveOther.ThreeState = true;

@@ -77,6 +77,7 @@ namespace CmsWeb.Models
         public string emfriend { get; set; }
         public string emphone { get; set; }
         public bool activeother { get; set; }
+        public bool HasPicture { get; set; }
     }
     public class FamilyInfo
     {

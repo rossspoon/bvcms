@@ -303,6 +303,29 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("done");
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult UploadImage2(int id)
+        {
+            var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
+            if (person.Picture == null)
+                person.Picture = new Picture();
+            byte[] bits = new byte[Request.InputStream.Length];
+            Request.InputStream.Read(bits, 0, bits.Length);
+
+            var p = person.Picture;
+            p.CreatedDate = Util.Now;
+            p.CreatedBy = Util.UserName;
+            p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
+            p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
+            p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+            DbUtil.Db.SubmitChanges();
+            return Content("done");
+        }
+        public ActionResult FetchImage(int id)
+        {
+            var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
+            return new ImageResult(person.Picture.LargeId ?? 0);
+        }
         public ActionResult CheckInList()
         {
             var m = from t in DbUtil.Db.CheckInTimes

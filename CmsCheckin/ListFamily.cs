@@ -63,6 +63,7 @@ namespace CmsCheckin
         private bool hasprinter;
         private int Row;
         DateTime time;
+        string securitycode;
         int? next, prev;
         List<Control> controls = new List<Control>();
         List<Control> sucontrols = new List<Control>();
@@ -83,6 +84,9 @@ namespace CmsCheckin
 
             next = x.Root.Attribute("next").Value.ToInt2();
             prev = x.Root.Attribute("prev").Value.ToInt2();
+            securitycode = x.Root.Attribute("securitycode").Value;
+            label3.Text = securitycode;
+
             pgdn.Visible = next.HasValue;
             pgup.Visible = prev.HasValue;
             Program.MaxLabels = x.Root.Attribute("maxlabels").Value.ToInt();
@@ -138,7 +142,7 @@ namespace CmsCheckin
                     twidab = Math.Max(twidab, bwid);
 
                     size = g.MeasureString(e.Attribute("name").Value, font);
-                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width));
+                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + 10);
 
                     size = g.MeasureString(e.Attribute("org").Value, font);
                     widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
@@ -238,6 +242,7 @@ namespace CmsCheckin
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
                     Row = Row,
                     CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
+                    HasPicture = bool.Parse(e.Attribute("haspicture").Value),
                     leadtime = double.Parse(e.Attribute("leadtime").Value)
                 };
 
@@ -275,25 +280,36 @@ namespace CmsCheckin
                 ab.Tag = c;
                 controls.Add(ab);
 
-                var label = new Label();
+                var nam = new Button();
                 LeftEdge += twidab + sep;
-                label.Location = new Point(LeftEdge, top);
-                label.Size = new Size(widname + 5, maxheight);
+                nam.UseVisualStyleBackColor = false;
+                nam.FlatStyle = FlatStyle.Flat;
+                nam.FlatAppearance.BorderSize = 1;
+                nam.FlatAppearance.BorderColor = Color.Black;
+                if (c.HasPicture)
+                    nam.BackColor = Color.FromArgb(0xFF, 0xCC, 0x99);
+                else
+                    nam.BackColor = Color.White;
 
-                label.Font = font;
-                label.UseMnemonic = false;
-                label.Text = c.name;
-                label.TextAlign = ContentAlignment.MiddleLeft;
+                nam.Location = new Point(LeftEdge, top - 5);
+                nam.Size = new Size(widname, bsize);
+
+                nam.Font = font;
+                nam.UseMnemonic = false;
+                nam.Text = c.name;
+                nam.TextAlign = ContentAlignment.MiddleLeft;
                 if (c.cinfo.oid != 0)
                     if (c.cinfo.mv == "V")
-                        label.ForeColor = Color.DarkGreen;
+                        nam.ForeColor = Color.DarkGreen;
                     else
-                        label.ForeColor = Color.Blue;
-                this.Controls.Add(label);
-                controls.Add(label);
+                        nam.ForeColor = Color.Blue;
+                nam.Click += new EventHandler(nam_Click);
+                nam.Tag = Row;
+                this.Controls.Add(nam);
+                controls.Add(nam);
 
-                label = new Label();
-                LeftEdge += widname + sep;
+                var label = new Label();
+                LeftEdge += widname + 5 + sep;
                 label.Location = new Point(LeftEdge, top);
                 label.Size = new Size(widorg + 5, maxheight);
 
@@ -439,6 +455,17 @@ namespace CmsCheckin
             bw.RunWorkerAsync(info);
         }
 
+        void nam_Click(object sender, EventArgs e)
+        {
+            Program.TimerReset();
+            var eb = sender as Button;
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
+            var c = ab.Tag as AttendLabel;
+            Program.PeopleId = c.cinfo.pid;
+            var f = new Picture();
+            f.ShowDialog();
+        }
+
         void cb_Click(object sender, EventArgs e)
         {
             var cb = sender as Button;
@@ -553,7 +580,7 @@ namespace CmsCheckin
                             @class = g.First().@class,
                         };
                 foreach (var li in q)
-                    CmsCheckin.Print.Label(li, time);
+                    CmsCheckin.Print.Label(li, time, securitycode);
                 if (q.Sum(li => li.n) > 0)
                     CmsCheckin.Print.BlankLabel();
             }
@@ -648,6 +675,7 @@ namespace CmsCheckin
         public int Row { get; set; }
         public bool CheckedIn { get; set; }
         public bool Clicked { get; set; }
+        public bool HasPicture { get; set; }
         public double leadtime { get; set; }
     }
     public class LabelInfo

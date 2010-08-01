@@ -239,7 +239,9 @@
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\RegistrationType.cs" />
+    <Compile Include="Generated\SecurityCode.cs" />
     <Compile Include="Generated\Views\DiscActivityLog.cs" />
+    <Compile Include="Generated\Views\RandNumber.cs" />
     <Compile Include="MemberRules.cs" />
     <Compile Include="EmailOptOut.cs" />
     <Compile Include="Generated\Address.cs" />

@@ -102,7 +102,10 @@ namespace CmsCheckin
         {
             Program.TimerStop();
             var d = textBox1.Text.GetDigits().Length;
-            GoNext(sender, e);
+            if (d == 10 || d == 0)
+                GoNext(sender, e);
+            else
+                MessageBox.Show("please enter area code too");
         }
 
         private void buttonbs_Click(object sender, EventArgs e)
