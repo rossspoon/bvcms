@@ -94,7 +94,7 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = om.Person.Grade,
-                    HasPicture = om.Person.PictureId != null,
+                    HasPicture = HasImage(om.Person.Picture.LargeId),
                 };
 
             // now get recent visitors
@@ -150,7 +150,7 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = a.Person.Grade,
-                    HasPicture = a.Person.PictureId != null,
+                    HasPicture = HasImage(a.Person.Picture.LargeId),
                 };
 
             var list = members.ToList();
@@ -214,13 +214,21 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = p.Grade,
-                    HasPicture = p.PictureId != null,
+                    HasPicture = HasImage(p.Picture.LargeId),
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)
                 .ThenByDescending(a => a.Position == 10 ? a.Gender : "U")
                 .ThenBy(a => a.Age).ToList();
             return list2;
+        }
+        private bool HasImage(int? imageid)
+        {
+            var q = from i in ImageData.DbUtil.Db.Images
+                    where i.Id == imageid
+                    select i.Length;
+            var len = q.SingleOrDefault();
+            return len > 0;
         }
         public List<Attendee> FamilyMembersKiosk(int id, int campus)
         {

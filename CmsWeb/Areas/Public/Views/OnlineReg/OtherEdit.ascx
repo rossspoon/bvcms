@@ -210,7 +210,7 @@
             <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
             <input type="text" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestionValue(a.question) %>" />
         </td>
-        <td></td>
+        <td><%=Html.ValidationMessage(a.question + "-QError")%></td>
     </tr>
 <% }
    foreach (var a in Model.YesNoQuestions())

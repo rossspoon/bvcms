@@ -27,7 +27,7 @@ namespace CmsWeb.Contributions
                 Response.EndShowMessage("no person");
             peopleid = id.Value;
             PersonLink.Text = person.Name;
-            PersonLink.NavigateUrl = "~/Contributions/Years.aspx?id=" + person.PeopleId;
+            PersonLink.NavigateUrl = "/Reports/ContributionYears/" + person.PeopleId;
             int sz = Util.GetPageSizeCookie();
             DataPager1.PageSize = sz;
             DataPager2.PageSize = sz;

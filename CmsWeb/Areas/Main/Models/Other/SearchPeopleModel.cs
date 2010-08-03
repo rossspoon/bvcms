@@ -434,7 +434,7 @@ namespace CmsWeb.Models
                          where p.BirthDay == dt.Day && p.BirthMonth == dt.Month && p.BirthYear == dt.Year
                          select p;
                 count = q2.Count();
-                if (count <= 1) // use only birthday if there and unique
+                if (count == 1) // use only birthday if there and unique
                     return PersonFound(ctx, q2);
             }
             if (email.HasValue())

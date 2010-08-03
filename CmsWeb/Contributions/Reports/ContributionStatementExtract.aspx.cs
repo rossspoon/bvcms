@@ -189,6 +189,11 @@ namespace CmsWeb.Contributions.Reports
 
             fd = DateTime.Parse(FromDate.Text);
             td = DateTime.Parse(ToDate.Text);
+            if (PDF.Checked)
+            {
+                Response.Redirect("/Reports/ContributionStatement/0?FromDate={0:d}&ToDate={1:d}&typ=3".Fmt(fd, td));
+                return;
+            }
 
             Response.Clear();
             Response.Buffer = true;

@@ -42,8 +42,8 @@
                     var fd = $('#FromDate').val();
                     var td = $('#ToDate').val();
                     var typ = $('input[name=indfam]:radio:checked').val();
-                    var args = "?id=<%=Model.person.PeopleId %>&fd=" + fd + "&td=" + td + "&typ=" + typ;
-                    var newWindowUrl = "/Contributions/Reports/ContributionStatementRpt.aspx" + args;
+                    var args = "<%=Model.person.PeopleId %>?FromDate=" + fd + "&ToDate=" + td + "&typ=" + typ;
+                    var newWindowUrl = "/Reports/ContributionStatement/" + args;
                     window.open(newWindowUrl);
                     d.dialog('close');
                     }

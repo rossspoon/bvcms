@@ -180,6 +180,8 @@ namespace CmsCheckin
                 sb.AppendLine("gender needed");
             if (!first.Text.HasValue())
                 sb.AppendLine("first name needed");
+            if (!last.Text.HasValue())
+                sb.AppendLine("last name needed");
             if (Program.AskChurch && ActiveOther.CheckState == CheckState.Indeterminate)
                 sb.AppendLine("Active Other Church needed");
             if (sb.Length > 0)

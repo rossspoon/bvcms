@@ -68,6 +68,7 @@ namespace CmsCheckin
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }
         public static int CampusId { get; set; }
+        public static string SecurityCode { get; set; }
         public static int ThisDay { get; set; }
         public static int LeadTime { get; set; }
         public static int EarlyCheckin { get; set; }
@@ -117,6 +118,7 @@ namespace CmsCheckin
         public static EnterGenderMarital gendermarital;
         public static void ClearFields()
         {
+            SecurityCode = null;
             first.textBox1.Text = null;
             goesby.textBox1.Text = null;
             last.textBox1.Text = null;

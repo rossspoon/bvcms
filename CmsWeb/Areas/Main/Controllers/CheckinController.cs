@@ -324,7 +324,9 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult FetchImage(int id)
         {
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
-            return new ImageResult(person.Picture.LargeId ?? 0);
+            if (person.PictureId != null)
+                return new ImageResult(person.Picture.MediumId ?? 0);
+            return new ImageResult(0);
         }
         public ActionResult CheckInList()
         {

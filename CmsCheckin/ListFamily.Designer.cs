@@ -45,7 +45,7 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(507, 687);
+            this.Print.Location = new System.Drawing.Point(507, 686);
             this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(432, 66);
@@ -131,7 +131,7 @@
             this.bAddToFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bAddToFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bAddToFamily.ForeColor = System.Drawing.Color.Black;
-            this.bAddToFamily.Location = new System.Drawing.Point(957, 696);
+            this.bAddToFamily.Location = new System.Drawing.Point(957, 695);
             this.bAddToFamily.Margin = new System.Windows.Forms.Padding(4);
             this.bAddToFamily.Name = "bAddToFamily";
             this.bAddToFamily.Size = new System.Drawing.Size(45, 45);
@@ -143,11 +143,13 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 634);
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(986, 749);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 17);
+            this.label3.Size = new System.Drawing.Size(39, 18);
             this.label3.TabIndex = 17;
-            this.label3.Text = "label3";
+            this.label3.Text = "U73";
             // 
             // ListFamily
             // 

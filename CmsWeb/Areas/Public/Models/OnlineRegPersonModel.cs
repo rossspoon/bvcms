@@ -483,6 +483,11 @@ namespace CmsWeb.Models
                 if (YesNoQuestion == null || !YesNoQuestion.ContainsKey(a.name))
                     modelState.AddModelError(a.name + "-YNError", "please select yes or no");
             }
+            foreach (var q in ExtraQuestions())
+            {
+                if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(q.question) || !ExtraQuestion[q.question].HasValue())
+                    modelState.AddModelError(q.question + "-QError", "please some answer");
+            }
         }
 
         public List<SelectListItem> ShirtSizes()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
+using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -152,9 +153,9 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(m);
         }
         [Authorize(Roles = "Finance")]
-        public ActionResult ContributionStatement(int id) //, DateTime FromDate, DateTime ToDate)
+        public ActionResult ContributionStatement(int id, DateTime FromDate, DateTime ToDate, int typ)
         {
-            return new ContributionStatementResult(id);
+            return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
         }
         public ActionResult ChurchAttendance(DateTime? id)
         {

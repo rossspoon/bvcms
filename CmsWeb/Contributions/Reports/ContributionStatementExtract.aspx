@@ -12,8 +12,11 @@
         if (Page_IsValid) {
             var fd = $get('<%=FromDate.ClientID %>').value;
             var td = $get('<%=ToDate.ClientID %>').value;
-            var args = "?fd=" + fd + "&td=" + td;
-            var newWindowUrl = "ContributionStatementExtract.ashx" + args
+
+            var args = "?fd=" + fd + "&td=" + td + "&typ=3";
+            var newWindowUrl;
+            var ck = $get('<%=PDF.ClientID %>').value;
+            newWindowUrl = "ContributionStatementExtract.ashx" + args
             window.open(newWindowUrl);
         }
         return Page_IsValid;
@@ -47,6 +50,10 @@
                         Creating....
                     </b>
         </span> </td>
+        </tr>
+        <tr>
+            <th>PDF:</th>
+            <td><asp:CheckBox ID="PDF" Checked="true" runat="server" /></td>
         </tr>
         <tr>
             <th>Start Date:</th>

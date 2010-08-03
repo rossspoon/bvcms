@@ -63,7 +63,6 @@ namespace CmsCheckin
         private bool hasprinter;
         private int Row;
         DateTime time;
-        string securitycode;
         int? next, prev;
         List<Control> controls = new List<Control>();
         List<Control> sucontrols = new List<Control>();
@@ -84,8 +83,9 @@ namespace CmsCheckin
 
             next = x.Root.Attribute("next").Value.ToInt2();
             prev = x.Root.Attribute("prev").Value.ToInt2();
-            securitycode = x.Root.Attribute("securitycode").Value;
-            label3.Text = securitycode;
+            if (!Program.SecurityCode.HasValue())
+                Program.SecurityCode = x.Root.Attribute("securitycode").Value;
+            label3.Text = Program.SecurityCode;
 
             pgdn.Visible = next.HasValue;
             pgup.Visible = prev.HasValue;
@@ -142,7 +142,7 @@ namespace CmsCheckin
                     twidab = Math.Max(twidab, bwid);
 
                     size = g.MeasureString(e.Attribute("name").Value, font);
-                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + 10);
+                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + 12);
 
                     size = g.MeasureString(e.Attribute("org").Value, font);
                     widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
@@ -304,9 +304,11 @@ namespace CmsCheckin
                     else
                         nam.ForeColor = Color.Blue;
                 nam.Click += new EventHandler(nam_Click);
+                nam.Enabled = false;
                 nam.Tag = Row;
                 this.Controls.Add(nam);
                 controls.Add(nam);
+                sucontrols.Add(nam);
 
                 var label = new Label();
                 LeftEdge += widname + 5 + sep;
@@ -580,7 +582,7 @@ namespace CmsCheckin
                             @class = g.First().@class,
                         };
                 foreach (var li in q)
-                    CmsCheckin.Print.Label(li, time, securitycode);
+                    CmsCheckin.Print.Label(li, time, Program.SecurityCode);
                 if (q.Sum(li => li.n) > 0)
                     CmsCheckin.Print.BlankLabel();
             }
@@ -606,7 +608,8 @@ namespace CmsCheckin
             foreach (var c in sucontrols)
             {
                 c.Enabled = true;
-                c.BackColor = Color.Coral;
+                if (c.BackColor == SystemColors.Control)
+                    c.BackColor = Color.Coral;
             }
         }
 
