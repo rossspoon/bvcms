@@ -99,7 +99,8 @@ namespace CmsCheckin
 
         private void TakePicture_FormClosing(object sender, FormClosingEventArgs e)
         {
-            cam.Dispose();
+            if (cam != null)
+                cam.Dispose();
         }
 
         private void Return_Click(object sender, EventArgs e)

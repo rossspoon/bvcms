@@ -292,7 +292,12 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
                 doc.Add(mct);
             }
-            pageEvents.EndPageSet();
+            if (!pageEvents.EndPageSet())
+            {
+                pageEvents.StartPageSet();
+                doc.Add(new Phrase("no data"));
+                pageEvents.EndPageSet();
+            }
             doc.Close();
         }
     }
@@ -312,14 +317,15 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
             font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             dc = writer.DirectContent;
         }
-        public void EndPageSet()
+        public bool EndPageSet()
         {
             if (npages == null)
-                return;
+                return false;
             npages.BeginText();
             npages.SetFontAndSize(font, 8);
             npages.ShowText((writer.PageNumber + 1).ToString());
             npages.EndText();
+            return true;
         }
         public void StartPageSet()
         {

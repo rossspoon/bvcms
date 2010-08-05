@@ -394,6 +394,32 @@ namespace CmsData
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
+        //internal static Expression IsTopGiver(
+        //    ParameterExpression parm,
+        //    int days,
+        //    CompareType op,
+        //    int top)
+        //{
+        //    //int[] ReturnedReversedTypes = new int[] 
+        //    //{ 
+        //    //    (int)Contribution.TypeCode.ReturnedCheck, 
+        //    //    (int)Contribution.TypeCode.Reversed 
+        //    //};
+        //    //var mindt = Util.Now.AddDays(-days).Date;
+        //    //Expression<Func<Person, decimal?>> pred = p =>
+        //    //    p.Contributions.Where(c => c.ContributionDate >= mindt
+        //    //        && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
+        //    //            || (p.Family.HeadOfHouseholdId == p.PeopleId
+        //    //                && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
+        //    //        && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+        //    //        && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+        //    //    ).Sum(c => c.ContributionAmount) ?? 0;
+        //    //Expression left = Expression.Invoke(pred, parm);
+        //    //var right = Expression.Convert(Expression.Constant(amt), left.Type);
+        //    //if (HttpContext.Current.User.IsInRole("Finance"))
+        //    //    return Compare(left, op, right);
+        //    //return Compare(right, CompareType.NotEqual, right);
+        //}
         internal static Expression NumberOfFamilyMembers(
             ParameterExpression parm,
             CompareType op,

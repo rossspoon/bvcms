@@ -69,7 +69,6 @@ namespace CmsCheckin
         {
 #if DEBUG
             cbDayOfWeek.SelectedIndex = 0;
-            Program.TestMode = true;
             HideCursor.Checked = false;
 #endif
             var prtdoc = new PrintDocument();

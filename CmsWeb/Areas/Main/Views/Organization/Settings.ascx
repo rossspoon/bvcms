@@ -58,6 +58,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.AllowNonCampusCheckIn) %></td>
     </tr>
     <tr>
+        <th>No security label required:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.NoSecurityLabel) %></td>
+    </tr>
+    <tr>
         <th>Number of CheckIn Labels:</th>
         <td><%=Model.org.NumCheckInLabels%></td>
     </tr>

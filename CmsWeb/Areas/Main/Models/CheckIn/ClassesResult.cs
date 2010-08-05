@@ -88,6 +88,7 @@ namespace CmsWeb.Models
                              o.BirthDayEnd,
                              o.MeetingTime,
                              o.OrganizationName,
+                             o.NumCheckInLabels,
                              o.Limit,
                              MemberCount = o.OrganizationMembers.Count(om =>
                                  om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
@@ -116,6 +117,7 @@ namespace CmsWeb.Models
                         display = "{0:hh:mm tt} {1}{2}{3}{4}"
                             .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays);
                     w.WriteAttributeString("display", display);
+                    w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

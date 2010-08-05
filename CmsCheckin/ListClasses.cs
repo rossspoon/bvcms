@@ -125,6 +125,7 @@ namespace CmsCheckin
                 {
                     oid = e.Attribute("orgid").Value.ToInt(),
                     pid = PeopleId,
+                    nlabels = e.Attribute("nlabels").Value.ToInt()
                 };
                 ab.Tag = c;
                 ab.Text = e.Attribute("display").Value;
@@ -152,6 +153,7 @@ namespace CmsCheckin
             Util.CheckUnCheckClass(ra);
             ShowAllClasses = false;
             this.Swap(Program.family);
+            Program.family.classlist.Add(c);
             Program.family.ShowFamily(FamilyId, 1);
         }
 
@@ -193,5 +195,6 @@ namespace CmsCheckin
         public int pid { get; set; }
         public string mv { get; set; }
         public string bdays { get; set; }
+        public int nlabels { get; set; }
     }
 }

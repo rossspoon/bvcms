@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <th>PDF:</th>
-            <td><asp:CheckBox ID="PDF" Checked="true" runat="server" /></td>
+            <td><asp:CheckBox ID="PDF" Checked="true" runat="server" /> (otherwise, text extract)</td>
         </tr>
         <tr>
             <th>Start Date:</th>
@@ -65,8 +65,8 @@
         </tr>
         <tr>
             <td colspan="2" align="center"><asp:Button ID="btnCSExtract" Width="114px"
-                    ToolTip="Press to create Contribution Statement Extract" 
-                    CausesValidation="true" runat="server" Text="Extract" ValidationGroup="vgDates" 
+                    ToolTip="Press to create Contribution Statements" 
+                    CausesValidation="true" runat="server" Text="Run" ValidationGroup="vgDates" 
                     onclick="ProcessRequest" /></td>
         </tr>
     </table>

@@ -15,6 +15,8 @@ namespace CmsWeb.Models.PersonPage
 
         public string Comments { get; set; }
         public string shirtsize { get; set; }
+        public bool? custody { get; set; }
+        public bool? transport { get; set; }
         public string emcontact { get; set; }
         public string emphone { get; set; }
         public string insurance { get; set; }
@@ -57,7 +59,9 @@ namespace CmsWeb.Models.PersonPage
                         mname = r.Mname,
                         otherchurch = r.ActiveInAnotherChurch ?? false,
                         policy = r.Policy,
-                        shirtsize = r.ShirtSize
+                        shirtsize = r.ShirtSize,
+                        custody = r.Person.CustodyIssue,
+                        transport = r.Person.OkTransport,
                     };
             var rr = q.FirstOrDefault();
             if (rr == null)
@@ -92,6 +96,8 @@ namespace CmsWeb.Models.PersonPage
             rr.Mname = mname;
             rr.Policy = policy;
             rr.ShirtSize = shirtsize;
+            p.CustodyIssue = custody;
+            p.OkTransport = transport;
 
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Updated RecReg: {0}".Fmt(p.Name));

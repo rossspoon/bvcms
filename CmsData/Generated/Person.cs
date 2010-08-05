@@ -247,6 +247,10 @@ namespace CmsData
 		
 		private int? _Age;
 		
+		private bool? _CustodyIssue;
+		
+		private bool? _OkTransport;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -714,6 +718,12 @@ namespace CmsData
 		
 		partial void OnAgeChanging(int? value);
 		partial void OnAgeChanged();
+		
+		partial void OnCustodyIssueChanging(bool? value);
+		partial void OnCustodyIssueChanged();
+		
+		partial void OnOkTransportChanging(bool? value);
+		partial void OnOkTransportChanged();
 		
     #endregion
 		public Person()
@@ -3429,6 +3439,50 @@ namespace CmsData
 					this._Age = value;
 					this.SendPropertyChanged("Age");
 					this.OnAgeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CustodyIssue", UpdateCheck=UpdateCheck.Never, Storage="_CustodyIssue", DbType="bit")]
+		public bool? CustodyIssue
+		{
+			get { return this._CustodyIssue; }
+
+			set
+			{
+				if (this._CustodyIssue != value)
+				{
+				
+                    this.OnCustodyIssueChanging(value);
+					this.SendPropertyChanging();
+					this._CustodyIssue = value;
+					this.SendPropertyChanged("CustodyIssue");
+					this.OnCustodyIssueChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OkTransport", UpdateCheck=UpdateCheck.Never, Storage="_OkTransport", DbType="bit")]
+		public bool? OkTransport
+		{
+			get { return this._OkTransport; }
+
+			set
+			{
+				if (this._OkTransport != value)
+				{
+				
+                    this.OnOkTransportChanging(value);
+					this.SendPropertyChanging();
+					this._OkTransport = value;
+					this.SendPropertyChanged("OkTransport");
+					this.OnOkTransportChanged();
 				}
 
 			}

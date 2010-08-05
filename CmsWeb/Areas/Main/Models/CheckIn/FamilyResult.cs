@@ -87,6 +87,8 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("first", c.First);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
+                    w.WriteAttributeString("orgname", c.Class);
+                    w.WriteAttributeString("leader", c.Leader);
                     w.WriteAttributeString("orgid", c.OrgId.ToString());
                     w.WriteAttributeString("loc", c.Location);
                     w.WriteAttributeString("gender", c.gender.ToString());
@@ -94,6 +96,10 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("age", c.Age.ToString());
                     w.WriteAttributeString("numlabels", c.NumLabels.ToString());
                     w.WriteAttributeString("checkedin", c.CheckedIn.ToString());
+                    w.WriteAttributeString("custody", c.Custody.ToString());
+                    w.WriteAttributeString("transport", c.Transport.ToString());
+                    w.WriteAttributeString("hour", c.Hour.ToString());
+                    w.WriteAttributeString("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
 
                     w.WriteAttributeString("email", c.email);
                     w.WriteAttributeString("dob", c.dob);

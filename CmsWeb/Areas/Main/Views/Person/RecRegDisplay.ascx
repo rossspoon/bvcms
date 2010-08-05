@@ -9,6 +9,14 @@
         <td><%=Model.shirtsize %></td>
     </tr>
     <tr>
+        <td>Custody Issue</td>
+        <td><%=Html.CheckBoxReadonly(Model.custody) %></td>
+    </tr>
+    <tr>
+        <td>OK to transport</td>
+        <td><%=Html.CheckBoxReadonly(Model.transport) %></td>
+    </tr>
+    <tr>
         <td><label for="emcontact">Emergency Friend</label></td>
         <td><%=Model.emcontact %></td>
     </tr>

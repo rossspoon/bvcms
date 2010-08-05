@@ -18,6 +18,9 @@ namespace CmsCheckin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+#if DEBUG
+            Program.TestMode = true;
+#endif
             if (args.Length > 0)
                 TestMode = args[0] == "test";
 
@@ -32,7 +35,7 @@ namespace CmsCheckin
                     URL = login.URL.Text;
                 else
                     URL = "https://" + login.URL.Text;
-            } while (!Util.Authenticate(login.username.Text, login.password.Text));
+            } while (!Util.Authenticate(login.username.Text, login.password.Text) && !TestMode);
 
             var f = new StartUp();
             var ret = f.ShowDialog();

@@ -109,11 +109,8 @@
                             <asp:HyperLink NavigateUrl="#" runat="server">Reports</asp:HyperLink>
                             <ul>
                                 <li>
-                                    <asp:HyperLink ID="HyperLink21" NavigateUrl="/Reports/ContributionStatement/0?FromDate="
-                                        runat="server">Statements</asp:HyperLink></li>
-                                <li>
                                     <asp:HyperLink ID="HyperLink14" NavigateUrl="~/Contributions/Reports/ContributionStatementExtract.aspx"
-                                        runat="server">Statements Extract</asp:HyperLink></li>
+                                        runat="server">Statements (All)</asp:HyperLink></li>
                                 <li>
                                     <asp:HyperLink ID="HyperLink12" NavigateUrl="~/Contributions/GLExtract.aspx" runat="server">GL Extract</asp:HyperLink></li>
                                 <li>

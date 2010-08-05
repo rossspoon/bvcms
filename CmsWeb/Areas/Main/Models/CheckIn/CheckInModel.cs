@@ -94,7 +94,10 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = om.Person.Grade,
-                    HasPicture = HasImage(om.Person.Picture.LargeId),
+                    HasPicture = om.Person.PictureId != null,
+                    Custody = (om.Person.CustodyIssue ?? false) == true,
+                    Transport = (om.Person.OkTransport ?? false) == true,
+                    RequiresSecurityLabel = (om.MemberTypeId == 220) && (om.Person.Age ?? 0) < 11 && (om.Organization.NoSecurityLabel ?? false) == false,
                 };
 
             // now get recent visitors
@@ -150,7 +153,10 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = a.Person.Grade,
-                    HasPicture = HasImage(a.Person.Picture.LargeId),
+                    HasPicture = a.Person.PictureId != null,
+                    Custody = (a.Person.CustodyIssue ?? false) == true,
+                    Transport = (a.Person.OkTransport ?? false) == true,
+                    RequiresSecurityLabel = ((a.Person.Age ?? 0) < 11) && (a.Organization.NoSecurityLabel ?? false) == false,
                 };
 
             var list = members.ToList();
@@ -194,6 +200,7 @@ namespace CmsWeb.Models
                     BDay = p.BirthDay,
                     Class = oldervisitor ? VisitorOrgName : PleaseVisit,
                     OrgId = oldervisitor ? VisitorOrgId : 0,
+                    Leader = "",
                     Age = p.Age ?? 0,
                     Gender = p.Gender.Code,
                     NumLabels = 1,
@@ -214,7 +221,10 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = p.Grade,
-                    HasPicture = HasImage(p.Picture.LargeId),
+                    HasPicture = p.PictureId != null,
+                    Custody = p.CustodyIssue ?? false,
+                    Transport = p.OkTransport ?? false,
+                    RequiresSecurityLabel = false,
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)

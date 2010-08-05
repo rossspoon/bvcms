@@ -34,6 +34,10 @@
         <td><%=Html.CheckBox("org.AllowNonCampusCheckin")%></td>
     </tr>
     <tr>
+        <th>No security label required:</th>
+        <td><%=Html.CheckBox("org.NoSecurityLabel") %></td>
+    </tr>
+    <tr>
         <th>Number of CheckIn Labels:</th>
         <td><%=Html.TextBox("org.NumCheckInLabels")%></td>
     </tr>

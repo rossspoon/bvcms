@@ -7,6 +7,14 @@
         <td><%= Html.ValidationMessage("shirtsize")%></td>
     </tr>
     <tr>
+        <td>Custody Issue</td>
+        <td><%= Html.CheckBox("custody") %></td>
+    </tr>
+    <tr>
+        <td>OK to transport</td>
+        <td><%= Html.CheckBox("transport") %></td>
+    </tr>
+    <tr>
         <td><label for="emcontact">Emergency Friend</label></td>
         <td><%= Html.TextBox("emcontact", Model.emcontact, new { maxlength = 100 }) %></td>
         <td><%= Html.ValidationMessage("emcontact")%></td>

@@ -199,6 +199,8 @@ namespace CmsData
 		
 		private string _ShirtSizes;
 		
+		private bool? _NoSecurityLabel;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -520,6 +522,9 @@ namespace CmsData
 		
 		partial void OnShirtSizesChanging(string value);
 		partial void OnShirtSizesChanged();
+		
+		partial void OnNoSecurityLabelChanging(bool? value);
+		partial void OnNoSecurityLabelChanged();
 		
     #endregion
 		public Organization()
@@ -2591,6 +2596,28 @@ namespace CmsData
 					this._ShirtSizes = value;
 					this.SendPropertyChanged("ShirtSizes");
 					this.OnShirtSizesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoSecurityLabel", UpdateCheck=UpdateCheck.Never, Storage="_NoSecurityLabel", DbType="bit")]
+		public bool? NoSecurityLabel
+		{
+			get { return this._NoSecurityLabel; }
+
+			set
+			{
+				if (this._NoSecurityLabel != value)
+				{
+				
+                    this.OnNoSecurityLabelChanging(value);
+					this.SendPropertyChanging();
+					this._NoSecurityLabel = value;
+					this.SendPropertyChanged("NoSecurityLabel");
+					this.OnNoSecurityLabelChanged();
 				}
 
 			}

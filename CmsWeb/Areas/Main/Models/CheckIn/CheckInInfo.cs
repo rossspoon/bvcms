@@ -44,13 +44,20 @@ namespace CmsWeb.Models
         {
             get
             {
-                if (Hour.HasValue)
-                    return "{0} ({1:h:mm})".Fmt(
-                        CmsData.Organization.FormatOrgName(Class, Leader, Location), Hour);
-                return Class;
+                string s = "";
+                if (Location.HasValue())
+                    if (!Class.StartsWith(Location))
+                        s = Location + ", ";
+                s += Class;
+                if (Leader.HasValue())
+                    s += ", " + Leader;
+                return s;
             }
         }
         public bool CheckedIn { get; set; }
+        public bool Custody { get; set; }
+        public bool Transport { get; set; }
+        public bool RequiresSecurityLabel { get; set; }
 
         public string dob
         {
