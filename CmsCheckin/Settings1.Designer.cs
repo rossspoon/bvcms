@@ -142,5 +142,17 @@ namespace CmsCheckin {
                 this["username"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AskChurchName {
+            get {
+                return ((bool)(this["AskChurchName"]));
+            }
+            set {
+                this["AskChurchName"] = value;
+            }
+        }
     }
 }

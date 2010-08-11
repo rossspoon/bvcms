@@ -204,13 +204,13 @@ namespace CmsData
             {
                 HttpContext.Current.Items["attendinfo"] = o;
                 DbUtil.Db.SubmitChanges();
+                DbUtil.Db.UpdateAttendStr(o.Meeting.OrganizationId, PeopleId);
             }
             catch (SqlException ex)
             {
                 throw new Exception("Error recording attendance pid={0},dt={1}".Fmt(PeopleId, o.Meeting.MeetingDate), ex);
             }
 
-            DbUtil.Db.UpdateAttendStr(o.Meeting.OrganizationId, PeopleId);
             foreach (var m in OtherMeetings)
             {
                 DbUtil.Db.UpdateAttendStr(m.OrganizationId, PeopleId);

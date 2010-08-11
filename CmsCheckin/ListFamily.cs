@@ -61,7 +61,7 @@ namespace CmsCheckin
         }
 
         private bool hasprinter;
-        bool LabelsPrinted;
+        int LabelsPrinted;
         bool RequiresSecurityLabel;
         DateTime time;
         int? next, prev;
@@ -590,11 +590,11 @@ namespace CmsCheckin
         {
             Util.UnLockFamily();
             PrintLabels();
-            if (LabelsPrinted)
+            if (LabelsPrinted > 0)
             {
                 if (RequiresSecurityLabel)
-                    CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
-                CmsCheckin.Print.BlankLabel();
+                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
+                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
             }
         }
         private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -636,11 +636,12 @@ namespace CmsCheckin
                 foreach (var li in q)
                     CmsCheckin.Print.LabelKiosk(li);
                 if (q.Sum(li => li.n) > 0)
-                    CmsCheckin.Print.BlankLabel();
+                    CmsCheckin.Print.BlankLabel(true);
             }
             else
             {
                 var q = from c in list
+                        where c.NumLabels > 0
                         select new LabelInfo
                         {
                             allergies = c.allergies,
@@ -656,9 +657,19 @@ namespace CmsCheckin
                             transport = c.transport,
                             requiressecuritylabel = c.RequiresSecurityLabel,
                         };
+                int tn = q.Count();
+                int n = 1;
                 foreach (var li in q)
-                    CmsCheckin.Print.Label(li, time, Program.SecurityCode);
-                LabelsPrinted = q.Sum(li => li.n) > 0;
+                    LabelsPrinted += CmsCheckin.Print.Label(li, n++, tn, 1, time, Program.SecurityCode);
+                n = 1;
+                foreach (var li in q)
+                    LabelsPrinted += CmsCheckin.Print.Label(li, n++, tn, li.n - 1, time, Program.SecurityCode);
+
+                foreach (var li in q)
+                    LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
+                foreach (var li in q)
+                    LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
+
                 RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
             }
         }
@@ -671,7 +682,7 @@ namespace CmsCheckin
             }
             controls.Clear();
             rows = 0;
-            LabelsPrinted = false;
+            LabelsPrinted = 0;
             sucontrols.Clear();
             sucontrols.Add(bAddToFamily);
             bAddToFamily.BackColor = SystemColors.Control;

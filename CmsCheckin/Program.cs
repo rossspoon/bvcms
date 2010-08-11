@@ -52,6 +52,7 @@ namespace CmsCheckin
             AskEmFriend = f.AskEmFriend.Checked;
             KioskMode = f.KioskMode.Checked;
             AskChurch = f.AskChurch.Checked;
+            AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
 
             f.Dispose();
@@ -84,6 +85,7 @@ namespace CmsCheckin
         public static bool AskEmFriend { get; set; }
         public static bool AskGrade { get; set; }
         public static bool AskChurch { get; set; }
+        public static bool AskChurchName { get; set; }
 
         public static string QueryString
         {
@@ -104,6 +106,7 @@ namespace CmsCheckin
         public static ListNames names;
 
         public static EnterText allergy;
+        public static EnterText church;
         public static EnterText emfriend;
         public static EnterNumber grade;
         public static EnterPhone emphone;

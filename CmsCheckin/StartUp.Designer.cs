@@ -45,6 +45,7 @@
             this.AskGrade = new System.Windows.Forms.CheckBox();
             this.AskChurch = new System.Windows.Forms.CheckBox();
             this.EnableTimer = new System.Windows.Forms.CheckBox();
+            this.AskChurchName = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -101,7 +102,7 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(494, 455);
+            this.HideCursor.Location = new System.Drawing.Point(532, 456);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(105, 21);
             this.HideCursor.TabIndex = 21;
@@ -194,7 +195,7 @@
             // 
             this.AskEmFriend.AutoSize = true;
             this.AskEmFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskEmFriend.Location = new System.Drawing.Point(229, 376);
+            this.AskEmFriend.Location = new System.Drawing.Point(23, 377);
             this.AskEmFriend.Name = "AskEmFriend";
             this.AskEmFriend.Size = new System.Drawing.Size(232, 29);
             this.AskEmFriend.TabIndex = 18;
@@ -205,7 +206,7 @@
             // 
             this.KioskMode.AutoSize = true;
             this.KioskMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KioskMode.Location = new System.Drawing.Point(229, 341);
+            this.KioskMode.Location = new System.Drawing.Point(23, 342);
             this.KioskMode.Name = "KioskMode";
             this.KioskMode.Size = new System.Drawing.Size(191, 29);
             this.KioskMode.TabIndex = 17;
@@ -216,7 +217,7 @@
             // 
             this.AskGrade.AutoSize = true;
             this.AskGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskGrade.Location = new System.Drawing.Point(229, 411);
+            this.AskGrade.Location = new System.Drawing.Point(271, 377);
             this.AskGrade.Name = "AskGrade";
             this.AskGrade.Size = new System.Drawing.Size(127, 29);
             this.AskGrade.TabIndex = 19;
@@ -227,7 +228,7 @@
             // 
             this.AskChurch.AutoSize = true;
             this.AskChurch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskChurch.Location = new System.Drawing.Point(229, 447);
+            this.AskChurch.Location = new System.Drawing.Point(23, 413);
             this.AskChurch.Name = "AskChurch";
             this.AskChurch.Size = new System.Drawing.Size(137, 29);
             this.AskChurch.TabIndex = 20;
@@ -240,12 +241,23 @@
             this.EnableTimer.Checked = true;
             this.EnableTimer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EnableTimer.Location = new System.Drawing.Point(229, 306);
+            this.EnableTimer.Location = new System.Drawing.Point(23, 307);
             this.EnableTimer.Name = "EnableTimer";
             this.EnableTimer.Size = new System.Drawing.Size(150, 29);
             this.EnableTimer.TabIndex = 16;
             this.EnableTimer.Text = "Enable Timer";
             this.EnableTimer.UseVisualStyleBackColor = true;
+            // 
+            // AskChurchName
+            // 
+            this.AskChurchName.AutoSize = true;
+            this.AskChurchName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AskChurchName.Location = new System.Drawing.Point(271, 412);
+            this.AskChurchName.Name = "AskChurchName";
+            this.AskChurchName.Size = new System.Drawing.Size(194, 29);
+            this.AskChurchName.TabIndex = 20;
+            this.AskChurchName.Text = "Ask Church Name";
+            this.AskChurchName.UseVisualStyleBackColor = true;
             // 
             // StartUp
             // 
@@ -253,6 +265,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 506);
             this.Controls.Add(this.EnableTimer);
+            this.Controls.Add(this.AskChurchName);
             this.Controls.Add(this.AskChurch);
             this.Controls.Add(this.AskGrade);
             this.Controls.Add(this.KioskMode);
@@ -298,5 +311,6 @@
         public System.Windows.Forms.CheckBox AskGrade;
         public System.Windows.Forms.CheckBox AskChurch;
         public System.Windows.Forms.CheckBox EnableTimer;
+        public System.Windows.Forms.CheckBox AskChurchName;
     }
 }

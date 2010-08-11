@@ -71,6 +71,12 @@
             this.ActiveOther = new System.Windows.Forms.CheckBox();
             this.ParentName = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.churchnameLab = new System.Windows.Forms.Label();
+            this.churchname = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -112,7 +118,7 @@
             this.groupBox1.Controls.Add(this.Female);
             this.groupBox1.Controls.Add(this.Male);
             this.groupBox1.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(246, 442);
+            this.groupBox1.Location = new System.Drawing.Point(246, 460);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(174, 178);
             this.groupBox1.TabIndex = 36;
@@ -147,11 +153,13 @@
             this.groupBox2.Controls.Add(this.separated);
             this.groupBox2.Controls.Add(this.married);
             this.groupBox2.Controls.Add(this.single);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox2.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(493, 442);
+            this.groupBox2.Location = new System.Drawing.Point(493, 460);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(426, 227);
+            this.groupBox2.Size = new System.Drawing.Size(426, 199);
             this.groupBox2.TabIndex = 37;
             this.groupBox2.TabStop = false;
             // 
@@ -160,7 +168,7 @@
             this.widowed.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.widowed.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.widowed.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.widowed.Location = new System.Drawing.Point(206, 159);
+            this.widowed.Location = new System.Drawing.Point(206, 145);
             this.widowed.Name = "widowed";
             this.widowed.Size = new System.Drawing.Size(198, 60);
             this.widowed.TabIndex = 3;
@@ -173,7 +181,7 @@
             this.divorced.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.divorced.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.divorced.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.divorced.Location = new System.Drawing.Point(206, 93);
+            this.divorced.Location = new System.Drawing.Point(206, 85);
             this.divorced.Name = "divorced";
             this.divorced.Size = new System.Drawing.Size(198, 60);
             this.divorced.TabIndex = 3;
@@ -199,7 +207,7 @@
             this.married.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.married.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDark;
             this.married.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.married.Location = new System.Drawing.Point(6, 94);
+            this.married.Location = new System.Drawing.Point(6, 86);
             this.married.Name = "married";
             this.married.Size = new System.Drawing.Size(164, 60);
             this.married.TabIndex = 1;
@@ -476,7 +484,7 @@
             this.allergies.AutoSize = true;
             this.allergies.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.allergies.ForeColor = System.Drawing.Color.Firebrick;
-            this.allergies.Location = new System.Drawing.Point(162, 214);
+            this.allergies.Location = new System.Drawing.Point(162, 207);
             this.allergies.Name = "allergies";
             this.allergies.Size = new System.Drawing.Size(0, 34);
             this.allergies.TabIndex = 56;
@@ -487,7 +495,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label11.Location = new System.Drawing.Point(16, 214);
+            this.label11.Location = new System.Drawing.Point(16, 207);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(139, 34);
             this.label11.TabIndex = 57;
@@ -500,7 +508,7 @@
             this.emfriendlab.AutoSize = true;
             this.emfriendlab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emfriendlab.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.emfriendlab.Location = new System.Drawing.Point(53, 335);
+            this.emfriendlab.Location = new System.Drawing.Point(51, 317);
             this.emfriendlab.Name = "emfriendlab";
             this.emfriendlab.Size = new System.Drawing.Size(104, 34);
             this.emfriendlab.TabIndex = 58;
@@ -513,7 +521,7 @@
             this.emphonelab.AutoSize = true;
             this.emphonelab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emphonelab.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.emphonelab.Location = new System.Drawing.Point(53, 369);
+            this.emphonelab.Location = new System.Drawing.Point(51, 351);
             this.emphonelab.Name = "emphonelab";
             this.emphonelab.Size = new System.Drawing.Size(102, 34);
             this.emphonelab.TabIndex = 59;
@@ -525,7 +533,7 @@
             this.EmFriend.AutoSize = true;
             this.EmFriend.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EmFriend.ForeColor = System.Drawing.Color.Firebrick;
-            this.EmFriend.Location = new System.Drawing.Point(162, 335);
+            this.EmFriend.Location = new System.Drawing.Point(160, 317);
             this.EmFriend.Name = "EmFriend";
             this.EmFriend.Size = new System.Drawing.Size(0, 34);
             this.EmFriend.TabIndex = 60;
@@ -535,7 +543,7 @@
             this.EmPhone.AutoSize = true;
             this.EmPhone.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EmPhone.ForeColor = System.Drawing.Color.Firebrick;
-            this.EmPhone.Location = new System.Drawing.Point(162, 369);
+            this.EmPhone.Location = new System.Drawing.Point(160, 351);
             this.EmPhone.Name = "EmPhone";
             this.EmPhone.Size = new System.Drawing.Size(0, 34);
             this.EmPhone.TabIndex = 61;
@@ -544,11 +552,11 @@
             // 
             this.emergencylab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.emergencylab.AutoSize = true;
-            this.emergencylab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emergencylab.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emergencylab.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.emergencylab.Location = new System.Drawing.Point(3, 264);
+            this.emergencylab.Location = new System.Drawing.Point(17, 258);
             this.emergencylab.Name = "emergencylab";
-            this.emergencylab.Size = new System.Drawing.Size(173, 34);
+            this.emergencylab.Size = new System.Drawing.Size(136, 25);
             this.emergencylab.TabIndex = 62;
             this.emergencylab.Text = "Emergency";
             this.emergencylab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -558,7 +566,7 @@
             this.grade.AutoSize = true;
             this.grade.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grade.ForeColor = System.Drawing.Color.Firebrick;
-            this.grade.Location = new System.Drawing.Point(781, 332);
+            this.grade.Location = new System.Drawing.Point(779, 314);
             this.grade.Name = "grade";
             this.grade.Size = new System.Drawing.Size(0, 34);
             this.grade.TabIndex = 42;
@@ -569,7 +577,7 @@
             this.gradelab.AutoSize = true;
             this.gradelab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gradelab.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.gradelab.Location = new System.Drawing.Point(674, 332);
+            this.gradelab.Location = new System.Drawing.Point(672, 314);
             this.gradelab.Name = "gradelab";
             this.gradelab.Size = new System.Drawing.Size(100, 34);
             this.gradelab.TabIndex = 49;
@@ -583,7 +591,7 @@
             this.ActiveOther.Checked = true;
             this.ActiveOther.CheckState = System.Windows.Forms.CheckState.Indeterminate;
             this.ActiveOther.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ActiveOther.Location = new System.Drawing.Point(14, 413);
+            this.ActiveOther.Location = new System.Drawing.Point(14, 431);
             this.ActiveOther.Name = "ActiveOther";
             this.ActiveOther.Size = new System.Drawing.Size(394, 44);
             this.ActiveOther.TabIndex = 63;
@@ -596,7 +604,7 @@
             this.ParentName.AutoSize = true;
             this.ParentName.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ParentName.ForeColor = System.Drawing.Color.Firebrick;
-            this.ParentName.Location = new System.Drawing.Point(162, 301);
+            this.ParentName.Location = new System.Drawing.Point(160, 283);
             this.ParentName.Name = "ParentName";
             this.ParentName.Size = new System.Drawing.Size(0, 34);
             this.ParentName.TabIndex = 65;
@@ -607,16 +615,89 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label12.Location = new System.Drawing.Point(50, 301);
+            this.label12.Location = new System.Drawing.Point(48, 283);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(107, 34);
             this.label12.TabIndex = 64;
             this.label12.Text = "Parent";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Firebrick;
+            this.label9.Location = new System.Drawing.Point(77, -29);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 34);
+            this.label9.TabIndex = 51;
+            this.label9.Text = "label1";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label13.Location = new System.Drawing.Point(-57, -29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(127, 34);
+            this.label13.TabIndex = 52;
+            this.label13.Text = "Address";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.Firebrick;
+            this.label14.Location = new System.Drawing.Point(142, 645);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(102, 34);
+            this.label14.TabIndex = 51;
+            this.label14.Text = "label1";
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label15.Location = new System.Drawing.Point(8, 645);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(127, 34);
+            this.label15.TabIndex = 52;
+            this.label15.Text = "Address";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // churchnameLab
+            // 
+            this.churchnameLab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.churchnameLab.AutoSize = true;
+            this.churchnameLab.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.churchnameLab.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.churchnameLab.Location = new System.Drawing.Point(37, 394);
+            this.churchnameLab.Name = "churchnameLab";
+            this.churchnameLab.Size = new System.Drawing.Size(116, 34);
+            this.churchnameLab.TabIndex = 67;
+            this.churchnameLab.Text = "Church";
+            this.churchnameLab.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // churchname
+            // 
+            this.churchname.AutoSize = true;
+            this.churchname.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.churchname.ForeColor = System.Drawing.Color.Firebrick;
+            this.churchname.Location = new System.Drawing.Point(162, 394);
+            this.churchname.Name = "churchname";
+            this.churchname.Size = new System.Drawing.Size(0, 34);
+            this.churchname.TabIndex = 66;
+            // 
             // EnterGenderMarital
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.churchnameLab);
+            this.Controls.Add(this.churchname);
             this.Controls.Add(this.ParentName);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.ActiveOther);
@@ -624,7 +705,9 @@
             this.Controls.Add(this.EmPhone);
             this.Controls.Add(this.EmFriend);
             this.Controls.Add(this.emphonelab);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.emfriendlab);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.allergies);
             this.Controls.Add(this.button1);
@@ -659,6 +742,7 @@
             this.Size = new System.Drawing.Size(1024, 768);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -709,5 +793,11 @@
         private System.Windows.Forms.Label ParentName;
         private System.Windows.Forms.Label label12;
         public System.Windows.Forms.CheckBox ActiveOther;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label churchnameLab;
+        private System.Windows.Forms.Label churchname;
     }
 }

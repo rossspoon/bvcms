@@ -92,6 +92,7 @@ namespace CmsCheckin
             string parent, 
             string emfriend,
             string emphone,
+            string churchname, 
             CheckState activeother,
             int marital,
             int gender)
@@ -114,11 +115,28 @@ namespace CmsCheckin
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
             coll.Add("allergies", allergies);
-            coll.Add("grade", grade);
-            coll.Add("parent", parent);
-            coll.Add("emfriend", emfriend);
-            coll.Add("emphone", emphone.GetDigits());
-            coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+            if (Program.AskGrade)
+            {
+                coll.Add("grade", grade);
+                coll.Add("AskGrade", Program.AskGrade.ToString());
+            }
+            if (Program.AskChurchName)
+            {
+                coll.Add("churchname", churchname);
+                coll.Add("AskChurchName", Program.AskChurchName.ToString());
+            }
+            if (Program.AskEmFriend)
+            {
+                coll.Add("parent", parent);
+                coll.Add("emphone", emphone.GetDigits());
+                coll.Add("AskEmFriend", Program.AskEmFriend.ToString());
+                coll.Add("emfriend", emfriend);
+            }
+            if (Program.AskChurch)
+            {
+                coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+                coll.Add("AskChurch", Program.AskChurch.ToString());
+            }
 
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
 
@@ -143,6 +161,7 @@ namespace CmsCheckin
             string parent, 
             string emfriend,
             string emphone,
+            string churchname, 
             CheckState activeother,
             int marital,
             int gender)
@@ -165,11 +184,29 @@ namespace CmsCheckin
             coll.Add("gender", gender.ToString());
             coll.Add("campusid", Program.CampusId.ToString());
             coll.Add("allergies", allergies);
-            coll.Add("grade", grade);
-            coll.Add("parent", parent);
-            coll.Add("emfriend", emfriend);
-            coll.Add("emphone", emphone.GetDigits());
-            coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+            if (Program.AskGrade)
+            {
+                coll.Add("grade", grade);
+                coll.Add("AskGrade", Program.AskGrade.ToString());
+            }
+            if (Program.AskChurchName)
+            {
+                coll.Add("churchname", churchname);
+                coll.Add("AskChurchName", Program.AskChurchName.ToString());
+            }
+            if (Program.AskEmFriend)
+            {
+                coll.Add("parent", parent);
+                coll.Add("emphone", emphone.GetDigits());
+                coll.Add("AskEmFriend", Program.AskEmFriend.ToString());
+                coll.Add("emfriend", emfriend);
+            }
+            if (Program.AskChurch)
+            {
+                coll.Add("activeother", (activeother == CheckState.Checked).ToString());
+                coll.Add("AskChurch", Program.AskChurch.ToString());
+            }
+
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id);
 
             var resp = wc.UploadValues(url, "POST", coll);

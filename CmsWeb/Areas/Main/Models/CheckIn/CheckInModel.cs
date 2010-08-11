@@ -97,7 +97,7 @@ namespace CmsWeb.Models
                     HasPicture = om.Person.PictureId != null,
                     Custody = (om.Person.CustodyIssue ?? false) == true,
                     Transport = (om.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = (om.MemberTypeId == 220) && (om.Person.Age ?? 0) < 11 && (om.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = (om.MemberTypeId == 220) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
                 };
 
             // now get recent visitors
@@ -156,7 +156,7 @@ namespace CmsWeb.Models
                     HasPicture = a.Person.PictureId != null,
                     Custody = (a.Person.CustodyIssue ?? false) == true,
                     Transport = (a.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = ((a.Person.Age ?? 0) < 11) && (a.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = ((a.Person.Age ?? 0) < 18) && (a.Organization.NoSecurityLabel ?? false) == false,
                 };
 
             var list = members.ToList();

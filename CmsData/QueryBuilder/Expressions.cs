@@ -355,13 +355,14 @@ namespace CmsData
             };
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, int>> pred = p =>
-                p.Contributions.Count(c => c.ContributionDate >= mindt
-                    && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
-                        || (p.Family.HeadOfHouseholdId == p.PeopleId
-                            && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
+                DbUtil.Db.Contributions.Count(c => c.ContributionDate >= mindt
                     && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                );
+                    && (((p.ContributionOptionsId ?? 1) != (int)Person.EnvelopeOptionCode.Joint
+                            && p.PeopleId == c.PeopleId)
+                        || ((p.ContributionOptionsId ?? 1) == (int)Person.EnvelopeOptionCode.Joint
+                            && (p.PeopleId == c.PeopleId || p.SpouseId == c.PeopleId))
+                        ));
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -380,14 +381,17 @@ namespace CmsData
                 (int)Contribution.TypeCode.Reversed 
             };
             var mindt = Util.Now.AddDays(-days).Date;
+
             Expression<Func<Person, decimal?>> pred = p =>
-                p.Contributions.Where(c => c.ContributionDate >= mindt
-                    && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
-                        || (p.Family.HeadOfHouseholdId == p.PeopleId
-                            && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
-                    && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                    && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                ).Sum(c => c.ContributionAmount) ?? 0;
+            DbUtil.Db.Contributions.Where(c => c.ContributionDate >= mindt
+                && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+                && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                && (((p.ContributionOptionsId ?? 1) != (int)Person.EnvelopeOptionCode.Joint
+                        && p.PeopleId == c.PeopleId)
+                    || ((p.ContributionOptionsId ?? 0) == (int)Person.EnvelopeOptionCode.Joint
+                        && (p.PeopleId == c.PeopleId || p.SpouseId == c.PeopleId))
+                    )).Sum(c => c.ContributionAmount) ?? 0;
+
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))

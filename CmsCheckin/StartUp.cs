@@ -54,6 +54,7 @@ namespace CmsCheckin
                 Settings1.Default.Campus = ((Campus)(cbCampusId.SelectedItem)).Name;
             Settings1.Default.Printer = Printer.Text;
             Settings1.Default.AskChurch = AskChurch.Checked;
+            Settings1.Default.AskChurchName = AskChurchName.Checked;
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;
             Settings1.Default.AskGrade = AskGrade.Checked;
             Settings1.Default.KioskMode = KioskMode.Checked;
@@ -104,6 +105,7 @@ namespace CmsCheckin
             KioskMode.Checked = Settings1.Default.KioskMode;
             AskGrade.Checked = Settings1.Default.AskGrade;
             AskChurch.Checked = Settings1.Default.AskChurch;
+            AskChurchName.Checked = Settings1.Default.AskChurchName;
 
         }
     }

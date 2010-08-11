@@ -227,6 +227,8 @@ namespace CmsWeb.Models
         public void AssignPending()
         {
             var t = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == TargetClassId);
+            if (t == null)
+                return;
             var fromdiv = Promotion.FromDivId;
             var todiv = Promotion.ToDivId;
 

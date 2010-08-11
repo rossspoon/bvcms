@@ -21,6 +21,8 @@ namespace UtilityExtensions
         public static void Email(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
             var fr = FirstAddress(from);
+            if (fr == null)
+                fr = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             SendMsg(smtp, fr, subject, message, name, addrs, null);
@@ -28,6 +30,8 @@ namespace UtilityExtensions
         public static void EmailAlways(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
             var fr = FirstAddress(from);
+            if (fr == null)
+                fr = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
             SendMsg(smtp, fr, subject, message, name, addrs, null);
@@ -70,6 +74,8 @@ namespace UtilityExtensions
         public static void SendMsg(SmtpClient smtp, MailAddress From, string subject, string Message, string Name, string addr, Attachment attach)
         {
             var msg = new MailMessage();
+            if (From == null)
+                From = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             msg.From = From;
             var aa = addr.SplitStr(",;");
             foreach (var ad in aa)

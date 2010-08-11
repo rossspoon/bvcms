@@ -298,7 +298,9 @@ namespace CmsWeb.Models
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 
-            var re = new Regex(@"CT(?<rt>[\d?]+)A(?<ac>[\d ?]*)C(?<ck>[\d?]+)M",
+            var re = new Regex(
+@"(T(?<rt>[\d?]+)T(?<ac>[\d ?]*)U\s*(?<ck>[\d?]+))|
+(CT(?<rt>[\d?]+)A(?<ac>[\d ?]*)C(?<ck>[\d?]+)M)",
                 RegexOptions.IgnoreCase);
             var m = re.Match(lines);
             while (m.Success)

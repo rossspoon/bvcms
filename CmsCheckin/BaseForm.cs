@@ -117,13 +117,37 @@ namespace CmsCheckin
                 Program.homephone.SetBackNext(Program.cellphone, Program.parent);
                 Program.parent.SetBackNext(Program.homephone, Program.emfriend);
                 Program.emfriend.SetBackNext(Program.parent, Program.emphone);
-                Program.emphone.SetBackNext(Program.emfriend, Program.allergy);
-                Program.allergy.SetBackNext(Program.emphone, null);
+                if (Program.AskChurchName)
+                {
+                    Program.church = new EnterText("Church Name", true);
+                    ControlsAdd(Program.church);
+
+                    Program.emphone.SetBackNext(Program.emfriend, Program.church);
+                    Program.church.SetBackNext(Program.emphone, Program.allergy);
+                    Program.allergy.SetBackNext(Program.church, null);
+                }
+                else
+                {
+                    Program.emphone.SetBackNext(Program.emfriend, Program.allergy);
+                    Program.allergy.SetBackNext(Program.emphone, null);
+                }
             }
             else
             {
-                Program.homephone.SetBackNext(Program.cellphone, Program.allergy);
-                Program.allergy.SetBackNext(Program.homephone, null);
+                if (Program.AskChurchName)
+                {
+                    Program.church = new EnterText("Church Name", true);
+                    ControlsAdd(Program.church);
+
+                    Program.homephone.SetBackNext(Program.cellphone, Program.church);
+                    Program.church.SetBackNext(Program.homephone, Program.allergy);
+                    Program.allergy.SetBackNext(Program.church, null);
+                }
+                else
+                {
+                    Program.homephone.SetBackNext(Program.cellphone, Program.allergy);
+                    Program.allergy.SetBackNext(Program.homephone, null);
+                }
             }
             Program.allergy.GoNext += new EventHandler(allergy_GoNext);
         }

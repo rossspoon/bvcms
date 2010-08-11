@@ -70,10 +70,15 @@ namespace CmsWeb.Areas.Main.Controllers
             public string parent { get; set; }
             public string emfriend { get; set; }
             public string emphone { get; set; }
+            public string churchname { get; set; }
             public int marital { get; set; }
             public int gender { get; set; }
             public int campusid { get; set; }
             public string activeother { get; set; }
+            public bool AskChurch { get; set; }
+            public bool AskChurchName { get; set; }
+            public bool AskGrade { get; set; }
+            public bool AskEmFriend { get; set; }
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddPerson(int id, PersonInfo m)
@@ -144,18 +149,25 @@ namespace CmsWeb.Areas.Main.Controllers
             var rr = GetRecReg(p);
             if (m.allergies != rr.MedicalDescription)
                 SetRecReg(p).MedicalDescription = m.allergies;
-            if (m.grade.ToInt2() != p.Grade)
-                p.Grade = m.grade.ToInt2();
-            if (m.parent != rr.Mname)
-                SetRecReg(p).Mname = m.parent;
-            if (m.emfriend != rr.Emcontact)
-                SetRecReg(p).Emcontact = m.emfriend;
-            if (m.emphone != rr.Emphone)
-                SetRecReg(p).Emphone = m.emphone;
+            if (m.AskGrade)
+                if (m.grade.ToInt2() != p.Grade)
+                    p.Grade = m.grade.ToInt2();
+            if (m.AskEmFriend)
+            {
+                if (m.parent != rr.Mname)
+                    SetRecReg(p).Mname = m.parent;
+                if (m.emfriend != rr.Emcontact)
+                    SetRecReg(p).Emcontact = m.emfriend;
+                if (m.emphone != rr.Emphone)
+                    SetRecReg(p).Emphone = m.emphone;
+            }
             if (m.campusid > 0)
                 p.CampusId = m.campusid;
-            if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
-                SetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
+            if (m.AskChurch)
+                if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
+                    SetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
+            if (m.AskChurchName)
+                p.OtherNewChurch = m.churchname;
             DbUtil.Db.SubmitChanges();
         }
         private RecReg GetRecReg(Person p)

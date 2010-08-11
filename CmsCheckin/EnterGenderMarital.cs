@@ -37,8 +37,12 @@ namespace CmsCheckin
                 EmFriend.Text = Program.emfriend.textBox1.Text;
                 EmPhone.Text = Program.emphone.textBox1.Text;
             }
+            if (Program.AskChurchName)
+                churchname.Text = Program.church.textBox1.Text;
 
             ActiveOther.Visible = Program.AskChurch;
+            churchname.Visible = Program.AskChurchName;
+            churchnameLab.Visible = Program.AskChurchName;
             emfriendlab.Visible = Program.AskEmFriend;
             emphonelab.Visible = Program.AskEmFriend;
             emergencylab.Visible = Program.AskEmFriend;
@@ -77,12 +81,12 @@ namespace CmsCheckin
             if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
                 Program.homephone.textBox1.Text = cellphone.Text;
             if (Program.editing)
-                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
+                this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, marital, gender);
             else
             {
                 if (Program.FamilyId == 0 && !homephone.Text.HasValue() && cellphone.Text.HasValue())
                     homephone.Text = cellphone.Text;
-                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, marital, gender);
+                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, marital, gender);
             }
             Util.UnLockFamily();
 
@@ -182,6 +186,8 @@ namespace CmsCheckin
                 sb.AppendLine("first name needed");
             if (!last.Text.HasValue())
                 sb.AppendLine("last name needed");
+            if (!cellphone.Text.HasValue() && !homephone.Text.HasValue())
+                sb.AppendLine("phone number needed");
             if (Program.AskChurch && ActiveOther.CheckState == CheckState.Indeterminate)
                 sb.AppendLine("Active Other Church needed");
             if (sb.Length > 0)
@@ -197,7 +203,7 @@ namespace CmsCheckin
                 return;
             if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
                 Program.homephone.textBox1.Text = cellphone.Text;
-            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, ActiveOther.CheckState, Marital, Gender);
+            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, Marital, Gender);
             var s = this.ActiveOther.CheckState.ToString();
             Program.ClearFields();
             Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, s);
