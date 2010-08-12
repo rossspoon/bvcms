@@ -98,6 +98,7 @@ namespace CmsWeb.Models
                     Custody = (om.Person.CustodyIssue ?? false) == true,
                     Transport = (om.Person.OkTransport ?? false) == true,
                     RequiresSecurityLabel = (om.MemberTypeId == 220) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
+                    church = om.Person.OtherNewChurch,
                 };
 
             // now get recent visitors
@@ -157,6 +158,7 @@ namespace CmsWeb.Models
                     Custody = (a.Person.CustodyIssue ?? false) == true,
                     Transport = (a.Person.OkTransport ?? false) == true,
                     RequiresSecurityLabel = ((a.Person.Age ?? 0) < 18) && (a.Organization.NoSecurityLabel ?? false) == false,
+                    church = a.Person.OtherNewChurch,
                 };
 
             var list = members.ToList();
@@ -225,6 +227,7 @@ namespace CmsWeb.Models
                     Custody = p.CustodyIssue ?? false,
                     Transport = p.OkTransport ?? false,
                     RequiresSecurityLabel = false,
+                    church = p.OtherNewChurch,
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)
@@ -291,6 +294,8 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = om.Person.Grade,
+                    church = om.Person.OtherNewChurch,
+                    HasPicture = om.Person.PictureId != null,
                 };
 
             var list = members.ToList();
@@ -334,6 +339,8 @@ namespace CmsWeb.Models
                     activeother = recreg.ActiveInAnotherChurch ?? false,
                     parent = recreg.Mname ?? recreg.Fname,
                     grade = p.Grade,
+                    church = p.OtherNewChurch,
+                    HasPicture = p.PictureId != null,
                 };
             list.AddRange(otherfamily.ToList());
             var list2 = list.OrderBy(a => a.Position)

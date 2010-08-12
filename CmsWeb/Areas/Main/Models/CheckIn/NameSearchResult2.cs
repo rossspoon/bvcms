@@ -61,6 +61,7 @@ namespace CmsWeb.Models
                              fid = p.FamilyId,
                              pid = p.PeopleId,
                              zip = p.Family.ZipCode,
+                             church = p.OtherNewChurch,
 
                              allergies = recreg.MedicalDescription,
                              emfriend = recreg.Emcontact,
@@ -107,6 +108,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("emfriend", p.emfriend);
                     w.WriteAttributeString("emphone", p.emphone);
                     w.WriteAttributeString("activeother", p.activeother.ToString());
+                    w.WriteAttributeString("church", p.church);
                     
                     w.WriteEndElement();
                 }

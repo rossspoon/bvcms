@@ -293,7 +293,7 @@ namespace CmsCheckin
                 sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{4} of {5} | {0} |{1}{2}{3}^FS".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : ""), n, tn);
+                    li.custody ? " C |" : "", n, tn));
                 sw.WriteLine(@"^FT29,185^A0N,28,28^FH\^FD{0}^FS".Fmt(li.org));
                 sw.WriteLine(@"^FT473,48^A0N,28,28^FH\^FD{0:M/d/yy}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT474,77^A0N,28,28^FH\^FD{0:H:mm tt}^FS".Fmt(li.hour));
@@ -321,7 +321,7 @@ namespace CmsCheckin
                 sw.WriteLine("1911A1000190011{4} of {5} | {0} |{1}{2}{3}".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : ""), n, tn);
+                    li.custody ? " C |" : "", n, tn));
                 sw.WriteLine("1911A1000020011" + li.org);
                 sw.WriteLine("1911A1000610222{0:M/d/yy}".Fmt(li.hour));
                 sw.WriteLine("1911A1000470222{0:h:mm tt}".Fmt(li.hour));

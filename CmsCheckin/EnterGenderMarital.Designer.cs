@@ -39,6 +39,8 @@
             this.separated = new System.Windows.Forms.RadioButton();
             this.married = new System.Windows.Forms.RadioButton();
             this.single = new System.Windows.Forms.RadioButton();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.first = new System.Windows.Forms.Label();
             this.goesby = new System.Windows.Forms.Label();
             this.last = new System.Windows.Forms.Label();
@@ -71,10 +73,6 @@
             this.ActiveOther = new System.Windows.Forms.CheckBox();
             this.ParentName = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.churchnameLab = new System.Windows.Forms.Label();
             this.churchname = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -230,6 +228,30 @@
             this.single.Text = "Single";
             this.single.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.single.UseVisualStyleBackColor = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Firebrick;
+            this.label9.Location = new System.Drawing.Point(77, -29);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 34);
+            this.label9.TabIndex = 51;
+            this.label9.Text = "label1";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label13.Location = new System.Drawing.Point(-57, -29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(127, 34);
+            this.label13.TabIndex = 52;
+            this.label13.Text = "Address";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // first
             // 
@@ -622,54 +644,6 @@
             this.label12.Text = "Parent";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.Firebrick;
-            this.label9.Location = new System.Drawing.Point(77, -29);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(102, 34);
-            this.label9.TabIndex = 51;
-            this.label9.Text = "label1";
-            // 
-            // label13
-            // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label13.Location = new System.Drawing.Point(-57, -29);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(127, 34);
-            this.label13.TabIndex = 52;
-            this.label13.Text = "Address";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.Firebrick;
-            this.label14.Location = new System.Drawing.Point(142, 645);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(102, 34);
-            this.label14.TabIndex = 51;
-            this.label14.Text = "label1";
-            // 
-            // label15
-            // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label15.Location = new System.Drawing.Point(8, 645);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(127, 34);
-            this.label15.TabIndex = 52;
-            this.label15.Text = "Address";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // churchnameLab
             // 
             this.churchnameLab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -705,9 +679,7 @@
             this.Controls.Add(this.EmPhone);
             this.Controls.Add(this.EmFriend);
             this.Controls.Add(this.emphonelab);
-            this.Controls.Add(this.label15);
             this.Controls.Add(this.emfriendlab);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.allergies);
             this.Controls.Add(this.button1);
@@ -795,8 +767,6 @@
         public System.Windows.Forms.CheckBox ActiveOther;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label churchnameLab;
         private System.Windows.Forms.Label churchname;
     }

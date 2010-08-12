@@ -143,6 +143,7 @@ namespace CmsCheckin
             }
             cellphone.textBox1.Text = null;
             homephone.textBox1.Text = null;
+            church.textBox1.Text = null;
             gendermarital.Gender = 0;
             gendermarital.Marital = 0;
             if (AskChurch)
@@ -153,7 +154,7 @@ namespace CmsCheckin
             return s == bool.TrueString || s == "Checked" ? CheckState.Checked :
             s == bool.FalseString || s == "Unchecked" ? CheckState.Unchecked : CheckState.Indeterminate;
         }
-        public static void SetFields(string Last, string Email, string Addr, string Zip, string Home, string Parent, string EmFriend, string EmPhone, string AnotherChurch)
+        public static void SetFields(string Last, string Email, string Addr, string Zip, string Home, string Parent, string EmFriend, string EmPhone, string AnotherChurch, string ChurchName)
         {
             last.textBox1.Text = Last;
             email.textBox1.Text = Email;
@@ -166,6 +167,8 @@ namespace CmsCheckin
                 parent.textBox1.Text = Parent;
                 emphone.textBox1.Text = EmPhone;
             }
+            if (AskChurchName)
+                church.textBox1.Text = ChurchName;
             gendermarital.ActiveOther.CheckState = ActiveOther(AnotherChurch);
         }
         public static void Timer2Reset()

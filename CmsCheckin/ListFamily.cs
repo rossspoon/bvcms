@@ -16,6 +16,7 @@ namespace CmsCheckin
 {
     public partial class ListFamily : UserControl
     {
+        private const int ExtraPixelsName = 13;
         public ListFamily()
         {
             InitializeComponent();
@@ -138,6 +139,7 @@ namespace CmsCheckin
                     first = e.Attribute("first").Value,
                     last = e.Attribute("last").Value,
                     dob = e.Attribute("dob").Value,
+                    church = e.Attribute("church").Value,
 
                     goesby = e.Attribute("goesby").Value,
                     email = e.Attribute("email").Value,
@@ -192,7 +194,7 @@ namespace CmsCheckin
                     twidab = Math.Max(twidab, bwid);
 
                     size = g.MeasureString(c.name, font);
-                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + 12);
+                    widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + ExtraPixelsName);
 
                     size = g.MeasureString("{0:H:mm} {1}".Fmt(c.hour, c.org), font);
                     widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
@@ -461,7 +463,7 @@ namespace CmsCheckin
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
-                eb.Text = c.NumLabels.ToString();
+                eb.Text = c.NumLabels == 0 ? "" : c.NumLabels.ToString();
                 info.ischecked = true;
             }
             else
@@ -492,7 +494,7 @@ namespace CmsCheckin
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
-                eb.Text = c.NumLabels.ToString();
+                eb.Text = c.NumLabels == 0 ? "" : c.NumLabels.ToString();
                 info.ischecked = true;
             }
             else
@@ -549,7 +551,7 @@ namespace CmsCheckin
             var c = ab.Tag as AttendLabel;
 
             Program.PeopleId = c.cinfo.pid;
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother);
+            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             Program.first.textBox1.Text = c.first;
             Program.goesby.textBox1.Text = c.goesby;
             Program.dob.textBox1.Text = c.dob;
@@ -717,7 +719,7 @@ namespace CmsCheckin
             var ab = this.Controls[this.Controls.IndexOfKey("attend0")] as Button;
             var c = ab.Tag as AttendLabel;
 
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother);
+            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             Program.editing = false;
             Util.UnLockFamily();
             this.Swap(Program.first);
@@ -742,6 +744,7 @@ namespace CmsCheckin
         public string first { get; set; }
         public string last { get; set; }
         public string dob { get; set; }
+        public string church { get; set; }
 
         public string goesby { get; set; }
         public string email { get; set; }

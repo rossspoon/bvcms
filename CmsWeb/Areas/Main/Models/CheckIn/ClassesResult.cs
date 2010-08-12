@@ -42,8 +42,8 @@ namespace CmsWeb.Models
                 if (kioskmode == true)
                     q = from o in q
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
                         where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
                         where o.AllowKioskRegister == true

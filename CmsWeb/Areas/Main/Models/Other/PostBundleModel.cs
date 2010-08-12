@@ -90,9 +90,9 @@ namespace CmsWeb.Models
             foreach (var c in list)
             {
                 string s = null;
-                if (!c.PeopleId.HasValue && c.extra.HasValue())
+                if (!c.PeopleId.HasValue)
                 {
-                    s = c.extra;
+                    s = c.extra ?? "";
                     if (c.eac.HasValue())
                         s += " (" + Util.Decrypt(c.eac) + ")";
                     if (s.HasValue())
@@ -341,6 +341,7 @@ namespace CmsWeb.Models
                     bd.Contribution.BankAccount = eac;
                     bd.Contribution.ContributionDesc = ck;
                 }
+
                 m = m.NextMatch();
             }
             bh.TotalChecks = 0;

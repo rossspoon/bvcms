@@ -85,6 +85,7 @@ namespace CmsWeb.Models
         public string emphone { get; set; }
         public bool activeother { get; set; }
         public bool HasPicture { get; set; }
+        public string church { get; set; }
     }
     public class FamilyInfo
     {

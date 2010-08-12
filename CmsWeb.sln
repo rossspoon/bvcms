@@ -17,13 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWeb", "CMSWeb\CMSWeb.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsCheckin", "CmsCheckin\CmsCheckin.csproj", "{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeUploadPicture", "TakeUploadPicture\TakeUploadPicture.csproj", "{DF39F492-D882-4616-95CC-F9A617F08654}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FC942D51-94B5-456B-9683-0BA000A1EAF4} = {FC942D51-94B5-456B-9683-0BA000A1EAF4}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostBundle", "PostBundle\PostBundle\PostBundle.csproj", "{7A9FAD1A-2730-4078-9AA1-219BE8355181}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CmsCheckinSetup", "CmsCheckinSetup\CmsCheckinSetup\CmsCheckinSetup.vdproj", "{32D944A8-4C10-4EEC-B342-BC3BC21AE00F}"
 EndProject
 Global
@@ -271,62 +264,6 @@ Global
 		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|Itanium.ActiveCfg = Release|Any CPU
 		{6F00AEE1-5D32-4ACF-9B58-D3B3D12A3D04}.Release|x86.ActiveCfg = Release|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.BVCMSProduction|Any CPU.ActiveCfg = BVCMSProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.BVCMSProduction|Any CPU.Build.0 = BVCMSProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.BVCMSProduction|Itanium.ActiveCfg = BVCMSProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.BVCMSProduction|x86.ActiveCfg = BVCMSProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Cms2Production|Any CPU.ActiveCfg = Cms2Production|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Cms2Production|Any CPU.Build.0 = Cms2Production|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Cms2Production|Itanium.ActiveCfg = Cms2Production|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Cms2Production|x86.ActiveCfg = Cms2Production|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsTest|Any CPU.ActiveCfg = CmsTest|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsTest|Any CPU.Build.0 = CmsTest|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsTest|Itanium.ActiveCfg = CmsTest|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsTest|x86.ActiveCfg = CmsTest|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsWebProduction|Any CPU.ActiveCfg = CmsWebProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsWebProduction|Any CPU.Build.0 = CmsWebProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsWebProduction|Itanium.ActiveCfg = CmsWebProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.CmsWebProduction|x86.ActiveCfg = CmsWebProduction|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|Itanium.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|Itanium.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Default|x86.ActiveCfg = Debug|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|Itanium.ActiveCfg = Release|Any CPU
-		{DF39F492-D882-4616-95CC-F9A617F08654}.Release|x86.ActiveCfg = Release|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.BVCMSProduction|Any CPU.ActiveCfg = BVCMSProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.BVCMSProduction|Any CPU.Build.0 = BVCMSProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.BVCMSProduction|Itanium.ActiveCfg = BVCMSProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.BVCMSProduction|x86.ActiveCfg = BVCMSProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Cms2Production|Any CPU.ActiveCfg = Cms2Production|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Cms2Production|Any CPU.Build.0 = Cms2Production|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Cms2Production|Itanium.ActiveCfg = Cms2Production|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Cms2Production|x86.ActiveCfg = Cms2Production|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsTest|Any CPU.ActiveCfg = CmsTest|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsTest|Any CPU.Build.0 = CmsTest|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsTest|Itanium.ActiveCfg = CmsTest|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsTest|x86.ActiveCfg = CmsTest|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsWebProduction|Any CPU.ActiveCfg = CmsWebProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsWebProduction|Any CPU.Build.0 = CmsWebProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsWebProduction|Itanium.ActiveCfg = CmsWebProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.CmsWebProduction|x86.ActiveCfg = CmsWebProduction|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Debug|Itanium.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Default|Itanium.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Default|x86.ActiveCfg = Debug|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|Itanium.ActiveCfg = Release|Any CPU
-		{7A9FAD1A-2730-4078-9AA1-219BE8355181}.Release|x86.ActiveCfg = Release|Any CPU
 		{32D944A8-4C10-4EEC-B342-BC3BC21AE00F}.BVCMSProduction|Any CPU.ActiveCfg = Release
 		{32D944A8-4C10-4EEC-B342-BC3BC21AE00F}.BVCMSProduction|Itanium.ActiveCfg = Release
 		{32D944A8-4C10-4EEC-B342-BC3BC21AE00F}.BVCMSProduction|x86.ActiveCfg = Release

@@ -46,7 +46,7 @@
             this.button12 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button13 = new System.Windows.Forms.Button();
+            this.MagicButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -279,25 +279,25 @@
             this.label2.Text = "Check-in";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button13
+            // MagicButton
             // 
-            this.button13.BackColor = System.Drawing.SystemColors.Control;
-            this.button13.FlatAppearance.BorderSize = 0;
-            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button13.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button13.Location = new System.Drawing.Point(4, 684);
-            this.button13.Margin = new System.Windows.Forms.Padding(4);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(132, 84);
-            this.button13.TabIndex = 35;
-            this.button13.Text = ".";
-            this.button13.UseVisualStyleBackColor = false;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.MagicButton.BackColor = System.Drawing.SystemColors.Control;
+            this.MagicButton.FlatAppearance.BorderSize = 0;
+            this.MagicButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MagicButton.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MagicButton.Location = new System.Drawing.Point(4, 684);
+            this.MagicButton.Margin = new System.Windows.Forms.Padding(4);
+            this.MagicButton.Name = "MagicButton";
+            this.MagicButton.Size = new System.Drawing.Size(132, 84);
+            this.MagicButton.TabIndex = 35;
+            this.MagicButton.Text = ".";
+            this.MagicButton.UseVisualStyleBackColor = false;
+            this.MagicButton.Click += new System.EventHandler(this.MagicButton_Click);
             // 
             // Home
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.Controls.Add(this.button13);
+            this.Controls.Add(this.MagicButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button12);
@@ -345,6 +345,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button MagicButton;
     }
 }

@@ -181,7 +181,7 @@ namespace CmsCheckin
             }
         }
 
-        private void button13_Click(object sender, EventArgs e)
+        private void MagicButton_Click(object sender, EventArgs e)
         {
             this.Swap(Program.namesearch);
         }

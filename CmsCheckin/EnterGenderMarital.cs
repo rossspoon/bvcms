@@ -206,7 +206,7 @@ namespace CmsCheckin
             this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, Marital, Gender);
             var s = this.ActiveOther.CheckState.ToString();
             Program.ClearFields();
-            Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, s);
+            Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, s, churchname.Text);
             this.Swap(Program.first);
         }
 

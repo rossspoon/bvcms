@@ -100,6 +100,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("transport", c.Transport.ToString());
                     w.WriteAttributeString("hour", c.Hour.ToString());
                     w.WriteAttributeString("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
+                    w.WriteAttributeString("church", c.church);
 
                     w.WriteAttributeString("email", c.email);
                     w.WriteAttributeString("dob", c.dob);

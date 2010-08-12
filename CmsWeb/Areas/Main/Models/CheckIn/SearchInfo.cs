@@ -40,5 +40,6 @@ namespace CmsWeb.Models
                        Util.FmtFone7(cell,"c"), 
                        addr);
         }
+        public string church { get; set; }
     }
 }

@@ -177,6 +177,7 @@ namespace CmsCheckin
                     dob = e.Attribute("dob").Value,
                     gender = e.Attribute("gender").Value.ToInt(),
                     marital = e.Attribute("marital").Value.ToInt(),
+                    church = e.Attribute("church").Value,
 
                     emphone = e.Attribute("emphone").Value.FmtFone(),
                     emfriend = e.Attribute("emfriend").Value,
@@ -216,7 +217,7 @@ namespace CmsCheckin
             var an = sender as Button;
             var fi = (AddFamilyInfo)an.Tag;
             Program.FamilyId = fi.fid;
-            Program.SetFields(fi.last, fi.email, fi.addr, fi.zip, fi.home, null, null, null, null);
+            Program.SetFields(fi.last, fi.email, fi.addr, fi.zip, fi.home, null, null, null, null, null);
             Program.editing = false;
             this.Swap(Program.first);
         }
@@ -225,7 +226,7 @@ namespace CmsCheckin
             var ed = sender as Button;
             var pi = (PersonInfo)ed.Tag;
             Program.PeopleId = pi.pid;
-            Program.SetFields(pi.last, pi.email, pi.addr, pi.zip, pi.home, pi.parent, pi.emfriend, pi.emphone, pi.activeother);
+            Program.SetFields(pi.last, pi.email, pi.addr, pi.zip, pi.home, pi.parent, pi.emfriend, pi.emphone, pi.activeother, pi.church);
             Program.first.textBox1.Text = pi.first;
             Program.goesby.textBox1.Text = pi.goesby;
             Program.dob.textBox1.Text = pi.dob;
@@ -307,5 +308,6 @@ namespace CmsCheckin
         public string grade { get; set; }
         public string activeother { get; set; }
         public string parent { get; set; }
+        public string church { get; set; }
     }
 }

@@ -89,7 +89,7 @@
             // 
             this.allclasses.FlatAppearance.BorderSize = 0;
             this.allclasses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.allclasses.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allclasses.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.allclasses.ForeColor = System.Drawing.SystemColors.ButtonShadow;
             this.allclasses.Location = new System.Drawing.Point(3, 677);
             this.allclasses.Name = "allclasses";
