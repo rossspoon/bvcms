@@ -358,7 +358,7 @@ namespace CmsCheckin
                 {
                     var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
                     if (li != null && c.CheckedIn)
-                        lb.Text = li.nlabels.ToString();
+                        lb.Text = li.nlabels == 0 ? "" : li.nlabels.ToString();
                 }
                 controls.Add(lb);
                 controls.Add(org);
@@ -659,13 +659,10 @@ namespace CmsCheckin
                             transport = c.transport,
                             requiressecuritylabel = c.RequiresSecurityLabel,
                         };
-                int tn = q.Count();
-                int n = 1;
                 foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.Label(li, n++, tn, 1, time, Program.SecurityCode);
-                n = 1;
+                    LabelsPrinted += CmsCheckin.Print.Label(li, "", 1, Program.SecurityCode);
                 foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.Label(li, n++, tn, li.n - 1, time, Program.SecurityCode);
+                    LabelsPrinted += CmsCheckin.Print.Label(li, "E | ", li.n - 1, Program.SecurityCode);
 
                 foreach (var li in q)
                     LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
@@ -705,12 +702,24 @@ namespace CmsCheckin
         private void pgup_Click(object sender, EventArgs e)
         {
             PrintLabels();
+            if (LabelsPrinted > 0)
+            {
+                if (RequiresSecurityLabel)
+                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
+                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+            }
             ShowFamily(Program.FamilyId, prev.Value);
         }
 
         private void pgdn_Click(object sender, EventArgs e)
         {
             PrintLabels();
+            if (LabelsPrinted > 0)
+            {
+                if (RequiresSecurityLabel)
+                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
+                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+            }
             ShowFamily(Program.FamilyId, next.Value);
         }
 

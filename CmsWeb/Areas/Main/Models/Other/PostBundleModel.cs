@@ -276,12 +276,9 @@ namespace CmsWeb.Models
             using (var csv = new CsvReader(new StringReader(text), true))
             {
                 var names = csv.GetFieldHeaders();
-                var rd = GetNames(names);
-                if (rd == null)
-                    return null;
-                if (rd.ContainsKey("ProfileID"))
+                if (names.Contains("ProfileID"))
                     return BatchProcessServiceU(csv, date);
-                return BatchProcess(csv, rd, date);
+                return BatchProcess(csv, date);
             }
         }
         private static int? BatchProcessMagTek(string lines, DateTime date)
@@ -374,7 +371,7 @@ namespace CmsWeb.Models
             bh.TotalEnvelopes = 0;
             DbUtil.Db.SubmitChanges();
         }
-        public static int? BatchProcess(CsvReader csv, Dictionary<string, string> Names, DateTime date)
+        public static int? BatchProcess(CsvReader csv, DateTime date)
         {
             var now = DateTime.Now;
             var prevbundle = -1;
@@ -382,6 +379,12 @@ namespace CmsWeb.Models
 
             var bh = GetBundleHeader(date, now);
 
+            Regex re = new Regex(
+                @"(?<g1>d(?<rt>.*?)d\sc(?<ac>.*?)(?:c|\s)(?<ck>.*?))$
+		|(?<g2>d(?<rt>.*?)d(?<ck>.*?)(?:c|\s)(?<ac>.*?)c[\s!]*)$
+		|(?<g3>d(?<rt>.*?)d(?<ac>.*?)c(?<ck>.*?$))
+		|(?<g4>c(?<ck>.*?)c\s*d(?<rt>.*?)d(?<ac>.*?)c\s*$)
+		", RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
             int fieldCount = csv.FieldCount;
             var cols = csv.GetFieldHeaders();
 
@@ -409,12 +412,9 @@ namespace CmsWeb.Models
                 string ac = null, rt = null;
                 for (var c = 1; c < fieldCount; c++)
                 {
-                    var col = cols[c].Trim();
-                    if (!Names.ContainsKey(col))
-                        continue;
-                    switch (Names[col])
+                    switch (cols[c])
                     {
-                        case "Bundle":
+                        case "Deposit Number":
                             curbundle = csv[c].ToInt();
                             if (curbundle != prevbundle)
                             {
@@ -423,37 +423,39 @@ namespace CmsWeb.Models
                                 prevbundle = curbundle;
                             }
                             break;
-                        //case "Date": // does not parse TZ correctly
-                        //    bd.Contribution.ContributionDate = a[c].ToDate();
-                        //    break;
-                        case "Amount":
+                        case "Post Amount":
                             bd.Contribution.ContributionAmount = csv[c].GetAmount();
                             break;
-                        case "Check":
-                            bd.Contribution.ContributionDesc = csv[c];
-                            break;
-                        case "Route":
-                            rt = csv[c];
-                            break;
-                        case "Account":
-                            ac = csv[c];
+                        //case "Check Number":
+                        //    bd.Contribution.ContributionDesc = csv[c];
+                        //    break;
+                        //case "R/T":
+                        //    rt = csv[c];
+                        //    break;
+                        //case "Account Number":
+                        //    ac = csv[c];
+                        //    break;
+                        case "micr":
+                            var m = re.Match(csv[c]);
+	                        rt = m.Groups["rt"].Value;
+                            ac = m.Groups["ac"].Value;
+                            bd.Contribution.ContributionDesc = m.Groups["ck"].Value;
                             break;
                     }
-                    var eac = Util.Encrypt(rt + "|" + ac);
-                    var q = from kc in DbUtil.Db.CardIdentifiers
-                            where kc.Id == eac
-                            select kc.PeopleId;
-                    var pid = q.SingleOrDefault();
-                    if (pid != null)
-                        bd.Contribution.PeopleId = pid;
-                    else
-                        bd.Contribution.BankAccount = eac;
                 }
+                var eac = Util.Encrypt(rt + "|" + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                else
+                    bd.Contribution.BankAccount = eac;
                 bh.BundleDetails.Add(bd);
             }
             FinishBundle(bh);
             return bh.BundleHeaderId;
-
         }
         private static int? FindFund(string s)
         {

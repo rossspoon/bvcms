@@ -274,7 +274,7 @@ namespace CmsCheckin
             sw.Close();
             return 1;
         }
-        public static int Label(LabelInfo li, int n, int tn, int nlabels, DateTime time, string code)
+        public static int Label(LabelInfo li, string extra, int nlabels, string code)
         {
             if (nlabels <= 0 || !Program.Printer.HasValue())
                 return 0;
@@ -290,10 +290,11 @@ namespace CmsCheckin
                 sw.WriteLine("^LS0");
                 sw.WriteLine(@"^FT29,75^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
                 sw.WriteLine(@"^FT29,118^A0N,28,28^FH\^FD{0}^FS".Fmt(li.last));
-                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{4} of {5} | {0} |{1}{2}{3}^FS".Fmt(li.mv,
+                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{4}{0} |{1}{2}{3}^FS".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : "", n, tn));
+                    li.custody ? " C |" : "", 
+                    extra));
                 sw.WriteLine(@"^FT29,185^A0N,28,28^FH\^FD{0}^FS".Fmt(li.org));
                 sw.WriteLine(@"^FT473,48^A0N,28,28^FH\^FD{0:M/d/yy}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT474,77^A0N,28,28^FH\^FD{0:H:mm tt}^FS".Fmt(li.hour));
@@ -318,10 +319,11 @@ namespace CmsCheckin
                 sw.WriteLine("A2");
                 sw.WriteLine("1911A1800500010" + li.first);
                 sw.WriteLine("1911A1000350011" + li.last);
-                sw.WriteLine("1911A1000190011{4} of {5} | {0} |{1}{2}{3}".Fmt(li.mv,
+                sw.WriteLine("1911A1000190011{4}{0} |{1}{2}{3}".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : "", n, tn));
+                    li.custody ? " C |" : "",
+                    extra));
                 sw.WriteLine("1911A1000020011" + li.org);
                 sw.WriteLine("1911A1000610222{0:M/d/yy}".Fmt(li.hour));
                 sw.WriteLine("1911A1000470222{0:h:mm tt}".Fmt(li.hour));
@@ -404,7 +406,8 @@ namespace CmsCheckin
                 sw.WriteLine("^LL0406");
                 sw.WriteLine("^LS0");
                 sw.WriteLine(@"^FT29,83^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
-                sw.WriteLine(@"^FT30,155^A0N,45,45^FH\^FDLocation: {0}^FS".Fmt(li.location));
+                sw.WriteLine(@"^FT30,155^A0N,45,45^FH\^FDLocation/time: {0}, {1:h:mm tt}^FS"
+                    .Fmt(li.location, li.hour));
                 sw.WriteLine("^PQ1,0,1,Y^XZ");
             }
             else if (Program.Printer.Contains("Datamax"))
@@ -424,7 +427,8 @@ namespace CmsCheckin
                 sw.WriteLine("ySPM");
                 sw.WriteLine("A2");
                 sw.WriteLine("1911A1800450014" + li.first);
-                sw.WriteLine("1911A1400120013Location: " + li.location);
+                sw.WriteLine("1911A1400120013Location: {0}, {1:h:mm tt}"
+                    .Fmt(li.location, li.hour));
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }

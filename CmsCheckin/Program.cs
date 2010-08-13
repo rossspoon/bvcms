@@ -143,7 +143,8 @@ namespace CmsCheckin
             }
             cellphone.textBox1.Text = null;
             homephone.textBox1.Text = null;
-            church.textBox1.Text = null;
+            if (AskChurchName)
+                church.textBox1.Text = null;
             gendermarital.Gender = 0;
             gendermarital.Marital = 0;
             if (AskChurch)

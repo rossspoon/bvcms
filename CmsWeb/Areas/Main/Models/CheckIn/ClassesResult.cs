@@ -56,8 +56,8 @@ namespace CmsWeb.Models
                     q = from o in q
                         let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where o.CanSelfCheckin == true
                         where (o.ClassFilled ?? false) == false
                         where o.CampusId == campusid || campusid == 0
