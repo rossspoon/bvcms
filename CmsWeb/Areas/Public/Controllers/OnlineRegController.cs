@@ -80,7 +80,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     first = "David",
                     last = "Carroll",
                     dob = "5/30/52",
-                    email = "david@davidcarroll.name",
+                    email = "david@bvcms.com",
                     phone = "9017581862",
                 }
             };
@@ -150,6 +150,8 @@ namespace CmsWeb.Areas.Public.Controllers
                     p.OtherOK = true;
             }
             p.TryCount++;
+            if (p.ShowDisplay() && p.ComputesOrganizationByAge())
+                p.classid = p.org.OrganizationId;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -172,6 +174,8 @@ namespace CmsWeb.Areas.Public.Controllers
             p.IsValidForExisting = ModelState.IsValid == false;
             if (p.IsNew)
                 FillPriorInfo(p);
+            if (p.ShowDisplay() && p.ComputesOrganizationByAge())
+                p.classid = p.org.OrganizationId;
             return View("list", m);
         }
         private static void FillPriorInfo(OnlineRegPersonModel p)

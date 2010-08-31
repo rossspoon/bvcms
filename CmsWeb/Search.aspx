@@ -9,7 +9,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
-        <asp:LinkButton ID="NewSearch" runat="server" OnClick="NewSearch_Click">New Search (clear)</asp:LinkButton>
         <uc2:QuickSearchParameters ID="Parameters" runat="server" />
     </div>
     <uc1:PersonGrid ID="PersonGrid1" runat="server" DataSourceID="PeopleData" Visible="false" />

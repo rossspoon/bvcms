@@ -4,8 +4,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Index</title>
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
+<%= SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.2.custom.css")
+        .Add("/Content/Dialog.css")
+        .Add("/Content/jquery.tooltip.css")
+    .Render("/Content/OrgMember_#.css")
+%>
 </head>
 <body>
     <%= SquishIt.Framework.Bundle.JavaScript()
@@ -18,6 +22,8 @@
 
 <% string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; %>
 <%=Html.Hidden("from") %>
+<h4><%= Model.Person.Name %></h4>
+<a class="helplink" target="_blank" href='http://wiki.bvcms.com/help.UpdateOrgMember.ashx'>help</a>
 <table>
     <tr>
     <td>Attendance:</td>

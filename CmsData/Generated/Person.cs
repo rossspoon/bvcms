@@ -123,8 +123,6 @@ namespace CmsData
 		
 		private string _LastName;
 		
-		private string _AltName;
-		
 		private string _SuffixCode;
 		
 		private string _NickName;
@@ -246,6 +244,8 @@ namespace CmsData
 		private string _CheckInNotes;
 		
 		private int? _Age;
+		
+		private string _AltName;
 		
 		private bool? _CustodyIssue;
 		
@@ -533,9 +533,6 @@ namespace CmsData
 		partial void OnLastNameChanging(string value);
 		partial void OnLastNameChanged();
 		
-		partial void OnAltNameChanging(string value);
-		partial void OnAltNameChanged();
-		
 		partial void OnSuffixCodeChanging(string value);
 		partial void OnSuffixCodeChanged();
 		
@@ -718,6 +715,9 @@ namespace CmsData
 		
 		partial void OnAgeChanging(int? value);
 		partial void OnAgeChanged();
+		
+		partial void OnAltNameChanging(string value);
+		partial void OnAltNameChanged();
 		
 		partial void OnCustodyIssueChanging(bool? value);
 		partial void OnCustodyIssueChanged();
@@ -2063,28 +2063,6 @@ namespace CmsData
 					this._LastName = value;
 					this.SendPropertyChanged("LastName");
 					this.OnLastNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltName", UpdateCheck=UpdateCheck.Never, Storage="_AltName", DbType="nvarchar(100)")]
-		public string AltName
-		{
-			get { return this._AltName; }
-
-			set
-			{
-				if (this._AltName != value)
-				{
-				
-                    this.OnAltNameChanging(value);
-					this.SendPropertyChanging();
-					this._AltName = value;
-					this.SendPropertyChanged("AltName");
-					this.OnAltNameChanged();
 				}
 
 			}
@@ -3439,6 +3417,28 @@ namespace CmsData
 					this._Age = value;
 					this.SendPropertyChanged("Age");
 					this.OnAgeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AltName", UpdateCheck=UpdateCheck.Never, Storage="_AltName", DbType="nvarchar(100)")]
+		public string AltName
+		{
+			get { return this._AltName; }
+
+			set
+			{
+				if (this._AltName != value)
+				{
+				
+                    this.OnAltNameChanging(value);
+					this.SendPropertyChanging();
+					this._AltName = value;
+					this.SendPropertyChanged("AltName");
+					this.OnAltNameChanged();
 				}
 
 			}

@@ -20,8 +20,8 @@
 <input type="hidden" name="m.List.Index" value="<%=n %>" />
 <input type="hidden" name="m.List[<%=n %>].FamilyId" value="<%=np.FamilyId %>" />
 <h4>Add Person To New Family</h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLink("NewFamily") %>'>help</a>
 <table width="100%">
-    </tr>
 <% Html.RenderPartial("EditPerson", np);
    Html.RenderPartial("EditAddress", np);
 %>

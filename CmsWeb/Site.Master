@@ -186,6 +186,12 @@
                 </li>
                 <li id="HelpItem" class="headlink" runat="server">
                     <asp:HyperLink ID="HelpLink" NavigateUrl="#" Target="_blank" runat="server">Help</asp:HyperLink>
+                    <ul>
+                        <li>
+                            <asp:HyperLink ID="HelpLink2" Target="_blank" NavigateUrl="#" runat="server">Wiki Documentation</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="HyperLink22" Target="_blank" NavigateUrl="http://bvcms.wufoo.com/forms/bvcms-bug-tracker/" runat="server">Bug Report</asp:HyperLink></li>
+                    </ul>
                 </li>
             </ul>
             <asp:TextBox CssClass="CommonNavigationSearch" ID="SearchText" runat="server" OnTextChanged="SearchText_TextChanged"

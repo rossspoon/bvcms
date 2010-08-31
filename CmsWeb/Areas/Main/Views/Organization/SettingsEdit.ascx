@@ -79,6 +79,10 @@
         <td><%=Html.TextBox("org.RollSheetVisitorWks")%></td>
     </tr>
     <tr>
+        <th>Days to ignore history on drop:</th>
+        <td><%=Html.TextBox("org.DaysToIgnoreHistory")%></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>
@@ -159,9 +163,17 @@
         <%= Html.ValidationMessage("askoptions")%></td>
     </tr>
     <tr>
+        <th>Options Label:</th>
+        <td><%=Html.TextBox("org.OptionsLabel")%></td>
+    </tr>
+    <tr>
         <th>Extra Options:</th>
         <td><%=Html.TextBox("org.ExtraOptions")%> 
         <%= Html.ValidationMessage("extraoptions")%></td>
+    </tr>
+    <tr>
+        <th>Extra Options Label:</th>
+        <td><%=Html.TextBox("org.ExtraOptionsLabel")%></td>
     </tr>
     <tr>
         <th>Grade Options:</th>
@@ -195,6 +207,10 @@
     <tr>
         <th>Extra Questions:</th>
         <td><%=Html.TextBox("org.ExtraQuestions")%></td>
+    </tr>
+    <tr>
+        <th>Menu Items:</th>
+        <td><%=Html.TextBox("org.MenuItems")%></td>
     </tr>
     <tr>
         <th>Validate Member in OrgIds:</th>

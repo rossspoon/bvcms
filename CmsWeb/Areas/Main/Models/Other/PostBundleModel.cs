@@ -418,6 +418,15 @@ namespace CmsWeb.Models
                             curbundle = csv[c].ToInt();
                             if (curbundle != prevbundle)
                             {
+                                if (curbundle == 3143)
+                                {
+                                    foreach (var i in bh.BundleDetails)
+                                    {
+                                        Debug.WriteLine(i.Contribution.ContributionDesc);
+                                        Debug.WriteLine(i.Contribution.BankAccount);
+                                    }
+                                }
+                                    
                                 FinishBundle(bh);
                                 bh = GetBundleHeader(date, now);
                                 prevbundle = curbundle;
@@ -494,7 +503,7 @@ namespace CmsWeb.Models
 
             while (csv.ReadNextRecord())
             {
-                string ac = null, oth = null, first = null, last = null, addr = null, name = null;
+                string ac = null, oth = null, first = null, last = null, addr = null, name = null, email = null;
                 var dt = date;
                 for (var c = 1; c < csv.FieldCount; c++)
                 {
@@ -519,11 +528,16 @@ namespace CmsWeb.Models
                         case "Address":
                             addr = csv[c];
                             break;
+                        case "Email Address":
+                            email = csv[c]; 
+                            break;
                         case "Designation for &quot;Other&quot;":
                             oth = csv[c];
                             break;
                     }
                 }
+                if (ac.ToInt() == 0)
+                    ac = email;
                 var eac = Util.Encrypt(ac);
                 var q = from kc in DbUtil.Db.CardIdentifiers
                         where kc.Id == eac
@@ -554,7 +568,8 @@ namespace CmsWeb.Models
                             col = oth;
                         if (!fundid.HasValue)
                             bd.Contribution.ContributionDesc = col;
-                        bd.Contribution.BankAccount = bankac;
+                        if (ac.HasValue())
+                            bd.Contribution.BankAccount = bankac;
                         bd.Contribution.PeopleId = pid;
                         bh.BundleDetails.Add(bd);
                         if (ed != null)

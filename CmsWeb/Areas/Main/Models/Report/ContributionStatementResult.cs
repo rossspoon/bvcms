@@ -198,7 +198,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
                     cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
                     cell.Phrase = new Phrase(c.ContributionAmount.ToString2("N2"), font);
                     t.AddCell(cell);
-                    total += c.ContributionAmount.Value;
+                    total += (c.ContributionAmount ?? 0);
                 }
                 t.DefaultCell.Border = PdfPCell.TOP_BORDER;
                 cell = new PdfPCell(t.DefaultCell);

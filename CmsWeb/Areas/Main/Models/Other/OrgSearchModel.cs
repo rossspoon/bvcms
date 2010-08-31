@@ -122,6 +122,7 @@ namespace CmsWeb.Models
                          LastDayBeforeExtra = o.LastDayBeforeExtra.FormatDate2(),
                          MaximumFee = o.MaximumFee ?? 0,
                          MemberOnly = o.MemberOnly ?? false,
+                         NoSecurityLabel = o.NoSecurityLabel ?? false,
                          NumCheckInLabels = o.NumCheckInLabels ?? 0,
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          RegistrationTypeId = o.RegistrationTypeId ?? 0,

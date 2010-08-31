@@ -23,6 +23,8 @@ namespace CmsData
 		
 		private int _MemberTagId;
 		
+		private int? _Number;
+		
    		
     	
 		private EntityRef< MemberTag> _MemberTag;
@@ -44,6 +46,9 @@ namespace CmsData
 		
 		partial void OnMemberTagIdChanging(int value);
 		partial void OnMemberTagIdChanged();
+		
+		partial void OnNumberChanging(int? value);
+		partial void OnNumberChanged();
 		
     #endregion
 		public OrgMemMemTag()
@@ -128,6 +133,28 @@ namespace CmsData
 					this._MemberTagId = value;
 					this.SendPropertyChanged("MemberTagId");
 					this.OnMemberTagIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="int")]
+		public int? Number
+		{
+			get { return this._Number; }
+
+			set
+			{
+				if (this._Number != value)
+				{
+				
+                    this.OnNumberChanging(value);
+					this.SendPropertyChanging();
+					this._Number = value;
+					this.SendPropertyChanged("Number");
+					this.OnNumberChanged();
 				}
 
 			}

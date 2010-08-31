@@ -116,6 +116,27 @@ namespace CmsWeb.Models
                     select om;
             return q;
         }
+        private string type()
+        {
+            if (pendings)
+                return "UpdatePending";
+            else if (inactives)
+                return "UpdateInactive";
+            return "UpdateMembers";
+        }
+        public string title()
+        {
+            if (pendings)
+                return "Update Pending Members";
+            else if (inactives)
+                return "Update Inactive Members";
+            return "Update Members";
+        }
+        public string HelpLink()
+        {
+            return "http://wiki.bvcms.com/help.UpdateOrgMember_{0}.ashx".Fmt(type());
+        }
+
         public class PersonDialogSearchInfo
         {
             public int PeopleId { get; set; }
@@ -145,6 +166,7 @@ namespace CmsWeb.Models
                         .Fmt(Name, PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus, Email);
                 }
             }
+
         }
     }
 }

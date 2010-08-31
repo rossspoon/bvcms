@@ -39,6 +39,14 @@ namespace CmsWeb.Models
         public string address { get; set; }
         public string dob { get; set; }
 
+        public string HelpLink(string page)
+        {
+            return "http://wiki.bvcms.com/help.SearchAdd_{0}.ashx".Fmt(page);
+        }
+        public string HelpLinkWithType(string page)
+        {
+            return "http://wiki.bvcms.com/help.SearchAdd_{0}_{1}.ashx".Fmt(page, type);
+        }
         private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query

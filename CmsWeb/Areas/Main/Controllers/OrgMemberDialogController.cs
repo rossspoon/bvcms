@@ -115,5 +115,10 @@ namespace CmsWeb.Areas.Main.Controllers
             public string OrgName { get; set; }
             public string id { get; set; }
         }
+        public string HelpLink()
+        {
+            return "";
+        }
+
     }
 }

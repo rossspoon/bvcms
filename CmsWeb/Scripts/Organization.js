@@ -39,7 +39,7 @@
         title: 'Add Members Dialog',
         bgiframe: true,
         autoOpen: false,
-        width: 700,
+        width: 712,
         height: 650,
         modal: true,
         overlay: {

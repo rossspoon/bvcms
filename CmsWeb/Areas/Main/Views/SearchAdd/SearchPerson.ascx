@@ -3,6 +3,7 @@
 <input type="hidden" name="m.typeid" value="<%=Model.typeid%>" />
 <input type="hidden" name="m.from" value="<%=Model.from%>" />
 <h4>Search for Person</h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLinkWithType("SearchPerson") %>'>help</a>
 <table class="modalPopup" width="100%" class="searchenter">
     <tr>
         <td align="right" colspan="2"><a href="#" class="clear">clear</a></td>

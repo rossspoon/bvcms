@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 first = "Davy",
                 last = "Carroll",
                 dob = "5/30/02",
-                email = "david@davidcarroll.name",
+                email = "david@bvcms.com",
                 phone = "9017581862",
                 homecell = "h",
                 divid = id

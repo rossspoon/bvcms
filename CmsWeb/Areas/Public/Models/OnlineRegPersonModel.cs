@@ -12,6 +12,7 @@ using System.Data.Linq.SqlClient;
 using CMSPresenter;
 using System.Net.Mail;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
 {
@@ -83,6 +84,18 @@ namespace CmsWeb.Models
                 return YesNoQuestion[key] == value ? "checked='checked'" : "";
             return "";
         }
+        private Dictionary<string, int?> _MenuItem = new Dictionary<string, int?>();
+        public Dictionary<string, int?> MenuItem
+        {
+            get { return _MenuItem; }
+            set { _MenuItem = value; }
+        }
+        public int? MenuItemValue(string s)
+        {
+            if (MenuItem.ContainsKey(s))
+                return MenuItem[s];
+            return null;
+        }
 
         [NonSerialized]
         private DateTime _Birthday;
@@ -108,7 +121,7 @@ namespace CmsWeb.Models
         {
             get { return gender == 1 ? "Male" : "Female"; }
         }
-       public string marrieddisplay
+        public string marrieddisplay
         {
             get { return married == 10 ? "Single" : "Married"; }
         }
@@ -207,7 +220,7 @@ namespace CmsWeb.Models
         public OrganizationMember GetOrgMember()
         {
             if (org != null)
-                return DbUtil.Db.OrganizationMembers.SingleOrDefault(m2 => 
+                return DbUtil.Db.OrganizationMembers.SingleOrDefault(m2 =>
                     m2.PeopleId == PeopleId && m2.OrganizationId == org.OrganizationId);
             return null;
         }
@@ -356,6 +369,8 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
+            if (amt == 0 && org.MenuItems.HasValue())
+                amt = MenuItemsChosen().Sum(m => m.number * m.amt);
             if (amt == 0 && org.AgeFee.HasValue())
             {
                 var q = from o in org.AgeFee.Split(',')
@@ -544,6 +559,58 @@ namespace CmsWeb.Models
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
         }
+        public class MenuItemType
+        {
+            public int n { get; set; }
+            public string desc { get; set; }
+            public string sg { get; set; }
+            public decimal amt { get; set; }
+        }
+        private List<MenuItemType> menuitems;
+        public List<MenuItemType> MenuItems()
+        {
+            if (menuitems == null)
+            {
+                menuitems = new List<MenuItemType>();
+                if (org.MenuItems.HasValue())
+                {
+                    var i = 0;
+                    var re = new Regex(@"(?<desc>.*?)(?:\[(?<sg>.*?)\])?=(?<amt>[\d.]+),?");
+                    var m = re.Match(org.MenuItems);
+                    while (m.Success)
+                    {
+                        var mi = new MenuItemType();
+                        mi.n = i++;
+                        mi.desc = m.Groups["desc"].Value;
+                        mi.sg = m.Groups["sg"].Value;
+                        if (!mi.sg.HasValue())
+                            mi.sg = mi.desc;
+                        mi.amt = decimal.Parse(m.Groups["amt"].Value);
+                        menuitems.Add(mi);
+                        m = m.NextMatch();
+                    }
+                }
+            }
+            return menuitems;
+        }
+        public class MenuItemChosen
+        {
+            public string sg { get; set; }
+            public string desc { get; set; }
+            public int n { get; set; }
+            public int number { get; set; }
+            public decimal amt { get; set; }
+        }
+        public IEnumerable<MenuItemChosen> MenuItemsChosen()
+        {
+            int nn = 0;
+            var items = MenuItems();
+            var q = from i in MenuItem
+                    join m in items on i.Key equals m.sg
+                    where i.Value.HasValue
+                    select new MenuItemChosen { sg = m.sg, n = nn++, number = i.Value ?? 0, desc = m.desc, amt = m.amt };
+            return q;
+        }
         public IEnumerable<SelectListItem> GradeOptions()
         {
             var q = from s in (org.GradeOptions ?? string.Empty).Split(',')
@@ -631,7 +698,7 @@ namespace CmsWeb.Models
                 sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", rr.Policy);
             }
             if (org.AskRequest == true)
-                sb.AppendFormat("<tr><td>Request:</td><td>{0}</td></tr>\n", om.Request);
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", om.Request, om.Organization.RequestLabel.HasValue() ? om.Organization.RequestLabel : "Request");
             if (org.AskAllergies == true)
                 sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", rr.MedicalDescription);
 
@@ -661,11 +728,20 @@ namespace CmsWeb.Models
                 sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
 
             if (org.AskOptions.HasValue())
-                sb.AppendFormat("<tr><td>Option:</td><td>{0}</td></tr>\n", option);
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, Util.PickFirst(om.Organization.OptionsLabel,"Options"));
             if (org.ExtraOptions.HasValue())
-                sb.AppendFormat("<tr><td>Extra Option:</td><td>{0}</td></tr>\n", option2);
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, Util.PickFirst(om.Organization.ExtraOptionsLabel,"Extra Options"));
+            if (org.MenuItems.HasValue())
+            {
+                var menulabel = "Menu Items";
+                foreach(var i in MenuItemsChosen())
+                {
+                    sb.AppendFormat("<tr><td>{0}</td><td>{1} {2} (at {3:N2}</td></tr>\n", menulabel, i.number, i.desc, i.amt);
+                    menulabel = string.Empty;
+                }
+            }
             if (org.GradeOptions.HasValue())
-                sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n", 
+                sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n",
                     GradeOptions().SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
             if (org.YesNoQuestions.HasValue())
                 foreach (var a in YesNoQuestions())
@@ -758,6 +834,9 @@ namespace CmsWeb.Models
                 foreach (var g in ExtraQuestion)
                     if (g.Value.HasValue())
                         AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value), om);
+            if (org.MenuItems.HasValue())
+                foreach (var i in MenuItem)
+                    om.AddToGroup(i.Key, i.Value);
 
             foreach (var op in Options())
                 om.RemoveFromGroup(op.Value);
@@ -783,7 +862,7 @@ namespace CmsWeb.Models
                 var q = from omt in DbUtil.Db.OrgMemMemTags
                         where a.Contains(omt.OrgId) && omt.PeopleId == om.PeopleId
                         select omt.MemberTag.Name;
-                foreach(var name in q)
+                foreach (var name in q)
                     om.AddToGroup(name);
             }
 
@@ -796,6 +875,16 @@ namespace CmsWeb.Models
                 AddToMemberData(tran, om);
                 if (others.HasValue())
                     AddToMemberData("Others: " + others, om);
+            }
+            if (org.MenuItems.HasValue())
+            {
+                var menulabel = "Menu Items";
+                foreach (var i in MenuItemsChosen())
+                {
+                    AddToMemberData(menulabel, om);
+                    AddToMemberData("{0} {1} (at {2:N2})".Fmt(i.number, i.desc, i.amt), om);
+                    menulabel = string.Empty;
+                }
             }
 
             if (org.AskTylenolEtc == true)
@@ -833,6 +922,8 @@ namespace CmsWeb.Models
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {
+            if (!s.HasValue())
+                return;
             if (om.UserData.HasValue())
                 om.UserData += "\n";
             om.UserData += s;
@@ -872,6 +963,16 @@ namespace CmsWeb.Models
                      select o;
             return q2.FirstOrDefault();
         }
+        public bool ShowDisplay()
+        {
+            if (org == null || IsFilled)
+                return false;
+            if (Found == true && IsValidForExisting)
+                return true;
+            if (IsNew && IsValidForNew)
+                return true;
+            return false;
+        }
         public bool AnyOtherInfo()
         {
             if (org != null)
@@ -887,6 +988,7 @@ namespace CmsWeb.Models
                     org.AskCoaching == true ||
                     org.AskChurch == true ||
                     org.AskTickets == true ||
+                    org.MenuItems.HasValue() ||
                     org.AskOptions.HasValue() ||
                     org.YesNoQuestions.HasValue() ||
                     org.Deposit > 0);
@@ -905,6 +1007,7 @@ namespace CmsWeb.Models
                         o.AskChurch == true ||
                         o.AskTickets == true ||
                         o.AskOptions.HasValue() ||
+                        o.MenuItems.HasValue() ||
                         o.YesNoQuestions.Length > 0 ||
                         o.Deposit > 0
                     select o;

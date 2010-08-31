@@ -102,6 +102,10 @@
         <td><%=Model.org.RollSheetVisitorWks%></td>
     </tr>
     <tr>
+        <th>Days to ignore history on drop:</th>
+        <td><%=Model.org.DaysToIgnoreHistory %></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>
@@ -211,6 +215,10 @@
     <tr>
         <th>Extra Questions:</th>
         <td><%=Model.org.ExtraQuestions %></td>
+    </tr>
+    <tr>
+        <th>Menu Items:</th>
+        <td><%=Model.org.MenuItems %></td>
     </tr>
     <tr>
         <th>Validate Member in OrgIds:</th>

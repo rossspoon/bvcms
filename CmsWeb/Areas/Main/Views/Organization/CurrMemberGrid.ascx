@@ -1,5 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrganizationPage.MemberModel>" %>
-<% Html.RenderPartial("ExportToolBar"); %>
+<% ViewData["OrgMemberContext"] = true;
+   Html.RenderPartial("ExportToolBar");
+   ViewData["OrgMemberContext"] = false; 
+%>
 &nbsp;<div style="clear: both"></div>
 <p>
 Count: <strong><%=Model.Count() %></strong>&nbsp;&nbsp;

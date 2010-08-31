@@ -166,8 +166,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.AskShirtSize = frorg.AskShirtSize;
                 toorg.AskTickets = frorg.AskTickets;
                 toorg.AskTylenolEtc = frorg.AskTylenolEtc;
-                toorg.BirthDayEnd = frorg.BirthDayEnd;
-                toorg.BirthDayStart = frorg.BirthDayStart;
                 toorg.CanSelfCheckin = frorg.CanSelfCheckin;
                 toorg.Deposit = frorg.Deposit;
                 toorg.EmailAddresses = frorg.EmailAddresses;
@@ -186,6 +184,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.LinkGroupsFromOrgs = frorg.LinkGroupsFromOrgs;
                 toorg.MaximumFee = frorg.MaximumFee;
                 toorg.MemberOnly = frorg.MemberOnly;
+                toorg.NoSecurityLabel = frorg.NoSecurityLabel;
                 toorg.NumCheckInLabels = frorg.NumCheckInLabels;
                 toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
                 toorg.OrgMemberFees = frorg.OrgMemberFees;

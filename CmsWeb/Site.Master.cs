@@ -99,6 +99,7 @@ namespace CmsWeb
             string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath,"");
             pa = pa.Substring(0, pa.Length - 1);
             HelpLink.NavigateUrl = "http://wiki.bvcms.com/help.{0}.ashx".Fmt(pa.Replace('/', '_'));
+            HelpLink2.NavigateUrl = HelpLink.NavigateUrl;
         }
         protected void NewQuery_Click(object sender, EventArgs e)
         {

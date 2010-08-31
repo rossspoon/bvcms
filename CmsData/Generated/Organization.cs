@@ -201,6 +201,16 @@ namespace CmsData
 		
 		private bool? _NoSecurityLabel;
 		
+		private bool? _AlwaysSecurityLabel;
+		
+		private string _MenuItems;
+		
+		private string _OptionsLabel;
+		
+		private string _ExtraOptionsLabel;
+		
+		private int? _DaysToIgnoreHistory;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -525,6 +535,21 @@ namespace CmsData
 		
 		partial void OnNoSecurityLabelChanging(bool? value);
 		partial void OnNoSecurityLabelChanged();
+		
+		partial void OnAlwaysSecurityLabelChanging(bool? value);
+		partial void OnAlwaysSecurityLabelChanged();
+		
+		partial void OnMenuItemsChanging(string value);
+		partial void OnMenuItemsChanged();
+		
+		partial void OnOptionsLabelChanging(string value);
+		partial void OnOptionsLabelChanged();
+		
+		partial void OnExtraOptionsLabelChanging(string value);
+		partial void OnExtraOptionsLabelChanged();
+		
+		partial void OnDaysToIgnoreHistoryChanging(int? value);
+		partial void OnDaysToIgnoreHistoryChanged();
 		
     #endregion
 		public Organization()
@@ -2618,6 +2643,116 @@ namespace CmsData
 					this._NoSecurityLabel = value;
 					this.SendPropertyChanged("NoSecurityLabel");
 					this.OnNoSecurityLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AlwaysSecurityLabel", UpdateCheck=UpdateCheck.Never, Storage="_AlwaysSecurityLabel", DbType="bit")]
+		public bool? AlwaysSecurityLabel
+		{
+			get { return this._AlwaysSecurityLabel; }
+
+			set
+			{
+				if (this._AlwaysSecurityLabel != value)
+				{
+				
+                    this.OnAlwaysSecurityLabelChanging(value);
+					this.SendPropertyChanging();
+					this._AlwaysSecurityLabel = value;
+					this.SendPropertyChanged("AlwaysSecurityLabel");
+					this.OnAlwaysSecurityLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MenuItems", UpdateCheck=UpdateCheck.Never, Storage="_MenuItems", DbType="varchar(500)")]
+		public string MenuItems
+		{
+			get { return this._MenuItems; }
+
+			set
+			{
+				if (this._MenuItems != value)
+				{
+				
+                    this.OnMenuItemsChanging(value);
+					this.SendPropertyChanging();
+					this._MenuItems = value;
+					this.SendPropertyChanged("MenuItems");
+					this.OnMenuItemsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OptionsLabel", UpdateCheck=UpdateCheck.Never, Storage="_OptionsLabel", DbType="varchar(50)")]
+		public string OptionsLabel
+		{
+			get { return this._OptionsLabel; }
+
+			set
+			{
+				if (this._OptionsLabel != value)
+				{
+				
+                    this.OnOptionsLabelChanging(value);
+					this.SendPropertyChanging();
+					this._OptionsLabel = value;
+					this.SendPropertyChanged("OptionsLabel");
+					this.OnOptionsLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ExtraOptionsLabel", UpdateCheck=UpdateCheck.Never, Storage="_ExtraOptionsLabel", DbType="varchar(50)")]
+		public string ExtraOptionsLabel
+		{
+			get { return this._ExtraOptionsLabel; }
+
+			set
+			{
+				if (this._ExtraOptionsLabel != value)
+				{
+				
+                    this.OnExtraOptionsLabelChanging(value);
+					this.SendPropertyChanging();
+					this._ExtraOptionsLabel = value;
+					this.SendPropertyChanged("ExtraOptionsLabel");
+					this.OnExtraOptionsLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DaysToIgnoreHistory", UpdateCheck=UpdateCheck.Never, Storage="_DaysToIgnoreHistory", DbType="int")]
+		public int? DaysToIgnoreHistory
+		{
+			get { return this._DaysToIgnoreHistory; }
+
+			set
+			{
+				if (this._DaysToIgnoreHistory != value)
+				{
+				
+                    this.OnDaysToIgnoreHistoryChanging(value);
+					this.SendPropertyChanging();
+					this._DaysToIgnoreHistory = value;
+					this.SendPropertyChanged("DaysToIgnoreHistory");
+					this.OnDaysToIgnoreHistoryChanged();
 				}
 
 			}

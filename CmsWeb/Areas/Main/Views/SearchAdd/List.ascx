@@ -8,9 +8,10 @@
 <input type="hidden" name="m.phone" value="<%=Model.phone%>" />
 <% 
     %>
+<h4>Pending Selection List</h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLinkWithType("List") %>'>help</a>
 <table id="people" width="100%" style="font-size:12px">
 <thead>
-<tr><th align="left" colspan="5">Selection List</th></tr>
 <tr class="headrow">
     <th>Name</th>
     <th>Address</th>

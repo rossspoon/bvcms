@@ -12,6 +12,7 @@ using CmsData;
 using CMSPresenter;
 using CmsWeb.Models;
 using UtilityExtensions;
+using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -128,7 +129,7 @@ namespace CmsWeb.Areas.Main.Controllers
             p.gender = 1;
             p.marital = 20;
             p.dob = "5/30/52";
-            p.email = "david@davidcarroll.name";
+            p.email = "david@bvcms.com";
             p.phone = "9014890611";
 #endif
             m.List.Add(p);

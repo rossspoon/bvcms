@@ -334,7 +334,6 @@ You have been assigned to {1} in room {2}. The leader's name is {3}.
 Please call {4} if you have any questions.
 
 Thanks for registering!
-The {5} Team
 ".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, i.PhoneNumber.FmtFone(), onlineorg.OrganizationName);
 
                 if (i.om.RegisterEmail.HasValue())

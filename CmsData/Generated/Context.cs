@@ -2118,20 +2118,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.DecToBase", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string DecToBase(
-            [Parameter(Name = "val", DbType="bigint")] long? val,
-            [Parameter(Name = "baseX", DbType="int")] int? baseX
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                val,
-                baseX
-                ).ReturnValue));
-		}
-
 		[Function(Name="disc.VerseInCategory", IsComposable = true)]
 		[return: Parameter(DbType = "bit")]
 		public bool? VerseInCategory(
@@ -2227,16 +2213,6 @@ namespace CmsData
                 oid,
                 tid,
                 typeid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetSecurityCode", IsComposable = true)]
-		[return: Parameter(DbType = "char")]
-		public string GetSecurityCode(
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
                 ).ReturnValue));
 		}
 
@@ -2587,6 +2563,42 @@ namespace CmsData
 			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.DecToBase", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string DecToBase(
+            [Parameter(Name = "val", DbType="bigint")] long? val,
+            [Parameter(Name = "baseX", DbType="int")] int? baseX
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                val,
+                baseX
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetSecurityCode", IsComposable = true)]
+		[return: Parameter(DbType = "char")]
+		public string GetSecurityCode(
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.FmtPhone", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string FmtPhone(
+            [Parameter(Name = "PhoneNumber", DbType="varchar")] string PhoneNumber
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                PhoneNumber
                 ).ReturnValue));
 		}
 

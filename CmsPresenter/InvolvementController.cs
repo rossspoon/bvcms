@@ -8,6 +8,10 @@ using System.ComponentModel;
 using UtilityExtensions;
 using CMSPresenter.InfoClasses;
 using System.Collections;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Linq.Dynamic;
+using System.Data.SqlClient;
 
 namespace CMSPresenter
 {
@@ -39,7 +43,7 @@ namespace CMSPresenter
                          HomePhone = p.HomePhone,
                          WorkPhone = p.WorkPhone,
                          CellPhone = p.CellPhone,
-                         DivName = om.Organization.DivOrgs.FirstOrDefault(d => 
+                         DivName = om.Organization.DivOrgs.FirstOrDefault(d =>
                              d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          OrgName = om.Organization.OrganizationName,
                          Teacher = p.BFClass.LeaderName,
@@ -169,6 +173,30 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
+
+        public static IEnumerable OrgMemberList2(int qid)
+        {
+            var Db = DbUtil.Db;
+            var qB = Db.LoadQueryById(qid);
+            var qp = Db.People.Where(qB.Predicate());
+            var q2 = qp.Select(p => new 
+            { 
+                om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId), 
+                rr = p.RecRegs.FirstOrDefault(),
+                p = p 
+            });
+            var q = q2.Select("new(p.PreferredName,p.LastName,om.AttendStr,om.AmountPaid)");
+            return q;
+        }
+        public static IEnumerable OrgMemberListGroups()
+        {
+            var Db = DbUtil.Db;
+            var cmd = new SqlCommand(
+                "dbo.OrgMembers {0}, {1}".Fmt(Util.CurrentOrgId, Util.CurrentGroupId));
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
+            return cmd.ExecuteReader();
+        }
         public static IEnumerable OrgMemberList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;
@@ -187,7 +215,7 @@ namespace CMSPresenter
                          Request = om.Request,
                          Amount = om.Amount ?? 0,
                          AmountPaid = om.AmountPaid ?? 0,
-                         Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray()),
+                         //Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray()),
                          Email = p.EmailAddress,
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),

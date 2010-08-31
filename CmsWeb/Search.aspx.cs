@@ -58,8 +58,14 @@ namespace CmsWeb
                     Parameters.Campus = ps.Campus;
                     PersonGrid1.Visible = true;
                 }
+            Parameters.ClearButtonClicked += new EventHandler(Parameters_ClearButtonClicked);
             Parameters.SearchButtonClicked += new EventHandler(SearchButton_Click);
             PersonGrid1.DataBound += new EventHandler(PersonGrid1_DataBound);
+        }
+
+        void Parameters_ClearButtonClicked(object sender, EventArgs e)
+        {
+            PersonGrid1.Visible = false;
         }
 
         void PersonGrid1_DataBound(object sender, EventArgs e)
@@ -93,10 +99,10 @@ namespace CmsWeb
             return MyTags.ToggleTag(PeopleId, controlid);
         }
 
-        protected void NewSearch_Click(object sender, EventArgs e)
-        {
-            Session.Remove(STR_PersonSearch);
-            Response.Redirect("~/Search.aspx");
-        }
+        //protected void NewSearch_Click(object sender, EventArgs e)
+        //{
+        //    Session.Remove(STR_PersonSearch);
+        //    Response.Redirect("~/Search.aspx");
+        //}
     }
 }

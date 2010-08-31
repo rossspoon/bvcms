@@ -23,9 +23,12 @@
             <li>
                 <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 
                     Member Export</a></li>
+    <% if ((bool?)ViewData["OrgMemberContext"] ?? false)
+       { %>
             <li>
-                <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=SML' title="Includes Soulmate Live info"><img src="/images/Excel.png" />
-                    Soulmate Export</a></li>
+                <a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"><img src="/images/Excel.png" /> 
+                    Groups Export</a></li>
+    <% } %>
             <li>
                 <a href='/ExportExcel.aspx?id=<%=ViewData["queryid"] %>&format=Promotion' title="Just for Promotion Mail Merge"><img src="/images/Excel.png" />
                     Promotion Export</a></li>
@@ -66,7 +69,7 @@
    { %>
             <li><a href='/Reports/Registration/<%=ViewData["queryid"]%>' 
                 target="_blank"><img src="/images/Report.png" /> 
-                Registration Report</a></li>
+                Registration Rpt</a></li>
 <% } %>   
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />

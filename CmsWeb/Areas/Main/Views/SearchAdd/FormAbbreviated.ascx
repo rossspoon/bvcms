@@ -26,6 +26,7 @@
 <input type="hidden" name="m.List[<%=n %>].city" value="<%=np.city%>" />
 <input type="hidden" name="m.List[<%=n %>].state" value="<%=np.state%>" />
 <h4>Add Person To Existing Family</h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLink("ExistingFamily") %>'>help</a>
 <table width="100%">
     <% Html.RenderPartial("EditPerson", np);%>
 </table>

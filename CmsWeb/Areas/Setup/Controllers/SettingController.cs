@@ -290,6 +290,9 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "MemberOnly":
                             o.MemberOnly = a[c].ToBool2();
                             break;
+                        case "NoSecurityLabel":
+                            o.NoSecurityLabel = a[c].ToBool2();
+                            break;
                         case "NumCheckInLabels":
                             o.NumCheckInLabels = a[c].ToInt2();
                             break;

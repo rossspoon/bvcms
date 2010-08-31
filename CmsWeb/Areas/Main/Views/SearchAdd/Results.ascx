@@ -14,6 +14,8 @@
         Html.RenderPartial("HiddenPerson", p);
     }
 %>
+<h4>Individual Search Results (top 20)</h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLink("Results") %>'>help</a>
 <table id="people" width="100%" class="grid" style="font-size:12px;" cellpadding="3">
 <tr class="headrow">
     <th>Name</th>

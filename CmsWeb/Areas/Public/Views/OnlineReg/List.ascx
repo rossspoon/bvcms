@@ -5,7 +5,6 @@
 <%=Html.Hidden("m.URL", Model.URL) %>
 <table cellpadding="0" cellspacing="2" width="100%">
 <% 
-    bool ShowDisplay = false;
     for (var i = 0; i < Model.List.Count; i++)
     {
         var p = Model.List[i];
@@ -20,10 +19,7 @@
 <%
         p.LastItem = i == (Model.List.Count - 1);
        
-        ShowDisplay = p.org != null && !p.IsFilled
-            && ((p.Found == true && p.IsValidForExisting)
-                || (p.IsNew && p.IsValidForNew));
-        if (ShowDisplay)
+        if (p.ShowDisplay())
         {
             Html.RenderPartial("PersonDisplay", p);
             if (p.OtherOK)
@@ -38,7 +34,7 @@
 <%  }
     var last = Model.List[Model.List.Count - 1];
     last.LastItem = true;
-    if (last.OtherOK && ShowDisplay)
+    if (last.OtherOK && last.ShowDisplay())
     {
 %>
 <tr><td colspan="2">

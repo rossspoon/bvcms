@@ -145,7 +145,7 @@
    if(Model.org.AskOptions.HasValue())
    { %>
     <tr>
-        <td>Option</td>
+        <td><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></td>
         <td><%=Model.option %>
         <%=Html.Hidden3("m.list[" + Model.index + "].option", Model.option)%>
         </td>
@@ -154,7 +154,7 @@
    if(Model.org.ExtraOptions.HasValue())
    { %>
     <tr>
-        <td>Extra Option</td>
+        <td><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Option")%>
         <td><%=Model.option2 %>
         <%=Html.Hidden3("m.list[" + Model.index + "].option2", Model.option2)%>
         </td>
@@ -188,6 +188,17 @@
             <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
             <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />
             <%=Model.YesNoQuestion[a.name] == true ? "Yes" : "No" %>
+        </td>
+    </tr>
+<% }
+   foreach (var i in Model.MenuItemsChosen())
+   { %>
+    <tr>
+        <td></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Key" value="<%=i.sg %>" />
+            <input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Value" value="<%=Model.MenuItemValue(i.sg) %>" />
+            <%=i.number%> <%=i.desc%>
         </td>
     </tr>
 <% }

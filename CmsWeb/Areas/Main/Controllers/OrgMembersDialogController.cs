@@ -58,5 +58,9 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View();
         }
+        public string HelpLink(string page)
+        {
+            return "http://wiki.bvcms.com/help.SearchAdd_{0}.ashx".Fmt(page);
+        }
     }
 }

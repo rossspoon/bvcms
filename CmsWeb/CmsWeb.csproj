@@ -124,7 +124,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 10.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Framework, Version=0.4.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -853,6 +856,8 @@
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />
@@ -1560,7 +1565,9 @@
     <Content Include="Config\Authentication.config" />
     <Content Include="Config\ConnectionStrings.config" />
     <Content Include="Config\CustomErrors.config" />
-    <Content Include="Config\smtp.config" />
+    <Content Include="Config\smtp.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\attention48.png" />
     <Content Include="Content\blackredgradient.png" />
     <Content Include="Content\bvorgfiles\black_bg_main_cm.jpg" />
@@ -1763,6 +1770,7 @@
     <Content Include="Areas\Public\Views\Volunteer\Unknown.aspx" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>

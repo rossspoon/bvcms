@@ -495,11 +495,12 @@ namespace CmsWeb.Models
         {
             get
             {
-                return @"We could not find this person's record.<br />
+                return @"We are trying to find this person's record.<br />
 The first and last names of the individual must match a record.<br />
 Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />
 We may not have your birthday, so try leaving it blank.<br />
-Try different spellings or a nickname too.";
+Try different spellings or a nickname too.<br />
+<span style='color: green;'><i>After a couple of tries, you will have the option to Register a New record</i></span>";
             }
         }
     }

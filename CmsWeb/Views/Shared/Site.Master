@@ -172,7 +172,13 @@
                         </li>
                         <% } %>
                         <li class="headlink"><a href="http://wiki.bvcms.com/help.<%=Util.Helpfile %>.ashx"
-                            target="_blank">Help</a> </li>
+                            target="_blank">Help</a>
+                            <ul>
+                                <li><a href="http://wiki.bvcms.com/help.<%=Util.Helpfile %>.ashx"
+                                    target="_blank">Wiki Documentation</a></li>
+                                <li><a href="http://bvcms.wufoo.com/forms/bvcms-bug-tracker/" target="_blank">Bug Report</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <input type="text" class="CommonNavigationSearch" id="SearchText" onclick="if(this.defaultValue==this.value) this.value='';"
                         value="Quick Search" defaultvalue="Quick Search" onblur="if(this.value=='') this.value=this.defaultValue;"

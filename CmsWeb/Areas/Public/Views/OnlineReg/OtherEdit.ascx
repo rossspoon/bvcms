@@ -181,7 +181,7 @@
    if(Model.org.AskOptions.HasValue())
    { %>
     <tr>
-        <td>Options</td>
+        <td><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></td>
         <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option", Model.Options(), "0")%></td>
         <td><%=Html.ValidationMessage("option")%></td>
     </tr>
@@ -189,7 +189,7 @@
    if(Model.org.ExtraOptions.HasValue())
    { %>
     <tr>
-        <td>Extra Options</td>
+        <td><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Options")%></td>
         <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option2", Model.ExtraOptions(), "0")%></td>
         <td><%=Html.ValidationMessage("option2")%></td>
     </tr>
@@ -213,8 +213,8 @@
         <td><%=Html.ValidationMessage(a.question + "-QError")%></td>
     </tr>
 <% }
-   foreach (var a in Model.YesNoQuestions())
-   { %>
+    foreach (var a in Model.YesNoQuestions())
+    { %>
     <tr>
         <td><%=a.desc%></td>
         <td>
@@ -223,6 +223,18 @@
             <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="false" <%=Model.YesNoChecked(a.name, false) %> />No
         </td>
         <td><%=Html.ValidationMessage(a.name + "-YNError")%></td>
+    </tr>
+<% }
+   foreach(var i in Model.MenuItems())
+   { %>
+    <tr>
+        <td></td>
+        <td>
+            <input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Key" value="<%=i.sg %>" />
+            <input type="text" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Value" value="<%=Model.MenuItemValue(i.sg) %>" class="short" />
+            <%=i.desc %> ($<%=i.amt.ToString("N2") %>)
+        </td>
+        <td><%=Html.ValidationMessage(i.sg + "-MIError")%></td>
     </tr>
 <% }
    if (Model.org.Deposit > 0)

@@ -3,9 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Index</title>
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+<%= SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.2.custom.css")
+        .Add("/Content/Dialog.css")
+        .Add("/Content/jquery.tooltip.css")
+    .Render("/Content/OrgMembers_#.css")
+%>
 </head>
 <body>
     <%= SquishIt.Framework.Bundle.JavaScript()
@@ -19,6 +22,8 @@
 <%=Html.Hidden("orgid") %>
 <%=Html.Hidden("pendings") %>
 <%=Html.Hidden("inactives") %>
+<h4><%=Model.title() %></h4>
+<a class="helplink" target="_blank" href='<%=Model.HelpLink() %>'>help</a>
 <table class="modalPopup">
 	<tr>
 		<td colspan="2"><a id="ClearSearch" href="#">clear</a></td>

@@ -19,7 +19,7 @@
         bgiframe: true,
         autoOpen: false,
         width: 700,
-        height: 650,
+        height: 630,
         modal: true,
         overlay: {
             opacity: 0.5,
@@ -32,7 +32,7 @@
         ev.preventDefault();
         var d = $('#dialogbox');
         $('iframe', d).attr("src", this.href);
-        d.dialog("option", "title", "Delegate task");
+        d.dialog("option", "title", "Change Owner");
         d.dialog("open");
         return false;
     });
@@ -48,7 +48,7 @@
         ev.preventDefault();
         var d = $('#dialogbox');
         $('iframe', d).attr("src", this.href);
-        d.dialog("option", "title", "Delegate task");
+        d.dialog("option", "title", "Make Task About");
         d.dialog("open");
         return false;
     });

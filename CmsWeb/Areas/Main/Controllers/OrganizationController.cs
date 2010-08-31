@@ -133,6 +133,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
         public ActionResult CurrMemberGrid(int id, int smallgroupid)
         {
+            ViewData["OrgMemberContext"] = true;
             Util.CurrentGroupId = smallgroupid;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             InitExportToolbar(id, qb.QueryId);

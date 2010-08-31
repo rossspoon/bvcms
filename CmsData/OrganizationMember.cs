@@ -56,16 +56,12 @@ namespace CmsData
                             let count = Db.Attends.Count(a => a.PeopleId == PeopleId
                                 && a.OrganizationId == OrganizationId
                                 && (a.MeetingDate < DateTime.Today || a.AttendanceFlag == true))
-                            select new
-                            {
-                                FirstMeetingDt = o.FirstMeetingDate,
-                                AttendCount = count,
-                                TrackAttendance = o.AttendTrkLevelId == 20,
-                                MeetingCt = o.Meetings.Count()
-                            };
+                            select new { count, Organization.DaysToIgnoreHistory };
                     var i = q.Single();
                     EnrollmentTransaction droptrans = null;
-                    if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays < 60 && i.AttendCount == 0)
+                    if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays
+                        < (i.DaysToIgnoreHistory ?? 60) 
+                        && i.count == 0)
                     {
                         var qe = from et in Db.EnrollmentTransactions
                                  where et.PeopleId == PeopleId
@@ -148,6 +144,11 @@ namespace CmsData
         }
         public void AddToGroup(string name)
         {
+            int? n = null;
+            AddToGroup(name, n);
+        }
+        public void AddToGroup(string name, int? n)
+        {
             if (!name.HasValue())
                 return;
             var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
@@ -157,15 +158,16 @@ namespace CmsData
                 DbUtil.Db.MemberTags.InsertOnSubmit(mt);
                 DbUtil.Db.SubmitChanges();
             }
-            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => 
-                t.PeopleId == PeopleId 
+            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t =>
+                t.PeopleId == PeopleId
                 && t.MemberTagId == mt.Id
                 && t.OrgId == OrganizationId);
             if (omt == null)
-                mt.OrgMemMemTags.Add(new OrgMemMemTag 
-                { 
-                    PeopleId = PeopleId, 
-                    OrgId = OrganizationId 
+                mt.OrgMemMemTags.Add(new OrgMemMemTag
+                {
+                    PeopleId = PeopleId,
+                    OrgId = OrganizationId,
+                    Number = n
                 });
             DbUtil.Db.SubmitChanges();
         }

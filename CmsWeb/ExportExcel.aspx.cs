@@ -39,14 +39,14 @@ namespace CmsWeb
                 r.Charset = "";
 
             int? qid = Request.QueryString["id"].ToInt2();
-            if (!qid.HasValue)
+            var labelNameFormat = Request.QueryString["format"];
+            if (!qid.HasValue && labelNameFormat != "Groups")
             {
                 r.Write("no queryid");
                 r.Flush();
                 r.End();
             }
-            var labelNameFormat = Request.QueryString["format"];
-            var ctl = new MailingController();
+           var ctl = new MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             var dg = new DataGrid();
@@ -82,6 +82,9 @@ namespace CmsWeb
                     break;
                 case "Organization":
                     dg.DataSource = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
+                    break;
+                case "Groups":
+                    dg.DataSource = InvolvementController.OrgMemberListGroups();
                     break;
                 case "Promotion":
                     dg.DataSource = InvolvementController.PromoList(qid.Value, maxExcelRows);

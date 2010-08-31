@@ -232,6 +232,7 @@
     <Compile Include="ContentService.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
+    <Compile Include="Dynamic.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
