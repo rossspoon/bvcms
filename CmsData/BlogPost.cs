@@ -92,7 +92,10 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
                     if (n % 20 == 0)
                         smtp = new SmtpClient();
                     n++;
+#if DEBUG
+#else
                     smtp.Send(msg);
+#endif
                 }
             }
             var f = new MailAddress("bbcms01@bellevue.org");
@@ -101,7 +104,10 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
             msg2.Body = sb.ToString();
             msg2.IsBodyHtml = true;
             var smtp2 = new SmtpClient();
-            smtp.Send(msg2);
+#if DEBUG
+#else
+            smtp2.Send(msg2);
+#endif
         }
         public bool IsTempPost
         {

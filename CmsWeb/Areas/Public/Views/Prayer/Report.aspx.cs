@@ -11,6 +11,7 @@ using System.Collections;
 using CmsData;
 using UtilityExtensions;
 using System.Text;
+using CmsWeb.Models;
 
 namespace CmsWeb.Models.Prayer
 {
@@ -46,7 +47,7 @@ namespace CmsWeb.Models.Prayer
                 t.HeaderRows = 1;
                 t.WidthPercentage = 100;
                 t.SetWidths(new int[] { 13, 87 });
-                t.AddCell(new Phrase("Time", boldfont));
+                t.Add("Time", boldfont);
                 var cell = new PdfPCell(new Paragraph(((DayOfWeek)day).ToString(), boldfont));
                 cell.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
                 t.AddCell(cell);

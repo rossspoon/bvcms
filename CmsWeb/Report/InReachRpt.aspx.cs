@@ -12,7 +12,7 @@ namespace CmsWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RenderReport();
+            //RenderReport();
         }
         private void localReport_SubreportProcessing(object sender, SubreportProcessingEventArgs e)
         {

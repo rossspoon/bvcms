@@ -324,9 +324,9 @@ namespace CmsWeb.Models
                         om.Organization.PhoneNumber
                     };
             var sb = new StringBuilder("Room Notices sent to:\r\n<pre>\r\n");
-            string subj = "{0} room assignment".Fmt(onlineorg.OrganizationName);
             foreach (var i in q)
             {
+                string subj = "{0} room assignment".Fmt(i.OrganizationName);
                 var msg =
 @"{0},
 

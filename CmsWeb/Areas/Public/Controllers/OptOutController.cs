@@ -12,7 +12,18 @@ namespace CmsWeb.Areas.Public.Controllers
     {
         public ActionResult UnSubscribe(string optout, string cancel)
         {
-            var s = Util.Decrypt(Request["id"]);
+            var id = Request["id"];
+            if (!id.HasValue())
+                return Content("no id");
+            string s;
+            try
+            {
+                s = Util.Decrypt(id);
+            }
+            catch (Exception ex)
+            {
+                return Content("unable to identify request");
+            }
             var a = s.SplitStr("|");
             ViewData["fromemail"] = a[1];
             if (Request.HttpMethod.ToUpper() == "GET")

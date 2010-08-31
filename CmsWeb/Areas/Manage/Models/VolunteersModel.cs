@@ -198,31 +198,3 @@ namespace CmsWeb.Models
         public string Application { get; set; }
     }
 }
-
-
-/*
-
-4	_Greeter	BLM	Greeter
-30	_City_of_Memphis_Cleanup_Project	BLM	City of Memphis Clean-up Project
-32	_Impact_Ministries_Food_Pantry_Thrift_Store	BLM	Impact Ministries - Food Pantry/Thrift Store
-34	_ICare_Baptist_East_and_St_Francis_Bartlett	BLM	I-Care Baptist East and St. Francis Bartlett
-35	_Prayer_Room	BLM	Prayer Room
-36	_Bella_Vista_Painting	BLM	Bella Vista - Painting
-37	_Bella_Vista_Fence_Installation	BLM	Bella Vista - Fence Installation
-38	_Manassas_High_School_Project	BLM	Manassas High School Project
-39	_Cordova_High_School_Project	BLM	Cordova High School Project
-40	_Arlington_Sheriff_Sub_Station_Cookout	BLM	Arlington Sheriff's Sub-Station Cookout
-41	_Kennedy_Home_Project	BLM	Kennedy Home Project
-42	_Rhea_Avenue_Project	BLM	Rhea Avenue Project
-43	_Confidential_Care_for_Women_Project	BLM	Confidential Care for Women Project
-44	_Treadwell_Elementary_Project	BLM	Treadwell Elementary Project
-45	_Dillard_Home_Project	BLM	Dillard Home Project
-46	_Grace_House_of_Memphis	BLM	Grace House of Memphis
-47	_Knowledge_Quest_Project	BLM	Knowledge Quest Project
-48	_Bellevue_Loves_Our_Housekeeping_Staff	BLM	Bellevue Loves Our Housekeeping Staff
-49	_Cancer_Survivor_Park_Project	BLM	Cancer Survivor's Park Project
-50	_Audubon_Park_Project	BLM	Audubon Park Project
-51	_Shepherds_Haven_Project	BLM	Shepherd's Haven Project
-52	_TN_Baptist_Childrens_Home_Bartlett_Project	BLM	TN Baptist Children's Home Bartlett Project
-63	_Bellevue_Loves_Memphis	BLM	Bellevue Loves Memphis
-*/

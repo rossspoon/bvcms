@@ -51,7 +51,7 @@ namespace Disciples.Modules
             else
                 Literal1.Text = "Set both the ContentID and PageName";
 
-            if (Page.User.IsInRole("BlogAdministrator") || CanEdit)
+            if ((Page.User.IsInRole("BlogAdministrator") || CanEdit) && ContentName.HasValue())
             {
                 Panel1.CssClass = "contentboxadmin";
                 string dblclick = string.Format("showPopWin('{0}?id={1}', 800, 650, null);",

@@ -122,7 +122,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     t2.AddCell(" ");
                     t2.AddCell(" ");
                     
-                    var rr = GetRecReg(i.p);
+                    var rr = GetRecRegOrTemp(i.p);
 
                     t2.AddCell("Date of Birth");
                     t2.AddCell(i.p.DOB);
@@ -199,7 +199,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             Response.End();
         }
 
-        private RecReg GetRecReg(Person p)
+        private RecReg GetRecRegOrTemp(Person p)
         {
             var rr = p.RecRegs.SingleOrDefault();
             if (rr == null)

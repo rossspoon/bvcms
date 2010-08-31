@@ -109,7 +109,7 @@
             <td valign="bottom" rowspan="6">
                 <asp:HyperLink ID="MeetingSummaryLink" runat="server" Target="_blank">
                     <asp:Image ID="Image2" ImageUrl="~/images/pdficon_small.gif" runat="server" />
-                    Attendance Summary Report</asp:HyperLink><br />
+                    Visits/Absents Report</asp:HyperLink><br />
                 <asp:HyperLink ID="MeetingAttendanceLink" runat="server" Target="_blank">
                     <asp:Image ID="Image1" ImageUrl="~/images/pdficon_small.gif" runat="server" />
                     Attendee Report</asp:HyperLink>

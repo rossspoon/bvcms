@@ -140,6 +140,36 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new AveryAddressResult { id = id, format = format, titles = titles };
         }
+        public ActionResult RollLabels(int? id, string format, bool? titles)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new RollLabelsResult{ qid = id, format = format, titles = titles ?? false };
+        }
+        public ActionResult Prospect(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new ProspectResult(id);
+        }
+        public ActionResult Attendee(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no meetingid");
+            return new AttendeeResult(id);
+        }
+        public ActionResult VisitsAbsents(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no meetingid");
+            return new VisitsAbsentsResult(id);
+        }
+        public ActionResult PastAttendee(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no orgid");
+            return new PastAttendeeResult(id);
+        }
         public ActionResult Registration(int? id, int? oid)
         {
             if (!id.HasValue)

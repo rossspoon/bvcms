@@ -69,8 +69,8 @@ namespace CmsWeb
 				EditUpdateButton1.OnClientClick = "$.blockUI()";
 
 			UpdateFieldVisibility();
-			MeetingAttendanceLink.NavigateUrl = "~/Report/MeetingAttendanceRpt.aspx?mtgid={0}".Fmt(meeting.MeetingId);
-			MeetingSummaryLink.NavigateUrl = "~/Report/MeetingSummaryRpt.aspx?mtgid={0}".Fmt(meeting.MeetingId);
+			MeetingAttendanceLink.NavigateUrl = "/Reports/Attendee/{0}".Fmt(meeting.MeetingId);
+			MeetingSummaryLink.NavigateUrl = "/Reports/VisitsAbsents/{0}".Fmt(meeting.MeetingId);
 			TextBox1.Focus();
             rollsheetlink.NavigateUrl = "/Reports/Rollsheet/?meetingid={0}".Fmt(meeting.MeetingId);
         }

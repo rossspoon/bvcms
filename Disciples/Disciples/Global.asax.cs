@@ -73,11 +73,9 @@ namespace Disciples
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var debug = true;
 #if DEBUG
-            if (debug)
-                return;
-#endif
+            return;
+#else
             var ex = Server.GetLastError();
             if (ex.Message == "File does not exist.")
                 return;
@@ -97,6 +95,8 @@ namespace Disciples
             }
             msg.To.Add(WebConfigurationManager.AppSettings["senderrorsto"]);
             //smtp.Send(msg);
+#endif
+
         }
 
         //public void FormsAuthentication_OnAuthenticate(object sender, FormsAuthenticationEventArgs args)

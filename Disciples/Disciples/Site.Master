@@ -81,7 +81,7 @@
         </div>
         <div id="CSHeaderUserArea">
             <div id="CSHeaderUserWelcome">
-                <asp:LoginView ID="LoginView1" runat="server">
+                <asp:LoginView ID="LoginView1" runat="server" >
                     <AnonymousTemplate>
                         <asp:HyperLink ID="HyperLink2" NavigateUrl="~/default.aspx#login" runat="server">Login</asp:HyperLink>
                         |
@@ -93,7 +93,8 @@
                         |
                         <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ProfileEdit.aspx" EnableViewState="False">Edit Profile</asp:HyperLink>
                         |
-                        <asp:LoginStatus ID="LoginStatus1" runat="server" EnableViewState="false" LogoutAction="RedirectToLoginPage" />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" EnableViewState="false" 
+                            LogoutAction="Redirect" LogoutPageUrl="/Default.aspx" />
                     </LoggedInTemplate>
                 </asp:LoginView>
             </div>

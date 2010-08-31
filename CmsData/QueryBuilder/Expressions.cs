@@ -805,7 +805,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
+//            var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
             Expression<Func<Person, int>> pred = p =>
                 p.Attends.Count(a =>
                     a.AttendanceFlag == true
@@ -819,7 +819,8 @@ namespace CmsData
 
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
-            return Expression.And(memb, Compare(left, op, right));
+            return Compare(left, op, right);
+ //           return Expression.And(memb, Compare(left, op, right));
         }
         internal static Expression AttendPctHistory(
            ParameterExpression parm, CMSDataContext Db,
@@ -831,6 +832,7 @@ namespace CmsData
            CompareType op,
            decimal pct)
         {
+            // note: this only works for members because visitors do not have att%
             var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
 
             Expression<Func<Person, double>> pred = p =>

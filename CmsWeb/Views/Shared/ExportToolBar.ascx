@@ -38,7 +38,7 @@
     <li class="headlink"><a href=''><img src="/images/Report.png" /> 
         Reports</a>
         <ul>
-            <li><a href='/Report/ProspectCardsrpt.aspx?id=<%=ViewData["queryid"]%>'
+            <li><a href='/Reports/Prospect/<%=ViewData["queryid"]%>'
                 target="_blank"><img src="/images/Report.png" /> 
                 Prospect Form</a></li>
             <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
@@ -85,7 +85,7 @@
     <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 
         Labels</a>
         <ul>
-            <li><a href='/Report/LabelsRpt.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
+            <li><a href='/Reports/RollLabels/<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Labels (pdf for Datamax label printer)" target="_blank"><img src="/images/tags.png" /> 
                 Roll Labels</a></li>
 <% if ((bool?)ViewData["OrganizationContext"] ?? false)

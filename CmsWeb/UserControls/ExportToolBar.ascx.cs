@@ -24,11 +24,11 @@ namespace CmsWeb
         {
             EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
             EmailLinkParents.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?parents=true&");
-            LabelsLink.NavigateUrl = "/Report/LabelsRpt.aspx?id=" + queryId;
+            LabelsLink.NavigateUrl = "/Reports/RollLabels/" + queryId;
             VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;
             BulkMailLink.NavigateUrl = "/bulkmail.aspx?id=" + queryId;
-            ProspectLink.NavigateUrl = GoTo("NewWindow", "Report/ProspectCardsRpt.aspx?");
+            ProspectLink.NavigateUrl = GoTo("NewWindow", "Reports/Prospect/" + queryId);
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
             ContactsLink.NavigateUrl = GoTo2("NewWindow", "Reports/Contacts/" + queryId);
             BarCodeLabels.NavigateUrl = GoTo2("NewWindow", "Reports/BarCodeLabels/" + queryId);

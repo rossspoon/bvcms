@@ -43,7 +43,7 @@
 <a id="deleteorg" href="/Organization/Delete/<%=o.OrganizationId %>">
             <img border="0" src="/images/delete.gif" align="middle" /></a> |
 <% } %>
-        <a id="RecentAttendRpt" href="/Report/PastAttendeeRpt.aspx?id=<%=o.OrganizationId %>" target="_blank">Recent Attendance Report</a> |
+        <a id="RecentAttendRpt" href="/Reports/PastAttendee/<%=o.OrganizationId %>" target="_blank">Recent Attendance Report</a> |
         <a id="AttendanceRpt" href="/Reports/Attendance/<%=o.OrganizationId %>">Attendance Percentages</a> | 
         <a id="VolunteerCalendar" href="/Volunteers/Calendar/<%=o.OrganizationId %>">Volunteer Calendar</a> | 
         <a class="CreateAndGo" href="/Organization/Clone/<%=o.OrganizationId %>" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>

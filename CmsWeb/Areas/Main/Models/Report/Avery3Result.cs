@@ -5,19 +5,11 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.IO;
-using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
 
@@ -26,9 +18,7 @@ namespace CmsWeb.Areas.Main.Models.Report
     public class Avery3Result : ActionResult
     {
         public int? id;
-        protected float H = 1.0f;
-        protected float W = 2.625f;
-        protected float GAP = .125f;
+        const float W = 197f;
 
         protected PdfContentByte dc;
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 20);
@@ -41,26 +31,15 @@ namespace CmsWeb.Areas.Main.Models.Report
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             var document = new Document(PageSize.LETTER);
-            document.SetMargins(36f, 36f, 33f, 36f);
+            document.SetMargins(40f, 36f, 32f, 36f);
             var w = PdfWriter.GetInstance(document, Response.OutputStream);
             document.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetController();
+            var cols = new float[] { W, W, W - 10f };
+            var t = new PdfPTable(cols);
+            t.SetTotalWidth(cols);
 
-            var cols = new float[3 * 2 - 1];
-            var twid = 0f;
-            var t = new PdfPTable(cols.Length);
-            for (var i = 0; i < cols.Length; i++)
-                if (i % 2 == 1)
-                    cols[i] = GAP * 72f;
-                else
-                    cols[i] = W * 72f;
-            foreach (var wid in cols)
-                twid += wid;
-
-            t.TotalWidth = twid;
-            t.SetWidths(cols);
             t.HorizontalAlignment = Element.ALIGN_CENTER;
             t.LockedWidth = true;
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
@@ -76,6 +55,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         Phone = p.CellPhone ?? p.HomePhone,
                         dob = p.DOB
                     };
+            Debug.WriteLine(q.Count());
             foreach (var m in q)
                 AddRow(t, m.First, m.Last, m.Phone, m.dob, m.PeopleId);
             document.Add(t);
@@ -83,7 +63,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Close();
             Response.End();
         }
-        public void AddRow(PdfPTable t, string fname, string lname, string phone, string dob, int pid)
+        private void AddRow(PdfPTable t, string fname, string lname, string phone, string dob, int pid)
         {
             var t2 = new PdfPTable(2);
             t2.WidthPercentage = 100f;
@@ -106,7 +86,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             pcell = new PdfPCell(new Phrase(phone.FmtFone(), smallfont));
             pcell.Border = PdfPCell.NO_BORDER;
-            pcell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            pcell.HorizontalAlignment = Element.ALIGN_MIDDLE;
             t2.AddCell(pcell);
 
             var cell = new PdfPCell(t2);
@@ -114,12 +94,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             cell.PaddingLeft = 8f;
             cell.PaddingRight = 8f;
             cell.Border = PdfPCell.NO_BORDER;
-            cell.FixedHeight = H * 72f;
+            cell.FixedHeight = 72f;
 
             t.AddCell(cell);
-            t.AddCell("");
             t.AddCell(cell);
-            t.AddCell("");
             t.AddCell(cell);
         }
 

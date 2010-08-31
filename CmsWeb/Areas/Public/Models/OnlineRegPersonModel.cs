@@ -988,6 +988,7 @@ namespace CmsWeb.Models
                     org.AskCoaching == true ||
                     org.AskChurch == true ||
                     org.AskTickets == true ||
+                    org.ExtraQuestions.HasValue() ||
                     org.MenuItems.HasValue() ||
                     org.AskOptions.HasValue() ||
                     org.YesNoQuestions.HasValue() ||
@@ -1007,6 +1008,7 @@ namespace CmsWeb.Models
                         o.AskChurch == true ||
                         o.AskTickets == true ||
                         o.AskOptions.HasValue() ||
+                        o.ExtraQuestions.HasValue() ||
                         o.MenuItems.HasValue() ||
                         o.YesNoQuestions.Length > 0 ||
                         o.Deposit > 0

@@ -30,6 +30,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PublishDatabases>false</PublishDatabases>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -124,10 +125,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 10.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Framework, Version=0.4.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -200,8 +198,15 @@
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
+    <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\HeadFoot.cs" />
     <Compile Include="Areas\Main\Models\Report\ContributionModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ContributionStatementResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\AttendeeResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\ProspectResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\RollLabelsResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -720,20 +725,6 @@
     <Compile Include="Report\InReachRpt.aspx.designer.cs">
       <DependentUpon>InReachRpt.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\LabelsRpt.aspx.cs">
-      <DependentUpon>LabelsRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\LabelsRpt.aspx.designer.cs">
-      <DependentUpon>LabelsRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\MeetingAttendanceRpt.aspx.cs">
-      <DependentUpon>MeetingAttendanceRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\MeetingAttendanceRpt.aspx.designer.cs">
-      <DependentUpon>MeetingAttendanceRpt.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\MeetingSummaryRpt.aspx.cs">
       <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -747,13 +738,6 @@
     </Compile>
     <Compile Include="Report\PastAttendeeRpt.aspx.designer.cs">
       <DependentUpon>PastAttendeeRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\ProspectCardsRpt.aspx.cs">
-      <DependentUpon>ProspectCardsRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\ProspectCardsRpt.aspx.designer.cs">
-      <DependentUpon>ProspectCardsRpt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\Reports.Master.cs">
       <DependentUpon>Reports.Master</DependentUpon>
@@ -1156,11 +1140,8 @@
     <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
     <Content Include="Report\InReachRpt.aspx" />
-    <Content Include="Report\LabelsRpt.aspx" />
-    <Content Include="Report\MeetingAttendanceRpt.aspx" />
     <Content Include="Report\MeetingSummaryRpt.aspx" />
     <Content Include="Report\PastAttendeeRpt.aspx" />
-    <Content Include="Report\ProspectCardsRpt.aspx" />
     <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\Address.ascx" />
@@ -1656,7 +1637,6 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <None Include="ckeditor\.htaccess" />
     <None Include="ckeditor\ckeditor.pack" />
-    <Content Include="Report\ChurchAttendance.aspx" />
     <Content Include="Scripts\Divisions.js" />
     <Content Include="Views\Shared\Reports.Master" />
     <Content Include="Scripts\PostBundle.js" />
@@ -1805,40 +1785,13 @@
     <Content Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Report\rdlc\AttendanceSummarySubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\ContactNotesSubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\ContactSummarySubReport.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\CurrentEnrollmentSubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\FamilySummarySubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Report\rdlc\InReachRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\LabelsRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\MeetingAttendanceRpt.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Report\rdlc\MeetingSummaryRpt.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Report\rdlc\PastAttendeeRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\PastContactsSummarySubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\ProspectCardsRpt.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

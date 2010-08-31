@@ -126,7 +126,7 @@
    { %>
     <tr>
         <td><label for="church"><%= Model.org.AskParents == true ? "Parent's Church" : "Church" %></label></td>
-        <td><%=Model.memberus? "Member of Bellevue" : "not member of bellevue" %> <br />
+        <td><%=Model.memberus? "Member of our church" : "not member of our church" %> <br />
         <%=Model.otherchurch? "Active in another Local Church" : "not active in another church" %>
         <%=Html.Hidden3("m.list[" + Model.index + "].memberus", Model.memberus)%>
         <%=Html.Hidden3("m.list[" + Model.index + "].otherchurch", Model.otherchurch)%>

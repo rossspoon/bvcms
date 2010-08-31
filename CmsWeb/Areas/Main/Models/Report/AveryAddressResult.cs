@@ -6,20 +6,12 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.IO;
-using System.Collections;
-using CmsData;
-using UtilityExtensions;
 using CMSPresenter;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using System.Diagnostics;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -28,14 +20,11 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int? id;
         public string format;
         public bool? titles;
-        const float Pts = 72f;
-        const float H = 1.0f * Pts;
-        const float W = 2.625f * Pts;
-        const float GAP = .125f * Pts;
+        const float H = 72f;
+        const float W = 197f;
+        private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
 
         protected PdfContentByte dc;
-        private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
-        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -43,8 +32,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            var ctl = new MailingController();
-            ctl.UseTitles = titles == true;
+            var ctl = new MailingController { UseTitles = titles == true };
 
             const string STR_Name = "Name";
             IEnumerable<MailingInfo> q = null;
@@ -68,73 +56,37 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
 
             var document = new Document(PageSize.LETTER);
-            document.SetMargins(36f, 36f, 33f, 36f);
+            document.SetMargins(50f, 36f, 32f, 36f);
             var w = PdfWriter.GetInstance(document, Response.OutputStream);
             document.Open();
             dc = w.DirectContent;
 
-            var cols = new float[] { W, GAP, W, GAP, W };
-            var twid = 0f;
-            for (var i = 0; i < cols.Length; i++)
-                twid += cols[i];
-
-            var t = new PdfPTable(cols.Length);
-            t.TotalWidth = twid;
-            t.SetWidths(cols);
+            var cols = new float[] { W, W, W - 25f };
+            var t = new PdfPTable(cols);
+            t.SetTotalWidth(cols);
             t.HorizontalAlignment = Element.ALIGN_CENTER;
             t.LockedWidth = true;
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
+            t.DefaultCell.FixedHeight = H;
+            t.DefaultCell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
+            t.DefaultCell.PaddingLeft = 8f;
+            t.DefaultCell.PaddingRight = 8f;
+            t.DefaultCell.SetLeading(2.0f, 1f);
 
-            bool rowcomplete = false;
             foreach (var m in q)
-                rowcomplete = AddCell(t, m.LabelName, m.Address, m.Address2, m.CityStateZip);
-            while (!rowcomplete)
-                rowcomplete = AddCell(t, "", "", "", "");
+            {
+                var ph = new Paragraph();
+                ph.AddLine(m.LabelName, font);
+                ph.AddLine(m.Address, font);
+                ph.AddLine(m.Address2, font);
+                ph.AddLine(m.CityStateZip, font);
+                t.AddCell(ph);
+            }
+            t.CompleteRow();
             document.Add(t);
 
             document.Close();
             Response.End();
         }
-        int n;
-        public bool AddCell(PdfPTable t, string name, string addr, string addr2, string csz)
-        {
-            var t2 = new PdfPTable(1);
-            t2.WidthPercentage = 100f;
-            t2.DefaultCell.Border = PdfPCell.NO_BORDER;
-
-            var cc = new PdfPCell(new Phrase(name, font));
-            cc.Border = PdfPCell.NO_BORDER;
-            t2.AddCell(cc);
-
-            cc = new PdfPCell(new Phrase(addr, font));
-            cc.Border = PdfPCell.NO_BORDER;
-            t2.AddCell(cc);
-
-            if (addr2.HasValue())
-            {
-                cc = new PdfPCell(new Phrase(addr, font));
-                cc.Border = PdfPCell.NO_BORDER;
-                t2.AddCell(cc);
-            }
-
-            cc = new PdfPCell(new Phrase(csz, font));
-            cc.Border = PdfPCell.NO_BORDER;
-            t2.AddCell(cc);
-
-            var cell = new PdfPCell(t2);
-            cell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
-            cell.PaddingLeft = 8f;
-            cell.PaddingRight = 8f;
-            cell.Border = PdfPCell.NO_BORDER;
-            cell.FixedHeight = H;
-
-            t.AddCell(cell);
-            n++;
-            if (n % 3 > 0)
-                t.AddCell("");
-            return n % 3 == 0;
-        }
-
     }
 }
-
