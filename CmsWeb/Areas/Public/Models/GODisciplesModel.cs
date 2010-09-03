@@ -29,7 +29,15 @@ namespace CmsWeb.Models
             if (neworg != null)
                 campus = neworg.CampusId;
         }
-        public int neworgid { get { return neworg.OrganizationId; } }
+        public int neworgid
+        {
+            get
+            {
+                if (neworg == null)
+                    return 0;
+                return neworg.OrganizationId;
+            }
+        }
         public int? peopleid { get; set; }
         private Person _person;
         public Person person
@@ -147,9 +155,7 @@ namespace CmsWeb.Models
                         AddPerson();
                 else if (count == 1)
                     if (!person.EmailAddress.HasValue())
-                        modelState.AddModelError("email0", 
-                            "Cannot enroll without an email address, contact church to let us know yours, {0}"
-                            .Fmt(DbUtil.Settings("GoDisciplesPhone", "(901) 347-2000")));
+                        modelState.AddModelError("email0", "noemail");
             }
         }
         private void AddPerson()
@@ -450,7 +456,7 @@ namespace CmsWeb.Models
                 .Fmt(p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName, 
                 p.GenderId == 2 ? "her" : "his", neworg.OrganizationName));
 
-            UpdatePhone(smtp, adminmail, p);
+            //UpdatePhone(smtp, adminmail, p);
         }
         public void EmailMemberNotices()
         {
@@ -476,7 +482,7 @@ namespace CmsWeb.Models
             var leader = q.FirstOrDefault();
             if (leader != null)
                 Util.Email2(smtp, p.EmailAddress, leader.EmailAddress, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
-            UpdatePhone(smtp, adminmail, p);
+            //UpdatePhone(smtp, adminmail, p);
         }
         public Content ContentDefault(string name)
         {
@@ -522,8 +528,10 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
 
             var smtp = Util.Smtp();
             Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
-            Util.Email2(smtp, p.EmailAddress, adminmail, "new Individual GODisciple registration in cms", "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
-            UpdatePhone(smtp, adminmail, p);
+            Util.Email2(smtp, p.EmailAddress, adminmail, 
+                "new Individual GODisciple registration in cms", 
+                "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
+            //UpdatePhone(smtp, adminmail, p);
         }
         private string LinkResetPassword()
         {
@@ -532,21 +540,21 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
 		<a href='{0}'>you can reset it here</a>)</i>"
                                 .Fmt(Util.ResolveServerUrl("~/Account/ForgotPassword"));
         }
-        private void UpdatePhone(SmtpClient smtp, string adminmail, Person p)
-        {
-            if (homecell == "c" && p.CellPhone.HasValue() && !p.CellPhone.EndsWith(phone.GetDigits()))
-            {
-                const string subject = "updated cell phone";
-                const string message =
-@"We have updated your cell phone from {0} to {1}.<br />
-If this is not correct, please reply and let us know.";
-                var oldphone = p.CellPhone.FmtFone();
-                if (oldphone.HasValue())
-                    Util.Email(smtp, adminmail, p.Name, p.EmailAddress, subject,
-                        message.Fmt(oldphone, phone.FmtFone()));
-                p.CellPhone = phone;
-            }
-            DbUtil.Db.SubmitChanges();
-        }
+//        private void UpdatePhone(SmtpClient smtp, string adminmail, Person p)
+//        {
+//            if (homecell == "c" && p.CellPhone.HasValue() && !p.CellPhone.EndsWith(phone.GetDigits()))
+//            {
+//                const string subject = "updated cell phone";
+//                const string message =
+//@"We have updated your cell phone from {0} to {1}.<br />
+//If this is not correct, please reply and let us know.";
+//                var oldphone = p.CellPhone.FmtFone();
+//                if (oldphone.HasValue())
+//                    Util.Email(smtp, adminmail, p.Name, p.EmailAddress, subject,
+//                        message.Fmt(oldphone, phone.FmtFone()));
+//                p.CellPhone = phone;
+//            }
+//            DbUtil.Db.SubmitChanges();
+//        }
     }
 }

@@ -66,7 +66,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             box.Border = PdfPCell.NO_BORDER;
             box.CellEvent = new CellEvent();
 
-            var ctl = new RollsheetController();
+            var ctl = new RollsheetModel();
             foreach (var o in list1)
             {
                 var mct = StartPageSet(o);
@@ -84,7 +84,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.GroupId))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
 
-                if (bygroup == false && !groupid.HasValue && meeting == null)
+                if (bygroup == false && (groupid ?? 0) == 0 && meeting == null)
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                 if (t.Rows.Count > 0)

@@ -2590,18 +2590,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.FmtPhone", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string FmtPhone(
-            [Parameter(Name = "PhoneNumber", DbType="varchar")] string PhoneNumber
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                PhoneNumber
-                ).ReturnValue));
-		}
-
 		[Function(Name="disc.DayOfYear", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? DayOfYear(
@@ -2611,6 +2599,18 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 DateX
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.FmtPhone", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string FmtPhone(
+            [Parameter(Name = "PhoneNumber", DbType="varchar")] string PhoneNumber
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                PhoneNumber
                 ).ReturnValue));
 		}
 
@@ -2697,6 +2697,21 @@ namespace CmsData
                 createdby
 			);
 			return ((ISingleResult< ForumEntry>)(result.ReturnValue));
+		}
+
+		[Function(Name="dbo.TopGivers")]
+		public ISingleResult< TopGiver> TopGivers(
+            [Parameter(Name = "top", DbType="int")] int? top,
+            [Parameter(Name = "sdate", DbType="datetime")] DateTime? sdate,
+            [Parameter(Name = "edate", DbType="datetime")] DateTime? edate
+            )
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                top,
+                sdate,
+                edate
+			);
+			return ((ISingleResult< TopGiver>)(result.ReturnValue));
 		}
 
     #endregion

@@ -117,10 +117,13 @@ namespace UtilityExtensions
             if (attach != null)
                 msg.Attachments.Add(attach);
 
-#if DEBUG
+#if DEBUG2
 #else
             try
             {
+#if DEBUG
+                smtp.EnableSsl = true;
+#endif
                 smtp.Send(msg);
             }
             catch (Exception ex)

@@ -202,6 +202,7 @@
                "&divid=" + $('#DivisionId').val() +
                "&schedid=" + $('#ScheduleId').val() +
                "&campusid=" + $('#CampusId').val() +
+               "&statusid=" + $('#StatusId').val() +
                "&name=" + $('#Name').val();
         window.open("/Meetings.aspx" + args);
         return false;

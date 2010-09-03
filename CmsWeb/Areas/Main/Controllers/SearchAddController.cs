@@ -73,6 +73,9 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Select(int id, SearchModel m)
         {
+            if (m.List.AsEnumerable().Any(li => li.PeopleId == id))
+                return View("List", m);
+
             var p = DbUtil.Db.LoadPersonById(id);
             var s = new SearchPersonModel
             {
@@ -207,11 +210,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (id > 0)
             {
+                var c = DbUtil.Db.NewContacts.Single(ct => ct.ContactId == id);
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, (int)Person.OriginCode.Visit, 0);
-                    var ctee = DbUtil.Db.Contactees.SingleOrDefault(c =>
-                        c.ContactId == id && c.PeopleId == p.person.PeopleId);
+                    var ctee = c.contactees.SingleOrDefault(ct =>
+                        ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctee == null)
                     {
                         ctee = new Contactee
@@ -219,7 +223,7 @@ namespace CmsWeb.Areas.Main.Controllers
                             ContactId = id,
                             PeopleId = p.person.PeopleId,
                         };
-                        DbUtil.Db.Contactees.InsertOnSubmit(ctee);
+                        c.contactees.Add(ctee);
                     }
                 }
                 DbUtil.Db.SubmitChanges();
@@ -230,11 +234,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (id > 0)
             {
+                var c = DbUtil.Db.NewContacts.Single(ct => ct.ContactId == id);
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, 0, 0);
-                    var ctor = DbUtil.Db.Contactors.SingleOrDefault(c =>
-                        c.ContactId == id && c.PeopleId == p.person.PeopleId);
+                    var ctor = c.contactsMakers.SingleOrDefault(ct =>
+                        ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctor == null)
                     {
                         ctor = new Contactor
@@ -242,7 +247,7 @@ namespace CmsWeb.Areas.Main.Controllers
                             ContactId = id,
                             PeopleId = p.person.PeopleId,
                         };
-                        DbUtil.Db.Contactors.InsertOnSubmit(ctor);
+                        c.contactsMakers.Add(ctor);
                     }
                 }
                 DbUtil.Db.SubmitChanges();
@@ -253,12 +258,18 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (id > 0)
             {
+                var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == id);
+
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
                     AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
                     if (!isnew)
                     {
+                        var fm = f.People.SingleOrDefault(fa => fa.PeopleId == p.person.PeopleId);
+                        if (fm != null)
+                            continue; // already a member of this family
+
                         if (p.person.Age < 18)
                             p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
                         else if (p.family.People.Count(per =>

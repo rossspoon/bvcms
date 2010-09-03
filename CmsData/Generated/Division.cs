@@ -205,7 +205,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar(4000)")]
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
 		public string EmailMessage
 		{
 			get { return this._EmailMessage; }
@@ -249,7 +249,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar(1000)")]
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
 		public string Instructions
 		{
 			get { return this._Instructions; }
@@ -271,7 +271,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar(4000)")]
+		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar")]
 		public string Terms
 		{
 			get { return this._Terms; }

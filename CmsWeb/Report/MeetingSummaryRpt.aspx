@@ -1,2 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MeetingSummaryRpt.aspx.cs" Inherits="CmsWeb.Reports.MeetingSummaryRpt" %>
-<html><body>Sorry this report is broken, check back later...</body></html>

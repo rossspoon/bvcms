@@ -15,7 +15,6 @@ using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -43,7 +42,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetController();
+            var ctl = new RollsheetModel();
 
             var cols = new float[3 * 2 - 1];
             var twid = 0f;

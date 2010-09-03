@@ -39,7 +39,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             w.PageEvent = pageEvents;
             doc.Open();
 
-            var ctl = new RollsheetController();
+            var ctl = new RollsheetModel();
             dc = w.DirectContent;
 
             if (qid.HasValue)

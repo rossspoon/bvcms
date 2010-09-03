@@ -15,7 +15,6 @@ using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -48,7 +47,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             doc.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetController();
+            var haddata = false;
+            var ctl = new RollsheetModel();
             foreach (var o in list1)
             {
                 var t = StartPageSet(o);
@@ -61,9 +61,12 @@ namespace CmsWeb.Areas.Main.Models.Report
                     else
                         color = Color.WHITE;
                     AddRow(t, m,  color);
+                    haddata = true;
                 }
                 doc.Add(t);
             }
+            if (!haddata)
+                doc.Add(new Phrase("\nno data"));
             pageEvents.EndPageSet();
             doc.Close();
             Response.End();
@@ -95,7 +98,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, PersonMemberInfo p, Color color)
+        private void AddRow(PdfPTable t, RollsheetModel.PersonMemberInfo p, Color color)
         {
             t.DefaultCell.BackgroundColor = color;
 

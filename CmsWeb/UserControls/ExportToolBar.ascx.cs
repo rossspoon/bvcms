@@ -28,7 +28,7 @@ namespace CmsWeb
             VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;
             BulkMailLink.NavigateUrl = "/bulkmail.aspx?id=" + queryId;
-            ProspectLink.NavigateUrl = GoTo("NewWindow", "Reports/Prospect/" + queryId);
+            ProspectLink.NavigateUrl = GoTo2("NewWindow", "Reports/Prospect/" + queryId);
             InreachLink.NavigateUrl = GoTo("NewWindow", "Report/InreachRpt.aspx?");
             ContactsLink.NavigateUrl = GoTo2("NewWindow", "Reports/Contacts/" + queryId);
             BarCodeLabels.NavigateUrl = GoTo2("NewWindow", "Reports/BarCodeLabels/" + queryId);

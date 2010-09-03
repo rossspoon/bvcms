@@ -18,6 +18,9 @@
     <Field Name="Birthday" Title="Birthday" Type="StringEqual" ToolTip="MM/DD/YYYY or MM/DD or MM or YYYY">
       Searchs by exact date (MM/DD/YYYY) or day of month (MM/DD) or month (MM) or year (YYYY)
     </Field>
+    <Field Name="BDate" Title="Birthdate" Type="Date" >
+      Searchs by Date, can do greater less etc.
+    </Field>
     <Field Name="DaysTillBirthday" Title="Days Till Birthday" Type="Integer">
       Number of days until next birthday (if known.) Always less than 365.
     </Field>
@@ -403,6 +406,9 @@
       Must have Finance role for this to work.
     </Field>
     <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0})" Params="Days">
+      Must have Finance role for this to work.
+    </Field>
+    <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" DataValueField="IdCode">
       Must have Finance role for this to work.
     </Field>
     <Field Name="PeopleExtra" Title="ExtraValue" Type="CodeStr" DataSource="ExtraValues">

@@ -83,7 +83,16 @@ namespace CmsWeb.Areas.Public.Controllers
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Individual");
             if (Request.HttpMethod.ToUpper() == "GET")
+            {
+#if DEBUG
+                m.first = "David";
+                m.last = "Carroll";
+                m.dob = "5/30/52";
+                m.phone = "901.758.1862";
+                m.email = "david@bvcms.com";
+#endif
                 return View("Signup", m);
+            }
 
             UpdateModel(m);
             m.ValidateModel(ModelState);

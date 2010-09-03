@@ -214,6 +214,12 @@ namespace CmsData
                                c.Organization,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.IsTopGiver:
+                    return Expressions.IsTopGiver(parm,
+                                c.Days,
+                                c.Quarters,
+                                CompType,
+                                c.CodeIds == "1");
                 case QueryType.InBFClass:
                     return Expressions.InBFClass(parm,
                                CompType,

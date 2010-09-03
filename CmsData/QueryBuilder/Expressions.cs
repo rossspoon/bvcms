@@ -270,7 +270,10 @@ namespace CmsData
             CompareType op,
             string value)
         {
+            if (!value.HasValue() || !value.Contains(":"))
+                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
             var a = value.Split(new char[] { ':' }, 2);
+
             Expression<Func<Person, bool>> pred = p =>
                 p.PeopleExtras.Any(e =>
                     e.Field == a[0] && e.Data.Contains(a[1]));
@@ -284,7 +287,10 @@ namespace CmsData
             CompareType op,
             string value)
         {
+            if (!value.HasValue() || !value.Contains(":"))
+                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
             var a = value.Split(new char[] { ':' }, 2);
+
             Expression<Func<Person, bool>> pred = p =>
                 p.PeopleExtras.Any(e =>
                     e.Field == a[0] && e.IntValue == a[1].ToInt());
@@ -298,7 +304,10 @@ namespace CmsData
             CompareType op,
             string value)
         {
+            if (!value.HasValue() || !value.Contains(":"))
+                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
             var a = value.Split(new char[] { ':' }, 2);
+
             var dt = DateTime.Parse(a[1]);
             Expression<Func<Person, DateTime>> pred = p =>
                 p.PeopleExtras.SingleOrDefault(e =>
@@ -398,32 +407,27 @@ namespace CmsData
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
-        //internal static Expression IsTopGiver(
-        //    ParameterExpression parm,
-        //    int days,
-        //    CompareType op,
-        //    int top)
-        //{
-        //    //int[] ReturnedReversedTypes = new int[] 
-        //    //{ 
-        //    //    (int)Contribution.TypeCode.ReturnedCheck, 
-        //    //    (int)Contribution.TypeCode.Reversed 
-        //    //};
-        //    //var mindt = Util.Now.AddDays(-days).Date;
-        //    //Expression<Func<Person, decimal?>> pred = p =>
-        //    //    p.Contributions.Where(c => c.ContributionDate >= mindt
-        //    //        && (p.ContributionOptionsId != (int)Person.EnvelopeOptionCode.Joint
-        //    //            || (p.Family.HeadOfHouseholdId == p.PeopleId
-        //    //                && p.ContributionOptionsId == (int)Person.EnvelopeOptionCode.Joint))
-        //    //        && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-        //    //        && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-        //    //    ).Sum(c => c.ContributionAmount) ?? 0;
-        //    //Expression left = Expression.Invoke(pred, parm);
-        //    //var right = Expression.Convert(Expression.Constant(amt), left.Type);
-        //    //if (HttpContext.Current.User.IsInRole("Finance"))
-        //    //    return Compare(left, op, right);
-        //    //return Compare(right, CompareType.NotEqual, right);
-        //}
+        internal static Expression IsTopGiver(
+            ParameterExpression parm,
+            int days,
+            string top,
+            CompareType op,
+            bool tf)
+        {
+            if (!HttpContext.Current.User.IsInRole("Finance"))
+                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
+
+            var mindt = Util.Now.AddDays(-days).Date;
+            var r = DbUtil.Db.TopGivers(top.ToInt(), mindt, DateTime.Now);
+            var topgivers = r.Select(g => g.PeopleId).ToList();
+            Expression<Func<Person, bool>> pred = p =>
+                topgivers.Contains(p.PeopleId);
+
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression NumberOfFamilyMembers(
             ParameterExpression parm,
             CompareType op,
@@ -805,7 +809,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-//            var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
+            //            var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
             Expression<Func<Person, int>> pred = p =>
                 p.Attends.Count(a =>
                     a.AttendanceFlag == true
@@ -820,7 +824,7 @@ namespace CmsData
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
- //           return Expression.And(memb, Compare(left, op, right));
+            //           return Expression.And(memb, Compare(left, op, right));
         }
         internal static Expression AttendPctHistory(
            ParameterExpression parm, CMSDataContext Db,
@@ -1499,61 +1503,3 @@ namespace CmsData
         }
     }
 }
-/*
--- ================================================
--- Template generated from Template Explorer using:
--- Create Inline Function (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the function.
--- ================================================
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE FUNCTION WasMemberAsOf 
-(	
-	@from DATE,
-	@to DATE,
-	@progid INT,
-	@divid INT,
-	@orgid INT,
-	@tf BIT
-)
-RETURNS TABLE 
-AS
-RETURN 
-
-	SELECT PeopleId FROM dbo.People
-	WHERE
-	EXISTS (
-        SELECT NULL
-        FROM dbo.EnrollmentTransaction et
-        WHERE et.TransactionTypeId <= 3 
-			AND @from <= COALESCE(et.NextTranChangeDate,GETDATE()) 
-			AND et.TransactionDate <= @to 
-			AND EXISTS (
-				SELECT NULL
-				FROM dbo.Organizations AS o, dbo.DivOrg AS do
-				WHERE do.DivId = @divid 
-					AND o.OrganizationId = et.OrganizationId
-					AND do.OrgId = o.OrganizationId
-				 AND (EXISTS(
-				SELECT NULL AS [EMPTY]
-				FROM dbo.[Organizations] AS [t4]
-				CROSS JOIN dbo.[DivOrg] AS [t5]
-				INNER JOIN dbo.[Division] AS [t6] ON [t6].[Id] = [t5].[DivId]
-				WHERE ([t6].[ProgId] = @p5) AND ([t4].[OrganizationId] = et.[OrganizationId]) AND ([t5].[OrgId] = [t4].[OrganizationId])
-				)) AND (et.[PeopleId] = [t0].[PeopleId])
-        )
-GO
-*/

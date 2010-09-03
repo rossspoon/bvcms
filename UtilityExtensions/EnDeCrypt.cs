@@ -44,5 +44,40 @@ namespace UtilityExtensions
                 return string.Empty;
             }
         }
+        public static string EncryptForUrl(string s)
+        {
+            if (s == null || s.Length == 0)
+                return string.Empty;
+            string result = string.Empty;
+            byte[] buffer = Encoding.ASCII.GetBytes(s);
+            var des = new TripleDESCryptoServiceProvider();
+            var MD5 = new MD5CryptoServiceProvider();
+            des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(cryptoKey));
+            des.IV = IV;
+            result = HttpServerUtility.UrlTokenEncode(
+                des.CreateEncryptor().TransformFinalBlock(buffer, 0, buffer.Length));
+            return result;
+        }
+        public static string DecryptFromUrl(string s)
+        {
+            if (s == null || s.Length == 0)
+                return string.Empty;
+            try
+            {
+                string result = string.Empty;
+                byte[] buffer = HttpServerUtility.UrlTokenDecode(s);
+                var des = new TripleDESCryptoServiceProvider();
+                var MD5 = new MD5CryptoServiceProvider();
+                des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(cryptoKey));
+                des.IV = IV;
+                result = Encoding.ASCII.GetString(
+                    des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length));
+                return result;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
     }
 }

@@ -461,7 +461,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BankAccount", UpdateCheck=UpdateCheck.Never, Storage="_BankAccount", DbType="varchar(50)")]
+		[Column(Name="BankAccount", UpdateCheck=UpdateCheck.Never, Storage="_BankAccount", DbType="varchar(250)")]
 		public string BankAccount
 		{
 			get { return this._BankAccount; }

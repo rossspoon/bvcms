@@ -125,7 +125,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Framework, Version=0.4.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -198,6 +197,7 @@
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
+    <Compile Include="Areas\Main\Models\Report\RollsheetModel.cs" />
     <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
     <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\HeadFoot.cs" />
@@ -482,13 +482,6 @@
     <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.designer.cs">
       <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.cs">
-      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementRpt.aspx.designer.cs">
-      <DependentUpon>ContributionStatementRpt.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Contributions\Reports\JournalDetails.aspx.cs">
       <DependentUpon>JournalDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -717,27 +710,6 @@
     </Compile>
     <Compile Include="Report\DecisionSummary.aspx.designer.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\InReachRpt.aspx.cs">
-      <DependentUpon>InReachRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\InReachRpt.aspx.designer.cs">
-      <DependentUpon>InReachRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\MeetingSummaryRpt.aspx.cs">
-      <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\MeetingSummaryRpt.aspx.designer.cs">
-      <DependentUpon>MeetingSummaryRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\PastAttendeeRpt.aspx.cs">
-      <DependentUpon>PastAttendeeRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\PastAttendeeRpt.aspx.designer.cs">
-      <DependentUpon>PastAttendeeRpt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\Reports.Master.cs">
       <DependentUpon>Reports.Master</DependentUpon>
@@ -1103,7 +1075,6 @@
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Individual.aspx" />
     <Content Include="Contributions\Reports\ContributionStatementExtract.aspx" />
-    <Content Include="Contributions\Reports\ContributionStatementRpt.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
     <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
@@ -1139,9 +1110,6 @@
     <Content Include="Report\ChurchAttendanceRpt.aspx" />
     <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
-    <Content Include="Report\InReachRpt.aspx" />
-    <Content Include="Report\MeetingSummaryRpt.aspx" />
-    <Content Include="Report\PastAttendeeRpt.aspx" />
     <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\Address.ascx" />
@@ -1773,29 +1741,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Contributions\Reports\rdlc\ContributionsSubReport.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contributions\Reports\rdlc\ContributionStatementRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contributions\Reports\rdlc\GiftInKindSubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contributions\Reports\rdlc\PledgeSummarySubRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\InReachRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\MeetingSummaryRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report\rdlc\PastAttendeeRpt.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />
@@ -1804,6 +1749,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Models\" />
+    <Folder Include="Report\rdlc\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

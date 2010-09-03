@@ -264,7 +264,8 @@ namespace CmsWeb.Models
                     list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Value }).ToList();
                     break;
             }
-            list2[0].Selected = true;
+            if (list2.Count > 0)
+                list2[0].Selected = true;
             return list2;
         }
         DateTime? DateParse(string s)

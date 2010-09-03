@@ -38,6 +38,8 @@
     <Comparison Type="Less" Display="{0} &lt; '{1:d}'" />
     <Comparison Type="LessEqual" Display="{0} &lt;= '{1:d}'" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; '{1:d}'" />
+    <Comparison Type="IsNull" Display="{0} is null" />
+    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="DateField">
     <Comparison Type="Equal" Display="{0} = {1}" />

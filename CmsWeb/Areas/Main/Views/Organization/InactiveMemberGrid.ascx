@@ -3,6 +3,9 @@
 &nbsp;<div style="clear: both"></div>
 <p style="bottom-margin:5px">
 Count: <strong><%=Model.Count() %></strong>
+<% if(Page.User.IsInRole("Edit"))
+   { %>
 <a href="/OrgMembersDialog/Index/<%=Model.OrganizationId %>?inactives=true" title="Update Inactive Members" class="memberdialog">update</a>
+<% } %>
 </p>
 <% Html.RenderPartial("MemberGrid", Model); %>

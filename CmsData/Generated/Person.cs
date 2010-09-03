@@ -251,6 +251,8 @@ namespace CmsData
 		
 		private bool? _OkTransport;
 		
+		private DateTime? _BDate;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -724,6 +726,9 @@ namespace CmsData
 		
 		partial void OnOkTransportChanging(bool? value);
 		partial void OnOkTransportChanged();
+		
+		partial void OnBDateChanging(DateTime? value);
+		partial void OnBDateChanged();
 		
     #endregion
 		public Person()
@@ -3483,6 +3488,28 @@ namespace CmsData
 					this._OkTransport = value;
 					this.SendPropertyChanged("OkTransport");
 					this.OnOkTransportChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BDate", UpdateCheck=UpdateCheck.Never, Storage="_BDate", DbType="datetime", IsDbGenerated=true)]
+		public DateTime? BDate
+		{
+			get { return this._BDate; }
+
+			set
+			{
+				if (this._BDate != value)
+				{
+				
+                    this.OnBDateChanging(value);
+					this.SendPropertyChanging();
+					this._BDate = value;
+					this.SendPropertyChanged("BDate");
+					this.OnBDateChanged();
 				}
 
 			}

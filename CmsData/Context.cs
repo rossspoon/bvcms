@@ -298,11 +298,11 @@ namespace CmsData
         User _currentuser;
         public User CurrentUser
         {
-            get 
+            get
             {
                 if (_currentuser != null)
                     return _currentuser;
-                return Users.SingleOrDefault(u => u.UserId == Util.UserId); 
+                return Users.SingleOrDefault(u => u.UserId == Util.UserId);
             }
             set { _currentuser = value; }
         }
@@ -382,6 +382,12 @@ namespace CmsData
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid, pid);
             return ((int)(result.ReturnValue));
+        }
+        public class TopGiver
+        {
+            public int PeopleId;
+            public string Name;
+            public decimal Amount;
         }
         public class AttendMeetingInfo1
         {
@@ -463,7 +469,7 @@ namespace CmsData
             if (cp != null)
                 return cp.ToString();
             Preference p = null;
-            if(CurrentUser != null)
+            if (CurrentUser != null)
                 p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
             return p != null ? p.ValueX : def;
         }

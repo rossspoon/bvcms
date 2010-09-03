@@ -196,7 +196,7 @@ namespace CmsData
         private enum Part { Id = 0, Code = 1 }
         private string GetCodeIdValuePart(string value, Part part)
         {
-            if (value.Contains(","))
+            if (value != null && value.Contains(","))
                 return value.SplitStr(",", 2)[(int)part];
             return value;
         }

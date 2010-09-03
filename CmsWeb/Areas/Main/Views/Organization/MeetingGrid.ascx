@@ -1,5 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OrganizationPage.MeetingModel>" %>
-<p><a id="NewMeeting" href="Organization/NewMeeting">Create New Meeting</a> | 
+<p>
+<% if (Page.User.IsInRole("Attendance"))
+   { %>
+<a id="NewMeeting" href="Organization/NewMeeting">Create New Meeting</a> | 
+<% } %>
 <%=Html.CheckBox("future") %> Show Future Meetings</p>
 <table id="MemberGrid" class="grid" cellpadding="4">
 <thead>

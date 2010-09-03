@@ -222,7 +222,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttendController.cs" />
-    <Compile Include="AttendenceController.cs" />
     <Compile Include="BFCAttendSummaryController.cs" />
     <Compile Include="BundleController.cs" />
     <Compile Include="ChurchAttendanceConstants.cs" />
@@ -252,7 +251,6 @@
     <Compile Include="InfoClasses\ContributorInfo.cs" />
     <Compile Include="InfoClasses\MemberTypeInfo.cs" />
     <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
-    <Compile Include="RollsheetController.cs" />
     <Compile Include="VolunteerAppController.cs" />
     <Compile Include="FamilyController.cs" />
     <Compile Include="TagController.cs" />

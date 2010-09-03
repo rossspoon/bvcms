@@ -15,11 +15,10 @@ using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
+using System.Text;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -48,7 +47,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             doc.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetController();
+            var ctl = new RollsheetModel();
             foreach (var o in list1)
             {
                 var t = StartPageSet(o);

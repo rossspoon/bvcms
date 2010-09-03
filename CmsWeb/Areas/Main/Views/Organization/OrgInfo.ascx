@@ -3,8 +3,11 @@
 <table class="Design2">
     <tr>
         <th>Name:</th>
-        <td><%=o.OrganizationName %></td>
+        <td><%=o.OrganizationName %></td> 
+<% if (Page.User.IsInRole("Edit"))
+   { %>
         <td align="right">&nbsp;&nbsp;<a class="displayedit2" href="/Organization/OrgInfoEdit/<%=Model.OrganizationId %>">Edit</a></td>
+<% } %>
     </tr>
     <tr>
         <th>Schedule:</th>

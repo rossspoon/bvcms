@@ -503,7 +503,7 @@ namespace CmsData
         }
         public string OptOutKey(string FromEmail)
         {
-            return Util.Encrypt("{0}|{1}".Fmt(PeopleId, FromEmail));
+            return Util.EncryptForUrl("{0}|{1}".Fmt(PeopleId, FromEmail));
         }
 
         public static bool ToggleTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)

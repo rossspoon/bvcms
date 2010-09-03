@@ -50,15 +50,27 @@
                     <%= Html.RadioButton("homecell", "c") %> Cell
                     <%= Html.ValidationMessage("phone")%></td>
                 </tr>
-               <tr><th colspan="3"><%= Html.ValidationMessage("email0") %></th></tr>
-            <% if (Model.shownew)
-               { %>
-               <tr><th colspan="3"><span style="color:Red">Please provide contact information</span></th></tr>
                 <tr>
                     <td><label for="email">Contact Email</label></td>
                     <td><%= Html.TextBox("email", Model.email, new { maxlength = 50 })%></td>
                     <td><%= Html.ValidationMessage("email") %></td>
                 </tr>
+                <tr>
+                    <th colspan="3">
+               <% if (Html.ValidationMessage("email0") != null)
+                  { %>
+                    <p class="blue">
+                        OK we found your record, but we have no email address for you on file.
+                        Sorry but this means we need you to contact the church at 
+                        <%=DbUtil.Settings("GoDisciplesPhone", "(901) 347-2000") %> to give us your email address.
+                        This is done to protect your data from others gaining access to it.
+                    </p>
+               <% } %>
+                    </th>
+                </tr>
+            <% if (Model.shownew)
+               { %>
+               <tr><th colspan="3"><span style="color:Red">Please provide contact information</span></th></tr>
                 <tr>
                     <td><%=Html.Hidden("shownew") %>
                     <label for="addr">Address</label></td>

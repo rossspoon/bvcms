@@ -13,22 +13,49 @@ using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
 
-namespace CMSPresenter
+namespace CmsWeb.Areas.Main.Models.Report
 {
-    public class RollsheetController
+    public class RollsheetModel
     {
-        public IEnumerable<OrganizationInfo> FetchOrgsList(string name, int DivId, int SchedId, int StatusId, int CampusId)
+        public class PersonInfo
         {
-            return (new OrganizationSearchController().FetchOrganizationExcelList0(name, DivId, SchedId, StatusId, CampusId, Util.Now.Date));
-        }
-
-        public IEnumerable<OrganizationInfo> FetchOrgsList(int oid, DateTime MeetingDate)
+             public int PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Name2 { get; set; }
+            public string BirthDate { get; set; }
+            public string Age { get; set; }
+            public string Address { get; set; }
+            public string Address2 { get; set; }
+            public string CityStateZip { get; set; }
+            public int PhonePref { get; set; }
+            public string HomePhone { get; set; }
+            public string CellPhone { get; set; }
+            public string WorkPhone { get; set; }
+            public string MemberStatus { get; set; }
+            public string Email { get; set; }
+            public bool HasTag { get; set; }
+            public string BFTeacher { get; set; }
+            public int? BFTeacherId { get; set; }
+            public DateTime? LastAttended { get; set; }
+       }
+        public class PersonMemberInfo : PersonInfo
         {
-            return (new AttendenceController().GetOrganizationInfo(oid));
+            public string MemberTypeCode { get; set; }
+            public string MemberType { get; set; }
+            public int MemberTypeId { get; set; }
+            public DateTime? InactiveDate { get; set; }
+            public decimal? AttendPct { get; set; }
+            public DateTime? Joined { get; set; }
         }
-
+        public class PersonVisitorInfo : PersonInfo
+        {
+            public string VisitorType { get; set; }
+            public string NameParent1 { get; set; }
+            public string NameParent2 { get; set; }
+        }
         public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int? groupid)
         {
+            var tagownerid = Util.CurrentTagOwnerId;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
                     where om.OrgMemMemTags.Any(mt => mt.MemberTagId == groupid) || (groupid ?? 0) <= 0
@@ -37,9 +64,38 @@ namespace CMSPresenter
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     where om.EnrollmentDate <= Util.Now
                     orderby om.Person.Name2
-                    select om;
-            var q2 = OrganizationController.FetchPeopleList(q, GroupSelect.Active);
-            return q2;
+                    let p = om.Person
+                    select new PersonMemberInfo
+                    {
+                        PeopleId = p.PeopleId,
+                        Name = p.Name,
+                        Name2 = p.Name2,
+                        BirthDate = Util.FormatBirthday(
+                            p.BirthYear,
+                            p.BirthMonth,
+                            p.BirthDay),
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+                        PhonePref = p.PhonePrefId,
+                        HomePhone = p.HomePhone,
+                        CellPhone = p.CellPhone,
+                        WorkPhone = p.WorkPhone,
+                        MemberStatus = p.MemberStatus.Description,
+                        Email = p.EmailAddress,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
+                        Age = p.Age.ToString(),
+                        MemberTypeCode = om.MemberType.Code,
+                        MemberType = om.MemberType.Description,
+                        MemberTypeId = om.MemberTypeId,
+                        InactiveDate = om.InactiveDate,
+                        AttendPct = om.AttendPct,
+                        LastAttended = om.LastAttended,
+                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
+                        Joined = om.EnrollmentDate,
+                    };
+            return q;
         }
 
         private static int[] VisitAttendTypes = new int[] 
@@ -62,14 +118,8 @@ namespace CMSPresenter
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
-                        && a.MeetingDate >= a.Organization.FirstMeetingDate
-                    )
+                        && a.MeetingDate >= a.Organization.FirstMeetingDate)
                     where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
-                    select p.PeopleId;
-
-            var r = from pid in q
-                    join p in DbUtil.Db.People on pid equals p.PeopleId
-                    let f = p.Family
                     orderby p.Name2, p.Name
                     select new PersonVisitorInfo
                     {
@@ -77,7 +127,6 @@ namespace CMSPresenter
                         PeopleId = p.PeopleId,
                         Name = p.Name,
                         Name2 = p.Name2,
-                        //JoinDate = p.JoinDate,
                         BirthDate = Util.FormatBirthday(
                             p.BirthYear,
                             p.BirthMonth,
@@ -96,14 +145,12 @@ namespace CMSPresenter
                         Age = p.Age.ToString(),
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == Util.CurrentTagOwnerId),
-                        NameParent1 = f.HohName,
+                        NameParent1 = p.Family.HohName,
                         NameParent2 = p.Family.People.Where(x => 
                             x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult 
-                            && x.PeopleId != f.HeadOfHouseholdId).FirstOrDefault().Name,
+                            && x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,
                     };
-
-
-            return r;
+            return q;
         }
     }
 }

@@ -13,24 +13,32 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult UnSubscribe(string optout, string cancel)
         {
             var id = Request["id"];
-            if (!id.HasValue())
-                return Content("no id");
-            string s;
+            var enc = Request["enc"];
+            ViewData["id"] = Request["id"];
+            ViewData["enc"] = Request["enc"];
+            if (!id.HasValue() && !enc.HasValue())
+                return Content("unable to identify request");
+            string s = null;
             try
             {
-                s = Util.Decrypt(id);
+                if (id.HasValue())
+                    s = Util.Decrypt(id);
+                else if (enc.HasValue())
+                    s = Util.DecryptFromUrl(enc);
             }
             catch (Exception ex)
             {
                 return Content("unable to identify request");
             }
+            if (!(s.HasValue() && s.Contains("|")))
+                return Content("Unable to identify request");
+
             var a = s.SplitStr("|");
             ViewData["fromemail"] = a[1];
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 var p = DbUtil.Db.LoadPersonById(a[0].ToInt());
                 ViewData["toemail"] = p.EmailAddress;
-                ViewData["key"] = Request["id"];
                 return View();
             }
             if (optout.HasValue() && optout.StartsWith("Yes"))
