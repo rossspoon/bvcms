@@ -2,17 +2,39 @@
 <table cellspacing="6">
 <% if (Model.UserSelectsOrganization())
    { %>
+    <% if (Model.FilledClasses().Count() > 0)
+       { %>
     <tr>
-        <td colspan="3"><label for="classid">Choose Class</label>
+        <td><span style="color:Red">Filled Classes</span></td>
+        <td>
+        <% foreach (var c in Model.FilledClasses())
+           { %>
+           <%=c %><br />
+        <% } %>
+        </td>
+    </tr>
+    <% } %>
+    <tr>
+        <td colspan="3">
+   <% if (Model.Classes().Count() > 1)
+      { %>
         <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%>
-        <%=Html.ValidationMessage("classid") %></td>
+        <%=Html.ValidationMessage("classid") %>
+   <% }
+      else
+      { %>
+        <%=Model.Classes().Single().Text%>
+        <%=Html.Hidden("m.List[" + Model.index + "].classid", Model.Classes().Single().Value)%>
+   <% } %>
+        </td>
     </tr>
 <% } %>
     <tr>
         <td><label for="first">First Name</label></td>
         <td><input id="first" type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" />
         </td>
-        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %></td>
+        <td><%= Html.ValidationMessage("first") %> <%= Html.ValidationMessage("find") %>
+        </td>
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>

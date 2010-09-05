@@ -24,33 +24,33 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             ViewData["Title"] = "Tasks";
         }
-        public ActionResult List(int? id)
+        public ActionResult List(string id)
         {
             var tasks = new TaskModel();
             UpdateModel<ITaskFormBindable>(tasks);
             DbUtil.LogActivity("Tasks");
-            if (id.HasValue && id == 0)
+            if (id == "0")
                 return PartialView("Rows", tasks);
             return View(tasks);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Priority(int id, int priority)
         {
-            var tasks = new TaskModel { Id = id };
+            var tasks = new TaskModel { Id = id.ToString() };
             tasks.SetPriority(priority);
             return Json(new { Priority = id == 0 ? "" : priority.ToString() });
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SetComplete(int id)
         {
-            var tasks = new TaskModel { Id = id };
+            var tasks = new TaskModel { Id = id.ToString() };
             tasks.CompleteTask(id, new Emailer());
             return PartialView("Columns", tasks.FetchTask(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Accept(int id)
         {
-            var tasks = new TaskModel { Id = id };
+            var tasks = new TaskModel { Id = id.ToString() };
             tasks.AcceptTask(id, new Emailer());
             return PartialView("Detail", tasks.FetchTask(id));
         }

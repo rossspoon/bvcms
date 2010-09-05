@@ -1,4 +1,5 @@
 ﻿$(function () {
+    $(".submitbutton").button();
     $('form.DisplayEdit input.dob').live("blur", function () {
         var bd = $(this).val();
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
@@ -29,15 +30,16 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-//    $("#first").live("change", function () {
-//        $('#regnew').hide();
-//    });
+    //    $("#first").live("change", function () {
+    //        $('#regnew').hide();
+    //    });
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
+            $(".submitbutton", f).button();
         });
         return false;
     });
@@ -51,7 +53,10 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
+            if (ret == 'refresh')
+                location.reload();
             $(f).html(ret);
+            $(".submitbutton", f).button();
         });
         return false;
     });

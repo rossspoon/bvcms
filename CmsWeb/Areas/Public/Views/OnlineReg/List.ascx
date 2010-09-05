@@ -30,15 +30,28 @@
         else if (!Model.IsEnded())
             Html.RenderPartial("PersonEdit", p);
 %>
-</td></tr>
-<%  }
-    var last = Model.List[Model.List.Count - 1];
-    last.LastItem = true;
-    if (last.OtherOK && last.ShowDisplay())
-    {
-%>
+</td>
+<td valign="top"><a class="cancel" href="/OnlineReg/Cancel/<%=p.index %>">remove</a></td>
+</tr>
+<% }
+   var last = Model.List[Model.List.Count - 1];
+   last.LastItem = true;
+   if (last.OtherOK && last.ShowDisplay())
+   { %>
 <tr><td colspan="2">
-    <% var amt = Model.Amount();
+    <% if (!Model.OnlyOneAllowed())
+       { %>
+        <span class="blue">OK, now you can add another household member</span>
+        <blockquote><a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a></blockquote>
+        <span class="blue">Or you can complete your registration</span>
+        <blockquote>
+    <% }
+       else
+       { %>
+        <span class="blue">OK, Now you can complete your registration</span>
+        <blockquote>
+    <% } 
+       var amt = Model.Amount();
        if (amt > 0)
        { %>
         <input id="submitit" type="submit"
@@ -53,11 +66,8 @@
        { %>
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration' />
-    <% }
-       if (!Model.OnlyOneAllowed())
-       { %>
-        or <a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a>
     <% } %>
+        </blockquote>
 </td></tr>
 <% } %>
 </table>

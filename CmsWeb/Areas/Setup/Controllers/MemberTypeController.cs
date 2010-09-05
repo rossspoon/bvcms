@@ -23,9 +23,11 @@ namespace CmsWeb.Areas.Setup.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(int id)
+        public ActionResult Create(int? id)
         {
-            var m = new MemberType { Id = id };
+            if (!id.HasValue)
+                return Content("need an integer id");
+            var m = new MemberType { Id = id.Value };
             DbUtil.Db.MemberTypes.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
             return Redirect("/Setup/MemberType/");

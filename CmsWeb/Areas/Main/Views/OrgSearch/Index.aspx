@@ -15,9 +15,6 @@
         <tr>
             <td>
                 <table class="modalPopup">
-                <tr><td><a href="/OrgSearch/Results?clear=true" id="clear">clear</a></td>
-                    <td colspan="3"></td>
-                    </tr>
                     <tr>
                         <th>Name:</th>
                         <td><%=Html.TextBox("Name", Model.Name, new { title="OrganizationId, Location or part of Name (organization, leader, division)"}) %></td>
@@ -39,6 +36,11 @@
                     <tr>
                         <th>Campus:</th>
                         <td colspan="2"><%=Html.DropDownList("CampusId", Model.CampusIds()) %></td>
+                        <td align="right"><a href="/OrgSearch/Results?clear=true" id="clear">clear</a></td>
+                    </tr>
+                    <tr>
+                        <th>Online Reg.:</th>
+                        <td colspan="2"><%=Html.DropDownList("OnlineReg", Model.RegistrationTypeIds()) %></td>
                         <td align="right"><a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a></td>
                     </tr>
                 </table>

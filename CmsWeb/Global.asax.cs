@@ -46,6 +46,8 @@ namespace CmsWeb
             routes.IgnoreRoute("{myWebForms}.asmx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.js/{*pathInfo}");
             routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+            routes.IgnoreRoute("*/pagerror.gif");
+            routes.IgnoreRoute("*/refresh.gif");
             routes.IgnoreRoute("{name}.png");
             routes.IgnoreRoute("Admin/{*pathInfo}");
             routes.IgnoreRoute("AppReview/{*pathInfo}");

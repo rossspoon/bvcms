@@ -344,14 +344,18 @@ form.DisplayEdit input[type=text]
 {
     width: 20em;
 }
-a.submitbutton,a.button {
+div.wraparound
+{
+    width: 12em;
+}
+/* a.submitbutton,a.button {
   padding:5px;
     border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
     background-color:#3B5998;
   border: 1px solid;
     color:#FFFFFF;
   text-decoration:none;
-}
+}*/
 a.bt {
   border-radius:            3px;
   -moz-border-radius:       3px;
@@ -359,7 +363,7 @@ a.bt {
   
   display:                  inline-block;
   padding:                  4px 6px 2px;
-  .padding-bottom:          4px; /* IE hack to fix spacing issue. */
+  .padding-bottom:          4px; 
   
   text-decoration:          none;
   text-align:               center;

@@ -19,7 +19,7 @@ namespace CmsWeb.Areas.Main.Controllers
             public int? Division { get; set; }
             public int? Sched { get; set; }
             public int? Status { get; set; }
-            public bool OnlineReg { get; set; }
+            public int? OnlineReg { get; set; }
         }
         private const string STR_OrgSearch = "OrgSearch2";
         public ActionResult Index(int? div, int? progid)
@@ -42,6 +42,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.DivisionId = os.Division;
                 m.ScheduleId = os.Sched;
                 m.StatusId = os.Status;
+                m.OnlineReg = os.OnlineReg;
             }
             return View(m);
         }
@@ -81,6 +82,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 Division = m.DivisionId,
                 Sched = m.ScheduleId,
                 Status = m.StatusId,
+                OnlineReg = m.OnlineReg,
             };
         }
         [AcceptVerbs(HttpVerbs.Post)]

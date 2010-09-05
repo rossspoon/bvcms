@@ -810,6 +810,7 @@
   <ItemGroup>
     <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
+    <Content Include="Areas\Main\Views\Person\Copy of BasicEdit.ascx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />

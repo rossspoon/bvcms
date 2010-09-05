@@ -27,7 +27,7 @@ namespace CmsWeb.Models
     }
     public interface ITaskFormBindable
     {
-        int? Id { get; set; }
+        string Id { get; set; }
         string CurTab { get; set; }
         string Project { get; set; }
         string Location { get; set; }
@@ -43,8 +43,8 @@ namespace CmsWeb.Models
         private const string STR_InBox = "InBox";
 
         public int PeopleId { get; set; }
-        private int? _Id;
-        public int? Id
+        private string _Id;
+        public string Id
         {
             get { return _Id; }
             set
@@ -52,6 +52,10 @@ namespace CmsWeb.Models
                 _Id = value;
                 CurTab = MyListId();
             }
+        }
+        public int intId
+        {
+            get { return _Id.ToInt(); }
         }
         
         public string Project { get; set; }
@@ -225,7 +229,7 @@ namespace CmsWeb.Models
                          CoOwner = t.CoOwner.Name,
                          CoOwnerId = t.CoOwnerId,
                          Status = t.TaskStatus.Description,
-                         IsSelected = t.Id == (Id ?? 0),
+                         IsSelected = t.Id == intId,
                          Completed = t.StatusId == completedcode,
                          PrimarySort = t.StatusId == completedcode ? 3 : (t.StatusId == somedaycode ? 2 : 1),
                          SortPriority = t.Priority ?? 4,
@@ -262,7 +266,7 @@ namespace CmsWeb.Models
                          CoOwnerEmail = t.CoOwner.EmailAddress,
                          Status = t.TaskStatus.Description,
                          StatusId = t.StatusId.Value,
-                         IsSelected = t.Id == (Id ?? 0),
+                         IsSelected = t.Id == intId,
                          Location = t.Location,
                          Project = t.Project,
                          Completed = t.StatusId == completedcode,
@@ -722,7 +726,7 @@ namespace CmsWeb.Models
 
         public void SetPriority(int p)
         {
-            var task = DbUtil.Db.Tasks.Single(t => t.Id == Id);
+            var task = DbUtil.Db.Tasks.Single(t => t.Id == intId);
             if (p == 0)
                 task.Priority = null;
             else
@@ -799,7 +803,7 @@ namespace CmsWeb.Models
         }
         public string MyListId()
         {
-            var t = DbUtil.Db.Tasks.SingleOrDefault(k => k.Id == Id);
+            var t = DbUtil.Db.Tasks.SingleOrDefault(k => k.Id == intId);
             if (t == null)
                 return "t" + CurListId;
             if (t.CoOwnerId.HasValue && PeopleId == t.CoOwnerId.Value)

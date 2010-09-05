@@ -52,6 +52,7 @@ namespace CmsWeb.Models
                 where om.Organization.CanSelfCheckin.Value
                 where (om.Pending ?? false) == false
                 where om.Organization.CampusId == campus || om.Organization.CampusId == null
+                where om.Organization.OrganizationStatusId == (int)Organization.OrgStatusCode.Active
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
                 where Hour != null

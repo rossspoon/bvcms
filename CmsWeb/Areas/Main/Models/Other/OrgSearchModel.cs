@@ -30,7 +30,7 @@ namespace CmsWeb.Models
         public int? CampusId { get; set; }
         public int? StatusId { get; set; }
         public string tagstr { get; set; }
-        public bool OnlineReg { get; set; }
+        public int? OnlineReg { get; set; }
 
         public OrgSearchModel()
         {
@@ -198,6 +198,15 @@ namespace CmsWeb.Models
             if (CampusId > 0)
                 organizations = from o in organizations
                                 where o.CampusId == CampusId
+                                select o;
+
+            if (this.OnlineReg == 99)
+                organizations = from o in organizations
+                                where o.RegistrationTypeId > 0
+                                select o;
+            else if (this.OnlineReg > 0)
+                organizations = from o in organizations
+                                where o.RegistrationTypeId == OnlineReg
                                 select o;
 
             return organizations;
@@ -405,6 +414,28 @@ namespace CmsWeb.Models
                         Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
                     };
             var list = q.ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Value = "0",
+                Text = "(not specified)",
+            });
+            return list;
+        }
+        public IEnumerable<SelectListItem> RegistrationTypeIds()
+        {
+            var q = from o in DbUtil.Db.RegistrationTypes
+                    orderby o.Id
+                    select new SelectListItem
+                    {
+                        Value = o.Id.ToString(),
+                        Text = o.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Value = "99",
+                Text = "(any online reg)",
+            });
             list.Insert(0, new SelectListItem
             {
                 Value = "0",

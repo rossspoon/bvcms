@@ -22,7 +22,7 @@
 <% if (Model.UserSelectsOrganization())
    { %>
     <tr>
-        <td colspan="3"><label for="classid">Chosen Class</label>
+        <td colspan="3"><label for="classid">Chosen Class:</label>
         <%=Html.CodeDesc("classid", Model.Classes())%></td>
     </tr>
 <% } %>

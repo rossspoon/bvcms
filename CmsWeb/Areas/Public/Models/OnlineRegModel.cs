@@ -54,7 +54,7 @@ namespace CmsWeb.Models
         public bool IsEnded()
         {
             if (div != null)
-                return div.Organizations.Any(o => o.ClassFilled == true);
+                return OnlineRegPersonModel.UserSelectClasses(div.Id).Count() == 0;
             else
                 return org.ClassFilled == true;
         }
@@ -168,6 +168,7 @@ namespace CmsWeb.Models
                 list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;
         }
+
 
         public void EnrollAndConfirm(string TransactionID)
         {

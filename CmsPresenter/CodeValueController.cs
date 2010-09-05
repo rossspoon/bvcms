@@ -631,7 +631,7 @@ namespace CMSPresenter
                          Value = qb.SavedBy + ":" + qb.Description
                      };
 
-            var list = q1.Union(q2).ToList();
+            var list = q1.Union(q2).OrderBy(i => i.Value).ToList();
             return list;
         }
 

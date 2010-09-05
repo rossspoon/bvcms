@@ -608,7 +608,7 @@ namespace CmsWeb.Models
         public List<SelectListItem> SavedQueries()
         {
             var cv = new CMSPresenter.CodeValueController();
-            return ConvertToSelect(cv.UserQueries(), null);
+            return ConvertToSelect(cv.UserQueries(), "Code");
         }
 
         private IQueryable<Person> query;

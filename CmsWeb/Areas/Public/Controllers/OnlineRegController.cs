@@ -48,7 +48,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge,
                     (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
                 };
-                if (!m.div.Organizations.Any(o => a.Contains(o.RegistrationTypeId)))
+                if (OnlineRegPersonModel.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
             }
 
@@ -94,6 +94,14 @@ namespace CmsWeb.Areas.Public.Controllers
                 });
 #endif
             return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Cancel(int id, OnlineRegModel m)
+        {
+            m.List.RemoveAt(id);
+            if (m.List.Count == 0)
+                return Content("refresh");
+            return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ShowMoreInfo(int id, OnlineRegModel m)

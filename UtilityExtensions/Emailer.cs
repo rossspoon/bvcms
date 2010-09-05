@@ -117,7 +117,7 @@ namespace UtilityExtensions
             if (attach != null)
                 msg.Attachments.Add(attach);
 
-#if DEBUG2
+#if DEBUG
 #else
             try
             {

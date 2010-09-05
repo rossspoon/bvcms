@@ -145,7 +145,7 @@
    if(Model.org.AskOptions.HasValue())
    { %>
     <tr>
-        <td><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></td>
+        <td><div class="wraparound"><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></div></td>
         <td><%=Model.option %>
         <%=Html.Hidden3("m.list[" + Model.index + "].option", Model.option)%>
         </td>
@@ -154,7 +154,7 @@
    if(Model.org.ExtraOptions.HasValue())
    { %>
     <tr>
-        <td><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Option")%>
+        <td><div class="wraparound"><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Option")%></div></td>
         <td><%=Model.option2 %>
         <%=Html.Hidden3("m.list[" + Model.index + "].option2", Model.option2)%>
         </td>
@@ -172,7 +172,7 @@
    foreach (var a in Model.ExtraQuestions())
    { %>
     <tr>
-        <td><%=a.question%></td>
+        <td><div class="wraparound"><%=a.question%></div></td>
         <td>
             <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
             <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestion[a.question] %>" />
@@ -183,7 +183,7 @@
    foreach (var a in Model.YesNoQuestions())
    { %>
     <tr>
-        <td><%=a.desc%></td>
+        <td><div class="wraparound"><%=a.desc%></div></td>
         <td>
             <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
             <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />

@@ -62,7 +62,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.Quarters = "";
             m.StartDate = "";
             m.EndDate = "";
-            
+
             return Json(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -71,11 +71,11 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new QueryModel { Comparison = Comparison, ConditionName = ConditionName };
             m.SetCodes();
             return Json(new
-            { 
-                CodesVisible = m.CodesVisible, 
-                CodeVisible = m.CodeVisible, 
-                CodeData = m.CodeData, 
-                SelectMultiple = m.SelectMultiple 
+            {
+                CodesVisible = m.CodesVisible,
+                CodeVisible = m.CodeVisible,
+                CodeData = m.CodeData,
+                SelectMultiple = m.SelectMultiple
             });
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -167,7 +167,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public JsonResult SavedQueries()
         {
             var m = new QueryModel();
-            return Json(m.SavedQueries());
+            return Json(m.SavedQueries()); ;
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveQuery()
@@ -246,7 +246,7 @@ namespace CmsWeb.Areas.Main.Controllers
             int i = 0;
             if (m.DaysVisible && !int.TryParse(m.Days, out i))
                 m.Errors.Add("Days", "must be integer");
-            if (i>10000)
+            if (i > 10000)
                 m.Errors.Add("Days", "days > 1000");
             if (m.AgeVisible && !int.TryParse(m.Age, out i))
                 m.Errors.Add("Age", "must be integer");

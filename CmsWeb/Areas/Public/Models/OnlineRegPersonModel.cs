@@ -229,22 +229,59 @@ namespace CmsWeb.Models
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
-        public IEnumerable<SelectListItem> Classes()
+        public static IQueryable<Organization> UserSelectClasses(int? divid)
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == divid
-                    where o.ClassFilled != true
+                    where o.DivOrgs.Any(od => od.DivId == divid)
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
+                    where o.OnLineCatalogSort != null
+                    select o;
+            return q;
+        }
+        public IEnumerable<SelectListItem> Classes()
+        {
+            var q = from o in UserSelectClasses(divid)
+                    where (o.ClassFilled ?? false) == false
                     where (o.Limit ?? 0) == 0 || o.Limit > o.MemberCount
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
-                        Text = o.OrganizationName,
+                        Text = ClassName(o)
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specifed)" });
+            if (list.Count == 1)
+                return list;
+            list.Insert(0, new SelectListItem { Text = "(select a class)", Value = "0" });
             return list;
+        }
+        public IEnumerable<String> FilledClasses()
+        {
+            var q = from o in UserSelectClasses(divid)
+                    where (o.ClassFilled ?? false) == true
+                        || ((o.Limit ?? 0) > 0 && o.Limit > o.MemberCount)
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select ClassName(o);
+            return q;
+        }
+        private static string ClassName(CmsData.Organization o)
+        {
+            var lead = o.LeaderName;
+            if (lead.HasValue())
+                lead = ": " + lead;
+            var loc = o.Location;
+            if (loc.HasValue())
+                loc = " ({0})".Fmt(loc);
+            var dt1 = o.FirstMeetingDate;
+            var dt2 = o.LastMeetingDate;
+            var dt = "";
+            if (dt1.HasValue && dt2.HasValue)
+                dt = ", {0:MMM d}-{1:MMM d}".Fmt(dt1, dt2);
+            else if (dt1.HasValue)
+                dt = ", {0:MMM d}".Fmt(dt1);
+
+            return o.OrganizationName + lead + dt + loc;
         }
 
         public bool IsValidForNew { get; set; }
