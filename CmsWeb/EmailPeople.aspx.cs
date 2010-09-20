@@ -81,7 +81,7 @@ namespace CmsWeb
                 orderby p.PeopleId
                 select p;
             var em = new Emailer(args.FromAddress, args.FromName);
-            em.SendPeopleEmail(q, args.Subject, args.Body, args.FileUpload, args.IsHtml);
+            em.SendPeopleEmail(q, args.Subject, args.Body, args.IsHtml);
         }
 
         protected void SendEmail_Click(object sender, EventArgs e)
@@ -99,7 +99,6 @@ namespace CmsWeb
                     Subject = SubjectLine.Text,
                     Body = EmailBody.Text,
                     IsHtml = IsHtml.Checked,
-                    FileUpload = FileUpload1, 
                     current = HttpContext.Current,
                     wantParents = this.QueryString<string>("parents") == "true"
                 });
@@ -124,7 +123,7 @@ namespace CmsWeb
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, FileUpload1, IsHtml.Checked);
+            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, IsHtml.Checked);
         }
 
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)
@@ -141,7 +140,6 @@ namespace CmsWeb
         public string Subject { get; set; }
         public string Body { get; set; }
         public bool IsHtml { get; set; }
-        public FileUpload FileUpload { get; set; }
         public HttpContext current { get; set; }
     }
 }

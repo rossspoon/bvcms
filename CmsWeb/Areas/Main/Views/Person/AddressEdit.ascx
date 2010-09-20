@@ -1,8 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.AddressInfo>" %>
-<% if (Page.User.IsInRole("Edit"))
-   { %>
 <a class="displayedit" href="/Person/AddressDisplay/<%=Model.PeopleId %>?type=<%=Model.Name %>">Cancel</a>
-<% } %>
 <table class="Design2">
     <tr>
         <th>Address:</th>
@@ -24,13 +21,15 @@
         <th>Zip:</th>
         <td><%=Html.TextBox("Zip", Model.Zip.FmtZip()) %> <a id="verifyaddress" href="/Person/VerifyAddress/" class="button">Verify</a></td>
     </tr>
+    <% if (Model.person.CanUserEditAll)
+       { %>
     <tr>
         <th>Resident Code:</th>
-        <td><%=Html.DropDownList("ResCodeId", CmsWeb.Models.PersonPage.AddressInfo.ResCodes())%></td>
+        <td><%=Html.DropDownList("ResCodeId", CmsWeb.Models.PersonPage.AddressInfo.ResCodes()) %></td>
     </tr>
     <tr>
         <th>Bad Address Flag:</th>
-        <td><%=Html.CheckBox("BadAddress") %></td>
+        <td><%=Html.CheckBox("BadAddress")%></td>
     </tr>
     <tr>
         <th style="vertical-align: top">Effective Dates:</th>
@@ -38,11 +37,11 @@
             <table class="Design2">
                 <tr>
                     <th>From:</th>
-                    <td><%=Html.TextBox("FromDt", Model.FromDt.FormatDate()) %></td>
+                    <td><%=Html.TextBox("FromDt", Model.FromDt.FormatDate())%></td>
                 </tr>
                 <tr>
                     <th>To:</th>
-                    <td><%=Html.TextBox("ToDt", Model.ToDt.FormatDate()) %></td>
+                    <td><%=Html.TextBox("ToDt", Model.ToDt.FormatDate())%></td>
                 </tr>
             </table>
         </td>
@@ -51,5 +50,6 @@
         <th>Preferred Address</th>
         <td><%=Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)%></td>
     </tr>
+    <% } %>
     <tr><td></td><td><a href="/Person/AddressUpdate/<%=Model.PeopleId %>?type=<%=Model.Name %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

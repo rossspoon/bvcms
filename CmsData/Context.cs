@@ -306,10 +306,6 @@ namespace CmsData
             }
             set { _currentuser = value; }
         }
-        public Person NewPeopleManager
-        {
-            get { return People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId); }
-        }
         public Tag OrgMembersOnlyTag
         {
             get { return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly); }

@@ -68,7 +68,7 @@ namespace CmsCheckin
             ClearControls();
 
             name = match;
-            var x = this.GetDocument("Checkin/NameSearch/" + name + "?page=" + page);
+            var x = this.GetDocument("Checkin2/NameSearch/" + name + "?page=" + page);
 
             var points = 14F;
 
@@ -226,6 +226,7 @@ namespace CmsCheckin
             var ed = sender as Button;
             var pi = (PersonInfo)ed.Tag;
             Program.PeopleId = pi.pid;
+            Program.FamilyId = pi.fid;
             Program.SetFields(pi.last, pi.email, pi.addr, pi.zip, pi.home, pi.parent, pi.emfriend, pi.emphone, pi.activeother, pi.church);
             Program.first.textBox1.Text = pi.first;
             Program.goesby.textBox1.Text = pi.goesby;

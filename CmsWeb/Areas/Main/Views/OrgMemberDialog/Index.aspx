@@ -23,7 +23,7 @@
 <% string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; %>
 <%=Html.Hidden("from") %>
 <h4><%= Model.Person.Name %></h4>
-<a class="helplink" target="_blank" href='http://wiki.bvcms.com/help.UpdateOrgMember.ashx'>help</a>
+<a class="helplink" target="_blank" href='<%=Util.HelpLink("UpdateOrgMember")%>'>help</a>
 <table>
     <tr>
     <td>Attendance:</td>

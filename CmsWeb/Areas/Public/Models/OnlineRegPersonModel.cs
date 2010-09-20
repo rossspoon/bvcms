@@ -164,7 +164,12 @@ namespace CmsWeb.Models
                     else if (org != null)
                     {
                         var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
-                        if (m != null)
+                        if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                        {
+                            if (person.Users.Count() > 0)
+                                ModelState.AddModelError("find", "You already have an account");
+                        }
+                        else if (m != null)
                         {
                             ModelState.AddModelError("find", "This person is already registered");
                             IsValidForContinue = false;
@@ -231,19 +236,24 @@ namespace CmsWeb.Models
         }
         public static IQueryable<Organization> UserSelectClasses(int? divid)
         {
+            var a = new int[] 
+            { 
+                (int)Organization.RegistrationEnum.UserSelectsOrganization,
+                (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+            };
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(od => od.DivId == divid)
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                    where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
-                    where o.OnLineCatalogSort != null
+                    where a.Contains(o.RegistrationTypeId.Value)
+                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == (int)Organization.RegistrationEnum.ComputeOrganizationByAge
                     select o;
             return q;
         }
         public IEnumerable<SelectListItem> Classes()
         {
             var q = from o in UserSelectClasses(divid)
-                    where (o.ClassFilled ?? false) == false
-                    where (o.Limit ?? 0) == 0 || o.Limit > o.MemberCount
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where hasroom
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem
                     {
@@ -259,8 +269,8 @@ namespace CmsWeb.Models
         public IEnumerable<String> FilledClasses()
         {
             var q = from o in UserSelectClasses(divid)
-                    where (o.ClassFilled ?? false) == true
-                        || ((o.Limit ?? 0) > 0 && o.Limit > o.MemberCount)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where !hasroom
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select ClassName(o);
             return q;
@@ -765,13 +775,13 @@ namespace CmsWeb.Models
                 sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
 
             if (org.AskOptions.HasValue())
-                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, Util.PickFirst(om.Organization.OptionsLabel,"Options"));
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, Util.PickFirst(om.Organization.OptionsLabel, "Options"));
             if (org.ExtraOptions.HasValue())
-                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, Util.PickFirst(om.Organization.ExtraOptionsLabel,"Extra Options"));
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, Util.PickFirst(om.Organization.ExtraOptionsLabel, "Extra Options"));
             if (org.MenuItems.HasValue())
             {
                 var menulabel = "Menu Items";
-                foreach(var i in MenuItemsChosen())
+                foreach (var i in MenuItemsChosen())
                 {
                     sb.AppendFormat("<tr><td>{0}</td><td>{1} {2} (at {3:N2}</td></tr>\n", menulabel, i.number, i.desc, i.amt);
                     menulabel = string.Empty;
@@ -1013,7 +1023,9 @@ namespace CmsWeb.Models
         public bool AnyOtherInfo()
         {
             if (org != null)
-                return (org.AskShirtSize == true ||
+                if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                    return false;
+                else return (org.AskShirtSize == true ||
                     org.AskRequest == true ||
                     org.AskGrade == true ||
                     org.AskEmContact == true ||
@@ -1072,8 +1084,8 @@ It is important that you call the church <strong>{2}</strong> to update our reco
 so that you will receive future important notices regarding this registration.</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                Util.Email2(smtp, fromemail, regemail, subj, msg);
-                Util.Email2(smtp, fromemail, person.EmailAddress, subj, msg);
+                DbUtil.Email2(smtp, fromemail, regemail, subj, msg);
+                DbUtil.Email2(smtp, fromemail, person.EmailAddress, subj, msg);
             }
             else
             {
@@ -1090,7 +1102,7 @@ But we won't add that to your record without your permission.
 Thank you</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                Util.Email2(smtp, fromemail, regemail, subj, msg);
+                DbUtil.Email2(smtp, fromemail, regemail, subj, msg);
             }
         }
         private static string trim(string s)

@@ -3,6 +3,7 @@
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
     $("#growth-tab").tabs();
+    $("#system-tab").tabs();
     var maintabs = $("#main-tab").tabs();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
@@ -112,6 +113,11 @@
             $.showTable($(this));
         });
     });
+    $("#system-link").click(function() {
+        $("#system-tab form").each(function() {
+            $.showTable($(this));
+        });
+    });
     $("#recreg-link").click(function() {
         var f = $('#recreg-tab form')
         if ($('table', f).size() > 0)
@@ -190,5 +196,9 @@
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));
     $.updateTable($('#pending-tab form'));
+    $("#memberDialog").dialog('close');
+}
+function RebindUserInfoGrid(from) {
+    $.updateTable($('#user-tab form'));
     $("#memberDialog").dialog('close');
 }

@@ -19,69 +19,80 @@
             <td>&nbsp;</td>
         </tr>
     </table>
-        <table>
-            <tr>
-                <td>
-                    <div id="businesscard" href="/Person/BusinessCard/<%=p.PeopleId %>">
-                    <% Html.RenderPartial("BusinessCard", p); %>
-                    </div>
-                    <table>
-                        <tr>
-                            <td><%=p.basic.DoNotCall %></td>
-                            <td>
-                                <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Reports/ContributionYears/" + p.PeopleId, "Contributions", null, null)%>
-<%--                                <%=Html.HyperlinkIf(Model.HasRecReg, "/Recreation/Detail/" + Model.recregid, "RecForm", null, null)  %>
---%>                                <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <% if (Page.User.IsInRole("Admin"))
-                                   { %>
-                                <a id="deleteperson" href="/Person/Delete/<%=p.PeopleId %>"><img border="0" src="/images/delete.gif" /></a>
-                                <a id="moveperson" href="/Person/Move/<%=p.PeopleId %>">move</a>
-                                <% } %>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td valign="top">
-                    <a id="Picture" href="/UploadPicture.aspx?id=<%=p.PeopleId %>" title="Click to see larger version or upload new">
-                    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=p.SmallPicId %>" />
-                    </a>
-                </td>
-                <td></td>
-                <td valign="top">
-                    <br />
-                    <table>
-                        <tr>
-                            <th align="left" colspan="4">
-                                <a href="/Family.aspx?id=<%=p.FamilyId %>"><strong>Family Members</strong></a>
-                            </th>
-                        </tr>
-                    <% foreach (var m in Model.FamilyMembers())
-                       { %>
-                        <tr>
-                            <td><a href="/Person/Index/<%=m.Id %>"><span style='color: <%=m.Color%>'><%=m.Name %></span></a></td>
-                            <td><%=m.SpouseIndicator %></td>
-                            <td><%=m.Age %></td>
-                            <td><%=m.PositionInFamily %></td>
-                            <td><%=m.Email %></td>
-                        </tr>
-                    <% } %>
-                    </table>
-                </td>
-           </tr>
-        </table>
-    </div>
+    <table>
+        <tr>
+            <td>
+                <div id="businesscard" href="/Person/BusinessCard/<%=p.PeopleId %>">
+                <% Html.RenderPartial("BusinessCard", p); %>
+                </div>
+                <table>
+                    <tr>
+                        <td><%=p.basic.DoNotCall %></td>
+                        <td>
+                            <%=Html.HyperlinkIf(User.IsInRole("Finance"), "/Reports/ContributionYears/" + p.PeopleId, "Contributions", null, null)%>
+                            <%=Html.HyperlinkIf(Model.CanCheckIn, "/CheckIn/CheckIn/{0}?pid={1}".Fmt(Model.ckorg, p.PeopleId), "CheckIn", null, null)%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <% if (Page.User.IsInRole("Admin"))
+                               { %>
+                            <a id="deleteperson" href="/Person/Delete/<%=p.PeopleId %>"><img border="0" src="/images/delete.gif" /></a>
+                            <a id="moveperson" href="/Person/Move/<%=p.PeopleId %>">move</a>
+                            <% } %>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td valign="top">
+                <a id="Picture" href="/UploadPicture.aspx?id=<%=p.PeopleId %>" title="Click to see larger version or upload new">
+                <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=<%=p.SmallPicId %>" />
+                </a>
+            </td>
+            <td></td>
+            <td valign="top">
+                <br />
+                <table>
+                    <tr>
+                        <th align="left" colspan="4">
+                        <% if (User.IsInRole("Access"))
+                           { %>
+                            <a href="/Family.aspx?id=<%=p.FamilyId %>"><strong>Family Members</strong></a>
+                        <% }
+                           else
+                           { %>
+                           <strong>Family Members</strong>
+                        <% } %>
+                        </th>
+                    </tr>
+                <% foreach (var m in Model.FamilyMembers())
+                   { %>
+                    <tr>
+                        <td><a href="/Person/Index/<%=m.Id %>"><span style='color: <%=m.Color%>'><%=m.Name %></span></a></td>
+                        <td><%=m.SpouseIndicator %></td>
+                        <td><%=m.Age %></td>
+                        <td><%=m.PositionInFamily %></td>
+                        <td><%=m.Email %></td>
+                    </tr>
+                <% } %>
+                </table>
+            </td>
+       </tr>
+    </table>
     <div id="main-tab" class="ui-tabs">
         <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
             <li><a href="#member-tab"><span>Member Profile</span></a></li>
+<% if (User.IsInRole("Access"))
+   { %>
             <li><a id="growth-link" href="#growth-tab"><span>Growth</span></a></li>
-            <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
+<% }
+   if (User.IsInRole("Edit"))
+   { %>
+            <li><a id="system-link" href="#system-tab"><span>System</span></a></li>
+<% } %>
         </ul>
         <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
             <form class="DisplayEdit" action="">
@@ -93,7 +104,7 @@
                 <li><a href="#PersonalAddr"><span>Personal</span></a></li>
                 <li><a href="#AltPersonalAddr"><span>Personal Alternate</span></a></li>
                 <li><a href="#FamilyAddr"><span>Family</span></a></li>
-                <li><a href="#AltPersonalAddr"><span>Family Alternate</span></a></li>
+                <li><a href="#AltFamilyAddr"><span>Family Alternate</span></a></li>
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
@@ -162,11 +173,14 @@
                 </form>
             </div>
         </div>
+<% if (User.IsInRole("Access"))
+   { %>
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
                 <li><a href="#entry-tab"><span>Entry</span></a></li>
                 <li><a href="#contacts-tab"><span>Contacts</span></a></li>
                 <li><a href="#comments-tab"><span>Comments</span></a></li>
+                <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
             </ul>
             <div id="entry-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
@@ -181,30 +195,48 @@
                 <% Html.RenderPartial("CommentsDisplay"); %>
                 </form>
             </div>
+            <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
+                <table class="Design2" style="border-style: groove; border-width: thin;">
+                    <tr>
+                        <th>Approvals:</th>
+                        <td><input type="checkbox" <%=Model.vol.Standard ? "checked='checked'" : "" %> disabled="disabled" />
+                            Standard (references only)<br />
+                            <input type="checkbox" <%=Model.vol.Leader ? "checked='checked'" : "" %> disabled="disabled" />
+                            Leadership (background check)
+                        </td>
+                        <td>
+        <% if (User.IsInRole("ApplicationReview"))
+           { %>
+                        <a href="/AppReview/VolunteerApp.aspx?id=<%=p.PeopleId %>">
+                        Volunteer Application Review</a>
+        <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Approval Date:</th>
+                        <td colspan="2"><%=Model.vol.ProcessedDate.FormatDate()%></td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
-            <table class="Design2" style="border-style: groove; border-width: thin;">
-                <tr>
-                    <th>Approvals:</th>
-                    <td><input type="checkbox" <%=Model.vol.Standard ? "checked='checked'" : "" %> disabled="disabled" />
-                        Standard (references only)<br />
-                        <input type="checkbox" <%=Model.vol.Leader ? "checked='checked'" : "" %> disabled="disabled" />
-                        Leadership (background check)
-                    </td>
-                    <td>
-<% if (User.IsInRole("ApplicationReview"))
+<% }
+   if (User.IsInRole("Edit"))
    { %>
-                    <a href="/AppReview/VolunteerApp.aspx?id=<%=p.PeopleId %>">
-                    Volunteer Application Review</a>
-<% } %>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Approval Date:</th>
-                    <td colspan="2"><%=Model.vol.ProcessedDate.FormatDate() %></td>
-                </tr>
-            </table>
+        <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
+            <ul class="ui-tabs-nav">
+                <li><a href="#user-tab"><span>User</span></a></li>
+                <li><a href="#changes-tab"><span>Changes</span></a></li>
+            </ul>
+            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/UserInfoGrid/<%=p.PeopleId %>">
+                </form>
+            </div>
+            <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/PeopleExtrasGrid/<%=p.PeopleId %>">
+                </form>
+            </div>
         </div>
+<% } %>
     </div>
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
     </div>

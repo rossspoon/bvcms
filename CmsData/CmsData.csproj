@@ -160,8 +160,11 @@
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="Emailer.cs" />
     <Compile Include="Generated\Coupon.cs" />
+    <Compile Include="Generated\EmailSent.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
+    <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />

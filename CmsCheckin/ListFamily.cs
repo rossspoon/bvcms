@@ -16,7 +16,7 @@ namespace CmsCheckin
 {
     public partial class ListFamily : UserControl
     {
-        private const int ExtraPixelsName = 13;
+        private const int ExtraPixelsName = 15;
         public ListFamily()
         {
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace CmsCheckin
 
         public void ShowFamily(int fid, int page)
         {
-            var x = this.GetDocument("Checkin/Family/" + fid + Program.QueryString + "&page=" + page);
+            var x = this.GetDocument("Checkin2/Family/" + fid + Program.QueryString + "&page=" + page);
             ShowFamily(x);
         }
         public void ShowFamily(XDocument x)
@@ -100,6 +100,7 @@ namespace CmsCheckin
             int top = 50;
             const int bsize = 45;
             const int bwid = 65;
+            const int mwid = 80;
 
             string Verdana = "Verdana";
             var pfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
@@ -108,7 +109,6 @@ namespace CmsCheckin
             string Present = "Attend";
             string Labels = "Labels";
             var g = this.CreateGraphics();
-            Print.Text = "Print Labels, Return";
             button1.Enabled = true;
             if (x.Descendants("attendee").Count() == 0)
             {
@@ -196,19 +196,19 @@ namespace CmsCheckin
                     size = g.MeasureString(c.name, font);
                     widname = Math.Max(widname, (int)Math.Ceiling(size.Width) + ExtraPixelsName);
 
-                    size = g.MeasureString("{0:H:mm} {1}".Fmt(c.hour, c.org), font);
-                    widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
-
                     size = g.MeasureString(Labels, labfont);
                     twidlb = Math.Max(twidlb, (int)Math.Ceiling(size.Width));
-                    twidlb = Math.Max(twidlb, bsize);
+                    twidlb = Math.Max(twidlb, mwid);
+
+                    size = g.MeasureString("{0:h:mm tt} {1}".Fmt(c.hour, c.org), font);
+                    widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
 
                     size = g.MeasureString("|", labfont);
                     maxheight = Math.Max(maxheight, (int)Math.Ceiling(size.Height));
                 }
 
                 totalwid = sep + twidab + sep + widname + sep + widorg
-                                    + sep + twidlb + sep + bsize + sep + bsize + sep;
+                                    + sep + twidlb + sep;
                 if (totalwid > 1024)
                 {
                     points -= 1F;
@@ -238,20 +238,11 @@ namespace CmsCheckin
             controls.Add(head);
 
             head = new Label();
-            LeftEdge += widname + sep;
+            LeftEdge += mwid + sep + widname + sep;
             head.Location = new Point(LeftEdge, labtop);
             head.Size = new Size(widorg + 5, maxheight);
             head.Font = labfont;
             head.Text = "Meeting";
-            this.Controls.Add(head);
-            controls.Add(head);
-
-            head = new Label();
-            LeftEdge += widorg + sep;
-            head.Location = new Point(LeftEdge, labtop);
-            head.Size = new Size(twidlb + 5, maxheight);
-            head.Font = labfont;
-            head.Text = "Labels";
             this.Controls.Add(head);
             controls.Add(head);
 
@@ -288,8 +279,8 @@ namespace CmsCheckin
                 ab.TextAlign = ContentAlignment.TopCenter;
                 ab.UseVisualStyleBackColor = false;
                 this.Controls.Add(ab);
-                ab.KeyDown += new KeyEventHandler(ab_KeyDown);
-                ab.Click += new EventHandler(ab_Click);
+                ab.KeyDown += new KeyEventHandler(AttendButton_KeyDown);
+                ab.Click += new EventHandler(Attend_Click);
                 ab.Text = c.CheckedIn ? "ü" : String.Empty;
                 ab.Tag = c;
                 controls.Add(ab);
@@ -311,28 +302,47 @@ namespace CmsCheckin
                 nam.Font = font;
                 nam.UseMnemonic = false;
                 nam.Text = c.name;
+                nam.Name = "name" + c.Row;
                 nam.TextAlign = ContentAlignment.MiddleLeft;
                 if (c.cinfo.oid != 0)
                     if (c.cinfo.mv == "V")
                         nam.ForeColor = Color.DarkGreen;
                     else
                         nam.ForeColor = Color.Blue;
-                nam.Click += new EventHandler(nam_Click);
+                nam.Click += new EventHandler(ShowPic_Click);
                 nam.Enabled = false;
                 nam.Tag = c.Row;
                 this.Controls.Add(nam);
                 controls.Add(nam);
                 sucontrols.Add(nam);
 
-                var org = new Label();
+                var menu = new Button();
                 LeftEdge += widname + 5 + sep;
+                menu.Location = new Point(LeftEdge, top - 5);
+                menu.Size = new Size(mwid, bsize);
+                menu.Text = "menu";
+                menu.BackColor = SystemColors.Control;
+                menu.Enabled = false;
+                menu.Font = pfont;
+                menu.Name = "menu" + c.Row;
+                menu.Tag = c.Row;
+                menu.TextAlign = ContentAlignment.TopCenter;
+                menu.UseVisualStyleBackColor = false;
+                this.Controls.Add(menu);
+                menu.Click += new EventHandler(Menu_Click);
+                controls.Add(menu);
+                sucontrols.Add(menu);
+
+                var org = new Label();
+                LeftEdge += mwid + 5 + sep;
                 org.Location = new Point(LeftEdge, top);
                 org.Size = new Size(widorg + 5, maxheight);
-
                 org.Font = font;
                 org.UseMnemonic = false;
-                org.Text = "{0:H:mm} {1}".Fmt(c.hour, c.org);
+                org.Text = "{0:h:mm tt} {1}".Fmt(c.hour, c.org);
                 org.TextAlign = ContentAlignment.MiddleLeft;
+                org.Name = "org" + c.Row;
+                org.Tag = 0;
                 if (c.cinfo.oid != 0)
                     if (c.cinfo.mv == "V")
                         org.ForeColor = Color.DarkGreen;
@@ -340,62 +350,6 @@ namespace CmsCheckin
                         org.ForeColor = Color.Blue;
                 this.Controls.Add(org);
                 controls.Add(org);
-
-                var lb = new Button();
-                LeftEdge += widorg + sep;
-                lb.Location = new Point(LeftEdge, top - 5);
-                lb.Size = new Size(bwid, bsize);
-
-                lb.BackColor = Color.Yellow;
-                lb.Font = pfont;
-                lb.Name = "print" + c.Row;
-                lb.Tag = c.Row;
-                lb.TextAlign = ContentAlignment.TopCenter;
-                lb.UseVisualStyleBackColor = false;
-                this.Controls.Add(lb);
-                lb.Click += new EventHandler(lb_Click);
-                if (classlist != null)
-                {
-                    var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
-                    if (li != null && c.CheckedIn)
-                        lb.Text = li.nlabels == 0 ? "" : li.nlabels.ToString();
-                }
-                controls.Add(lb);
-                controls.Add(org);
-
-                var cb = new Button();
-                LeftEdge += twidlb + sep;
-                cb.Location = new Point(LeftEdge, top - 5);
-                cb.Size = new Size(bsize, bsize);
-                cb.Text = "c";
-                cb.BackColor = SystemColors.Control;
-                cb.Enabled = false;
-                cb.Font = pfont;
-                cb.Name = "visit" + c.Row;
-                cb.Tag = c.Row;
-                cb.TextAlign = ContentAlignment.TopCenter;
-                cb.UseVisualStyleBackColor = false;
-                this.Controls.Add(cb);
-                cb.Click += new EventHandler(cb_Click);
-                controls.Add(cb);
-                sucontrols.Add(cb);
-
-                var eb = new Button();
-                LeftEdge += bsize + sep;
-                eb.Location = new Point(LeftEdge, top - 5);
-                eb.Size = new Size(bsize, bsize);
-                eb.Text = "e";
-                eb.BackColor = SystemColors.Control;
-                eb.Enabled = false;
-                eb.Font = pfont;
-                eb.Name = "edit" + c.Row;
-                eb.Tag = c.Row;
-                eb.TextAlign = ContentAlignment.TopCenter;
-                eb.UseVisualStyleBackColor = false;
-                this.Controls.Add(eb);
-                eb.Click += new EventHandler(eb_Click);
-                controls.Add(eb);
-                sucontrols.Add(eb);
             }
             Program.TimerStart(timer1_Tick);
         }
@@ -408,7 +362,7 @@ namespace CmsCheckin
             this.GoHome("");
         }
 
-        void ab_KeyDown(object sender, KeyEventArgs e)
+        void AttendButton_KeyDown(object sender, KeyEventArgs e)
         {
             Program.TimerReset();
             if (e.KeyValue == 27)
@@ -419,42 +373,42 @@ namespace CmsCheckin
             }
         }
 
-        void lb_Click(object sender, EventArgs e)
+        void PrintLabel_Click(object sender, EventArgs e)
         {
             Program.TimerReset();
-            var lb = sender as Button;
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + lb.Tag.ToString())] as Button;
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
-
-            //if (ab.Enabled == true && !c.Clicked && ab.Text == String.Empty)
-            //{
-            //    ab_Click(ab, e);
-            //    return;
-            //}
-            if (sucontrols[0].BackColor == Color.Coral
-                || lb.Text != String.Empty
-                || ab.Text != String.Empty)
+            var li = new LabelInfo
             {
-                var n = 0;
-                if (int.TryParse(lb.Text, out n))
-                    n += 1;
-                else
-                    n = 1;
-                if (n == 6)
-                    n = 0;
-                lb.Text = n.ToString();
-            }
+                allergies = c.allergies,
+                pid = c.cinfo.pid,
+                mv = c.cinfo.mv,
+                n = 1,
+                first = c.first,
+                last = c.last,
+                location = c.location,
+                hour = c.hour,
+                org = c.org,
+                custody = c.custody,
+                transport = c.transport,
+                requiressecuritylabel = c.RequiresSecurityLabel,
+            };
+            CmsCheckin.Print.Label(li, "E | ", li.n, Program.SecurityCode);
+            RemoveMenu();
         }
 
-        void ab_Click(object sender, EventArgs e)
+        void Attend_Click(object sender, EventArgs e)
+        {
+            Attend_Click((Button)sender);
+        }
+        public void Attend_Click(Button ab)
         {
             Program.TimerReset();
-            var ab = sender as Button;
             var c = ab.Tag as AttendLabel;
             if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
                 return;
             c.Clicked = true;
-            var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
+            var org = this.Controls[this.Controls.IndexOfKey("org" + c.Row.ToString())] as Label;
             if (c.cinfo.oid == 0)
                 return;
             Cursor.Current = Cursors.WaitCursor;
@@ -463,44 +417,13 @@ namespace CmsCheckin
             if (ab.Text == String.Empty)
             {
                 ab.Text = "ü";
-                eb.Text = c.NumLabels == 0 ? "" : c.NumLabels.ToString();
+                org.Tag = c.NumLabels;
                 info.ischecked = true;
             }
             else
             {
                 ab.Text = String.Empty;
-                eb.Text = String.Empty;
-                info.ischecked = false;
-            }
-            c.lastpress = DateTime.Now;
-            var bw = new BackgroundWorker();
-            bw.DoWork += CheckUnCheckDoWork;
-            bw.RunWorkerCompleted += CheckUncheckCompleted;
-            bw.RunWorkerAsync(info);
-        }
-        public void ab_Click(Button ab)
-        {
-            Program.TimerReset();
-            var c = ab.Tag as AttendLabel;
-            if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
-                return;
-            c.Clicked = true;
-            var eb = this.Controls[this.Controls.IndexOfKey("print" + c.Row.ToString())] as Button;
-            if (c.cinfo.oid == 0)
-                return;
-            Cursor.Current = Cursors.WaitCursor;
-            Program.CursorShow();
-            var info = new Util.ClassCheckedInfo { c = c.cinfo };
-            if (ab.Text == String.Empty)
-            {
-                ab.Text = "ü";
-                eb.Text = c.NumLabels == 0 ? "" : c.NumLabels.ToString();
-                info.ischecked = true;
-            }
-            else
-            {
-                ab.Text = String.Empty;
-                eb.Text = String.Empty;
+                org.Tag = 0;
                 info.ischecked = false;
             }
             c.lastpress = DateTime.Now;
@@ -510,7 +433,7 @@ namespace CmsCheckin
             bw.RunWorkerAsync(info);
         }
 
-        void nam_Click(object sender, EventArgs e)
+        void ShowPic_Click(object sender, EventArgs e)
         {
             Program.TimerReset();
             var eb = sender as Button;
@@ -522,32 +445,70 @@ namespace CmsCheckin
         }
 
         public List<ClassInfo> classlist;
-        void cb_Click(object sender, EventArgs e)
+        private Label mask;
+        private Menu menu;
+
+        void Menu_Click(object sender, EventArgs e)
+        {
+            var MenuButton = sender as Button;
+            menu = new Menu();
+            menu.Tag = MenuButton.Tag;
+            menu.Parent = this;
+            menu.Location = new Point(MenuButton.Location.X - 100, MenuButton.Location.Y + MenuButton.Height);
+            mask = new Label();
+            mask.BackColor = this.BackColor;
+            mask.Size = this.Size;
+            //mask.Location = this.Location;
+            mask.Parent = this;
+            mask.BringToFront();
+            var nam = this.Controls[this.Controls.IndexOfKey("name" + menu.Tag.ToString())] as Button;
+            var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
+            nam.BringToFront();
+            org.BringToFront();
+
+            mask.Show();
+            menu.VisitClass += Visit_Click;
+            menu.EditRecord += EditRecord_Click;
+            menu.PrintLabel += PrintLabel_Click;
+            menu.AddFamily += AddToFamily_Click;
+            menu.CancelMenu += new EventHandler(CancelMenu_Click);
+            menu.Show();
+            menu.BringToFront();
+        }
+
+        void CancelMenu_Click(object sender, EventArgs e)
+        {
+            RemoveMenu();
+        }
+        void Visit_Click(object sender, EventArgs e)
+        {
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
+            var c = ab.Tag as AttendLabel;
+            SaveClasses();
+            this.Swap(Program.classes);
+            Program.classes.ShowResults(c.cinfo.pid, 1);
+            RemoveMenu();
+        }
+        private void SaveClasses()
         {
             classlist = new List<ClassInfo>();
-            var cb = sender as Button;
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + cb.Tag.ToString())] as Button;
-            var c = ab.Tag as AttendLabel;
             for (var r = 0; r < rows; r++)
             {
-                var eb = this.Controls[this.Controls.IndexOfKey("print" + r.ToString())] as Button;
+                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
                 var abb = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
                 var cc = abb.Tag as AttendLabel;
-                var n = 0;
-                if (int.TryParse(eb.Text, out n) && n > 0)
+                var n = (int)org.Tag;
+                if (n > 0)
                 {
                     cc.cinfo.nlabels = n;
                     classlist.Add(cc.cinfo);
                 }
             }
-            this.Swap(Program.classes);
-            Program.classes.ShowResults(c.cinfo.pid, 1);
         }
 
-        void eb_Click(object sender, EventArgs e)
+        void EditRecord_Click(object sender, EventArgs e)
         {
-            var eb = sender as Button;
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
+            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
             var c = ab.Tag as AttendLabel;
 
             Program.PeopleId = c.cinfo.pid;
@@ -572,23 +533,41 @@ namespace CmsCheckin
                 Program.emphone.textBox1.Text = c.emphone.FmtFone();
             }
             Util.UnLockFamily();
+            SaveClasses();
 
             Program.editing = true;
+            RemoveMenu();
             this.Swap(Program.first);
+        }
+        private void RemoveMenu()
+        {
+            this.Controls.Remove(menu);
+            this.Controls.Remove(mask);
+            menu.Dispose();
+            mask.Dispose();
         }
 
         PleaseWait PleaseWaitForm = null;
-        private void GoBack_Click(object sender, EventArgs e)
+        private void Print_Click(object sender, EventArgs e)
         {
             Program.TimerStop();
             PleaseWaitForm = new PleaseWait();
             PleaseWaitForm.Show();
+
+            for (var r = 0; r < rows; r++)
+            {
+                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
+                var ab = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
+                var cc = ab.Tag as AttendLabel;
+                org.Tag = ab.Text == String.Empty ? cc.NumLabels : 0;
+            }
+
             var bw = new BackgroundWorker();
-            bw.DoWork += new DoWorkEventHandler(backgroundWorker2_DoWork);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker2_RunWorkerCompleted);
+            bw.DoWork += new DoWorkEventHandler(DoPrinting);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
             bw.RunWorkerAsync();
         }
-        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        private void DoPrinting(object sender, DoWorkEventArgs e)
         {
             Util.UnLockFamily();
             PrintLabels();
@@ -599,7 +578,7 @@ namespace CmsCheckin
                 CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
             }
         }
-        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             PleaseWaitForm.Hide();
             PleaseWaitForm.Dispose();
@@ -613,11 +592,11 @@ namespace CmsCheckin
             var list = new List<AttendLabel>();
             for (var r = 0; r < rows; r++)
             {
-                var eb = this.Controls[this.Controls.IndexOfKey("print" + r.ToString())] as Button;
+                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
                 var ab = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
                 var c = ab.Tag as AttendLabel;
-                var n = 0;
-                if (int.TryParse(eb.Text, out n) && n > 0)
+                var n = (int)org.Tag;
+                if (n > 0)
                 {
                     c.NumLabels = n;
                     list.Add(c);
@@ -683,12 +662,9 @@ namespace CmsCheckin
             rows = 0;
             LabelsPrinted = 0;
             sucontrols.Clear();
-            sucontrols.Add(bAddToFamily);
-            bAddToFamily.BackColor = SystemColors.Control;
-            bAddToFamily.Enabled = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void MagicButton_Click(object sender, EventArgs e)
         {
             Program.TimerStop();
             foreach (var c in sucontrols)
@@ -723,14 +699,19 @@ namespace CmsCheckin
             ShowFamily(Program.FamilyId, next.Value);
         }
 
-        private void bAddToFamily_Click(object sender, EventArgs e)
+        private void AddToFamily_Click(object sender, EventArgs e)
         {
+            var menu = ((Button)sender).Parent as UserControl;
+            menu.Hide();
             var ab = this.Controls[this.Controls.IndexOfKey("attend0")] as Button;
             var c = ab.Tag as AttendLabel;
 
             Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             Program.editing = false;
+            SaveClasses();
             Util.UnLockFamily();
+            this.Controls.Remove(menu);
+            menu.Dispose();
             this.Swap(Program.first);
         }
 
@@ -743,6 +724,17 @@ namespace CmsCheckin
         {
             Cursor.Current = Cursors.Default;
             Program.CursorHide();
+        }
+
+        private void Return_Click(object sender, EventArgs e)
+        {
+            Program.TimerStop();
+            PleaseWaitForm = new PleaseWait();
+            PleaseWaitForm.Show();
+            var bw = new BackgroundWorker();
+            bw.DoWork += new DoWorkEventHandler(DoPrinting);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
+            bw.RunWorkerAsync();
         }
     }
     public class AttendLabel

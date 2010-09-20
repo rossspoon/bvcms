@@ -31,7 +31,7 @@
             Html.RenderPartial("PersonEdit", p);
 %>
 </td>
-<td valign="top"><a class="cancel" href="/OnlineReg/Cancel/<%=p.index %>">remove</a></td>
+<td><a class="cancel" href="/OnlineReg/Cancel/<%=p.index %>">remove<br />participant</a></td>
 </tr>
 <% }
    var last = Model.List[Model.List.Count - 1];

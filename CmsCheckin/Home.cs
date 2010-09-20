@@ -151,7 +151,7 @@ namespace CmsCheckin
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var ph = e.Argument as string;
-            var x = this.GetDocument("Checkin/Match/" + ph.GetDigits() 
+            var x = this.GetDocument("Checkin2/Match/" + ph.GetDigits() 
                 + Program.QueryString + "&page=1");
             e.Result = x;
         }

@@ -15,7 +15,7 @@
             }
         });
     });
-    $('#bundle tbody td[title]').tooltip({ showBody: "|" });
+    $('td.name').tooltip({ showBody: "|" });
     $("#name").autocomplete("/PostBundle/Names", {
         minChars: 3,
         matchContains: false,
@@ -152,6 +152,8 @@
         if ($('#editid').val())
             action = "/PostBundle/UpdateRow/";
         $.post(action, q, function (ret) {
+            if (!ret)
+                return;
             $('#totalitems').text(ret.totalitems);
             $('#itemcount').text(ret.itemcount);
             var pid = $('#pid').val();
@@ -163,11 +165,13 @@
                     + '">' + $('#name').val()
                     + '</td><td class="amt" val="' + $('#amt').val()
                     + '" align="right">' + ret.amt
-                    + '</td><td val="' + $('#fund').val() + '"class="fund" pledge="' + ret.pledge + '"><span id="f' + ret.cid + '" class="clickSelect">' + ret.fund + '</span></td><td class="notes">' + $('#notes').val()
+                    + '</td><td val="' + $('#fund').val() + '"class="fund" pledge="' + ret.pledge
+                    + '"><span id="f' + ret.cid + '" class="clickSelect">' + ret.fund 
+                    + '</span></td><td class="notes">' + $('#notes').val()
                     + '</td><td><a class="edit" href="#">edit</a>'
                     + '</td><td><a class="delete" href="#">delete</a></td>'
                     + '</tr>');
-            $('#bundle tbody tr:first td[title]').tooltip({ showBody: "|" });
+            $('#bundle tbody tr:first td.name').tooltip({ showBody: "|" });
             $('#editid').val('');
             $('#entry input').val('');
             $('#fund').val($('#fundid').val());

@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Collections.Specialized;
 
 namespace CmsCheckin
 {
@@ -91,8 +92,8 @@ namespace CmsCheckin
         {
             this.Cursor = Cursors.WaitCursor;
             var bits = ConvertImageToByteArray(imageResizer1.SaveImage(), ImageFormat.Jpeg);
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/UploadImage2/" + Program.PeopleId);
-            var wc = new WebClient();
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/UploadImage/" + Program.PeopleId);
+            var wc = Util.CreateWebClient();
             wc.UploadData(url, "POST", bits);
             this.Close();
         }

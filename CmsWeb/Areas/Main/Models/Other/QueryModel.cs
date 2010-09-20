@@ -104,7 +104,6 @@ namespace CmsWeb.Models
         public bool StartDateVisible { get; set; }
         public bool OrganizationVisible { get; set; }
         public bool ViewVisible { get; set; }
-        public bool OrganizationRequired { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool DaysVisible { get; set; }
         public bool AgeVisible { get; set; }
@@ -177,7 +176,6 @@ namespace CmsWeb.Models
             DivisionVisible = fieldMap.HasParam("Division");
             ProgramVisible = fieldMap.HasParam("Program");
             OrganizationVisible = fieldMap.HasParam("Organization");
-            OrganizationRequired = fieldMap.HasParam("OrgRequired");
             ScheduleVisible = fieldMap.HasParam("Schedule");
             DaysVisible = fieldMap.HasParam("Days");
             AgeVisible = fieldMap.HasParam("Age");

@@ -57,7 +57,7 @@
                 <tr id="TagsDiv" style="display:none">
                     <td align="right">Tags:</td>
                     <td>
-                        <span id="tagvalues" style="display:none"></span>
+                        <span id="tagvalues" class="validate" style="display:none"></span>
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
@@ -94,7 +94,6 @@
                     <td align="right">Organization:</td>
                     <td>
                         <select id="Organization" ></select>
-                        <span id="OrganizationError" class="validate"></span>
                     </td>
                 </tr>
                 <tr id="SchedDiv" style="display:none">

@@ -249,7 +249,7 @@ namespace CmsWeb.Models
         public void SendNotice()
         {
             var smtp = Util.Smtp();
-            Util.Email2(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
+            DbUtil.Email2(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
         }
     }
 }

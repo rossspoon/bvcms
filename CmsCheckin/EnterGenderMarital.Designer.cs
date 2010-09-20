@@ -55,7 +55,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.AddAnother = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.addr = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -236,7 +235,7 @@
             this.label9.ForeColor = System.Drawing.Color.Firebrick;
             this.label9.Location = new System.Drawing.Point(77, -29);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(102, 34);
+            this.label9.Size = new System.Drawing.Size(78, 26);
             this.label9.TabIndex = 51;
             this.label9.Text = "label1";
             // 
@@ -248,7 +247,7 @@
             this.label13.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label13.Location = new System.Drawing.Point(-57, -29);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(127, 34);
+            this.label13.Size = new System.Drawing.Size(99, 26);
             this.label13.TabIndex = 52;
             this.label13.Text = "Address";
             this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -260,7 +259,7 @@
             this.first.ForeColor = System.Drawing.Color.Firebrick;
             this.first.Location = new System.Drawing.Point(162, 16);
             this.first.Name = "first";
-            this.first.Size = new System.Drawing.Size(102, 34);
+            this.first.Size = new System.Drawing.Size(78, 26);
             this.first.TabIndex = 38;
             this.first.Text = "label1";
             // 
@@ -271,7 +270,7 @@
             this.goesby.ForeColor = System.Drawing.Color.Firebrick;
             this.goesby.Location = new System.Drawing.Point(162, 50);
             this.goesby.Name = "goesby";
-            this.goesby.Size = new System.Drawing.Size(102, 34);
+            this.goesby.Size = new System.Drawing.Size(78, 26);
             this.goesby.TabIndex = 39;
             this.goesby.Text = "label1";
             // 
@@ -282,7 +281,7 @@
             this.last.ForeColor = System.Drawing.Color.Firebrick;
             this.last.Location = new System.Drawing.Point(162, 84);
             this.last.Name = "last";
-            this.last.Size = new System.Drawing.Size(102, 34);
+            this.last.Size = new System.Drawing.Size(78, 26);
             this.last.TabIndex = 40;
             this.last.Text = "label1";
             // 
@@ -293,7 +292,7 @@
             this.email.ForeColor = System.Drawing.Color.Firebrick;
             this.email.Location = new System.Drawing.Point(162, 118);
             this.email.Name = "email";
-            this.email.Size = new System.Drawing.Size(102, 34);
+            this.email.Size = new System.Drawing.Size(78, 26);
             this.email.TabIndex = 41;
             this.email.Text = "label1";
             // 
@@ -304,7 +303,7 @@
             this.dob.ForeColor = System.Drawing.Color.Firebrick;
             this.dob.Location = new System.Drawing.Point(781, 18);
             this.dob.Name = "dob";
-            this.dob.Size = new System.Drawing.Size(102, 34);
+            this.dob.Size = new System.Drawing.Size(78, 26);
             this.dob.TabIndex = 42;
             this.dob.Text = "label1";
             // 
@@ -315,7 +314,7 @@
             this.cellphone.ForeColor = System.Drawing.Color.Firebrick;
             this.cellphone.Location = new System.Drawing.Point(781, 86);
             this.cellphone.Name = "cellphone";
-            this.cellphone.Size = new System.Drawing.Size(102, 34);
+            this.cellphone.Size = new System.Drawing.Size(78, 26);
             this.cellphone.TabIndex = 42;
             this.cellphone.Text = "label1";
             // 
@@ -326,7 +325,7 @@
             this.homephone.ForeColor = System.Drawing.Color.Firebrick;
             this.homephone.Location = new System.Drawing.Point(781, 52);
             this.homephone.Name = "homephone";
-            this.homephone.Size = new System.Drawing.Size(102, 34);
+            this.homephone.Size = new System.Drawing.Size(78, 26);
             this.homephone.TabIndex = 42;
             this.homephone.Text = "label1";
             // 
@@ -338,7 +337,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label1.Location = new System.Drawing.Point(677, 52);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 34);
+            this.label1.Size = new System.Drawing.Size(76, 26);
             this.label1.TabIndex = 47;
             this.label1.Text = "Home";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -351,7 +350,7 @@
             this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label2.Location = new System.Drawing.Point(704, 86);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 34);
+            this.label2.Size = new System.Drawing.Size(52, 26);
             this.label2.TabIndex = 48;
             this.label2.Text = "Cell";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -364,7 +363,7 @@
             this.label3.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label3.Location = new System.Drawing.Point(639, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(135, 34);
+            this.label3.Size = new System.Drawing.Size(105, 26);
             this.label3.TabIndex = 49;
             this.label3.Text = "Birthday";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -377,7 +376,7 @@
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label4.Location = new System.Drawing.Point(60, 118);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 34);
+            this.label4.Size = new System.Drawing.Size(72, 26);
             this.label4.TabIndex = 46;
             this.label4.Text = "Email";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -390,7 +389,7 @@
             this.label5.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label5.Location = new System.Drawing.Point(81, 84);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 34);
+            this.label5.Size = new System.Drawing.Size(57, 26);
             this.label5.TabIndex = 45;
             this.label5.Text = "Last";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -403,7 +402,7 @@
             this.label6.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label6.Location = new System.Drawing.Point(25, 50);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(130, 34);
+            this.label6.Size = new System.Drawing.Size(101, 26);
             this.label6.TabIndex = 44;
             this.label6.Text = "Goes by";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -416,26 +415,10 @@
             this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label7.Location = new System.Drawing.Point(77, 16);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 34);
+            this.label7.Size = new System.Drawing.Size(60, 26);
             this.label7.TabIndex = 43;
             this.label7.Text = "First";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // AddAnother
-            // 
-            this.AddAnother.BackColor = System.Drawing.Color.LimeGreen;
-            this.AddAnother.FlatAppearance.BorderColor = System.Drawing.Color.Green;
-            this.AddAnother.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AddAnother.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddAnother.ForeColor = System.Drawing.Color.White;
-            this.AddAnother.Location = new System.Drawing.Point(520, 683);
-            this.AddAnother.Margin = new System.Windows.Forms.Padding(4);
-            this.AddAnother.Name = "AddAnother";
-            this.AddAnother.Size = new System.Drawing.Size(231, 73);
-            this.AddAnother.TabIndex = 50;
-            this.AddAnother.Text = "Another";
-            this.AddAnother.UseVisualStyleBackColor = false;
-            this.AddAnother.Click += new System.EventHandler(this.AddAnother_Click);
             // 
             // label8
             // 
@@ -445,7 +428,7 @@
             this.label8.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label8.Location = new System.Drawing.Point(28, 160);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(127, 34);
+            this.label8.Size = new System.Drawing.Size(99, 26);
             this.label8.TabIndex = 52;
             this.label8.Text = "Address";
             this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -457,7 +440,7 @@
             this.addr.ForeColor = System.Drawing.Color.Firebrick;
             this.addr.Location = new System.Drawing.Point(162, 160);
             this.addr.Name = "addr";
-            this.addr.Size = new System.Drawing.Size(102, 34);
+            this.addr.Size = new System.Drawing.Size(78, 26);
             this.addr.TabIndex = 51;
             this.addr.Text = "label1";
             // 
@@ -469,7 +452,7 @@
             this.label10.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label10.Location = new System.Drawing.Point(714, 160);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(60, 34);
+            this.label10.Size = new System.Drawing.Size(47, 26);
             this.label10.TabIndex = 54;
             this.label10.Text = "Zip";
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -481,7 +464,7 @@
             this.zip.ForeColor = System.Drawing.Color.Firebrick;
             this.zip.Location = new System.Drawing.Point(781, 160);
             this.zip.Name = "zip";
-            this.zip.Size = new System.Drawing.Size(102, 34);
+            this.zip.Size = new System.Drawing.Size(78, 26);
             this.zip.TabIndex = 53;
             this.zip.Text = "label1";
             // 
@@ -492,7 +475,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Verdana", 27.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(262, 683);
+            this.button1.Location = new System.Drawing.Point(372, 683);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(231, 73);
@@ -508,7 +491,7 @@
             this.allergies.ForeColor = System.Drawing.Color.Firebrick;
             this.allergies.Location = new System.Drawing.Point(162, 207);
             this.allergies.Name = "allergies";
-            this.allergies.Size = new System.Drawing.Size(0, 34);
+            this.allergies.Size = new System.Drawing.Size(0, 26);
             this.allergies.TabIndex = 56;
             // 
             // label11
@@ -519,7 +502,7 @@
             this.label11.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label11.Location = new System.Drawing.Point(16, 207);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(139, 34);
+            this.label11.Size = new System.Drawing.Size(105, 26);
             this.label11.TabIndex = 57;
             this.label11.Text = "Allergies";
             this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -532,7 +515,7 @@
             this.emfriendlab.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.emfriendlab.Location = new System.Drawing.Point(51, 317);
             this.emfriendlab.Name = "emfriendlab";
-            this.emfriendlab.Size = new System.Drawing.Size(104, 34);
+            this.emfriendlab.Size = new System.Drawing.Size(81, 26);
             this.emfriendlab.TabIndex = 58;
             this.emfriendlab.Text = "Friend";
             this.emfriendlab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -545,7 +528,7 @@
             this.emphonelab.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.emphonelab.Location = new System.Drawing.Point(51, 351);
             this.emphonelab.Name = "emphonelab";
-            this.emphonelab.Size = new System.Drawing.Size(102, 34);
+            this.emphonelab.Size = new System.Drawing.Size(79, 26);
             this.emphonelab.TabIndex = 59;
             this.emphonelab.Text = "Phone";
             this.emphonelab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -557,7 +540,7 @@
             this.EmFriend.ForeColor = System.Drawing.Color.Firebrick;
             this.EmFriend.Location = new System.Drawing.Point(160, 317);
             this.EmFriend.Name = "EmFriend";
-            this.EmFriend.Size = new System.Drawing.Size(0, 34);
+            this.EmFriend.Size = new System.Drawing.Size(0, 26);
             this.EmFriend.TabIndex = 60;
             // 
             // EmPhone
@@ -567,7 +550,7 @@
             this.EmPhone.ForeColor = System.Drawing.Color.Firebrick;
             this.EmPhone.Location = new System.Drawing.Point(160, 351);
             this.EmPhone.Name = "EmPhone";
-            this.EmPhone.Size = new System.Drawing.Size(0, 34);
+            this.EmPhone.Size = new System.Drawing.Size(0, 26);
             this.EmPhone.TabIndex = 61;
             // 
             // emergencylab
@@ -578,7 +561,7 @@
             this.emergencylab.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.emergencylab.Location = new System.Drawing.Point(17, 258);
             this.emergencylab.Name = "emergencylab";
-            this.emergencylab.Size = new System.Drawing.Size(136, 25);
+            this.emergencylab.Size = new System.Drawing.Size(106, 18);
             this.emergencylab.TabIndex = 62;
             this.emergencylab.Text = "Emergency";
             this.emergencylab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -590,7 +573,7 @@
             this.grade.ForeColor = System.Drawing.Color.Firebrick;
             this.grade.Location = new System.Drawing.Point(779, 314);
             this.grade.Name = "grade";
-            this.grade.Size = new System.Drawing.Size(0, 34);
+            this.grade.Size = new System.Drawing.Size(0, 26);
             this.grade.TabIndex = 42;
             // 
             // gradelab
@@ -601,7 +584,7 @@
             this.gradelab.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.gradelab.Location = new System.Drawing.Point(672, 314);
             this.gradelab.Name = "gradelab";
-            this.gradelab.Size = new System.Drawing.Size(100, 34);
+            this.gradelab.Size = new System.Drawing.Size(78, 26);
             this.gradelab.TabIndex = 49;
             this.gradelab.Text = "Grade";
             this.gradelab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -615,7 +598,7 @@
             this.ActiveOther.Font = new System.Drawing.Font("Verdana", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActiveOther.Location = new System.Drawing.Point(14, 431);
             this.ActiveOther.Name = "ActiveOther";
-            this.ActiveOther.Size = new System.Drawing.Size(394, 44);
+            this.ActiveOther.Size = new System.Drawing.Size(324, 36);
             this.ActiveOther.TabIndex = 63;
             this.ActiveOther.Text = "Active Other Church?";
             this.ActiveOther.ThreeState = true;
@@ -628,7 +611,7 @@
             this.ParentName.ForeColor = System.Drawing.Color.Firebrick;
             this.ParentName.Location = new System.Drawing.Point(160, 283);
             this.ParentName.Name = "ParentName";
-            this.ParentName.Size = new System.Drawing.Size(0, 34);
+            this.ParentName.Size = new System.Drawing.Size(0, 26);
             this.ParentName.TabIndex = 65;
             // 
             // label12
@@ -639,7 +622,7 @@
             this.label12.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label12.Location = new System.Drawing.Point(48, 283);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(107, 34);
+            this.label12.Size = new System.Drawing.Size(83, 26);
             this.label12.TabIndex = 64;
             this.label12.Text = "Parent";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -652,7 +635,7 @@
             this.churchnameLab.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.churchnameLab.Location = new System.Drawing.Point(37, 394);
             this.churchnameLab.Name = "churchnameLab";
-            this.churchnameLab.Size = new System.Drawing.Size(116, 34);
+            this.churchnameLab.Size = new System.Drawing.Size(89, 26);
             this.churchnameLab.TabIndex = 67;
             this.churchnameLab.Text = "Church";
             this.churchnameLab.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -664,7 +647,7 @@
             this.churchname.ForeColor = System.Drawing.Color.Firebrick;
             this.churchname.Location = new System.Drawing.Point(162, 394);
             this.churchname.Name = "churchname";
-            this.churchname.Size = new System.Drawing.Size(0, 34);
+            this.churchname.Size = new System.Drawing.Size(0, 26);
             this.churchname.TabIndex = 66;
             // 
             // EnterGenderMarital
@@ -687,7 +670,6 @@
             this.Controls.Add(this.zip);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.addr);
-            this.Controls.Add(this.AddAnother);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.gradelab);
@@ -747,7 +729,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button AddAnother;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label addr;
         private System.Windows.Forms.Label label10;

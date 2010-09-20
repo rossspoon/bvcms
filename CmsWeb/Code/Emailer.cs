@@ -101,18 +101,9 @@ namespace CmsWeb
                 }
             }
         }
-        public void SendPeopleEmail(IEnumerable<Person> people,
-            string subject,
-            string message,
-            FileUpload attach,
-            bool IsHtml)
+        public void SendPeopleEmail(IEnumerable<Person> people, string subject, string message, bool IsHtml)
         {
             this.people = people;
-
-            Attachment a = null;
-
-            if (attach.FileName.HasValue())
-                a = new Attachment(attach.FileContent, attach.FileName);
 
             var sb = new StringBuilder("<pre>\r\n");
             SmtpClient smtp = null;
@@ -156,7 +147,7 @@ namespace CmsWeb
                     "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>"
                     .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
 
-                Util.SendMsg(smtp, From, subject, text, p.Name, p.EmailAddress, a);
+                DbUtil.SendMsg(smtp, From, subject, text, p.Name, p.EmailAddress);
 
                 DbUtil.Db.EmailLogs.InsertOnSubmit(
                     new EmailLog
@@ -189,12 +180,12 @@ namespace CmsWeb
             sb.Append("</pre>\r\n");
             sb.Append(Message);
 
-            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address, null);
-            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null,
-                WebConfigurationManager.AppSettings["senderrorsto"], null);
+            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address);
+            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null,
+                WebConfigurationManager.AppSettings["senderrorsto"]);
             var notices = DbUtil.Settings("NotifySentEmails", null);
             if (notices.HasValue())
-            Util.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices, null);
+            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices);
 
             sb.Length = 0;
             sb.Append("<pre>\r\n");

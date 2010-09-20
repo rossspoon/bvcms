@@ -276,6 +276,10 @@
         <th>Members Only:</th>
         <td><%=Html.CheckBox("org.MemberOnly")%></td>
     </tr>
+    <tr>
+        <th>Create Account:</th>
+        <td><%=Html.CheckBox("org.CreateAccount")%> (warning this disables all other features)</td>
+    </tr>
 
     <tr><td></td><td><a href="/Organization/SettingsUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

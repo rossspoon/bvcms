@@ -471,40 +471,32 @@ namespace CmsData
                 Task.AddNewPerson(p.PeopleId);
             else
             {
-                var npm = DbUtil.Db.NewPeopleManager;
-                var em = DbUtil.SystemEmailAddress;
-                var name = String.Empty;
-                if (npm != null)
-                {
-                    em = npm.EmailAddress;
-                    name = npm.Name;
-                }
-                if (em != null)
-                    Util.Email(em, name, em,
-                            "Just Added Person on " + Util.Host,
-                            "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
-                            .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
+                var em = DbUtil.NewPeopleEmailAddress;
+                DbUtil.Email(em, null, em,
+                    "Just Added Person on " + Util.Host,
+                    "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
+                    .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
             }
             return p;
-        }
-        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
-        {
-            return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
-        }
-        public void FixTitle()
-        {
-            if (GenderId == 1)
-                TitleCode = "Mr.";
-            else if (GenderId == 2)
-                if (MaritalStatusId == 20 || MaritalStatusId == 50)
-                    TitleCode = "Mrs.";
-                else
-                    TitleCode = "Ms.";
-        }
-        public string OptOutKey(string FromEmail)
-        {
-            return Util.EncryptForUrl("{0}|{1}".Fmt(PeopleId, FromEmail));
-        }
+}
+public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
+{
+    return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
+}
+public void FixTitle()
+{
+    if (GenderId == 1)
+        TitleCode = "Mr.";
+    else if (GenderId == 2)
+        if (MaritalStatusId == 20 || MaritalStatusId == 50)
+            TitleCode = "Mrs.";
+        else
+            TitleCode = "Ms.";
+}
+public string OptOutKey(string FromEmail)
+{
+    return Util.EncryptForUrl("{0}|{1}".Fmt(PeopleId, FromEmail));
+}
 
         public static bool ToggleTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
         {
@@ -598,6 +590,51 @@ namespace CmsData
             }
             return 30;
         }
+        private bool? _CanUserEditAll;
+        public bool CanUserEditAll
+        {
+            get
+            {
+                if (!_CanUserEditAll.HasValue)
+                    _CanUserEditAll = HttpContext.Current.User.IsInRole("Edit");
+                return _CanUserEditAll.Value;
+            }
+        }
+        private bool? _CanUserEditFamilyAddress;
+        public bool CanUserEditFamilyAddress
+        {
+            get
+            {
+                if (!_CanUserEditFamilyAddress.HasValue)
+                    _CanUserEditFamilyAddress = CanUserEditAll
+                        || Util.UserPeopleId == Family.HeadOfHouseholdId
+                        || Util.UserPeopleId == Family.HeadOfHouseholdSpouseId;
+                return _CanUserEditFamilyAddress.Value;
+            }
+        }
+        private bool? _CanUserEditBasic;
+        public bool CanUserEditBasic
+        {
+            get
+            {
+                if (!_CanUserEditBasic.HasValue)
+                    _CanUserEditBasic = CanUserEditFamilyAddress
+                        || Util.UserPeopleId == PeopleId;
+                return _CanUserEditBasic.Value;
+            }
+        }        
+        private bool? _CanUserSee;
+        public bool CanUserSee
+        {
+            get
+            {
+                if (!_CanUserSee.HasValue)
+                    _CanUserSee = CanUserEditBasic
+                        || Family.People.Any(m => m.PeopleId == Util.UserPeopleId);
+                return _CanUserSee.Value;
+            }
+        }        
+
         partial void OnZipCodeChanged()
         {
             ResCodeId = FindResCode(ZipCode);

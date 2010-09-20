@@ -10,10 +10,12 @@ namespace CmsWeb.Models.PersonPage
     public class PersonPrevEnrollmentsModel
     {
         private int PeopleId;
+        public Person person { get; set; }
         public PagerModel2 Pager { get; set; }
         public PersonPrevEnrollmentsModel(int id)
         {
             PeopleId = id;
+            person = DbUtil.Db.LoadPersonById(id);
             Pager = new PagerModel2(Count);
         }
         private IQueryable<EnrollmentTransaction> _enrollments;

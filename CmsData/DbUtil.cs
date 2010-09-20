@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace CmsData
 {
-    public static class DbUtil
+    public static partial class DbUtil
     {
         private const string CMSDbKEY = "CMSDbKey";
         //private static CMSDataContext _idb;
@@ -139,6 +139,17 @@ namespace CmsData
         }
         public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
         public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
+        public static string NewPeopleEmailAddress
+        {
+            get
+            {
+                var em = DbUtil.SystemEmailAddress;
+                var npm = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
+                if (npm != null && npm.EmailAddress.HasValue())
+                    em = npm.EmailAddress;
+                return Settings("NewPeopleEmailAddress", em);
+            }
+        }
         public static string StartAddress { get { return Settings("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }
         public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole", "") == "true"; } }
         

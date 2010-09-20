@@ -17,9 +17,9 @@
         });
     </script>
 
-    <h2>Event Registration Received</h2>
+    <h2>Registration Received</h2>
     <p style="color: Black">
-        Thank you for registering for the <%=ViewData["orgname"] %> event.  
+        Thank you for registering for <%=ViewData["orgname"] %>.  
         You should receive a confirmation email at <%=ViewData["email"] %> shortly.
     </p>
     <p style="color: Blue"><a href='<%=ViewData["URL"] %>'>Start a New Registration</a></p>

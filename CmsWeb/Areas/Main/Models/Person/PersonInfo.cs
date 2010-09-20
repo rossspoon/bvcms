@@ -85,6 +85,7 @@ namespace CmsWeb.Models.PersonPage
                         basic = new BasicPersonInfo
                         {
                             PeopleId = p.PeopleId,
+                            person = p,
                             Age = p.Age.ToString(),
                             Birthday = p.DOB,
                             CampusId = p.CampusId ?? 0,
@@ -140,6 +141,7 @@ namespace CmsWeb.Models.PersonPage
                         {
                             Name = "FamilyAddr",
                             PeopleId = p.PeopleId,
+                            person = p,
                             Address1 = p.Family.AddressLineOne,
                             Address2 = p.Family.AddressLineTwo,
                             City = p.Family.CityName,
@@ -155,6 +157,7 @@ namespace CmsWeb.Models.PersonPage
                         {
                             Name = "AltFamilyAddr",
                             PeopleId = p.PeopleId,
+                            person = p,
                             Address1 = p.Family.AltAddressLineOne,
                             Address2 = p.Family.AltAddressLineTwo,
                             City = p.Family.AltCityName,
@@ -170,6 +173,7 @@ namespace CmsWeb.Models.PersonPage
                         {
                             Name = "PersonalAddr",
                             PeopleId = p.PeopleId,
+                            person = p,
                             Address1 = p.AddressLineOne,
                             Address2 = p.AddressLineTwo,
                             City = p.CityName,
@@ -185,6 +189,7 @@ namespace CmsWeb.Models.PersonPage
                         {
                             Name = "AltPersonalAddr",
                             PeopleId = p.PeopleId,
+                            person = p,
                             Address1 = p.AltAddressLineOne,
                             Address2 = p.AltAddressLineTwo,
                             City = p.AltCityName,

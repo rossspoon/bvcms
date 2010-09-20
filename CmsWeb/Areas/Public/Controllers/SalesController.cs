@@ -87,7 +87,7 @@ namespace CmsWeb.Areas.Public.Controllers
             Body = Body.Replace("{download}", 
                 Request.Url.Scheme + "://" + Request.Url.Authority + "/Sales/Download/" + m.saleitem.Id);
 
-            Util.Email(m.saleitem.Email,
+            DbUtil.Email(m.saleitem.Email,
                  m.person.Name, m.transaction.EmailAddress, c.Title, Body);
             return View(m);
         }

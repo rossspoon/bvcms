@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.BasicPersonInfo>" %>
-<% Html.RenderPartial("ExportToolBar"); %><div style="clear:both;padding: 5px"></div>
-<% if (Page.User.IsInRole("Edit"))
+<% if(Page.User.IsInRole("Access")) Html.RenderPartial("ExportToolBar"); %>
+<div style="clear:both;padding: 5px"></div>
+<% if (Model.person.CanUserEditBasic)
    { %>
 <a class="displayedit" href="/Person/BasicEdit/<%=Model.PeopleId %>">Edit</a>
 <% } %>

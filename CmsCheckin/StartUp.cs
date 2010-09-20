@@ -80,8 +80,8 @@ namespace CmsCheckin
             if (Settings1.Default.Printer.HasValue())
                 Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
 
-            var wc = new WebClient();
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Campuses");
+            var wc = Util.CreateWebClient();
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Campuses");
             var str = wc.DownloadString(url);
             var x = XDocument.Parse(str);
             foreach (var i in x.Descendants("campus"))

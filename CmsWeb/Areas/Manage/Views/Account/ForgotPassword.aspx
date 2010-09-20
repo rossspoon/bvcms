@@ -19,11 +19,6 @@
                     <%= Html.ValidationMessage("username") %>
                 </p>
                 <p>
-                    <label for="dob">Date of Birth:</label>
-                    <input type="text" name="dob" title = "m/d/y, mmddyy, mmddyyyy" /> (m/d/y)
-                    <%= Html.ValidationMessage("dob") %>
-                </p>
-                <p>
                     <input type="submit" value="Request New Password" />
                 </p>
             </fieldset>

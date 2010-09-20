@@ -51,6 +51,12 @@ namespace CmsWeb.Models
         {
             get { return testing == true ? "?testing=true" : ""; }
         }
+        public bool IsCreateAccount()
+        {
+            if (div != null)
+                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
+            return false;
+        }
         public bool IsEnded()
         {
             if (div != null)
@@ -61,7 +67,9 @@ namespace CmsWeb.Models
         public bool OnlyOneAllowed()
         {
             if (org != null)
-                return org.AllowOnlyOne == true || org.AskTickets == true;
+                return org.AllowOnlyOne == true 
+                    || org.AskTickets == true 
+                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivisionId == divid
                     where o.AllowOnlyOne == true || o.AskTickets == true
@@ -169,7 +177,31 @@ namespace CmsWeb.Models
             return list;
         }
 
-
+        public void CreateAccount()
+        {
+            var person = List[0].person;
+            var uname = MembershipService.FetchUsername(person.PreferredName, person.LastName);
+            var pword = MembershipService.FetchPassword();
+            var user = MembershipService.CreateUser(person.PeopleId, uname, pword);
+            var smtp = Util.Smtp();
+            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
+                uname, person.EmailAddress,
+                    "New account for {0}",
+                    @"Hi {1},
+<p>You now have an account in our church database.
+This will make it easier for you to do online registrations
+and to help us maintain your current address, email and phone numbers.
+The following are the credentials you can use. Both the username and password are system generated.
+You can use this the next time you do an online registration.
+</p>
+<table>
+<tr><td>Username:</td><td><b>{2}</b></td></tr>
+<tr><td>Password:</td><td><b>{3}</b></td></tr>
+</table>
+<p>Thanks,<br />
+The bvcms team</p>
+".Fmt(Util.Host, person.Name, uname, pword));
+        }
         public void EnrollAndConfirm(string TransactionID)
         {
             var elist = new List<string>();
@@ -268,8 +300,8 @@ namespace CmsWeb.Models
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
             var smtp = Util.Smtp();
-            Util.Email2(smtp, o.EmailAddresses, emails, subject, message);
-            Util.Email2(smtp, emails, o.EmailAddresses,
+            DbUtil.Email2(smtp, o.EmailAddresses, emails, subject, message);
+            DbUtil.Email2(smtp, emails, o.EmailAddresses,
                 "{0}".Fmt(Header),
                 @"{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}
 <pre>{5}</pre>"

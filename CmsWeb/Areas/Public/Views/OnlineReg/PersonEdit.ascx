@@ -5,8 +5,8 @@
     <% if (Model.FilledClasses().Count() > 0)
        { %>
     <tr>
-        <td><span style="color:Red">Filled Classes</span></td>
-        <td>
+        <td colspan="3">
+        <span style="color:Red">Filled Classes:</span><br />
         <% foreach (var c in Model.FilledClasses())
            { %>
            <%=c %><br />
@@ -18,11 +18,13 @@
         <td colspan="3">
    <% if (Model.Classes().Count() > 1)
       { %>
+        <span class="blue">Select a class:</span><br />
         <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%>
         <%=Html.ValidationMessage("classid") %>
    <% }
       else
       { %>
+        <span class="blue">Here is the only available class:</span><br />
         <%=Model.Classes().Single().Text%>
         <%=Html.Hidden("m.List[" + Model.index + "].classid", Model.Classes().Single().Value)%>
    <% } %>
@@ -38,14 +40,15 @@
     </tr>
     <tr>
         <td><label for="last">Last Name</label></td>
-        <td><input id="last" type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
-        <td>suffix:<input type="text" name="m.List[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" />
-        <%= Html.ValidationMessage("last") %></td>
+        <td nowrap="nowrap"><input id="last" type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" />
+        suffix:<input type="text" name="m.List[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" /></td>
+        <td><%= Html.ValidationMessage("last") %></td>
     </tr>
      <tr>
         <td><label for="dob">Date of Birth</label></td>
-        <td><input id="dob" type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
-        <td><span id="age"><%=Model.age %></span> (m/d/y) <%= Html.ValidationMessage("dob") %></td>
+        <td nowrap="nowrap"><input id="dob" type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" />
+        <span id="age"><%=Model.age %></span> (m/d/y)</td>
+        <td><%= Html.ValidationMessage("dob") %></td>
     </tr>
     <tr>
         <td><label for="phone">Phone</label></td>

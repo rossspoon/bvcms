@@ -190,6 +190,10 @@ namespace CmsData
         partial void UpdateEmailOptOut(EmailOptOut instance);
         partial void DeleteEmailOptOut(EmailOptOut instance);
         
+        partial void InsertEmailSent(EmailSent instance);
+        partial void UpdateEmailSent(EmailSent instance);
+        partial void DeleteEmailSent(EmailSent instance);
+        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -213,6 +217,10 @@ namespace CmsData
         partial void InsertFamilyCheckinLock(FamilyCheckinLock instance);
         partial void UpdateFamilyCheckinLock(FamilyCheckinLock instance);
         partial void DeleteFamilyCheckinLock(FamilyCheckinLock instance);
+        
+        partial void InsertFamilyExtra(FamilyExtra instance);
+        partial void UpdateFamilyExtra(FamilyExtra instance);
+        partial void DeleteFamilyExtra(FamilyExtra instance);
         
         partial void InsertFamilyMemberType(FamilyMemberType instance);
         partial void UpdateFamilyMemberType(FamilyMemberType instance);
@@ -890,6 +898,12 @@ namespace CmsData
 
 		}
 
+		public Table< EmailSent> EmailSents
+		{
+			get	{ return this.GetTable< EmailSent>(); }
+
+		}
+
 		public Table< EnrollmentTransaction> EnrollmentTransactions
 		{
 			get	{ return this.GetTable< EnrollmentTransaction>(); }
@@ -923,6 +937,12 @@ namespace CmsData
 		public Table< FamilyCheckinLock> FamilyCheckinLocks
 		{
 			get	{ return this.GetTable< FamilyCheckinLock>(); }
+
+		}
+
+		public Table< FamilyExtra> FamilyExtras
+		{
+			get	{ return this.GetTable< FamilyExtra>(); }
 
 		}
 

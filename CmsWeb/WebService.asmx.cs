@@ -124,6 +124,7 @@ namespace CmsWeb
         [AuthenticatonSoapExtensionAttribute]
         public PersonResult[] SearchPerson(string name, string comm, string addr, string birthday)
         {
+            DbUtil.Db.SetNoLock();
             var ctl = new PersonSearchController();
             var q = ctl.FetchPeopleList(0, 10, "", name, comm, addr, 0, 0, birthday, 99, 0, 0, false, 99);
             var q2 = from p in q

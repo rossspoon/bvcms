@@ -79,25 +79,14 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                GetPeopleId();
-            Util.SysFromEmail = DbUtil.Settings("SysFromEmail", 
+                Login.SetUserInfo(Util.UserName);
+            Util.SysFromEmail = DbUtil.Settings("SysFromEmail",
                 WebConfigurationManager.AppSettings["sysfromemail"]);
             Util.SessionStarting = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            //if (!Util.UserPeopleId.HasValue && User != null && User.Identity.IsAuthenticated)
-            //    GetPeopleId();
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-        }
-        private static void GetPeopleId()
-        {
-            var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == Util.UserName);
-            if (u != null)
-            {
-                Util.UserId = u.UserId;
-                Util.UserPeopleId = u.PeopleId;
-            }
         }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
@@ -117,11 +106,11 @@ namespace CmsWeb
             if (ex is HttpException)
             {
                 var code = ((HttpException)ex).GetHttpCode();
-                if (code == (int)HttpStatusCode.NotFound 
+                if (code == (int)HttpStatusCode.NotFound
                     || code == (int)HttpStatusCode.Forbidden)
                     return;
             }
-            
+
             var u = DbUtil.Db.CurrentUser;
             var smtp = Util.Smtp();
             var msg = new MailMessage();
@@ -136,7 +125,7 @@ namespace CmsWeb
             if (u != null)
             {
                 msg.From = Util.FirstAddress(u.EmailAddress, u.Name);
-                msg.Body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.UserId, u.Name, Request.Url.OriginalString) 
+                msg.Body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.UserId, u.Name, Request.Url.OriginalString)
                     + ex.ToString() + sb.ToString();
             }
             else
@@ -150,5 +139,5 @@ namespace CmsWeb
 
             smtp.Send(msg);
         }
-   }
+    }
 }

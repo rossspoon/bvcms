@@ -28,7 +28,6 @@ namespace CmsCheckin
             addr.Text = Program.addr.textBox1.Text;
             zip.Text = Program.zip.textBox1.Text;
             allergies.Text = Program.allergy.textBox1.Text;
-            AddAnother.Visible = !Program.editing;
             if (Program.AskGrade)
                 grade.Text = Program.grade.textBox1.Text;
             if (Program.AskEmFriend)
@@ -99,7 +98,16 @@ namespace CmsCheckin
                 else
                     ph = "";
             Program.ClearFields();
-            this.GoHome(ph);
+            if (Program.editing)
+            {
+                this.Swap(Program.family);
+                Program.family.ShowFamily(Program.FamilyId, 1);
+            }
+            else
+            {
+                this.Swap(Program.classes);
+                Program.classes.ShowResults(Program.PeopleId, 1);
+            }
         }
 
         public int Gender
@@ -196,18 +204,6 @@ namespace CmsCheckin
                 return false;
             }
             return true;
-        }
-        private void AddAnother_Click(object sender, EventArgs e)
-        {
-            if (!ValidateFields())
-                return;
-            if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
-                Program.homephone.textBox1.Text = cellphone.Text;
-            this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, Marital, Gender);
-            var s = this.ActiveOther.CheckState.ToString();
-            Program.ClearFields();
-            Program.SetFields(last.Text, email.Text, addr.Text, zip.Text, homephone.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, s, churchname.Text);
-            this.Swap(Program.first);
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -24,7 +24,7 @@ namespace CmsWeb.Models.PersonPage
         {
             get
             {
-                if (_person == null)
+                if (_person == null && displayperson != null)
                     _person = DbUtil.Db.LoadPersonById(displayperson.PeopleId);
                 return _person;
             }

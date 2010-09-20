@@ -420,13 +420,13 @@ print, sign, and return it to the Recreation Ministry in order to complete your 
             message = message.Replace("{cmshost}", Util.CmsHost);
             message = message.Replace("{summary}", PrepareSummaryText(om));
 
-            Util.Email2(smtp, staffemail, email, subject, message);
-            Util.Email2(smtp, email, staffemail,
+            DbUtil.Email2(smtp, staffemail, email, subject, message);
+            DbUtil.Email2(smtp, email, staffemail,
                 "{0} Registration".Fmt(division.Name),
                 "{0}({1}) has registered for {2}<br/>Feepaid: {3:C}"
                 .Fmt(person.Name, person.PeopleId, org.OrganizationName, om.Amount));
 
-            Util.SendIfEmailDifferent(smtp, staffemail, email,
+            DbUtil.SendIfEmailDifferent(smtp, staffemail, email,
                 person.PeopleId, person.Name, person.EmailAddress, subject, message);
         }
         private static void AddToMemberData(string s, OrganizationMember om)

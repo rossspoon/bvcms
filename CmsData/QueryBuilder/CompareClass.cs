@@ -316,7 +316,7 @@ namespace CmsData
                                c.Division,
                                c.Organization,
                                CompType,
-                               c.StartDate);
+                               c.DateValue);
                 // P ----------------
                 case QueryType.PendingCurrentOrg:
                     return Expressions.PendingCurrentOrg(parm,

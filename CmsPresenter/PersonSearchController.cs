@@ -97,7 +97,6 @@ namespace CMSPresenter
         public IEnumerable<TaggedPersonInfo> FetchPeopleList(int startRowIndex, int maximumRows, string sortExpression,
             string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
-            DbUtil.Db.SetNoLock();
             var query = ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly, marital);
             count = query.Count();
             if (TagTypeId == DbUtil.TagTypeId_AddSelected)

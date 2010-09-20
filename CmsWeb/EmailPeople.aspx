@@ -82,13 +82,6 @@ text box below. You can then fill out your subject, add any attachment and send 
         </tr>
         <tr>
             <td align="right">
-                Attachment:</td>
-            <td>
-                <asp:FileUpload ID="FileUpload1" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
                 Body:<br />
                 <br />
                 <asp:CheckBox ID="IsHtml" runat="server" AutoPostBack="true" Text="HTML Editor" 

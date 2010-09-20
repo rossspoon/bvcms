@@ -132,7 +132,7 @@ namespace CmsWeb.Areas.Public.Controllers
 
         private static void SendStaffEmail(SmtpClient smtp, Person p, string email, CmsData.Meeting meeting)
         {
-            Util.Email2(smtp, email,
+            DbUtil.Email2(smtp, email,
                 DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
                 "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"{0}({1}) registered for {3} for the following date:
@@ -155,7 +155,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 }
                 sb.AppendLine("</table>");
             }
-            Util.Email(smtp, DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
+            DbUtil.Email(smtp, DbUtil.Settings("SmlMail", DbUtil.SystemEmailAddress),
                                 p.Name, email, "{0} Registration".Fmt(meeting.Organization.OrganizationName),
 @"Hi {0},<p>Thank you for registering. You are now enrolled for the {2} Event for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} </p><p>{3}</p>".Fmt(

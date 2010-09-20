@@ -41,11 +41,11 @@ namespace CmsWeb.Models
 
         public string HelpLink(string page)
         {
-            return "http://wiki.bvcms.com/help.SearchAdd_{0}.ashx".Fmt(page);
+            return Util.HelpLink("SearchAdd_{0}".Fmt(page));
         }
         public string HelpLinkWithType(string page)
         {
-            return "http://wiki.bvcms.com/help.SearchAdd_{0}_{1}.ashx".Fmt(page, type);
+            return Util.HelpLink("SearchAdd_{0}_{1}".Fmt(page, type));
         }
         private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
         {

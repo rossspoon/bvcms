@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public string HelpLink(string page)
         {
-            return "http://wiki.bvcms.com/help.SearchAdd_{0}.ashx".Fmt(page);
+            return Util.HelpLink("SearchAdd_{0}".Fmt(page));
         }
     }
 }

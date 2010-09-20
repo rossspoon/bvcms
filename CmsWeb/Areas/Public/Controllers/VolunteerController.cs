@@ -88,7 +88,7 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 var summary = m.PrepareSummaryText2();
                 var smtp = Util.Smtp();
-                Util.Email2(smtp,
+                DbUtil.Email2(smtp,
                     Util.PickFirst(regemail, m.person.EmailAddress),
                     email,
                     "{0} registration".Fmt(id),
@@ -112,7 +112,7 @@ namespace CmsWeb.Areas.Public.Controllers
                         em = email;
                         body = "<p>NO EMAIL</p>\n" + body;
                     }
-                    Util.Email(smtp, email, m.person.Name, em,
+                    DbUtil.Email(smtp, email, m.person.Name, em,
                          c.Title, body);
                     OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Data.Linq;
+using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
@@ -15,7 +16,35 @@ namespace CmsWeb.Models.PersonPage
         private CodeValueController cv = new CodeValueController();
 
         public int PeopleId { get; set; }
+        public Person person { get; set; }
+
         public string Name { get; set; }
+        private bool? _CanUserEditAddress;
+        public bool CanUserEditAddress
+        {
+            get
+            {
+                if (!_CanUserEditAddress.HasValue)
+                {
+                    switch (Name)
+                    {
+                        case "PersonalAddr":
+                            _CanUserEditAddress = person.CanUserEditBasic;
+                            break;
+                        case "AltPersonalAddr":
+                            _CanUserEditAddress = person.CanUserEditBasic;
+                            break;
+                        case "FamilyAddr":
+                            _CanUserEditAddress = person.CanUserEditFamilyAddress;
+                            break;
+                        case "AltFamilyAddr":
+                            _CanUserEditAddress = person.CanUserEditFamilyAddress;
+                            break;
+                    }
+                }
+                return _CanUserEditAddress.Value;
+            }
+        }
 
         public string Address1 { get; set; }
         public string Address2 { get; set; }
@@ -32,7 +61,7 @@ namespace CmsWeb.Models.PersonPage
         }
         public string Addr2CityStateZip()
         {
-            return Address2 + " " + CityStateZip(); 
+            return Address2 + " " + CityStateZip();
         }
         public bool? BadAddress { get; set; }
         public int? ResCodeId { get; set; }
@@ -57,6 +86,7 @@ namespace CmsWeb.Models.PersonPage
         {
             var p = DbUtil.Db.LoadPersonById(id);
             var a = new AddressInfo();
+            a.person = p;
             switch (typeid)
             {
                 case "FamilyAddr":
@@ -120,58 +150,104 @@ namespace CmsWeb.Models.PersonPage
             if (ResCodeId == 0)
                 ResCodeId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
+            var f = p.Family;
             switch (Name)
             {
                 case "FamilyAddr":
-                    p.Family.AddressLineOne = Address1;
-                    p.Family.AddressLineTwo = Address2;
-                    p.Family.AddressToDate = ToDt;
-                    p.Family.BadAddressFlag = BadAddress;
-                    p.Family.CityName = City;
-                    p.Family.StateCode = State;
-                    p.Family.ResCodeId = ResCodeId;
-                    p.Family.ZipCode = Zip;
+                    UpdateValue(f, "AddressLineOne", Address1);
+                    UpdateValue(f, "AddressLineTwo", Address2);
+                    UpdateValue(f, "AddressToDate", ToDt);
+                    UpdateValue(f, "BadAddressFlag", BadAddress);
+                    UpdateValue(f, "CityName", City);
+                    UpdateValue(f, "StateCode", State);
+                    UpdateValue(f, "ResCodeId", ResCodeId);
+                    UpdateValue(f, "ZipCode", Zip);
                     if (Preferred)
-                        p.AddressTypeId = 10;
+                        UpdateValue(p, "AddressTypeId", 10);
                     break;
                 case "AltFamilyAddr":
-                    p.Family.AltAddressLineOne = Address1;
-                    p.Family.AltAddressLineTwo = Address2;
-                    p.Family.AltAddressToDate = ToDt;
-                    p.Family.AltBadAddressFlag = BadAddress;
-                    p.Family.AltCityName = City;
-                    p.Family.AltStateCode = State;
-                    p.Family.AltResCodeId = ResCodeId;
-                    p.Family.AltZipCode = Zip;
+                    UpdateValue(f, "AltAddressLineOne", Address1);
+                    UpdateValue(f, "AltAddressLineTwo", Address2);
+                    UpdateValue(f, "AltAddressToDate", ToDt);
+                    UpdateValue(f, "AltBadAddressFlag", BadAddress);
+                    UpdateValue(f, "AltCityName", City);
+                    UpdateValue(f, "AltStateCode", State);
+                    UpdateValue(f, "AltResCodeId", ResCodeId);
+                    UpdateValue(f, "AltZipCode", Zip);
                     if (Preferred)
-                        p.AddressTypeId = 20;
+                        UpdateValue(p, "AddressTypeId", 20);
                     break;
                 case "PersonalAddr":
-                    p.AddressLineOne = Address1;
-                    p.AddressLineTwo = Address2;
-                    p.AddressToDate = ToDt;
-                    p.BadAddressFlag = BadAddress;
-                    p.CityName = City;
-                    p.StateCode = State;
-                    p.ResCodeId = ResCodeId;
-                    p.ZipCode = Zip;
+                    UpdateValue(p, "AddressLineOne", Address1);
+                    UpdateValue(p, "AddressLineTwo", Address2);
+                    UpdateValue(p, "AddressToDate", ToDt);
+                    UpdateValue(p, "BadAddressFlag", BadAddress);
+                    UpdateValue(p, "CityName", City);
+                    UpdateValue(p, "StateCode", State);
+                    UpdateValue(p, "ResCodeId", ResCodeId);
+                    UpdateValue(p, "ZipCode", Zip);
                     if (Preferred)
-                        p.AddressTypeId = 30;
+                        UpdateValue(p, "AddressTypeId", 30);
                     break;
                 case "AltPersonalAddr":
-                    p.AltAddressLineOne = Address1;
-                    p.AltAddressLineTwo = Address2;
-                    p.AltAddressToDate = ToDt;
-                    p.AltBadAddressFlag = BadAddress;
-                    p.AltCityName = City;
-                    p.AltStateCode = State;
-                    p.AltResCodeId = ResCodeId;
-                    p.AltZipCode = Zip;
+                    UpdateValue(p, "AltAddressLineOne", Address1);
+                    UpdateValue(p, "AltAddressLineTwo", Address2);
+                    UpdateValue(p, "AltAddressToDate", ToDt);
+                    UpdateValue(p, "AltBadAddressFlag", BadAddress);
+                    UpdateValue(p, "AltCityName", City);
+                    UpdateValue(p, "AltStateCode", State);
+                    UpdateValue(p, "AltResCodeId", ResCodeId);
+                    UpdateValue(p, "AltZipCode", Zip);
                     if (Preferred)
-                        p.AddressTypeId = 40;
+                        UpdateValue(p, "AddressTypeId", 40);
                     break;
             }
+            if (psb.Length > 0)
+                p.PeopleExtras.Add(new PeopleExtra
+                {
+                    Field = Name,
+                    Data = psb.ToString(),
+                    TransactionTime = Util.Now
+                });
+            if (fsb.Length > 0)
+                f.FamilyExtras.Add(new FamilyExtra
+                {
+                    Field = Name,
+                    Data = psb.ToString(),
+                    TransactionTime = Util.Now
+                });
             DbUtil.Db.SubmitChanges();
+            if (!HttpContext.Current.User.IsInRole("Access"))
+                if (psb.Length > 0 || fsb.Length > 0)
+                {
+                    var smtp = Util.Smtp();        
+                    DbUtil.Email2(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
+                        "Address Info Changed",
+                        "{0} changed the following information:\n{1}\n{2}"
+                        .Fmt(psb.ToString(),fsb.ToString()));
+                }
+        }
+        private StringBuilder fsb = new StringBuilder();
+        private void UpdateValue(Family f, string field, object value)
+        {
+            var o = Util.GetProperty(f, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            fsb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            Util.SetProperty(f, field, value);
+        }
+        private StringBuilder psb = new StringBuilder();
+        private void UpdateValue(Person p, string field, object value)
+        {
+            var o = Util.GetProperty(p, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            psb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            Util.SetProperty(p, field, value);
         }
         public static IEnumerable<SelectListItem> StateCodes()
         {

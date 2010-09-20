@@ -85,6 +85,7 @@ namespace CmsWeb.Models
                         Age = d.Contribution.Person.Age,
                         extra = d.Contribution.ExtraDatum.Data,
                         pledge = d.Contribution.PledgeFlag,
+                        memstatus = d.Contribution.Person.MemberStatus.Description,
                     };
             var list = q.ToList();
             foreach (var c in list)
@@ -172,7 +173,7 @@ namespace CmsWeb.Models
                         fund = "{0} - {1}".Fmt(
                             c.FundId, c.ContributionFund.FundName),
                         cid = c.ContributionId,
-                        tip = Tip(c.PeopleId, c.Person.Age, c.Person.PrimaryAddress, c.Person.PrimaryCity, c.Person.PrimaryState, c.Person.PrimaryZip)
+                        tip = Tip(c.PeopleId, c.Person.Age, c.Person.MemberStatus.Description, c.Person.PrimaryAddress, c.Person.PrimaryCity, c.Person.PrimaryState, c.Person.PrimaryZip)
                     };
             return q.First();
         }
@@ -213,7 +214,9 @@ namespace CmsWeb.Models
                 type = (int)Contribution.TypeCode.Pledge;
             else
                 type = (int)Contribution.TypeCode.CheckCash;
-            var c = DbUtil.Db.Contributions.Single(cc => cc.ContributionId == editid);
+            var c = DbUtil.Db.Contributions.SingleOrDefault(cc => cc.ContributionId == editid);
+            if (c == null)
+                return null;
             c.FundId = fund;
             c.PeopleId = pid;
             c.ContributionAmount = amt;
@@ -580,9 +583,9 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
-        public static string Tip(int? pid, int? age, string address, string city, string state, string zip)
+        public static string Tip(int? pid, int? age, string memstatus, string address, string city, string state, string zip)
         {
-            return "PeopleId: {0}|Age: {1}|{2}|{3}".Fmt(pid, age, address, Util.FormatCSZ(city, state, zip));
+            return "PeopleId: {0}|Age: {1}|{2}|{3}|{4}".Fmt(pid, age, memstatus, address, Util.FormatCSZ(city, state, zip));
         }
         public class ContributionInfo
         {
@@ -596,6 +599,7 @@ namespace CmsWeb.Models
             public string State { get; set; }
             public string Zip { get; set; }
             public bool pledge { get; set; }
+            public string memstatus { get; set; }
             public string CityStateZip
             {
                 get
@@ -626,7 +630,7 @@ namespace CmsWeb.Models
             {
                 get
                 {
-                    return Tip(PeopleId, Age, Address, City, State, Zip);
+                    return Tip(PeopleId, Age, memstatus, Address, City, State, Zip);
                 }
             }
         }

@@ -46,10 +46,15 @@ namespace CmsWeb
     }
     public class CmsStaffController : System.Web.Mvc.Controller
     {
+        public bool NoCheckRole { get; set; }
+
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            Login.CheckStaffRole(Util.UserName);
+            if (!User.Identity.IsAuthenticated)
+                requestContext.HttpContext.Response.Redirect("/Login.aspx?ReturnUrl=" + requestContext.HttpContext.Request.Path);
+            else if (!NoCheckRole)
+                Login.CheckStaffRole(Util.UserName);
         }
         protected override void HandleUnknownAction(string actionName)
         {

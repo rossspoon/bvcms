@@ -26,7 +26,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 else if (enc.HasValue())
                     s = Util.DecryptFromUrl(enc);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Content("unable to identify request");
             }

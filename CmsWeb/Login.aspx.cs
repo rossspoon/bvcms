@@ -46,13 +46,14 @@ By logging in below, you agree that you understand this purpose and will abide b
         protected void Login1_LoggedIn(object sender, EventArgs e)
         {
             var user = Membership.GetUser(Login1.UserName);
-            var u = DbUtil.Db.Users.Single(us => us.Username == user.UserName);
-            Util.UserId = u.UserId;
-            Util.UserPeopleId = u.PeopleId;
+            SetUserInfo(Login1.UserName);
             if (CMSMembershipProvider.provider.UserMustChangePassword)
                 Response.Redirect("~/ChangePassword.aspx");
             Util.FormsBasedAuthentication = true;
-            CheckStaffRole(user.UserName);
+            if (user != null && !Login1.DestinationPageUrl.HasValue())
+                if (!CMSRoleProvider.provider.IsUserInRole(Login1.UserName, "Access"))
+                    Response.Redirect("/Person/Index/" + Util.UserPeopleId);
+         
         }
 
         protected void Login1_LoginError(object sender, EventArgs e)
@@ -80,7 +81,7 @@ By logging in below, you agree that you understand this purpose and will abide b
                         string.Format("{0} visited site at {1} but does not have Staff role",
                             name, Util.Now));
                 FormsAuthentication.SignOut();
-                HttpContext.Current.Response.Redirect("Errors/AccessDenied.htm");
+                HttpContext.Current.Response.Redirect("/Errors/AccessDenied.htm");
             }
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
             {
@@ -88,6 +89,14 @@ By logging in below, you agree that you understand this purpose and will abide b
                     HttpContext.Current.Request.UserHostAddress));
                 HttpContext.Current.Response.Redirect("NoRemoteAccess.htm");
             }
+        }
+        public static void SetUserInfo(string username)
+        {
+            var u = DbUtil.Db.Users.Single(us => us.Username == username);
+            Util.UserId = u.UserId;
+            Util.UserPeopleId = u.PeopleId;
+            Util.CurrentPeopleId = Util.UserPeopleId.Value;
+            HttpContext.Current.Session["ActivePerson"] = u.Name;
         }
 
         protected void Login1_Authenticate(object sender, System.Web.UI.WebControls.AuthenticateEventArgs e)
@@ -102,7 +111,7 @@ By logging in below, you agree that you understand this purpose and will abide b
             }
             else
             {
-                if (Login1.Password == DbUtil.Settings("ImpersonatePassword", null))
+                if (user != null && Login1.Password == DbUtil.Settings("ImpersonatePassword", null))
                 {
                     e.Authenticated = true;
                     Notify(WebConfigurationManager.AppSettings["senderrorsto"],
@@ -116,7 +125,7 @@ By logging in below, you agree that you understand this purpose and will abide b
         private static void Notify(string to, string subject, string message)
         {
             var smtp = Util.Smtp();
-            Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), to, subject, message);
+            DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), to, subject, message);
         }
         private static void NotifyAdmins(string subject, string message)
         {

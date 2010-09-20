@@ -165,6 +165,12 @@
     <Compile Include="ImageResizer.Designer.cs">
       <DependentUpon>ImageResizer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Menu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Menu.Designer.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Picture.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -261,6 +267,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ImageResizer.resx">
       <DependentUpon>ImageResizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Picture.resx">
       <DependentUpon>Picture.cs</DependentUpon>

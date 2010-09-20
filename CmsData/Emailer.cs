@@ -9,10 +9,11 @@ using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using System.Configuration;
+using UtilityExtensions;
 
-namespace UtilityExtensions
+namespace CmsData
 {
-    public static partial class Util
+    public static partial class DbUtil
     {
         public static void Email(string from, string name, string addrs, string subject, string message)
         {
@@ -20,43 +21,25 @@ namespace UtilityExtensions
         }
         public static void Email(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
-            var fr = FirstAddress(from);
+            var fr = Util.FirstAddress(from);
             if (fr == null)
-                fr = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
+                fr = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-            SendMsg(smtp, fr, subject, message, name, addrs, null);
+            SendMsg(smtp, fr, subject, message, name, addrs);
         }
         public static void EmailAlways(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
         {
-            var fr = FirstAddress(from);
+            var fr = Util.FirstAddress(from);
             if (fr == null)
-                fr = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
+                fr = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-            SendMsg(smtp, fr, subject, message, name, addrs, null);
+            SendMsg(smtp, fr, subject, message, name, addrs);
         }
         public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)
         {
             Email(smtp, from, null, addrs, subject, message);
-        }
-        public static MailAddress FirstAddress(string addrs)
-        {
-            return FirstAddress(addrs, null);
-        }
-        public static MailAddress FirstAddress(string addrs, string name)
-        {
-            if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
-            var a = addrs.SplitStr(",;");
-            try
-            {
-                return new MailAddress(a[0], name);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
         private static void TrySend(SmtpClient smtp, MailMessage msg)
         {
@@ -71,11 +54,23 @@ namespace UtilityExtensions
                 smtp.Send(msg);
             }
         }
-        public static void SendMsg(SmtpClient smtp, MailAddress From, string subject, string Message, string Name, string addr, Attachment attach)
+        public static void SendMsg(SmtpClient smtp, MailAddress From, string subject, string Message, string Name, string addr)
         {
+            var em = new EmailSent
+            {
+                FromAddr = From.Address,
+                Subject = subject,
+                Message = Message,
+                Name = Name,
+                ToAddr = addr,
+                Username = Util.UserName
+            };
+            DbUtil.Db.EmailSents.InsertOnSubmit(em);
+            DbUtil.Db.SubmitChanges();
+
             var msg = new MailMessage();
             if (From == null)
-                From = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
+                From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             msg.From = From;
             var aa = addr.SplitStr(",;");
             foreach (var ad in aa)
@@ -114,29 +109,26 @@ namespace UtilityExtensions
                 if (From.Host != sysmail.Host)
                     msg.Sender = sysmail;
             }
-            if (attach != null)
-                msg.Attachments.Add(attach);
 
-#if DEBUG
-#else
-            try
+            if (WebConfigurationManager.AppSettings["sendemail"] != "false")
             {
+                try
+                {
 #if DEBUG
-                smtp.EnableSsl = true;
+                    smtp.EnableSsl = true;
 #endif
-                smtp.Send(msg);
+                    smtp.Send(msg);
+                }
+                catch (Exception ex)
+                {
+                    if (!msg.Subject.StartsWith("(smtp error)"))
+                        SendMsg(smtp, From,
+                            "(smtp error) " + subject,
+                            "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
+                            Name,
+                            WebConfigurationManager.AppSettings["senderrorsto"]);
+                }
             }
-            catch (Exception ex)
-            {
-                if (!msg.Subject.StartsWith("(smtp error)"))
-                    SendMsg(smtp, From, 
-                        "(smtp error) " + subject, 
-                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
-                        Name,
-                        WebConfigurationManager.AppSettings["senderrorsto"], 
-                        attach);
-            }
-#endif
             htmlView.Dispose();
             htmlStream.Dispose();
         }
@@ -149,9 +141,9 @@ namespace UtilityExtensions
                 return;
 
             if (emailonrecord.HasValue())
-                Util.Email(smtp, staff, name, emailonrecord, subject, message);
+                Email(smtp, staff, name, emailonrecord, subject, message);
 
-            Util.Email2(smtp, emailonrecord, staff, "different email address than one on record",
+            Email2(smtp, emailonrecord, staff, "different email address than one on record",
                 "<p>{0}({1}) registered  with '{2}' but has '{3}' in record.</p>".Fmt(
                 name, peopleid, to, emailonrecord));
         }

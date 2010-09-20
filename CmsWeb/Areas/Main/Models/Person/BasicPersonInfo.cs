@@ -14,6 +14,7 @@ namespace CmsWeb.Models.PersonPage
     {
         private CodeValueController cv = new CodeValueController();
         public int PeopleId { get; set; }
+        public Person person { get; set; }
         public string NickName { get; set; }
         public string Title { get; set; }
         public string First { get; set; }
@@ -84,42 +85,42 @@ namespace CmsWeb.Models.PersonPage
 
         public static BasicPersonInfo GetBasicPersonInfo(int? id)
         {
-            var q = from p in DbUtil.Db.People
-                    where p.PeopleId == id
-                    select new BasicPersonInfo
-                    {
-                        Age = p.Age.ToString(),
-                        Birthday = p.DOB,
-                        CampusId = p.CampusId ?? 0,
-                        CellPhone = p.CellPhone.FmtFone(),
-                        DeceasedDate = p.DeceasedDate,
-                        DoNotCallFlag = p.DoNotCallFlag,
-                        DoNotMailFlag = p.DoNotMailFlag,
-                        DoNotVisitFlag = p.DoNotVisitFlag,
-                        EmailAddress = p.EmailAddress,
-                        Employer = p.EmployerOther,
-                        First = p.FirstName,
-                        GenderId = p.GenderId,
-                        Grade = p.Grade.ToString(),
-                        HomePhone = p.Family.HomePhone.FmtFone(),
-                        JoinDate = p.JoinDate,
-                        Last = p.LastName,
-                        AltName = p.AltName,
-                        Maiden = p.MaidenName,
-                        MaritalStatusId = p.MaritalStatusId,
-                        MemberStatusId = p.MemberStatusId,
-                        Middle = p.MiddleName,
-                        NickName = p.NickName,
-                        Occupation = p.OccupationOther,
-                        PeopleId = p.PeopleId,
-                        School = p.SchoolOther,
-                        Spouse = p.SpouseName,
-                        Suffix = p.SuffixCode,
-                        Title = p.TitleCode,
-                        WeddingDate = p.WeddingDate,
-                        WorkPhone = p.WorkPhone.FmtFone(),
-                    };
-            return q.Single();
+            var p = DbUtil.Db.LoadPersonById(id.Value);
+            var pi = new BasicPersonInfo
+            {
+                Age = p.Age.ToString(),
+                Birthday = p.DOB,
+                CampusId = p.CampusId ?? 0,
+                CellPhone = p.CellPhone.FmtFone(),
+                DeceasedDate = p.DeceasedDate,
+                DoNotCallFlag = p.DoNotCallFlag,
+                DoNotMailFlag = p.DoNotMailFlag,
+                DoNotVisitFlag = p.DoNotVisitFlag,
+                EmailAddress = p.EmailAddress,
+                Employer = p.EmployerOther,
+                First = p.FirstName,
+                GenderId = p.GenderId,
+                Grade = p.Grade.ToString(),
+                HomePhone = p.Family.HomePhone.FmtFone(),
+                JoinDate = p.JoinDate,
+                Last = p.LastName,
+                AltName = p.AltName,
+                Maiden = p.MaidenName,
+                MaritalStatusId = p.MaritalStatusId,
+                MemberStatusId = p.MemberStatusId,
+                Middle = p.MiddleName,
+                NickName = p.NickName,
+                Occupation = p.OccupationOther,
+                PeopleId = p.PeopleId,
+                School = p.SchoolOther,
+                Spouse = p.SpouseName,
+                Suffix = p.SuffixCode,
+                Title = p.TitleCode,
+                WeddingDate = p.WeddingDate,
+                WorkPhone = p.WorkPhone.FmtFone(),
+            };
+            pi.person = p;
+            return pi;
         }
 
         public void UpdatePerson()
@@ -127,34 +128,58 @@ namespace CmsWeb.Models.PersonPage
             if (CampusId == 0)
                 CampusId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
-            p.DOB = Birthday;
-            p.CampusId = CampusId;
-            p.DeceasedDate = DeceasedDate;
-            p.DoNotCallFlag = DoNotCallFlag;
-            p.DoNotMailFlag = DoNotMailFlag;
-            p.DoNotVisitFlag = DoNotVisitFlag;
-            p.EmailAddress = EmailAddress;
-            p.FirstName = First;
-            p.LastName = Last;
-            p.AltName = AltName;
-            p.GenderId = GenderId;
-            p.Grade = Grade.ToInt2();
-            p.CellPhone = CellPhone.GetDigits();
-            p.Family.HomePhone = HomePhone.GetDigits();
-            p.MaidenName = Maiden;
-            p.MaritalStatusId = MaritalStatusId;
-            p.MiddleName = Middle;
-            p.NickName = NickName;
-            p.OccupationOther = Occupation;
-            p.SchoolOther = School;
-            p.SuffixCode = Suffix;
-            p.EmployerOther = Employer;
-            p.TitleCode = Title;
-            p.WeddingDate = WeddingDate;
-            p.WorkPhone = WorkPhone.GetDigits();
+            UpdateValue(p, "DOB", Birthday);;
+            UpdateValue(p, "CampusId", CampusId);
+            UpdateValue(p, "DeceasedDate", DeceasedDate);
+            UpdateValue(p, "DoNotCallFlag", DoNotCallFlag);
+            UpdateValue(p, "DoNotMailFlag", DoNotMailFlag);
+            UpdateValue(p, "DoNotVisitFlag", DoNotVisitFlag);
+            UpdateValue(p, "EmailAddress", EmailAddress);
+            UpdateValue(p, "FirstName", First);
+            UpdateValue(p, "LastName", Last);
+            UpdateValue(p, "AltName", AltName);
+            UpdateValue(p, "GenderId", GenderId);
+            UpdateValue(p, "Grade", Grade.ToInt2());
+            UpdateValue(p, "CellPhone", CellPhone.GetDigits());
+            UpdateValue(p.Family, "HomePhone", HomePhone.GetDigits());
+            UpdateValue(p, "MaidenName", Maiden);
+            UpdateValue(p, "MaritalStatusId", MaritalStatusId);
+            UpdateValue(p, "MiddleName", Middle);
+            UpdateValue(p, "NickName", NickName);
+            UpdateValue(p, "OccupationOther", Occupation);
+            UpdateValue(p, "SchoolOther", School);
+            UpdateValue(p, "SuffixCode", Suffix);
+            UpdateValue(p, "EmployerOther", Employer);
+            UpdateValue(p, "TitleCode", Title);
+            UpdateValue(p, "WeddingDate", WeddingDate);
+            UpdateValue(p, "WorkPhone", WorkPhone.GetDigits());
             if (p.DeceasedDateChanged)
                 p.MemberProfileAutomation();
+
+            if (psb.Length > 0)
+                p.PeopleExtras.Add(new PeopleExtra
+                {
+                    Field = "BasicPersonInfo",
+                    Data = psb.ToString(),
+                    TransactionTime = Util.Now
+                });
+            if (fsb.Length > 0)
+                p.PeopleExtras.Add(new PeopleExtra
+                {
+                    Field = "HomePhone",
+                    Data = fsb.ToString(),
+                    TransactionTime = Util.Now
+                });
             DbUtil.Db.SubmitChanges();
+            if (!HttpContext.Current.User.IsInRole("Access"))
+                if (psb.Length > 0 || fsb.Length > 0)
+                {
+                    var smtp = Util.Smtp();        
+                    DbUtil.Email2(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
+                        "Basic People Info Changed",
+                        "{0} changed the following information:\n{1}\n{2}"
+                        .Fmt(psb.ToString(),fsb.ToString()));
+                }
         }
         public static IEnumerable<SelectListItem> TitleCodes()
         {
@@ -180,6 +205,28 @@ namespace CmsWeb.Models.PersonPage
         {
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
+        }
+        private StringBuilder fsb = new StringBuilder();
+        private void UpdateValue(Family f, string field, object value)
+        {
+            var o = Util.GetProperty(f, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            fsb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            Util.SetProperty(f, field, value);
+        }
+        private StringBuilder psb = new StringBuilder();
+        private void UpdateValue(Person p, string field, object value)
+        {
+            var o = Util.GetProperty(p, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            psb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            Util.SetProperty(p, field, value);
         }
     }
 }

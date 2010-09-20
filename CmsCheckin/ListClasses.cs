@@ -61,7 +61,7 @@ namespace CmsCheckin
         public void ShowResults(int pid, int page)
         {
             ClearControls();
-            var url = "Checkin/Classes/" + pid + Program.QueryString + "&page=" + page;
+            var url = "Checkin2/Classes/" + pid + Program.QueryString + "&page=" + page;
             if (ShowAllClasses)
                 url += "&noagecheck=true";
             var x = this.GetDocument(url);

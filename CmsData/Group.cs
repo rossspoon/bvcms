@@ -275,7 +275,7 @@ namespace CmsData
         }
         public void NotifyNewUser(string newuserid)
         {
-            var smtp = new SmtpClient();
+            var smtp = Util.Smtp();
             var n = 0;
             var u = DbUtil.Db.Users.Single(uu => uu.Username == newuserid);
             var subject = "New user in Group: " + Name;
@@ -286,9 +286,9 @@ namespace CmsData
             foreach (var mu in GetUsersInRole(GroupType.Admin))
             {
                 if (n % 20 == 0)
-                    smtp = new SmtpClient();
+                    smtp = Util.Smtp();
                 n++;
-                Util.SendMsg(smtp, from, subject, body, mu.Name, mu.EmailAddress, null);
+                DbUtil.SendMsg(smtp, from, subject, body, mu.Name, mu.EmailAddress);
             }
         }
     }

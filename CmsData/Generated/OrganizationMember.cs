@@ -463,7 +463,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="UserData", UpdateCheck=UpdateCheck.Never, Storage="_UserData", DbType="varchar(1000)")]
+		[Column(Name="UserData", UpdateCheck=UpdateCheck.Never, Storage="_UserData", DbType="varchar")]
 		public string UserData
 		{
 			get { return this._UserData; }

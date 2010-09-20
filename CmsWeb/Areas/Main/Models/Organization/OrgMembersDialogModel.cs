@@ -134,7 +134,7 @@ namespace CmsWeb.Models
         }
         public string HelpLink()
         {
-            return "http://wiki.bvcms.com/help.UpdateOrgMember_{0}.ashx".Fmt(type());
+            return Util.HelpLink("UpdateOrgMember_{0}".Fmt(type()));
         }
 
         public class PersonDialogSearchInfo

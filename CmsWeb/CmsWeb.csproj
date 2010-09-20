@@ -165,6 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgMembersDialogController.cs" />
@@ -179,6 +181,11 @@
     <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\PersonResult.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\DetailsResult.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\PeopleInfo.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ImageResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
@@ -525,7 +532,7 @@
       <DependentUpon>Years.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Main\Controllers\Checkin2Controller.cs" />
     <Compile Include="Areas\Manage\Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
@@ -809,8 +816,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn2\Campuses.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn2\CheckIn.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn2\CheckInList.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn2\Index.aspx" />
+    <Content Include="Areas\Main\Views\CheckIn2\Keyboard.ascx" />
+    <Content Include="Areas\Main\Views\CheckIn2\Startup.aspx" />
+    <Content Include="Areas\Main\Views\Person\UserDialog.aspx" />
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
-    <Content Include="Areas\Main\Views\Person\Copy of BasicEdit.ascx" />
+    <Content Include="Areas\Main\Views\Person\UserInfoGrid.ascx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />
@@ -844,6 +858,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="OnlineRegSample.htm" />
+    <Content Include="Scripts\UserDialog.js" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="UserControls\ExportToolBar.ascx" />
     <Content Include="Web.config">
@@ -862,7 +877,7 @@
     <Content Include="EmailAttendanceNotices.aspx" />
     <Content Include="EmailPeople.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
-    <Content Include="Errors\Error.htm" />
+    <Content Include="Errors\Error.aspx" />
     <Content Include="Family.aspx" />
     <Content Include="favicon.ico" />
   </ItemGroup>
@@ -1512,12 +1527,6 @@
     <Content Include="ckeditor\skins\v2\skin.js" />
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
-    <Content Include="Config\Authentication.config" />
-    <Content Include="Config\ConnectionStrings.config" />
-    <Content Include="Config\CustomErrors.config" />
-    <Content Include="Config\smtp.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\attention48.png" />
     <Content Include="Content\blackredgradient.png" />
     <Content Include="Content\bvorgfiles\black_bg_main_cm.jpg" />
@@ -1611,7 +1620,6 @@
     <Content Include="Scripts\PostBundle.js" />
     <Content Include="Scripts\OrgGroups.js" />
     <Content Include="Views\Shared\onlinereg.Master" />
-    <Content Include="Config\AppSettings.config" />
     <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />
     <Content Include="Scripts\OnlineReg.js" />

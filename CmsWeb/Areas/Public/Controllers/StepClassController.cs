@@ -123,12 +123,12 @@ namespace CmsWeb.Areas.Public.Controllers
         private void SendEmail(Models.StepClassModel m, string name)
         {
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress),
+            DbUtil.Email(smtp, DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress),
                                 m.person.Name, m.email, "Step Class Registration",
 @"Hi {0},<p>Thank you for registering. You are now enrolled in the {2} Class for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} to {3:h:mm tt}</p>".Fmt(
             m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
-            Util.Email2(smtp, m.email, DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress), "Step Class Registration", @"{0}({1}) registered in the {3} Class for the following date:
+            DbUtil.Email2(smtp, m.email, DbUtil.Settings("StepMail", DbUtil.SystemEmailAddress), "Step Class Registration", @"{0}({1}) registered in the {3} Class for the following date:
 {2:ddd MMM d, yyyy h:mm tt} to {4:h:mm tt}".Fmt(m.person.Name, m.person.PeopleId, m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));
         }
     }

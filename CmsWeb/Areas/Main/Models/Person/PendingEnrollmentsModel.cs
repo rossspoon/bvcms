@@ -10,9 +10,11 @@ namespace CmsWeb.Models.PersonPage
     public class PersonPendingEnrollmentsModel
     {
         int PeopleId;
+        public Person person { get; set; }
         public PersonPendingEnrollmentsModel(int id)
         {
             PeopleId = id;
+            person = DbUtil.Db.LoadPersonById(id);
         }
         public IEnumerable<OrgMemberInfo> PendingEnrollments()
         {

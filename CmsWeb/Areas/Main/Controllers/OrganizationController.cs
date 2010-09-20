@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+    [ValidateInput(false)]
     public class OrganizationController : CmsStaffController
     {
         public ActionResult Index(int? id)

@@ -18,6 +18,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+    [ValidateInput(false)]
     public class TaskController : CmsStaffController
     {
         public TaskController()

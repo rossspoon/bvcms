@@ -124,7 +124,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
+            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
                     "New user welcome",
                     @"Hi {0},
 <p>You have a new account on our Church Management System which you can access at the following link:<br />
@@ -191,29 +191,23 @@ The bvCMS Team</p>
         }
 
 
-        public ActionResult ForgotUsername(string email, string dob)
+        public ActionResult ForgotUsername(string email)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View();
 
             if (!Util.ValidEmail(email))
                 ModelState.AddModelError("email", "valid email required");
-            DateTime bd;
-            if (!Util.DateValid(dob, out bd))
-                ModelState.AddModelError("dob", "valid birth date required");
             if (!ModelState.IsValid)
                 return View();
 
             var q = from u in DbUtil.Db.Users
                     where u.Person.EmailAddress == email
-                    where u.Person.BirthDay == bd.Day
-                    where u.Person.BirthMonth == bd.Month
-                    where u.Person.BirthYear == bd.Year
                     select u;
             var smtp = Util.Smtp();
             foreach (var user in q)
             {
-                Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, email,
+                DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, email,
                     "bvcms forgot username",
                     @"Hi {0},
 <p>Your username is: {1}</p>
@@ -222,39 +216,33 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, user.Username));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
+                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
             }
             if (q.Count() == 0)
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
+                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
 
             return RedirectToAction("RequestUsername");
 
         }
-        public ActionResult ForgotPassword(string username, string dob)
+        public ActionResult ForgotPassword(string username)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View();
 
             if (!username.HasValue())
                 ModelState.AddModelError("username", "user name required");
-            DateTime bd;
-            if (!Util.DateValid(dob, out bd))
-                ModelState.AddModelError("dob", "valid birth date required");
             if (!ModelState.IsValid)
                 return View();
 
             var user = DbUtil.Db.Users.SingleOrDefault(u =>
-                u.Username == username
-                && u.Person.BirthDay == bd.Day
-                && u.Person.BirthMonth == bd.Month
-                && u.Person.BirthYear == bd.Year);
+                u.Username == username);
             var smtp = Util.Smtp();
             if (user != null)
             {
                 user.ResetPasswordCode = Guid.NewGuid();
                 var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt(
                     Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
-                Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
+                DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
                     "bvcms password reset link",
                     @"Hi {0},
 <p>You recently requested a new password.  To reset your password, follow the link below:<br />
@@ -264,10 +252,10 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, link));
                 DbUtil.Db.SubmitChanges();
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} user: {1} forgot password".Fmt(Util.Host, user.Name), "no content");
+                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} user: {1} forgot password".Fmt(Util.Host, user.Name), "no content");
             }
             else
-                Util.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} unknown user: {1} forgot password".Fmt(Util.Host, username), "no content");
+                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} unknown user: {1} forgot password".Fmt(Util.Host, username), "no content");
 
             return RedirectToAction("RequestPassword");
 
@@ -300,7 +288,7 @@ The bvCMS Team</p>
             
             DbUtil.Db.SubmitChanges();
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress, 
+            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress, 
                 "bvcms new password",
                 @"Hi {0},
 <p>Your new password is {1}</p>

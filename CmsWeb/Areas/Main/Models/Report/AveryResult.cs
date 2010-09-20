@@ -62,7 +62,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Close();
             Response.End();
         }
-        int n;
         public void AddCell(PdfPTable t, string fname, string lname, string phone, int pid)
         {
             var t2 = new PdfPTable(2);

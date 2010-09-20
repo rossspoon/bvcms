@@ -12,6 +12,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Diagnostics;
 using System.Web.Configuration;
+using CmsData;
 
 namespace CmsWeb
 {
@@ -56,6 +57,7 @@ namespace CmsWeb
                     Parameters.Comm = ps.Communication;
                     Parameters.Addr = ps.Address;
                     Parameters.Campus = ps.Campus;
+                    DbUtil.Db.SetNoLock();
                     PersonGrid1.Visible = true;
                 }
             Parameters.ClearButtonClicked += new EventHandler(Parameters_ClearButtonClicked);
@@ -89,6 +91,7 @@ namespace CmsWeb
 
         protected void SearchButton_Click(object sender, EventArgs e)
         {
+            DbUtil.Db.SetNoLock();
             PersonGrid1.Visible = true;
             SaveToSession();
         }

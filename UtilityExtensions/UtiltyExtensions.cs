@@ -549,7 +549,6 @@ namespace UtilityExtensions
         {
             get
             {
-
                 if (HttpContext.Current != null)
                     return GetUserName(HttpContext.Current.User.Identity.Name);
                 return ConfigurationManager.AppSettings["TestName"];
@@ -572,7 +571,8 @@ namespace UtilityExtensions
             set
             {
                 if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_UserId] = value;
+                    if (HttpContext.Current.Session != null)
+                        HttpContext.Current.Session[STR_UserId] = value;
             }
         }
         public static int UserId1
@@ -814,6 +814,11 @@ namespace UtilityExtensions
             {
                 HttpContext.Current.Session[STR_Helpfile] = value;
             }
+        }
+        public static string HelpLink(string page)
+        {
+            var h = ConfigurationManager.AppSettings["helpurl"];
+            return h.Fmt(page);
         }
 
         public static string SafeFormat(string s)
@@ -1109,6 +1114,25 @@ namespace UtilityExtensions
             }
             return new string(password);
         }
+        public static MailAddress FirstAddress(string addrs)
+        {
+            return FirstAddress(addrs, null);
+        }
+        public static MailAddress FirstAddress(string addrs, string name)
+        {
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            var a = addrs.SplitStr(",;");
+            try
+            {
+                return new MailAddress(a[0], name);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
     }
     public class EventArg<T> : EventArgs
     {

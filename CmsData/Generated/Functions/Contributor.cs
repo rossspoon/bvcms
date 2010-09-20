@@ -250,7 +250,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PrimaryAddress", Storage="_PrimaryAddress", DbType="varchar(60)")]
+		[Column(Name="PrimaryAddress", Storage="_PrimaryAddress", DbType="varchar(50)")]
 		public string PrimaryAddress
 		{
 			get
@@ -267,7 +267,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PrimaryAddress2", Storage="_PrimaryAddress2", DbType="varchar(60)")]
+		[Column(Name="PrimaryAddress2", Storage="_PrimaryAddress2", DbType="varchar(50)")]
 		public string PrimaryAddress2
 		{
 			get
@@ -301,7 +301,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PrimaryState", Storage="_PrimaryState", DbType="varchar(5)")]
+		[Column(Name="PrimaryState", Storage="_PrimaryState", DbType="varchar(50)")]
 		public string PrimaryState
 		{
 			get
@@ -318,7 +318,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PrimaryZip", Storage="_PrimaryZip", DbType="varchar(11)")]
+		[Column(Name="PrimaryZip", Storage="_PrimaryZip", DbType="varchar(50)")]
 		public string PrimaryZip
 		{
 			get

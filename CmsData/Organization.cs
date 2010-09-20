@@ -30,7 +30,8 @@ namespace CmsData
             JoinOrganization = 1,
             AttendMeeting = 2,
             UserSelectsOrganization = 3,
-            ComputeOrganizationByAge = 4
+            ComputeOrganizationByAge = 4,
+            CreateAccount = 5,
         }
         public static string FormatOrgName(string name, string leader, string loc)
         {

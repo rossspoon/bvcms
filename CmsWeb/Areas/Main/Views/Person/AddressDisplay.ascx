@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.AddressInfo>" %>
-<% if (Page.User.IsInRole("Edit"))
+<% if (Model.CanUserEditAddress)
    { %>
 <a class="displayedit" href="/Person/AddressEdit/<%=Model.PeopleId %>?type=<%=Model.Name %>">Edit</a>
 <% } %>

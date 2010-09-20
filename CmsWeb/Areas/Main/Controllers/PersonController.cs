@@ -9,20 +9,33 @@ using System.Text;
 using CmsWeb.Models.PersonPage;
 using CmsWeb.Models;
 using System.Diagnostics;
+using System.Web.Routing;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+    [ValidateInput(false)]
     public class PersonController : CmsStaffController
     {
+        protected override void Initialize(RequestContext requestContext)
+        {
+            NoCheckRole = true;
+            base.Initialize(requestContext);
+        }
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
-                return Content("no person");
+                return Content("no id");
             var m = new PersonModel(id);
-            if (m == null)
-                return Content("no person");
-            if (m.displayperson == null)
-                return Content("person not found");
+            if (User.IsInRole("Access"))
+            {
+                if (m == null)
+                    return Content("no person");
+                if (m.displayperson == null)
+                    return Content("person not found");
+            }
+            else
+                if(m.Person == null || !m.Person.CanUserSee)
+                    return Content("no access");
             if (Util.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
             {
                 DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
@@ -62,9 +75,19 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("error, bad peopleid");
             if (!person.PurgePerson())
                 return Content("error, not deleted");
-            Util.CurrentPeopleId = 0;
-            Session.Remove("ActivePerson");
-            return new EmptyResult();
+
+            var p = person.Family.People.FirstOrDefault(m => m.PeopleId != id);
+            if (p != null)
+            {
+                Util.CurrentPeopleId = p.PeopleId;
+                Session["ActivePerson"] = p.Name;
+            }
+            else
+            {
+                Util.CurrentPeopleId = 0;
+                Session.Remove("ActivePerson");
+            }
+            return Content("");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Tag(int id)
@@ -406,6 +429,38 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
             return Json(r);
+        }
+        [Authorize(Roles="Admin")]
+        public ActionResult UserDialog(int id)
+        {
+            var u = DbUtil.Db.Users.Single(us => us.UserId == id);
+            return View(u);
+        }
+        [Authorize(Roles="Admin")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UserUpdate(int id, string username, string password2, bool islockedout, string[] role)
+        {
+            var u = DbUtil.Db.Users.Single(us => us.UserId == id);
+            u.Username = username;
+            u.IsLockedOut = islockedout;
+            u.Roles = role;
+            if (password2.HasValue())
+                u.ChangePassword(password2);
+            DbUtil.Db.SubmitChanges();
+            return Content("");
+            //return View("UserDialog", u.Person);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UserInfoGrid(int id)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            return View(p);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PeopleExtrasGrid(int id)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            return View(p);
         }
         private void InitExportToolbar(int? id)
         {

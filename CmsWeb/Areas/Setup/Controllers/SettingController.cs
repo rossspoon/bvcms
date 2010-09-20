@@ -9,7 +9,8 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
-   [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
+    [ValidateInput(false)]
     public class SettingController : CmsStaffController
     {
         public ActionResult Index()

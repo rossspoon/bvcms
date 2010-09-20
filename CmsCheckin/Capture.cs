@@ -222,14 +222,13 @@ namespace CmsCheckin
                 // Start waiting
                 if (!m_PictureReady.WaitOne(9000, false))
                 {
-                    throw new Exception("Timeout waiting to get picture");
+                    return IntPtr.Zero;
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 Marshal.FreeCoTaskMem(m_ipBuffer);
                 m_ipBuffer = IntPtr.Zero;
-                throw;
             }
 
             // Got one

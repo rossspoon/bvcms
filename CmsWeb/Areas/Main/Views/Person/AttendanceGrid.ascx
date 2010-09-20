@@ -10,15 +10,30 @@ Show Future Meetings: <%=Html.CheckBox("future") %>
 </tr>
 </thead>
 <tbody>
-<% foreach(var a in Model.Attendances())
-   { %>
+<% if (Page.User.IsInRole("Access"))
+   {
+       foreach (var a in Model.Attendances())
+       { %>
     <tr>
-    <td><a href="/Meeting.aspx?id=<%=a.MeetingId %>"><%=a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt") %></a></td>
-    <td><a href="/Organization/Index/<%=a.OrganizationId %>"><%=a.OrganizationName %></a></td>
-    <td><%=a.MemberType %></td>
-    <td><%=a.AttendType %></td>
+    <td><a href="/Meeting.aspx?id=<%=a.MeetingId %>"><%=a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt")%></a></td>
+    <td><a href="/Organization/Index/<%=a.OrganizationId %>"><%=a.OrganizationName%></a></td>
+    <td><%=a.MemberType%></td>
+    <td><%=a.AttendType%></td>
     </tr>
-<% } %>
+    <% }
+   }
+   else
+   {
+       foreach (var a in Model.Attendances())
+       { %>
+    <tr>
+    <td><%=a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt")%></td>
+    <td><%=a.OrganizationName%></td>
+    <td><%=a.MemberType%></td>
+    <td><%=a.AttendType%></td>
+    </tr>
+    <% }
+   } %>
 </tbody>
 </table>
 <% Html.RenderPartial("Pager2", Model.Pager); %>

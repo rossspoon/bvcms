@@ -55,6 +55,15 @@ namespace CmsData
                 }
             }
         }
+        public void ChangePassword(string newpassword)
+        {
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var mu = CMSMembershipProvider.provider.GetUser(Username, false);
+            mu.UnlockUser();
+            mu.ChangePassword(mu.ResetPassword(), newpassword);
+            TempPassword = newpassword;
+            CMSMembershipProvider.provider.AdminOverride = false;
+        }
         public string PasswordSetOnly { get; set; }
     }
 }

@@ -291,23 +291,24 @@ namespace CmsData
         }
         private void CopyFrom(QueryBuilderClause from)
         {
+            Age = from.Age;
             ClauseOrder = from.ClauseOrder;
-            Description = from.Description;
-            Field = from.Field;
-            Comparison = from.Comparison;
-            TextValue = from.TextValue;
-            DateValue = from.DateValue;
             CodeIdValue = from.CodeIdValue;
-            StartDate = from.StartDate;
-            EndDate = from.EndDate;
-            Program = from.Program;
-            Schedule = from.Schedule;
-            Division = from.Division;
-            Organization = from.Organization;
+            Comparison = from.Comparison;
+            DateValue = from.DateValue;
             Days = from.Days;
+            Description = from.Description;
+            Division = from.Division;
+            EndDate = from.EndDate;
+            Field = from.Field;
+            Organization = from.Organization;
+            Program = from.Program;
             Quarters = from.Quarters;
-            Tags = from.Tags;
             SavedQueryIdDesc = from.SavedQueryIdDesc;
+            Schedule = from.Schedule;
+            StartDate = from.StartDate;
+            Tags = from.Tags;
+            TextValue = from.TextValue;
         }
         public void CopyFromAll(QueryBuilderClause from)
         {

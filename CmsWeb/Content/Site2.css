@@ -381,6 +381,11 @@ a.bt {
   a.bt:hover { 
     border-color:           #99ccff;  
   }
+td.alt0
+{
+    background-color: #ddc;
+    width: 100%;
+}
 td.alt1
 {
     background-color: #ddd;

@@ -44,7 +44,7 @@ namespace CmsWeb.Models
                 var sb = new StringBuilder();
                 foreach (var ps in n.PrayerSlots)
                     sb.AppendFormat("<tr><td>{0}</td><td>{1:hh:mm tt}</td></tr>\n", ((DayOfWeek)ps.Day), ps.Time);
-                Util.Email(DbUtil.Settings("PrayerEmail", "prayer@bellevue.org"), 
+                DbUtil.Email(DbUtil.Settings("PrayerEmail", "prayer@bellevue.org"), 
                     n.Name, n.EmailAddress, "Your Prayer Commitment",
 @"Hi {0},<br/>
 You have reserved the following prayer times:

@@ -34,13 +34,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pgdn = new System.Windows.Forms.Button();
             this.pgup = new System.Windows.Forms.Button();
-            this.bAddToFamily = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.Return = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Print
             // 
-            this.Print.BackColor = System.Drawing.Color.LightGreen;
+            this.Print.BackColor = System.Drawing.Color.Yellow;
             this.Print.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -48,11 +48,11 @@
             this.Print.Location = new System.Drawing.Point(507, 686);
             this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
-            this.Print.Size = new System.Drawing.Size(432, 66);
+            this.Print.Size = new System.Drawing.Size(221, 66);
             this.Print.TabIndex = 10;
-            this.Print.Text = "Print Labels, Return";
+            this.Print.Text = "Print Labels";
             this.Print.UseVisualStyleBackColor = false;
-            this.Print.Click += new System.EventHandler(this.GoBack_Click);
+            this.Print.Click += new System.EventHandler(this.Print_Click);
             // 
             // label1
             // 
@@ -61,7 +61,7 @@
             this.label1.ForeColor = System.Drawing.Color.Blue;
             this.label1.Location = new System.Drawing.Point(90, 658);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(386, 46);
+            this.label1.Size = new System.Drawing.Size(306, 36);
             this.label1.TabIndex = 11;
             this.label1.Text = "Touch blue buttons";
             // 
@@ -72,7 +72,7 @@
             this.label2.ForeColor = System.Drawing.Color.Blue;
             this.label2.Location = new System.Drawing.Point(90, 707);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(420, 46);
+            this.label2.Size = new System.Drawing.Size(333, 36);
             this.label2.TabIndex = 12;
             this.label2.Text = "to record attendance";
             // 
@@ -88,7 +88,7 @@
             this.button1.TabIndex = 13;
             this.button1.Text = ".";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.MagicButton_Click);
             // 
             // pgdn
             // 
@@ -124,22 +124,6 @@
             this.pgup.UseVisualStyleBackColor = false;
             this.pgup.Click += new System.EventHandler(this.pgup_Click);
             // 
-            // bAddToFamily
-            // 
-            this.bAddToFamily.BackColor = System.Drawing.SystemColors.Control;
-            this.bAddToFamily.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
-            this.bAddToFamily.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bAddToFamily.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bAddToFamily.ForeColor = System.Drawing.Color.Black;
-            this.bAddToFamily.Location = new System.Drawing.Point(957, 695);
-            this.bAddToFamily.Margin = new System.Windows.Forms.Padding(4);
-            this.bAddToFamily.Name = "bAddToFamily";
-            this.bAddToFamily.Size = new System.Drawing.Size(45, 45);
-            this.bAddToFamily.TabIndex = 16;
-            this.bAddToFamily.Text = "a";
-            this.bAddToFamily.UseVisualStyleBackColor = false;
-            this.bAddToFamily.Click += new System.EventHandler(this.bAddToFamily_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -147,16 +131,32 @@
             this.label3.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(986, 749);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 18);
+            this.label3.Size = new System.Drawing.Size(32, 14);
             this.label3.TabIndex = 17;
             this.label3.Text = "U73";
+            // 
+            // Return
+            // 
+            this.Return.BackColor = System.Drawing.Color.LimeGreen;
+            this.Return.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+            this.Return.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Return.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Return.ForeColor = System.Drawing.Color.Black;
+            this.Return.Location = new System.Drawing.Point(751, 686);
+            this.Return.Margin = new System.Windows.Forms.Padding(4);
+            this.Return.Name = "Return";
+            this.Return.Size = new System.Drawing.Size(142, 66);
+            this.Return.TabIndex = 18;
+            this.Return.Text = "Return";
+            this.Return.UseVisualStyleBackColor = false;
+            this.Return.Click += new System.EventHandler(this.Return_Click);
             // 
             // ListFamily
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.Return);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.bAddToFamily);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.button1);
@@ -179,8 +179,8 @@
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.Button pgdn;
         public System.Windows.Forms.Button pgup;
-        public System.Windows.Forms.Button bAddToFamily;
         private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.Button Return;
 
     }
 }

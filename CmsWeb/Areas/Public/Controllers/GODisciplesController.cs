@@ -11,6 +11,7 @@ using System.Net.Mail;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
+    [ValidateInput(false)]
     public class GODisciplesController : CmsController
     {
         public GODisciplesController()

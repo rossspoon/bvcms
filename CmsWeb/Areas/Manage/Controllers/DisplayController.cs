@@ -15,6 +15,7 @@ using UtilityExtensions;
 namespace CmsWeb.Areas.Manage.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [ValidateInput(false)]
     public class DisplayController : CmsStaffController
     {
         public ActionResult Index()
@@ -54,7 +55,6 @@ namespace CmsWeb.Areas.Manage.Controllers
             ViewData["ishtml"] = ishtml ?? true;
             return View();
         }
-        [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdatePage(string id, string title, string html)
         {
@@ -114,7 +114,6 @@ namespace CmsWeb.Areas.Manage.Controllers
             ViewData["id"] = id;
             return View();
         }
-        [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateOrgContent(int id, bool? div, string what, string title, string html)
         {

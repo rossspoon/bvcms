@@ -58,6 +58,8 @@
         <div id="CommonHeader">
             <div>
                 <%= DbUtil.Header() %>
+        <% if(Page.User.IsInRole("Access"))
+           { %>
                 <div id="CommonHeaderUserArea">
                     <% Html.RenderPartial("LogOnUserControl"); %>
                     <div>
@@ -171,10 +173,10 @@
                             </ul>
                         </li>
                         <% } %>
-                        <li class="headlink"><a href="http://wiki.bvcms.com/help.<%=Util.Helpfile %>.ashx"
+                        <li class="headlink"><a href="<%=Util.HelpLink(Util.Helpfile) %>"
                             target="_blank">Help</a>
                             <ul>
-                                <li><a href="http://wiki.bvcms.com/help.<%=Util.Helpfile %>.ashx"
+                                <li><a href="<%=Util.HelpLink(Util.Helpfile) %>"
                                     target="_blank">Wiki Documentation</a></li>
                                 <li><a href="http://bvcms.wufoo.com/forms/bvcms-bug-tracker/" target="_blank">Bug Report</a></li>
                             </ul>
@@ -187,6 +189,7 @@
                 <div id="CommonNavigationShadow">
                 </div>
             </div>
+        <% } %>
         </div>
         <div class="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />

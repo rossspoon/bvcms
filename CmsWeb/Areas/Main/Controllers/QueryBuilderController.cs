@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+    [Authorize(Roles = "Testing")]
     public class QueryBuilderController : CmsStaffController
     {
         public ActionResult NewQuery()
@@ -258,8 +259,9 @@ namespace CmsWeb.Areas.Main.Controllers
 
             if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
                 m.Errors.Add("IntegerValue", "need integer");
-            if (m.OrganizationRequired && m.Organization == 0)
-                m.Errors.Add("OrganizationError", "Organization Required");
+
+            if (m.TagsVisible && string.Join(",", m.Tags).Length > 500)
+                m.Errors.Add("tagvalues", "too many tags selected");
 
             decimal d;
             if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))

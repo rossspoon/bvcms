@@ -18,25 +18,20 @@ namespace CmsCheckin
     {
         public static string ServiceUrl()
         {
-            //var c = Program.GetQueryStringParameters();
-            //var s = Util.Decrypt(c["s"]);
-            //if (s.HasValue())
-            //    return s;
             if (Program.TestMode)
+            {
+                //return "http://ipv4.fiddler:58724/";
                 return "http://localhost:58724/";
+            }
             else
                 return Program.URL;
         }
-        public static bool Authenticate(string username, string password)
+        public static WebClient CreateWebClient()
         {
             var wc = new WebClient();
-            var coll = new NameValueCollection();
-            coll.Add("username", username);
-            coll.Add("password", password);
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Authenticate/");
-            var resp = wc.UploadValues(url, "POST", coll);
-            var s = Encoding.ASCII.GetString(resp);
-            return s == "OK";
+            wc.Headers.Add("username", Program.Username);
+            wc.Headers.Add("password", Program.Password);
+            return wc;
         }
         public static string GetDigits(this string s)
         {
@@ -54,7 +49,7 @@ namespace CmsCheckin
         }
         public static XDocument GetDocument(this Control f, string page)
         {
-            var wc = new WebClient();
+            var wc = Util.CreateWebClient();
             var url = new Uri(new Uri(Util.ServiceUrl()), page);
 
             var str = wc.DownloadString(url);
@@ -97,7 +92,7 @@ namespace CmsCheckin
             int marital,
             int gender)
         {
-            var wc = new WebClient();
+            var wc = CreateWebClient();
             var coll = new NameValueCollection();
             coll.Add("first", first);
             coll.Add("last", last);
@@ -138,12 +133,14 @@ namespace CmsCheckin
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
 
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/AddPerson/" + Program.FamilyId);
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/AddPerson2/" + Program.FamilyId);
 
             var resp = wc.UploadValues(url, "POST", coll);
 
             var s = Encoding.ASCII.GetString(resp);
-            Program.FamilyId = s.ToInt();
+            var a = s.Split('.');
+            Program.FamilyId = a[0].ToInt();
+            Program.PeopleId = a[1].ToInt();
         }
         public static void EditPerson(this Control f,
             int id,
@@ -166,8 +163,10 @@ namespace CmsCheckin
             int marital,
             int gender)
         {
-            var wc = new WebClient();
+            var wc = CreateWebClient();
             var coll = new NameValueCollection();
+            coll.Add("username", Program.Username);
+            coll.Add("password", Program.Password);
             coll.Add("first", first);
             coll.Add("last", last);
             coll.Add("goesby", goesby);
@@ -207,7 +206,7 @@ namespace CmsCheckin
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
 
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/EditPerson/" + id);
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/EditPerson/" + id);
 
             var resp = wc.UploadValues(url, "POST", coll);
 
@@ -331,7 +330,7 @@ namespace CmsCheckin
                 return;
             try
             {
-                var wc = new WebClient();
+                var wc = CreateWebClient();
                 var coll = new NameValueCollection();
                 coll.Add("PeopleId", info.c.pid.ToString());
                 coll.Add("OrgId", info.c.oid.ToString());
@@ -339,13 +338,13 @@ namespace CmsCheckin
                 if (Program.KioskMode)
                 {
                     coll.Add("Member", info.ischecked.ToString());
-                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/Membership/");
+                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
                 }
                 else
                 {
                     coll.Add("Present", info.ischecked.ToString());
                     coll.Add("thisday", Program.ThisDay.ToString());
-                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/RecordAttend/");
+                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/RecordAttend/");
                 }
 
                 var resp = wc.UploadValues(url, "POST", coll);
@@ -364,10 +363,10 @@ namespace CmsCheckin
                 return;
             try
             {
-                var wc = new WebClient();
+                var wc = CreateWebClient();
                 var coll = new NameValueCollection();
                 coll.Add("fid", Program.FamilyId.ToString());
-                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin/UnLockFamily/");
+                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/UnLockFamily/");
                 var resp = wc.UploadValues(url, "POST", coll);
                 var s = Encoding.ASCII.GetString(resp);
             }

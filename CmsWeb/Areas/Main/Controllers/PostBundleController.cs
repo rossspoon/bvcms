@@ -11,8 +11,8 @@ using System.IO;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    [Authorize(Roles = "Testing")]
     [Authorize(Roles = "Finance")]
+    [ValidateInput(false)]
     public class PostBundleController : Controller
     {
         public ActionResult Index(int id)

@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
+    [ValidateInput(false)]
     public class OnlineRegController : CmsController
     {
 #if DEBUG
@@ -381,7 +382,6 @@ namespace CmsWeb.Areas.Public.Controllers
             });
         }
 
-        [ValidateInput(false)]
         public ActionResult Confirm(int? id, string TransactionID)
         {
             if (!id.HasValue)
@@ -395,17 +395,20 @@ namespace CmsWeb.Areas.Public.Controllers
 
             var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
             var m = Util.DeSerialize<OnlineRegModel>(s);
-
-            m.EnrollAndConfirm(TransactionID);
-            UseCoupon(TransactionID, m.List[0].PeopleId.Value, m.Amount());
-
+            if (m.org != null && m.org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                m.CreateAccount();
+            else
+            {
+                m.EnrollAndConfirm(TransactionID);
+                UseCoupon(TransactionID, m.List[0].PeopleId.Value, m.Amount());
+            }
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             ViewData["email"] = m.List[0].email;
             ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
             ViewData["URL"] = m.URL;
             ViewData["timeout"] = INT_timeout;
-
+                
             SetHeaders(m.divid ?? m.orgid ?? 0);
             return View(m);
         }
@@ -460,7 +463,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("no outstanding transaction");
             return Content(ed.Data);
         }
-        [ValidateInput(false)]
         public ActionResult Confirm2(int? id, string TransactionID, decimal Amount)
         {
             if (!id.HasValue)
@@ -518,14 +520,14 @@ namespace CmsWeb.Areas.Public.Controllers
                     amt -= pay;
                 }
                 else
-                    Util.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
+                    DbUtil.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
                             "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
             }
             DbUtil.Db.SubmitChanges();
             var names = string.Join(", ", ti.people.Select(i => i.name).ToArray());
-            Util.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
+            DbUtil.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
                 "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Header, ti.AmountDue, names));
-            Util.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
+            DbUtil.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
                 "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Header, ti.AmountDue, names));
             ViewData["URL"] = ti.URL;
             ViewData["timeout"] = INT_timeout;

@@ -63,10 +63,6 @@
         </tr>
 <tr><td></td></tr>
         <tr>
-            <th>Campus:</th>
-            <td><%=Html.DropDownList("CampusId", CmsWeb.Models.PersonPage.BasicPersonInfo.Campuses())%></td>
-        </tr>
-        <tr>
             <th>Marital Status:</th>
             <td><%=Html.DropDownList("MaritalStatusId", CmsWeb.Models.PersonPage.BasicPersonInfo.MaritalStatuses())%></td>
         </tr>
@@ -78,12 +74,19 @@
             <th>Birthday:</th>
             <td><%=Html.TextBox("Birthday", Model.Birthday, new { @class = "datepicker" }) %></td>
         </tr>
-<% if(Page.User.IsInRole("Membership"))
+<% if(Model.person.CanUserEditAll)
   { %>
+        <tr>
+            <th>Campus:</th>
+            <td><%=Html.DropDownList("CampusId", CmsWeb.Models.PersonPage.BasicPersonInfo.Campuses())%></td>
+        </tr>
+    <% if(Page.User.IsInRole("Membership"))
+      { %>
         <tr>
             <th>Deceased:</th>
             <td><%=Html.TextBox("DeceasedDate", Model.DeceasedDate.FormatDate(), new { @class = "datepicker" })%></td>
         </tr>
+    <% } %>
 <% } %>
 <tr><td></td></tr>
         <tr><td>Do Not Call</td><td><%=Html.CheckBox("DoNotCallFlag") %> </td></tr>

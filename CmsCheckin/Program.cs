@@ -26,16 +26,12 @@ namespace CmsCheckin
 
             var login = new Login();
             login.password.Focus();
-            do
-            {
-                var r = login.ShowDialog();
-                if (r == DialogResult.Cancel)
-                    return;
-                if (login.URL.Text.StartsWith("http"))
-                    URL = login.URL.Text;
-                else
-                    URL = "https://" + login.URL.Text;
-            } while (!Util.Authenticate(login.username.Text, login.password.Text) && !TestMode);
+            var r = login.ShowDialog();
+            if (r == DialogResult.Cancel)
+                return;
+            URL = "https://" + login.URL.Text;
+            Username = login.username.Text;
+            Password = login.password.Text;
 
             var f = new StartUp();
             var ret = f.ShowDialog();
@@ -58,6 +54,7 @@ namespace CmsCheckin
             f.Dispose();
 
             var b = new BaseForm();
+            Program.baseform = b;
 
 #if DEBUG
 #else
@@ -67,6 +64,8 @@ namespace CmsCheckin
 
             Application.Run(b);
         }
+        public static string Username { get; set; }
+        public static string Password { get; set; }
         public static string URL { get; set; }
         public static string Printer { get; set; }
         public static int FamilyId { get; set; }
@@ -122,6 +121,7 @@ namespace CmsCheckin
         public static EnterPhone cellphone;
         public static EnterPhone homephone;
         public static EnterGenderMarital gendermarital;
+        public static BaseForm baseform;
         public static void ClearFields()
         {
             SecurityCode = null;

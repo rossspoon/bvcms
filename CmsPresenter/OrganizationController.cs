@@ -157,38 +157,7 @@ namespace CMSPresenter
             var tagownerid = Util.CurrentTagOwnerId;
             var q = from om in query
                     let p = om.Person
-                    select new PersonMemberInfo
-                    {
-                        PeopleId = p.PeopleId,
-                        Name = p.Name,
-                        Name2 = p.Name2,
-                        //JoinDate = p.JoinDate,
-                        BirthDate = Util.FormatBirthday(
-                            p.BirthYear,
-                            p.BirthMonth,
-                            p.BirthDay),
-                        Address = p.PrimaryAddress,
-                        Address2 = p.PrimaryAddress2,
-                        CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-                        PhonePref = p.PhonePrefId,
-                        HomePhone = p.HomePhone,
-                        CellPhone = p.CellPhone,
-                        WorkPhone = p.WorkPhone,
-                        MemberStatus = p.MemberStatus.Description,
-                        Email = p.EmailAddress,
-                        BFTeacher = p.BFClass.LeaderName,
-                        BFTeacherId = p.BFClass.LeaderId,
-                        Age = p.Age.ToString(),
-                        MemberTypeCode = om.MemberType.Code,
-                        MemberType = om.MemberType.Description,
-                        MemberTypeId = om.MemberTypeId,
-                        InactiveDate = om.InactiveDate,
-                        AttendPct = om.AttendPct,
-                        LastAttended = om.LastAttended,
-                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
-                        FromTab = fromtab,
-                        Joined = om.EnrollmentDate,
-                    };
+                    select new PersonMemberInfo { PeopleId = p.PeopleId, Name = p.Name, Name2 = p.Name2, BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay), Address = p.PrimaryAddress, Address2 = p.PrimaryAddress2, CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip), PhonePref = p.PhonePrefId, HomePhone = p.HomePhone, CellPhone = p.CellPhone, WorkPhone = p.WorkPhone, MemberStatus = p.MemberStatus.Description, Email = p.EmailAddress, BFTeacher = p.BFClass.LeaderName, BFTeacherId = p.BFClass.LeaderId, Age = p.Age.ToString(), MemberTypeCode = om.MemberType.Code, MemberType = om.MemberType.Description, MemberTypeId = om.MemberTypeId, InactiveDate = om.InactiveDate, AttendPct = om.AttendPct, LastAttended = om.LastAttended, HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid), FromTab = fromtab, Joined = om.EnrollmentDate };
             return q;
         }
         public static IEnumerable<PersonMemberInfo> FetchPeopleList(IQueryable<EnrollmentTransaction> query)
@@ -196,37 +165,7 @@ namespace CMSPresenter
             var tagownerid = Util.CurrentTagOwnerId;
             var q = from m in query
                     let p = m.Person
-                    select new PersonMemberInfo
-                    {
-                        PeopleId = p.PeopleId,
-                        Name = p.Name,
-                        Name2 = p.Name2,
-                        //JoinDate = p.JoinDate,
-                        BirthDate = Util.FormatBirthday(
-                            p.BirthYear,
-                            p.BirthMonth,
-                            p.BirthDay),
-                        Address = p.PrimaryAddress,
-                        Address2 = p.PrimaryAddress2,
-                        CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-                        PhonePref = p.PhonePrefId,
-                        HomePhone = p.HomePhone,
-                        CellPhone = p.CellPhone,
-                        WorkPhone = p.WorkPhone,
-                        MemberStatus = p.MemberStatus.Description,
-                        Email = p.EmailAddress,
-                        BFTeacher = p.BFClass.LeaderName,
-                        BFTeacherId = p.BFClass.LeaderId,
-                        Age = p.Age.ToString(),
-                        MemberTypeCode = m.MemberType.Code,
-                        MemberType = m.MemberType.Description,
-                        MemberTypeId = m.MemberTypeId,
-                        AttendPct = m.AttendancePercentage,
-                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
-                        FromTab = GroupSelect.Previous,
-                        Joined = m.EnrollmentDate,
-                        Dropped = m.TransactionDate
-                    };
+                    select new PersonMemberInfo { PeopleId = p.PeopleId, Name = p.Name, Name2 = p.Name2, BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay), Address = p.PrimaryAddress, Address2 = p.PrimaryAddress2, CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip), PhonePref = p.PhonePrefId, HomePhone = p.HomePhone, CellPhone = p.CellPhone, WorkPhone = p.WorkPhone, MemberStatus = p.MemberStatus.Description, Email = p.EmailAddress, BFTeacher = p.BFClass.LeaderName, BFTeacherId = p.BFClass.LeaderId, Age = p.Age.ToString(), MemberTypeCode = m.MemberType.Code, MemberType = m.MemberType.Description, MemberTypeId = m.MemberTypeId, AttendPct = m.AttendancePercentage, HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid), FromTab = GroupSelect.Previous, Joined = m.EnrollmentDate, Dropped = m.TransactionDate };
             return q;
         }
         public IEnumerable<PersonVisitorInfo> FetchVisitorList(IQueryable<Person> query, int orgid)

@@ -155,7 +155,13 @@ namespace CmsCheckin
         void first_GoBack(object sender, EventArgs e)
         {
             Program.ClearFields();
-            Program.first.GoHome(string.Empty);
+            if (Program.editing && Program.FamilyId > 0)
+            {
+                Program.first.Swap(Program.family);
+                Program.family.ShowFamily(Program.FamilyId, 1);
+            }
+            else
+                Program.first.GoHome(string.Empty);
         }
         void namesearch_GoNext(object sender, EventArgs e)
         {
