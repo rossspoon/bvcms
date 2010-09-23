@@ -104,6 +104,7 @@ namespace CmsWeb
         public void SendPeopleEmail(IEnumerable<Person> people, string subject, string message, bool IsHtml)
         {
             this.people = people;
+            Subject = subject;
 
             var sb = new StringBuilder("<pre>\r\n");
             SmtpClient smtp = null;
@@ -154,7 +155,7 @@ namespace CmsWeb
                     {
                         Fromaddr = From.Address,
                         Toaddr = p.EmailAddress,
-                        Subject = Subject,
+                        Subject = subject,
                         Time = Util.Now
                     });
                 DbUtil.Db.SubmitChanges();
@@ -162,10 +163,10 @@ namespace CmsWeb
                 //System.Threading.Thread.Sleep(100);
                 sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
                 if (i % EmailBatchCount == 0)
-                    NotifySentEmails(sb, smtp, String.Empty);
+                    NotifySentEmails(sb, smtp, i);
             }
             if (smtp != null)
-                NotifySentEmails(sb, smtp, String.Empty);
+                NotifySentEmails(sb, smtp, i);
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
@@ -175,17 +176,30 @@ namespace CmsWeb
             if (Addresses.Count > 0)
                 NotifyEmail(subject, message);
         }
-        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp, string message)
+        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp, int i)
         {
             sb.Append("</pre>\r\n");
-            sb.Append(Message);
+            var em = new EmailSent
+            {
+                FromAddr = From.Address,
+                Subject = Subject,
+                Message = Message,
+                Count = i,
+                Username = Util.UserName,
+                FromPid = Util.UserPeopleId.Value,
+                ToList = sb.ToString(),
+                Time = Util.Now,
+            };
+            DbUtil.Db.EmailSents.InsertOnSubmit(em);
+            DbUtil.Db.SubmitChanges();
 
+            sb.Append(Message);
             DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address);
             DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null,
                 WebConfigurationManager.AppSettings["senderrorsto"]);
             var notices = DbUtil.Settings("NotifySentEmails", null);
             if (notices.HasValue())
-            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices);
+                DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices);
 
             sb.Length = 0;
             sb.Append("<pre>\r\n");

@@ -59,7 +59,7 @@
             this.Visit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Visit.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Visit.ForeColor = System.Drawing.Color.Black;
-            this.Visit.Location = new System.Drawing.Point(4, 4);
+            this.Visit.Location = new System.Drawing.Point(191, 4);
             this.Visit.Margin = new System.Windows.Forms.Padding(4);
             this.Visit.Name = "Visit";
             this.Visit.Size = new System.Drawing.Size(179, 45);
@@ -75,7 +75,7 @@
             this.Join.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Join.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Join.ForeColor = System.Drawing.Color.Black;
-            this.Join.Location = new System.Drawing.Point(191, 4);
+            this.Join.Location = new System.Drawing.Point(378, 4);
             this.Join.Margin = new System.Windows.Forms.Padding(4);
             this.Join.Name = "Join";
             this.Join.Size = new System.Drawing.Size(179, 45);
@@ -107,7 +107,7 @@
             this.Edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Edit.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Edit.ForeColor = System.Drawing.Color.Black;
-            this.Edit.Location = new System.Drawing.Point(378, 4);
+            this.Edit.Location = new System.Drawing.Point(4, 4);
             this.Edit.Margin = new System.Windows.Forms.Padding(4);
             this.Edit.Name = "Edit";
             this.Edit.Size = new System.Drawing.Size(179, 45);
@@ -128,7 +128,7 @@
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(179, 45);
             this.Print.TabIndex = 17;
-            this.Print.Text = "Extra Label";
+            this.Print.Text = "Test Label";
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.Print_Click);
             // 

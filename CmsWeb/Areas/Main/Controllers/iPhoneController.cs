@@ -17,12 +17,25 @@ namespace CmsWeb.Areas.Main.Controllers
 #else
    [RequireHttps]
 #endif
+    [ValidateInput(false)]
     public class iPhoneController : CmsController
     {
         private bool Authenticate()
         {
-            var username = Request.Headers["username"];
-            var password = Request.Headers["password"];
+            string username, password;
+            var auth = Request.Headers["Authorization"];
+            if (auth.HasValue())
+            {
+                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+                username = cred[0];
+                password = cred[1];
+            }
+            else
+            {
+                username = Request.Headers["username"];
+                password = Request.Headers["password"];
+            }
             return CMSMembershipProvider.provider.ValidateUser(username, password);
         }
         public ActionResult FetchImage(int id)

@@ -60,8 +60,10 @@
     <% using (Html.BeginForm("Create", "Fund"))
        { %>
     <p>
+        Your first fund should have a fundid of 1<br />
         New Fund Id: <%= Html.TextBox("fundid") %>
         <input type="submit" value="Create" />
+        <%= Html.ValidationMessage("fundid") %>
     </p>
     <% } %>
 

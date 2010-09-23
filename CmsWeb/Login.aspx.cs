@@ -76,6 +76,12 @@ By logging in below, you agree that you understand this purpose and will abide b
         {
             if (!Roles.IsUserInRole(name, "Access") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
             {
+                if (Util.UserPeopleId > 0)
+                {
+                    HttpContext.Current.Response.Redirect("/Person/Index/" + Util.UserPeopleId);
+                    return;
+                }
+
                 if (name.HasValue())
                     NotifyAdmins("user loggedin without a role on " + Util.Host,
                         string.Format("{0} visited site at {1} but does not have Staff role",

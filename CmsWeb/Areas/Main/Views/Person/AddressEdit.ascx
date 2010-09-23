@@ -46,10 +46,10 @@
             </table>
         </td>
     </tr>
+    <% } %>
     <tr>
         <th>Preferred Address</th>
         <td><%=Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)%></td>
     </tr>
-    <% } %>
     <tr><td></td><td><a href="/Person/AddressUpdate/<%=Model.PeopleId %>?type=<%=Model.Name %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

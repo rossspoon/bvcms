@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Print = new System.Windows.Forms.Button();
+            this.PrintAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -36,23 +36,24 @@
             this.pgup = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Return = new System.Windows.Forms.Button();
+            this.PrintAll1 = new System.Windows.Forms.Label();
+            this.PrintAll2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // Print
+            // PrintAll
             // 
-            this.Print.BackColor = System.Drawing.Color.Yellow;
-            this.Print.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
-            this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Print.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(507, 686);
-            this.Print.Margin = new System.Windows.Forms.Padding(4);
-            this.Print.Name = "Print";
-            this.Print.Size = new System.Drawing.Size(221, 66);
-            this.Print.TabIndex = 10;
-            this.Print.Text = "Print Labels";
-            this.Print.UseVisualStyleBackColor = false;
-            this.Print.Click += new System.EventHandler(this.Print_Click);
+            this.PrintAll.BackColor = System.Drawing.Color.Yellow;
+            this.PrintAll.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+            this.PrintAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PrintAll.Font = new System.Drawing.Font("Wingdings", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.PrintAll.ForeColor = System.Drawing.Color.Black;
+            this.PrintAll.Location = new System.Drawing.Point(936, 686);
+            this.PrintAll.Margin = new System.Windows.Forms.Padding(4);
+            this.PrintAll.Name = "PrintAll";
+            this.PrintAll.Size = new System.Drawing.Size(62, 61);
+            this.PrintAll.TabIndex = 10;
+            this.PrintAll.UseVisualStyleBackColor = false;
+            this.PrintAll.Click += new System.EventHandler(this.PrintAll_Click);
             // 
             // label1
             // 
@@ -142,26 +143,50 @@
             this.Return.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Return.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Return.ForeColor = System.Drawing.Color.Black;
-            this.Return.Location = new System.Drawing.Point(751, 686);
+            this.Return.Location = new System.Drawing.Point(439, 686);
             this.Return.Margin = new System.Windows.Forms.Padding(4);
             this.Return.Name = "Return";
-            this.Return.Size = new System.Drawing.Size(142, 66);
+            this.Return.Size = new System.Drawing.Size(381, 66);
             this.Return.TabIndex = 18;
-            this.Return.Text = "Return";
+            this.Return.Text = "Print Labels, Return";
             this.Return.UseVisualStyleBackColor = false;
             this.Return.Click += new System.EventHandler(this.Return_Click);
+            // 
+            // PrintAll1
+            // 
+            this.PrintAll1.AutoSize = true;
+            this.PrintAll1.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintAll1.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.PrintAll1.Location = new System.Drawing.Point(855, 695);
+            this.PrintAll1.Name = "PrintAll1";
+            this.PrintAll1.Size = new System.Drawing.Size(74, 25);
+            this.PrintAll1.TabIndex = 19;
+            this.PrintAll1.Text = "Reprint";
+            // 
+            // PrintAll2
+            // 
+            this.PrintAll2.AutoSize = true;
+            this.PrintAll2.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintAll2.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.PrintAll2.Location = new System.Drawing.Point(833, 720);
+            this.PrintAll2.Name = "PrintAll2";
+            this.PrintAll2.Size = new System.Drawing.Size(96, 25);
+            this.PrintAll2.TabIndex = 19;
+            this.PrintAll2.Text = "All Labels";
             // 
             // ListFamily
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.PrintAll2);
+            this.Controls.Add(this.PrintAll1);
             this.Controls.Add(this.Return);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pgdn);
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Print);
+            this.Controls.Add(this.PrintAll);
             this.Controls.Add(this.label2);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListFamily";
@@ -173,7 +198,7 @@
 
         #endregion
 
-        public System.Windows.Forms.Button Print;
+        public System.Windows.Forms.Button PrintAll;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
@@ -181,6 +206,8 @@
         public System.Windows.Forms.Button pgup;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.Button Return;
+        private System.Windows.Forms.Label PrintAll1;
+        private System.Windows.Forms.Label PrintAll2;
 
     }
 }

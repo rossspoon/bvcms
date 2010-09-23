@@ -65,7 +65,6 @@ namespace CmsCheckin
             this.Hide();
         }
 
-        TextBox current = null;
         private void StartUp_Load(object sender, EventArgs e)
         {
 #if DEBUG

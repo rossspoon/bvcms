@@ -17,25 +17,21 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Id;
+		private int _FromPid;
+		
+		private DateTime _Time;
 		
 		private string _Username;
 		
-		private DateTime? _Time;
-		
 		private string _FromAddr;
+		
+		private string _ToList;
 		
 		private string _Subject;
 		
 		private string _Message;
 		
-		private string _Name;
-		
-		private string _ToAddr;
-		
-		private int? _FromPid;
-		
-		private int? _ToPid;
+		private int? _Count;
 		
    		
     	
@@ -46,17 +42,20 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnIdChanging(int value);
-		partial void OnIdChanged();
+		partial void OnFromPidChanging(int value);
+		partial void OnFromPidChanged();
+		
+		partial void OnTimeChanging(DateTime value);
+		partial void OnTimeChanged();
 		
 		partial void OnUsernameChanging(string value);
 		partial void OnUsernameChanged();
 		
-		partial void OnTimeChanging(DateTime? value);
-		partial void OnTimeChanged();
-		
 		partial void OnFromAddrChanging(string value);
 		partial void OnFromAddrChanged();
+		
+		partial void OnToListChanging(string value);
+		partial void OnToListChanged();
 		
 		partial void OnSubjectChanging(string value);
 		partial void OnSubjectChanged();
@@ -64,17 +63,8 @@ namespace CmsData
 		partial void OnMessageChanging(string value);
 		partial void OnMessageChanged();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
-		
-		partial void OnToAddrChanging(string value);
-		partial void OnToAddrChanged();
-		
-		partial void OnFromPidChanging(int? value);
-		partial void OnFromPidChanged();
-		
-		partial void OnToPidChanging(int? value);
-		partial void OnToPidChanged();
+		partial void OnCountChanging(int? value);
+		partial void OnCountChanged();
 		
     #endregion
 		public EmailSent()
@@ -87,21 +77,43 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
+		[Column(Name="FromPid", UpdateCheck=UpdateCheck.Never, Storage="_FromPid", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int FromPid
 		{
-			get { return this._Id; }
+			get { return this._FromPid; }
 
 			set
 			{
-				if (this._Id != value)
+				if (this._FromPid != value)
 				{
 				
-                    this.OnIdChanging(value);
+                    this.OnFromPidChanging(value);
 					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
+					this._FromPid = value;
+					this.SendPropertyChanged("FromPid");
+					this.OnFromPidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Time", UpdateCheck=UpdateCheck.Never, Storage="_Time", DbType="datetime NOT NULL", IsPrimaryKey=true)]
+		public DateTime Time
+		{
+			get { return this._Time; }
+
+			set
+			{
+				if (this._Time != value)
+				{
+				
+                    this.OnTimeChanging(value);
+					this.SendPropertyChanging();
+					this._Time = value;
+					this.SendPropertyChanged("Time");
+					this.OnTimeChanged();
 				}
 
 			}
@@ -131,28 +143,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Time", UpdateCheck=UpdateCheck.Never, Storage="_Time", DbType="datetime")]
-		public DateTime? Time
-		{
-			get { return this._Time; }
-
-			set
-			{
-				if (this._Time != value)
-				{
-				
-                    this.OnTimeChanging(value);
-					this.SendPropertyChanging();
-					this._Time = value;
-					this.SendPropertyChanged("Time");
-					this.OnTimeChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="FromAddr", UpdateCheck=UpdateCheck.Never, Storage="_FromAddr", DbType="varchar(50)")]
 		public string FromAddr
 		{
@@ -168,6 +158,28 @@ namespace CmsData
 					this._FromAddr = value;
 					this.SendPropertyChanged("FromAddr");
 					this.OnFromAddrChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ToList", UpdateCheck=UpdateCheck.Never, Storage="_ToList", DbType="varchar")]
+		public string ToList
+		{
+			get { return this._ToList; }
+
+			set
+			{
+				if (this._ToList != value)
+				{
+				
+                    this.OnToListChanging(value);
+					this.SendPropertyChanging();
+					this._ToList = value;
+					this.SendPropertyChanged("ToList");
+					this.OnToListChanged();
 				}
 
 			}
@@ -219,87 +231,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(100)")]
-		public string Name
+		[Column(Name="Count", UpdateCheck=UpdateCheck.Never, Storage="_Count", DbType="int")]
+		public int? Count
 		{
-			get { return this._Name; }
+			get { return this._Count; }
 
 			set
 			{
-				if (this._Name != value)
+				if (this._Count != value)
 				{
 				
-                    this.OnNameChanging(value);
+                    this.OnCountChanging(value);
 					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ToAddr", UpdateCheck=UpdateCheck.Never, Storage="_ToAddr", DbType="varchar(200)")]
-		public string ToAddr
-		{
-			get { return this._ToAddr; }
-
-			set
-			{
-				if (this._ToAddr != value)
-				{
-				
-                    this.OnToAddrChanging(value);
-					this.SendPropertyChanging();
-					this._ToAddr = value;
-					this.SendPropertyChanged("ToAddr");
-					this.OnToAddrChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FromPid", UpdateCheck=UpdateCheck.Never, Storage="_FromPid", DbType="int")]
-		public int? FromPid
-		{
-			get { return this._FromPid; }
-
-			set
-			{
-				if (this._FromPid != value)
-				{
-				
-                    this.OnFromPidChanging(value);
-					this.SendPropertyChanging();
-					this._FromPid = value;
-					this.SendPropertyChanged("FromPid");
-					this.OnFromPidChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ToPid", UpdateCheck=UpdateCheck.Never, Storage="_ToPid", DbType="int")]
-		public int? ToPid
-		{
-			get { return this._ToPid; }
-
-			set
-			{
-				if (this._ToPid != value)
-				{
-				
-                    this.OnToPidChanging(value);
-					this.SendPropertyChanging();
-					this._ToPid = value;
-					this.SendPropertyChanged("ToPid");
-					this.OnToPidChanged();
+					this._Count = value;
+					this.SendPropertyChanged("Count");
+					this.OnCountChanged();
 				}
 
 			}

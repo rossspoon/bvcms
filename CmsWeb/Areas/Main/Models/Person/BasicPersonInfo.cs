@@ -157,28 +157,39 @@ namespace CmsWeb.Models.PersonPage
                 p.MemberProfileAutomation();
 
             if (psb.Length > 0)
-                p.PeopleExtras.Add(new PeopleExtra
+            {
+                var c = new ChangeLog
                 {
-                    Field = "BasicPersonInfo",
-                    Data = psb.ToString(),
-                    TransactionTime = Util.Now
-                });
+                    UserPeopleId = Util.UserPeopleId,
+                    PeopleId = PeopleId,
+                    Field = "Basic Info",
+                    Data = "<table>\n" + psb.ToString() + "</table>",
+                    Created = Util.Now
+                };
+                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
+            }
             if (fsb.Length > 0)
-                p.PeopleExtras.Add(new PeopleExtra
+            {
+                var c = new ChangeLog
                 {
+                    FamilyId = p.FamilyId,
+                    UserPeopleId = Util.UserPeopleId,
+                    PeopleId = PeopleId,
                     Field = "HomePhone",
-                    Data = fsb.ToString(),
-                    TransactionTime = Util.Now
-                });
+                    Data = "<table>\n" + fsb.ToString() + "</table>",
+                    Created = Util.Now
+                };
+                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
+            }
             DbUtil.Db.SubmitChanges();
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
                     var smtp = Util.Smtp();        
                     DbUtil.Email2(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
-                        "Basic People Info Changed",
-                        "{0} changed the following information:\n{1}\n{2}"
-                        .Fmt(psb.ToString(),fsb.ToString()));
+                        "Basic Person Info Changed",
+                        "{0} changed the following information:<br />\n<table>{1}{2}</table>"
+                        .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));
                 }
         }
         public static IEnumerable<SelectListItem> TitleCodes()
@@ -214,7 +225,7 @@ namespace CmsWeb.Models.PersonPage
                 return;
             if (o != null && o.Equals(value))
                 return;
-            fsb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            fsb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(f, field, value);
         }
         private StringBuilder psb = new StringBuilder();
@@ -225,7 +236,7 @@ namespace CmsWeb.Models.PersonPage
                 return;
             if (o != null && o.Equals(value))
                 return;
-            psb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(p, field, value);
         }
     }

@@ -181,7 +181,6 @@
     <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\PersonResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailsResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\PeopleInfo.cs" />
     <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />
@@ -523,13 +522,6 @@
     </Compile>
     <Compile Include="Contributions\Reports\TotalsByFundRange.aspx.designer.cs">
       <DependentUpon>TotalsByFundRange.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Years.aspx.cs">
-      <DependentUpon>Years.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Years.aspx.designer.cs">
-      <DependentUpon>Years.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
     <Compile Include="Areas\Main\Controllers\Checkin2Controller.cs" />
@@ -1095,7 +1087,6 @@
     <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
-    <Content Include="Contributions\Years.aspx" />
     <Content Include="images\1pix.gif" />
     <Content Include="images\adobe.png" />
     <Content Include="images\ajax-loader.gif" />

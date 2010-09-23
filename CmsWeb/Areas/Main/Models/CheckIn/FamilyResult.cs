@@ -56,21 +56,26 @@ namespace CmsWeb.Models
                 w.WriteAttributeString("waslocked", waslocked.ToString());
 
                 var count = q.Count();
-                const int INT_PageSize = 10;
-                var startrow = (page - 1) * INT_PageSize;
-                if (count > startrow + INT_PageSize)
-                    w.WriteAttributeString("next", (page + 1).ToString());
-                else
-                    w.WriteAttributeString("next", "");
-                if (page > 1)
-                    w.WriteAttributeString("prev", (page - 1).ToString());
-                else
-                    w.WriteAttributeString("prev", "");
+
+                if (page > 0)
+                {
+                    const int INT_PageSize = 10;
+                    var startrow = (page - 1) * INT_PageSize;
+                    if (count > startrow + INT_PageSize)
+                        w.WriteAttributeString("next", (page + 1).ToString());
+                    else
+                        w.WriteAttributeString("next", "");
+                    if (page > 1)
+                        w.WriteAttributeString("prev", (page - 1).ToString());
+                    else
+                        w.WriteAttributeString("prev", "");
+                    q = q.Skip(startrow).Take(INT_PageSize).ToList();
+                }
                 w.WriteAttributeString("maxlabels", DbUtil.Settings("MaxLabels", "6"));
                 var code = DbUtil.Db.NextSecurityCode(DateTime.Today).Select(c => c.Code).Single();
                 w.WriteAttributeString("securitycode", code);
 
-                foreach (var c in q.Skip(startrow).Take(INT_PageSize))
+                foreach (var c in q)
                 {
                     double leadtime = 0;
                     if (c.Hour.HasValue)

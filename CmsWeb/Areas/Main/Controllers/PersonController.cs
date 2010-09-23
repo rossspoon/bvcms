@@ -73,8 +73,6 @@ namespace CmsWeb.Areas.Main.Controllers
             var person = DbUtil.Db.LoadPersonById(id);
             if (person == null)
                 return Content("error, bad peopleid");
-            if (!person.PurgePerson())
-                return Content("error, not deleted");
 
             var p = person.Family.People.FirstOrDefault(m => m.PeopleId != id);
             if (p != null)
@@ -87,6 +85,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 Util.CurrentPeopleId = 0;
                 Session.Remove("ActivePerson");
             }
+
+            if (!person.PurgePerson())
+                return Content("error, not deleted");
+
             return Content("");
         }
         [AcceptVerbs(HttpVerbs.Post)]

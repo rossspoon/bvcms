@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Main.Controllers
 #else
    [RequireHttps]
 #endif
+    [RequireBasicAuthentication]
     public class Checkin2Controller : CmsController
     {
         public ActionResult Match(string id, int campus, int thisday, int? page, bool? kioskmode)
@@ -29,17 +30,17 @@ namespace CmsWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(kioskmode, 0, campus, thisday, 1, false); // not found
+                return new FamilyResult(kioskmode, 0, campus, thisday, 0, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(kioskmode, matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
+                return new FamilyResult(kioskmode, matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked);
             return new MultipleResult(matches, page);
         }
-        public ActionResult Family(int id, int campus, int thisday, int? page, bool? kioskmode)
+        public ActionResult Family(int id, int campus, int thisday, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
-            return new FamilyResult(kioskmode, id, campus, thisday, page.Value, false);
+            return new FamilyResult(kioskmode, id, campus, thisday, 0, false);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -94,7 +95,7 @@ namespace CmsWeb.Areas.Main.Controllers
             public bool AskGrade { get; set; }
             public bool AskEmFriend { get; set; }
         }
-       [AcceptVerbs(HttpVerbs.Post)]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddPerson(int id, PersonInfo m)
         {
             if (!Authenticate())
@@ -140,9 +141,16 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         private bool Authenticate()
         {
-            var username = Request.Headers["username"];
-            var password = Request.Headers["password"];
-            return CMSMembershipProvider.provider.ValidateUser(username, password);
+            var auth = Request.Headers["Authorization"];
+            if (auth.HasValue())
+            {
+                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+                var username = cred[0];
+                var password = cred[1];
+                return CMSMembershipProvider.provider.ValidateUser(username, password);
+            }
+            return false;
         }
         private void UpdatePerson(Person p, PersonInfo m)
         {

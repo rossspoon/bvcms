@@ -17,6 +17,7 @@ namespace CmsCheckin
     public partial class ListFamily : UserControl
     {
         private const int ExtraPixelsName = 15;
+        private const string STR_CheckMark = "ü";
         public ListFamily()
         {
             InitializeComponent();
@@ -32,11 +33,11 @@ namespace CmsCheckin
                 {
                     case Keys.PageUp:
                         if (pgup.Visible)
-                            ShowFamily(Program.FamilyId, prev.Value);
+                            ShowPage(page - 1);
                         return true;
                     case Keys.PageDown:
                         if (pgdn.Visible)
-                            ShowFamily(Program.FamilyId, next.Value);
+                            ShowPage(page + 1);
                         return true;
                     case Keys.Escape:
                         Program.TimerStop();
@@ -65,50 +66,35 @@ namespace CmsCheckin
         int LabelsPrinted;
         bool RequiresSecurityLabel;
         DateTime time;
-        int? next, prev;
+        int page = 1;
         List<Control> controls = new List<Control>();
         List<Control> sucontrols = new List<Control>();
-        private int rows = 0;
+        XDocument xdoc;
+        List<AttendLabel> list;
+        const string Verdana = "Verdana";
+        Font pfont = new Font(Verdana, 14f, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
 
-        public void ShowFamily(int fid, int page)
+        public void ShowFamily(int fid)
         {
-            var x = this.GetDocument("Checkin2/Family/" + fid + Program.QueryString + "&page=" + page);
-            ShowFamily(x);
+            page = 1;
+            xdoc = this.GetDocument("Checkin2/Family/" + fid + Program.QueryString);
+            ShowFamily(xdoc);
         }
         public void ShowFamily(XDocument x)
         {
-            ClearControls();
+            xdoc = x;
             hasprinter = PrintRawHelper.HasPrinter(Program.Printer);
             this.Focus();
             time = DateTime.Now;
 
             Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
 
-            next = x.Root.Attribute("next").Value.ToInt2();
-            prev = x.Root.Attribute("prev").Value.ToInt2();
             if (!Program.SecurityCode.HasValue())
                 Program.SecurityCode = x.Root.Attribute("securitycode").Value;
             label3.Text = Program.SecurityCode;
 
-            pgdn.Visible = next.HasValue;
-            pgup.Visible = prev.HasValue;
             Program.MaxLabels = x.Root.Attribute("maxlabels").Value.ToInt();
 
-            var points = 14F;
-            const int sep = 10;
-            const int rowheight = 50;
-            int top = 50;
-            const int bsize = 45;
-            const int bwid = 65;
-            const int mwid = 80;
-
-            string Verdana = "Verdana";
-            var pfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            Font font;
-            Font labfont;
-            string Present = "Attend";
-            string Labels = "Labels";
-            var g = this.CreateGraphics();
             button1.Enabled = true;
             if (x.Descendants("attendee").Count() == 0)
             {
@@ -116,15 +102,20 @@ namespace CmsCheckin
                 lab.Font = pfont;
                 lab.Location = new Point(15, 200);
                 lab.AutoSize = true;
+                PrintAll.Visible = false;
+                PrintAll1.Visible = false;
+                PrintAll2.Visible = false;
+                pgup.Visible = false;
+                pgdn.Visible = false;
                 lab.Text = "Not Found, try another phone number?";
                 this.Controls.Add(lab);
-                Print.Text = "Try again";
+                Return.Text = "Try again";
                 controls.Add(lab);
                 button1.Enabled = false;
                 return;
             }
 
-            var list = new List<AttendLabel>();
+            list = new List<AttendLabel>();
             foreach (var e in x.Descendants("attendee"))
             {
                 list.Add(new AttendLabel
@@ -164,15 +155,46 @@ namespace CmsCheckin
                     location = e.Attribute("loc").Value,
                     leader = e.Attribute("leader").Value,
                     NumLabels = int.Parse(e.Attribute("numlabels").Value),
-                    Row = rows,
+                    Row = list.Count,
                     CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
                     HasPicture = bool.Parse(e.Attribute("haspicture").Value),
                     RequiresSecurityLabel = bool.Parse(e.Attribute("requiressecuritylabel").Value),
                     leadtime = double.Parse(e.Attribute("leadtime").Value),
                 });
-                rows++;
             }
+            ShowPage(1);
+        }
+        public void ShowPage(int page)
+        {
+            ClearControls();
+            this.page = page;
+
+            const int sep = 10;
+            const int rowheight = 50;
+            int top = 50;
+            const int bsize = 45;
+            const int bwid = 65;
+            const int mwid = 80;
+
+            var points = 14F;
+            var g = this.CreateGraphics();
+
+            Font font;
+            Font labfont;
+            string Present = "Attend";
+            string Labels = "Labels";
+            Return.Text = "Print Labels, Return";
+
             var cols = new int[6];
+
+            const int PageSize = 10;
+
+            int srow = (page - 1) * PageSize;
+            int erow = srow + PageSize;
+            if (erow > list.Count)
+                erow = list.Count;
+            pgdn.Visible = list.Count > erow;
+            pgup.Visible = srow > 0;
 
             int maxheight;
             int twidab, widname, widorg, twidlb;
@@ -246,8 +268,16 @@ namespace CmsCheckin
             this.Controls.Add(head);
             controls.Add(head);
 
-            foreach (var c in list)
+            for (var r = srow; r < erow; r++)
             {
+                var c = list[r];
+                if (classlist != null)
+                {
+                    var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
+                    if (li != null && c.CheckedIn)
+                        c.WasChecked = true;
+                }
+
                 LeftEdge = (1024 - totalwid) / 2;
                 top += rowheight;
 
@@ -281,8 +311,8 @@ namespace CmsCheckin
                 this.Controls.Add(ab);
                 ab.KeyDown += new KeyEventHandler(AttendButton_KeyDown);
                 ab.Click += new EventHandler(Attend_Click);
-                ab.Text = c.CheckedIn ? "ü" : String.Empty;
-                ab.Tag = c;
+                ab.Text = c.CheckedIn ? STR_CheckMark : String.Empty;
+                ab.Tag = c.Row;
                 controls.Add(ab);
 
                 var nam = new Button();
@@ -342,7 +372,6 @@ namespace CmsCheckin
                 org.Text = "{0:h:mm tt} {1}".Fmt(c.hour, c.org);
                 org.TextAlign = ContentAlignment.MiddleLeft;
                 org.Name = "org" + c.Row;
-                org.Tag = 0;
                 if (c.cinfo.oid != 0)
                     if (c.cinfo.mv == "V")
                         org.ForeColor = Color.DarkGreen;
@@ -352,6 +381,7 @@ namespace CmsCheckin
                 controls.Add(org);
             }
             Program.TimerStart(timer1_Tick);
+            ComputeLabels();
         }
 
         void timer1_Tick(object sender, EventArgs e)
@@ -376,8 +406,7 @@ namespace CmsCheckin
         void PrintLabel_Click(object sender, EventArgs e)
         {
             Program.TimerReset();
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
-            var c = ab.Tag as AttendLabel;
+            var c = list[(int)menu.Tag];
             var li = new LabelInfo
             {
                 allergies = c.allergies,
@@ -404,29 +433,28 @@ namespace CmsCheckin
         public void Attend_Click(Button ab)
         {
             Program.TimerReset();
-            var c = ab.Tag as AttendLabel;
+            var c = list[(int)ab.Tag];
             if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
                 return;
-            c.Clicked = true;
-            var org = this.Controls[this.Controls.IndexOfKey("org" + c.Row.ToString())] as Label;
             if (c.cinfo.oid == 0)
                 return;
             Cursor.Current = Cursors.WaitCursor;
             Program.CursorShow();
-            var info = new Util.ClassCheckedInfo { c = c.cinfo };
             if (ab.Text == String.Empty)
             {
-                ab.Text = "ü";
-                org.Tag = c.NumLabels;
-                info.ischecked = true;
+                ab.Text = STR_CheckMark;
+                c.CheckedIn = true;
+                c.WasChecked = true;
             }
             else
             {
                 ab.Text = String.Empty;
-                org.Tag = 0;
-                info.ischecked = false;
+                c.CheckedIn = false;
+                c.WasChecked = false;
             }
+            var info = new Util.ClassCheckedInfo { c = c.cinfo, ischecked = c.CheckedIn };
             c.lastpress = DateTime.Now;
+            ComputeLabels();
             var bw = new BackgroundWorker();
             bw.DoWork += CheckUnCheckDoWork;
             bw.RunWorkerCompleted += CheckUncheckCompleted;
@@ -438,18 +466,19 @@ namespace CmsCheckin
             Program.TimerReset();
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
-            var c = ab.Tag as AttendLabel;
+            var c = list[(int)menu.Tag];
             Program.PeopleId = c.cinfo.pid;
             var f = new Picture();
             f.ShowDialog();
         }
 
-        public List<ClassInfo> classlist;
+        public List<ClassInfo> classlist = new List<ClassInfo>();
         private Label mask;
         private Menu menu;
 
         void Menu_Click(object sender, EventArgs e)
         {
+            Program.TimerReset();
             var MenuButton = sender as Button;
             menu = new Menu();
             menu.Tag = MenuButton.Tag;
@@ -468,12 +497,26 @@ namespace CmsCheckin
 
             mask.Show();
             menu.VisitClass += Visit_Click;
+            var c = list[(int)menu.Tag];
+            menu.Join.Visible = c.cinfo.mv == "V";
+            nam.Enabled = false;
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
             menu.AddFamily += AddToFamily_Click;
+            menu.JoinClass += new EventHandler(menu_JoinClass);
             menu.CancelMenu += new EventHandler(CancelMenu_Click);
             menu.Show();
             menu.BringToFront();
+        }
+
+        void menu_JoinClass(object sender, EventArgs e)
+        {
+            var c = list[(int)menu.Tag];
+            var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
+            org.ForeColor = Color.Blue;
+            var info = new Util.ClassCheckedInfo { c = c.cinfo, ischecked = true };
+            Util.JoinUnJoin(info);
+            RemoveMenu();
         }
 
         void CancelMenu_Click(object sender, EventArgs e)
@@ -482,34 +525,46 @@ namespace CmsCheckin
         }
         void Visit_Click(object sender, EventArgs e)
         {
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
-            var c = ab.Tag as AttendLabel;
+            var c = list[(int)menu.Tag];
             SaveClasses();
+            RemoveMenu();
             this.Swap(Program.classes);
             Program.classes.ShowResults(c.cinfo.pid, 1);
-            RemoveMenu();
         }
         private void SaveClasses()
         {
             classlist = new List<ClassInfo>();
-            for (var r = 0; r < rows; r++)
+            for (var r = 0; r < list.Count; r++)
             {
-                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
-                var abb = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
-                var cc = abb.Tag as AttendLabel;
-                var n = (int)org.Tag;
-                if (n > 0)
+                var cc = list[r];
+                if (cc.WasChecked)
                 {
-                    cc.cinfo.nlabels = n;
+                    cc.cinfo.nlabels = cc.NumLabels;
                     classlist.Add(cc.cinfo);
                 }
             }
         }
+        private void ComputeLabels()
+        {
+            int canprint;
+            int willprint;
+            var can = list.Where(c => c.CheckedIn && c.NumLabels > 0);
+            var will = can.Where(c => c.WasChecked);
+            canprint = can.Count();
+            willprint = will.Count();
+            var show = canprint > willprint;
+            PrintAll.Visible = show;
+            PrintAll1.Visible = show;
+            PrintAll2.Visible = show;
+            if (PrintAll.Text.HasValue() || willprint > 0)
+                Return.Text = "Print Labels, Return";
+            else
+                Return.Text = "Return";
+        }
 
         void EditRecord_Click(object sender, EventArgs e)
         {
-            var ab = this.Controls[this.Controls.IndexOfKey("attend" + menu.Tag.ToString())] as Button;
-            var c = ab.Tag as AttendLabel;
+            var c = list[(int)menu.Tag];
 
             Program.PeopleId = c.cinfo.pid;
             Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
@@ -541,6 +596,8 @@ namespace CmsCheckin
         }
         private void RemoveMenu()
         {
+            var nam = this.Controls[this.Controls.IndexOfKey("name" + menu.Tag.ToString())] as Button;
+            nam.Enabled = true;
             this.Controls.Remove(menu);
             this.Controls.Remove(mask);
             menu.Dispose();
@@ -548,25 +605,6 @@ namespace CmsCheckin
         }
 
         PleaseWait PleaseWaitForm = null;
-        private void Print_Click(object sender, EventArgs e)
-        {
-            Program.TimerStop();
-            PleaseWaitForm = new PleaseWait();
-            PleaseWaitForm.Show();
-
-            for (var r = 0; r < rows; r++)
-            {
-                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
-                var ab = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
-                var cc = ab.Tag as AttendLabel;
-                org.Tag = ab.Text == String.Empty ? cc.NumLabels : 0;
-            }
-
-            var bw = new BackgroundWorker();
-            bw.DoWork += new DoWorkEventHandler(DoPrinting);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
-            bw.RunWorkerAsync();
-        }
         private void DoPrinting(object sender, DoWorkEventArgs e)
         {
             Util.UnLockFamily();
@@ -585,26 +623,16 @@ namespace CmsCheckin
             PleaseWaitForm = null;
             Program.FamilyId = 0;
             classlist = null;
+            PrintAll.Text = string.Empty;
             this.GoHome(string.Empty);
         }
         private void PrintLabels()
         {
-            var list = new List<AttendLabel>();
-            for (var r = 0; r < rows; r++)
-            {
-                var org = this.Controls[this.Controls.IndexOfKey("org" + r.ToString())] as Label;
-                var ab = this.Controls[this.Controls.IndexOfKey("attend" + r.ToString())] as Button;
-                var c = ab.Tag as AttendLabel;
-                var n = (int)org.Tag;
-                if (n > 0)
-                {
-                    c.NumLabels = n;
-                    list.Add(c);
-                }
-            }
+            if (list == null)
+                return;
             if (Program.KioskMode)
             {
-                var q = from c in list
+                var q = from c in list.Where(cc => cc.WasChecked)
                         select new LabelInfo
                         {
                             allergies = c.allergies,
@@ -621,8 +649,11 @@ namespace CmsCheckin
             }
             else
             {
-                var q = from c in list
-                        where c.NumLabels > 0
+                var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
+                if (!PrintAll.Text.HasValue())
+                    qlist = qlist.Where(c => c.WasChecked);
+
+                var q = from c in qlist
                         select new LabelInfo
                         {
                             allergies = c.allergies,
@@ -641,7 +672,7 @@ namespace CmsCheckin
                 foreach (var li in q)
                     LabelsPrinted += CmsCheckin.Print.Label(li, "", 1, Program.SecurityCode);
                 foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.Label(li, "E | ", li.n - 1, Program.SecurityCode);
+                    LabelsPrinted += CmsCheckin.Print.Label(li, "EXTRA | ", li.n - 1, Program.SecurityCode);
 
                 foreach (var li in q)
                     LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
@@ -659,7 +690,6 @@ namespace CmsCheckin
                 c.Dispose();
             }
             controls.Clear();
-            rows = 0;
             LabelsPrinted = 0;
             sucontrols.Clear();
         }
@@ -677,48 +707,33 @@ namespace CmsCheckin
 
         private void pgup_Click(object sender, EventArgs e)
         {
-            PrintLabels();
-            if (LabelsPrinted > 0)
-            {
-                if (RequiresSecurityLabel)
-                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
-                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
-            }
-            ShowFamily(Program.FamilyId, prev.Value);
+            ShowPage(page - 1);
         }
 
         private void pgdn_Click(object sender, EventArgs e)
         {
-            PrintLabels();
-            if (LabelsPrinted > 0)
-            {
-                if (RequiresSecurityLabel)
-                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
-                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
-            }
-            ShowFamily(Program.FamilyId, next.Value);
+            ShowPage(page + 1);
         }
 
         private void AddToFamily_Click(object sender, EventArgs e)
         {
-            var menu = ((Button)sender).Parent as UserControl;
-            menu.Hide();
-            var ab = this.Controls[this.Controls.IndexOfKey("attend0")] as Button;
-            var c = ab.Tag as AttendLabel;
-
+            var c = list[(int)menu.Tag];
             Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             Program.editing = false;
             SaveClasses();
             Util.UnLockFamily();
-            this.Controls.Remove(menu);
-            menu.Dispose();
+            RemoveMenu();
             this.Swap(Program.first);
         }
 
         private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
         {
             var info = e.Argument as Util.ClassCheckedInfo;
-            Util.CheckUnCheckClass(info);
+            if(Program.KioskMode)
+                Util.JoinUnJoin(info);
+            else
+                Util.AttendUnAttend(info);
+
         }
         private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -729,12 +744,24 @@ namespace CmsCheckin
         private void Return_Click(object sender, EventArgs e)
         {
             Program.TimerStop();
+
+            if (Return.Text.Contains("Try Again"))
+            {
+                this.GoHome(string.Empty);
+                return;
+            }
             PleaseWaitForm = new PleaseWait();
             PleaseWaitForm.Show();
+
             var bw = new BackgroundWorker();
             bw.DoWork += new DoWorkEventHandler(DoPrinting);
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
             bw.RunWorkerAsync();
+        }
+        private void PrintAll_Click(object sender, EventArgs e)
+        {
+            PrintAll.Text = PrintAll.Text.HasValue() ? String.Empty : STR_CheckMark;
+            ComputeLabels();
         }
     }
     public class AttendLabel
@@ -772,7 +799,7 @@ namespace CmsCheckin
         public int NumLabels { get; set; }
         public int Row { get; set; }
         public bool CheckedIn { get; set; }
-        public bool Clicked { get; set; }
+        public bool WasChecked { get; set; }
         public bool HasPicture { get; set; }
         public bool RequiresSecurityLabel { get; set; }
         public double leadtime { get; set; }

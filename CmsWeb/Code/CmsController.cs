@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using UtilityExtensions;
 using CmsData;
+using System.Web.Mvc;
 
 namespace CmsWeb
 {
@@ -67,6 +68,20 @@ namespace CmsWeb
             Util.Helpfile = "{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
+        }
+    }
+    public class RequireBasicAuthentication : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var req = filterContext.HttpContext.Request;
+            if (!req.Headers["Authorization"].HasValue() && !req.Headers["username"].HasValue())
+            {
+                var res = filterContext.HttpContext.Response;
+                res.StatusCode = 401;
+                res.AddHeader("WWW-Authenticate", "Basic realm=\"{0}\"".Fmt(Util.Host));
+                res.End();
+            }
         }
     }
 }

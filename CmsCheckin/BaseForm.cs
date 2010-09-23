@@ -158,7 +158,7 @@ namespace CmsCheckin
             if (Program.editing && Program.FamilyId > 0)
             {
                 Program.first.Swap(Program.family);
-                Program.family.ShowFamily(Program.FamilyId, 1);
+                Program.family.ShowFamily(Program.FamilyId);
             }
             else
                 Program.first.GoHome(string.Empty);

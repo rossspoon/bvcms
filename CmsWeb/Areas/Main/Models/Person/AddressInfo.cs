@@ -164,6 +164,8 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(f, "ZipCode", Zip);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 10);
+                    if (fsb.Length > 0)
+                        f.BadAddressFlag = false;
                     break;
                 case "AltFamilyAddr":
                     UpdateValue(f, "AltAddressLineOne", Address1);
@@ -176,6 +178,8 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(f, "AltZipCode", Zip);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 20);
+                    if (fsb.Length > 0)
+                        f.AltBadAddressFlag = false;
                     break;
                 case "PersonalAddr":
                     UpdateValue(p, "AddressLineOne", Address1);
@@ -188,6 +192,8 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(p, "ZipCode", Zip);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 30);
+                    if (psb.Length > 0)
+                        p.BadAddressFlag = false;
                     break;
                 case "AltPersonalAddr":
                     UpdateValue(p, "AltAddressLineOne", Address1);
@@ -200,22 +206,35 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(p, "AltZipCode", Zip);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 40);
+                    if (psb.Length > 0)
+                        p.AltBadAddressFlag = false;
                     break;
             }
             if (psb.Length > 0)
-                p.PeopleExtras.Add(new PeopleExtra
+            {
+                var c = new ChangeLog
                 {
+                    UserPeopleId = Util.UserPeopleId,
+                    PeopleId = PeopleId,
                     Field = Name,
-                    Data = psb.ToString(),
-                    TransactionTime = Util.Now
-                });
+                    Data = "<table>\n" + psb.ToString() + "</table>",
+                    Created = Util.Now
+                };
+                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
+            }
             if (fsb.Length > 0)
-                f.FamilyExtras.Add(new FamilyExtra
+            {
+                var c = new ChangeLog
                 {
+                    FamilyId = p.FamilyId,
+                    UserPeopleId = Util.UserPeopleId,
+                    PeopleId = PeopleId,
                     Field = Name,
-                    Data = psb.ToString(),
-                    TransactionTime = Util.Now
-                });
+                    Data = "<table>\n" + fsb.ToString() + "</table>",
+                    Created = Util.Now
+                };
+                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
+            }
             DbUtil.Db.SubmitChanges();
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
@@ -223,8 +242,8 @@ namespace CmsWeb.Models.PersonPage
                     var smtp = Util.Smtp();        
                     DbUtil.Email2(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
                         "Address Info Changed",
-                        "{0} changed the following information:\n{1}\n{2}"
-                        .Fmt(psb.ToString(),fsb.ToString()));
+                        "{0} changed the following information:<br />\n<table>{1}{2}</table>"
+                        .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));
                 }
         }
         private StringBuilder fsb = new StringBuilder();
@@ -235,7 +254,7 @@ namespace CmsWeb.Models.PersonPage
                 return;
             if (o != null && o.Equals(value))
                 return;
-            fsb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            fsb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(f, field, value);
         }
         private StringBuilder psb = new StringBuilder();
@@ -246,7 +265,7 @@ namespace CmsWeb.Models.PersonPage
                 return;
             if (o != null && o.Equals(value))
                 return;
-            psb.AppendFormat("{0}: {1} -> {2}\n", field, o, value ?? "(null)");
+            psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(p, field, value);
         }
         public static IEnumerable<SelectListItem> StateCodes()

@@ -29,8 +29,9 @@ namespace CmsCheckin
         public static WebClient CreateWebClient()
         {
             var wc = new WebClient();
-            wc.Headers.Add("username", Program.Username);
-            wc.Headers.Add("password", Program.Password);
+            wc.Headers.Add("Authorization",
+                "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}"
+                            .Fmt(Program.Username, Program.Password))));
             return wc;
         }
         public static string GetDigits(this string s)
@@ -84,10 +85,10 @@ namespace CmsCheckin
             string home,
             string allergies,
             string grade,
-            string parent, 
+            string parent,
             string emfriend,
             string emphone,
-            string churchname, 
+            string churchname,
             CheckState activeother,
             int marital,
             int gender)
@@ -133,7 +134,7 @@ namespace CmsCheckin
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
 
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/AddPerson2/" + Program.FamilyId);
+            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/AddPerson/" + Program.FamilyId);
 
             var resp = wc.UploadValues(url, "POST", coll);
 
@@ -155,10 +156,10 @@ namespace CmsCheckin
             string home,
             string allergies,
             string grade,
-            string parent, 
+            string parent,
             string emfriend,
             string emphone,
-            string churchname, 
+            string churchname,
             CheckState activeother,
             int marital,
             int gender)
@@ -324,7 +325,7 @@ namespace CmsCheckin
             public bool ischecked { get; set; }
             public ClassInfo c { get; set; }
         }
-        public static void CheckUnCheckClass(ClassCheckedInfo info)
+        public static void AttendUnAttend(ClassCheckedInfo info)
         {
             if (info.c.oid == 0)
                 return;
@@ -335,17 +336,33 @@ namespace CmsCheckin
                 coll.Add("PeopleId", info.c.pid.ToString());
                 coll.Add("OrgId", info.c.oid.ToString());
                 Uri url = null;
-                if (Program.KioskMode)
-                {
-                    coll.Add("Member", info.ischecked.ToString());
-                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
-                }
-                else
-                {
-                    coll.Add("Present", info.ischecked.ToString());
-                    coll.Add("thisday", Program.ThisDay.ToString());
-                    url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/RecordAttend/");
-                }
+                coll.Add("Present", info.ischecked.ToString());
+                coll.Add("thisday", Program.ThisDay.ToString());
+                url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/RecordAttend/");
+
+                var resp = wc.UploadValues(url, "POST", coll);
+#if DEBUG
+                //System.Threading.Thread.Sleep(1500);
+#endif
+                var s = Encoding.ASCII.GetString(resp);
+            }
+            catch (Exception)
+            {
+            }
+        }
+        public static void JoinUnJoin(ClassCheckedInfo info)
+        {
+            if (info.c.oid == 0)
+                return;
+            try
+            {
+                var wc = CreateWebClient();
+                var coll = new NameValueCollection();
+                coll.Add("PeopleId", info.c.pid.ToString());
+                coll.Add("OrgId", info.c.oid.ToString());
+                Uri url = null;
+                coll.Add("Member", info.ischecked.ToString());
+                url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
 
                 var resp = wc.UploadValues(url, "POST", coll);
 #if DEBUG

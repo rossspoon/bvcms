@@ -32,14 +32,33 @@
         <td><%=c.IntValue%> <%=c.IntValue2%></td>
         <% } %>
     </tr>
-    <% }
-       foreach (var c in Model.Family.FamilyExtras)
-       { %>
-    <tr>
-        <td valign="top"><%=c.Field%></td>
-        <td><%=Util.SafeFormat(c.Data) %></td>
-    </tr>
     <% } %>
 </tbody>
 </table>
 <% } %>
+<table class="grid">
+<thead>
+    <tr>
+        <th>User</th>
+        <th>Field</th>
+        <th>Time</th>
+        <th>Value</th>
+    </tr>
+</thead>
+<tbody>
+    <% var q = from c in DbUtil.Db.ChangeLogs
+               let userp = DbUtil.Db.People.Single(u => u.PeopleId == c.UserPeopleId)
+               where c.PeopleId == Model.PeopleId || c.FamilyId == Model.FamilyId
+               orderby c.Created descending
+               select new { User = userp.Name, Field = c.Field, Data = c.Data, Time = c.Created };
+       foreach (var c in q)
+       { %>
+    <tr>
+        <td valign="top"><%=c.User%></td>
+        <td valign="top"><%=c.Field%></td>
+        <td valign="top"><%=c.Time.ToString2("M/d/yy h:mm tt")%></td>
+        <td><%=c.Data %></td>
+    </tr>
+    <% } %>
+</tbody>
+</table>

@@ -101,7 +101,7 @@ namespace CmsCheckin
             if (Program.editing)
             {
                 this.Swap(Program.family);
-                Program.family.ShowFamily(Program.FamilyId, 1);
+                Program.family.ShowFamily(Program.FamilyId);
             }
             else
             {

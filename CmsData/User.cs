@@ -37,6 +37,11 @@ namespace CmsData
             }
             set
             {
+                if (value == null)
+                {
+                    Db.UserRoles.DeleteAllOnSubmit(UserRoles);
+                    return;
+                }
                 var qdelete = from r in UserRoles
                               where !value.Contains(r.Role.RoleName)
                               select r;

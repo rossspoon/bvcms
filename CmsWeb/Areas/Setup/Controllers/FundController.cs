@@ -18,14 +18,21 @@ namespace CmsWeb.Areas.Setup.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(int fundid)
+        public ActionResult Create(string fundid)
         {
+            var id = fundid.ToInt();
+            if (id == 0)
+            {
+                ModelState.AddModelError("fundid", "expected an integer (account number)");
+                var m = DbUtil.Db.ContributionFunds.AsEnumerable();
+                return View("Index", m);
+            }
             try
             {
                 var f = new ContributionFund 
                 { 
                     FundName = "new fund", 
-                    FundId=fundid,
+                    FundId=id,
                     ChurchId = 1,
                     CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,

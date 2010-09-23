@@ -24,6 +24,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             return View();
         }
+        [ValidateInput(false)]
         public ActionResult ShowError(string id, string url)
         {
             ViewData["error"] = Server.UrlDecode(id);

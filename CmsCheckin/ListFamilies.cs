@@ -106,7 +106,7 @@ namespace CmsCheckin
         {
             var ab = sender as Button;
             this.Swap(Program.family);
-            Program.family.ShowFamily((int)ab.Tag, 1);
+            Program.family.ShowFamily((int)ab.Tag);
         }
 
         private void GoBack_Click(object sender, EventArgs e)

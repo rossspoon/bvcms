@@ -33,8 +33,6 @@ namespace CmsWeb.Areas.Main.Models.Report
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             CmsData.Meeting meeting = null;
             if (meetingid.HasValue)
@@ -55,6 +53,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                 Response.Write("no data found");
                 return;
             }
+            if (!dt.HasValue)
+            {
+                Response.Write("bad date");
+                return;
+            }
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);

@@ -87,7 +87,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             var q11 = from p in DbUtil.Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? 1 : p.ContributionOptionsId
-                      let name = (p.ContributionOptionsId == 1 ?
+                      let name = (option == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
                                  : (p.SpouseId == null ?
                                      (p.Title != null ? p.Title + " " + p.Name : p.Name)

@@ -56,18 +56,6 @@ namespace CmsData
         }
         public static void SendMsg(SmtpClient smtp, MailAddress From, string subject, string Message, string Name, string addr)
         {
-            var em = new EmailSent
-            {
-                FromAddr = From.Address,
-                Subject = subject,
-                Message = Message,
-                Name = Name,
-                ToAddr = addr,
-                Username = Util.UserName
-            };
-            DbUtil.Db.EmailSents.InsertOnSubmit(em);
-            DbUtil.Db.SubmitChanges();
-
             var msg = new MailMessage();
             if (From == null)
                 From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);

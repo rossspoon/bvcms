@@ -40,7 +40,7 @@ namespace CmsCheckin
                         return true;
                     case Keys.Escape:
                         this.Swap(Program.family);
-                        Program.family.ShowFamily(FamilyId, 1);
+                        Program.family.ShowFamily(FamilyId);
                         return true;
                     case Keys.S | Keys.Alt:
                         Program.TimerReset();
@@ -150,18 +150,21 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             var ra = new Util.ClassCheckedInfo { c = c, ischecked = true };
-            Util.CheckUnCheckClass(ra);
+            if (Program.KioskMode)
+                Util.JoinUnJoin(ra);
+            else
+                Util.AttendUnAttend(ra);
             ShowAllClasses = false;
             this.Swap(Program.family);
             Program.family.classlist.Add(c);
-            Program.family.ShowFamily(FamilyId, 1);
+            Program.family.ShowFamily(FamilyId);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
             this.Swap(Program.family);
             ShowAllClasses = false;
-            Program.family.ShowFamily(FamilyId, 1);
+            Program.family.ShowFamily(FamilyId);
         }
         private void ClearControls()
         {

@@ -121,77 +121,20 @@ namespace CmsCheckin
                 ab.Font = labfont;
                 const int Gutter = 10;
                 ab.Location = new Point(Gutter, 100 + (row * 50));
+                ab.Tag = e.Attribute("fid").Value.ToInt();
                 var homephone = e.Attribute("home").Value;
                 var cellphone = e.Attribute("cell").Value;
-                ab.Tag = !string.IsNullOrEmpty(homephone) ? homephone : !string.IsNullOrEmpty(cellphone) ? cellphone : "";
+                var ph = homephone.HasValue() ? homephone : cellphone.HasValue() ? cellphone : "";
+                if (!ph.HasValue())
+                    ab.BackColor = Color.LightPink;
+
                 ab.Size = new Size(WidName, 45);
                 ab.TextAlign = ContentAlignment.MiddleLeft;
                 ab.UseVisualStyleBackColor = false;
                 ab.Text = e.Attribute("display").Value;
-                ab.Enabled = ab.Tag.ToString().HasValue();
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
                 controls.Add(ab);
-
-                var an = new Button();
-                an.BackColor = SystemColors.Control;
-                an.FlatStyle = FlatStyle.Flat;
-                an.FlatAppearance.BorderSize = 1;
-                an.Text = "a";
-                an.Location = new Point(Gutter + WidName + Gutter, 100 + (row * 50));
-                an.Tag = new AddFamilyInfo
-                {
-                    fid = e.Attribute("fid").Value.ToInt(),
-                    home = e.Attribute("home").Value.FmtFone(),
-                    addr = e.Attribute("addr").Value,
-                    zip = e.Attribute("zip").Value.FmtZip(),
-                    last = e.Attribute("last").Value,
-                    email = e.Attribute("email").Value,
-                };
-                const int ButtonWid = 45;
-                an.Size = new Size(ButtonWid, ButtonWid);
-                this.Controls.Add(an);
-                an.Click += new EventHandler(an_Click);
-                an.Enabled = bAddNewFamily.Enabled;
-                controls.Add(an);
-                sucontrols.Add(an);
-
-                var ed = new Button();
-                ed.BackColor = SystemColors.Control;
-                ed.FlatStyle = FlatStyle.Flat;
-                ed.FlatAppearance.BorderSize = 1;
-                ed.Text = "e";
-                ed.Location = new Point(Gutter + WidName + Gutter + ButtonWid + Gutter, 100 + (row * 50));
-                ed.Tag = new PersonInfo
-                {
-                    fid = e.Attribute("fid").Value.ToInt(),
-                    pid = e.Attribute("pid").Value.ToInt(),
-                    home = e.Attribute("home").Value.FmtFone(),
-                    cell = e.Attribute("cell").Value.FmtFone(),
-                    addr = e.Attribute("addr").Value,
-                    zip = e.Attribute("zip").Value.FmtZip(),
-                    first = e.Attribute("first").Value,
-                    email = e.Attribute("email").Value,
-                    last = e.Attribute("last").Value,
-                    goesby = e.Attribute("goesby").Value,
-                    dob = e.Attribute("dob").Value,
-                    gender = e.Attribute("gender").Value.ToInt(),
-                    marital = e.Attribute("marital").Value.ToInt(),
-                    church = e.Attribute("church").Value,
-
-                    emphone = e.Attribute("emphone").Value.FmtFone(),
-                    emfriend = e.Attribute("emfriend").Value,
-                    allergies = e.Attribute("allergies").Value,
-                    grade = e.Attribute("grade").Value,
-                    activeother = e.Attribute("activeother").Value,
-                    parent = e.Attribute("parent").Value,
-                };
-                ed.Size = new Size(ButtonWid, ButtonWid);
-                this.Controls.Add(ed);
-                ed.Click += new EventHandler(ed_Click);
-                ed.Enabled = bAddNewFamily.Enabled;
-                controls.Add(ed);
-                sucontrols.Add(ed);
 
                 row++;
             }
@@ -210,33 +153,8 @@ namespace CmsCheckin
         {
             Program.TimerStop();
             var ab = sender as Button;
-            this.GoHome((string)ab.Tag);
-        }
-        void an_Click(object sender, EventArgs e)
-        {
-            var an = sender as Button;
-            var fi = (AddFamilyInfo)an.Tag;
-            Program.FamilyId = fi.fid;
-            Program.SetFields(fi.last, fi.email, fi.addr, fi.zip, fi.home, null, null, null, null, null);
-            Program.editing = false;
-            this.Swap(Program.first);
-        }
-        void ed_Click(object sender, EventArgs e)
-        {
-            var ed = sender as Button;
-            var pi = (PersonInfo)ed.Tag;
-            Program.PeopleId = pi.pid;
-            Program.FamilyId = pi.fid;
-            Program.SetFields(pi.last, pi.email, pi.addr, pi.zip, pi.home, pi.parent, pi.emfriend, pi.emphone, pi.activeother, pi.church);
-            Program.first.textBox1.Text = pi.first;
-            Program.goesby.textBox1.Text = pi.goesby;
-            Program.dob.textBox1.Text = pi.dob;
-            Program.cellphone.textBox1.Text = pi.cell.FmtFone();
-            Program.gendermarital.Marital = pi.marital;
-            Program.gendermarital.Gender = pi.gender;
-
-            Program.editing = true;
-            this.Swap(Program.first);
+            this.Swap(Program.family);
+            Program.family.ShowFamily((int)ab.Tag);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
@@ -284,31 +202,5 @@ namespace CmsCheckin
                 c.BackColor = Color.Coral;
             }
         }
-    }
-    public class AddFamilyInfo
-    {
-        public int fid { get; set; }
-        public string home { get; set; }
-        public string addr { get; set; }
-        public string zip { get; set; }
-        public string last { get; set; }
-        public string email { get; set; }
-    }
-    public class PersonInfo : AddFamilyInfo
-    {
-        public int pid { get; set; }
-        public string first { get; set; }
-        public string goesby { get; set; }
-        public string dob { get; set; }
-        public string cell { get; set; }
-        public int gender { get; set; }
-        public int marital { get; set; }
-        public string emfriend { get; set; }
-        public string emphone { get; set; }
-        public string allergies { get; set; }
-        public string grade { get; set; }
-        public string activeother { get; set; }
-        public string parent { get; set; }
-        public string church { get; set; }
     }
 }

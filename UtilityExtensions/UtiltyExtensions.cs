@@ -600,6 +600,8 @@ namespace UtilityExtensions
 
         public static string GetUserName(string name)
         {
+            if (name == null)
+                return null;
             var a = name.Split('\\');
             if (a.Length == 2)
                 return a[1];

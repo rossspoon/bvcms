@@ -361,15 +361,23 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == OrgId
+                    let p = DbUtil.Db.People.Single(pp => pp.PeopleId == PeopleId)
                     select new
                     {
                         MeetingId = DbUtil.Db.GetTodaysMeetingId(OrgId, thisday),
                         MeetingTime = DbUtil.Db.GetTodaysMeetingHour(OrgId, thisday),
                         o.AttendTrkLevelId,
-                        o.Location
+                        o.Location,
+                        OrgEntryPoint = o.EntryPointId,
+                        p.EntryPointId,
                     };
             var info = q.Single();
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == info.MeetingId);
+            if (info.EntryPointId == null)
+            {
+                var p = DbUtil.Db.LoadPersonById(PeopleId);
+                p.EntryPointId = info.OrgEntryPoint;
+            }
             if (meeting == null)
             {
                 meeting = new CmsData.Meeting

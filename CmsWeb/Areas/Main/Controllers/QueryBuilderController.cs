@@ -274,6 +274,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
                     m.Errors.Add("DateValue", "need valid date");
 
+            if (m.Comparison == "Contains")
+                if (!m.TextValue.HasValue())
+                    m.Errors.Add("TextValue", "cannot be empty");
+
             return m.Errors.Count == 0;
         }
     }
