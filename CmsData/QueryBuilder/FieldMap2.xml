@@ -395,9 +395,6 @@
     <Field Name="CreatedDate" Title="Record Created On Date" Type="Date">
       Record Created On Date
     </Field>
-    <Field Name="BadET" Title="Bad Enrollment Transaction" Type="Code" DataSource="BadETCodes" DataValueField="IdCode">
-      Two drops in a row (55), Two Enrollments in a row (11), or a missing drop (10)
-    </Field>
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
       Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
     </Field>

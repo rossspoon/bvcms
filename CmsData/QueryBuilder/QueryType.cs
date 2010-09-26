@@ -13,7 +13,6 @@ namespace CmsData
         AttendPctHistory,
         AttendCntHistory,
         AttendTypeAsOf,
-        BadET,
         BaptismDate,
         BaptismSchedDate,
         BaptismStatusId,

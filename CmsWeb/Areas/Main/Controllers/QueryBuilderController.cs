@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    [Authorize(Roles = "Testing")]
     public class QueryBuilderController : CmsStaffController
     {
         public ActionResult NewQuery()

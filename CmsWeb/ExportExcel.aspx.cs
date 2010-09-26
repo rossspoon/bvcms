@@ -89,9 +89,6 @@ namespace CmsWeb
                 case "Promotion":
                     dg.DataSource = InvolvementController.PromoList(qid.Value, maxExcelRows);
                     break;
-                case "SML":
-                    dg.DataSource = InvolvementController.SoulmateList(qid.Value, maxExcelRows);
-                    break;
             }
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(r.Output));

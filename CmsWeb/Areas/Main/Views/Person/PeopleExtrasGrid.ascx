@@ -56,7 +56,7 @@
     <tr>
         <td valign="top"><%=c.User%></td>
         <td valign="top"><%=c.Field%></td>
-        <td valign="top"><%=c.Time.ToString2("M/d/yy h:mm tt")%></td>
+        <td valign="top"><%=c.Time.ToString("M/d/yy h:mm tt")%></td>
         <td><%=c.Data %></td>
     </tr>
     <% } %>

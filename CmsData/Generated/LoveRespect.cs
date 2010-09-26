@@ -43,10 +43,6 @@ namespace CmsData
     	
 		private EntityRef< Organization> _Organization;
 		
-		private EntityRef< Person> _Her;
-		
-		private EntityRef< Person> _Him;
-		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -93,10 +89,6 @@ namespace CmsData
 			
 			
 			this._Organization = default(EntityRef< Organization>); 
-			
-			this._Her = default(EntityRef< Person>); 
-			
-			this._Him = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -157,9 +149,6 @@ namespace CmsData
 			{
 				if (this._HimId != value)
 				{
-				
-					if (this._Him.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnHimIdChanging(value);
 					this.SendPropertyChanging();
@@ -226,9 +215,6 @@ namespace CmsData
 			{
 				if (this._HerId != value)
 				{
-				
-					if (this._Her.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnHerIdChanging(value);
 					this.SendPropertyChanging();
@@ -398,90 +384,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Organization");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="HerLoveRespects__Her", Storage="_Her", ThisKey="HerId", IsForeignKey=true)]
-		public Person Her
-		{
-			get { return this._Her.Entity; }
-
-			set
-			{
-				Person previousValue = this._Her.Entity;
-				if (((previousValue != value) 
-							|| (this._Her.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Her.Entity = null;
-						previousValue.HerLoveRespects.Remove(this);
-					}
-
-					this._Her.Entity = value;
-					if (value != null)
-					{
-						value.HerLoveRespects.Add(this);
-						
-						this._HerId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._HerId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Her");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="HisLoveRespects__Him", Storage="_Him", ThisKey="HimId", IsForeignKey=true)]
-		public Person Him
-		{
-			get { return this._Him.Entity; }
-
-			set
-			{
-				Person previousValue = this._Him.Entity;
-				if (((previousValue != value) 
-							|| (this._Him.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Him.Entity = null;
-						previousValue.HisLoveRespects.Remove(this);
-					}
-
-					this._Him.Entity = value;
-					if (value != null)
-					{
-						value.HisLoveRespects.Add(this);
-						
-						this._HimId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._HimId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Him");
 				}
 
 			}

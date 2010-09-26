@@ -6,7 +6,3 @@
 <strong>Comments:</strong><br />
 <%=ViewData["Comments"] %>
 
-<% 
-    CmsData.Person p = DbUtil.Db.LoadPersonById((int)ViewData["PeopleId"]);
-    Html.RenderPartial("PeopleExtrasGrid", p); 
-%>

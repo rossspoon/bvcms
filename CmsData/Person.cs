@@ -331,12 +331,6 @@ namespace CmsData
                     c.contact.contactees.Add(new Contactee { PeopleId = otherid });
                 Db.Contactees.DeleteOnSubmit(c);
             }
-            foreach (var f in this.VBSApps)
-                f.PeopleId = otherid;
-            foreach (var sm in this.HisSoulMates)
-                sm.HimId = otherid;
-            foreach (var sm in this.HerSoulMates)
-                sm.HerId = otherid;
 
             var torecreg = toperson.RecRegs.SingleOrDefault();
             var frrecreg = RecRegs.SingleOrDefault();
@@ -391,7 +385,17 @@ namespace CmsData
                 }
             return Add(fam, position, tag, First, null, Last, dob, Married, gender, originId, EntryPointId);
         }
-        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId)
+        public static Person Add(Family fam, 
+            int position, 
+            Tag tag, 
+            string firstname, 
+            string nickname, 
+            string lastname, 
+            string dob, 
+            int MarriedCode, 
+            int gender, 
+            int originId, 
+            int? EntryPointId)
         {
             var p = new Person();
             p.CreatedDate = Util.Now;
@@ -478,25 +482,67 @@ namespace CmsData
                     .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
             }
             return p;
-}
-public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
-{
-    return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
-}
-public void FixTitle()
-{
-    if (GenderId == 1)
-        TitleCode = "Mr.";
-    else if (GenderId == 2)
-        if (MaritalStatusId == 20 || MaritalStatusId == 50)
-            TitleCode = "Mrs.";
-        else
-            TitleCode = "Ms.";
-}
-public string OptOutKey(string FromEmail)
-{
-    return Util.EncryptForUrl("{0}|{1}".Fmt(PeopleId, FromEmail));
-}
+        }
+        public static Person Add(Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, bool Married, int gender, int originId, int? EntryPointId)
+        {
+            return Add(fam, position, tag, firstname, nickname, lastname, dob, Married ? 20 : 10, gender, originId, EntryPointId);
+        }
+        public List<int> PossibleDuplicates()
+        {
+            var fone = Util.GetDigits(Util.PickFirst(CellPhone, HomePhone));
+            using (var ctx = new CMSDataContext(Util.ConnectionString))
+            {
+                ctx.SetNoLock();
+            	var re = new Regex(@"^(\d+\s)");
+                string streetnum1 = null, streetnum2 = null;
+                if (PrimaryAddress.HasValue())
+                	streetnum1 = re.Match(PrimaryAddress).Groups[1].Value;
+                if (AddressLineOne.HasValue())
+                	streetnum2 = re.Match(AddressLineOne).Groups[1].Value;
+                var q = from p in ctx.People
+                        let firstmatch = ( p.FirstName == FirstName 
+                                || p.NickName == FirstName 
+                                || p.MiddleName == FirstName)
+                        let bdmatch = (BirthDate != null && p.BirthDay == BirthDay && p.BirthMonth == BirthMonth && p.BirthYear == BirthYear)
+                        let emailmatch = p.EmailAddress == EmailAddress
+                        let phonematch = ( p.CellPhoneLU == CellPhoneLU
+                                            || p.CellPhoneLU == Family.HomePhoneLU
+                                            || p.CellPhone == WorkPhoneLU
+                                            || p.Family.HomePhoneLU == CellPhoneLU
+                                            || p.Family.HomePhoneLU == Family.HomePhoneLU
+                                            || p.Family.HomePhoneLU == WorkPhoneLU
+                                            || p.WorkPhoneLU == CellPhoneLU
+                                            || p.WorkPhoneLU == Family.HomePhoneLU
+                                            || p.WorkPhoneLU == WorkPhoneLU)
+                        let streetmatch = (streetnum1 != null && 
+                                                (p.AddressLineOne.StartsWith(streetnum1)
+                                                || p.Family.AddressLineOne.StartsWith(streetnum1)))
+                                            || (streetnum2 != null && 
+                                                (p.AddressLineOne.StartsWith(streetnum2)
+                                                || p.Family.AddressLineOne.StartsWith(streetnum2)))
+                        let citymatch = (p.PrimaryCity == PrimaryCity)
+                        let nmatches = (firstmatch ? 1 : 0) + (bdmatch ? 1 : 0) + (emailmatch ? 1 : 0) + (phonematch ? 1 : 0) + ((citymatch && streetmatch) ? 1 : 0)
+                        where p.PeopleId != PeopleId
+                        where (p.LastName == LastName || p.MaidenName == LastName)
+                        where (nmatches > 1)
+                        select p.PeopleId;
+                return q.ToList();
+            }
+        }
+        public void FixTitle()
+        {
+            if (GenderId == 1)
+                TitleCode = "Mr.";
+            else if (GenderId == 2)
+                if (MaritalStatusId == 20 || MaritalStatusId == 50)
+                    TitleCode = "Mrs.";
+                else
+                    TitleCode = "Ms.";
+        }
+        public string OptOutKey(string FromEmail)
+        {
+            return Util.EncryptForUrl("{0}|{1}".Fmt(PeopleId, FromEmail));
+        }
 
         public static bool ToggleTag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
         {
@@ -622,7 +668,7 @@ public string OptOutKey(string FromEmail)
                         || Util.UserPeopleId == PeopleId;
                 return _CanUserEditBasic.Value;
             }
-        }        
+        }
         private bool? _CanUserSee;
         public bool CanUserSee
         {
@@ -633,7 +679,7 @@ public string OptOutKey(string FromEmail)
                         || Family.People.Any(m => m.PeopleId == Util.UserPeopleId);
                 return _CanUserSee.Value;
             }
-        }        
+        }
 
         partial void OnZipCodeChanged()
         {

@@ -357,21 +357,8 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            int[] ReturnedReversedTypes = new int[] 
-            { 
-                (int)Contribution.TypeCode.ReturnedCheck, 
-                (int)Contribution.TypeCode.Reversed 
-            };
-            var mindt = Util.Now.AddDays(-days).Date;
-            Expression<Func<Person, int>> pred = p =>
-                DbUtil.Db.Contributions.Count(c => c.ContributionDate >= mindt
-                    && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                    && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                    && (((p.ContributionOptionsId ?? 1) != (int)Person.EnvelopeOptionCode.Joint
-                            && p.PeopleId == c.PeopleId)
-                        || ((p.ContributionOptionsId ?? 1) == (int)Person.EnvelopeOptionCode.Joint
-                            && (p.PeopleId == c.PeopleId || p.SpouseId == c.PeopleId))
-                        ));
+            Expression<Func<Person, int?>> pred = p =>
+                DbUtil.Db.ContributionCount(p.PeopleId, days);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -384,23 +371,8 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            int[] ReturnedReversedTypes = new int[] 
-            { 
-                (int)Contribution.TypeCode.ReturnedCheck, 
-                (int)Contribution.TypeCode.Reversed 
-            };
-            var mindt = Util.Now.AddDays(-days).Date;
-
             Expression<Func<Person, decimal?>> pred = p =>
-            DbUtil.Db.Contributions.Where(c => c.ContributionDate >= mindt
-                && c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                && !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                && (((p.ContributionOptionsId ?? 1) != (int)Person.EnvelopeOptionCode.Joint
-                        && p.PeopleId == c.PeopleId)
-                    || ((p.ContributionOptionsId ?? 0) == (int)Person.EnvelopeOptionCode.Joint
-                        && (p.PeopleId == c.PeopleId || p.SpouseId == c.PeopleId))
-                    )).Sum(c => c.ContributionAmount) ?? 0;
-
+                DbUtil.Db.ContributionAmount(p.PeopleId, days);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -1405,17 +1377,6 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Volunteers.Any(v => ids.Contains(v.StatusId.Value));
-            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
-            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
-                expr = Expression.Not(expr);
-            return expr;
-        }
-        internal static Expression BadET(ParameterExpression parm,
-            CompareType op,
-            int[] ids)
-        {
-            Expression<Func<Person, bool>> pred = p =>
-                p.BadETs.Any(b => ids.Contains(b.Flag));
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);

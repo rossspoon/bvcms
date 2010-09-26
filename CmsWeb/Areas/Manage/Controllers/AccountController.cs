@@ -30,6 +30,11 @@ namespace CmsWeb.Areas.Manage.Controllers
             MembershipService = new MembershipService();
         }
         [HttpPost]
+        public ActionResult KeepAlive()
+        {
+            return Content("alive");
+        }
+        [HttpPost]
         public ActionResult CKEditorUpload(string CKEditorFuncNum)
         {
             string baseurl = WebConfigurationManager.AppSettings["UploadUrl"];

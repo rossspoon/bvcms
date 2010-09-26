@@ -55,11 +55,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                         {
                             p.Name,
                             MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
-                            vbapp = p.VBSApps.OrderByDescending(v => v.Uploaded).FirstOrDefault(),
                             p.PeopleId,
                         };
                 foreach (var i in q)
-                    AddRow(i.MembertypeCode, i.Name, i.PeopleId, i.vbapp, font);
+                    AddRow(i.MembertypeCode, i.Name, i.PeopleId, font);
                 if (t.Rows.Count > 1)
                     doc.Add(t);
                 else
@@ -69,20 +68,18 @@ namespace CmsWeb.Areas.Main.Models.Report
                 foreach (var o in list(org, div, schedule))
                 {
                     var q = from m in ctl.FetchOrgMembers(o.OrgId, null)
-                            let vbapp = DbUtil.Db.VBSApps.Where(v => v.PeopleId == m.PeopleId).OrderByDescending(v => v.Uploaded).FirstOrDefault()
                             orderby m.Name2
                             select new
                             {
                                 m.Name2,
                                 m.MemberType,
-                                vbapp,
                                 m.PeopleId,
                             };
                     if (q.Count() == 0)
                         continue;
                     StartPageSet(o);
                     foreach (var i in q)
-                        AddRow(i.MemberType, i.Name2, i.PeopleId, i.vbapp, font);
+                        ;
 
                     if (t.Rows.Count > 1)
                         doc.Add(t);
@@ -133,23 +130,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.AddCell(new Phrase("Medical", boldfont));
             pagesetstarted = true;
         }
-        private void AddRow(string Code, string name, int pid, VBSApp app, Font font)
+        private void AddRow(string Code, string name, int pid, Font font)
         {
             t.AddCell(pid.ToString());
             t.AddCell(name);
             t.AddCell(Code);
             string med = "see registration card";
-            if (app == null)
-                med = "";
-            else if (app.MedAllergy == false)
-                med = "";
-            else if (app.IsDocument == true)
-            {
-                var img = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == app.ImgId);
-                med = "";
-                if (img != null && img.HasMedical())
-                    med = img.Medical();
-            }
             t.AddCell(med);
         }
         private class OrgInfo

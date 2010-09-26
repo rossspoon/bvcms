@@ -272,14 +272,12 @@
     <Compile Include="Areas\Public\Controllers\GODisciplesController.cs" />
     <Compile Include="Areas\Public\Controllers\PrayerController.cs" />
     <Compile Include="Areas\Public\Controllers\SalesController.cs" />
-    <Compile Include="Areas\Public\Controllers\SoulMateController.cs" />
     <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
     <Compile Include="Areas\Public\Models\DiscipleLifeModel.cs" />
     <Compile Include="Areas\Public\Models\GODisciplesModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerModel.cs" />
     <Compile Include="Areas\Public\Models\PsUtil.cs" />
     <Compile Include="Areas\Public\Models\SalesModel.cs" />
-    <Compile Include="Areas\Public\Models\SoulMateModel.cs" />
     <Compile Include="Areas\Public\Models\StepClassModel.cs" />
     <Compile Include="Areas\Public\Views\Prayer\Report.aspx.cs">
       <DependentUpon>Report.aspx</DependentUpon>
@@ -821,6 +819,7 @@
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet.aspx" />
+    <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />
@@ -1276,10 +1275,6 @@
     <Content Include="Areas\Public\Views\Sales\Payment.aspx" />
     <Content Include="Areas\Public\Views\Sales\Transactions.aspx" />
     <Content Include="Areas\Public\Views\Sales\Unknown.aspx" />
-    <Content Include="Areas\Public\Views\SoulMate\CheckBack.aspx" />
-    <Content Include="Areas\Public\Views\SoulMate\ChildCare.aspx" />
-    <Content Include="Areas\Public\Views\SoulMate\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\SoulMate\Index.aspx" />
     <Content Include="Areas\Public\Views\StepClass\Step1.aspx" />
     <Content Include="Areas\Public\Views\StepClass\Step1Confirm.aspx" />
     <Content Include="Areas\Public\Views\StepClass\Step2.aspx" />

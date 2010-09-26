@@ -2410,6 +2410,34 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.ContributionCount", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? ContributionCount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.ContributionAmount", IsComposable = true)]
+		[return: Parameter(DbType = "money")]
+		public decimal? ContributionAmount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days
+            )
+		{
+			return ((decimal?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.LastContact", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastContact(

@@ -411,7 +411,7 @@ namespace CmsWeb.Models
             {
                 var q = from o in org.AskOptions.Split(',')
                         let a = o.Split('=')
-                        where option == a[0] && a.Length > 1
+                        where option == a[0].Trim() && a.Length > 1
                         select decimal.Parse(a[1]);
                 if (q.Count() > 0)
                     amt = q.First();

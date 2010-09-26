@@ -22,21 +22,22 @@
     <asp:PlaceHolder ID="CKEditPanel" runat="server">
 <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function() {
-        CKEDITOR.replace( "<%=EmailBody.UniqueID %>", {
-                filebrowserUploadUrl : '/Account/CKEditorUpload/',
-                filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
-            });
+    $(function () {
+        CKEDITOR.replace("<%=EmailBody.UniqueID %>", {
+            filebrowserUploadUrl: '/Account/CKEditorUpload/',
+            filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
+        });
+        setInterval(KeepSessionAlive, 120000);
     });
+    function KeepSessionAlive() {
+        $.post("/Account/KeepAlive", null, null);
+    }  
 </script>
     </asp:PlaceHolder>
-<blockquote style="width: 80%"><span class="style1">Please Note</span>: your session will timeout in 20 minutes. 
-If you hit send after that, your message will not be sent correctly.
-Unless this is an email&nbsp; you can type up quickly,
-please compose your message in an external text editor such as notepad or Word.
-Then come back to a fresh version of this page and copy/paste your message into the 
-text box below. You can then fill out your subject, add any attachment and send it 
-    without worry of losing your work.</blockquote>
+<blockquote style="width: 80%"><span class="style1">Please Note</span>: 
+You can include a file, image, mp3 or whatever you like in your email. 
+<a href="http://www.bvcms.com/Page/EmailFileUpload">Read this article for instructions</a>.
+<blockquote>
     <table width="100%">
         <tr>
             <td>

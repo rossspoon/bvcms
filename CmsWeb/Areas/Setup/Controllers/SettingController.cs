@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
@@ -19,7 +20,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             return View(m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)] 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(string id)
         {
             var m = new Setting { Id = id };
@@ -71,7 +72,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             var upds = from s in settings
                        join b in batch on s.Id equals b.name
                        select new { s = s, value = b.value };
-            
+
             foreach (var pair in upds)
                 pair.s.SettingX = pair.value;
 
@@ -81,7 +82,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                        where s == null
                        select b;
 
-            foreach(var b in adds)
+            foreach (var b in adds)
                 DbUtil.Db.Settings.InsertOnSubmit(new Setting { Id = b.name, SettingX = b.value });
 
             var dels = from s in settings
@@ -89,7 +90,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                        select s;
 
             DbUtil.Db.Settings.DeleteAllOnSubmit(dels);
-            DbUtil.Db.SubmitChanges();            
+            DbUtil.Db.SubmitChanges();
 
             return RedirectToAction("Index");
         }
@@ -189,7 +190,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                 var a = lines[i].Split('\t');
                 var oid = a[0].ToInt();
                 var o = DbUtil.Db.LoadOrganizationById(oid);
-                for(var c = 1; c < a.Length; c++)
+                for (var c = 1; c < a.Length; c++)
                     switch (names[c].Trim())
                     {
                         case "Name":
@@ -316,6 +317,113 @@ namespace CmsWeb.Areas.Setup.Controllers
                             o.RegistrationTypeId = a[c].ToInt();
                             break;
                     }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Redirect("/");
+        }
+        public ActionResult BatchUploadPeople(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var list = text.Split('\n').Select(li => li.Split('\t'));
+            var list0 = list.First().ToList();
+            var names = list0.ToDictionary(i => i.TrimEnd(), 
+                i => list0.FindIndex(s => s == i));
+
+            var campuslist = (from li in list.Skip(1)
+                              where li.Length == names.Count
+                              group li by li[names["Campus"]] into campus
+                              select campus.Key).ToList();
+            var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
+            var dbc = from c in campuslist
+                      join cp in DbUtil.Db.Campus on c equals cp.Description into j
+                      from cp in j.DefaultIfEmpty()
+                      select new { cp, c };
+            var clist = dbc.ToList();
+            foreach(var i in clist)
+                if (i.cp == null)
+                {
+                    var cp = new Campu { Description = i.c, Id = ++maxcampusid };
+                    DbUtil.Db.Campus.InsertOnSubmit(cp);
+                }
+            DbUtil.Db.SubmitChanges();
+            var campuses = DbUtil.Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
+
+
+            var q = from li in list.Skip(1)
+                    where li.Length == names.Count
+                    group li by li[names["FamilyId"]] into fam
+                    select fam;
+
+            foreach (var fam in q)
+            {
+                var f = new Family();
+                DbUtil.Db.Families.InsertOnSubmit(f);
+                var line0 = fam.First();
+                f.AddressLineOne = line0[names["Address"]];
+                f.AddressLineTwo = line0[names["Address2"]];
+                f.CityName = line0[names["City"]];
+                f.StateCode = line0[names["State"]];
+                f.ZipCode = line0[names["Zip"]];
+                f.HomePhone = line0[names["HomePhone"]];
+                DbUtil.Db.SubmitChanges();
+
+                foreach (var a in fam)
+                {
+                    var p = Person.Add(f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], false, 0, 0, null);
+                    p.AltName = a[names["AltName"]];
+                    p.CellPhone = a[names["CellPhone"]];
+                    p.EmailAddress = a[names["Email"]];
+
+                    switch (a[names["Gender"]])
+                    {
+                        case "M":
+                            p.GenderId = 1;
+                            break;
+                        case "F":
+                            p.GenderId = 2;
+                            break;
+                    }
+                    switch (a[names["Married"]])
+                    {
+                        case "M":
+                            p.MaritalStatusId = 10;
+                            break;
+                        case "S":
+                            p.MaritalStatusId = 10;
+                            break;
+                        default:
+                            p.MaritalStatusId = 0;
+                            break;
+                    }
+                    p.TitleCode = a[names["Title"]];
+                    switch (a[names["Position"]])
+                    {
+                        case "Primary":
+                            p.PositionInFamilyId = 10;
+                            break;
+                        case "Secondary":
+                            p.PositionInFamilyId = 20;
+                            break;
+                        case "Child":
+                            p.PositionInFamilyId = 30;
+                            break;
+                    }
+                    p.AddressLineOne = a[names["Address"]];
+                    p.AddressLineTwo = a[names["Address2"]];
+                    p.CityName = a[names["City"]];
+                    p.StateCode = a[names["State"]];
+                    p.ZipCode = a[names["Zip"]];
+
+                    if (a[names["Campus"]].HasValue())
+                        p.CampusId = campuses[a[names["Campus"]]];
+
+                    if (p.PossibleDuplicates().Count() > 0)
+                        p.HasDuplicates = true;
+                }
                 DbUtil.Db.SubmitChanges();
             }
             return Redirect("/");

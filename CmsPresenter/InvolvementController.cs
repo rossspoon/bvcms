@@ -265,48 +265,5 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
-        public static IEnumerable SoulmateList(int queryid, int maximumRows)
-        {
-
-            var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
-            var q2 = from p in q
-                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
-                     let soulmate2 = p.HerSoulMates.OrderByDescending(sm => sm.Meeting.MeetingDate).FirstOrDefault()
-                     let soulmate1 = p.HisSoulMates.OrderByDescending(sm => sm.Meeting.MeetingDate).FirstOrDefault()
-                     let soulmate = soulmate1 != null ? soulmate1 : soulmate2 != null ? soulmate2 : null
-                     orderby soulmate.Id, p.FamilyId, p.GenderId
-                     select new
-                     {
-                         SoulMateId = ((int?)soulmate.Id) ?? 0,
-                         Relationship = ((int?)soulmate.Relationship) ?? 0,
-                         Married = p.MaritalStatus.Description,
-                         PeopleId = p.PeopleId,
-                         Title = p.TitleCode,
-                         FirstName = p.PreferredName,
-                         LastName = p.LastName,
-                         Address = p.PrimaryAddress,
-                         Address2 = p.PrimaryAddress2,
-                         City = p.PrimaryCity,
-                         State = p.PrimaryState,
-                         Zip = p.PrimaryZip.FmtZip(),
-                         Email = p.EmailAddress,
-                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
-                         EnrollDate = bfm.EnrollmentDate.FormatDate(),
-                         JoinDate = p.JoinDate.FormatDate(),
-                         HomePhone = p.HomePhone.FmtFone(),
-                         CellPhone = p.CellPhone.FmtFone(),
-                         WorkPhone = p.WorkPhone.FmtFone(),
-                         MemberStatus = p.MemberStatus.Description,
-                         Age = p.Age.ToString(),
-                         School = p.SchoolOther,
-                         LastAttend = bfm.LastAttended.ToString(),
-                         AttendPct = bfm.AttendPct.ToString(),
-                         AttendStr = bfm.AttendStr,
-                         MemberType = bfm.MemberType.Description,
-                     };
-            return q2.Take(maximumRows);
-        }
     }
 }

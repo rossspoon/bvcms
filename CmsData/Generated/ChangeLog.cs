@@ -17,13 +17,15 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int? _PeopleId;
+		private int _Id;
+		
+		private int _PeopleId;
+		
+		private int _UserPeopleId;
+		
+		private DateTime _Created;
 		
 		private int? _FamilyId;
-		
-		private int? _UserPeopleId;
-		
-		private DateTime? _Created;
 		
 		private string _Field;
 		
@@ -38,17 +40,20 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnPeopleIdChanging(int? value);
+		partial void OnIdChanging(int value);
+		partial void OnIdChanged();
+		
+		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
+		
+		partial void OnUserPeopleIdChanging(int value);
+		partial void OnUserPeopleIdChanged();
+		
+		partial void OnCreatedChanging(DateTime value);
+		partial void OnCreatedChanged();
 		
 		partial void OnFamilyIdChanging(int? value);
 		partial void OnFamilyIdChanged();
-		
-		partial void OnUserPeopleIdChanging(int? value);
-		partial void OnUserPeopleIdChanged();
-		
-		partial void OnCreatedChanging(DateTime? value);
-		partial void OnCreatedChanged();
 		
 		partial void OnFieldChanging(string value);
 		partial void OnFieldChanged();
@@ -67,8 +72,30 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int")]
-		public int? PeopleId
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get { return this._Id; }
+
+			set
+			{
+				if (this._Id != value)
+				{
+				
+                    this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL")]
+		public int PeopleId
 		{
 			get { return this._PeopleId; }
 
@@ -82,6 +109,50 @@ namespace CmsData
 					this._PeopleId = value;
 					this.SendPropertyChanged("PeopleId");
 					this.OnPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="UserPeopleId", UpdateCheck=UpdateCheck.Never, Storage="_UserPeopleId", DbType="int NOT NULL")]
+		public int UserPeopleId
+		{
+			get { return this._UserPeopleId; }
+
+			set
+			{
+				if (this._UserPeopleId != value)
+				{
+				
+                    this.OnUserPeopleIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserPeopleId = value;
+					this.SendPropertyChanged("UserPeopleId");
+					this.OnUserPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Created", UpdateCheck=UpdateCheck.Never, Storage="_Created", DbType="datetime NOT NULL")]
+		public DateTime Created
+		{
+			get { return this._Created; }
+
+			set
+			{
+				if (this._Created != value)
+				{
+				
+                    this.OnCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._Created = value;
+					this.SendPropertyChanged("Created");
+					this.OnCreatedChanged();
 				}
 
 			}
@@ -104,50 +175,6 @@ namespace CmsData
 					this._FamilyId = value;
 					this.SendPropertyChanged("FamilyId");
 					this.OnFamilyIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="UserPeopleId", UpdateCheck=UpdateCheck.Never, Storage="_UserPeopleId", DbType="int")]
-		public int? UserPeopleId
-		{
-			get { return this._UserPeopleId; }
-
-			set
-			{
-				if (this._UserPeopleId != value)
-				{
-				
-                    this.OnUserPeopleIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserPeopleId = value;
-					this.SendPropertyChanged("UserPeopleId");
-					this.OnUserPeopleIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Created", UpdateCheck=UpdateCheck.Never, Storage="_Created", DbType="datetime")]
-		public DateTime? Created
-		{
-			get { return this._Created; }
-
-			set
-			{
-				if (this._Created != value)
-				{
-				
-                    this.OnCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._Created = value;
-					this.SendPropertyChanged("Created");
-					this.OnCreatedChanged();
 				}
 
 			}

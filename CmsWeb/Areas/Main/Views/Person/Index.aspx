@@ -79,6 +79,10 @@
             </td>
        </tr>
     </table>
+<% if (User.IsInRole("Access"))
+   { %>
+    <p style="color:blue">Volunteer tab has moved under Growth</p>
+<% } %>
     <div id="main-tab" class="ui-tabs">
         <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>

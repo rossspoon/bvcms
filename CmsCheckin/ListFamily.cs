@@ -466,7 +466,7 @@ namespace CmsCheckin
             Program.TimerReset();
             var eb = sender as Button;
             var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
-            var c = list[(int)menu.Tag];
+            var c = list[(int)ab.Tag];
             Program.PeopleId = c.cinfo.pid;
             var f = new Picture();
             f.ShowDialog();

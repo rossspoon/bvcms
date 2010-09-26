@@ -160,7 +160,7 @@ namespace CmsWeb.Models.PersonPage
             {
                 var c = new ChangeLog
                 {
-                    UserPeopleId = Util.UserPeopleId,
+                    UserPeopleId = Util.UserPeopleId.Value,
                     PeopleId = PeopleId,
                     Field = "Basic Info",
                     Data = "<table>\n" + psb.ToString() + "</table>",
@@ -173,7 +173,7 @@ namespace CmsWeb.Models.PersonPage
                 var c = new ChangeLog
                 {
                     FamilyId = p.FamilyId,
-                    UserPeopleId = Util.UserPeopleId,
+                    UserPeopleId = Util.UserPeopleId.Value,
                     PeopleId = PeopleId,
                     Field = "HomePhone",
                     Data = "<table>\n" + fsb.ToString() + "</table>",

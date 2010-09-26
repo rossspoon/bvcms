@@ -45,8 +45,6 @@ namespace CmsData
 		
    		
     	
-		private EntityRef< Person> _Person;
-		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -98,8 +96,6 @@ namespace CmsData
 		{
 			
 			
-			this._Person = default(EntityRef< Person>); 
-			
 			OnCreated();
 		}
 
@@ -137,9 +133,6 @@ namespace CmsData
 			{
 				if (this._PeopleId != value)
 				{
-				
-					if (this._Person.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
@@ -403,48 +396,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_VBSApp_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
-		public Person Person
-		{
-			get { return this._Person.Entity; }
-
-			set
-			{
-				Person previousValue = this._Person.Entity;
-				if (((previousValue != value) 
-							|| (this._Person.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Person.Entity = null;
-						previousValue.VBSApps.Remove(this);
-					}
-
-					this._Person.Entity = value;
-					if (value != null)
-					{
-						value.VBSApps.Add(this);
-						
-						this._PeopleId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._PeopleId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Person");
-				}
-
-			}
-
-		}
-
-		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

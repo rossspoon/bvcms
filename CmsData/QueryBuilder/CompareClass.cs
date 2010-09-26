@@ -100,8 +100,6 @@ namespace CmsData
                 // B --------------------
                 case QueryType.Birthday:
                     return Expressions.Birthday(parm, CompType, c.TextValue);
-                case QueryType.BadET:
-                    return Expressions.BadET(parm, CompType, c.CodeIntIds);
                 // C ------------------------
                 case QueryType.CampusId:
                     return Expressions.CampusId(parm,

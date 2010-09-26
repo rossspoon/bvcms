@@ -253,6 +253,8 @@ namespace CmsData
 		
 		private DateTime? _BDate;
 		
+		private bool? _HasDuplicates;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -267,8 +269,6 @@ namespace CmsData
    		private EntitySet< MOBSReg> _MOBSRegs;
 		
    		private EntitySet< Attend> _Attends;
-		
-   		private EntitySet< BadET> _BadETs;
 		
    		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
@@ -296,21 +296,11 @@ namespace CmsData
 		
    		private EntitySet< User> _Users;
 		
-   		private EntitySet< VBSApp> _VBSApps;
-		
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
    		private EntitySet< Volunteer> _Volunteers;
 		
    		private EntitySet< VolunteerForm> _VolunteerForms;
-		
-   		private EntitySet< LoveRespect> _HerLoveRespects;
-		
-   		private EntitySet< SoulMate> _HerSoulMates;
-		
-   		private EntitySet< LoveRespect> _HisLoveRespects;
-		
-   		private EntitySet< SoulMate> _HisSoulMates;
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -730,6 +720,9 @@ namespace CmsData
 		partial void OnBDateChanging(DateTime? value);
 		partial void OnBDateChanged();
 		
+		partial void OnHasDuplicatesChanging(bool? value);
+		partial void OnHasDuplicatesChanged();
+		
     #endregion
 		public Person()
 		{
@@ -747,8 +740,6 @@ namespace CmsData
 			this._MOBSRegs = new EntitySet< MOBSReg>(new Action< MOBSReg>(this.attach_MOBSRegs), new Action< MOBSReg>(this.detach_MOBSRegs)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
-			
-			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
 			
 			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
 			
@@ -776,21 +767,11 @@ namespace CmsData
 			
 			this._Users = new EntitySet< User>(new Action< User>(this.attach_Users), new Action< User>(this.detach_Users)); 
 			
-			this._VBSApps = new EntitySet< VBSApp>(new Action< VBSApp>(this.attach_VBSApps), new Action< VBSApp>(this.detach_VBSApps)); 
-			
 			this._VolInterestInterestCodes = new EntitySet< VolInterestInterestCode>(new Action< VolInterestInterestCode>(this.attach_VolInterestInterestCodes), new Action< VolInterestInterestCode>(this.detach_VolInterestInterestCodes)); 
 			
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
-			
-			this._HerLoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_HerLoveRespects), new Action< LoveRespect>(this.detach_HerLoveRespects)); 
-			
-			this._HerSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HerSoulMates), new Action< SoulMate>(this.detach_HerSoulMates)); 
-			
-			this._HisLoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_HisLoveRespects), new Action< LoveRespect>(this.detach_HisLoveRespects)); 
-			
-			this._HisSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_HisSoulMates), new Action< SoulMate>(this.detach_HisSoulMates)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -3517,6 +3498,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="HasDuplicates", UpdateCheck=UpdateCheck.Never, Storage="_HasDuplicates", DbType="bit")]
+		public bool? HasDuplicates
+		{
+			get { return this._HasDuplicates; }
+
+			set
+			{
+				if (this._HasDuplicates != value)
+				{
+				
+                    this.OnHasDuplicatesChanging(value);
+					this.SendPropertyChanging();
+					this._HasDuplicates = value;
+					this.SendPropertyChanged("HasDuplicates");
+					this.OnHasDuplicatesChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3587,16 +3590,6 @@ namespace CmsData
    		    get { return this._Attends; }
 
 			set	{ this._Attends.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_BadET_People", Storage="_BadETs", OtherKey="PeopleId")]
-   		public EntitySet< BadET> BadETs
-   		{
-   		    get { return this._BadETs; }
-
-			set	{ this._BadETs.Assign(value); }
 
    		}
 
@@ -3731,16 +3724,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_VBSApp_People", Storage="_VBSApps", OtherKey="PeopleId")]
-   		public EntitySet< VBSApp> VBSApps
-   		{
-   		    get { return this._VBSApps; }
-
-			set	{ this._VBSApps.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_VolInterestInterestCodes_People", Storage="_VolInterestInterestCodes", OtherKey="PeopleId")]
    		public EntitySet< VolInterestInterestCode> VolInterestInterestCodes
    		{
@@ -3767,46 +3750,6 @@ namespace CmsData
    		    get { return this._VolunteerForms; }
 
 			set	{ this._VolunteerForms.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="HerLoveRespects__Her", Storage="_HerLoveRespects", OtherKey="HerId")]
-   		public EntitySet< LoveRespect> HerLoveRespects
-   		{
-   		    get { return this._HerLoveRespects; }
-
-			set	{ this._HerLoveRespects.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="HerSoulMates__Her", Storage="_HerSoulMates", OtherKey="HerId")]
-   		public EntitySet< SoulMate> HerSoulMates
-   		{
-   		    get { return this._HerSoulMates; }
-
-			set	{ this._HerSoulMates.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="HisLoveRespects__Him", Storage="_HisLoveRespects", OtherKey="HimId")]
-   		public EntitySet< LoveRespect> HisLoveRespects
-   		{
-   		    get { return this._HisLoveRespects; }
-
-			set	{ this._HisLoveRespects.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="HisSoulMates__Him", Storage="_HisSoulMates", OtherKey="HimId")]
-   		public EntitySet< SoulMate> HisSoulMates
-   		{
-   		    get { return this._HisSoulMates; }
-
-			set	{ this._HisSoulMates.Assign(value); }
 
    		}
 
@@ -4907,19 +4850,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_CardIdentifiers(CardIdentifier entity)
 		{
 			this.SendPropertyChanging();
@@ -5089,19 +5019,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_VBSApps(VBSApp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_VBSApps(VBSApp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_VolInterestInterestCodes(VolInterestInterestCode entity)
 		{
 			this.SendPropertyChanging();
@@ -5138,58 +5055,6 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
-		}
-
-		
-		private void attach_HerLoveRespects(LoveRespect entity)
-		{
-			this.SendPropertyChanging();
-			entity.Her = this;
-		}
-
-		private void detach_HerLoveRespects(LoveRespect entity)
-		{
-			this.SendPropertyChanging();
-			entity.Her = null;
-		}
-
-		
-		private void attach_HerSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Her = this;
-		}
-
-		private void detach_HerSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Her = null;
-		}
-
-		
-		private void attach_HisLoveRespects(LoveRespect entity)
-		{
-			this.SendPropertyChanging();
-			entity.Him = this;
-		}
-
-		private void detach_HisLoveRespects(LoveRespect entity)
-		{
-			this.SendPropertyChanging();
-			entity.Him = null;
-		}
-
-		
-		private void attach_HisSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Him = this;
-		}
-
-		private void detach_HisSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Him = null;
 		}
 
 		

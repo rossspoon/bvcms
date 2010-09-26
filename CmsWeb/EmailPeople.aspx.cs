@@ -26,9 +26,12 @@ namespace CmsWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Util.SessionStarting)
+                Response.EndShowMessage("session timed out", "/", "home");
+
             var Qb = DbUtil.Db.LoadQueryById(this.QueryString<int?>("id"));
             if (Qb == null)
-                Response.EndShowMessage("query not found");
+                Response.EndShowMessage("query not found", "/", "home");
             var q = DbUtil.Db.People.Where(Qb.Predicate());
 
             if (this.QueryString<string>("parents") == "true")
