@@ -25,8 +25,7 @@ namespace CMSPresenter
         public static IEnumerable<InvovementInfo> InvolvementList(int queryid)
         {
             var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
                      orderby p.LastName, p.FirstName
                      let spouse = Db.People.SingleOrDefault(w => p.SpouseId == w.PeopleId)
@@ -71,9 +70,7 @@ namespace CMSPresenter
         }
         public static IEnumerable ChildrenList(int queryid, int maximumRows)
         {
-            var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = DbUtil.Db.PeopleQuery(queryid);
             var q2 = from p in q
                      select new
                      {
@@ -102,11 +99,9 @@ namespace CMSPresenter
         }
         public static IEnumerable ChurchList(int queryid, int maximumRows)
         {
-            var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = DbUtil.Db.PeopleQuery(queryid);
             var q2 = from p in q
-                     let rescode = Db.ResidentCodes.SingleOrDefault(r => r.Id == p.PrimaryResCode).Description
+                     let rescode = DbUtil.Db.ResidentCodes.SingleOrDefault(r => r.Id == p.PrimaryResCode).Description
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -139,12 +134,9 @@ namespace CMSPresenter
 
         public static IEnumerable AttendList(int queryid, int maximumRows)
         {
-
-            var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = DbUtil.Db.PeopleQuery(queryid);
             var q2 = from p in q
-                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId && om.PeopleId == p.PeopleId)
+                     let bfm = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId && om.PeopleId == p.PeopleId)
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -176,17 +168,15 @@ namespace CMSPresenter
 
         public static IEnumerable OrgMemberList2(int qid)
         {
-            var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(qid);
-            var qp = Db.People.Where(qB.Predicate());
-            var q2 = qp.Select(p => new 
-            { 
-                om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId), 
+            var q = DbUtil.Db.PeopleQuery(qid);
+            var q2 = q.Select(p => new
+            {
+                om = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId),
                 rr = p.RecRegs.FirstOrDefault(),
-                p = p 
+                p = p
             });
-            var q = q2.Select("new(p.PreferredName,p.LastName,om.AttendStr,om.AmountPaid)");
-            return q;
+            var q3 = q2.Select("new(p.PreferredName,p.LastName,om.AttendStr,om.AmountPaid)");
+            return q3;
         }
         public static IEnumerable OrgMemberListGroups()
         {
@@ -200,8 +190,7 @@ namespace CMSPresenter
         public static IEnumerable OrgMemberList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
                      let om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let recreg = p.RecRegs.FirstOrDefault()
@@ -239,8 +228,7 @@ namespace CMSPresenter
         public static IEnumerable PromoList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
                      let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let tm = bfm.Organization.SchedTime.Value

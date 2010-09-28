@@ -102,6 +102,18 @@ namespace CmsData
             var qb = QueryBuilderClauses.SingleOrDefault(c => c.QueryId == queryid);
             return CheckBadQuery(qb);
         }
+        public IQueryable<Person> PeopleQuery(int qid)
+        {
+            var qB = DbUtil.Db.LoadQueryById(qid);
+            var q = DbUtil.Db.People.Where(qB.Predicate());
+            if (qB.ParentsOf)
+                q = from p in q
+                    from m in p.Family.People
+                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                    select m;
+            return q;
+        }
         public QueryBuilderClause QueryBuilderScratchPad()
         {
             var qb = LoadQueryById(Util.QueryBuilderScratchPadId);
@@ -269,8 +281,7 @@ namespace CmsData
         }
         public Tag PopulateSpecialTag(int QueryId, int TagTypeId)
         {
-            var Qb = LoadQueryById(QueryId);
-            var q = People.Where(Qb.Predicate());
+            var q = PeopleQuery(QueryId);
             return PopulateSpecialTag(q, TagTypeId);
         }
         public Tag PopulateSpecialTag(IQueryable<Person> q, int TagTypeId)

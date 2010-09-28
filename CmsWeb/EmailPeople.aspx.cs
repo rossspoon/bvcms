@@ -34,12 +34,13 @@ namespace CmsWeb
                 Response.EndShowMessage("query not found", "/", "home");
             var q = DbUtil.Db.People.Where(Qb.Predicate());
 
-            if (this.QueryString<string>("parents") == "true")
+            if (this.QueryString<string>("parents") == "true" || Qb.ParentsOf)
             {
                 q = from p in q
-                    from m in p.Family.People
-                    where m.PositionInFamilyId == 10
-                    select m;
+                         from m in p.Family.People
+                         where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                         || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                         select m;
             }
 
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
@@ -71,42 +72,20 @@ namespace CmsWeb
 
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
-            if (args.wantParents)
-            {
-                var q1 = from p in q
-                         where p.PositionInFamilyId == 10
-                         select p;
-                var q2 = from p in q
-                         where p.PositionInFamilyId != 10
+            if (args.wantParents || Qb.ParentsOf)
+                q = from p in q
                          from m in p.Family.People
-                         where m.PositionInFamilyId == 10
+                         where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                         || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                          select m;
-                var em = new Emailer(args.FromAddress, args.FromName);
 
-                q1 = from p in q1.Distinct()
-                    where p.EmailAddress != null && p.EmailAddress != ""
-                    where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
-                    orderby p.PeopleId
-                    select p;
-                em.SendPeopleEmail(q1, args.Subject, args.Body, args.IsHtml);
-                
-                q2 = from p in q2.Distinct()
-                    where p.EmailAddress != null && p.EmailAddress != ""
-                    where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
-                    orderby p.PeopleId
-                    select p;
-                em.SendPeopleEmail(q2, args.Subject, args.Body, args.IsHtml);
-            }
-            else
-            {
-                q = from p in q.Distinct()
-                    where p.EmailAddress != null && p.EmailAddress != ""
-                    where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
-                    orderby p.PeopleId
-                    select p;
-                var em = new Emailer(args.FromAddress, args.FromName);
-                em.SendPeopleEmail(q, args.Subject, args.Body, args.IsHtml);
-            }
+            q = from p in q.Distinct()
+                where p.EmailAddress != null && p.EmailAddress != ""
+                where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
+                orderby p.PeopleId
+                select p;
+            var em = new Emailer(args.FromAddress, args.FromName);
+            em.SendPeopleEmail(q, args.Subject, args.Body, args.IsHtml);
         }
 
         protected void SendEmail_Click(object sender, EventArgs e)

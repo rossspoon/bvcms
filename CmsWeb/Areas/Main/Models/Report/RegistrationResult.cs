@@ -67,8 +67,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (qid.HasValue) // print using a query
             {
                 pageEvents.StartPageSet("Registration Report: {0:d}".Fmt(dt));
-                var qB = DbUtil.Db.LoadQueryById(qid.Value);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
+                var q2 = DbUtil.Db.PeopleQuery(qid.Value);
+                var q = from p in q2
                         orderby p.Name2
                         select new
                         {

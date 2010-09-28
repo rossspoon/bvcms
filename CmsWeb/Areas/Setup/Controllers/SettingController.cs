@@ -352,7 +352,6 @@ namespace CmsWeb.Areas.Setup.Controllers
             DbUtil.Db.SubmitChanges();
             var campuses = DbUtil.Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
 
-
             var q = from li in list.Skip(1)
                     where li.Length == names.Count
                     group li by li[names["FamilyId"]] into fam
@@ -390,7 +389,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                     switch (a[names["Married"]])
                     {
                         case "M":
-                            p.MaritalStatusId = 10;
+                            p.MaritalStatusId = 20;
                             break;
                         case "S":
                             p.MaritalStatusId = 10;

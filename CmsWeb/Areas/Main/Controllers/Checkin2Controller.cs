@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
 
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);
@@ -40,33 +41,31 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
             return new FamilyResult(kioskmode, id, campus, thisday, 0, false);
         }
         public ActionResult Class(int id, int thisday)
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            if (org == null)
-                return new EmptyResult();
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
             return new ClassResult(id, thisday);
         }
-        public ActionResult Classes(int id, int campus, int thisday, int page, bool? noagecheck, bool? kioskmode)
+        public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var p = DbUtil.Db.LoadPersonById(id);
-            if (p == null)
-                return new EmptyResult();
             Response.NoCache();
-            return new ClassesResult(kioskmode, p, thisday, campus, page, noagecheck ?? false);
+            DbUtil.Db.SetNoLock();
+            return new ClassesResult(kioskmode, id, thisday, campus, noagecheck ?? false);
         }
         public ActionResult NameSearch(string id, int? page)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
             return new NameSearchResult2(id, page.Value);
         }
         public class PersonInfo

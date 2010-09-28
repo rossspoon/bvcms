@@ -26,8 +26,7 @@ namespace CMSPresenter
 
         public IEnumerable<ProspectInfo> ListByQuery(int qid)
         {
-            var qB = Db.LoadQueryById(qid);
-            var q = Db.People.Where(qB.Predicate());
+            var q = Db.PeopleQuery(qid);
             return FetchList(q);
         }
 

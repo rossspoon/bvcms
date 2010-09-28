@@ -15,8 +15,7 @@ namespace CMSPresenter
     {
         public IEnumerable<InReachInfo> ListByQuery(int qid)
         {
-            var qB = DbUtil.Db.LoadQueryById(qid);
-            var q = DbUtil.Db.People.Where(qB.Predicate());
+            var q = DbUtil.Db.PeopleQuery(qid);
             return FetchList(q);
         }
 

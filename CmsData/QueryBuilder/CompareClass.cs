@@ -316,6 +316,11 @@ namespace CmsData
                                CompType,
                                c.DateValue);
                 // P ----------------
+                case QueryType.ParentsOf:
+                    c.SetParentsOf(CompType, c.CodeIds == "1");
+                    return Expressions.ParentsOf(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.PendingCurrentOrg:
                     return Expressions.PendingCurrentOrg(parm,
                                CompType,

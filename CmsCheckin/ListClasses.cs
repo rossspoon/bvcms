@@ -32,11 +32,11 @@ namespace CmsCheckin
                 {
                     case Keys.PageUp:
                         if (pgup.Visible)
-                            ShowResults(PeopleId, prev.Value);
+                            ShowPage(page - 1);
                         return true;
                     case Keys.PageDown:
                         if (pgdn.Visible)
-                            ShowResults(PeopleId, next.Value);
+                            ShowPage(page + 1);
                         return true;
                     case Keys.Escape:
                         this.Swap(Program.family);
@@ -51,37 +51,36 @@ namespace CmsCheckin
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private List<ClassInfo> list;
+        private float points;
+        private Font Labfont;
+        private string Verdana;
+        private XDocument x;
         DateTime time;
         int FamilyId;
         int PeopleId;
-        int? next, prev;
+        int page;
         List<Control> controls = new List<Control>();
         bool ShowAllClasses;
 
-        public void ShowResults(int pid, int page)
+        public void ShowResults(int pid)
         {
-            ClearControls();
-            var url = "Checkin2/Classes/" + pid + Program.QueryString + "&page=" + page;
+            var url = "Checkin2/Classes/" + pid + Program.QueryString;
             if (ShowAllClasses)
                 url += "&noagecheck=true";
-            var x = this.GetDocument(url);
+            x = this.GetDocument(url);
 
             time = DateTime.Now;
 
-            var points = 14F;
+            points = 14F;
 
-            string Verdana = "Verdana";
-            Font labfont;
-            var g = this.CreateGraphics();
+            Verdana = "Verdana";
             FamilyId = x.Root.Attribute("fid").Value.ToInt();
             PeopleId = x.Root.Attribute("pid").Value.ToInt();
-            next = x.Root.Attribute("next").Value.ToInt2();
-            prev = x.Root.Attribute("prev").Value.ToInt2();
-            pgdn.Visible = next.HasValue;
-            pgup.Visible = prev.HasValue;
 
             if (x.Descendants("class").Count() == 0)
             {
+                ClearControls();
                 var lab = new Label();
                 lab.Font = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                 lab.Location = new Point(15, 200);
@@ -92,15 +91,31 @@ namespace CmsCheckin
                 GoBackButton.Text = "Go Back";
                 return;
             }
-
+            list = new List<ClassInfo>();
+            foreach (var e in x.Descendants("class"))
+            {
+                list.Add(new ClassInfo
+                {
+                    display = e.Attribute("display").Value,
+                    oid = e.Attribute("orgid").Value.ToInt(),
+                    pid = PeopleId,
+                    nlabels = e.Attribute("nlabels").Value.ToInt(),
+                });
+            }
+            ShowPage(1);
+        }
+        public void ShowPage(int page)
+        {
+            ClearControls();
+            this.page = page;
+            var g = this.CreateGraphics();
             while (true)
             {
                 var wid = 0;
-                labfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                foreach (var e in x.Descendants("class"))
+                Labfont = new Font(Verdana, points, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                foreach (var c in list)
                 {
-                    var s = e.Attribute("display").Value;
-                    var size = g.MeasureString(s, labfont);
+                    var size = g.MeasureString(c.display, Labfont);
                     wid = Math.Max(wid, (int)size.Width);
                 }
                 if (wid > 1000)
@@ -110,28 +125,33 @@ namespace CmsCheckin
                 }
                 break;
             }
-            var row = 0;
-            foreach (var e in x.Descendants("class"))
+            const int PageSize = 10;
+
+            int srow = (page - 1) * PageSize;
+            int erow = srow + PageSize;
+            if (erow > list.Count)
+                erow = list.Count;
+            pgdn.Visible = list.Count > erow;
+            pgup.Visible = srow > 0;
+            int rowheight = 50;
+            int top = 50;
+
+            for (var r = srow; r < erow; r++)
             {
+                var c = list[r];
                 var ab = new Button();
                 controls.Add(ab);
                 ab.BackColor = SystemColors.ControlLight;
-                ab.Font = labfont;
-                ab.Location = new Point(10, 100 + (row * 50));
+                ab.Font = Labfont;
+                top += rowheight;
+                ab.Location = new Point(10, top);
                 ab.Size = new Size(1000, 45);
                 ab.TextAlign = ContentAlignment.MiddleLeft;
                 ab.UseVisualStyleBackColor = false;
-                var c = new ClassInfo
-                {
-                    oid = e.Attribute("orgid").Value.ToInt(),
-                    pid = PeopleId,
-                    nlabels = e.Attribute("nlabels").Value.ToInt()
-                };
                 ab.Tag = c;
-                ab.Text = e.Attribute("display").Value;
+                ab.Text = c.display;
                 this.Controls.Add(ab);
                 ab.Click += new EventHandler(ab_Click);
-                row++;
             }
             Program.TimerStart(timer1_Tick);
         }
@@ -177,23 +197,24 @@ namespace CmsCheckin
         }
         private void pgdn_Click(object sender, EventArgs e)
         {
-            ShowResults(PeopleId, next.Value);
+            ShowPage(page + 1);
         }
 
         private void pgup_Click(object sender, EventArgs e)
         {
-            ShowResults(PeopleId, prev.Value);
+            ShowPage(page - 1);
         }
 
         private void allclasses_Click(object sender, EventArgs e)
         {
             ShowAllClasses = true;
-            ShowResults(PeopleId, 1);
+            ShowResults(PeopleId);
         }
 
     }
     public class ClassInfo
     {
+        public string display { get; set; }
         public int oid { get; set; }
         public int pid { get; set; }
         public string mv { get; set; }

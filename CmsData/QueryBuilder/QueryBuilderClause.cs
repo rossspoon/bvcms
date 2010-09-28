@@ -81,7 +81,15 @@ namespace CmsData
                 c = c.Parent;
             c.includeDeceased = true;
         }
+        internal void SetParentsOf(CompareType op, bool tf)
+        {
+            var c = this;
+            while (c.Parent != null)
+                c = c.Parent;
+            c.ParentsOf = ((tf && op == CompareType.Equal) || (!tf && op == CompareType.NotEqual));
+        }
         private bool includeDeceased = false;
+        public bool ParentsOf { get; set; }
         public Expression<Func<Person, bool>> Predicate()
         {
             var parm = Expression.Parameter(typeof(Person), "p");

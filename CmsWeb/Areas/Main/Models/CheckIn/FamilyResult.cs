@@ -25,16 +25,17 @@ namespace CmsWeb.Models
             this.kioskmode = kioskmode;
             if (fid > 0)
             {
-                var lockf = DbUtil.Db.FamilyCheckinLocks.SingleOrDefault(f => f.FamilyId == fid);
+                var db = new CMSDataContext(Util.ConnectionString);
+                var lockf = db.FamilyCheckinLocks.SingleOrDefault(f => f.FamilyId == fid);
                 if (lockf == null)
                 {
                     lockf = new FamilyCheckinLock { FamilyId = fid, Created = DateTime.Now };
-                    DbUtil.Db.FamilyCheckinLocks.InsertOnSubmit(lockf);
+                    db.FamilyCheckinLocks.InsertOnSubmit(lockf);
                 }
                 lockf.Locked = true;
                 if (!waslocked)
                     lockf.Created = DateTime.Now;
-                DbUtil.Db.SubmitChanges();
+                db.SubmitChanges();
             }
         }
         public override void ExecuteResult(ControllerContext context)

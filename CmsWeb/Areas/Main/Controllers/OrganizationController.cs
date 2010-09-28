@@ -284,8 +284,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ContentResult TagAll(int id, string m)
         {
             DbUtil.Db.SetNoLock();
-            var Qb = DbUtil.Db.LoadQueryById(id);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = DbUtil.Db.PeopleQuery(id);
             switch (m)
             {
                 case "tag":

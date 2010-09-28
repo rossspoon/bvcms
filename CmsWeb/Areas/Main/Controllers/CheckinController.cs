@@ -20,6 +20,7 @@ namespace CmsWeb.Areas.Main.Controllers
             Response.NoCache();
 
             var m = new CheckInModel();
+            DbUtil.Db.SetNoLock();
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
@@ -31,6 +32,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult Family(int id, int campus, int thisday, int? page, bool? kioskmode)
         {
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
             return new FamilyResult(kioskmode, id, campus, thisday, page.Value, false);
         }
         public ActionResult Class(int id, int thisday)
@@ -43,15 +45,14 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Classes(int id, int campus, int thisday, int page, bool? noagecheck, bool? kioskmode)
         {
-            var p = DbUtil.Db.LoadPersonById(id);
-            if (p == null)
-                return new EmptyResult();
             Response.NoCache();
-            return new ClassesResult(kioskmode, p, thisday, campus, page, noagecheck ?? false);
+            DbUtil.Db.SetNoLock();
+            return new ClassesResult0(kioskmode, id, thisday, campus, page, noagecheck ?? false);
         }
         public ActionResult NameSearch(string id, int? page)
         {
             Response.NoCache();
+            DbUtil.Db.SetNoLock();
             return new NameSearchResult2(id, page.Value);
         }
         public class PersonInfo

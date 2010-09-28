@@ -24,10 +24,7 @@ namespace CmsWeb.Models.OrganizationPage
         private IQueryable<Person> FetchVisitors()
         {
             if (_visitors == null)
-            {
-                var qb = DbUtil.Db.LoadQueryById(queryid);
-                _visitors = DbUtil.Db.People.Where(qb.Predicate());
-            }
+                _visitors = DbUtil.Db.PeopleQuery(queryid);
             return _visitors;
         }
         int? _count;

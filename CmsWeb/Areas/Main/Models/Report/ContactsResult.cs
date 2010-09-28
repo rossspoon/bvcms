@@ -59,10 +59,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             StartPageSet();
             if (qid.HasValue) // print using a query
             {
-                var qB = DbUtil.Db.LoadQueryById(qid.Value);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        orderby p.Name2
-                        select p;
+                var q = DbUtil.Db.PeopleQuery(qid.Value);
+                q = from p in q
+                    orderby p.Name2
+                    select p;
                 foreach (var p in q)
                     AddRow(p);
                 if (t.Rows.Count > 1)

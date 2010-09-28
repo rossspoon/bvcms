@@ -629,6 +629,15 @@ namespace CmsWeb.Models
                 LoadScratchPad();
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
+            if (Qb.ParentsOf)
+            {
+                var q2 = from p in q
+                         from m in p.Family.People
+                         where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                         || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                         select m;
+                return q2;
+            }
             return q;
         }
         public void TagAll()
@@ -637,6 +646,14 @@ namespace CmsWeb.Models
                 LoadScratchPad();
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
+            if (Qb.ParentsOf)
+            {
+                q = from p in q
+                    from m in p.Family.People
+                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                    select m;
+            }
             Db.TagAll(q);
         }
         public void UnTagAll()
@@ -645,6 +662,14 @@ namespace CmsWeb.Models
                 LoadScratchPad();
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate());
+            if (Qb.ParentsOf)
+            {
+                q = from p in q
+                    from m in p.Family.People
+                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                    select m;
+            }
             Db.UnTagAll(q);
         }
         private IEnumerable<PeopleInfo> FetchPeopleList(IQueryable<Person> query)

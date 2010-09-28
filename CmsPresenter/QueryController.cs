@@ -136,28 +136,24 @@ namespace CMSPresenter
         {
             Db.SetNoLock();
             var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
             QueryDescription = Qb.Description;
-            return q;
+            return Db.PeopleQuery(QueryId);
         }
         public void TagAll(int QueryId)
         {
             Db.SetNoLock();
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.PeopleQuery(QueryId);
             Db.TagAll(q);
         }
         public void UnTagAll(int QueryId)
         {
             Db.SetNoLock();
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.PeopleQuery(QueryId);
             Db.UnTagAll(q);
         }
         public NewContact AddContact(int QueryId)
         {
-            var Qb = Db.LoadQueryById(QueryId);
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.PeopleQuery(QueryId);
             var c = new NewContact { ContactDate = Util.Now.Date };
             c.CreatedDate = c.ContactDate;
             c.ContactTypeId = (int)NewContact.ContactTypeCode.Other;
@@ -165,9 +161,7 @@ namespace CMSPresenter
             if (q.Count() > 500)
                 return null;
             foreach (var p in q)
-            {
                 c.contactees.Add(new Contactee { PeopleId = p.PeopleId });
-            }
             Db.NewContacts.InsertOnSubmit(c);
             Db.SubmitChanges();
             return c;

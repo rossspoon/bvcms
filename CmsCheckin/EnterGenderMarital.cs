@@ -106,7 +106,7 @@ namespace CmsCheckin
             else
             {
                 this.Swap(Program.classes);
-                Program.classes.ShowResults(Program.PeopleId, 1);
+                Program.classes.ShowResults(Program.PeopleId);
             }
         }
 
@@ -194,8 +194,6 @@ namespace CmsCheckin
                 sb.AppendLine("first name needed");
             if (!last.Text.HasValue())
                 sb.AppendLine("last name needed");
-            if (!cellphone.Text.HasValue() && !homephone.Text.HasValue())
-                sb.AppendLine("phone number needed");
             if (Program.AskChurch && ActiveOther.CheckState == CheckState.Indeterminate)
                 sb.AppendLine("Active Other Church needed");
             if (sb.Length > 0)

@@ -15,7 +15,6 @@ namespace CmsWeb.Models
     {
         public List<FamilyInfo> Match(string id, int campus, int thisday)
         {
-            DbUtil.Db.SetNoLock();
             var ph = Util.GetDigits(id).PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
@@ -41,7 +40,6 @@ namespace CmsWeb.Models
         }
         public List<Attendee> FamilyMembers(int id, int campus, int thisday)
         {
-            DbUtil.Db.SetNoLock();
             var now = Util.Now;
             // get org members first
             var members =
@@ -376,7 +374,8 @@ namespace CmsWeb.Models
             if (info.EntryPointId == null)
             {
                 var p = DbUtil.Db.LoadPersonById(PeopleId);
-                p.EntryPointId = info.OrgEntryPoint;
+                if (info.OrgEntryPoint > 0)
+                    p.EntryPointId = info.OrgEntryPoint;
             }
             if (meeting == null)
             {

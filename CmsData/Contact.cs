@@ -43,9 +43,7 @@ namespace CmsData
         }
         public static int AddContact(int qid)
         {
-            var Qb = DbUtil.Db.LoadQueryById(qid);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
-
+            var q = DbUtil.Db.PeopleQuery(qid);
             if (q.Count() > 100)
                 return -1;
             if (q.Count() == 0)

@@ -275,88 +275,88 @@ namespace CmsWeb.Areas.Main.Models.Report
         private IQueryable<ProspectInfo> GetProspectInfo()
         {
             var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(qid.Value);
-            var q = from p in Db.People.Where(qB.Predicate())
-                    orderby p.PrimaryZip, p.LastName, p.Name
-                    select new ProspectInfo
-                    {
-                        PeopleId = p.PeopleId,
-                        Name = p.Name,
-                        Address = p.PrimaryAddress,
-                        Address2 = p.PrimaryAddress2,
-                        Age = p.Age != null ? p.Age.ToString() : "",
-                        MemberStatus = p.MemberStatus.Description,
-                        CityStateZip = Util.FormatCSZ4(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-                        Gender = p.GenderId == 1 ? "Male" : p.GenderId == 2 ? "Female" : "",
-                        MaritalStatus = p.MaritalStatus.Description,
-                        PositionInFamily = p.FamilyPosition.Description,
-                        Origin = p.Origin.Description,
-                        Comment = p.Comments,
-                        ChristAsSavior = p.ChristAsSavior ? "Prayed to receive Christ as Savior" : "",
-                        InterestedInJoining = p.InterestedInJoining ? "Interested in joining Church" : "",
-                        PleaseVisit = p.PleaseVisit ? "Requests a visit" : "",
-                        InfoBecomeAChristian = p.InfoBecomeAChristian ? "Interested in becoming a Christian" : "",
-                        CellPhone = p.CellPhone,
-                        HomePhone = p.HomePhone,
-                        WorkPhone = p.WorkPhone,
+            var q = Db.PeopleQuery(qid.Value);
+            var q2 = from p in q
+                     orderby p.PrimaryZip, p.LastName, p.Name
+                     select new ProspectInfo
+                     {
+                         PeopleId = p.PeopleId,
+                         Name = p.Name,
+                         Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
+                         Age = p.Age != null ? p.Age.ToString() : "",
+                         MemberStatus = p.MemberStatus.Description,
+                         CityStateZip = Util.FormatCSZ4(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+                         Gender = p.GenderId == 1 ? "Male" : p.GenderId == 2 ? "Female" : "",
+                         MaritalStatus = p.MaritalStatus.Description,
+                         PositionInFamily = p.FamilyPosition.Description,
+                         Origin = p.Origin.Description,
+                         Comment = p.Comments,
+                         ChristAsSavior = p.ChristAsSavior ? "Prayed to receive Christ as Savior" : "",
+                         InterestedInJoining = p.InterestedInJoining ? "Interested in joining Church" : "",
+                         PleaseVisit = p.PleaseVisit ? "Requests a visit" : "",
+                         InfoBecomeAChristian = p.InfoBecomeAChristian ? "Interested in becoming a Christian" : "",
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
+                         WorkPhone = p.WorkPhone,
 
-                        Family = from m in p.Family.People
-                                 where m.DeceasedDate == null
-                                 where m.PeopleId != p.PeopleId
-                                 orderby m.PositionInFamilyId, m.Age descending
-                                 select new FamilyMember
-                                 {
-                                     Id = m.PeopleId,
-                                     Name = m.Name,
-                                     Age = m.Age,
-                                     Deceased = m.DeceasedDate != null,
-                                     PositionInFamily = m.FamilyPosition.Description,
-                                     MemberStatus = m.MemberStatus.Description
-                                 },
-                        Memberships = from om in p.OrganizationMembers
-                                      where dt > om.EnrollmentDate
-                                      let o = om.Organization
-                                      let l = Db.People.SingleOrDefault(l => l.PeopleId == o.LeaderId)
-                                      orderby om.Organization.OrganizationName
-                                      select new OrganizationView
-                                      {
-                                          Id = o.OrganizationId,
-                                          Name = o.OrganizationName,
-                                          Location = o.Location,
-                                          LeaderName = l.Name,
-                                          MeetingTime = o.MeetingTime,
-                                          MemberType = om.MemberType.Description,
-                                          EnrollDate = om.EnrollmentDate,
-                                          DivisionName = o.Division.Name
-                                      },
-                        Contacts = from ch in p.contactsHad
-                                   let c = ch.contact
-                                   orderby c.ContactDate descending
-                                   select new ContactInfo
-                                   {
-                                       ContactId = c.ContactId,
-                                       Comments = c.Comments,
-                                       ContactDate = c.ContactDate,
-                                       ContactReason = c.NewContactReason.Description,
-                                       TypeOfContact = c.NewContactType.Description,
-                                       Team = string.Join(",", c.contactsMakers.Select(cm => cm.person.Name).ToArray())
-                                   },
-                        Attends = (from a in p.Attends
-                                   where a.AttendanceFlag == true
-                                   let o = a.Organization
-                                   orderby a.MeetingDate descending, o.OrganizationName
-                                   select new AttendInfo
-                                   {
-                                       MeetingId = a.MeetingId,
-                                       OrganizationName = o.OrganizationName,
-                                       Teacher = o.LeaderName,
-                                       AttendType = a.AttendType.Description,
-                                       MeetingName = o.Division.Name + ": " + o.OrganizationName,
-                                       MeetingDate = a.MeetingDate,
-                                       MemberType = a.MemberType.Description,
-                                   }).Take(10)
-                    };
-            return q;
+                         Family = from m in p.Family.People
+                                  where m.DeceasedDate == null
+                                  where m.PeopleId != p.PeopleId
+                                  orderby m.PositionInFamilyId, m.Age descending
+                                  select new FamilyMember
+                                  {
+                                      Id = m.PeopleId,
+                                      Name = m.Name,
+                                      Age = m.Age,
+                                      Deceased = m.DeceasedDate != null,
+                                      PositionInFamily = m.FamilyPosition.Description,
+                                      MemberStatus = m.MemberStatus.Description
+                                  },
+                         Memberships = from om in p.OrganizationMembers
+                                       where dt > om.EnrollmentDate
+                                       let o = om.Organization
+                                       let l = Db.People.SingleOrDefault(l => l.PeopleId == o.LeaderId)
+                                       orderby om.Organization.OrganizationName
+                                       select new OrganizationView
+                                       {
+                                           Id = o.OrganizationId,
+                                           Name = o.OrganizationName,
+                                           Location = o.Location,
+                                           LeaderName = l.Name,
+                                           MeetingTime = o.MeetingTime,
+                                           MemberType = om.MemberType.Description,
+                                           EnrollDate = om.EnrollmentDate,
+                                           DivisionName = o.Division.Name
+                                       },
+                         Contacts = from ch in p.contactsHad
+                                    let c = ch.contact
+                                    orderby c.ContactDate descending
+                                    select new ContactInfo
+                                    {
+                                        ContactId = c.ContactId,
+                                        Comments = c.Comments,
+                                        ContactDate = c.ContactDate,
+                                        ContactReason = c.NewContactReason.Description,
+                                        TypeOfContact = c.NewContactType.Description,
+                                        Team = string.Join(",", c.contactsMakers.Select(cm => cm.person.Name).ToArray())
+                                    },
+                         Attends = (from a in p.Attends
+                                    where a.AttendanceFlag == true
+                                    let o = a.Organization
+                                    orderby a.MeetingDate descending, o.OrganizationName
+                                    select new AttendInfo
+                                    {
+                                        MeetingId = a.MeetingId,
+                                        OrganizationName = o.OrganizationName,
+                                        Teacher = o.LeaderName,
+                                        AttendType = a.AttendType.Description,
+                                        MeetingName = o.Division.Name + ": " + o.OrganizationName,
+                                        MeetingDate = a.MeetingDate,
+                                        MemberType = a.MemberType.Description,
+                                    }).Take(10)
+                     };
+            return q2;
         }
 
         class PageEvent : PdfPageEventHelper

@@ -1418,6 +1418,18 @@ namespace CmsData
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             return expr;
         }
+        internal static Expression ParentsOf(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = null;
+
+            bool include = ((tf && op == CompareType.Equal) || (!tf && op == CompareType.NotEqual));
+            pred = p => p.PeopleId > 0;
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            return expr;
+        }
         internal static Expression UserRole(
             ParameterExpression parm,
             CompareType op,

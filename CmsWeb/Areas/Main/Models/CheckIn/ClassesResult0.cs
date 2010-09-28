@@ -9,18 +9,20 @@ using CmsData;
 
 namespace CmsWeb.Models
 {
-    public class ClassesResult : ActionResult
+    public class ClassesResult0 : ActionResult
     {
         private int thisday;
         private int campusid;
+        private int page;
         private bool? kioskmode;
+        Person p;
         private int familyid;
         private int? peopleid;
         private DateTime? bd;
         private int? grade;
 
         public bool noagecheck { get; set; }
-        public ClassesResult(bool? kioskmode, int id, int thisday, int campusid, bool noagecheck)
+        public ClassesResult0(bool? kioskmode, int id, int thisday, int campusid, int page, bool noagecheck)
         {
             this.thisday = thisday;
             this.campusid = campusid;
@@ -40,6 +42,7 @@ namespace CmsWeb.Models
             bd = i.BirthDate;
             grade = i.Grade;
 
+            this.page = page;
             this.noagecheck = noagecheck;
             this.kioskmode = kioskmode;
         }
@@ -83,6 +86,18 @@ namespace CmsWeb.Models
                         orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                         select o;
 
+                var count = q.Count();
+                const int INT_PageSize = 10;
+                var startrow = (page - 1) * INT_PageSize;
+                if (count > startrow + INT_PageSize)
+                    w.WriteAttributeString("next", (page + 1).ToString());
+                else
+                    w.WriteAttributeString("next", "");
+                if (page > 1)
+                    w.WriteAttributeString("prev", (page - 1).ToString());
+                else
+                    w.WriteAttributeString("prev", "");
+
                 var q2 = from o in q
                          select new
                          {
@@ -101,7 +116,7 @@ namespace CmsWeb.Models
                                  ),
                          };
 
-                foreach (var o in q2)
+                foreach (var o in q2.Skip(startrow).Take(INT_PageSize))
                 {
                     w.WriteStartElement("class");
                     w.WriteAttributeString("orgid", o.OrganizationId.ToString());

@@ -59,8 +59,7 @@ namespace CMSPresenter
         public static IEnumerable FetchExcelList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;
-            var qB = Db.LoadQueryById(queryid);
-            var query = Db.People.Where(qB.Predicate());
+            var query = Db.PeopleQuery(queryid);
             var q = from p in query
                     let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
                     select new
@@ -299,7 +298,7 @@ namespace CMSPresenter
                 case "Name":
                 default:
                     query = from p in query
-                            orderby  p.LastName,
+                            orderby p.LastName,
                             p.FirstName,
                             p.PeopleId
                             select p;

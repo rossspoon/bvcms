@@ -104,10 +104,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             var orgkeys = Person.OrgKeys(id);
             var q = DbUtil.Db.People.AsQueryable();
             if (qid.HasValue)
-            {
-                var Qb = DbUtil.Db.LoadQueryById(qid);
-                q = DbUtil.Db.People.Where(Qb.Predicate());
-            }
+                q = DbUtil.Db.PeopleQuery(qid.Value);
             q = from p in q
                 where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) > 0
                 select p;

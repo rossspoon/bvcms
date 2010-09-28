@@ -55,7 +55,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             w.PageEvent = pageEvents;
             doc.Open();
             dc = w.DirectContent;
-            
+
             t = new PdfPTable(1);
             t.WidthPercentage = 100;
             t.DefaultCell.Padding = 0;
@@ -70,21 +70,21 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             if (qid.HasValue) // print using a query
             {
-                var qB = DbUtil.Db.LoadQueryById(qid.Value);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        let person = p
-                        group p by p.FamilyId into g
-                        select new
-                        {
-                            members = from m in g.First().Family.People
-                                      select new
-                                      {
-                                          order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
-                                                m.PositionInFamilyId,
-                                          person = m
-                                      }
-                        };
-                foreach (var f in q)
+                var q = DbUtil.Db.PeopleQuery(qid.Value);
+                var q2 = from p in q
+                         let person = p
+                         group p by p.FamilyId into g
+                         select new
+                         {
+                             members = from m in g.First().Family.People
+                                       select new
+                                       {
+                                           order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
+                                                 m.PositionInFamilyId,
+                                           person = m
+                                       }
+                         };
+                foreach (var f in q2)
                 {
                     var ft = new PdfPTable(HeaderWids);
                     ft.DefaultCell.SetLeading(2.0f, 1f);
@@ -159,7 +159,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             c2.Add(new Chunk("{0} ({1})".Fmt(cv.MemberStatusCodes().ItemValue(p.MemberStatusId), "?"), font));
             t.AddCell(c2);
 
-            
+
             var c3 = new Phrase((
                     p.PositionInFamilyId == 10 ? "Primary Adult" :
                     p.PositionInFamilyId == 20 ? "Secondary Adult" :

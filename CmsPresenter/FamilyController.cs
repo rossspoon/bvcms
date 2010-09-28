@@ -89,13 +89,6 @@ namespace CMSPresenter
              DbUtil.Db.SubmitChanges();
 
          }
-        //public IEnumerable<FamilyMember> ListByQuery(int qid)
-        //{
-        //    var Db = new CMSDataContext(Util.ConnectionString);
-        //    var qB = Db.LoadQueryById(qid);
-        //    var q = Db.Families.Where(qB.Predicate());
-        //    return FetchList(q);
-        //}
          public static void AddRelatedFamily(int familyId, int relatedPersonId)
          {
              var p = DbUtil.Db.LoadPersonById(relatedPersonId);

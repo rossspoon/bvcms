@@ -46,18 +46,18 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 var o = list(org, null, null).First();
                 StartPageSet(o);
-                var qB = DbUtil.Db.LoadQueryById(qid.Value);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        join m in ctl.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
-                        from m in j.DefaultIfEmpty()
-                        orderby p.Name2
-                        select new
-                        {
-                            p.Name,
-                            MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
-                            p.PeopleId,
-                        };
-                foreach (var i in q)
+                var q = DbUtil.Db.PeopleQuery(qid.Value);
+                var q2 = from p in q
+                         join m in ctl.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
+                         from m in j.DefaultIfEmpty()
+                         orderby p.Name2
+                         select new
+                         {
+                             p.Name,
+                             MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
+                             p.PeopleId,
+                         };
+                foreach (var i in q2)
                     AddRow(i.MembertypeCode, i.Name, i.PeopleId, font);
                 if (t.Rows.Count > 1)
                     doc.Add(t);

@@ -101,6 +101,7 @@ namespace CmsData
 		OriginId,
         OtherNewChurch,
         OtherPreviousChurch,
+        ParentsOf,
         PendingCurrentOrg,
         PreviousCurrentOrg,
         PeopleExtra,

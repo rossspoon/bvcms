@@ -95,9 +95,10 @@ namespace CmsCheckin
 
             Program.MaxLabels = x.Root.Attribute("maxlabels").Value.ToInt();
 
-            button1.Enabled = true;
+            list = new List<AttendLabel>();
             if (x.Descendants("attendee").Count() == 0)
             {
+                ClearControls();
                 var lab = new Label();
                 lab.Font = pfont;
                 lab.Location = new Point(15, 200);
@@ -111,11 +112,9 @@ namespace CmsCheckin
                 this.Controls.Add(lab);
                 Return.Text = "Try again";
                 controls.Add(lab);
-                button1.Enabled = false;
                 return;
             }
 
-            list = new List<AttendLabel>();
             foreach (var e in x.Descendants("attendee"))
             {
                 list.Add(new AttendLabel
@@ -529,7 +528,7 @@ namespace CmsCheckin
             SaveClasses();
             RemoveMenu();
             this.Swap(Program.classes);
-            Program.classes.ShowResults(c.cinfo.pid, 1);
+            Program.classes.ShowResults(c.cinfo.pid);
         }
         private void SaveClasses()
         {
@@ -697,6 +696,11 @@ namespace CmsCheckin
         private void MagicButton_Click(object sender, EventArgs e)
         {
             Program.TimerStop();
+            if (list.Count == 0)
+            {
+                this.Swap(Program.namesearch);
+                return;
+            }
             foreach (var c in sucontrols)
             {
                 c.Enabled = true;

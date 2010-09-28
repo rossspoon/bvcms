@@ -24,9 +24,7 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchIndividualList(string sortExpression, int QueryId)
         {
-            var Qb = DbUtil.Db.LoadQueryById(QueryId);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
-
+            var q = DbUtil.Db.PeopleQuery(QueryId);
             var q2 = from p in q
                      where p.DeceasedDate == null
                      where p.PrimaryBadAddrFlag != 1
@@ -57,11 +55,9 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<MailingInfo> FetchFamilyList(int startRowIndex, int maximumRows, string sortExpression, int QueryId)
         {
-            var Qb = DbUtil.Db.LoadQueryById(QueryId);
-
-            var qp = DbUtil.Db.People.Where(Qb.Predicate());
+            var q1 = DbUtil.Db.PeopleQuery(QueryId);
             var q = from f in DbUtil.Db.Families
-                    where qp.Any(p => p.FamilyId == f.FamilyId)
+                    where q1.Any(p => p.FamilyId == f.FamilyId)
                     select f.People.Single(fm => fm.PeopleId == f.HeadOfHouseholdId);
 
             _FamilyCount = q.Count();
@@ -78,7 +74,7 @@ namespace CMSPresenter
                          City = h.PrimaryCity,
                          State = h.PrimaryState,
                          Zip = h.PrimaryZip,
-                         LabelName = (h.Family.CoupleFlag == 1 ? (UseTitles ? (h.TitleCode != null ? h.TitleCode + " and Mrs. " + h.Name 
+                         LabelName = (h.Family.CoupleFlag == 1 ? (UseTitles ? (h.TitleCode != null ? h.TitleCode + " and Mrs. " + h.Name
                                                                                                     : "Mr. and Mrs. " + h.Name)
                                                                              : h.PreferredName + " and " + spouse.PreferredName + " " + h.LastName) :
                                       h.Family.CoupleFlag == 2 ? ("The " + h.Name + " Family") :
@@ -94,7 +90,7 @@ namespace CMSPresenter
                 return q2;
             return q2.Skip(startRowIndex).Take(maximumRows);
         }
-        
+
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<MailingInfo> FetchFamilyList(string sortExpression, int QueryId)
         {
@@ -105,8 +101,7 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchParentsOfList(string sortExpression, int QueryId)
         {
-            var Qb = DbUtil.Db.LoadQueryById(QueryId);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = DbUtil.Db.PeopleQuery(QueryId);
             var q2 = from p in q
                      where p.DeceasedDate == null
                      where p.PrimaryBadAddrFlag != 1
@@ -141,7 +136,7 @@ namespace CMSPresenter
                      select p;
             return q1;
         }
-        
+
         public IEnumerable<MailingInfo> FetchCouplesEitherList(string sortExpression, int QueryId)
         {
             var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
@@ -211,7 +206,7 @@ namespace CMSPresenter
             }
             return query;
         }
-        
+
         public IEnumerable FetchExcelCouplesBoth(int QueryId, int maximumRows)
         {
             var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
@@ -244,7 +239,7 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
-        
+
         public IEnumerable FetchExcelCouplesEither(int QueryId, int maximumRows)
         {
             var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
@@ -278,12 +273,11 @@ namespace CMSPresenter
                      };
             return q2.Take(maximumRows);
         }
-        
+
         public IEnumerable FetchExcelFamily(int QueryId, int maximumRows)
         {
-            var Qb = DbUtil.Db.LoadQueryById(QueryId);
+            var qp = DbUtil.Db.PeopleQuery(QueryId);
 
-            var qp = DbUtil.Db.People.Where(Qb.Predicate());
             var q = from f in DbUtil.Db.Families
                     where qp.Any(p => p.FamilyId == f.FamilyId)
                     select f.People.Single(fm => fm.PeopleId == f.HeadOfHouseholdId);
@@ -312,11 +306,10 @@ namespace CMSPresenter
                         Zip = h.PrimaryZip,
                     }).Take(maximumRows);
         }
-        
+
         public IEnumerable FetchExcelParents(int QueryId, int maximumRows)
         {
-            var Qb = DbUtil.Db.LoadQueryById(QueryId);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = DbUtil.Db.PeopleQuery(QueryId);
             var q2 = from p in q
                      where p.DeceasedDate == null
                      where p.PrimaryBadAddrFlag != 1

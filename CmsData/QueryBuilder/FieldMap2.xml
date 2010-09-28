@@ -362,6 +362,9 @@
     <Field Name="IncludeDeceased" Title="Included Deceased" Type="Bit" DataValueField="IdCode">
       Allows you to specify whether to include deceased people in your query.
     </Field>
+    <Field Name="ParentsOf" Title="Parents Only" Type="Bit" DataValueField="IdCode">
+      Include only the heads of household in the family of the people in the selection
+    </Field>
     <Field Name="HasCurrentTag" Title="Active Tag" Type="Bit" DataValueField="IdCode">
       Selects those who are in your 'Active Tag' at the time you run the query.
     </Field>

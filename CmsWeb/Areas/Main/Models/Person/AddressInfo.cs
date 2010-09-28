@@ -157,7 +157,6 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(f, "AddressLineOne", Address1);
                     UpdateValue(f, "AddressLineTwo", Address2);
                     UpdateValue(f, "AddressToDate", ToDt);
-                    UpdateValue(f, "BadAddressFlag", BadAddress);
                     UpdateValue(f, "CityName", City);
                     UpdateValue(f, "StateCode", State);
                     UpdateValue(f, "ResCodeId", ResCodeId);
@@ -165,13 +164,13 @@ namespace CmsWeb.Models.PersonPage
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 10);
                     if (fsb.Length > 0)
-                        f.BadAddressFlag = false;
+                        BadAddress = false;
+                    UpdateValue(f, "BadAddressFlag", BadAddress);
                     break;
                 case "AltFamilyAddr":
                     UpdateValue(f, "AltAddressLineOne", Address1);
                     UpdateValue(f, "AltAddressLineTwo", Address2);
                     UpdateValue(f, "AltAddressToDate", ToDt);
-                    UpdateValue(f, "AltBadAddressFlag", BadAddress);
                     UpdateValue(f, "AltCityName", City);
                     UpdateValue(f, "AltStateCode", State);
                     UpdateValue(f, "AltResCodeId", ResCodeId);
@@ -179,13 +178,13 @@ namespace CmsWeb.Models.PersonPage
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 20);
                     if (fsb.Length > 0)
-                        f.AltBadAddressFlag = false;
+                        BadAddress = false;
+                    UpdateValue(f, "AltBadAddressFlag", BadAddress);
                     break;
                 case "PersonalAddr":
                     UpdateValue(p, "AddressLineOne", Address1);
                     UpdateValue(p, "AddressLineTwo", Address2);
                     UpdateValue(p, "AddressToDate", ToDt);
-                    UpdateValue(p, "BadAddressFlag", BadAddress);
                     UpdateValue(p, "CityName", City);
                     UpdateValue(p, "StateCode", State);
                     UpdateValue(p, "ResCodeId", ResCodeId);
@@ -193,13 +192,13 @@ namespace CmsWeb.Models.PersonPage
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 30);
                     if (psb.Length > 0)
-                        p.BadAddressFlag = false;
+                        BadAddress = false;
+                    UpdateValue(p, "BadAddressFlag", BadAddress);
                     break;
                 case "AltPersonalAddr":
                     UpdateValue(p, "AltAddressLineOne", Address1);
                     UpdateValue(p, "AltAddressLineTwo", Address2);
                     UpdateValue(p, "AltAddressToDate", ToDt);
-                    UpdateValue(p, "AltBadAddressFlag", BadAddress);
                     UpdateValue(p, "AltCityName", City);
                     UpdateValue(p, "AltStateCode", State);
                     UpdateValue(p, "AltResCodeId", ResCodeId);
@@ -207,7 +206,8 @@ namespace CmsWeb.Models.PersonPage
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 40);
                     if (psb.Length > 0)
-                        p.AltBadAddressFlag = false;
+                        BadAddress = false;
+                    UpdateValue(p, "AltBadAddressFlag", BadAddress);
                     break;
             }
             if (psb.Length > 0)

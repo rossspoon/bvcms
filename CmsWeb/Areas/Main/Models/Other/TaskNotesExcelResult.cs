@@ -26,18 +26,18 @@ namespace CmsWeb.Models
             Response.AddHeader("Content-Disposition", "attachment;filename=CMSTasks.xls");
             Response.Charset = "";
 
-                var qB = DbUtil.Db.LoadQueryById(qid);
-                var q = from p in DbUtil.Db.People.Where(qB.Predicate())
-                        let t = p.TasksAboutPerson.OrderByDescending(t => t.CreatedOn).FirstOrDefault(t => t.Notes != null)
-                        where t != null
-                        select new
-                        {
-                            p.Name,
-                            t.Notes,
-                            t.CreatedOn
-                        };
+            var q = DbUtil.Db.PeopleQuery(qid);
+            var q2 = from p in q
+                     let t = p.TasksAboutPerson.OrderByDescending(t => t.CreatedOn).FirstOrDefault(t => t.Notes != null)
+                     where t != null
+                     select new
+                     {
+                         p.Name,
+                         t.Notes,
+                         t.CreatedOn
+                     };
             var dg = new DataGrid();
-            dg.DataSource = q;
+            dg.DataSource = q2;
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(Response.Output));
             Response.End();

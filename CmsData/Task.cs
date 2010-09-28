@@ -59,9 +59,7 @@ namespace CmsData
         }
         public static int AddTasks(int qid)
         {
-            var Qb = DbUtil.Db.LoadQueryById(qid);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
-
+            var q = DbUtil.Db.PeopleQuery(qid);
             int qCount = q.Count();
             if (qCount > 100)
                 return qCount;

@@ -43,8 +43,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.LockedWidth = true;
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
 
-            var qB = DbUtil.Db.LoadQueryById(id.Value);
-            var q = from p in DbUtil.Db.People.Where(qB.Predicate())
+            var q = DbUtil.Db.PeopleQuery(id.Value);
+            var q2 = from p in q
                     orderby p.Name2
                     select new
                     {
@@ -54,7 +54,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         dob = p.DOB,
                         Phone = p.CellPhone ?? p.HomePhone
                     };
-            foreach (var m in q)
+            foreach (var m in q2)
                 AddCell(t, m.First, m.Last, m.Phone, m.PeopleId);
             t.CompleteRow();
             document.Add(t);
