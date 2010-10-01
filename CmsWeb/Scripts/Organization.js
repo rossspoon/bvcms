@@ -138,23 +138,23 @@
             $(f).html(ret);
         });
     });
-    $("a.groupmanager").live("click", function (ev) { // this is no longer needed?
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        var q = f.serialize();
-        $.post($(this).attr("href"), q, function (ret) {
-            if (ret) {
-                $(f).html(ret);
-                $.post('/Organization/SmallGroups/', null, function (ret) {
-                    var op = $('#smallgroupid');
-                    var id = $(op).val();
-                    $(op).replaceWith(ret);
-                    $('#smallgroupid').val(id);
-                });
-            }
-        });
-        return false;
-    });
+    //    $("a.groupmanager").live("click", function (ev) { // this is no longer needed?
+    //        ev.preventDefault();
+    //        var f = $(this).closest('form');
+    //        var q = f.serialize();
+    //        $.post($(this).attr("href"), q, function (ret) {
+    //            if (ret) {
+    //                $(f).html(ret);
+    //                $.post('/Organization/SmallGroups/', null, function (ret) {
+    //                    var op = $('#smallgroupid');
+    //                    var id = $(op).val();
+    //                    $(op).replaceWith(ret);
+    //                    $('#').val(id);
+    //                });
+    //            }
+    //        });
+    //        return false;
+    //    });
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
@@ -196,8 +196,20 @@
             "org.ShirtFee": { number: true }
         }
     });
-    $("#Members-tab").delegate("#smallgroupid", "change", function () {
-        $.getTable($('#Members-tab form'));
+
+    $("#filtergroupslink").live("click", function (ev) {
+        ev.preventDefault();
+        $("#FilterGroups").dialog({
+            title: "Filter by Small Groups",
+            width: "300px",
+            buttons: {
+                Ok: function () {
+                    var q = $('#FilterGroups form').serialize();
+                    $.getTable($('#Members-tab form'), q);
+                    $("#FilterGroups").dialog("close");
+                }
+            }
+        });
         return false;
     });
     $("#addfromtaglink").live("click", function (ev) {

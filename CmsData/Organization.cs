@@ -32,6 +32,7 @@ namespace CmsData
             UserSelectsOrganization = 3,
             ComputeOrganizationByAge = 4,
             CreateAccount = 5,
+            ChooseSlot = 6,
         }
         public static string FormatOrgName(string name, string leader, string loc)
         {

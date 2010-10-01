@@ -182,7 +182,7 @@ namespace CMSPresenter
         {
             var Db = DbUtil.Db;
             var cmd = new SqlCommand(
-                "dbo.OrgMembers {0}, {1}".Fmt(Util.CurrentOrgId, Util.CurrentGroupId));
+                "dbo.OrgMembers {0}, {1}".Fmt(Util.CurrentOrgId, Util.CurrentGroups));
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             return cmd.ExecuteReader();

@@ -44,14 +44,17 @@
         <span class="blue">OK, now you can add another household member</span>
         <blockquote><a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Add another household member</a></blockquote>
         <span class="blue">Or you can complete your registration</span>
-        <blockquote>
     <% }
+       else if(Model.ChoosingSlots())
+       { %>
+        <span class="blue">OK, now you can choose your committments</span>
+    <% } 
        else
        { %>
         <span class="blue">OK, Now you can complete your registration</span>
-        <blockquote>
-    <% } 
-       var amt = Model.Amount();
+    <% } %>
+       <blockquote>
+    <% var amt = Model.Amount();
        if (amt > 0)
        { %>
         <input id="submitit" type="submit"
@@ -61,6 +64,11 @@
        { %>
         <input id="submitit" type="submit"
              class="submitbutton" value='Complete Registration and Read Terms' />
+    <% }
+       else if(Model.ChoosingSlots())
+       { %>
+        <input id="submitit" type="submit"
+             class="submitbutton" value='Choose Committment Times' />
     <% }
        else
        { %>

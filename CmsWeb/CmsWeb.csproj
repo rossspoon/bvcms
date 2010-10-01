@@ -151,11 +151,17 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Abstractions">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -214,6 +220,7 @@
     <Compile Include="Areas\Main\Models\Report\ProspectResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollLabelsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
+    <Compile Include="Areas\Public\Models\SlotModel.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -818,8 +825,10 @@
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.ascx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\PickSlot.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\PickSlots.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\images\calendar.gif" />
@@ -850,6 +859,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="OnlineRegSample.htm" />
+    <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="UserControls\ExportToolBar.ascx" />

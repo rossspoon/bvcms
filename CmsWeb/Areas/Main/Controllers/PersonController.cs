@@ -452,6 +452,18 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content("");
             //return View("UserDialog", u.Person);
         }
+        [Authorize(Roles="Admin")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UserDelete(int id)
+        {
+            var u = DbUtil.Db.Users.Single(us => us.UserId == id);
+            DbUtil.Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
+            DbUtil.Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
+            DbUtil.Db.Users.DeleteOnSubmit(u);
+            DbUtil.Db.SubmitChanges();
+            return Content("");
+            //return View("UserDialog", u.Person);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UserInfoGrid(int id)
         {

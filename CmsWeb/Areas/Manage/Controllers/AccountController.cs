@@ -46,6 +46,10 @@ namespace CmsWeb.Areas.Manage.Controllers
             {
                 var file = Request.Files[0];
                 fn = Path.GetFileName(file.FileName);
+                fn = fn.Replace(' ', '_');
+                fn = fn.Replace('(', '-');
+                fn = fn.Replace(')', '-');
+                fn = fn.Replace(',', '_');
                 string path = WebConfigurationManager.AppSettings["UploadPath"];
                 if (!path.HasValue())
                     path = Server.MapPath("/Upload/");

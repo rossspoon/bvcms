@@ -29,7 +29,10 @@ namespace CmsWeb.Models
             get
             {
                 if (_org == null && orgid.HasValue)
-                    _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
+                    if (orgid == Util.CreateAccountCode)
+                        _org = OnlineRegModel.CreateAccountOrg;
+                    else
+                        _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
                     _org = DbUtil.Db.LoadOrganizationById(classid.Value);
                 if (_org == null && divid.HasValue && (Found == true || IsValidForNew))
@@ -166,10 +169,13 @@ namespace CmsWeb.Models
                         var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
                         if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
                         {
+#if DEBUG
+#else
                             if (person.Users.Count() > 0)
                                 ModelState.AddModelError("find", "You already have an account");
+#endif
                         }
-                        else if (m != null)
+                        else if (m != null && org.RegistrationTypeId != (int)Organization.RegistrationEnum.ChooseSlot)
                         {
                             ModelState.AddModelError("find", "This person is already registered");
                             IsValidForContinue = false;
@@ -195,7 +201,14 @@ namespace CmsWeb.Models
                 else if (count == 0)
                 {
                     ModelState.AddModelError("find", "record not found");
-                    NotFoundText = CmsWeb.Models.SearchPeopleModel.NotFoundText;
+                    NotFoundText = @"We are trying to find this record.<br />
+The first and last names must match a record.<br />
+Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />
+We may not have your birthday, so try leaving it blank.<br />
+Try different spellings or a nickname too.<br />";
+                    if (!MemberOnly())
+                        NotFoundText += 
+"<span style='color: green;'><i>After a couple of tries, you will have the option to Register a New record</i></span>";
                 }
             }
             IsValidForExisting = ModelState.IsValid;
@@ -1024,6 +1037,8 @@ namespace CmsWeb.Models
         {
             if (org != null)
                 if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                    return false;
+                else if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot)
                     return false;
                 else return (org.AskShirtSize == true ||
                     org.AskRequest == true ||

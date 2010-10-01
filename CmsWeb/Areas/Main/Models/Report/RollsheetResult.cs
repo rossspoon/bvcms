@@ -25,7 +25,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class RollsheetResult : ActionResult
     {
-        public int? qid, pid, div, schedule, meetingid, groupid, orgid;
+        public int? qid, pid, div, schedule, meetingid, orgid;
+        public int[] groups;
         public bool? bygroup;
         public string name, sgprefix;
         public DateTime? dt;
@@ -46,7 +47,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (bygroup == true)
                 list1 = ReportList2(orgid, pid, div, schedule, name, sgprefix);
             else
-                list1 = ReportList(orgid, groupid, pid, div, schedule, name);
+                list1 = ReportList(orgid, groups, pid, div, schedule, name);
 
             if (list1.Count() == 0)
             {
@@ -86,10 +87,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                         AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, a.Person.DOB, font);
                 }
                 else
-                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.GroupId))
+                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.Groups))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
 
-                if (bygroup == false && (groupid ?? 0) == 0 && meeting == null)
+                if (bygroup == false && groups == null && meeting == null)
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                 if (t.Rows.Count > 0)
@@ -167,9 +168,9 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Name { get; set; }
             public string Teacher { get; set; }
             public string Location { get; set; }
-            public int? GroupId { get; set; }
+            public int[] Groups { get; set; }
         }
-        private IEnumerable<OrgInfo> ReportList(int? orgid, int? groupid, int? progid, int? divid, int? schedule, string name)
+        private IEnumerable<OrgInfo> ReportList(int? orgid, int[] groups, int? progid, int? divid, int? schedule, string name)
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
@@ -186,7 +187,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         Name = o.OrganizationName,
                         Teacher = o.LeaderName,
                         Location = o.Location,
-                        GroupId = groupid
+                        Groups = groups
                     };
             return q;
         }
@@ -209,7 +210,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         Name = sg.Name,
                         Teacher = "",
                         Location = o.Location,
-                        GroupId = sg.Id
+                        Groups = new int[] { sg.Id }
                     };
             return q;
         }

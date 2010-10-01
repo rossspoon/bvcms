@@ -1226,8 +1226,8 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
-                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId <= 0)
-                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroupId != -1)
+                        && (m.OrgMemMemTags.Any(mt => Util.CurrentGroups.Contains(mt.MemberTagId)) || Util.CurrentGroups[0] <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroups[0] != -1)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         && (m.Pending ?? false) == false
                         && (m.AmountPaid > 0 && m.AmountPaid < m.Amount));
@@ -1244,8 +1244,8 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Util.CurrentOrgId
-                        && (m.OrgMemMemTags.Any(mt => mt.MemberTagId == Util.CurrentGroupId) || Util.CurrentGroupId <= 0)
-                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroupId != -1)
+                        && (m.OrgMemMemTags.Any(mt => Util.CurrentGroups.Contains(mt.MemberTagId)) || Util.CurrentGroups[0] <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroups[0] != -1)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));

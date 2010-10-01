@@ -112,7 +112,7 @@ namespace CmsData
                     where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                     || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                     select m;
-            return q;
+            return q.Distinct();
         }
         public QueryBuilderClause QueryBuilderScratchPad()
         {

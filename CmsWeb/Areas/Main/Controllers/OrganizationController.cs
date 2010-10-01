@@ -35,7 +35,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
             if (Util.CurrentOrgId != m.org.OrganizationId)
-                Util.CurrentGroupId = 0;
+                Util.CurrentGroups = null;
             Util.CurrentOrgId = m.org.OrganizationId;
             ViewData["OrganizationContext"] = true;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
@@ -53,7 +53,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!org.PurgeOrg())
                 return Content("error, not deleted");
             Util.CurrentOrgId = 0;
-            Util.CurrentGroupId = 0;
+            Util.CurrentGroups = null;
             Session.Remove("ActiveOrganization");
             return new EmptyResult();
         }
@@ -132,13 +132,13 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["OrganizationContext"] = true;
         }
 
-        public ActionResult CurrMemberGrid(int id, int smallgroupid)
+        public ActionResult CurrMemberGrid(int id, int[] smallgrouplist)
         {
             ViewData["OrgMemberContext"] = true;
-            Util.CurrentGroupId = smallgroupid;
+            Util.CurrentGroups = smallgrouplist;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, smallgroupid, MemberModel.GroupSelect.Active);
+            var m = new MemberModel(id, Util.CurrentGroups, MemberModel.GroupSelect.Active);
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -165,7 +165,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, 0, MemberModel.GroupSelect.Pending);
+            var m = new MemberModel(id, null, MemberModel.GroupSelect.Pending);
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -174,7 +174,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, 0, MemberModel.GroupSelect.Inactive);
+            var m = new MemberModel(id, null, MemberModel.GroupSelect.Inactive);
             UpdateModel(m.Pager);
             return View(m);
         }

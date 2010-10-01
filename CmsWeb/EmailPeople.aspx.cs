@@ -41,6 +41,7 @@ namespace CmsWeb
                          where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                          || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                          select m;
+                q = q.Distinct();
             }
 
             q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");

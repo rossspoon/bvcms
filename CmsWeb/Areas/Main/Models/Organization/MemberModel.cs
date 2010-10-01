@@ -17,14 +17,16 @@ namespace CmsWeb.Models.OrganizationPage
             Pending,
         }
         public int OrganizationId { get; set; }
-        private int GroupId;
+        private int[] Groups;
         private GroupSelect Select;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int id, int groupid, GroupSelect select)
+        public MemberModel(int id, int[] groups, GroupSelect select)
         {
             OrganizationId = id;
-            GroupId = groupid;
+            if (groups == null)
+                groups = new int[] { 0 };
+            Groups = groups;
             Select = select;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
@@ -45,6 +47,7 @@ namespace CmsWeb.Models.OrganizationPage
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return list;
         }
+
         private IQueryable<OrganizationMember> _members;
         private IQueryable<OrganizationMember> FetchMembers()
         {
@@ -68,8 +71,8 @@ namespace CmsWeb.Models.OrganizationPage
             if (_members == null)
                 _members = from om in DbUtil.Db.OrganizationMembers
                            where om.OrganizationId == OrganizationId
-                           where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId) || GroupId <= 0
-                           where om.OrgMemMemTags.Count() == 0 || GroupId != -1
+                           where om.OrgMemMemTags.Any(mt => Groups.Contains(mt.MemberTagId)) || Groups[0] <= 0
+                           where om.OrgMemMemTags.Count() == 0 || Groups[0] != -1
                            select om;
             if (Active == true)
                 if (Pending == false) // current

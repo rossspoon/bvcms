@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 qid = id,
                 orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
-                groupid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentGroupId : null,
+                groups = org == "curr" ? UtilityExtensions.Util.CurrentGroups : new int[] { 0 },
                 pid = pid,
                 div = div,
                 name = name,
@@ -103,7 +103,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new RosterListResult
             {
-                 orgid = org,
+                orgid = org,
                 div = div,
                 schedule = schedule,
                 name = name,
@@ -144,7 +144,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new RollLabelsResult{ qid = id, format = format, titles = titles ?? false };
+            return new RollLabelsResult { qid = id, format = format, titles = titles ?? false };
         }
         public ActionResult Prospect(int? id)
         {
@@ -176,7 +176,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RegistrationResult(id, oid);
         }
-        [Authorize(Roles="Finance")]
+        [Authorize(Roles = "Finance")]
         public ActionResult ContributionYears(int id)
         {
             var m = new ContributionModel(id);
@@ -200,7 +200,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
             if (!Dt2.HasValue)
                 Dt2 = DateTime.Today;
-            var m = new ChurchAttendance2Model (Dt1, Dt2 , skipweeks);
+            var m = new ChurchAttendance2Model(Dt1, Dt2, skipweeks);
             return View(m);
         }
     }

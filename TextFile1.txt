@@ -1,0 +1,71 @@
+<doc>
+<row id="0" text="12:00 AM" />
+<row id="1" text="1:00 AM" />
+<row id="2" text="2:00 AM" />
+<row id="3" text="3:00 AM" />
+<row id="4" text="4:00 AM" />
+<row id="5" text="5:00 AM" />
+<row id="6" text="6:00 AM" />
+<row id="7" text="7:00 AM" />
+<row id="8" text="8:00 AM" />
+<row id="9" text="9:00 AM" />
+<row id="10" text="10:00 AM" />
+<row id="11" text="11:00 AM" />
+<row id="12" text="12:00 PM" />
+<row id="13" text="1:00 PM" />
+<row id="14" text="2:00 PM" />
+<row id="15" text="3:00 PM" />
+<row id="16" text="4:00 PM" />
+<row id="17" text="5:00 PM" />
+<row id="18" text="6:00 PM" />
+<row id="19" text="7:00 PM" />
+<row id="20" text="8:00 PM" />
+<row id="21" text="9:00 PM" />
+<row id="22" text="10:00 PM" />
+<row id="23" text="11:00 PM" />
+
+<col id="1" text="Fri, 10/29" />
+<col id="2" text="Sat, 10/30" />
+<col id="3" text="Sun, 10/31" />
+
+<slot col="1" row="16" />
+<slot col="1" row="17" />
+<slot col="1" row="18" />
+<slot col="1" row="19" />
+<slot col="1" row="20" />
+<slot col="1" row="21" />
+<slot col="1" row="22" />
+<slot col="1" row="23" />
+<slot col="2" row="0" />
+<slot col="2" row="1" />
+<slot col="2" row="2" />
+<slot col="2" row="3" />
+<slot col="2" row="4" />
+<slot col="2" row="5" />
+<slot col="2" row="6" />
+<slot col="2" row="7" />
+<slot col="2" row="8" />
+<slot col="2" row="9" />
+<slot col="2" row="10" />
+<slot col="2" row="11" />
+<slot col="2" row="12" />
+<slot col="2" row="13" />
+<slot col="2" row="14" />
+<slot col="2" row="15" />
+<slot col="2" row="16" />
+<slot col="2" row="17" />
+<slot col="2" row="18" />
+<slot col="2" row="19" />
+<slot col="2" row="20" />
+<slot col="2" row="21" />
+<slot col="2" row="22" />
+<slot col="2" row="23" />
+<slot col="3" row="0" />
+<slot col="3" row="1" />
+<slot col="3" row="2" />
+<slot col="3" row="3" />
+<slot col="3" row="4" />
+<slot col="3" row="5" />
+<slot col="3" row="6" />
+<slot col="3" row="7" />
+</doc>

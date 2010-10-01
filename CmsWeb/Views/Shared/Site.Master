@@ -188,8 +188,8 @@
                 </div>
                 <div id="CommonNavigationShadow">
                 </div>
-            </div>
         <% } %>
+            </div>
         </div>
         <div class="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />

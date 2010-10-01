@@ -1,0 +1,72 @@
+Rows
+{
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+}
+Cols
+{
+Pray
+}
+Slots
+{
+Pray: 1| Week1
+Pray: 2| Week1
+Pray: 3| Week1
+Pray: 4| Week1
+Pray: 5| Week1
+Pray: 6| Week1
+Pray: 7| Week1
+Pray: 8| Week2
+Pray: 9| Week2
+Pray: 10| Week2
+Pray: 11| Week2
+Pray: 12| Week2
+Pray: 13| Week2
+Pray: 14| Week2
+Pray: 15| Week3
+Pray: 16| Week3
+Pray: 17| Week3
+Pray: 18| Week3
+Pray: 19| Week3
+Pray: 20| Week3
+Pray: 21| Week3
+Pray: 22| Week4
+Pray: 23| Week4
+Pray: 24| Week4
+Pray: 25| Week4
+Pray: 26| Week4
+Pray: 27| Week4
+Pray: 28| Week4
+Pray: 29| Week5
+Pray: 30| Week5
+Pray: 31| Week5
+}

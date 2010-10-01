@@ -6,7 +6,7 @@
 &nbsp;<div style="clear: both"></div>
 <p>
 Count: <strong><%=Model.Count() %></strong>&nbsp;&nbsp;
-Small Groups: <%=Html.DropDownList("smallgroupid", Model.SmallGroups()) %>
+<a id="filtergroupslink" href="#">Filter by Small Groups</a>
 <% if(Page.User.IsInRole("Edit"))
    { %>
 <a href="/SearchAdd/Index/<%=Model.OrganizationId %>?type=org" class="addmembers">add members</a> |

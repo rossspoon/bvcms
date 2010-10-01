@@ -18,7 +18,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             OrganizationId = id;
             org = DbUtil.Db.LoadOrganizationById(id);
-            MemberModel = new MemberModel(id, 0, MemberModel.GroupSelect.Active);
+            MemberModel = new MemberModel(id, null, MemberModel.GroupSelect.Active);
         }
         public MemberModel MemberModel;
 
@@ -152,7 +152,7 @@ namespace CmsWeb.Models.OrganizationPage
                     var q = from o in org.AgeFee.Split(',')
                             let b = o.Split('=')
                             let a = b[0].Split('-')
-                            select new { startage=int.Parse(a[0]), endage = int.Parse(a[1]), amt = decimal.Parse(b[1])};
+                            select new { startage = int.Parse(a[0]), endage = int.Parse(a[1]), amt = decimal.Parse(b[1]) };
                     var list = q.ToList();
                 }
                 catch (Exception)

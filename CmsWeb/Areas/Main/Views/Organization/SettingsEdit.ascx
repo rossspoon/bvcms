@@ -210,7 +210,7 @@
     </tr>
     <tr>
         <th>Menu Items:</th>
-        <td><%=Html.TextBox("org.MenuItems")%></td>
+        <td><%=Html.TextArea("org.MenuItems", new { style = "height:200px;width:200px" })%></td>
     </tr>
     <tr>
         <th>Validate Member in OrgIds:</th>
@@ -275,10 +275,6 @@
     <tr>
         <th>Members Only:</th>
         <td><%=Html.CheckBox("org.MemberOnly")%></td>
-    </tr>
-    <tr>
-        <th>Create Account:</th>
-        <td><%=Html.CheckBox("org.CreateAccount")%> (warning this disables all other features)</td>
     </tr>
 
     <tr><td></td><td><a href="/Organization/SettingsUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>

@@ -298,6 +298,8 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             DbUtil.Db.SetNoLock();
             var d = DbUtil.Db.GetDatum<OnlineRegModel>(m);
+            if (m.ChoosingSlots())
+                return RedirectToAction("PickSlots", new { id = d.Id });
 
             if (m.Amount() == 0 && !m.Terms.HasValue())
                 return RedirectToAction("Confirm",
@@ -382,6 +384,34 @@ namespace CmsWeb.Areas.Public.Controllers
             });
         }
 
+        public ActionResult PickSlots(int? id)
+        {
+            if (!id.HasValue)
+                return View("Unknown");
+
+            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
+            if (ed == null)
+                return Content("no pending confirmation found");
+            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            return View(new SlotModel(m.List[0].PeopleId.Value, m.orgid.Value));
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ToggleSlot(int id, int oid, string slot, bool ck)
+        {
+            var m = new SlotModel(id, oid);
+            var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id);
+            if (om == null)
+                om = OrganizationMember.InsertOrgMembers(oid, id, 220, Util.Now, null, false);
+            if (ck)
+                om.AddToGroup(slot);
+            else
+                om.RemoveFromGroup(slot);
+            DbUtil.DbDispose();
+            m = new SlotModel(id, oid);
+            var slotinfo = m.NewSlot(slot);
+            ViewData["returnval"] = slotinfo.status;
+            return View("PickSlot", slotinfo);
+        }
         public ActionResult Confirm(int? id, string TransactionID)
         {
             if (!id.HasValue)

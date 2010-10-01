@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Public
 {
@@ -32,6 +33,12 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
             AddRoute(context, "VolunteerStart", "Volunteer", "Volunteer/{id}", "Start");
             AddRoute(context, "Volunteer");
+            context.MapRoute(
+                "Public_CreateAccount",
+                "CreateAccount",
+                new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
+            );
+
             context.MapRoute(
                 "Public_default",
                 "Public/{controller}/{action}/{id}",

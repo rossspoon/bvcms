@@ -53,13 +53,13 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string NameParent1 { get; set; }
             public string NameParent2 { get; set; }
         }
-        public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int? groupid)
+        public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int[] groups)
         {
             var tagownerid = Util.CurrentTagOwnerId;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
-                    where om.OrgMemMemTags.Any(mt => mt.MemberTagId == groupid) || (groupid ?? 0) <= 0
-                    where (groupid ?? 0) >= 0 || (groupid == -1 && om.OrgMemMemTags.Count() == 0)
+                    where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups == null)
+                    where !groups.Contains(-1) || (groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
                     where (om.Pending ?? false) == false
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     where om.EnrollmentDate <= Util.Now

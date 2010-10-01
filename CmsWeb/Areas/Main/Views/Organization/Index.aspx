@@ -124,4 +124,15 @@
     <div id="memberDialog">
     <iframe id="memberDialogiframe" style="width:99%;height:99%"></iframe>
     </div>
+    <div id="FilterGroups" class="modalDiv" style="display:none;">
+        <form action="">
+        <div>Select multiple items by holding down the control key (individual) or shift key (range) while you click. Select (not specified) to cancel the filter.</div>
+        <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
+        <% foreach(var s in Model.MemberModel.SmallGroups())
+           { %>
+            <option <%=s.Selected ? "selected='selected'" : "" %> value="<%=s.Value %>"><%=s.Text %></option>
+        <% } %>
+        </select>
+        </form>
+    </div>
 </asp:Content>

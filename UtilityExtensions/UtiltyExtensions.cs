@@ -666,20 +666,23 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_ActiveOrganizationId] = value;
             }
         }
-        const string STR_ActiveGroupId = "ActiveGroupId";
-        public static int CurrentGroupId
+        public static int CreateAccountCode = -1952;
+        const string STR_ActiveGroupId = "ActiveGroup";
+        public static int[] CurrentGroups
         {
             get
             {
-                int id = 0;
+                var id = new int[] { 0 };
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Session != null)
                         if (HttpContext.Current.Session[STR_ActiveGroupId] != null)
-                            id = HttpContext.Current.Session[STR_ActiveGroupId].ToInt();
+                            id = (int[])HttpContext.Current.Session[STR_ActiveGroupId];
                 return id;
             }
             set
             {
+                if (value == null)
+                    value = new int[] { 0 };
                 if (HttpContext.Current != null)
                     HttpContext.Current.Session[STR_ActiveGroupId] = value;
             }

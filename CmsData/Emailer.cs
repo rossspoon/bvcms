@@ -102,9 +102,6 @@ namespace CmsData
             {
                 try
                 {
-#if DEBUG
-                    smtp.EnableSsl = true;
-#endif
                     smtp.Send(msg);
                 }
                 catch (Exception ex)

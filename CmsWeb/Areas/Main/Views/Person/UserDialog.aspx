@@ -38,7 +38,13 @@
     </tr>
     <tr>
         <td></td>
-        <td><a href="/Person/UserUpdate/<%=Model.UserId %>" class="submitbutton">Save Changes</a></td>
+        <td><a id="saveuser" href="/Person/UserUpdate/<%=Model.UserId %>" class="submitbutton">Save Changes</a>
+            <a id="deluser" href="/Person/UserDelete/<%=Model.UserId %>" class="submitbutton">Delete User</a>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 </form>

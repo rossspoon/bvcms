@@ -31,6 +31,19 @@ namespace CmsWeb.Models
         }
         public string URL { get; set; }
 
+        public static Organization CreateAccountOrg
+        {
+            get
+            {
+                return new Organization
+                {
+                    OrganizationName = "Create Account",
+                    RegistrationTypeId = (int)Organization.RegistrationEnum.CreateAccount,
+                    MemberOnly = true,
+                    AllowOnlyOne = true,
+                };
+            }
+        }
         [NonSerialized]
         private CmsData.Organization _org;
         public CmsData.Organization org
@@ -38,7 +51,10 @@ namespace CmsWeb.Models
             get
             {
                 if (_org == null && orgid.HasValue)
-                    _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
+                    if (orgid == Util.CreateAccountCode)
+                        _org = CreateAccountOrg;
+                    else
+                        _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 return _org;
             }
         }
@@ -67,14 +83,21 @@ namespace CmsWeb.Models
         public bool OnlyOneAllowed()
         {
             if (org != null)
-                return org.AllowOnlyOne == true 
-                    || org.AskTickets == true 
+                return org.AllowOnlyOne == true
+                    || org.AskTickets == true
+                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivisionId == divid
                     where o.AllowOnlyOne == true || o.AskTickets == true
                     select o;
             return q.Count() > 0;
+        }
+        public bool ChoosingSlots()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot;
+            return false;
         }
         public string Header
         {
@@ -186,21 +209,21 @@ namespace CmsWeb.Models
             var smtp = Util.Smtp();
             DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
                 uname, person.EmailAddress,
-                    "New account for {0}",
+                    "New account for " + Util.Host,
                     @"Hi {1},
-<p>You now have an account in our church database.
-This will make it easier for you to do online registrations
-and to help us maintain your current address, email and phone numbers.
-The following are the credentials you can use. Both the username and password are system generated.
-You can use this the next time you do an online registration.
+<p>You now have an account in our church database.</p>
+<p>This will make it easier for you to do online registrations.
+Just use this account next time you register online.</p>
+<p>And this will allow you to help us maintain your correct address, email and phone numbers.
+Just login to {0} and you will be taken to your record where you can make corrections if needed.</p>
+<p>The following are the credentials you can use. Both the username and password are system generated.
 </p>
 <table>
 <tr><td>Username:</td><td><b>{2}</b></td></tr>
 <tr><td>Password:</td><td><b>{3}</b></td></tr>
 </table>
-<p>Thanks,<br />
-The bvcms team</p>
-".Fmt(Util.Host, person.Name, uname, pword));
+<p>Thank You</p>
+".Fmt(Util.CmsHost, person.Name, uname, pword));
         }
         public void EnrollAndConfirm(string TransactionID)
         {

@@ -636,7 +636,7 @@ namespace CmsWeb.Models
                          where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                          || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                          select m;
-                return q2;
+                return q2.Distinct();
             }
             return q;
         }
@@ -653,6 +653,7 @@ namespace CmsWeb.Models
                     where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                     || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                     select m;
+                q = q.Distinct();
             }
             Db.TagAll(q);
         }
@@ -669,6 +670,7 @@ namespace CmsWeb.Models
                     where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                     || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                     select m;
+                q = q.Distinct();
             }
             Db.UnTagAll(q);
         }
