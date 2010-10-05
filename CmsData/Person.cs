@@ -503,7 +503,10 @@ namespace CmsData
                         let firstmatch = ( p.FirstName == FirstName 
                                 || p.NickName == FirstName 
                                 || p.MiddleName == FirstName)
-                        let bdmatch = (BirthDate != null && p.BirthDay == BirthDay && p.BirthMonth == BirthMonth && p.BirthYear == BirthYear)
+                        let bdmatch = (BirthDate != null 
+                                    && p.BirthDay == BirthDay 
+                                    && p.BirthMonth == BirthMonth 
+                                    && p.BirthYear == BirthYear)
                         let emailmatch = p.EmailAddress == EmailAddress
                         let phonematch = ( p.CellPhoneLU == CellPhoneLU
                                             || p.CellPhoneLU == Family.HomePhoneLU
@@ -521,10 +524,14 @@ namespace CmsData
                                                 (p.AddressLineOne.StartsWith(streetnum2)
                                                 || p.Family.AddressLineOne.StartsWith(streetnum2)))
                         let citymatch = (p.PrimaryCity == PrimaryCity)
-                        let nmatches = (firstmatch ? 1 : 0) + (bdmatch ? 1 : 0) + (emailmatch ? 1 : 0) + (phonematch ? 1 : 0) + ((citymatch && streetmatch) ? 1 : 0)
+                        let nmatches = (firstmatch ? 1 : 0) 
+                                        + (bdmatch ? 1 : 0) 
+                                        + (emailmatch ? 1 : 0) 
+                                        + (phonematch ? 1 : 0) 
+                                        + ((citymatch && streetmatch) ? 1 : 0)
                         where p.PeopleId != PeopleId
                         where (p.LastName == LastName || p.MaidenName == LastName)
-                        where (nmatches > 1)
+                        where (nmatches > 2)
                         select p.PeopleId;
                 return q.ToList();
             }

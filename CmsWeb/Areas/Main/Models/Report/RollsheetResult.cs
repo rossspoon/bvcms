@@ -81,10 +81,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                 {
                     var q = from at in meeting.Attends
                             where at.AttendanceFlag == true || at.Registered == true
-                            orderby at.Person.Name2
-                            select at;
+                            orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
+                            select new { at.MemberType.Code, at.Person.Name2, at.PeopleId, at.Person.DOB };
                     foreach (var a in q)
-                        AddRow(a.MemberType.Code, a.Person.Name2, a.PeopleId, a.Person.DOB, font);
+                        AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, font);
                 }
                 else
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.Groups))

@@ -130,6 +130,8 @@
                 Add Tasks</a></li>
             <li><a href='/Task/NotesExcel/<%=ViewData["queryid"] %>'>
                 Export Task Notes</a></li>
+            <li><a href='/Person/TagDuplicates/<%=ViewData["queryid"] %>'>
+                Tag Duplicates</a></li>
         </ul>
     </li>
 </ul>

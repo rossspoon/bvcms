@@ -12,20 +12,42 @@ namespace CmsWeb.Models.OrganizationPage
         private int queryid;
         public int OrganizationId { get; set; }
         public PagerModel2 Pager { get; set; }
-        public VisitorModel(int id, int qid)
+        private string NameFilter;
+        public VisitorModel(int id, int qid, string name)
         {
             OrganizationId = id;
             queryid = qid;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";
+            NameFilter = name;
         }
         private IQueryable<Person> _visitors;
         private IQueryable<Person> FetchVisitors()
         {
             if (_visitors == null)
+            {
                 _visitors = DbUtil.Db.PeopleQuery(queryid);
+                if (NameFilter.HasValue())
+                {
+                    string First, Last;
+                    Person.NameSplit(NameFilter, out First, out Last);
+                    if (First.HasValue())
+                        _visitors = from p in _visitors
+                                    where p.LastName.StartsWith(Last)
+                                    where p.FirstName.StartsWith(First) || p.NickName.StartsWith(First)
+                                    select p;
+                    else
+                        _visitors = from p in _visitors
+                                    where p.LastName.StartsWith(Last)
+                                    select p;
+                }
+            }
             return _visitors;
+        }
+        public bool isFiltered
+        {
+            get { return NameFilter.HasValue(); }
         }
         int? _count;
         public int Count()

@@ -19,9 +19,10 @@ namespace CmsWeb.Models.OrganizationPage
         public int OrganizationId { get; set; }
         private int[] Groups;
         private GroupSelect Select;
+        private string NameFilter;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int id, int[] groups, GroupSelect select)
+        public MemberModel(int id, int[] groups, GroupSelect select, string name)
         {
             OrganizationId = id;
             if (groups == null)
@@ -31,6 +32,7 @@ namespace CmsWeb.Models.OrganizationPage
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";
+            NameFilter = name;
         }
         public IEnumerable<SelectListItem> SmallGroups()
         {
@@ -46,6 +48,10 @@ namespace CmsWeb.Models.OrganizationPage
             list.Insert(0, new SelectListItem { Value = "-1", Text = "(not assigned)" });
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return list;
+        }
+        public bool isFiltered
+        {
+            get { return Util.CurrentGroups[0] != 0 || NameFilter.HasValue(); }
         }
 
         private IQueryable<OrganizationMember> _members;
@@ -89,6 +95,22 @@ namespace CmsWeb.Models.OrganizationPage
                 _members = from om in _members
                            where om.MemberTypeId == inactive
                            select om;
+            if (NameFilter.HasValue())
+            {
+                string First, Last;
+                Person.NameSplit(NameFilter, out First, out Last);
+                if (First.HasValue())
+                    _members = from om in _members
+                               let p = om.Person
+                               where p.LastName.StartsWith(Last)
+                               where p.FirstName.StartsWith(First) || p.NickName.StartsWith(First)
+                               select om;
+                else
+                    _members = from om in _members
+                               let p = om.Person
+                               where p.LastName.StartsWith(Last)
+                               select om;
+            }
             return _members;
         }
         int? _count;

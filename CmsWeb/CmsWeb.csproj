@@ -209,6 +209,7 @@
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\DuplicatesModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetModel.cs" />
     <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
@@ -820,6 +821,8 @@
     <Content Include="Areas\Main\Views\CheckIn2\Index.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\Keyboard.ascx" />
     <Content Include="Areas\Main\Views\CheckIn2\Startup.aspx" />
+    <Content Include="Areas\Main\Views\Person\DuplicatesGrid.ascx" />
+    <Content Include="Areas\Main\Views\Person\TagDuplicatesProgress.aspx" />
     <Content Include="Areas\Main\Views\Person\UserDialog.aspx" />
     <Content Include="Areas\Main\Views\Person\BatchPeopleIds.aspx" />
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.ascx" />

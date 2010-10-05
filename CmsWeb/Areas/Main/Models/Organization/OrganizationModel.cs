@@ -18,7 +18,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             OrganizationId = id;
             org = DbUtil.Db.LoadOrganizationById(id);
-            MemberModel = new MemberModel(id, null, MemberModel.GroupSelect.Active);
+            MemberModel = new MemberModel(id, null, MemberModel.GroupSelect.Active, String.Empty);
         }
         public MemberModel MemberModel;
 

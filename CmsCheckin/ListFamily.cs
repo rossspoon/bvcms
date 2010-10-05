@@ -270,7 +270,7 @@ namespace CmsCheckin
             for (var r = srow; r < erow; r++)
             {
                 var c = list[r];
-                if (classlist != null)
+                if (classlist.Count > 0)
                 {
                     var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
                     if (li != null && c.CheckedIn)
@@ -621,7 +621,7 @@ namespace CmsCheckin
             PleaseWaitForm.Dispose();
             PleaseWaitForm = null;
             Program.FamilyId = 0;
-            classlist = null;
+            classlist = new List<ClassInfo>();
             PrintAll.Text = string.Empty;
             this.GoHome(string.Empty);
         }

@@ -197,15 +197,16 @@
         }
     });
 
-    $("#filtergroupslink").live("click", function (ev) {
+    $("a.filtergroupslink").live("click", function (ev) {
         ev.preventDefault();
+        var f = $(this).closest('form');
         $("#FilterGroups").dialog({
-            title: "Filter by Small Groups",
+            title: "Filter by Name, Small Groups",
             width: "300px",
             buttons: {
                 Ok: function () {
                     var q = $('#FilterGroups form').serialize();
-                    $.getTable($('#Members-tab form'), q);
+                    $.getTable(f, q);
                     $("#FilterGroups").dialog("close");
                 }
             }

@@ -126,6 +126,10 @@
     </div>
     <div id="FilterGroups" class="modalDiv" style="display:none;">
         <form action="">
+        <h3>Name Filter</h3>
+        <div>First and last name or just last name. You can put just the first few letters of each.</div>
+        <input name="namefilter" type="text" />
+        <h3>Small Group Filter</h3>
         <div>Select multiple items by holding down the control key (individual) or shift key (range) while you click. Select (not specified) to cancel the filter.</div>
         <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
         <% foreach(var s in Model.MemberModel.SmallGroups())

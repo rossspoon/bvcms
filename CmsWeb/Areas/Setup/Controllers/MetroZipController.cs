@@ -12,9 +12,10 @@ namespace CmsWeb.Areas.Setup.Controllers
     [Authorize(Roles = "Admin")]
     public class MetroZipController : CmsStaffController
     {
-        public ActionResult Index()
+        public ActionResult Index(string msg)
         {
             var m = DbUtil.Db.Zips.AsEnumerable();
+            ViewData["msg"] = msg;
             return View(m);
         }
 
@@ -49,6 +50,12 @@ namespace CmsWeb.Areas.Setup.Controllers
             DbUtil.Db.Zips.DeleteOnSubmit(zip);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdateMetroZips()
+        {
+            DbUtil.Db.UpdateResCodes();
+            return Redirect("/Setup/MetroZip?msg=Updated%20all%20Codes");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ResidentCodes()

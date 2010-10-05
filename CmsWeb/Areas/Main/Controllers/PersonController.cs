@@ -10,6 +10,7 @@ using CmsWeb.Models.PersonPage;
 using CmsWeb.Models;
 using System.Diagnostics;
 using System.Web.Routing;
+using System.Threading;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -34,7 +35,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     return Content("person not found");
             }
             else
-                if(m.Person == null || !m.Person.CanUserSee)
+                if (m.Person == null || !m.Person.CanUserSee)
                     return Content("no access");
             if (Util.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
             {
@@ -51,7 +52,7 @@ namespace CmsWeb.Areas.Main.Controllers
             InitExportToolbar(id);
             return View(m);
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Move(int id, int to)
         {
             var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
@@ -66,7 +67,7 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return new EmptyResult();
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             Util.Auditing = false;
@@ -432,13 +433,13 @@ namespace CmsWeb.Areas.Main.Controllers
             var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
             return Json(r);
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult UserDialog(int id)
         {
             var u = DbUtil.Db.Users.Single(us => us.UserId == id);
             return View(u);
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UserUpdate(int id, string username, string password2, bool islockedout, string[] role)
         {
@@ -452,7 +453,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content("");
             //return View("UserDialog", u.Person);
         }
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UserDelete(int id)
         {
@@ -475,6 +476,56 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var p = DbUtil.Db.LoadPersonById(id);
             return View(p);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DuplicatesGrid(int id)
+        {
+            var m = new DuplicatesModel(id);
+            return View(m);
+        }
+        public ActionResult TagDuplicates(int id)
+        {
+            int? pid = Util.UserPeopleId;
+            string tagname = Util.CurrentTagName;
+            ThreadPool.QueueUserWorkItem(o => 
+            { 
+                StartTagging(id, tagname, pid);
+            }, null);
+            return RedirectToAction("TagDuplicatesProgress");
+        }
+        public ActionResult TagDuplicatesProgress()
+        {
+            return View();
+        }
+
+        private void StartTagging(int id, string tagname, int? userpeopleid)
+        {
+            var st = DateTime.Now;
+            int nf = 0, np = 0;
+            TagDuplicatesStatus.SetStart();
+
+            var db = DbUtil.Db;
+            var q = db.PeopleQuery(id);
+            var tag = db.FetchOrCreateTag(tagname, userpeopleid, DbUtil.TagTypeId_Personal);
+            foreach (var p in q)
+            {
+                if (p.PossibleDuplicates().Count() > 0)
+                {
+                    var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
+                    if (tp == null)
+                    tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
+                    ++nf;
+                }
+                ++np;
+                var ts = DateTime.Now.Subtract(st);
+                var dt = new DateTime(ts.Ticks);
+                var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
+                var tt = "{0:mm:ss}".Fmt(dt);
+                TagDuplicatesStatus.SetStatus(np, nf, tsp, tt);
+            }
+            db.SubmitChanges();
+            
+            TagDuplicatesStatus.SetFinished();
         }
         private void InitExportToolbar(int? id)
         {
@@ -509,6 +560,55 @@ namespace CmsWeb.Areas.Main.Controllers
                 Person.Tag(pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Redirect("/MyTags.aspx");
+        }
+    }
+    public static class TagDuplicatesStatus
+    {
+        static object lockObj = new object();
+        public static int found {get; set;}
+        public static int processed {get; set;}
+        public static string speed { get; set; }
+        public static string time { get; set; }
+        public static bool finished { get; set; }
+
+        public static void SetStatus(int np, int nf, string ts, string tt)
+        {
+            lock (lockObj)
+            {
+                found = nf;
+                processed = np;
+                speed = ts;
+                time = tt;
+            }
+        }
+        public static void SetFinished()
+        {
+            lock (lockObj)
+            {
+                finished = true;
+            }
+        }
+        public static void SetStart()
+        {
+            lock (lockObj)
+            {
+                found = 0;
+                processed = 0;
+                speed = null;
+                time = null;
+                finished = false;
+            }
+        }
+        public static void GetStatus(out int np, out int nf, out string ts, out string tt, out bool fi)
+        {
+            lock (lockObj)
+            {
+                np = processed;
+                nf = found;
+                ts = speed;
+                tt = time;
+                fi = finished;
+            }
         }
     }
 }

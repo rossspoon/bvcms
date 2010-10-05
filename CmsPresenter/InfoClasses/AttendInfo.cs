@@ -30,5 +30,8 @@ namespace CMSPresenter
         public bool AttendFlag { get; set; }
         public bool RegisteredFlag { get; set; }
         public int RollSheetSectionId { get; set; }
+        public int FamilyId { get; set; }
+        public string LastName { get; set; }
+        public int? Age { get; set; }
     }
 }

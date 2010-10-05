@@ -82,5 +82,6 @@ namespace CmsWeb.Models.iPhone
             }
             get { return _WorkPhone; }
         }
+        public bool HasPicture { get; set; }
     }
 }

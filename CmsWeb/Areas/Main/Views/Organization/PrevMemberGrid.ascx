@@ -3,6 +3,7 @@
 &nbsp;<div style="clear: both"></div>
 <p style="bottom-margin:5px">
 Count: <strong><%=Model.Count() %></strong></p>
+<a class="filtergroupslink" href="#">Filter by name/group<%= Model.isFiltered ? "(filtered)" : "" %></a>
 <table id="MemberGrid" class="grid" cellpadding="4">
 <thead>
 <tr>

@@ -43,6 +43,7 @@ namespace CmsWeb.Models.iPhone
                     w.WriteAttributeString("workphone", p.WorkPhone);
                     w.WriteAttributeString("memberstatus", p.MemberStatus);
                     w.WriteAttributeString("email", p.Email);
+                    w.WriteAttributeString("haspicture", p.HasPicture ? "1": "0");
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

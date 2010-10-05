@@ -11,30 +11,55 @@ namespace CmsWeb.Models.OrganizationPage
     {
         private int OrganizationId;
         public PagerModel2 Pager { get; set; }
-        public PrevMemberModel(int id)
+        public PrevMemberModel(int id, string name)
         {
             OrganizationId = id;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";
+            NameFilter = name;
         }
+        private string NameFilter;
         private IQueryable<EnrollmentTransaction> _enrollments;
         private IQueryable<EnrollmentTransaction> FetchPrevMembers()
         {
             if (_enrollments == null)
+            {
                 _enrollments = from etd in DbUtil.Db.EnrollmentTransactions
-                    let mdt = DbUtil.Db.EnrollmentTransactions.Where(m =>
-                        m.PeopleId == etd.PeopleId
-                        && m.OrganizationId == OrganizationId
-                        && m.TransactionTypeId > 3
-                        && m.TransactionStatus == false).Select(m => m.TransactionDate).Max()
-                    where etd.TransactionStatus == false
-                    where etd.TransactionDate == mdt
-                    where etd.OrganizationId == OrganizationId
-                    where etd.TransactionTypeId >= 4
-                    where !etd.Person.OrganizationMembers.Any(om => om.OrganizationId == OrganizationId)
-                    select etd;
+                               let mdt = DbUtil.Db.EnrollmentTransactions.Where(m =>
+                                   m.PeopleId == etd.PeopleId
+                                   && m.OrganizationId == OrganizationId
+                                   && m.TransactionTypeId > 3
+                                   && m.TransactionStatus == false).Select(m => m.TransactionDate).Max()
+                               where etd.TransactionStatus == false
+                               where etd.TransactionDate == mdt
+                               where etd.OrganizationId == OrganizationId
+                               where etd.TransactionTypeId >= 4
+                               where !etd.Person.OrganizationMembers.Any(om => om.OrganizationId == OrganizationId)
+                               select etd;
+
+                if (NameFilter.HasValue())
+                {
+                    string First, Last;
+                    Person.NameSplit(NameFilter, out First, out Last);
+                    if (First.HasValue())
+                        _enrollments = from om in _enrollments
+                                       let p = om.Person
+                                       where p.LastName.StartsWith(Last)
+                                       where p.FirstName.StartsWith(First) || p.NickName.StartsWith(First)
+                                       select om;
+                    else
+                        _enrollments = from om in _enrollments
+                                       let p = om.Person
+                                       where p.LastName.StartsWith(Last)
+                                       select om;
+                }
+            }
             return _enrollments;
+        }
+        public bool isFiltered
+        {
+            get { return NameFilter.HasValue(); }
         }
         int? _count;
         public int Count()

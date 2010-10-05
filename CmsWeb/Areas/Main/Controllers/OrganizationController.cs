@@ -132,49 +132,49 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["OrganizationContext"] = true;
         }
 
-        public ActionResult CurrMemberGrid(int id, int[] smallgrouplist)
+        public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, string namefilter)
         {
             ViewData["OrgMemberContext"] = true;
             Util.CurrentGroups = smallgrouplist;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, Util.CurrentGroups, MemberModel.GroupSelect.Active);
+            var m = new MemberModel(id, Util.CurrentGroups, MemberModel.GroupSelect.Active, namefilter);
             UpdateModel(m.Pager);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PrevMemberGrid(int id)
+        public ActionResult PrevMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderPreviousCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new PrevMemberModel(id);
+            var m = new PrevMemberModel(id, namefilter);
             UpdateModel(m.Pager);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult VisitorGrid(int id)
+        public ActionResult VisitorGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new VisitorModel(id, qb.QueryId);
+            var m = new VisitorModel(id, qb.QueryId, namefilter);
             UpdateModel(m.Pager);
             return View("VisitorGrid", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PendingMemberGrid(int id)
+        public ActionResult PendingMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, null, MemberModel.GroupSelect.Pending);
+            var m = new MemberModel(id, null, MemberModel.GroupSelect.Pending, namefilter);
             UpdateModel(m.Pager);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult InactiveMemberGrid(int id)
+        public ActionResult InactiveMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, null, MemberModel.GroupSelect.Inactive);
+            var m = new MemberModel(id, null, MemberModel.GroupSelect.Inactive, namefilter);
             UpdateModel(m.Pager);
             return View(m);
         }

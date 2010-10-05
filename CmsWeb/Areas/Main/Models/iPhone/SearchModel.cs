@@ -17,7 +17,7 @@ namespace CmsWeb.Models.iPhone
         public string Comm { get; set; }
         public string Addr { get; set; }
 
-        public SearchModel(string name, string addr, string comm)
+        public SearchModel(string name, string comm, string addr)
         {
             Name = name;
             Comm = comm;
@@ -40,8 +40,9 @@ namespace CmsWeb.Models.iPhone
                         CellPhone = p.CellPhone,
                         WorkPhone = p.WorkPhone,
                         MemberStatus = p.MemberStatus.Description,
-                        Email = p.EmailAddress
-                    };
+                        Email = p.EmailAddress,
+                        HasPicture = p.PictureId != null,
+                    };                    
             return q;
         }
 

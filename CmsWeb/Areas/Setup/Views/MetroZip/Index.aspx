@@ -23,6 +23,7 @@
         });
     </script>
     <h2>Zips</h2>
+    <h3><span style="color:#008000"><%=ViewData["msg"] %></span></h3>
 
     <table>
         <tr>
@@ -56,6 +57,12 @@
     <p>
         New ZipCode: <%= Html.TextBox("zipcode") %>
         <input type="submit" value="Create" />
+    </p>
+    <% } %>
+    <% using (Html.BeginForm("UpdateMetroZips", "MetroZip"))
+       { %>
+    <p>
+        <input type="submit" value="Update all Metro Zips" />
     </p>
     <% } %>
 

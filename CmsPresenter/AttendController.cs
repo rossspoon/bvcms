@@ -87,10 +87,13 @@ namespace CMSPresenter
                         AttendFlag = attend == null ? false : attend.AttendanceFlag,
                         RollSheetSectionId = ismember ? 1 : 2,
                         RegisteredFlag = attend == null ? false : attend.Registered ?? false,
+                        LastName = p.LastName,
+                        FamilyId = p.FamilyId,
+                        Age = p.Age
                     };
 
             q = from a in q
-                orderby a.RollSheetSectionId, a.Name
+                orderby a.RollSheetSectionId, a.LastName, a.FamilyId, a.Name
                 select a;
             return q;
         }

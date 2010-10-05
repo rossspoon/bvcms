@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where (om.Pending ?? false) == false
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                     where om.EnrollmentDate <= Util.Now
-                    orderby om.Person.Name2
+                    orderby om.Person.LastName, om.Person.FamilyId, om.Person.Name2
                     let p = om.Person
                     select new PersonMemberInfo
                     {
@@ -120,7 +120,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                         && a.MeetingDate >= a.Organization.FirstMeetingDate)
                     where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
-                    orderby p.Name2, p.Name
+                    orderby p.Name2, p.Name                           
+                    orderby p.LastName, p.FamilyId, p.Name2
                     select new PersonVisitorInfo
                     {
                         VisitorType = p.MemberStatusId == (int)Person.MemberStatusCode.Member ? "VM" : "VS",

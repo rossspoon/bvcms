@@ -79,10 +79,6 @@
             </td>
        </tr>
     </table>
-<% if (User.IsInRole("Access"))
-   { %>
-    <p style="color:blue">Volunteer tab has moved under Growth</p>
-<% } %>
     <div id="main-tab" class="ui-tabs">
         <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>
@@ -228,15 +224,20 @@
    { %>
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
-                <li><a href="#user-tab"><span>User</span></a></li>
                 <li><a href="#changes-tab"><span>Changes</span></a></li>
+                <li><a href="#duplicates-tab"><span>Duplicates</span></a></li>
+                <li><a href="#user-tab"><span>User</span></a></li>
             </ul>
-            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/UserInfoGrid/<%=p.PeopleId %>">
-                </form>
-            </div>
             <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form action="/Person/PeopleExtrasGrid/<%=p.PeopleId %>">
+                </form>
+            </div>
+            <div id="duplicates-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/DuplicatesGrid/<%=p.PeopleId %>">
+                </form>
+            </div>
+            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/UserInfoGrid/<%=p.PeopleId %>">
                 </form>
             </div>
         </div>

@@ -49,8 +49,11 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Search(string name, string comm, string addr)
         {
+#if DEBUG
+#else
             if (!Authenticate())
                 return Content("not authorized");
+#endif
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
         }
