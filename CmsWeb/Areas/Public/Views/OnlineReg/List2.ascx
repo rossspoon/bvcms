@@ -9,7 +9,12 @@
     {
         var p = Model.List[i];
         p.index = i;
-        %>
+        if (Model.List.Count == 1)
+        { %>
+<tr><td>
+Log in
+</td></tr>
+     <% } %>
 <tr><td class="alt<%=p.index % 2 %>">
 <%=Html.Hidden("m.List.index", p.index) %>
 <%=Html.Hidden3("m.List[" + p.index + "].orgid", p.orgid) %>

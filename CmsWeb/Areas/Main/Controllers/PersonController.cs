@@ -483,50 +483,6 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new DuplicatesModel(id);
             return View(m);
         }
-        public ActionResult TagDuplicates(int id)
-        {
-            int? pid = Util.UserPeopleId;
-            string tagname = Util.CurrentTagName;
-            ThreadPool.QueueUserWorkItem(o => 
-            { 
-                StartTagging(id, tagname, pid);
-            }, null);
-            return RedirectToAction("TagDuplicatesProgress");
-        }
-        public ActionResult TagDuplicatesProgress()
-        {
-            return View();
-        }
-
-        private void StartTagging(int id, string tagname, int? userpeopleid)
-        {
-            var st = DateTime.Now;
-            int nf = 0, np = 0;
-            TagDuplicatesStatus.SetStart();
-
-            var db = DbUtil.Db;
-            var q = db.PeopleQuery(id);
-            var tag = db.FetchOrCreateTag(tagname, userpeopleid, DbUtil.TagTypeId_Personal);
-            foreach (var p in q)
-            {
-                if (p.PossibleDuplicates().Count() > 0)
-                {
-                    var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
-                    if (tp == null)
-                    tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
-                    ++nf;
-                }
-                ++np;
-                var ts = DateTime.Now.Subtract(st);
-                var dt = new DateTime(ts.Ticks);
-                var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
-                var tt = "{0:mm:ss}".Fmt(dt);
-                TagDuplicatesStatus.SetStatus(np, nf, tsp, tt);
-            }
-            db.SubmitChanges();
-            
-            TagDuplicatesStatus.SetFinished();
-        }
         private void InitExportToolbar(int? id)
         {
             var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
@@ -561,54 +517,72 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/MyTags.aspx");
         }
-    }
-    public static class TagDuplicatesStatus
-    {
-        static object lockObj = new object();
-        public static int found {get; set;}
-        public static int processed {get; set;}
-        public static string speed { get; set; }
-        public static string time { get; set; }
-        public static bool finished { get; set; }
+        public ActionResult TagDuplicates(int id)
+        {
+            if(HttpContext.Application["TagDuplicatesStatus"] != null)
+                return Content("already running elsewhere, sorry");
+            HttpContext.Application["TagDuplicatesStatus"] = new TagDuplicatesStatus();
+            int? pid = Util.UserPeopleId;
+            string tagname = Util.CurrentTagName;
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                var st = DateTime.Now;
+                int nf = 0, np = 0;
 
-        public static void SetStatus(int np, int nf, string ts, string tt)
-        {
-            lock (lockObj)
-            {
-                found = nf;
-                processed = np;
-                speed = ts;
-                time = tt;
-            }
+                var status = HttpContext.Application["TagDuplicatesStatus"] as TagDuplicatesStatus;
+                try
+                {
+                    var db = DbUtil.Db;
+                    var q = db.PeopleQuery(id);
+                    var tag = db.FetchOrCreateTag(tagname, pid, DbUtil.TagTypeId_Personal);
+                    foreach (var p in q)
+                    {
+                        if (p.PossibleDuplicates().Count() > 0)
+                        {
+                            var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
+                            if (tp == null)
+                                tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
+                            ++nf;
+                            db.SubmitChanges();
+                        }
+                        ++np;
+                        var ts = DateTime.Now.Subtract(st);
+                        var dt = new DateTime(ts.Ticks);
+                        var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
+                        var tt = "{0:mm:ss}".Fmt(dt);
+                        status.SetStatus(np, nf, tsp, tt);
+                    }
+                }
+                finally
+                {
+                    HttpContext.Application.Remove("TagDuplicatesStatus");
+                }
+            }, null);
+            return RedirectToAction("TagDuplicatesProgress");
         }
-        public static void SetFinished()
+        public ActionResult TagDuplicatesProgress()
         {
-            lock (lockObj)
-            {
-                finished = true;
-            }
+            var status = HttpContext.Application["TagDuplicatesStatus"] as TagDuplicatesStatus;
+            if (status == null)
+                return Redirect("/MyTags.aspx");
+            return View(status);
         }
-        public static void SetStart()
+    }
+    public class TagDuplicatesStatus
+    {
+        public int found { get; set; }
+        public int processed { get; set; }
+        public string speed { get; set; }
+        public string time { get; set; }
+        public bool finished { get; set; }
+        public bool isrunning { get; set; }
+
+        public void SetStatus(int np, int nf, string ts, string tt)
         {
-            lock (lockObj)
-            {
-                found = 0;
-                processed = 0;
-                speed = null;
-                time = null;
-                finished = false;
-            }
-        }
-        public static void GetStatus(out int np, out int nf, out string ts, out string tt, out bool fi)
-        {
-            lock (lockObj)
-            {
-                np = processed;
-                nf = found;
-                ts = speed;
-                tt = time;
-                fi = finished;
-            }
+            found = nf;
+            processed = np;
+            speed = ts;
+            time = tt;
         }
     }
 }

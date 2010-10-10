@@ -2,29 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using UtilityExtensions;
 using CmsData;
 
-namespace CmsWeb.Report
+namespace CmsWeb.Areas.Main.Models.Report
 {
-    public partial class AttendanceDetail : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            var dt1 = this.QueryString<DateTime>("dt1");
-            var dt2 = this.QueryString<DateTime?>("dt2");
+    public class AttendanceDetailModel
+    {  
+        DateTime dt1;
+        DateTime? dt2;
+        string name;
+        int? divid;
+        int? schedid;
+        int? campusid;
+
+        public AttendanceDetailModel (DateTime dt1, DateTime? dt2, string name, int? divid, int? schedid, int? campusid)
+    	{
             if (dt2.HasValue)
-                dt2 = dt2.Value.AddDays(1);
+            {
+                if (dt2.Value.TimeOfDay == TimeSpan.Zero)
+                    dt2 = dt2.Value.AddDays(1);
+            }
             else
                 dt2 = dt1.AddDays(1);
-            var name = this.QueryString<string>("name");
-            name = Server.UrlDecode(name);
-            var divid = this.QueryString<int?>("divid");
-            var schedid = this.QueryString<int?>("schedid");
-            var campusid = this.QueryString<int?>("campusid");
-
+            this.dt1 = dt1;
+            this.dt2 = dt2;
+            this.name = name;
+            this.divid = divid;
+            this.schedid = schedid;
+            this.campusid = campusid;
+    	}
+        public IEnumerable<MeetingRow> FetchMeetings()
+        {
             var q = from dio in DbUtil.Db.DivOrgs
                     where dio.DivId == divid
                     from m in dio.Organization.Meetings
@@ -68,17 +76,12 @@ namespace CmsWeb.Report
                 OutTowners = list.Sum(i => i.OutTowners)
             };
             list.Add(t);
-
-            var dg = new DataGrid();
-            bd.Controls.Add(dg);
-            dg.DataSource = list;
-            dg.DataBind();
+            return list;
         }
         public class MeetingRow
         {
             public string OrgName { get; set; }
             public string Leader { get; set; }
-            public string Location { get; set; }
             public string date { get; set; }
             public string OrgId { get; set; }
             public int Present { get; set; }

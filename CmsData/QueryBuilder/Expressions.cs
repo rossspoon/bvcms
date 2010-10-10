@@ -379,6 +379,36 @@ namespace CmsData
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
+        internal static Expression ContributionAmount2(
+            ParameterExpression parm,
+            DateTime? start,
+            DateTime? end,
+            CompareType op,
+            decimal amt)
+        {
+            Expression<Func<Person, decimal?>> pred = p =>
+                DbUtil.Db.ContributionAmount2(p.PeopleId, start.Value, end.Value);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(amt), left.Type);
+            if (HttpContext.Current.User.IsInRole("Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
+        internal static Expression ContributionChange(
+            ParameterExpression parm, CMSDataContext Db,
+            DateTime? start,
+            DateTime? end,
+            CompareType op,
+            double pct)
+        {
+            Expression<Func<Person, double?>> pred = p =>
+                Db.ContributionChange(p.PeopleId, start.Value, end.Value);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(pct), left.Type);
+            if (HttpContext.Current.User.IsInRole("Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
         internal static Expression IsTopGiver(
             ParameterExpression parm,
             int days,

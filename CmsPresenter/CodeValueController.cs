@@ -154,7 +154,7 @@ namespace CMSPresenter
                 list = q.ToList();
                 HttpRuntime.Cache[Util.Host + NAME] = list;
             }
-            return list;
+            return list.AddNotSpecified();
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]

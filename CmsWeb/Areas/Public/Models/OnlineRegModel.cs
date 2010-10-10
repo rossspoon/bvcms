@@ -39,7 +39,6 @@ namespace CmsWeb.Models
                 {
                     OrganizationName = "Create Account",
                     RegistrationTypeId = (int)Organization.RegistrationEnum.CreateAccount,
-                    MemberOnly = true,
                     AllowOnlyOne = true,
                 };
             }

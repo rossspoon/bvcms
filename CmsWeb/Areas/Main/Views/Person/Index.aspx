@@ -65,7 +65,7 @@
                         <% } %>
                         </th>
                     </tr>
-                <% foreach (var m in Model.FamilyMembers())
+                <% foreach (var m in Model.displayperson.familymembers)
                    { %>
                     <tr>
                         <td><a href="/Person/Index/<%=m.Id %>"><span style='color: <%=m.Color%>'><%=m.Name %></span></a></td>

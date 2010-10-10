@@ -203,5 +203,14 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new ChurchAttendance2Model(Dt1, Dt2, skipweeks);
             return View(m);
         }
+        public ActionResult AttendanceDetail(DateTime? Dt1, DateTime? Dt2, string name, int? divid, int? schedid, int? campusid)
+        {
+            if (!Dt1.HasValue)
+                Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            if (!Dt2.HasValue)
+                Dt2 = Dt1.Value.AddDays(1);
+            var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
+            return View(m);
+        }
     }
 }

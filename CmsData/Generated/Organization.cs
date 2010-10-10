@@ -2672,7 +2672,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MenuItems", UpdateCheck=UpdateCheck.Never, Storage="_MenuItems", DbType="varchar(500)")]
+		[Column(Name="MenuItems", UpdateCheck=UpdateCheck.Never, Storage="_MenuItems", DbType="varchar(2500)")]
 		public string MenuItems
 		{
 			get { return this._MenuItems; }

@@ -50,6 +50,15 @@ namespace CmsWeb.Areas.Manage.Controllers
                 fn = fn.Replace('(', '-');
                 fn = fn.Replace(')', '-');
                 fn = fn.Replace(',', '_');
+                fn = fn.Replace("#", "");
+                fn = fn.Replace("!", "");
+                fn = fn.Replace("$", "");
+                fn = fn.Replace("%", "");
+                fn = fn.Replace("&", "_");
+                fn = fn.Replace("'", "");
+                fn = fn.Replace("+", "-");
+                fn = fn.Replace("=", "-");
+
                 string path = WebConfigurationManager.AppSettings["UploadPath"];
                 if (!path.HasValue())
                     path = Server.MapPath("/Upload/");

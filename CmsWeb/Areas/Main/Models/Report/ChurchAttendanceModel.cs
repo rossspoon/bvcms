@@ -58,6 +58,8 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             public int DivId { get; set; }
             public string Name { get; set; }
+            public DateTime Dt1 { get; set; }
+            public DateTime Dt2 { get; set; }
             public IEnumerable<MeetInfo> Meetings { get; set; }
         }
         public class MeetInfo
@@ -82,17 +84,19 @@ namespace CmsWeb.Areas.Main.Models.Report
                         Name = g.Key.Name,
                         RptGroup = g.Key.RptGroup,
                         Divs = from pd in g
+                               let dt1 = Sunday.AddHours((double)g.Key.StartHoursOffset)
+                               let dt2 = Sunday.AddHours((double)g.Key.EndHoursOffset)
                                orderby pd.Division.ReportLine
                                select new DivInfo
                                {
                                    DivId = pd.DivId,
                                    Name = pd.Division.Name,
+                                   Dt1 = dt1,
+                                   Dt2 = dt2,
                                    Meetings = from dg in pd.Division.DivOrgs
                                               from m in dg.Organization.Meetings
-                                              where m.MeetingDate
-                                                >= Sunday.AddHours((double)g.Key.StartHoursOffset)
-                                              where m.MeetingDate
-                                                < Sunday.AddHours((double)g.Key.EndHoursOffset)
+                                              where m.MeetingDate >= dt1
+                                              where m.MeetingDate < dt2
                                               select new MeetInfo
                                               {
                                                   date = m.MeetingDate.Value,

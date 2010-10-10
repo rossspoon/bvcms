@@ -73,7 +73,7 @@
                   { %>
            <td align="right"><%=d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present).ToString("n0") %></td>
                <% } %>
-           <td align="right"><%=d.Meetings.Sum(m => m.Present).ToString("n0")%></td>
+           <td align="right"><a href='/Reports/AttendanceDetail?dt1=<%=d.Dt1.ToString("M/d/yy H:mm") %>&dt2=<%=d.Dt2.ToString("M/d/yy H:mm") %>&divid=<%=d.DivId %>'><%=d.Meetings.Sum(m => m.Present).ToString("n0")%></a></td>
            <td align="right"><%=d.Meetings.Sum(m => m.Visitors).ToString("n0")%></td>
            <td align="right"><%=d.Meetings.Sum(m => m.OutTowners).ToString("n0")%></td>
            </tr>

@@ -24,6 +24,8 @@ namespace CmsData
         ChristAsSavior,
         ContributionOptionsId,
         ContributionsStatement,
+        ContributionAmount2,
+        ContributionChange,
         CreatedBy,
         CreatedDate,
         DaysSinceContact,

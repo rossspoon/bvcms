@@ -90,7 +90,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.Groups))
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
 
-                if (bygroup == false && groups == null && meeting == null)
+                if (bygroup == false && groups[0] == 0 && meeting == null)
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                 if (t.Rows.Count > 0)

@@ -17,19 +17,19 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _FromPid;
+		private string _Username;
 		
 		private DateTime _Time;
 		
-		private string _Username;
-		
 		private string _FromAddr;
-		
-		private string _ToList;
 		
 		private string _Subject;
 		
 		private string _Message;
+		
+		private int _FromPid;
+		
+		private string _ToList;
 		
 		private int? _Count;
 		
@@ -42,26 +42,26 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnFromPidChanging(int value);
-		partial void OnFromPidChanged();
+		partial void OnUsernameChanging(string value);
+		partial void OnUsernameChanged();
 		
 		partial void OnTimeChanging(DateTime value);
 		partial void OnTimeChanged();
 		
-		partial void OnUsernameChanging(string value);
-		partial void OnUsernameChanged();
-		
 		partial void OnFromAddrChanging(string value);
 		partial void OnFromAddrChanged();
-		
-		partial void OnToListChanging(string value);
-		partial void OnToListChanged();
 		
 		partial void OnSubjectChanging(string value);
 		partial void OnSubjectChanged();
 		
 		partial void OnMessageChanging(string value);
 		partial void OnMessageChanged();
+		
+		partial void OnFromPidChanging(int value);
+		partial void OnFromPidChanged();
+		
+		partial void OnToListChanging(string value);
+		partial void OnToListChanged();
 		
 		partial void OnCountChanging(int? value);
 		partial void OnCountChanged();
@@ -77,21 +77,21 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="FromPid", UpdateCheck=UpdateCheck.Never, Storage="_FromPid", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int FromPid
+		[Column(Name="Username", UpdateCheck=UpdateCheck.Never, Storage="_Username", DbType="varchar(50)")]
+		public string Username
 		{
-			get { return this._FromPid; }
+			get { return this._Username; }
 
 			set
 			{
-				if (this._FromPid != value)
+				if (this._Username != value)
 				{
 				
-                    this.OnFromPidChanging(value);
+                    this.OnUsernameChanging(value);
 					this.SendPropertyChanging();
-					this._FromPid = value;
-					this.SendPropertyChanged("FromPid");
-					this.OnFromPidChanged();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
 				}
 
 			}
@@ -121,28 +121,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Username", UpdateCheck=UpdateCheck.Never, Storage="_Username", DbType="varchar(50)")]
-		public string Username
-		{
-			get { return this._Username; }
-
-			set
-			{
-				if (this._Username != value)
-				{
-				
-                    this.OnUsernameChanging(value);
-					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="FromAddr", UpdateCheck=UpdateCheck.Never, Storage="_FromAddr", DbType="varchar(50)")]
 		public string FromAddr
 		{
@@ -158,28 +136,6 @@ namespace CmsData
 					this._FromAddr = value;
 					this.SendPropertyChanged("FromAddr");
 					this.OnFromAddrChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ToList", UpdateCheck=UpdateCheck.Never, Storage="_ToList", DbType="varchar")]
-		public string ToList
-		{
-			get { return this._ToList; }
-
-			set
-			{
-				if (this._ToList != value)
-				{
-				
-                    this.OnToListChanging(value);
-					this.SendPropertyChanging();
-					this._ToList = value;
-					this.SendPropertyChanged("ToList");
-					this.OnToListChanged();
 				}
 
 			}
@@ -224,6 +180,50 @@ namespace CmsData
 					this._Message = value;
 					this.SendPropertyChanged("Message");
 					this.OnMessageChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FromPid", UpdateCheck=UpdateCheck.Never, Storage="_FromPid", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int FromPid
+		{
+			get { return this._FromPid; }
+
+			set
+			{
+				if (this._FromPid != value)
+				{
+				
+                    this.OnFromPidChanging(value);
+					this.SendPropertyChanging();
+					this._FromPid = value;
+					this.SendPropertyChanged("FromPid");
+					this.OnFromPidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ToList", UpdateCheck=UpdateCheck.Never, Storage="_ToList", DbType="varchar")]
+		public string ToList
+		{
+			get { return this._ToList; }
+
+			set
+			{
+				if (this._ToList != value)
+				{
+				
+                    this.OnToListChanging(value);
+					this.SendPropertyChanging();
+					this._ToList = value;
+					this.SendPropertyChanged("ToList");
+					this.OnToListChanged();
 				}
 
 			}

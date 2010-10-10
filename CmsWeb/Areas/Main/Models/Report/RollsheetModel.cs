@@ -55,10 +55,12 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int[] groups)
         {
+            if (groups == null)
+                groups = new int[] { 0 };
             var tagownerid = Util.CurrentTagOwnerId;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
-                    where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups == null)
+                    where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups[0] == 0)
                     where !groups.Contains(-1) || (groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
                     where (om.Pending ?? false) == false
                     where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive

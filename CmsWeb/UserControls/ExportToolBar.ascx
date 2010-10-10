@@ -24,8 +24,12 @@
         <ul>
             <li>
                 <asp:HyperLink ID="ExcelLink" class="ChooseLabelType" ToolTip="For mail merge" runat="server">
-                    <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
+                    <asp:Image ID="Image6a" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel</asp:HyperLink></li>
+            <li>
+                <asp:HyperLink ID="ExcelPicLink" ToolTip="For picture directory word merge" runat="server">
+                    <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
+                    Excel Pictures</asp:HyperLink></li>
             <li>
                 <asp:HyperLink ID="BulkMailLink" class="ChooseLabelType" ToolTip="Comma separated values text file, opens in excel, for bulk mailings"
                     runat="server">

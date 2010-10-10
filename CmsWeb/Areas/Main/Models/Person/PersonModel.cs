@@ -45,36 +45,36 @@ namespace CmsWeb.Models.PersonPage
                 return ckorg.HasValue;
             }
         }
-        public class FamilyMember
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public int? Age { get; set; }
-            public string Color { get; set; }
-            public string PositionInFamily { get; set; }
-            public string SpouseIndicator { get; set; }
-            public string Email { get; set; }
-        }
-        public IEnumerable<FamilyMember> FamilyMembers()
-        {
-            var q = from m in DbUtil.Db.People
-                    where m.FamilyId == displayperson.FamilyId
-                    orderby
-                        m.PeopleId == m.Family.HeadOfHouseholdId ? 1 :
-                        m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 :
-                        3, m.Age descending, m.Name2
-                    select new FamilyMember
-                    {
-                        Id = m.PeopleId,
-                        Name = m.Name,
-                        Age = m.Age,
-                        Color = m.DeceasedDate != null ? "red" : "#336699",
-                        PositionInFamily = m.FamilyPosition.Code,
-                        SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;",
-                        Email = m.EmailAddress
-                    };
-            return q;
-        }
+        //public class FamilyMember
+        //{
+        //    public int Id { get; set; }
+        //    public string Name { get; set; }
+        //    public int? Age { get; set; }
+        //    public string Color { get; set; }
+        //    public string PositionInFamily { get; set; }
+        //    public string SpouseIndicator { get; set; }
+        //    public string Email { get; set; }
+        //}
+        //public IEnumerable<FamilyMember> FamilyMembers()
+        //{
+        //    var q = from m in DbUtil.Db.People
+        //            where m.FamilyId == displayperson.FamilyId
+        //            orderby
+        //                m.PeopleId == m.Family.HeadOfHouseholdId ? 1 :
+        //                m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 :
+        //                3, m.Age descending, m.Name2
+        //            select new FamilyMember
+        //            {
+        //                Id = m.PeopleId,
+        //                Name = m.Name,
+        //                Age = m.Age,
+        //                Color = m.DeceasedDate != null ? "red" : "#336699",
+        //                PositionInFamily = m.FamilyPosition.Code,
+        //                SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;",
+        //                Email = m.EmailAddress
+        //            };
+        //    return q;
+        //}
         public string addrtab { get { return displayperson.PrimaryAddr.Name; } }
 
     }

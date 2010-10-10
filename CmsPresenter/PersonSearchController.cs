@@ -91,6 +91,43 @@ namespace CMSPresenter
                     };
             return q.Take(maximumRows);
         }
+        public static IEnumerable FetchExcelListPics(int queryid, int maximumRows)
+        {
+            var Db = DbUtil.Db;
+            var query = Db.PeopleQuery(queryid);
+            var q = from p in query
+                    let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                    select new
+                    {
+                        PeopleId = p.PeopleId,
+                        Title = p.TitleCode,
+                        FirstName = p.PreferredName,
+                        LastName = p.LastName,
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        City = p.PrimaryCity,
+                        State = p.PrimaryState,
+                        Zip = p.PrimaryZip.FmtZip(),
+                        Email = p.EmailAddress,
+                        BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                        BirthDay = Util.FormatBirthday(null, p.BirthMonth, p.BirthDay),
+                        JoinDate = p.JoinDate.FormatDate(),
+                        HomePhone = p.HomePhone.FmtFone(),
+                        CellPhone = p.CellPhone.FmtFone(),
+                        WorkPhone = p.WorkPhone.FmtFone(),
+                        MemberStatus = p.MemberStatus.Description,
+                        BFTeacher = p.BFClass.LeaderName,
+                        Age = p.Age.ToString(),
+                        School = p.SchoolOther,
+                        Grade = p.Grade.ToString(),
+                        AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
+                        Married = p.MaritalStatus.Description,
+                        FamilyId = p.FamilyId,
+                        Image = p.PictureId == null ? Util.ServerLink("/images/unknown.jpg") :
+                            Util.ServerLink("/Image.aspx?portrait=1&w=160&h=200&id=" + p.Picture.LargeId)
+                    };
+            return q.Take(maximumRows);
+        }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<TaggedPersonInfo> FetchPeopleList(int startRowIndex, int maximumRows, string sortExpression,

@@ -37,7 +37,6 @@ namespace CmsWeb.Models
                          col = s.Attribute("col").Value,
                          row = s.Attribute("row").Value,
                          name = Slot.Name(s, this),
-                         smgroup = s.Attribute("group").Value
                      };
             slots = qs.ToDictionary(s => s.name);
 
@@ -65,7 +64,6 @@ namespace CmsWeb.Models
             public string col { get; set; }
             public string row { get; set; }
             public string name { get; set; }
-            public string smgroup { get; set; }
             public static string Name(string row, string col, SlotModel m)
             {
                 return m.cols[col] + ": " + m.rows[row];

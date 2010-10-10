@@ -220,7 +220,7 @@
                "&name=" + $('#Name').val() +
                "&dt1=" + $('#MeetingDate1').val() +
                "&dt2=" + $('#MeetingDate2').val();
-        window.open("/Report/AttendanceDetail.aspx" + args);
+        window.open("/Reports/AttendanceDetail" + args);
         return false;
     });
     $('#Roster').click(function(ev) {

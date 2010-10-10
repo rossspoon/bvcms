@@ -23,9 +23,39 @@ namespace CmsWeb
                 NoPic(context);
             else
             {
-                context.Response.ContentType = image.Mimetype;
-                context.Response.BinaryWrite(image.Bits);
+                var w = Page.QueryString<int?>("w");
+                var h = Page.QueryString<int?>("h");
+                if (w.HasValue && h.HasValue)
+                {
+                    context.Response.ContentType = "image/jpeg";
+                    context.Response.BinaryWrite(FetchResizedImage(image, w.Value, h.Value));
+                }
+                else
+                {
+                    context.Response.ContentType = image.Mimetype;
+                    context.Response.BinaryWrite(image.Bits);
+                }
             }
+        }
+        public byte[] FetchResizedImage(ImageData.Image img, int w, int h)
+        {
+            var istream = new MemoryStream(img.Bits);
+            var img1 = System.Drawing.Image.FromStream(istream);
+            var ratio = Math.Min(w / (double)img1.Width, h / (double)img1.Height);
+            if (ratio >= 1) // image is smaller than requested
+                ratio = 1; // same size
+            w = Convert.ToInt32(ratio * img1.Width);
+            h = Convert.ToInt32(ratio * img1.Height);
+            var img2 = new System.Drawing.Bitmap(img1, w, h);
+            var ostream = new MemoryStream();
+            img2.Save(ostream, ImageFormat.Jpeg);
+            var Bits = ostream.GetBuffer();
+            var Length = Bits.Length;
+            img1.Dispose();
+            img2.Dispose();
+            istream.Close();
+            ostream.Close();
+            return Bits;
         }
         void NoPic(HttpContext context)
         {

@@ -17,19 +17,19 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Id;
-		
 		private int _PeopleId;
+		
+		private int? _FamilyId;
 		
 		private int _UserPeopleId;
 		
 		private DateTime _Created;
 		
-		private int? _FamilyId;
-		
 		private string _Field;
 		
 		private string _Data;
+		
+		private int _Id;
 		
    		
     	
@@ -40,11 +40,11 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnIdChanging(int value);
-		partial void OnIdChanged();
-		
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
+		
+		partial void OnFamilyIdChanging(int? value);
+		partial void OnFamilyIdChanged();
 		
 		partial void OnUserPeopleIdChanging(int value);
 		partial void OnUserPeopleIdChanged();
@@ -52,14 +52,14 @@ namespace CmsData
 		partial void OnCreatedChanging(DateTime value);
 		partial void OnCreatedChanged();
 		
-		partial void OnFamilyIdChanging(int? value);
-		partial void OnFamilyIdChanged();
-		
 		partial void OnFieldChanging(string value);
 		partial void OnFieldChanged();
 		
 		partial void OnDataChanging(string value);
 		partial void OnDataChanged();
+		
+		partial void OnIdChanging(int value);
+		partial void OnIdChanged();
 		
     #endregion
 		public ChangeLog()
@@ -71,28 +71,6 @@ namespace CmsData
 
 		
     #region Columns
-		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get { return this._Id; }
-
-			set
-			{
-				if (this._Id != value)
-				{
-				
-                    this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-
-			}
-
-		}
-
 		
 		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL")]
 		public int PeopleId
@@ -109,6 +87,28 @@ namespace CmsData
 					this._PeopleId = value;
 					this.SendPropertyChanged("PeopleId");
 					this.OnPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FamilyId", UpdateCheck=UpdateCheck.Never, Storage="_FamilyId", DbType="int")]
+		public int? FamilyId
+		{
+			get { return this._FamilyId; }
+
+			set
+			{
+				if (this._FamilyId != value)
+				{
+				
+                    this.OnFamilyIdChanging(value);
+					this.SendPropertyChanging();
+					this._FamilyId = value;
+					this.SendPropertyChanged("FamilyId");
+					this.OnFamilyIdChanged();
 				}
 
 			}
@@ -160,28 +160,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FamilyId", UpdateCheck=UpdateCheck.Never, Storage="_FamilyId", DbType="int")]
-		public int? FamilyId
-		{
-			get { return this._FamilyId; }
-
-			set
-			{
-				if (this._FamilyId != value)
-				{
-				
-                    this.OnFamilyIdChanging(value);
-					this.SendPropertyChanging();
-					this._FamilyId = value;
-					this.SendPropertyChanged("FamilyId");
-					this.OnFamilyIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Field", UpdateCheck=UpdateCheck.Never, Storage="_Field", DbType="varchar(50)")]
 		public string Field
 		{
@@ -219,6 +197,28 @@ namespace CmsData
 					this._Data = value;
 					this.SendPropertyChanged("Data");
 					this.OnDataChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get { return this._Id; }
+
+			set
+			{
+				if (this._Id != value)
+				{
+				
+                    this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 
 			}

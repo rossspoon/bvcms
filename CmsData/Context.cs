@@ -53,11 +53,10 @@ namespace CmsData
             //}
 
             //base.SubmitChanges(failureMode);
-
             int t = Thread.CurrentThread.ManagedThreadId;
             if (LogFile.HasValue())
             {
-                this.Log = File.AppendText(LogFile);
+                this.Log = File.AppendText(HttpContext.Current.Server.MapPath(LogFile));
                 DateTime n = Util.Now;
                 this.Log.WriteLine("-->> {0} at {1:d};{2:T}, by {3}", t, n, n, Util.UserName);
             }

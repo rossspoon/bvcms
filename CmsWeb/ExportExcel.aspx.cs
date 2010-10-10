@@ -8,6 +8,7 @@ using CMSPresenter;
 using UtilityExtensions;
 using System.Collections;
 using CmsData;
+using System.IO;
 
 namespace CmsWeb
 {
@@ -15,15 +16,12 @@ namespace CmsWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var labelNameFormat = Request.QueryString["format"];
+            int? qid = Request.QueryString["id"].ToInt2();
             var r = Response;
             r.Clear();
             var useweb = Request.QueryString["web"];
 
-            if (useweb != "true")
-            {
-                r.ContentType = "application/vnd.ms-excel";
-                r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
-            }
             string header =
 @"<html xmlns:x=""urn:schemas-microsoft-com:office:excel"">
 <head>
@@ -35,18 +33,21 @@ namespace CmsWeb
     </style>
 </head>
 <body>";
-                r.Write(header);
-                r.Charset = "";
+            r.Charset = "";
 
-            int? qid = Request.QueryString["id"].ToInt2();
-            var labelNameFormat = Request.QueryString["format"];
             if (!qid.HasValue && labelNameFormat != "Groups")
             {
                 r.Write("no queryid");
                 r.Flush();
                 r.End();
             }
-           var ctl = new MailingController();
+            if (useweb != "true")
+            {
+                r.ContentType = "application/vnd.ms-excel";
+                r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
+            }
+            r.Write(header);
+            var ctl = new MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             var dg = new DataGrid();
@@ -55,6 +56,11 @@ namespace CmsWeb
             {
                 case "Individual":
                     dg.DataSource = PersonSearchController.FetchExcelList(qid.Value, maxExcelRows);
+                    break;
+                case "IndividualPicture":
+                    GridView1.EnableViewState = false;
+                    GridView1.AllowPaging = false;
+                    GridView1.DataSource = PersonSearchController.FetchExcelListPics(qid.Value, maxExcelRows);
                     break;
                 case "Family":
                     dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
@@ -90,13 +96,26 @@ namespace CmsWeb
                     dg.DataSource = InvolvementController.PromoList(qid.Value, maxExcelRows);
                     break;
             }
-            dg.DataBind();
-            dg.RenderControl(new HtmlTextWriter(r.Output));
+            if (labelNameFormat == "IndividualPicture")
+            {
+                GridView1.DataBind();
+                GridView1.RenderControl(new HtmlTextWriter(r.Output));
+            }
+            else
+            {
+                dg.DataBind();
+                dg.RenderControl(new HtmlTextWriter(r.Output));
+            }
             r.Write("</body></HTML>");
+            r.Flush();
+            r.End();
         }
         private static int maxExcelRows
         {
             get { return DbUtil.Settings("MaxExcelRows", "10000").ToInt(); }
+        }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
         }
     }
 }

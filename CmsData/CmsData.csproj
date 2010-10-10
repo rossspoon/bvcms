@@ -165,12 +165,14 @@
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailSent.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
+    <Compile Include="Generated\Functions\Split.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\RegistrationType.cs" />
     <Compile Include="Generated\SecurityCode.cs" />
+    <Compile Include="Generated\StreetType.cs" />
     <Compile Include="Generated\Views\DiscActivityLog.cs" />
     <Compile Include="Generated\Views\RandNumber.cs" />
     <Compile Include="MemberRules.cs" />
@@ -417,7 +419,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="books.xml" />
-    <Content Include="QueryBuilder\FieldMap2.xml" />
+    <Content Include="QueryBuilder\FieldMap2.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="QueryBuilder\CompareMap.xml" />
   </ItemGroup>
   <ItemGroup>

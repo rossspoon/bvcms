@@ -42,9 +42,8 @@
             </th>
             <td>
                 <cc1:DisplayOrEditDropDown ID="StatusId" runat="server" BindingSource="vol" DataTextField="Value"
-                    DataValueField="Id" MakeDefault0="True" BindingMember="StatusId"  AppendDataBoundItems="true"
+                    DataValueField="Id" MakeDefault0="True" BindingMember="StatusId"  
                     BindingMode="TwoWay" DataSourceID="ODSVolunteerStatusApplicationCodes">
-                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
                 </cc1:DisplayOrEditDropDown>
             </td>
         </tr>

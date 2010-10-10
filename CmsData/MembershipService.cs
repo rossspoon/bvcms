@@ -68,7 +68,7 @@ namespace CmsData
         }
         public static string FetchUsername(string first, string last)
         {
-            var username = first.Trim().ToLower() + last.Trim().ToLower()[0];
+            var username = first.Trim().ToLower()[0] + last.Trim().ToLower();
             var uname = username;
             var i = 1;
             while (DbUtil.Db.Users.SingleOrDefault(u => u.Username == uname) != null)
@@ -77,7 +77,7 @@ namespace CmsData
         }
         public static string FetchUsernameNoCheck(string first, string last)
         {
-            return first.ToLower() + last.ToLower()[0];
+            return first.ToLower()[0] + last.ToLower();
         }
         public static string FetchPassword()
         {

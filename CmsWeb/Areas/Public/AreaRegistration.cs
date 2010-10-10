@@ -17,18 +17,13 @@ namespace CmsWeb.Areas.Public
         {
             AddRoute(context, "DiscipleLife");
             AddRoute(context, "GODisciples");
-            AddRoute(context, "LoveRespect");
             AddRoute(context, "MOBS");
-            AddRoute(context, "Retreat");
             AddRoute(context, "OnlineReg");
             AddRoute(context, "Prayer");
-            AddRoute(context, "RecReg");
             AddRoute(context, "Register");
             AddRoute(context, "Sales");
             AddRoute(context, "OptOut");
-            AddRoute(context, "SoulMate");
             AddRoute(context, "StepClass");
-            AddRoute(context, "VBSReg");
             AddRoute(context, "Event");
             AddRoute(context, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
             AddRoute(context, "VolunteerStart", "Volunteer", "Volunteer/{id}", "Start");

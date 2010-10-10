@@ -494,6 +494,10 @@ namespace CmsData
         partial void UpdateStateLookup(StateLookup instance);
         partial void DeleteStateLookup(StateLookup instance);
         
+        partial void InsertStreetType(StreetType instance);
+        partial void UpdateStreetType(StreetType instance);
+        partial void DeleteStreetType(StreetType instance);
+        
         partial void InsertTag(Tag instance);
         partial void UpdateTag(Tag instance);
         partial void DeleteTag(Tag instance);
@@ -1354,6 +1358,12 @@ namespace CmsData
 
 		}
 
+		public Table< StreetType> StreetTypes
+		{
+			get	{ return this.GetTable< StreetType>(); }
+
+		}
+
 		public Table< Tag> Tags
 		{
 			get	{ return this.GetTable< Tag>(); }
@@ -1724,6 +1734,19 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.Split", IsComposable = true)]
+		public IQueryable< View.Split > Split(
+            [Parameter(DbType="varchar")] string InputText,
+            [Parameter(DbType="varchar")] string Delimiter
+            )
+		{
+			return this.CreateMethodCallQuery< View.Split>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                InputText,
+                Delimiter
+                );
+		}
+
 		[Function(Name="dbo.SundayDates", IsComposable = true)]
 		public IQueryable< View.SundayDate > SundayDates(
             [Parameter(DbType="datetime")] DateTime? dt1,
@@ -1974,6 +1997,22 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.ContributionChange", IsComposable = true)]
+		[return: Parameter(DbType = "float")]
+		public double? ContributionChange(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "dt1", DbType="datetime")] DateTime? dt1,
+            [Parameter(Name = "dt2", DbType="datetime")] DateTime? dt2
+            )
+		{
+			return ((double?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                dt1,
+                dt2
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.PersonAttendCountOrg", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? PersonAttendCountOrg(
@@ -1985,6 +2024,22 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
                 oid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.ContributionAmount2", IsComposable = true)]
+		[return: Parameter(DbType = "money")]
+		public decimal? ContributionAmount2(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "dt1", DbType="datetime")] DateTime? dt1,
+            [Parameter(Name = "dt2", DbType="datetime")] DateTime? dt2
+            )
+		{
+			return ((decimal?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                dt1,
+                dt2
                 ).ReturnValue));
 		}
 
@@ -2045,6 +2100,20 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 familyid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.AddressMatch", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? AddressMatch(
+            [Parameter(Name = "var1", DbType="varchar")] string var1,
+            [Parameter(Name = "var2", DbType="varchar")] string var2
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                var1,
+                var2
                 ).ReturnValue));
 		}
 
@@ -2410,34 +2479,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.ContributionCount", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? ContributionCount(
-            [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "days", DbType="int")] int? days
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid,
-                days
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.ContributionAmount", IsComposable = true)]
-		[return: Parameter(DbType = "money")]
-		public decimal? ContributionAmount(
-            [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "days", DbType="int")] int? days
-            )
-		{
-			return ((decimal?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid,
-                days
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.LastContact", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastContact(
@@ -2673,6 +2714,34 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 Username,
                 PropertyName
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.ContributionCount", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? ContributionCount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.ContributionAmount", IsComposable = true)]
+		[return: Parameter(DbType = "money")]
+		public decimal? ContributionAmount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days
+            )
+		{
+			return ((decimal?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days
                 ).ReturnValue));
 		}
 

@@ -114,7 +114,7 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
-                    ModelState.AddModelError("dob", "Sorry, that age group is filled");
+                    ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
                     FillPriorInfo(p);
                 if (!p.AnyOtherInfo())
@@ -150,7 +150,7 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
-                    ModelState.AddModelError("dob", "Sorry, that age group is filled");
+                    ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
                 {
                     FillPriorInfo(p);

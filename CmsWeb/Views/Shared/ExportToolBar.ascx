@@ -15,6 +15,9 @@
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="For mail merge"><img src="/images/Excel.png" /> 
                 Excel</a></li>
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=IndividualPicture' 
+                title="For picture directory word merge"><img src="/images/Excel.png" /> 
+                Excel Pictures</a></li>
             <li><a href='/bulkmail.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Comma separated values text file, opens in excel, for bulk mailings"><img src="/images/Excel.png" /> 
                 Bulk (csv)</a></li>

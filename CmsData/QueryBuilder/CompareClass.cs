@@ -108,6 +108,18 @@ namespace CmsData
                 case QueryType.CreatedBy:
                     return Expressions.CreatedBy(parm, c.GetDataContext() as CMSDataContext, 
                         CompType, c.TextValue);
+                case QueryType.ContributionAmount2:
+                    return Expressions.ContributionAmount2(parm,
+                               c.StartDate,
+                               c.EndDate,
+                               CompType,
+                               Decimal.Parse(c.TextValue));
+                case QueryType.ContributionChange:
+                    return Expressions.ContributionChange(parm, c.GetDataContext() as CMSDataContext,
+                               c.StartDate,
+                               c.EndDate,
+                               CompType,
+                               double.Parse(c.TextValue));
                 // D --------------------
 				case QueryType.DaysTillBirthday:
 					return Expressions.DaysTillBirthday(parm, c.GetDataContext() as CMSDataContext,

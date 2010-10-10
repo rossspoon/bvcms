@@ -98,7 +98,9 @@ By logging in below, you agree that you understand this purpose and will abide b
         }
         public static void SetUserInfo(string username)
         {
-            var u = DbUtil.Db.Users.Single(us => us.Username == username);
+            var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == username);
+            if (u == null)
+                return;
             Util.UserId = u.UserId;
             Util.UserPeopleId = u.PeopleId;
             Util.CurrentPeopleId = Util.UserPeopleId.Value;

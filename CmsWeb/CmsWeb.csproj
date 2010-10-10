@@ -209,7 +209,9 @@
     <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
+    <Compile Include="Areas\Main\Models\Person\FamilyMemberInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\DuplicatesModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\AttendanceDetailModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetModel.cs" />
     <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
@@ -821,6 +823,7 @@
     <Content Include="Areas\Main\Views\CheckIn2\Index.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\Keyboard.ascx" />
     <Content Include="Areas\Main\Views\CheckIn2\Startup.aspx" />
+    <Content Include="Areas\Main\Views\Person\DuplicateRow.ascx" />
     <Content Include="Areas\Main\Views\Person\DuplicatesGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\TagDuplicatesProgress.aspx" />
     <Content Include="Areas\Main\Views\Person\UserDialog.aspx" />
@@ -828,6 +831,9 @@
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.ascx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
+    <Content Include="Areas\Main\Views\Reports\AttendanceDetail.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg\List.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg\List2.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\PickSlot.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment_aunet.aspx" />
@@ -1254,7 +1260,6 @@
     <Content Include="Areas\Public\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Payment2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Index.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg\List.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\NoLeague.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\OtherDisplay.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg\OtherEdit.ascx" />
@@ -1787,8 +1792,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>58724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

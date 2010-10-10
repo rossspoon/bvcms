@@ -176,7 +176,7 @@ namespace UtilityExtensions
                 dt = "{0}/{1}".Fmt(m, d);
             if (y.HasValue)
                 if (dt != "")
-                    dt = dt + "/" + y;
+                    dt = dt + "/" + (y.Value % 100).ToString("00");
                 else
                     dt = y.ToString();
             return dt;
@@ -1006,7 +1006,7 @@ namespace UtilityExtensions
         public static void ShowError(string message)
         {
             HttpContext.Current.Response.Redirect(
-                "/Home/ShowError/{0}?url={1}".Fmt(HttpContext.Current.Server.UrlEncode(message),
+                "/Home/ShowError/?id={0}&url={1}".Fmt(HttpContext.Current.Server.UrlEncode(message),
                 HttpContext.Current.Request.Url.OriginalString));
         }
         public static string ResolveUrl(string originalUrl)
