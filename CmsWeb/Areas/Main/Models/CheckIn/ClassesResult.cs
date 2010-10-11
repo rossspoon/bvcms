@@ -13,14 +13,13 @@ namespace CmsWeb.Models
     {
         private int thisday;
         private int campusid;
-        private bool? kioskmode;
         private int familyid;
         private int? peopleid;
         private DateTime? bd;
         private int? grade;
 
         public bool noagecheck { get; set; }
-        public ClassesResult(bool? kioskmode, int id, int thisday, int campusid, bool noagecheck)
+        public ClassesResult(int id, int thisday, int campusid, bool noagecheck)
         {
             this.thisday = thisday;
             this.campusid = campusid;
@@ -32,7 +31,7 @@ namespace CmsWeb.Models
                          p.BirthDate,
                          p.Grade
                      }).SingleOrDefault();
-            if (i==null)
+            if (i == null)
                 return;
 
             familyid = i.FamilyId;
@@ -41,7 +40,6 @@ namespace CmsWeb.Models
             grade = i.Grade;
 
             this.noagecheck = noagecheck;
-            this.kioskmode = kioskmode;
         }
         public override void ExecuteResult(ControllerContext context)
         {
@@ -56,32 +54,32 @@ namespace CmsWeb.Models
                 w.WriteAttributeString("pid", peopleid.ToString());
                 w.WriteAttributeString("fid", familyid.ToString());
                 var q = DbUtil.Db.Organizations.AsQueryable();
-                if (kioskmode == true)
-                    q = from o in q
-                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                        where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
-                        where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
-                        where o.AllowKioskRegister == true
-                        where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                        orderby bdaystart, o.OrganizationName
-                        select o;
-                else
-                    q = from o in q
-                        let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
-                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                        where o.CanSelfCheckin == true
-                        where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                        where Hour1 != null
-                        orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
-                        select o;
+                //if (kioskmode == true)
+                //    q = from o in q
+                //        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                //        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                //        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                //        where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
+                //        where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
+                //        where o.AllowKioskRegister == true
+                //        where (o.ClassFilled ?? false) == false
+                //        where o.CampusId == campusid || campusid == 0
+                //        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                //        orderby bdaystart, o.OrganizationName
+                //        select o;
+                //else
+                q = from o in q
+                    let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
+                    let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                    where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                    where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                    where o.CanSelfCheckin == true
+                    where (o.ClassFilled ?? false) == false
+                    where o.CampusId == campusid || campusid == 0
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where Hour1 != null
+                    orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
+                    select o;
 
                 var q2 = from o in q
                          select new
@@ -114,14 +112,8 @@ namespace CmsWeb.Models
                     var bdays = " [{0:M/d/yy}-{1:M/d/yy}]".Fmt(o.BirthDayStart, o.BirthDayEnd);
                     if (bdays == " [-]")
                         bdays = null;
-                    string display = null;
-                    if (kioskmode == true)
-                        display = "{0:hh:mm tt} {1}{2}{3}({4},{5})"
-                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, o.Limit, o.MemberCount);
-                    else
-                        display = "{0:hh:mm tt} {1}{2}{3}{4}"
-                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays);
-                    w.WriteAttributeString("display", display);
+                    w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
+                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
                     w.WriteEndElement();
                 }

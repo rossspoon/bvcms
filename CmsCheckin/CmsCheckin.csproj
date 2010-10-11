@@ -159,6 +159,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Capture.cs" />
+    <Compile Include="AdminLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminLogin.Designer.cs">
+      <DependentUpon>AdminLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DidItWork.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DidItWork.Designer.cs">
+      <DependentUpon>DidItWork.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageResizer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -265,6 +277,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AdminLogin.resx">
+      <DependentUpon>AdminLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DidItWork.resx">
+      <DependentUpon>DidItWork.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ImageResizer.resx">
       <DependentUpon>ImageResizer.cs</DependentUpon>
     </EmbeddedResource>

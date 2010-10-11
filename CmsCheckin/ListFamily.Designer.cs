@@ -58,22 +58,22 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 22.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(90, 658);
+            this.label1.Location = new System.Drawing.Point(90, 667);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 36);
+            this.label1.Size = new System.Drawing.Size(309, 37);
             this.label1.TabIndex = 11;
             this.label1.Text = "Touch blue buttons";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Verdana", 22.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Blue;
-            this.label2.Location = new System.Drawing.Point(90, 707);
+            this.label2.Location = new System.Drawing.Point(92, 706);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(333, 36);
+            this.label2.Size = new System.Drawing.Size(331, 37);
             this.label2.TabIndex = 12;
             this.label2.Text = "to record attendance";
             // 
@@ -97,7 +97,7 @@
             this.pgdn.BackColor = System.Drawing.Color.LightGray;
             this.pgdn.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgdn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgdn.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgdn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgdn.ForeColor = System.Drawing.Color.Black;
             this.pgdn.Location = new System.Drawing.Point(900, 618);
             this.pgdn.Margin = new System.Windows.Forms.Padding(4);
@@ -114,7 +114,7 @@
             this.pgup.BackColor = System.Drawing.Color.LightGray;
             this.pgup.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgup.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgup.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgup.ForeColor = System.Drawing.Color.Black;
             this.pgup.Location = new System.Drawing.Point(906, 5);
             this.pgup.Margin = new System.Windows.Forms.Padding(4);
@@ -155,22 +155,22 @@
             // PrintAll1
             // 
             this.PrintAll1.AutoSize = true;
-            this.PrintAll1.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintAll1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PrintAll1.ForeColor = System.Drawing.Color.RoyalBlue;
             this.PrintAll1.Location = new System.Drawing.Point(855, 695);
             this.PrintAll1.Name = "PrintAll1";
-            this.PrintAll1.Size = new System.Drawing.Size(74, 25);
+            this.PrintAll1.Size = new System.Drawing.Size(81, 25);
             this.PrintAll1.TabIndex = 19;
             this.PrintAll1.Text = "Reprint";
             // 
             // PrintAll2
             // 
             this.PrintAll2.AutoSize = true;
-            this.PrintAll2.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintAll2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PrintAll2.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.PrintAll2.Location = new System.Drawing.Point(833, 720);
+            this.PrintAll2.Location = new System.Drawing.Point(830, 720);
             this.PrintAll2.Name = "PrintAll2";
-            this.PrintAll2.Size = new System.Drawing.Size(96, 25);
+            this.PrintAll2.Size = new System.Drawing.Size(106, 25);
             this.PrintAll2.TabIndex = 19;
             this.PrintAll2.Text = "All Labels";
             // 
@@ -178,6 +178,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.PrintAll);
             this.Controls.Add(this.PrintAll2);
             this.Controls.Add(this.PrintAll1);
             this.Controls.Add(this.Return);
@@ -186,7 +187,6 @@
             this.Controls.Add(this.pgup);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.PrintAll);
             this.Controls.Add(this.label2);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListFamily";

@@ -26,6 +26,16 @@ namespace CmsCheckin
                 return 0;
             }
         }
+        public string AdminPassword
+        {
+            get
+            {
+                var c = cbCampusId.SelectedItem as Campus;
+                if (c != null)
+                    return c.password;
+                return "kio.";
+            }
+        }
         public int DayOfWeek
         {
             get
@@ -57,7 +67,7 @@ namespace CmsCheckin
             Settings1.Default.AskChurchName = AskChurchName.Checked;
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;
             Settings1.Default.AskGrade = AskGrade.Checked;
-            Settings1.Default.KioskMode = KioskMode.Checked;
+            Settings1.Default.KioskName = KioskName.Text;
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
@@ -87,7 +97,8 @@ namespace CmsCheckin
                 cbCampusId.Items.Add(new Campus
                 {
                     Id = int.Parse(i.Attribute("id").Value),
-                    Name = i.Attribute("name").Value
+                    Name = i.Attribute("name").Value,
+                    password = i.Attribute("password").Value
                 });
             if (cbCampusId.Items.Count > 0)
                 cbCampusId.SelectedIndex = 0;
@@ -101,10 +112,10 @@ namespace CmsCheckin
             if (ii >= 0)
                 LateMinutes.SelectedIndex = ii;
             AskEmFriend.Checked = Settings1.Default.AskEmFriend;
-            KioskMode.Checked = Settings1.Default.KioskMode;
             AskGrade.Checked = Settings1.Default.AskGrade;
             AskChurch.Checked = Settings1.Default.AskChurch;
             AskChurchName.Checked = Settings1.Default.AskChurchName;
+            KioskName.Text = Settings1.Default.KioskName;
 
         }
     }
@@ -121,6 +132,7 @@ namespace CmsCheckin
     {
         public string Name { get; set; }
         public int Id { get; set; }
+        public string password { get; set; }
         public override string ToString()
         {
             return Name;

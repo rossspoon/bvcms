@@ -40,7 +40,7 @@
             this.GoBackButton.BackColor = System.Drawing.Color.LightGreen;
             this.GoBackButton.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.GoBackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GoBackButton.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoBackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GoBackButton.ForeColor = System.Drawing.Color.Black;
             this.GoBackButton.Location = new System.Drawing.Point(751, 687);
             this.GoBackButton.Margin = new System.Windows.Forms.Padding(4);
@@ -57,7 +57,7 @@
             this.pgup.BackColor = System.Drawing.Color.LightGray;
             this.pgup.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgup.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgup.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgup.ForeColor = System.Drawing.Color.Black;
             this.pgup.Location = new System.Drawing.Point(906, 7);
             this.pgup.Margin = new System.Windows.Forms.Padding(4);
@@ -74,7 +74,7 @@
             this.pgdn.BackColor = System.Drawing.Color.LightGray;
             this.pgdn.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgdn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgdn.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgdn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgdn.ForeColor = System.Drawing.Color.Black;
             this.pgdn.Location = new System.Drawing.Point(904, 615);
             this.pgdn.Margin = new System.Windows.Forms.Padding(4);

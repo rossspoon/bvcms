@@ -403,6 +403,15 @@ namespace CmsWeb.Models
             else if (om != null && !Member)
                 om.Drop();
             DbUtil.Db.SubmitChanges();
+            if (om.Organization.EmailAddresses.HasValue())
+            {
+                var smtp = Util.Smtp();
+                DbUtil.Email2(smtp, null, om.Organization.EmailAddresses, 
+                    "cms check-in, join class " + Util.CmsHost, 
+                    "<a href='{0}/Person/Index/{1}'>{2}</a> joined {3}".Fmt( 
+                        Util.ServerLink("/Person/Index/" + om.PeopleId), 
+                        om.Person.Name, om.Organization.OrganizationName));
+            }
         }
     }
 }

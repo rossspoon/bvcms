@@ -38,6 +38,7 @@ namespace CmsCheckin
             if (ret == DialogResult.Cancel)
                 return;
 
+            AdminPassword = f.AdminPassword;
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
@@ -46,7 +47,7 @@ namespace CmsCheckin
             LeadTime = int.Parse(f.LeadHours.Text);
             EarlyCheckin = int.Parse(f.LateMinutes.Text);
             AskEmFriend = f.AskEmFriend.Checked;
-            KioskMode = f.KioskMode.Checked;
+            KioskName = f.KioskName.Text;
             AskChurch = f.AskChurch.Checked;
             AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
@@ -68,6 +69,7 @@ namespace CmsCheckin
         public static string Password { get; set; }
         public static string URL { get; set; }
         public static string Printer { get; set; }
+        public static string AdminPassword { get; set; }
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }
         public static int CampusId { get; set; }
@@ -80,7 +82,7 @@ namespace CmsCheckin
         public static bool TestMode { get; set; }
         public static bool editing { get; set; }
         public static bool EnableTimer { get; set; }
-        public static bool KioskMode { get; set; }
+        public static string KioskName { get; set; }
         public static bool AskEmFriend { get; set; }
         public static bool AskGrade { get; set; }
         public static bool AskChurch { get; set; }
@@ -88,11 +90,7 @@ namespace CmsCheckin
 
         public static string QueryString
         {
-            get
-            {
-                return string.Format("?campus={0}&thisday={1}&kioskmode={2}",
-                    CampusId, ThisDay, KioskMode);
-            }
+            get { return string.Format("?campus={0}&thisday={1}&kiosk={2}", CampusId, ThisDay, KioskName); }
         }
         public static int MaxLabels { get; set; }
         public static Timer timer1;

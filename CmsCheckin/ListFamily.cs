@@ -270,6 +270,8 @@ namespace CmsCheckin
             for (var r = srow; r < erow; r++)
             {
                 var c = list[r];
+                if (c.cinfo.mv == "V")
+                    c.cinfo.mv = "G";
                 if (classlist.Count > 0)
                 {
                     var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
@@ -334,10 +336,10 @@ namespace CmsCheckin
                 nam.Name = "name" + c.Row;
                 nam.TextAlign = ContentAlignment.MiddleLeft;
                 if (c.cinfo.oid != 0)
-                    if (c.cinfo.mv == "V")
-                        nam.ForeColor = Color.DarkGreen;
-                    else
+                    if (c.cinfo.mv == "M")
                         nam.ForeColor = Color.Blue;
+                    else
+                        nam.ForeColor = Color.DarkGreen;
                 nam.Click += new EventHandler(ShowPic_Click);
                 nam.Enabled = false;
                 nam.Tag = c.Row;
@@ -372,10 +374,10 @@ namespace CmsCheckin
                 org.TextAlign = ContentAlignment.MiddleLeft;
                 org.Name = "org" + c.Row;
                 if (c.cinfo.oid != 0)
-                    if (c.cinfo.mv == "V")
-                        org.ForeColor = Color.DarkGreen;
-                    else
+                    if (c.cinfo.mv == "M")
                         org.ForeColor = Color.Blue;
+                    else
+                        org.ForeColor = Color.DarkGreen;
                 this.Controls.Add(org);
                 controls.Add(org);
             }
@@ -421,7 +423,7 @@ namespace CmsCheckin
                 transport = c.transport,
                 requiressecuritylabel = c.RequiresSecurityLabel,
             };
-            CmsCheckin.Print.Label(li, "E | ", li.n, Program.SecurityCode);
+            CmsCheckin.Print.Label(li, li.n, Program.SecurityCode);
             RemoveMenu();
         }
 
@@ -497,7 +499,7 @@ namespace CmsCheckin
             mask.Show();
             menu.VisitClass += Visit_Click;
             var c = list[(int)menu.Tag];
-            menu.Join.Visible = c.cinfo.mv == "V";
+            menu.Join.Visible = c.cinfo.mv != "M";
             nam.Enabled = false;
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
@@ -623,63 +625,52 @@ namespace CmsCheckin
             Program.FamilyId = 0;
             classlist = new List<ClassInfo>();
             PrintAll.Text = string.Empty;
+            var f = new DidItWork();
+            var ret = f.ShowDialog();
+            f.Hide();
+            f.Dispose();
+            if (ret == DialogResult.No)
+            {
+                Util.ReportPrinterProblem();
+                var fa = new AdminLogin();
+                fa.ShowDialog();
+            }
             this.GoHome(string.Empty);
         }
         private void PrintLabels()
         {
             if (list == null)
                 return;
-            if (Program.KioskMode)
+
+            var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
+            if (!PrintAll.Text.HasValue())
+                qlist = qlist.Where(c => c.WasChecked);
+
+            var q = from c in qlist
+                    select new LabelInfo
+                    {
+                        allergies = c.allergies,
+                        pid = c.cinfo.pid,
+                        mv = c.cinfo.mv,
+                        n = c.NumLabels,
+                        first = c.first,
+                        last = c.last,
+                        location = c.location,
+                        hour = c.hour,
+                        org = c.org,
+                        custody = c.custody,
+                        transport = c.transport,
+                        requiressecuritylabel = c.RequiresSecurityLabel,
+                    };
+            foreach (var li in q)
             {
-                var q = from c in list.Where(cc => cc.WasChecked)
-                        select new LabelInfo
-                        {
-                            allergies = c.allergies,
-                            n = c.NumLabels,
-                            first = c.first,
-                            last = c.last,
-                            location = c.location,
-                            org = c.org,
-                        };
-                foreach (var li in q)
-                    CmsCheckin.Print.LabelKiosk(li);
-                if (q.Sum(li => li.n) > 0)
-                    CmsCheckin.Print.BlankLabel(true);
+                LabelsPrinted += CmsCheckin.Print.Label(li, li.n, Program.SecurityCode);
+                LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
             }
-            else
-            {
-                var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-                if (!PrintAll.Text.HasValue())
-                    qlist = qlist.Where(c => c.WasChecked);
+            foreach (var li in q)
+                LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
 
-                var q = from c in qlist
-                        select new LabelInfo
-                        {
-                            allergies = c.allergies,
-                            pid = c.cinfo.pid,
-                            mv = c.cinfo.mv,
-                            n = c.NumLabels,
-                            first = c.first,
-                            last = c.last,
-                            location = c.location,
-                            hour = c.hour,
-                            org = c.org,
-                            custody = c.custody,
-                            transport = c.transport,
-                            requiressecuritylabel = c.RequiresSecurityLabel,
-                        };
-                foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.Label(li, "", 1, Program.SecurityCode);
-                foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.Label(li, "EXTRA | ", li.n - 1, Program.SecurityCode);
-
-                foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
-                foreach (var li in q)
-                    LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
-
-                RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
-            }
+            RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
         }
         private void ClearControls()
         {
@@ -733,10 +724,7 @@ namespace CmsCheckin
         private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
         {
             var info = e.Argument as Util.ClassCheckedInfo;
-            if(Program.KioskMode)
-                Util.JoinUnJoin(info);
-            else
-                Util.AttendUnAttend(info);
+            Util.AttendUnAttend(info);
 
         }
         private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)

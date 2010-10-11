@@ -188,6 +188,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
+    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailsResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\PeopleInfo.cs" />
     <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />

@@ -20,8 +20,8 @@
     <Setting Name="AskGrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="KioskMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="KioskName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Kiosk</Value>
     </Setting>
     <Setting Name="AskEmFriend" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

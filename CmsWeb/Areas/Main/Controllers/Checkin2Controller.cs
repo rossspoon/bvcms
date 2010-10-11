@@ -10,6 +10,7 @@ using UtilityExtensions;
 using CmsWeb.Models;
 using System.Xml;
 using System.IO;
+using System.Net.Mail;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -20,7 +21,7 @@ namespace CmsWeb.Areas.Main.Controllers
     //[RequireBasicAuthentication]
    public class Checkin2Controller : CmsController
     {
-        public ActionResult Match(string id, int campus, int thisday, int? page, bool? kioskmode)
+        public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk)
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -31,18 +32,18 @@ namespace CmsWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(kioskmode, 0, campus, thisday, 0, false); // not found
+                return new FamilyResult(0, campus, thisday, 0, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(kioskmode, matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked);
+                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked);
             return new MultipleResult(matches, page);
         }
-        public ActionResult Family(int id, int campus, int thisday, bool? kioskmode)
+        public ActionResult Family(int id, int campus, int thisday, string kiosk)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new FamilyResult(kioskmode, id, campus, thisday, 0, false);
+            return new FamilyResult(id, campus, thisday, 0, false);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -52,13 +53,13 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SetNoLock();
             return new ClassResult(id, thisday);
         }
-        public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
+        public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new ClassesResult(kioskmode, id, thisday, campus, noagecheck ?? false);
+            return new ClassesResult(id, thisday, campus, noagecheck ?? false);
         }
         public ActionResult NameSearch(string id, int? page)
         {
@@ -211,6 +212,11 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return rr;
         }
+        public class CampusItem
+        {
+            public CmsData.Campu Campus{ get; set; }
+            public string password { get; set; }
+        }
         public ActionResult Campuses()
         {
             if (!Authenticate())
@@ -218,11 +224,15 @@ namespace CmsWeb.Areas.Main.Controllers
             var q = from c in DbUtil.Db.Campus
                     where c.Organizations.Any(o => o.CanSelfCheckin == true)
                     orderby c.Id
-                    select c;
+                    select new CampusItem
+                    {
+                        Campus = c,
+                        password = DbUtil.Settings("kioskpassword" + c.Id, "kio.")
+                    };
             return View(q);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present, int thisday)
+        public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present, int thisday, string kiosk)
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -368,6 +378,27 @@ namespace CmsWeb.Areas.Main.Controllers
                 lockf.Locked = false;
                 DbUtil.Db.SubmitChanges();
             }
+            return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ReportPrinterProblem(string kiosk, int campusid)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+            var setting = "KioskEmail";
+            if (campusid > 0)
+                setting += campusid;
+            var email = DbUtil.Settings(setting, null);
+            if (email.HasValue())
+            {
+                var smtp = Util.Smtp();
+                foreach (var em in email.SplitStr(",;"))
+                {
+                    var msg = new MailMessage(Util.SysFromEmail, em, "printer problem", kiosk + " at " + DateTime.Now.ToShortTimeString());
+                    smtp.Send(msg);
+                }
+            }
+
             return new EmptyResult();
         }
     }

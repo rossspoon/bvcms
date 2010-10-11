@@ -41,7 +41,7 @@
             this.Return.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.Return.FlatAppearance.BorderSize = 2;
             this.Return.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Return.Font = new System.Drawing.Font("Verdana", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Return.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Return.ForeColor = System.Drawing.Color.Black;
             this.Return.Location = new System.Drawing.Point(422, 674);
             this.Return.Margin = new System.Windows.Forms.Padding(4);
@@ -55,11 +55,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(273, 21);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(323, 45);
+            this.label1.Size = new System.Drawing.Size(257, 37);
             this.label1.TabIndex = 12;
             this.label1.Text = "Choose a Family";
             // 
@@ -69,7 +69,7 @@
             this.pgdn.BackColor = System.Drawing.Color.LightGray;
             this.pgdn.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgdn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgdn.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgdn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgdn.ForeColor = System.Drawing.Color.Black;
             this.pgdn.Location = new System.Drawing.Point(900, 612);
             this.pgdn.Margin = new System.Windows.Forms.Padding(4);
@@ -86,7 +86,7 @@
             this.pgup.BackColor = System.Drawing.Color.LightGray;
             this.pgup.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
             this.pgup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pgup.Font = new System.Drawing.Font("Verdana", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pgup.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pgup.ForeColor = System.Drawing.Color.Black;
             this.pgup.Location = new System.Drawing.Point(902, 4);
             this.pgup.Margin = new System.Windows.Forms.Padding(4);

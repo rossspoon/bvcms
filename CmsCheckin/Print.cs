@@ -274,7 +274,7 @@ namespace CmsCheckin
             sw.Close();
             return 1;
         }
-        public static int Label(LabelInfo li, string extra, int nlabels, string code)
+        public static int Label(LabelInfo li, int nlabels, string code)
         {
             if (nlabels <= 0 || !Program.Printer.HasValue())
                 return 0;
@@ -290,11 +290,10 @@ namespace CmsCheckin
                 sw.WriteLine("^LS0");
                 sw.WriteLine(@"^FT29,75^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
                 sw.WriteLine(@"^FT29,118^A0N,28,28^FH\^FD{0}^FS".Fmt(li.last));
-                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{4}{0} |{1}{2}{3}^FS".Fmt(li.mv,
+                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{0} |{1}{2}{3}^FS".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : "", 
-                    extra));
+                    li.custody ? " C |" : ""));
                 sw.WriteLine(@"^FT29,185^A0N,28,28^FH\^FD{0}^FS".Fmt(li.org));
                 sw.WriteLine(@"^FT473,48^A0N,28,28^FH\^FD{0:M/d/yy}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT474,77^A0N,28,28^FH\^FD{0:H:mm tt}^FS".Fmt(li.hour));
@@ -319,11 +318,10 @@ namespace CmsCheckin
                 sw.WriteLine("A2");
                 sw.WriteLine("1911A1800500010" + li.first);
                 sw.WriteLine("1911A1000350011" + li.last);
-                sw.WriteLine("1911A1000190011{4}{0} |{1}{2}{3}".Fmt(li.mv,
+                sw.WriteLine("1911A1000190011{0} |{1}{2}{3}".Fmt(li.mv,
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
-                    li.custody ? " C |" : "",
-                    extra));
+                    li.custody ? " C |" : ""));
                 sw.WriteLine("1911A1000020011" + li.org);
                 sw.WriteLine("1911A1000610222{0:M/d/yy}".Fmt(li.hour));
                 sw.WriteLine("1911A1000470222{0:h:mm tt}".Fmt(li.hour));
@@ -358,7 +356,7 @@ namespace CmsCheckin
                 sw.WriteLine("^LS0");
                 sw.WriteLine(@"^FT29,83^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
                 sw.WriteLine(@"^^FT30,134^A0N,34,33^FH\^FD{0}^FS".Fmt(li.last));
-                sw.WriteLine(@"^FT30,183^A0N,28,28^FH\^FDVisitor{0}^FS".Fmt(li.allergies.HasValue() ? " (" + li.allergies + ")" : ""));
+                sw.WriteLine(@"^FT30,183^A0N,28,28^FH\^FDGuest{0}^FS".Fmt(li.allergies.HasValue() ? " (" + li.allergies + ")" : ""));
                 sw.WriteLine("^PQ1,0,1,Y^XZ");
             }
             else if (Program.Printer.Contains("Datamax"))
@@ -379,7 +377,7 @@ namespace CmsCheckin
                 sw.WriteLine("A2");
                 sw.WriteLine("1911A1800500010" + li.first);
                 sw.WriteLine("1911A1200320010" + li.last);
-                sw.WriteLine("1911A1000060011Visitor" + (li.allergies.HasValue() ? " (" + li.allergies + ")" : ""));
+                sw.WriteLine("1911A1000060011Guest" + (li.allergies.HasValue() ? " (" + li.allergies + ")" : ""));
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }

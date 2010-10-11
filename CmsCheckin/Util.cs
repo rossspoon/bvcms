@@ -391,6 +391,22 @@ namespace CmsCheckin
             {
             }
         }
+        public static void ReportPrinterProblem()
+        {
+            try
+            {
+                var wc = CreateWebClient();
+                var coll = new NameValueCollection();
+                coll.Add("kiosk", Program.KioskName);
+                coll.Add("campusid", Program.CampusId.ToString());
+                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/ReportPrinterProblem/");
+                var resp = wc.UploadValues(url, "POST", coll);
+                var s = Encoding.ASCII.GetString(resp);
+            }
+            catch (Exception)
+            {
+            }
+        }
 
     }
     public class EventArgs<T> : EventArgs

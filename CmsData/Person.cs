@@ -116,7 +116,7 @@ namespace CmsData
         }
         public enum EnvelopeOptionCode
         {
-            None = 0,
+            None = 9,
             Individual = 1,
             Joint = 2,
         }

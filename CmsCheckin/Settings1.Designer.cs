@@ -97,13 +97,13 @@ namespace CmsCheckin {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool KioskMode {
+        [global::System.Configuration.DefaultSettingValueAttribute("Kiosk")]
+        public string KioskName {
             get {
-                return ((bool)(this["KioskMode"]));
+                return ((string)(this["KioskName"]));
             }
             set {
-                this["KioskMode"] = value;
+                this["KioskName"] = value;
             }
         }
         

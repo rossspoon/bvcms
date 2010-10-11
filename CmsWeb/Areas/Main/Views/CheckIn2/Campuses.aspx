@@ -1,7 +1,7 @@
-<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<IEnumerable<CmsData.Campu>>" %>
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<IEnumerable<CmsWeb.Areas.Main.Controllers.Checkin2Controller.CampusItem>>" %>
 <Campuses>
-    <% foreach (var c in Model)
+    <% foreach (var i in Model)
        { %>
-    <campus id="<%=c.Id %>" name="<%=c.Description %>" />
+    <campus id="<%=i.Campus.Id %>" name="<%=i.Campus.Description %>" password="<%=i.password %>" />
     <% } %>
 </Campuses>

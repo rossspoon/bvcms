@@ -170,10 +170,7 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             var ra = new Util.ClassCheckedInfo { c = c, ischecked = true };
-            if (Program.KioskMode)
-                Util.JoinUnJoin(ra);
-            else
-                Util.AttendUnAttend(ra);
+            Util.AttendUnAttend(ra);
             ShowAllClasses = false;
             this.Swap(Program.family);
             Program.family.classlist.Add(c);

@@ -24,16 +24,16 @@ namespace CmsWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(kioskmode, 0, campus, thisday, 1, false); // not found
+                return new FamilyResult0(kioskmode, 0, campus, thisday, 1, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(kioskmode, matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
+                return new FamilyResult0(kioskmode, matches.Single().FamilyId, campus, thisday, 1, matches[0].Locked);
             return new MultipleResult(matches, page);
         }
         public ActionResult Family(int id, int campus, int thisday, int? page, bool? kioskmode)
         {
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new FamilyResult(kioskmode, id, campus, thisday, page.Value, false);
+            return new FamilyResult0(kioskmode, id, campus, thisday, page.Value, false);
         }
         public ActionResult Class(int id, int thisday)
         {
