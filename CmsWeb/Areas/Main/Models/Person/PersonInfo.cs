@@ -36,17 +36,11 @@ namespace CmsWeb.Models.PersonPage
                         _PrimaryAddr = FamilyAddr;
                     else if (PersonalAddr.Preferred)
                         _PrimaryAddr = PersonalAddr;
-                    else if (AltFamilyAddr.Preferred)
-                        _PrimaryAddr = AltFamilyAddr;
-                    else if (AltPersonalAddr.Preferred)
-                        _PrimaryAddr = AltPersonalAddr;
                 return _PrimaryAddr;
             }
         }
         public AddressInfo FamilyAddr { get; set; }
-        public AddressInfo AltFamilyAddr { get; set; }
         public AddressInfo PersonalAddr { get; set; }
-        public AddressInfo AltPersonalAddr { get; set; }
         public static PersonInfo GetPersonInfo(int? id)
         {
             var p = DbUtil.Db.LoadPersonById(id.Value);
@@ -154,22 +148,6 @@ namespace CmsWeb.Models.PersonPage
                     ToDt = p.Family.AddressToDate,
                     Preferred = p.AddressTypeId == 10,
                 },
-                AltFamilyAddr = new AddressInfo
-                {
-                    Name = "AltFamilyAddr",
-                    PeopleId = p.PeopleId,
-                    person = p,
-                    Address1 = p.Family.AltAddressLineOne,
-                    Address2 = p.Family.AltAddressLineTwo,
-                    City = p.Family.AltCityName,
-                    State = p.Family.AltStateCode,
-                    Zip = p.Family.AltZipCode,
-                    BadAddress = p.Family.AltBadAddressFlag,
-                    ResCodeId = p.Family.AltResCodeId ?? 0,
-                    FromDt = p.Family.AltAddressFromDate,
-                    ToDt = p.Family.AltAddressToDate,
-                    Preferred = p.AddressTypeId == 20,
-                },
                 PersonalAddr = new AddressInfo
                 {
                     Name = "PersonalAddr",
@@ -185,22 +163,6 @@ namespace CmsWeb.Models.PersonPage
                     FromDt = p.AddressFromDate,
                     ToDt = p.AddressToDate,
                     Preferred = p.AddressTypeId == 30,
-                },
-                AltPersonalAddr = new AddressInfo
-                {
-                    Name = "AltPersonalAddr",
-                    PeopleId = p.PeopleId,
-                    person = p,
-                    Address1 = p.AltAddressLineOne,
-                    Address2 = p.AltAddressLineTwo,
-                    City = p.AltCityName,
-                    State = p.AltStateCode,
-                    Zip = p.AltZipCode,
-                    BadAddress = p.AltBadAddressFlag,
-                    ResCodeId = p.AltResCodeId ?? 0,
-                    FromDt = p.AltAddressFromDate,
-                    ToDt = p.AltAddressToDate,
-                    Preferred = p.AddressTypeId == 40,
                 },
                 familymembers = from m in p.Family.People
                                 orderby

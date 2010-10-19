@@ -102,28 +102,16 @@
         <div id="address-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
                 <li><a href="#PersonalAddr"><span>Personal</span></a></li>
-                <li><a href="#AltPersonalAddr"><span>Personal Alternate</span></a></li>
                 <li><a href="#FamilyAddr"><span>Family</span></a></li>
-                <li><a href="#AltFamilyAddr"><span>Family Alternate</span></a></li>
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
                 <% Html.RenderPartial("AddressDisplay", p.PersonalAddr); %>
                 </form>
             </div>
-            <div id="AltPersonalAddr" class="ui-tabs-hide ui-tabs-panel">
-                <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", p.AltPersonalAddr); %>
-                </form>
-            </div>
             <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
                 <% Html.RenderPartial("AddressDisplay", p.FamilyAddr); %>
-                </form>
-            </div>
-            <div id="AltFamilyAddr" class="ui-tabs-hide ui-tabs-panel">
-                <form class="DisplayEdit" action="">
-                <% Html.RenderPartial("AddressDisplay", p.AltFamilyAddr); %>
                 </form>
             </div>
             <%=Html.Hidden("addrtab") %>

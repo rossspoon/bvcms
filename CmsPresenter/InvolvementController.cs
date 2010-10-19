@@ -181,8 +181,9 @@ namespace CMSPresenter
         public static IEnumerable OrgMemberListGroups()
         {
             var Db = DbUtil.Db;
+            var gids = string.Join(",", Util.CurrentGroups);
             var cmd = new SqlCommand(
-                "dbo.OrgMembers {0}, {1}".Fmt(Util.CurrentOrgId, Util.CurrentGroups));
+                "dbo.OrgMembers {0}, '{1}'".Fmt(Util.CurrentOrgId, gids));
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             return cmd.ExecuteReader();
@@ -219,6 +220,7 @@ namespace CMSPresenter
                          AttendStr = om.AttendStr,
                          MemberType = om.MemberType.Description,
                          MemberInfo = om.UserData,
+                         InactiveDate = om.InactiveDate.ToString2("M/d/yy"),
                          Medical = recreg.MedicalDescription,
                          PeopleId = p.PeopleId,
                          EnrollDate = om.EnrollmentDate.FormatDate(),

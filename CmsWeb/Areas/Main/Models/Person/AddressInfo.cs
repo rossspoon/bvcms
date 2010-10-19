@@ -31,13 +31,7 @@ namespace CmsWeb.Models.PersonPage
                         case "PersonalAddr":
                             _CanUserEditAddress = person.CanUserEditBasic;
                             break;
-                        case "AltPersonalAddr":
-                            _CanUserEditAddress = person.CanUserEditBasic;
-                            break;
                         case "FamilyAddr":
-                            _CanUserEditAddress = person.CanUserEditFamilyAddress;
-                            break;
-                        case "AltFamilyAddr":
                             _CanUserEditAddress = person.CanUserEditFamilyAddress;
                             break;
                     }
@@ -102,19 +96,6 @@ namespace CmsWeb.Models.PersonPage
                     a.ResCodeId = p.Family.ResCodeId;
                     a.Preferred = p.AddressTypeId == 10;
                     break;
-                case "AltFamilyAddr":
-                    a.Name = typeid;
-                    a.PeopleId = p.PeopleId;
-                    a.Address1 = p.Family.AltAddressLineOne;
-                    a.Address2 = p.Family.AltAddressLineTwo;
-                    a.ToDt = p.Family.AltAddressToDate;
-                    a.BadAddress = p.Family.AltBadAddressFlag;
-                    a.City = p.Family.AltCityName;
-                    a.State = p.Family.AltStateCode;
-                    a.Zip = p.Family.AltZipCode;
-                    a.ResCodeId = p.Family.AltResCodeId;
-                    a.Preferred = p.AddressTypeId == 20;
-                    break;
                 case "PersonalAddr":
                     a.Name = typeid;
                     a.PeopleId = p.PeopleId;
@@ -127,19 +108,6 @@ namespace CmsWeb.Models.PersonPage
                     a.Zip = p.ZipCode;
                     a.ResCodeId = p.ResCodeId;
                     a.Preferred = p.AddressTypeId == 30;
-                    break;
-                case "AltPersonalAddr":
-                    a.Name = typeid;
-                    a.PeopleId = p.PeopleId;
-                    a.Address1 = p.AltAddressLineOne;
-                    a.Address2 = p.AltAddressLineTwo;
-                    a.ToDt = p.AltAddressToDate;
-                    a.BadAddress = p.AltBadAddressFlag;
-                    a.City = p.AltCityName;
-                    a.State = p.AltStateCode;
-                    a.Zip = p.AltZipCode;
-                    a.ResCodeId = p.AltResCodeId;
-                    a.Preferred = p.AddressTypeId == 40;
                     break;
             }
             return a;
@@ -167,20 +135,6 @@ namespace CmsWeb.Models.PersonPage
                         BadAddress = false;
                     UpdateValue(f, "BadAddressFlag", BadAddress);
                     break;
-                case "AltFamilyAddr":
-                    UpdateValue(f, "AltAddressLineOne", Address1);
-                    UpdateValue(f, "AltAddressLineTwo", Address2);
-                    UpdateValue(f, "AltAddressToDate", ToDt);
-                    UpdateValue(f, "AltCityName", City);
-                    UpdateValue(f, "AltStateCode", State);
-                    UpdateValue(f, "AltResCodeId", ResCodeId);
-                    UpdateValue(f, "AltZipCode", Zip);
-                    if (Preferred)
-                        UpdateValue(p, "AddressTypeId", 20);
-                    if (fsb.Length > 0)
-                        BadAddress = false;
-                    UpdateValue(f, "AltBadAddressFlag", BadAddress);
-                    break;
                 case "PersonalAddr":
                     UpdateValue(p, "AddressLineOne", Address1);
                     UpdateValue(p, "AddressLineTwo", Address2);
@@ -194,20 +148,6 @@ namespace CmsWeb.Models.PersonPage
                     if (psb.Length > 0)
                         BadAddress = false;
                     UpdateValue(p, "BadAddressFlag", BadAddress);
-                    break;
-                case "AltPersonalAddr":
-                    UpdateValue(p, "AltAddressLineOne", Address1);
-                    UpdateValue(p, "AltAddressLineTwo", Address2);
-                    UpdateValue(p, "AltAddressToDate", ToDt);
-                    UpdateValue(p, "AltCityName", City);
-                    UpdateValue(p, "AltStateCode", State);
-                    UpdateValue(p, "AltResCodeId", ResCodeId);
-                    UpdateValue(p, "AltZipCode", Zip);
-                    if (Preferred)
-                        UpdateValue(p, "AddressTypeId", 40);
-                    if (psb.Length > 0)
-                        BadAddress = false;
-                    UpdateValue(p, "AltBadAddressFlag", BadAddress);
                     break;
             }
             if (psb.Length > 0)

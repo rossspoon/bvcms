@@ -22,11 +22,11 @@
                                     <asp:GridView ID="Birthdays" runat="server" AutoGenerateColumns="False" ShowHeader="False"
         CellPadding="4" ForeColor="#333333" GridLines="None">
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
                                         <Columns>
@@ -104,11 +104,11 @@
                                      <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" ShowHeader="False"
         CellPadding="4" ForeColor="#333333" GridLines="None">
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
                                         <Columns>
@@ -123,11 +123,11 @@
                                         ShowHeader="false"
         CellPadding="4" ForeColor="#333333" GridLines="None">
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
                                         <Columns>
@@ -157,11 +157,11 @@
                                     <asp:GridView ID="NewsGrid" runat="server" AutoGenerateColumns="False" ShowHeader="False"
         CellPadding="4" ForeColor="#333333" GridLines="None">
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
                                         <Columns>
@@ -204,11 +204,11 @@
                                         DataSourceID="ObjectDataSource1"
         CellPadding="4" ForeColor="#333333" GridLines="None">
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
                                         <Columns>

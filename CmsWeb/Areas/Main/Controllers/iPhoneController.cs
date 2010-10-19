@@ -44,7 +44,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("not authorized");
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             if (person.PictureId != null)
-                return new CmsWeb.Models.ImageResult(person.Picture.SmallId ?? 0);
+                return new CmsWeb.Models.ImageResult(person.Picture.MediumId ?? 0);
             return new CmsWeb.Models.ImageResult(0);
         }
         public ActionResult Search(string name, string comm, string addr)

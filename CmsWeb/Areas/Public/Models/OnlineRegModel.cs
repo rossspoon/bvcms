@@ -137,6 +137,9 @@ namespace CmsWeb.Models
             get { return list; }
             set { list = value; }
         }
+        public string username { get; set; }
+        public string password { get; set; }
+        public bool authenticated { get; set; }
 
         public decimal Amount()
         {
@@ -201,6 +204,9 @@ namespace CmsWeb.Models
 
         public void CreateAccount()
         {
+            var p = List[0];
+            if (p.IsNew)
+                p.AddPerson(null, p.org.EntryPointId ?? 0);
             var person = List[0].person;
             var uname = MembershipService.FetchUsername(person.PreferredName, person.LastName);
             var pword = MembershipService.FetchPassword();

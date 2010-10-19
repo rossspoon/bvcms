@@ -23,7 +23,7 @@ form
 {
 	margin: 0;
 	width: 100%;
-	border-top: solid 9px #3E8CB5;
+	border-top: solid 9px #4296CC;
 	background-image: url(header-gradient.png);
 	background-repeat: repeat-x;
 	background-position: left top;
@@ -550,7 +550,7 @@ div.bottomhyperlink img
 }
 .dashtitle
 {
-    background-color:#3E8CB5;
+    background-color:#4296CC;
     color:White;
     font-weight:bold;
 }

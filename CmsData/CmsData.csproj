@@ -165,6 +165,7 @@
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailSent.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
+    <Compile Include="Generated\Functions\FindPerson.cs" />
     <Compile Include="Generated\Functions\Split.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\PrayerItem.cs" />

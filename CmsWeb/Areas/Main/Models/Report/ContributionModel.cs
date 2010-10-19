@@ -81,12 +81,13 @@ namespace CmsWeb.Areas.Main.Models.Report
         //    return q;
         //}
 
-        public static IEnumerable<ContributorInfo> contributors(DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId)
+        public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId)
         {
             //var pids = new int[] { 817023, 865610, 828611, 828612 };
 
-            var q11 = from p in DbUtil.Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
+            var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? 1 : p.ContributionOptionsId
+                      let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? 1 : p.SpouseContributionOptionsId
                       let name = (option == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
                                  : (p.SpouseId == null ?
@@ -99,9 +100,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                                              p.SpouseTitle + " and Mrs. " + p.SpouseName
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
-                      //where pids.Contains(p.PeopleId)
-                      where option == 1 || (option == 2 && p.HeadOfHouseholdId == p.PeopleId)
-                      orderby p.FamilyId, p.PositionInFamilyId, p.Age
+                      where option != 9
+                      where (option == 1 && p.Amount > 0) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > 0)
+                      orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
                       {
                           Name = name,
@@ -117,18 +118,20 @@ namespace CmsWeb.Areas.Main.Models.Report
                           Age = p.Age,
                           FamilyPositionId = p.PositionInFamilyId,
                           hohInd = p.HohFlag,
+                          Joint = option == 2
                       };
+                      
             return q11;
         }
 
-        public static IEnumerable<ContributionInfo> contributions(int pid, int? spid, DateTime fromDate, DateTime toDate)
+        public static IEnumerable<ContributionInfo> contributions(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in DbUtil.Db.Contributions
+            var q = from c in Db.Contributions
                     where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
                     where c.ContributionTypeId != (int)Contribution.TypeCode.BrokeredProperty
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where c.ContributionDate >= fromDate.Date && c.ContributionDate <= toDate.Date
-                    where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
+                    where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
                     where !c.PledgeFlag
                     orderby c.ContributionDate
                     select new ContributionInfo
@@ -141,26 +144,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return q;
         }
 
-        public IEnumerable<ContributionInfo> gifts(int pid, int? spid, DateTime fromDate, DateTime toDate)
-        {
-            var q = from c in DbUtil.Db.Contributions
-                    where c.ContributionTypeId == (int)Contribution.TypeCode.BrokeredProperty
-                    where c.ContributionDate >= fromDate
-                    where c.ContributionDate <= toDate
-                    where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
-                    where c.PledgeFlag == false
-                    orderby c.ContributionDate
-                    select new ContributionInfo
-                    {
-                        ContributionAmount = c.ContributionAmount,
-                        ContributionDate = c.ContributionDate,
-                        Fund = c.ContributionFund.FundName,
-                        Description = c.ContributionDesc,
-                    };
-            return q;
-        }
-
-        public static IEnumerable<PledgeSummaryInfo> pledges(int pid, int? spid, DateTime toDate)
+        public static IEnumerable<PledgeSummaryInfo> pledges(CMSDataContext Db, ContributorInfo ci, DateTime toDate)
         {
             var PledgeExcludes = new int[] 
             { 
@@ -169,16 +153,16 @@ namespace CmsWeb.Areas.Main.Models.Report
                 (int)Contribution.TypeCode.Reversed 
             };
 
-            var qp = from p in DbUtil.Db.Contributions
-                     where p.PeopleId == pid || (p.Person.ContributionOptionsId == 2 && p.PeopleId == spid)
+            var qp = from p in Db.Contributions
+                     where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
                      where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
                      where p.ContributionDate <= toDate
                      select p;
-            var qc = from c in DbUtil.Db.Contributions
+            var qc = from c in Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
-                     where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
+                     where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
                      where !c.PledgeFlag
                      where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
                      where c.ContributionDate <= toDate
@@ -197,14 +181,14 @@ namespace CmsWeb.Areas.Main.Models.Report
             return q;
         }
 
-        public static IEnumerable<ContributionInfo> quarterlySummary(int pid, int? spid, DateTime fromDate, DateTime toDate)
+        public static IEnumerable<ContributionInfo> quarterlySummary(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)
         {
-            var q = from c in DbUtil.Db.Contributions
+            var q = from c in Db.Contributions
                     where c.ContributionTypeId == (int)Contribution.TypeCode.CheckCash
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where c.ContributionDate >= fromDate
                     where c.ContributionDate <= toDate
-                    where c.PeopleId == pid || (c.Person.ContributionOptionsId == 2 && c.PeopleId == spid)
+                    where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
                     where c.PledgeFlag == false
                     group c by c.ContributionFund.FundName into g
                     orderby g.Key
@@ -240,7 +224,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int hohInd { get; set; }
         public int FamilyPositionId { get; set; }
         public int? Age { get; set; }
-
+        public bool Joint { get; set; }
     }
     public class ContributionInfo
     {

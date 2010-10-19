@@ -399,11 +399,11 @@ namespace CmsWeb.Models
         {
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             if (om == null && Member)
-                OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+                om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
                 om.Drop();
             DbUtil.Db.SubmitChanges();
-            if (om.Organization.EmailAddresses.HasValue())
+            if (om != null && om.Organization.EmailAddresses.HasValue())
             {
                 var smtp = Util.Smtp();
                 DbUtil.Email2(smtp, null, om.Organization.EmailAddresses, 

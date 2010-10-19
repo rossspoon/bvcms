@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
+using System.IO;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -186,6 +187,40 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult ContributionStatement(int id, DateTime FromDate, DateTime ToDate, int typ)
         {
             return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
+        }
+        const string CSE = "ContributionStatementsExtract";
+        [Authorize(Roles = "Finance")]
+        public ActionResult ContributionStatements(string Submit, bool? PDF, DateTime? FromDate, DateTime? ToDate)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
+#if DEBUG
+                ViewData["FromDate"] = DateTime.Parse("1/1/10");
+                ViewData["ToDate"] = DateTime.Parse("10/30/10");
+#endif
+                return View(m);
+            }
+            if (Submit == "Reset")
+            {
+                HttpContext.Cache.Remove(CSE);
+                var m = null as ContributionStatementsExtract;
+                return View(m);
+            }
+            else
+            {
+                var m = new ContributionStatementsExtract(FromDate.Value, ToDate.Value, PDF.Value);
+                HttpContext.Cache[CSE] = m;
+                m.Run();
+                return View(m);
+            }
+        }
+        [Authorize(Roles = "Finance")]
+        public ActionResult ContributionStatementsDownload()
+        {
+            var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
+            HttpContext.Cache.Remove(CSE);
+            return new ContributionStatementsResult(m.OutputFile);
         }
         public ActionResult ChurchAttendance(DateTime? id)
         {

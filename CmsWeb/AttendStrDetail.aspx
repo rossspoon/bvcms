@@ -14,11 +14,11 @@
         <asp:GridView ID="GridView1" runat="server" style="text-align:left" 
         CellPadding="4" ForeColor="#333333" GridLines="None" >
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
         </asp:GridView>
@@ -26,11 +26,11 @@
         <asp:GridView ID="GridView2" runat="server" style="text-align:left" 
         CellPadding="4" ForeColor="#333333" GridLines="None" >
         <PagerSettings Position="TopAndBottom" />
-        <FooterStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <FooterStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <RowStyle BackColor="#EFF3FB" />
         <PagerStyle CssClass="pagerstyle" />
         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <HeaderStyle BackColor="#3e8cb5" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#4296CC" Font-Bold="True" ForeColor="White" />
         <EditRowStyle BackColor="#EFF3FB"/>
         <AlternatingRowStyle BackColor="White" />
         </asp:GridView>

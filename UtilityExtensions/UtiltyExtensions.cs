@@ -259,7 +259,12 @@ namespace UtilityExtensions
         }
         public static int AgeAsOf(this DateTime bd, DateTime dt)
         {
-            int age = dt.Year - bd.Year;
+            int y = bd.Year;
+            if (y < 1000)
+                if (y < 50)
+                    y = y + 2000; 
+                else y = y + 1900;
+            int age = dt.Year - y;
             if (dt.Month < bd.Month || (dt.Month == bd.Month && dt.Day < bd.Day))
                 age--;
             return age;
@@ -518,6 +523,16 @@ namespace UtilityExtensions
                 if (HttpContext.Current != null)
                     HttpContext.Current.Session[STR_ConnectionString] = value;
             }
+        }
+        public static string GetConnectionString(string Host)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+            if (cs == null)
+                return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
+            var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+            var a = Host.SplitStr(".:");
+            cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
+            return cb.ConnectionString;
         }
         public static string ConnectionStringImage
         {
@@ -1058,7 +1073,7 @@ namespace UtilityExtensions
             if (a != null)
                 smtp.Credentials = new NetworkCredential(a[0], a[1]);
             return smtp;
-        }        
+        }
         private const string STR_SysFromEmail = "UnNamed";
         public static string SysFromEmail
         {

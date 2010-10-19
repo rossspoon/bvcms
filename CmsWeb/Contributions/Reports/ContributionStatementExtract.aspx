@@ -6,38 +6,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-<script type="text/javascript">
-    function CreateStatementExtract() {
-        Page_ClientValidate("vgDates");
-        if (Page_IsValid) {
-            var fd = $get('<%=FromDate.ClientID %>').value;
-            var td = $get('<%=ToDate.ClientID %>').value;
-
-            var args = "?fd=" + fd + "&td=" + td + "&typ=3";
-            var newWindowUrl;
-            var ck = $get('<%=PDF.ClientID %>').value;
-            newWindowUrl = "ContributionStatementExtract.ashx" + args
-            window.open(newWindowUrl);
-        }
-        return Page_IsValid;
-    }
-
-    function showDiv() {
-        var uploadButtonId = '';
-        WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(uploadButtonId, "", true, "", "", false, false));
-
-        var validated = ValidatorOnSubmit();
-
-        if (validated == true) {
-            var hiddenDiv = '<%=myHiddenDiv.ClientID%>';
-            var animatedImg = '<%=myAnimatedImage.ClientID%>';    
-            document.getElementById(hiddenDiv).style.display = "";
-            setTimeout('document.images["' + animatedImg + '"].src = "/images/work.gif"', 200);
-        }
-    } 
-    </script>
-
-
     <table class="modalPopup">
         <tr>
             <th colspan="2">

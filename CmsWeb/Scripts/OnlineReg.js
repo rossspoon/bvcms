@@ -33,7 +33,7 @@
     //    $("#first").live("change", function () {
     //        $('#regnew').hide();
     //    });
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
+    $("a.submitbutton, a.submitlink", "form.DisplayEdit").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();

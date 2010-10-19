@@ -36,14 +36,11 @@ namespace CmsWeb
             if (person != null)
             {
                 FamilyPrimaryAddr.person = person;
-                FamilyAltAddr.person = person;
                 if(!IsPostBack)
                     DbUtil.LogActivity("Viewing Family for {0}".Fmt(person.Name));
             }
 
             FamilyPrimaryAddr.showPreferredAddress = false;
-
-            FamilyAltAddr.showPreferredAddress = false;
             trAddressLineTwo.Visible = family.AddressLineTwo.HasValue();
 
             EditUpdateButton1.DataBind();

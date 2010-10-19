@@ -255,6 +255,8 @@ namespace CmsData
 		
 		private bool? _HasDuplicates;
 		
+		private string _FirstName2;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -722,6 +724,9 @@ namespace CmsData
 		
 		partial void OnHasDuplicatesChanging(bool? value);
 		partial void OnHasDuplicatesChanged();
+		
+		partial void OnFirstName2Changing(string value);
+		partial void OnFirstName2Changed();
 		
     #endregion
 		public Person()
@@ -3513,6 +3518,28 @@ namespace CmsData
 					this._HasDuplicates = value;
 					this.SendPropertyChanged("HasDuplicates");
 					this.OnHasDuplicatesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FirstName2", UpdateCheck=UpdateCheck.Never, Storage="_FirstName2", DbType="varchar(50)")]
+		public string FirstName2
+		{
+			get { return this._FirstName2; }
+
+			set
+			{
+				if (this._FirstName2 != value)
+				{
+				
+                    this.OnFirstName2Changing(value);
+					this.SendPropertyChanging();
+					this._FirstName2 = value;
+					this.SendPropertyChanged("FirstName2");
+					this.OnFirstName2Changed();
 				}
 
 			}

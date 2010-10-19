@@ -168,5 +168,12 @@ namespace CmsWeb.Models
             };
             return si;
         }
+        public IEnumerable<string> MySlots()
+        {
+            var q = from g in DbUtil.Db.OrgMemMemTags
+                    where g.OrgId == this.org.OrganizationId && g.PeopleId == this.person.PeopleId
+                    select findslot(g.MemberTag.Name).name;
+            return q;
+        }
     }
 }

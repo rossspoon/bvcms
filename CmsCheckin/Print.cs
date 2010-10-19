@@ -342,7 +342,7 @@ namespace CmsCheckin
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("V"))
+            if (!li.mv.Contains("G"))
                 return 0;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
@@ -391,7 +391,7 @@ namespace CmsCheckin
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("V") || !li.location.HasValue())
+            if (!li.mv.Contains("G") || !li.location.HasValue())
                 return 0;
             var memStrm = new MemoryStream();
             var sw = new StreamWriter(memStrm);
