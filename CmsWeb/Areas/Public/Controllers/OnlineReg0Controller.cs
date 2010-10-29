@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 namespace CmsWeb.Areas.Public.Controllers
 {
     [ValidateInput(false)]
-    public class OnlineReg2Controller : CmsController
+    public class OnlineReg0Controller : CmsController
     {
 #if DEBUG
         private const int INT_timeout = 1600000;
@@ -29,7 +29,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!id.HasValue && !div.HasValue)
                 return Content("no organization");
-            var m = new OnlineRegModel2
+            var m = new OnlineRegModel0
             {
                 divid = div,
                 orgid = id,
@@ -49,44 +49,63 @@ namespace CmsWeb.Areas.Public.Controllers
                     (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge,
                     (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
                 };
-                if (OnlineRegModel2.UserSelectClasses(m.divid).Count() == 0)
+                if (OnlineRegPersonModel0.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
             }
 
             m.URL = Request.Url.OriginalString;
-            if (m.IsCreateAccount())
-                CreateList(m);
-            else
-                Session["gobackurl"] = m.URL;
-                
             ViewData["timeout"] = INT_timeout;
             SetHeaders(m.divid ?? m.orgid ?? 0);
 
 #if DEBUG
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o => o.PeopleId == 828612 && o.Organization.OrganizationName == "Crossroads Camp");
+            if (om != null)
+            {
+                om.Drop();
+                DbUtil.Db.SubmitChanges();
+            }
+            om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o => o.PeopleId == 827651 && o.Organization.OrganizationName == "Crossroads Camp");
+            if (om != null)
+            {
+                om.Drop();
+                DbUtil.Db.SubmitChanges();
+            }
 
             m.testing = true;
-            m.username = "david";
-            m.password = "toby123";
+            m.List = new List<OnlineRegPersonModel0>
+            {
+                new OnlineRegPersonModel0
+                {
+                    divid = div,
+                    orgid = id,
+                    first = "David",
+                    last = "Carroll",
+                    dob = "5/30/52",
+                    email = "david@bvcms.com",
+                    phone = "9017581862",
+                }
+            };
 #else
             m.testing = testing;
+            m.List.Add(
+                new OnlineRegPersonModel
+                {
+                    divid = div,
+                    orgid = id,
+                });
 #endif
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Cancel(int id, OnlineRegModel2 m)
+        public ActionResult Cancel(int id, OnlineRegModel0 m)
         {
             m.List.RemoveAt(id);
             if (m.List.Count == 0)
-                m.List.Add(new OnlineRegPersonModel2
-                {
-                    divid = m.divid,
-                    orgid = m.orgid,
-                    LoggedIn = m.UserPeopleId.HasValue,
-                });
+                return Content("refresh");
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ShowMoreInfo(int id, OnlineRegModel2 m)
+        public ActionResult ShowMoreInfo(int id, OnlineRegModel0 m)
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
@@ -97,59 +116,35 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
-                    p.FillPriorInfo();
+                    FillPriorInfo(p);
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
                 return View("list", m);
-            }
-            if (!p.whatfamily.HasValue && (p.index > 0 || p.LoggedIn == true))
-            {
-                ModelState.AddModelError("whatfamily", "Choose a family option");
-                return View("list", m);
-            }
-            switch(p.whatfamily)
-            {
-                case 1:
-                    var u = DbUtil.Db.LoadPersonById(m.UserPeopleId.Value);
-                    p.address = u.PrimaryAddress;
-                    p.city = u.PrimaryCity;
-                    p.state = u.PrimaryState;
-                    p.zip = u.PrimaryZip.FmtZip();
-                    break;
-                case 2:
-                    var pb = m.List[id - 1];
-                    p.address = pb.address;
-                    p.city = pb.city;
-                    p.state = pb.state;
-                    p.zip = pb.zip;
-                    break;
-                default:
+           }
 #if DEBUG
-                    p.address = "235 Riveredge Cv.";
-                    p.city = "Cordova";
-                    p.state = "TN";
-                    p.zip = "38018";
-                    p.gender = 1;
-                    p.married = 10;
+            p.address = "235 Riveredge Cv.";
+            p.city = "Cordova";
+            p.state = "TN";
+            p.zip = "38018";
+            p.gender = 1;
+            p.married = 10;
 #endif
-                    break;
+            if (id > 0)
+            {
+                var p0 = m.List[0];
+                p.address = p0.address;
+                p.city = p0.city;
+                p.state = p0.state;
+                p.zip = p0.zip;
             }
             p.ShowAddress = true;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PersonFind(int id, OnlineRegModel2 m)
+        public ActionResult PersonFind(int id, OnlineRegModel0 m)
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
-            if (m.classid.HasValue)
-            {
-                m.orgid = m.classid;
-                p.classid = m.classid;
-                p.orgid = m.classid;
-            }
-            p.classid = m.classid;
-            p.PeopleId = null;
             p.ValidateModelForFind(ModelState);
             if (p.org != null)
             {
@@ -157,23 +152,26 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
-                    p.FillPriorInfo();
+                {
+                    FillPriorInfo(p);
+                }
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
             }
+            p.TryCount++;
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SubmitNew(int id, OnlineRegModel2 m)
+        public ActionResult SubmitNew(int id, OnlineRegModel0 m)
         {
             var p = m.List[id];
             p.ValidateModelForNew(ModelState);
             if (ModelState.IsValid)
             {
                 if (p.org == null)
-                    ModelState.AddModelError(p.ErrorTarget, "Sorry, cannot find an appropriate age group");
+                    ModelState.AddModelError("find", "Sorry, cannot find an appropriate age group");
                 else
                 {
                     p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
@@ -184,14 +182,85 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             p.IsValidForExisting = ModelState.IsValid == false;
             if (p.IsNew)
-                p.FillPriorInfo();
+                FillPriorInfo(p);
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
             return View("list", m);
         }
+        private static void FillPriorInfo(OnlineRegPersonModel0 p)
+        {
+#if DEBUG
+            p.shirtsize = "YT-L";
+            p.request = "tommy";
+            p.emcontact = "test";
+            p.emphone = "test";
+            p.docphone = "test";
+            p.doctor = "test";
+            p.insurance = "test";
+            p.policy = "test";
+            p.mname = "";
+            p.fname = "test t";
+            p.tylenol = true;
+            p.advil = true;
+            p.robitussin = false;
+            p.maalox = false;
+            p.paydeposit = true;
+#endif
+            if (!p.IsNew)
+            {
+                var rr = p.person.RecRegs.SingleOrDefault();
+                if (rr != null)
+                {
+                    if (p.org.AskRequest == true)
+                    {
+                        var om = p.GetOrgMember();
+                        if (om != null)
+                            p.request = om.Request;
+                    }
+                    if (p.org.AskShirtSize == true)
+                        p.shirtsize = rr.ShirtSize;
+                    if (p.org.AskEmContact == true)
+                    {
+                        p.emcontact = rr.Emcontact;
+                        p.emphone = rr.Emphone;
+                    }
+                    if (p.org.AskInsurance == true)
+                    {
+                        p.insurance = rr.Insurance;
+                        p.policy = rr.Policy;
+                    }
+                    if (p.org.AskDoctor == true)
+                    {
+                        p.docphone = rr.Docphone;
+                        p.doctor = rr.Doctor;
+                    }
+                    if (p.org.AskParents == true)
+                    {
+                        p.mname = rr.Mname;
+                        p.fname = rr.Fname;
+                    }
+                    if (p.org.AskAllergies == true)
+                        p.medical = rr.MedicalDescription;
+                    if (p.org.AskCoaching == true)
+                        p.coaching = rr.Coaching;
+                    if (p.org.AskChurch == true)
+                    {
+                        p.otherchurch = rr.ActiveInAnotherChurch ?? false;
+                        p.memberus = rr.Member ?? false;
+                    }
+                    if (p.org.AskTylenolEtc == true)
+                    {
+                        p.tylenol = rr.Tylenol;
+                        p.advil = rr.Advil;
+                        p.robitussin = rr.Robitussin;
+                        p.maalox = rr.Maalox;
+                    }
+                }
+            }
+        }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SubmitOtherInfo(int id, OnlineRegModel2 m)
+        public ActionResult SubmitOtherInfo(int id, OnlineRegModel0 m)
         {
             var p = m.List[id];
             p.ValidateModelForOther(ModelState);
@@ -199,12 +268,12 @@ namespace CmsWeb.Areas.Public.Controllers
             return View("list", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AddAnotherPerson(OnlineRegModel2 m)
+        public ActionResult AddAnotherPerson(OnlineRegModel0 m)
         {
             if (!ModelState.IsValid)
                 return View("list", m.List);
 #if DEBUG
-            m.List.Add(new OnlineRegPersonModel2
+            m.List.Add(new OnlineRegPersonModel0
             {
                 divid = m.divid,
                 orgid = m.orgid,
@@ -213,24 +282,22 @@ namespace CmsWeb.Areas.Public.Controllers
                 dob = "1/29/86",
                 email = "davcar@pobox.com",
                 phone = "9017581862".FmtFone(),
-                LoggedIn = m.UserPeopleId.HasValue,
             });
 #else
-            m.List.Add(new OnlineRegPersonModel2
+            m.List.Add(new OnlineRegPersonModel
             {
                 divid = m.divid,
                 orgid = m.orgid,
-                LoggedIn = m.UserPeopleId.HasValue,
             });
 #endif
             return View("list", m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CompleteRegistration(OnlineRegModel2 m)
+        public ActionResult CompleteRegistration(OnlineRegModel0 m)
         {
             DbUtil.Db.SetNoLock();
-            var d = DbUtil.Db.GetDatum<OnlineRegModel2>(m);
+            var d = DbUtil.Db.GetDatum<OnlineRegModel0>(m);
             if (m.ChoosingSlots())
                 return RedirectToAction("PickSlots", new { id = d.Id });
 
@@ -254,7 +321,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 State = p.state,
                 PostalCode = p.zip,
                 testing = m.testing ?? false,
-                PostbackURL = Util.ServerLink("/OnlineReg2/Confirm/" + d.Id),
+                PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
                 Misc2 = m.Header,
                 Terms = Util.PickFirst(m.Terms, ""),
                 _URL = m.URL,
@@ -285,7 +352,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Json(new { error = "problem coupon" });
             }
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
-            var m = Util.DeSerialize<OnlineRegModel2>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
+            var m = Util.DeSerialize<OnlineRegModel0>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
             string coupon = pm._Coupon.ToUpper().Replace(" ", "");
             string admincoupon = DbUtil.Settings("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
             if (coupon == admincoupon)
@@ -325,7 +392,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
             if (ed == null)
                 return Content("no pending confirmation found");
-            var m = Util.DeSerialize<OnlineRegModel2>(ed.Data);
+            var m = Util.DeSerialize<OnlineRegModel0>(ed.Data);
             return View(new SlotModel(m.List[0].PeopleId.Value, m.orgid.Value));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -357,13 +424,9 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("no pending confirmation found");
 
             var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
-            var m = Util.DeSerialize<OnlineRegModel2>(s);
-            string confirm = "Confirm";
+            var m = Util.DeSerialize<OnlineRegModel0>(s);
             if (m.org != null && m.org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
-            {
                 m.CreateAccount();
-                confirm = "ConfirmAccount";
-            }
             else
             {
                 m.EnrollAndConfirm(TransactionID);
@@ -371,38 +434,13 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
-            if (m.IsCreateAccount())
-                ViewData["email"] = m.List[0].person.EmailAddress;
-            else
-                ViewData["email"] = m.List[0].email;
+            ViewData["email"] = m.List[0].email;
             ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
             ViewData["URL"] = m.URL;
             ViewData["timeout"] = INT_timeout;
-
+                
             SetHeaders(m.divid ?? m.orgid ?? 0);
-            return View(confirm, m);
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ConfirmSlots(int id, int orgid)
-        {
-            var m = new SlotModel(id, orgid);
-            var slots = string.Join("<br />\n", m.MySlots());
-            var smtp = Util.Smtp();
-            DbUtil.Email2(smtp, m.org.EmailAddresses, m.person.EmailAddress, "Commitment confirmation",
-@"Thank you for committing to {0}. You have the following slots:<br/>
-{1}".Fmt(m.org.OrganizationName, slots));
-            DbUtil.Email2(smtp, m.person.EmailAddress, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
-                "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
-            return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
-        }
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult ConfirmSlots(int id)
-        {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            ViewData["Organization"] = org.OrganizationName;
-            SetHeaders(org.OrganizationId);
-            return View();
+            return View(m);
         }
         public ActionResult PayDue(string q)
         {
@@ -559,7 +597,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 var t = re.Match(s).Groups[1].Value;
                 ViewData["top"] = t;
                 var b = re.Match(s).Groups[2].Value;
-                ViewData["bottom"] = b;
+                ViewData["bottom"] = b; 
             }
             else
             {
@@ -571,9 +609,9 @@ namespace CmsWeb.Areas.Public.Controllers
                 ViewData["bottom"] = DbUtil.Content("OnlineRegBottom-" + id,
                     DbUtil.Content("OnlineRegBottom", ""));
             }
-
-
-
+        
+        
+        
         }
         private static void AddToMemberData(string s, OrganizationMember om)
         {
@@ -584,98 +622,6 @@ namespace CmsWeb.Areas.Public.Controllers
         private static void AddToRegistrationComments(string s, RecReg rr)
         {
             rr.Comments = s + "\n" + rr.Comments;
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Login(OnlineRegModel2 m)
-        {
-            var authenticated = CMSMembershipProvider.provider.ValidateUser(m.username, m.password);
-            if (!authenticated)
-                ModelState.AddModelError("authentication", "There was a problem with your username and password combination, try again");
-            else
-            {
-                CreateList(m);
-                m.UserPeopleId = (from u in DbUtil.Db.Users
-                                  where u.Username == m.username
-                                  select u.PeopleId).Single();
-                m.List[0].LoggedIn = true;
-            }
-            return View("List", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NoLogin(OnlineRegModel2 m)
-        {
-            m.nologin = true;
-            CreateList(m);
-            return View("List", m);
-        }
-        private void CreateList(OnlineRegModel2 m)
-        {
-#if DEBUG
-            m.List = new List<OnlineRegPersonModel2>
-            {
-                new OnlineRegPersonModel2
-                {
-                    divid = m.divid,
-                    orgid = m.orgid,
-                    first = "David4",
-                    last = "Carroll4",
-                    dob = "5/30/52",
-                    email = "david@bvcms.com",
-                    phone = "9017581862",
-                    LoggedIn = false,
-                }
-            };
-#else
-            m.List = new List<OnlineRegPersonModel2>
-            {
-                new OnlineRegPersonModel2
-                {
-                    divid = m.divid,
-                    orgid = m.orgid,
-                    LoggedIn = false,
-                }
-            };
-#endif
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Register(int id, OnlineRegModel2 m)
-        {
-            if (m.classid.HasValue)
-                m.orgid = m.classid;
-            var person = DbUtil.Db.LoadPersonById(id);
-            var p = new OnlineRegPersonModel2
-            {
-                dob = person.DOB,
-                email = person.EmailAddress,
-                first = person.FirstName,
-                last = person.LastName,
-                PeopleId = id,
-                phone = Util.PickFirst(person.CellPhone, person.HomePhone),
-                orgid = m.orgid,
-                divid = m.divid,
-                classid = m.classid,
-                IsFamily = true,
-                LoggedIn = true,
-            };
-            p.ValidateModelForFind(ModelState);
-            if (!ModelState.IsValid)
-                return View("List", m);
-            m.List[m.List.Count - 1] = p;
-
-            if (p.org != null && p.Found == true)
-            {
-                p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
-                if (p.IsFilled)
-                    ModelState.AddModelError(p.ErrorTarget, "Sorry, but registration is closed.");
-                if (p.Found == true)
-                    p.FillPriorInfo();
-                if (!p.AnyOtherInfo())
-                    p.OtherOK = true;
-                return View("list", m);
-            }
-            if (p.ShowDisplay() && p.org != null && p.ComputesOrganizationByAge())
-                p.classid = p.org.OrganizationId;
-            return View("List", m);
         }
     }
 }

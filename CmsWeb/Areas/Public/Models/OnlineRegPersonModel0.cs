@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 namespace CmsWeb.Models
 {
     [Serializable]
-    public class OnlineRegPersonModel2
+    public class OnlineRegPersonModel0
     {
         public int index { get; set; }
         public bool LastItem { get; set; }
@@ -30,7 +30,7 @@ namespace CmsWeb.Models
             {
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
-                        _org = OnlineRegModel.CreateAccountOrg;
+                        _org = OnlineRegModel0.CreateAccountOrg;
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
@@ -46,7 +46,6 @@ namespace CmsWeb.Models
         public int? classid { get; set; }
 
         public string first { get; set; }
-        public string middle { get; set; }
         public string last { get; set; }
         public string suffix { get; set; }
         public string dob { get; set; }
@@ -61,9 +60,8 @@ namespace CmsWeb.Models
 
         public bool? Found { get; set; }
         public bool IsNew { get; set; }
-        public bool IsFamily { get; set; }
-        public string ErrorTarget { get { return IsFamily ? "findf" : "findn"; } }
         public bool OtherOK { get; set; }
+        public int TryCount { get; set; }
         public bool ShowAddress { get; set; }
         private Dictionary<string, string> _ExtraQuestion = new Dictionary<string, string>();
         public Dictionary<string, string> ExtraQuestion
@@ -101,8 +99,6 @@ namespace CmsWeb.Models
                 return MenuItem[s];
             return null;
         }
-        public int? whatfamily { get; set; }
-        public bool? LoggedIn { get; set; }
 
         [NonSerialized]
         private DateTime _Birthday;
@@ -119,11 +115,9 @@ namespace CmsWeb.Models
         {
             get
             {
-                if (_Person != null && _Person.BirthDate.HasValue)
+                if (person != null && person.BirthDate.HasValue)
                     return person.BirthDate.Value.AgeAsOf(Util.Now);
-                if (birthday.HasValue)
-                    return birthday.Value.AgeAsOf(Util.Now);
-                return 0;
+                return _Birthday.AgeAsOf(Util.Now);
             }
         }
         public string genderdisplay
@@ -136,30 +130,14 @@ namespace CmsWeb.Models
         }
         public bool IsValidForExisting { get; set; }
         public bool IsValidForContinue { get; set; }
-        private void ValidateBirthdayRange(ModelStateDictionary ModelState)
-        {
-            if (org != null)
-                if (!birthday.HasValue && (org.BirthDayStart.HasValue || org.BirthDayEnd.HasValue))
-                    ModelState.AddModelError("DOB", "birthday required");
-                else if (birthday.HasValue)
-                {
-                    if ((org.BirthDayStart.HasValue && birthday < org.BirthDayStart)
-                        || (org.BirthDayEnd.HasValue && birthday > org.BirthDayEnd))
-                        ModelState.AddModelError("DOB", "birthday outside age allowed range");
-                }
-        }
         public void ValidateModelForFind(ModelStateDictionary ModelState)
         {
             IsValidForContinue = true; // true till proven false
-            if (!this.PeopleId.HasValue)
-                CmsWeb.Models.SearchPeopleModel
-                    .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
+            CmsWeb.Models.SearchPeopleModel
+                .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
             if (UserSelectsOrganization())
                 if ((classid ?? 0) == 0)
-                    if (IsFamily)
-                        ModelState.AddModelError("classidfam", "please choose a group/event");
-                    else
-                        ModelState.AddModelError("classidguest", "please choose a group/event");
+                    ModelState.AddModelError("classid", "choose a class");
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (!email.HasValue() || !Util.ValidEmail(email))
@@ -183,7 +161,7 @@ namespace CmsWeb.Models
                     }
                     else if (MemberOnly() && person.MemberStatusId != (int)Person.MemberStatusCode.Member)
                     {
-                        ModelState.AddModelError(ErrorTarget, "Sorry, must be a member of church");
+                        ModelState.AddModelError("find", "Sorry, must be a member of church");
                         IsValidForContinue = false;
                     }
                     else if (org != null)
@@ -194,28 +172,13 @@ namespace CmsWeb.Models
 #if DEBUG
 #else
                             if (person.Users.Count() > 0)
-                            {
-                                ModelState.AddModelError(ErrorTarget, "You already have an account");
-                                IsValidForContinue = false;
-                            }
-                            if (!Util.ValidEmail(person.EmailAddress))
-                            {
-                                ModelState.AddModelError(ErrorTarget, "You must have a valid email address on record");
-                                NotFoundText = @"We have found your record but we do not have a valid email for you.<br/>
-For your protection, we cannot continue to create an account.<br />
-We can't use the one you enter online here since we can't be sure this is you.<br />
-Please call the church to resolve this before we can complete your account.<br />";
-                                IsValidForContinue = false;
-                            }
+                                ModelState.AddModelError("find", "You already have an account");
 #endif
                         }
                         else if (m != null && org.RegistrationTypeId != (int)Organization.RegistrationEnum.ChooseSlot)
                         {
-#if DEBUG
-#else
-                            ModelState.AddModelError(ErrorTarget, "This person is already registered");
+                            ModelState.AddModelError("find", "This person is already registered");
                             IsValidForContinue = false;
-#endif
                         }
                         else if (org.ValidateOrgs.HasValue())
                         {
@@ -224,7 +187,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             var a = q.ToArray();
                             if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
                             {
-                                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
+                                ModelState.AddModelError("find", "Must be member of specified organization");
                                 IsValidForContinue = false;
                             }
                         }
@@ -232,21 +195,22 @@ Please call the church to resolve this before we can complete your account.<br /
                 }
                 else if (count > 1)
                 {
-                    ModelState.AddModelError(ErrorTarget, "More than one match, sorry");
-                    NotFoundText = @"We have found more than one record that matches your information<br/>
-This is an unexpected error and we don't know which one is you.<br />
-Please call the church to resolve this before we can complete your registration.<br />";
+                    ModelState.AddModelError("find", "More than one match, sorry");
                     IsValidForContinue = false;
                 }
                 else if (count == 0)
                 {
-                    ModelState.AddModelError(ErrorTarget, "record not found");
+                    ModelState.AddModelError("find", "record not found");
                     NotFoundText = @"We are trying to find this record.<br />
 The first and last names must match a record.<br />
-Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
+Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />
+We may not have your birthday, so try leaving it blank.<br />
+Try different spellings or a nickname too.<br />";
+                    if (!MemberOnly())
+                        NotFoundText += 
+"<span style='color: green;'><i>After a couple of tries, you will have the option to Register a New record</i></span>";
                 }
             }
-            ValidateBirthdayRange(ModelState);
             IsValidForExisting = ModelState.IsValid;
         }
         public string NotFoundText;
@@ -260,17 +224,10 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
             {
                 if (_Person == null)
                     if (PeopleId.HasValue)
-                    {
                         _Person = DbUtil.Db.LoadPersonById(PeopleId.Value);
-                        count = 1;
-                    }
                     else
                     {
-                        //_Person = SearchPeopleModel.FindPerson(first, last, birthday, email, phone, out count);
-                        var list = DbUtil.Db.FindPerson(first, last, birthday, email, phone).ToList();
-                        count = list.Count;
-                        if (count == 1)
-                            _Person = DbUtil.Db.LoadPersonById(list[0].PeopleId.Value);
+                        _Person = SearchPeopleModel.FindPerson(first, last, birthday, email, phone, out count);
                         if (_Person != null)
                             PeopleId = _Person.PeopleId;
                     }
@@ -290,6 +247,65 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
+        public static IQueryable<Organization> UserSelectClasses(int? divid)
+        {
+            var a = new int[] 
+            { 
+                (int)Organization.RegistrationEnum.UserSelectsOrganization,
+                (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+            };
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivOrgs.Any(od => od.DivId == divid)
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where a.Contains(o.RegistrationTypeId.Value)
+                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+                    select o;
+            return q;
+        }
+        public IEnumerable<SelectListItem> Classes()
+        {
+            var q = from o in UserSelectClasses(divid)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where hasroom
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select new SelectListItem
+                    {
+                        Value = o.OrganizationId.ToString(),
+                        Text = ClassName(o)
+                    };
+            var list = q.ToList();
+            if (list.Count == 1)
+                return list;
+            list.Insert(0, new SelectListItem { Text = "(select a class)", Value = "0" });
+            return list;
+        }
+        public IEnumerable<String> FilledClasses()
+        {
+            var q = from o in UserSelectClasses(divid)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where !hasroom
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select ClassName(o);
+            return q;
+        }
+        private static string ClassName(CmsData.Organization o)
+        {
+            var lead = o.LeaderName;
+            if (lead.HasValue())
+                lead = ": " + lead;
+            var loc = o.Location;
+            if (loc.HasValue())
+                loc = " ({0})".Fmt(loc);
+            var dt1 = o.FirstMeetingDate;
+            var dt2 = o.LastMeetingDate;
+            var dt = "";
+            if (dt1.HasValue && dt2.HasValue)
+                dt = ", {0:MMM d}-{1:MMM d}".Fmt(dt1, dt2);
+            else if (dt1.HasValue)
+                dt = ", {0:MMM d}".Fmt(dt1);
+
+            return o.OrganizationName + lead + dt + loc;
+        }
 
         public bool IsValidForNew { get; set; }
         internal void ValidateModelForNew(ModelStateDictionary ModelState)
@@ -298,7 +314,6 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                 .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
             if (!birthday.HasValue && DbUtil.Settings("DobNotRequired", "true") == "true")
                 ModelState.AddModelError("DOB", "birthday required");
-            ValidateBirthdayRange(ModelState);
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
             if (email.HasValue())
@@ -348,7 +363,6 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                     (int)Person.OriginCode.Enrollment, entrypoint);
             person.EmailAddress = email;
             person.SuffixCode = suffix;
-            person.MiddleName = middle;
             person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
@@ -985,8 +999,11 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
         }
         public bool ComputesOrganizationByAge()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
+            if (!divid.HasValue)
+                return false;
+            var q = DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                     o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge);
+            return q;
         }
         public bool MemberOnly()
         {
@@ -1009,17 +1026,13 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                      select o;
             return q2.FirstOrDefault();
         }
-        public bool Finished()
-        {
-            return ShowDisplay() && OtherOK;
-        }
         public bool ShowDisplay()
         {
             if (org == null || IsFilled)
                 return false;
             if (Found == true && IsValidForExisting)
                 return true;
-            if (IsFamily || (IsNew && IsValidForNew))
+            if (IsNew && IsValidForNew)
                 return true;
             return false;
         }
@@ -1061,9 +1074,9 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                         o.AskCoaching == true ||
                         o.AskChurch == true ||
                         o.AskTickets == true ||
-                        o.AskOptions.Length > 0 ||
-                        o.ExtraQuestions.Length > 0 ||
-                        o.MenuItems.Length > 0 ||
+                        o.AskOptions.HasValue() ||
+                        o.ExtraQuestions.HasValue() ||
+                        o.MenuItems.HasValue() ||
                         o.YesNoQuestions.Length > 0 ||
                         o.Deposit > 0
                     select o;
@@ -1115,77 +1128,6 @@ Thank you</p>"
             if (s != null)
                 return s.Trim();
             return s;
-        }
-        public void FillPriorInfo()
-        {
-#if DEBUG
-            shirtsize = "YT-L";
-            request = "tommy";
-            emcontact = "test";
-            emphone = "test";
-            docphone = "test";
-            doctor = "test";
-            insurance = "test";
-            policy = "test";
-            mname = "";
-            fname = "test t";
-            tylenol = true;
-            advil = true;
-            robitussin = false;
-            maalox = false;
-            paydeposit = true;
-#endif
-            if (!IsNew)
-            {
-                var rr = person.RecRegs.SingleOrDefault();
-                if (rr != null)
-                {
-                    if (org.AskRequest == true)
-                    {
-                        var om = GetOrgMember();
-                        if (om != null)
-                            request = om.Request;
-                    }
-                    if (org.AskShirtSize == true)
-                        shirtsize = rr.ShirtSize;
-                    if (org.AskEmContact == true)
-                    {
-                        emcontact = rr.Emcontact;
-                        emphone = rr.Emphone;
-                    }
-                    if (org.AskInsurance == true)
-                    {
-                        insurance = rr.Insurance;
-                        policy = rr.Policy;
-                    }
-                    if (org.AskDoctor == true)
-                    {
-                        docphone = rr.Docphone;
-                        doctor = rr.Doctor;
-                    }
-                    if (org.AskParents == true)
-                    {
-                        mname = rr.Mname;
-                        fname = rr.Fname;
-                    }
-                    if (org.AskAllergies == true)
-                        medical = rr.MedicalDescription;
-                    if (org.AskCoaching == true)
-                        coaching = rr.Coaching;
-                    if (org.AskChurch == true)
-                    {
-                        otherchurch = rr.ActiveInAnotherChurch ?? false;
-                        memberus = rr.Member ?? false;
-                    }
-                    if (org.AskTylenolEtc == true)
-                    {
-                        tylenol = rr.Tylenol;
-                        advil = rr.Advil;
-                        robitussin = rr.Robitussin;
-                        maalox = rr.Maalox;
-                    }
-                }
-            }
         }
     }
 }

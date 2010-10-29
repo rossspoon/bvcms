@@ -14,7 +14,7 @@
     <%= SquishIt.Framework.Bundle.JavaScript()
         .Add("/Content/js/jquery.blockUI.js")
         .Add("/Content/js/jquery.tooltip.js")
-        .Add("/Scripts/pickslots.js")
+        .Add("/Scripts/pickslots2.js")
         .Render("/Content/PickSlots#.js")
             %>        
     <h2>
@@ -62,6 +62,10 @@
    <tr><td colspan="3">green = yours</td></tr>
    <tr><td colspan="3">unchecked = available</td></tr>
    </table>
+   <form method="post" action="/OnlineReg/ConfirmSlots/<%=Model.person.PeopleId %>?orgid=<%=Model.org.OrganizationId %>">
+   <p style="text-align: center">
+   <input id="submitit" type="submit" class="submitbutton" 
+    value='Send Confirmation Email' /></p></form>
    </td></tr></table>
     <div class="growlUI" style="display: none;">
         <h1>Growl Notification</h1>

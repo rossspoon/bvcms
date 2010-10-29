@@ -3,7 +3,7 @@
    <h2>Transaction Completed</h2>
     <p>
         Thank you for your payment of <%=ViewData["Amount"] %> for <%=ViewData["Desc"] %>.<br />
-        Your balance is <%=ViewData["AmountDue"] %>.<br/>
-        You should receive a confirmation email shortly.
+        Your balance is <%=ViewData["AmountDue"] %>.</br>
+        You should receive a confirmation email at <%=ViewData["Email"] %> shortly.
     </p>
 </asp:Content>

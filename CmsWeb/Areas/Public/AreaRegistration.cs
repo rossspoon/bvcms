@@ -18,8 +18,8 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "DiscipleLife");
             AddRoute(context, "GODisciples");
             AddRoute(context, "MOBS");
+            AddRoute(context, "OnlineReg0");
             AddRoute(context, "OnlineReg");
-            AddRoute(context, "OnlineReg2");
             AddRoute(context, "Prayer");
             AddRoute(context, "Register");
             AddRoute(context, "Sales");
@@ -32,7 +32,7 @@ namespace CmsWeb.Areas.Public
             context.MapRoute(
                 "Public_CreateAccount",
                 "CreateAccount",
-                new { controller = "OnlineReg2", action = "Index", id = Util.CreateAccountCode.ToString() }
+                new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
 
             context.MapRoute(

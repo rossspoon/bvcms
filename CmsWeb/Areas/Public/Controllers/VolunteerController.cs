@@ -114,7 +114,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     }
                     DbUtil.Email(smtp, email, m.person.Name, em,
                          c.Title, body);
-                    OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
+                    OnlineRegPersonModel0.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }
             }

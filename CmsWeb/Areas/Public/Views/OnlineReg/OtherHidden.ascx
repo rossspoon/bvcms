@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel2>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <% if (Model.org.AskShirtSize == true)
    { %>
 <%=Html.Hidden3("m.list[" + Model.index + "].shirtsize", Model.shirtsize)%>

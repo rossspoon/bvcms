@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel2>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <% if (Model.Classes().Count() > 1)
    { %>
         <%=Html.DropDownList3(null, "m.classid", Model.Classes(), Model.classid.ToString())%>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel2>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <%=Html.Hidden3("m.List[" + Model.index + "].first", Model.first) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].middle", Model.middle) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].last", Model.last) %>

@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 namespace CmsWeb.Models
 {
     [Serializable]
-    public class OnlineRegModel
+    public class OnlineRegModel0
     {
         [NonSerialized]
         private CmsData.Division _div;
@@ -75,7 +75,7 @@ namespace CmsWeb.Models
         public bool IsEnded()
         {
             if (div != null)
-                return OnlineRegPersonModel.UserSelectClasses(div.Id).Count() == 0;
+                return OnlineRegPersonModel0.UserSelectClasses(div.Id).Count() == 0;
             else
                 return org.ClassFilled == true;
         }
@@ -131,8 +131,8 @@ namespace CmsWeb.Models
             }
         }
 
-        private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
-        public IList<OnlineRegPersonModel> List
+        private IList<OnlineRegPersonModel0> list = new List<OnlineRegPersonModel0>();
+        public IList<OnlineRegPersonModel0> List
         {
             get { return list; }
             set { list = value; }
@@ -300,7 +300,7 @@ Just login to {0} and you will be taken to your record where you can make correc
 </td></tr>", i + 1, p.PrepareSummaryText());
 
                 om.RegisterEmail = p.email;
-                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
+                OnlineRegPersonModel0.CheckNotifyDiffEmails(p.person,
                     p.org.EmailAddresses,
                     p.email,
                     p.org.OrganizationName,

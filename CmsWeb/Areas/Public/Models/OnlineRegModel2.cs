@@ -17,7 +17,7 @@ using System.Collections;
 namespace CmsWeb.Models
 {
     [Serializable]
-    public class OnlineRegModel2
+    public class OnlineRegModel
     {
         [NonSerialized]
         private CmsData.Division _div;
@@ -221,13 +221,13 @@ namespace CmsWeb.Models
             }
         }
 
-        private IList<OnlineRegPersonModel2> list = new List<OnlineRegPersonModel2>();
-        public IList<OnlineRegPersonModel2> List
+        private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
+        public IList<OnlineRegPersonModel> List
         {
             get { return list; }
             set { list = value; }
         }
-        public OnlineRegPersonModel2 last
+        public OnlineRegPersonModel last
         {
             get
             {
@@ -450,7 +450,7 @@ Just login to {host} and you will be taken to your record where you can make cor
 </td></tr>", i + 1, p.PrepareSummaryText());
 
                 om.RegisterEmail = p.email;
-                OnlineRegPersonModel2.CheckNotifyDiffEmails(p.person,
+                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
                     p.org.EmailAddresses,
                     p.email,
                     p.org.OrganizationName,

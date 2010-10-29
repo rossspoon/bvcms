@@ -13,7 +13,7 @@
     $("input").live("click", function (sender) {
         var sid = this.id;
         var $this = $(this);
-        $.post('/OnlineReg2/ToggleSlot/' + $('#pid').val(), { oid: $('#oid').val(), slot: this.id, ck: this.checked }, function (ret) {
+        $.post('/OnlineReg/ToggleSlot/' + $('#pid').val(), { oid: $('#oid').val(), slot: this.id, ck: this.checked }, function (ret) {
             var a = ret.split("<!-- -->");
             $this.parent().replaceWith(a[1]).ready(function () {
                 $('td.slot[title]').tooltip({
