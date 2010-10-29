@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
@@ -56,6 +57,53 @@ namespace CmsWeb.Areas.Main.Controllers
 #endif
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
+        }
+        public ActionResult Organizations()
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            return new OrgResult(u.PeopleId.Value);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RollList(int id, string datetime)
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            var dt = DateTime.Parse(datetime);
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId== id && m.MeetingDate == dt);
+            if (meeting == null)
+            {
+                meeting = new CmsData.Meeting
+                {
+                    OrganizationId = id,
+                    MeetingDate = dt,
+                    CreatedDate = Util.Now,
+                    CreatedBy = u.UserId,
+                    GroupMeetingFlag = false,
+                };
+                DbUtil.Db.Meetings.InsertOnSubmit(meeting);
+                DbUtil.Db.SubmitChanges();
+            }
+            return new RollListResult(id, meeting);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RecordAttend(int id, int PeopleId, bool Present)
+        {
+            Attend.RecordAttendance(PeopleId, id, Present);
+            DbUtil.Db.UpdateMeetingCounters(id);
+            return new EmptyResult();
         }
     }
 }

@@ -145,7 +145,7 @@ namespace CMSPresenter
             var pids = from om in DbUtil.Db.OrganizationMembers
                        from m in om.Organization.Meetings
                        from a in m.Attends
-                       where om.Organization.DivisionId == divid
+                       where om.Organization.DivOrgs.Any(di => di.DivId == divid)
                        group new { a, m } by new { PeopleId = a.PeopleId, OrgId = m.OrganizationId } into g
                        select g into h
                        where h.Max(z => z.a.MeetingDate) < Util.Now.Date.AddDays(-45)

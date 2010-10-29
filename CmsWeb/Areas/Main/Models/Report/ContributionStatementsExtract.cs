@@ -135,6 +135,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         pageStatement = 1;
                         writeHeader(c);
                         writeContributions(c);
+            string hdrGift = "   Date        Fund Name          Description of Gift-in-Kind Given as of {0:MM/dd/yyyy}\n\n".Fmt(td);
+            rWrite(hdrGift);
                         writeSummary(c);
                     }
                     stream.Close();

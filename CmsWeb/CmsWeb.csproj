@@ -189,6 +189,8 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\RollListResult.cs" />
+    <Compile Include="Areas\Main\Models\iPhone\OrgResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailsResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\PeopleInfo.cs" />
     <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />
@@ -846,6 +848,9 @@
     <Content Include="Areas\Public\Views\OnlineReg2\Confirm2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg2\ConfirmSlots.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg2\ChooseClass.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg2\ConfirmAccount.aspx" />
+    <Content Include="Areas\Public\Views\OnlineReg2\Login.ascx" />
+    <Content Include="Areas\Public\Views\OnlineReg2\PersonMetaHidden.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\FamilyList.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\PersonHidden.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\OtherHidden.ascx" />
@@ -856,8 +861,6 @@
     <Content Include="Areas\Public\Views\OnlineReg2\OtherEdit.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\Payment.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg2\Payment2.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg2\Payment_aunet.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg2\Payment_aunet2.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg2\PersonDisplay.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\PersonEdit.ascx" />
     <Content Include="Areas\Public\Views\OnlineReg2\PickSlot.ascx" />
@@ -871,6 +874,7 @@
     <Content Include="Areas\Public\Views\OnlineReg\PickSlots.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
+    <Content Include="Content\bluebullet.gif" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />
     <Content Include="Content\images\file.gif" />
@@ -900,6 +904,7 @@
     <Content Include="Global.asax" />
     <Content Include="OnlineRegSample.htm" />
     <Content Include="Scripts\pickslots.js" />
+    <Content Include="Scripts\pickslots2.js" />
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="UserControls\ExportToolBar.ascx" />

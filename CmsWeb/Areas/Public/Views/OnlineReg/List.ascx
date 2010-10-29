@@ -51,7 +51,7 @@
     <% } 
        else
        { %>
-        <span class="blue">OK, Now you can complete your registration</span>
+        <span class="blue">OK, now you can complete your registration</span>
     <% } %>
        <blockquote>
     <% var amt = Model.Amount();

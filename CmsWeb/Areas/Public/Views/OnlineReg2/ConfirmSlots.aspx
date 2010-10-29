@@ -5,5 +5,4 @@
         Thank you for your Commitment to <%=ViewData["Organization"] %><br />
         You should receive a confirmation email shortly.
     </p>
-    <p style="color: #FF00FF">You may now do whatever you would like to do.</p>
 </asp:Content>

@@ -262,7 +262,7 @@ namespace UtilityExtensions
             int y = bd.Year;
             if (y < 1000)
                 if (y < 50)
-                    y = y + 2000; 
+                    y = y + 2000;
                 else y = y + 1900;
             int age = dt.Year - y;
             if (dt.Month < bd.Month || (dt.Month == bd.Month && dt.Day < bd.Day))
@@ -1065,6 +1065,12 @@ namespace UtilityExtensions
             if (value == dissallow)
                 return "";
             return value;
+        }
+        public static string ObscureEmail(string email)
+        {
+            var a = email.Split('@');
+            var rest =  new string('x', a[0].Length - 2);
+            return a[0].Substring(0, 2) + rest + "@" + a[1];
         }
         public static SmtpClient Smtp()
         {

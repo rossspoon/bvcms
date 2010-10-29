@@ -175,11 +175,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.EmailSubject = frorg.EmailSubject;
                 toorg.ExtraFee = frorg.ExtraFee;
                 toorg.ExtraOptions = frorg.ExtraOptions;
+                toorg.ExtraOptionsLabel = frorg.ExtraOptionsLabel;
                 toorg.ExtraQuestions = frorg.ExtraQuestions;
                 toorg.Fee = frorg.Fee;
                 toorg.GenderId = frorg.GenderId;
-                toorg.GradeAgeStart = frorg.GradeAgeStart;
-                toorg.GradeAgeEnd = frorg.GradeAgeEnd;
                 toorg.GradeOptions = frorg.GradeOptions;
                 toorg.Instructions = frorg.Instructions;
                 toorg.LastDayBeforeExtra = frorg.LastDayBeforeExtra;
@@ -189,6 +188,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.NoSecurityLabel = frorg.NoSecurityLabel;
                 toorg.NumCheckInLabels = frorg.NumCheckInLabels;
                 toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
+                toorg.OptionsLabel = frorg.OptionsLabel;
                 toorg.OrgMemberFees = frorg.OrgMemberFees;
                 toorg.RegistrationTypeId = frorg.RegistrationTypeId;
                 toorg.RequestLabel = frorg.RequestLabel;

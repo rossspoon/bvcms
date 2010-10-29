@@ -58,7 +58,13 @@
         <div id="CommonHeader">
             <div>
                 <%= DbUtil.Header() %>
-        <% if(Page.User.IsInRole("Access"))
+        <% if(!Page.User.IsInRole("Access"))
+           { %>
+                <div id="CommonHeaderUserArea">
+                    <% Html.RenderPartial("LogOnUserControl"); %>
+                </div>
+        <% }
+           else
            { %>
                 <div id="CommonHeaderUserArea">
                     <% Html.RenderPartial("LogOnUserControl"); %>

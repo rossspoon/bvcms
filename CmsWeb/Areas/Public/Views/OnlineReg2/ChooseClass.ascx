@@ -1,41 +1,22 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel2>" %>
-<table cellspacing="6">
-<% if ((Model.classid ?? 0) > 0)
-   { %>
-    <tr>
-        <td colspan="3"><label for="classid">Chosen Class:</label>
-        <%=Html.CodeDesc("classid", Model.Classes())%></td>
-    </tr>
-<% }
-   else
-   {
-       if (Model.FilledClasses().Count() > 0)
-       { %>
-    <tr>
-        <td>
-        <span style="color:Red">Filled Classes:</span><br />
-        <% foreach (var c in Model.FilledClasses())
-           { %>
-           <%=c%><br />
-        <% } %>
-        </td>
-    </tr>
-    <% } %>
-    <tr>
-        <td>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel2>" %>
 <% if (Model.Classes().Count() > 1)
    { %>
-        <span class="blue">Select a class:</span><br />
-        <%=Html.DropDownList3(null, "m.List[" + Model.index + "].classid", Model.Classes(), Model.classid.ToString())%>
+        <%=Html.DropDownList3(null, "m.classid", Model.Classes(), Model.classid.ToString())%>
         <%=Html.ValidationMessage("classid")%>
 <% }
    else
    { %>
-        <span class="blue">Here is the only available class:</span><br />
+        <span class="instruct">Here is the only available class:</span><br />
         <%=Model.Classes().Single().Text%>
-        <%=Html.Hidden("m.List[" + Model.index + "].classid", Model.Classes().Single().Value)%>
+        <%=Html.Hidden("m.classid", Model.Classes().Single().Value)%>
 <% } %>
-        </td>
-    </tr>
+<% if (Model.FilledClasses().Count() > 0)
+   { %>
+    <h3 style="color:Red;padding-top:8px">The following groups are filled:</h3>
+    <div style="padding-left:1em">
+    <% foreach (var c in Model.FilledClasses())
+       { %>
+       <%=c%><br />
+    <% } %>
+    </div>
 <% } %>
-</table>

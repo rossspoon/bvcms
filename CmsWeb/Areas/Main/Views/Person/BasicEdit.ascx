@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.PersonPage.BasicPersonInfo>" %>
 <a class="displayedit" href="/Person/BasicDisplay/<%=Model.PeopleId %>">cancel</a>
-    <table class="Design2">
+    <table class="Design2 basicedit">
         <tr><th>Goes By:</th>
             <td><%=Html.TextBox("NickName") %></td>
         </tr>

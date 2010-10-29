@@ -87,7 +87,7 @@ namespace CmsWeb.Models
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == divid
+                    where o.DivOrgs.Any(di => di.DivId == divid)
                     where o.AllowOnlyOne == true || o.AskTickets == true
                     select o;
             return q.Count() > 0;

@@ -27,7 +27,6 @@ namespace CmsWeb.Models.iPhone
         private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query
-                    orderby p.Name2
                     select new PeopleInfo
                     {
                         PeopleId = p.PeopleId,
@@ -55,8 +54,8 @@ namespace CmsWeb.Models.iPhone
         }
         public IEnumerable<PeopleInfo> PeopleList()
         {
-            var q = ApplySearch();
-            return PeopleList(q.Take(20));
+            var q = ApplySearch().OrderBy(p => p.Name2).Take(20);
+            return PeopleList(q);
         }
 
         private IQueryable<Person> query = null;

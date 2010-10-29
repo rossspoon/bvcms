@@ -554,3 +554,20 @@ div.bottomhyperlink img
     color:White;
     font-weight:bold;
 }
+/*
+table.participant tr
+{
+    padding-left:1em;
+}
+table.participant tr.out
+{
+    padding-left: 0;
+}
+*/
+.instruct
+{
+    position:relative;
+    left: -1em;
+    color:Blue;
+    font-size: larger;
+}

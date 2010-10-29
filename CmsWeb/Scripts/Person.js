@@ -1,4 +1,4 @@
-﻿$(function() {
+﻿$(function () {
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
@@ -7,7 +7,7 @@
     var maintabs = $("#main-tab").tabs();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
-    $('#clipaddr').live('click', function() {
+    $('#clipaddr').live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
             var range = inElement.createTextRange();
@@ -16,17 +16,17 @@
         }
         return false;
     });
-    $('#deleteperson').click(function() {
+    $('#deleteperson').click(function () {
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
-            $.post(href, null, function(ret) {
+            $.post(href, null, function (ret) {
                 if (ret) {
                     $.blockUI({ message: "delete Failed: " + ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
                 else {
                     $.blockUI({ message: "person deleted" });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click(function() {
+                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
                         window.location = "/";
                     });
@@ -35,10 +35,10 @@
         }
         return false;
     });
-    $('#moveperson').click(function(ev) {
+    $('#moveperson').click(function (ev) {
         var href = $(this).attr("href");
-        $('#dialogbox').SearchPeople(ev, function(id, peopleid) {
-            $.post(href, { to: peopleid }, function(ret) {
+        $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
+            $.post(href, { to: peopleid }, function (ret) {
                 $('#dialogbox').dialog("close");
                 if (ret) {
                     $.blockUI({ message: "Move Failed: " + ret });
@@ -46,7 +46,7 @@
                 }
                 else {
                     $.blockUI({ message: "Move succeeded" });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click(function() {
+                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
                         window.location.reload();
                     });
@@ -71,11 +71,11 @@
         overlay: {
             opacity: 0.5,
             background: "black"
-        }, close: function() {
+        }, close: function () {
             $('iframe', this).attr("src", "");
         }
     });
-    $('form a.membertype').live("click", function(e) {
+    $('form a.membertype').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -88,51 +88,51 @@
         d.dialog("open");
     });
 
-    $(".CreateAndGo").click(function() {
+    $(".CreateAndGo").click(function () {
         if (confirm($(this).attr("confirm")))
-            $.post($(this).attr("href"), null, function(ret) {
+            $.post($(this).attr("href"), null, function (ret) {
                 window.location = ret;
             });
         return false;
     });
 
-    $("#enrollment-link").click(function() {
+    $("#enrollment-link").click(function () {
         $.showTable($('#current-tab form'));
     });
-    $("#previous-link").click(function() {
+    $("#previous-link").click(function () {
         $.showTable($('#previous-tab form'));
     });
-    $("#pending-link").click(function() {
+    $("#pending-link").click(function () {
         $.showTable($('#pending-tab form'));
     });
-    $("#attendance-link").click(function() {
+    $("#attendance-link").click(function () {
         $.showTable($('#attendance-tab form'));
     });
-    $("#growth-link").click(function() {
-        $("#contacts-tab form").each(function() {
+    $("#growth-link").click(function () {
+        $("#contacts-tab form").each(function () {
             $.showTable($(this));
         });
     });
-    $("#system-link").click(function() {
-        $("#system-tab form").each(function() {
+    $("#system-link").click(function () {
+        $("#system-tab form").each(function () {
             $.showTable($(this));
         });
     });
-    $("#recreg-link").click(function() {
+    $("#recreg-link").click(function () {
         var f = $('#recreg-tab form')
         if ($('table', f).size() > 0)
             return false;
         var q = f.serialize();
-        $.post(f.attr('action'), q, function(ret) {
+        $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret);
         });
     });
 
-    $("a.displayedit").live('click', function(ev) {
+    $("a.displayedit").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
-        $.post($(this).attr('href'), null, function(ret) {
-            $(f).html(ret).ready(function() {
+        $.post($(this).attr('href'), null, function (ret) {
+            $(f).html(ret).ready(function () {
                 var acopts = {
                     minChars: 3,
                     matchContains: 1
@@ -146,10 +146,10 @@
                     changeMonth: true,
                     changeYear: true
                 });
-                $("#verifyaddress").click(function() {
+                $("#verifyaddress").click(function () {
                     var f = $(this).closest('form');
                     var q = f.serialize();
-                    $.post($(this).attr('href'), q, function(ret) {
+                    $.post($(this).attr('href'), q, function (ret) {
                         if (confirm(ret.address + "\nUse this Address?")) {
                             $('#Address1', f).val(ret.Line1);
                             $('#Address2', f).val(ret.Line2);
@@ -165,33 +165,72 @@
         });
         return false;
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
+        if (!$(f).valid())
+            return;
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
-            $(f).html(ret).ready(function() {
+        $.post($(this).attr('href'), q, function (ret) {
+            $(f).html(ret).ready(function () {
                 var bc = $('#businesscard');
-                $.post($(bc).attr("href"), null, function(ret) {
+                $.post($(bc).attr("href"), null, function (ret) {
                     $(bc).html(ret);
                 });
             });
         });
         return false;
     });
-    $("#future").live('click', function(ev) {
+    $("#future").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(f).attr("action"), q, function(ret) {
+        $.post($(f).attr("action"), q, function (ret) {
             $(f).html(ret);
         });
     });
-    $("form.DisplayEdit").submit(function() {
+    $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
     });
-
+    $.validator.setDefaults({
+        highlight: function (input) {
+            $(input).addClass("ui-state-highlight");
+        },
+        unhighlight: function (input) {
+            $(input).removeClass("ui-state-highlight");
+        },
+        rules: {
+            "NickName": { maxlength: 15 },
+            "Title": { maxlength: 10 },
+            "First": { maxlength: 25 },
+            "Middle": { maxlength: 15 },
+            "Last": { maxlength: 30 },
+            "Suffix": { maxlength: 10 },
+            "AltName": { maxlength: 100 },
+            "Maiden": { maxlength: 20 },
+            "HomePhone": { maxlength: 20 },
+            "CellPhone": { maxlength: 20 },
+            "WorkPhone": { maxlength: 20 },
+            "EmailAddress": { maxlength: 150 },
+            "School": { maxlength: 60 },
+            "Employer": { maxlength: 60 },
+            "Occupation": { maxlength: 60 },
+            "WeddingDate": { date: true },
+            "Birthday": { date: true },
+            "DeceasedDate": { date: true },
+            "Grade": { number: true },
+            "Address1": { maxlength: 40 },
+            "Address2": { maxlength: 40 },
+            "City": { maxlength: 30 },
+            "Zip": { maxlength: 15 },
+            "FromDt": { date: true },
+            "ToDt": { date: true }
+        }
+    });
+    $('#addrf').validate();
+    $('#addrp').validate();
+    $('#basic').validate();
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));

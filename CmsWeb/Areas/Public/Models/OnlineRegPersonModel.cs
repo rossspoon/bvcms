@@ -994,26 +994,29 @@ Try different spellings or a nickname too.<br />";
         }
         public bool UserSelectsOrganization()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                     o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization);
         }
         public bool ComputesOrganizationByAge()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+            if (!divid.HasValue)
+                return false;
+            var q = DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                     o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge);
+            return q;
         }
         public bool MemberOnly()
         {
             if (org != null)
                 return org.MemberOnly == true;
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivisionId == divid &&
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                     o.MemberOnly == true);
         }
         private CmsData.Organization GetAppropriateOrg()
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge
-                    where o.DivisionId == divid
+                    where o.DivOrgs.Any(di => di.DivId == divid)
                     where gender == null || o.GenderId == gender || o.GenderId == 0
                     select o;
             var list = q.ToList();
@@ -1058,7 +1061,7 @@ Try different spellings or a nickname too.<br />";
                     org.YesNoQuestions.HasValue() ||
                     org.Deposit > 0);
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == divid
+                    where o.DivOrgs.Any(di => di.DivId == divid)
                     where o.AskShirtSize == true ||
                         o.AskRequest == true ||
                         o.AskGrade == true ||

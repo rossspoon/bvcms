@@ -49,11 +49,16 @@ namespace CmsWeb.Areas.Public.Controllers
                     (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge,
                     (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization
                 };
-                if (OnlineRegPersonModel2.UserSelectClasses(m.divid).Count() == 0)
+                if (OnlineRegModel2.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
             }
 
             m.URL = Request.Url.OriginalString;
+            if (m.IsCreateAccount())
+                CreateList(m);
+            else
+                Session["gobackurl"] = m.URL;
+                
             ViewData["timeout"] = INT_timeout;
             SetHeaders(m.divid ?? m.orgid ?? 0);
 
@@ -62,27 +67,8 @@ namespace CmsWeb.Areas.Public.Controllers
             m.testing = true;
             m.username = "david";
             m.password = "toby123";
-            m.List = new List<OnlineRegPersonModel2>
-            {
-                new OnlineRegPersonModel2
-                {
-                    divid = div,
-                    orgid = id,
-                    //first = "David",
-                    //last = "Carroll",
-                    //dob = "5/30/52",
-                    //email = "david@bvcms.com",
-                    //phone = "9017581862",
-                }
-            };
 #else
             m.testing = testing;
-            m.List.Add(
-                new OnlineRegPersonModel2
-                {
-                    divid = div,
-                    orgid = id,
-                });
 #endif
             return View(m);
         }
@@ -94,7 +80,8 @@ namespace CmsWeb.Areas.Public.Controllers
                 m.List.Add(new OnlineRegPersonModel2
                 {
                     divid = m.divid,
-                    orgid = m.orgid
+                    orgid = m.orgid,
+                    LoggedIn = m.UserPeopleId.HasValue,
                 });
             return View("list", m);
         }
@@ -110,26 +97,42 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
-                    FillPriorInfo(p);
+                    p.FillPriorInfo();
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
                 return View("list", m);
             }
-#if DEBUG2
-            p.address = "235 Riveredge Cv.";
-            p.city = "Cordova";
-            p.state = "TN";
-            p.zip = "38018";
-            //p.gender = 1;
-            //p.married = 10;
-#endif
-            if (id > 0)
+            if (!p.whatfamily.HasValue && (p.index > 0 || p.LoggedIn == true))
             {
-                var p0 = m.List[0];
-                p.address = p0.address;
-                p.city = p0.city;
-                p.state = p0.state;
-                p.zip = p0.zip;
+                ModelState.AddModelError("whatfamily", "Choose a family option");
+                return View("list", m);
+            }
+            switch(p.whatfamily)
+            {
+                case 1:
+                    var u = DbUtil.Db.LoadPersonById(m.UserPeopleId.Value);
+                    p.address = u.PrimaryAddress;
+                    p.city = u.PrimaryCity;
+                    p.state = u.PrimaryState;
+                    p.zip = u.PrimaryZip.FmtZip();
+                    break;
+                case 2:
+                    var pb = m.List[id - 1];
+                    p.address = pb.address;
+                    p.city = pb.city;
+                    p.state = pb.state;
+                    p.zip = pb.zip;
+                    break;
+                default:
+#if DEBUG
+                    p.address = "235 Riveredge Cv.";
+                    p.city = "Cordova";
+                    p.state = "TN";
+                    p.zip = "38018";
+                    p.gender = 1;
+                    p.married = 10;
+#endif
+                    break;
             }
             p.ShowAddress = true;
             return View("list", m);
@@ -139,6 +142,14 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
+            if (m.classid.HasValue)
+            {
+                m.orgid = m.classid;
+                p.classid = m.classid;
+                p.orgid = m.classid;
+            }
+            p.classid = m.classid;
+            p.PeopleId = null;
             p.ValidateModelForFind(ModelState);
             if (p.org != null)
             {
@@ -146,7 +157,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (p.IsFilled)
                     ModelState.AddModelError("dob", "Sorry, but registration is closed.");
                 if (p.Found == true)
-                    FillPriorInfo(p);
+                    p.FillPriorInfo();
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
             }
@@ -162,7 +173,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ModelState.IsValid)
             {
                 if (p.org == null)
-                    ModelState.AddModelError("find", "Sorry, cannot find an appropriate age group");
+                    ModelState.AddModelError(p.ErrorTarget, "Sorry, cannot find an appropriate age group");
                 else
                 {
                     p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
@@ -173,81 +184,10 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             p.IsValidForExisting = ModelState.IsValid == false;
             if (p.IsNew)
-                FillPriorInfo(p);
+                p.FillPriorInfo();
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
             return View("list", m);
-        }
-        private static void FillPriorInfo(OnlineRegPersonModel2 p)
-        {
-#if DEBUG
-            p.shirtsize = "YT-L";
-            p.request = "tommy";
-            p.emcontact = "test";
-            p.emphone = "test";
-            p.docphone = "test";
-            p.doctor = "test";
-            p.insurance = "test";
-            p.policy = "test";
-            p.mname = "";
-            p.fname = "test t";
-            p.tylenol = true;
-            p.advil = true;
-            p.robitussin = false;
-            p.maalox = false;
-            p.paydeposit = true;
-#endif
-            if (!p.IsNew)
-            {
-                var rr = p.person.RecRegs.SingleOrDefault();
-                if (rr != null)
-                {
-                    if (p.org.AskRequest == true)
-                    {
-                        var om = p.GetOrgMember();
-                        if (om != null)
-                            p.request = om.Request;
-                    }
-                    if (p.org.AskShirtSize == true)
-                        p.shirtsize = rr.ShirtSize;
-                    if (p.org.AskEmContact == true)
-                    {
-                        p.emcontact = rr.Emcontact;
-                        p.emphone = rr.Emphone;
-                    }
-                    if (p.org.AskInsurance == true)
-                    {
-                        p.insurance = rr.Insurance;
-                        p.policy = rr.Policy;
-                    }
-                    if (p.org.AskDoctor == true)
-                    {
-                        p.docphone = rr.Docphone;
-                        p.doctor = rr.Doctor;
-                    }
-                    if (p.org.AskParents == true)
-                    {
-                        p.mname = rr.Mname;
-                        p.fname = rr.Fname;
-                    }
-                    if (p.org.AskAllergies == true)
-                        p.medical = rr.MedicalDescription;
-                    if (p.org.AskCoaching == true)
-                        p.coaching = rr.Coaching;
-                    if (p.org.AskChurch == true)
-                    {
-                        p.otherchurch = rr.ActiveInAnotherChurch ?? false;
-                        p.memberus = rr.Member ?? false;
-                    }
-                    if (p.org.AskTylenolEtc == true)
-                    {
-                        p.tylenol = rr.Tylenol;
-                        p.advil = rr.Advil;
-                        p.robitussin = rr.Robitussin;
-                        p.maalox = rr.Maalox;
-                    }
-                }
-            }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -273,12 +213,14 @@ namespace CmsWeb.Areas.Public.Controllers
                 dob = "1/29/86",
                 email = "davcar@pobox.com",
                 phone = "9017581862".FmtFone(),
+                LoggedIn = m.UserPeopleId.HasValue,
             });
 #else
             m.List.Add(new OnlineRegPersonModel2
             {
                 divid = m.divid,
                 orgid = m.orgid,
+                LoggedIn = m.UserPeopleId.HasValue,
             });
 #endif
             return View("list", m);
@@ -416,8 +358,12 @@ namespace CmsWeb.Areas.Public.Controllers
 
             var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
             var m = Util.DeSerialize<OnlineRegModel2>(s);
+            string confirm = "Confirm";
             if (m.org != null && m.org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+            {
                 m.CreateAccount();
+                confirm = "ConfirmAccount";
+            }
             else
             {
                 m.EnrollAndConfirm(TransactionID);
@@ -425,13 +371,16 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
-            ViewData["email"] = m.List[0].email;
+            if (m.IsCreateAccount())
+                ViewData["email"] = m.List[0].person.EmailAddress;
+            else
+                ViewData["email"] = m.List[0].email;
             ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
             ViewData["URL"] = m.URL;
             ViewData["timeout"] = INT_timeout;
 
             SetHeaders(m.divid ?? m.orgid ?? 0);
-            return View(m);
+            return View(confirm, m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -643,14 +592,56 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!authenticated)
                 ModelState.AddModelError("authentication", "There was a problem with your username and password combination, try again");
             else
+            {
+                CreateList(m);
                 m.UserPeopleId = (from u in DbUtil.Db.Users
                                   where u.Username == m.username
                                   select u.PeopleId).Single();
+                m.List[0].LoggedIn = true;
+            }
             return View("List", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NoLogin(OnlineRegModel2 m)
+        {
+            m.nologin = true;
+            CreateList(m);
+            return View("List", m);
+        }
+        private void CreateList(OnlineRegModel2 m)
+        {
+#if DEBUG
+            m.List = new List<OnlineRegPersonModel2>
+            {
+                new OnlineRegPersonModel2
+                {
+                    divid = m.divid,
+                    orgid = m.orgid,
+                    first = "David4",
+                    last = "Carroll4",
+                    dob = "5/30/52",
+                    email = "david@bvcms.com",
+                    phone = "9017581862",
+                    LoggedIn = false,
+                }
+            };
+#else
+            m.List = new List<OnlineRegPersonModel2>
+            {
+                new OnlineRegPersonModel2
+                {
+                    divid = m.divid,
+                    orgid = m.orgid,
+                    LoggedIn = false,
+                }
+            };
+#endif
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Register(int id, OnlineRegModel2 m)
         {
+            if (m.classid.HasValue)
+                m.orgid = m.classid;
             var person = DbUtil.Db.LoadPersonById(id);
             var p = new OnlineRegPersonModel2
             {
@@ -662,17 +653,22 @@ namespace CmsWeb.Areas.Public.Controllers
                 phone = Util.PickFirst(person.CellPhone, person.HomePhone),
                 orgid = m.orgid,
                 divid = m.divid,
+                classid = m.classid,
                 IsFamily = true,
+                LoggedIn = true,
             };
-            m.List[m.List.Count - 1] = p;
             p.ValidateModelForFind(ModelState);
+            if (!ModelState.IsValid)
+                return View("List", m);
+            m.List[m.List.Count - 1] = p;
+
             if (p.org != null && p.Found == true)
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
-                    ModelState.AddModelError("dob", "Sorry, but registration is closed.");
+                    ModelState.AddModelError(p.ErrorTarget, "Sorry, but registration is closed.");
                 if (p.Found == true)
-                    FillPriorInfo(p);
+                    p.FillPriorInfo();
                 if (!p.AnyOtherInfo())
                     p.OtherOK = true;
                 return View("list", m);

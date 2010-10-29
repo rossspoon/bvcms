@@ -7,6 +7,7 @@
             .Add("/Content/js/jquery.pagination.js")
             .Add("/Scripts/SearchPeople.js")
             .Add("/Content/js/jquery.autocomplete.js")
+            .Add("/Content/js/jquery.validate.js")
             .Add("/Scripts/Pager.js")
             .Add("/Scripts/Person.js")
         .Render("/Content/Person_#.js")
@@ -95,7 +96,7 @@
 <% } %>
         </ul>
         <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
-            <form class="DisplayEdit" action="">
+            <form id="basic" class="DisplayEdit" action="">
             <% Html.RenderPartial("BasicDisplay", p.basic); %>
             </form>
         </div>
@@ -105,12 +106,12 @@
                 <li><a href="#FamilyAddr"><span>Family</span></a></li>
             </ul>
             <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
-                <form class="DisplayEdit" action="">
+                <form id="addrp" class="DisplayEdit" action="">
                 <% Html.RenderPartial("AddressDisplay", p.PersonalAddr); %>
                 </form>
             </div>
             <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
-                <form class="DisplayEdit" action="">
+                <form id="addrf" class="DisplayEdit" action="">
                 <% Html.RenderPartial("AddressDisplay", p.FamilyAddr); %>
                 </form>
             </div>

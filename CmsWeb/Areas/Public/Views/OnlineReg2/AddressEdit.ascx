@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel2>" %>
     <tr><th colspan="3"><span class="blue">Please provide additional information</span></th></tr>
-<% if(Model.index == 0)
+<% if(Model.whatfamily == 3)
    { %>
     <tr>
         <td><label for="addr">Address</label></td>
@@ -30,6 +30,7 @@
    <%=Html.Hidden3("m.List[" + Model.index + "].state", Model.state)%>
    <%=Html.Hidden3("m.List[" + Model.index + "].zip", Model.zip)%>
 <% } %>
+   <%=Html.Hidden3("m.List[" + Model.index + "].whatfamily", Model.whatfamily)%>
     <tr>
         <td><label for="gender">Gender</label></td>
         <td><input type="radio" name="m.List[<%=Model.index%>].gender" value="1" <%=Model.gender == 1 ? "checked='checked'" : "" %> /> Male<br />

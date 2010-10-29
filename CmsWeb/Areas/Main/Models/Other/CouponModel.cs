@@ -92,7 +92,7 @@ namespace CmsWeb.Models
                      where o.ClassFilled != true
                      where (o.RegistrationClosed ?? false) == false
                      where o.Fee > 0
-                     group o.Division by o.DivisionId into g
+                     group o.Division by o.DivisionId into g // can we group these by DivOrg?
                      from d in g
                      select new SelectListItem
                      {

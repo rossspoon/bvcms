@@ -61,24 +61,113 @@ namespace CmsWeb.Models
 
         public int? divid { get; set; }
         public int? orgid { get; set; }
+        public int? classid { get; set; }
 
+        public string username { get; set; }
+        public string password { get; set; }
+        public bool nologin { get; set; }
+
+        public bool DisplayLogin()
+        {
+            return (List.Count == 0 && !UserPeopleId.HasValue && !IsCreateAccount() && nologin == false);
+        }
+
+        public int? UserPeopleId { get; set; }
+        private Person _User;
+        public Person user
+        {
+            get
+            {
+                if (_User == null && UserPeopleId.HasValue)
+                    _User = DbUtil.Db.LoadPersonById(UserPeopleId.Value);
+                return _User;
+            }
+        }
         public bool? testing { get; set; }
         public string qtesting
         {
             get { return testing == true ? "?testing=true" : ""; }
         }
         public bool IsCreateAccount()
-                {
+        {
             if (div == null)
                 return org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
             return false;
         }
+        public static IQueryable<Organization> UserSelectClasses(int? divid)
+        {
+            var a = new int[] 
+            { 
+                (int)Organization.RegistrationEnum.UserSelectsOrganization,
+                (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+            };
+            var q = from o in DbUtil.Db.Organizations
+                    where o.DivOrgs.Any(od => od.DivId == divid)
+                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where a.Contains(o.RegistrationTypeId.Value)
+                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+                    select o;
+            return q;
+        }
         public bool IsEnded()
         {
             if (div != null)
-                return OnlineRegPersonModel2.UserSelectClasses(div.Id).Count() == 0;
+                return UserSelectClasses(div.Id).Count() == 0;
             else
                 return org.ClassFilled == true;
+        }
+        public IEnumerable<SelectListItem> Classes()
+        {
+            return Classes(divid);
+        }
+        public static IEnumerable<SelectListItem> Classes(int? divid)
+        {
+            var q = from o in UserSelectClasses(divid)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where hasroom
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select new SelectListItem
+                    {
+                        Value = o.OrganizationId.ToString(),
+                        Text = ClassName(o)
+                    };
+            var list = q.ToList();
+            if (list.Count == 1)
+                return list;
+            list.Insert(0, new SelectListItem { Text = "(make a selection)", Value = "0" });
+            return list;
+        }
+        public IEnumerable<String> FilledClasses()
+        {
+            var q = from o in UserSelectClasses(divid)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    where !hasroom
+                    orderby o.OnLineCatalogSort, o.OrganizationName
+                    select ClassName(o);
+            return q;
+        }
+        private static string ClassName(CmsData.Organization o)
+        {
+            var lead = o.LeaderName;
+            if (lead.HasValue())
+                lead = ": " + lead;
+            var loc = o.Location;
+            if (loc.HasValue())
+                loc = " ({0})".Fmt(loc);
+            var dt1 = o.FirstMeetingDate;
+            var dt2 = o.LastMeetingDate;
+            var dt = "";
+            if (dt1.HasValue && dt2.HasValue)
+                dt = ", {0:MMM d}-{1:MMM d}".Fmt(dt1, dt2);
+            else if (dt1.HasValue)
+                dt = ", {0:MMM d}".Fmt(dt1);
+
+            return o.OrganizationName + lead + dt + loc;
+        }
+        public bool UserSelectsOrganization()
+        {
+            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
+                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization);
         }
         public bool OnlyOneAllowed()
         {
@@ -88,7 +177,7 @@ namespace CmsWeb.Models
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivisionId == divid
+                    where o.DivOrgs.Any(di => di.DivId == divid)
                     where o.AllowOnlyOne == true || o.AskTickets == true
                     select o;
             return q.Count() > 0;
@@ -145,20 +234,6 @@ namespace CmsWeb.Models
                 if (list.Count > 0)
                     return list[list.Count - 1];
                 return null;
-            }
-        }
-        public string username { get; set; }
-        public string password { get; set; }
-
-        public int? UserPeopleId { get; set; }
-        private Person _User;
-        public Person user
-        {
-            get
-            {
-                if (_User == null && UserPeopleId.HasValue)
-                    _User = DbUtil.Db.LoadPersonById(UserPeopleId.Value);
-                return _User;
             }
         }
         public class FamilyMember
@@ -255,25 +330,43 @@ namespace CmsWeb.Models
             var uname = MembershipService.FetchUsername(person.PreferredName, person.LastName);
             var pword = MembershipService.FetchPassword();
             var user = MembershipService.CreateUser(person.PeopleId, uname, pword);
-            var smtp = Util.Smtp();
-            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
-                uname, person.EmailAddress,
-                    "New account for " + Util.Host,
-                    @"Hi {1},
-<p>You now have an account in our church database.</p>
+
+            var gobackurl = HttpContext.Current.Session["gobackurl"] as string;
+            Content c = null;
+            if (gobackurl.HasValue())
+                c = DbUtil.Content("CreateAccountRegistration");
+            else
+                c = DbUtil.Content("CreateAccountConfirmation");
+            if (c == null)
+                c = new Content();
+
+            var message = Util.PickFirst(c.Body,
+                    @"Hi {name},
+<p>Thank you for creating an account in our church database.</p>
 <p>This will make it easier for you to do online registrations.
 Just use this account next time you register online.</p>
 <p>And this will allow you to help us maintain your correct address, email and phone numbers.
-Just login to {0} and you will be taken to your record where you can make corrections if needed.</p>
+Just login to {host} and you will be taken to your record where you can make corrections if needed.</p>
 <p>The following are the credentials you can use. Both the username and password are system generated.
 </p>
 <table>
-<tr><td>Username:</td><td><b>{2}</b></td></tr>
-<tr><td>Password:</td><td><b>{3}</b></td></tr>
+<tr><td>Username:</td><td><b>{username}</b></td></tr>
+<tr><td>Password:</td><td><b>{password}</b></td></tr>
 </table>
 <p>Thank You</p>
-".Fmt(Util.CmsHost, person.Name, uname, pword));
+");
+            message = message
+                .Replace("{name}", person.Name)
+                .Replace("{username}", uname)
+                .Replace("{password}", pword)
+                .Replace("{gobackurl}", gobackurl)
+                .Replace("{host}", Util.CmsHost);
+
+            var smtp = Util.Smtp();
+            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),
+                uname, person.EmailAddress, "New account for " + Util.Host, message);
         }
+
         public void EnrollAndConfirm(string TransactionID)
         {
             var elist = new List<string>();
@@ -284,7 +377,19 @@ Just login to {0} and you will be taken to your record where you can make correc
             {
                 var p = List[i];
                 if (p.IsNew)
-                    p.AddPerson(i == 0 ? null : p0.person, p.org.EntryPointId ?? 0);
+                {
+                    Person uperson = null;
+                    switch(p.whatfamily)
+                    {
+                        case 1:
+                            uperson = DbUtil.Db.LoadPersonById(UserPeopleId.Value);
+                            break;
+                        case 2:
+                            uperson = List[i - 1].person;
+                            break;
+                    }
+                    p.AddPerson(uperson, p.org.EntryPointId ?? 0);
+                }
 
                 if (!elist.Contains(p.email))
                     elist.Add(p.email);
@@ -336,6 +441,7 @@ Just login to {0} and you will be taken to your record where you can make correc
             {
                 var p = List[i];
                 var others = string.Join(",", pids.Where(po => po.pid != p.PeopleId).Select(po => po.name).ToArray());
+                others += "(Total paid {0:c})".Fmt(amtdue);
                 var om = p.Enroll(TransactionID, paylink, testing, others);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>

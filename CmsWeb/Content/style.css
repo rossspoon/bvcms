@@ -16,6 +16,7 @@ div.main
 {
     background-color: #fff;
     padding-left: 2em;
+    clear:both;
 }
 form
 {

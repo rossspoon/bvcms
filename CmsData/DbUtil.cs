@@ -56,10 +56,13 @@ namespace CmsData
         public static void LogActivity(string activity, bool recordPageUrl)
         {
             var db = new CMSDataContext(Util.ConnectionString);
+            int? uid = Util.UserId;
+            if (uid == 0)
+                uid = null;
             var a = new ActivityLog
             {
                 ActivityDate = Util.Now,
-                UserId = Util.UserId1,
+                UserId = uid,
                 Activity = activity,
                 PageUrl = recordPageUrl ? HttpContext.Current.Request.RawUrl : null,
             };
