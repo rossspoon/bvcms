@@ -28,6 +28,7 @@ namespace CmsWeb.Models
         public int useridfilter { get; set; }
         public string regidfilter { get; set; }
         public string usedfilter { get; set; }
+        public string date { get; set; }
 
         public string Registration()
         {
@@ -39,20 +40,28 @@ namespace CmsWeb.Models
             var q = from c in DbUtil.Db.Coupons
                     where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
                     where c.UserId == useridfilter || useridfilter == 0
-                    where c.Canceled == null
                     select c;
             switch (usedfilter)
             {
                 case "Used":
-                    q = q.Where(c => c.Used != null);
+                    q = q.Where(c => c.Used != null && c.Canceled == null);
                     break;
                 case "UnUsed":
-                    q = q.Where(c => c.Used == null);
+                    q = q.Where(c => c.Used == null && c.Canceled == null);
                     break;
-                case "Expired":
-                    q = q.Where(c => SqlMethods.DateDiffHour(c.Created, DateTime.Now) >= 24);
+                case "Canceled":
+                    q = q.Where(c => c.Canceled != null );
                     break;
             }
+            if (name.HasValue())
+                q = q.Where(c => c.Name.Contains(name) || c.Person.Name.Contains(name));
+            if (date.HasValue())
+            {
+                DateTime bd;
+                if (DateTime.TryParse(date, out bd))
+                    q = q.Where(c => c.Created.Date == bd);
+            }
+
 
             var q2 = from c in q
                      orderby c.Created descending
@@ -70,6 +79,53 @@ namespace CmsWeb.Models
                          UserId = c.UserId,
                          UserName = c.User.Name,
                          RegAmt = c.RegAmount
+                     };
+            return q2.Take(200);
+        }
+        public IEnumerable<CouponInfo2> Coupons2()
+        {
+            var q = from c in DbUtil.Db.Coupons
+                    where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
+                    where c.UserId == useridfilter || useridfilter == 0
+                    select c;
+            switch (usedfilter)
+            {
+                case "Used":
+                    q = q.Where(c => c.Used != null && c.Canceled == null);
+                    break;
+                case "UnUsed":
+                    q = q.Where(c => c.Used == null && c.Canceled == null);
+                    break;
+                case "Canceled":
+                    q = q.Where(c => c.Canceled != null );
+                    break;
+            }
+            if (name.HasValue())
+                q = q.Where(c => c.Name.Contains(name) || c.Person.Name.Contains(name));
+            if (date.HasValue())
+            {
+                DateTime bd;
+                if (DateTime.TryParse(date, out bd))
+                    q = q.Where(c => c.Created.Date == bd);
+            }
+
+
+            var q2 = from c in q
+                     orderby c.Created descending
+                     select new CouponInfo2
+                     {
+                         Amount = c.Amount ?? 0,
+                         Canceled = c.Canceled ?? DateTime.Parse("1/1/80"),
+                         Code = c.Id,
+                         Created = c.Created,
+                         OrgDivName = c.OrgId != null ? c.Organization.OrganizationName : c.Division.Name,
+                         Used = c.Used ?? DateTime.Parse("1/1/80"),
+                         PeopleId = c.PeopleId ?? 0,
+                         Name = c.Name,
+                         Person = c.Person.Name,
+                         UserId = c.UserId ?? 0,
+                         UserName = c.User.Name,
+                         RegAmt = c.RegAmount ?? 0
                      };
             return q2.Take(200);
         }
@@ -124,7 +180,7 @@ namespace CmsWeb.Models
                 new SelectListItem { Text = "(not specified)" },
                 new SelectListItem { Text = "Used" },
                 new SelectListItem { Text = "UnUsed" },
-                new SelectListItem { Text = "Expired" },
+                new SelectListItem { Text = "Canceled" },
             };
         }
         public Coupon CreateCoupon()
@@ -190,6 +246,25 @@ namespace CmsWeb.Models
             public string Name { get; set; }
             public string Person { get; set; }
             public int? UserId { get; set; }
+            public string UserName { get; set; }
+        }
+        public class CouponInfo2
+        {
+            public string Code;
+            public string Coupon
+            {
+                get { return Code.Insert(8, " ").Insert(4, " "); }
+            }
+            public string OrgDivName { get; set; }
+            public DateTime Created { get; set; }
+            public DateTime Used { get; set; }
+            public DateTime Canceled { get; set; }
+            public decimal Amount { get; set; }
+            public decimal RegAmt { get; set; }
+            public int PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Person { get; set; }
+            public int UserId { get; set; }
             public string UserName { get; set; }
         }
     }

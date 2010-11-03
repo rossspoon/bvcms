@@ -171,6 +171,7 @@ namespace CmsData
                 FirstMeetingDate = FirstMeetingDate,
                 SchedDay = SchedDay,
                 SchedTime = SchedTime,
+                IsBibleFellowshipOrg = IsBibleFellowshipOrg,
                 EmailSubject = EmailSubject,
                 EmailMessage = EmailMessage,
                 EmailAddresses = EmailAddresses,

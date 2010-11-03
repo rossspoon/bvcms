@@ -397,9 +397,25 @@ namespace CmsData
             int originId,
             int? EntryPointId)
         {
+            return Person.Add(DbUtil.Db, fam, position, tag, 
+                firstname, nickname, lastname, dob, MarriedCode,
+                gender, originId, EntryPointId);
+        }
+        public static Person Add(CMSDataContext Db, Family fam,
+            int position,
+            Tag tag,
+            string firstname,
+            string nickname,
+            string lastname,
+            string dob,
+            int MarriedCode,
+            int gender,
+            int originId,
+            int? EntryPointId)
+        {
             var p = new Person();
             p.CreatedDate = Util.Now;
-            DbUtil.Db.People.InsertOnSubmit(p);
+            Db.People.InsertOnSubmit(p);
             p.PositionInFamilyId = position;
             p.AddressTypeId = 10;
 
@@ -448,7 +464,7 @@ namespace CmsData
             if (fam == null)
             {
                 fam = new Family();
-                DbUtil.Db.Families.InsertOnSubmit(fam);
+                Db.Families.InsertOnSubmit(fam);
                 p.Family = fam;
             }
             else
@@ -462,20 +478,23 @@ namespace CmsData
                 tag.PersonTags.Add(new TagPerson { Person = p });
             if (Util.UserPeopleId.HasValue)
             {
-                var tag2 = DbUtil.Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+                var tag2 = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
                 tag2.PersonTags.Add(new TagPerson { Person = p });
             }
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             p.FixTitle();
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
+            var NewPeopleManagerId = Db.Settings.SingleOrDefault(ss => ss.Id == "NewPeopleManagerId").SettingX.ToInt2();
+            if (NewPeopleManagerId.HasValue)
+                NewPeopleManagerId = 1;
             if (Util.UserPeopleId.HasValue
-                    && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId
+                    && Util.UserPeopleId.Value != NewPeopleManagerId
                     && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
                 Task.AddNewPerson(p.PeopleId);
             else
             {
-                var em = DbUtil.NewPeopleEmailAddress;
+                var em = Db.NewPeopleEmailAddress;
                 DbUtil.Email(em, null, em,
                     "Just Added Person on " + Util.Host,
                     "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"

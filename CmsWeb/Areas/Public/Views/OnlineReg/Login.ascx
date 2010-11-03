@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
-<table class="login box" cellspacing="6" style="width: auto" >
+<table class="login box" cellspacing="6" style="width: auto;margin-top:1em" >
     <tr>
         <td><label for="username">Username</label></td>
         <td><input id="username" type="text" name="m.username" value="<%=Model.username%>" tabindex="1" /></td>
@@ -22,8 +22,7 @@
         <td></td>
     </tr>
 </table>
-<table class="login" cellspacing="6">
-    <tr><td>You can create an <a href="/CreateAccount">account</a> to login with. 
-            See <a target="_blank" href="http://www.bvcms.com/Page/WhyMemberAccount">benefits</a></td></tr>
-    <tr><td>Or you can register <a href="/OnlineReg/NoLogin" class="submitlink">without an account</a> too.</td></tr>
+<table class="login" cellspacing="6" style="margin-top:1em">
+    <tr><td><a href="/CreateAccount">Create an account</a></td></tr>
+    <tr><td><a href="/OnlineReg/NoLogin" class="submitlink">Register without an account</a></td></tr>
 </table>

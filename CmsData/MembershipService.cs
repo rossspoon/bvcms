@@ -82,14 +82,16 @@ namespace CmsData
         public static string FetchPassword()
         {
             var rnd = new Random();
-            var n = DbUtil.Db.Words.Select(w => w.WordX).Count();
+            var n = DbUtil.Db.Words.Count();
             var r1 = rnd.Next(1, n);
             var r2 = rnd.Next(1, n);
             var q = from w in DbUtil.Db.Words
                     where w.N == r1 || w.N == r2
                     select w.WordX;
             var a = q.ToArray();
-            return a[0] + "." + a[1];
+            if (a.Length == 2)
+                return a[0] + "." + a[1];
+            return a[0] + "." + a[0];
         }
     }
 }

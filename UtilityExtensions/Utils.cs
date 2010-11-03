@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections;
 using System.Web.UI;
 using System.Collections.Generic;
+using System.Data.Common;
 
 namespace UtilityExtensions
 {
@@ -12,6 +13,14 @@ namespace UtilityExtensions
             BindingFlags.Public | BindingFlags.NonPublic |
             BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
 
+        public static Object GetAs(DbDataReader reader, Type type)
+        {
+            Object o = Activator.CreateInstance(type);
+            PropertyInfo[] props = type.GetProperties();
+            for (int i = 0; i < props.Length; i++)
+                Util.SetPropertyFromText(o, props[i].Name, reader[props[i].Name].ToString().Trim());
+            return o;
+        }
         public static object GetProperty(object Object, string Property)
         {
             return Object.GetType().GetProperty(Property, bindingFlags).GetValue(Object, null);

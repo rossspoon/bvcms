@@ -3,22 +3,35 @@
 <style>
 .instruct
 {
-    position:relative;
-    left: -1em;
-    color:Blue;
+    color:#808080;
     font-size: 120%;
-    padding-left: 2em;
     height: 27px;
     line-height: 27px;
+/*  padding-left: 2em; 
+    position:relative;
+    left: -1em;
     background: url(/content/bluebullet.gif) left center no-repeat;
+*/
+}
+h4
+{
+    color: #908080;
+    font-size: 90%;
+    padding-left: 11px;
+/*  padding-left: 2em; 
+    position:relative;
+    left: -1em;
+    background: url(/content/bluebullet.gif) left center no-repeat;
+*/
 }
 .box
 {
-    margin-left:1em; 
     border-width: 1px;
-    border-color: #D3D3D3; 
+    border-color: #808080; 
     border-style: solid;
-    padding-left:1em;
+    padding-left: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 a.close
 {
@@ -26,8 +39,11 @@ a.close
 }
 div.personheader
 {
-    font-size:120%;
-    padding:8px;
+    font-size:110%;
+}
+div.instructions.find, div.instructions.options
+{
+    display:none;
 }
 </style>
     <%= SquishIt.Framework.Bundle.JavaScript()
@@ -65,6 +81,7 @@ div.personheader
 <% }
    else
    { %>
+<%=Model.Instructions %>
 <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/<%=Model.qtesting %>" method="post">
 <% Html.RenderPartial("List", Model); %>
 </form>

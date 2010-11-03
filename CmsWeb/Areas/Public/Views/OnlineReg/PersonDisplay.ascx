@@ -3,7 +3,7 @@
    { %>
     <tr>
         <td>Chosen Class:</td>
-        <td colspan="4"><%=Html.CodeDesc("classid", CmsWeb.Models.OnlineRegModel.Classes(Model.divid))%></td>
+        <td colspan="4"><%=Html.CodeDesc("classid", CmsWeb.Models.OnlineRegModel.Classes(Model.divid, Model.classid ?? 0))%></td>
     </tr>
 <% } %>
     <tr>

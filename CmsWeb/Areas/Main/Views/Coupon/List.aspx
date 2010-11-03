@@ -19,16 +19,19 @@
             $("a.confirm").click(function() {
                 return confirm("are you sure?");
             });
-            $("select").change(function() {
-                $("form").submit();
-            });
         });
     </script>
     <div>
     <form action="/Coupon/List" method="post">
-    <%=Html.DropDownList("useridfilter", Model.Users()) %>
-    <%=Html.DropDownList("regidfilter", Model.OnlineRegs()) %>
-    <%=Html.DropDownList("usedfilter", Model.CouponStatus()) %>
+    <table>
+    <tr><td>User:</td><td><%=Html.DropDownList("useridfilter", Model.Users()) %></td></tr>
+    <tr><td>Reg:</td><td><%=Html.DropDownList("regidfilter", Model.OnlineRegs()) %></td></tr>
+    <tr><td>Status:</td><td><%=Html.DropDownList("usedfilter", Model.CouponStatus()) %></td></tr>
+    <tr><td>Name:</td><td><%=Html.TextBox("name") %></td></tr>
+    <tr><td>Date:</td><td><%=Html.TextBox("date") %></td></tr>
+    </table>
+    <input name="submit" type="submit" value="Search" />
+    <input name="submit" type="submit" value="Excel" />
     </form>
     </div>
     
@@ -36,7 +39,6 @@
         <tr>
             <th></th>
             <th>
-                Coupon
             </th>
             <th>
                 User<br />
@@ -56,7 +58,6 @@
             <th>
                 Created<br />
                 Used<br />
-                Canceled
             </th>
         </tr>
 
@@ -66,9 +67,14 @@
             n++; %>
         <tr <%= (n % 2) == 0? "class='alt'" : "" %>>
             <td>
-                <%= Html.ActionLink("Cancel", "Cancel", new { id = item.Code }, new { @class = "confirm" })%>
+                <% if (!item.Used.HasValue && !item.Canceled.HasValue)
+                   {
+                      %>
+
+                <%= Html.ActionLink("X", "Cancel", new { id = item.Code }, new { @class = "confirm" })%>
+                <% } %>
             </td>
-            <td>
+            <td nowrap="nowrap">
                 <span style="font-family:Courier New"><%= Html.Encode(item.Coupon) %></span>
             </td>
             <td>
@@ -85,8 +91,7 @@
             </td>
             <td>
                 <%= Html.Encode(item.Created.FormatDateTm()) %><br />
-                <%= Html.Encode(item.Used.FormatDateTm("not used"))%><br />
-                <%= Html.Encode(item.Canceled.FormatDateTm("active"))%>
+                <%= Html.Encode(item.Used.FormatDateTm(item.Canceled.HasValue ? "canceled" : "not used"))%><br />
             </td>
             <td>
             </td>

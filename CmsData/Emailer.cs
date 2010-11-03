@@ -25,7 +25,10 @@ namespace CmsData
             if (fr == null)
                 fr = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            {
+                addrs = fr.Address + "," + WebConfigurationManager.AppSettings["senderrorsto"];
+                message = "<p style=\"color:red\">you are receiving this email because the recipient had no email</p>" + message;
+            }
             SendMsg(smtp, fr, subject, message, name, addrs);
         }
         public static void EmailAlways(SmtpClient smtp, string from, string name, string addrs, string subject, string message)
@@ -34,7 +37,10 @@ namespace CmsData
             if (fr == null)
                 fr = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            {
+                addrs = fr.Address + "," + WebConfigurationManager.AppSettings["senderrorsto"];
+                message = "<p style=\"color:red\">you are receiving this email because the recipient had no email</p>" + message;
+            }
             SendMsg(smtp, fr, subject, message, name, addrs);
         }
         public static void Email2(SmtpClient smtp, string from, string addrs, string subject, string message)

@@ -17,8 +17,7 @@ if (Model.DisplayLogin())
 }
 else
 { %>
-<%=Model.Instructions%>
-<table cellpadding="6" width="100%">
+<table cellpadding="0" width="100%">
 <% if (!Model.OnlyOneAllowed() && Model.List.Count > 1)
    { %>
 <tr><td><div class="instruct">Registrants</div></td></tr>
@@ -36,25 +35,25 @@ else
         
         if (Model.UserSelectsOrganization())
         { %>
-<tr><td><div class="instruct">Choose a group/event...</div></td></tr>
-<tr><td><div class="box" style="padding:1em">
+<tr><td><div class="instruct">Make a Selection</div></td></tr>
+<tr><td><div>
    <% Html.RenderPartial("ChooseClass", Model); %></div>
 </td></tr>
-     <% }
-        //---------------------CHOOSE FAMILY MEMBER--------------------------------
+<% }   //---------------------FAMILY MEMBER--------------------------------
 
         if (Model.UserPeopleId.HasValue && Model.FamilyMembers().Count() > 0)
         { %>
-<tr><td><div class="instruct">Choose a family member to register...</div></td></tr>
-<tr><td><div class="box" style="padding:1em">
+<tr><td><div class="instruct">Select Registrant</div></td></tr>
+<tr><td><h4>Family Members</h4></td></tr>
+<tr><td><div class="box">
     <% Html.RenderPartial("FamilyList", Model); %></div>
         <%= Html.ValidationMessage("findf")%>
 </td></tr>
-<tr><td><div class="instruct">Or register a guest (or new family member) below</div></td></tr>
+<tr><td><h4>Guest or New Family member</h4></td></tr>
      <% }
         else
         { %>
-<tr><td><div class="instruct">Fill out the form to <%=Model.IsCreateAccount() ? "create an account" : "register" %></div></td></tr>
+<tr><td><h3 class="instruct">Fill out the form to <%=Model.IsCreateAccount() ? "create an account" : "register" %></h3></td></tr>
      <% }
     } %>
 <tr><td><div class="box">
@@ -77,7 +76,7 @@ else
        //-----------------------DETAILS TOGGLE------------------------------
    if (p.Finished())
    { %>
-<div class="personheader"><%=p.first + " " + p.last %> <span class="blue" style="font-size:80%">(show or hide <a class="toggle" href="#">details</a>)</span></div>
+<div class="personheader"><%=p.first + " " + p.last %> <span class="blue" style="font-size:80%">(<a class="toggle" href="#">Details</a>)</span></div>
 <% } %>
 <span><%= Html.ValidationMessage("findn") %></span>
 <table class="particpant" style='<%=!p.Finished() ? "" : "display: none" %>'>
@@ -113,10 +112,10 @@ else
     
    if (Model.last != null && Model.last.OtherOK && Model.last.ShowDisplay())
    { %> 
-<div class="instruct">
+<div class="instruct" style="margin-top:10px">
 <%   if (!Model.OnlyOneAllowed())
        { %>
-        <a href="/OnlineReg/AddAnotherPerson/" class="submitbutton">Register another</a> Or
+        <input type="submit" href="/OnlineReg/AddAnotherPerson/" class="submitbutton ajax" value="Register Another" />
     <% } %>
     <% var amt = Model.Amount();
        if (amt > 0)

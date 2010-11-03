@@ -162,7 +162,7 @@ namespace CmsWeb.Models
                         ModelState.AddModelError("classidguest", "please choose a group/event");
             if (!phone.HasValue())
                 ModelState.AddModelError("phone", "phone required");
-            if (!email.HasValue() || !Util.ValidEmail(email))
+            if (!IsFamily && (!email.HasValue() || !Util.ValidEmail(email)))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (ModelState.IsValid)
             {
@@ -726,6 +726,8 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
 
             var rr = person.RecRegs.Single();
 
+            if (org.AskTickets == true)
+                sb.AppendFormat("<tr><td>Tickets:</td><td>{0}</td></tr>\n", om.Tickets);
             if (org.AskShirtSize == true)
                 sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", om.ShirtSize);
             if (org.AskEmContact == true)

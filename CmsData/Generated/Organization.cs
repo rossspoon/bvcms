@@ -211,6 +211,10 @@ namespace CmsData
 		
 		private int? _DaysToIgnoreHistory;
 		
+		private string _GroupToJoin;
+		
+		private bool? _GiveOrgMembAccess;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -550,6 +554,12 @@ namespace CmsData
 		
 		partial void OnDaysToIgnoreHistoryChanging(int? value);
 		partial void OnDaysToIgnoreHistoryChanged();
+		
+		partial void OnGroupToJoinChanging(string value);
+		partial void OnGroupToJoinChanged();
+		
+		partial void OnGiveOrgMembAccessChanging(bool? value);
+		partial void OnGiveOrgMembAccessChanged();
 		
     #endregion
 		public Organization()
@@ -2753,6 +2763,50 @@ namespace CmsData
 					this._DaysToIgnoreHistory = value;
 					this.SendPropertyChanged("DaysToIgnoreHistory");
 					this.OnDaysToIgnoreHistoryChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GroupToJoin", UpdateCheck=UpdateCheck.Never, Storage="_GroupToJoin", DbType="varchar(50)")]
+		public string GroupToJoin
+		{
+			get { return this._GroupToJoin; }
+
+			set
+			{
+				if (this._GroupToJoin != value)
+				{
+				
+                    this.OnGroupToJoinChanging(value);
+					this.SendPropertyChanging();
+					this._GroupToJoin = value;
+					this.SendPropertyChanged("GroupToJoin");
+					this.OnGroupToJoinChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GiveOrgMembAccess", UpdateCheck=UpdateCheck.Never, Storage="_GiveOrgMembAccess", DbType="bit")]
+		public bool? GiveOrgMembAccess
+		{
+			get { return this._GiveOrgMembAccess; }
+
+			set
+			{
+				if (this._GiveOrgMembAccess != value)
+				{
+				
+                    this.OnGiveOrgMembAccessChanging(value);
+					this.SendPropertyChanging();
+					this._GiveOrgMembAccess = value;
+					this.SendPropertyChanged("GiveOrgMembAccess");
+					this.OnGiveOrgMembAccessChanged();
 				}
 
 			}

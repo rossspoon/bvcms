@@ -88,7 +88,7 @@ namespace CmsWeb.Areas.Public.Controllers
 #else
             m.testing = testing;
             m.List.Add(
-                new OnlineRegPersonModel
+                new OnlineRegPersonModel0
                 {
                     divid = div,
                     orgid = id,
@@ -284,7 +284,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 phone = "9017581862".FmtFone(),
             });
 #else
-            m.List.Add(new OnlineRegPersonModel
+            m.List.Add(new OnlineRegPersonModel0
             {
                 divid = m.divid,
                 orgid = m.orgid,

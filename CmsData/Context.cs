@@ -305,6 +305,18 @@ namespace CmsData
         {
             return FetchOrCreateTag(Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
         }
+        public string NewPeopleEmailAddress
+        {
+            get
+            {
+                var em = DbUtil.SystemEmailAddress;
+                var npm = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
+                if (npm != null && npm.EmailAddress.HasValue())
+                    em = npm.EmailAddress;
+                var s = Settings.Where(ss => ss.Id == "NewPeopleEmailAddress").Select(ss => ss.SettingX).SingleOrDefault();
+                return Util.PickFirst(s, em);
+            }
+        }
         User _currentuser;
         public User CurrentUser
         {

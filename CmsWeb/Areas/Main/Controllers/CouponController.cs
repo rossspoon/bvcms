@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CmsData;
 using CmsWeb.Models;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -40,9 +42,33 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult List(CouponModel m)
+        public ActionResult List(string submit, CouponModel m)
         {
+            if (submit == "Excel")
+                return new CouponExcelResult(m);
             return View(m);
+        }
+    }
+    public class CouponExcelResult : ActionResult
+    {
+        private CouponModel m;
+        public CouponExcelResult(CouponModel m)
+        {
+            this.m = m;
+        }
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var Response = context.HttpContext.Response;
+            Response.Buffer = true;
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", "attachment;filename=CMSOrganizations.xls");
+            Response.Charset = "";
+            var d = m.Coupons2();
+            var dg = new DataGrid();
+            dg.DataSource = d;
+            dg.DataBind();
+            dg.RenderControl(new HtmlTextWriter(Response.Output));
+            Response.End();
         }
     }
 }

@@ -276,6 +276,17 @@
         <th>Members Only:</th>
         <td><%=Html.CheckBox("org.MemberOnly")%></td>
     </tr>
+    <% if (Page.User.IsInRole("Admin"))
+       { %>
+    <tr>
+        <th>Give OrgMemberOnly Access:</th>
+        <td><%=Html.CheckBox("org.GiveOrgMembAccess")%></td>
+    </tr>
+    <tr>
+        <th>Group to Join:</th>
+        <td><%=Html.TextBox("org.GroupToJoin")%></td>
+    </tr>
+    <% } %>
 
     <tr><td></td><td><a href="/Organization/SettingsUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>
 </table>

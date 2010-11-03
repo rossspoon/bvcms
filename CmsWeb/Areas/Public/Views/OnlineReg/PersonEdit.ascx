@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <tr>
-    <td><label for="first">First Name</label></td>
+    <td><label id="personedit" for="first">First Name</label></td>
     <td><input id="first" type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" /></td>
     <td>middle:</td>
     <td><input type="text" name="m.List[<%=Model.index%>].middle" class="short" value="<%=Model.middle%>" /></td>

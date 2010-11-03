@@ -70,8 +70,17 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 byte[] buffer = new byte[file.ContentLength];
                 file.InputStream.Read(buffer, 0, file.ContentLength);
-                var enc = new System.Text.ASCIIEncoding();
-                s = enc.GetString(buffer);
+                System.Text.Encoding enc = null;
+                if (buffer[0] == 0xFF && buffer[1] == 0xFE)
+                {
+                    enc = new System.Text.UnicodeEncoding();
+                    s = enc.GetString(buffer, 2, buffer.Length - 2);
+                }
+                else
+                {
+                    enc = new System.Text.ASCIIEncoding();
+                    s = enc.GetString(buffer);
+                }
             }
             else
                 s = text;

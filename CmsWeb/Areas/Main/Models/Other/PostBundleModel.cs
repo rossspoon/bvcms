@@ -67,7 +67,7 @@ namespace CmsWeb.Models
         {
             var q = from d in DbUtil.Db.BundleDetails
                     where d.BundleHeaderId == id
-                    orderby d.CreatedDate descending
+                    orderby d.BundleDetailId descending
                     select new ContributionInfo
                     {
                         ContributionId = d.ContributionId,
@@ -276,6 +276,9 @@ namespace CmsWeb.Models
         {
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
+            if (text.StartsWith("Financial_Institution"))
+                using (var csv = new CsvReader(new StringReader(text), true))
+                    return BatchProcessSunTrust(csv, date);
             using (var csv = new CsvReader(new StringReader(text), true))
             {
                 var names = csv.GetFieldHeaders();
@@ -376,11 +379,10 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(CsvReader csv, DateTime date)
         {
-            var now = DateTime.Now;
             var prevbundle = -1;
             var curbundle = 0;
 
-            var bh = GetBundleHeader(date, now);
+            var bh = GetBundleHeader(date, DateTime.Now);
 
             Regex re = new Regex(
                 @"(?<g1>d(?<rt>.*?)d\sc(?<ac>.*?)(?:c|\s)(?<ck>.*?))$
@@ -396,7 +398,7 @@ namespace CmsWeb.Models
                 var bd = new CmsData.BundleDetail
                 {
                     CreatedBy = Util.UserId,
-                    CreatedDate = now,
+                    CreatedDate = DateTime.Now,
                 };
                 var qf = from f in DbUtil.Db.ContributionFunds
                          where f.FundStatusId == 1
@@ -406,7 +408,7 @@ namespace CmsWeb.Models
                 bd.Contribution = new Contribution
                 {
                     CreatedBy = Util.UserId,
-                    CreatedDate = now,
+                    CreatedDate = DateTime.Now,
                     ContributionDate = date,
                     FundId = qf.First(),
                     ContributionStatusId = 0,
@@ -431,21 +433,13 @@ namespace CmsWeb.Models
                                 }
                                     
                                 FinishBundle(bh);
-                                bh = GetBundleHeader(date, now);
+                                bh = GetBundleHeader(date, DateTime.Now);
                                 prevbundle = curbundle;
                             }
                             break;
                         case "Post Amount":
                             bd.Contribution.ContributionAmount = csv[c].GetAmount();
                             break;
-                        //case "Check Number":
-                        //    bd.Contribution.ContributionDesc = csv[c];
-                        //    break;
-                        //case "R/T":
-                        //    rt = csv[c];
-                        //    break;
-                        //case "Account Number":
-                        //    ac = csv[c];
                         //    break;
                         case "micr":
                             var m = re.Match(csv[c]);
@@ -455,6 +449,99 @@ namespace CmsWeb.Models
                             break;
                     }
                 }
+                var eac = Util.Encrypt(rt + "|" + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                else
+                    bd.Contribution.BankAccount = eac;
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
+        public static int? BatchProcessSunTrust(CsvReader csv, DateTime date)
+        {
+            var prevbundle = -1;
+            var curbundle = 0;
+
+            var bh = GetBundleHeader(date, DateTime.Now);
+
+            int fieldCount = csv.FieldCount;
+            var cols = csv.GetFieldHeaders();
+
+            while (csv.ReadNextRecord())
+            {
+                var bd = new CmsData.BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                var qf = from f in DbUtil.Db.ContributionFunds
+                         where f.FundStatusId == 1
+                         orderby f.FundId
+                         select f.FundId;
+
+                bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    ContributionDate = date,
+                    FundId = qf.First(),
+                    ContributionStatusId = 0,
+                    ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+                };
+                string ac = null, rt = null, ck = null, sn = null;
+                for (var c = 1; c < fieldCount; c++)
+                {
+                    switch (cols[c])
+                    {
+                        case "Deposit_ID":
+                            curbundle = csv[c].ToInt();
+                            if (curbundle != prevbundle)
+                            {
+                                if (curbundle == 3143)
+                                {
+                                    foreach (var i in bh.BundleDetails)
+                                    {
+                                        Debug.WriteLine(i.Contribution.ContributionDesc);
+                                        Debug.WriteLine(i.Contribution.BankAccount);
+                                    }
+                                }
+                                    
+                                FinishBundle(bh);
+                                bh = GetBundleHeader(date, DateTime.Now);
+                                prevbundle = curbundle;
+                            }
+                            break;
+                        case "Amount":
+                            bd.Contribution.ContributionAmount = csv[c].GetAmount();
+                            break;
+                        case "Tran_Code":
+                            ck = csv[c];
+                            break;
+                        case "Serial_Number":
+                            sn = csv[c];
+                            break;
+                        case "Routing_Transit":
+                            rt = csv[c];
+                            break;
+                        case "Account_Number":
+                            ac = csv[c];
+                            break;
+                    }
+                }
+                if (!ck.HasValue())
+                    if (ac.Contains(' '))
+                    {
+                        var a = ac.SplitStr(" ", 2);
+                        ck = a[0];
+                        ac = a[1];
+                    }
+                bd.Contribution.ContributionDesc = string.Join(" ", sn, ck);
                 var eac = Util.Encrypt(rt + "|" + ac);
                 var q = from kc in DbUtil.Db.CardIdentifiers
                         where kc.Id == eac

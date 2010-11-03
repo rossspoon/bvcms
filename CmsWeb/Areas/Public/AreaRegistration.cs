@@ -34,6 +34,11 @@ namespace CmsWeb.Areas.Public
                 "CreateAccount",
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
+            context.MapRoute(
+                "OnlineReg2",
+                "OnlineReg2/{action}/{id}",
+                new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
+            );
 
             context.MapRoute(
                 "Public_default",

@@ -65,8 +65,8 @@ namespace CmsWeb.Areas.Public.Controllers
 #if DEBUG
 
             m.testing = true;
-            m.username = "david";
-            m.password = "toby123";
+            m.username = "";
+            m.password = "";
 #else
             m.testing = testing;
 #endif
@@ -216,7 +216,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 LoggedIn = m.UserPeopleId.HasValue,
             });
 #else
-            m.List.Add(new OnlineRegPersonModel2
+            m.List.Add(new OnlineRegPersonModel
             {
                 divid = m.divid,
                 orgid = m.orgid,
@@ -300,10 +300,10 @@ namespace CmsWeb.Areas.Public.Controllers
             if (m.divid.HasValue)
             {
                 if (c.DivId != m.divid)
-                    return Json(new { error = "coupon div not valid" });
+                    return Json(new { error = "coupon division not match" });
             }
             else if (m.orgid != c.OrgId)
-                return Json(new { error = "coupon org not valid" });
+                return Json(new { error = "coupon org not match" });
             if (DateTime.Now.Subtract(c.Created).TotalHours > 24)
                 return Json(new { error = "coupon expired" });
             if (c.Used.HasValue)
@@ -626,9 +626,9 @@ namespace CmsWeb.Areas.Public.Controllers
                 }
             };
 #else
-            m.List = new List<OnlineRegPersonModel2>
+            m.List = new List<OnlineRegPersonModel>
             {
-                new OnlineRegPersonModel2
+                new OnlineRegPersonModel
                 {
                     divid = m.divid,
                     orgid = m.orgid,
@@ -646,7 +646,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var p = new OnlineRegPersonModel
             {
                 dob = person.DOB,
-                email = person.EmailAddress,
+                email = person.EmailAddress.HasValue() ? person.EmailAddress : m.user.EmailAddress,
                 first = person.FirstName,
                 last = person.LastName,
                 PeopleId = id,

@@ -118,9 +118,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Classes()
         {
-            return Classes(divid);
+            return Classes(divid, classid ?? 0);
         }
-        public static IEnumerable<SelectListItem> Classes(int? divid)
+        public static IEnumerable<SelectListItem> Classes(int? divid, int id)
         {
             var q = from o in UserSelectClasses(divid)
                     let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
@@ -129,12 +129,13 @@ namespace CmsWeb.Models
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
-                        Text = ClassName(o)
+                        Text = ClassName(o),
+                        Selected = o.OrganizationId == id,
                     };
             var list = q.ToList();
             if (list.Count == 1)
                 return list;
-            list.Insert(0, new SelectListItem { Text = "(make a selection)", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "Registration Options", Value = "0" });
             return list;
         }
         public IEnumerable<String> FilledClasses()
@@ -175,7 +176,9 @@ namespace CmsWeb.Models
                 return org.AllowOnlyOne == true
                     || org.AskTickets == true
                     || org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot
-                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
+                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount
+                    || org.GiveOrgMembAccess == true;
+
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(di => di.DivId == divid)
                     where o.AllowOnlyOne == true || o.AskTickets == true
@@ -342,7 +345,7 @@ namespace CmsWeb.Models
 
             var message = Util.PickFirst(c.Body,
                     @"Hi {name},
-<p>Thank you for creating an account in our church database.</p>
+<p>We have created an account you for in our church database.</p>
 <p>This will make it easier for you to do online registrations.
 Just use this account next time you register online.</p>
 <p>And this will allow you to help us maintain your correct address, email and phone numbers.
@@ -370,9 +373,10 @@ Just login to {host} and you will be taken to your record where you can make cor
         public void EnrollAndConfirm(string TransactionID)
         {
             var elist = new List<string>();
+            if (UserPeopleId.HasValue)
+                elist.Add(user.EmailAddress);
             var participants = new StringBuilder();
             var pids = new List<TransactionInfo.PeopleInfo>();
-            var p0 = List[0];
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
@@ -406,6 +410,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                     amt = p.AmountToPay() + p.AmountDue()
                 });
             }
+            var p0 = List[0].person;
             var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
             var amtdue = TotalAmountDue();
@@ -418,11 +423,11 @@ Just login to {host} and you will be taken to your record where you can make cor
                     //URL = URL,
                     Header = Header,
                     Name = NameOnAccount,
-                    Address = p0.address,
-                    City = p0.city,
-                    State = p0.state,
-                    Zip = p0.zip,
-                    Phone = p0.phone.FmtFone(),
+                    Address = p0.PrimaryAddress,
+                    City = p0.PrimaryCity,
+                    State = p0.PrimaryState,
+                    Zip = p0.PrimaryZip,
+                    Phone = Util.PickFirst(p0.HomePhone, p0.CellPhone).FmtFone(),
                     testing = testing ?? false,
                     AmountDue = amtdue,
                     AmountPaid = amtpaid,
@@ -450,6 +455,30 @@ Just login to {host} and you will be taken to your record where you can make cor
 </td></tr>", i + 1, p.PrepareSummaryText());
 
                 om.RegisterEmail = p.email;
+                if (org.GiveOrgMembAccess == true)
+                {
+                    CmsData.Group g = null;
+                    if (org.GroupToJoin.HasValue())
+                        g = CmsData.Group.LoadByName(org.GroupToJoin);
+                    
+                    if (p.person.Users.Count() == 0)
+                    {
+                        p.IsNew = false;
+                        CreateAccount();
+                    }
+                    foreach(var u in p.person.Users)
+                    {
+                        var list = u.Roles.ToList();
+                        if (!list.Contains("Access"))
+                            list.Add("Access");
+                        if (!list.Contains("OrgMembersOnly"))
+                            list.Add("OrgMembersOnly");
+                        u.Roles = list.ToArray();
+                        if (org.GroupToJoin.HasValue())
+                            g.SetMember(u, true);
+                    }
+                    DbUtil.Db.SubmitChanges();
+                }
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
                     p.org.EmailAddresses,
                     p.email,
@@ -459,15 +488,44 @@ Just login to {host} and you will be taken to your record where you can make cor
             details.Append("\n</table>\n");
             DbUtil.Db.SubmitChanges();
 
-            var o = org;
-            if (o == null)
-                o = p0.org;
-            var subject = Util.PickFirst(o.EmailSubject, o.Division != null ? o.Division.EmailSubject : null, "no subject");
-            var message = Util.PickFirst(o.EmailMessage, o.Division != null ? o.Division.EmailMessage : null, "no message");
-            message = message.Replace("{first}", p0.first);
-            message = message.Replace("{tickets}", p0.ntickets.ToString());
-            message = message.Replace("{division}", o.DivisionName);
-            message = message.Replace("{org}", o.OrganizationName);
+            string DivisionName = null;
+            if (div != null)
+                DivisionName = div.Name;
+            else if (org != null)
+                DivisionName = org.DivisionName;
+
+            string OrganizationName = null;
+            if (div != null)
+                OrganizationName = "";
+            else if (org != null)
+                OrganizationName = org.OrganizationName;
+            if (!OrganizationName.HasValue())
+                OrganizationName = DivisionName;
+
+            string EmailSubject = null;
+            if (div != null)
+                EmailSubject = div.EmailSubject;
+            else if (org != null)
+                EmailSubject = org.EmailSubject;
+
+            string EmailMessage = null;
+            if (div != null)
+                EmailMessage = div.EmailMessage;
+            else if (org != null)
+                EmailMessage = org.EmailMessage;
+
+            string EmailAddresses = null;
+            if (div != null)
+                EmailAddresses = List[0].org.EmailAddresses;
+            else if (org != null)
+                EmailAddresses = org.EmailAddresses;
+
+            var subject = Util.PickFirst(EmailSubject, "no subject");
+            var message = Util.PickFirst(EmailMessage, "no message");
+            message = message.Replace("{first}", p0.PreferredName);
+            message = message.Replace("{tickets}", List[0].ntickets.ToString());
+            message = message.Replace("{division}", DivisionName);
+            message = message.Replace("{org}", OrganizationName);
             message = message.Replace("{cmshost}", Util.CmsHost);
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
@@ -478,12 +536,12 @@ Just login to {host} and you will be taken to your record where you can make cor
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
             var smtp = Util.Smtp();
-            DbUtil.Email2(smtp, o.EmailAddresses, emails, subject, message);
-            DbUtil.Email2(smtp, emails, o.EmailAddresses,
-                "{0}".Fmt(Header),
-                @"{0} has registered {1} participant for {2}<br/>Feepaid: {3:C}<br/>AmountDue: {4:C}
-<pre>{5}</pre>"
-                .Fmt(NameOnAccount, List.Count, Header, amtpaid, amtdue, details.ToString()));
+            DbUtil.Email2(smtp, EmailAddresses, emails, subject, message);
+            foreach(var p in List)
+                 DbUtil.Email2(smtp, p.person.EmailAddress, p.org.EmailAddresses, "{0}".Fmt(Header),
+@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}
+<pre>{4}</pre>"
+                .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
         }
     }
 }

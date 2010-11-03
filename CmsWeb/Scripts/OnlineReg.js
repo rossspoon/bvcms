@@ -33,12 +33,20 @@
     //    $("#first").live("change", function () {
     //        $('#regnew').hide();
     //    });
-    $("a.submitbutton, a.submitlink", "form.DisplayEdit").live('click', function (ev) {
+    $("a.submitbutton, a.submitlink, input.submitbutton.ajax", "form.DisplayEdit").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            $(f).html(ret);
+            $(f).html(ret).ready(function () {
+                if ($("#personedit").attr("id")) {
+                    $("div.instructions").hide();
+                    $("div.instructions.find").show();
+                } else if ($("#otheredit").attr("id")) {
+                    $("div.instructions").hide();
+                    $("div.instructions.options").show();
+                }
+            });
             $(".submitbutton", f).button();
         });
         return false;
