@@ -84,7 +84,7 @@ By logging in below, you agree that you understand this purpose and will abide b
 
                 if (name.HasValue())
                     NotifyAdmins("user loggedin without a role on " + Util.Host,
-                        string.Format("{0} visited site at {1} but does not have Staff role",
+                        string.Format("{0} visited site at {1} but does not have Access role",
                             name, Util.Now));
                 FormsAuthentication.SignOut();
                 HttpContext.Current.Response.Redirect("/Errors/AccessDenied.htm");

@@ -69,7 +69,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var p = m.person;
             m.transaction.Username = MembershipService.FetchUsernameNoCheck(
                 m.person.FirstName, m.person.LastName);
-            var password = MembershipService.FetchPassword();
+            var password = MembershipService.FetchPassword(DbUtil.Db);
             if (m.testing)
                 m.transaction.Password = password + ".test";
             else

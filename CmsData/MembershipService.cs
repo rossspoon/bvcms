@@ -66,12 +66,12 @@ namespace CmsData
             CMSMembershipProvider.provider.AdminOverride = false;
             return ret;
         }
-        public static string FetchUsername(string first, string last)
+        public static string FetchUsername(CMSDataContext Db, string first, string last)
         {
             var username = first.Trim().ToLower()[0] + last.Trim().ToLower();
             var uname = username;
             var i = 1;
-            while (DbUtil.Db.Users.SingleOrDefault(u => u.Username == uname) != null)
+            while (Db.Users.SingleOrDefault(u => u.Username == uname) != null)
                 uname = username + i++;
             return uname;
         }
@@ -79,13 +79,13 @@ namespace CmsData
         {
             return first.ToLower()[0] + last.ToLower();
         }
-        public static string FetchPassword()
+        public static string FetchPassword(CMSDataContext Db)
         {
             var rnd = new Random();
-            var n = DbUtil.Db.Words.Count();
+            var n = Db.Words.Count();
             var r1 = rnd.Next(1, n);
             var r2 = rnd.Next(1, n);
-            var q = from w in DbUtil.Db.Words
+            var q = from w in Db.Words
                     where w.N == r1 || w.N == r2
                     select w.WordX;
             var a = q.ToArray();

@@ -1729,6 +1729,29 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.FindPerson2", IsComposable = true)]
+		public IQueryable< View.FindPerson2 > FindPerson2(
+            [Parameter(DbType="varchar")] string first,
+            [Parameter(DbType="varchar")] string last,
+            [Parameter(DbType="int")] int? m,
+            [Parameter(DbType="int")] int? d,
+            [Parameter(DbType="int")] int? y,
+            [Parameter(DbType="varchar")] string email,
+            [Parameter(DbType="varchar")] string phone
+            )
+		{
+			return this.CreateMethodCallQuery< View.FindPerson2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                first,
+                last,
+                m,
+                d,
+                y,
+                email,
+                phone
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,

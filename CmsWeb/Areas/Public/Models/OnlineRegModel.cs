@@ -13,6 +13,7 @@ using CMSPresenter;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Runtime.Serialization;
 
 namespace CmsWeb.Models
 {
@@ -61,18 +62,49 @@ namespace CmsWeb.Models
 
         public int? divid { get; set; }
         public int? orgid { get; set; }
-        public int? classid { get; set; }
+        [OptionalField]
+        private int? _Classid;
+        public int? classid
+        {
+            get { return _Classid; }
+            set { _Classid = value; }
+        }
 
-        public string username { get; set; }
-        public string password { get; set; }
-        public bool nologin { get; set; }
+        [OptionalField]
+        private string _Username;
+        public string username
+        {
+            get { return _Username; }
+            set { _Username = value; }
+        }
+        [OptionalField]
+        private string _Password;
+        public string password
+        {
+            get { return _Password; }
+            set { _Password = value; }
+        }
+        [OptionalField]
+        private bool _Nologin;
+        public bool nologin
+        {
+            get { return _Nologin; }
+            set { _Nologin = value; }
+        }
 
         public bool DisplayLogin()
         {
             return (List.Count == 0 && !UserPeopleId.HasValue && !IsCreateAccount() && nologin == false);
         }
 
-        public int? UserPeopleId { get; set; }
+        [OptionalField]
+        private int? _UserPeopleId;
+        public int? UserPeopleId
+        {
+            get { return _UserPeopleId; }
+            set { _UserPeopleId = value; }
+        }
+        [OptionalField]
         private Person _User;
         public Person user
         {
@@ -83,6 +115,20 @@ namespace CmsWeb.Models
                 return _User;
             }
         }
+        public string LoginName
+        {
+            get
+            {
+                if (user != null)
+                    return user.Name;
+                return "anonymous";
+            }
+        }
+        public string MeetingTime
+        {
+            get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
+        }
+
         public bool? testing { get; set; }
         public string qtesting
         {
@@ -304,10 +350,6 @@ namespace CmsWeb.Models
             }
             return _meeting;
         }
-        public string MeetingTime
-        {
-            get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
-        }
         public List<SelectListItem> ShirtSizes()
         {
             var q = from ss in DbUtil.Db.ShirtSizes
@@ -330,8 +372,8 @@ namespace CmsWeb.Models
             if (p.IsNew)
                 p.AddPerson(null, p.org.EntryPointId ?? 0);
             var person = List[0].person;
-            var uname = MembershipService.FetchUsername(person.PreferredName, person.LastName);
-            var pword = MembershipService.FetchPassword();
+            var uname = MembershipService.FetchUsername(DbUtil.Db, person.PreferredName, person.LastName);
+            var pword = MembershipService.FetchPassword(DbUtil.Db);
             var user = MembershipService.CreateUser(person.PeopleId, uname, pword);
 
             var gobackurl = HttpContext.Current.Session["gobackurl"] as string;
@@ -383,7 +425,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                 if (p.IsNew)
                 {
                     Person uperson = null;
-                    switch(p.whatfamily)
+                    switch (p.whatfamily)
                     {
                         case 1:
                             uperson = DbUtil.Db.LoadPersonById(UserPeopleId.Value);
@@ -455,18 +497,18 @@ Just login to {host} and you will be taken to your record where you can make cor
 </td></tr>", i + 1, p.PrepareSummaryText());
 
                 om.RegisterEmail = p.email;
-                if (org.GiveOrgMembAccess == true)
+                if (p.org.GiveOrgMembAccess == true)
                 {
                     CmsData.Group g = null;
                     if (org.GroupToJoin.HasValue())
                         g = CmsData.Group.LoadByName(org.GroupToJoin);
-                    
+
                     if (p.person.Users.Count() == 0)
                     {
                         p.IsNew = false;
                         CreateAccount();
                     }
-                    foreach(var u in p.person.Users)
+                    foreach (var u in p.person.Users)
                     {
                         var list = u.Roles.ToList();
                         if (!list.Contains("Access"))
@@ -475,7 +517,10 @@ Just login to {host} and you will be taken to your record where you can make cor
                             list.Add("OrgMembersOnly");
                         u.Roles = list.ToArray();
                         if (org.GroupToJoin.HasValue())
+                        {
                             g.SetMember(u, true);
+                            u.DefaultGroup = g.Name;
+                        }
                     }
                     DbUtil.Db.SubmitChanges();
                 }
@@ -537,11 +582,123 @@ Just login to {host} and you will be taken to your record where you can make cor
 
             var smtp = Util.Smtp();
             DbUtil.Email2(smtp, EmailAddresses, emails, subject, message);
-            foreach(var p in List)
-                 DbUtil.Email2(smtp, p.person.EmailAddress, p.org.EmailAddresses, "{0}".Fmt(Header),
+            foreach (var p in List)
+                DbUtil.Email2(smtp, p.person.EmailAddress, p.org.EmailAddresses, "{0}".Fmt(Header),
 @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}
 <pre>{4}</pre>"
-                .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
+               .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
+        }
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("orgid: {0}<br/>\n", this.orgid);
+            sb.AppendFormat("divid: {0}<br/>\n", this.divid);
+            sb.AppendFormat("userid: {0}<br/>\n", this.UserPeopleId);
+            foreach (var li in List)
+            {
+                sb.AppendFormat("--------------------------------\nList: {0}<br/>\n", li.index);
+                sb.Append(li.ToString());
+            }
+            return sb.ToString();
+        }
+
+        public OnlineRegModel()
+        {
+
+        }
+        protected OnlineRegModel(SerializationInfo si, StreamingContext context)
+        {
+            UserPeopleId = (int?)si.GetValue("UserPeopleId", typeof(int?));
+            URL = si.GetString("URL");
+            classid = (int?)si.GetValue("classid", typeof(int?));
+            divid = (int?)si.GetValue("divid", typeof(int?));
+            nologin = si.GetBoolean("nologin");
+            orgid = (int?)si.GetValue("orgid", typeof(int?));
+            testing = si.GetBoolean("testing");
+            username = si.GetString("username");
+
+            /*
+<OnlineRegModel xmlns="http://schemas.datacontract.org/2004/07/CmsWeb.Models" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <_User i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/CmsData"/>
+  <_meeting i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/CmsData"/>
+  <_x003C_URL_x003E_k__BackingField>https://cms.bellevue.org:443/CreateAccount</_x003C_URL_x003E_k__BackingField>
+  <_x003C_UserPeopleId_x003E_k__BackingField i:nil="true"/>
+  <_x003C_classid_x003E_k__BackingField i:nil="true"/>
+  <_x003C_divid_x003E_k__BackingField i:nil="true"/>
+  <_x003C_nologin_x003E_k__BackingField>false</_x003C_nologin_x003E_k__BackingField>
+  <_x003C_orgid_x003E_k__BackingField>-1952</_x003C_orgid_x003E_k__BackingField>
+  <_x003C_password_x003E_k__BackingField i:nil="true"/>
+  <_x003C_testing_x003E_k__BackingField i:nil="true"/>
+  <_x003C_username_x003E_k__BackingField i:nil="true"/>
+  <list>
+    <OnlineRegPersonModel>
+      <NotFoundText i:nil="true"/>
+      <_ExtraQuestion xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <_MenuItem xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <_YesNoQuestion xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <_x003C_Found_x003E_k__BackingField>true</_x003C_Found_x003E_k__BackingField>
+      <_x003C_IsFamily_x003E_k__BackingField>false</_x003C_IsFamily_x003E_k__BackingField>
+      <_x003C_IsFilled_x003E_k__BackingField>false</_x003C_IsFilled_x003E_k__BackingField>
+      <_x003C_IsNew_x003E_k__BackingField>false</_x003C_IsNew_x003E_k__BackingField>
+      <_x003C_IsValidForContinue_x003E_k__BackingField>false</_x003C_IsValidForContinue_x003E_k__BackingField>
+      <_x003C_IsValidForExisting_x003E_k__BackingField>true</_x003C_IsValidForExisting_x003E_k__BackingField>
+      <_x003C_IsValidForNew_x003E_k__BackingField>false</_x003C_IsValidForNew_x003E_k__BackingField>
+      <_x003C_LastItem_x003E_k__BackingField>false</_x003C_LastItem_x003E_k__BackingField>
+      <_x003C_LoggedIn_x003E_k__BackingField>false</_x003C_LoggedIn_x003E_k__BackingField>
+      <_x003C_OtherOK_x003E_k__BackingField>true</_x003C_OtherOK_x003E_k__BackingField>
+      <_x003C_PeopleId_x003E_k__BackingField>819917</_x003C_PeopleId_x003E_k__BackingField>
+      <_x003C_ShowAddress_x003E_k__BackingField>false</_x003C_ShowAddress_x003E_k__BackingField>
+      <_x003C_address_x003E_k__BackingField>845 Rocky Forest Cv S</_x003C_address_x003E_k__BackingField>
+      <_x003C_advil_x003E_k__BackingField i:nil="true"/>
+      <_x003C_city_x003E_k__BackingField>Cordova</_x003C_city_x003E_k__BackingField>
+      <_x003C_classid_x003E_k__BackingField i:nil="true"/>
+      <_x003C_coaching_x003E_k__BackingField i:nil="true"/>
+      <_x003C_divid_x003E_k__BackingField i:nil="true"/>
+      <_x003C_dob_x003E_k__BackingField>2/6/46</_x003C_dob_x003E_k__BackingField>
+      <_x003C_docphone_x003E_k__BackingField i:nil="true"/>
+      <_x003C_doctor_x003E_k__BackingField i:nil="true"/>
+      <_x003C_email_x003E_k__BackingField>earhartworrell@comcast.net</_x003C_email_x003E_k__BackingField>
+      <_x003C_emcontact_x003E_k__BackingField i:nil="true"/>
+      <_x003C_emphone_x003E_k__BackingField i:nil="true"/>
+      <_x003C_first_x003E_k__BackingField>Max</_x003C_first_x003E_k__BackingField>
+      <_x003C_fname_x003E_k__BackingField i:nil="true"/>
+      <_x003C_gender_x003E_k__BackingField>1</_x003C_gender_x003E_k__BackingField>
+      <_x003C_grade_x003E_k__BackingField i:nil="true"/>
+      <_x003C_gradeoption_x003E_k__BackingField i:nil="true"/>
+      <_x003C_index_x003E_k__BackingField>0</_x003C_index_x003E_k__BackingField>
+      <_x003C_insurance_x003E_k__BackingField i:nil="true"/>
+      <_x003C_last_x003E_k__BackingField>Worrell</_x003C_last_x003E_k__BackingField>
+      <_x003C_maalox_x003E_k__BackingField i:nil="true"/>
+      <_x003C_married_x003E_k__BackingField>1</_x003C_married_x003E_k__BackingField>
+      <_x003C_medical_x003E_k__BackingField i:nil="true"/>
+      <_x003C_memberus_x003E_k__BackingField>false</_x003C_memberus_x003E_k__BackingField>
+      <_x003C_middle_x003E_k__BackingField i:nil="true"/>
+      <_x003C_mname_x003E_k__BackingField i:nil="true"/>
+      <_x003C_ntickets_x003E_k__BackingField i:nil="true"/>
+      <_x003C_option2_x003E_k__BackingField i:nil="true"/>
+      <_x003C_option_x003E_k__BackingField i:nil="true"/>
+      <_x003C_orgid_x003E_k__BackingField>-1952</_x003C_orgid_x003E_k__BackingField>
+      <_x003C_otherchurch_x003E_k__BackingField>false</_x003C_otherchurch_x003E_k__BackingField>
+      <_x003C_paydeposit_x003E_k__BackingField i:nil="true"/>
+      <_x003C_phone_x003E_k__BackingField>9017541194</_x003C_phone_x003E_k__BackingField>
+      <_x003C_policy_x003E_k__BackingField i:nil="true"/>
+      <_x003C_request_x003E_k__BackingField i:nil="true"/>
+      <_x003C_robitussin_x003E_k__BackingField i:nil="true"/>
+      <_x003C_shirtsize_x003E_k__BackingField i:nil="true"/>
+      <_x003C_state_x003E_k__BackingField>TN</_x003C_state_x003E_k__BackingField>
+      <_x003C_suffix_x003E_k__BackingField i:nil="true"/>
+      <_x003C_tylenol_x003E_k__BackingField i:nil="true"/>
+      <_x003C_whatfamily_x003E_k__BackingField i:nil="true"/>
+      <_x003C_zip_x003E_k__BackingField>38018-6542</_x003C_zip_x003E_k__BackingField>
+      <count>0</count>
+      <menuitems i:nil="true"/>
+    </OnlineRegPersonModel>
+  </list>
+</OnlineRegModel> */
+        }
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

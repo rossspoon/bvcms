@@ -12,11 +12,9 @@ namespace CmsWeb.Models.iPhone
 {
     public class RollListResult : ActionResult
     {
-        private int oid;
         private CmsData.Meeting meeting;
-        public RollListResult(int oid, CmsData.Meeting meeting)
+        public RollListResult(CmsData.Meeting meeting)
         {
-            this.oid = oid;
             this.meeting = meeting;
         }
         private IEnumerable<AttendInfo> RollList()
@@ -26,7 +24,7 @@ namespace CmsWeb.Models.iPhone
                     where a.AttendanceFlag == true
                     select a;
 
-            var q1 = from p in m.FetchOrgMembers(oid, null)
+            var q1 = from p in m.FetchOrgMembers(meeting.OrganizationId, null)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new
@@ -36,7 +34,7 @@ namespace CmsWeb.Models.iPhone
                          Attended = pa != null ? pa.AttendanceFlag : false,
                          Member = true
                      };
-            var q2 = from p in m.FetchVisitors(oid, meeting.MeetingDate.Value)
+            var q2 = from p in m.FetchVisitors(meeting.OrganizationId, meeting.MeetingDate.Value)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new

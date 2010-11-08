@@ -123,9 +123,9 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var p = DbUtil.Db.People.Single(pe => pe.PeopleId == id);
             CMSMembershipProvider.provider.AdminOverride = true;
-            var newpassword = MembershipService.FetchPassword();
+            var newpassword = MembershipService.FetchPassword(DbUtil.Db);
             var user = CMSMembershipProvider.provider.NewUser(
-                MembershipService.FetchUsername(p.FirstName, p.LastName),
+                MembershipService.FetchUsername(DbUtil.Db, p.FirstName, p.LastName),
                 newpassword,
                 null,
                 true,
@@ -298,7 +298,7 @@ The bvCMS Team</p>
             CMSMembershipProvider.provider.AdminOverride = true;
             var mu = CMSMembershipProvider.provider.GetUser(user.Username, false);
             mu.UnlockUser();
-            var newpassword = MembershipService.FetchPassword();
+            var newpassword = MembershipService.FetchPassword(DbUtil.Db);
             mu.ChangePassword(mu.ResetPassword(), newpassword);
             CMSMembershipProvider.provider.AdminOverride = false;
 

@@ -27,11 +27,14 @@ namespace CmsWeb.Areas.Main.Controllers
             Response.NoCache();
             var m = new OrgSearchModel();
 
-            if (div.HasValue && progid.HasValue)
+            if (div.HasValue)
             {
-                m.ProgramId = progid;
-                m.TagProgramId = progid;
                 m.DivisionId = div;
+                if (progid.HasValue)
+                    m.ProgramId = progid;
+                else
+                    m.ProgramId = m.Division().ProgId;
+                m.TagProgramId = m.ProgramId;
                 m.TagDiv = div;
             }
             else if (Session[STR_OrgSearch].IsNotNull())

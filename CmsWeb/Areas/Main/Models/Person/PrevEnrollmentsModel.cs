@@ -47,12 +47,8 @@ namespace CmsWeb.Models.PersonPage
                      {
                          OrgId = om.OrganizationId,
                          PeopleId = om.PeopleId,
-                         Name = om.Organization.OrganizationName,
-                         Location = om.Organization.Location,
-                         LeaderName = om.Organization.LeaderName,
-                         MeetingTime = om.Organization.MeetingTime,
+                         Name = om.OrganizationName,
                          MemberType = om.MemberType.Description,
-                         LeaderId = om.Organization.LeaderId,
                          EnrollDate = om.FirstTransaction.TransactionDate,
                          AttendPct = om.AttendancePercentage,
                          DivisionName = div.Program.Name + "/" + div.Name,

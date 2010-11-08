@@ -21,6 +21,15 @@ namespace UtilityExtensions
                 Util.SetPropertyFromText(o, props[i].Name, reader[props[i].Name].ToString().Trim());
             return o;
         }
+        public static Object GetAs(string line, Type type)
+        {
+            Object o = Activator.CreateInstance(type);
+            PropertyInfo[] props = type.GetProperties();
+            var a = line.Split('\t');
+            for (int i = 0; i < props.Length; i++)
+                Util.SetPropertyFromText(o, props[i].Name, a[i].Trim());
+            return o;
+        }
         public static object GetProperty(object Object, string Property)
         {
             return Object.GetType().GetProperty(Property, bindingFlags).GetValue(Object, null);

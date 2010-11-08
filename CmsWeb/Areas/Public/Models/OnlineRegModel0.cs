@@ -182,10 +182,10 @@ namespace CmsWeb.Models
             }
             return _meeting;
         }
-        public string MeetingTime
-        {
-            get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
-        }
+        //public string MeetingTime
+        //{
+        //    get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
+        //}
         public List<SelectListItem> ShirtSizes()
         {
             var q = from ss in DbUtil.Db.ShirtSizes
@@ -208,8 +208,8 @@ namespace CmsWeb.Models
             if (p.IsNew)
                 p.AddPerson(null, p.org.EntryPointId ?? 0);
             var person = List[0].person;
-            var uname = MembershipService.FetchUsername(person.PreferredName, person.LastName);
-            var pword = MembershipService.FetchPassword();
+            var uname = MembershipService.FetchUsername(DbUtil.Db, person.PreferredName, person.LastName);
+            var pword = MembershipService.FetchPassword(DbUtil.Db);
             var user = MembershipService.CreateUser(person.PeopleId, uname, pword);
             var smtp = Util.Smtp();
             DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress),

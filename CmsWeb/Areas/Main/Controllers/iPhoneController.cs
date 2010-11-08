@@ -11,6 +11,7 @@ using UtilityExtensions;
 using CmsWeb.Models.iPhone;
 using System.Xml;
 using System.IO;
+using System.Web.Security;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -55,6 +56,12 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!Authenticate())
                 return Content("not authorized");
 #endif
+            Login.SetUserInfo(name);
+            if (!Util.OrgMembersOnly && User.IsInRole("OrgMembersOnly"))
+            {
+                Util.OrgMembersOnly = true;
+                DbUtil.Db.SetOrgMembersOnly();
+            }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
         }
@@ -67,8 +74,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("not authorized");
             var uname = Request.Headers["username"];
 #endif
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
-            return new OrgResult(u.PeopleId.Value);
+            Login.SetUserInfo(uname);
+            FormsAuthentication.SetAuthCookie(uname, false);
+            if (!User.IsInRole("Attendance"))
+                return new OrgResult(null);
+            return new OrgResult(Util.UserPeopleId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RollList(int id, string datetime)
@@ -96,14 +106,91 @@ namespace CmsWeb.Areas.Main.Controllers
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
             }
-            return new RollListResult(id, meeting);
+            return new RollListResult(meeting);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RecordAttend(int id, int PeopleId, bool Present)
         {
+#if DEBUG
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+#endif
             Attend.RecordAttendance(PeopleId, id, Present);
             DbUtil.Db.UpdateMeetingCounters(id);
             return new EmptyResult();
+        }
+        public class PersonInfo
+        {
+            public int addtofamilyid { get; set; }
+            public string addr { get; set; }
+            public string zip { get; set; }
+            public string first { get; set; }
+            public string last { get; set; }
+            public string goesby { get; set; }
+            public string dob { get; set; }
+            public string email { get; set; }
+            public string cell { get; set; }
+            public string home { get; set; }
+            public int marital { get; set; }
+            public int gender { get; set; }
+        }
+#if DEBUG
+#else
+        [AcceptVerbs(HttpVerbs.Post)]
+#endif
+        public ActionResult AddPerson(int id, PersonInfo m)
+        {
+#if DEBUG
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+#endif
+
+            CmsData.Family f;
+            if (m.addtofamilyid > 0)
+                f = DbUtil.Db.Families.First(fam => fam.People.Any(pp => pp.PeopleId == m.addtofamilyid));
+            else
+                f = new CmsData.Family();
+
+            var position = (int)CmsData.Family.PositionInFamily.Child;
+            if (Util.Age0(m.dob) >= 18)
+                if (f.People.Count(per =>
+                     per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
+                     < 2)
+                    position = (int)CmsData.Family.PositionInFamily.PrimaryAdult;
+                else
+                    position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
+
+            var p = Person.Add(f, position,
+                null, Trim(m.first), Trim(m.goesby), Trim(m.last), m.dob, false, m.gender,
+                    (int)Person.OriginCode.Visit, null);
+
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
+            if (!m.home.HasValue() && m.cell.HasValue())
+                m.home = m.cell;
+            p.Family.HomePhone = m.home.GetDigits();
+            p.Family.AddressLineOne = m.addr;
+            p.Family.CityName = z != null ? z.City : null;
+            p.Family.StateCode = z != null ? z.State : null;
+            p.Family.ZipCode = m.zip;
+
+            p.EmailAddress = m.email.Trim();
+            p.CellPhone = m.cell.GetDigits();
+            p.MaritalStatusId = m.marital;
+            p.GenderId = m.gender;
+            DbUtil.Db.SubmitChanges();
+            var meeting = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == id);
+            Attend.RecordAttendance(p.PeopleId, id, true);
+            DbUtil.Db.UpdateMeetingCounters(id);
+            return new RollListResult(meeting);
+        }
+        string Trim(string s)
+        {
+            if (s.HasValue())
+                return s.Trim();
+            else
+                return s;
         }
     }
 }

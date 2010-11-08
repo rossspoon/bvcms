@@ -45,7 +45,7 @@ namespace CmsData
         }
         public EnrollmentTransaction Drop()
         {
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
             int ntries = 2;
             while (true)
             {
@@ -114,7 +114,7 @@ namespace CmsData
                     if (ex.Number == 1205)
                         if (--ntries > 0)
                         {
-                            DbUtil.DbDispose();
+                            Db.Dispose();
                             System.Threading.Thread.Sleep(500);
                             continue;
                         }
@@ -124,10 +124,14 @@ namespace CmsData
         }
         public static void UpdateMeetingsToUpdate()
         {
+            UpdateMeetingsToUpdate(DbUtil.Db);
+        }
+        public static void UpdateMeetingsToUpdate(CMSDataContext Db)
+        {
             var mids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
             if (mids != null)
                 foreach (var mid in mids)
-                    DbUtil.Db.UpdateMeetingCounters(mid);
+                    Db.UpdateMeetingCounters(mid);
         }
         public bool ToggleGroup(int groupid)
         {
@@ -151,14 +155,14 @@ namespace CmsData
         {
             if (!name.HasValue())
                 return;
-            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
+            var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
             if (mt == null)
             {
                 mt = new MemberTag { Name = name.Trim(), OrgId = OrganizationId };
-                DbUtil.Db.MemberTags.InsertOnSubmit(mt);
-                DbUtil.Db.SubmitChanges();
+                Db.MemberTags.InsertOnSubmit(mt);
+                Db.SubmitChanges();
             }
-            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t =>
+            var omt = Db.OrgMemMemTags.SingleOrDefault(t =>
                 t.PeopleId == PeopleId
                 && t.MemberTagId == mt.Id
                 && t.OrgId == OrganizationId);
@@ -169,19 +173,19 @@ namespace CmsData
                     OrgId = OrganizationId,
                     Number = n
                 });
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
         }
         public void RemoveFromGroup(string name)
         {
-            var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
+            var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
             if (mt == null)
                 return;
-            var omt = DbUtil.Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id && t.OrgId == OrganizationId);
+            var omt = Db.OrgMemMemTags.SingleOrDefault(t => t.PeopleId == PeopleId && t.MemberTagId == mt.Id && t.OrgId == OrganizationId);
             if (omt != null)
             {
                 OrgMemMemTags.Remove(omt);
                 Db.OrgMemMemTags.DeleteOnSubmit(omt);
-                DbUtil.Db.SubmitChanges();
+                Db.SubmitChanges();
             }
         }
         public void AddToMemberData(string s)
@@ -199,13 +203,23 @@ namespace CmsData
             DateTime? InactiveDate, bool pending
             )
         {
-            DbUtil.Db.SubmitChanges();
+            return OrganizationMember.InsertOrgMembers(DbUtil.Db, OrganizationId, PeopleId, MemberTypeId, EnrollmentDate, InactiveDate, pending);
+        }
+        public static OrganizationMember InsertOrgMembers
+            (CMSDataContext Db, 
+            int OrganizationId,
+            int PeopleId,
+            int MemberTypeId,
+            DateTime EnrollmentDate,
+            DateTime? InactiveDate, bool pending
+            )
+        {
+            Db.SubmitChanges();
             int ntries = 2;
             while (true)
             {
                 try
                 {
-                    var Db = DbUtil.Db;
                     var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
                     if (m != null)
                     {
@@ -250,7 +264,6 @@ namespace CmsData
                     if (ex.Number == 1205)
                         if (--ntries > 0)
                         {
-                            DbUtil.DbDispose();
                             System.Threading.Thread.Sleep(500);
                             continue;
                         }

@@ -37,6 +37,11 @@ namespace CmsWeb.Models
             StatusId = (int)CmsData.Organization.OrgStatusCode.Active;
             GetCount = Count;
         }
+        public Division Division()
+        {
+            var d = DbUtil.Db.Divisions.SingleOrDefault(dd => dd.Id == DivisionId);
+            return d;
+        }
 
         private IQueryable<CmsData.Organization> organizations;
         public IEnumerable<OrganizationInfo> OrganizationList()

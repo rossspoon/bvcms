@@ -397,11 +397,11 @@ namespace CmsData
             int originId,
             int? EntryPointId)
         {
-            return Person.Add(DbUtil.Db, fam, position, tag, 
+            return Person.Add(DbUtil.Db, Util.Host, true, fam, position, tag, 
                 firstname, nickname, lastname, dob, MarriedCode,
                 gender, originId, EntryPointId);
         }
-        public static Person Add(CMSDataContext Db, Family fam,
+        public static Person Add(CMSDataContext Db, string host, bool SendNotices, Family fam,
             int position,
             Tag tag,
             string firstname,
@@ -485,20 +485,23 @@ namespace CmsData
             p.EntryPointId = EntryPointId;
             p.FixTitle();
             Db.SubmitChanges();
-            var NewPeopleManagerId = Db.Settings.SingleOrDefault(ss => ss.Id == "NewPeopleManagerId").SettingX.ToInt2();
-            if (NewPeopleManagerId.HasValue)
-                NewPeopleManagerId = 1;
-            if (Util.UserPeopleId.HasValue
-                    && Util.UserPeopleId.Value != NewPeopleManagerId
-                    && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
-                Task.AddNewPerson(p.PeopleId);
-            else
+            if (SendNotices)
             {
-                var em = Db.NewPeopleEmailAddress;
-                DbUtil.Email(em, null, em,
-                    "Just Added Person on " + Util.Host,
-                    "<a href='{0}Person/Index/{2}'>{1} ({2})</a>"
-                    .Fmt(Util.ResolveServerUrl("~/"), p.Name, p.PeopleId));
+                var NewPeopleManagerId = Db.Settings.SingleOrDefault(ss => ss.Id == "NewPeopleManagerId").SettingX.ToInt2();
+                if (NewPeopleManagerId.HasValue)
+                    NewPeopleManagerId = 1;
+                if (Util.UserPeopleId.HasValue
+                        && Util.UserPeopleId.Value != NewPeopleManagerId
+                        && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
+                    Task.AddNewPerson(p.PeopleId);
+                else
+                {
+                    var em = Db.NewPeopleEmailAddress;
+                    DbUtil.Email(em, null, em,
+                        "Just Added Person on " + host,
+                        "{0} ({1})"
+                        .Fmt(p.Name, p.PeopleId));
+                }
             }
             return p;
         }

@@ -13,6 +13,7 @@ using CMSPresenter;
 using System.Net.Mail;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace CmsWeb.Models
 {
@@ -46,7 +47,13 @@ namespace CmsWeb.Models
         public int? classid { get; set; }
 
         public string first { get; set; }
-        public string middle { get; set; }
+        [OptionalField]
+        private string _Middle;
+        public string middle
+        {
+            get { return _Middle; }
+            set { _Middle = value; }
+        }
         public string last { get; set; }
         public string suffix { get; set; }
         public string dob { get; set; }
@@ -61,7 +68,13 @@ namespace CmsWeb.Models
 
         public bool? Found { get; set; }
         public bool IsNew { get; set; }
-        public bool IsFamily { get; set; }
+        [OptionalField]
+        private bool _IsFamily;
+        public bool IsFamily
+        {
+            get { return _IsFamily; }
+            set { _IsFamily = value; }
+        }
         public string ErrorTarget { get { return IsFamily ? "findf" : "findn"; } }
         public bool OtherOK { get; set; }
         public bool ShowAddress { get; set; }
@@ -89,6 +102,7 @@ namespace CmsWeb.Models
                 return YesNoQuestion[key] == value ? "checked='checked'" : "";
             return "";
         }
+        [OptionalField]
         private Dictionary<string, int?> _MenuItem = new Dictionary<string, int?>();
         public Dictionary<string, int?> MenuItem
         {
@@ -101,8 +115,20 @@ namespace CmsWeb.Models
                 return MenuItem[s];
             return null;
         }
-        public int? whatfamily { get; set; }
-        public bool? LoggedIn { get; set; }
+        [OptionalField]
+        private int? _Whatfamily;
+        public int? whatfamily
+        {
+            get { return _Whatfamily; }
+            set { _Whatfamily = value; }
+        }
+        [OptionalField]
+        private bool? _LoggedIn;
+        public bool? LoggedIn
+        {
+            get { return _LoggedIn; }
+            set { _LoggedIn = value; }
+        }
 
         [NonSerialized]
         private DateTime _Birthday;
@@ -267,6 +293,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                     else
                     {
                         //_Person = SearchPeopleModel.FindPerson(first, last, birthday, email, phone, out count);
+
                         var list = DbUtil.Db.FindPerson(first, last, birthday, email, phone).ToList();
                         count = list.Count;
                         if (count == 1)
@@ -317,16 +344,34 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                 ModelState.AddModelError("gender", "Please specify gender");
             if (!married.HasValue)
                 ModelState.AddModelError("married", "Please specify marital status");
+
+            if (MemberOnly())
+                ModelState.AddModelError(ErrorTarget, "Sorry, must be a member of church");
+            else if (org != null && org.ValidateOrgs.HasValue())
+                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
+
             IsValidForNew = ModelState.IsValid;
         }
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("{0}({1},{2},{3}), Birthday: {4}({5}), Phone: {6}, {7}<br />\n".Fmt(
-                person.Name, person.PeopleId, person.Gender.Code, person.MaritalStatus.Code,
-                person.DOB, person.Age, phone.FmtFone(), email));
-            if (ShowAddress)
-                sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);
+            sb.AppendFormat("Org: {0}<br/>\n", org.OrganizationName);
+            if (PeopleId.HasValue)
+            {
+                sb.AppendFormat("{0}({1},{2},{3}), Birthday: {4}({5}), Phone: {6}, {7}, {8}<br />\n".Fmt(
+                    person.Name, person.PeopleId, person.Gender.Code, person.MaritalStatus.Code,
+                    person.DOB, person.Age, phone.FmtFone(), person.EmailAddress, email));
+                if (ShowAddress)
+                    sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", person.PrimaryAddress, person.CityStateZip);
+            }
+            else
+            {
+                sb.AppendFormat("{0} {1}({2},{3}), Birthday: {4}({5}), Phone: {6}, {7}<br />\n".Fmt(
+                    first, last, gender, married,
+                    dob, age, phone.FmtFone(), email));
+                if (ShowAddress)
+                    sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", this.address, city);
+            }
             return sb.ToString();
         }
         internal void AddPerson(Person p, int entrypoint)
@@ -386,7 +431,13 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
         public string grade { get; set; }
         public int? ntickets { get; set; }
         public string option { get; set; }
-        public string option2 { get; set; }
+        [OptionalField]
+        private string _Option2;
+        public string option2
+        {
+            get { return _Option2; }
+            set { _Option2 = value; }
+        }
         public string gradeoption { get; set; }
 
         public decimal AmountToPay()
@@ -612,6 +663,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
             public string sg { get; set; }
             public decimal amt { get; set; }
         }
+        [NonSerialized]
         private List<MenuItemType> menuitems;
         public List<MenuItemType> MenuItems()
         {
@@ -1189,5 +1241,15 @@ Thank you</p>"
                 }
             }
         }
+        //override string ToString()
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.AppendFormat("peopleid: {0}\n", PeopleId);
+        //    sb.AppendFormat(": {0}\n", this.person.Name);
+        //    sb.AppendFormat(": {0}\n", this.person.EmailAddress);
+        //    sb.AppendFormat(": {0}\n", this.org.OrganizationName);
+        //    //sb.AppendFormat(": {0}\n");
+        //    return sb.ToString();
+        //}
     }
 }

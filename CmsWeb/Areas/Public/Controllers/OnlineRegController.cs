@@ -677,5 +677,31 @@ namespace CmsWeb.Areas.Public.Controllers
                 p.classid = p.org.OrganizationId;
             return View("List", m);
         }
+        public class ConfirmTestInfo
+        {
+            public ExtraDatum ed;
+            public OnlineRegModel m;
+        }
+        [Authorize(Roles="Admin")]
+        public ActionResult ConfirmTest(int? id, int? count)
+        {
+            IEnumerable<ExtraDatum> q;
+            if (id.HasValue)
+                q = DbUtil.Db.ExtraDatas.Where(e => e.Id == id);
+            else
+                q = from ed in DbUtil.Db.ExtraDatas
+                        where ed.Data.StartsWith("<OnlineRegModel ")
+                        orderby ed.Stamp descending
+                        select ed;
+            var list = q.Take(count ?? 20).ToList();
+            var q2 = from ed in list
+                     let s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models")
+                     select new ConfirmTestInfo
+                     {
+                         ed = ed,
+                         m = Util.DeSerialize<OnlineRegModel>(s) as OnlineRegModel
+                     };
+            return View(q2);
+        }
     }
 }

@@ -380,7 +380,7 @@ namespace CmsWeb.Models
                     if (user != null)
                         _username = user.Username;
                     else
-                        _username = MembershipService.FetchUsername(
+                        _username = MembershipService.FetchUsername(DbUtil.Db,
                             person.PreferredName, person.LastName);
                 }
                 return _username;
@@ -392,7 +392,7 @@ namespace CmsWeb.Models
             get
             {
                 if (_password == null)
-                    _password = MembershipService.FetchPassword();
+                    _password = MembershipService.FetchPassword(DbUtil.Db);
                 return _password;
             }
         }

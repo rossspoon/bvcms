@@ -11,8 +11,8 @@ namespace CmsWeb.Models.iPhone
 {
     public class OrgResult : ActionResult
     {
-        private int pid;
-        public OrgResult(int pid)
+        private int? pid;
+        public OrgResult(int? pid)
         {
             this.pid = pid;
         }
