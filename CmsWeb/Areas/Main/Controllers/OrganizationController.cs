@@ -23,13 +23,14 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.org == null)
                 return Content("organization not found");
             if (Util.OrgMembersOnly
-                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                && (!DbUtil.Db.OrganizationMembers.Any(om =>
                     om.OrganizationId == m.org.OrganizationId
-                    && om.PeopleId == Util.UserPeopleId))
+                    && om.PeopleId == Util.UserPeopleId
+                    || m.org.SecurityTypeId == 3 )))
             {
                 DbUtil.LogActivity("Trying to view Organization ({0})".Fmt(m.org.OrganizationName));
                 return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
-                    .Fmt("You must be a member of this organization to have access to this page",
+                    .Fmt("You do not have access to this page",
                     "javascript: history.go(-1)", "Go Back"));
             }
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));

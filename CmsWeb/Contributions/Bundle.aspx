@@ -99,14 +99,14 @@
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
-        <tr id="TR_FundId" runat="server">
+        <tr>
             <th>
                 Fund:
             </th>
             <td>
                 <cc1:DisplayOrEditDropDown ID="FundIdDropDown" runat="server" BindingMember="FundId"
                     BindingSource="bundleheader" BindingMode="TwoWay" DataTextField="Value" DataValueField="Id"
-                    AssociatedRowId="TR_FundId" DataSourceID="FundsODS" MakeDefault0="True" AppendDataBoundItems="true">
+                    DataSourceID="FundsODS" MakeDefault0="True" AppendDataBoundItems="true">
                     <asp:ListItem Value="0">(not specified)</asp:ListItem>
                 </cc1:DisplayOrEditDropDown>
                 <asp:HyperLink ID="FundsLink" runat="server" Target="_blank">fund totals</asp:HyperLink>
@@ -196,7 +196,7 @@
                     <asp:Label ID="ContributionDateLabel" runat="server" Text='<%# Eval("ContributionDate", "{0:d}") %>' />
                 </td>
                 <td align="right">
-                    <asp:Label ID="ContributionAmountLabel" runat="server" Text='<%# Eval("ContributionAmount", "{0:c}") %>' />
+                    <asp:Label ID="ContributionAmountLabel" runat="server" Text='<%# Eval("ContributionAmount", "{0:N2}") %>' />
                 </td>
                 <td>
                     <asp:Label ID="StatusLabel" runat="server" Text='<%# Eval("Status") %>' />

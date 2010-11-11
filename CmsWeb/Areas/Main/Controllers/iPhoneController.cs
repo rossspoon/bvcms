@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("not authorized");
 #endif
             Login.SetUserInfo(name);
-            if (!Util.OrgMembersOnly && User.IsInRole("OrgMembersOnly"))
+            if (!Util.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
             {
                 Util.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
@@ -75,8 +75,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var uname = Request.Headers["username"];
 #endif
             Login.SetUserInfo(uname);
-            FormsAuthentication.SetAuthCookie(uname, false);
-            if (!User.IsInRole("Attendance"))
+            if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
         }
@@ -109,16 +108,17 @@ namespace CmsWeb.Areas.Main.Controllers
             return new RollListResult(meeting);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult RecordAttend(int id, int PeopleId, bool Present)
+        public ActionResult RecordVisit(int id, int PeopleId)
         {
 #if DEBUG
 #else
             if (!Authenticate())
                 return Content("not authorized");
 #endif
-            Attend.RecordAttendance(PeopleId, id, Present);
+            Attend.RecordAttendance(PeopleId, id, true);
             DbUtil.Db.UpdateMeetingCounters(id);
-            return new EmptyResult();
+            var meeting = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == id);
+            return new RollListResult(meeting);
         }
         public class PersonInfo
         {

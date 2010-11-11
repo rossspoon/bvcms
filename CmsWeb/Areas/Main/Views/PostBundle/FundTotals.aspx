@@ -6,7 +6,7 @@
 <table>
 <% foreach (var f in Model.TotalsByFund())
    { %>
-<tr><td><%=f.Name %></td><td><%=f.Total.ToString2("c") %></td></tr>
+<tr><td><%=f.Name %></td><td align="right"><%=f.Total.ToString2("N2") %></td></tr>
 <% } %>
 </table>
 

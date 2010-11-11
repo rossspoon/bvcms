@@ -14,6 +14,11 @@ namespace CmsWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Util.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
+            {
+                Util.OrgMembersOnly = true;
+                DbUtil.Db.SetOrgMembersOnly();
+            }
             BindBirthdays();
             BindMyInvolvements();
             BindNews();

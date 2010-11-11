@@ -106,7 +106,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     case "a":
                         c.ContributionAmount = value.ToDecimal();
                         DbUtil.Db.SubmitChanges();
-                        return Content(c.ContributionAmount.ToString2("c"));
+                        return Content(c.ContributionAmount.ToString2("N2"));
                     case "f":
                         c.FundId = value.ToInt();
                         DbUtil.Db.SubmitChanges();

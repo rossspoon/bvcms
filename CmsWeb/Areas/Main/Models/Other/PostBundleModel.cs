@@ -165,9 +165,9 @@ namespace CmsWeb.Models
                     where c.ContributionId == id
                     select new
                     {
-                        amt = amt.ToString2("c"),
+                        amt = amt.ToString2("N2"),
                         totalitems = bh.BundleDetails.Sum(d =>
-                            d.Contribution.ContributionAmount).ToString2("c"),
+                            d.Contribution.ContributionAmount).ToString2("N2"),
                         itemcount = bh.BundleDetails.Count(),
                         pledge = c.PledgeFlag,
                         fund = "{0} - {1}".Fmt(
@@ -240,7 +240,7 @@ namespace CmsWeb.Models
             return new
             {
                 totalitems = bundle.BundleDetails.Sum(d =>
-                    d.Contribution.ContributionAmount).ToString2("c"),
+                    d.Contribution.ContributionAmount).ToString2("N2"),
                 itemcount = bundle.BundleDetails.Count(),
             };
         }
@@ -700,7 +700,7 @@ namespace CmsWeb.Models
             {
                 get
                 {
-                    return Amt.ToString2("c");
+                    return Amt.ToString2("N2");
                 }
             }
             public string Fund { get; set; }

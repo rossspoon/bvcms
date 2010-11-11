@@ -59,10 +59,10 @@
                     <asp:Label ID="DepositDateLabel" runat="server" />
                 </td>
                 <td align="right">
-                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("TotalBundle", "{0:c}") %>' />
+                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("TotalBundle", "{0:N2}") %>' />
                 </td>
                 <td align="right">
-                    <asp:Label ID="Label3" runat="server" Text='<%# Eval("TotalItems", "{0:c}") %>' />
+                    <asp:Label ID="Label3" runat="server" Text='<%# Eval("TotalItems", "{0:N2}") %>' />
                 </td>
                 <td>
                     <asp:Label ID="FundLabel" runat="server" ToolTip='<%# Eval("FundId") %>' Text='<%# Eval("Fund") %>' />

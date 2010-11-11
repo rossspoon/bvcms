@@ -193,15 +193,6 @@ namespace CmsWeb.Contributions {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator3;
         
         /// <summary>
-        /// TR_FundId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow TR_FundId;
-        
-        /// <summary>
         /// FundIdDropDown control.
         /// </summary>
         /// <remarks>

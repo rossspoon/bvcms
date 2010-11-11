@@ -36,7 +36,7 @@
     </asp:PlaceHolder>
 <blockquote style="width: 80%"><span class="style1">Please Note</span>: 
 You can include a file, image, mp3 or whatever you like in your email. 
-<a href="http://www.bvcms.com/Page/EmailFileUpload">Read this article for instructions</a>.
+<a href="http://www.bvcms.com/Doc/EmailFileUpload">Read this article for instructions</a>.
 <blockquote>
     <table width="100%">
         <tr>
