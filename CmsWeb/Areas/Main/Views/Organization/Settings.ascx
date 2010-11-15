@@ -177,6 +177,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.AskTickets)%></td>
     </tr>
     <tr>
+        <th>Num Items Label:</th>
+        <td><%=Model.org.NumItemsLabel %></td>
+    </tr>
+    <tr>
         <th>Allow Only One:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AllowOnlyOne)%></td>
     </tr>

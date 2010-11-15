@@ -22,17 +22,13 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new OrganizationModel(id.Value);
             if (m.org == null)
                 return Content("organization not found");
-            if (Util.OrgMembersOnly
-                && (!DbUtil.Db.OrganizationMembers.Any(om =>
-                    om.OrganizationId == m.org.OrganizationId
-                    && om.PeopleId == Util.UserPeopleId
-                    || m.org.SecurityTypeId == 3 )))
-            {
-                DbUtil.LogActivity("Trying to view Organization ({0})".Fmt(m.org.OrganizationName));
-                return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
-                    .Fmt("You do not have access to this page",
-                    "javascript: history.go(-1)", "Go Back"));
-            }
+
+            if (Util.OrgMembersOnly)
+                if (m.org.SecurityTypeId == 3)
+                    return NotAllowed("You do not have access to this page", m.org.OrganizationName);
+                else if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId))
+                    return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
+            
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
             if (Util.CurrentOrgId != m.org.OrganizationId)
@@ -43,6 +39,12 @@ namespace CmsWeb.Areas.Main.Controllers
             InitExportToolbar(id.Value, qb.QueryId);
             Session["ActiveOrganization"] = m.org.OrganizationName;
             return View(m);
+        }
+        private ActionResult NotAllowed(string error, string name)
+        {
+            DbUtil.LogActivity("Trying to view Organization ({0})".Fmt(name));
+            return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
+                                    .Fmt(error, "javascript: history.go(-1)", "Go Back"));
         }
         [Authorize(Roles = "Admin")]
 

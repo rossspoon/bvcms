@@ -34,8 +34,11 @@ namespace CmsWeb.Models.iPhone
                     w.WriteStartElement("Person");
                     w.WriteAttributeString("peopleid", p.PeopleId.ToString());
                     w.WriteAttributeString("name", p.Name);
+                    w.WriteAttributeString("first", p.First);
+                    w.WriteAttributeString("last", p.Last);
                     w.WriteAttributeString("address", p.Address);
                     w.WriteAttributeString("citystatezip", p.CityStateZip);
+                    w.WriteAttributeString("zip", p.Zip);
                     w.WriteAttributeString("age", p.Age.ToString());
                     w.WriteAttributeString("birthdate", p.BirthDate);
                     w.WriteAttributeString("homephone", p.HomePhone);

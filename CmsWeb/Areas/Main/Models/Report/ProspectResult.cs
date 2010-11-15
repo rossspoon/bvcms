@@ -27,11 +27,13 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Font bfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
+        private bool ShowForm;
 
         private int? qid;
-        public ProspectResult(int? id)
+        public ProspectResult(int? id, bool ShowForm)
         {
             qid = id;
+            this.ShowForm = ShowForm;
         }
 
         public class ProspectInfo
@@ -131,7 +133,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(new Phrase("no data"));
             else
             {
-                pageEvents.StartPageSet("Prospect Report: {0:d}".Fmt(dt));
+                pageEvents.StartPageSet("Outreach/Inreach Report: {0:d}".Fmt(dt));
                 IQueryable<ProspectInfo> q = GetProspectInfo();
                 foreach (var p in q)
                 {
@@ -264,7 +266,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         }
                         doc.Add(t);
                     }
-
+                    if (ShowForm)
+                        ContactForm();
                 }
             }
             pageEvents.EndPageSet();
@@ -357,6 +360,100 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     }).Take(10)
                      };
             return q2;
+        }
+
+        private const float cm2pts = 28.34f;
+        private Font h1font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+        private Font h2font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+
+        public void ContactForm()
+        {
+            doc.NewPage();
+
+            var t = new PdfPTable(1);
+            t.SetNoBorder();
+            t.AddCentered("InReach/Outreach Card", 1, h1font);
+            t.AddCentered("Contact Summary", 1, h2font);
+            t.AddRight("Contact Date: _______________", bfont);
+
+            doc.Add(t);
+
+            DisplayTable("Contact Reason", 5.7f, 1.2f, 24f, new List<string> 
+            { 
+                "Out-Reach (not a church member)",
+                "In-Reach (church/group member)",
+                "Information",
+                "Bereavement",
+                "Health",
+                "Personal",
+                "Other"
+            });
+
+            DisplayTable("Type of Contact", 5.7f, 8f, 24f, new List<string> 
+            { 
+                "Personal Visit",
+                "Phone Call",
+                "Card Sent",
+                "Email Sent",
+            });
+            DisplayTable("Results", 5.7f, 14.5f, 24f, new List<string> 
+            { 
+                "Not at Home",
+                "Left Door Hanger",
+                "Left Message",
+                "Contact Made",
+                "Gospel Shared",
+                "Profession of Faith",
+                "Prayer Request Rec'd",
+                "Prayed for Person",
+                "Already Saved",
+            });
+            DisplayNotes("Team Members", 4, 7.5f, 6f, 18.5f);
+            DisplayNotes("Specific Comments on Contact", 5, 18.5f, 1.2f, 13f);
+
+            DisplayTable("Actions to be taken", 12f, 1f, 6.5f, new List<string> 
+            { 
+                "Recycle to me on ____/____/____",
+                "Random Recycle",
+                "Follow-up Completed",
+            });
+
+            var t2 = new PdfPTable(1);
+            t2.TotalWidth = 7.5f * 72f;
+            t2.SetNoBorder();
+            t2.LockedWidth = true;
+            t2.AddCentered("Internal Use Only", 1, smallfont);
+            t2.WriteSelectedRows(0, -1, 36f, 56f, dc);
+        }
+        private void DisplayTable(string title, float width, float x, float y, List<string> reasons)
+        {
+            var t = new PdfPTable(new float[] { 1.3f, width-1.3f });
+            t.TotalWidth = width * cm2pts;
+            t.SetNoBorder();
+            t.LockedWidth = true;
+            t.DefaultCell.MinimumHeight = 1f * cm2pts;
+            t.DefaultCell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
+
+            t.AddPlainRow(title, bfont);
+            foreach (var r in reasons)
+            {
+                t.AddRight("_____", font);
+                t.Add(r, font);
+            }
+            t.WriteSelectedRows(0, -1, x * cm2pts, y * cm2pts, dc);
+        }
+        private void DisplayNotes(string title, int nrows, float width, float x, float y)
+        {
+            var t = new PdfPTable(1);
+            t.TotalWidth = width * cm2pts;
+            t.LockedWidth = true;
+            t.DefaultCell.MinimumHeight = 1f * cm2pts;
+            t.DefaultCell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
+
+            t.AddPlainRow(title, bfont);
+            for (int r = 0; r < nrows; r++ )
+                t.AddCell("");
+            t.WriteSelectedRows(0, -1, x * cm2pts, y * cm2pts, dc);
         }
 
         class PageEvent : PdfPageEventHelper

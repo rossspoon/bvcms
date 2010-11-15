@@ -1,37 +1,43 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
-
-<asp:Content ID="loginHead" ContentPlaceHolderID="head" runat="server">
-    <title>Log On</title>
-</asp:Content>
-
-<asp:Content ID="loginContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Log On</h2>
-    <p>
-        Please enter your username and password. <%= Html.ActionLink("Register", "Register") %> if you don't have an account.
-    </p>
-    <%= Html.ValidationSummary() %>
-
+<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Log on</title>
+    <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />   
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
+    <link href="/Content/Site2.css?v=2" rel="stylesheet" type="text/css" />
+    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
+</head>
+<body>
+<div id="container">
+    <div id="body">
     <% using (Html.BeginForm()) { %>
-        <div>
+        <div id="login">
+        <h2><%=DbUtil.Settings("NameOfChurch", "NameOfChurch: " + Util.Host)%></h2>
+        <h4 id="provider">Provided by <a href="http://www.bvcms.com"><img src="/images/bvcms130.png" border="0" /></a></h4>
             <fieldset>
-                <legend>Account Information</legend>
                 <p>
                     <label for="username">Username:</label>
                     <%= Html.TextBox("username") %>
-                    <%= Html.ValidationMessage("username") %>
                 </p>
                 <p>
                     <label for="password">Password:</label>
                     <%= Html.Password("password") %>
-                    <%= Html.ValidationMessage("password") %>
                 </p>
-                <p>
-                    <%= Html.CheckBox("rememberMe") %> <label class="inline" for="rememberMe">Remember me?</label>
-                </p>
-                <p>
+                <p style="text-align:right">
                     <input type="submit" value="Log On" />
                 </p>
+                <p><%= Html.ValidationMessage("login") %></p>
+                <p>
+                Forgot <a href="/Account/ForgotUsername">Username</a> or <a href="/Account/ForgotPassword">Password</a>?
+                </p>
             </fieldset>
+            <div class="source">Source code is <a href="http://www.bvcms.com/Page/License">licensed under GPL</a></div>
         </div>
     <% } %>
-</asp:Content>
+   </div>
+   <div id="footer"><p><strong>Terms of Use:</strong><br />Access to this site is given by special permission only</p></div>
+   </div>
+</body>
+</html>

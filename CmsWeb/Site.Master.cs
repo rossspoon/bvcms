@@ -14,6 +14,7 @@ using System.Web.UI.WebControls;
 using System.Linq;
 using System.Data.Linq;
 using CmsData;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb
 {
@@ -39,7 +40,7 @@ namespace CmsWeb
                 .Add("/Content/js/superfish.js")
                 .Add("/Content/js/supersubs.js")
                 .Add("/Scripts/ExportToolBar.js")
-                .Render("/Content/combined_#.js");     
+                .Render("/Content/combined_#.js");
 
             urgentNotice.Visible = ((string)Application["getoff"]).HasValue();
             if (urgentNotice.Visible)
@@ -60,9 +61,13 @@ namespace CmsWeb
                 Util.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
-            Login.CheckStaffRole(Util.UserName);
+
+            var r = AccountController.CheckAccessRole(Util.UserName);
+            if (r.HasValue())
+                Response.Redirect(r);
+
             if (CMSMembershipProvider.provider.UserMustChangePassword)
-                Response.Redirect(ResolveUrl("~/ChangePassword.aspx"));
+                Response.Redirect(ResolveUrl("/ChangePassword.aspx"));
             Membership.GetUser(); // record activity
 
             NewUserItem.Visible = false;
@@ -96,7 +101,7 @@ namespace CmsWeb
             OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;
             UserHeader.Text = DbUtil.Header();
-            string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath,"");
+            string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath, "");
             pa = pa.Substring(0, pa.Length - 1);
             HelpLink.NavigateUrl = Util.HelpLink(pa.Replace('/', '_'));
             HelpLink2.NavigateUrl = HelpLink.NavigateUrl;

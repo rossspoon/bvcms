@@ -22,6 +22,11 @@ namespace CmsWeb.Areas.Manage
             AddRoute(context, "Recreation");
             AddRoute(context, "Volunteers");
             context.MapRoute(
+                "Public_Logon",
+                "Logon",
+                new { controller = "Account", action = "Logon", id="" }
+            );
+            context.MapRoute(
                 "Manage_default",
                 "Manage/{controller}/{action}/{id}",
                 new { action = "Index", id = "" }

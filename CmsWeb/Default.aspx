@@ -151,7 +151,7 @@
                         <tr>
                             <td>
                                 <h4 style="font: verdana; color: #2b637d;font-size:.8em">
-                                    <asp:HyperLink ID="BlogLink" runat="server" Target="_blank">CMS2 News</asp:HyperLink>
+                                    <asp:HyperLink ID="BlogLink" runat="server" Target="_blank">BVCMS News</asp:HyperLink>
                                 </h4>
                                 <div style="overflow: auto; height: 600px;">
                                     <asp:GridView ID="NewsGrid" runat="server" AutoGenerateColumns="False" ShowHeader="False"
@@ -174,11 +174,6 @@
                                             <asp:TemplateField HeaderText="Date">
                                                 <ItemTemplate>
                                                     <asp:Label ID="Label2" runat="server" Text='<%# Eval("Published", "{0:d}") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Author">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("Author") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>

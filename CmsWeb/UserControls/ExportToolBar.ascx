@@ -59,11 +59,7 @@
             <li>
                 <asp:HyperLink ID="ProspectLink" runat="server">
                     <asp:Image ID="Image8" ImageUrl="~/images/Report.png" runat="server" />
-                    Prospect Form</asp:HyperLink></li>
-            <li>
-                <asp:HyperLink ID="InreachLink" runat="server">
-                    <asp:Image ID="Image9" ImageUrl="~/images/Report.png" runat="server" />
-                    Inreach Form</asp:HyperLink></li>
+                    Inreach/Outreach</asp:HyperLink></li>
             <li>
                 <asp:HyperLink ID="ContactsLink" ToolTip="For calling contacts"
                     runat="server">

@@ -313,6 +313,8 @@ namespace CmsData
             Db.Attends.DeleteAllOnSubmit(q2);
             foreach (var c in this.Contributions)
                 c.PeopleId = otherid;
+            foreach (var u in this.Users)
+                u.PeopleId = otherid;
             foreach (var v in this.VolunteerForms)
                 v.PeopleId = otherid;
             foreach (var v in this.Volunteers)

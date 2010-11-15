@@ -154,6 +154,10 @@
         <td><%=Html.CheckBox("org.AskTickets")%></td>
     </tr>
     <tr>
+        <th>Num Items Label:</th>
+        <td><%=Html.TextBox("org.NumItemsLabel")%></td>
+    </tr>
+    <tr>
         <th>Allow Only One:</th>
         <td><%=Html.CheckBox("org.AllowOnlyOne")%></td>
     </tr>

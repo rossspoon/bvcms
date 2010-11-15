@@ -31,8 +31,11 @@ namespace CmsWeb.Models.iPhone
                     {
                         PeopleId = p.PeopleId,
                         Name = p.Name,
+                        First = p.FirstName,
+                        Last = p.LastName,
                         Address = p.PrimaryAddress,
                         CityStateZip = p.PrimaryCity + ", " + p.PrimaryState + " " + p.PrimaryZip.Substring(0, 5),
+                        Zip = p.PrimaryZip.Substring(0,5),
                         Age = p.Age,
                         BirthDate = p.BirthMonth + "/" + p.BirthDay + "/" + p.BirthYear,
                         HomePhone = p.HomePhone,

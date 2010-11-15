@@ -215,6 +215,8 @@ namespace CmsData
 		
 		private bool? _GiveOrgMembAccess;
 		
+		private string _NumItemsLabel;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -560,6 +562,9 @@ namespace CmsData
 		
 		partial void OnGiveOrgMembAccessChanging(bool? value);
 		partial void OnGiveOrgMembAccessChanged();
+		
+		partial void OnNumItemsLabelChanging(string value);
+		partial void OnNumItemsLabelChanged();
 		
     #endregion
 		public Organization()
@@ -2807,6 +2812,28 @@ namespace CmsData
 					this._GiveOrgMembAccess = value;
 					this.SendPropertyChanged("GiveOrgMembAccess");
 					this.OnGiveOrgMembAccessChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NumItemsLabel", UpdateCheck=UpdateCheck.Never, Storage="_NumItemsLabel", DbType="varchar(50)")]
+		public string NumItemsLabel
+		{
+			get { return this._NumItemsLabel; }
+
+			set
+			{
+				if (this._NumItemsLabel != value)
+				{
+				
+                    this.OnNumItemsLabelChanging(value);
+					this.SendPropertyChanging();
+					this._NumItemsLabel = value;
+					this.SendPropertyChanged("NumItemsLabel");
+					this.OnNumItemsLabelChanged();
 				}
 
 			}

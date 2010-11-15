@@ -291,6 +291,13 @@ namespace CmsData
             TagAll(q, tag);
             return tag;
         }
+        public void PopulateSpecialTag(IQueryable<Person> q, string tagname)
+        {
+            var tag = FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            TagPeople.DeleteAllOnSubmit(tag.PersonTags);
+            SubmitChanges();
+            TagAll(q, tag);
+        }
         public void DePopulateSpecialTag(IQueryable<Person> q, int TagTypeId)
         {
             var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId);
@@ -348,6 +355,7 @@ namespace CmsData
         public void SetOrgMembersOnly()
         {
             var me = Util.UserPeopleId;
+            var dt = Util.Now.AddYears(-1);
 
             // members of any of my orgs excluding unshared orgs
             var q = from p in People
@@ -358,16 +366,30 @@ namespace CmsData
                              && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgMembersOnly);
+            PopulateSpecialTag(q, "OrgMemberOnlyInMyOrg");
+
+            // prev members of any of my orgs excluding unshared orgs
+
+            q = from p in People
+                    where p.EnrollmentTransactions.Any(et =>
+                            et.TransactionDate > dt
+                            && et.TransactionTypeId >= 4
+                            && et.Organization.SecurityTypeId != 3
+                            && OrganizationMembers.Any(um =>
+                                um.OrganizationId == et.OrganizationId && um.PeopleId == me))
+                    select p;
+            TagAll(q, tag);
+            PopulateSpecialTag(q, "OrgMemberOnlyPrevInMyOrg");
 
             // members of my family
             q = from p in People
                 where p.FamilyId == CurrentUser.Person.FamilyId
                 select p;
             TagAll(q, tag);
+            PopulateSpecialTag(q, "OrgMemberOnlyInMyFamily");
 
             // visitors in the last year to one of my orgs excluding unshared
             var attype = new int[] { 40, 50, 60 };
-            var dt = Util.Now.AddYears(-1);
             q = from p in People
                 where p.Attends.Any(a =>
                     OrganizationMembers.Any(um =>
@@ -376,18 +398,21 @@ namespace CmsData
                     && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)
                 select p;
             TagAll(q, tag);
+            PopulateSpecialTag(q, "OrgMemberOnlyVisitMyOrg");
 
             // people assigned to me in one of my tasks
             q = from p in People
                 where p.TasksAboutPerson.Any(at => at.OwnerId == me || at.CoOwnerId == me)
                 select p;
             TagAll(q, tag);
+            PopulateSpecialTag(q, "OrgMemberOnlyInMyTask");
 
             // people I have visited in a contact
             q = from p in People
                 where p.contactsHad.Any(c => c.contact.contactsMakers.Any(cm => cm.PeopleId == me))
                 select p;
             TagAll(q, tag);
+            PopulateSpecialTag(q, "OrgMemberOnlyIHaveContacted");
         }
         [Function(Name = "dbo.AddAbsents")]
         public int AddAbsents([Parameter(DbType = "Int")] int? meetid, [Parameter(DbType = "Int")] int? userid)

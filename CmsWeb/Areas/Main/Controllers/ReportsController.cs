@@ -147,11 +147,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RollLabelsResult { qid = id, format = format, titles = titles ?? false };
         }
-        public ActionResult Prospect(int? id)
+        public ActionResult Prospect(int? id, bool? ShowForm)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new ProspectResult(id);
+            return new ProspectResult(id, ShowForm ?? false);
         }
         public ActionResult Attendee(int? id)
         {
@@ -246,6 +246,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 Dt2 = Dt1.Value.AddDays(1);
             var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
             return View(m);
+        }
+        public ActionResult Test()
+        {
+            return new TestResult();
         }
     }
 }

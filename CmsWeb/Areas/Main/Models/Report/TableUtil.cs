@@ -20,12 +20,22 @@ public static class TableUtil
             c.AddElement(new Paragraph(s, bfont));
             c.GrayFill = .8f;
             t.AddCell(c);
+            c.MinimumHeight = t.DefaultCell.MinimumHeight;
+        }
+        public static void AddPlainRow(this PdfPTable t, string s, Font bfont)
+        {
+            var c = new PdfPCell(t.DefaultCell);
+            c.Border = PdfPCell.NO_BORDER;
+            c.Colspan = t.NumberOfColumns;
+            c.AddElement(new Phrase(s, bfont));
+            t.AddCell(c);
         }
         public static void AddHeader(this PdfPTable t, string s, Font font)
         {
             var c = new PdfPCell(new Paragraph(s, font));
             c.Border = PdfPCell.BOTTOM_BORDER;
             c.BackgroundColor = t.DefaultCell.BackgroundColor;
+            c.MinimumHeight = t.DefaultCell.MinimumHeight;
             c.SetLeading(t.DefaultCell.Leading, 1f);
             t.AddCell(c);
         }
@@ -33,6 +43,7 @@ public static class TableUtil
         {
             var c = new PdfPCell(new Paragraph(s, font));
             c.Border = t.DefaultCell.Border;
+            c.MinimumHeight = t.DefaultCell.MinimumHeight;
             c.BackgroundColor = t.DefaultCell.BackgroundColor;
             c.SetLeading(t.DefaultCell.Leading, 1f);
             t.AddCell(c);

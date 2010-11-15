@@ -48,7 +48,7 @@ ul.sf-tab li:hover li ul, ul.sf-tab li.sfHover li ul
 }
 ul.sf-tab li li:hover ul, ul.sf-tab li li.sfHover ul
 {
-	left: 10em; /* match ul width */
+	left: 17em; /* match ul width */
 	top: 0;
 }
 ul.sf-tab li li:hover li ul, ul.sf-tab li li.sfHover li ul
@@ -57,7 +57,7 @@ ul.sf-tab li li:hover li ul, ul.sf-tab li li.sfHover li ul
 }
 ul.sf-tab li li li:hover ul, ul.sf-tab li li li.sfHover ul
 {
-	left: 10em; /* match ul width */
+	left: 17em; /* match ul width */
 	top: 0;
 }
 
@@ -95,7 +95,7 @@ ul.sf-tab li li li:hover ul, ul.sf-tab li li li.sfHover ul
 }
 .sf-tab li li a
 {
-	width: 10em;
+	width: 17em;
 	z-index: 99;
 }
 .sf-tab li li li
@@ -109,7 +109,7 @@ ul.sf-tab li li li:hover ul, ul.sf-tab li li li.sfHover ul
 .sf-tab li li a:focus, .sf-tab li li a:hover, .sf-tab li li a:active
 {
 	background: #abe2ff;
-	width: 10em;
+	width: 17em;
 	z-index: 99;
 }
 

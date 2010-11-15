@@ -14,6 +14,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Globalization;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb
 {
@@ -79,7 +80,7 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                Login.SetUserInfo(Util.UserName);
+                AccountController.SetUserInfo(Util.UserName, Session);
             Util.SysFromEmail = DbUtil.Settings("SysFromEmail",
                 WebConfigurationManager.AppSettings["sysfromemail"]);
             Util.SessionStarting = true;
@@ -94,7 +95,11 @@ namespace CmsWeb
                 DbUtil.DbDispose();
             if (Response.Status.StartsWith("401")
                     && Request.Url.AbsolutePath.EndsWith(".aspx"))
-                Login.CheckStaffRole(User.Identity.Name);
+            {
+                var r = AccountController.CheckAccessRole(User.Identity.Name);
+                if (r.HasValue())
+                    Response.Redirect(r);
+            }
         }
         protected void Application_Error(object sender, EventArgs e)
         {

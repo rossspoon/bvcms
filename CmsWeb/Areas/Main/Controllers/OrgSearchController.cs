@@ -73,7 +73,15 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult ExportExcel(int prog, int div, int schedule, int status, int campus, string name)
         {
-            var m = new OrgSearchModel { ProgramId = prog, DivisionId = div, ScheduleId = schedule, StatusId = status, CampusId = campus, Name = name };
+            var m = new OrgSearchModel 
+            { 
+                ProgramId = prog, 
+                DivisionId = div, 
+                ScheduleId = schedule, 
+                StatusId = status, 
+                CampusId = campus, 
+                Name = name 
+            };
             return new OrgExcelResult(m);
         }
         private void SaveToSession(OrgSearchModel m)
@@ -181,21 +189,26 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.ExtraOptionsLabel = frorg.ExtraOptionsLabel;
                 toorg.ExtraQuestions = frorg.ExtraQuestions;
                 toorg.Fee = frorg.Fee;
+                toorg.FirstMeetingDate = frorg.FirstMeetingDate;
                 toorg.GenderId = frorg.GenderId;
                 toorg.GradeOptions = frorg.GradeOptions;
                 toorg.Instructions = frorg.Instructions;
                 toorg.LastDayBeforeExtra = frorg.LastDayBeforeExtra;
+                toorg.LastMeetingDate = frorg.LastMeetingDate;
                 toorg.LinkGroupsFromOrgs = frorg.LinkGroupsFromOrgs;
                 toorg.MaximumFee = frorg.MaximumFee;
                 toorg.MemberOnly = frorg.MemberOnly;
                 toorg.NoSecurityLabel = frorg.NoSecurityLabel;
                 toorg.NumCheckInLabels = frorg.NumCheckInLabels;
+                toorg.NumItemsLabel = frorg.NumItemsLabel;
                 toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
                 toorg.OptionsLabel = frorg.OptionsLabel;
                 toorg.OrgMemberFees = frorg.OrgMemberFees;
+                toorg.PhoneNumber = frorg.PhoneNumber;
                 toorg.RegistrationTypeId = frorg.RegistrationTypeId;
                 toorg.RequestLabel = frorg.RequestLabel;
                 toorg.ShirtFee = frorg.ShirtFee;
+                toorg.ShirtSizes = frorg.ShirtSizes;
                 toorg.Terms = frorg.Terms;
                 toorg.ValidateOrgs = frorg.ValidateOrgs;
                 toorg.YesNoQuestions = frorg.YesNoQuestions;

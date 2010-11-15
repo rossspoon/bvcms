@@ -13,6 +13,7 @@ using System.Net.Mail;
 using CMSPresenter;
 using System.IO;
 using System.Web.Configuration;
+using System.Text;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -97,25 +98,133 @@ CKEditorFuncNum, baseurl + fn, error));
 
         public ActionResult LogOn()
         {
+            if (Request.Url.Scheme == "http" && Util.CmsHost.StartsWith("https://"))
+                if (Request.QueryString.Count > 0)
+                    return Redirect(Util.CmsHost + "Logon?" + Request.QueryString);
+                else
+                    return Redirect(Util.CmsHost + "Logon");
+
+            if (User.Identity.IsAuthenticated)
+                return Redirect("/");
+
             return View();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings",
-            Justification = "Needs to take same parameter type as Controller.Redirect()")]
-        public ActionResult LogOn(string userName, string password, bool rememberMe, string returnUrl)
+        public ActionResult LogOn(string userName, string password, string returnUrl)
         {
-            if (!ValidateLogOn(userName, password))
-            {
-                ViewData["rememberMe"] = rememberMe;
-                return View();
-            }
+            if (returnUrl.StartsWith("/default.aspx"))
+                returnUrl = null;
 
-            FormsAuth.SignIn(userName, rememberMe);
-            if (!String.IsNullOrEmpty(returnUrl))
-                return Redirect(returnUrl);
+            var user = DbUtil.Db.Users.SingleOrDefault(u => u.Username == userName);
+            if (user != null && password == user.TempPassword)
+            {
+                user.TempPassword = null;
+                user.IsLockedOut = false;
+                DbUtil.Db.SubmitChanges();
+                FormsAuth.SignIn(userName, false);
+            }
+            else if (user != null && password == DbUtil.Settings("ImpersonatePassword", null))
+            {
+                FormsAuth.SignIn(userName, false);
+                Notify(WebConfigurationManager.AppSettings["senderrorsto"],
+                    "{0} is being impersonated".Fmt(userName),
+                    Util.Now.ToString());
+            }
             else
-                return Redirect("/");
+                if (!ValidateLogOn(userName, password))
+                {
+                    if (user == null)
+                        NotifyAdmins("attempt to login by non-user on " + Request.Url.Authority,
+                                "{0} tried to login at {1} but is not a user"
+                                    .Fmt(userName, Util.Now));
+                    else if (user.IsLockedOut)
+                        NotifyAdmins("user locked out on " + Request.Url.Authority,
+                                "{0} tried to login at {1} but is locked out"
+                                    .Fmt(user.Username, Util.Now));
+                    else if (!user.IsApproved)
+                        NotifyAdmins("unapproved user logging in on " + Request.Url.Authority,
+                                "{0} tried to login at {1} but is not approved"
+                                    .Fmt(user.Username, Util.Now));
+                    return View();
+                }
+
+            FormsAuth.SignIn(userName, false);
+            SetUserInfo(userName, Session);
+
+            var muser = Membership.GetUser(userName);
+            if (CMSMembershipProvider.provider.UserMustChangePassword)
+                Redirect("/ChangePassword.aspx");
+            Util.FormsBasedAuthentication = true;
+            if (user != null && !returnUrl.HasValue())
+                if (!CMSRoleProvider.provider.IsUserInRole(userName, "Access"))
+                    return Redirect("/Person/Index/" + Util.UserPeopleId);
+            if (returnUrl.HasValue())
+                return Redirect(returnUrl);
+            return Redirect("/");
+        }
+        private static void Notify(string to, string subject, string message)
+        {
+            var smtp = Util.Smtp();
+            DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), to, subject, message);
+        }
+        private static void NotifyAdmins(string subject, string message)
+        {
+            var sb = new StringBuilder();
+            foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
+            {
+                if (!Util.ValidEmail(u.Person.EmailAddress))
+                    continue;
+                if (sb.Length > 0)
+                    sb.Append(",");
+                sb.Append(u.EmailAddress);
+            }
+            Notify(sb.ToString(), subject, message);
+        }
+        public static string CheckAccessRole(string name)
+        {
+            if (!Roles.IsUserInRole(name, "Access") && !Roles.IsUserInRole(name, "OrgMembersOnly"))
+            {
+                if (Util.UserPeopleId > 0)
+                    return "/Person/Index/" + Util.UserPeopleId;
+
+                if (name.HasValue())
+                    NotifyAdmins("user loggedin without a role on " + Util.Host,
+                        string.Format("{0} visited site at {1} but does not have Access role",
+                            name, Util.Now));
+                FormsAuthentication.SignOut();
+                return "/Errors/AccessDenied.htm";
+            }
+            if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
+            {
+                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, Util.Host));
+                return "NoRemoteAccess.htm";
+            }
+            return null;
+        }
+        public static void SetUserInfo(string username, System.Web.SessionState.HttpSessionState Session)
+        {
+            var u = SetUserInfo(username);
+            Session["ActivePerson"] = u.Name;
+        }
+        public static void SetUserInfo(string username, HttpSessionStateBase Session)
+        {
+            var u = SetUserInfo(username);
+            if (u == null)
+                return;
+            Session["ActivePerson"] = u.Name;
+        }
+        private static User SetUserInfo(string username)
+        {
+            var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == username);
+            if (u != null)
+            {
+                Util.UserId = u.UserId;
+                Util.UserPeopleId = u.PeopleId;
+                Util.CurrentPeopleId = Util.UserPeopleId.Value;
+
+            }
+            return u;
         }
 
         [Authorize(Roles = "Admin")]
@@ -173,41 +282,6 @@ The bvCMS Team</p>
             FormsAuth.SignOut();
             return Redirect("/");
         }
-
-        public ActionResult Register()
-        {
-
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-
-            return View();
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Register(string userName, string email, string password, string confirmPassword)
-        {
-
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-
-            if (ValidateRegistration(userName, email, password, confirmPassword))
-            {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus = MembershipService.CreateUser(userName, password, email);
-
-                if (createStatus == MembershipCreateStatus.Success)
-                {
-                    FormsAuth.SignIn(userName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("_FORM", ErrorCodeToString(createStatus));
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View();
-        }
-
 
         public ActionResult ForgotUsername(string email)
         {
@@ -303,10 +377,10 @@ The bvCMS Team</p>
             CMSMembershipProvider.provider.AdminOverride = false;
 
             user.ResetPasswordCode = null;
-            
+
             DbUtil.Db.SubmitChanges();
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress, 
+            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
                 "bvcms new password",
                 @"Hi {0},
 <p>Your new password is {1}</p>
@@ -328,8 +402,6 @@ The bvCMS Team</p>
 
         [Authorize]
         [AcceptVerbs(HttpVerbs.Post)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "Exceptions result in password not being changed.")]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
 
@@ -399,12 +471,8 @@ The bvCMS Team</p>
 
         private bool ValidateLogOn(string userName, string password)
         {
-            if (String.IsNullOrEmpty(userName))
-                ModelState.AddModelError("username", "You must specify a username.");
-            if (String.IsNullOrEmpty(password))
-                ModelState.AddModelError("password", "You must specify a password.");
             if (!MembershipService.ValidateUser(userName, password))
-                ModelState.AddModelError("_FORM", "The username or password provided is incorrect.");
+                ModelState.AddModelError("login", "Username or password not recognized.");
 
             return ModelState.IsValid;
         }

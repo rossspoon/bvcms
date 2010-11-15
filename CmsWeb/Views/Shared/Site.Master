@@ -124,7 +124,7 @@
                         </li>
                         <% if (Page.User.IsInRole("Finance"))
                            { %>
-                        <li class="headlink"><a href="#" runat="server">Contributions</a>
+                        <li class="headlink"><a href="/Contributions/Bundles.aspx" runat="server">Contributions</a>
                             <ul>
                                 <li><a href="/Contributions/Bundles.aspx">Bundles</a></li>
                                 <li><a href="/Contributions/All.aspx">All</a></li>

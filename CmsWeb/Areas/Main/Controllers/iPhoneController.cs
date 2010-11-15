@@ -12,6 +12,7 @@ using CmsWeb.Models.iPhone;
 using System.Xml;
 using System.IO;
 using System.Web.Security;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -56,7 +57,8 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!Authenticate())
                 return Content("not authorized");
 #endif
-            Login.SetUserInfo(name);
+            AccountController.SetUserInfo(name, Session);
+
             if (!Util.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
             {
                 Util.OrgMembersOnly = true;
@@ -74,7 +76,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("not authorized");
             var uname = Request.Headers["username"];
 #endif
-            Login.SetUserInfo(uname);
+            AccountController.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
@@ -106,6 +108,18 @@ namespace CmsWeb.Areas.Main.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             return new RollListResult(meeting);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RecordAttend(int id, int PeopleId, bool Present)
+        {
+#if DEBUG
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+#endif
+            Attend.RecordAttendance(PeopleId, id, Present);
+            DbUtil.Db.UpdateMeetingCounters(id);
+            return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RecordVisit(int id, int PeopleId)
@@ -175,8 +189,9 @@ namespace CmsWeb.Areas.Main.Controllers
             p.Family.StateCode = z != null ? z.State : null;
             p.Family.ZipCode = m.zip;
 
-            p.EmailAddress = m.email.Trim();
-            p.CellPhone = m.cell.GetDigits();
+            p.EmailAddress = Trim(m.email);
+            if (m.cell.HasValue())
+                p.CellPhone = m.cell.GetDigits();
             p.MaritalStatusId = m.marital;
             p.GenderId = m.gender;
             DbUtil.Db.SubmitChanges();

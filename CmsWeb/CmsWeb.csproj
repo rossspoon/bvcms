@@ -220,6 +220,7 @@
     <Compile Include="Areas\Main\Models\Report\ContributionStatementsExtract.cs" />
     <Compile Include="Areas\Main\Models\Report\ContributionStatements.cs" />
     <Compile Include="Areas\Main\Models\Report\ContributionStatementsResult.cs" />
+    <Compile Include="Areas\Main\Models\Report\TestResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetModel.cs" />
     <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
     <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult.cs" />
@@ -626,13 +627,6 @@
     <Compile Include="Image.aspx.designer.cs">
       <DependentUpon>Image.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Meeting.aspx.cs">
       <DependentUpon>Meeting.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -892,6 +886,7 @@
     <Content Include="ckeditor\skins\office2003\icons_rtl.png" />
     <Content Include="ckeditor\skins\v2\icons_rtl.png" />
     <Content Include="Content\bluebullet.gif" />
+    <Content Include="Content\images\bvcms_8.png" />
     <Content Include="Content\images\calendar.gif" />
     <Content Include="Content\images\closek.png" />
     <Content Include="Content\images\file.gif" />
@@ -919,6 +914,8 @@
     <Content Include="BadEts.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="images\bvcms130.png" />
+    <Content Include="images\bvcms150.png" />
     <Content Include="OnlineRegSample.htm" />
     <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\pickslots2.js" />
@@ -947,7 +944,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ForceError.aspx" />
-    <Content Include="Login.aspx" />
     <Content Include="Meeting.aspx" />
     <Content Include="Meetings.aspx" />
     <Content Include="MemberMap.aspx" />
@@ -1081,7 +1077,6 @@
     <Content Include="Content\images\888888_7x7_arrow_left.gif" />
     <Content Include="Content\images\888888_7x7_arrow_right.gif" />
     <Content Include="Content\images\888888_7x7_arrow_up.gif" />
-    <Content Include="Content\images\bvcms_8.png" />
     <Content Include="Content\images\dadada_40x100_textures_02_glass_75.png" />
     <Content Include="Content\images\e6e6e6_40x100_textures_02_glass_75.png" />
     <Content Include="Content\images\ffffff_40x100_textures_01_flat_75.png" />

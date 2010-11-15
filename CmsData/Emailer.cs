@@ -104,7 +104,7 @@ namespace CmsData
                     msg.Sender = sysmail;
             }
 
-            if (WebConfigurationManager.AppSettings["sendemail"] != "false")
+            if (WebConfigurationManager.AppSettings["sendemail"] != "false" && smtp.Host != null)
             {
                 try
                 {

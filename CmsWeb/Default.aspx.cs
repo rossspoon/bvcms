@@ -80,9 +80,9 @@ namespace CmsWeb
         }
         private void BindNews()
         {
-            var feedurl = DbUtil.Settings("BlogFeedUrl", "http://feeds2.feedburner.com/Bvcms-Blog");
+            var feedurl = "http://feeds.feedburner.com/Bvcms-Blog";
 
-            BlogLink.NavigateUrl = DbUtil.Settings("BlogAppUrl", "http://www.bvcms.com/blog/");
+            BlogLink.NavigateUrl = "http://blog.bvcms.com";
 
             var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
@@ -99,8 +99,11 @@ namespace CmsWeb
 
             if (feed != null)
             {
-                req.IfModifiedSince = feed.LastModified.Value;
-                req.Headers.Add("If-None-Match", feed.ETag);
+                if (feed.LastModified.HasValue)
+                {
+                    req.IfModifiedSince = feed.LastModified.Value;
+                    req.Headers.Add("If-None-Match", feed.ETag);
+                }
             }
             else
             {
@@ -121,7 +124,7 @@ namespace CmsWeb
                     sr.Close();
                     DbUtil.Db.SubmitChanges();
                 }
-                catch (WebException)
+                catch (WebException ex)
                 {
                 }
                 if (feed.Data != null)

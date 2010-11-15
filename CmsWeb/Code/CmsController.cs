@@ -5,6 +5,7 @@ using System.Web;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb
 {
@@ -55,7 +56,11 @@ namespace CmsWeb
             if (!User.Identity.IsAuthenticated)
                 requestContext.HttpContext.Response.Redirect("/Login.aspx?ReturnUrl=" + requestContext.HttpContext.Request.Path);
             else if (!NoCheckRole)
-                Login.CheckStaffRole(Util.UserName);
+            {
+                var r = AccountController.CheckAccessRole(Util.UserName);
+                if (r.HasValue())
+                    Response.Redirect(r);
+            }
         }
         protected override void HandleUnknownAction(string actionName)
         {

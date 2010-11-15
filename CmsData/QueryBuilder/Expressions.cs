@@ -1466,7 +1466,9 @@ namespace CmsData
             int[] ids)
         {
             Expression<Func<Person, bool>> pred = p =>
-                p.Users.Any(u => u.UserRoles.Any(ur => ids.Contains(ur.RoleId)));
+                p.Users.Any(u => u.UserRoles.Any(ur => ids.Contains(ur.RoleId))
+                    || (u.UserRoles.Count() == 0 && ids.Contains(0))
+                );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);

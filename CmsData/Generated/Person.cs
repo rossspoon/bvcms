@@ -2105,7 +2105,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="varchar(40)")]
+		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="varchar(60)")]
 		public string AddressLineOne
 		{
 			get { return this._AddressLineOne; }
@@ -2925,7 +2925,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryCity", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCity", DbType="varchar(50)")]
+		[Column(Name="PrimaryCity", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCity", DbType="varchar(30)")]
 		public string PrimaryCity
 		{
 			get { return this._PrimaryCity; }
@@ -2947,7 +2947,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryZip", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryZip", DbType="varchar(50)")]
+		[Column(Name="PrimaryZip", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryZip", DbType="varchar(15)")]
 		public string PrimaryZip
 		{
 			get { return this._PrimaryZip; }
@@ -2969,7 +2969,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(50)")]
+		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(60)")]
 		public string PrimaryAddress
 		{
 			get { return this._PrimaryAddress; }
@@ -2991,7 +2991,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryState", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryState", DbType="varchar(50)")]
+		[Column(Name="PrimaryState", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryState", DbType="varchar(20)")]
 		public string PrimaryState
 		{
 			get { return this._PrimaryState; }
@@ -3057,7 +3057,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(50)")]
+		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(40)")]
 		public string PrimaryAddress2
 		{
 			get { return this._PrimaryAddress2; }

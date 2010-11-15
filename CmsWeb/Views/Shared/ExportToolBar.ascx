@@ -43,10 +43,10 @@
         <ul>
             <li><a href='/Reports/Prospect/<%=ViewData["queryid"]%>'
                 target="_blank"><img src="/images/Report.png" /> 
-                Prospect Form</a></li>
-            <li><a href='/Report/InreachRpt.aspx?id=<%=ViewData["queryid"]%>' 
+                Inreach/Outreach</a></li>
+            <li><a href='/Report/Prospect/<%=ViewData["queryid"]%>?Form=true' 
                 target="_blank"><img src="/images/Report.png" /> 
-                Inreach Form</a></li>
+                Inreach/Outreach with Form</a></li>
             <li><a href='/Reports/Contacts/<%=ViewData["queryid"]%>' 
                 target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
                 Contact Report</a></li>

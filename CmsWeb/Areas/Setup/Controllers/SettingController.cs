@@ -193,18 +193,6 @@ namespace CmsWeb.Areas.Setup.Controllers
                 for (var c = 1; c < a.Length; c++)
                     switch (names[c].Trim())
                     {
-                        case "Name":
-                            o.OrganizationName = a[c];
-                            break;
-                        case "FirstMeeting":
-                            o.FirstMeetingDate = a[c].ToDate();
-                            break;
-                        case "Location":
-                            o.Location = a[c];
-                            break;
-                        case "RollSheetVisitorWks":
-                            o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
-                            break;
                         case "AgeFee":
                             o.AgeFee = a[c];
                             break;
@@ -268,14 +256,17 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "Deposit":
                             o.Deposit = a[c].ToDecimal();
                             break;
-                        case "GradeAgeEnd":
-                            o.GradeAgeEnd = a[c].ToInt2();
-                            break;
-                        case "Limit":
-                            o.Limit = a[c].ToInt2();
+                        case "EmailAddresses":
+                            o.EmailAddresses = a[c];
                             break;
                         case "Fee":
                             o.Fee = a[c].ToDecimal();
+                            break;
+                        case "FirstMeeting":
+                            o.FirstMeetingDate = a[c].ToDate();
+                            break;
+                        case "GradeAgeEnd":
+                            o.GradeAgeEnd = a[c].ToInt2();
                             break;
                         case "Gender":
                             o.GenderId = a[c].ToInt2();
@@ -283,14 +274,29 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "GradeAgeStart":
                             o.GradeAgeStart = a[c].ToInt2();
                             break;
-                        case "EmailAddresses":
-                            o.EmailAddresses = a[c];
+                        case "IsBibleFellowshipOrg":
+                            o.IsBibleFellowshipOrg = a[c].ToBool2();
+                            break;
+                        case "LastDayBeforeExtra":
+                            o.LastDayBeforeExtra = a[c].ToDate();
+                            break;
+                        case "LastMeeting":
+                            o.LastMeetingDate = a[c].ToDate();
+                            break;
+                        case "Limit":
+                            o.Limit = a[c].ToInt2();
+                            break;
+                        case "Location":
+                            o.Location = a[c];
                             break;
                         case "MaximumFee":
                             o.MaximumFee = a[c].ToDecimal();
                             break;
                         case "MemberOnly":
                             o.MemberOnly = a[c].ToBool2();
+                            break;
+                        case "Name":
+                            o.OrganizationName = a[c];
                             break;
                         case "NoSecurityLabel":
                             o.NoSecurityLabel = a[c].ToBool2();
@@ -301,20 +307,20 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "NumWorkerCheckInLabels":
                             o.NumWorkerCheckInLabels = a[c].ToInt2();
                             break;
+                        case "Phone":
+                            o.PhoneNumber = a[c];
+                            break;
+                        case "RegistrationTypeId":
+                            o.RegistrationTypeId = a[c].ToInt();
+                            break;
+                        case "RollSheetVisitorWks":
+                            o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
+                            break;
                         case "ShirtFee":
                             o.ShirtFee = a[c].ToDecimal();
                             break;
                         case "YesNoQuestions":
                             o.YesNoQuestions = a[c];
-                            break;
-                        case "LastDayBeforeExtra":
-                            o.LastDayBeforeExtra = a[c].ToDate();
-                            break;
-                        case "IsBibleFellowshipOrg":
-                            o.IsBibleFellowshipOrg = a[c].ToBool2();
-                            break;
-                        case "RegistrationTypeId":
-                            o.RegistrationTypeId = a[c].ToInt();
                             break;
                     }
                 DbUtil.Db.SubmitChanges();

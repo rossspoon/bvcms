@@ -20,6 +20,9 @@ namespace CmsWeb.Models.iPhone
         public int PeopleId { get; set; }
         public string MemberStatus { get; set; }
         public string Name { get; set; }
+        public string First { get; set; }
+        public string Last { get; set; }
+        public string Zip { get; set; }
         public string BirthDate { get; set; }
         public string Address { get; set; }
         public string Address2 { get; set; }

@@ -143,7 +143,7 @@ namespace CmsWeb.Models
         {
             var q = from i in DbUtil.Db.People
                     where i.PeopleId == pid.ToInt()
-                    select i.Name2;
+                    select i.Name2 + (i.DeceasedDate.HasValue ? "[DECEASED]" : "");
             var s = q.SingleOrDefault();
             if (!s.HasValue())
                 return "not found";
@@ -154,8 +154,11 @@ namespace CmsWeb.Models
             var qu = from p in DbUtil.Db.People
                      where p.Name2.StartsWith(q)
                      orderby p.Name2
-                     select p.Name2 +
-                     "|" + p.PeopleId + "|" + (p.Age ?? 0) + "|" + p.PrimaryAddress;
+                     select p.Name2
+                     + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
+                     + "|" + p.PeopleId
+                     + "|" + (p.Age ?? 0)
+                     + "|" + p.PrimaryAddress;
             return string.Join("\n", qu.Take(limit).ToArray());
         }
         private object ContributionRowData(int id)
