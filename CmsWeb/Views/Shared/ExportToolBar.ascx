@@ -44,7 +44,7 @@
             <li><a href='/Reports/Prospect/<%=ViewData["queryid"]%>'
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach/Outreach</a></li>
-            <li><a href='/Report/Prospect/<%=ViewData["queryid"]%>?Form=true' 
+            <li><a href='/Reports/Prospect/<%=ViewData["queryid"]%>?Form=true' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Inreach/Outreach with Form</a></li>
             <li><a href='/Reports/Contacts/<%=ViewData["queryid"]%>' 

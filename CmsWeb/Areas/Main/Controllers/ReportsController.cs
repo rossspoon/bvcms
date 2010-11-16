@@ -147,11 +147,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RollLabelsResult { qid = id, format = format, titles = titles ?? false };
         }
-        public ActionResult Prospect(int? id, bool? ShowForm)
+        public ActionResult Prospect(int? id, bool? Form)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new ProspectResult(id, ShowForm ?? false);
+            return new ProspectResult(id, Form ?? false);
         }
         public ActionResult Attendee(int? id)
         {

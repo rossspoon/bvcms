@@ -124,7 +124,7 @@ namespace CMSPresenter
                         p.Attends.Any(a =>
                             a.AttendanceFlag == true
                             && (a.MeetingDate >= dt && a.MeetingDate <= meeting.MeetingDate)
-                            && a.MeetingDate >= a.Organization.FirstMeetingDate
+                            && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                             && a.OrganizationId == meeting.OrganizationId
                             && Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                             )

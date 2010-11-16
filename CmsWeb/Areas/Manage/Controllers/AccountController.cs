@@ -113,7 +113,8 @@ CKEditorFuncNum, baseurl + fn, error));
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult LogOn(string userName, string password, string returnUrl)
         {
-            if (returnUrl.StartsWith("/default.aspx"))
+            var lc = returnUrl.ToLower();
+            if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
                 returnUrl = null;
 
             var user = DbUtil.Db.Users.SingleOrDefault(u => u.Username == userName);
@@ -367,7 +368,7 @@ The bvCMS Team</p>
         {
             var user = DbUtil.Db.Users.SingleOrDefault(u => u.ResetPasswordCode == id);
             if (user == null)
-                return Content("Invalid code");
+                return Content("Password has been reset already, if you did not get the email, contact the church");
 
             CMSMembershipProvider.provider.AdminOverride = true;
             var mu = CMSMembershipProvider.provider.GetUser(user.Username, false);

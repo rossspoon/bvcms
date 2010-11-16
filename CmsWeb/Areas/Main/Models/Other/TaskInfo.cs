@@ -202,7 +202,7 @@ namespace CmsWeb.Models
             Util.CurrentPeopleId = WhoId.Value;
             HttpContext.Current.Session["ActivePerson"] = Who;
             var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
-            return "/Reports/Prospect/" + qb.QueryId;
+            return "/Reports/Prospect/" + qb.QueryId + "?form=true";
         }
         public IEnumerable<SelectListItem> PriorityList()
         {

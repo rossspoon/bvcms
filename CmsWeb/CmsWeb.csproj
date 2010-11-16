@@ -914,6 +914,8 @@
     <Content Include="BadEts.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Content\bodybg.png" />
+    <Content Include="images\bvcms120.png" />
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
     <Content Include="OnlineRegSample.htm" />
