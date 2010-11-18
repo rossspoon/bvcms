@@ -15,6 +15,9 @@
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="For mail merge"><img src="/images/Excel.png" /> 
                 Excel</a></li>
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=AllFamily'
+                title="For mail merge"><img src="/images/Excel.png" /> 
+                Excel Family</a></li>
             <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=IndividualPicture' 
                 title="For picture directory word merge"><img src="/images/Excel.png" /> 
                 Excel Pictures</a></li>

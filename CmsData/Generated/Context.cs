@@ -194,6 +194,14 @@ namespace CmsData
         partial void UpdateEmailOptOut(EmailOptOut instance);
         partial void DeleteEmailOptOut(EmailOptOut instance);
         
+        partial void InsertEmailQueue(EmailQueue instance);
+        partial void UpdateEmailQueue(EmailQueue instance);
+        partial void DeleteEmailQueue(EmailQueue instance);
+        
+        partial void InsertEmailQueueTo(EmailQueueTo instance);
+        partial void UpdateEmailQueueTo(EmailQueueTo instance);
+        partial void DeleteEmailQueueTo(EmailQueueTo instance);
+        
         partial void InsertEmailSent(EmailSent instance);
         partial void UpdateEmailSent(EmailSent instance);
         partial void DeleteEmailSent(EmailSent instance);
@@ -905,6 +913,18 @@ namespace CmsData
 		public Table< EmailOptOut> EmailOptOuts
 		{
 			get	{ return this.GetTable< EmailOptOut>(); }
+
+		}
+
+		public Table< EmailQueue> EmailQueues
+		{
+			get	{ return this.GetTable< EmailQueue>(); }
+
+		}
+
+		public Table< EmailQueueTo> EmailQueueTos
+		{
+			get	{ return this.GetTable< EmailQueueTo>(); }
 
 		}
 

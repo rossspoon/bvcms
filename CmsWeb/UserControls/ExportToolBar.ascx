@@ -27,6 +27,10 @@
                     <asp:Image ID="Image6a" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel</asp:HyperLink></li>
             <li>
+                <asp:HyperLink ID="ExcelFamLink" class="ChooseLabelType" ToolTip="For mail merge" runat="server">
+                    <asp:Image ID="Image6b" ImageUrl="~/images/Excel.png" runat="server" />
+                    Excel Family</asp:HyperLink></li>
+            <li>
                 <asp:HyperLink ID="ExcelPicLink" ToolTip="For picture directory word merge" runat="server">
                     <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel Pictures</asp:HyperLink></li>

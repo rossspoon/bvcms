@@ -91,6 +91,46 @@ namespace CMSPresenter
                     };
             return q.Take(maximumRows);
         }
+        public static IEnumerable FetchExcelListFamily(int queryid)
+        {
+            var Db = DbUtil.Db;
+            var query = Db.PeopleQuery(queryid);
+
+            var q = from p in Db.People
+                    where query.Any(ff => ff.FamilyId == p.FamilyId)
+                    orderby p.LastName, p.FamilyId, p.FirstName
+                    where p.DeceasedDate == null
+                    let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                    select new
+                    {
+                        FamilyId = p.FamilyId,
+                        PeopleId = p.PeopleId,
+                        LastName = p.LastName,
+                        FirstName = p.PreferredName,
+                        Position = p.FamilyPosition.Description,
+                        Married = p.MaritalStatus.Description,
+                        Title = p.TitleCode,
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        City = p.PrimaryCity,
+                        State = p.PrimaryState,
+                        Zip = p.PrimaryZip.FmtZip(),
+                        Email = p.EmailAddress,
+                        BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                        BirthDay = Util.FormatBirthday(null, p.BirthMonth, p.BirthDay),
+                        JoinDate = p.JoinDate.FormatDate(),
+                        HomePhone = p.HomePhone.FmtFone(),
+                        CellPhone = p.CellPhone.FmtFone(),
+                        WorkPhone = p.WorkPhone.FmtFone(),
+                        MemberStatus = p.MemberStatus.Description,
+                        BFTeacher = p.BFClass.LeaderName,
+                        Age = p.Age.ToString(),
+                        School = p.SchoolOther,
+                        Grade = p.Grade.ToString(),
+                        AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
+                    };
+            return q;
+        }
         public static IEnumerable FetchExcelListPics(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;

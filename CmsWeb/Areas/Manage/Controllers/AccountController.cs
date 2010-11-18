@@ -117,17 +117,17 @@ CKEditorFuncNum, baseurl + fn, error));
             if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
                 returnUrl = null;
 
-            var user = DbUtil.Db.Users.SingleOrDefault(u => u.Username == userName);
+            var user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == userName || u.EmailAddress == userName);
             if (user != null && password == user.TempPassword)
             {
                 user.TempPassword = null;
                 user.IsLockedOut = false;
                 DbUtil.Db.SubmitChanges();
-                FormsAuth.SignIn(userName, false);
+                FormsAuth.SignIn(user.Username, false);
             }
             else if (user != null && password == DbUtil.Settings("ImpersonatePassword", null))
             {
-                FormsAuth.SignIn(userName, false);
+                FormsAuth.SignIn(user.Username, false);
                 Notify(WebConfigurationManager.AppSettings["senderrorsto"],
                     "{0} is being impersonated".Fmt(userName),
                     Util.Now.ToString());
@@ -142,23 +142,23 @@ CKEditorFuncNum, baseurl + fn, error));
                     else if (user.IsLockedOut)
                         NotifyAdmins("user locked out on " + Request.Url.Authority,
                                 "{0} tried to login at {1} but is locked out"
-                                    .Fmt(user.Username, Util.Now));
+                                    .Fmt(userName, Util.Now));
                     else if (!user.IsApproved)
                         NotifyAdmins("unapproved user logging in on " + Request.Url.Authority,
                                 "{0} tried to login at {1} but is not approved"
-                                    .Fmt(user.Username, Util.Now));
+                                    .Fmt(userName, Util.Now));
                     return View();
                 }
 
-            FormsAuth.SignIn(userName, false);
-            SetUserInfo(userName, Session);
+            FormsAuth.SignIn(user.Username, false);
+            SetUserInfo(user.Username, Session);
 
-            var muser = Membership.GetUser(userName);
+            var muser = Membership.GetUser(user.Username);
             if (CMSMembershipProvider.provider.UserMustChangePassword)
                 Redirect("/ChangePassword.aspx");
             Util.FormsBasedAuthentication = true;
             if (user != null && !returnUrl.HasValue())
-                if (!CMSRoleProvider.provider.IsUserInRole(userName, "Access"))
+                if (!CMSRoleProvider.provider.IsUserInRole(user.Username, "Access"))
                     return Redirect("/Person/Index/" + Util.UserPeopleId);
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);

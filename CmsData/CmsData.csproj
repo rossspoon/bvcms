@@ -163,6 +163,8 @@
     <Compile Include="Emailer.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
+    <Compile Include="Generated\EmailQueue.cs" />
+    <Compile Include="Generated\EmailQueueTo.cs" />
     <Compile Include="Generated\EmailSent.cs" />
     <Compile Include="Generated\FamilyCheckinLock.cs" />
     <Compile Include="Generated\Functions\FindPerson.cs" />

@@ -65,6 +65,9 @@ namespace CmsWeb
                 case "Family":
                     dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
                     break;
+                case "AllFamily":
+                    dg.DataSource = PersonSearchController.FetchExcelListFamily(qid.Value);
+                    break;
                 case "ParentsOf":
                     dg.DataSource = ctl.FetchExcelParents(qid.Value, maxExcelRows);
                     break;

@@ -595,8 +595,8 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 CreateList(m);
                 m.UserPeopleId = (from u in DbUtil.Db.Users
-                                  where u.Username == m.username
-                                  select u.PeopleId).Single();
+                                  where u.Username == m.username || u.EmailAddress == m.username
+                                  select u.PeopleId).First();
                 m.List[0].LoggedIn = true;
             }
             return View("List", m);

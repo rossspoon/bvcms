@@ -103,6 +103,7 @@ namespace CmsData
                 if (From.Host != sysmail.Host)
                     msg.Sender = sysmail;
             }
+            //msg.Headers.Add("bvcms-host", Util.CmsHost);
 
             if (WebConfigurationManager.AppSettings["sendemail"] != "false" && smtp.Host != null)
             {
