@@ -169,10 +169,10 @@ namespace CmsWeb.Models
             };
             var p = Person.Add(f, 30,
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
-                    DbUtil.Settings("GODisciplesOrigin", "70").ToInt(),
-                    DbUtil.Settings("GODisciplesEntry", "15").ToInt());
+                    DbUtil.Db.Setting("GODisciplesOrigin", "70").ToInt(),
+                    DbUtil.Db.Setting("GODisciplesEntry", "15").ToInt());
             p.EmailAddress = email;
-            p.CampusId = DbUtil.Settings("DefaultCampusId", campus.ToString()).ToInt2();
+            p.CampusId = DbUtil.Db.Setting("DefaultCampusId", campus.ToString()).ToInt2();
             if (p.Age >= 18)
                 p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
@@ -224,7 +224,7 @@ namespace CmsWeb.Models
                 b.Title = groupname + " Blog";
                 b.OwnerId = discuser.UserId;
                 b.Name = b.Title.Replace(" ", "");
-                b.Description = DbUtil.Settings("GODisciplesBlogDescription", "A Small Group Discussion");
+                b.Description = DbUtil.Db.Setting("GODisciplesBlogDescription", "A Small Group Discussion");
                 b.GroupId = g.Id;
                 b.PrivacyLevel = 1;
                 DbUtil.Db.Blogs.InsertOnSubmit(b);
@@ -240,7 +240,7 @@ namespace CmsWeb.Models
 
                 // create a new cms org
                 leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
-                    o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
+                    o.OrganizationId == DbUtil.Db.Setting("GODisciplesLeadersOrgId", "0").ToInt());
                 if (leaderorg == null)
                 {
                     var div = DbUtil.Db.Divisions.SingleOrDefault(d => d.Name == "GODisciples");
@@ -259,7 +259,7 @@ namespace CmsWeb.Models
                         OrganizationName = STR_GODisciplesLeaders,
                         SecurityTypeId = 0,
                         AttendClassificationId = (int)CmsData.Organization.AttendanceClassificationCode.Normal,
-                        CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2(),
+                        CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2(),
                         AllowAttendOverlap = false,
                     };
                     leaderorg.DivisionId = div.Id;
@@ -275,7 +275,7 @@ namespace CmsWeb.Models
             else
             {
                 leaderorg = DbUtil.Db.Organizations.SingleOrDefault(o =>
-                    o.OrganizationId == DbUtil.Settings("GODisciplesLeadersOrgId", "0").ToInt());
+                    o.OrganizationId == DbUtil.Db.Setting("GODisciplesLeadersOrgId", "0").ToInt());
                 neworg = DbUtil.Db.Organizations.SingleOrDefault(o =>
                     o.OrganizationName == groupname);
             }
@@ -284,7 +284,7 @@ namespace CmsWeb.Models
             g.SetBlogger(discuser, true);
             g.SetMember(discuser, true);
 
-            var leaderg = Group.LoadByName(DbUtil.Settings("GoDisciplesLeadersGroup",
+            var leaderg = Group.LoadByName(DbUtil.Db.Setting("GoDisciplesLeadersGroup",
                 STR_GODisciplesLeaders));
             if (leaderg == null)
             {
@@ -433,7 +433,7 @@ namespace CmsWeb.Models
         }
         public void EmailLeaderNotices()
         {
-            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            string adminmail = DbUtil.Db.Setting("GODisciplesMail", DbUtil.SystemEmailAddress);
             var c = DbUtil.Content("GODisciplesLeaderConfirm");
             if (c == null)
                 return;
@@ -444,13 +444,13 @@ namespace CmsWeb.Models
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
             Body = Body.Replace("{membersignupurl}", MemberSignupUrl);
             Body = Body.Replace("{cmsorgpageurl}", CmsOrgPageUrl);
-            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{minister}", DbUtil.Db.Setting("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Db.Setting("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
-            DbUtil.Email2(smtp, p.EmailAddress, adminmail,
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email(smtp, p.EmailAddress, adminmail,
                 "new Leader GODisciple registration in cms", 
                 "{0}({1},{2}) joined {3}\r\nand has {4} own {5}"
                 .Fmt(p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName, 
@@ -460,7 +460,7 @@ namespace CmsWeb.Models
         }
         public void EmailMemberNotices()
         {
-            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            string adminmail = DbUtil.Db.Setting("GODisciplesMail", DbUtil.SystemEmailAddress);
             var c = DbUtil.Content("GODisciplesConfirm");
             if (c == null)
                 return;
@@ -469,19 +469,19 @@ namespace CmsWeb.Models
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
             Body = Body.Replace("{groupname}", neworg.OrganizationName);
-            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
-            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{minister}", DbUtil.Db.Setting("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Db.Setting("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
-            DbUtil.Email2(smtp, p.EmailAddress, adminmail, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email(smtp, p.EmailAddress, adminmail, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             var q = from om in neworg.OrganizationMembers
                     where om.MemberTypeId == neworg.LeaderMemberTypeId
                     select om.Person;
             var leader = q.FirstOrDefault();
             if (leader != null)
-                DbUtil.Email2(smtp, p.EmailAddress, leader.EmailAddress, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+                Util.Email(smtp, p.EmailAddress, leader.EmailAddress, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             //UpdatePhone(smtp, adminmail, p);
         }
         public Content ContentDefault(string name)
@@ -504,7 +504,7 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
         }
         public void EmailIndividualNotices(string invitationcode)
         {
-            string adminmail = DbUtil.Settings("GODisciplesMail", DbUtil.SystemEmailAddress);
+            string adminmail = DbUtil.Db.Setting("GODisciplesMail", DbUtil.SystemEmailAddress);
             var g = GetGroupByInvitation(invitationcode);
             Content c;
             var groupname = "";
@@ -522,13 +522,13 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
             var Body = c.Body.Replace("{groupname}", groupname);
             Body = Body.Replace("{first}", p.PreferredName);
             Body = Body.Replace("{username}", discuser.Username);
-            Body = Body.Replace("{disciplesurl}", DbUtil.Settings("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
-            Body = Body.Replace("{minister}", DbUtil.Settings("GODisciplesMinister", "GO Disciples Team"));
+            Body = Body.Replace("{disciplesurl}", DbUtil.Db.Setting("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
+            Body = Body.Replace("{minister}", DbUtil.Db.Setting("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{password}", password);
 
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
-            DbUtil.Email2(smtp, p.EmailAddress, adminmail, 
+            Util.Email(smtp, adminmail, p.Name, p.EmailAddress, c.Title, Body);
+            Util.Email(smtp, p.EmailAddress, adminmail, 
                 "new Individual GODisciple registration in cms", 
                 "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
             //UpdatePhone(smtp, adminmail, p);

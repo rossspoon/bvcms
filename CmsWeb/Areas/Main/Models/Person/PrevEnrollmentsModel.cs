@@ -26,7 +26,7 @@ namespace CmsWeb.Models.PersonPage
                     where etd.TransactionStatus == false
                     where etd.PeopleId == PeopleId
                     where etd.TransactionTypeId >= 4
-                    where !(etd.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                    where !(etd.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                     select etd;
             return _enrollments;
         }

@@ -160,7 +160,6 @@
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
-    <Compile Include="Emailer.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailQueue.cs" />
@@ -194,6 +193,8 @@
     <Compile Include="Generated\PeopleExtra.cs" />
     <Compile Include="Generated\Views\ContributionsView.cs" />
     <Compile Include="Generated\VolunteerCode.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Session2.cs" />
     <Compile Include="VolInterest.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumEntry.cs" />

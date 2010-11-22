@@ -84,7 +84,7 @@ namespace CmsWeb
             {
                 var res = filterContext.HttpContext.Response;
                 res.StatusCode = 401;
-                res.AddHeader("WWW-Authenticate", "Basic realm=\"{0}\"".Fmt(Util.Host));
+                res.AddHeader("WWW-Authenticate", "Basic realm=\"{0}\"".Fmt(DbUtil.Db.Host));
                 res.End();
             }
         }

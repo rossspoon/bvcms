@@ -21,8 +21,8 @@ namespace CMSPresenter
         public PersonSearchController()
         {
             TagTypeId = DbUtil.TagTypeId_Personal;
-            TagName = Util.CurrentTagName;
-            TagOwner = Util.CurrentTagOwnerId;
+            TagName = Util2.CurrentTagName;
+            TagOwner = Util2.CurrentTagOwnerId;
         }
         public int count;
 
@@ -92,6 +92,28 @@ namespace CMSPresenter
             return q.Take(maximumRows);
         }
         public static IEnumerable FetchExcelListFamily(int queryid)
+        {
+            var Db = DbUtil.Db;
+            var query = Db.PeopleQuery(queryid);
+
+            var q = from f in Db.Families
+                    where query.Any(ff => ff.FamilyId == f.FamilyId)
+                    let p = Db.People.Single(pp => pp.PeopleId == f.HeadOfHouseholdId)
+                    let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
+                    let children = f.People.Where(pp => pp.PeopleId != p.PeopleId && pp.PeopleId != p.SpouseId && pp.Age < 25).Select(pp => pp.PreferredName)
+                    select new
+                    {
+                        FamilyId = p.FamilyId,
+                        LastName = p.LastName,
+                        LabelName = (spouse == null ? p.PreferredName : p.PreferredName + " & " + spouse.PreferredName),
+                        Children = string.Join(", ", children),
+                        Address = p.AddrCityStateZip,
+                        HomePhone = p.HomePhone.FmtFone(),
+                        Email = p.EmailAddress,
+                    };
+            return q;
+        }
+        public static IEnumerable FetchExcelListFamily2(int queryid)
         {
             var Db = DbUtil.Db;
             var query = Db.PeopleQuery(queryid);
@@ -213,7 +235,7 @@ namespace CMSPresenter
             string name, string addr, string comm, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             var query = DbUtil.Db.People.Select(p => p);
-            if (Util.OrgMembersOnly)
+            if (Util2.OrgMembersOnly)
                 query = DbUtil.Db.OrgMembersOnlyTag.People();
             if (usersonly)
                 query = query.Where(p => p.Users.Count() > 0);

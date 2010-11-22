@@ -37,7 +37,7 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 if (m.Person == null || !m.Person.CanUserSee)
                     return Content("no access");
-            if (Util.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
+            if (Util2.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
             {
                 DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
                 return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
@@ -46,7 +46,7 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             ViewData["Comments"] = Util.SafeFormat(m.Person.Comments);
             ViewData["PeopleId"] = id.Value;
-            Util.CurrentPeopleId = id.Value;
+            Util2.CurrentPeopleId = id.Value;
             Session["ActivePerson"] = m.displayperson.Name;
             DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name));
             InitExportToolbar(id);
@@ -78,12 +78,12 @@ namespace CmsWeb.Areas.Main.Controllers
             var p = person.Family.People.FirstOrDefault(m => m.PeopleId != id);
             if (p != null)
             {
-                Util.CurrentPeopleId = p.PeopleId;
+                Util2.CurrentPeopleId = p.PeopleId;
                 Session["ActivePerson"] = p.Name;
             }
             else
             {
-                Util.CurrentPeopleId = 0;
+                Util2.CurrentPeopleId = 0;
                 Session.Remove("ActivePerson");
             }
 
@@ -95,14 +95,14 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Tag(int id)
         {
-            Person.Tag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            Person.Tag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UnTag(int id)
         {
-            Person.UnTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            Person.UnTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
@@ -523,7 +523,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("already running elsewhere, sorry");
             HttpContext.Application["TagDuplicatesStatus"] = new TagDuplicatesStatus();
             int? pid = Util.UserPeopleId;
-            string tagname = Util.CurrentTagName;
+            string tagname = Util2.CurrentTagName;
             ThreadPool.QueueUserWorkItem(o =>
             {
                 var st = DateTime.Now;

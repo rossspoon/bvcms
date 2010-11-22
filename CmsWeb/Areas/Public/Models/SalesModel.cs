@@ -38,8 +38,8 @@ namespace CmsWeb.Models
             get
             {
                 if (testing)
-                    return DbUtil.Settings("ServiceUOrgIDTest", "0");
-                return DbUtil.Settings("ServiceUOrgID", "0");
+                    return DbUtil.Db.Setting("ServiceUOrgIDTest", "0");
+                return DbUtil.Db.Setting("ServiceUOrgID", "0");
             }
         }
         public string ServiceUOrgAccountID
@@ -47,8 +47,8 @@ namespace CmsWeb.Models
             get
             {
                 if (testing)
-                    return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
-                return DbUtil.Settings("ServiceUOrgAccountID", "0");
+                    return DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0");
+                return DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
             }
         }
 
@@ -196,10 +196,10 @@ namespace CmsWeb.Models
             };
             var p = Person.Add(f, 30,
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
-                    DbUtil.Settings("SaleOrigin", "0").ToInt(),
-                    DbUtil.Settings("SaleEntry", "0").ToInt());
+                    DbUtil.Db.Setting("SaleOrigin", "0").ToInt(),
+                    DbUtil.Db.Setting("SaleEntry", "0").ToInt());
             p.EmailAddress = email;
-            p.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            p.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)
                 p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             switch (homecell)
@@ -249,7 +249,7 @@ namespace CmsWeb.Models
         public void SendNotice()
         {
             var smtp = Util.Smtp();
-            DbUtil.Email2(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
+            Util.Email(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
         }
     }
 }

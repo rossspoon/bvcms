@@ -18,11 +18,11 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             ViewData["head"] = HeaderHtml("GODisciplesHeader",
                 Header,
-                DbUtil.Settings("GoDisciplesLogo", "/Content/Crosses.png"));
+                DbUtil.Db.Setting("GoDisciplesLogo", "/Content/Crosses.png"));
         }
         public ActionResult Index()
         {
-            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+            if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var c = DbUtil.Content("GODisciplesIndex");
@@ -33,14 +33,14 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Leader(int? id)
         {
-            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+            if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Leader");
             if (id.HasValue)
                 m.campus = id;
             else
-                m.campus = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+                m.campus = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
 
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!id.HasValue)
                 return Content("group not found");
-            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+            if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Disciple", id.Value);
@@ -79,7 +79,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Individual(string id)
         {
-            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+            if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             var m = new Models.GODisciplesModel("Individual");
@@ -108,7 +108,7 @@ namespace CmsWeb.Areas.Public.Controllers
         [Authorize(Roles = "Edit")]
         public ActionResult RenameGroup(string oldname, string newname)
         {
-            if (bool.Parse(DbUtil.Settings("GODisciplesDisabled", "false")))
+            if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -134,7 +134,7 @@ namespace CmsWeb.Areas.Public.Controllers
 
         private string Header
         {
-            get { return DbUtil.Settings("GODisciplesTitle", "GO Disciples") + " Registration"; }
+            get { return DbUtil.Db.Setting("GODisciplesTitle", "GO Disciples") + " Registration"; }
         }
         //public ActionResult FixPW()
         //{

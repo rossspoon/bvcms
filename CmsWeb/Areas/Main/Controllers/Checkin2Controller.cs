@@ -227,7 +227,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     select new CampusItem
                     {
                         Campus = c,
-                        password = DbUtil.Settings("kioskpassword" + c.Id, "kio.")
+                        password = DbUtil.Db.Setting("kioskpassword" + c.Id, "kio.")
                     };
             return View(q);
         }
@@ -388,7 +388,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var setting = "KioskEmail";
             if (campusid > 0)
                 setting += campusid;
-            var email = DbUtil.Settings(setting, null);
+            var email = DbUtil.Db.Setting(setting, null);
             if (email.HasValue())
             {
                 var smtp = Util.Smtp();

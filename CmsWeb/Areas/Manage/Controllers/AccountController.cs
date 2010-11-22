@@ -125,7 +125,7 @@ CKEditorFuncNum, baseurl + fn, error));
                 DbUtil.Db.SubmitChanges();
                 FormsAuth.SignIn(user.Username, false);
             }
-            else if (user != null && password == DbUtil.Settings("ImpersonatePassword", null))
+            else if (user != null && password == DbUtil.Db.Setting("ImpersonatePassword", null))
             {
                 FormsAuth.SignIn(user.Username, false);
                 Notify(WebConfigurationManager.AppSettings["senderrorsto"],
@@ -135,6 +135,9 @@ CKEditorFuncNum, baseurl + fn, error));
             else
                 if (!ValidateLogOn(userName, password))
                 {
+                    if (!userName.HasValue())
+                        return View();
+
                     if (user == null)
                         NotifyAdmins("attempt to login by non-user on " + Request.Url.Authority,
                                 "{0} tried to login at {1} but is not a user"
@@ -167,7 +170,7 @@ CKEditorFuncNum, baseurl + fn, error));
         private static void Notify(string to, string subject, string message)
         {
             var smtp = Util.Smtp();
-            DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), to, subject, message);
+            Util.Email(smtp, DbUtil.AdminMail, to, subject, message);
         }
         private static void NotifyAdmins(string subject, string message)
         {
@@ -190,7 +193,7 @@ CKEditorFuncNum, baseurl + fn, error));
                     return "/Person/Index/" + Util.UserPeopleId;
 
                 if (name.HasValue())
-                    NotifyAdmins("user loggedin without a role on " + Util.Host,
+                    NotifyAdmins("user loggedin without a role on " + DbUtil.Db.Host,
                         string.Format("{0} visited site at {1} but does not have Access role",
                             name, Util.Now));
                 FormsAuthentication.SignOut();
@@ -198,7 +201,7 @@ CKEditorFuncNum, baseurl + fn, error));
             }
             if (Roles.IsUserInRole(name, "NoRemoteAccess") && DbUtil.CheckRemoteAccessRole)
             {
-                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, Util.Host));
+                NotifyAdmins("NoRemoteAccess", string.Format("{0} tried to login from {1}", name, DbUtil.Db.Host));
                 return "NoRemoteAccess.htm";
             }
             return null;
@@ -222,8 +225,7 @@ CKEditorFuncNum, baseurl + fn, error));
             {
                 Util.UserId = u.UserId;
                 Util.UserPeopleId = u.PeopleId;
-                Util.CurrentPeopleId = Util.UserPeopleId.Value;
-
+                Util2.CurrentPeopleId = Util.UserPeopleId.Value;
             }
             return u;
         }
@@ -252,7 +254,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
+            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
                     "New user welcome",
                     @"Hi {0},
 <p>You have a new account on our Church Management System which you can access at the following link:<br />
@@ -264,7 +266,7 @@ CKEditorFuncNum, baseurl + fn, error));
 <p>Please visit <a href=""{1}/Display/Page/Welcome"">this welcome page</a> for more information</p>
 <p>Thanks,<br />
 The bvCMS Team</p>
-".Fmt(user.Name, DbUtil.Settings("DefaultHost", Util.Host), user.Username, newpassword));
+".Fmt(user.Name, DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host), user.Username, newpassword));
             return Redirect("/Admin/Users.aspx?create=1");
         }
         [Authorize(Roles = "Admin")]
@@ -300,7 +302,7 @@ The bvCMS Team</p>
             var smtp = Util.Smtp();
             foreach (var user in q)
             {
-                DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, email,
+                Util.Email(smtp, DbUtil.AdminMail, user.Name, email,
                     "bvcms forgot username",
                     @"Hi {0},
 <p>Your username is: {1}</p>
@@ -309,10 +311,10 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, user.Username));
                 DbUtil.Db.SubmitChanges();
-                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
+                Util.Email(smtp, DbUtil.AdminMail, DbUtil.AdminMail, "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
             }
             if (q.Count() == 0)
-                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
+                Util.Email(smtp, DbUtil.AdminMail, DbUtil.AdminMail, "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
 
             return RedirectToAction("RequestUsername");
 
@@ -335,7 +337,7 @@ The bvCMS Team</p>
                 user.ResetPasswordCode = Guid.NewGuid();
                 var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt(
                     Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
-                DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
+                Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
                     "bvcms password reset link",
                     @"Hi {0},
 <p>You recently requested a new password.  To reset your password, follow the link below:<br />
@@ -345,10 +347,10 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, link));
                 DbUtil.Db.SubmitChanges();
-                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} user: {1} forgot password".Fmt(Util.Host, user.Name), "no content");
+                Util.Email(smtp, DbUtil.AdminMail, DbUtil.AdminMail, "{0} user: {1} forgot password".Fmt(DbUtil.Db.Host, user.Name), "no content");
             }
             else
-                DbUtil.Email2(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), "{0} unknown user: {1} forgot password".Fmt(Util.Host, username), "no content");
+                Util.Email(smtp, DbUtil.AdminMail, DbUtil.AdminMail, "{0} unknown user: {1} forgot password".Fmt(DbUtil.Db.Host, username), "no content");
 
             return RedirectToAction("RequestPassword");
 
@@ -381,7 +383,7 @@ The bvCMS Team</p>
 
             DbUtil.Db.SubmitChanges();
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress), user.Name, user.Person.EmailAddress,
+            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
                 "bvcms new password",
                 @"Hi {0},
 <p>Your new password is {1}</p>

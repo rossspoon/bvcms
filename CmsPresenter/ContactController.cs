@@ -134,7 +134,7 @@ namespace CMSPresenter
         }
         public bool CanViewComments(int cid)
         {
-            if (!Util.OrgMembersOnly)
+            if (!Util2.OrgMembersOnly)
                 return true;
 
             var q = from c in Db.Contactees

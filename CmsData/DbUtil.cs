@@ -80,7 +80,7 @@ namespace CmsData
         }
         public static string Header()
         {
-            var hc = HttpContext.Current.Cache[Util.Host + "header"] as string;
+            var hc = HttpRuntime.Cache[Db.Host + "header"] as string;
             if (hc == null)
             {
                 var h = Content("Header");
@@ -96,7 +96,7 @@ namespace CmsData
     <h2 id='CommonHeaderSubTitle'>Feed My Sheep</h2>
 </div>
 ";
-                HttpContext.Current.Cache[Util.Host + "header"] = hc;
+                HttpRuntime.Cache[Db.Host + "header"] = hc;
             }
             return hc;
         }
@@ -111,37 +111,9 @@ namespace CmsData
                 return content.Body;
             return def;
         }
-        public static string Settings(string name, string defaultvalue)
-        {
-            if (HttpContext.Current == null)
-                return "";
-            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
-            if (list == null)
-            {
-                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX,
-                    StringComparer.OrdinalIgnoreCase);
-                HttpContext.Current.Cache[Util.Host + "Settings"] = list;
-            }
-            if (list.ContainsKey(name))
-                return list[name];
-            if (defaultvalue.HasValue())
-                return defaultvalue;
-            return string.Empty;
-        }
-        public static void SetSetting(string name, string value)
-        {
-            if (HttpContext.Current == null)
-                return;
-            var list = HttpContext.Current.Cache[Util.Host + "Settings"] as Dictionary<string, string>;
-            if (list == null)
-            {
-                list = Db.Settings.ToDictionary(c => c.Id, c => c.SettingX);
-                HttpContext.Current.Cache[Util.Host + "Settings"] = list;
-            }
-            list[name] = value;
-        }
-        public static int NewPeopleManagerId { get { return Settings("NewPeopleManagerId", "1").ToInt(); } }
-        public static string SystemEmailAddress { get { return Settings("SystemEmailAddress", ""); } }
+        public static int NewPeopleManagerId { get { return Db.Setting("NewPeopleManagerId", "1").ToInt(); } }
+        public static string SystemEmailAddress { get { return Db.Setting("SystemEmailAddress", ""); } }
+        public static string AdminMail { get { return Db.Setting("AdminMail", SystemEmailAddress); } }
         public static string NewPeopleEmailAddress
         {
             get
@@ -150,11 +122,11 @@ namespace CmsData
                 var npm = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
                 if (npm != null && npm.EmailAddress.HasValue())
                     em = npm.EmailAddress;
-                return Settings("NewPeopleEmailAddress", em);
+                return Db.Setting("NewPeopleEmailAddress", em);
             }
         }
-        public static string StartAddress { get { return Settings("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }
-        public static bool CheckRemoteAccessRole { get { return Settings("CheckRemoteAccessRole", "") == "true"; } }
+        public static string StartAddress { get { return Db.Setting("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }
+        public static bool CheckRemoteAccessRole { get { return Db.Setting("CheckRemoteAccessRole", "") == "true"; } }
         
         public const string MiscTagsString = "Misc Tags";
         public const int TagTypeId_Personal = 1;

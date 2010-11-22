@@ -23,7 +23,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.org == null)
                 return Content("organization not found");
 
-            if (Util.OrgMembersOnly)
+            if (Util2.OrgMembersOnly)
                 if (m.org.SecurityTypeId == 3)
                     return NotAllowed("You do not have access to this page", m.org.OrganizationName);
                 else if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId))
@@ -31,9 +31,9 @@ namespace CmsWeb.Areas.Main.Controllers
             
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
-            if (Util.CurrentOrgId != m.org.OrganizationId)
-                Util.CurrentGroups = null;
-            Util.CurrentOrgId = m.org.OrganizationId;
+            if (Util2.CurrentOrgId != m.org.OrganizationId)
+                Util2.CurrentGroups = null;
+            Util2.CurrentOrgId = m.org.OrganizationId;
             ViewData["OrganizationContext"] = true;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             InitExportToolbar(id.Value, qb.QueryId);
@@ -55,8 +55,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("error, bad orgid");
             if (!org.PurgeOrg())
                 return Content("error, not deleted");
-            Util.CurrentOrgId = 0;
-            Util.CurrentGroups = null;
+            Util2.CurrentOrgId = 0;
+            Util2.CurrentGroups = null;
             Session.Remove("ActiveOrganization");
             return new EmptyResult();
         }
@@ -71,7 +71,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NewMeeting(string d, string t, bool group)
         {
-            var organization = DbUtil.Db.LoadOrganizationById(Util.CurrentOrgId);
+            var organization = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
             if (organization == null)
                 return Content("");
             DateTime dt;
@@ -126,7 +126,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
         private void InitExportToolbar(int oid, int qid)
         {
-            Util.CurrentOrgId = oid;
+            Util2.CurrentOrgId = oid;
             ViewData["queryid"] = qid;
             ViewData["TagAction"] = "/Organization/TagAll/{0}?m=tag".Fmt(qid);
             ViewData["UnTagAction"] = "/Organization/TagAll/{0}?m=untag".Fmt(qid);
@@ -138,10 +138,10 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, string namefilter)
         {
             ViewData["OrgMemberContext"] = true;
-            Util.CurrentGroups = smallgrouplist;
+            Util2.CurrentGroups = smallgrouplist;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
             InitExportToolbar(id, qb.QueryId);
-            var m = new MemberModel(id, Util.CurrentGroups, MemberModel.GroupSelect.Active, namefilter);
+            var m = new MemberModel(id, Util2.CurrentGroups, MemberModel.GroupSelect.Active, namefilter);
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -241,7 +241,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SmallGroups()
         {
-            var m = new OrganizationModel(Util.CurrentOrgId);
+            var m = new OrganizationModel(Util2.CurrentOrgId);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -259,7 +259,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult CopySettings()
         {
-            Session["OrgCopySettings"] = Util.CurrentOrgId;
+            Session["OrgCopySettings"] = Util2.CurrentOrgId;
             return Redirect("/OrgSearch/");
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -279,7 +279,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ToggleTag(int id)
         {
-            var t = Person.ToggleTag(id, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            var t = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Content(t ? "Remove" : "Add");
         }

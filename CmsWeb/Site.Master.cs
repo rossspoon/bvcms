@@ -52,13 +52,13 @@ namespace CmsWeb
             FooterEntity.ToolTip = HttpContext.Current.Request.UserHostAddress.ToString();
             if (Util.SessionStarting)
             {
-                if (Util.OrgMembersOnly)
+                if (Util2.OrgMembersOnly)
                     DbUtil.Db.SetOrgMembersOnly();
                 Util.SessionStarting = false;
             }
-            if (!Util.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
+            if (!Util2.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
             {
-                Util.OrgMembersOnly = true;
+                Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
 
@@ -71,34 +71,34 @@ namespace CmsWeb
             Membership.GetUser(); // record activity
 
             NewUserItem.Visible = false;
-            if (Util.CurrentPeopleId != 0)
+            if (Util2.CurrentPeopleId != 0)
             {
                 CurrentPersonMenuItem.Visible = true;
-                CurrentPersonLink.NavigateUrl = "Person/Index/{0}".Fmt(Util.CurrentPeopleId);
+                CurrentPersonLink.NavigateUrl = "Person/Index/{0}".Fmt(Util2.CurrentPeopleId);
                 CurrentPersonLink.Text = Session["ActivePerson"].ToString();
                 if (Page.User.IsInRole("Admin"))
                 {
                     NewUserItem.Visible = true;
-                    NewUser.NavigateUrl = "/Account/AddUser/" + Util.CurrentPeopleId;
+                    NewUser.NavigateUrl = "/Account/AddUser/" + Util2.CurrentPeopleId;
                     NewUser.Text = "Add '" + Session["ActivePerson"].ToString() + "' as user";
                 }
             }
 
-            if (Util.CurrentOrgId > 0)
+            if (Util2.CurrentOrgId > 0)
             {
                 CurrentOrgMenuItem.Visible = true;
-                CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util.CurrentOrgId);
+                CurrentOrgLink.NavigateUrl = "Organization/Index/{0}".Fmt(Util2.CurrentOrgId);
                 if (Session["ActiveOrganization"] != null)
                     CurrentOrgLink.Text = Session["ActiveOrganization"].ToString();
                 else
                     CurrentOrgLink.Text = "Current Org";
             }
             //HomeDrop.Visible = Page.User.IsInRole("Developer");
-            SavedQueriesLink.Enabled = !Util.OrgMembersOnly;
+            SavedQueriesLink.Enabled = !Util2.OrgMembersOnly;
             AdminMenuItem.Visible = Page.User.IsInRole("Admin");
             OrgMembersMenuItem.Visible = Page.User.IsInRole("Edit");
             ContributionsMenuItem.Visible = Page.User.IsInRole("Finance");
-            OrgMembersOnly.Text = Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
+            OrgMembersOnly.Text = Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On";
             AdminMenuLink.ToolTip = Util.ConnectionString;
             UserHeader.Text = DbUtil.Header();
             string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath, "");

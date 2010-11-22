@@ -67,7 +67,7 @@ namespace CmsWeb.Models
                         w.WriteAttributeString("prev", "");
                     q = q.Skip(startrow).Take(INT_PageSize).ToList();
                 }
-                w.WriteAttributeString("maxlabels", DbUtil.Settings("MaxLabels", "6"));
+                w.WriteAttributeString("maxlabels", DbUtil.Db.Setting("MaxLabels", "6"));
                 var code = DbUtil.Db.NextSecurityCode(DateTime.Today).Select(c => c.Code).Single();
                 w.WriteAttributeString("securitycode", code);
 
@@ -79,7 +79,7 @@ namespace CmsWeb.Models
                         var midnight = c.Hour.Value.Date;
                         var now = midnight.Add(Util.Now2.TimeOfDay);
                         leadtime = c.Hour.Value.Subtract(now).TotalHours;
-                        leadtime -= DbUtil.Settings("TZOffset", "0").ToInt(); // positive to the east, negative to the west
+                        leadtime -= DbUtil.Db.Setting("TZOffset", "0").ToInt(); // positive to the east, negative to the west
                     }
                     w.WriteStartElement("attendee");
                     w.WriteAttributeString("id", c.Id.ToString());

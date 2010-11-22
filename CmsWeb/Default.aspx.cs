@@ -14,9 +14,9 @@ namespace CmsWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Util.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
+            if (!Util2.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
             {
-                Util.OrgMembersOnly = true;
+                Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
             BindBirthdays();
@@ -64,7 +64,7 @@ namespace CmsWeb
                 var q = from om in DbUtil.Db.OrganizationMembers
                         where om.PeopleId == u.PeopleId
                         where (om.Pending ?? false) == false
-                        where !(om.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                        where !(om.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                         select new 
                         { 
                             Name = om.Organization.OrganizationName, 

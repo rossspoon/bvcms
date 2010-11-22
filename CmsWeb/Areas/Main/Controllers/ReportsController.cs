@@ -57,8 +57,8 @@ namespace CmsWeb.Areas.Main.Controllers
             return new RollsheetResult
             {
                 qid = id,
-                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
-                groups = org == "curr" ? UtilityExtensions.Util.CurrentGroups : new int[] { 0 },
+                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
+                groups = org == "curr" ? Util2.CurrentGroups : new int[] { 0 },
                 pid = pid,
                 div = div,
                 name = name,
@@ -73,7 +73,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new OrgLeadersResult
             {
-                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
+                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
                 div = div,
                 name = name,
                 schedule = schedule,
@@ -83,7 +83,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new ClassListResult
             {
-                orgid = org == "curr" ? (int?)UtilityExtensions.Util.CurrentOrgId : null,
+                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
                 div = div,
                 name = name,
                 schedule = schedule,

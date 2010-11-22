@@ -68,19 +68,19 @@ namespace CmsWeb
         protected void delTag_Click(object sender, EventArgs e)
         {
             ctl.DeleteTag();
-            Util.CurrentTag = "UnNamed";
+            Util2.CurrentTag = "UnNamed";
             Tags.DataBind();
             SetSelectedItem();
         }
         private void EnableDisableButtons()
         {
-            //ShareLink.Enabled = Util.UserPeopleId == Util.CurrentTagOwnerId;
+            //ShareLink.Enabled = Util.UserPeopleId == Util2.CurrentTagOwnerId;
             //delTag.Enabled = ShareLink.Enabled;
         }
         protected void Tags_SelectedIndexChanged(object sender, EventArgs e)
         {
             var a = Tags.SelectedValue.SplitStr(",", 2);
-            Util.CurrentTag = a[1];
+            Util2.CurrentTag = a[1];
             ShareLinkText = ctl.SharedCount();
             PersonGrid1.DataBind();
             EnableDisableButtons();
@@ -88,7 +88,7 @@ namespace CmsWeb
         private void SetSelectedItem()
         {
             var t = DbUtil.Db.TagCurrent();
-            var item = Tags.Items.FindByValue(t.Id + "," + Util.CurrentTag);
+            var item = Tags.Items.FindByValue(t.Id + "," + Util2.CurrentTag);
             if (item != null)
                 item.Selected = true;
             PeopleData.SelectParameters.UpdateValues(HttpContext.Current, Tags);
@@ -99,7 +99,7 @@ namespace CmsWeb
         public static string ToggleTag(int PeopleId, string controlid)
         {
             var r = new ToggleTagReturn { ControlId = controlid };
-            r.HasTag = Person.ToggleTag(PeopleId, Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            r.HasTag = Person.ToggleTag(PeopleId, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             var jss = new DataContractJsonSerializer(typeof(ToggleTagReturn));
             var ms = new MemoryStream();

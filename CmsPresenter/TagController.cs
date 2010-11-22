@@ -39,14 +39,14 @@ namespace CMSPresenter
         }
         public Tag NewTag(string name)
         {
-            Util.CurrentTag = name;
+            Util2.CurrentTag = name;
             return DbUtil.Db.TagCurrent();
         }
         public void RenameTag(string name)
         {
             DbUtil.Db.TagCurrent().Name = name;
             DbUtil.Db.SubmitChanges();
-            Util.CurrentTag = name;
+            Util2.CurrentTag = name;
         }
         public void DeleteTag()
         {

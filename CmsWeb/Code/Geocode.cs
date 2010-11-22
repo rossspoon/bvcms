@@ -27,7 +27,7 @@ namespace CmsWeb
         }
         public static string GoogleAPIKey
         {
-            get { return DbUtil.Settings("GoogleMapsKey", ""); }
+            get { return DbUtil.Db.Setting("GoogleMapsKey", ""); }
         }
         private static Uri GetGeocodeUri(string address)
         {

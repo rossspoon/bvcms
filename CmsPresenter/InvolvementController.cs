@@ -53,7 +53,7 @@ namespace CMSPresenter
                          Spouse = spouse != null ? spouse.FirstName : "",
 
                          activities = from m in p.OrganizationMembers
-                                      where m.Organization.SecurityTypeId != 3 || !Util.OrgMembersOnly
+                                      where m.Organization.SecurityTypeId != 3 || !Util2.OrgMembersOnly
                                       select new ActivityInfo
                                       {
                                           Name = m.Organization.OrganizationName,
@@ -171,7 +171,7 @@ namespace CMSPresenter
             var q = DbUtil.Db.PeopleQuery(qid);
             var q2 = q.Select(p => new
             {
-                om = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId),
+                om = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId),
                 rr = p.RecRegs.FirstOrDefault(),
                 p = p
             });
@@ -181,9 +181,9 @@ namespace CMSPresenter
         public static IEnumerable OrgMemberListGroups()
         {
             var Db = DbUtil.Db;
-            var gids = string.Join(",", Util.CurrentGroups);
+            var gids = string.Join(",", Util2.CurrentGroups);
             var cmd = new SqlCommand(
-                "dbo.OrgMembers {0}, '{1}'".Fmt(Util.CurrentOrgId, gids));
+                "dbo.OrgMembers {0}, '{1}'".Fmt(Util2.CurrentOrgId, gids));
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             return cmd.ExecuteReader();
@@ -193,7 +193,7 @@ namespace CMSPresenter
             var Db = DbUtil.Db;
             var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
-                     let om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let recreg = p.RecRegs.FirstOrDefault()
                      select new
                      {
@@ -232,7 +232,7 @@ namespace CMSPresenter
             var Db = DbUtil.Db;
             var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
-                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util.CurrentOrgId && om.PeopleId == p.PeopleId)
+                     let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let tm = bfm.Organization.SchedTime.Value
                      select new
                      {

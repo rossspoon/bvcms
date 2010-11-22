@@ -173,6 +173,7 @@
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\MassEmailer.cs" />
     <Compile Include="Areas\Main\Models\Other\OrgSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\PostBundleModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
@@ -280,22 +282,17 @@
     <Compile Include="Areas\Manage\Controllers\OrgMembersController.cs" />
     <Compile Include="Areas\Manage\Models\OrgMembersModel.cs" />
     <Compile Include="Areas\Public\AreaRegistration.cs" />
-    <Compile Include="Areas\Public\Controllers\OnlineReg0Controller.cs" />
     <Compile Include="Areas\Public\Controllers\OptOutController.cs" />
-    <Compile Include="Areas\Public\Models\OnlineRegPersonModel0.cs" />
-    <Compile Include="Areas\Public\Models\OnlineRegModel0.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
     <Compile Include="Code\AddressVerify.cs" />
     <Compile Include="Code\CmsController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
-    <Compile Include="Areas\Public\Controllers\DiscipleLifeController.cs" />
     <Compile Include="Areas\Public\Controllers\GODisciplesController.cs" />
     <Compile Include="Areas\Public\Controllers\PrayerController.cs" />
     <Compile Include="Areas\Public\Controllers\SalesController.cs" />
     <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
-    <Compile Include="Areas\Public\Models\DiscipleLifeModel.cs" />
     <Compile Include="Areas\Public\Models\GODisciplesModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerModel.cs" />
     <Compile Include="Areas\Public\Models\PsUtil.cs" />
@@ -549,7 +546,6 @@
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Manage\Controllers\RecreationController.cs" />
-    <Compile Include="Areas\Public\Controllers\RecRegController.cs" />
     <Compile Include="Areas\Public\Controllers\RegisterController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
@@ -581,13 +577,6 @@
     </Compile>
     <Compile Include="EmailAttendanceNotices.aspx.designer.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EmailPeople.aspx.cs">
-      <DependentUpon>EmailPeople.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EmailPeople.aspx.designer.cs">
-      <DependentUpon>EmailPeople.aspx</DependentUpon>
     </Compile>
     <Compile Include="EnrollmentControlReport.aspx.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
@@ -658,7 +647,6 @@
     <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QueryModel.cs" />
     <Compile Include="Areas\Manage\Models\RecreationModel.cs" />
-    <Compile Include="Areas\Public\Models\RecRegModel.cs" />
     <Compile Include="Areas\Public\Models\RegisterModel.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendanceModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
@@ -827,6 +815,9 @@
     <Content Include="Areas\Main\Views\CheckIn2\Index.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\Keyboard.ascx" />
     <Content Include="Areas\Main\Views\CheckIn2\Startup.aspx" />
+    <Content Include="Areas\Main\Views\Email\EmailQueued.aspx" />
+    <Content Include="Areas\Main\Views\Email\Index.aspx" />
+    <Content Include="Areas\Main\Views\Email\Progress.aspx" />
     <Content Include="Areas\Main\Views\Person\DuplicateRow.ascx" />
     <Content Include="Areas\Main\Views\Person\DuplicatesGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\TagDuplicatesProgress.aspx" />
@@ -863,11 +854,6 @@
     <Content Include="Areas\Public\Views\OnlineReg\PickSlots.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\Public\Views\OnlineReg\Unknown.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\List.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\PickSlot.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Payment_aunet2.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Payment_aunet.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\PickSlots.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="ckeditor\ckeditor.asp" />
@@ -919,6 +905,7 @@
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
     <Content Include="OnlineRegSample.htm" />
+    <Content Include="Scripts\Edit.js" />
     <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\pickslots2.js" />
     <Content Include="Scripts\UserDialog.js" />
@@ -938,7 +925,6 @@
     <Content Include="Dialog\EditMember.aspx" />
     <Content Include="Dialog\EditMembers.aspx" />
     <Content Include="EmailAttendanceNotices.aspx" />
-    <Content Include="EmailPeople.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="Errors\Error.aspx" />
     <Content Include="Family.aspx" />
@@ -1303,29 +1289,6 @@
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
     <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\AddressDisplay.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\AddressEdit.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Confirm2.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Terms.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Payment2.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Index.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\NoLeague.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\OtherDisplay.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\OtherEdit.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Payment.aspx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\PersonDisplay.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\PersonEdit.ascx" />
-    <Content Include="Areas\Public\Views\OnlineReg0\Unknown.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\AddressDisplay.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\AddressEdit.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\OtherDisplay.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\Index.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\List.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\PersonDisplay.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\PersonEdit.ascx" />
-    <Content Include="Areas\Public\Views\DiscipleLife\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\DiscipleLife\Index.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\Confirm.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\Index.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\RenameGroup.aspx" />
@@ -1744,11 +1707,6 @@
     <Content Include="Areas\Manage\Views\Recreation\Coaches.aspx" />
     <Content Include="Areas\Manage\Views\Recreation\Index.aspx" />
     <Content Include="Areas\Manage\Views\Recreation\List.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\NoLeague.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\OtherEdit.ascx" />
-    <Content Include="Areas\Public\Views\RecReg\Payment.aspx" />
-    <Content Include="Areas\Public\Views\RecReg\Unknown.aspx" />
     <Content Include="Areas\Public\Views\Register\Confirm.aspx" />
     <Content Include="Areas\Public\Views\Register\ConfirmVisit.aspx" />
     <Content Include="Areas\Public\Views\Register\Form2.aspx" />

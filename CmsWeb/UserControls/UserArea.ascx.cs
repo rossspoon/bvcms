@@ -23,7 +23,7 @@ namespace CmsWeb
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            TagLink.Text = Util.CurrentTagName;
+            TagLink.Text = Util2.CurrentTagName;
         }
 
         protected void LoginStatus1_LoggingOut(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)

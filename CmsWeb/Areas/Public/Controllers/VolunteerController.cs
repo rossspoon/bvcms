@@ -80,15 +80,15 @@ namespace CmsWeb.Areas.Public.Controllers
             m.person.BuildVolInfoList(m.View); // 2nd time updates existing
             m.person.RefreshCommitments(m.View);
 
-            string email = DbUtil.Settings("VolunteerMail-" + id, "");
+            string email = DbUtil.Db.Setting("VolunteerMail-" + id, "");
             if (!email.HasValue())
-                email = DbUtil.Settings("VolunteerMail", DbUtil.SystemEmailAddress);
+                email = DbUtil.Db.Setting("VolunteerMail", DbUtil.SystemEmailAddress);
 
             if (Request.Form["noemail"] != "noemail")
             {
                 var summary = m.PrepareSummaryText2();
                 var smtp = Util.Smtp();
-                DbUtil.Email2(smtp,
+                Util.Email(smtp,
                     Util.PickFirst(regemail, m.person.EmailAddress),
                     email,
                     "{0} registration".Fmt(id),
@@ -112,9 +112,9 @@ namespace CmsWeb.Areas.Public.Controllers
                         em = email;
                         body = "<p>NO EMAIL</p>\n" + body;
                     }
-                    DbUtil.Email(smtp, email, m.person.Name, em,
+                    Util.Email(smtp, email, m.person.Name, em,
                          c.Title, body);
-                    OnlineRegPersonModel0.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
+                    OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }
             }

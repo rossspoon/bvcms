@@ -60,8 +60,8 @@ namespace CmsWeb.Models
             ConditionName = "Group";
             Direction = "asc";
             TagTypeId = DbUtil.TagTypeId_Personal;
-            TagName = Util.CurrentTagName;
-            TagOwner = Util.CurrentTagOwnerId;
+            TagName = Util2.CurrentTagName;
+            TagOwner = Util2.CurrentTagOwnerId;
             Errors = new Dictionary<string, string>();
         }
         public string Description { get; set; }
@@ -566,7 +566,7 @@ namespace CmsWeb.Models
                     where ot.DivId == divid
                     && (SqlMethods.DateDiffMonth(ot.Organization.OrganizationClosedDate, Util.Now) < 14
                         || ot.Organization.OrganizationStatusId == 30)
-                    where Util.OrgMembersOnly == false || (ot.Organization.SecurityTypeId != 3)
+                    where Util2.OrgMembersOnly == false || (ot.Organization.SecurityTypeId != 3)
                     orderby ot.Organization.OrganizationStatusId, ot.Organization.OrganizationName
                     select new SelectListItem
                     {

@@ -115,7 +115,7 @@ namespace CmsWeb
         }
         private static int maxExcelRows
         {
-            get { return DbUtil.Settings("MaxExcelRows", "10000").ToInt(); }
+            get { return DbUtil.Db.Setting("MaxExcelRows", "10000").ToInt(); }
         }
         public override void VerifyRenderingInServerForm(Control control)
         {

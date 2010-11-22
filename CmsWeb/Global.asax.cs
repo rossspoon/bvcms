@@ -15,6 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Globalization;
 using CmsWeb.Areas.Manage.Controllers;
+using System.Web.Caching;
 
 namespace CmsWeb
 {
@@ -33,7 +34,7 @@ namespace CmsWeb
             if (File.Exists(smtppasswordfile))
             {
                 var a = File.ReadAllText(smtppasswordfile).Split(',');
-                Application["smtpcreds"] = a;
+                HttpRuntime.Cache.Insert("smtpcreds", a, null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration);
             }
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
@@ -81,9 +82,13 @@ namespace CmsWeb
         {
             if (User.Identity.IsAuthenticated)
                 AccountController.SetUserInfo(Util.UserName, Session);
-            Util.SysFromEmail = DbUtil.Settings("SysFromEmail",
+            Util.SysFromEmail = DbUtil.Db.Setting("SysFromEmail",
                 WebConfigurationManager.AppSettings["sysfromemail"]);
             Util.SessionStarting = true;
+        }
+        protected void Session_End(object sender, EventArgs e)
+        {
+            HttpRuntime.Cache.Remove(Util.SessionId);
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {

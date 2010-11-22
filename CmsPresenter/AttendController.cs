@@ -196,7 +196,7 @@ namespace CMSPresenter
             var midnight = Util.Now.Date.AddDays(1);
             var q = from a in DbUtil.Db.Attends
                     where a.PeopleId == pid
-                    where !(a.Meeting.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                    where !(a.Meeting.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                     select a;
             if (future)
             {

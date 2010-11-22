@@ -23,8 +23,8 @@ namespace CmsWeb
 
         public void ProcessRequest(HttpContext context)
         {
-            Util.OrgMembersOnly = !Util.OrgMembersOnly;
-            if (Util.OrgMembersOnly)
+            Util2.OrgMembersOnly = !Util2.OrgMembersOnly;
+            if (Util2.OrgMembersOnly)
                 DbUtil.Db.SetOrgMembersOnly();
             context.Response.Redirect("~/");
         }

@@ -399,21 +399,9 @@ namespace CmsData
             int originId,
             int? EntryPointId)
         {
-            return Person.Add(DbUtil.Db, Util.Host, true, fam, position, tag, 
-                firstname, nickname, lastname, dob, MarriedCode,
-                gender, originId, EntryPointId);
+            return Person.Add(DbUtil.Db, true, fam, position, tag, firstname, nickname, lastname, dob, MarriedCode, gender, originId, EntryPointId);
         }
-        public static Person Add(CMSDataContext Db, string host, bool SendNotices, Family fam,
-            int position,
-            Tag tag,
-            string firstname,
-            string nickname,
-            string lastname,
-            string dob,
-            int MarriedCode,
-            int gender,
-            int originId,
-            int? EntryPointId)
+        public static Person Add(CMSDataContext Db, bool SendNotices, Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId)
         {
             var p = new Person();
             p.CreatedDate = Util.Now;
@@ -499,8 +487,8 @@ namespace CmsData
                 else
                 {
                     var em = Db.NewPeopleEmailAddress;
-                    DbUtil.Email(em, null, em,
-                        "Just Added Person on " + host,
+                    Util.Email(Util.Smtp(), em, null, em,
+                        "Just Added Person on " + Db.Host,
                         "{0} ({1})"
                         .Fmt(p.Name, p.PeopleId));
                 }

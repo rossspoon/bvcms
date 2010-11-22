@@ -32,7 +32,7 @@ namespace CmsWeb
             get
             {
                 if (_From == null)
-                    _From = Util.FirstAddress(DbUtil.Settings("AdminMail", DbUtil.SystemEmailAddress));
+                    _From = Util.FirstAddress(DbUtil.Db.Setting("AdminMail", DbUtil.SystemEmailAddress));
                 return _From;
             }
             set
@@ -101,7 +101,7 @@ namespace CmsWeb
                 }
             }
         }
-        public void SendPeopleEmail(IEnumerable<Person> people, string subject, string message, bool IsHtml)
+        public void SendPeopleEmail(CMSDataContext Db, string CmsHost, IEnumerable<Person> people, string subject, string message, bool IsHtml)
         {
             this.people = people;
             Subject = subject;
@@ -116,7 +116,7 @@ namespace CmsWeb
                 Message = Util.SafeFormat(message);
             var bhtml = Message;
 
-            int EmailBatchCount = DbUtil.Settings("EmailBatchCount", "500").ToInt();
+            int EmailBatchCount = Db.Setting("EmailBatchCount", "500").ToInt();
 
             foreach (var p in people)
             {
@@ -130,10 +130,10 @@ namespace CmsWeb
 
                 var text = bhtml.Replace("{name}", p.Name);
                 text = text.Replace("{first}", p.PreferredName);
-                if (Util.CurrentOrgId > 0 && text.Contains("{paylink}"))
+                if (Db.CurrentOrgId > 0 && text.Contains("{paylink}"))
                 {
-                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o =>
-                        o.OrganizationId == Util.CurrentOrgId && o.PeopleId == p.PeopleId);
+                    var om = Db.OrganizationMembers.SingleOrDefault(o =>
+                        o.OrganizationId == Db.CurrentOrgId && o.PeopleId == p.PeopleId);
                     if (om != null)
                     {
                         if (om.PayLink.HasValue())
@@ -146,105 +146,82 @@ namespace CmsWeb
                 }
                 text = text.Replace("{unsubscribe}",
                     "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>"
-                    .Fmt(Util.CmsHost, p.OptOutKey(From.Address)));
+                    .Fmt(CmsHost, p.OptOutKey(From.Address)));
 
-                DbUtil.SendMsg(smtp, From, subject, text, p.Name, p.EmailAddress);
+                Util.SendMsg(smtp, CmsHost, From, subject, text, p.Name, p.EmailAddress);
 
-                DbUtil.Db.EmailLogs.InsertOnSubmit(
-                    new EmailLog
-                    {
-                        Fromaddr = From.Address,
-                        Toaddr = p.EmailAddress,
-                        Subject = subject,
-                        Time = Util.Now
-                    });
-                DbUtil.Db.SubmitChanges();
-
-                //System.Threading.Thread.Sleep(100);
                 sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
                 if (i % EmailBatchCount == 0)
-                    NotifySentEmails(sb, smtp, i);
+                    NotifySentEmails(Db, CmsHost, sb, smtp, From, Subject, Message, i);
             }
             if (smtp != null)
-                NotifySentEmails(sb, smtp, i);
+                NotifySentEmails(Db, CmsHost, sb, smtp, From, Subject, Message, i);
         }
-        public void SendPeopleEmail2(IEnumerable<Person> people, string subject, string message, bool IsHtml, DateTime? schedule)
+        public static void SendPeopleEmail(CMSDataContext Db, string CmsHost, EmailQueue emailqueue)
         {
-            this.people = people;
-
-            if (!IsHtml)
-                message = Util.SafeFormat(message);
-
-            var emailqueue = new EmailQueue { FromAddr = From.Address, Subject = subject, Body = message, SendWhen = schedule };
-            DbUtil.Db.EmailQueues.InsertOnSubmit(emailqueue);
-            DbUtil.Db.SubmitChanges();
-            
-            foreach (var p in people)
-            {
-                var em = p.EmailAddress.Trim();
-                if (!p.EmailAddress.HasValue())
-                    continue;
-                if (Util.CurrentOrgId > 0 && message.Contains("{paylink}"))
-                    emailqueue.EmailQueueTos.Add(new EmailQueueTo { PeopleId = p.PeopleId, OrgId = Util.CurrentOrgId });
-                else
-                    emailqueue.EmailQueueTos.Add(new EmailQueueTo { PeopleId = p.PeopleId });
-                DbUtil.Db.SubmitChanges();
-            }
-        }
-        public static void SendPeopleEmail3(int Id)
-        {
-            var emailqueue = DbUtil.Db.EmailQueues.Single(ee => ee.Id == Id);
             var emailer = new Emailer(emailqueue.FromAddr);
+            emailer.Message = emailqueue.Body;
+            emailqueue.Started = DateTime.Now;
+            Db.SubmitChanges();
 
             var sb = new StringBuilder("<pre>\r\n");
             SmtpClient smtp = null;
             var i = 0;
-            int EmailBatchCount = DbUtil.Settings("EmailBatchCount", "500").ToInt();
+            int EmailBatchCount = Db.Setting("EmailBatchCount", "500").ToInt();
 
-            foreach (var To in emailqueue.EmailQueueTos.Where(ee => !ee.Sent.HasValue))
+            var q = from To in Db.EmailQueueTos
+                    where To.Id == emailqueue.Id
+                    where To.Sent == null
+                    orderby To.PeopleId
+                    select To;
+            foreach (var To in q)
             {
-                var p = DbUtil.Db.LoadPersonById(To.PeopleId);
-
-                if (!p.EmailAddress.HasValue())
-                    continue;
-                var em = p.EmailAddress.Trim();
-
-                if (i % 20 == 0)
-                    smtp = Util.Smtp();
-                i++;
-
+                var p = Db.LoadPersonById(To.PeopleId);
                 var text = emailqueue.Body.Replace("{name}", p.Name);
                 text = text.Replace("{first}", p.PreferredName);
-                if (To.OrgId > 0)
+                var aa = p.EmailAddress.SplitStr(",;").ToList();
+                if (To.OrgId.HasValue)
                 {
-                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(o =>
+                    var om = Db.OrganizationMembers.SingleOrDefault(o =>
                         o.OrganizationId == To.OrgId && o.PeopleId == p.PeopleId);
                     if (om != null)
                     {
                         if (om.PayLink.HasValue())
-                            text = text.Replace("{paylink}",
-                                "<a href=\"{0}\">payment link</a>".Fmt(om.PayLink));
+                            text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(om.PayLink));
                         text = text.Replace("{amtdue}", (om.Amount - om.AmountPaid).ToString2("c"));
-                        if (om.RegisterEmail.HasValue() && string.Compare(om.RegisterEmail, em, true) == 0)
-                            em += (";" + om.RegisterEmail);
+                        if (om.RegisterEmail.HasValue() && !aa.Contains(om.RegisterEmail, StringComparer.OrdinalIgnoreCase))
+                            aa.Add(om.RegisterEmail);
                     }
                 }
-                text = text.Replace("{unsubscribe}",
-                    "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>"
-                    .Fmt(Util.CmsHost, p.OptOutKey(emailqueue.FromAddr)));
 
-                DbUtil.SendMsg(smtp, emailer.From, emailqueue.Subject, text, p.Name, p.EmailAddress);
-                To.Sent = DateTime.Now;
+                foreach (var ad in aa)
+                {
+                    if (Util.ValidEmail(ad))
+                    {
+                        if (i % 20 == 0)
+                            smtp = Util.Smtp();
+                        i++;
 
-                sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, em, p.PeopleId));
-                if (i % EmailBatchCount == 0)
-                    emailer.NotifySentEmails(sb, smtp, i);
-                DbUtil.Db.SubmitChanges();
+                        text = text.Replace("{unsubscribe}",
+                            "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>"
+                            .Fmt(CmsHost, p.OptOutKey(emailqueue.FromAddr)));
+
+                        Util.SendMsg(smtp, CmsHost, emailer.From, emailqueue.Subject, text, p.Name, ad, emailqueue.Id);
+                        if (smtp.PickupDirectoryLocation.HasValue())
+                            Thread.Sleep(50); // simulate sending
+                        To.Sent = DateTime.Now;
+
+                        sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, ad, p.PeopleId));
+                        if (i % EmailBatchCount == 0)
+                            NotifySentEmails(Db, CmsHost, sb, smtp, emailer.From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+                        Db.SubmitChanges();
+                    }
+                }
             }
             if (smtp != null)
-                emailer.NotifySentEmails(sb, smtp, i);
-            emailqueue.Sent = true;
-            DbUtil.Db.SubmitChanges();
+                NotifySentEmails(Db, CmsHost, sb, smtp, emailer.From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+            emailqueue.Sent = DateTime.Now;
+            Db.SubmitChanges();
         }
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
@@ -254,30 +231,16 @@ namespace CmsWeb
             if (Addresses.Count > 0)
                 NotifyEmail(subject, message);
         }
-        private void NotifySentEmails(StringBuilder sb, SmtpClient smtp, int i)
+        private static void NotifySentEmails(CMSDataContext Db, string CmsHost, StringBuilder sb, SmtpClient smtp, MailAddress From, string subject, string body, int id)
         {
-            sb.Append("</pre>\r\n");
-            var em = new EmailSent
-            {
-                FromAddr = From.Address,
-                Subject = Subject,
-                Message = Message,
-                Count = i,
-                Username = Util.UserName,
-                FromPid = Util.UserPeopleId.Value,
-                ToList = sb.ToString(),
-                Time = Util.Now,
-            };
-            DbUtil.Db.EmailSents.InsertOnSubmit(em);
-            DbUtil.Db.SubmitChanges();
-
-            sb.Append(Message);
-            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, From.Address);
-            DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null,
-                WebConfigurationManager.AppSettings["senderrorsto"]);
-            var notices = DbUtil.Settings("NotifySentEmails", null);
+            sb.Append("</pre>\r\n<h2>{0}</h2>".Fmt(subject));
+            sb.Append(body);
+            Util.SendMsg(smtp, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
+            Util.SendMsg(smtp, CmsHost, From, "sent emails", sb.ToString(), null,
+                WebConfigurationManager.AppSettings["senderrorsto"], id);
+            var notices = DbUtil.Db.Setting("NotifySentEmails", null);
             if (notices.HasValue())
-                DbUtil.SendMsg(smtp, From, "sent emails", sb.ToString(), null, notices);
+                Util.SendMsg(smtp, CmsHost, From, "sent emails", sb.ToString(), null, notices, id);
 
             sb.Length = 0;
             sb.Append("<pre>\r\n");

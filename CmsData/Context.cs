@@ -27,6 +27,7 @@ namespace CmsData
         partial void OnCreated()
         {
             CommandTimeout = 600;
+            Host = Util.Host;
         }
         private string _LogFile;
         public string LogFile
@@ -34,7 +35,7 @@ namespace CmsData
             get
             {
                 if (_LogFile == null)
-                    _LogFile = DbUtil.Settings("LinqLogFile", null);
+                    _LogFile = Setting("LinqLogFile", null);
                 return _LogFile;
             }
         }
@@ -72,7 +73,7 @@ namespace CmsData
         {
             return this.People.FirstOrDefault(p => p.PeopleId == id);
         }
-        public Organization LoadOrganizationById(int id)
+        public Organization LoadOrganizationById(int? id)
         {
             return this.Organizations.FirstOrDefault(o => o.OrganizationId == id);
         }
@@ -310,7 +311,7 @@ namespace CmsData
         }
         public Tag TagCurrent()
         {
-            return FetchOrCreateTag(Util.CurrentTagName, Util.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            return FetchOrCreateTag(Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
         }
         public string NewPeopleEmailAddress
         {
@@ -588,5 +589,9 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
         }
+
+
+
+
     }
 }

@@ -59,9 +59,9 @@ namespace CmsWeb.Areas.Main.Controllers
 #endif
             AccountController.SetUserInfo(name, Session);
 
-            if (!Util.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
+            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
             {
-                Util.OrgMembersOnly = true;
+                Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
             var m = new SearchModel(name, comm, addr);

@@ -22,8 +22,8 @@ namespace CmsWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            EmailLink.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?");
-            EmailLinkParents.NavigateUrl = GoTo("NavWindow", "EmailPeople.aspx?parents=true&");
+            EmailLink.NavigateUrl = "/Email/Index/" + queryId;
+            EmailLinkParents.NavigateUrl = "/Email/Index/" + queryId + "?parents=true";
             LabelsLink.NavigateUrl = "/Reports/RollLabels/" + queryId;
             VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;

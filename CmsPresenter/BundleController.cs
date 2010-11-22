@@ -558,7 +558,7 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed, 
             };
-            string GLBundlePrefix = DbUtil.Settings("GLBundlePrefix", "CM");
+            string GLBundlePrefix = DbUtil.Db.Setting("GLBundlePrefix", "CM");
             var qIncomeFundNo67 =
                 from c in DbUtil.Db.Contributions
                 from d in c.BundleDetails

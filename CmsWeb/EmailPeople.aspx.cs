@@ -61,7 +61,7 @@ namespace CmsWeb
                 IsHtml.Checked = ishtml ?? false;
             }
             CKEditPanel.Visible = IsHtml.Checked;
-            SendEmail.Enabled = DbUtil.Settings("emailer", "on") != "off";
+            SendEmail.Enabled = DbUtil.Db.Setting("emailer", "on") != "off";
         }
 
         public void DoJob(object data2)
@@ -86,7 +86,11 @@ namespace CmsWeb
                 orderby p.PeopleId
                 select p;
             var em = new Emailer(args.FromAddress, args.FromName);
+#if DEBUG2
+            em.SendPeopleEmail2(q, args.Subject, args.Body, args.IsHtml, null);
+#else
             em.SendPeopleEmail(q, args.Subject, args.Body, args.IsHtml);
+#endif
         }
 
         protected void SendEmail_Click(object sender, EventArgs e)
@@ -129,7 +133,11 @@ namespace CmsWeb
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
+#if DEBUG2
+            em.SendPeopleEmail2(q, SubjectLine.Text, EmailBody.Text, IsHtml.Checked, null);
+#else
             em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, IsHtml.Checked);
+#endif
         }
 
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)

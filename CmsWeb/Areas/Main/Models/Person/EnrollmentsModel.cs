@@ -25,7 +25,7 @@ namespace CmsWeb.Models.PersonPage
                 _enrollments = from om in DbUtil.Db.OrganizationMembers
                                where om.PeopleId == PeopleId
                                where (om.Pending ?? false) == false
-                               where !(om.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                               where !(om.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                                select om;
             return _enrollments;
         }

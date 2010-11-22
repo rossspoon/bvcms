@@ -166,7 +166,7 @@ namespace CmsWeb.Models
             var g = Group.LoadByName("Prayer Partners");
             var a = g.GetUsersInRole(GroupType.Admin);
             foreach (var admin in a)
-                DbUtil.Email(p.EmailAddress, admin.Name, admin.EmailAddress,
+                Util.Email(Util.Smtp(), p.EmailAddress, admin.Name, admin.EmailAddress,
                 "time {0} for {1}".Fmt(si.Mine ? "claimed" : "released", p.Name),
                 "{0} {1:hh:mm tt} changed at {2} ({3} total)".Fmt(
                 DayName(si.Day), si.Time, DateTime.Now, si.Owners.Count));

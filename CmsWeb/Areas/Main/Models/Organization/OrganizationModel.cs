@@ -13,8 +13,8 @@ namespace CmsWeb.Models.OrganizationPage
     public class OrganizationModel
     {
         public CmsData.Organization org { get; set; }
-        public int OrganizationId { get; set; }
-        public OrganizationModel(int id)
+        public int? OrganizationId { get; set; }
+        public OrganizationModel(int? id)
         {
             OrganizationId = id;
             org = DbUtil.Db.LoadOrganizationById(id);

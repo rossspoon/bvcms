@@ -27,7 +27,11 @@ namespace CmsData
 		
 		private string _FromAddr;
 		
-		private bool _Sent;
+		private DateTime? _Sent;
+		
+		private DateTime? _Started;
+		
+		private DateTime _Queued;
 		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
@@ -55,8 +59,14 @@ namespace CmsData
 		partial void OnFromAddrChanging(string value);
 		partial void OnFromAddrChanged();
 		
-		partial void OnSentChanging(bool value);
+		partial void OnSentChanging(DateTime? value);
 		partial void OnSentChanged();
+		
+		partial void OnStartedChanging(DateTime? value);
+		partial void OnStartedChanged();
+		
+		partial void OnQueuedChanging(DateTime value);
+		partial void OnQueuedChanged();
 		
     #endregion
 		public EmailQueue()
@@ -181,8 +191,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Sent", UpdateCheck=UpdateCheck.Never, Storage="_Sent", DbType="bit NOT NULL")]
-		public bool Sent
+		[Column(Name="Sent", UpdateCheck=UpdateCheck.Never, Storage="_Sent", DbType="datetime")]
+		public DateTime? Sent
 		{
 			get { return this._Sent; }
 
@@ -196,6 +206,50 @@ namespace CmsData
 					this._Sent = value;
 					this.SendPropertyChanged("Sent");
 					this.OnSentChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Started", UpdateCheck=UpdateCheck.Never, Storage="_Started", DbType="datetime")]
+		public DateTime? Started
+		{
+			get { return this._Started; }
+
+			set
+			{
+				if (this._Started != value)
+				{
+				
+                    this.OnStartedChanging(value);
+					this.SendPropertyChanging();
+					this._Started = value;
+					this.SendPropertyChanged("Started");
+					this.OnStartedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Queued", UpdateCheck=UpdateCheck.Never, Storage="_Queued", DbType="datetime NOT NULL")]
+		public DateTime Queued
+		{
+			get { return this._Queued; }
+
+			set
+			{
+				if (this._Queued != value)
+				{
+				
+                    this.OnQueuedChanging(value);
+					this.SendPropertyChanging();
+					this._Queued = value;
+					this.SendPropertyChanged("Queued");
+					this.OnQueuedChanged();
 				}
 
 			}

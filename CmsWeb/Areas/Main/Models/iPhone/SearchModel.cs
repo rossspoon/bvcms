@@ -67,7 +67,7 @@ namespace CmsWeb.Models.iPhone
             if (query.IsNotNull())
                 return query;
             var Db = DbUtil.Db;
-            if (Util.OrgMembersOnly)
+            if (Util2.OrgMembersOnly)
                 query = DbUtil.Db.OrgMembersOnlyTag.People();
             else
                 query = Db.People.Select(p => p);

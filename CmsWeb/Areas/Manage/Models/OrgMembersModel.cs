@@ -338,13 +338,13 @@ Thanks for registering!
 
                 if (i.om.RegisterEmail.HasValue())
                 {
-                    DbUtil.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress, i.Name, i.om.RegisterEmail.Trim(), subj, msg);
+                    Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress, i.Name, i.om.RegisterEmail.Trim(), subj, msg);
                     sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.om.RegisterEmail.Trim(), i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }
                 if (i.EmailAddress.HasValue())
                 {
-                    DbUtil.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, i.EmailAddress.Trim(), subj, msg);
+                    Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, i.EmailAddress.Trim(), subj, msg);
                     sb.AppendFormat("\"{0}\" [{1}]I ({2}): {3}\r\n".Fmt(i.Name, i.EmailAddress.Trim(), i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }
@@ -356,14 +356,14 @@ Thanks for registering!
                     flist = flist.Where(fm => fm.HasValue()).ToList();
                     foreach (var em in flist)
                     {
-                        DbUtil.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, em.Trim(), subj, msg);
+                        Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, em.Trim(), subj, msg);
                         sb.AppendFormat("\"{0}\" [{1}]P ({2}): {3}\r\n".Fmt(i.Name, em.Trim(), i.PeopleId, i.Location));
                         i.om.Moved = false;
                     }
                 }
             }
             sb.Append("</pre>\n");
-            DbUtil.EmailAlways(smtp, DbUtil.Db.CurrentUser.Person.EmailAddress, null, onlineorg.EmailAddresses, "room notices sent to:", sb.ToString());
+            Util.Email(smtp, DbUtil.Db.CurrentUser.Person.EmailAddress, null, onlineorg.EmailAddresses, "room notices sent to:", sb.ToString());
             DbUtil.Db.SubmitChanges();
         }
 

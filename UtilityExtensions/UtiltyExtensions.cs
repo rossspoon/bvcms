@@ -467,19 +467,9 @@ namespace UtilityExtensions
         {
             get
             {
-                string host = string.Empty;
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_Host] != null)
-                            host = HttpContext.Current.Session[STR_Host].ToString();
-                if (host.HasValue())
-                    return host;
+                if (HttpContext.Current == null)
+                    return null;
                 return HttpContext.Current.Request.Url.Authority;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_Host] = value;
             }
         }
         public static string Host1
@@ -624,25 +614,6 @@ namespace UtilityExtensions
         {
             get { return "<--ScratchPad-->"; }
         }
-        private const string STR_CurrentTag = "CurrentTag";
-        private const string STR_DefaultTag = "UnNamed";
-        public static string CurrentTag
-        {
-            get
-            {
-                var tag = STR_DefaultTag;
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_CurrentTag] != null)
-                            tag = HttpContext.Current.Session[STR_CurrentTag].ToString();
-                return tag;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_CurrentTag] = value;
-            }
-        }
         const string STR_QBScratchPad = "QBScratchPad";
         public static int QueryBuilderScratchPadId
         {
@@ -661,123 +632,15 @@ namespace UtilityExtensions
                     HttpContext.Current.Session[STR_QBScratchPad] = value;
             }
         }
-        const string STR_ActiveOrganizationId = "ActiveOrganizationId";
-        public static int CurrentOrgId
-        {
-            get
-            {
-                int id = 0;
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_ActiveOrganizationId] != null)
-                            id = HttpContext.Current.Session[STR_ActiveOrganizationId].ToInt();
-                return id;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_ActiveOrganizationId] = value;
-            }
-        }
         public static int CreateAccountCode = -1952;
-        const string STR_ActiveGroupId = "ActiveGroup";
-        public static int[] CurrentGroups
-        {
-            get
-            {
-                var id = new int[] { 0 };
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_ActiveGroupId] != null)
-                            id = (int[])HttpContext.Current.Session[STR_ActiveGroupId];
-                return id;
-            }
-            set
-            {
-                if (value == null)
-                    value = new int[] { 0 };
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_ActiveGroupId] = value;
-            }
-        }
-        const string STR_ActivePersonId = "ActivePersonId";
-        public static int CurrentPeopleId
-        {
-            get
-            {
-                int id = 0;
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_ActivePersonId] != null)
-                            id = HttpContext.Current.Session[STR_ActivePersonId].ToInt();
-                return id;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_ActivePersonId] = value;
-            }
-        }
-        public static int? CurrentTagOwnerId
-        {
-            get
-            {
-                var pid = Util.UserPeopleId;
-                var a = Util.CurrentTag.Split(':');
-                if (a.Length > 1)
-                    pid = a[0].ToInt2();
-                return pid;
-            }
-        }
-        public static string CurrentTagName
-        {
-            get
-            {
-                string tag = Util.CurrentTag;
-                var a = tag.Split(':');
-                if (a.Length == 2)
-                    return a[1];
-                return tag;
-            }
-        }
-        private const string STR_VisitLookbackDays = "VisitLookbackDays";
-        public static int VisitLookbackDays
-        {
-            get
-            {
-                var lookback = 180;
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_VisitLookbackDays] != null)
-                            lookback = HttpContext.Current.Session[STR_VisitLookbackDays].ToInt();
-                return lookback;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_VisitLookbackDays] = value;
-            }
-        }
         public static string SessionId
         {
-            get { return HttpContext.Current.Session.SessionID; }
-        }
-        public const string STR_OrgMembersOnly = "OrgMembersOnly";
-        public static bool OrgMembersOnly
-        {
             get
             {
-                bool tf = false;
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_OrgMembersOnly] != null)
-                            tf = (bool)HttpContext.Current.Session[STR_OrgMembersOnly];
-                return tf;
-            }
-            set
-            {
-                if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_OrgMembersOnly] = value;
+                        return HttpContext.Current.Session.SessionID;
+                return null;
             }
         }
         private const string STR_SessionStarting = "SessionStarting";
@@ -949,14 +812,15 @@ namespace UtilityExtensions
                 return false;
             var re = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
             var a = email.SplitStr(",;");
-            var b = true;
             foreach (var m in a)
             {
-                b = b && re.IsMatch(m);
+                var b = re.IsMatch(m);
                 if (m.Contains("@."))
                     b = false;
+                if (b)
+                    return true; // at least one good email address
             }
-            return b;
+            return false;
         }
         public static bool IsLocalNetworkRequest
         {
@@ -1073,7 +937,7 @@ namespace UtilityExtensions
         public static SmtpClient Smtp()
         {
             var smtp = new SmtpClient();
-            string[] a = (string[])HttpContext.Current.Application["smtpcreds"];
+            string[] a = (string[])HttpRuntime.Cache["smtpcreds"];
             if (a != null)
                 smtp.Credentials = new NetworkCredential(a[0], a[1]);
             return smtp;
@@ -1143,6 +1007,20 @@ namespace UtilityExtensions
             return FirstAddress(addrs, null);
         }
         public static MailAddress FirstAddress(string addrs, string name)
+        {
+            if (!addrs.HasValue())
+                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+            var a = addrs.SplitStr(",;");
+            try
+            {
+                return new MailAddress(a[0], name);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static MailAddress FirstAddress2(string addrs, string name)
         {
             if (!addrs.HasValue())
                 addrs = WebConfigurationManager.AppSettings["senderrorsto"];

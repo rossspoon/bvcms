@@ -288,7 +288,7 @@ namespace CmsData
                 if (n % 20 == 0)
                     smtp = Util.Smtp();
                 n++;
-                DbUtil.SendMsg(smtp, from, subject, body, mu.Name, mu.EmailAddress);
+                Util.SendMsg(smtp, Util.CmsHost, from, subject, body, mu.Name, mu.EmailAddress);
             }
         }
     }

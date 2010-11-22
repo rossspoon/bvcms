@@ -36,7 +36,7 @@ namespace CmsWeb.Dialog
                 ListView1.DataSource = ctl.FetchSearchList(null, null, null, 0, 0, null, -1, 0, 0, true, 99);
                 ListView1.DataBind();
             }
-            if (Util.UserPeopleId == Util.CurrentTagOwnerId)
+            if (Util.UserPeopleId == Util2.CurrentTagOwnerId)
                 Parameters.SearchButtonClicked += new EventHandler(Parameters_SearchButtonClicked);
             else
                 AddSelectedUsers.Enabled = false;

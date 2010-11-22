@@ -70,7 +70,7 @@
                     <% Html.RenderPartial("LogOnUserControl"); %>
                     <div>
                         Active Tag: <a href="/MyTags.aspx">
-                            <%=Util.CurrentTagName%></a>
+                            <%=Util2.CurrentTagName%></a>
                     </div>
                 </div>
                 <div style="clear: both">
@@ -85,9 +85,9 @@
                             <ul>
                                 <li><a href="/Search.aspx">Quick Search</a></li>
                                 <li><a href="/MyTags.aspx">Manage Tags</a></li>
-                                <% if (Util.CurrentPeopleId != 0)
+                                <% if (Util2.CurrentPeopleId != 0)
                                    { %>
-                                <li><a href="/Person/Index/<%=Util.CurrentPeopleId%>">
+                                <li><a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
                                     <%=Session["ActivePerson"]%></a></li>
                                 <% } %>
                                 <li><a href="/ContactSearch.aspx">Contact Search</a></li>
@@ -102,9 +102,9 @@
                                    { %>
                                 <li><a href="/OrgMembers">Org Members Management</a></li>
                                 <% }
-                                   if (Util.CurrentOrgId != 0)
+                                   if (Util2.CurrentOrgId != 0)
                                    { %>
-                                <li><a href="/Organization/Index/<%=Util.CurrentOrgId%>">
+                                <li><a href="/Organization/Index/<%=Util2.CurrentOrgId%>">
                                     <%=Session["ActiveOrganization"]%></a></li>
                                 <% } %>
                             </ul>
@@ -165,12 +165,12 @@
                                 <li><a href="/Display/Index/">Special Content</a></li>
                                 <li><a href="/Setup/Recreation/">Recreation Setup</a></li>
                                 <li><a href="/Admin/ToggleOrgMembersOnly.ashx">
-                                    <%=Util.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On"  %></a></li>
+                                    <%=Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On"  %></a></li>
                                 <li><a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
                                 <li><a href="/Admin/UrgentMessage.aspx">Urgent Message</a></li>
-                                <% if (Util.CurrentPeopleId != 0 && Page.User.IsInRole("Admin"))
+                                <% if (Util2.CurrentPeopleId != 0 && Page.User.IsInRole("Admin"))
                                    { %>
-                                <li><a href="/Account/AddUser/<%=Util.CurrentPeopleId %>">Add
+                                <li><a href="/Account/AddUser/<%=Util2.CurrentPeopleId %>">Add
                                     <%=Session["ActivePerson"].ToString() %>
                                     As New User</a></li>
                                 <% } %>

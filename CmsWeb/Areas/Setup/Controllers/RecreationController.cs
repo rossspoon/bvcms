@@ -14,18 +14,18 @@ namespace CmsWeb.Areas.Setup.Controllers
     {
         public ActionResult Index()
         {
-            if (DbUtil.Settings("RecreationProgramId", "") == string.Empty)
+            if (DbUtil.Db.Setting("RecreationProgramId", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecreationProgramId required in Settings");
-            if (DbUtil.Settings("RecEntry", "") == string.Empty)
+            if (DbUtil.Db.Setting("RecEntry", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecEntry required in Settings");
-            if (DbUtil.Settings("RecOrigin", "") == string.Empty)
+            if (DbUtil.Db.Setting("RecOrigin", "") == string.Empty)
                 ModelState.AddModelError("_FORM", "RecOrigin required in Settings");
 
             if (!ModelState.IsValid)
                 return View("Errors");
 
             var q = from c in DbUtil.Db.Divisions
-                    where c.ProgId == DbUtil.Settings("RecreationProgramId", "0").ToInt()
+                    where c.ProgId == DbUtil.Db.Setting("RecreationProgramId", "0").ToInt()
                     where c.RecLeagues.Count() == 0
                     orderby c.Name
                     select new SelectListItem

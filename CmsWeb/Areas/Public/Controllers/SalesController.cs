@@ -58,7 +58,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var m = new SalesModel { tranid = id };
 
             m.testing = false;
-            if ((string)DbUtil.Settings("ServiceUOrgIDTest", "") == OrgId)
+            if ((string)DbUtil.Db.Setting("ServiceUOrgIDTest", "") == OrgId)
                 m.testing = true;
             if (m.testing)
                 m.transaction.TransactionId = "Test-" + TransactionID;
@@ -87,7 +87,7 @@ namespace CmsWeb.Areas.Public.Controllers
             Body = Body.Replace("{download}", 
                 Request.Url.Scheme + "://" + Request.Url.Authority + "/Sales/Download/" + m.saleitem.Id);
 
-            DbUtil.Email(m.saleitem.Email,
+            Util.Email(Util.Smtp(), m.saleitem.Email,
                  m.person.Name, m.transaction.EmailAddress, c.Title, Body);
             return View(m);
         }
@@ -181,6 +181,6 @@ namespace CmsWeb.Areas.Public.Controllers
             ViewData["title"] = c.Title;
             return View();
         }
-        private int testquantity { get { return DbUtil.Settings("ServiceUTestQuantity", "99").ToInt(); } }
+        private int testquantity { get { return DbUtil.Db.Setting("ServiceUTestQuantity", "99").ToInt(); } }
     }
 }

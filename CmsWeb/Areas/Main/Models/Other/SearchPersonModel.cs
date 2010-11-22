@@ -190,7 +190,7 @@ namespace CmsWeb.Models
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;
-            person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
 
             person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();

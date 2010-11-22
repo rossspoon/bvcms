@@ -25,8 +25,8 @@ namespace CmsWeb.Models
             get
             {
                 if (testing)
-                    return DbUtil.Settings("ServiceUOrgIDTest", "0");
-                return DbUtil.Settings("ServiceUOrgID", "0");
+                    return DbUtil.Db.Setting("ServiceUOrgIDTest", "0");
+                return DbUtil.Db.Setting("ServiceUOrgID", "0");
             }
         }
         public string OrgAccountID
@@ -34,8 +34,8 @@ namespace CmsWeb.Models
             get
             {
                 if (testing)
-                    return DbUtil.Settings("ServiceUOrgAccountIDTest", "0");
-                return DbUtil.Settings("ServiceUOrgAccountID", "0");
+                    return DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0");
+                return DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
             }
         }
 

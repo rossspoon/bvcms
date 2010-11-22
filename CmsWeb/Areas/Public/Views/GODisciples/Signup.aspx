@@ -62,7 +62,7 @@
                     <p class="blue">
                         OK we found your record, but we have no email address for you on file.
                         Sorry but this means we need you to contact the church at 
-                        <%=DbUtil.Settings("GoDisciplesPhone", "(901) 347-2000") %> to give us your email address.
+                        <%=DbUtil.Db.Setting("GoDisciplesPhone", "(901) 347-2000") %> to give us your email address.
                         This is done to protect your data from others gaining access to it.
                     </p>
                <% } %>

@@ -287,7 +287,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pm._datumid);
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
             string coupon = pm._Coupon.ToUpper().Replace(" ", "");
-            string admincoupon = DbUtil.Settings("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
+            string admincoupon = DbUtil.Db.Setting("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
             if (coupon == admincoupon)
                 return Json(new
                 {
@@ -389,10 +389,10 @@ namespace CmsWeb.Areas.Public.Controllers
             var m = new SlotModel(id, orgid);
             var slots = string.Join("<br />\n", m.MySlots());
             var smtp = Util.Smtp();
-            DbUtil.Email2(smtp, m.org.EmailAddresses, m.person.EmailAddress, "Commitment confirmation",
+            Util.Email(smtp, m.org.EmailAddresses, m.person.EmailAddress, "Commitment confirmation",
 @"Thank you for committing to {0}. You have the following slots:<br/>
 {1}".Fmt(m.org.OrganizationName, slots));
-            DbUtil.Email2(smtp, m.person.EmailAddress, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
+            Util.Email(smtp, m.person.EmailAddress, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
                 "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
             return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
         }
@@ -512,14 +512,14 @@ namespace CmsWeb.Areas.Public.Controllers
                     amt -= pay;
                 }
                 else
-                    DbUtil.Email2(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
+                    Util.Email(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
                             "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
             }
             DbUtil.Db.SubmitChanges();
             var names = string.Join(", ", ti.people.Select(i => i.name).ToArray());
-            DbUtil.Email2(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
+            Util.Email(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
                 "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Header, ti.AmountDue, names));
-            DbUtil.Email2(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
+            Util.Email(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
                 "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Header, ti.AmountDue, names));
             ViewData["URL"] = ti.URL;
             ViewData["timeout"] = INT_timeout;

@@ -92,6 +92,8 @@ namespace CmsData
         public bool ParentsOf { get; set; }
         public Expression<Func<Person, bool>> Predicate()
         {
+            var db = this.GetDataContext() as CMSDataContext;
+            db.CopySession();
             var parm = Expression.Parameter(typeof(Person), "p");
             var tree = ExpressionTree(parm);
             if (tree == null)
@@ -99,7 +101,7 @@ namespace CmsData
             if (includeDeceased == false)
                 tree = Expression.And(tree, Expressions.CompareConstant(parm,
                      "DeceasedDate", CompareType.Equal, new DateTime?()));
-            if (Util.OrgMembersOnly)
+            if (Util2.OrgMembersOnly)
                 tree = Expression.And(OrgMembersOnly(parm), tree);
             return Expression.Lambda<Func<Person, bool>>(tree, parm);
         }

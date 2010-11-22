@@ -89,14 +89,15 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 case QueryType.AttendMemberTypeAsOf:
-                    return Expressions.AttendMemberTypeAsOf(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.AttendMemberTypeAsOf(c.GetDataContext() as CMSDataContext,
+                               parm,
                                c.StartDate,
                                c.EndDate,
                                c.Program,
                                c.Division,
                                c.Organization,
                                CompType,
-                               string.Join(",",c.CodeStrIds));
+                               string.Join(",", c.CodeStrIds));
                 // B --------------------
                 case QueryType.Birthday:
                     return Expressions.Birthday(parm, CompType, c.TextValue);
@@ -106,7 +107,7 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 case QueryType.CreatedBy:
-                    return Expressions.CreatedBy(parm, c.GetDataContext() as CMSDataContext, 
+                    return Expressions.CreatedBy(parm, c.GetDataContext() as CMSDataContext,
                         CompType, c.TextValue);
                 case QueryType.ContributionAmount2:
                     return Expressions.ContributionAmount2(parm,
@@ -121,15 +122,15 @@ namespace CmsData
                                CompType,
                                double.Parse(c.TextValue));
                 // D --------------------
-				case QueryType.DaysTillBirthday:
-					return Expressions.DaysTillBirthday(parm, c.GetDataContext() as CMSDataContext,
-							   CompType,
-							   c.TextValue.ToInt());
-				case QueryType.DaysSinceContact:
-					return Expressions.DaysSinceContact(parm, 
-							   CompType,
-							   c.TextValue.ToInt());
-				// F ----------------------------
+                case QueryType.DaysTillBirthday:
+                    return Expressions.DaysTillBirthday(parm, c.GetDataContext() as CMSDataContext,
+                               CompType,
+                               c.TextValue.ToInt());
+                case QueryType.DaysSinceContact:
+                    return Expressions.DaysSinceContact(parm,
+                               CompType,
+                               c.TextValue.ToInt());
+                // F ----------------------------
                 case QueryType.FamHasPrimAdultChurchMemb:
                     return Expressions.FamHasPrimAdultChurchMemb(parm, CompType, c.CodeIds == "1");
                 case QueryType.FamilyHasChildren:
@@ -140,11 +141,11 @@ namespace CmsData
                     return Expressions.FamilyHasChildrenAged2(parm, c.Quarters, CompType, c.CodeIds == "1");
                 // H --------------------
                 case QueryType.HasBalanceInCurrentOrg:
-                    return Expressions.HasBalanceInCurrentOrg(parm,
+                    return Expressions.HasBalanceInCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasCurrentTag:
-                    return Expressions.HasCurrentTag(parm,
+                    return Expressions.HasCurrentTag(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasMyTag:
@@ -171,28 +172,28 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HaveVolunteerApplications:
-					return Expressions.HaveVolunteerApplications(parm,
-							   CompType,
-							   c.CodeIds == "1");
-				case QueryType.HasContacts:
-					return Expressions.HasContacts(parm,
-							   CompType,
-							   c.CodeIds == "1");
+                    return Expressions.HaveVolunteerApplications(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.HasContacts:
+                    return Expressions.HasContacts(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.HasTaskWithName:
                     return Expressions.HasTaskWithName(parm,
                                 CompType,
                                 c.TextValue);
                 // I -----------------
                 case QueryType.IsCurrentPerson:
-                    return Expressions.IsCurrentPerson(parm,
+                    return Expressions.IsCurrentPerson(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InCurrentOrg:
-                    return Expressions.InCurrentOrg(parm,
+                    return Expressions.InCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InactiveCurrentOrg:
-                    return Expressions.InactiveCurrentOrg(parm,
+                    return Expressions.InactiveCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InOneOfMyOrgs:
@@ -334,7 +335,7 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.PendingCurrentOrg:
-                    return Expressions.PendingCurrentOrg(parm,
+                    return Expressions.PendingCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.PeopleExtra:
@@ -354,7 +355,7 @@ namespace CmsData
                                 CompType,
                                 c.TextValue);
                 case QueryType.PreviousCurrentOrg:
-                    return Expressions.PreviousCurrentOrg(parm,
+                    return Expressions.PreviousCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
                 // R ----------------
@@ -431,18 +432,18 @@ namespace CmsData
                                c.CodeIntIds);
                 // V -------------------
                 case QueryType.VisitedCurrentOrg:
-                    return Expressions.VisitedCurrentOrg(parm,
+                    return Expressions.VisitedCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
                                CompType,
                                c.CodeIds == "1");
-				case QueryType.VolunteerApprovalCode:
-					return Expressions.VolunteerApprovalCode(parm,
-							   CompType,
-							   c.CodeIntIds);
-				case QueryType.VolAppStatusCode:
-					return Expressions.VolAppStatusCode(parm,
-							   CompType,
-							   c.CodeIntIds);
-				case QueryType.VolunteerProcessedDateMonthsAgo:
+                case QueryType.VolunteerApprovalCode:
+                    return Expressions.VolunteerApprovalCode(parm,
+                               CompType,
+                               c.CodeIntIds);
+                case QueryType.VolAppStatusCode:
+                    return Expressions.VolAppStatusCode(parm,
+                               CompType,
+                               c.CodeIntIds);
+                case QueryType.VolunteerProcessedDateMonthsAgo:
                     return Expressions.VolunteerProcessedDateMonthsAgo(parm,
                         CompType,
                         int.Parse(c.TextValue));

@@ -3,9 +3,9 @@
     <li class="headlink"><a href=''><img src="/images/Mail.png" /> 
         Email</a>
         <ul>
-            <li><a href='/EmailPeople.aspx?id=<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
+            <li><a href='/Email/Index/<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
                 Individuals</a></li>
-            <li><a href='/EmailPeople.aspx?id=<%=ViewData["queryid"]%>&parents=true'><img src="/images/Mail.png" /> 
+            <li><a href='/Email/Index/<%=ViewData["queryid"]%>&parents=true'><img src="/images/Mail.png" /> 
                 Parents</a></li>
         </ul>
     </li>
@@ -67,7 +67,7 @@
                 Volunteer Report</a></li>
 <% if ((bool?)ViewData["OrganizationContext"] ?? false)
    { %>
-            <li><a href='/Reports/Registration/<%=ViewData["queryid"]%>?oid=<%=Util.CurrentOrgId %>' 
+            <li><a href='/Reports/Registration/<%=ViewData["queryid"]%>?oid=<%=Util2.CurrentOrgId %>' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Registration Report</a></li>
 <% }

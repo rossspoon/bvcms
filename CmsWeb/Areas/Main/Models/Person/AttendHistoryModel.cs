@@ -26,7 +26,7 @@ namespace CmsWeb.Models.PersonPage
                 var midnight = Util.Now.Date.AddDays(1);
                 _attends = from a in DbUtil.Db.Attends
                            where a.PeopleId == PeopleId
-                           where !(a.Meeting.Organization.SecurityTypeId == 3 && Util.OrgMembersOnly)
+                           where !(a.Meeting.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                            select a;
                 if (future)
                 {

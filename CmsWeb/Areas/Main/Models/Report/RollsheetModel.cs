@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             if (groups == null)
                 groups = new int[] { 0 };
-            var tagownerid = Util.CurrentTagOwnerId;
+            var tagownerid = Util2.CurrentTagOwnerId;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
                     where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups[0] == 0)
@@ -94,7 +94,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         InactiveDate = om.InactiveDate,
                         AttendPct = om.AttendPct,
                         LastAttended = om.LastAttended,
-                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
+                        HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == tagownerid),
                         Joined = om.EnrollmentDate,
                     };
             return q;
@@ -147,7 +147,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
-                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == Util.CurrentTagOwnerId),
+                        HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
                         NameParent1 = p.Family.HohName,
                         NameParent2 = p.Family.People.Where(x => 
                             x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult 

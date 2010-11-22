@@ -106,7 +106,7 @@ namespace CmsData
                     if (div == null)
                     {
                         div = new Division { Name = s };
-                        string misctags = DbUtil.Settings("MiscTagsString", "Misc Tags");
+                        string misctags = DbUtil.Db.Setting("MiscTagsString", "Misc Tags");
                         var prog = Db.Programs.SingleOrDefault(p => p.Name == misctags);
                         if (prog == null)
                         {

@@ -323,7 +323,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
         {
             CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
-            if (!birthday.HasValue && DbUtil.Settings("DobNotRequired", "true") == "true")
+            if (!birthday.HasValue && DbUtil.Db.Setting("DobNotRequired", "true") == "true")
                 ModelState.AddModelError("DOB", "birthday required");
             ValidateBirthdayRange(ModelState);
             if (!phone.HasValue())
@@ -394,7 +394,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
             person.EmailAddress = email;
             person.SuffixCode = suffix;
             person.MiddleName = middle;
-            person.CampusId = DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
             if (f.HomePhone.HasValue())
@@ -1143,8 +1143,8 @@ It is important that you call the church <strong>{2}</strong> to update our reco
 so that you will receive future important notices regarding this registration.</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                DbUtil.Email2(smtp, fromemail, regemail, subj, msg);
-                DbUtil.Email2(smtp, fromemail, person.EmailAddress, subj, msg);
+                Util.Email(smtp, fromemail, regemail, subj, msg);
+                Util.Email(smtp, fromemail, person.EmailAddress, subj, msg);
             }
             else
             {
@@ -1161,7 +1161,7 @@ But we won't add that to your record without your permission.
 Thank you</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                DbUtil.Email2(smtp, fromemail, regemail, subj, msg);
+                Util.Email(smtp, fromemail, regemail, subj, msg);
             }
         }
         private static string trim(string s)
@@ -1191,7 +1191,7 @@ Thank you</p>"
 #endif
             if (!IsNew)
             {
-                var rr = person.RecRegs.SingleOrDefault();
+                var rr = DbUtil.Db.RecRegs.SingleOrDefault(r => r.PeopleId == PeopleId);
                 if (rr != null)
                 {
                     if (org.AskRequest == true)

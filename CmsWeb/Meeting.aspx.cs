@@ -48,7 +48,7 @@ namespace CmsWeb
 			if (meeting == null)
 				Response.EndShowMessage("no meeting");
 
-			if (Util.OrgMembersOnly
+			if (Util2.OrgMembersOnly
 				&& !DbUtil.Db.OrganizationMembers.Any(om =>
 					om.OrganizationId == meeting.OrganizationId
 					&& om.PeopleId == Util.UserPeopleId))

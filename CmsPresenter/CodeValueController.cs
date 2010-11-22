@@ -28,7 +28,7 @@ namespace CMSPresenter
         public static List<CodeValueItem> GetStateList()
         {
             const string NAME = "GetStateList";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from s in DbUtil.Db.StateLookups
@@ -40,7 +40,7 @@ namespace CMSPresenter
                         };
                 list = q.ToList();
                 list.Insert(0, new CodeValueItem { Code = "", Value = "(not specified)" });
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -56,7 +56,7 @@ namespace CMSPresenter
         public List<CodeValueItem> LetterStatusCodes()
         {
             const string NAME = "LetterStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.MemberLetterStatuses
@@ -68,7 +68,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -77,7 +77,7 @@ namespace CMSPresenter
         public List<CodeValueItem> EnvelopeOptions()
         {
             const string NAME = "EnvelopeOptions";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.EnvelopeOptions
@@ -89,7 +89,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -98,7 +98,7 @@ namespace CMSPresenter
         public List<CodeValueItem> JoinTypes()
         {
             const string NAME = "JoinTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.JoinTypes
@@ -110,7 +110,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -119,7 +119,7 @@ namespace CMSPresenter
         public List<CodeValueItem> TitleCodes()
         {
             const string NAME = "TitleCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.NameTitles
@@ -131,7 +131,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -140,7 +140,7 @@ namespace CMSPresenter
         public List<CodeValueItem> VolApplicationStatusCodes()
         {
             const string NAME = "VolApplicationStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from sc in DbUtil.Db.VolApplicationStatuses
@@ -152,7 +152,7 @@ namespace CMSPresenter
                             Value = sc.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list.AddNotSpecified();
         }
@@ -161,7 +161,7 @@ namespace CMSPresenter
         public List<CodeValueItem> DropTypes()
         {
             const string NAME = "DropTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.DropTypes
@@ -173,7 +173,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -182,7 +182,7 @@ namespace CMSPresenter
         public List<CodeValueItem> GenderCodes()
         {
             const string NAME = "GenderCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.Genders
@@ -193,7 +193,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -201,7 +201,7 @@ namespace CMSPresenter
         public List<CodeValueItem> BundleStatusTypes()
         {
             const string NAME = "BundleStatusTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.BundleStatusTypes
@@ -212,7 +212,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -220,7 +220,7 @@ namespace CMSPresenter
         public List<CodeValueItem> BundleHeaderTypes()
         {
             const string NAME = "BundleHeaderTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.BundleHeaderTypes
@@ -231,7 +231,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -239,7 +239,7 @@ namespace CMSPresenter
         public List<CodeValueItem> ContributionStatuses()
         {
             const string NAME = "ContributionStatuses";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.ContributionStatuses
@@ -250,7 +250,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -258,7 +258,7 @@ namespace CMSPresenter
         public List<CodeValueItem> ContributionTypes()
         {
             const string NAME = "ContributionTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.ContributionTypes
@@ -269,7 +269,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -277,7 +277,7 @@ namespace CMSPresenter
         public List<CodeValueItem> Funds()
         {
             const string NAME = "Funds";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from f in DbUtil.Db.ContributionFunds
@@ -289,7 +289,7 @@ namespace CMSPresenter
                             Value = f.FundName
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });
             return list;
@@ -307,7 +307,7 @@ namespace CMSPresenter
         public List<CodeValueItem> DiscoveryClassStatusCodes()
         {
             const string NAME = "DiscoveryClassStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.DiscoveryClassStatuses
@@ -318,7 +318,7 @@ namespace CMSPresenter
                             Value = c.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -327,7 +327,7 @@ namespace CMSPresenter
         public List<CodeValueItem> EntryPoints()
         {
             const string NAME = "EntryPoints";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.EntryPoints
@@ -338,7 +338,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -347,7 +347,7 @@ namespace CMSPresenter
         public List<CodeValueItem> Origins()
         {
             const string NAME = "Origins";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.Origins
@@ -358,7 +358,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -367,7 +367,7 @@ namespace CMSPresenter
         public List<CodeValueItem> InterestPoints()
         {
             const string NAME = "InterestPoints";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.InterestPoints
@@ -378,7 +378,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -387,7 +387,7 @@ namespace CMSPresenter
         public List<CodeValueItem> BaptismTypes()
         {
             const string NAME = "BaptismTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.BaptismTypes
@@ -398,7 +398,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -407,7 +407,7 @@ namespace CMSPresenter
         public List<CodeValueItem> BaptismStatuses()
         {
             const string NAME = "BaptismStatuses";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.BaptismStatuses
@@ -418,7 +418,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -427,7 +427,7 @@ namespace CMSPresenter
         public List<CodeValueItem> DecisionCodes()
         {
             const string NAME = "DecisionCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.DecisionTypes
@@ -438,7 +438,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -447,7 +447,7 @@ namespace CMSPresenter
         public List<CodeValueItem> FamilyPositionCodes()
         {
             const string NAME = "FamilyPositionCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.FamilyPositions
@@ -458,7 +458,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -467,7 +467,7 @@ namespace CMSPresenter
         public List<CodeValueItem> Ministries()
         {
             const string NAME = "Ministries";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from m in DbUtil.Db.Ministries
@@ -479,7 +479,7 @@ namespace CMSPresenter
                             Value = m.MinistryName
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -493,7 +493,7 @@ namespace CMSPresenter
         public List<CodeValueItem> ContactReasonCodes()
         {
             const string NAME = "ContactReasonCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.NewContactReasons
@@ -505,7 +505,7 @@ namespace CMSPresenter
                             Value = c.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -518,7 +518,7 @@ namespace CMSPresenter
         public List<CodeValueItem> ContactTypeCodes()
         {
             const string NAME = "ContactTypeCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.NewContactTypes
@@ -530,7 +530,7 @@ namespace CMSPresenter
                             Value = c.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -639,7 +639,7 @@ namespace CMSPresenter
         public List<CodeValueItem> MaritalStatusCodes()
         {
             const string NAME = "MaritalStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.MaritalStatuses
@@ -650,7 +650,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -694,7 +694,7 @@ namespace CMSPresenter
         public List<CodeValueItem> BitCodes()
         {
             const string NAME = "BitCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 list = new List<CodeValueItem> 
@@ -702,7 +702,7 @@ namespace CMSPresenter
                     new CodeValueItem { Id = 1, Value = "True", Code = "T" },
                     new CodeValueItem { Id = 0, Value = "False", Code = "F" },
 		        };
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -710,7 +710,7 @@ namespace CMSPresenter
         //public List<CodeValueItem> MeetingStatusCodes()
         //{
         //    const string NAME = "MeetingStatusCodes";
-        //    var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+        //    var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
         //    if (list == null)
         //    {
         //        var q = from ms in DbUtil.Db.MeetingStatuses
@@ -721,7 +721,7 @@ namespace CMSPresenter
         //                    Value = ms.Description
         //                };
         //        list = q.ToList();
-        //        HttpRuntime.Cache[Util.Host + NAME] = list;
+        //        HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
         //    }
         //    return list;
         //}
@@ -729,7 +729,7 @@ namespace CMSPresenter
         public List<CodeValueItem> DateFields()
         {
             const string NAME = "DateFields";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 list = new List<CodeValueItem> 
@@ -748,7 +748,7 @@ namespace CMSPresenter
 	                new CodeValueItem { Id = 12, Value = "Alt Addr To", Code = "AltAddressToDate" },
 	                new CodeValueItem { Id = 13, Value = "Deceased", Code = "DeceasedDate" },
 	            };
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -757,7 +757,7 @@ namespace CMSPresenter
         public List<CodeValueItem> AllCampuses()
         {
             const string NAME = "AllCampuses";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.Campus
@@ -768,7 +768,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -782,7 +782,7 @@ namespace CMSPresenter
         public List<CodeValueItem> OrganizationStatusCodes()
         {
             const string NAME = "OrganizationStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.OrganizationStatuses
@@ -793,7 +793,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -806,12 +806,12 @@ namespace CMSPresenter
         public static List<CodeValueItem> ResidentCodesWithZero()
         {
             const string NAME = "ResidentCodesWithZero";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 list = ResidentCodes();
                 list.Insert(0, top[0]);
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -820,7 +820,7 @@ namespace CMSPresenter
         public static List<CodeValueItem> ResidentCodes()
         {
             const string NAME = "ResidentCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.ResidentCodes
@@ -831,7 +831,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -840,7 +840,7 @@ namespace CMSPresenter
         public List<CodeValueItem> OrganizationTypes()
         {
             const string NAME = "OrganizationTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
                 list = MeetingTypes();
             return list;
@@ -850,7 +850,7 @@ namespace CMSPresenter
         public List<CodeValueItem> MeetingTypes()
         {
             const string NAME = "MeetingTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.MeetingTypes
@@ -861,7 +861,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -870,7 +870,7 @@ namespace CMSPresenter
         public List<CodeValueItem> GenderClasses()
         {
             const string NAME = "GenderClasses";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.GenderClasses
@@ -881,7 +881,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -890,7 +890,7 @@ namespace CMSPresenter
         public List<CodeValueItem> AttendanceTrackLevelCodes()
         {
             const string NAME = "AttendanceTrackLevelCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.AttendTrackLevels
@@ -901,7 +901,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -909,7 +909,7 @@ namespace CMSPresenter
         public List<CodeValueItem> RegistrationTypes()
         {
             const string NAME = "RegistrationTypes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.RegistrationTypes
@@ -920,7 +920,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -929,7 +929,7 @@ namespace CMSPresenter
         public List<CodeValueItem> SecurityTypeCodes()
         {
             const string NAME = "SecurityTypeCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 list = new List<CodeValueItem> 
@@ -939,7 +939,7 @@ namespace CMSPresenter
 		                new CodeValueItem { Id = 2, Value = "Beeper", Code = "B" },
 		                new CodeValueItem { Id = 3, Value = "UnShared", Code = "U" },
 		            };
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -960,7 +960,7 @@ namespace CMSPresenter
         public List<CodeValueItem> AttendanceClassifications()
         {
             const string NAME = "AttendanceClassifications";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from i in DbUtil.Db.AttendanceClassifications
@@ -972,7 +972,7 @@ namespace CMSPresenter
                             Value = i.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -981,7 +981,7 @@ namespace CMSPresenter
         public List<CodeValueItem> MemberStatusCodes()
         {
             const string NAME = "MemberStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from ms in DbUtil.Db.MemberStatuses
@@ -992,7 +992,7 @@ namespace CMSPresenter
                             Value = ms.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -1061,7 +1061,7 @@ namespace CMSPresenter
         public static List<MemberTypeItem> MemberTypeCodes2()
         {
             const string NAME = "MemberTypeCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<MemberTypeItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<MemberTypeItem>;
             if (list == null)
             {
                 var q = from mt in DbUtil.Db.MemberTypes
@@ -1076,7 +1076,7 @@ namespace CMSPresenter
                             AttendanceTypeId = mt.AttendanceTypeId
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -1098,7 +1098,7 @@ namespace CMSPresenter
         public List<CodeValueItem> AttendanceTypeCodes()
         {
             const string NAME = "AttendanceTypeCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from c in DbUtil.Db.AttendTypes
@@ -1109,7 +1109,7 @@ namespace CMSPresenter
                             Value = c.Description,
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -1118,7 +1118,7 @@ namespace CMSPresenter
         public List<CodeValueItem> AddressTypeCodes()
         {
             const string NAME = "AddressTypeCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from at in DbUtil.Db.AddressTypes
@@ -1129,7 +1129,7 @@ namespace CMSPresenter
                             Value = at.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -1190,7 +1190,7 @@ namespace CMSPresenter
         public List<CodeValueItem> VolunteerCodes()
         {
             const string NAME = "VolunteerCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from vc in DbUtil.Db.VolunteerCodes
@@ -1201,7 +1201,7 @@ namespace CMSPresenter
                             Value = vc.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }
@@ -1209,7 +1209,7 @@ namespace CMSPresenter
         public List<CodeValueItem> TaskStatusCodes()
         {
             const string NAME = "TaskStatusCodes";
-            var list = HttpRuntime.Cache[Util.Host + NAME] as List<CodeValueItem>;
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
             if (list == null)
             {
                 var q = from vc in DbUtil.Db.TaskStatuses
@@ -1221,7 +1221,7 @@ namespace CMSPresenter
                             Value = vc.Description
                         };
                 list = q.ToList();
-                HttpRuntime.Cache[Util.Host + NAME] = list;
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;
         }

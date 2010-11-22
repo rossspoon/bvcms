@@ -43,7 +43,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 OutputFile = HttpContext.Current.Server.MapPath("/contributions.pdf");
             else
                 OutputFile = HttpContext.Current.Server.MapPath("/contributions.txt");
-            Host = Util.Host;
+            Host = DbUtil.Db.Host;
         }
 
         private bool _LastSuccess;
@@ -105,6 +105,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             try
             {
                 Db = new CMSDataContext(Util.GetConnectionString(Host));
+                Db.Host = Host;
                 Db.CommandTimeout = 1200;
 
                 Current = 0;

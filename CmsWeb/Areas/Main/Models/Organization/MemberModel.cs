@@ -16,13 +16,13 @@ namespace CmsWeb.Models.OrganizationPage
             Inactive,
             Pending,
         }
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
         private int[] Groups;
         private GroupSelect Select;
         private string NameFilter;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int id, int[] groups, GroupSelect select, string name)
+        public MemberModel(int? id, int[] groups, GroupSelect select, string name)
         {
             OrganizationId = id;
             if (groups == null)
@@ -51,7 +51,7 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public bool isFiltered
         {
-            get { return Util.CurrentGroups[0] != 0 || NameFilter.HasValue(); }
+            get { return Util2.CurrentGroups[0] != 0 || NameFilter.HasValue(); }
         }
 
         private IQueryable<OrganizationMember> _members;
@@ -124,7 +124,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             var q0 = ApplySort();
             q0 = q0.Skip(Pager.StartRow).Take(Pager.PageSize);
-            var tagownerid = Util.CurrentTagOwnerId;
+            var tagownerid = Util2.CurrentTagOwnerId;
             var q = from om in q0
                     let p = om.Person
                     select new PersonMemberInfo
@@ -155,7 +155,7 @@ namespace CmsWeb.Models.OrganizationPage
                         InactiveDate = om.InactiveDate,
                         AttendPct = om.AttendPct,
                         LastAttended = om.LastAttended,
-                        HasTag = p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == tagownerid),
+                        HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == tagownerid),
                         //FromTab = fromtab,
                         Joined = om.EnrollmentDate,
                     };

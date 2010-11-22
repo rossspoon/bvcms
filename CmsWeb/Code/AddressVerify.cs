@@ -50,7 +50,7 @@ namespace CmsWeb
         }
         public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
         {
-            string url = DbUtil.Settings("QAServer", "");
+            string url = DbUtil.Db.Setting("QAServer", "");
             if (!url.HasValue())
                 return new AddressResult { found = false };
 

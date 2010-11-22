@@ -118,7 +118,7 @@ namespace CmsWeb.Models
         }
         public static IEnumerable<SelectListItem> StateList()
         {
-            string defstate = DbUtil.Settings("DefaultState", "TN");
+            string defstate = DbUtil.Db.Setting("DefaultState", "TN");
             var q = from r in DbUtil.Db.StateLookups
                     select new SelectListItem
                     {
@@ -242,7 +242,7 @@ namespace CmsWeb.Models
             var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
-                DbUtil.Settings("RegOrigin", "10").ToInt(), 
+                DbUtil.Db.Setting("RegOrigin", "10").ToInt(), 
                 organization == null? null : organization.EntryPointId);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
@@ -253,7 +253,7 @@ namespace CmsWeb.Models
             p.FixTitle();
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email.Trim();
-            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            p.CampusId = campusid ?? DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             if (org.HasValue)
@@ -266,7 +266,7 @@ namespace CmsWeb.Models
             var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
             var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
-                DbUtil.Settings("RegOrigin", "10").ToInt(),
+                DbUtil.Db.Setting("RegOrigin", "10").ToInt(),
                 organization == null ? null : organization.EntryPointId);
             var age = p.GetAge();
             var pos = (int)Family.PositionInFamily.PrimaryAdult;
@@ -279,7 +279,7 @@ namespace CmsWeb.Models
             p.FixTitle();
             p.CellPhone = cellphone.GetDigits();
             p.EmailAddress = email.Trim();
-            p.CampusId = campusid ?? DbUtil.Settings("DefaultCampusId", "").ToInt2();
+            p.CampusId = campusid ?? DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             if (org.HasValue)
@@ -334,17 +334,17 @@ namespace CmsWeb.Models
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress), person.Name, person.EmailAddress, c.Title, c.Body);
-            DbUtil.Email2(smtp, person.EmailAddress, DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress),
-                "new registration on {0}".Fmt(Util.Host),
+            Util.Email(smtp, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress), person.Name, person.EmailAddress, c.Title, c.Body);
+            Util.Email(smtp, person.EmailAddress, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress),
+                "new registration on {0}".Fmt(DbUtil.Db.Host),
                 "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
 
         public void EmailVisit()
         {
-            string email = DbUtil.Settings("VisitMail-" + campusid, "");
+            string email = DbUtil.Db.Setting("VisitMail-" + campusid, "");
             if (!email.HasValue())
-                email = DbUtil.Settings("RegMail", DbUtil.SystemEmailAddress);
+                email = DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress);
 
             var c = DbUtil.Content("VisitMessage-" + campusid);
             if (c == null)
@@ -358,8 +358,8 @@ namespace CmsWeb.Models
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
             var smtp = Util.Smtp();
-            DbUtil.Email(smtp, email, person.Name, person.EmailAddress, c.Title, c.Body);
-            DbUtil.Email2(smtp, person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+            Util.Email(smtp, email, person.Name, person.EmailAddress, c.Title, c.Body);
+            Util.Email(smtp, person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
 
     }

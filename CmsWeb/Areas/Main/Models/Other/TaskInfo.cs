@@ -199,7 +199,7 @@ namespace CmsWeb.Models
         }
         public string ProspectReportLink()
         {
-            Util.CurrentPeopleId = WhoId.Value;
+            Util2.CurrentPeopleId = WhoId.Value;
             HttpContext.Current.Session["ActivePerson"] = Who;
             var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
             return "/Reports/Prospect/" + qb.QueryId + "?form=true";

@@ -100,7 +100,7 @@ namespace CmsData
                     && et.TransactionStatus == false
                     && et.TransactionDate <= enddt // transaction starts <= looked for end
                     && (et.Pending ?? false) == false
-                    && (et.NextTranChangeDate ?? Util.Now) >= startdt // transaction ends >= looked for start
+                    && (et.NextTranChangeDate ?? DateTime.Now) >= startdt // transaction ends >= looked for start
                     && (orgid == 0 || et.OrganizationId == orgid)
                     && (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -460,12 +460,12 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
-        internal static Expression VisitedCurrentOrg(
+        internal static Expression VisitedCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
-            var mindt = Util.Now.AddDays(-Util.VisitLookbackDays).Date;
+            var mindt = Util.Now.AddDays(-Db.VisitLookbackDays).Date;
             var ids = new int[] 
             { 
                 (int)Attend.AttendTypeCode.NewVisitor, 
@@ -478,17 +478,17 @@ namespace CmsData
                     && a.MeetingDate >= mindt
                     && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                     && ids.Contains(a.AttendanceTypeId.Value)
-                    && a.Meeting.OrganizationId == Util.CurrentOrgId
+                    && a.Meeting.OrganizationId == Db .CurrentOrgId
                     )
-                && !p.OrganizationMembers.Any(m => m.OrganizationId == Util.CurrentOrgId
+                && !p.OrganizationMembers.Any(m => m.OrganizationId == Db .CurrentOrgId
                     && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression AttendMemberTypeAsOf(
-            ParameterExpression parm, CMSDataContext Db,
+        internal static Expression AttendMemberTypeAsOf(CMSDataContext Db,
+            ParameterExpression parm, 
             DateTime? from,
             DateTime? to,
             int? progid,
@@ -1236,28 +1236,29 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression HasCurrentTag(
+        internal static Expression HasCurrentTag(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
-                    p.Tags.Any(t => t.Tag.Name == Util.CurrentTagName && t.Tag.PeopleId == Util.CurrentTagOwnerId);
+                    p.Tags.Any(t => t.Tag.Name == Db.CurrentTagName && t.Tag.PeopleId == Db.CurrentTagOwnerId);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression HasBalanceInCurrentOrg(
+        internal static Expression HasBalanceInCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
+            var cg = Db.CurrentGroups.ToArray();
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
-                        && (m.OrgMemMemTags.Any(mt => Util.CurrentGroups.Contains(mt.MemberTagId)) || Util.CurrentGroups[0] <= 0)
-                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroups[0] != -1)
+                        m.OrganizationId == Db.CurrentOrgId
+                        && (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         && (m.Pending ?? false) == false
                         && (m.AmountPaid > 0 && m.AmountPaid < m.Amount));
@@ -1266,16 +1267,17 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression InCurrentOrg(
+        internal static Expression InCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
+            var cg = Db.CurrentGroups.ToArray();
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
-                        && (m.OrgMemMemTags.Any(mt => Util.CurrentGroups.Contains(mt.MemberTagId)) || Util.CurrentGroups[0] <= 0)
-                        && (m.OrgMemMemTags.Count() == 0 || Util.CurrentGroups[0] != -1)
+                        m.OrganizationId == Db.CurrentOrgId
+                        && (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
+                        && (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
                         && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                         && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
@@ -1283,60 +1285,60 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression InactiveCurrentOrg(
+        internal static Expression InactiveCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
+                        m.OrganizationId == Db.CurrentOrgId
                         && m.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression PendingCurrentOrg(
+        internal static Expression PendingCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
+                        m.OrganizationId == Db.CurrentOrgId
                         && (m.Pending ?? false) == true);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression PreviousCurrentOrg(
+        internal static Expression PreviousCurrentOrg(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.EnrollmentTransactions.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
+                        m.OrganizationId == Db.CurrentOrgId
                         && m.TransactionTypeId > 3
                         && m.TransactionStatus == false
                         && (m.Pending ?? false) == false)
                     && !p.OrganizationMembers.Any(m =>
-                        m.OrganizationId == Util.CurrentOrgId
+                        m.OrganizationId == Db.CurrentOrgId
                         && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression IsCurrentPerson(
+        internal static Expression IsCurrentPerson(CMSDataContext Db,
             ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
-                    p.PeopleId == Util.CurrentPeopleId;
+                    p.PeopleId == Db.CurrentPeopleId;
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

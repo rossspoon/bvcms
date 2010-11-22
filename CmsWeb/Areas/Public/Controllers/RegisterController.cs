@@ -18,8 +18,8 @@ namespace CmsWeb.Areas.Public.Controllers
         public RegisterController()
         {
             ViewData["head"] = HeaderHtml("RegHeader",
-                DbUtil.Settings("RegHeader", "change RegHeader setting"),
-                DbUtil.Settings("RegLogo", "/Content/Crosses.png"));
+                DbUtil.Db.Setting("RegHeader", "change RegHeader setting"),
+                DbUtil.Db.Setting("RegLogo", "/Content/Crosses.png"));
         }
 
         public ActionResult Inside(int? campus)
@@ -216,7 +216,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!password.HasValue())
                 ModelState.AddModelError("password", "required");
             if (ModelState.IsValid)
-                if (password == DbUtil.Settings("RegPassword", "fgsltw"))
+                if (password == DbUtil.Db.Setting("RegPassword", "fgsltw"))
                 {
                     Session["auth"] = "true";
                     return RedirectToAction("Index");
