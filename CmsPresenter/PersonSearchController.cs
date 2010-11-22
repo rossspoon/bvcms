@@ -99,8 +99,13 @@ namespace CMSPresenter
             var q = from f in Db.Families
                     where query.Any(ff => ff.FamilyId == f.FamilyId)
                     let p = Db.People.Single(pp => pp.PeopleId == f.HeadOfHouseholdId)
-                    let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
-                    let children = f.People.Where(pp => pp.PeopleId != p.PeopleId && pp.PeopleId != p.SpouseId && pp.Age < 25).Select(pp => pp.PreferredName)
+                    let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == f.HeadOfHouseholdSpouseId)
+                    let children = from pp in f.People
+                                   where pp.PeopleId != f.HeadOfHouseholdId
+                                   where pp.PeopleId != (f.HeadOfHouseholdSpouseId ?? 0)
+                                   where pp.PositionInFamilyId == 30
+                                   orderby pp.LastName == p.LastName ? 1 : 2, pp.Age descending
+                                   select pp.LastName == p.LastName ? pp.PreferredName : pp.Name
                     select new
                     {
                         FamilyId = p.FamilyId,

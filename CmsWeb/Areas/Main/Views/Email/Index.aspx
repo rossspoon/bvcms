@@ -35,7 +35,7 @@ You can include a file, image, mp3 or whatever you like in your email.
            { %>
         Scheduled Date and Time (mm/dd/yy h:mm AM|PM)<%=Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" })%> (Optional)</p>
         <% } %>
-   <p>From: <%=Html.DropDownList("From", Model.EmailFroms()) %>
+   <p>From: <%=Html.DropDownList("FromAddress", Model.EmailFroms()) %>
     <input type="submit" name="Submit" value="Test (Send To Yourself)" onclick="$.blockUI()" />
     </p>
     <p><label>Subject:</label>

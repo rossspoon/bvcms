@@ -33,6 +33,8 @@ namespace CmsData
 		
 		private DateTime _Queued;
 		
+		private string _FromName;
+		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
@@ -67,6 +69,9 @@ namespace CmsData
 		
 		partial void OnQueuedChanging(DateTime value);
 		partial void OnQueuedChanged();
+		
+		partial void OnFromNameChanging(string value);
+		partial void OnFromNameChanged();
 		
     #endregion
 		public EmailQueue()
@@ -250,6 +255,28 @@ namespace CmsData
 					this._Queued = value;
 					this.SendPropertyChanged("Queued");
 					this.OnQueuedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FromName", UpdateCheck=UpdateCheck.Never, Storage="_FromName", DbType="varchar(60)")]
+		public string FromName
+		{
+			get { return this._FromName; }
+
+			set
+			{
+				if (this._FromName != value)
+				{
+				
+                    this.OnFromNameChanging(value);
+					this.SendPropertyChanging();
+					this._FromName = value;
+					this.SendPropertyChanged("FromName");
+					this.OnFromNameChanged();
 				}
 
 			}

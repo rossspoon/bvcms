@@ -13,6 +13,7 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class EmailController : CmsStaffController
     {
+        [ValidateInput(false)]
         public ActionResult Index(int id, string body, string subj, bool? ishtml)
         {
             var m = new MassEmailer(id);
@@ -32,6 +33,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.TestSend(Util.UserPeopleId.Value);
                 return View("Index", m);
             }
+            m.FromName = m.EmailFroms().Single(ef => ef.Value == m.FromAddress).Text;
             DbUtil.LogActivity("Emailing people");
             var id = m.Queue();
             if (m.Schedule.HasValue)

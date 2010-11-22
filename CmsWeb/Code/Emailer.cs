@@ -159,7 +159,7 @@ namespace CmsWeb
         }
         public static void SendPeopleEmail(CMSDataContext Db, string CmsHost, EmailQueue emailqueue)
         {
-            var emailer = new Emailer(emailqueue.FromAddr);
+            var emailer = new Emailer(emailqueue.FromAddr, emailqueue.FromName);
             emailer.Message = emailqueue.Body;
             emailqueue.Started = DateTime.Now;
             Db.SubmitChanges();

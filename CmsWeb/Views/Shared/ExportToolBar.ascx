@@ -5,7 +5,7 @@
         <ul>
             <li><a href='/Email/Index/<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
                 Individuals</a></li>
-            <li><a href='/Email/Index/<%=ViewData["queryid"]%>&parents=true'><img src="/images/Mail.png" /> 
+            <li><a href='/Email/Index/<%=ViewData["queryid"]%>?parents=true'><img src="/images/Mail.png" /> 
                 Parents</a></li>
         </ul>
     </li>

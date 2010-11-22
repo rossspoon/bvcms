@@ -96,7 +96,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                                 meeting.Organization.Location,
                                 meeting.Organization.LeaderName);
 
-            return Redirect("/EmailPeople.aspx?id={0}&subj={1}&body={2}&ishtml=true"
+            return Redirect("/Email/Index/{0}?subj={1}&body={2}&ishtml=true"
                 .Fmt(qb.QueryId, Server.UrlEncode(subject), Server.UrlEncode(body)));
         }
         public ActionResult UpdateAll(string id, int? qid)

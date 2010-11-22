@@ -61,6 +61,7 @@ namespace CmsWeb.Areas.Main.Models
             {
                 Queued = DateTime.Now,
                 FromAddr = FromAddress,
+                FromName = FromName,
                 Subject = Subject,
                 Body = Body,
                 SendWhen = Schedule,
