@@ -14,10 +14,9 @@ namespace CmsWeb.Areas.Main.Controllers
     public class EmailController : CmsStaffController
     {
         [ValidateInput(false)]
-        public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? wantParents)
+        public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? parents)
         {
-            var m = new MassEmailer(id);
-            m.wantParents = wantParents ?? false;
+            var m = new MassEmailer(id, parents);
             if (body.HasValue())
                 m.Body = Server.UrlDecode(body);
             if (subj.HasValue())

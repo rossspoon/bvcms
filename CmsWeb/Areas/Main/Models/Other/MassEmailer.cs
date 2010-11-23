@@ -32,19 +32,20 @@ namespace CmsWeb.Areas.Main.Models
             CmsHost = Util.CmsHost;
         }
 
-        public MassEmailer(int QBId)
+        public MassEmailer(int QBId, bool? parents)
             : this()
         {
             this.QBId = QBId;
+            this.wantParents = parents ?? false;
             var Qb = DbUtil.Db.LoadQueryById(QBId);
             var q = DbUtil.Db.PeopleQuery(QBId);
             if (Qb.ParentsOf || wantParents)
             {
                 q = from p in q
-                    from m in p.Family.People
-                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-                    select m;
+                    from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)
+                    where (fm.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+                    || (fm.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                    select fm;
                 q = q.Distinct();
             }
 
@@ -103,7 +104,7 @@ namespace CmsWeb.Areas.Main.Models
             var q = Db.People.Where(Qb.Predicate());
             if (m.wantParents || Qb.ParentsOf)
                 q = from p in q
-                    from fm in p.Family.People
+                    from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)
                     where (fm.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
                     || (fm.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
                     select fm;

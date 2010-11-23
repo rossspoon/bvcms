@@ -28,6 +28,7 @@ You can include a file, image, mp3 or whatever you like in your email.
    <fieldset>
    <%=Html.Hidden("QBId") %>
    <%=Html.Hidden("Count", Model.Count) %>
+   <%=Html.Hidden("wantParents", Model.wantParents) %>
    <p>Number of Emails: <%=Model.Count%></p>
    <p>
         <input type="submit" name="Submit" value="Send" style="width:62px;height: 42px;" onclick="$.blockUI()" /> 
