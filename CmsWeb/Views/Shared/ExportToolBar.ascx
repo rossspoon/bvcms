@@ -3,10 +3,17 @@
     <li class="headlink"><a href=''><img src="/images/Mail.png" /> 
         Email</a>
         <ul>
+            <li><a href='/EmailPeople.aspx?id=<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
+                Individuals</a></li>
+            <li><a href='/EmailPeole.aspx?id=<%=ViewData["queryid"]%>&parents=true'><img src="/images/Mail.png" /> 
+                Parents</a></li>
+                <% if (Page.User.IsInRole("testing"))
+                   { %>
             <li><a href='/Email/Index/<%=ViewData["queryid"]%>'><img src="/images/Mail.png" /> 
                 Individuals</a></li>
             <li><a href='/Email/Index/<%=ViewData["queryid"]%>?parents=true'><img src="/images/Mail.png" /> 
                 Parents</a></li>
+                <% } %>
         </ul>
     </li>
     <li class="headlink"><a href=''><img src="/images/BulkMailing.png" /> 

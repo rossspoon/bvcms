@@ -89,7 +89,9 @@ namespace CmsWeb
 #if DEBUG2
             em.SendPeopleEmail2(q, args.Subject, args.Body, args.IsHtml, null);
 #else
-            em.SendPeopleEmail(q, args.Subject, args.Body, args.IsHtml);
+            if (!IsHtml.Checked)
+                args.Body = Util.SafeFormat(args.Body);
+            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, args.Subject, args.Body);
 #endif
         }
 
@@ -133,11 +135,10 @@ namespace CmsWeb
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
             var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
-#if DEBUG2
-            em.SendPeopleEmail2(q, SubjectLine.Text, EmailBody.Text, IsHtml.Checked, null);
-#else
-            em.SendPeopleEmail(q, SubjectLine.Text, EmailBody.Text, IsHtml.Checked);
-#endif
+            string body = EmailBody.Text;
+            if (!IsHtml.Checked)
+                body = Util.SafeFormat(body);
+            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, SubjectLine.Text, EmailBody.Text);
         }
 
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)

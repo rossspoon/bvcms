@@ -22,8 +22,10 @@ namespace CmsWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            EmailLink.NavigateUrl = "/Email/Index/" + queryId;
-            EmailLinkParents.NavigateUrl = "/Email/Index/" + queryId + "?parents=true";
+            //EmailLink.NavigateUrl = "/Email/Index/" + queryId;
+            //EmailLinkParents.NavigateUrl = "/Email/Index/" + queryId + "?parents=true";
+            EmailLink.NavigateUrl = "/EmailPeople.aspx?id=" + queryId;
+            EmailLinkParents.NavigateUrl = "/EmailPeople.aspx?id=" + queryId + "&parents=true";
             LabelsLink.NavigateUrl = "/Reports/RollLabels/" + queryId;
             VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;

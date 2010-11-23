@@ -578,6 +578,13 @@
     <Compile Include="EmailAttendanceNotices.aspx.designer.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EmailPeople.aspx.cs">
+      <DependentUpon>EmailPeople.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmailPeople.aspx.designer.cs">
+      <DependentUpon>EmailPeople.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnrollmentControlReport.aspx.cs">
       <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -893,6 +900,7 @@
     <Content Include="Content\images\treeview-red-line.gif" />
     <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\js\jquery.showpassword.js" />
+    <Content Include="EmailPeople.aspx" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Dialog\AddTagShareds.aspx" />
     <Content Include="App_Offline1.htm" />
