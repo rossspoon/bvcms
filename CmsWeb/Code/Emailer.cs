@@ -101,7 +101,7 @@ namespace CmsWeb
                 }
             }
         }
-        public void SendPeopleEmail(CMSDataContext Db, string CmsHost, IEnumerable<Person> people, string subject, string message, bool IsHtml)
+        public void SendPeopleEmail(CMSDataContext Db, string CmsHost, IEnumerable<Person> people, string subject, string message)
         {
             this.people = people;
             Subject = subject;
@@ -110,10 +110,7 @@ namespace CmsWeb
             SmtpClient smtp = null;
             var i = 0;
 
-            if (IsHtml)
-                Message = message;
-            else
-                Message = Util.SafeFormat(message);
+            Message = message;
             var bhtml = Message;
 
             int EmailBatchCount = Db.Setting("EmailBatchCount", "500").ToInt();

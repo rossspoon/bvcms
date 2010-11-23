@@ -14,14 +14,14 @@ namespace CmsWeb.Areas.Main.Controllers
     public class EmailController : CmsStaffController
     {
         [ValidateInput(false)]
-        public ActionResult Index(int id, string body, string subj, bool? ishtml)
+        public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? wantParents)
         {
             var m = new MassEmailer(id);
+            m.wantParents = wantParents ?? false;
             if (body.HasValue())
                 m.Body = Server.UrlDecode(body);
             if (subj.HasValue())
                 m.Subject = Server.UrlDecode(subj);
-            m.IsHtml = ishtml ?? false;
             return View(m);
         }
         [HttpPost]

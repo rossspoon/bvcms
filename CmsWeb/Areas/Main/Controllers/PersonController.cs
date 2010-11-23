@@ -517,52 +517,65 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/MyTags.aspx");
         }
+        private class TagData
+        {
+            public int id { get; set; }
+            public int? pid { get; set; }
+            public string tagname { get; set; }
+            public string cachename { get; set; }
+        }
         public ActionResult TagDuplicates(int id)
         {
             if(HttpContext.Application["TagDuplicatesStatus"] != null)
                 return Content("already running elsewhere, sorry");
-            HttpContext.Application["TagDuplicatesStatus"] = new TagDuplicatesStatus();
             int? pid = Util.UserPeopleId;
             string tagname = Util2.CurrentTagName;
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                var st = DateTime.Now;
-                int nf = 0, np = 0;
+            var td = new TagData { id = id, pid = pid, tagname = tagname, cachename = "TagDuplicatesStatus_" + Util.Host };
+            HttpRuntime.Cache[td.cachename] = new TagDuplicatesStatus();
 
-                var status = HttpContext.Application["TagDuplicatesStatus"] as TagDuplicatesStatus;
-                try
-                {
-                    var db = DbUtil.Db;
-                    var q = db.PeopleQuery(id);
-                    var tag = db.FetchOrCreateTag(tagname, pid, DbUtil.TagTypeId_Personal);
-                    foreach (var p in q)
-                    {
-                        if (p.PossibleDuplicates().Count() > 0)
-                        {
-                            var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
-                            if (tp == null)
-                                tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
-                            ++nf;
-                            db.SubmitChanges();
-                        }
-                        ++np;
-                        var ts = DateTime.Now.Subtract(st);
-                        var dt = new DateTime(ts.Ticks);
-                        var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
-                        var tt = "{0:mm:ss}".Fmt(dt);
-                        status.SetStatus(np, nf, tsp, tt);
-                    }
-                }
-                finally
-                {
-                    HttpContext.Application.Remove("TagDuplicatesStatus");
-                }
-            }, null);
+            var t = new Thread(new ParameterizedThreadStart(TagDupsWorker));
+            t.Start(td);
+            Thread.Sleep(1000);
             return RedirectToAction("TagDuplicatesProgress");
+        }
+        private void TagDupsWorker(object tagdata)
+        {
+            var td = tagdata as TagData;
+            var st = DateTime.Now;
+            int nf = 0, np = 0;
+
+            var status = HttpRuntime.Cache[td.cachename] as TagDuplicatesStatus;
+            try
+            {
+                var db = DbUtil.Db;
+                var q = db.PeopleQuery(td.id);
+                var tag = db.FetchOrCreateTag(td.tagname, td.pid, DbUtil.TagTypeId_Personal);
+                foreach (var p in q)
+                {
+                    if (p.PossibleDuplicates().Count() > 0)
+                    {
+                        var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
+                        if (tp == null)
+                            tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
+                        ++nf;
+                        db.SubmitChanges();
+                    }
+                    ++np;
+                    var ts = DateTime.Now.Subtract(st);
+                    var dt = new DateTime(ts.Ticks);
+                    var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
+                    var tt = "{0:mm:ss}".Fmt(dt);
+                    status.SetStatus(np, nf, tsp, tt);
+                }
+            }
+            finally
+            {
+                HttpRuntime.Cache.Remove(td.cachename);
+            }
         }
         public ActionResult TagDuplicatesProgress()
         {
-            var status = HttpContext.Application["TagDuplicatesStatus"] as TagDuplicatesStatus;
+            var status = HttpRuntime.Cache["TagDuplicatesStatus_" + Util.Host] as TagDuplicatesStatus;
             if (status == null)
                 return Redirect("/MyTags.aspx");
             return View(status);

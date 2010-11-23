@@ -22,7 +22,6 @@ namespace CmsWeb.Areas.Main.Models
         public string Subject { get; set; }
         public string Body { get; set; }
         public DateTime? Schedule { get; set; }
-        public bool IsHtml { get; set; }
 
         public int QueueId { get; set; }
         public string CmsHost { get; set; }
@@ -70,8 +69,8 @@ namespace CmsWeb.Areas.Main.Models
             DbUtil.Db.SubmitChanges();
             QueueId = emailqueue.Id;
 
-            var methodTarget = new WaitCallback(QueueEmails);
-            ThreadPool.QueueUserWorkItem(methodTarget, this);
+            var t = new Thread(new ParameterizedThreadStart(QueueEmails));
+            t.Start(this);
             Thread.Sleep(1000);
             return emailqueue.Id;
         }
@@ -79,7 +78,7 @@ namespace CmsWeb.Areas.Main.Models
         {
             var q = DbUtil.Db.People.Where(pp => pp.PeopleId == id);
             var em = new Emailer(FromAddress, FromName);
-            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, Subject, Body, IsHtml);
+            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, Subject, Body);
         }
         public void Send(int id)
         {
@@ -87,8 +86,8 @@ namespace CmsWeb.Areas.Main.Models
             DbUtil.Db.CopySession();
             session2 = DbUtil.Db.ExportSession();
 
-            var methodTarget = new WaitCallback(SendEmails);
-            ThreadPool.QueueUserWorkItem(methodTarget, this);
+            var t = new Thread(new ParameterizedThreadStart(SendEmails));
+            t.Start(this);
             Thread.Sleep(1000);
         }
 
@@ -114,9 +113,6 @@ namespace CmsWeb.Areas.Main.Models
                 where !p.EmailOptOuts.Any(oo => oo.FromEmail == m.FromAddress)
                 orderby p.PeopleId
                 select p;
-
-            if (!m.IsHtml)
-                m.Body = Util.SafeFormat(m.Body);
 
             var emailqueue = Db.EmailQueues.Single(eq => eq.Id == m.QueueId);
             foreach (var p in q)

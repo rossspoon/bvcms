@@ -25,7 +25,7 @@ namespace CmsWeb.Models.iPhone
                     {
                         OrgId = o.OrganizationId,
                         OrgName = o.OrganizationName,
-                        MeetingTime = o.SchedTime.Value + o.SchedTime.Value.TimeOfDay,
+                        MeetingTime = o.SchedTime.Value,
                         MeetingDay = o.SchedDay.Value
                     };
             return q;
