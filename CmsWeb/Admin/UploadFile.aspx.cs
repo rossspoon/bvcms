@@ -21,11 +21,11 @@ namespace CmsWeb.Admin
             if (FileUpload1.HasFile)
                 try
                 {
-                    var fpath = Server.MapPath("~/Upload/" + Util.Host1 + "/");
+                    var fpath = Server.MapPath("~/Upload/" + Util.Host + "/");
                     if (!Directory.Exists(fpath))
                         Directory.CreateDirectory(fpath);
                     FileUpload1.SaveAs(fpath + FileUpload1.FileName);
-                    var url = Util.CmsHost + "Upload/" + Util.Host1 + "/";
+                    var url = Util.CmsHost + "Upload/" + Util.Host + "/";
                     if (Path.GetExtension(FileUpload1.FileName) == ".zip")
                     {
                         string fn = Path.GetFileNameWithoutExtension(FileUpload1.FileName);

@@ -160,6 +160,7 @@
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="Emailer.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailQueue.cs" />

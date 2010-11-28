@@ -35,10 +35,14 @@ namespace CmsData
 		
 		private string _FromName;
 		
+		private int? _QueuedBy;
+		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
     	
+		private EntityRef< Person> _Person;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -73,12 +77,17 @@ namespace CmsData
 		partial void OnFromNameChanging(string value);
 		partial void OnFromNameChanged();
 		
+		partial void OnQueuedByChanging(int? value);
+		partial void OnQueuedByChanged();
+		
     #endregion
 		public EmailQueue()
 		{
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
 			
+			
+			this._Person = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -284,6 +293,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="QueuedBy", UpdateCheck=UpdateCheck.Never, Storage="_QueuedBy", DbType="int")]
+		public int? QueuedBy
+		{
+			get { return this._QueuedBy; }
+
+			set
+			{
+				if (this._QueuedBy != value)
+				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnQueuedByChanging(value);
+					this.SendPropertyChanging();
+					this._QueuedBy = value;
+					this.SendPropertyChanged("QueuedBy");
+					this.OnQueuedByChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -302,6 +336,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_EmailQueue_People", Storage="_Person", ThisKey="QueuedBy", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.EmailQueues.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.EmailQueues.Add(this);
+						
+						this._QueuedBy = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._QueuedBy = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;

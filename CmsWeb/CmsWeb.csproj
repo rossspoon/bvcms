@@ -438,7 +438,7 @@
     <Compile Include="ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Code\Emailer.cs" />
+    <Compile Include="Code\WebEmailer.cs" />
     <Compile Include="Code\Geocode.cs" />
     <Compile Include="Code\IMetaWebLog.cs" />
     <Compile Include="Code\ViewExtensions.cs" />
@@ -825,6 +825,7 @@
     <Content Include="Areas\Main\Views\Email\EmailQueued.aspx" />
     <Content Include="Areas\Main\Views\Email\Index.aspx" />
     <Content Include="Areas\Main\Views\Email\Progress.aspx" />
+    <Content Include="Areas\Main\Views\Email\TaskProgress.ascx" />
     <Content Include="Areas\Main\Views\Person\DuplicateRow.ascx" />
     <Content Include="Areas\Main\Views\Person\DuplicatesGrid.ascx" />
     <Content Include="Areas\Main\Views\Person\TagDuplicatesProgress.aspx" />
@@ -914,6 +915,7 @@
     <Content Include="images\bvcms150.png" />
     <Content Include="OnlineRegSample.htm" />
     <Content Include="Scripts\Edit.js" />
+    <Content Include="Scripts\Email.js" />
     <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\pickslots2.js" />
     <Content Include="Scripts\UserDialog.js" />

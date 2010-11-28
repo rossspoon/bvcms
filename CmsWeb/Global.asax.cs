@@ -88,7 +88,8 @@ namespace CmsWeb
         }
         protected void Session_End(object sender, EventArgs e)
         {
-            HttpRuntime.Cache.Remove(Util.SessionId);
+            if (Util.SessionId != null)
+                HttpRuntime.Cache.Remove(Util.SessionId);
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {

@@ -282,6 +282,8 @@ namespace CmsData
 		
    		private EntitySet< EmailOptOut> _EmailOptOuts;
 		
+   		private EntitySet< EmailQueue> _EmailQueues;
+		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
    		private EntitySet< PendingNotification> _PendingNotifications;
@@ -757,6 +759,8 @@ namespace CmsData
 			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
 			this._EmailOptOuts = new EntitySet< EmailOptOut>(new Action< EmailOptOut>(this.attach_EmailOptOuts), new Action< EmailOptOut>(this.detach_EmailOptOuts)); 
+			
+			this._EmailQueues = new EntitySet< EmailQueue>(new Action< EmailQueue>(this.attach_EmailQueues), new Action< EmailQueue>(this.detach_EmailQueues)); 
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
 			
@@ -3675,6 +3679,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_EmailQueue_People", Storage="_EmailQueues", OtherKey="QueuedBy")]
+   		public EntitySet< EmailQueue> EmailQueues
+   		{
+   		    get { return this._EmailQueues; }
+
+			set	{ this._EmailQueues.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_EmailQueueTo_People", Storage="_EmailQueueTos", OtherKey="PeopleId")]
    		public EntitySet< EmailQueueTo> EmailQueueTos
    		{
@@ -4950,6 +4964,19 @@ namespace CmsData
 		}
 
 		private void detach_EmailOptOuts(EmailOptOut entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_EmailQueues(EmailQueue entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_EmailQueues(EmailQueue entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

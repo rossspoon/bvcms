@@ -1,0 +1,117 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text;
+using System.Data.SqlClient;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Configuration;
+using UtilityExtensions;
+using CmsData;
+
+namespace MassEmailer
+{
+    public partial class MassEmailer : ServiceBase
+    {
+
+        private System.Timers.Timer timer;
+        private bool isTimerStarted;
+        private string connstr;
+        private DateTime dailyrun = new DateTime(10, 10, 1, 4, 0, 0);// 4:00 AM
+        private DateTime lastrun;
+
+        public MassEmailer()
+        {
+            InitializeComponent();
+#if (!DEBUG)
+            if (!EventLog.SourceExists("MassEmailer"))
+                EventLog.CreateEventSource("MassEmailer", "Application");
+#endif
+            eventLog1.Source = "MassEmailer";
+            connstr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString;
+        }
+
+        protected override void OnStart(string[] args)
+        {
+            eventLog1.WriteEntry("MassEmailer service started");
+            timer = new System.Timers.Timer();
+            timer.Interval = 15000;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+            timer.Enabled = true;
+            timer.Start();
+        }
+
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            timer.Stop();
+            CheckQueue();
+            timer.Start();
+        }
+
+        public void CheckQueue()
+        {
+            using (var cn = new SqlConnection(connstr))
+            {
+                try
+                {
+                    cn.Open();
+
+                    var todaysrun = DateTime.Today + dailyrun.TimeOfDay;
+                    if (DateTime.Now > todaysrun && lastrun.Date != DateTime.Today)
+                    {
+                        eventLog1.WriteEntry("Check for scheduled emails {0}".Fmt(todaysrun));
+                        var t = DateTime.Now;
+                        using (var cmd = new SqlCommand("QueueScheduledEmails", cn))
+                            cmd.ExecuteNonQuery();
+                        var s = DateTime.Now - t;
+                        eventLog1.WriteEntry("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
+                        lastrun = DateTime.Now;
+                    }
+                    using (var cmdr = new SqlCommand("RECEIVE TOP(1) CONVERT(VARCHAR(max), message_body) AS message FROM EmailReceiveQueue", cn))
+                        while (true)
+                        {
+                            var s = (string)cmdr.ExecuteScalar();
+                            if (!s.HasValue())
+                                break;
+
+                            var a = s.Split('|');
+                            var id = a[0].ToInt();
+                            var CmsHost = a[1];
+                            var Host = a[2];
+
+                            using (var Db = new CMSDataContext(GetConnectionString(Host)))
+                            {
+                                Db.Host = Host;
+                                var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
+                                var nt = Db.EmailQueueTos.Count(et => et.Id == id);
+                                eventLog1.WriteEntry("Sending {0} Emails for {1}, id={2}".Fmt(nt, Host, emailqueue.Id));
+                                var t = DateTime.Now;
+                                Emailer.SendPeopleEmail(Db, CmsHost, emailqueue);
+                                var dur = DateTime.Now - t;
+                                eventLog1.WriteEntry("Finished {0} Emails for {1}, id={2}, duration={3:mm\\:ss}".Fmt(nt, Host, emailqueue.Id, dur));
+                            }
+                        }
+                }
+                catch (Exception ex)
+                {
+                    eventLog1.WriteEntry(ex.StackTrace);
+                }
+            }
+        }
+        protected override void OnStop()
+        {
+            eventLog1.WriteEntry("MassEmailer service stopped");
+        }
+        protected string GetConnectionString(string Host)
+        {
+            var cb = new SqlConnectionStringBuilder(connstr);
+            var a = Host.SplitStr(".:");
+            cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
+            return cb.ConnectionString;
+        }
+    }
+}

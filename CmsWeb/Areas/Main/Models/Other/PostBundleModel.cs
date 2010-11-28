@@ -420,9 +420,9 @@ namespace CmsWeb.Models
                 string ac = null, rt = null;
                 for (var c = 1; c < fieldCount; c++)
                 {
-                    switch (cols[c])
+                    switch (cols[c].ToLower())
                     {
-                        case "Deposit Number":
+                        case "deposit number":
                             curbundle = csv[c].ToInt();
                             if (curbundle != prevbundle)
                             {
@@ -440,7 +440,7 @@ namespace CmsWeb.Models
                                 prevbundle = curbundle;
                             }
                             break;
-                        case "Post Amount":
+                        case "post amount":
                             bd.Contribution.ContributionAmount = csv[c].GetAmount();
                             break;
                         //    break;
@@ -500,9 +500,9 @@ namespace CmsWeb.Models
                 string ac = null, rt = null, ck = null, sn = null;
                 for (var c = 1; c < fieldCount; c++)
                 {
-                    switch (cols[c])
+                    switch (cols[c].ToLower())
                     {
-                        case "Deposit_ID":
+                        case "deposit_id":
                             curbundle = csv[c].ToInt();
                             if (curbundle != prevbundle)
                             {
@@ -520,19 +520,19 @@ namespace CmsWeb.Models
                                 prevbundle = curbundle;
                             }
                             break;
-                        case "Amount":
+                        case "amount":
                             bd.Contribution.ContributionAmount = csv[c].GetAmount();
                             break;
-                        case "Tran_Code":
+                        case "tran_code":
                             ck = csv[c];
                             break;
-                        case "Serial_Number":
+                        case "serial_number":
                             sn = csv[c];
                             break;
-                        case "Routing_Transit":
+                        case "routing_transit":
                             rt = csv[c];
                             break;
-                        case "Account_Number":
+                        case "account_number":
                             ac = csv[c];
                             break;
                     }

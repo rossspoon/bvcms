@@ -467,17 +467,12 @@ namespace UtilityExtensions
         {
             get
             {
-                if (HttpContext.Current == null)
-                    return null;
-                return HttpContext.Current.Request.Url.Authority;
-            }
-        }
-        public static string Host1
-        {
-            get
-            {
-                var a = Host.SplitStr(".:");
-                return a[0];
+                var h = ConfigurationManager.AppSettings["host"];
+                if (h.HasValue())
+                    return h;
+                if (HttpContext.Current != null)
+                    return HttpContext.Current.Request.Url.Authority.SplitStr(".:")[0];
+                return null;
             }
         }
 
@@ -486,7 +481,7 @@ namespace UtilityExtensions
             get
             {
                 var h = ConfigurationManager.AppSettings["cmshost"];
-                return h.Replace("{church}", Host1);
+                return h.Replace("{church}", Host);
             }
         }
         private const string STR_ConnectionString = "ConnectionString";
@@ -503,7 +498,7 @@ namespace UtilityExtensions
                     return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
 
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                cb.InitialCatalog = "CMS_{0}".Fmt(Host1);
+                cb.InitialCatalog = "CMS_{0}".Fmt(Host);
                 return cb.ConnectionString;
             }
             set
@@ -516,7 +511,7 @@ namespace UtilityExtensions
         {
             var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
             if (cs == null)
-                return ConfigurationManager.ConnectionStrings["CMS"].ConnectionString;
+                cs = ConfigurationManager.ConnectionStrings["CMS"];
             var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
             var a = Host.SplitStr(".:");
             cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
@@ -528,10 +523,10 @@ namespace UtilityExtensions
             {
                 var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
                 if (cs == null)
-                    return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
-
+                    cs = ConfigurationManager.ConnectionStrings["CMS"];
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-                cb.InitialCatalog = "CMS_{0}_img".Fmt(Host1);
+                var a = Host.SplitStr(".:");
+                cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
                 return cb.ConnectionString;
             }
         }
@@ -937,9 +932,15 @@ namespace UtilityExtensions
         public static SmtpClient Smtp()
         {
             var smtp = new SmtpClient();
+#if DEBUG
+            smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+            smtp.PickupDirectoryLocation = "c:/email";
+            smtp.Host = "localhost";
+#else
             string[] a = (string[])HttpRuntime.Cache["smtpcreds"];
             if (a != null)
                 smtp.Credentials = new NetworkCredential(a[0], a[1]);
+#endif
             return smtp;
         }
         private const string STR_SysFromEmail = "UnNamed";

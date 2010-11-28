@@ -589,7 +589,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
         }
-
+        [Function(Name = "dbo.QueueEmail")]
+        public int QueueEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
+            return ((int)(result.ReturnValue));
+        }
 
 
 

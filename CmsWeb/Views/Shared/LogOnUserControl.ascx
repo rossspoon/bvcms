@@ -3,5 +3,5 @@
         Hi <%= Html.Encode(Page.User.Identity.Name) %><br />
         <a href="/ChangePassword.aspx">Change Password</a> | <a href="/Account/LogOff/">Log Off</a>
 <% } else { %> 
-        <a href="/Login.aspx">Login</a>
+        <a href="/Logon">Login</a>
 <% } %>

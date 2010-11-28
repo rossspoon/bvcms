@@ -2,7 +2,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:LoginView ID="LoginView1" EnableViewState="false" runat="server">
     <AnonymousTemplate>
-        <a href='<%=Page.ResolveUrl("~/login.aspx")%>'>Login</a>
+        <a href='<%=Page.ResolveUrl("/logon")%>'>Login</a>
     </AnonymousTemplate>
     <LoggedInTemplate>
         Hi

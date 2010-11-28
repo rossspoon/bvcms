@@ -54,7 +54,36 @@ namespace CmsWeb
         {
             base.Initialize(requestContext);
             if (!User.Identity.IsAuthenticated)
-                requestContext.HttpContext.Response.Redirect("/Login.aspx?ReturnUrl=" + requestContext.HttpContext.Request.Path);
+                requestContext.HttpContext.Response.Redirect("/Logon?ReturnUrl=" + requestContext.HttpContext.Request.Path);
+            else if (!NoCheckRole)
+            {
+                var r = AccountController.CheckAccessRole(Util.UserName);
+                if (r.HasValue())
+                    Response.Redirect(r);
+            }
+        }
+        protected override void HandleUnknownAction(string actionName)
+        {
+            //base.HandleUnknownAction(actionName);
+            throw new HttpException(404, "404");
+        }
+        protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            Util.Helpfile = "{0}_{1}".Fmt(
+                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
+                filterContext.ActionDescriptor.ActionName);
+        }
+    }
+    public class CmsStaffAsyncController : System.Web.Mvc.AsyncController
+    {
+        public bool NoCheckRole { get; set; }
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+            if (!User.Identity.IsAuthenticated)
+                requestContext.HttpContext.Response.Redirect("/Logon?ReturnUrl=" + requestContext.HttpContext.Request.Path);
             else if (!NoCheckRole)
             {
                 var r = AccountController.CheckAccessRole(Util.UserName);

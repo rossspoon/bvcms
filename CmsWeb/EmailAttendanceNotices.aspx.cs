@@ -74,7 +74,7 @@ namespace CmsWeb
                 SubDivOrg.SelectedValue.ToInt(),
                 Organization.SelectedValue.ToInt(),
                 EndDate.Text.ToDate().Value,
-                new Emailer());
+                new WebEmailer());
             Label1.Visible = true;
             Button1.Enabled = false;
         }

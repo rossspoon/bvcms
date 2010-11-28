@@ -85,13 +85,15 @@ namespace CmsWeb
                 where !p.EmailOptOuts.Any(oo => oo.FromEmail == args.FromAddress)
                 orderby p.PeopleId
                 select p;
-            var em = new Emailer(args.FromAddress, args.FromName);
+            var em = new WebEmailer(args.FromAddress, args.FromName);
 #if DEBUG2
             em.SendPeopleEmail2(q, args.Subject, args.Body, args.IsHtml, null);
 #else
             if (!IsHtml.Checked)
                 args.Body = Util.SafeFormat(args.Body);
-            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, args.Subject, args.Body);
+            Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, 
+                Util.FirstAddress(args.FromAddress, args.FromName), q, 
+                args.Subject, args.Body);
 #endif
         }
 
@@ -134,11 +136,11 @@ namespace CmsWeb
             var Db = DbUtil.Db;
             DbUtil.LogActivity("Testing Email");
             var q = Db.People.Where(p => p.PeopleId == Util.UserPeopleId);
-            var em = new Emailer(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
+            var From = Util.FirstAddress(EmailFrom.SelectedItem.Value, EmailFrom.SelectedItem.Text);
             string body = EmailBody.Text;
             if (!IsHtml.Checked)
                 body = Util.SafeFormat(body);
-            em.SendPeopleEmail(DbUtil.Db, Util.CmsHost, q, SubjectLine.Text, EmailBody.Text);
+            Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, From, q, SubjectLine.Text, EmailBody.Text);
         }
 
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)

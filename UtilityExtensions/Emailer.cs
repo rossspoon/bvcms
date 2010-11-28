@@ -70,7 +70,7 @@ namespace UtilityExtensions
             htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
             msg.AlternateViews.Add(htmlView);
 
-            string sysfromemail = Util.SysFromEmail;
+            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
             if (sysfromemail.HasValue())
             {
                 var sysmail = new MailAddress(sysfromemail);
