@@ -45,7 +45,7 @@ namespace CmsData
                 {
                     var qm = (from m in Db.OrganizationMembers
                               where m.PeopleId == To.PeopleId && m.OrganizationId == To.OrgId
-                              select new { m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail }).Single();
+                              select new { m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail }).SingleOrDefault();
                     if (qm != null)
                     {
                         if (qm.PayLink.HasValue())

@@ -290,6 +290,30 @@
         <th>Group to Join:</th>
         <td><%=Html.TextBox("org.GroupToJoin")%></td>
     </tr>
+    <tr>
+        <th>Do Not Require Date of Birth:</th>
+        <td><%=Html.CheckBox("org.NotReqDOB")%></td>
+    </tr>
+    <tr>
+        <th>Do Not Require Address:</th>
+        <td><%=Html.CheckBox("org.NotReqAddr")%></td>
+    </tr>
+    <tr>
+        <th>Do Not Require Zip:</th>
+        <td><%=Html.CheckBox("org.NotReqZip")%></td>
+    </tr>
+    <tr>
+        <th>Do Not Require Phone:</th>
+        <td><%=Html.CheckBox("org.NotReqPhone")%></td>
+    </tr>
+    <tr>
+        <th>Do Not Require Gender:</th>
+        <td><%=Html.CheckBox("org.NotReqGender")%></td>
+    </tr>
+    <tr>
+        <th>Do Not Require Marital:</th>
+        <td><%=Html.CheckBox("org.NotReqMarital")%></td>
+    </tr>
     <% } %>
 
     <tr><td></td><td><a href="/Organization/SettingsUpdate/<%=Model.OrganizationId %>" class="submitbutton">Save Changes</a></td></tr>

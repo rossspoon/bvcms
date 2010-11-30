@@ -1549,12 +1549,6 @@ namespace CmsData
 	#endregion
 	#region Views
 		
-	    public Table< View.ActivityAll> ViewActivityAlls
-	    {
-		    get { return this.GetTable< View.ActivityAll>(); }
-
-	    }
-
 	    public Table< View.BadETView> ViewBadETViews
 	    {
 		    get { return this.GetTable< View.BadETView>(); }

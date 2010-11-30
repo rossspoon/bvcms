@@ -913,6 +913,7 @@
     <Content Include="images\bvcms120.png" />
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
+    <Content Include="images\req.gif" />
     <Content Include="OnlineRegSample.htm" />
     <Content Include="Scripts\Edit.js" />
     <Content Include="Scripts\Email.js" />

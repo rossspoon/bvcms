@@ -30,7 +30,7 @@ namespace MassEmailer
             var service = new MassEmailer();
             for(;;)
             {
-                service.CheckQueue();
+                service.CheckQueue(service.data);
                 Thread.Sleep(15000);
             }
 #endif

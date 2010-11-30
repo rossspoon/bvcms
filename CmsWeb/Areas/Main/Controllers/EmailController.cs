@@ -24,6 +24,8 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["oldemailer"] = "/EmailPeople.aspx?id=" + id
                 + "&subj=" + subj + "&body=" + body + "&ishtml=" + ishtml
                 + (parents == true ? "&parents=true" : "");
+            if (parents == true)
+                ViewData["parentsof"] = "with ParentsOf option";
             return View(m);
         }
         [HttpPost]
@@ -73,18 +75,31 @@ namespace CmsWeb.Areas.Main.Controllers
                         where et.Id == id
                         select et;
                 ViewData["queued"] = emailqueue.Queued.ToString("M/d/yy h:mm tt");
-                ViewData["started"] = emailqueue.Started == null ? "not started" : emailqueue.Started.Value.ToString("M/d/yy h:mm tt");
-                ViewData["completed"] = emailqueue.Sent == null ? "still running" : emailqueue.Sent.Value.ToString("M/d/yy h:mm tt");
                 ViewData["total"] = q.Count();
                 ViewData["sent"] = q.Count(e => e.Sent != null);
-                if (emailqueue.Started.HasValue)
+                ViewData["finished"] = false;
+                if (emailqueue.Started == null)
                 {
-                    var max = q.Max(et => et.Sent);
-                    max = max ?? DateTime.Now;
-                    ViewData["elapsed"] = max.Value.Subtract(emailqueue.Started.Value).ToString(@"h\:mm\:ss");
+                    ViewData["started"] = "not started";
+                    ViewData["completed"] = "not started";
+                    ViewData["elapsed"] = "not started";
                 }
                 else
-                    ViewData["elapsed"] = "not started";
+                {
+                    ViewData["started"] = emailqueue.Started.Value.ToString("M/d/yy h:mm tt");
+                    var max = q.Max(et => et.Sent);
+                    max = max ?? DateTime.Now;
+
+                    if (emailqueue.Sent == null)
+                        ViewData["completed"] = "running";
+                    else
+                    {
+                        ViewData["completed"] = max;
+                        emailqueue.Sent.Value.ToString("M/d/yy h:mm tt");
+                        ViewData["finished"] = true;
+                    }
+                    ViewData["elapsed"] = max.Value.Subtract(emailqueue.Started.Value).ToString(@"h\:mm\:ss");
+                }
             }
             return emailqueue;
         }

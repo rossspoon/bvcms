@@ -350,6 +350,22 @@ namespace CmsWeb
             }
             return "";
         }
+        public static string NotRequired(this HtmlHelper helper, bool? NotRequired)
+        {
+            if ((NotRequired ?? false) == false)
+            {
+                var tb = new TagBuilder("img");
+                tb.MergeAttribute("src", "/images/req.gif");
+                tb.MergeAttribute("border", "0");
+                tb.MergeAttribute("alt", "req");
+                return tb.ToString();
+            }
+            return "";
+        }
+        public static string Required(this HtmlHelper helper)
+        {
+            return helper.NotRequired(false);
+        }
         public static string HiddenIf(this HtmlHelper helper, string name, object value, bool? include)
         {
             if (include == true)

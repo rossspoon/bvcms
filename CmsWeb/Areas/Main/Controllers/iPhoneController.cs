@@ -167,6 +167,8 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 f = new CmsData.Family();
 
+            if (m.goesby == "(Null)")
+                m.goesby = null;
             var position = (int)CmsData.Family.PositionInFamily.Child;
             if (Util.Age0(m.dob) >= 18)
                 if (f.People.Count(per =>
@@ -199,6 +201,34 @@ namespace CmsWeb.Areas.Main.Controllers
             Attend.RecordAttendance(p.PeopleId, id, true);
             DbUtil.Db.UpdateMeetingCounters(id);
             return new RollListResult(meeting);
+        }
+#if DEBUG
+#else
+        [AcceptVerbs(HttpVerbs.Post)]
+#endif
+        public ActionResult JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)
+        {
+#if DEBUG
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+#endif
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
+            if (om == null && Member)
+                om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+            else if (om != null && !Member)
+                om.Drop();
+            DbUtil.Db.SubmitChanges();
+            //if (om != null && om.Organization.EmailAddresses.HasValue())
+            //{
+            //    var smtp = Util.Smtp();
+            //    Util.Email(smtp, null, om.Organization.EmailAddresses, 
+            //        "cms check-in, join class " + Util.CmsHost, 
+            //        "<a href='{0}/Person/Index/{1}'>{2}</a> joined {3}".Fmt( 
+            //            Util.ServerLink("/Person/Index/" + om.PeopleId), 
+            //            om.PeopleId, om.Person.Name, om.Organization.OrganizationName));
+            //}
+            return Content("OK");
         }
         string Trim(string s)
         {

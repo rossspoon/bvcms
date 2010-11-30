@@ -1,20 +1,20 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <tr>
-    <td><label id="personedit" for="first">First Name</label></td>
+    <td><label id="personedit" for="first">First Name</label> <%=Html.Required() %></td>
     <td><input id="first" type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" /></td>
     <td>middle:</td>
     <td><input type="text" name="m.List[<%=Model.index%>].middle" class="short" value="<%=Model.middle%>" /></td>
     <td><%= Html.ValidationMessage("first") %> </td>
 </tr>
 <tr>
-    <td><label for="last">Last Name</label></td>
+    <td><label for="last">Last Name</label> <%=Html.Required() %></td>
     <td nowrap="nowrap"><input id="last" type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
     <td>suffix:</td>
     <td><input type="text" name="m.List[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" /></td>
     <td><%= Html.ValidationMessage("last") %></td>
 </tr>
  <tr>
-    <td><label for="dob">Date of Birth</label></td>
+    <td><label for="dob">Date of Birth</label> <%=Html.NotRequired(!Model.RequiredDOB()) %></td>
     <td nowrap="nowrap"><input id="dob" type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
     <td>age:</td>
     <td><span id="age"><%=Model.age %></span> (m/d/y)</td>
@@ -26,7 +26,7 @@
     <td colspan="3"><%= Html.ValidationMessage("phone")%></td>
 </tr>
 <tr>
-    <td><label for="email">Contact Email</label></td>
+    <td><label for="email">Contact Email</label> <%=Html.Required() %></td>
     <td><input type="text" name="m.List[<%=Model.index%>].email" value="<%=Model.email%>" /></td>
     <td colspan="3"><%= Html.ValidationMessage("email")%></td>
 </tr>

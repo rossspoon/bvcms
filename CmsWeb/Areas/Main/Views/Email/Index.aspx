@@ -15,7 +15,7 @@ You can include a file, image, mp3 or whatever you like in your email.
    <%=Html.Hidden("CmsHost") %>
    <%=Html.Hidden("Count", Model.Count) %>
    <%=Html.Hidden("wantParents", Model.wantParents) %>
-   <p>Number of Emails: <%=Model.Count%></p>
+   <p>Number of Emails: <%=Model.Count%> <%=ViewData["parentsof"] %></p>
    <p>
         <%=Html.Button("Send", "Send", HtmlButtonType.Button, "$.Send()", new { style = "width:62px;height: 42px;" })%>
         <% if (Page.User.IsInRole("Admin"))

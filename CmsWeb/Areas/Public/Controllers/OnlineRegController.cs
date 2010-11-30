@@ -102,7 +102,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     p.OtherOK = true;
                 return View("list", m);
             }
-            if (!p.whatfamily.HasValue && (p.index > 0 || p.LoggedIn == true))
+            if (!p.whatfamily.HasValue && (id > 0 || p.LoggedIn == true))
             {
                 ModelState.AddModelError("whatfamily", "Choose a family option");
                 return View("list", m);
@@ -187,6 +187,8 @@ namespace CmsWeb.Areas.Public.Controllers
                 p.FillPriorInfo();
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
+            if(!p.AnyOtherInfo())
+                p.OtherOK = ModelState.IsValid;
             return View("list", m);
         }
 

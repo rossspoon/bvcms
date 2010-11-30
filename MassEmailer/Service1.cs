@@ -12,17 +12,16 @@ using System.Collections.Specialized;
 using System.Configuration;
 using UtilityExtensions;
 using CmsData;
+using System.Threading;
 
 namespace MassEmailer
 {
     public partial class MassEmailer : ServiceBase
     {
 
-        private System.Timers.Timer timer;
+        private Timer timer;
         private bool isTimerStarted;
-        private string connstr;
-        private DateTime dailyrun = new DateTime(10, 10, 1, 4, 0, 0);// 4:00 AM
-        private DateTime lastrun;
+        internal WorkData data;
 
         public MassEmailer()
         {
@@ -32,36 +31,41 @@ namespace MassEmailer
                 EventLog.CreateEventSource("MassEmailer", "Application");
 #endif
             eventLog1.Source = "MassEmailer";
-            connstr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString;
+            data = new WorkData 
+            {
+                connstr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString
+            };
+        }
+        internal class WorkData
+        {
+            public DateTime dailyrun = new DateTime(10, 10, 1, 4, 0, 0);// 4:00 AM
+            public string connstr { get; set; }
+            public DateTime lastrun { get; set; }
         }
 
         protected override void OnStart(string[] args)
         {
             eventLog1.WriteEntry("MassEmailer service started");
-            timer = new System.Timers.Timer();
-            timer.Interval = 15000;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Enabled = true;
-            timer.Start();
+            var cb = new TimerCallback(timer_Elapsed);
+            timer = new Timer(cb, data, 3000, 15000);
         }
 
-        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void timer_Elapsed(object sender)
         {
-            timer.Stop();
-            CheckQueue();
-            timer.Start();
+            var data = sender as WorkData;
+            CheckQueue(data);
         }
 
-        public void CheckQueue()
+        internal void CheckQueue(WorkData data)
         {
-            using (var cn = new SqlConnection(connstr))
+            using (var cn = new SqlConnection(data.connstr))
             {
                 try
                 {
                     cn.Open();
 
-                    var todaysrun = DateTime.Today + dailyrun.TimeOfDay;
-                    if (DateTime.Now > todaysrun && lastrun.Date != DateTime.Today)
+                    var todaysrun = DateTime.Today + data.dailyrun.TimeOfDay;
+                    if (DateTime.Now > todaysrun && data.lastrun.Date != DateTime.Today)
                     {
                         eventLog1.WriteEntry("Check for scheduled emails {0}".Fmt(todaysrun));
                         var t = DateTime.Now;
@@ -69,7 +73,7 @@ namespace MassEmailer
                             cmd.ExecuteNonQuery();
                         var s = DateTime.Now - t;
                         eventLog1.WriteEntry("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
-                        lastrun = DateTime.Now;
+                        data.lastrun = DateTime.Now;
                     }
                     using (var cmdr = new SqlCommand("RECEIVE TOP(1) CONVERT(VARCHAR(max), message_body) AS message FROM EmailReceiveQueue", cn))
                         while (true)
@@ -83,7 +87,7 @@ namespace MassEmailer
                             var CmsHost = a[1];
                             var Host = a[2];
 
-                            using (var Db = new CMSDataContext(GetConnectionString(Host)))
+                            using (var Db = new CMSDataContext(GetConnectionString(Host, data.connstr)))
                             {
                                 Db.Host = Host;
                                 var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
@@ -106,9 +110,9 @@ namespace MassEmailer
         {
             eventLog1.WriteEntry("MassEmailer service stopped");
         }
-        protected string GetConnectionString(string Host)
+        protected string GetConnectionString(string Host, string cs)
         {
-            var cb = new SqlConnectionStringBuilder(connstr);
+            var cb = new SqlConnectionStringBuilder(cs);
             var a = Host.SplitStr(".:");
             cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
             return cb.ConnectionString;

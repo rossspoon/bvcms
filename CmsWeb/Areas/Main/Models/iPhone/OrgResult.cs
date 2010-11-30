@@ -20,7 +20,8 @@ namespace CmsWeb.Models.iPhone
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationMembers.Any(om => om.PeopleId == pid)
-                    where o.CanSelfCheckin == true
+                    where o.SchedDay != null
+                    where o.SchedTime != null
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,

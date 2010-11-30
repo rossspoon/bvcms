@@ -75,6 +75,62 @@ namespace CmsWeb.Models
             get { return _IsFamily; }
             set { _IsFamily = value; }
         }
+        public bool RequiredDOB()
+        {
+            return ComputesOrganizationByAge();
+        }
+        public class NotRequiredFields
+        {
+            public bool NotReqAddr { get; set; }
+            public bool NotReqZip { get; set; }
+            public bool NotReqMarital { get; set; }
+            public bool NotReqGender { get; set; }
+        }
+        private List<NotRequiredFields> _notreq;
+        public List<NotRequiredFields> notreq
+        {
+            get
+            {
+                if (_notreq == null)
+                {
+                    var q = from o in DbUtil.Db.Organizations
+                            select new NotRequiredFields
+                             {
+                                 NotReqAddr = o.NotReqAddr ?? false,
+                                 NotReqGender = o.NotReqGender ?? false,
+                                 NotReqMarital = o.NotReqMarital ?? false,
+                                 NotReqZip = o.NotReqZip ?? false
+                             };
+                    _notreq = q.ToList();
+                }
+                return _notreq;
+            }
+        }
+        public bool RequiredAddr()
+        {
+            if (org != null)
+                return !(org.NotReqAddr ?? false);
+            return !notreq.Any(o => o.NotReqAddr);
+        }
+        public bool RequiredZip()
+        {
+            if (org != null)
+                return !(org.NotReqZip ?? false);
+            return !notreq.Any(o => o.NotReqZip);
+        }
+        public bool RequiredMarital()
+        {
+            if (org != null)
+                return !(org.NotReqMarital ?? false);
+            return !notreq.Any(o => o.NotReqMarital);
+        }
+        public bool RequiredGender()
+        {
+            if (org != null)
+                return !(org.NotReqGender ?? false);
+            return !notreq.Any(o => o.NotReqGender);
+        }
+
         public string ErrorTarget { get { return IsFamily ? "findf" : "findn"; } }
         public bool OtherOK { get; set; }
         public bool ShowAddress { get; set; }
@@ -186,8 +242,8 @@ namespace CmsWeb.Models
                         ModelState.AddModelError("classidfam", "please choose a group/event");
                     else
                         ModelState.AddModelError("classidguest", "please choose a group/event");
-            if (!phone.HasValue())
-                ModelState.AddModelError("phone", "phone required");
+            if (RequiredDOB() && !birthday.HasValue)
+                ModelState.AddModelError("dob", "birthday required");
             if (!IsFamily && (!email.HasValue() || !Util.ValidEmail(email)))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
             if (ModelState.IsValid)
@@ -323,7 +379,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
         {
             CmsWeb.Models.SearchPeopleModel
                 .ValidateFindPerson(ModelState, first, last, birthday, email, phone);
-            if (!birthday.HasValue && DbUtil.Db.Setting("DobNotRequired", "true") == "true")
+            if (!birthday.HasValue && RequiredDOB())
                 ModelState.AddModelError("DOB", "birthday required");
             ValidateBirthdayRange(ModelState);
             if (!phone.HasValue())
@@ -332,17 +388,17 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
                 email = email.Trim();
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError("email", "Please specify a valid email address.");
-            if (!address.HasValue())
+            if (!address.HasValue() && RequiredAddr())
                 ModelState.AddModelError("address", "address required.");
-            if (!city.HasValue())
+            if (!city.HasValue() && RequiredZip())
                 ModelState.AddModelError("city", "city required.");
-            if (zip.GetDigits().Length < 5)
+            if (RequiredZip() && (!zip.HasValue() || zip.GetDigits().Length < 5))
                 ModelState.AddModelError("zip", "zip needs at least 5 digits.");
-            if (!state.HasValue())
+            if (!state.HasValue() && RequiredZip())
                 ModelState.AddModelError("state", "state required");
-            if (!gender.HasValue)
+            if (!gender.HasValue && RequiredGender())
                 ModelState.AddModelError("gender", "Please specify gender");
-            if (!married.HasValue)
+            if (!married.HasValue && RequiredMarital())
                 ModelState.AddModelError("married", "Please specify marital status");
 
             if (MemberOnly())

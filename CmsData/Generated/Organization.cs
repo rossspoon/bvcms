@@ -217,6 +217,18 @@ namespace CmsData
 		
 		private string _NumItemsLabel;
 		
+		private bool? _NotReqDOB;
+		
+		private bool? _NotReqAddr;
+		
+		private bool? _NotReqZip;
+		
+		private bool? _NotReqPhone;
+		
+		private bool? _NotReqGender;
+		
+		private bool? _NotReqMarital;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -565,6 +577,24 @@ namespace CmsData
 		
 		partial void OnNumItemsLabelChanging(string value);
 		partial void OnNumItemsLabelChanged();
+		
+		partial void OnNotReqDOBChanging(bool? value);
+		partial void OnNotReqDOBChanged();
+		
+		partial void OnNotReqAddrChanging(bool? value);
+		partial void OnNotReqAddrChanged();
+		
+		partial void OnNotReqZipChanging(bool? value);
+		partial void OnNotReqZipChanged();
+		
+		partial void OnNotReqPhoneChanging(bool? value);
+		partial void OnNotReqPhoneChanged();
+		
+		partial void OnNotReqGenderChanging(bool? value);
+		partial void OnNotReqGenderChanged();
+		
+		partial void OnNotReqMaritalChanging(bool? value);
+		partial void OnNotReqMaritalChanged();
 		
     #endregion
 		public Organization()
@@ -2834,6 +2864,138 @@ namespace CmsData
 					this._NumItemsLabel = value;
 					this.SendPropertyChanged("NumItemsLabel");
 					this.OnNumItemsLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqDOB", UpdateCheck=UpdateCheck.Never, Storage="_NotReqDOB", DbType="bit")]
+		public bool? NotReqDOB
+		{
+			get { return this._NotReqDOB; }
+
+			set
+			{
+				if (this._NotReqDOB != value)
+				{
+				
+                    this.OnNotReqDOBChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqDOB = value;
+					this.SendPropertyChanged("NotReqDOB");
+					this.OnNotReqDOBChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqAddr", UpdateCheck=UpdateCheck.Never, Storage="_NotReqAddr", DbType="bit")]
+		public bool? NotReqAddr
+		{
+			get { return this._NotReqAddr; }
+
+			set
+			{
+				if (this._NotReqAddr != value)
+				{
+				
+                    this.OnNotReqAddrChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqAddr = value;
+					this.SendPropertyChanged("NotReqAddr");
+					this.OnNotReqAddrChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqZip", UpdateCheck=UpdateCheck.Never, Storage="_NotReqZip", DbType="bit")]
+		public bool? NotReqZip
+		{
+			get { return this._NotReqZip; }
+
+			set
+			{
+				if (this._NotReqZip != value)
+				{
+				
+                    this.OnNotReqZipChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqZip = value;
+					this.SendPropertyChanged("NotReqZip");
+					this.OnNotReqZipChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqPhone", UpdateCheck=UpdateCheck.Never, Storage="_NotReqPhone", DbType="bit")]
+		public bool? NotReqPhone
+		{
+			get { return this._NotReqPhone; }
+
+			set
+			{
+				if (this._NotReqPhone != value)
+				{
+				
+                    this.OnNotReqPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqPhone = value;
+					this.SendPropertyChanged("NotReqPhone");
+					this.OnNotReqPhoneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqGender", UpdateCheck=UpdateCheck.Never, Storage="_NotReqGender", DbType="bit")]
+		public bool? NotReqGender
+		{
+			get { return this._NotReqGender; }
+
+			set
+			{
+				if (this._NotReqGender != value)
+				{
+				
+                    this.OnNotReqGenderChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqGender = value;
+					this.SendPropertyChanged("NotReqGender");
+					this.OnNotReqGenderChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotReqMarital", UpdateCheck=UpdateCheck.Never, Storage="_NotReqMarital", DbType="bit")]
+		public bool? NotReqMarital
+		{
+			get { return this._NotReqMarital; }
+
+			set
+			{
+				if (this._NotReqMarital != value)
+				{
+				
+                    this.OnNotReqMaritalChanging(value);
+					this.SendPropertyChanging();
+					this._NotReqMarital = value;
+					this.SendPropertyChanged("NotReqMarital");
+					this.OnNotReqMaritalChanged();
 				}
 
 			}
