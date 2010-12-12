@@ -7,6 +7,9 @@ using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
+using LumenWorks.Framework.IO.Csv;
+using System.IO;
+using System.Text;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
@@ -450,6 +453,54 @@ namespace CmsWeb.Areas.Setup.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             return Redirect("/");
+        }
+        public ActionResult BatchMoveAndDelete()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult BatchMoveAndDelete(string text)
+        {
+            var sb = new StringBuilder();
+            sb.Append("<h2>done</h2>\n<p><a href='/'>home</a></p>\n");
+            using (var csv = new CsvReader(new StringReader(text), false, '\t'))
+            {
+                while (csv.ReadNextRecord())
+                {
+                    var fromid = csv[0].ToInt();
+                    var toid = csv[1].ToInt();
+                    var p = DbUtil.Db.LoadPersonById(fromid);
+                    if (p == null)
+                    {
+                        sb.AppendFormat("fromid {0} not found<br/>\n");
+                        continue;
+                    }
+                    //var p2 = DbUtil.Db.LoadPersonById(toid);
+                    //if (p2 == null)
+                    //{
+                    //    sb.AppendFormat("toid {0} not found<br/>\n");
+                    //    continue;
+                    //}
+                    try
+                    {
+                        p.MovePersonStuff(DbUtil.Db, toid);
+                    }
+                    catch (Exception ex)
+                    {
+                        sb.AppendFormat("error on move ({0}, {1}):<br/>\n{2}<br/>\n", fromid, toid, ex.Message);
+                        continue;
+                    }
+                    try
+                    {
+                        DbUtil.Db.PurgePerson(fromid);
+                    }
+                    catch (Exception ex)
+                    {
+                        sb.AppendFormat("error on delete ({0}):<br/>\n{1}<br/>\n", fromid, ex.Message);
+                    }
+                }
+            }
+            return Content(sb.ToString());
         }
     }
 }

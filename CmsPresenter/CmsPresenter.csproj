@@ -248,6 +248,7 @@
     <Compile Include="InfoClasses\ContributorInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InfoClasses\SavedQueryInfo.cs" />
     <Compile Include="OrganizationController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -265,6 +266,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FamilyController.cs" />
+    <Compile Include="QueryController.cs" />
     <Compile Include="TagController.cs" />
     <Compile Include="InfoClasses\InvovementInfo.cs" />
     <Compile Include="InfoClasses\MailingInfo.cs" />

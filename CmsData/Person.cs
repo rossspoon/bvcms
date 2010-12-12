@@ -225,12 +225,6 @@ namespace CmsData
                 years--;
             return years;
         }
-        public void DeletePerson(CMSDataContext Db)
-        {
-            Db.TagPeople.DeleteAllOnSubmit(Tags);
-            Db.People.DeleteOnSubmit(this);
-            Db.SubmitChanges();
-        }
         public void MovePersonStuff(CMSDataContext Db, int otherid)
         {
             var toperson = Db.People.Single(p => p.PeopleId == otherid);
