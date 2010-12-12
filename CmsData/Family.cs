@@ -62,25 +62,6 @@ namespace CmsData
         {
             get { return People.Count; }
         }
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
-
-        partial void OnZipCodeChanged()
-        {
-            ResCodeId = Person.FindResCode(ZipCode);
-        }
-        partial void OnAltZipCodeChanged()
-        {
-            AltResCodeId = Person.FindResCode(AltZipCode);
-        }
     }
 }
 

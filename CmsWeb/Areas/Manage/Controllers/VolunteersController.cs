@@ -67,7 +67,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             var vols = new VolunteersModel { QueryId = id };
             UpdateModel(vols);
-            var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.QueryId == id).Clone();
+            var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.QueryId == id).Clone(DbUtil.Db);
             var comp = CompareType.Equal;
             if (vols.Org == "na")
                 comp = CompareType.NotEqual;
@@ -81,7 +81,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult EmailReminders(int id)
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate();
+            qb.CleanSlate(DbUtil.Db);
             var clause = qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, id.ToString());
             DbUtil.Db.SubmitChanges();
 

@@ -307,6 +307,24 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "NumWorkerCheckInLabels":
                             o.NumWorkerCheckInLabels = a[c].ToInt2();
                             break;
+                        case "NotReqAddr":
+                            o.NotReqAddr = a[c].ToBool2();
+                            break;
+                        case "NotReqDOB":
+                            o.NotReqDOB = a[c].ToBool2();
+                            break;
+                        case "NotReqGender":
+                            o.NotReqGender = a[c].ToBool2();
+                            break;
+                        case "NotReqMarital":
+                            o.NotReqMarital = a[c].ToBool2();
+                            break;
+                        case "NotReqPhone":
+                            o.NotReqPhone = a[c].ToBool2();
+                            break;
+                        case "NotReqZip":
+                            o.NotReqZip = a[c].ToBool2();
+                            break;
                         case "Phone":
                             o.PhoneNumber = a[c];
                             break;

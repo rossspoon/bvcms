@@ -59,13 +59,16 @@ namespace CmsWeb.Areas.Setup.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id)
+        public ActionResult Delete(string id)
         {
             id = id.Substring(1);
             var p = DbUtil.Db.Programs.SingleOrDefault(m => m.Id == id.ToInt());
             if (p == null)
                 return new EmptyResult();
-            DbUtil.Db.Divisions.DeleteAllOnSubmit(p.Divisions);
+
+            foreach (var d in p.Divisions)
+                d.ProgId = null;
+            DbUtil.Db.ProgDivs.DeleteAllOnSubmit(p.ProgDivs);
             DbUtil.Db.Programs.DeleteOnSubmit(p);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();

@@ -26,7 +26,7 @@ namespace CmsWeb.Models.OrganizationPage
 
         public void UpdateOrganization()
         {
-            org.TagString = DivisionsList;
+            org.SetTagString(DbUtil.Db, DivisionsList);
             if (org.DivisionId == 0)
                 org.DivisionId = null;
             var divorg = org.DivOrgs.SingleOrDefault(d => d.DivId == org.DivisionId);

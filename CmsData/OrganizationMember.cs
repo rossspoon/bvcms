@@ -33,17 +33,7 @@ namespace CmsData
             VIP = 700,
             Drop = -1,
         }
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
-        public EnrollmentTransaction Drop()
+        public EnrollmentTransaction Drop(CMSDataContext Db)
         {
             Db.SubmitChanges();
             int ntries = 2;
@@ -80,12 +70,15 @@ namespace CmsData
                         var qa = from et in Db.Attends
                                  where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
                                  select et;
-                        var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
-                        var mids = qa.Select(a => a.MeetingId).ToList();
-                        if (smids != null)
-                            smids.AddRange(mids);
-                        else
-                            HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
+                        if (HttpContext.Current != null)
+                        {
+                            var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
+                            var mids = qa.Select(a => a.MeetingId).ToList();
+                            if (smids != null)
+                                smids.AddRange(mids);
+                            else
+                                HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
+                        }
                         Db.Attends.DeleteAllOnSubmit(qa);
                     }
                     else
@@ -133,7 +126,7 @@ namespace CmsData
                 foreach (var mid in mids)
                     Db.UpdateMeetingCounters(mid);
         }
-        public bool ToggleGroup(int groupid)
+        public bool ToggleGroup(CMSDataContext Db, int groupid)
         {
             var group = OrgMemMemTags.SingleOrDefault(g => 
                 g.OrgId == OrganizationId && g.PeopleId == PeopleId && g.MemberTagId == groupid);
@@ -146,12 +139,12 @@ namespace CmsData
             Db.OrgMemMemTags.DeleteOnSubmit(group);
             return false;
         }
-        public void AddToGroup(string name)
+        public void AddToGroup(CMSDataContext Db, string name)
         {
             int? n = null;
-            AddToGroup(name, n);
+            AddToGroup(Db, name, n);
         }
-        public void AddToGroup(string name, int? n)
+        public void AddToGroup(CMSDataContext Db, string name, int? n)
         {
             if (!name.HasValue())
                 return;
@@ -175,7 +168,7 @@ namespace CmsData
                 });
             Db.SubmitChanges();
         }
-        public void RemoveFromGroup(string name)
+        public void RemoveFromGroup(CMSDataContext Db, string name)
         {
             var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name && t.OrgId == OrganizationId);
             if (mt == null)
@@ -226,6 +219,9 @@ namespace CmsData
                         m.AddToMemberData("insert: {0}".Fmt(EnrollmentDate.ToString()));
                         return m;
                     }
+                    var org = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == OrganizationId);
+                    if (org == null)
+                        return null;
                     var om = new OrganizationMember
                     {
                         OrganizationId = OrganizationId,
@@ -238,7 +234,7 @@ namespace CmsData
                     };
                     var name = (from o in Db.Organizations
                                 where o.OrganizationId == OrganizationId
-                                select o.OrganizationName).Single();
+                                select o.OrganizationName).SingleOrDefault();
                     var et = new EnrollmentTransaction
                     {
                         OrganizationId = om.OrganizationId,

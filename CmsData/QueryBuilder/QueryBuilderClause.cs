@@ -90,25 +90,23 @@ namespace CmsData
         }
         private bool includeDeceased = false;
         public bool ParentsOf { get; set; }
-        public Expression<Func<Person, bool>> Predicate()
+        public Expression<Func<Person, bool>> Predicate(CMSDataContext db)
         {
-            var db = this.GetDataContext() as CMSDataContext;
             db.CopySession();
             var parm = Expression.Parameter(typeof(Person), "p");
-            var tree = ExpressionTree(parm);
+            var tree = ExpressionTree(parm, db);
             if (tree == null)
                 tree = Expressions.CompareConstant(parm, "PeopleId", CompareType.NotEqual, 0);
             if (includeDeceased == false)
                 tree = Expression.And(tree, Expressions.CompareConstant(parm,
                      "DeceasedDate", CompareType.Equal, new DateTime?()));
             if (Util2.OrgMembersOnly)
-                tree = Expression.And(OrgMembersOnly(parm), tree);
+                tree = Expression.And(OrgMembersOnly(db, parm), tree);
             return Expression.Lambda<Func<Person, bool>>(tree, parm);
         }
-        private Expression OrgMembersOnly(ParameterExpression parm)
+        private Expression OrgMembersOnly(CMSDataContext db, ParameterExpression parm)
         {
-            var tag = DbUtil.Db.OrgMembersOnlyTag;
-            var db = this.GetDataContext() as CMSDataContext;
+            var tag = db.OrgMembersOnlyTag2();
             Expression<Func<Person, bool>> pred = p =>
                 p.Tags.Any(t => t.Id == tag.Id);
             //db.TaggedPeople(tag.Id).Select(t => t.PeopleId).Contains(p.PeopleId);
@@ -131,17 +129,17 @@ namespace CmsData
                     || ComparisonType == CompareType.AnyFalse;
             }
         }
-        private Expression ExpressionTree(ParameterExpression parm)
+        private Expression ExpressionTree(ParameterExpression parm, CMSDataContext Db)
         {
             Expression expr = null;
             if (IsGroup)
             {
                 foreach (var clause in Clauses.OrderBy(c => c.ClauseOrder))
                     if (expr == null)
-                        expr = clause.ExpressionTree(parm);
+                        expr = clause.ExpressionTree(parm, Db);
                     else
                     {
-                        var right = clause.ExpressionTree(parm);
+                        var right = clause.ExpressionTree(parm, Db);
                         if (right != null && expr != null)
                             if (AnyFalseTrue)
                                 expr = Expression.Or(expr, right);
@@ -152,16 +150,15 @@ namespace CmsData
             }
             else
             {
-                expr = Compare.Expression(this, parm);
+                expr = Compare.Expression(this, parm, Db);
                 if (InAllAnyFalse)
                     expr = Expression.Not(expr);
                 return expr;
             }
         }
-        public IQueryable<int> PeopleIds()
+        public IQueryable<int> PeopleIds(CMSDataContext Db)
         {
-            var Db = EntityExtension.GetDataContext(this) as CMSDataContext;
-            return Db.People.Where(Predicate()).Select(p => p.PeopleId);
+            return Db.People.Where(Predicate(Db)).Select(p => p.PeopleId);
         }
         public int MaxClauseOrder()
         {
@@ -289,14 +286,13 @@ namespace CmsData
                     break;
             }
         }
-        public QueryBuilderClause Clone()
+        public QueryBuilderClause Clone(CMSDataContext Db)
         {
             var q = new QueryBuilderClause();
             q.CopyFrom(this);
-            var Db = this.GetDataContext() as CMSDataContext;
             Db.QueryBuilderClauses.InsertOnSubmit(q);
             foreach (var c in Clauses)
-                q.Clauses.Add(c.Clone());
+                q.Clauses.Add(c.Clone(Db));
             return q;
         }
         private void CopyFrom(QueryBuilderClause from)
@@ -320,28 +316,26 @@ namespace CmsData
             Tags = from.Tags;
             TextValue = from.TextValue;
         }
-        public void CopyFromAll(QueryBuilderClause from)
+        public void CopyFromAll(QueryBuilderClause from, CMSDataContext Db)
         {
             foreach (var c in Clauses)
-                DeleteClause(c);
+                DeleteClause(c, Db);
             CopyFrom(from);
             foreach (var c in from.Clauses)
-                Clauses.Add(c.Clone());
+                Clauses.Add(c.Clone(Db));
         }
-        private void DeleteClause(QueryBuilderClause qb)
+        private void DeleteClause(QueryBuilderClause qb, CMSDataContext Db)
         {
-            var Db = this.GetDataContext() as CMSDataContext;
             foreach (var c in qb.Clauses)
-                DeleteClause(c);
+                DeleteClause(c, Db);
             Db.QueryBuilderClauses.DeleteOnSubmit(qb);
         }
-        public void CleanSlate()
+        public void CleanSlate(CMSDataContext Db)
         {
             foreach (var c in Clauses)
-                DeleteClause(c);
+                DeleteClause(c, Db);
             SetQueryType(QueryType.Group);
             SetComparisonType(CompareType.AllTrue);
-            var Db = this.GetDataContext() as CMSDataContext;
             Db.SubmitChanges();
         }
         public static QueryBuilderClause NewGroupClause()

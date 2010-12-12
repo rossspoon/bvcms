@@ -51,7 +51,7 @@ namespace CMSPresenter
         public void DeleteTag()
         {
             var t = DbUtil.Db.TagCurrent();
-            t.DeleteTag();
+            t.DeleteTag(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
         }
         [DataObjectMethod(DataObjectMethodType.Select, false)]

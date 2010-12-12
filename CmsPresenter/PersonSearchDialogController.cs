@@ -82,8 +82,8 @@ namespace CMSPresenter
             string namesearch, string commsearch, string addrsearch, int memstatus, int tag, string dob, int gender, int orgid, int campus, bool usersonly, int marital)
         {
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
-            var n = t.People().Count();
-            var list = FetchPeopleList(t.People()).ToList();
+            var n = t.People(DbUtil.Db).Count();
+            var list = FetchPeopleList(t.People(DbUtil.Db)).ToList();
             var ids = list.Select(p => p.PeopleId).ToArray();
 
             var query = PersonSearchController.ApplySearch(namesearch, addrsearch, commsearch, memstatus, tag, dob, gender, orgid, campus, usersonly, marital);
@@ -249,9 +249,9 @@ namespace CMSPresenter
             var PrimaryCount = 0;
             if (famtype == AddFamilyType.ExistingFamily)
             {
-                if (tag.People().Count() != 1)
+                if (tag.People(DbUtil.Db).Count() != 1)
                     return false;
-                fam = tag.People().First().Family;
+                fam = tag.People(DbUtil.Db).First().Family;
                 PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
                 if (name.StartsWith("New"))
                     name = fam.People.First().LastName;
@@ -296,7 +296,7 @@ namespace CMSPresenter
             var famtype = ParseFamilyType(selectedValue);
             var tag = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId_AddSelected);
             if (famtype == AddFamilyType.ExistingFamily)
-                if (tag.People().Count() != 1)
+                if (tag.People(DbUtil.Db).Count() != 1)
                     return false;
             return true;
         }

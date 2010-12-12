@@ -245,30 +245,36 @@
     <Compile Include="ChurchAttendanceController.cs" />
     <Compile Include="ActivityController.cs" />
     <Compile Include="DecisionSummaryController.cs" />
-    <Compile Include="PersonSearchDialogController.cs" />
+    <Compile Include="InfoClasses\ContributorInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrganizationController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrganizationSearchController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="InfoClasses\ContacteeInfo.cs" />
     <Compile Include="InfoClasses\ContactorInfo.cs" />
-    <Compile Include="InfoClasses\ContributorInfo.cs" />
     <Compile Include="InfoClasses\MemberTypeInfo.cs" />
     <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
-    <Compile Include="VolunteerAppController.cs" />
+    <Compile Include="PersonSearchController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PersonSearchDialogController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FamilyController.cs" />
     <Compile Include="TagController.cs" />
     <Compile Include="InfoClasses\InvovementInfo.cs" />
     <Compile Include="InfoClasses\MailingInfo.cs" />
-    <Compile Include="InfoClasses\ProspectAttendInfo.cs" />
-    <Compile Include="InfoClasses\ProspectInfo.cs" />
-    <Compile Include="InfoClasses\SavedQueryInfo.cs" />
     <Compile Include="InfoClasses\ToggleTagReturn.cs" />
     <Compile Include="InfoClasses\TaggedPersonInfo.cs" />
     <Compile Include="ContactController.cs" />
     <Compile Include="InvolvementController.cs" />
     <Compile Include="InfoClasses\ContactInfo.cs" />
-    <Compile Include="InfoClasses\QBPersonInfo.cs" />
     <Compile Include="InfoClasses\FamilyMember.cs" />
     <Compile Include="InfoClasses\ExcelInfo.cs" />
-    <Compile Include="InfoClasses\InreachInfo.cs" />
-    <Compile Include="InReachController.cs" />
     <Compile Include="MailingController.cs" />
     <Compile Include="MeetingController.cs" />
     <Compile Include="InfoClasses\AttendInfo.cs" />
@@ -278,17 +284,13 @@
     <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
     <Compile Include="InfoClasses\PersonInfo.cs" />
     <Compile Include="InfoClasses\PersonMemberInfo.cs" />
-    <Compile Include="InfoClasses\QueryClauseDisplay.cs" />
     <Compile Include="CodeValueController.cs" />
-    <Compile Include="IQueryView.cs" />
-    <Compile Include="ProspectController.cs" />
-    <Compile Include="QueryController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
-    <Compile Include="OrganizationController.cs" />
-    <Compile Include="OrganizationSearchController.cs" />
-    <Compile Include="PersonSearchController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VolunteerAppController.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CmsData\CmsData.csproj">

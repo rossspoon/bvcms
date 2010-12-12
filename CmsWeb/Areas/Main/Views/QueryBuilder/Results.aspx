@@ -15,7 +15,7 @@
             <a href="#" class="sortable">Address</a>
         </th>
         <th>
-            Communication
+            <a href="#" class="sortable">Communication</a>
         </th>
         <th>
             <a href="#" class="sortable">Teacher</a>

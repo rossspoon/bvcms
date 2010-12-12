@@ -206,7 +206,7 @@ namespace CMSPresenter
             {
                 query = ApplySort(query, sortExpression);
                 var t = DbUtil.Db.FetchOrCreateTag(TagName, TagOwner, TagTypeId);
-                query = t.People().Union(query);
+                query = t.People(DbUtil.Db).Union(query);
             }
             else
                 query = ApplySort(query, sortExpression);
@@ -241,7 +241,7 @@ namespace CMSPresenter
         {
             var query = DbUtil.Db.People.Select(p => p);
             if (Util2.OrgMembersOnly)
-                query = DbUtil.Db.OrgMembersOnlyTag.People();
+                query = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
             if (usersonly)
                 query = query.Where(p => p.Users.Count() > 0);
 

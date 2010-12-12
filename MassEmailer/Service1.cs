@@ -13,6 +13,8 @@ using System.Configuration;
 using UtilityExtensions;
 using CmsData;
 using System.Threading;
+using System.Net.Mail;
+using System.Web.Configuration;
 
 namespace MassEmailer
 {
@@ -90,11 +92,13 @@ namespace MassEmailer
                             using (var Db = new CMSDataContext(GetConnectionString(Host, data.connstr)))
                             {
                                 Db.Host = Host;
+                                var SysFromEmail = Db.Setting("SysFromEmail",
+                                    ConfigurationManager.AppSettings["sysfromemail"]);
                                 var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
                                 var nt = Db.EmailQueueTos.Count(et => et.Id == id);
                                 eventLog1.WriteEntry("Sending {0} Emails for {1}, id={2}".Fmt(nt, Host, emailqueue.Id));
                                 var t = DateTime.Now;
-                                Emailer.SendPeopleEmail(Db, CmsHost, emailqueue);
+                                Emailer.SendPeopleEmail(Db, SysFromEmail, CmsHost, emailqueue);
                                 var dur = DateTime.Now - t;
                                 eventLog1.WriteEntry("Finished {0} Emails for {1}, id={2}, duration={3:mm\\:ss}".Fmt(nt, Host, emailqueue.Id, dur));
                             }
@@ -102,7 +106,9 @@ namespace MassEmailer
                 }
                 catch (Exception ex)
                 {
-                    eventLog1.WriteEntry(ex.StackTrace);
+                    eventLog1.WriteEntry("Error sending emails", EventLogEntryType.Error);
+                    Util.SendMsg(Util.Smtp(), ConfigurationManager.AppSettings["sysfromemail"], "http://bvcms.com", 
+                        new MailAddress("david@bvcms.com", "David Carroll"), ex.Message, ex.StackTrace, "David Carroll", "david@bvcms.com");
                 }
             }
         }

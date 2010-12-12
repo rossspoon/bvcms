@@ -30,27 +30,38 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-    //    $("#first").live("change", function () {
-    //        $('#regnew').hide();
-    //    });
     $("a.submitbutton, a.submitlink, input.submitbutton.ajax", "form.DisplayEdit").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
+            if (ret.substr(0, 13) === '/Person/Index') {
+                window.location = ret;
+                return;
+            } else if (ret.substr(0, 30) === '/OnlineReg/ManageSubscriptions') {
+                window.location = ret;
+                return;
+            }
             $(f).html(ret).ready(function () {
-                if ($("#personedit").attr("id")) {
-                    $("div.instructions").hide();
-                    $("div.instructions.find").show();
-                } else if ($("#otheredit").attr("id")) {
-                    $("div.instructions").hide();
-                    $("div.instructions.options").show();
-                }
+                $.InstructionsShow();
             });
             $(".submitbutton", f).button();
         });
         return false;
     });
+    $.InstructionsShow = function () {
+        $("div.instructions").hide();
+        if ($("#personedit").attr("id")) {
+            $("#fillout").hide();
+            $("div.instructions.find").show();
+        }
+        else if ($("#otheredit").attr("id"))
+            $("div.instructions.options").show();
+        else if ($("#username").attr("id"))
+            $("div.instructions.login").show();
+        else if ($("#submitit").attr("id"))
+            $("div.instructions.submit").show();
+    }
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
@@ -88,5 +99,6 @@
         $("input:last[name$='.paydeposit']").val($("input:hidden:last[name$='.paydeposit']").val());
         return false;
     });
+    $.InstructionsShow();
 });
 

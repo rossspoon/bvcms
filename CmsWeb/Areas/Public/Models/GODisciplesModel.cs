@@ -267,7 +267,7 @@ namespace CmsWeb.Models
                     DbUtil.Db.Organizations.InsertOnSubmit(leaderorg);
                     DbUtil.Db.SubmitChanges();
                 }
-                neworg = leaderorg.CloneOrg();
+                neworg = leaderorg.CloneOrg(DbUtil.Db);
                 neworg.CampusId = campus;
                 neworg.OrganizationName = groupname;
                 DbUtil.Db.SubmitChanges();
@@ -416,7 +416,7 @@ namespace CmsWeb.Models
             if (discuser == null)
             {
                 discuser = MembershipService.CreateUser(person.PeopleId, username, password);
-                discuser.Roles = new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff };
+                discuser.SetRoles(DbUtil.Db, new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff });
             }
             else
             {
@@ -427,7 +427,7 @@ namespace CmsWeb.Models
                     roles.Add(STR_Attendance);
                 if (!roles.Contains(STR_Staff))
                     roles.Add(STR_Staff);
-                discuser.Roles = roles.ToArray();
+                discuser.SetRoles(DbUtil.Db, roles.ToArray());
             }
             DbUtil.Db.SubmitChanges();
         }

@@ -54,7 +54,7 @@ namespace CmsWeb.Models
             var q = DbUtil.Db.People.Where(p => p.VolInterestInterestCodes.Count() > 0);
             var Qb = DbUtil.Db.LoadQueryById(QueryId);
             if (Qb != null)
-                q = DbUtil.Db.People.Where(Qb.Predicate());
+                q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db));
 
             if (Org == "na")
                 q = from p in q

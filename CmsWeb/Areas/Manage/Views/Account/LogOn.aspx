@@ -18,7 +18,7 @@
         <h4 id="provider">Provided by <a href="http://www.bvcms.com"><img src="/images/bvcms130.png" border="0" /></a></h4>
             <fieldset>
                 <p>
-                    <label for="username">Username:</label>
+                    <label for="username">Username or Email:</label>
                     <%= Html.TextBox("username") %>
                 </p>
                 <p>

@@ -24,7 +24,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult NewQuery()
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate();
+            qb.CleanSlate(DbUtil.Db);
             return RedirectToAction("Main");
         }
         public ActionResult Main(int? id, int? run)

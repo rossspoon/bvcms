@@ -32,8 +32,11 @@ namespace CmsWeb.Areas.Main.Controllers
         [ValidateInput(false)]
         public ActionResult QueueEmails(MassEmailer m)
         {
+            if (!m.Subject.HasValue() || !m.Body.HasValue())
+                return Json(new { id = 0, content = "<h2>Both Subject and Body need some text</h2>" });
+
             DbUtil.LogActivity("Emailing people");
-            m.FromName = m.EmailFroms().Single(ef => ef.Value == m.FromAddress).Text;
+            m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
 
             var emailqueue = m.CreateQueue();
 
@@ -42,7 +45,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
             if (DbUtil.Db.EmailQueueTos.Count(et => et.Id == emailqueue.Id) < 10)
                 // Send Immediately, bypass Service Broker
-                Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, emailqueue);
+                Emailer.SendPeopleEmail(DbUtil.Db, Util.SysFromEmail, Util.CmsHost, emailqueue);
             else
                 // Send to Service Broker, Send ASAP (at end of queue)
                 DbUtil.Db.QueueEmail(emailqueue.Id, Util.CmsHost, Util.Host);
@@ -55,7 +58,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var qp = DbUtil.Db.People.Where(pp => pp.PeopleId == Util.UserPeopleId);
-            Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, From, qp, m.Subject, m.Body);
+            Emailer.SendPeopleEmail(DbUtil.Db, Util.SysFromEmail, Util.CmsHost, From, qp, m.Subject, m.Body);
             return Content("<h2>Test Email Sent</h2>");
         }
         [HttpPost]

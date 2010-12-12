@@ -113,59 +113,97 @@ CKEditorFuncNum, baseurl + fn, error));
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult LogOn(string userName, string password, string returnUrl)
         {
-            var lc = returnUrl.ToLower();
-            if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
-                returnUrl = null;
-
-            var user = DbUtil.Db.Users.FirstOrDefault(u => u.Username == userName || u.EmailAddress == userName);
-            if (user != null && password == user.TempPassword)
+            if (returnUrl.HasValue())
             {
-                user.TempPassword = null;
-                user.IsLockedOut = false;
-                DbUtil.Db.SubmitChanges();
-                FormsAuth.SignIn(user.Username, false);
+                var lc = returnUrl.ToLower();
+                if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
+                    returnUrl = null;
             }
-            else if (user != null && password == DbUtil.Db.Setting("ImpersonatePassword", null))
+
+            if (!userName.HasValue())
+                return View();
+
+            var ret = AuthenticateLogon(userName, password, Session, Request);
+            if (ret is string)
             {
-                FormsAuth.SignIn(user.Username, false);
-                Notify(WebConfigurationManager.AppSettings["senderrorsto"],
-                    "{0} is being impersonated".Fmt(userName),
-                    Util.Now.ToString());
+                ModelState.AddModelError("login", ret.ToString());
+                return View();
             }
-            else
-                if (!ValidateLogOn(userName, password))
-                {
-                    if (!userName.HasValue())
-                        return View();
+            var user = ret as User;
 
-                    if (user == null)
-                        NotifyAdmins("attempt to login by non-user on " + Request.Url.Authority,
-                                "{0} tried to login at {1} but is not a user"
-                                    .Fmt(userName, Util.Now));
-                    else if (user.IsLockedOut)
-                        NotifyAdmins("user locked out on " + Request.Url.Authority,
-                                "{0} tried to login at {1} but is locked out"
-                                    .Fmt(userName, Util.Now));
-                    else if (!user.IsApproved)
-                        NotifyAdmins("unapproved user logging in on " + Request.Url.Authority,
-                                "{0} tried to login at {1} but is not approved"
-                                    .Fmt(userName, Util.Now));
-                    return View();
-                }
-
-            FormsAuth.SignIn(user.Username, false);
-            SetUserInfo(user.Username, Session);
-
-            var muser = Membership.GetUser(user.Username);
             if (CMSMembershipProvider.provider.UserMustChangePassword)
                 Redirect("/ChangePassword.aspx");
-            Util.FormsBasedAuthentication = true;
-            if (user != null && !returnUrl.HasValue())
+            if (!returnUrl.HasValue())
                 if (!CMSRoleProvider.provider.IsUserInRole(user.Username, "Access"))
                     return Redirect("/Person/Index/" + Util.UserPeopleId);
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);
             return Redirect("/");
+        }
+        public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
+        {
+            var q = DbUtil.Db.Users.Where(uu => uu.Username == userName || uu.Person.EmailAddress == userName);
+
+            User user = null;
+            int n = q.Count();
+            foreach (var u in q)
+                if (u.TempPassword != null && password == u.TempPassword)
+                {
+                    u.TempPassword = null;
+                    u.IsLockedOut = false;
+                    DbUtil.Db.SubmitChanges();
+                    user = u;
+                    break;
+                }
+                else if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
+                {
+                    Notify(WebConfigurationManager.AppSettings["senderrorsto"],
+                        "{0} is being impersonated".Fmt(u.Username),
+                        Util.Now.ToString());
+                    user = u;
+                    break;
+                }
+                else if (Membership.Provider.ValidateUser(u.Username, password))
+                {
+                    user = u;
+                    break;
+                }
+
+            string problem = "There is a problem with your username and password combination. If you are using your email address, it must match the one we have on record. Try again or use one of the links below.";
+            if (user == null && n > 0)
+            {
+                NotifyAdmins("failed password by user on " + Request.Url.OriginalString,
+                        "{0} tried to login at {1} but got the password wrong"
+                            .Fmt(userName, Util.Now));
+                return problem;
+            }
+            else if (user == null)
+            {
+                NotifyAdmins("attempt to login by non-user on " + Request.Url.OriginalString,
+                        "{0} tried to login at {1} but is not a user"
+                            .Fmt(userName, Util.Now));
+                return problem;
+            }
+            else if (user.IsLockedOut)
+            {
+                NotifyAdmins("user locked out on " + Request.Url.OriginalString,
+                        "{0} tried to login at {1} but is locked out"
+                            .Fmt(userName, Util.Now));
+                return problem;
+            }
+            else if (!user.IsApproved)
+            {
+                NotifyAdmins("unapproved user logging in on " + Request.Url.OriginalString,
+                        "{0} tried to login at {1} but is not approved"
+                            .Fmt(userName, Util.Now));
+                return problem;
+            }
+
+            FormsAuthentication.SetAuthCookie(user.Username, false);
+            SetUserInfo(user.Username, Session);
+            Util.FormsBasedAuthentication = true;
+
+            return user;
         }
         private static void Notify(string to, string subject, string message)
         {
@@ -209,6 +247,8 @@ CKEditorFuncNum, baseurl + fn, error));
         public static void SetUserInfo(string username, System.Web.SessionState.HttpSessionState Session)
         {
             var u = SetUserInfo(username);
+            if (u == null)
+                return;
             Session["ActivePerson"] = u.Name;
         }
         public static void SetUserInfo(string username, HttpSessionStateBase Session)

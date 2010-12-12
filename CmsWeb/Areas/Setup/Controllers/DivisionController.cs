@@ -91,7 +91,7 @@ namespace CmsWeb.Areas.Setup.Controllers
         public ActionResult ToggleProg(int id, DivisionModel m)
         {
             var division = DbUtil.Db.Divisions.Single(d => d.Id == id);
-            bool t = division.ToggleTag(m.TagProgramId.Value);
+            bool t = division.ToggleTag(DbUtil.Db, m.TagProgramId.Value);
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, division);
             var di = m.DivisionItem(id).Single();

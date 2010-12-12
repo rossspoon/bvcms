@@ -109,7 +109,7 @@ namespace CmsWeb
         protected void NewQuery_Click(object sender, EventArgs e)
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate();
+            qb.CleanSlate(DbUtil.Db);
             Response.Redirect("/QueryBuilder/Main/");
         }
 

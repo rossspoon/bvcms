@@ -110,7 +110,7 @@ namespace CmsWeb.Models
             var Db = DbUtil.Db;
             var query = Db.People.Select(p => p);
             if (Util2.OrgMembersOnly)
-                query = Db.OrgMembersOnlyTag.People();
+                query = Db.OrgMembersOnlyTag2().People(Db);
 
             if (MemberStatusId.HasValue && MemberStatusId > 0)
                 query = from p in query

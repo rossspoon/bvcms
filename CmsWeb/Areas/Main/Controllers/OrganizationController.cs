@@ -53,7 +53,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var org = DbUtil.Db.LoadOrganizationById(id);
             if (org == null)
                 return Content("error, bad orgid");
-            if (!org.PurgeOrg())
+            if (!org.PurgeOrg(DbUtil.Db))
                 return Content("error, not deleted");
             Util2.CurrentOrgId = 0;
             Util2.CurrentGroups = null;
@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult Clone(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
-            var neworg = org.CloneOrg();
+            var neworg = org.CloneOrg(DbUtil.Db);
             DbUtil.LogActivity("Cloning new org from {0}".Fmt(org.FullName));
             return Content("/Organization/Index/" + neworg.OrganizationId);
         }

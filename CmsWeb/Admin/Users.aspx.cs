@@ -119,7 +119,7 @@ namespace CmsWeb.Admin
             foreach (ListItem li in cbl.Items)
                 if (li.Selected)
                     checkedRoles.Add(li.Text);
-            user.Roles = checkedRoles.ToArray();
+            user.SetRoles(DbUtil.Db, checkedRoles.ToArray());
             DbUtil.Db.SubmitChanges();
         }
         protected void AddSelectedPerson_Click(object sender, EventArgs e)

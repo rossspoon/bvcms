@@ -22,6 +22,10 @@ namespace CmsWeb.Areas.Setup.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(string zipcode)
         {
+            var zip = DbUtil.Db.Zips.SingleOrDefault(mz => mz.ZipCode == zipcode);
+            if (zip != null)
+                return Content(Util.EndShowMessage("Zipcode already exists", "/Setup/MetroZip", "Go back"));
+
             var m = new Zip { ZipCode = zipcode };
             DbUtil.Db.Zips.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();

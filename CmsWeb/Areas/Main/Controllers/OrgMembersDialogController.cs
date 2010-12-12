@@ -45,7 +45,7 @@ namespace CmsWeb.Areas.Main.Controllers
             foreach (var om in q)
             {
                 if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
-                    om.Drop();
+                    om.Drop(DbUtil.Db);
                 else
                 {
                     if (m.MemberType > 0)

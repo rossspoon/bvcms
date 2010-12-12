@@ -217,7 +217,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (om == null && Member)
                 om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
-                om.Drop();
+                om.Drop(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
             //if (om != null && om.Organization.EmailAddresses.HasValue())
             //{

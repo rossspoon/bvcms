@@ -23,6 +23,11 @@ namespace CmsWeb.StaffOnly
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            DateTime d;
+            if (!Util.DateValid(FromDate.Text, out d))
+                return;
+            if (ToDate.Text.HasValue() && !Util.DateValid(ToDate.Text, out d))
+                return;
             DecisionsView.DataBind();
             BaptismsByAgeView.DataBind();
             BaptismsByTypeView.DataBind();
@@ -34,7 +39,7 @@ namespace CmsWeb.StaffOnly
         protected void ItemCommand(object sender, ListViewCommandEventArgs e)
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate();
+            qb.CleanSlate(DbUtil.Db);
             DateTime dt;
             DateTime? FromDt = null, dt2 = null;
             if (DateTime.TryParse(FromDate.Text, out dt))

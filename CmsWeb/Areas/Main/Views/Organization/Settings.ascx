@@ -22,10 +22,14 @@
         <th>Organization Phone Number:</th>
         <td><%=Model.org.PhoneNumber.FmtFone() %></td>
     </tr>
+    <tr>
+        <th valign="top">Organization Description</th>
+        <td><%=Model.org.Description %></td>
+    </tr>
 <% if (Page.User.IsInRole("Admin"))
    { %>
     <tr>
-        <th>Edit Online Reg Messages</th>
+        <th valign="top">Edit Online Reg Messages</th>
         <td>
             <a href="/Display/OrgContent/<%=Model.org.OrganizationId %>?what=message">
                confirmation (org)</a>

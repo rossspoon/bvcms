@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult NewQuery()
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate();
+            qb.CleanSlate(DbUtil.Db);
             return Redirect("/QueryBuilder/Main");
         }
         public ActionResult BatchTag(string text)
@@ -100,7 +100,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 if (om == null)
                     continue;
                 om.Person.Comments = "InactiveDrop: {0}({1})\n{2}".Fmt(om.Organization.OrganizationName, om.Organization.OrganizationId, om.Person.Comments);
-                om.Drop();
+                om.Drop(DbUtil.Db);
 
                 DbUtil.Db.SubmitChanges();
                 n++;

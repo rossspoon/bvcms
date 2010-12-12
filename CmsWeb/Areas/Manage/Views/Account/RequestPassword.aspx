@@ -7,6 +7,6 @@
 <asp:Content ID="changePasswordSuccessContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Password Reset Notice Sent</h2>
     <p>
-        You should receive an email shortly with a link to reset your password if you gave us your correct username and birthday.
+        You should receive an email shortly with a link to reset your password if you gave us your correct username.
     </p>
 </asp:Content>

@@ -1,6 +1,6 @@
-﻿$(function() {
+﻿$(function () {
     $('#Name').focus();
-    $("#search").click(function() {
+    $("#search").click(function () {
         var name = $('#Name').val();
         if (name.match("^" + "M\.") == "M.") {
             var f = $('#results').closest('form');
@@ -10,22 +10,22 @@
         $.getTable();
         return false;
     });
-    $.gotoPage = function(e, pg) {
+    $.gotoPage = function (e, pg) {
         $("#Page").val(pg);
         $.getTable();
         return false;
     }
-    $.setPageSize = function(e) {
+    $.setPageSize = function (e) {
         $('#Page').val(1);
         $("#PageSize").val($(e).val());
         return $.getTable();
     }
-    $.getTable = function() {
+    $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
         $.blockUI();
-        $.post($('#search').attr('href'), q, function(ret) {
-            $('#results').replaceWith(ret).ready(function() {
+        $.post($('#search').attr('href'), q, function (ret) {
+            $('#results').replaceWith(ret).ready(function () {
                 $.fmtTable();
                 $.unblockUI();
             });
@@ -33,7 +33,7 @@
         return false;
     }
     $.editable.addInputType('datepicker', {
-        element: function(settings, original) {
+        element: function (settings, original) {
             var input = $('<input>');
             if (settings.width != 'none') { input.width(settings.width); }
             if (settings.height != 'none') { input.height(settings.height); }
@@ -41,28 +41,28 @@
             $(this).append(input);
             return (input);
         },
-        plugin: function(settings, original) {
+        plugin: function (settings, original) {
             var form = this;
             settings.onblur = 'ignore';
-            $(this).find('input').datepicker().bind('click', function() {
+            $(this).find('input').datepicker().bind('click', function () {
                 $(this).datepicker('show');
                 return false;
-            }).bind('dateSelected', function(e, selectedDate, $td) {
+            }).bind('dateSelected', function (e, selectedDate, $td) {
                 $(form).submit();
             });
         }
     });
     $.editable.addInputType("checkbox", {
-        element: function(settings, original) {
+        element: function (settings, original) {
             var input = $('<input type="checkbox">');
             $(this).append(input);
-            $(input).click(function() {
+            $(input).click(function () {
                 var value = $(input).attr("checked") ? 'yes' : 'no';
                 $(input).val(value);
             });
             return (input);
         },
-        content: function(string, settings, original) {
+        content: function (string, settings, original) {
             var checked = string == "yes" ? 1 : 0;
             var input = $(':input:first', this);
             $(input).attr("checked", checked);
@@ -70,7 +70,7 @@
             $(input).val(value);
         }
     });
-    $.fmtTable = function() {
+    $.fmtTable = function () {
         $("#results td.tip").tooltip({
             showBody: "|"
         });
@@ -89,7 +89,7 @@
         });
     }
     $.fmtTable();
-    $('#results > thead a.sortable').live('click', function(ev) {
+    $('#results > thead a.sortable').live('click', function (ev) {
         ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");
@@ -102,48 +102,48 @@
         $.getTable();
         return false;
     });
-    $('#clear').click(function(ev) {
+    $('#clear').click(function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
-        $(f).find(':input').each(function() {
+        $(f).find(':input').each(function () {
             $(this).val('');
         });
-        $(f).find('select').each(function() {
+        $(f).find('select').each(function () {
             $(this).val("0");
         });
         $('#DivisionId').html('<option value="0">(select a program)</option>');
         $('#StatusId').val("30");
         return $.getTable();
     });
-    $.maxZIndex = $.fn.maxZIndex = function(opt) {
+    $.maxZIndex = $.fn.maxZIndex = function (opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
         var zmax = 0;
-        $(def.group).each(function() {
+        $(def.group).each(function () {
             var cur = parseInt($(this).css('z-index'));
             zmax = cur > zmax ? cur : zmax;
         });
         if (!this.jquery)
             return zmax;
-        return this.each(function() {
+        return this.each(function () {
             zmax += def.inc;
             $(this).css("z-index", zmax);
         });
     }
-    $('#ProgramId').change(function() {
-        $.post('/OrgSearch/DivisionIds/' + $('#ProgramId').val(), null, function(ret) {
+    $('#ProgramId').change(function () {
+        $.post('/OrgSearch/DivisionIds/' + $('#ProgramId').val(), null, function (ret) {
             $('#DivisionId').replaceWith(ret);
         });
     });
-    $('#TagProgramId').change(function() {
-        $.post('/OrgSearch/TagDivIds/' + $('#TagProgramId').val(), null, function(ret) {
+    $('#TagProgramId').change(function () {
+        $.post('/OrgSearch/TagDivIds/' + $('#TagProgramId').val(), null, function (ret) {
             $('#TagDiv').replaceWith(ret);
-            $('#TagDiv').change(function() {
+            $('#TagDiv').change(function () {
                 $.getTable();
             });
         });
     });
-    $("form input").live("keypress", function(e) {
+    $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;
@@ -151,9 +151,9 @@
         return true;
     });
     $('div.dialog').dialog({ autoOpen: false });
-    $('#rollsheet1').click(function(ev) {
+    $('#rollsheet1').click(function (ev) {
         ev.preventDefault();
-        $.post('/OrgSearch/DefaultMeetingDate/' + $('#ScheduleId').val(), null, function(ret) {
+        $.post('/OrgSearch/DefaultMeetingDate/' + $('#ScheduleId').val(), null, function (ret) {
             $('#MeetingDate').val(ret.date);
             $('#MeetingTime').val(ret.time);
             var d = $('#PanelRollsheet')
@@ -161,13 +161,13 @@
         }, "json");
         return false;
     });
-    $('#attdetail1').click(function(ev) {
+    $('#attdetail1').click(function (ev) {
         ev.preventDefault();
         var d = $('#PanelAttDetail');
         d.dialog('open');
         return false;
     });
-    $('#rollsheet2').click(function(ev) {
+    $('#rollsheet2').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
         var pid = $('#ProgramId').val();
@@ -183,7 +183,7 @@
         window.open("/Reports/Rollsheet/" + args);
         return false;
     });
-    $('#ExportExcel').click(function(ev) {
+    $('#ExportExcel').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
         var args = "?prog=" + $('#ProgramId').val() +
@@ -195,7 +195,7 @@
         window.open("/OrgSearch/ExportExcel/" + args);
         return false;
     });
-    $('#Meetings').click(function(ev) {
+    $('#Meetings').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
         var args = "?progid=" + $('#ProgramId').val() +
@@ -207,7 +207,7 @@
         window.open("/Meetings.aspx" + args);
         return false;
     });
-    $('#attdetail2').click(function(ev) {
+    $('#attdetail2').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
         var did = $('#DivisionId').val();
@@ -223,7 +223,7 @@
         window.open("/Reports/AttendanceDetail" + args);
         return false;
     });
-    $('#Roster').click(function(ev) {
+    $('#Roster').click(function (ev) {
         ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
@@ -234,18 +234,18 @@
         window.open("/Reports/Roster/" + args);
         return false;
     });
-    $('#PasteSettings').click(function(ev) {
+    $('#PasteSettings').click(function (ev) {
         ev.preventDefault();
         if (!confirm("Are you sure you want to replace all these settings?"))
             return false;
         var f = $('form');
         var q = f.serialize();
-        $.post(this.href, q, function(ret) {
+        $.post(this.href, q, function (ret) {
             $.growlUI("Completed", "Settings Replaced");
         });
         return false;
     });
-    $('a.ViewReport').click(function(ev) {
+    $('a.ViewReport').click(function (ev) {
         ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
@@ -258,18 +258,20 @@
         window.open($(this).attr("href") + args);
         return false;
     });
-    $('a.taguntag').live('click', function(ev) {
+    $('a.taguntag').live('click', function (ev) {
         ev.preventDefault();
         var a = $(this);
-        $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function(ret) {
-            a.text(ret.value);
-        }, "json");
+        var td = $('#TagDiv').val()
+        if (td > 0)
+            $.post(a.attr('href'), { tagdiv: td }, function (ret) {
+                a.text(ret.value);
+            }, "json");
         return false;
     });
-    $('a.maindiv').live('click', function(ev) {
+    $('a.maindiv').live('click', function (ev) {
         ev.preventDefault();
         var a = $(this);
-        $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function(ret) {
+        $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function (ret) {
             a.text("");
         }, "json");
         return false;

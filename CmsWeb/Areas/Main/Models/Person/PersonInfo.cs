@@ -44,6 +44,8 @@ namespace CmsWeb.Models.PersonPage
         public static PersonInfo GetPersonInfo(int? id)
         {
             var p = DbUtil.Db.LoadPersonById(id.Value);
+            if (p == null)
+                return null;
             var rr = p.RecRegs.SingleOrDefault();
 
             var pi = new PersonInfo
@@ -105,7 +107,7 @@ namespace CmsWeb.Models.PersonPage
                     NickName = p.NickName,
                     Occupation = p.OccupationOther,
                     School = p.SchoolOther,
-                    Spouse = p.SpouseName,
+                    Spouse = p.SpouseName(DbUtil.Db),
                     Suffix = p.SuffixCode,
                     Title = p.TitleCode,
                     WeddingDate = p.WeddingDate,

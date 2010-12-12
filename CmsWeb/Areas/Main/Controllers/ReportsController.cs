@@ -209,6 +209,8 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             else
             {
+                if (!FromDate.HasValue || !ToDate.HasValue)
+                    return Content("<h3>Must have a Startdate and Enddate</h3>");
                 var m = new ContributionStatementsExtract(FromDate.Value, ToDate.Value, PDF.Value);
                 HttpContext.Cache[CSE] = m;
                 m.Run();

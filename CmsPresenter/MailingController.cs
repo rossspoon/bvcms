@@ -139,7 +139,7 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchCouplesEitherList(string sortExpression, int QueryId)
         {
-            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People(DbUtil.Db);
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)
@@ -167,7 +167,7 @@ namespace CMSPresenter
 
         public IEnumerable<MailingInfo> FetchCouplesBothList(string sortExpression, int QueryId)
         {
-            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People(DbUtil.Db);
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      // get spouse if in the query
@@ -209,7 +209,7 @@ namespace CMSPresenter
 
         public IEnumerable FetchExcelCouplesBoth(int QueryId, int maximumRows)
         {
-            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People(DbUtil.Db);
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      // get spouse if in the query
@@ -242,7 +242,7 @@ namespace CMSPresenter
 
         public IEnumerable FetchExcelCouplesEither(int QueryId, int maximumRows)
         {
-            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People();
+            var q = DbUtil.Db.PopulateSpecialTag(QueryId, DbUtil.TagTypeId_CouplesHelper).People(DbUtil.Db);
             var q1 = EliminateCoupleDoublets(q);
             var q2 = from p in q1
                      let spouse = DbUtil.Db.People.SingleOrDefault(sp => sp.PeopleId == p.SpouseId)

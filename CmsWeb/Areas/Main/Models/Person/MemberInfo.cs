@@ -103,7 +103,7 @@ namespace CmsWeb.Models.PersonPage
             p.DiscoveryClassDate = NewMemberClassDate;
             p.DiscoveryClassStatusId = NewMemberClassStatusId;
             p.MemberStatusId = MemberStatusId;
-            p.MemberProfileAutomation();
+            p.MemberProfileAutomation(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);

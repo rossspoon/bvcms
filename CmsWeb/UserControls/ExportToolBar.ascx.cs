@@ -16,7 +16,6 @@ namespace CmsWeb
     public partial class ExportToolBar : System.Web.UI.UserControl
     {
         public int queryId { get; set; }
-        private QueryController QueryControl = new QueryController();
         public bool Single { get; set; }
         public bool OrganizationContext { get; set; }
 
@@ -65,22 +64,23 @@ namespace CmsWeb
 
         protected void TagAddAll_Click(object sender, EventArgs e)
         {
-            QueryControl.TagAll(queryId);
+            var q = DbUtil.Db.PeopleQuery(queryId);
+            DbUtil.Db.TagAll(q);
             if (TaggedEvent != null)
                 TaggedEvent(this, e);
         }
 
         protected void TagRemoveAll_Click(object sender, EventArgs e)
         {
-            QueryControl.UnTagAll(queryId);
+            var q = DbUtil.Db.PeopleQuery(queryId);
+            DbUtil.Db.UnTagAll(q);
             if (TaggedEvent != null)
                 TaggedEvent(this, e);
         }
         protected void AddContact_Click(object sender, EventArgs e)
         {
-            var c = QueryControl.AddContact(queryId);
-            if (c != null)
-                Response.Redirect("~/Contact.aspx?id=" + c.ContactId);
+            var id = NewContact.AddContact(queryId);
+            Response.Redirect("~/Contact.aspx?id=" + id);
         }
         protected void PurgeAll_Click(object sender, EventArgs e)
         {
@@ -92,7 +92,7 @@ namespace CmsWeb
         private void StartPurge(object id)
         {
             var Qb = DbUtil.Db.LoadQueryById((int)id);
-            var q = DbUtil.Db.People.Where(Qb.Predicate()).Select(p => p.PeopleId);
+            var q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db)).Select(p => p.PeopleId);
             int n = 0;
             var st = DateTime.Now;
             Session.Remove("purgefinished");

@@ -17,9 +17,15 @@ namespace CmsData
 {
     public static class Emailer
     {
-        public static void SendPeopleEmail(CMSDataContext Db, string CmsHost, EmailQueue emailqueue)
+        public static void SendPeopleEmail(CMSDataContext Db, string SysFromEmail, string CmsHost, EmailQueue emailqueue)
         {
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
+            if (!emailqueue.Subject.HasValue() || !emailqueue.Body.HasValue())
+            {
+                Util.SendMsg(Util.Smtp(), SysFromEmail, CmsHost, From, "sent emails", "no subject or body, no emails sent", null, From.Address, emailqueue.Id);
+                return;
+            }
+
             var Message = emailqueue.Body;
             emailqueue.Started = DateTime.Now;
             Db.SubmitChanges();
@@ -36,10 +42,19 @@ namespace CmsData
             foreach (var To in q)
             {
                 var qp = (from p in Db.People
-                         where p.PeopleId == To.PeopleId
-                         select new { p.Name, p.PreferredName, p.EmailAddress }).Single();
-                var text = emailqueue.Body.Replace("{name}", qp.Name);
-                text = text.Replace("{first}", qp.PreferredName);
+                          where p.PeopleId == To.PeopleId
+                          select new { p.Name, p.PreferredName, p.EmailAddress }).Single();
+                string text = emailqueue.Body;
+
+                if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
+                    text = text.Replace("{name}", string.Empty);
+                else
+                    text = text.Replace("{name}", qp.Name);
+
+                if (qp.PreferredName.Contains("?") || qp.PreferredName.ToLower() == "unknown")
+                    text = text.Replace("{first}", string.Empty);
+                else
+                    text = text.Replace("{first}", qp.PreferredName);
                 var aa = qp.EmailAddress.SplitStr(",;").ToList();
                 if (To.OrgId.HasValue)
                 {
@@ -64,28 +79,30 @@ namespace CmsData
                             smtp = Util.Smtp();
                         i++;
 
-                        text = text.Replace("{unsubscribe}",
-                            "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>"
-                            .Fmt(CmsHost,  Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, From.Address))));
+                        var link = "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>".Fmt(CmsHost, Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, From.Address)));
+                        text = text.Replace("{unsubscribe}", link);
+                        text = text.Replace("{Unsubscribe}", link);
+                        text = text.Replace("{toemail}", ad);
+                        text = text.Replace("%7Btoemail%7D", ad);
+                        text = text.Replace("{fromemail}", From.Address);
+                        text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                        Util.SendMsg(smtp, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
-                        if (smtp.PickupDirectoryLocation.HasValue())
-                            Thread.Sleep(50); // simulate sending
+                        Util.SendMsg(smtp, SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
                         To.Sent = DateTime.Now;
 
                         sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(qp.Name, ad, To.PeopleId));
                         if (i % 500 == 0)
-                            NotifySentEmails(Db, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+                            NotifySentEmails(Db, SysFromEmail, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
                         Db.SubmitChanges();
                     }
                 }
             }
             if (smtp != null)
-                NotifySentEmails(Db, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+                NotifySentEmails(Db, SysFromEmail, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
             emailqueue.Sent = DateTime.Now;
             Db.SubmitChanges();
         }
-        public static void SendPeopleEmail(CMSDataContext Db, string CmsHost, MailAddress From, IEnumerable<Person> q, string Subject, string Message)
+        public static void SendPeopleEmail(CMSDataContext Db, string SysFromEmail, string CmsHost, MailAddress From, IEnumerable<Person> q, string Subject, string Message)
         {
             var emailqueue = new EmailQueue
             {
@@ -108,14 +125,14 @@ namespace CmsData
                 Db.EmailQueueTos.InsertOnSubmit(to);
             }
             Db.SubmitChanges();
-            SendPeopleEmail(Db, CmsHost, emailqueue);
+            SendPeopleEmail(Db, SysFromEmail, CmsHost, emailqueue);
         }
-        private static void NotifySentEmails(CMSDataContext Db, string CmsHost, StringBuilder sb, SmtpClient smtp, MailAddress From, string subject, string body, int id)
+        private static void NotifySentEmails(CMSDataContext Db, string SysFromEmail, string CmsHost, StringBuilder sb, SmtpClient smtp, MailAddress From, string subject, string body, int id)
         {
             sb.Append("</pre>\r\n<h2>{0}</h2>".Fmt(subject));
             sb.Append(body);
-            Util.SendMsg(smtp, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
-            Util.SendMsg(smtp, CmsHost, From, "sent emails", sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
+            Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
+            Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
             sb.Length = 0;
             sb.Append("<pre>\r\n");
         }

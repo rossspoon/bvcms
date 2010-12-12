@@ -104,8 +104,8 @@ namespace CmsData
         }
         public IQueryable<Person> PeopleQuery(int qid)
         {
-            var qB = DbUtil.Db.LoadQueryById(qid);
-            var q = DbUtil.Db.People.Where(qB.Predicate());
+            var qB = this.LoadQueryById(qid);
+            var q = DbUtil.Db.People.Where(qB.Predicate(this));
             if (qB.ParentsOf)
                 q = from p in q
                     from m in p.Family.People
@@ -336,9 +336,9 @@ namespace CmsData
             }
             set { _currentuser = value; }
         }
-        public Tag OrgMembersOnlyTag
+        public Tag OrgMembersOnlyTag2()
         {
-            get { return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly); }
+             return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly); 
         }
 
         public Tag FetchOrCreateTag(string tagname, int? OwnerId, int tagtypeid)

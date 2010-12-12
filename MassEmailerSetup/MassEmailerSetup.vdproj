@@ -15,13 +15,19 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
-        "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
+        "MsmKey" = "8:_0909F63B2C577B0FB7B55C3C8FE688C8"
+        "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
+        "MsmKey" = "8:_0AB42C8FE530B83A1A058F37C64FE39D"
+        "OwnerKey" = "8:_0909F63B2C577B0FB7B55C3C8FE688C8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0AB42C8FE530B83A1A058F37C64FE39D"
         "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,12 +39,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
-        "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "MsmSig" = "8:_UNDEFINED"
@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
+        "OwnerKey" = "8:_0909F63B2C577B0FB7B55C3C8FE688C8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
+        "OwnerKey" = "8:_0AB42C8FE530B83A1A058F37C64FE39D"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -63,7 +63,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\MassEmailerSetup.msi"
+        "OutputFilename" = "8:..\\..\\Deploy\\MassEmailer\\MassEmailerSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -216,20 +216,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E594934CE7A4B3C795E9BDFB3F9721D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0909F63B2C577B0FB7B55C3C8FE688C8"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:UtilityExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CmsData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4E594934CE7A4B3C795E9BDFB3F9721D"
+                    "_0909F63B2C577B0FB7B55C3C8FE688C8"
                     {
-                    "Name" = "8:UtilityExtensions.dll"
+                    "Name" = "8:CmsData.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:UtilityExtensions.dll"
+            "SourcePath" = "8:CmsData.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"
@@ -247,20 +247,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC3605C2F30115C3C7AB8FEC3F1785EA"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0AB42C8FE530B83A1A058F37C64FE39D"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CmsData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:UtilityExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DC3605C2F30115C3C7AB8FEC3F1785EA"
+                    "_0AB42C8FE530B83A1A058F37C64FE39D"
                     {
-                    "Name" = "8:CmsData.dll"
+                    "Name" = "8:UtilityExtensions.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:CmsData.dll"
+            "SourcePath" = "8:UtilityExtensions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"
@@ -335,7 +335,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BVCMS MassEmailer"
         "ProductCode" = "8:{AC3EA0FB-C655-43A9-B021-9EF4B5381CC0}"
-        "PackageCode" = "8:{6A90DADC-F168-448D-A552-E0538CAE6952}"
+        "PackageCode" = "8:{1B74C268-62F0-49C8-A7E6-E81EBA49CBEE}"
         "UpgradeCode" = "8:{899DA84A-DB56-44AC-A0E5-2CC2C33AC8F4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -856,7 +856,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CF69F13EE5B74A21B63B2BCAC462B17D"
             {
-            "SourcePath" = "8:..\\MassEmailer\\obj\\x86\\Release\\MassEmailer.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"

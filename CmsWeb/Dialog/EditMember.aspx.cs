@@ -81,7 +81,7 @@ namespace CmsWeb.Dialog
             if (OrgMember != null)
             {
                 var pid = OrgMember.PeopleId;
-                OrgMember.Drop();
+                OrgMember.Drop(DbUtil.Db);
                 DbUtil.Db.SubmitChanges();
                 OrganizationMember.UpdateMeetingsToUpdate();
                 DbUtil.Db.UpdateSchoolGrade(pid);

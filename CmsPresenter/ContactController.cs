@@ -145,7 +145,8 @@ namespace CMSPresenter
                      select c.PeopleId;
             var a = q.Union(q2).ToArray();
 
-            var t = DbUtil.Db.OrgMembersOnlyTag.People().Any(p => a.Contains(p.PeopleId));
+            var tag = DbUtil.Db.OrgMembersOnlyTag2();
+            var t = tag.People(DbUtil.Db).Any(p => a.Contains(p.PeopleId));
             return t;
         }
 

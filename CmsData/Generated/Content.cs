@@ -17,8 +17,6 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Id;
-		
 		private string _Name;
 		
 		private string _Title;
@@ -26,6 +24,8 @@ namespace CmsData
 		private string _Body;
 		
 		private DateTime? _DateCreated;
+		
+		private int _Id;
 		
    		
     	
@@ -35,9 +35,6 @@ namespace CmsData
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-		
-		partial void OnIdChanging(int value);
-		partial void OnIdChanged();
 		
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
@@ -51,6 +48,9 @@ namespace CmsData
 		partial void OnDateCreatedChanging(DateTime? value);
 		partial void OnDateCreatedChanged();
 		
+		partial void OnIdChanging(int value);
+		partial void OnIdChanged();
+		
     #endregion
 		public Content()
 		{
@@ -61,28 +61,6 @@ namespace CmsData
 
 		
     #region Columns
-		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get { return this._Id; }
-
-			set
-			{
-				if (this._Id != value)
-				{
-				
-                    this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-
-			}
-
-		}
-
 		
 		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(500) NOT NULL")]
 		public string Name
@@ -165,6 +143,28 @@ namespace CmsData
 					this._DateCreated = value;
 					this.SendPropertyChanged("DateCreated");
 					this.OnDateCreatedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get { return this._Id; }
+
+			set
+			{
+				if (this._Id != value)
+				{
+				
+                    this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 
 			}

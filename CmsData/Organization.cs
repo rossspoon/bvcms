@@ -33,6 +33,7 @@ namespace CmsData
             ComputeOrganizationByAge = 4,
             CreateAccount = 5,
             ChooseSlot = 6,
+            ManageSubscriptions = 7,
         }
         public static string FormatOrgName(string name, string leader, string loc)
         {
@@ -51,76 +52,63 @@ namespace CmsData
         {
             get { return DivisionName + ", " + FormatOrgName(OrganizationName, LeaderName, Location); }
         }
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
 
         private string _TagString;
-        public string TagString
+        public string TagString()
         {
-            get
+            if (_TagString == null)
             {
-                if (_TagString == null)
-                {
-                    var sb = new StringBuilder();
-                    var q = from d in DivOrgs
-                            orderby d.Division.Name
-                            select d.Division.Name;
-                    foreach (var name in q)
-                        sb.Append(name + ",");
-                    if (sb.Length > 0)
-                        sb.Remove(sb.Length - 1, 1);
-                    _TagString = sb.ToString();
-                }
-                return _TagString;
+                var sb = new StringBuilder();
+                var q = from d in DivOrgs
+                        orderby d.Division.Name
+                        select d.Division.Name;
+                foreach (var name in q)
+                    sb.Append(name + ",");
+                if (sb.Length > 0)
+                    sb.Remove(sb.Length - 1, 1);
+                _TagString = sb.ToString();
             }
-            set
-            {
-                if (!value.HasValue())
-                {
-                    Db.DivOrgs.DeleteAllOnSubmit(DivOrgs);
-                    return;
-                }
-                var a = value.Split(',');
-                var qdelete = from d in DivOrgs
-                              where !a.Contains(d.Division.Name)
-                              select d;
-                Db.DivOrgs.DeleteAllOnSubmit(qdelete);
-
-                var q = from s in a
-                        join d2 in DivOrgs on s equals d2.Division.Name into g
-                        from d in g.DefaultIfEmpty()
-                        where d == null
-                        select s;
-
-                foreach (var s in q)
-                {
-                    var div = Db.Divisions.FirstOrDefault(d => d.Name == s);
-                    if (div == null)
-                    {
-                        div = new Division { Name = s };
-                        string misctags = DbUtil.Db.Setting("MiscTagsString", "Misc Tags");
-                        var prog = Db.Programs.SingleOrDefault(p => p.Name == misctags);
-                        if (prog == null)
-                        {
-                            prog = new Program { Name = misctags };
-                            Db.Programs.InsertOnSubmit(prog);
-                        }
-                        div.Program = prog;
-                    }
-                    DivOrgs.Add(new DivOrg { Division = div });
-                }
-                _TagString = value;
-            }
+            return _TagString;
         }
-        public bool ToggleTag(int divid)
+        public void SetTagString(CMSDataContext Db, string value)
+        {
+            if (!value.HasValue())
+            {
+                Db.DivOrgs.DeleteAllOnSubmit(DivOrgs);
+                return;
+            }
+            var a = value.Split(',');
+            var qdelete = from d in DivOrgs
+                          where !a.Contains(d.Division.Name)
+                          select d;
+            Db.DivOrgs.DeleteAllOnSubmit(qdelete);
+
+            var q = from s in a
+                    join d2 in DivOrgs on s equals d2.Division.Name into g
+                    from d in g.DefaultIfEmpty()
+                    where d == null
+                    select s;
+
+            foreach (var s in q)
+            {
+                var div = Db.Divisions.FirstOrDefault(d => d.Name == s);
+                if (div == null)
+                {
+                    div = new Division { Name = s };
+                    string misctags = DbUtil.Db.Setting("MiscTagsString", "Misc Tags");
+                    var prog = Db.Programs.SingleOrDefault(p => p.Name == misctags);
+                    if (prog == null)
+                    {
+                        prog = new Program { Name = misctags };
+                        Db.Programs.InsertOnSubmit(prog);
+                    }
+                    div.Program = prog;
+                }
+                DivOrgs.Add(new DivOrg { Division = div });
+            }
+            _TagString = value;
+        }
+        public bool ToggleTag(CMSDataContext Db, int divid)
         {
             var divorg = DivOrgs.SingleOrDefault(d => d.DivId == divid);
             if (divorg == null)
@@ -135,7 +123,7 @@ namespace CmsData
             return false;
         }
 
-        public bool PurgeOrg()
+        public bool PurgeOrg(CMSDataContext Db)
         {
             try
             {
@@ -147,7 +135,7 @@ namespace CmsData
             }
             return true;
         }
-        public Organization CloneOrg()
+        public Organization CloneOrg(CMSDataContext Db)
         {
             var neworg = new Organization
             {
@@ -182,10 +170,10 @@ namespace CmsData
                 RollSheetVisitorWks = RollSheetVisitorWks,
                 NumWorkerCheckInLabels = NumWorkerCheckInLabels,
             };
-            DbUtil.Db.Organizations.InsertOnSubmit(neworg);
+            Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)
                 neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
             return neworg;
         }
         public static DateTime? GetDateFromScheduleId(int id)
@@ -196,7 +184,7 @@ namespace CmsData
                 dw = 7;
             int hour = id / 100;
             int min = id % 100;
-            if(hour > 0)
+            if (hour > 0)
                 return new DateTime(1900, 1, dw, hour, min, 0);
             return null;
         }
@@ -204,9 +192,10 @@ namespace CmsData
         {
             get
             {
-                return Division != null ? 
-                           Division.Program.Name + ":" + Division.Name : 
-                           "<span style='color:red'>need a main division</span>";
+                return Division != null ?
+                    (Division.Program != null ? Division.Program.Name : "no program") 
+                        + ":" + Division.Name :
+                       "<span style='color:red'>need a main division</span>";
             }
         }
     }

@@ -8,17 +8,7 @@ namespace CmsData
 {
     public partial class Division
     {
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
-        public bool ToggleTag(int progid)
+        public bool ToggleTag(CMSDataContext Db, int progid)
         {
             var pd = ProgDivs.SingleOrDefault(d => d.ProgId == progid);
             if (pd == null)

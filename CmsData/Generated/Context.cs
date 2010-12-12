@@ -350,6 +350,10 @@ namespace CmsData
         partial void UpdateNewContactType(NewContactType instance);
         partial void DeleteNewContactType(NewContactType instance);
         
+        partial void InsertOneTimeLink(OneTimeLink instance);
+        partial void UpdateOneTimeLink(OneTimeLink instance);
+        partial void DeleteOneTimeLink(OneTimeLink instance);
+        
         partial void InsertOrganizationMember(OrganizationMember instance);
         partial void UpdateOrganizationMember(OrganizationMember instance);
         partial void DeleteOrganizationMember(OrganizationMember instance);
@@ -1147,6 +1151,12 @@ namespace CmsData
 		public Table< NewContactType> NewContactTypes
 		{
 			get	{ return this.GetTable< NewContactType>(); }
+
+		}
+
+		public Table< OneTimeLink> OneTimeLinks
+		{
+			get	{ return this.GetTable< OneTimeLink>(); }
 
 		}
 

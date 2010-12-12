@@ -41,7 +41,7 @@ namespace CmsWeb.Areas.Main.Controllers
                      where a.Contains(om.PeopleId)
                      select om;
             foreach (var om in q2)
-                om.AddToGroup(sgname);
+                om.AddToGroup(DbUtil.Db, sgname);
             DbUtil.Db.SubmitChanges();
             return View("Rows", m);
         }

@@ -272,7 +272,11 @@ namespace CmsWeb.Models
                 var sg = om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToList();
                 var tom = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == pid && m.OrganizationId == TargetId);
                 if (tom == null)
+                {
                     tom = OrganizationMember.InsertOrgMembers(TargetId, pid, (int)OrganizationMember.MemberTypeCode.Member, om.EnrollmentDate.Value, om.InactiveDate, om.Pending ?? false);
+                    if (tom == null)
+                        continue;
+                }
                 tom.Request = om.Request;
                 tom.Amount = om.Amount;
                 tom.UserData = om.UserData;
@@ -282,10 +286,10 @@ namespace CmsWeb.Models
                 tom.ShirtSize = om.ShirtSize;
                 tom.Tickets = om.Tickets;
                 foreach (var s in sg)
-                    tom.AddToGroup(s);
+                    tom.AddToGroup(DbUtil.Db, s);
                 if (om.OrganizationId != tom.OrganizationId)
                     tom.Moved = true;
-                om.Drop();
+                om.Drop(DbUtil.Db);
                 DbUtil.Db.SubmitChanges();
             }
         }

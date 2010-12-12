@@ -8,23 +8,13 @@ namespace CmsData
 {
     public partial class Tag
     {
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
-        public void DeleteTag()
+        public void DeleteTag(CMSDataContext Db)
         {
             Db.TagPeople.DeleteAllOnSubmit(PersonTags);
             Db.TagShares.DeleteAllOnSubmit(TagShares);
             Db.Tags.DeleteOnSubmit(this);
         }
-        public IQueryable<Person> People()
+        public IQueryable<Person> People(CMSDataContext Db)
         {
             return Db.People.Where(p => p.Tags.Any(tp => tp.Id == Id));
         }

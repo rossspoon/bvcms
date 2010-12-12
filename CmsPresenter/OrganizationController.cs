@@ -103,7 +103,7 @@ namespace CMSPresenter
         public IEnumerable<PersonVisitorInfo> Visitors(int orgid, string sortExpression, int maximumRows, int startRowIndex)
         {
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
-            var q = DbUtil.Db.People.Where(qb.Predicate());
+            var q = DbUtil.Db.People.Where(qb.Predicate(DbUtil.Db));
             visitorCount = q.Count();
             q = ApplySort(q, orgid, sortExpression);
             var q2 = FetchVisitorList(q.Skip(startRowIndex).Take(maximumRows), orgid);

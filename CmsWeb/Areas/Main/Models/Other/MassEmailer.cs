@@ -66,7 +66,7 @@ namespace CmsWeb.Areas.Main.Models
             DbUtil.Db.SubmitChanges();
 
             var Qb = DbUtil.Db.LoadQueryById(QBId);
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db));
             if (wantParents || Qb.ParentsOf)
                 q = from p in q
                     from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)
@@ -91,12 +91,6 @@ namespace CmsWeb.Areas.Main.Models
             return emailqueue;
         }
 
-        public static void SendEmails(int id, string Host, string CmsHost)
-        {
-            var Db = new CMSDataContext(Util.GetConnectionString(Host));
-            var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
-            Emailer.SendPeopleEmail(Db, CmsHost, emailqueue);
-        }
         public IEnumerable<SelectListItem> EmailFroms()
         {
             return new SelectList(new CodeValueController().UsersToEmailFrom(), "Code", "Value");

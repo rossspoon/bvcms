@@ -72,7 +72,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
             if (om != null)
             {
-                om.Drop();
+                om.Drop(DbUtil.Db);
                 DbUtil.Db.SubmitChanges();
             }
             return Content("dropped");
@@ -106,7 +106,7 @@ namespace CmsWeb.Areas.Main.Controllers
             om2.Request = om1.Request;
             om2.Amount = om1.Amount;
             om2.UserData = om1.UserData;
-            om1.Drop();
+            om1.Drop(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
             return Content("moved");
         }

@@ -76,7 +76,7 @@ namespace CmsWeb
             foreach (var a in Addresses)
             {
                 var msg = new MailMessage(From, a);
-                string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
+                string sysfromemail = Util.SysFromEmail;
                 if (sysfromemail.HasValue())
                 {
                     var sysmail = new MailAddress(sysfromemail);

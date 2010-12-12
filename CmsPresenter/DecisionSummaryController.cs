@@ -53,6 +53,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> DecisionsByType(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             // member decisions
             var q = from p in DbUtil.Db.People
                     where p.DecisionDate >= dt1 && p.DecisionDate < (dt2 ?? dt1).Value.AddDays(1)
@@ -84,6 +86,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> BaptismsByAge(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             var q = from p in DbUtil.Db.People
                     let agerange = DbUtil.Db.BaptismAgeRange(p.Age ?? 0)
                     where p.BaptismDate >= dt1 && p.BaptismDate < (dt2 ?? dt1).Value.AddDays(1)
@@ -100,6 +104,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> BaptismsByType(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             var q = from p in DbUtil.Db.People
                     where p.BaptismDate >= dt1 && p.BaptismDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.BaptismTypeId + "," + p.BaptismType.Code into g
@@ -116,6 +122,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> NewMemberByType(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             var q = from p in DbUtil.Db.People
                     where p.JoinDate >= dt1 && p.JoinDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.JoinCodeId + "," + p.JoinType.Code into g
@@ -132,6 +140,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> DroppedMemberByType(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             var q = from p in DbUtil.Db.People
                     where p.DropDate >= dt1 && p.DropDate < (dt2 ?? dt1).Value.AddDays(1)
                     group p by p.DropCodeId + "," + p.DropType.Code into g
@@ -148,6 +158,8 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public IEnumerable<TypeCountInfo> DroppedMemberByChurch(DateTime? dt1, DateTime? dt2)
         {
+            if (!dt1.HasValue)
+                return null;
             var q0 = from p in DbUtil.Db.People
                      where p.DropDate >= dt1 && p.DropDate < (dt2 ?? dt1).Value.AddDays(1)
                      select p;

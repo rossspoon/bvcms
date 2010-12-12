@@ -161,6 +161,7 @@
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
     <Compile Include="Emailer.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailQueue.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Generated\Functions\FindPerson3.cs" />
     <Compile Include="Generated\Functions\Split.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
+    <Compile Include="Generated\OneTimeLink.cs" />
     <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Generated\PeopleExtra.cs" />
     <Compile Include="Generated\Views\ContributionsView.cs" />
     <Compile Include="Generated\VolunteerCode.cs" />
+    <Compile Include="RecReg.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Session2.cs" />
     <Compile Include="VolInterest.cs" />
@@ -313,7 +316,6 @@
     <Compile Include="Generated\TaskListOwner.cs" />
     <Compile Include="Generated\TaskStatus.cs" />
     <Compile Include="ITaskNotify.cs" />
-    <Compile Include="Meeting.cs" />
     <Compile Include="OrganizationMember.cs" />
     <Compile Include="Resource1.Designer.cs" />
     <Compile Include="Task.cs" />
@@ -358,7 +360,6 @@
     <Compile Include="QueryBuilder\CompareType.cs" />
     <Compile Include="QueryBuilder\CompareClass.cs" />
     <Compile Include="QueryBuilder\Expressions.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Generated\Functions\Attendance.cs" />
     <Compile Include="Generated\Functions\MemberTypeId.cs" />
     <Compile Include="Generated\Functions\MemberTypesAsOf.cs" />

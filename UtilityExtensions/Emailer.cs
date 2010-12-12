@@ -24,17 +24,17 @@ namespace UtilityExtensions
                 addrs = fr.Address + "," + WebConfigurationManager.AppSettings["senderrorsto"];
                 message = "<p style=\"color:red\">you are receiving this email because the recipient had no email</p>" + message;
             }
-            SendMsg(smtp, Util.CmsHost, fr, subject, message, name, addrs);
+            SendMsg(smtp, Util.SysFromEmail, Util.CmsHost, fr, subject, message, name, addrs);
         }
         public static void Email(SmtpClient smtp, string from, string addrs, string subject, string message)
         {
             Email(smtp, from, null, addrs, subject, message);
         }
-        public static void SendMsg(SmtpClient smtp, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr)
+        public static void SendMsg(SmtpClient smtp, string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr)
         {
-            SendMsg(smtp, CmsHost, From, subject, Message, Name, addr, 0);
+            SendMsg(smtp, SysFromEmail, CmsHost, From, subject, Message, Name, addr, 0);
         }
-        public static void SendMsg(SmtpClient smtp, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr, int id)
+        public static void SendMsg(SmtpClient smtp, string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr, int id)
         {
             var msg = new MailMessage();
             if (From == null)
@@ -43,6 +43,8 @@ namespace UtilityExtensions
             var aa = addr.SplitStr(",;");
             foreach (var ad in aa)
             {
+                if (Name.HasValue() && Name.Contains("?"))
+                    Name = null;
                 var ma = Util.TryGetMailAddress(ad, Name);
                 if (ma != null)
                     msg.To.Add(ma);
@@ -70,10 +72,9 @@ namespace UtilityExtensions
             htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
             msg.AlternateViews.Add(htmlView);
 
-            string sysfromemail = WebConfigurationManager.AppSettings["sysfromemail"];
-            if (sysfromemail.HasValue())
+            if (SysFromEmail.HasValue())
             {
-                var sysmail = new MailAddress(sysfromemail);
+                var sysmail = new MailAddress(SysFromEmail);
                 if (From.Host != sysmail.Host)
                     msg.Sender = sysmail;
             }
@@ -89,7 +90,7 @@ namespace UtilityExtensions
                 catch (Exception ex)
                 {
                     if (!msg.Subject.StartsWith("(smtp error)"))
-                        SendMsg(smtp, CmsHost, From,
+                        SendMsg(smtp, SysFromEmail, CmsHost, From,
                             "(smtp error) " + subject,
                             "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message),
                             Name,

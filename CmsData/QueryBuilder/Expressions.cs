@@ -1107,6 +1107,31 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression DuplicateEmails(CMSDataContext Db,
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.EmailAddress != null && p.EmailAddress != ""
+                    && Db.People.Any(pp => pp.PeopleId != p.PeopleId && pp.EmailAddress == p.EmailAddress);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression DuplicateNames(CMSDataContext Db,
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    Db.People.Any(pp => pp.PeopleId != p.PeopleId && pp.FirstName == p.FirstName && pp.LastName == p.LastName);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression RecActiveOtherChurch(
             ParameterExpression parm,
             CompareType op,
@@ -1515,7 +1540,7 @@ namespace CmsData
             var a = QueryIdDesc.Split(':');
             var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
                 q.SavedBy == a[0] && q.Description == a[1]);
-            var pred = savedquery.Predicate();
+            var pred = savedquery.Predicate(Db);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(tf), left.Type);
             return Compare(left, op, right);

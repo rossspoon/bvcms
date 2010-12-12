@@ -19,6 +19,10 @@
         <td><%=Html.TextBox("org.PhoneNumber")%></td>
     </tr>
     <tr>
+        <th>Organization Description:</th>
+        <td><%=Html.TextBox("org.Description")%></td>
+    </tr>
+    <tr>
         <td></td>
     </tr>
     <tr>

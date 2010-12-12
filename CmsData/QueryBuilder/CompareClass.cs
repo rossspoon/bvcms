@@ -50,7 +50,7 @@ namespace CmsData
                     throw new ArgumentException();
             }
         }
-        internal Expression Expression(QueryBuilderClause c, ParameterExpression parm)
+        internal Expression Expression(QueryBuilderClause c, ParameterExpression parm, CMSDataContext Db)
         {
             switch (c.FieldInfo.QueryType)
             {
@@ -62,7 +62,7 @@ namespace CmsData
                                CompType,
                                decimal.Parse(c.TextValue));
                 case QueryType.AttendPctHistory:
-                    return Expressions.AttendPctHistory(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.AttendPctHistory(parm, Db,
                                c.Program,
                                c.Division,
                                c.Organization,
@@ -71,7 +71,7 @@ namespace CmsData
                                CompType,
                                decimal.Parse(c.TextValue));
                 case QueryType.AttendCntHistory:
-                    return Expressions.AttendCntHistory(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.AttendCntHistory(parm, Db,
                                c.Program,
                                c.Division,
                                c.Organization,
@@ -89,7 +89,7 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 case QueryType.AttendMemberTypeAsOf:
-                    return Expressions.AttendMemberTypeAsOf(c.GetDataContext() as CMSDataContext,
+                    return Expressions.AttendMemberTypeAsOf(Db,
                                parm,
                                c.StartDate,
                                c.EndDate,
@@ -107,7 +107,7 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 case QueryType.CreatedBy:
-                    return Expressions.CreatedBy(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.CreatedBy(parm, Db,
                         CompType, c.TextValue);
                 case QueryType.ContributionAmount2:
                     return Expressions.ContributionAmount2(parm,
@@ -116,20 +116,30 @@ namespace CmsData
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.ContributionChange:
-                    return Expressions.ContributionChange(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.ContributionChange(parm, Db,
                                c.StartDate,
                                c.EndDate,
                                CompType,
                                double.Parse(c.TextValue));
                 // D --------------------
                 case QueryType.DaysTillBirthday:
-                    return Expressions.DaysTillBirthday(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.DaysTillBirthday(parm, Db,
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.DaysSinceContact:
                     return Expressions.DaysSinceContact(parm,
                                CompType,
                                c.TextValue.ToInt());
+                case QueryType.DuplicateNames:
+                    return Expressions.DuplicateNames(Db,
+                               parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.DuplicateEmails:
+                    return Expressions.DuplicateEmails(Db,
+                               parm,
+                               CompType,
+                               c.CodeIds == "1");
                 // F ----------------------------
                 case QueryType.FamHasPrimAdultChurchMemb:
                     return Expressions.FamHasPrimAdultChurchMemb(parm, CompType, c.CodeIds == "1");
@@ -141,11 +151,11 @@ namespace CmsData
                     return Expressions.FamilyHasChildrenAged2(parm, c.Quarters, CompType, c.CodeIds == "1");
                 // H --------------------
                 case QueryType.HasBalanceInCurrentOrg:
-                    return Expressions.HasBalanceInCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.HasBalanceInCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasCurrentTag:
-                    return Expressions.HasCurrentTag(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.HasCurrentTag(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasMyTag:
@@ -154,7 +164,7 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasLowerName:
-                    return Expressions.HasLowerName(c.GetDataContext() as CMSDataContext,
+                    return Expressions.HasLowerName(Db,
                                parm,
                                CompType,
                                c.CodeIds == "1");
@@ -185,19 +195,19 @@ namespace CmsData
                                 c.TextValue);
                 // I -----------------
                 case QueryType.IsCurrentPerson:
-                    return Expressions.IsCurrentPerson(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.IsCurrentPerson(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InCurrentOrg:
-                    return Expressions.InCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.InCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InactiveCurrentOrg:
-                    return Expressions.InactiveCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.InactiveCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.InOneOfMyOrgs:
-                    return Expressions.InOneOfMyOrgs(parm, c.GetDataContext() as CMSDataContext,
+                    return Expressions.InOneOfMyOrgs(parm, Db,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.IsUser:
@@ -335,7 +345,7 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.PendingCurrentOrg:
-                    return Expressions.PendingCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.PendingCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.PeopleExtra:
@@ -355,7 +365,7 @@ namespace CmsData
                                 CompType,
                                 c.TextValue);
                 case QueryType.PreviousCurrentOrg:
-                    return Expressions.PreviousCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.PreviousCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 // R ----------------
@@ -413,8 +423,7 @@ namespace CmsData
                                c.CodeIds == "1");
                 // S -------------------------
                 case QueryType.SavedQuery:
-                    return Expressions.SavedQuery(parm,
-                               c.GetDataContext() as CMSDataContext,
+                    return Expressions.SavedQuery(parm, Db,
                                c.SavedQueryIdDesc,
                                CompType,
                                c.CodeIds == "1");
@@ -432,7 +441,7 @@ namespace CmsData
                                c.CodeIntIds);
                 // V -------------------
                 case QueryType.VisitedCurrentOrg:
-                    return Expressions.VisitedCurrentOrg(c.GetDataContext() as CMSDataContext, parm,
+                    return Expressions.VisitedCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.VolunteerApprovalCode:
@@ -449,8 +458,7 @@ namespace CmsData
                         int.Parse(c.TextValue));
                 // W ----------------------
                 case QueryType.WasMemberAsOf:
-                    return Expressions.WasMemberAsOf(parm,
-                               c.GetDataContext() as CMSDataContext,
+                    return Expressions.WasMemberAsOf(parm, Db,
                                c.StartDate,
                                c.EndDate,
                                c.Program,
@@ -462,7 +470,7 @@ namespace CmsData
                     return Expressions.WeddingDate(parm, CompType, c.TextValue);
                 case QueryType.WidowedDate:
                     return Expressions.WidowedDate(parm,
-                               c.GetDataContext() as CMSDataContext,
+                               Db,
                                CompType,
                                c.DateValue);
                 default:

@@ -75,7 +75,7 @@ namespace CmsWeb.Models
                 var existing = Db.LoadQueryById(QueryId.Value);
                 if (existing != null)
                 {
-                    Qb.CopyFromAll(existing);
+                    Qb.CopyFromAll(existing, DbUtil.Db);
                     Description = Qb.Description;
                     SavedQueryDesc = Qb.Description;
                     Qb.Description = Util.ScratchPad;
@@ -425,7 +425,7 @@ namespace CmsWeb.Models
                 saveto = new QueryBuilderClause();
                 Db.QueryBuilderClauses.InsertOnSubmit(saveto);
             }
-            saveto.CopyFromAll(Qb); // save Qb on top of existing
+            saveto.CopyFromAll(Qb, DbUtil.Db); // save Qb on top of existing
             saveto.SavedBy = Util.UserName;
             saveto.Description = SavedQueryDesc;
             saveto.IsPublic = IsPublic;
@@ -459,7 +459,7 @@ namespace CmsWeb.Models
         }
         public void CopyAsNew()
         {
-            var Qb = Db.LoadQueryById(SelectedId).Clone();
+            var Qb = Db.LoadQueryById(SelectedId).Clone(DbUtil.Db);
             if (!Qb.IsGroup)
             {
                 var g = new QueryBuilderClause();
@@ -628,7 +628,7 @@ namespace CmsWeb.Models
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
             if (Qb.ParentsOf)
             {
                 var q2 = from p in q
@@ -645,7 +645,7 @@ namespace CmsWeb.Models
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
             if (Qb.ParentsOf)
             {
                 q = from p in q
@@ -662,7 +662,7 @@ namespace CmsWeb.Models
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
             if (Qb.ParentsOf)
             {
                 q = from p in q
@@ -736,6 +736,14 @@ namespace CmsWeb.Models
                             p.PeopleId
                             select p;
                         break;
+                    case "Communication":
+                        q = from p in q
+                            orderby p.EmailAddress,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select p;
+                        break;
                     case "DOB":
                         q = from p in q
                             orderby p.BirthMonth, p.BirthDay,
@@ -772,6 +780,14 @@ namespace CmsWeb.Models
                     case "Teacher":
                         q = from p in q
                             orderby p.BFClass.LeaderName descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select p;
+                        break;
+                    case "Communication":
+                        q = from p in q
+                            orderby p.EmailAddress descending,
                             p.LastName descending,
                             p.FirstName descending,
                             p.PeopleId descending

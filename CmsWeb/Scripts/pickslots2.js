@@ -13,7 +13,12 @@
     $("input").live("click", function (sender) {
         var sid = this.id;
         var $this = $(this);
-        $.post('/OnlineReg/ToggleSlot/' + $('#pid').val(), { oid: $('#oid').val(), slot: this.id, ck: this.checked }, function (ret) {
+        var ck = this.checked;
+        $.post('/OnlineReg/ToggleSlot/' + $('#pid').val(), { oid: $('#oid').val(), slot: this.id, ck: ck }, function (ret) {
+            if (!ret) {
+                $this.attr('checked', !ck);
+                return;
+            }
             var a = ret.split("<!-- -->");
             $this.parent().replaceWith(a[1]).ready(function () {
                 $('td.slot[title]').tooltip({

@@ -30,7 +30,7 @@ namespace CmsWeb
                 return;
             var n = UtilityExtensions.Util.Now;
             var tag = DbUtil.Db.FetchOrCreateTag("TrackBirthdays", user.PeopleId, DbUtil.TagTypeId_Personal);
-            var q = tag.People();
+            var q = tag.People(DbUtil.Db);
             if (q.Count() == 0)
                 q = from p in DbUtil.Db.People
                     where p.OrganizationMembers.Any(om => om.OrganizationId == user.Person.BibleFellowshipClassId)

@@ -32,7 +32,7 @@ namespace CmsWeb
             var Qb = DbUtil.Db.LoadQueryById(this.QueryString<int?>("id"));
             if (Qb == null)
                 Response.EndShowMessage("query not found", "/", "home");
-            var q = DbUtil.Db.People.Where(Qb.Predicate());
+            var q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db));
 
             if (this.QueryString<string>("parents") == "true" || Qb.ParentsOf)
             {
@@ -72,7 +72,7 @@ namespace CmsWeb
             var Qb = Db.LoadQueryById(args.QBId);
 
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate());
+            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
             if (args.wantParents || Qb.ParentsOf)
                 q = from p in q
                          from m in p.Family.People
@@ -91,7 +91,7 @@ namespace CmsWeb
 #else
             if (!IsHtml.Checked)
                 args.Body = Util.SafeFormat(args.Body);
-            Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, 
+            Emailer.SendPeopleEmail(DbUtil.Db, Util.SysFromEmail, Util.CmsHost, 
                 Util.FirstAddress(args.FromAddress, args.FromName), q, 
                 args.Subject, args.Body);
 #endif
@@ -140,7 +140,7 @@ namespace CmsWeb
             string body = EmailBody.Text;
             if (!IsHtml.Checked)
                 body = Util.SafeFormat(body);
-            Emailer.SendPeopleEmail(DbUtil.Db, Util.CmsHost, From, q, SubjectLine.Text, EmailBody.Text);
+            Emailer.SendPeopleEmail(DbUtil.Db, Util.SysFromEmail, Util.CmsHost, From, q, SubjectLine.Text, EmailBody.Text);
         }
 
         protected void IsHtml_CheckedChanged(object sender, EventArgs e)

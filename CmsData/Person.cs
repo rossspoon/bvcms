@@ -156,19 +156,16 @@ namespace CmsData
         {
             get { return PrimaryAddress2 + " " + CityStateZip; }
         }
-        public string SpouseName
+        public string SpouseName(CMSDataContext Db)
         {
-            get
+            if (SpouseId.HasValue)
             {
-                if (SpouseId.HasValue)
-                {
-                    var q = from p in Db.People
-                            where p.PeopleId == SpouseId
-                            select p.Name;
-                    return q.SingleOrDefault();
-                }
-                return "";
+                var q = from p in Db.People
+                        where p.PeopleId == SpouseId
+                        select p.Name;
+                return q.SingleOrDefault();
             }
+            return "";
         }
         public DateTime? BirthDate
         {
@@ -228,23 +225,13 @@ namespace CmsData
                 years--;
             return years;
         }
-        private CMSDataContext _Db;
-        public CMSDataContext Db
-        {
-            get
-            {
-                if (_Db == null)
-                    _Db = this.GetDataContext() as CMSDataContext;
-                return _Db;
-            }
-        }
-        public void DeletePerson()
+        public void DeletePerson(CMSDataContext Db)
         {
             Db.TagPeople.DeleteAllOnSubmit(Tags);
             Db.People.DeleteOnSubmit(this);
             Db.SubmitChanges();
         }
-        public void MovePersonStuff(int otherid)
+        public void MovePersonStuff(CMSDataContext Db, int otherid)
         {
             var toperson = Db.People.Single(p => p.PeopleId == otherid);
             foreach (var om in this.OrganizationMembers)
@@ -276,11 +263,10 @@ namespace CmsData
                     };
                     om.Organization.OrganizationMembers.Add(om2);
                     foreach (var m in om.OrgMemMemTags)
-                    {
                         om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
-                        Db.OrgMemMemTags.DeleteOnSubmit(m);
-                    }
                 }
+                foreach (var m in om.OrgMemMemTags)
+                    Db.OrgMemMemTags.DeleteOnSubmit(m);
                 Db.OrganizationMembers.DeleteOnSubmit(om);
             }
             foreach (var et in this.EnrollmentTransactions)
@@ -342,7 +328,7 @@ namespace CmsData
             foreach (var sale in this.SaleTransactions)
                 sale.PeopleId = otherid;
         }
-        public bool PurgePerson()
+        public bool PurgePerson(CMSDataContext Db)
         {
             try
             {
@@ -412,11 +398,13 @@ namespace CmsData
             if (firstname.HasValue())
                 p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
             else
-                p.FirstName = "Unknown";
+                p.FirstName = "?";
             if (nickname.HasValue())
                 p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
             if (lastname.HasValue())
                 p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
+            else
+                p.LastName = "?";
             p.FirstName = p.FirstName.Truncate(25);
             p.MiddleName = p.MiddleName.Truncate(15);
             p.NickName = p.NickName.Truncate(15);
@@ -541,23 +529,23 @@ namespace CmsData
                                         + (emailmatch ? 1 : 0)
                                         + (phonematch ? 1 : 0)
                                         + (addrmatch ? 1 : 0)
-                        where (lastmatch && nmatches >= 3) 
+                        where (lastmatch && nmatches >= 3)
                                 || ((firstmatch && lastmatch && bdmatchpart) && p.PeopleId != PeopleId)
                         select new Duplicate
-                        {
-                            PeopleId = p.PeopleId,
-                            First = p.FirstName,
-                            Last = p.LastName,
-                            Nick = p.NickName,
-                            Middle = p.MiddleName,
-                            BMon = p.BirthMonth,
-                            BDay = p.BirthDay,
-                            BYear = p.BirthYear,
-                            Email = p.EmailAddress,
-                            FamAddr = p.Family.AddressLineOne,
-                            PerAddr = p.AddressLineOne,
-                            Member = p.MemberStatus.Description
-                        };
+                                                {
+                                                    PeopleId = p.PeopleId,
+                                                    First = p.FirstName,
+                                                    Last = p.LastName,
+                                                    Nick = p.NickName,
+                                                    Middle = p.MiddleName,
+                                                    BMon = p.BirthMonth,
+                                                    BDay = p.BirthDay,
+                                                    BYear = p.BirthYear,
+                                                    Email = p.EmailAddress,
+                                                    FamAddr = p.Family.AddressLineOne,
+                                                    PerAddr = p.AddressLineOne,
+                                                    Member = p.MemberStatus.Description
+                                                };
                 var list = q.ToList();
                 return list;
             }
@@ -796,18 +784,18 @@ namespace CmsData
         {
             _DropCodeIdChanged = true;
         }
-        internal static int FindResCode(string zipcode)
-        {
-            if (zipcode.HasValue() && zipcode.Length >= 5)
-            {
-                var z5 = zipcode.Substring(0, 5);
-                var z = DbUtil.Db.Zips.SingleOrDefault(zip => z5 == zip.ZipCode);
-                if (z == null)
-                    return 30;
-                return z.MetroMarginalCode ?? 30;
-            }
-            return 30;
-        }
+        //internal static int FindResCode(string zipcode)
+        //{
+        //    if (zipcode.HasValue() && zipcode.Length >= 5)
+        //    {
+        //        var z5 = zipcode.Substring(0, 5);
+        //        var z = DbUtil.Db.Zips.SingleOrDefault(zip => z5 == zip.ZipCode);
+        //        if (z == null)
+        //            return 30;
+        //        return z.MetroMarginalCode ?? 30;
+        //    }
+        //    return 30;
+        //}
         private bool? _CanUserEditAll;
         public bool CanUserEditAll
         {
@@ -853,14 +841,14 @@ namespace CmsData
             }
         }
 
-        partial void OnZipCodeChanged()
-        {
-            ResCodeId = FindResCode(ZipCode);
-        }
-        partial void OnAltZipCodeChanged()
-        {
-            AltResCodeId = FindResCode(AltZipCode);
-        }
+        //partial void OnZipCodeChanged()
+        //{
+        //    ResCodeId = FindResCode(Db, ZipCode);
+        //}
+        //partial void OnAltZipCodeChanged()
+        //{
+        //    AltResCodeId = FindResCode(Db, AltZipCode);
+        //}
         public RecReg GetRecReg()
         {
             var rr = RecRegs.SingleOrDefault();

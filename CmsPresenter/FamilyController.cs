@@ -22,7 +22,6 @@ namespace CMSPresenter
 
         private static IEnumerable<FamilyMember> FetchList(IQueryable<Family> query)
         {
-            var Db = query.GetDataContext() as CMSDataContext;
             var q = from f in query
                     from p in f.People
                     let hoh = p.PeopleId == f.HeadOfHouseholdId ? 1 : p.PeopleId == f.HeadOfHouseholdSpouseId ? 2 : 3

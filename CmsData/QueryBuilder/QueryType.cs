@@ -33,6 +33,8 @@ namespace CmsData
         DeceasedDate,
         DecisionDate,
         DecisionTypeId,
+        DuplicateEmails,
+        DuplicateNames,
         DiscoveryClassDate,
         DiscoveryClassStatusId,
         DoNotCallFlag,

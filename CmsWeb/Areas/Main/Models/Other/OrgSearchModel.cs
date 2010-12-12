@@ -89,6 +89,7 @@ namespace CmsWeb.Models
                      {
                          OrgId = o.OrganizationId,
                          Name = o.OrganizationName,
+                         Description = o.Description,
                          Leader = o.LeaderName,
                          Members = o.MemberCount ?? 0,
                          Tracking = o.AttendTrackLevel.Description,
@@ -137,6 +138,12 @@ namespace CmsWeb.Models
                          ShirtFee = o.ShirtFee ?? 0,
                          o.YesNoQuestions,
                          IsBibleFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
+                         NoReqAddr = o.NotReqAddr,
+                         NoReqDOB = o.NotReqDOB,
+                         NoReqGender = o.NotReqGender,
+                         NoReqMarital = o.NotReqMarital,
+                         NoReqPhone = o.NotReqPhone,
+                         NoReqZip = o.NotReqZip,
                      };
             return q2;
         }

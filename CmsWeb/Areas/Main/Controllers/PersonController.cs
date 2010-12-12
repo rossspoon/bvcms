@@ -37,7 +37,8 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 if (m.Person == null || !m.Person.CanUserSee)
                     return Content("no access");
-            if (Util2.OrgMembersOnly && !DbUtil.Db.OrgMembersOnlyTag.People().Any(p => p.PeopleId == id.Value))
+            var omotag = DbUtil.Db.OrgMembersOnlyTag2();
+            if (Util2.OrgMembersOnly && DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == omotag.Id))
             {
                 DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
                 return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
@@ -58,7 +59,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             try
             {
-                p.MovePersonStuff(to);
+                p.MovePersonStuff(DbUtil.Db, to);
                 DbUtil.Db.SubmitChanges();
             }
             catch
@@ -87,8 +88,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 Session.Remove("ActivePerson");
             }
 
-            if (!person.PurgePerson())
+            if (!person.PurgePerson(DbUtil.Db))
                 return Content("error, not deleted");
+            //if (!person.PurgePerson(DbUtil.Db))
+            //    return Content("error, not deleted");
 
             return Content("");
         }
@@ -446,7 +449,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var u = DbUtil.Db.Users.Single(us => us.UserId == id);
             u.Username = username;
             u.IsLockedOut = islockedout;
-            u.Roles = role;
+            u.SetRoles(DbUtil.Db, role);
             if (password2.HasValue())
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();

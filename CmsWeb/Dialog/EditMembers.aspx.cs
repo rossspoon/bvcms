@@ -80,7 +80,7 @@ namespace CmsWeb.Dialog
                 var Db = DbUtil.Db;
                 var m = Db.OrganizationMembers.Single(om => om.OrganizationId == OrgId && om.PeopleId == PeopleId);
                 var r = new ToggleTagReturn { ControlId = controlid };
-                r.HasTag = m.ToggleGroup(GroupId);
+                r.HasTag = m.ToggleGroup(DbUtil.Db, GroupId);
                 Db.SubmitChanges();
                 return JsonReturnStr(r);
             }
@@ -102,7 +102,7 @@ namespace CmsWeb.Dialog
                 if (membertype == (int)OrganizationMember.MemberTypeCode.Drop)
                 {
                     list.Add(om.PeopleId);
-                    om.Drop();
+                    om.Drop(DbUtil.Db);
                 }
                 else
                 {
@@ -132,7 +132,7 @@ namespace CmsWeb.Dialog
                              where !om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId)
                              select om;
                     foreach (var om in q2)
-                        om.ToggleGroup(GroupId.Value);
+                        om.ToggleGroup(DbUtil.Db, GroupId.Value);
                     DbUtil.Db.SubmitChanges();
                     SetMembers();
                 }
@@ -142,7 +142,7 @@ namespace CmsWeb.Dialog
                              where om.OrgMemMemTags.Any(mt => mt.MemberTagId == GroupId)
                              select om;
                     foreach (var om in q2)
-                        om.ToggleGroup(GroupId.Value);
+                        om.ToggleGroup(DbUtil.Db, GroupId.Value);
                     DbUtil.Db.SubmitChanges();
                     SetMembers();
                 }

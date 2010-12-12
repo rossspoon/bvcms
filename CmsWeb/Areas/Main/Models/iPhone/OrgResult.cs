@@ -19,7 +19,9 @@ namespace CmsWeb.Models.iPhone
         private IEnumerable<OrgInfo> OrgList()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.OrganizationMembers.Any(om => om.PeopleId == pid)
+                    where o.OrganizationMembers.Any(om => om.PeopleId == pid
+                        && (om.Pending ?? false) == false
+                        && (om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
                     where o.SchedDay != null
                     where o.SchedTime != null
                     select new OrgInfo

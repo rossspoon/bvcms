@@ -127,11 +127,13 @@ namespace CmsWeb.Areas.Main.Controllers
             public string ChangeMain;
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult ToggleTag(int id, int tagdiv)
+        public ActionResult ToggleTag(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
             var organization = Db.LoadOrganizationById(id);
-            bool t = organization.ToggleTag(tagdiv);
+            if (tagdiv == 0)
+                return new EmptyResult();
+            bool t = organization.ToggleTag(DbUtil.Db, tagdiv);
             var r = new ToggleTagReturn
             {
                 value = t ? "Remove" : "Add",
@@ -149,11 +151,6 @@ namespace CmsWeb.Areas.Main.Controllers
             o.DivisionId = tagdiv;
             Db.SubmitChanges();
             return new EmptyResult();
-        }
-        public ActionResult UseOldOrgSearch()
-        {
-            DbUtil.Db.SetUserPreference("neworgsearch", "false");
-            return Redirect("/OrganizationSearch.aspx");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PasteSettings(OrgSearchModel m)
@@ -212,6 +209,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 toorg.Terms = frorg.Terms;
                 toorg.ValidateOrgs = frorg.ValidateOrgs;
                 toorg.YesNoQuestions = frorg.YesNoQuestions;
+                toorg.NotReqAddr = frorg.NotReqAddr;
+                toorg.NotReqDOB = frorg.NotReqDOB;
+                toorg.NotReqGender = frorg.NotReqGender;
+                toorg.NotReqMarital = frorg.NotReqMarital;
+                toorg.NotReqPhone = frorg.NotReqPhone;
+                toorg.NotReqZip = frorg.NotReqZip;
             }
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();

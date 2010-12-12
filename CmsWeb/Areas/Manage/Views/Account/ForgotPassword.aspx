@@ -7,7 +7,9 @@
 <asp:Content ID="changePasswordContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Forgot Password</h2>
     <p>
-        Use the form below to request a new password. 
+        Use the form below to request a new password.
+        Note: you will need to know your username for this to work. 
+        If you do not know your username, then please use the forgot username link first.
     </p>
     <form action="/Account/ForgotPassword" method="post">
         <div>

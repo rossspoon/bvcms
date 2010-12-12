@@ -18,7 +18,7 @@ namespace CmsData
             (int)Person.DiscoveryClassStatusCode.Attended, 
             (int)Person.DiscoveryClassStatusCode.ExemptedChild 
         };
-        public void MemberProfileAutomation()
+        public void MemberProfileAutomation(CMSDataContext Db)
         {
             if (DecisionTypeIdChanged)
                 switch (DecisionTypeId ?? 0)
@@ -143,53 +143,53 @@ namespace CmsData
             if (DeceasedDateChanged)
             {
                 if (DeceasedDate.HasValue)
-                    DeceasePerson();
+                    DeceasePerson(Db);
             }
             else if (DropCodeIdChanged)
             {
                 switch (DropCodeId)
                 {
                     case (int)Person.DropTypeCode.Administrative:
-                        DropMembership();
+                        DropMembership(Db);
                         break;
                     case (int)Person.DropTypeCode.AnotherDenomination:
-                        DropMembership();
+                        DropMembership(Db);
                         break;
                     case (int)Person.DropTypeCode.Duplicate:
-                        DropMembership();
+                        DropMembership(Db);
                         MemberStatusId = (int)Person.MemberStatusCode.NotMember;
                         break;
                     case (int)Person.DropTypeCode.LetteredOut:
-                        DropMembership();
+                        DropMembership(Db);
                         break;
                     case (int)Person.DropTypeCode.Other:
-                        DropMembership();
+                        DropMembership(Db);
                         break;
                     case (int)Person.DropTypeCode.Requested:
-                        DropMembership();
+                        DropMembership(Db);
                         break;
                 }
             }
             if (DiscoveryClassStatusIdChanged
                 && DiscoveryClassStatusId == (int)Person.DiscoveryClassStatusCode.Attended)
             {
-                var q = from om in DbUtil.Db.OrganizationMembers
+                var q = from om in Db.OrganizationMembers
                         where om.PeopleId == PeopleId
                         where om.Organization.OrganizationName == "Step 1"
                         select om;
                 foreach (var om in q)
-                    om.Drop();
+                    om.Drop(Db);
             }
         }
-        private void DropMembership()
+        private void DropMembership(CMSDataContext Db)
         {
-            dropMembership(false);
+            dropMembership(false, Db);
         }
-        private void DeceasePerson()
+        private void DeceasePerson(CMSDataContext Db)
         {
-            dropMembership(true);
+            dropMembership(true, Db);
         }
-        private void dropMembership(bool Deceased)
+        private void dropMembership(bool Deceased, CMSDataContext Db)
         {
             if (MemberStatusId == (int)Person.MemberStatusCode.Member)
             {
@@ -207,7 +207,7 @@ namespace CmsData
             }
             if (SpouseId.HasValue)
             {
-                var spouse = DbUtil.Db.LoadPersonById(SpouseId.Value);
+                var spouse = Db.LoadPersonById(SpouseId.Value);
                 if (Deceased)
                 {
                     spouse.MaritalStatusId = (int)Person.MaritalStatusCode.Widowed;
@@ -224,7 +224,7 @@ namespace CmsData
 
             var list = OrganizationMembers.ToList();
             foreach(var om in list)
-                om.Drop();
+                om.Drop(Db);
         }
     }
 }

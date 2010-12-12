@@ -113,7 +113,7 @@ namespace CmsWeb.Models.PersonPage
                 Occupation = p.OccupationOther,
                 PeopleId = p.PeopleId,
                 School = p.SchoolOther,
-                Spouse = p.SpouseName,
+                Spouse = p.SpouseName(DbUtil.Db),
                 Suffix = p.SuffixCode,
                 Title = p.TitleCode,
                 WeddingDate = p.WeddingDate,
@@ -154,7 +154,7 @@ namespace CmsWeb.Models.PersonPage
             UpdateValue(p, "WeddingDate", WeddingDate);
             UpdateValue(p, "WorkPhone", WorkPhone.GetDigits());
             if (p.DeceasedDateChanged)
-                p.MemberProfileAutomation();
+                p.MemberProfileAutomation(DbUtil.Db);
 
             if (psb.Length > 0)
             {
