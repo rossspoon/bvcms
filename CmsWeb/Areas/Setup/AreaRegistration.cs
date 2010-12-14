@@ -20,5 +20,16 @@ namespace CmsWeb.Areas.Setup
                 new { action = "Index", id = "" }
             );
         }
+        private void AddRoute(AreaRegistrationContext context, string controller)
+        {
+            context.MapRoute(controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
+        }
+        private static void AddRoute(AreaRegistrationContext context, string name, string controller, string path, string action)
+        {
+            context.MapRoute(name, path,
+                new { controller = controller, action = action, id = "" });
+        }
+
     }
 }

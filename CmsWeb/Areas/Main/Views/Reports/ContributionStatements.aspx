@@ -21,7 +21,7 @@
         <tr> <th> PDF: </th> <td> <%=Html.CheckBox("PDF", true) %> (otherwise, text extract) </td> </tr>
         <tr> <th> Start Date: </th> <td> <%=Html.DatePicker("FromDate") %></td> </tr>
         <tr> <th> End Date: </th> <td> <%=Html.DatePicker("ToDate") %> </td></tr>
-        <tr> <td colspan="2" align="center"> <%=Html.SubmitButton("Submit", "Run") %> </td></tr>
+        <tr> <td colspan="2" align="center"> <input type="submit" name="Submit" value="Run" /></td></tr>
     </table>
     </form>
 <% }  
@@ -30,7 +30,7 @@
        <h3><%=Model.ExceptionOccurred.Message %></h3>
        <pre><%=Model.ExceptionOccurred.StackTrace %></pre>
     <form action="/Reports/ContributionStatements" method="post">
-        <%=Html.SubmitButton("Submit", "Reset") %>
+        <input type="submit" name="Submit" value="Reset" />
     </form>
 <% }
    else

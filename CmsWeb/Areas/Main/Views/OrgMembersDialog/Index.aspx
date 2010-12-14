@@ -48,7 +48,7 @@
     Pending <%=Html.CheckBox("Pending")%>
 </div>
 <input id="SelectAll" type="checkbox" /> Select All
-<%=Html.SubmitButton("Update", "Update Selected")%>
+<input type="submit" name="Update" value="Update Selected" />
 <div>
 <table class="grid">
     <thead>

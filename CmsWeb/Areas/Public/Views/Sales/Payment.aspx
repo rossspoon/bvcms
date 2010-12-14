@@ -25,7 +25,7 @@
     <%=Html.Hidden("Email", Model.person.EmailAddress) %>
     <%=Html.Hidden("Misc1", Model.person.Name)%>
     <%=Html.Hidden("Misc2", Model.Description) %>
-    <%=Html.SubmitButton("Submit", "Next") %>
+    <input type="submit" name="Submit" value="Next" />
     </form>
 
 </asp:Content>

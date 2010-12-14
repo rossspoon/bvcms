@@ -203,9 +203,9 @@
         rules: {
             "NickName": { maxlength: 15 },
             "Title": { maxlength: 10 },
-            "First": { maxlength: 25 },
+            "First": { maxlength: 25, required: true },
             "Middle": { maxlength: 15 },
-            "Last": { maxlength: 30 },
+            "Last": { maxlength: 30, required: true },
             "Suffix": { maxlength: 10 },
             "AltName": { maxlength: 100 },
             "Maiden": { maxlength: 20 },

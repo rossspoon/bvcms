@@ -76,6 +76,7 @@ a.submitbutton,a.button {
 <p><%=Html.CheckBox("IAgree") %> I agree to the above terms and conditions.</p>
     <p>
         You must agree to the terms above for you or your minor child before you can continue with confirmation.</p>
-    <p><%=Html.SubmitButton("Submit", "Complete Registration") %></p>
+    <p>
+    <p><input type="submit" name="Submit" value="Complete Registration" /></p>
     </form>
 </asp:Content>

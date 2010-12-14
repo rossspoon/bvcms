@@ -64,7 +64,7 @@
        <%=Html.CheckBox("FilterUnassigned") %> Unassigned Only
        <%=Html.CheckBox("NormalMembersOnly")%> Exclude Teachers<br />
        Target Team: <%=Html.DropDownList("TargetTeamName", Model.TargetTeams())%>
-       <%=Html.SubmitButton("submit", "Assign to Group") %>
+       <input type="submit" name="submit" value="Assign to Group" />
        <% if((Model.AgeDivId ?? 0) > 0)
           { %>
        <%=Html.HyperLink("/Organization/Index/" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>

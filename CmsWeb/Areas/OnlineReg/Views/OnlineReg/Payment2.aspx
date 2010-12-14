@@ -40,7 +40,7 @@
     </p>
     <p>
     <%=Html.TextBox("Amount", Model.Amount.ToString("n2")) %>
-    <%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <input type="submit" name="Submit" value="Pay with Credit Card" /></p>
     <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
     <%=Html.TextBox("_Coupon") %>
     <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>

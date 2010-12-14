@@ -17,13 +17,13 @@ You can include a file, image, mp3 or whatever you like in your email.
    <%=Html.Hidden("wantParents", Model.wantParents) %>
    <p>Number of Emails: <%=Model.Count%> <%=ViewData["parentsof"] %></p>
    <p>
-        <%=Html.Button("Send", "Send", HtmlButtonType.Button, "$.Send()", new { style = "width:62px;height: 42px;" })%>
+        <input type="button" name="Send" value="Send" onclick="$.Send()" style="width:62px;height: 42px" />
         <% if (Page.User.IsInRole("Admin"))
            { %>
         Scheduled Date and Time (mm/dd/yy h:mm AM|PM)<%=Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" })%> (Optional)</p>
         <% } %>
    <p>From: <%=Html.DropDownList("FromAddress", Model.EmailFroms()) %>
-    <%=Html.Button("TestSend", "Test (Send To Yourself)", HtmlButtonType.Button, "$.TestSend()") %>
+    <input type="button" name="TestSend" value="Test (Send To Yourself)" onclick="$.TestSend()" />
     </p>
     <p><label>Subject:</label>
     <%=Html.TextBox("Subject", Model.Subject, new { style = "width:90%" })%>

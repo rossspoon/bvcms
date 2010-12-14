@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>Batch Move and Delete People</h2>
-    <p>please paste data, tab delimited (from Excel), no headers, fromid then toid</p>
+    <p>please paste data, tab delimited (copied from Excel), no headers, fromid(tab)toid, one set per row</p>
     
     <%using(Html.BeginForm())
     { %>

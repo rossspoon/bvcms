@@ -124,7 +124,7 @@
        <%=Html.CheckBox("FilterUnassigned") %> Unassigned Only
        <%=Html.CheckBox("NormalMembersOnly")%> Exclude Teachers<br />
        Target Class: <%=Html.DropDownList("TargetClassId", Model.TargetClasses()) %>
-       <%=Html.SubmitButton("submit", "Assign to Class") %>
+       <input type="submit" name="submit" value="Assign to Class" />
     <%=Html.Hidden("Sort", Model.Sort) %>
     <%=Html.Hidden("Dir", Model.Dir) %>
     </div>

@@ -20,7 +20,7 @@
             <td colspan="3">
                 Grades: <%=Html.TextBox("Grades") %>&nbsp;&nbsp;&nbsp;
                 <%=Html.CheckBox("MembersOnly")%> Exclude Teachers&nbsp;&nbsp;&nbsp;
-                <%=Html.SubmitButton("move", "Move") %>
+                <input type="submit" name="move" value="Move" />
                 <a href="#" id="EmailNotices">Email Room Notices(<%=Model.MovedCount() %>)</a>
             </td>
         </tr>

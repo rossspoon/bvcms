@@ -126,7 +126,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Framework, Version=0.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -254,6 +253,7 @@
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\OnlineRegPersonModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\OnlineRegModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\SlotModel.cs" />
+    <Compile Include="Controllers\BatchController.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -886,7 +886,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchMoveAndDelete.aspx" />
+    <Content Include="Views\Batch\MoveAndDelete.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="ckeditor\ckeditor.asp" />
     <Content Include="ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
@@ -1808,7 +1808,6 @@
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="ckeditor\adapters\" />
-    <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Models\" />
     <Folder Include="Report\rdlc\" />

@@ -16,11 +16,11 @@
        { %>
        <%=Html.Hidden("userid", Model.UserId) %>
        <%=Html.Hidden("newpassword", ViewData["newpassword"]) %>
-       <%=Html.SubmitButton("SendNewUserWelcome", "Send Email")%> 
+       <input type="submit" name="SendNewUserWelcome" value="Send Email" />
     <% } %>
     <% using (Html.BeginForm("UsersPage", "Account"))
        { %>
        <%=Html.Hidden("newpassword", ViewData["newpassword"]) %>
-       <%=Html.SubmitButton("UsersPage", "Go directly to Users")%> 
+       <input type="submit" name="Submit" value="Go directly to Users" /> 
     <% } %>
 </asp:Content>

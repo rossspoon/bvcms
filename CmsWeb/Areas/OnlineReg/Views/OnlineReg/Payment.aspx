@@ -109,7 +109,7 @@ a.submitbutton,a.button {
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
-    <p><%=Html.SubmitButton("Submit", "Pay with Credit Card") %></p>
+    <p><input type="submit" name="Submit" value="Pay with Credit Card" /></p>
     <p>If you have received a Cash Payment Code, please enter that number here and click the blue link next to it:</p>
     <input id="_Coupon" type="password" name="_Coupon" value="<%=Model._Coupon %>" />
     <a href="/OnlineReg/PayWithCoupon/" class="submitbutton">Pay with coupon</a>
