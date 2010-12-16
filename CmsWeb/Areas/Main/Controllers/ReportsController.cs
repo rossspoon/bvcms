@@ -52,7 +52,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value);
         }
-        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix)
+        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
         {
             return new RollsheetResult
             {
@@ -67,6 +67,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 bygroup = bygroup.HasValue,
                 sgprefix = sgprefix,
                 dt = dt,
+                altnames = altnames,
             };
         }
         public ActionResult OrgLeaders(string org, int? div, int? schedule, string name)

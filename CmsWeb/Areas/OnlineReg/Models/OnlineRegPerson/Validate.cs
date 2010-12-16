@@ -270,7 +270,7 @@ Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
             foreach (var q in ExtraQuestions())
             {
                 if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(q.question) || !ExtraQuestion[q.question].HasValue())
-                    modelState.AddModelError(q.question + "-QError", "please some answer");
+                    modelState.AddModelError(q.question + "-QError", "please give some answer");
             }
         }
     }

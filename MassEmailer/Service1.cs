@@ -106,9 +106,9 @@ namespace MassEmailer
                 }
                 catch (Exception ex)
                 {
-                    eventLog1.WriteEntry("Error sending emails", EventLogEntryType.Error);
+                    eventLog1.WriteEntry("Error sending emails ", EventLogEntryType.Error);
                     Util.SendMsg(Util.Smtp(), ConfigurationManager.AppSettings["sysfromemail"], "http://bvcms.com", 
-                        new MailAddress("david@bvcms.com", "David Carroll"), ex.Message, ex.StackTrace, "David Carroll", "david@bvcms.com");
+                        new MailAddress("david@bvcms.com", "David Carroll"), "Mass Emailer Error " + cn.DataSource, Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), "David Carroll", "david@bvcms.com");
                 }
             }
         }

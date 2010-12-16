@@ -193,7 +193,12 @@
             "org.Fee": { number: true },
             "org.Deposit": { number: true },
             "org.ExtraFee": { number: true },
-            "org.ShirtFee": { number: true }
+            "org.ShirtFee": { number: true },
+            "org.ExtraOptionsLabel": { maxlength: 50 },
+            "org.OptionsLabel": { maxlength: 50 },
+            "org.NumItemsLabel": { maxlength: 50 },
+            "org.GroupToJoin": { digits: true },
+            "org.RequestLabel": { maxlength: 50 }
         }
     });
 
@@ -244,6 +249,8 @@
                 if (!dt.valid)
                     return false;
                 var args = "?org=curr&dt=" + dt.date + " " + dt.time;
+                if ($('#altnames').is(":checked"))
+                    args += "&altnames=true";
                 if ($('#group').is(":checked"))
                     args += "&bygroup=1&sgprefix=";
                 window.open("/Reports/Rollsheet/" + args);

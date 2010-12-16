@@ -157,7 +157,6 @@ namespace CmsWeb.Models
                 IsFamily = true,
                 LoggedIn = true,
             };
-		    List[List.Count - 1] = p;
             return p;
         }
     }

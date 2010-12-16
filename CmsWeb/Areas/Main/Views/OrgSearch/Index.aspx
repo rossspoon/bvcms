@@ -88,6 +88,10 @@
         <tr><th colspan="2">Select a meeting date and time</th></tr>
         <tr><th>Meeting Date</th><td><input id="MeetingDate" type="text" class='datepicker' /></td></tr>
         <tr><th>Meeting Time</th><td><input id="MeetingTime" title="Time in Format hh:mm am or pm" type="text" /></td></tr>
+        <tr>
+            <th id="altnames">Use Alt Names</th>
+            <td><%=Html.CheckBox("altnames") %></td>
+        </tr>
         <tr><td align="right" colspan="2">
             <a class="bt" id="rollsheet2" href="#">create</a>
         </tr>

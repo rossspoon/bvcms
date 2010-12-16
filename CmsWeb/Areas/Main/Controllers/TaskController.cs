@@ -156,7 +156,8 @@ namespace CmsWeb.Areas.Main.Controllers
             foreach (var tid in a)
             {
                 var t = tasks.Delegate(tid, id, new WebEmailer());
-                t.ForceCompleteWContact = true;
+                if (t != null)
+                    t.ForceCompleteWContact = true;
             }
             DbUtil.Db.SubmitChanges();
             return PartialView("Rows", tasks);

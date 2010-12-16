@@ -116,6 +116,10 @@
             <th id="grouplabel"></th>
             <td><%=Html.CheckBox("group") %></td>
         </tr>
+        <tr>
+            <th>Use Alt Names</th>
+            <td><%=Html.CheckBox("altnames") %></td>
+        </tr>
     </table>
     </div>
     <div id="AddFromTag" class="modalDiv" style="display:none">

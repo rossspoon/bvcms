@@ -180,6 +180,8 @@
                "&schedule=" + $('#ScheduleId').val() +
                "&name=" + $('#Name').val() +
                "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
+        if ($('#altnames').is(":checked"))
+            args += "&altnames=true";
         window.open("/Reports/Rollsheet/" + args);
         return false;
     });

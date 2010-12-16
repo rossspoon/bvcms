@@ -29,6 +29,6 @@
 	<tr>
 		<th>Member Type:</th>
 		<td><%=Html.DropDownList("memtype", Model.MemberTypeCodesWithNotSpecified(), new { @class = "filter" })%>
-            <input type="button" id="Filter" value="Filter" />
+            <input type="button" name="filter" id="Filter" value="Filter" />
 		</td>
 	</tr>

@@ -329,6 +329,9 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "NotReqZip":
                             o.NotReqZip = a[c].ToBool2();
                             break;
+                        case "OnLineCatalogSort":
+                            o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
+                            break;
                         case "Phone":
                             o.PhoneNumber = a[c];
                             break;

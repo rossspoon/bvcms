@@ -7,8 +7,8 @@
 <% Html.RenderPartial("ManageGroups", Model); %>
 </table>
 <input id="SelectAll" type="checkbox" /> Select All
-<input type="submit" name="AssignSelectedToTargetGroup" "Assign Selected to Target Group" />
-<input type="submit" name="RemoveSelectedFromTargetGroup" "Remove Selected from Target Group" />
+<input type="submit" id="AssignSelectedToTargetGroup" value="Assign Selected to Target Group" />
+<input type="submit" id="RemoveSelectedFromTargetGroup" value="Remove Selected from Target Group" />
 <div>
 <table class="grid">
     <thead>

@@ -43,7 +43,7 @@ namespace CmsData
             {
                 var qp = (from p in Db.People
                           where p.PeopleId == To.PeopleId
-                          select new { p.Name, p.PreferredName, p.EmailAddress }).Single();
+                          select new { p.Name, p.PreferredName, p.EmailAddress, p.OccupationOther }).Single();
                 string text = emailqueue.Body;
 
                 if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
@@ -55,6 +55,7 @@ namespace CmsData
                     text = text.Replace("{first}", string.Empty);
                 else
                     text = text.Replace("{first}", qp.PreferredName);
+                text = text.Replace("{occupation}", qp.OccupationOther);
                 var aa = qp.EmailAddress.SplitStr(",;").ToList();
                 if (To.OrgId.HasValue)
                 {

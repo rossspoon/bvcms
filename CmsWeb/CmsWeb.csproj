@@ -886,6 +886,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="iTextAsian.dll" />
     <Content Include="Views\Batch\MoveAndDelete.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="ckeditor\ckeditor.asp" />

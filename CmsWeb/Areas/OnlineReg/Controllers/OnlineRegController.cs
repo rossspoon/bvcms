@@ -420,6 +420,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.ValidateModelForFind(ModelState);
             if (!ModelState.IsValid)
         		return View("List", m);
+		    m.List[m.List.Count - 1] = p;
             if (p.ManageSubscriptions() && p.Found == true)
             {
                 p.OtherOK = true;

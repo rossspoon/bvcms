@@ -28,6 +28,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int? qid, pid, div, schedule, meetingid, orgid;
         public int[] groups;
         public bool? bygroup;
+        public bool? altnames;
         public string name, sgprefix;
         public DateTime? dt;
 
@@ -82,17 +83,79 @@ namespace CmsWeb.Areas.Main.Models.Report
                     var q = from at in meeting.Attends
                             where at.AttendanceFlag == true || at.Registered == true
                             orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
-                            select new { at.MemberType.Code, at.Person.Name2, at.PeopleId, at.Person.DOB };
+                            select new
+                            {
+                                at.MemberType.Code,
+                                Name2 = (altnames == true && at.Person.AltName != null && at.Person.AltName.Length > 0) ?
+                                    at.Person.AltName : at.Person.Name2,
+                                at.PeopleId,
+                                at.Person.DOB
+                            };
                     foreach (var a in q)
                         AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, font);
                 }
                 else
-                    foreach (var m in ctl.FetchOrgMembers(o.OrgId, o.Groups))
-                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, font);
+                {
+                    if (groups == null)
+                        groups = new int[] { 0 };
+                    var q = from om in DbUtil.Db.OrganizationMembers
+                            where om.OrganizationId == o.OrgId
+                            where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups[0] == 0)
+                            where !groups.Contains(-1) || (groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
+                            where (om.Pending ?? false) == false
+                            where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                            where om.EnrollmentDate <= Util.Now
+                            orderby om.Person.LastName, om.Person.FamilyId, om.Person.Name2
+                            let p = om.Person
+                            let ch = altnames == true && p.AltName != null && p.AltName.Length > 0
+                            select new
+                            {
+                                PeopleId = p.PeopleId,
+                                Name2 = ch ? p.AltName : p.Name2,
+                                BirthDate = Util.FormatBirthday(
+                                    p.BirthYear,
+                                    p.BirthMonth,
+                                    p.BirthDay),
+                                MemberTypeCode = om.MemberType.Code,
+                                ch
+                            };
+                    foreach (var m in q)
+                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.ch ? china : font);
+                }
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
+                {
                     foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
+                    var wks = 3; // default lookback
+                    var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
+                    if (org.RollSheetVisitorWks.HasValue)
+                        wks = org.RollSheetVisitorWks.Value;
+                    var MeetingDate = dt.Value.AddDays(wks * -7);
+
+                    var q = from p in DbUtil.Db.People
+                            where p.Attends.Any(a => a.AttendanceFlag == true
+                                && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
+                                && a.OrganizationId == orgid
+                                && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+                                && a.MeetingDate >= a.Organization.FirstMeetingDate)
+                            let ch = altnames == true && p.AltName != null && p.AltName.Length > 0
+                            where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
+                            orderby p.Name2, p.Name
+                            orderby p.LastName, p.FamilyId, p.Name2
+                            select new PersonVisitorInfo
+                            {
+                                VisitorType = p.MemberStatusId == (int)Person.MemberStatusCode.Member ? "VM" : "VS",
+                                PeopleId = p.PeopleId,
+                                Name2 = ch ? p.AltName : p.Name2,
+                                BirthDate = Util.FormatBirthday(
+                                    p.BirthYear,
+                                    p.BirthMonth,
+                                    p.BirthDay),
+                            };
+                    foreach(var m in q)
+                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
+                }
                 if (t.Rows.Count > 0)
                     mct.AddElement(t);
                 else
@@ -103,6 +166,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             doc.Close();
             Response.End();
         }
+        private static int[] VisitAttendTypes = new int[] 
+        { 
+            (int)Attend.AttendTypeCode.VisitingMember,
+            (int)Attend.AttendTypeCode.RecentVisitor, 
+            (int)Attend.AttendTypeCode.NewVisitor 
+        };
 
         public class MemberInfo
         {
@@ -118,6 +187,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7);
         private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+        private Font china = null;
         private PageEvent pageEvents = new PageEvent();
         private PdfPTable t;
         private Document doc;
@@ -125,6 +195,14 @@ namespace CmsWeb.Areas.Main.Models.Report
 
         private MultiColumnText StartPageSet(OrgInfo o)
         {
+            if (altnames == true)
+            {
+                BaseFont.AddToResourceSearch(HttpContext.Current.Server.MapPath("/iTextAsian.dll"));
+                var bfchina = BaseFont.CreateFont("MHei-Medium",
+                    "UniCNS-UCS2-H", BaseFont.EMBEDDED);
+                china = new Font(bfchina, 12, Font.NORMAL);
+            }
+
             var mct = new MultiColumnText();
             mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
             t = new PdfPTable(4);
@@ -156,7 +234,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             DateTime bd;
             DateTime.TryParse(dob, out bd);
 
-            var p = new Phrase(name + "\n", font);
+            var p = new Phrase(name, font);
+            p.Add("\n");
             p.Add(new Chunk(" ", medfont));
             p.Add(new Chunk("({0}) {1:MMM d}".Fmt(Code, bd), smallfont));
             t.AddCell(p);

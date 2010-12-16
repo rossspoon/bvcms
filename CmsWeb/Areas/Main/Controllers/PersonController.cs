@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 if (m.Person == null || !m.Person.CanUserSee)
                     return Content("no access");
             var omotag = DbUtil.Db.OrgMembersOnlyTag2();
-            if (Util2.OrgMembersOnly && DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == omotag.Id))
+            if (Util2.OrgMembersOnly && !DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == omotag.Id))
             {
                 DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
                 return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"

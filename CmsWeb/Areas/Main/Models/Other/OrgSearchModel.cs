@@ -129,6 +129,7 @@ namespace CmsWeb.Models
                          LastDayBeforeExtra = o.LastDayBeforeExtra.FormatDate2(),
                          MaximumFee = o.MaximumFee ?? 0,
                          MemberOnly = o.MemberOnly ?? false,
+                         OnLineCatalogSort = o.OnLineCatalogSort ?? 0,
                          NoSecurityLabel = o.NoSecurityLabel ?? false,
                          NumCheckInLabels = o.NumCheckInLabels ?? 0,
                          o.NumItemsLabel,

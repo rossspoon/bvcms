@@ -129,7 +129,7 @@ namespace CmsWeb.Models
                     p.email,
                     p.org.OrganizationName,
                     p.org.PhoneNumber);
-                if (p.CreatingAccount == true && p.org.GiveOrgMembAccess == false)
+                if (p.CreatingAccount == true && (p.org.GiveOrgMembAccess ?? false) == false)
                     p.CreateAccount();
             }
             details.Append("\n</table>\n");
@@ -167,12 +167,19 @@ namespace CmsWeb.Models
             else if (org != null)
                 EmailAddresses = org.EmailAddresses;
 
+            string Location = null;
+            if (div != null)
+                Location = List[0].org.Location;
+            else if (org != null)
+                Location = org.Location;
+
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
             message = message.Replace("{first}", p0.PreferredName);
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
             message = message.Replace("{division}", DivisionName);
             message = message.Replace("{org}", OrganizationName);
+            message = message.Replace("{location}", Location);
             message = message.Replace("{cmshost}", Util.CmsHost);
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
