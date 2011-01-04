@@ -26,7 +26,7 @@ namespace CmsWeb.Models.iPhone
 
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {
-                w.WriteStartElement("People");
+                w.WriteStartElement("SearchResults");
                 w.WriteAttributeString("count", count.ToString());
 
                 foreach (var p in items)
@@ -34,19 +34,9 @@ namespace CmsWeb.Models.iPhone
                     w.WriteStartElement("Person");
                     w.WriteAttributeString("peopleid", p.PeopleId.ToString());
                     w.WriteAttributeString("name", p.Name);
-                    w.WriteAttributeString("first", p.First);
-                    w.WriteAttributeString("last", p.Last);
                     w.WriteAttributeString("address", p.Address);
                     w.WriteAttributeString("citystatezip", p.CityStateZip);
-                    w.WriteAttributeString("zip", p.Zip);
                     w.WriteAttributeString("age", p.Age.ToString());
-                    w.WriteAttributeString("birthdate", p.BirthDate);
-                    w.WriteAttributeString("homephone", p.HomePhone);
-                    w.WriteAttributeString("cellphone", p.CellPhone);
-                    w.WriteAttributeString("workphone", p.WorkPhone);
-                    w.WriteAttributeString("memberstatus", p.MemberStatus);
-                    w.WriteAttributeString("email", p.Email);
-                    w.WriteAttributeString("haspicture", p.HasPicture ? "1": "0");
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

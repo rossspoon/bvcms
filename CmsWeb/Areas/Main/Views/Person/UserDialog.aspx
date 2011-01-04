@@ -26,6 +26,7 @@
     <tr><td>Username:</td><td><%=Html.TextBox("Username") %></td></tr>
     <tr><td>Password:</td><td><%=Html.TextBox("Password2") %></td></tr>
     <tr><td>LockedOut:</td><td><%=Html.CheckBox("IsLockedOut") %></td></tr>
+    <tr><td>Created:</td><td><%=Model.CreationDate.FormatDateTm() %></td></tr>
 <tr><td></td></tr>
     <tr>
     <td>

@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <%
-    Html.RenderPartial("ModelHidden", Model);
+    Html.RenderPartial("Flow/ModelHidden", Model);
     if (Model.DisplayLogin())
     // nobody registered yet
-        Html.RenderPartial("Login", Model);
+        Html.RenderPartial("Flow/Login", Model);
     else
     { %>
 <table cellpadding="0" width="100%">
@@ -18,9 +18,9 @@
             Model.current = Model.List[i];
             Model.current.index = i;
             Model.current.LastItem = (i == (Model.List.Count - 1));
-            Html.RenderPartial("Registrant", Model);
+            Html.RenderPartial("Flow/Registrant", Model);
         } %>
 </table>
 <% 
-    Html.RenderPartial("Buttons", Model);
+    Html.RenderPartial("Flow/Buttons", Model);
     } %>

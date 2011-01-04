@@ -300,6 +300,8 @@ namespace CmsData
 		
    		private EntitySet< TaskListOwner> _TaskListOwners;
 		
+   		private EntitySet< TransactionPerson> _TransactionPeople;
+		
    		private EntitySet< User> _Users;
 		
    		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
@@ -777,6 +779,8 @@ namespace CmsData
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
 			this._TaskListOwners = new EntitySet< TaskListOwner>(new Action< TaskListOwner>(this.attach_TaskListOwners), new Action< TaskListOwner>(this.detach_TaskListOwners)); 
+			
+			this._TransactionPeople = new EntitySet< TransactionPerson>(new Action< TransactionPerson>(this.attach_TransactionPeople), new Action< TransactionPerson>(this.detach_TransactionPeople)); 
 			
 			this._Users = new EntitySet< User>(new Action< User>(this.attach_Users), new Action< User>(this.detach_Users)); 
 			
@@ -3769,6 +3773,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_TransactionPeople_Person", Storage="_TransactionPeople", OtherKey="PeopleId")]
+   		public EntitySet< TransactionPerson> TransactionPeople
+   		{
+   		    get { return this._TransactionPeople; }
+
+			set	{ this._TransactionPeople.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_Users_People", Storage="_Users", OtherKey="PeopleId")]
    		public EntitySet< User> Users
    		{
@@ -5081,6 +5095,19 @@ namespace CmsData
 		}
 
 		private void detach_TaskListOwners(TaskListOwner entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_TransactionPeople(TransactionPerson entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_TransactionPeople(TransactionPerson entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

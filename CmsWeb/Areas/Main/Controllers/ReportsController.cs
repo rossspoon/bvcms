@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -140,6 +141,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!id.HasValue)
                 return Content("no query");
+            if (!format.HasValue())
+                return Content("no format");
             return new AveryAddressResult { id = id, format = format, titles = titles };
         }
         public ActionResult RollLabels(int? id, string format, bool? titles)
@@ -189,7 +192,10 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
         }
-        const string CSE = "ContributionStatementsExtract";
+        private string CSE
+        {
+            get { return "CSE_" + Util.Host; }
+        }
         [Authorize(Roles = "Finance")]
         public ActionResult ContributionStatements(string Submit, bool? PDF, DateTime? FromDate, DateTime? ToDate)
         {

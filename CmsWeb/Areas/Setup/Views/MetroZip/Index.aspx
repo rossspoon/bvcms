@@ -5,9 +5,9 @@
     <script type="text/javascript">
         //id=elements_id&value=user_edited_content
         $(function() {
-            $(".clickSelect").editable("/MetroZip/Edit/", {
+            $(".clickSelect").editable("/Setup/MetroZip/Edit/", {
                 indicator: '<img src="/images/loading.gif">',
-                loadurl: "/MetroZip/ResidentCodes/",
+                loadurl: "/Setup/MetroZip/ResidentCodes/",
                 loadtype: "POST",
                 type: "select",
                 submit: "OK",
@@ -15,8 +15,8 @@
             });
             $("a.delete").click(function(ev) {
                 if (confirm("are you sure?"))
-                    $.post("/MetroZip/Delete/" + $(this).attr("id"), null, function(ret) {
-                        window.location = "/MetroZip/";
+                    $.post("/Setup/MetroZip/Delete/" + $(this).attr("id"), null, function(ret) {
+                        window.location = "/Setup/MetroZip/";
                     });
                 return false;
             });

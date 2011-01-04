@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
-using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
@@ -53,11 +52,32 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult Search(string name, string comm, string addr)
         {
 #if DEBUG
+            var uname = "david";
 #else
             if (!Authenticate())
                 return Content("not authorized");
+            var uname = Request.Headers["username"];
 #endif
-            AccountController.SetUserInfo(name, Session);
+            AccountController.SetUserInfo(uname, Session);
+
+            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
+            {
+                Util2.OrgMembersOnly = true;
+                DbUtil.Db.SetOrgMembersOnly();
+            }
+            var m = new SearchModel(name, comm, addr);
+            return new SearchResult0(m.PeopleList(), m.Count);
+        }
+        public ActionResult SearchResults(string name, string comm, string addr)
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            AccountController.SetUserInfo(uname, Session);
 
             if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
             {
@@ -66,6 +86,15 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
+        }
+        public ActionResult DetailResults(int id)
+        {
+#if DEBUG
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+#endif
+            return new DetailResult(id);
         }
         public ActionResult Organizations()
         {
@@ -81,7 +110,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
         }
+#if DEBUG
+#else
         [AcceptVerbs(HttpVerbs.Post)]
+#endif
         public ActionResult RollList(int id, string datetime)
         {
 #if DEBUG
@@ -106,10 +138,20 @@ namespace CmsWeb.Areas.Main.Controllers
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
+                Util.Email(Util.Smtp(), "david@bvcms.com",
+                    "david@bvcms.com;kworrell@bellevue.org", 
+                    "meeting created with iphone on {0}".Fmt(Util.Host), 
+                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>".Fmt(
+                    meeting.Organization.OrganizationName, 
+                    Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId)),
+                    u.Name));
             }
             return new RollListResult(meeting);
         }
+#if DEBUG
+#else
         [AcceptVerbs(HttpVerbs.Post)]
+#endif
         public ActionResult RecordAttend(int id, int PeopleId, bool Present)
         {
 #if DEBUG
@@ -121,7 +163,10 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.UpdateMeetingCounters(id);
             return new EmptyResult();
         }
+#if DEBUG
+#else
         [AcceptVerbs(HttpVerbs.Post)]
+#endif
         public ActionResult RecordVisit(int id, int PeopleId)
         {
 #if DEBUG
@@ -185,6 +230,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
             if (!m.home.HasValue() && m.cell.HasValue())
                 m.home = m.cell;
+
             p.Family.HomePhone = m.home.GetDigits();
             p.Family.AddressLineOne = m.addr;
             p.Family.CityName = z != null ? z.City : null;

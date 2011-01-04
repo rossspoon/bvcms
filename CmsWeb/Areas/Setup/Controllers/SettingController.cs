@@ -212,6 +212,9 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "AllowLastYearShirt":
                             o.AllowLastYearShirt = a[c].ToBool2();
                             break;
+                        case "AllowOnlyOne":
+                            o.AllowOnlyOne = a[c].ToBool2();
+                            break;
                         case "AskAllergies":
                             o.AskAllergies = a[c].ToBool2();
                             break;
@@ -263,6 +266,9 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "EmailAddresses":
                             o.EmailAddresses = a[c];
                             break;
+                        case "ExtraFee":
+                            o.ExtraFee = a[c].ToDecimal();
+                            break;
                         case "Fee":
                             o.Fee = a[c].ToDecimal();
                             break;
@@ -272,7 +278,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "GradeAgeEnd":
                             o.GradeAgeEnd = a[c].ToInt2();
                             break;
-                        case "Gender":
+                        case "GenderId":
                             o.GenderId = a[c].ToInt2();
                             break;
                         case "GradeAgeStart":
@@ -332,7 +338,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "OnLineCatalogSort":
                             o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
                             break;
-                        case "Phone":
+                        case "PhoneNumber":
                             o.PhoneNumber = a[c];
                             break;
                         case "RegistrationTypeId":
@@ -454,6 +460,138 @@ namespace CmsWeb.Areas.Setup.Controllers
                     if (p.PossibleDuplicates().Count() > 0)
                         p.HasDuplicates = true;
                 }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Redirect("/");
+        }
+        public ActionResult BatchUpdatePeople(string text)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var list = text.Split('\n').Select(li => li.Split('\t'));
+            var list0 = list.First().ToList();
+            var names = list0.ToDictionary(i => i.TrimEnd(),
+                i => list0.FindIndex(s => s == i));
+
+            var campuslist = (from li in list.Skip(1)
+                              where li.Length == names.Count
+                              group li by li[names["Campus"]] into campus
+                              select campus.Key).ToList();
+            var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
+            var dbc = from c in campuslist
+                      join cp in DbUtil.Db.Campus on c equals cp.Description into j
+                      from cp in j.DefaultIfEmpty()
+                      select new { cp, c };
+            var clist = dbc.ToList();
+            foreach (var i in clist)
+                if (i.cp == null)
+                {
+                    var cp = new Campu { Description = i.c, Id = ++maxcampusid };
+                    DbUtil.Db.Campus.InsertOnSubmit(cp);
+                }
+            DbUtil.Db.SubmitChanges();
+            var campuses = DbUtil.Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
+
+            var q = from li in list.Skip(1)
+                    where li.Length == names.Count
+                    select li;
+
+            foreach (var li in q)
+            {
+                DateTime? dob = null;
+                if (names.ContainsKey("Birthday"))
+                    dob = li[names["Birthday"]].ToDate();
+                string email = "", cell = "", homephone = "";
+                if (names.ContainsKey("CellPhone"))
+                    cell = li[names["CellPhone"]];
+                if (names.ContainsKey("Email"))
+                    email = li[names["Email"]];
+                if (names.ContainsKey("HomePhone"))
+                    homephone = li[names["HomePhone"]];
+                var pid = DbUtil.Db.FindPerson3(li[names["First"]], li[names["Last"]], dob, email, cell, homephone, null).FirstOrDefault();
+                if (pid == null)
+                    continue;
+                var p = DbUtil.Db.LoadPersonById(pid.PeopleId.Value);
+
+                foreach (var name in names)
+                    switch (name.Key)
+                    {
+                        case "Title":
+                            p.TitleCode = li[name.Value];
+                            break;
+                        case "Campus":
+                            p.CampusId = campuses[li[name.Value]];
+                            break;
+                        case "Gender":
+                            switch (li[name.Value])
+                            {
+                                case "M":
+                                    p.GenderId = 1;
+                                    break;
+                                case "F":
+                                    p.GenderId = 2;
+                                    break;
+                            }
+                            break;
+                        case "Married":
+                            switch (li[name.Value])
+                            {
+                                case "M":
+                                    p.MaritalStatusId = 20;
+                                    break;
+                                case "S":
+                                    p.MaritalStatusId = 10;
+                                    break;
+                                default:
+                                    p.MaritalStatusId = 0;
+                                    break;
+                            }
+                            break;
+                        case "Address":
+                            p.AddressLineOne = li[name.Value];
+                            break;
+                        case "Address2":
+                            p.AddressLineTwo = li[name.Value];
+                            break;
+                        case "City":
+                            p.CityName = li[name.Value];
+                            break;
+                        case "State":
+                            p.StateCode = li[name.Value];
+                            break;
+                        case "Zip":
+                            p.ZipCode = li[name.Value];
+                            break;
+                        case "Position":
+                            switch (li[name.Value])
+                            {
+                                case "Primary":
+                                    p.PositionInFamilyId = 10;
+                                    break;
+                                case "Secondary":
+                                    p.PositionInFamilyId = 20;
+                                    break;
+                                case "Child":
+                                    p.PositionInFamilyId = 30;
+                                    break;
+                            }
+                            break;
+                        case "Birthday":
+                            p.DOB = li[name.Value];
+                            break;
+                        case "CellPhone":
+                            p.CellPhone = li[name.Value];
+                            break;
+                        case "HomePhone":
+                            p.HomePhone = li[name.Value];
+                            break;
+                        case "Email":
+                            p.EmailAddress = li[name.Value];
+                            break;
+                    }
                 DbUtil.Db.SubmitChanges();
             }
             return Redirect("/");

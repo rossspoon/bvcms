@@ -41,7 +41,9 @@ namespace CmsWeb.Models
             get
             {
                 var p = List[0];
-                if (p.org.AskParents == true)
+                if (user != null)
+                    return user.Name;
+                if (p.org != null && p.org.AskParents == true)
                     return p.fname.HasValue() ? p.fname : p.mname;
                 return p.first + " " + p.last;
             }

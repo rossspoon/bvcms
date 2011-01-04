@@ -649,10 +649,10 @@ namespace CmsWeb.Models
                     ed = new ExtraDatum { Data = person, Stamp = Util.Now };
                 }
                 CmsData.BundleDetail bd = null;
-                for (var c = 1; c < csv.FieldCount; c++)
+                for (var c = 0; c < csv.FieldCount; c++)
                 {
                     var col = cols[c].Trim();
-                    if (col != "Total" && csv[c].StartsWith("$") && csv[c].GetAmount() > 0)
+                    if (col != "Amount" && !col.Contains("Comment") && csv[c].StartsWith("$") && csv[c].GetAmount() > 0)
                     {
                         var fundid = FindFund(col);
                         bd = CreateContribution(date, fundid ?? 1);

@@ -40,7 +40,7 @@
     <% foreach (var si in ts.slots)
        {
            if (si.slot != null)
-               Html.RenderPartial("PickSlot", si);
+               Html.RenderPartial("Special/PickSlot", si);
            else
            { %>
                 <td></td>

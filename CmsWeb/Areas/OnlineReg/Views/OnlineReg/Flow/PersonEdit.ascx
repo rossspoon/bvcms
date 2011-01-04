@@ -21,7 +21,7 @@
     <td width="100%"><%= Html.ValidationMessage("dob") %></td>
 </tr>
 <tr>
-    <td><label for="phone">Phone</label></td>
+    <td><label for="phone">Phone</label> <%=Model.ShowAddress == true? Html.NotRequired(!Model.RequiredPhone()) : "" %></td>
     <td><input type="text" name="m.List[<%=Model.index%>].phone" value="<%=Model.phone%>" /></td>
     <td colspan="3"><%= Html.ValidationMessage("phone")%></td>
 </tr>
@@ -33,7 +33,7 @@
 <%
     if (Model.ShowAddress)
     { %>
-<% Html.RenderPartial("AddressEdit", Model); %>
+<% Html.RenderPartial("Flow/AddressEdit", Model); %>
 <tr><td><%=Html.Required() %> Required</td>
 <%      if (Model.ManageSubscriptions())
         { %>

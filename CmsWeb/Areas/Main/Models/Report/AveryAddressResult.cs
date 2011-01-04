@@ -28,11 +28,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 
         public override void ExecuteResult(ControllerContext context)
         {
-            var Response = context.HttpContext.Response;
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "filename=foo.pdf");
-
             var ctl = new MailingController { UseTitles = titles == true };
+            var Response = context.HttpContext.Response;
 
             const string STR_Name = "Name";
             IEnumerable<MailingInfo> q = null;
@@ -53,7 +50,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                 case "CouplesBoth":
                     q = ctl.FetchCouplesBothList(STR_Name, id.Value);
                     break;
+                default:
+                    Response.Write("unknown format");
+                    Response.End();
+                    return;
             }
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "filename=foo.pdf");
 
             var document = new Document(PageSize.LETTER);
             document.SetMargins(50f, 36f, 32f, 36f);

@@ -21,6 +21,7 @@ using System.Runtime.Serialization;
 using System.Net;
 using System.Security.Cryptography;
 using System.Web.Configuration;
+using System.Diagnostics;
 
 namespace UtilityExtensions
 {
@@ -199,7 +200,7 @@ namespace UtilityExtensions
         }
         public static string FormatDateTm(this DateTime dt)
         {
-            return dt.ToString("M/d/yy h:mm");
+            return dt.ToString("M/d/yy H:mm");
         }
         public static string FormatDateTm(this DateTime? dt)
         {
@@ -208,7 +209,7 @@ namespace UtilityExtensions
         public static string FormatDateTm(this DateTime? dt, string def)
         {
             if (dt.HasValue)
-                return dt.ToString2("M/d/yy h:mm");
+                return dt.ToString2("M/d/yy H:mm");
             return def;
         }
         public static string ToString2(this int? i, string fmt)
@@ -254,6 +255,14 @@ namespace UtilityExtensions
             if (td.Month < bd.Month || (td.Month == bd.Month && td.Day < bd.Day))
                 age--;
             return age;
+        }
+        public static string URLCombine(string baseUrl, string relativeUrl)
+        {
+            if (baseUrl.Length == 0)
+                return relativeUrl;
+            if (relativeUrl.Length == 0)
+                return baseUrl;
+            return string.Format("{0}/{1}", baseUrl.TrimEnd(new char[] { '/', '\\' }), relativeUrl.TrimStart(new char[] { '/', '\\' }));
         }
         public static int AgeAsOf(this DateTime bd, DateTime dt)
         {
@@ -419,7 +428,8 @@ namespace UtilityExtensions
             foreach (var c in s.ToCharArray())
                 if (Char.IsDigit(c) || c == '.')
                     digits.Append(c);
-            return digits.ToString().ToDecimal();
+            var a = digits.ToString().ToDecimal();
+            return a;
         }
         public static string FmtZip(this string zip)
         {
@@ -926,7 +936,7 @@ namespace UtilityExtensions
         public static string ObscureEmail(string email)
         {
             var a = email.Split('@');
-            var rest =  new string('x', a[0].Length - 2);
+            var rest = new string('x', a[0].Length - 2);
             return a[0].Substring(0, 2) + rest + "@" + a[1];
         }
         public static SmtpClient Smtp()

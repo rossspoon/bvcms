@@ -54,7 +54,7 @@ namespace CmsWeb.Models
             if (ComputesOrganizationByAge())
                 return true;
             if (org != null)
-                return !(org.NotReqAddr ?? false);
+                return !(org.NotReqDOB ?? false);
             return !notreq.Any(i => i.NotReqDOB);
         }
         public bool RequiredZip()
@@ -77,9 +77,22 @@ namespace CmsWeb.Models
         }
         public bool RequiredPhone()
         {
+            //Person fp = null;
+            //switch(whatfamily)
+            //{
+            //    case 1:
+            //        fp = model.user;
+            //        break;
+            //    case 2:
+            //        if (model.
+            //            fp = DbUtil.Db.LoadPersonById(prevpid.Value);
+            //        break;
+            //}
             if (org != null)
                 return !(org.NotReqPhone ?? false);
             return !notreq.Any(o => o.NotReqPhone);
+                
+
         }
     }
 }

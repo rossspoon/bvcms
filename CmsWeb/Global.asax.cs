@@ -26,6 +26,7 @@ namespace CmsWeb
     {
         protected void Application_Start()
         {
+            ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.RouteExistingFiles = true;
@@ -109,7 +110,7 @@ namespace CmsWeb
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-#if DEBUG
+#if DEBUG2
             if (HttpContext.Current != null)
                 return;
 #endif

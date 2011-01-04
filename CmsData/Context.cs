@@ -318,7 +318,7 @@ namespace CmsData
             get
             {
                 var em = DbUtil.SystemEmailAddress;
-                var npm = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
+                var npm = People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
                 if (npm != null && npm.EmailAddress.HasValue())
                     em = npm.EmailAddress;
                 var s = Settings.Where(ss => ss.Id == "NewPeopleEmailAddress").Select(ss => ss.SettingX).SingleOrDefault();
@@ -521,13 +521,15 @@ namespace CmsData
         {
             if (UserPreference(pref) == value.ToString())
                 return;
+            if (CurrentUser == null)
+                return;
             var p = CurrentUser.Preferences.SingleOrDefault(up => up.PreferenceX == pref);
             if (p != null)
                 p.ValueX = value.ToString();
             else
             {
                 p = new Preference { UserId = Util.UserId1, PreferenceX = pref, ValueX = value.ToString() };
-                DbUtil.Db.Preferences.InsertOnSubmit(p);
+                Preferences.InsertOnSubmit(p);
             }
             HttpContext.Current.Session["pref-" + pref] = p.ValueX;
             SubmitChanges();

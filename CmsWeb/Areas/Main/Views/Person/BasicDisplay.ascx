@@ -34,6 +34,9 @@
         <tr><th>Gender:</th>
             <td><%=Model.Gender %></td>
         </tr>
+        <tr><th>Record Created:</th>
+            <td><%=Model.Created.FormatDateTm() %></td>
+        </tr>
     </table>
 </div>
 <div style="float:left">

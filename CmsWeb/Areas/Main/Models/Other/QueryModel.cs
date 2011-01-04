@@ -182,7 +182,7 @@ namespace CmsWeb.Models
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
             QuartersVisible = fieldMap.HasParam("Quarters");
             if (QuartersVisible)
-                QuartersLabel = fieldMap.Title;
+                QuartersLabel = fieldMap.QuartersTitle;
             ViewVisible = fieldMap.HasParam("View");
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)

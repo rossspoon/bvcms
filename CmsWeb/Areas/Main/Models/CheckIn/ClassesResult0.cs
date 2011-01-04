@@ -15,7 +15,6 @@ namespace CmsWeb.Models
         private int campusid;
         private int page;
         private bool? kioskmode;
-        Person p;
         private int familyid;
         private int? peopleid;
         private DateTime? bd;

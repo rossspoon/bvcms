@@ -31,7 +31,7 @@
                 <asp:BoundField DataField = "CellPhone" HeaderText = "CellPhone" />
                 <asp:BoundField DataField = "WorkPhone" HeaderText = "WorkPhone" />
                 <asp:BoundField DataField = "MemberStatus" HeaderText = "Church" />
-                <asp:BoundField DataField = "BFTeacher" HeaderText = "Teacher" />
+                <asp:BoundField DataField = "FellowshipLeader" HeaderText = "Teacher" />
                 <asp:BoundField DataField = "Age" HeaderText = "Age" />
                 <asp:BoundField DataField = "School" HeaderText = "School" />
                 <asp:BoundField DataField = "Grade" HeaderText = "Grade" />

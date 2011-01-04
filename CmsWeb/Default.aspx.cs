@@ -124,7 +124,7 @@ namespace CmsWeb
                     sr.Close();
                     DbUtil.Db.SubmitChanges();
                 }
-                catch (WebException ex)
+                catch (WebException)
                 {
                 }
                 if (feed.Data != null)

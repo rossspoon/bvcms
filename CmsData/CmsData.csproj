@@ -132,6 +132,7 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -157,6 +158,7 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
@@ -171,6 +173,7 @@
     <Compile Include="Generated\Functions\FindPerson.cs" />
     <Compile Include="Generated\Functions\FindPerson2.cs" />
     <Compile Include="Generated\Functions\FindPerson3.cs" />
+    <Compile Include="Generated\Functions\GetContribution.cs" />
     <Compile Include="Generated\Functions\Split.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\OneTimeLink.cs" />
@@ -180,6 +183,8 @@
     <Compile Include="Generated\RegistrationType.cs" />
     <Compile Include="Generated\SecurityCode.cs" />
     <Compile Include="Generated\StreetType.cs" />
+    <Compile Include="Generated\Transaction.cs" />
+    <Compile Include="Generated\TransactionPerson.cs" />
     <Compile Include="Generated\Views\ActivityAll.cs" />
     <Compile Include="Generated\Views\DiscActivityLog.cs" />
     <Compile Include="Generated\Views\RandNumber.cs" />

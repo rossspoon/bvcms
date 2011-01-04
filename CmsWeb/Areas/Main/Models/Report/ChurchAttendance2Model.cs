@@ -21,7 +21,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             Dt1 = dt1;
             Dt2 = dt2;
-            weeks = DbUtil.Db.SundayDates(dt1, dt2).Select(w => w.Dt.Value).ToList();
+            weeks = DbUtil.Db.SundayDates(Dt1, Dt2).Select(w => w.Dt.Value).ToList();
             if (SkipWeeks.HasValue())
                 foreach (var wk in SkipWeeks.Split(','))
                 {

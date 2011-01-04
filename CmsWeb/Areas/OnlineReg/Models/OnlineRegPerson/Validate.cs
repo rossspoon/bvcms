@@ -129,7 +129,9 @@ Please call the church to resolve this before we can complete your registration.
                     ModelState.AddModelError(ErrorTarget, "record not found");
                     NotFoundText = @"We are trying to find this record.<br />
 The first and last names must match a record.<br />
-Then one of <i>birthday, email</i> or <i>phone</i> must match.<br />";
+Then <b>one</b> of <i>birthday, email</i> or <i>phone</i> must match.<br />
+Perhaps we have the wrong email address.<br/>
+Try a different email, phone or birthdate.";
                 }
             }
             ValidateBirthdayRange(ModelState);

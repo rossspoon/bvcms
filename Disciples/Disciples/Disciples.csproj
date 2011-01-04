@@ -806,9 +806,11 @@
     </Content>
     <Content Include="Web.CMSTest.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.CMSWebProduction.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.BVCMSProduction.config">
       <DependentUpon>Web.config</DependentUpon>

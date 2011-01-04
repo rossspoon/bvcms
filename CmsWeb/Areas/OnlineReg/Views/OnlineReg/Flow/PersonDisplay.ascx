@@ -32,5 +32,5 @@
     <% }
        if (Model.ShowAddress)
        {
-           Html.RenderPartial("AddressDisplay", Model);
+           Html.RenderPartial("Flow/AddressDisplay", Model);
        } %>

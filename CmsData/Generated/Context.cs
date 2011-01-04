@@ -546,6 +546,14 @@ namespace CmsData
         partial void UpdateTemporaryToken(TemporaryToken instance);
         partial void DeleteTemporaryToken(TemporaryToken instance);
         
+        partial void InsertTransaction(Transaction instance);
+        partial void UpdateTransaction(Transaction instance);
+        partial void DeleteTransaction(Transaction instance);
+        
+        partial void InsertTransactionPerson(TransactionPerson instance);
+        partial void UpdateTransactionPerson(TransactionPerson instance);
+        partial void DeleteTransactionPerson(TransactionPerson instance);
+        
         partial void InsertUploadAuthenticationXref(UploadAuthenticationXref instance);
         partial void UpdateUploadAuthenticationXref(UploadAuthenticationXref instance);
         partial void DeleteUploadAuthenticationXref(UploadAuthenticationXref instance);
@@ -1448,6 +1456,18 @@ namespace CmsData
 
 		}
 
+		public Table< Transaction> Transactions
+		{
+			get	{ return this.GetTable< Transaction>(); }
+
+		}
+
+		public Table< TransactionPerson> TransactionPeople
+		{
+			get	{ return this.GetTable< TransactionPerson>(); }
+
+		}
+
 		public Table< UploadAuthenticationXref> UploadAuthenticationXrefs
 		{
 			get	{ return this.GetTable< UploadAuthenticationXref>(); }
@@ -1710,7 +1730,8 @@ namespace CmsData
             [Parameter(DbType="datetime")] DateTime? td,
             [Parameter(DbType="int")] int? pid,
             [Parameter(DbType="int")] int? spid,
-            [Parameter(DbType="int")] int? fid
+            [Parameter(DbType="int")] int? fid,
+            [Parameter(DbType="bit")] bool? noaddrok
             )
 		{
 			return this.CreateMethodCallQuery< View.Contributor>(this, 
@@ -1719,7 +1740,8 @@ namespace CmsData
                 td,
                 pid,
                 spid,
-                fid
+                fid,
+                noaddrok
                 );
 		}
 
@@ -1796,6 +1818,19 @@ namespace CmsData
                 phone1,
                 phone2,
                 phone3
+                );
+		}
+
+		[Function(Name="dbo.GetContributions", IsComposable = true)]
+		public IQueryable< View.GetContribution > GetContributions(
+            [Parameter(DbType="int")] int? fid,
+            [Parameter(DbType="bit")] bool? pledge
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetContribution>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fid,
+                pledge
                 );
 		}
 
@@ -1901,14 +1936,16 @@ namespace CmsData
 		public decimal? ContributionAmount2(
             [Parameter(Name = "pid", DbType="int")] int? pid,
             [Parameter(Name = "dt1", DbType="datetime")] DateTime? dt1,
-            [Parameter(Name = "dt2", DbType="datetime")] DateTime? dt2
+            [Parameter(Name = "dt2", DbType="datetime")] DateTime? dt2,
+            [Parameter(Name = "fundid", DbType="int")] int? fundid
             )
 		{
 			return ((decimal?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
                 dt1,
-                dt2
+                dt2,
+                fundid
                 ).ReturnValue));
 		}
 
@@ -2816,13 +2853,15 @@ namespace CmsData
 		[return: Parameter(DbType = "int")]
 		public int? ContributionCount(
             [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "days", DbType="int")] int? days
+            [Parameter(Name = "days", DbType="int")] int? days,
+            [Parameter(Name = "fundid", DbType="int")] int? fundid
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
-                days
+                days,
+                fundid
                 ).ReturnValue));
 		}
 
@@ -2830,13 +2869,15 @@ namespace CmsData
 		[return: Parameter(DbType = "money")]
 		public decimal? ContributionAmount(
             [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "days", DbType="int")] int? days
+            [Parameter(Name = "days", DbType="int")] int? days,
+            [Parameter(Name = "fundid", DbType="int")] int? fundid
             )
 		{
 			return ((decimal?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
-                days
+                days,
+                fundid
                 ).ReturnValue));
 		}
 

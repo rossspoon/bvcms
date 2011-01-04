@@ -42,7 +42,6 @@ namespace CmsWeb
         }
 
         private MailAddressCollection Addresses = new MailAddressCollection();
-        private IEnumerable<Person> people;
 
         public WebEmailer(string fromaddr, string fromname)
         {

@@ -643,7 +643,7 @@ namespace CmsData
 
                     return list;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
@@ -678,7 +678,7 @@ namespace CmsData
                 var street = string.Join(" ", la);
                 return street;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

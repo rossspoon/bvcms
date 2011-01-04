@@ -105,6 +105,7 @@ namespace CmsWeb.Models
                          CanSelfCheckin = o.CanSelfCheckin ?? false,
                          AllowKioskRegister = o.AllowKioskRegister ?? false,
                          AllowLastYearShirt = o.AllowLastYearShirt ?? false,
+                         AllowOnlyOne = o.AllowOnlyOne ?? false,
                          AskAllergies = o.AskAllergies ?? false,
                          AskChurch = o.AskChurch ?? false,
                          AskCoaching = o.AskCoaching ?? false,
@@ -122,6 +123,7 @@ namespace CmsWeb.Models
                          BirthDayEnd = o.BirthDayEnd.FormatDate2(),
                          Deposit = o.Deposit ?? 0,
                          Fee = o.Fee ?? 0,
+                         ExtraFee = o.ExtraFee ?? 0,
                          GenderId = o.GenderId ?? 0,
                          GradeAgeStart = o.GradeAgeStart ?? 0,
                          GradeAgeEnd = o.GradeAgeEnd ?? 0,
@@ -139,12 +141,12 @@ namespace CmsWeb.Models
                          ShirtFee = o.ShirtFee ?? 0,
                          o.YesNoQuestions,
                          IsBibleFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
-                         NoReqAddr = o.NotReqAddr,
-                         NoReqDOB = o.NotReqDOB,
-                         NoReqGender = o.NotReqGender,
-                         NoReqMarital = o.NotReqMarital,
-                         NoReqPhone = o.NotReqPhone,
-                         NoReqZip = o.NotReqZip,
+                         NoReqAddr = o.NotReqAddr ?? false,
+                         NoReqDOB = o.NotReqDOB ?? false,
+                         NoReqGender = o.NotReqGender ?? false,
+                         NoReqMarital = o.NotReqMarital ?? false,
+                         NoReqPhone = o.NotReqPhone ?? false,
+                         NoReqZip = o.NotReqZip ?? false,
                      };
             return q2;
         }
@@ -223,6 +225,10 @@ namespace CmsWeb.Models
             else if (this.OnlineReg > 0)
                 organizations = from o in organizations
                                 where o.RegistrationTypeId == OnlineReg
+                                select o;
+            else if (this.OnlineReg == 0)
+                organizations = from o in organizations
+                                where (o.RegistrationTypeId ?? 0) == 0
                                 select o;
 
             return organizations;
@@ -454,7 +460,7 @@ namespace CmsWeb.Models
             });
             list.Insert(0, new SelectListItem
             {
-                Value = "0",
+                Value = "-1",
                 Text = "(not specified)",
             });
             return list;

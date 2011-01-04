@@ -50,18 +50,6 @@ namespace CmsWeb
     {
         public bool NoCheckRole { get; set; }
 
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            base.Initialize(requestContext);
-            if (!User.Identity.IsAuthenticated)
-                requestContext.HttpContext.Response.Redirect("/Logon?ReturnUrl=" + requestContext.HttpContext.Request.Path);
-            else if (!NoCheckRole)
-            {
-                var r = AccountController.CheckAccessRole(Util.UserName);
-                if (r.HasValue())
-                    Response.Redirect(r);
-            }
-        }
         protected override void HandleUnknownAction(string actionName)
         {
             //base.HandleUnknownAction(actionName);
@@ -69,6 +57,14 @@ namespace CmsWeb
         }
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
+            if (!User.Identity.IsAuthenticated)
+                filterContext.Result = Redirect("/Logon?ReturnUrl=" + filterContext.HttpContext.Request.Path);
+            else if (!NoCheckRole)
+            {
+                var r = AccountController.CheckAccessRole(Util.UserName);
+                if (r.HasValue())
+                    filterContext.Result = Redirect(r);
+            }
             base.OnActionExecuting(filterContext);
             Util.Helpfile = "{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
@@ -79,18 +75,6 @@ namespace CmsWeb
     {
         public bool NoCheckRole { get; set; }
 
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            base.Initialize(requestContext);
-            if (!User.Identity.IsAuthenticated)
-                requestContext.HttpContext.Response.Redirect("/Logon?ReturnUrl=" + requestContext.HttpContext.Request.Path);
-            else if (!NoCheckRole)
-            {
-                var r = AccountController.CheckAccessRole(Util.UserName);
-                if (r.HasValue())
-                    Response.Redirect(r);
-            }
-        }
         protected override void HandleUnknownAction(string actionName)
         {
             //base.HandleUnknownAction(actionName);
@@ -98,6 +82,14 @@ namespace CmsWeb
         }
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
+            if (!User.Identity.IsAuthenticated)
+                filterContext.Result = Redirect("/Logon?ReturnUrl=" + filterContext.HttpContext.Request.Path);
+            else if (!NoCheckRole)
+            {
+                var r = AccountController.CheckAccessRole(Util.UserName);
+                if (r.HasValue())
+                    filterContext.Result = Redirect(r);
+            }
             base.OnActionExecuting(filterContext);
             Util.Helpfile = "{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,

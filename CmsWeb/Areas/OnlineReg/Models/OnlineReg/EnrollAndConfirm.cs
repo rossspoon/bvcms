@@ -11,13 +11,13 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegModel
     {
-        public void EnrollAndConfirm(string TransactionID)
+        public void EnrollAndConfirm()
         {
+            var ti = Transaction;
             var elist = new List<string>();
             if (UserPeopleId.HasValue)
                 elist.Add(user.EmailAddress);
             var participants = new StringBuilder();
-            var pids = new List<TransactionInfo.PeopleInfo>();
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
@@ -45,51 +45,48 @@ namespace CmsWeb.Models
                         if (!elist.Contains(p.person.EmailAddress))
                             elist.Add(p.person.EmailAddress);
                 participants.Append(p.ToString());
-                pids.Add(new TransactionInfo.PeopleInfo
-                {
-                    name = p.person.Name,
-                    pid = p.person.PeopleId,
-                    amt = p.AmountToPay() + p.AmountDue()
-                });
             }
             var p0 = List[0].person;
+            if (this.user != null)
+                p0 = user;
+
             var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
             var amtdue = TotalAmountDue();
             var amtpaid = Amount();
 
-            if (amtdue > 0)
-            {
-                var ti = new TransactionInfo
+            var pids2 = new List<TransactionPerson>();
+            foreach (var p in List)
+                pids2.Add(new TransactionPerson
                 {
-                    //URL = URL,
-                    Header = Header,
-                    Name = NameOnAccount,
-                    Address = p0.PrimaryAddress,
-                    City = p0.PrimaryCity,
-                    State = p0.PrimaryState,
-                    Zip = p0.PrimaryZip,
-                    Phone = Util.PickFirst(p0.HomePhone, p0.CellPhone).FmtFone(),
-                    testing = testing ?? false,
-                    AmountDue = amtdue,
-                    AmountPaid = amtpaid,
-                    Email = emails,
-                    Participants = participants.ToString(),
-                    people = pids.ToArray(),
-                    orgid = orgid.Value,
-                };
-                var td = DbUtil.Db.GetDatum<TransactionInfo>(ti);
-                var estr = HttpUtility.UrlEncode(Util.Encrypt(td.Id.ToString()));
-                paylink = Util.ResolveServerUrl("/OnlineReg/PayDue?q=" + estr);
-            }
+                    PeopleId = p.PeopleId.Value,
+                    Amt = p.AmountToPay() + p.AmountDue(),
+                    OrgId = orgid,
+                });
+
+            ti.Emails = emails;
+            ti.Participants = participants.ToString();
+            ti.TransactionDate = DateTime.Now;
+            ti.TransactionPeople.AddRange(pids2);
+
+            var estr = HttpUtility.UrlEncode(Util.Encrypt(ti.Id.ToString()));
+            paylink = Util.ResolveServerUrl("/OnlineReg/PayAmtDue?q=" + estr);
+
+            var pids = pids2.Select(pp => pp.PeopleId);
 
             var details = new StringBuilder("<table>");
             for (var i = 0; i < List.Count; i++)
             {
                 var p = List[i];
-                var others = string.Join(",", pids.Where(po => po.pid != p.PeopleId).Select(po => po.name).ToArray());
-                others += "(Total paid {0:c})".Fmt(amtdue);
-                var om = p.Enroll(TransactionID, paylink, testing, others);
+
+                var q = from pp in DbUtil.Db.People
+                        where pids.Contains(pp.PeopleId)
+                        where pp.PeopleId != p.PeopleId
+                        select pp.Name;
+                var others = string.Join(",", q.ToArray());
+
+                others += "(Total due {0:c})".Fmt(amtdue);
+                var om = p.Enroll(ti.TransactionId, paylink, testing, others);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>
 <tr><th valign='top'>{0}</th><td>
@@ -215,14 +212,14 @@ namespace CmsWeb.Models
         }
         public void ConfirmManageSubscriptions()
         {
-                var p = List[0];
-                if (p.IsNew)
-                    p.AddPerson(null, EntryPointForDiv());
-                if (p.CreatingAccount == true)
-                    p.CreateAccount();
-                p.SendOneTimeLink(
-                    ManageSubsModel.StaffEmail(divid.Value), 
-                    Util.ServerLink("/OnlineReg/ManageSubscriptions/"));
+            var p = List[0];
+            if (p.IsNew)
+                p.AddPerson(null, EntryPointForDiv());
+            if (p.CreatingAccount == true)
+                p.CreateAccount();
+            p.SendOneTimeLink(
+                ManageSubsModel.StaffEmail(divid.Value),
+                Util.ServerLink("/OnlineReg/ManageSubscriptions/"));
         }
         public int EntryPointForDiv()
         {

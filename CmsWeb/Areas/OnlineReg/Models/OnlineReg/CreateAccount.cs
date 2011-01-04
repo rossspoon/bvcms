@@ -28,8 +28,6 @@ Note: you will need to know your username for this to work. If you do not know y
 This will send you a link you can use to reset your password.</p>
 <p>You can use your account to help us maintain your correct address, email and phone numbers.
 Just login to <a href=""{host}"">{host}</a> and you will be taken to your record where you can make corrections if needed.</p>
-<p>The following are the credentials you can use. Both the username and password are system generated.
-</p>
 <p>Thank You</p>
 ";
                 message = message

@@ -63,6 +63,16 @@ namespace CmsWeb.Contributions
                     foreach (var d in bundleheader.BundleDetails)
                         d.Contribution.PostingDate = postingdt;
                 }
+                if (ContributionDate.HadBeenChanged)
+                {
+                    var q = from d in DbUtil.Db.BundleDetails
+                            where d.BundleHeaderId == bundleheader.BundleHeaderId
+                            select d.Contribution;
+                    foreach (var c in q)
+                        c.ContributionDate = ContributionDate.Text.ToDate();
+                    DbUtil.Db.SubmitChanges();
+                    ListView1.DataBind();
+                }
                 DbUtil.Db.SubmitChanges();
                 EditUpdateButton1.DataBind();
             }

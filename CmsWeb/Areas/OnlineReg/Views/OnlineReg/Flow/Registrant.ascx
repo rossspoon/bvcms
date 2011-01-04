@@ -7,7 +7,7 @@
         // show a select organization dropdown
         { %>
     <tr><td><div class="instruct">Make a Selection</div></td></tr>
-    <tr><td><div><% Html.RenderPartial("ChooseClass", Model); %></div></td></tr>
+    <tr><td><div><% Html.RenderPartial("Flow/ChooseClass", Model); %></div></td></tr>
 <%      }
         if (Model.UserPeopleId.HasValue && Model.FamilyMembers().Count() > 0)
         // show a family list cause we are logged in
@@ -17,7 +17,7 @@
     <tr>
         <td>
             <div class="box">
-                <% Html.RenderPartial("FamilyList", Model); %>
+                <% Html.RenderPartial("Flow/FamilyList", Model); %>
             </div>
             <%= Html.ValidationMessage("findf")%>
         </td>
@@ -38,14 +38,14 @@
         <td>
             <div class="box">
 <% // This is where we store some non editable meta data about the person
-    Html.RenderPartial("PersonMetaHidden", p);
+    Html.RenderPartial("Flow/PersonMetaHidden", p);
     if (p.ShowDisplay())
     // This is where we store the already entered info
     {
-        Html.RenderPartial("PersonHidden", p);
+        Html.RenderPartial("Flow/PersonHidden", p);
         if (p.OtherOK && !p.ManageSubscriptions())
         // need to store the other info too
-            Html.RenderPartial("OtherHidden", p);
+            Html.RenderPartial("Flow/OtherHidden", p);
     }
     if (!Model.IsCreateAccount() && !Model.ManagingSubscriptions())
     // This is the cancel link
@@ -71,10 +71,10 @@
 <%  if (p.ShowDisplay())
     // Already found
     {
-        Html.RenderPartial("PersonDisplay", p);
+        Html.RenderPartial("Flow/PersonDisplay", p);
         if (p.OtherOK && !p.ManageSubscriptions())
         // finished with other info
-            Html.RenderPartial("OtherDisplay", p);
+            Html.RenderPartial("Flow/OtherDisplay", p);
         else if (p.AnyOtherInfo())
         // need to edit other info
         { %>
@@ -86,7 +86,7 @@
                         </td>
                     </tr>
 <%          Model.ShowOtherInstructions = true;
-            Html.RenderPartial("OtherEdit", p);
+            Html.RenderPartial("Flow/OtherEdit", p);
         }
     }
     else if (!Model.IsEnded())
@@ -94,14 +94,14 @@
         if (p.IsFamily)
         // Already found, display only
         {
-            Html.RenderPartial("PersonDisplay", p);
+            Html.RenderPartial("Flow/PersonDisplay", p);
         }
 
         else
         // Find or Add New
         {
             Model.ShowFindInstructions = true;
-            Html.RenderPartial("PersonEdit", p);
+            Html.RenderPartial("Flow/PersonEdit", p);
         }
 %>
                 </table>

@@ -8,10 +8,9 @@ using System;
 using System.Web;
 using System.Text;
 using System.Collections;
-using System.Web.Mvc.Html;
+using System.Web.Mvc;
 using UtilityExtensions;
 using System.Configuration;
-using System.Web.Mvc;
 using System.Web.Routing;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,7 +287,7 @@ namespace CmsWeb
             tb.MergeAttribute("value", s ?? viewDataValue);
             return tb.ToString();
         }
-        public static string DatePicker(this HtmlHelper helper, string name)
+        public static HtmlString DatePicker(this HtmlHelper helper, string name)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
@@ -298,7 +297,7 @@ namespace CmsWeb
             var s = helper.TryGetModel(name);
             var viewDataValue = (DateTime?)helper.ViewData.Eval(name);
             tb.MergeAttribute("value", viewDataValue.FormatDate2());
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
         public static string CheckBoxReadonly(this HtmlHelper helper, bool? ck)
         {

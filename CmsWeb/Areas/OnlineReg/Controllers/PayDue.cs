@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
+using CmsData;
+using CmsWeb.Models;
+using UtilityExtensions;
+using System.Configuration;
+using System.Net.Mail;
+using System.Runtime.Serialization;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using CmsWeb.Areas.Manage.Controllers;
+using CmsWeb.Areas.OnlineReg.Models.Payments;
+
+namespace CmsWeb.Areas.OnlineReg.Controllers
+{
+    public partial class OnlineRegController : CmsController
+    {
+        // reached by the paylink in the confirmation email
+        // which is produced in EnrollAndConfirm
+        public ActionResult PayAmtDue(string q)
+        {
+            if (!q.HasValue())
+                return Content("unknown");
+            var id = Util.Decrypt(q).ToInt2();
+            var qq = from t in DbUtil.Db.Transactions
+                     where t.OriginalId == id || t.Id == id
+                     orderby t.Id descending
+                     select t;
+            var ti = qq.FirstOrDefault();
+
+            if (ti == null || ti.Amtdue == 0)
+                return Content("no outstanding transaction");
+            try
+            {
+                var ti2 = new Transaction
+                {
+                    Amt = ti.Amtdue, // assume they will pay entire amount due
+                    Amtdue = ti.Amtdue, // this is what they owe
+                    Name = ti.Name,
+                    Address = ti.Address,
+                    City = ti.City,
+                    State = ti.State,
+                    Zip = ti.Zip,
+                    Testing = ti.Testing,
+                    Description = ti.Description,
+                    Url = ti.Url,
+                    Emails = ti.Emails,
+                    OrgId = ti.OrgId,
+                    Participants = ti.Participants,
+                    OriginalId = ti.OriginalId ?? ti.Id // links all the transactions together
+                };
+                foreach (var tp in ti.TransactionPeople)
+                    ti2.TransactionPeople.Add(new TransactionPerson { Amt = tp.Amt, OrgId = tp.OrgId, PeopleId = tp.PeopleId });
+                DbUtil.Db.Transactions.InsertOnSubmit(ti2);
+                DbUtil.Db.SubmitChanges();
+
+                ViewData["Confirm"] = "ConfirmDuePaid";
+                ViewData["timeout"] = INT_timeout;
+
+                SetHeaders(ti2.OrgId.Value);
+
+                // Dislay the DuePayment Page which calls either
+                // ConfirmDuePaid or PayWithCoupon2
+                return View(ti2);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Problem in PayDue: " + ti.Id, ex);
+            }
+        }
+        public ActionResult PayDueTest(string q)
+        {
+            if (!q.HasValue())
+                return Content("unknown");
+            var id = Util.Decrypt(q);
+            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id.ToInt());
+            if (ed == null)
+                return Content("no outstanding transaction");
+            return Content(ed.Data);
+        }
+        // called from PayAmountDue
+        public ActionResult ConfirmDuePaid(int? id, string TransactionID, decimal Amount)
+        {
+            if (!id.HasValue)
+                return View("Unknown");
+            if (!TransactionID.HasValue())
+                return Content("error no transaction");
+
+            var ti = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
+            if (ti == null)
+                return Content("no pending transaction found");
+
+            var org = DbUtil.Db.LoadOrganizationById(ti.OrgId);
+            ti.Amt = Amount;
+            ti.Amtdue -= Amount;
+            var amt = Amount;
+            var smtp = Util.Smtp();
+            string paylink = null;
+            foreach (var pi in ti.TransactionPeople)
+            {
+                var p = DbUtil.Db.LoadPersonById(pi.PeopleId);
+                if (p != null)
+                {
+                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.OrgId && m.PeopleId == pi.PeopleId);
+                    paylink = om.PayLink;
+
+                    var due = (om.Amount - om.AmountPaid) ?? 0;
+                    var pay = amt;
+                    if (pay > due)
+                        pay = due;
+                    om.AmountPaid += pay;
+
+                    string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+                    om.AddToMemberData(tstamp);
+                    var tran = "{0:C} ({1} {2})".Fmt(
+                        pay, TransactionID, ti.Testing == true ? " test" : "");
+                    om.AddToMemberData(tran);
+                    om.AddToMemberData("(Total due {0:c})".Fmt(ti.Amtdue));
+
+                    var reg = p.RecRegs.Single();
+                    reg.AddToComments("-------------");
+                    reg.AddToComments(tran);
+                    reg.AddToComments("(Total due {0:c})".Fmt(ti.Amtdue));
+                    reg.AddToComments(Util.Now.ToString("MMM d yyyy h:mm tt"));
+                    reg.AddToComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName));
+                    amt -= pay;
+                }
+                else
+                    Util.Email(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
+                            "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.Person.Name, pi.PeopleId, pi.Amt));
+            }
+            DbUtil.Db.SubmitChanges();
+            var names = string.Join(", ", ti.TransactionPeople.Select(i => i.Person.Name).ToArray());
+            var msg = "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names);
+            if (ti.Amtdue > 0)
+                msg += "<br/>\n<a href='{0}'>PayLink</a>".Fmt(paylink);
+            
+            Util.Email(smtp, org.EmailAddresses, ti.Emails, "Payment confirmation",
+                "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names));
+            Util.Email(smtp, ti.Emails, org.EmailAddresses, "payment received for " + ti.Description,
+                "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+
+            ViewData["timeout"] = INT_timeout;
+
+            SetHeaders(ti.OrgId.Value);
+            return View(ti);
+        }
+    }
+}

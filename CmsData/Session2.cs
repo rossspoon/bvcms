@@ -60,7 +60,6 @@ namespace CmsData
         }
         public string Setting(string name, string defaultvalue)
         {
-
             var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {

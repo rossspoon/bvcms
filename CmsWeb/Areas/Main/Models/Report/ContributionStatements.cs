@@ -55,7 +55,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     doc.NewPage();
 
                 var st = new StyleSheet();
-                st.LoadTagStyle("h1", "size", "20px");
+                st.LoadTagStyle("h1", "size", "18px");
                 st.LoadTagStyle("h2", "size", "10px");
                 st.LoadTagStyle("p", "size", "8px");
 
@@ -101,7 +101,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 //-----Notice
                 var t2 = new PdfPTable(1);
                 t2.DefaultCell.Border = PdfPCell.NO_BORDER;
-                t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   Env #{1}".Fmt(DateTime.Now, ci.PeopleId), font));
+                t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1})".Fmt(DateTime.Now, ci.PeopleId), font));
                 t2.AddCell("");
                 string html2 = @"<p><i>
 NOTE: No goods or services were provided to you by the church in connection with any contibution;

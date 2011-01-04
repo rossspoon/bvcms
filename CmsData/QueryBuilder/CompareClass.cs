@@ -110,9 +110,9 @@ namespace CmsData
                     return Expressions.CreatedBy(parm, Db,
                         CompType, c.TextValue);
                 case QueryType.ContributionAmount2:
-                    return Expressions.ContributionAmount2(parm,
+                    return Expressions.ContributionAmount2(parm, Db,
                                c.StartDate,
-                               c.EndDate,
+                               c.EndDate, c.Quarters.ToInt2(),
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.ContributionChange:
@@ -236,7 +236,7 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.IsTopGiver:
-                    return Expressions.IsTopGiver(parm,
+                    return Expressions.IsTopGiver(parm, Db,
                                 c.Days,
                                 c.Quarters,
                                 CompType,
@@ -388,13 +388,13 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 case QueryType.RecentContributionCount:
-                    return Expressions.RecentContributionCount(parm,
-                               c.Days,
+                    return Expressions.RecentContributionCount(parm, Db,
+                               c.Days, c.Quarters.ToInt2(),
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentContributionAmount:
-                    return Expressions.RecentContributionAmount(parm,
-                               c.Days,
+                    return Expressions.RecentContributionAmount(parm, Db,
+                               c.Days, c.Quarters.ToInt2(),
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.RecentAttendCount:

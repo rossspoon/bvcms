@@ -71,6 +71,24 @@ namespace CmsWeb.Models
             get { return _Classid; }
             set { _Classid = value; }
         }
+        [OptionalField]
+        private int? _TranId;
+        public int? TranId
+        {
+            get { return _TranId; }
+            set { _TranId = value; }
+        }
+        [NonSerialized]
+        private Transaction _Transaction;
+        public Transaction Transaction
+        {
+            get
+            {
+                if (_Transaction == null && TranId.HasValue)
+                    _Transaction = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == TranId);
+                return _Transaction;
+            }
+        }
 
         [OptionalField]
         private string _Username;
@@ -102,7 +120,7 @@ namespace CmsWeb.Models
             get { return _UserPeopleId; }
             set { _UserPeopleId = value; }
         }
-        [OptionalField]
+        [NonSerialized]
         private Person _User;
         public Person user
         {

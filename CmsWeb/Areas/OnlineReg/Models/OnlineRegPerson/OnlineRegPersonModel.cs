@@ -115,6 +115,8 @@ namespace CmsWeb.Models
             get { return _LoggedIn; }
             set { _LoggedIn = value; }
         }
+        [NonSerialized]
+        public OnlineRegModel model;
 
         [NonSerialized]
         private DateTime _Birthday;

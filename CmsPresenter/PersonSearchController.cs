@@ -81,13 +81,14 @@ namespace CMSPresenter
                         CellPhone = p.CellPhone.FmtFone(),
                         WorkPhone = p.WorkPhone.FmtFone(),
                         MemberStatus = p.MemberStatus.Description,
-                        BFTeacher = p.BFClass.LeaderName,
+                        FellowshipLeader = p.BFClass.LeaderName,
                         Age = p.Age.ToString(),
                         School = p.SchoolOther,
                         Grade = p.Grade.ToString(),
                         AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
                         Married = p.MaritalStatus.Description,
-                        FamilyId = p.FamilyId
+                        FamilyId = p.FamilyId,
+                        AltName = p.AltName
                     };
             return q.Take(maximumRows);
         }
@@ -150,7 +151,7 @@ namespace CMSPresenter
                         CellPhone = p.CellPhone.FmtFone(),
                         WorkPhone = p.WorkPhone.FmtFone(),
                         MemberStatus = p.MemberStatus.Description,
-                        BFTeacher = p.BFClass.LeaderName,
+                        FellowshipLeader = p.BFClass.LeaderName,
                         Age = p.Age.ToString(),
                         School = p.SchoolOther,
                         Grade = p.Grade.ToString(),
@@ -183,7 +184,7 @@ namespace CMSPresenter
                         CellPhone = p.CellPhone.FmtFone(),
                         WorkPhone = p.WorkPhone.FmtFone(),
                         MemberStatus = p.MemberStatus.Description,
-                        BFTeacher = p.BFClass.LeaderName,
+                        FellowshipLeader = p.BFClass.LeaderName,
                         Age = p.Age.ToString(),
                         School = p.SchoolOther,
                         Grade = p.Grade.ToString(),

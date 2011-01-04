@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using System.Collections.Generic;
+using System.Web;
 
 namespace CmsData
 {
@@ -80,7 +81,9 @@ namespace CmsData
                             smtp = Util.Smtp();
                         i++;
 
-                        var link = "<a href=\"{0}OptOut/UnSubscribe/?enc={1}\">Unsubscribe</a>".Fmt(CmsHost, Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, From.Address)));
+                        var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, From.Address));
+                        var url = Util.URLCombine(CmsHost, qs);
+                        var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                         text = text.Replace("{unsubscribe}", link);
                         text = text.Replace("{Unsubscribe}", link);
                         text = text.Replace("{toemail}", ad);

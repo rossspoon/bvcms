@@ -45,6 +45,7 @@ namespace CmsData
             }
         }
         public string CategoryTitle { get; set; }
+        public string QuartersTitle { get; set; }
         private string _Title;
         public string Title
         {

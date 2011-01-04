@@ -1,0 +1,143 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
+using System.Data.Linq;
+using System.Web;
+using CmsData;
+using UtilityExtensions;
+using System.Web.Mvc;
+using System.Text;
+using System.Net.Mail;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+
+namespace CmsWeb.Models
+{
+    public class TransactionsModel
+    {
+        public string description { get; set; }
+        public string name { get; set; }
+        public decimal? gtamount { get; set; }
+        public decimal? ltamount { get; set; }
+        public DateTime? startdt { get; set; }
+        public DateTime? enddt { get; set; }
+        public PagerModel2 Pager { get; set; }
+        int? _count;
+        public int Count()
+        {
+            if (!_count.HasValue)
+                _count = FetchTransactions().Count();
+            return _count.Value;
+        }
+        public TransactionsModel()
+        {
+            Pager = new PagerModel2(Count);
+            Pager.Direction = "asc";
+            Pager.Sort = "Name";
+        }
+        public IEnumerable<Transaction> Transactions()
+        {
+            var q0 = ApplySort();
+            q0 = q0.Skip(Pager.StartRow).Take(Pager.PageSize);
+            return q0;
+        }
+
+        private IQueryable<Transaction> _transactions;
+        private IQueryable<Transaction> FetchTransactions()
+        {
+            _transactions
+               = from t in DbUtil.Db.Transactions
+                 where t.Amt >= gtamount || gtamount == null
+                 where t.Amt <= ltamount || ltamount == null
+                 where description == null || t.Description.Contains(description)
+                 where name == null || t.Name.Contains(name)
+                 select t;
+            return _transactions;
+        }
+        public IQueryable<Transaction> ApplySort()
+        {
+            var q = FetchTransactions();
+            if (Pager.Direction == "asc")
+                switch (Pager.Sort)
+                {
+                    case "Tran Id":
+                        q = from t in q
+                            orderby t.TransactionId
+                            select t;
+                        break;
+                    case "Appr":
+                        q = from t in q
+                            orderby t.Approved, t.TransactionDate descending
+                            select t;
+                        break;
+                    case "Date":
+                        q = from t in q
+                            orderby t.TransactionDate descending
+                            select t;
+                        break;
+                    case "Description":
+                        q = from t in q
+                            orderby t.Description, t.TransactionDate descending
+                            select t;
+                        break;
+                    case "Name":
+                        q = from t in q
+                            orderby t.Name, t.TransactionDate descending
+                            select t;
+                        break;
+                    case "Amount":
+                        q = from t in q
+                            orderby t.Amt, t.TransactionDate descending
+                            select t;
+                        break;
+                    case "Due":
+                        q = from t in q
+                            orderby t.Amtdue, t.TransactionDate descending
+                            select t;
+                        break;
+                }
+            else
+                switch (Pager.Sort)
+                {
+                    case "Tran Id":
+                        q = from t in q
+                            orderby t.TransactionId descending
+                            select t;
+                        break;
+                    case "Appr":
+                        q = from t in q
+                            orderby t.Approved descending, t.TransactionDate
+                            select t;
+                        break;
+                    case "Date":
+                        q = from t in q
+                            orderby t.TransactionDate
+                            select t;
+                        break;
+                    case "Description":
+                        q = from t in q
+                            orderby t.Description descending, t.TransactionDate
+                            select t;
+                        break;
+                    case "Name":
+                        q = from t in q
+                            orderby t.Name descending, t.TransactionDate
+                            select t;
+                        break;
+                    case "Amount":
+                        q = from t in q
+                            orderby t.Amt descending, t.TransactionDate
+                            select t;
+                        break;
+                    case "Due":
+                        q = from t in q
+                            orderby t.Amtdue descending, t.TransactionDate
+                            select t;
+                        break;
+                }
+
+            return q;
+        }
+    }
+}

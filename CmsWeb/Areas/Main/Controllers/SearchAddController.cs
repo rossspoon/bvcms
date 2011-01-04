@@ -104,7 +104,7 @@ namespace CmsWeb.Areas.Main.Controllers
             p.ValidateModelForNew(ModelState, true);
             if (!ModelState.IsValid)
                 return View("FormFull", m);
-            return View("list", m);
+            return View("List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddToFamily(SearchModel m)
@@ -113,7 +113,7 @@ namespace CmsWeb.Areas.Main.Controllers
             p.ValidateModelForNew(ModelState, false);
             if (!ModelState.IsValid)
                 return View("FormAbbreviated", m);
-            return View("list", m);
+            return View("List", m);
         }
         private SearchPersonModel NewPerson(int FamilyId, SearchModel m)
         {
@@ -195,13 +195,21 @@ namespace CmsWeb.Areas.Main.Controllers
                 case "contributor":
                     return AddContributor(id.Value, m);
                 case "taskdelegate":
-                    return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
+                    if (m.List.Count > 0)
+                        return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
+                    break;
                 case "taskdelegate2":
-                    return Json(new { close = true, how = "addselected2", url = "/Task/Action/", pid = m.List[0].PeopleId });
+                    if (m.List.Count > 0)
+                        return Json(new { close = true, how = "addselected2", url = "/Task/Action/", pid = m.List[0].PeopleId });
+                    break;
                 case "taskabout":
-                    return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                    if (m.List.Count > 0)
+                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                    break;
                 case "taskowner":
-                    return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId });
+                    if (m.List.Count > 0)
+                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId });
+                    break;
             }
             return new EmptyResult();
         }

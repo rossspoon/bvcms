@@ -7,22 +7,12 @@
         {
             color: #808080;
             font-size: 120%;
-            height: 27px;
-            line-height: 27px; /*  padding-left: 2em; 
-    position:relative;
-    left: -1em;
-    background: url(/content/bluebullet.gif) left center no-repeat;
-*/
         }
         h4
         {
             color: #908080;
             font-size: 90%;
-            padding-left: 11px; /*  padding-left: 2em; 
-    position:relative;
-    left: -1em;
-    background: url(/content/bluebullet.gif) left center no-repeat;
-*/
+            padding-left: 11px; 
         }
         .box
         {
@@ -97,7 +87,7 @@
 ") %>
     <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/<%=Model.qtesting %>"
     method="post">
-    <% Html.RenderPartial("List", Model); %>
+    <% Html.RenderPartial("Flow/List", Model); %>
     </form>
     <% } %>
 </asp:Content>

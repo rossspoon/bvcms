@@ -49,15 +49,15 @@
         <td><%=Model.Tickets %></td>
     </tr>
 <% }    
-   if (Model.Organization.RegistrationTypeId > 0)
+   if (Model.Amount.HasValue)
    { %>    
     <tr>
         <th>Amount:</th>
-        <td><%=Model.Amount.HasValue ? Model.Amount.Value.ToString("C") : ""%></td>
+        <td><%=Model.Amount.HasValue ? Model.Amount.Value.ToString("N") : ""%></td>
     </tr>
     <tr>
         <th>AmountPaid:</th>
-        <td><%=Model.AmountPaid.HasValue ? Model.AmountPaid.Value.ToString("C") : "" %>
+        <td><%=Model.AmountPaid.HasValue ? Model.AmountPaid.Value.ToString("N") : "" %>
         <% if (Model.PayLink.HasValue())
            { %>
         <a href="<%=Model.PayLink %>" target="_blank">paylink</a>

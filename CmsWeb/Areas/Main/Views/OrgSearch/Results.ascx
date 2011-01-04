@@ -2,6 +2,7 @@
 <table id="results" <%=Page.User.IsInRole("Edit") ? "class='edit'" : "" %>>
 <thead>
     <tr><td colspan="10">
+<div>Count: <%=Model.Count() %></div>
 <% Html.RenderPartial("Pager2", Model); %>
     </td></tr>
     <tr>

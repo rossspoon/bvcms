@@ -48,7 +48,8 @@ namespace CMSPresenter
         {
             //var pids = new int[] { 817023, 865610, 828611, 828612 };
 
-            var q11 = from p in DbUtil.Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
+            var noaddressok = DbUtil.Db.Setting("NoAddressOK", "false") == "true";
+            var q11 = from p in DbUtil.Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? 1 : p.ContributionOptionsId
                       let name = (p.ContributionOptionsId == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)

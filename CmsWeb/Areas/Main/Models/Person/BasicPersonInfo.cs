@@ -24,6 +24,7 @@ namespace CmsWeb.Models.PersonPage
         public string Suffix { get; set; }
         public string Maiden { get; set; }
         public int GenderId { get; set; }
+        public DateTime? Created { get; set; }
 
         public string HomePhone { get; set; }
         public string CellPhone { get; set; }
@@ -100,6 +101,7 @@ namespace CmsWeb.Models.PersonPage
                 Employer = p.EmployerOther,
                 First = p.FirstName,
                 GenderId = p.GenderId,
+                Created = p.CreatedDate,
                 Grade = p.Grade.ToString(),
                 HomePhone = p.Family.HomePhone.FmtFone(),
                 JoinDate = p.JoinDate,

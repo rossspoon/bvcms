@@ -484,7 +484,7 @@ namespace CmsWeb.Models
             if (phone.HasValue() && d == 10)
                 n++;
             if(n == 0)
-                modelState.AddModelError("dob", "valid birth date, email or phone required");
+                modelState.AddModelError("dob", "we require one of valid birthdate, email or phone to find your record");
 
             if (!Util.ValidEmail(email))
                 modelState.AddModelError("email", "valid email required");

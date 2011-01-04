@@ -95,6 +95,7 @@ namespace CmsWeb.Models.PersonPage
                     Employer = p.EmployerOther,
                     First = p.FirstName,
                     GenderId = p.GenderId,
+                    Created = p.CreatedDate,
                     Grade = p.Grade.ToString(),
                     HomePhone = p.Family.HomePhone,
                     JoinDate = p.JoinDate,

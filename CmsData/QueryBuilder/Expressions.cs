@@ -352,13 +352,14 @@ namespace CmsData
             return Compare(left, op, right);
         }
         internal static Expression RecentContributionCount(
-            ParameterExpression parm,
+            ParameterExpression parm, CMSDataContext Db,
             int days,
+            int? fund,
             CompareType op,
             int cnt)
         {
             Expression<Func<Person, int?>> pred = p =>
-                DbUtil.Db.ContributionCount(p.PeopleId, days);
+                Db.ContributionCount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -366,13 +367,14 @@ namespace CmsData
             return Compare(right, CompareType.NotEqual, right);
         }
         internal static Expression RecentContributionAmount(
-            ParameterExpression parm,
+            ParameterExpression parm, CMSDataContext Db,
             int days,
+            int? fund,
             CompareType op,
             decimal amt)
         {
             Expression<Func<Person, decimal?>> pred = p =>
-                DbUtil.Db.ContributionAmount(p.PeopleId, days);
+                Db.ContributionAmount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -380,14 +382,15 @@ namespace CmsData
             return Compare(right, CompareType.NotEqual, right);
         }
         internal static Expression ContributionAmount2(
-            ParameterExpression parm,
+            ParameterExpression parm, CMSDataContext Db,
             DateTime? start,
             DateTime? end,
+            int? fund,
             CompareType op,
             decimal amt)
         {
             Expression<Func<Person, decimal?>> pred = p =>
-                DbUtil.Db.ContributionAmount2(p.PeopleId, start.Value, end.Value);
+                Db.ContributionAmount2(p.PeopleId, start.Value, end.Value, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
             if (HttpContext.Current.User.IsInRole("Finance"))
@@ -410,7 +413,7 @@ namespace CmsData
             return Compare(right, CompareType.NotEqual, right);
         }
         internal static Expression IsTopGiver(
-            ParameterExpression parm,
+            ParameterExpression parm, CMSDataContext Db,
             int days,
             string top,
             CompareType op,
@@ -420,7 +423,7 @@ namespace CmsData
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;
-            var r = DbUtil.Db.TopGivers(top.ToInt(), mindt, DateTime.Now);
+            var r = Db.TopGivers(top.ToInt(), mindt, DateTime.Now);
             var topgivers = r.Select(g => g.PeopleId).ToList();
             Expression<Func<Person, bool>> pred = p =>
                 topgivers.Contains(p.PeopleId);
@@ -1421,11 +1424,17 @@ namespace CmsData
             CompareType op,
             int[] ids)
         {
-            Expression<Func<Person, bool>> pred = p =>
-                ids.Contains(p.CampusId.Value);
+            Expression<Func<Person, bool>> pred = null;
+            if (op == CompareType.IsNull)
+                pred = p => p.CampusId == null;
+            else if (op == CompareType.IsNotNull)
+                pred = p => p.CampusId != null;
+            else
+                pred = p => ids.Contains(p.CampusId.Value);
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
+
             return expr;
         }
         internal static Expression VolAppStatusCode(ParameterExpression parm,

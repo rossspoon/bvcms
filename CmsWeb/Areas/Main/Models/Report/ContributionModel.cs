@@ -85,9 +85,10 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             //var pids = new int[] { 817023, 865610, 828611, 828612 };
 
-            var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId)
-                      let option = (p.ContributionOptionsId ?? 0) == 0 ? 1 : p.ContributionOptionsId
-                      let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? 1 : p.SpouseContributionOptionsId
+            var noaddressok = Db.Setting("NoAddressOK", "false") == "true";
+            var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
+                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.ContributionOptionsId
+                      let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
                       let name = (option == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
                                  : (p.SpouseId == null ?

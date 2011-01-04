@@ -44,6 +44,7 @@ namespace CmsData
                                               CategoryTitle = (string)c.Attribute("Title").Value,
                                               Name = (string)f.Attribute("Name"),
                                               Title = (string)f.Attribute("Title"),
+                                              QuartersTitle = (string)f.Attribute("QuartersLabel"),
                                               DisplayAs = (string)f.Attribute("DisplayAs"),
                                               Type = FieldClass.Convert((string)f.Attribute("Type")),
                                               Params = (string)f.Attribute("Params"),

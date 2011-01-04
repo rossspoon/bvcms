@@ -40,9 +40,9 @@ namespace CmsWeb.Areas.Main.Models.Report
             this.PDF = PDF;
             CurrentTask = "Starting Up...";
             if (PDF)
-                OutputFile = HttpContext.Current.Server.MapPath("/contributions.pdf");
+                OutputFile = HttpContext.Current.Server.MapPath("/contributions_{0}.pdf".Fmt(Util.Host));
             else
-                OutputFile = HttpContext.Current.Server.MapPath("/contributions.txt");
+                OutputFile = HttpContext.Current.Server.MapPath("/contributions_{0}.txt").Fmt(Util.Host);
             Host = DbUtil.Db.Host;
         }
 

@@ -13,7 +13,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         private void SetHeaders(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
-            var s = DbUtil.Content(org != null ? org.Shell : null, DbUtil.Content("ShellDefault", ""));
+            var s = DbUtil.Content(org != null ? org.Shell : null, 
+                        DbUtil.Content("ShellDiv-" + id, 
+                                DbUtil.Content("ShellDefault", 
+                                        "")));
             if (s.HasValue())
             {
                 ViewData["hasshell"] = true;

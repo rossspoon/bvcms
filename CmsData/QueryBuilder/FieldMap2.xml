@@ -69,7 +69,7 @@
     <Field Name="FamilyHasChildrenAged" Title="Family Has Children Aged" DisplayAs="ChildrenAged&lt;={0}" Type="Bit" Params="Age" DataValueField="IdCode">
       A member of the family is specified age or under
     </Field>
-    <Field Name="FamilyHasChildrenAged2" Title="Family Has Children Aged Range" DisplayAs="ChildrenAged2={0}" Type="Bit" Params="Quarters" DataValueField="IdCode">
+    <Field Name="FamilyHasChildrenAged2" Title="Family Has Children Aged Range" DisplayAs="ChildrenAged2={0}" Type="Bit" QuartersLabel="Age Range" Params="Quarters" DataValueField="IdCode">
       A member of the family is specified age or under
     </Field>
     <Field Name="IsHeadOfHousehold" Title="Is Head of Household" Type="Bit" DataValueField="IdCode">
@@ -407,19 +407,19 @@
     <Field Name="DuplicateNames" Title="Duplicate Names" Type="Bit" DataValueField="IdCode">
       Record Has Duplicate Names on other records
     </Field>
-    <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="Integer" DisplayAs="RecentContributionCount({0})" Params="Days">
+    <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="Integer" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentContributionCount({0})" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0})" Params="Days">
+    <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="ContributionAmount2" Title="Contribution Amount History" Type="Number" DisplayAs="ContributionAmount2({0},{1})" Params="StartDate,EndDate">
+    <Field Name="ContributionAmount2" Title="Contribution Amount History" Type="Number" DisplayAs="ContributionAmount2({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="StartDate,EndDate,Quarters">
       Must have Finance role for this to work.
     </Field>
     <Field Name="ContributionChange" Title="Contribution Change Pct" Type="Number" DisplayAs="ContributionChange({0},{1})" Params="StartDate,EndDate">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" DataValueField="IdCode">
+    <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days" DataValueField="IdCode">
       Must have Finance role for this to work.
     </Field>
     <Field Name="PeopleExtra" Title="ExtraValue" Type="CodeStr" DataSource="ExtraValues">
