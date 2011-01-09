@@ -43,6 +43,9 @@ namespace CmsData
         }
         partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
+            if (HttpContext.Current == null)
+                return;
+            var o = HttpContext.Current.Items["attendinfo"] as CMSDataContext.AttendMeetingInfo1;
             var RequiredAttendTypesForVisitor = new List<int> 
             { 
                 (int)Attend.AttendTypeCode.VisitingMember, 
@@ -50,7 +53,6 @@ namespace CmsData
                 (int)Attend.AttendTypeCode.NewVisitor,
                 (int)Attend.AttendTypeCode.OtherClass
             };
-            var o = HttpContext.Current.Items["attendinfo"] as CMSDataContext.AttendMeetingInfo1;
             if (MemberTypeId == (int)OrganizationMember.MemberTypeCode.Visitor)
                 if (AttendanceTypeId.HasValue && !RequiredAttendTypesForVisitor.Contains(AttendanceTypeId.Value))
                 {

@@ -283,5 +283,92 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 return s;
         }
+#if DEBUG
+#else
+        [AcceptVerbs(HttpVerbs.Post)]
+#endif
+        public ActionResult RollList2(int id, string datetime)
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            var dt = DateTime.Parse(datetime);
+            return new RollListResult(id, dt);
+        }
+#if DEBUG
+#else
+        [AcceptVerbs(HttpVerbs.Post)]
+#endif
+        public ActionResult RecordAttend2(int id, string datetime, int PeopleId, bool Present)
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            var dt = DateTime.Parse(datetime);
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            RecordAttend2Extracted(id, PeopleId, Present, dt, u);
+            return new EmptyResult();
+        }
+#if DEBUG
+#else
+        [AcceptVerbs(HttpVerbs.Post)]
+#endif
+        public ActionResult RecordVisit2(int id, string datetime, int PeopleId)
+        {
+#if DEBUG
+            var uname = "david";
+#else
+            if (!Authenticate())
+                return Content("not authorized");
+            var uname = Request.Headers["username"];
+#endif
+            var dt = DateTime.Parse(datetime);
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+
+            RecordAttend2Extracted(id, PeopleId, true, dt, u);
+            return new RollListResult(id, dt);
+        }
+        private static void RecordAttend2Extracted(int id, int PeopleId, bool Present, DateTime dt, User u)
+        {
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
+            if (meeting == null)
+            {
+                meeting = new CmsData.Meeting
+                {
+                    OrganizationId = id,
+                    MeetingDate = dt,
+                    CreatedDate = Util.Now,
+                    CreatedBy = u.UserId,
+                    GroupMeetingFlag = false,
+                };
+                DbUtil.Db.Meetings.InsertOnSubmit(meeting);
+                DbUtil.Db.SubmitChanges();
+                Util.Email(Util.Smtp(), "david@bvcms.com",
+                    "david@bvcms.com;kworrell@bellevue.org",
+                    "meeting created with iphone on {0}".Fmt(Util.Host),
+                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>".Fmt(
+                    meeting.Organization.OrganizationName,
+                    Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId)),
+                    u.Name));
+            }
+            Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
+            DbUtil.Db.UpdateMeetingCounters(id);
+            var n = DbUtil.Db.Attends.Count(a => a.MeetingId == meeting.MeetingId && a.AttendanceFlag == true);
+            if (n == 0)
+            {
+                DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
+                DbUtil.Db.SubmitChanges();
+            }
+
+        }
     }
 }

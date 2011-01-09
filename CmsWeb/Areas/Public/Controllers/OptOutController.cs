@@ -38,6 +38,8 @@ namespace CmsWeb.Areas.Public.Controllers
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 var p = DbUtil.Db.LoadPersonById(a[0].ToInt());
+                if (p == null)
+                    return Content("Person not found in database");
                 ViewData["toemail"] = p.EmailAddress;
                 return View();
             }

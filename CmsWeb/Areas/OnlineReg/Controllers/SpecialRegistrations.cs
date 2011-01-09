@@ -42,7 +42,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             ViewData["returnval"] = slotinfo.status;
             return View("PickSlot", slotinfo);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ManageSubscriptions(string id)
         {
             if (!id.HasValue())
@@ -113,6 +112,31 @@ You have the following subscriptions:<br/>
 
             SetHeaders(m.divid);
             return View(m);
+        }
+        public ActionResult VoteLink(string id, string smallgroup)
+        {
+            if (!id.HasValue())
+                return Content("bad link");
+
+            Guid guid;
+            if (!Guid.TryParse(id, out guid))
+                return Content("invalid link");
+            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid);
+            if (ot == null)
+                return Content("invalid link");
+            if (ot.Used)
+                return Content("link used");
+            if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                return Content("link expired");
+            var a = ot.Querystring.Split(',');
+            var oid = a[0].ToInt();
+            var pid = a[1].ToInt();
+            var om = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
+            om.AddToGroup(DbUtil.Db, smallgroup);
+            ot.Used = true;
+            DbUtil.Db.SubmitChanges();
+
+            return Content("Thanks for your response");
         }
     }
 }

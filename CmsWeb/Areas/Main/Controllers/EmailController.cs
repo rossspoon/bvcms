@@ -42,8 +42,8 @@ namespace CmsWeb.Areas.Main.Controllers
 
             if (emailqueue.SendWhen.HasValue)
                 return Json(new { id = 0, content = "<h2>Emails Queued</h2>" });
-
-            if (DbUtil.Db.EmailQueueTos.Count(et => et.Id == emailqueue.Id) < 10)
+            var n = DbUtil.Db.Setting("MassEmailerThreshold", "10").ToInt();
+            if (DbUtil.Db.EmailQueueTos.Count(et => et.Id == emailqueue.Id) < n)
                 // Send Immediately, bypass Service Broker
                 Emailer.SendPeopleEmail(DbUtil.Db, Util.SysFromEmail, Util.CmsHost, emailqueue);
             else

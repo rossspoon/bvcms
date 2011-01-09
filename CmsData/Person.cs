@@ -230,63 +230,47 @@ namespace CmsData
             var toperson = Db.People.Single(p => p.PeopleId == otherid);
             foreach (var om in this.OrganizationMembers)
             {
-                var om2 = Db.OrganizationMembers.SingleOrDefault(o => o.PeopleId == otherid && o.OrganizationId == om.OrganizationId);
-                if (om2 == null)
-                {
-                    om2 = new OrganizationMember
-                    {
-                        CreatedBy = om.CreatedBy,
-                        CreatedDate = om.CreatedDate,
-                        EnrollmentDate = om.EnrollmentDate,
-                        InactiveDate = om.InactiveDate,
-                        MemberTypeId = om.MemberTypeId,
-                        ModifiedBy = Util.UserId1,
-                        ModifiedDate = Util.Now,
-                        PeopleId = otherid,
-                        AttendPct = om.AttendPct,
-                        AttendStr = om.AttendStr,
-                        LastAttended = om.LastAttended,
-                        Pending = om.Pending,
-                        Request = om.Request,
-                        Grade = om.Grade,
-                        Amount = om.Amount,
-                        RegisterEmail = om.RegisterEmail,
-                        ShirtSize = om.ShirtSize,
-                        Tickets = om.Tickets,
-                        UserData = om.UserData,
-                    };
-                    om.Organization.OrganizationMembers.Add(om2);
-                    foreach (var m in om.OrgMemMemTags)
-                        om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
-                }
+                var om2 = OrganizationMember.InsertOrgMembers(Db, om.OrganizationId, otherid, om.MemberTypeId, om.EnrollmentDate.Value, om.InactiveDate, om.Pending ?? false);
+                om2.CreatedBy = om.CreatedBy;
+                om2.CreatedDate = om.CreatedDate;
+                om2.AttendPct = om.AttendPct;
+                om2.AttendStr = om.AttendStr;
+                om2.LastAttended = om.LastAttended;
+                om2.Request = om.Request;
+                om2.Grade = om.Grade;
+                om2.Amount = om.Amount;
+                om2.RegisterEmail = om.RegisterEmail;
+                om2.ShirtSize = om.ShirtSize;
+                om2.Tickets = om.Tickets;
+                om2.UserData = om.UserData;
+                Db.SubmitChanges();
                 foreach (var m in om.OrgMemMemTags)
-                    Db.OrgMemMemTags.DeleteOnSubmit(m);
-                Db.OrganizationMembers.DeleteOnSubmit(om);
+                    om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
+                Db.SubmitChanges();
+                Db.OrgMemMemTags.DeleteAllOnSubmit(om.OrgMemMemTags);
+                Db.SubmitChanges();
             }
+            Db.OrganizationMembers.DeleteAllOnSubmit(this.OrganizationMembers);
+            Db.SubmitChanges();
+
             foreach (var et in this.EnrollmentTransactions)
                 et.PeopleId = otherid;
-            var q = from a in this.Attends
-                    where !toperson.Attends.Any(a2 => a2.MeetingId == a.MeetingId)
+            Db.SubmitChanges();
+
+            var q = from a in Db.Attends
+                    where a.PeopleId == this.PeopleId
+                    let oa = Db.Attends.SingleOrDefault(a2 => a2.MeetingId == a.MeetingId && a2.PeopleId == otherid)
+                    where oa == null
                     select a;
-            foreach (var a in q)
+            var list = q.ToList();
+            foreach (var a in list)
             {
-                var n = new Attend
-                {
-                    PeopleId = otherid,
-                    MeetingId = a.MeetingId,
-                    OrganizationId = a.OrganizationId,
-                    MeetingDate = a.MeetingDate,
-                    AttendanceFlag = a.AttendanceFlag,
-                    OtherOrgId = a.OtherOrgId,
-                    OtherAttends = a.OtherAttends,
-                    AttendanceTypeId = a.AttendanceTypeId,
-                    CreatedBy = a.CreatedBy,
-                    CreatedDate = a.CreatedDate,
-                    MemberTypeId = a.MemberTypeId,
-                };
-                Db.Attends.DeleteOnSubmit(a);
-                Db.Attends.InsertOnSubmit(n);
+                a.PeopleId = otherid;
+                Db.SubmitChanges();
             }
+            Db.Attends.DeleteAllOnSubmit(list);
+            Db.SubmitChanges();
+
             var q2 = from a in this.Attends
                      where toperson.Attends.Any(a2 => a2.MeetingId == a.MeetingId)
                      select a;

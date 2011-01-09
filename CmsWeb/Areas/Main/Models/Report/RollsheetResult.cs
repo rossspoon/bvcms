@@ -96,12 +96,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                 }
                 else
                 {
-                    if (groups == null)
-                        groups = new int[] { 0 };
+                    var Groups = o.Groups;
+                    if (Groups == null)
+                        Groups = new int[] { 0 };
                     var q = from om in DbUtil.Db.OrganizationMembers
                             where om.OrganizationId == o.OrgId
-                            where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups[0] == 0)
-                            where !groups.Contains(-1) || (groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
+                            where om.OrgMemMemTags.Any(mt => Groups.Contains(mt.MemberTagId)) || (Groups[0] == 0)
+                            where !Groups.Contains(-1) || (Groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
                             where (om.Pending ?? false) == false
                             where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
                             where om.EnrollmentDate <= Util.Now

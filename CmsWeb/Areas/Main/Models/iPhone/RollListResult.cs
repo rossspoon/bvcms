@@ -12,19 +12,32 @@ namespace CmsWeb.Models.iPhone
 {
     public class RollListResult : ActionResult
     {
-        private CmsData.Meeting meeting;
+        int? MeetingId;
+        int OrgId;
+        DateTime MeetingDate;
         public RollListResult(CmsData.Meeting meeting)
         {
-            this.meeting = meeting;
+            MeetingId = meeting.MeetingId;
+            OrgId = meeting.OrganizationId;
+            MeetingDate = meeting.MeetingDate.Value;
+        }
+        public RollListResult(int orgid, DateTime dt)
+        {
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingDate == dt && mm.OrganizationId == orgid);
+            if (meeting != null)
+                MeetingId = meeting.MeetingId;
+            OrgId = orgid;
+            MeetingDate = dt;
         }
         private IEnumerable<AttendInfo> RollList()
         {
             var m = new RollsheetModel();
-            var q = from a in meeting.Attends
+            var q = from a in DbUtil.Db.Attends
+                    where a.MeetingId == MeetingId
                     where a.AttendanceFlag == true
                     select a;
 
-            var q1 = from p in m.FetchOrgMembers(meeting.OrganizationId, null)
+            var q1 = from p in m.FetchOrgMembers(OrgId, null)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new
@@ -34,7 +47,7 @@ namespace CmsWeb.Models.iPhone
                          Attended = pa != null ? pa.AttendanceFlag : false,
                          Member = true
                      };
-            var q2 = from p in m.FetchVisitors(meeting.OrganizationId, meeting.MeetingDate.Value)
+            var q2 = from p in m.FetchVisitors(OrgId, MeetingDate)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new
@@ -70,7 +83,7 @@ namespace CmsWeb.Models.iPhone
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {
                 w.WriteStartElement("RollList");
-                w.WriteAttributeString("MeetingId", meeting.MeetingId.ToString());
+                w.WriteAttributeString("MeetingId", MeetingId.ToString());
 
                 foreach (var p in RollList())
                 {

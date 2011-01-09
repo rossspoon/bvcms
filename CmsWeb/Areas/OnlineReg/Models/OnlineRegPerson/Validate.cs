@@ -24,7 +24,7 @@ namespace CmsWeb.Models
                         ModelState.AddModelError("DOB", "birthday outside age allowed range");
                 }
         }
-        public void ValidateModelForFind(ModelStateDictionary ModelState)
+        public void ValidateModelForFind(ModelStateDictionary ModelState, OnlineRegModel m)
         {
             IsValidForContinue = true; // true till proven false
             if (!this.PeopleId.HasValue)
@@ -74,10 +74,10 @@ Please call the church to resolve this before we can complete your information."
                     }
                     else if (org != null)
                     {
-                        var m = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
+                        var om = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
                         if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
                         {
-#if DEBUG
+#if DEBUG2
 #else
                             if (person.Users.Count() > 0)
                             {
@@ -95,7 +95,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (m != null && org.RegistrationTypeId != (int)Organization.RegistrationEnum.ChooseSlot)
+                        else if (om != null && org.RegistrationTypeId != (int)Organization.RegistrationEnum.ChooseSlot)
                         {
 #if DEBUG
 #else
@@ -108,12 +108,17 @@ Please call the church to resolve this before we can complete your account.<br /
                             var q = from s in org.ValidateOrgs.Split(',')
                                     select s.ToInt();
                             var a = q.ToArray();
-                            if (!person.OrganizationMembers.Any(om => a.Contains(om.OrganizationId)))
+                            if (!person.OrganizationMembers.Any(mm => a.Contains(mm.OrganizationId)))
                             {
                                 ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
                                 IsValidForContinue = false;
                             }
                         }
+                    }
+                    if (m.List.Count(ii => ii.PeopleId == this.PeopleId) > 1)
+                    {
+                        ModelState.AddModelError("ErrorTarget", "Person already in Pending Registrations");
+                        IsValidForContinue = false;
                     }
                 }
                 else if (count > 1)

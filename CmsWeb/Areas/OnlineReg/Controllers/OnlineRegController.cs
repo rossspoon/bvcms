@@ -106,7 +106,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (m.classid.HasValue)
                 m.orgid = m.classid;
             var p = m.LoadExistingPerson(id);
-            p.ValidateModelForFind(ModelState);
+            p.ValidateModelForFind(ModelState, m);
             if (!ModelState.IsValid)
                 return View("Flow/List", m);
             m.List[m.List.Count - 1] = p;
@@ -148,7 +148,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
-            p.ValidateModelForFind(ModelState);
+            p.ValidateModelForFind(ModelState, m);
             if (p.org != null && p.Found == true)
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
@@ -208,7 +208,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             p.classid = m.classid;
             p.PeopleId = null;
-            p.ValidateModelForFind(ModelState);
+            p.ValidateModelForFind(ModelState, m);
             if (p.ManageSubscriptions())
             {
                 p.OtherOK = true;

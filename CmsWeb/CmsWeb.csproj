@@ -875,10 +875,10 @@
     <Content Include="Areas\Main\Views\Reports\AttendanceDetail.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionStatements.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressEdit.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSlots.aspx" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressEdit.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ChooseClass.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmAccount.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmTest.aspx" />
@@ -886,6 +886,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageSub.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmDuePaid.aspx" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Copy of AddressEdit2.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ProcessPayment.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\TransactionTest.aspx" />

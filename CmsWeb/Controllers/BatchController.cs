@@ -34,7 +34,6 @@ namespace CmsWeb.Areas.Setup.Controllers
             {
                 var sb = new StringBuilder();
                 sb.Append("<h2>done</h2>\n<p><a href='/'>home</a></p>\n");
-                var Db = new CMSDataContext(Util.GetConnectionString(host));
                 using (var csv = new CsvReader(new StringReader(text), false, '\t'))
                 {
                     while (csv.ReadNextRecord())
@@ -47,10 +46,19 @@ namespace CmsWeb.Areas.Setup.Controllers
 
                         var fromid = csv[0].ToInt();
                         var toid = csv[1].ToInt();
+                        var Db = new CMSDataContext(Util.GetConnectionString(host));
                         var p = Db.LoadPersonById(fromid);
                         if (p == null)
                         {
                             sb.AppendFormat("fromid {0} not found<br/>\n", fromid);
+                            Db.Dispose();
+                            continue;
+                        }
+                        var tp = Db.LoadPersonById(toid);
+                        if (tp == null)
+                        {
+                            sb.AppendFormat("toid {0} not found<br/>\n", toid);
+                            Db.Dispose();
                             continue;
                         }
                         try
@@ -61,6 +69,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                         catch (Exception ex)
                         {
                             sb.AppendFormat("error on move ({0}, {1}): {2}<br/>\n", fromid, toid, ex.Message);
+                            Db.Dispose();
                             continue;
                         }
                         try
@@ -71,6 +80,10 @@ namespace CmsWeb.Areas.Setup.Controllers
                         catch (Exception ex)
                         {
                             sb.AppendFormat("error on delete ({0}): {1}<br/>\n", fromid, ex.Message);
+                        }
+                        finally
+                        {
+                            Db.Dispose();
                         }
                     }
                 }

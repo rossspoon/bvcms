@@ -566,7 +566,9 @@ namespace CmsWeb.Models
         {
             if (toid == Util.UserPeopleId.Value)
                 return null; // cannot delegate to self
-            var task = DbUtil.Db.Tasks.Single(t => t.Id == taskid);
+            var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == taskid);
+            if (task == null)
+                return null;
             task.StatusId = (int)Task.StatusCode.Pending;
             task.CoOwnerId = toid;
 

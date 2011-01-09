@@ -13,6 +13,7 @@ using System.Text;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace CmsData
 {
@@ -57,6 +58,37 @@ namespace CmsData
                 else
                     text = text.Replace("{first}", qp.PreferredName);
                 text = text.Replace("{occupation}", qp.OccupationOther);
+
+                text = text.Replace("{}", qp.OccupationOther);
+
+            	var re = new Regex(@"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}", RegexOptions.Singleline | RegexOptions.Multiline);
+                var list = new Dictionary<string, OneTimeLink>();
+                var ma = re.Match(text);
+                while (ma.Success)
+                {
+                    var votelink = ma.Value;
+                    var orgid = ma.Groups["orgid"].Value;
+                    var smallgroup = ma.Groups["sg"].Value;
+                    var qs = @"{0},{1}".Fmt(orgid, To.PeopleId);
+                    OneTimeLink ot;
+                    if (list.ContainsKey(qs))
+                        ot = list[qs];
+                    else 
+                    {
+                        ot = new OneTimeLink
+                        {
+                            Id = Guid.NewGuid(),
+                            Querystring = qs
+                        };
+                        Db.OneTimeLinks.InsertOnSubmit(ot);
+                        Db.SubmitChanges();
+                        list.Add(qs, ot);
+                    }
+                    var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}".Fmt(ot.Id, smallgroup));
+                    text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, smallgroup));
+                    ma = ma.NextMatch();
+                }
+
                 var aa = qp.EmailAddress.SplitStr(",;").ToList();
                 if (To.OrgId.HasValue)
                 {
