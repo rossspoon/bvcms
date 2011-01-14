@@ -1,112 +1,211 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <tr>
-    <td nowrap="nowrap"><label id="personedit" for="first">First Name</label> <%=Html.Required() %></td>
-    <td><input id="first" type="text" name="m.List[<%=Model.index%>].first" value="<%=Model.first%>" /></td>
-    <td>middle:</td>
-    <td><input type="text" name="m.List[<%=Model.index%>].middle" class="short" value="<%=Model.middle%>" /></td>
-    <td width="100%"><%= Html.ValidationMessage("first") %> </td>
+    <td align="right" colspan="2">
+        <%=Html.Required() %>
+        required
+    </td>
+    <td>
+    </td>
 </tr>
 <tr>
-    <td nowrap="nowrap"><label for="last">Last Name</label> <%=Html.Required() %></td>
-    <td nowrap="nowrap"><input id="last" type="text" name="m.List[<%=Model.index%>].last" value="<%=Model.last%>" /></td>
-    <td>suffix:</td>
-    <td><input type="text" name="m.List[<%=Model.index%>].suffix" class="short" value="<%=Model.suffix%>" /></td>
-    <td width="100%"><%= Html.ValidationMessage("last") %></td>
-</tr>
- <tr>
-    <td nowrap="nowrap"><label for="dob">Date of Birth</label> <%=Html.NotRequired(!Model.RequiredDOB()) %></td>
-    <td nowrap="nowrap"><input id="dob" type="text" name="m.List[<%=Model.index%>].dob" value="<%=Model.dob%>" class="dob" title="m/d/y, mmddyy, mmddyyyy" /></td>
-    <td>(m/d/yy)</td>
-    <td nowrap="nowrap">age: <span id="age"><%=Model.age %></span></td>
-    <td width="100%"><%= Html.ValidationMessage("dob") %></td>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.Required() %>
+        <label id="personedit" for="first">
+            First</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("first"), Model.first)%>
+        <div>
+            <%= Html.ValidationMessage(Model.inputname("first"))%></div>
+    </td>
 </tr>
 <tr>
-    <td><label for="phone">Phone</label> <%=Model.ShowAddress == true? Html.NotRequired(!Model.RequiredPhone()) : "" %></td>
-    <td><input type="text" name="m.List[<%=Model.index%>].phone" value="<%=Model.phone%>" /></td>
-    <td colspan="3"><%= Html.ValidationMessage("phone")%></td>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.NotRequired() %>
+        <label for="middle">
+            Middle</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("middle"), Model.middle)%>
+    </td>
 </tr>
 <tr>
-    <td nowrap="nowrap"><label for="email">Contact Email</label> <%=Html.Required() %></td>
-    <td><input type="text" name="m.List[<%=Model.index%>].email" value="<%=Model.email%>" /></td>
-    <td colspan="3"><%= Html.ValidationMessage("email")%></td>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.Required() %>
+        <label for="last">
+            Last</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("last"), Model.last)%>
+        <div>
+            <%= Html.ValidationMessage(Model.inputname("last"))%></div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.NotRequired() %>
+        <label for="last">
+            Suffix</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("suffix"), Model.suffix, new { @class = "short" })%>
+    </td>
+</tr>
+<tr>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.IsRequired(Model.RequiredDOB()) %>
+        <label for="dob">
+            Birthday</label>
+    </td>
+    <td>
+        <%=Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })%>
+        (<span id="age"><%=Model.age %></span>)
+        <div>
+            <%= Html.ValidationMessage(Model.inputname("dob"))%></div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" nowrap="nowrap">
+        <%=Model.ShowAddress == true? Html.IsRequired(Model.RequiredPhone()) : Html.NotRequired() %>
+        <label for="phone">
+            Phone</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("phone"), Model.phone)%>
+        <div>
+            <%= Html.ValidationMessage(Model.inputname("phone"))%></div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" nowrap="nowrap">
+        <%=Html.Required() %>
+        <label for="email">
+            Email</label>
+    </td>
+    <td>
+        <%=Html.TextBox(Model.inputname("email"), Model.email)%>
+        <div>
+            <%= Html.ValidationMessage(Model.inputname("email"))%></div>
+    </td>
 </tr>
 <%
     if (Model.ShowAddress)
     { %>
 <% Html.RenderPartial("Flow/AddressEdit", Model); %>
-<tr><td><%=Html.Required() %> Required</td>
+<tr>
+    <td>
+    </td>
 <%      if (Model.ManageSubscriptions())
         { %>
-    <td colspan="4">
+    <td>
         <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
 <%          if (Model.age >= 16 || !Model.birthday.HasValue)
-            { %>                    
-        <input type="checkbox" name="m.List[<%=Model.index %>].CreatingAccount" value = "true" <%=Model.CreatingAccount == true ? "checked='checked'" : "" %> /> Create Account (optional)
+            { %>
+        <%=Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)%>
+        Create Account (optional)
 <%          } %>
     </td>
 <%      }
         else
         { %>
-    <td colspan="4"><a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a></td>
+    <td>
+        <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
+    </td>
 <%      } %>
 </tr>
 <%  }
     else
     { %>
-<tr><td valign="top"><div class="blue"><%=Html.Required() %> Required</div></td>
-    <td valign="top" colspan="5">
-    <table><tr>
-    <td>
 <%      if (!Model.Found.HasValue)
         { %>
+<tr>
+    <td colspan="2" align="right">
         <script type="text/javascript">
             $("div.instructions").hide();
             $("div.instructions.find").show();
         </script>
-        <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Find Record</a>
+        <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Find Profile</a>
         <%=Html.ValidationMessage("classidguest")%>
+    </td>
+</tr>
 <%      }
         else
         { %>
-       <div class="blue"><%=Model.NotFoundText %></div>
-       <a style="display:inline-block" href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Try Find Again</a>
-<%          if (Model.IsValidForContinue && !Model.MemberOnly() && Model.orgid != Util.CreateAccountCode)
-            { %>
-       or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">Add a New Record</a>
-<%          }
-            else if (Model.orgid == Util.CreateAccountCode)
-            { %>
-       <p class="blue">Call the church if you think your record should be in the system.
-       It may be that we are missing some information on your record that we need to identify you
-       like a phone number, date of birth or email address.</p>
-<%          } %>
+<tr>
+    <td colspan="2">
+        <div>
+            <%= Html.ValidationMessage("findn") %></div>
+        <div>
+            <%=Model.NotFoundText %></div>
     </td>
+</tr>
 <%          if (Model.Found == false)
             { %>
-        <td valign="bottom">
+<tr>
+    <td align="right" colspan="2">
 <%              if (Model.index > 0 || Model.LoggedIn == true)
                 { %>
-        <span class="blue">Add new person to which family?</span><br />
-        <input name="m.List[<%=Model.index%>].whatfamily" type="radio" value="3" /> New Family
+        <table>
+            <tr>
+                <td align="left">
+                    Add to which family?
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <%=Html.RadioButton(Model.inputname("whatfamily"), "3") %>
+                    New
+                </td>
+            </tr>
 <%              }
                 else
                 { %>
-        <input name="m.List[<%=Model.index%>].whatfamily" type="hidden" value="3" />
+            <%=Html.Hidden(Model.inputname("whatfamily"), "3") %>
 <%              }
                 if (Model.index > 0)
                 { %>
-        <br /><input name="m.List[<%=Model.index%>].whatfamily" type="radio" value="2" /> Previous Family
+            <tr>
+                <td align="left">
+                    <%=Html.RadioButton(Model.inputname("whatfamily"), "2") %>
+                    Previous
+                </td>
+            </tr>
 <%              }
                 if (Model.LoggedIn == true)
                 { %>
-        <br /><input name="m.List[<%=Model.index%>].whatfamily" type="radio" value="1" /> My Family
+            <tr>
+                <td align="left">
+                    <%=Html.RadioButton(Model.inputname("whatfamily"), "1") %>
+                    Mine
+                </td>
+            </tr>
 <%              } %>
-        <div><%=Html.ValidationMessage("whatfamily")%></div>
-        </td>
-        <td></td>
-<%          }
-        } %>
-    </tr></table>
+            <tr>
+                <td align="left">
+                    <%=Html.ValidationMessage(Model.inputname("whatfamily"))%>
+                </td>
+            </tr>
+        </table>
     </td>
 </tr>
-<%  } %>
+<%          } %>
+<tr>
+    <td colspan="2" align="right">
+        <a style="display: inline-block" href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">
+            Search Again</a>
+<%          if (Model.IsValidForContinue && !Model.MemberOnly() && Model.orgid != Util.CreateAccountCode)
+            { %>
+        or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">
+            Add New Profile</a>
+<%          }
+            else if (Model.orgid == Util.CreateAccountCode)
+            { %>
+        <p>
+            Call the church if you think your record should be in the system. It may be that
+            we are missing some information on your record that we need to identify you like
+            a phone number, date of birth or email address.</p>
+<%          } %>
+    </td>
+</tr>
+<%      }
+    } %>

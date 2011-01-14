@@ -66,7 +66,6 @@
 <%      } %>
                 </div>
 <%  } %>
-                <span><%= Html.ValidationMessage("findn") %></span>
                 <table class="particpant" style='<%=!p.Finished() ? "": "display: none" %>'>
 <%  if (p.ShowDisplay())
     // Already found

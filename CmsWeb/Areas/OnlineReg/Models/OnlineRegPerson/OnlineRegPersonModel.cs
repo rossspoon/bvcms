@@ -69,6 +69,10 @@ namespace CmsWeb.Models
         public string grade { get; set; }
         public int? ntickets { get; set; }
         public string option { get; set; }
+        public string inputname(string field) 
+        {
+            return "m.List[" + index + "]." + field;
+        }
         [OptionalField]
         private string _Option2;
         public string option2

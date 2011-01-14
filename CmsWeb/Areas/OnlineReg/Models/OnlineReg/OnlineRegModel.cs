@@ -175,10 +175,10 @@ namespace CmsWeb.Models
                 {
                     divid = divid,
                     orgid = orgid,
-                    first = "",
-                    last = "",
+                    first = "David",
+                    last = "Carroll",
                     dob = "",
-                    email = "david@davidcarroll.name",
+                    email = "david@bvcms.com",
                     phone = "",
                     LoggedIn = false,
                 }

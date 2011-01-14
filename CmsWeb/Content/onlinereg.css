@@ -1,56 +1,41 @@
 ﻿body
 {
     background-color: #FFFFFF;
-    color: #696969;
+}
+div.regform
+{    
+    color: #333;
     font-family: Verdana,Helvetica,Sans-Serif;
-    font-size: 0.75em;
     margin: 0;
     padding: 20px;
+    font-size:15px;
+    width: 500px;
 }
-#container {
-   min-height:100%;
-   position:relative;
-}
-#body {
-   padding:1px;
-   padding-bottom:60px;   /* Height of the footer */
-}
-#footer {
-   position:absolute;
-   bottom:0;
-   width:100%;
-   text-align: center;
-   font-size: 85%;
-   height:60px;   /* Height of the footer */
+div.regform table
+{
+    font-family: Verdana;
+    font-size: 15px;
 }
 a:link
 {
-    color: #034AF3;
+    color: #333;
     text-decoration: underline;
 }
 a:visited
 {
-    color: #505ABC;
+    color: #333;
 }
 a:hover
 {
-    color: #1D60FF;
-    text-decoration: none;
+    color: #333;
 }
 a:active
 {
-    color: #12EB87;
-}
-p, ul
-{
-    line-height: 1.6em;
-    margin-bottom: 20px;
+    color: #333;
 }
 h1, h2, h3, h4, h5, h6
 {
     color: #000000;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 1.5em;
 }
 h1
 {
@@ -73,92 +58,6 @@ h4
 h5, h6
 {
     font-size: 1em;
-}
-.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
-{
-    margin-top: 0;
-}
-.page
-{
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-}
-#header
-{
-    color: #000000;
-    margin-bottom: 0;
-    min-height: 4em;
-    padding: 0;
-    position: relative;
-    height: 95px;
-}
-#header h1
-{
-    border: medium none;
-    color: #FFFFFF;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 32px !important;
-    font-weight: bold;
-    line-height: 2em;
-    margin: 0;
-    padding: 5px 0;
-}
-#main
-{
-    background-color: #FFFFFF;
-    margin-bottom: 30px;
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-ul#menu
-{
-    border-bottom: 1px solid #5C87B2;
-    margin: 0;
-    padding: 0 0 2px;
-    position: relative;
-    text-align: right;
-}
-ul#menu li
-{
-    display: inline;
-    list-style-image: none;
-    list-style-position: outside;
-    list-style-type: none;
-}
-ul#menu li#greeting
-{
-    color: #FFFFFF;
-    font-weight: bold;
-    line-height: 2.8em;
-    padding: 10px 20px;
-    text-decoration: none;
-}
-ul#menu li a
-{
-    background-color: #E8EEF4;
-    color: #034AF3;
-    font-weight: bold;
-    line-height: 2.8em;
-    padding: 10px 20px;
-    text-decoration: none;
-}
-ul#menu li a:hover
-{
-    background-color: #FFFFFF;
-    text-decoration: none;
-}
-ul#menu li a:active
-{
-    background-color: #A6E2A6;
-    text-decoration: none;
-}
-ul#menu li.selected a
-{
-    background-color: #FFFFFF;
-    color: #000000;
 }
 fieldset
 {
@@ -229,15 +128,9 @@ legend
     background: #e6e7e9;
     padding: 0;
 }
-input[type="text"]
+input[type="text"], input[type="password"]
 {
     border: 1px solid #CCCCCC;
-    width: 200px;
-}
-input[type="password"]
-{
-    border: 1px solid #CCCCCC;
-    width: 200px;
 }
 textarea
 {
@@ -267,10 +160,6 @@ table#slots th
 .error
 {
     color: Red;
-}
-#menucontainer
-{
-    margin-top: 40px;
 }
 div#title
 {
@@ -395,45 +284,17 @@ table#leg td
 }
 form.DisplayEdit input[type=text]
 {
+    border: 1px solid #CCCCCC;
     width: 20em;
+}
+#dob
+{
+    width: 15em;
 }
 div.wraparound
 {
     width: 12em;
 }
-/* a.submitbutton,a.button {
-  padding:5px;
-    border-color:#D9DFEA #0E1F5B #0E1F5B #D9DFEA;
-    background-color:#3B5998;
-  border: 1px solid;
-    color:#FFFFFF;
-  text-decoration:none;
-}*/
-a.bt {
-  border-radius:            3px;
-  -moz-border-radius:       3px;
-  -webkit-border-radius:    3px; 
-  
-  display:                  inline-block;
-  padding:                  4px 6px 2px;
-  padding-bottom:          4px; 
-  
-  text-decoration:          none;
-  text-align:               center;
-  
-  background:               #f9f9f9;
-  color:                    black;
-  
-  border:                   1px solid;
-    border-top-color:       #ccc;
-    border-left-color:      #ccc;
-    border-right-color:     #bbb;
-    border-bottom-color:    #bbb;
-}
-  
-  a.bt:hover { 
-    border-color:           #99ccff;  
-  }
 td.alt0
 {
     background-color: #ddc;
@@ -450,19 +311,47 @@ td.alt1
 }
 form.DisplayEdit input.short 
 {
-    width: 1.5em;
+    width: 4em;
 }
 #username,#password
 {
     width: 12em;
 }
-#subs h3
+.instruct
 {
-    margin: 0;
-    color: #444;
+    color: #808080;
+    font-size: 120%;
 }
-#subs h4
+h4
 {
-    margin: 2px 0 5px 0;
-    color: #666;
-}   
+    color: #908080;
+    font-size: 90%;
+    padding-left: 11px; 
+}
+.box
+{
+    border-width: 1px;
+    border-color: #808080;
+    border-style: solid;
+    padding-left: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+a.close
+{
+    float: right;
+}
+div.instructions.find, div.instructions.options
+{
+    display: none;
+}
+.submitbutton
+{
+    font-size: 90%;
+}
+.asterisk
+{
+    color: Red;
+    font-weight: bold;
+    font-family: monospace;
+}

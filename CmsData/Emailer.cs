@@ -123,7 +123,8 @@ namespace CmsData
                         text = text.Replace("{fromemail}", From.Address);
                         text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                        Util.SendMsg(smtp, SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
+                        if (Db.Setting("sendemail", "true") != "false")
+                            Util.SendMsg(smtp, SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
                         To.Sent = DateTime.Now;
 
                         sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(qp.Name, ad, To.PeopleId));
@@ -167,8 +168,11 @@ namespace CmsData
         {
             sb.Append("</pre>\r\n<h2>{0}</h2>".Fmt(subject));
             sb.Append(body);
-            Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
-            Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
+            if (Db.Setting("sendemail", "true") != "false")
+            {
+                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
+                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
+            }
             sb.Length = 0;
             sb.Append("<pre>\r\n");
         }

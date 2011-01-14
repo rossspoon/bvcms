@@ -13,63 +13,63 @@
    { %>
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
-        <td><%= Html.DropDownList3("", "m.List[" + Model.index + "].shirtsize", Model.ShirtSizes(), Model.shirtsize)%></td>
-        <td colspan="2"><%= Html.ValidationMessage("shirtsize")%></td>
+        <td><%= Html.DropDownList3("", Model.inputname("shirtsize"), Model.ShirtSizes(), Model.shirtsize)%>
+            <div><%= Html.ValidationMessage(Model.inputname("shirtsize"))%></div></td>
     </tr>
 <% } 
    if (Model.org.AskRequest == true)
    { %>
     <tr>
         <td><label for="request"><%=Util.PickFirst(Model.org.RequestLabel, "Request") %></label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].request" value="<%=Model.request%>" maxlength="100" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("request") %></td>
+        <td><%=Html.TextBox(Model.inputname("request"), Model.request, new { maxlength = "100" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("request")) %></div></td>
     </tr>
 <% } 
    if (Model.org.AskGrade == true)
    { %>
     <tr>
-        <td><label for="grade">Grade completed<br />(during event)</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].grade" value="<%=Model.grade%>" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("grade") %></td>
+        <td><label for="grade"><%=Util.PickFirst(Model.org.GradeLabel, "Grade") %></label></td>
+        <td><%=Html.TextBox(Model.inputname("grade"), Model.grade) %>
+            <div><%= Html.ValidationMessage(Model.inputname("grade")) %></div></td>
     </tr>
 <% } 
    if (Model.org.AskEmContact == true)
    { %>
     <tr>
         <td><label for="emcontact">Emergency Friend</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].emcontact" value="<%=Model.emcontact%>" maxlength="100" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("emcontact")%></td>
+        <td><%=Html.TextBox(Model.inputname("emcontact"), Model.emcontact, new { maxlength = "100" })%>
+        <td colspan="2"><%= Html.ValidationMessage(Model.inputname("emcontact"))%></td>
     </tr>
     <tr>
         <td><label for="emphone">Emergency Phone</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].emphone" value="<%=Model.emphone%>" maxlength="15" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("emphone")%></td>
+        <td><%=Html.TextBox(Model.inputname("emphone"), Model.emphone, new { maxlength = "15" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("emphone"))%></div></td>
     </tr>
 <% } 
    if (Model.org.AskInsurance == true)
    { %>
     <tr>
         <td><label for="insurance">Health Insurance Carrier</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].insurance" value="<%=Model.insurance%>" maxlength="100" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("insurance")%></td>
+        <td><%=Html.TextBox(Model.inputname("insurance"), Model.insurance, new { maxlength = "100" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("insurance"))%></div></td>
     </tr>
     <tr>
         <td><label for="policy">Policy #</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].policy" value="<%=Model.policy%>" maxlength="100" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("policy")%></td>
+        <td><%=Html.TextBox(Model.inputname("policy"), Model.policy, new { maxlength = "100" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("policy"))%></div></td>
     </tr>
 <% } 
    if (Model.org.AskDoctor == true)
    { %>
     <tr>
         <td><label for="doctor">Family Physician Name</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].doctor" value="<%=Model.doctor%>" maxlength="100" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("doctor")%></td>
+        <td><%=Html.TextBox(Model.inputname("doctor"), Model.doctor, new { maxlength = "100" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("doctor"))%></div></td>
     </tr>
     <tr>
         <td><label for="docphone">Family Physician Phone</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].docphone" value="<%=Model.docphone%>" maxlength="15" /></td>
-        <td colspan="2"><%= Html.ValidationMessage("docphone")%></td>
+        <td><%=Html.TextBox(Model.inputname("docphone"), Model.docphone, new { maxlength = "15" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("docphone"))%></div></td>
     </tr>
 <% } 
    if (Model.org.AskAllergies == true)
@@ -77,46 +77,46 @@
     <tr>
         <td><label for="medical">Allergies or<br />
                Medical Problems</label></td>
-        <td><textarea name="m.List[<%=Model.index%>].medical"><%=Model.medical %></textarea></td>
-        <td colspan="3"><span class="blue"> Leave blank if none</span></td>
+        <td><%=Html.TextArea(Model.inputname("medical"), Model.medical) %>
+            <div class="red"> Leave blank if none</div></td>
     </tr>
 <% }
    if (Model.org.AskTylenolEtc == true)
    { %>
     <tr>
         <td><label for="medical">May we give your child</label></td>
-        <td colspan="4">
+        <td>
             <table>
             <tr>
                 <td>Tylenol?:</td>
                 <td>
-                    <input type="radio" name="m.List[<%=Model.index%>].tylenol" value="true" <%=Model.tylenol == true ? "checked='checked'" : "" %> />Yes
-                    <input type="radio" name="m.List[<%=Model.index%>].tylenol" value="false" <%=Model.tylenol == false ? "checked='checked'" : "" %> />No
-                    <%=Html.ValidationMessage("tylenol") %>
+                    <%=Html.RadioButton(Model.inputname("tylenol"), true, Model.tylenol) %> Yes
+                    <%=Html.RadioButton(Model.inputname("tylenol"), false, Model.tylenol) %> No
+                    <div><%=Html.ValidationMessage(Model.inputname("tylenol")) %></div>
                 </td>
             </tr>
             <tr>
                 <td>Advil?:</td>
                 <td>
-                    <input type="radio" name="m.List[<%=Model.index%>].advil" value="true" <%=Model.advil == true ? "checked='checked'" : "" %> />Yes
-                    <input type="radio" name="m.List[<%=Model.index%>].advil" value="false" <%=Model.advil == false ? "checked='checked'" : "" %> />No
-                    <%=Html.ValidationMessage("advil")%>
+                    <%=Html.RadioButton(Model.inputname("advil"), true, Model.advil) %> Yes
+                    <%=Html.RadioButton(Model.inputname("advil"), false, Model.advil) %> No
+                    <div><%=Html.ValidationMessage(Model.inputname("advil")) %></div>
                 </td>
             </tr>
             <tr>
                 <td>Maalox?:</td>
                 <td>
-                    <input type="radio" name="m.List[<%=Model.index%>].maalox" value="true" <%=Model.maalox == true ? "checked='checked'" : "" %> />Yes
-                    <input type="radio" name="m.List[<%=Model.index%>].maalox" value="false" <%=Model.maalox == false ? "checked='checked'" : "" %> />No
-                    <%=Html.ValidationMessage("maalox")%>
+                    <%=Html.RadioButton(Model.inputname("maalox"), true, Model.maalox) %> Yes
+                    <%=Html.RadioButton(Model.inputname("maalox"), false, Model.maalox) %> No
+                    <div><%=Html.ValidationMessage(Model.inputname("maalox")) %></div>
                 </td>
             </tr>
             <tr>
                 <td>Robitussin?:</td>
                 <td>
-                    <input type="radio" name="m.List[<%=Model.index%>].robitussin" value="true" <%=Model.robitussin == true ? "checked='checked'" : "" %> />Yes
-                    <input type="radio" name="m.List[<%=Model.index%>].robitussin" value="false" <%=Model.robitussin == false ? "checked='checked'" : "" %> />No
-                    <%=Html.ValidationMessage("robitussin")%>
+                    <%=Html.RadioButton(Model.inputname("robitussin"), true, Model.robitussin) %> Yes
+                    <%=Html.RadioButton(Model.inputname("robitussin"), false, Model.robitussin) %> No
+                    <div><%=Html.ValidationMessage(Model.inputname("robitussin")) %></div>
                 </td>
             </tr>
             </table>
@@ -127,88 +127,86 @@
    { %>
     <tr>
         <td><label for="mname">Mother's Name (first last)</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].mname" value="<%=Model.mname%>" maxlength="80" /></td>
-        <td colspan="3"><%= Html.ValidationMessage("mname")%></td>
+        <td><%=Html.TextBox(Model.inputname("mname"), Model.mname, new { maxlength = "80" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("mname"))%></div></td>
     </tr>
     <tr>
         <td><label for="fname">Father's Name (first last)</label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].fname" value="<%=Model.fname%>" maxlength="80" /></td>
-        <td colspan="3"><%= Html.ValidationMessage("fname")%></td>
+        <td><%=Html.TextBox(Model.inputname("fname"), Model.fname, new { maxlength = "80" }) %>
+            <div><%= Html.ValidationMessage(Model.inputname("fname"))%></div></td>
     </tr>
 <% }
    if (Model.org.AskCoaching == true)
    { %>
      <tr>
         <td><label for="coaching">Interested in Coaching?</label></td>
-        <td><input type="radio" name="m.List[<%=Model.index%>].coaching" value = "true"  <%=Model.coaching == true ? "checked='checked'" : "" %> /> Yes
-            <input type="radio" name="m.List[<%=Model.index%>].coaching" value = "false" <%=Model.coaching == false ? "checked='checked'" : "" %> /> No</td>
-        <td colspan="3"><%= Html.ValidationMessage("coaching") %></td>
+        <td>
+            <%=Html.RadioButton(Model.inputname("coaching"), true, Model.coaching) %> Yes
+            <%=Html.RadioButton(Model.inputname("coaching"), false, Model.coaching) %> No
+            <div><%=Html.ValidationMessage(Model.inputname("coaching")) %></div>
+        </td>
     </tr>
 <% }
    if (Model.org.AskChurch == true)
    { %>
     <tr>
         <td><label for="church"><%= Model.org.AskParents == true ? "Parent's Church" : "Church" %></label></td>
-        <td><input type="checkbox" name="m.List[<%=Model.index %>].memberus" value = "true" 
-            <%=Model.memberus == true ? "checked='checked'" : "" %> /> Member of this Church<br />
-            <input type="checkbox" name="m.List[<%=Model.index %>].otherchurch" value="true"
-            <%=Model.otherchurch == true ? "checked='checked'" : "" %> /> Active in another Local Church</td>
-        <td colspan="3"><%=Html.ValidationMessage("member")%></td>
+        <td><%=Html.CheckBox(Model.inputname("memberus"), Model.memberus) %> Member of this Church<br />
+            <%=Html.CheckBox(Model.inputname("otherchurch"), Model.otherchurch) %> Active in another Local Church
+            <div><%=Html.ValidationMessage("member")%></div></td>
     </tr>
 <% }
    if (Model.org.AskTickets == true)
    { %>
     <tr>
         <td><label for="ntickets"><%=Util.PickFirst(Model.org.NumItemsLabel, "No. of Items") %></label></td>
-        <td><input type="text" name="m.List[<%=Model.index%>].ntickets" value="<%=Model.ntickets%>" /></td>
-        <td colspan="3"><%= Html.ValidationMessage("ntickets") %></td>
+        <td><%=Html.TextBox(Model.inputname("ntickets"), Model.ntickets) %> />
+            <div><%= Html.ValidationMessage(Model.inputname("ntickets")) %></div></td>
     </tr>
 <% }
    if(Model.org.AskOptions.HasValue())
    { %>
     <tr>
         <td><div class="wraparound"><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></div></td>
-        <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option", Model.Options(), "0")%></td>
-        <td colspan="3"><%=Html.ValidationMessage("option")%></td>
+        <td><%=Html.DropDownList3("", Model.inputname("option"), Model.Options(), "0")%>
+            <div><%=Html.ValidationMessage(Model.inputname("option"))%></div></td>
     </tr>
-<% }
-   if(Model.org.ExtraOptions.HasValue())
-   { %>
+<%  }
+    if(Model.org.ExtraOptions.HasValue())
+    { %>
     <tr>
         <td><div class="wraparound"><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Options")%></div></td>
-        <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].option2", Model.ExtraOptions(), "0")%></td>
-        <td colspan="3"><%=Html.ValidationMessage("option2")%></td>
+        <td><%=Html.DropDownList3("", Model.inputname("option2"), Model.ExtraOptions(), "0")%>
+            <div><%=Html.ValidationMessage(Model.inputname("option2"))%></div></td>
     </tr>
-<% }
-   if(Model.org.GradeOptions.HasValue())
-   { %>
+<%  }
+    if(Model.org.GradeOptions.HasValue())
+    { %>
     <tr>
         <td>Grade</td>
-        <td><%=Html.DropDownList3("", "m.List[" + Model.index + "].gradeoption", Model.GradeOptions(), Model.gradeoption)%></td>
-        <td colspan="3"><%=Html.ValidationMessage("gradeoption")%></td>
+        <td><%=Html.DropDownList3("", Model.inputname("gradeoption"), Model.GradeOptions(), Model.gradeoption)%>
+            <div><%=Html.ValidationMessage(Model.inputname("gradeoption"))%></div></td>
     </tr>
-<% }
-   foreach (var a in Model.ExtraQuestions())
-   { %>
+<%  }
+    foreach (var a in Model.ExtraQuestions())
+    { %>
     <tr>
         <td><div class="wraparound"><%=a.question%></div></td>
         <td>
-            <input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
-            <input type="text" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestionValue(a.question) %>" />
-        </td>
-        <td colspan="3"><%=Html.ValidationMessage(a.question + "-QError")%></td>
+            <%=Html.Hidden(Model.inputname("ExtraQuestion[" + a.n + "].Key"), a.question) %>
+            <%=Html.TextBox(Model.inputname("ExtraQuestion[" + a.n + "].Value"), Model.ExtraQuestionValue(a.question)) %>
+            <div><%=Html.ValidationMessage(Model.inputname("ExtraQuestion[" + a.n + "].Value"))%></div></td>
     </tr>
-<% }
+<%  }
     foreach (var a in Model.YesNoQuestions())
     { %>
     <tr>
         <td><div class="wraparound"><%=a.desc%></div></td>
         <td>
-            <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
-            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="true" <%=Model.YesNoChecked(a.name, true) %> />Yes
-            <input type="radio" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="false" <%=Model.YesNoChecked(a.name, false) %> />No
-        </td>
-        <td colspan="3"><%=Html.ValidationMessage(a.name + "-YNError")%></td>
+            <%=Html.Hidden(Model.inputname("YesNoQuestion[" + a.n + "].Key"), a.name) %>
+            <%=Html.RadioButton(Model.inputname("YesNoQuestion[" + a.n + "].Value"), true, Model.YesNoChecked(a.name, true)) %> Yes
+            <%=Html.RadioButton(Model.inputname("YesNoQuestion[" + a.n + "].Value"), false, Model.YesNoChecked(a.name, false)) %> No
+            <div><%=Html.ValidationMessage(Model.inputname("YesNoQuestion[" + a.n + "].Value")) %></div></td>
     </tr>
 <% }
    foreach(var i in Model.MenuItems())
@@ -216,21 +214,20 @@
     <tr>
         <td></td>
         <td>
-            <input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Key" value="<%=i.sg %>" />
-            <input type="text" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Value" value="<%=Model.MenuItemValue(i.sg) %>" class="short" />
+            <%=Html.Hidden(Model.inputname("MenuItem[" + i.n + "].Key"), i.sg) %>
+            <%=Html.TextBox(Model.inputname("MenuItem[" + i.n + "].Value"), Model.MenuItemValue(i.sg), new { @class = "short" }) %>
             <%=i.desc %> ($<%=i.amt.ToString("N2") %>)
-        </td>
-        <td colspan="3"><%=Html.ValidationMessage(i.sg + "-MIError")%></td>
+            <div><%=Html.ValidationMessage(Model.inputname("MenuItem[" + i.n + "].Value"))%></div></td>
     </tr>
 <% }
    if (Model.org.Deposit > 0)
    { %>
     <tr>
         <td><label for="deposit">Payment</label></td>
-        <td><input type="radio" name="m.List[<%=Model.index%>].paydeposit" value="true" <%=Model.paydeposit == true ? "checked='checked'" : "" %> />Pay Deposit Only
-            <input type="radio" name="m.List[<%=Model.index%>].paydeposit" value="false" <%=Model.paydeposit == false ? "checked='checked'" : "" %> />Pay Full Amount
-        </td>
-        <td colspan="3"><%=Html.ValidationMessage("paydeposit")%></td>
+        <td>
+        <%=Html.RadioButton(Model.inputname("paydeposit"), true, Model.paydeposit) %> Pay Deposit Only<br />
+            <%=Html.RadioButton(Model.inputname("paydeposit"), false, Model.paydeposit) %> Pay Full Amount
+            <div><%=Html.ValidationMessage(Model.inputname("paydeposit"))%></div></td>
     </tr>
 <% } %>
     <tr><td></td>

@@ -199,8 +199,11 @@ namespace CmsWeb.Models
             string matchcoupon = @"Coupon\((?<coupon>.*)\)";
             if (Regex.IsMatch(TransactionID, matchcoupon, RegexOptions.IgnoreCase))
             {
-                var coupon = Regex.Match(TransactionID, matchcoupon, RegexOptions.IgnoreCase)
-                        .Groups["coupon"].Value.Replace(" ", "");
+                var match = Regex.Match(TransactionID, matchcoupon, RegexOptions.IgnoreCase);
+                var coup = match.Groups["coupon"];
+                var coupon = "";
+                if (coup != null)
+                    coupon = coup.Value.Replace(" ", "");
                 if (coupon != "Admin")
                 {
                     var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);

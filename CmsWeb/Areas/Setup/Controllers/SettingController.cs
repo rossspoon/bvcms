@@ -370,22 +370,25 @@ namespace CmsWeb.Areas.Setup.Controllers
             var names = list0.ToDictionary(i => i.TrimEnd(),
                 i => list0.FindIndex(s => s == i));
 
-            var campuslist = (from li in list.Skip(1)
-                              where li.Length == names.Count
-                              group li by li[names["Campus"]] into campus
-                              select campus.Key).ToList();
-            var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
-            var dbc = from c in campuslist
-                      join cp in DbUtil.Db.Campus on c equals cp.Description into j
-                      from cp in j.DefaultIfEmpty()
-                      select new { cp, c };
-            var clist = dbc.ToList();
-            foreach (var i in clist)
-                if (i.cp == null)
-                {
-                    var cp = new Campu { Description = i.c, Id = ++maxcampusid };
-                    DbUtil.Db.Campus.InsertOnSubmit(cp);
-                }
+            if (names.ContainsKey("Campus"))
+            {
+                var campuslist = (from li in list.Skip(1)
+                                  where li.Length == names.Count
+                                  group li by li[names["Campus"]] into campus
+                                  select campus.Key).ToList();
+                var dbc = from c in campuslist
+                          join cp in DbUtil.Db.Campus on c equals cp.Description into j
+                          from cp in j.DefaultIfEmpty()
+                          select new { cp, c };
+                var clist = dbc.ToList();
+                var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
+                foreach (var i in clist)
+                    if (i.cp == null)
+                    {
+                        var cp = new Campu { Description = i.c, Id = ++maxcampusid };
+                        DbUtil.Db.Campus.InsertOnSubmit(cp);
+                    }
+            }
             DbUtil.Db.SubmitChanges();
             var campuses = DbUtil.Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
 
@@ -454,7 +457,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                     p.StateCode = a[names["State"]];
                     p.ZipCode = a[names["Zip"]];
 
-                    if (a[names["Campus"]].HasValue())
+                    if (names.ContainsKey("Campus"))
                         p.CampusId = campuses[a[names["Campus"]]];
 
                     if (p.PossibleDuplicates().Count() > 0)

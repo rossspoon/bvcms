@@ -275,6 +275,29 @@ namespace CmsWeb
             tb.MergeAttribute("value", s ?? viewDataValue);
             return tb.ToString();
         }
+        public static string TextBox3(this HtmlHelper helper, string id, string name, string value)
+        {
+            var tb = new TagBuilder("input");
+            tb.MergeAttribute("type", "text");
+            tb.MergeAttribute("id", id);
+            tb.MergeAttribute("name", name);
+            tb.MergeAttribute("value", value);
+            return tb.ToString();
+        }
+        public static string TextBox3(this HtmlHelper helper, string id, string name, string value, object htmlAttributes)
+        {
+            var tb = new TagBuilder("input");
+            tb.MergeAttribute("type", "text");
+            tb.MergeAttribute("id", id);
+            tb.MergeAttribute("name", name);
+            tb.MergeAttribute("value", value);
+            var attr = new RouteValueDictionary(htmlAttributes);
+            tb.MergeAttributes<string, object>(attr);
+            ModelState state;
+            if (helper.ViewData.ModelState.TryGetValue(name, out state) && (state.Errors.Count > 0))
+                tb.AddCssClass(HtmlHelper.ValidationInputCssClassName);
+            return tb.ToString();
+        }
         public static string TextBoxClass(this HtmlHelper helper, string name, string @class)
         {
             var tb = new TagBuilder("input");
@@ -313,7 +336,7 @@ namespace CmsWeb
             var tb = new TagBuilder("span");
             var viewDataValue = helper.ViewData.Eval(name);
             var i = (int?)viewDataValue ?? 0;
-            
+
             var si = list.SingleOrDefault(v => v.Value == i.ToString());
             if (si != null)
                 tb.InnerHtml = si.Text;
@@ -349,21 +372,37 @@ namespace CmsWeb
             }
             return "";
         }
-        public static string NotRequired(this HtmlHelper helper, bool? NotRequired)
+        public static string IsRequired(this HtmlHelper helper, bool? Required)
         {
-            if ((NotRequired ?? false) == false)
+            //var tb = new TagBuilder("img");
+            //tb.MergeAttribute("border", "0");
+            //tb.MergeAttribute("width", "11");
+            //tb.MergeAttribute("height", "12");
+            //if ((Required ?? true) == true)
+            //{
+            //    tb.MergeAttribute("src", "/images/req.gif");
+            //    tb.MergeAttribute("alt", "req");
+            //    return tb.ToString();
+            //}
+            //tb.MergeAttribute("src", "/images/notreq.gif");
+            //tb.MergeAttribute("alt", "not req");
+            var tb = new TagBuilder("span");
+            tb.MergeAttribute("class", "asterisk");
+            if ((Required ?? true) == true)
             {
-                var tb = new TagBuilder("img");
-                tb.MergeAttribute("src", "/images/req.gif");
-                tb.MergeAttribute("border", "0");
-                tb.MergeAttribute("alt", "req");
+                tb.InnerHtml = "*";
                 return tb.ToString();
             }
-            return "";
+            tb.InnerHtml = "&nbsp;";
+            return tb.ToString();
         }
         public static string Required(this HtmlHelper helper)
         {
-            return helper.NotRequired(false);
+            return helper.IsRequired(true);
+        }
+        public static string NotRequired(this HtmlHelper helper)
+        {
+            return helper.IsRequired(false);
         }
         public static string HiddenIf(this HtmlHelper helper, string name, object value, bool? include)
         {

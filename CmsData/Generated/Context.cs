@@ -206,6 +206,10 @@ namespace CmsData
         partial void UpdateEmailSent(EmailSent instance);
         partial void DeleteEmailSent(EmailSent instance);
         
+        partial void InsertEmailToText(EmailToText instance);
+        partial void UpdateEmailToText(EmailToText instance);
+        partial void DeleteEmailToText(EmailToText instance);
+        
         partial void InsertEnrollmentTransaction(EnrollmentTransaction instance);
         partial void UpdateEnrollmentTransaction(EnrollmentTransaction instance);
         partial void DeleteEnrollmentTransaction(EnrollmentTransaction instance);
@@ -943,6 +947,12 @@ namespace CmsData
 		public Table< EmailSent> EmailSents
 		{
 			get	{ return this.GetTable< EmailSent>(); }
+
+		}
+
+		public Table< EmailToText> EmailToTexts
+		{
+			get	{ return this.GetTable< EmailToText>(); }
 
 		}
 

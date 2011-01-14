@@ -131,11 +131,11 @@
     </tr>
     <tr>
         <th>Fee:</th>
-        <td><%=Html.TextBox("org.Fee", Model.org.Fee.ToString2("n2"))%></td>
+        <td><%=Html.TextBox("org.Fee", Model.org.Fee.ToString2("f2"))%></td>
     </tr>
     <tr>
         <th>Deposit:</th>
-        <td><%=Html.TextBox("org.Deposit", Model.org.Deposit.ToString2("n2"))%></td>
+        <td><%=Html.TextBox("org.Deposit", Model.org.Deposit.ToString2("f2"))%></td>
     </tr>
     <tr>
         <th>Shirt Fee:</th>
@@ -147,7 +147,7 @@
     </tr>
     <tr>
         <th>Maximum Fee:</th>
-        <td><%=Html.TextBox("org.MaximumFee", Model.org.MaximumFee.ToString2("n2"))%></td>
+        <td><%=Html.TextBox("org.MaximumFee", Model.org.MaximumFee.ToString2("f2"))%></td>
     </tr>
     <tr>
         <th>Org Member Fees:</th>
@@ -239,6 +239,10 @@
     <tr>
         <th>Ask For Grade:</th>
         <td><%=Html.CheckBox("org.AskGrade")%></td>
+    </tr>
+    <tr>
+        <th>Grade Label:</th>
+        <td><%=Html.TextBox("org.GradeLabel")%></td>
     </tr>
     <tr>
         <th>Ask About Shirt Size:</th>

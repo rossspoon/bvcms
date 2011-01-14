@@ -2,40 +2,7 @@
     Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.OnlineRegModel>" %>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
-    <style>
-        .instruct
-        {
-            color: #808080;
-            font-size: 120%;
-        }
-        h4
-        {
-            color: #908080;
-            font-size: 90%;
-            padding-left: 11px; 
-        }
-        .box
-        {
-            border-width: 1px;
-            border-color: #808080;
-            border-style: solid;
-            padding-left: 10px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        a.close
-        {
-            float: right;
-        }
-        div.personheader
-        {
-            font-size: 110%;
-        }
-        div.instructions.find, div.instructions.options
-        {
-            display: none;
-        }
-    </style>
+<div class="regform">
     <%= SquishIt.Framework.Bundle.JavaScript()
         .Add("/Content/js/jquery-1.4.2.js")
         .Add("/Content/js/jquery-ui-1.8.2.custom.js")
@@ -90,4 +57,5 @@
     <% Html.RenderPartial("Flow/List", Model); %>
     </form>
     <% } %>
+</div>
 </asp:Content>

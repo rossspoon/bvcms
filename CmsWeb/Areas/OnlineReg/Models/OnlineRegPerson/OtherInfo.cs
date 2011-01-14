@@ -29,11 +29,11 @@ namespace CmsWeb.Models
             get { return _YesNoQuestion; }
             set { _YesNoQuestion = value; }
         }
-        public string YesNoChecked(string key, bool value)
+        public bool YesNoChecked(string key, bool value)
         {
             if (YesNoQuestion != null && YesNoQuestion.ContainsKey(key))
-                return YesNoQuestion[key] == value ? "checked='checked'" : "";
-            return "";
+                return YesNoQuestion[key] == value;
+            return false;
         }
         public List<SelectListItem> ShirtSizes()
         {

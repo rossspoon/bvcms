@@ -18,7 +18,7 @@
             <a href="#" class="sortable">Communication</a>
         </th>
         <th>
-            <a href="#" class="sortable">Teacher</a>
+            <a href="#" class="sortable">Fellowship Leader</a>
         </th>
         <th>
             Tag

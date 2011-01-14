@@ -403,14 +403,18 @@ namespace CmsWeb.Models
             else if (om != null && !Member)
                 om.Drop(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
-            if (om != null && om.Organization.EmailAddresses.HasValue())
+
+            var org = DbUtil.Db.LoadOrganizationById(OrgId);
+            if (org != null && org.EmailAddresses.HasValue())
             {
+                var p = DbUtil.Db.LoadPersonById(PeopleId);
+                var what = Member? "joined" : "dropped";
                 var smtp = Util.Smtp();
-                Util.Email(smtp, null, om.Organization.EmailAddresses, 
-                    "cms check-in, join class " + Util.CmsHost, 
-                    "<a href='{0}/Person/Index/{1}'>{2}</a> joined {3}".Fmt( 
-                        Util.ServerLink("/Person/Index/" + om.PeopleId), 
-                        om.PeopleId, om.Person.Name, om.Organization.OrganizationName));
+                Util.Email(smtp, null, org.EmailAddresses,
+                    "cms check-in, {0} class on ".Fmt(what) + Util.CmsHost, 
+                    "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt( 
+                        Util.ServerLink("/Person/Index/" + PeopleId), 
+                        PeopleId, p.Name, what, org.OrganizationName));
             }
         }
     }

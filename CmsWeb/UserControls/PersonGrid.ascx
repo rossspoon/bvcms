@@ -37,7 +37,7 @@
                     Communication
                 </th>
                 <th id="Th6" runat="server">
-                    <asp:LinkButton ID="lb7" CommandName="Sort" CommandArgument="BFTeacher" runat="server">BF Teacher</asp:LinkButton>
+                    <asp:LinkButton ID="lb7" CommandName="Sort" CommandArgument="BFTeacher" runat="server">Fellowship Leader</asp:LinkButton>
                 </th>
                 <th id="Th7" runat="server">
                     Tag

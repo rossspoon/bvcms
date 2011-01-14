@@ -13,7 +13,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
     [ValidateInput(false)]
     public partial class OnlineRegController : CmsController
     {
-#if DEBUG2
+#if DEBUG
         private const int INT_timeout = 1600000;
 #else
         private const int INT_timeout = 60000;
@@ -148,12 +148,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
+            p.index = id;
             p.ValidateModelForFind(ModelState, m);
             if (p.org != null && p.Found == true)
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
-                    ModelState.AddModelError("dob", "Sorry, but registration is closed.");
+                    ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
                 if (p.Found == true)
                     p.FillPriorInfo();
                 if (!p.AnyOtherInfo())
@@ -162,7 +163,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             if (!p.whatfamily.HasValue && (id > 0 || p.LoggedIn == true))
             {
-                ModelState.AddModelError("whatfamily", "Choose a family option");
+                ModelState.AddModelError(p.inputname("whatfamily"), "Choose a family option");
                 return View("Flow/List", m);
             }
             switch (p.whatfamily)
@@ -200,6 +201,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
+            p.index = id;
             if (m.classid.HasValue)
             {
                 m.orgid = m.classid;
@@ -219,7 +221,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                 if (p.IsFilled)
-                    ModelState.AddModelError("dob", "Sorry, but registration is closed.");
+                    ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
                 if (p.Found == true)
                     p.FillPriorInfo();
                 if (!p.AnyOtherInfo())
@@ -233,6 +235,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult SubmitNew(int id, OnlineRegModel m)
         {
             var p = m.List[id];
+            p.index = id;
             p.ValidateModelForNew(ModelState);
 
             if (ModelState.IsValid)
@@ -256,7 +259,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 {
                     p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
                     if (p.IsFilled)
-                        ModelState.AddModelError("dob", "Sorry, that age group is filled");
+                        ModelState.AddModelError(p.inputname("dob"), "Sorry, that age group is filled");
                 }
                 p.IsNew = true;
             }
@@ -273,6 +276,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult SubmitOtherInfo(int id, OnlineRegModel m)
         {
             var p = m.List[id];
+            p.index = id;
             p.ValidateModelForOther(ModelState);
             p.OtherOK = ModelState.IsValid;
             return View("Flow/List", m);
@@ -289,7 +293,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 orgid = m.orgid,
                 first = "Bethany",
                 last = "Carroll",
-                dob = "1/29/86",
+                dob = "1/29/87",
                 email = "davcar@pobox.com",
                 phone = "9017581862".FmtFone(),
                 LoggedIn = m.UserPeopleId.HasValue,

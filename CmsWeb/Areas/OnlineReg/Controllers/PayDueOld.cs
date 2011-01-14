@@ -94,25 +94,28 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 {
                     var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
 
-                    var due = (om.Amount - om.AmountPaid) ?? 0;
-                    var pay = amt;
-                    if (pay > due)
-                        pay = due;
-                    om.AmountPaid += pay;
+                    if (om != null)
+                    {
+                        var due = (om.Amount - om.AmountPaid) ?? 0;
+                        var pay = amt;
+                        if (pay > due)
+                            pay = due;
+                        om.AmountPaid += pay;
 
-                    string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
-                    om.AddToMemberData(tstamp);
-                    var tran = "{0:C} ({1} {2})".Fmt(
-                        pay, TransactionID, ti.testing == true ? " test" : "");
-                    om.AddToMemberData(tran);
+                        string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
+                        om.AddToMemberData(tstamp);
+                        var tran = "{0:C} ({1} {2})".Fmt(
+                            pay, TransactionID, ti.testing == true ? " test" : "");
+                        om.AddToMemberData(tran);
 
-                    var reg = p.RecRegs.Single();
-                    reg.AddToComments("-------------");
-                    reg.AddToComments(tran);
-                    reg.AddToComments(Util.Now.ToString("MMM d yyyy h:mm tt"));
-                    reg.AddToComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName));
+                        var reg = p.RecRegs.Single();
+                        reg.AddToComments("-------------");
+                        reg.AddToComments(tran);
+                        reg.AddToComments(Util.Now.ToString("MMM d yyyy h:mm tt"));
+                        reg.AddToComments("{0} - {1}".Fmt(org.DivisionName, org.OrganizationName));
 
-                    amt -= pay;
+                        amt -= pay;
+                    }
                 }
                 else
                     Util.Email(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",

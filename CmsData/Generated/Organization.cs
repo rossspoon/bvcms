@@ -229,6 +229,8 @@ namespace CmsData
 		
 		private bool? _NotReqMarital;
 		
+		private string _GradeLabel;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -595,6 +597,9 @@ namespace CmsData
 		
 		partial void OnNotReqMaritalChanging(bool? value);
 		partial void OnNotReqMaritalChanged();
+		
+		partial void OnGradeLabelChanging(string value);
+		partial void OnGradeLabelChanged();
 		
     #endregion
 		public Organization()
@@ -2996,6 +3001,28 @@ namespace CmsData
 					this._NotReqMarital = value;
 					this.SendPropertyChanged("NotReqMarital");
 					this.OnNotReqMaritalChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GradeLabel", UpdateCheck=UpdateCheck.Never, Storage="_GradeLabel", DbType="varchar(50)")]
+		public string GradeLabel
+		{
+			get { return this._GradeLabel; }
+
+			set
+			{
+				if (this._GradeLabel != value)
+				{
+				
+                    this.OnGradeLabelChanging(value);
+					this.SendPropertyChanging();
+					this._GradeLabel = value;
+					this.SendPropertyChanged("GradeLabel");
+					this.OnGradeLabelChanged();
 				}
 
 			}

@@ -886,7 +886,6 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageSub.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmDuePaid.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Copy of AddressEdit2.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ProcessPayment.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\TransactionTest.aspx" />
@@ -913,6 +912,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="images\notreq.gif" />
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\OnlineRegPayment.js" />
     <Content Include="Views\Batch\MoveAndDelete.aspx" />

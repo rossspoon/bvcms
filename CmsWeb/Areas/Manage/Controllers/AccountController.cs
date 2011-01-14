@@ -158,7 +158,7 @@ CKEditorFuncNum, baseurl + fn, error));
                 else if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
                 {
                     Notify(WebConfigurationManager.AppSettings["senderrorsto"],
-                        "{0} is being impersonated".Fmt(u.Username),
+                        "{0} is being impersonated on {1}".Fmt(u.Username, Util.Host),
                         Util.Now.ToString());
                     user = u;
                     break;

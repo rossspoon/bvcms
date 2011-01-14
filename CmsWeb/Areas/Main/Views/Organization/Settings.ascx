@@ -249,6 +249,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.AskGrade) %></td>
     </tr>
     <tr>
+        <th>Grade Label:</th>
+        <td><%=Util.PickFirst(Model.org.GradeLabel, "Grade") %></td>
+    </tr>
+    <tr>
         <th>Ask About Shirt Size:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.AskShirtSize) %></td>
     </tr>

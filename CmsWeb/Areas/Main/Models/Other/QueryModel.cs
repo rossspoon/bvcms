@@ -728,7 +728,7 @@ namespace CmsWeb.Models
                             p.PeopleId
                             select p;
                         break;
-                    case "Teacher":
+                    case "Fellowship Leader":
                         q = from p in q
                             orderby p.BFClass.LeaderName,
                             p.LastName,
@@ -777,7 +777,7 @@ namespace CmsWeb.Models
                             p.PeopleId descending
                             select p;
                         break;
-                    case "Teacher":
+                    case "Fellowship Leader":
                         q = from p in q
                             orderby p.BFClass.LeaderName descending,
                             p.LastName descending,

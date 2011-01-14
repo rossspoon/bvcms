@@ -81,7 +81,7 @@ namespace UtilityExtensions
             msg.Headers.Add("bvcms-host", CmsHost);
             msg.Headers.Add("bvcms-mail-id", id.ToString());
 
-            if (WebConfigurationManager.AppSettings["sendemail"] != "false" && smtp.Host != null)
+            if (WebConfigurationManager.AppSettings["sendemail"] != "false" && !String.IsNullOrEmpty(smtp.Host))
             {
                 try
                 {

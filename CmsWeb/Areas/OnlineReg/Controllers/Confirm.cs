@@ -119,6 +119,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             else
             {
+                if (!t.TransactionId.HasValue())
+                    t.TransactionId = TransactionID;
                 m.EnrollAndConfirm();
                 m.UseCoupon(t.TransactionId);
             }
