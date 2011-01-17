@@ -34,7 +34,14 @@
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 <% } %>
-    <p>
+    <form action="/OnlineReg/ApplyCoupon" method="post">
+    <p>If you have received a Coupon Code, please enter that number here and click
+       the blue link next to it:</p>
+    <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
+    <a href="/OnlineReg/PayWithCoupon/<%=ti.DatumId %>" class="submitbutton">Apply Coupon</a>
+    <div><%=Html.ValidationMessage("coupon") %></div>
+    </form>
+    <p> 
         When you click the 'Pay with Credit Card' button you will be redirected to ServiceU.com
         to process your payment of
         $<%=ti.Amt.Value.ToString("N") %>. After you are finished there, you will be redirected
@@ -59,13 +66,5 @@
     <%=Html.Hidden("Misc4") %>
     <p>
         <input id="Submit" type="submit" name="Submit" value="Pay with Credit Card" /></p>
-    </form>
-    <form action="/OnlineReg/PayWithCoupon" method="post">
-    <p>
-        If you have received a Cash Payment Code, please enter that number here and click
-        the blue link next to it:</p>
-    <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
-    <a href="/OnlineReg/PayWithCoupon/<%=ti.DatumId %>" class="submitbutton">Pay with coupon</a>
-    <span style="color: Red" id="validatecoupon"></span>
     </form>
 </asp:Content>

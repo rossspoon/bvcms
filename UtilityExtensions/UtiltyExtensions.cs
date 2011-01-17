@@ -888,7 +888,7 @@ namespace UtilityExtensions
         public static void ShowError(string message)
         {
             HttpContext.Current.Response.Redirect(
-                "/Home/ShowError/?id={0}&url={1}".Fmt(HttpContext.Current.Server.UrlEncode(message),
+                "/Home/ShowError/?error={0}&url={1}".Fmt(HttpContext.Current.Server.UrlEncode(message),
                 HttpContext.Current.Request.Url.OriginalString));
         }
         public static string ResolveUrl(string originalUrl)

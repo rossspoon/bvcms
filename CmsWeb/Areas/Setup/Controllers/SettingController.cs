@@ -414,24 +414,24 @@ namespace CmsWeb.Areas.Setup.Controllers
                 {
                     var p = Person.Add(f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], false, 0, 0, null);
                     p.AltName = a[names["AltName"]];
-                    p.CellPhone = a[names["CellPhone"]];
-                    p.EmailAddress = a[names["Email"]];
+                    p.CellPhone = a[names["CellPhone"]].GetDigits();
+                    p.EmailAddress = a[names["Email"]].GetDigits();
 
                     switch (a[names["Gender"]])
                     {
-                        case "M":
+                        case "Male":
                             p.GenderId = 1;
                             break;
-                        case "F":
+                        case "Female":
                             p.GenderId = 2;
                             break;
                     }
                     switch (a[names["Married"]])
                     {
-                        case "M":
+                        case "Married":
                             p.MaritalStatusId = 20;
                             break;
-                        case "S":
+                        case "Single":
                             p.MaritalStatusId = 10;
                             break;
                         default:
@@ -479,22 +479,25 @@ namespace CmsWeb.Areas.Setup.Controllers
             var names = list0.ToDictionary(i => i.TrimEnd(),
                 i => list0.FindIndex(s => s == i));
 
-            var campuslist = (from li in list.Skip(1)
-                              where li.Length == names.Count
-                              group li by li[names["Campus"]] into campus
-                              select campus.Key).ToList();
-            var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
-            var dbc = from c in campuslist
-                      join cp in DbUtil.Db.Campus on c equals cp.Description into j
-                      from cp in j.DefaultIfEmpty()
-                      select new { cp, c };
-            var clist = dbc.ToList();
-            foreach (var i in clist)
-                if (i.cp == null)
-                {
-                    var cp = new Campu { Description = i.c, Id = ++maxcampusid };
-                    DbUtil.Db.Campus.InsertOnSubmit(cp);
-                }
+            if (names.ContainsKey("Campus"))
+            {
+                var campuslist = (from li in list.Skip(1)
+                                  where li.Length == names.Count
+                                  group li by li[names["Campus"]] into campus
+                                  select campus.Key).ToList();
+                var dbc = from c in campuslist
+                          join cp in DbUtil.Db.Campus on c equals cp.Description into j
+                          from cp in j.DefaultIfEmpty()
+                          select new { cp, c };
+                var clist = dbc.ToList();
+                var maxcampusid = DbUtil.Db.Campus.Max(c => c.Id);
+                foreach (var i in clist)
+                    if (i.cp == null)
+                    {
+                        var cp = new Campu { Description = i.c, Id = ++maxcampusid };
+                        DbUtil.Db.Campus.InsertOnSubmit(cp);
+                    }
+            }
             DbUtil.Db.SubmitChanges();
             var campuses = DbUtil.Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
 
@@ -509,12 +512,14 @@ namespace CmsWeb.Areas.Setup.Controllers
                     dob = li[names["Birthday"]].ToDate();
                 string email = "", cell = "", homephone = "";
                 if (names.ContainsKey("CellPhone"))
-                    cell = li[names["CellPhone"]];
+                    cell = li[names["CellPhone"]].GetDigits();
                 if (names.ContainsKey("Email"))
-                    email = li[names["Email"]];
+                    email = li[names["Email"]].Trim();
                 if (names.ContainsKey("HomePhone"))
-                    homephone = li[names["HomePhone"]];
-                var pid = DbUtil.Db.FindPerson3(li[names["First"]], li[names["Last"]], dob, email, cell, homephone, null).FirstOrDefault();
+                    homephone = li[names["HomePhone"]].GetDigits();
+                var first = li[names["First"]].Trim();
+                var last = li[names["Last"]].Trim();
+                var pid = DbUtil.Db.FindPerson3(first, last, dob, email, cell, homephone, null).FirstOrDefault();
                 if (pid == null)
                     continue;
                 var p = DbUtil.Db.LoadPersonById(pid.PeopleId.Value);
@@ -531,10 +536,10 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "Gender":
                             switch (li[name.Value])
                             {
-                                case "M":
+                                case "Male":
                                     p.GenderId = 1;
                                     break;
-                                case "F":
+                                case "Female":
                                     p.GenderId = 2;
                                     break;
                             }
@@ -542,10 +547,10 @@ namespace CmsWeb.Areas.Setup.Controllers
                         case "Married":
                             switch (li[name.Value])
                             {
-                                case "M":
+                                case "Married":
                                     p.MaritalStatusId = 20;
                                     break;
-                                case "S":
+                                case "Single":
                                     p.MaritalStatusId = 10;
                                     break;
                                 default:
@@ -583,16 +588,16 @@ namespace CmsWeb.Areas.Setup.Controllers
                             }
                             break;
                         case "Birthday":
-                            p.DOB = li[name.Value];
+                            p.DOB = dob.ToString2("d");
                             break;
                         case "CellPhone":
-                            p.CellPhone = li[name.Value];
+                            p.CellPhone = cell;
                             break;
                         case "HomePhone":
-                            p.HomePhone = li[name.Value];
+                            p.HomePhone = homephone;
                             break;
                         case "Email":
-                            p.EmailAddress = li[name.Value];
+                            p.EmailAddress = email;
                             break;
                     }
                 DbUtil.Db.SubmitChanges();

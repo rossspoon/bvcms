@@ -222,15 +222,27 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CreateMeeting(string name)
         {
+            var n = name.ToCharArray().Count(c => c == 'M');
+            if (n > 1)
+            {
+                Util.ShowError("More than one barcode string found({0})".Fmt(name));
+                return new EmptyResult();
+            }
             var a = name.SplitStr(".");
             var orgid = a[1].ToInt();
             var organization = DbUtil.Db.LoadOrganizationById(orgid);
             if (organization == null)
-                Util.ShowError("Bad Orgid ({0})".Fmt(name));
+            {
+                Util.ShowError("Cannot interpret barcode orgid({0})".Fmt(name));
+                return new EmptyResult();
+            }
 
             var re = new Regex(@"\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])([0-9]{2})([01][0-9])([0-5][0-9])\Z");
             if (!re.IsMatch(a[2]))
-                Util.ShowError("Bad Date and Time ({0})".Fmt(name));
+            {
+                Util.ShowError("Cannot interpret barcode datetime({0})".Fmt(name));
+                return new EmptyResult();
+            }
             var g = re.Match(a[2]);
             var dt = new DateTime(
                 g.Groups[3].Value.ToInt() + 2000,

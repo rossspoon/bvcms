@@ -38,7 +38,7 @@
     </script>
     <div style="text-align: center">
         <h1>
-            Church Attendance</h1>
+           Week at a Glance Attendance Report</h1>
         Sunday Date:
         <%=Html.DatePicker("Sunday") %>
         <hr />

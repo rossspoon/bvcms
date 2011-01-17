@@ -49,7 +49,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 p = m.List[0].person;
 
             string first, last;
-            Person.NameSplit(pf.Name, out first, out last);
+            Person.NameSplit(pf.ti.Name, out first, out last);
             var tinfo = tctl.PostTransaction(
                 pf.CreditCard,
                 pf.CCV,
@@ -59,10 +59,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 p.PeopleId,
                 first,
                 last,
-                pf.Address,
-                pf.City,
-                pf.State,
-                pf.Zip,
+                pf.ti.Address,
+                pf.ti.City,
+                pf.ti.State,
+                pf.ti.Zip,
                 m.Transaction.Testing ?? false);
             //Html.ValidationMessage("shirtsize")
             if (tinfo.Approved == false)

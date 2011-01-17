@@ -874,6 +874,8 @@
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Areas\Main\Views\Reports\AttendanceDetail.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionStatements.aspx" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.aspx" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.aspx" />

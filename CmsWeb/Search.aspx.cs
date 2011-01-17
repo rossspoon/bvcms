@@ -67,6 +67,13 @@ namespace CmsWeb
 
         void Parameters_ClearButtonClicked(object sender, EventArgs e)
         {
+            Parameters.Name = "";
+            Parameters.Tag = 0;
+            Parameters.Member = 0;
+            Parameters.Comm = "";
+            Parameters.Addr = "";
+            Parameters.Campus = 0;
+            SaveToSession();
             PersonGrid1.Visible = false;
         }
 
@@ -93,6 +100,7 @@ namespace CmsWeb
         {
             DbUtil.Db.SetNoLock();
             PersonGrid1.Visible = true;
+            PersonGrid1.DataBind();
             SaveToSession();
         }
 

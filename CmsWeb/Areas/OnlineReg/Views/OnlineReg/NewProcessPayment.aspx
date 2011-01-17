@@ -33,12 +33,18 @@
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 <% } %>
+    <form action="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" method="post">
     <p>
-    </p>
+        If you have received a Cash Payment Code, please enter that number here and click
+        the blue link next to it:</p>
+    <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
+    <a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Coupon</a>
+    <div><%=Html.ValidationMessage("coupon") %></div>
+    </form>
     <form action="/onlinereg/ProcessPayment/<%=Model.ti.DatumId %>" method="post">
-    <%=Html.Hidden("pf.DatumId", Model.ti.DatumId) %>
-    <%=Html.Hidden("pf.Amt", Model.ti.Amt) %>
-    <%=Html.Hidden("pf.Url", Model.ti.Url) %>
+    <%=Html.Hidden("pf.ti.DatumId", Model.ti.DatumId) %>
+    <%=Html.Hidden("pf.ti.Amt", Model.ti.Amt) %>
+    <%=Html.Hidden("pf.ti.Url", Model.ti.Url) %>
     <table>
     <tr><td>Name</td><td><%=Html.TextBox("pf.ti.Name", Model.ti.Name) %></td></tr>
     <tr><td>Address</td><td><%=Html.TextBox("pf.ti.Address", Model.ti.Address) %></td></tr>
@@ -55,13 +61,5 @@
         <input id="Submit" type="submit" name="Submit" value="Pay with Credit Card" /><br />
         <%=Html.ValidationMessage("form") %>
         </p>
-    </form>
-    <form action="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" method="post">
-    <p>
-        If you have received a Cash Payment Code, please enter that number here and click
-        the blue link next to it:</p>
-    <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
-    <a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Pay with coupon</a>
-    <span style="color: Red" id="validatecoupon"></span>
     </form>
 </asp:Content>

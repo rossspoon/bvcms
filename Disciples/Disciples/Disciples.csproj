@@ -90,7 +90,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminGroups.aspx.cs">
@@ -814,6 +816,7 @@
     </Content>
     <Content Include="Web.BVCMSProduction.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="wimpy_wasp\example1.flv" />
     <None Include="wimpy_wasp\example2.flv" />

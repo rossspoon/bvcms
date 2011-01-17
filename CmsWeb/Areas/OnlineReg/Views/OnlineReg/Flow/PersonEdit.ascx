@@ -143,9 +143,9 @@
             { %>
 <tr>
     <td align="right" colspan="2">
+        <table>
 <%              if (Model.index > 0 || Model.LoggedIn == true)
                 { %>
-        <table>
             <tr>
                 <td align="left">
                     Add to which family?

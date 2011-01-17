@@ -55,7 +55,6 @@ namespace UtilityExtensions
                 msg.To.Add(msg.From);
                 msg.Subject = "(bad addr:{0}) {1}".Fmt(addr, subject);
             }
-
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
             var text = regex.Replace(Message, string.Empty);

@@ -365,21 +365,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (m.Amount() == 0 && m.Terms.HasValue())
                 return View("Terms", d.Id);
             if (ti.TransactionGateway == "ServiceU")
-                return View("Payment", m);
+                if (DbUtil.Db.Setting("newcoupon", "false") == "true")
+                    return View("NewPayment", m);
+                else
+                    return View("Payment", ti);
 
-            var pf = new PaymentForm
-               {
-                   Name = ti.Name,
-                   Address = ti.Address,
-                   City = ti.City,
-                   State = ti.State,
-                   Zip = ti.Zip,
-                   Phone = ti.Phone,
-                   Amt = ti.Amt.Value,
-                   DatumId = ti.DatumId.Value,
-                   Url = ti.Url,
-               };
-            return View("ProcessPayment", pf);
+            var pf = new PaymentForm { ti = ti };
+                if (DbUtil.Db.Setting("newcoupon", "false") == "true")
+                    return View("NewProcessPayment", pf);
+                else
+                    return View("ProcessPayment", pf);
         }
     }
 }

@@ -88,7 +88,8 @@ namespace CMSPresenter
                         AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
                         Married = p.MaritalStatus.Description,
                         FamilyId = p.FamilyId,
-                        AltName = p.AltName
+                        FamilyPosition = p.PositionInFamilyId,
+                        AltName = p.AltName,
                     };
             return q.Take(maximumRows);
         }
