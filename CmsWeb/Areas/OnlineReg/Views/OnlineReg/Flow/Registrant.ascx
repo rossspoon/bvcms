@@ -1,6 +1,10 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <%  var p = Model.current;
-    if (p.LastItem && !p.ShowDisplay())
+    if (p.LastItem && !p.Finished())
+    { %>
+    <tr><td><div class="instruct">New Registrations</div></td></tr>
+<%  }
+    if (!p.ShowDisplay())
     // This is a header that will show above the last unfinished item
     {
         if (Model.UserSelectsOrganization())
@@ -9,11 +13,11 @@
     <tr><td><div class="instruct">Make a Selection</div></td></tr>
     <tr><td><div><% Html.RenderPartial("Flow/ChooseClass", Model); %></div></td></tr>
 <%      }
-        if (Model.UserPeopleId.HasValue && Model.FamilyMembers().Count() > 0)
+        var showfamily = Model.UserPeopleId.HasValue && Model.FamilyMembers().Count() > 0;
+        if (showfamily)
         // show a family list cause we are logged in
         { %>
-    <tr><td><div class="instruct">Select Registrant</div></td></tr>
-    <tr><td><h4>Family Members</h4></td></tr>
+    <tr><td><h4>Select Family Member</h4></td></tr>
     <tr>
         <td>
             <div class="box">
@@ -22,16 +26,12 @@
             <%= Html.ValidationMessage("findf")%>
         </td>
     </tr>
-    <tr><td><h4>Guest or New Family member</h4></td></tr>
-<%      }
-        else
-        // give instructions for filling out the form
-        { %>
+<%      } %>
+    <tr><td><h4>Enter new person's information</h4></td></tr>
     <tr>
         <td><h3 id="fillout" class="instruct">Please fill out the form.</h3></td>
     </tr>
-<%      }
-    }
+<%  }
     // This is the registrant info, finished or not
 %>
     <tr>
@@ -66,7 +66,7 @@
 <%      } %>
                 </div>
 <%  } %>
-                <table class="particpant" style='<%=!p.Finished() ? "": "display: none" %>'>
+                <table class="particpant" width="95%" cellpadding="6" style='<%=!p.Finished() ? "": "display: none" %>'>
 <%  if (p.ShowDisplay())
     // Already found
     {
@@ -78,10 +78,10 @@
         // need to edit other info
         { %>
                     <tr>
-                        <td colspan="5">
-                            <p class="instruct">
-                                OK, we <%=p.IsNew ? "have your new" : "found your"%>
-                                record, please continue below.</p>
+                        <td colspan="2">
+                            <p>
+                                We <%=p.IsNew ? "have your new" : "found your"%> record,<br />
+                                please continue below.</p>
                         </td>
                     </tr>
 <%          Model.ShowOtherInstructions = true;

@@ -64,9 +64,14 @@ namespace CmsWeb.Models
             if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
                 if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
                     amt += org.ExtraFee.Value;
-            if (shirtsize != "lastyear" && org.ShirtFee.HasValue)
-                amt += org.ShirtFee.Value;
+            amt += TotalOther();
             return amt;
+        }
+        public decimal TotalOther()
+        {
+            if (shirtsize != "lastyear" && org.ShirtFee.HasValue)
+                return org.ShirtFee.Value;
+            return 0;
         }
     }
 }

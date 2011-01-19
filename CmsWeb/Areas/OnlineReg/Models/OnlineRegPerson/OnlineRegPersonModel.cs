@@ -5,6 +5,7 @@ using System.Data.Linq;
 using CmsData;
 using UtilityExtensions;
 using System.Runtime.Serialization;
+using System.Web.Mvc;
 
 namespace CmsWeb.Models
 {
@@ -33,6 +34,37 @@ namespace CmsWeb.Models
         public string last { get; set; }
         public string suffix { get; set; }
         public string dob { get; set; }
+        //public int bday { get; set; }
+        //public int bmon { get; set; }
+        //public int byear { get; set; }
+        //public string dob2
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            var dt = new DateTime(byear, bmon, bday);
+        //            return dt.ToShortDateString();
+        //        }
+        //        catch
+        //        {
+        //            return ""; 
+        //        }
+        //    }
+        //    set
+        //    {
+        //        DateTime dt;
+        //        if (DateTime.TryParse(value, out dt))
+        //        {
+        //            bday = dt.Day;
+        //            bmon = dt.Month;
+        //            byear = dt.Year;
+        //        }
+        //        bday = 0;
+        //        bmon = 0;
+        //        byear = 0;
+        //    }
+        //}
         public string phone { get; set; }
         public string email { get; set; }
         public string address { get; set; }
@@ -193,6 +225,31 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
             PeopleId = person.PeopleId;
+        }
+        public IEnumerable<SelectListItem> bdays()
+        {
+            for (int i = 0; i <= 31; i++)
+                if (i == 0)
+                    yield return new SelectListItem { Text = "Day", Value = i.ToString() };
+                else
+                    yield return new SelectListItem { Text = i.ToString(), Value = i.ToString() };
+            yield break;
+        }
+        public IEnumerable<SelectListItem> bmons()
+        {
+            for (int i = 0; i <= 12; i++)
+                if (i == 0)
+                    yield return new SelectListItem { Text = "Mon", Value = i.ToString() };
+                else
+                    yield return new SelectListItem { Text = i.ToString(), Value = i.ToString()};
+            yield break;
+        }
+        public IEnumerable<SelectListItem> byears()
+        {
+            yield return new SelectListItem { Text = "Year", Value = "0" };
+            for (int i = 1910; i <= 2030; i++)
+                yield return new SelectListItem { Text = i.ToString(), Value = i.ToString(), Selected = i == 1990 ? true : false };
+            yield break;
         }
     }
 }

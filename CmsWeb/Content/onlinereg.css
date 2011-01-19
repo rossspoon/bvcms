@@ -124,13 +124,27 @@ legend
 #login fieldset
 {
     margin: 12px 24px;
-    border 1px solid #808183;
+    border: 1px solid #808183;
     background: #e6e7e9;
     padding: 0;
 }
 input[type="text"], input[type="password"]
 {
     border: 1px solid #CCCCCC;
+}
+div.login.box
+{
+    margin: 5px;
+    width: 350px;
+}
+div.login div div
+{
+    margin: 5px;
+}
+.login input[type="text"], .login input[type="password"]
+{
+    border: 1px solid #CCCCCC;
+    width: 100%;
 }
 textarea
 {
@@ -282,10 +296,11 @@ table#leg td
     text-align:right;
     top:0;
 }
-form.DisplayEdit input[type=text]
+form.DisplayEdit input[type=text],
+form.DisplayEdit input[type=password]
 {
     border: 1px solid #CCCCCC;
-    width: 20em;
+    width: 100%;
 }
 #dob
 {
@@ -312,10 +327,6 @@ td.alt1
 form.DisplayEdit input.short 
 {
     width: 4em;
-}
-#username,#password
-{
-    width: 12em;
 }
 .instruct
 {

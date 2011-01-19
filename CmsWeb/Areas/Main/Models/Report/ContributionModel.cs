@@ -119,7 +119,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                           Age = p.Age,
                           FamilyPositionId = p.PositionInFamilyId,
                           hohInd = p.HohFlag,
-                          Joint = option == 2
+                          Joint = option == 2,
+                          CampusId = p.CampusId,
                       };
                       
             return q11;
@@ -226,6 +227,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int FamilyPositionId { get; set; }
         public int? Age { get; set; }
         public bool Joint { get; set; }
+        public int? CampusId { get; set; }
     }
     public class ContributionInfo
     {

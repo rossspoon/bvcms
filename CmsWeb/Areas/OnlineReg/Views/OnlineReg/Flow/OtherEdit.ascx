@@ -231,5 +231,5 @@
     </tr>
 <% } %>
     <tr><td></td>
-        <td colspan="4"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
+        <td align="right" colspan="4"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
     </tr>

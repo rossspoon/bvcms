@@ -268,20 +268,26 @@ namespace CmsData
                 a.PeopleId = otherid;
                 Db.SubmitChanges();
             }
-            Db.Attends.DeleteAllOnSubmit(list);
-            Db.SubmitChanges();
 
-            var q2 = from a in this.Attends
-                     where toperson.Attends.Any(a2 => a2.MeetingId == a.MeetingId)
-                     select a;
-            Db.Attends.DeleteAllOnSubmit(q2);
             foreach (var c in this.Contributions)
                 c.PeopleId = otherid;
             foreach (var u in this.Users)
                 u.PeopleId = otherid;
-            foreach (var v in this.VolunteerForms)
-                v.PeopleId = otherid;
             foreach (var v in this.Volunteers)
+            {
+                var vv = new Volunteer
+                {
+                    PeopleId = otherid,
+                    Children = v.Children,
+                    Comments = v.Comments,
+                    Leader = v.Leader,
+                    ProcessedDate = v.ProcessedDate,
+                    Standard = v.Standard,
+                    StatusId = v.StatusId,
+                };
+                Db.Volunteers.InsertOnSubmit(vv);
+            }
+            foreach (var v in this.VolunteerForms)
                 v.PeopleId = otherid;
             foreach (var c in this.contactsMade)
             {
@@ -448,7 +454,8 @@ namespace CmsData
                     NewPeopleManagerId = 1;
                 if (Util.UserPeopleId.HasValue
                         && Util.UserPeopleId.Value != NewPeopleManagerId
-                        && !HttpContext.Current.User.IsInRole("OrgMembersOnly"))
+                        && !HttpContext.Current.User.IsInRole("OrgMembersOnly")
+                        && HttpContext.Current.User.IsInRole("Access"))
                     Task.AddNewPerson(p.PeopleId);
                 else
                 {

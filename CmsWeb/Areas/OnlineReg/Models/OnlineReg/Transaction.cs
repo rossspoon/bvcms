@@ -24,8 +24,9 @@ namespace CmsWeb.Models
             var amt = List.Sum(p => p.AmountToPay());
             if (org == null)
                 return amt;
-            if (org.MaximumFee > 0 && amt > org.MaximumFee)
-                amt = org.MaximumFee.Value;
+            var totalother = List.Sum(p => p.TotalOther());
+            if (org.MaximumFee > 0 && (amt - totalother) > org.MaximumFee)
+                amt = org.MaximumFee.Value + totalother;
             return amt;
         }
         public decimal TotalAmount()

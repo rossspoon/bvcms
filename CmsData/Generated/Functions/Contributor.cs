@@ -60,6 +60,10 @@ namespace CmsData.View
 		
 		private decimal _SpouseAmount;
 		
+		private int? _CampusId;
+		
+		private string _HouseName;
+		
 		
 		public Contributor()
 		{
@@ -436,6 +440,40 @@ namespace CmsData.View
 			{
 				if (this._SpouseAmount != value)
 					this._SpouseAmount = value;
+			}
+
+		}
+
+		
+		[Column(Name="CampusId", Storage="_CampusId", DbType="int")]
+		public int? CampusId
+		{
+			get
+			{
+				return this._CampusId;
+			}
+
+			set
+			{
+				if (this._CampusId != value)
+					this._CampusId = value;
+			}
+
+		}
+
+		
+		[Column(Name="HouseName", Storage="_HouseName", DbType="varchar(30)")]
+		public string HouseName
+		{
+			get
+			{
+				return this._HouseName;
+			}
+
+			set
+			{
+				if (this._HouseName != value)
+					this._HouseName = value;
 			}
 
 		}

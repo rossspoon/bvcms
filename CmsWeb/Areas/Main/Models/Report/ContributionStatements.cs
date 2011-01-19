@@ -101,7 +101,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 //-----Notice
                 var t2 = new PdfPTable(1);
                 t2.DefaultCell.Border = PdfPCell.NO_BORDER;
-                t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1})".Fmt(DateTime.Now, ci.PeopleId), font));
+                t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
                 t2.AddCell("");
                 string html2 = @"<p><i>
 NOTE: No goods or services were provided to you by the church in connection with any contibution;

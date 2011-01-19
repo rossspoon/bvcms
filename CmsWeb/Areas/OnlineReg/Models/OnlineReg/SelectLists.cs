@@ -35,7 +35,7 @@ namespace CmsWeb.Models
                     select o;
             return q;
         }
-        
+
         public IEnumerable<SelectListItem> Classes()
         {
             return Classes(divid, classid ?? 0);
@@ -85,8 +85,8 @@ namespace CmsWeb.Models
 
             return o.OrganizationName + lead + dt + loc;
         }
-        
-       
+
+
         public List<SelectListItem> ShirtSizes()
         {
             var q = from ss in DbUtil.Db.ShirtSizes

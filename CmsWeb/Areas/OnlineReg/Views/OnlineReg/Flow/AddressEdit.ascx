@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
-    <tr><th colspan="3"><span class="blue">Please provide additional information for a new record</span></th></tr>
+    <tr><td colspan="3">Please provide additional<br />information for a new profile</td></tr>
 <% if(Model.whatfamily == 3)
    { %>
     <tr>

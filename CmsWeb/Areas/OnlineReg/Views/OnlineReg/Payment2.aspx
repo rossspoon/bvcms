@@ -41,7 +41,7 @@
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p>
-    <%=Html.TextBox("Amount", Model.Amount.ToString("f2")) %>
+    <%=Html.TextBox("Amount", Model.Amount.ToString("d2")) %>
     <input type="submit" name="Submit" value="Pay with Credit Card" /></p>
     </p>
     </form>

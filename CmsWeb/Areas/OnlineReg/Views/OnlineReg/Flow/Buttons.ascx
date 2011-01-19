@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <% if (Model.last != null && Model.last.OtherOK && Model.last.ShowDisplay())
     { %>
-<div class="instruct" style="margin-top: 10px">
+<div style="margin-top: 10px; text-align:right">
 <%      if (Model.ManagingSubscriptions())
         { %>
     <input id="submitit" type="submit" class="submitbutton" 

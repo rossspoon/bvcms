@@ -11,7 +11,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.Required() %>
         <label id="personedit" for="first">
-            First</label>
+            First Name:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("first"), Model.first)%>
@@ -23,7 +23,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.NotRequired() %>
         <label for="middle">
-            Middle</label>
+            Middle Initial:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("middle"), Model.middle)%>
@@ -33,7 +33,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.Required() %>
         <label for="last">
-            Last</label>
+            Last Name:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("last"), Model.last)%>
@@ -45,7 +45,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.NotRequired() %>
         <label for="last">
-            Suffix</label>
+            Suffix:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("suffix"), Model.suffix, new { @class = "short" })%>
@@ -55,10 +55,13 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.IsRequired(Model.RequiredDOB()) %>
         <label for="dob">
-            Birthday</label>
+            Birthdate:</label>
     </td>
     <td>
-        <%=Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })%>
+<%--        <%=Html.DropDownList("bmon", Model.bmons()) %>
+        <%=Html.DropDownList("bday", Model.bdays()) %>
+        <%=Html.DropDownList("byear", Model.byears()) %>
+--%>    <%=Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })%>
         (<span id="age"><%=Model.age %></span>)
         <div>
             <%= Html.ValidationMessage(Model.inputname("dob"))%></div>
@@ -68,7 +71,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Model.ShowAddress == true? Html.IsRequired(Model.RequiredPhone()) : Html.NotRequired() %>
         <label for="phone">
-            Phone</label>
+            Phone:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("phone"), Model.phone)%>
@@ -80,7 +83,7 @@
     <td valign="top" nowrap="nowrap">
         <%=Html.Required() %>
         <label for="email">
-            Email</label>
+            Email:</label>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("email"), Model.email)%>
@@ -97,7 +100,7 @@
     </td>
 <%      if (Model.ManageSubscriptions())
         { %>
-    <td>
+    <td align="right">
         <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
 <%          if (Model.age >= 16 || !Model.birthday.HasValue)
             { %>
@@ -108,7 +111,7 @@
 <%      }
         else
         { %>
-    <td>
+    <td align="right">
         <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
     </td>
 <%      } %>

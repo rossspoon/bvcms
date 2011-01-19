@@ -1,7 +1,16 @@
 ﻿$(function () {
     $(".submitbutton").button();
-    $('form.DisplayEdit input.dob').live("blur", function () {
-        var bd = $(this).val();
+    $.dpoptions = {
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-99:c+0',
+        onSelect: function (dateText, inst) {
+            var f = $(this).closest('form');
+            $("#age", f).text($.dodate(dateText));
+        }
+    };
+    $("#dob").datepicker($.dpoptions);
+    $.dodate = function (bd) {
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
         var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
         var m = re0.exec(bd);
@@ -26,9 +35,11 @@
             bday = new Date(by + age, bm, bd);
             age++;
         }
-        age -= 2;
+        return age - 2;
+    };
+    $('form.DisplayEdit input.dob').live("blur", function () {
         var f = $(this).closest('form');
-        $("#age", f).text(age);
+        $("#age", f).text($.dodate($(this).val()));
     });
     $("a.submitbutton, a.submitlink, input.submitbutton.ajax", "form.DisplayEdit").live('click', function (ev) {
         ev.preventDefault();
@@ -46,6 +57,7 @@
                 $.InstructionsShow();
             });
             $(".submitbutton", f).button();
+            $("#dob").datepicker($.dpoptions);
         });
         return false;
     });

@@ -6,14 +6,14 @@
         Html.RenderPartial("Flow/Login", Model);
     else
     { %>
-<table cellpadding="0" width="100%">
+<table width="100%">
     <%      if (!Model.OnlyOneAllowed() && Model.List.Count > 1)
             // label is necessary if more than one
             { %>
     <tr>
         <td>
             <div class="instruct">
-                Registrants</div>
+                Pending Registrations</div>
         </td>
     </tr>
     <%      }
@@ -27,5 +27,5 @@
             } %>
 </table>
 <% 
-        Html.RenderPartial("Flow/Buttons", Model);
+            Html.RenderPartial("Flow/Buttons", Model);
     } %>

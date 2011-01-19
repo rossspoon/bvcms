@@ -41,7 +41,7 @@
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p>
-    <%=Html.TextBox("Amount", Model.Amt.Value.ToString("n2")) %>
+    <%=Html.TextBox("Amount", Model.Amt.Value.ToString("d2")) %>
     <input type="submit" name="Submit" value="Pay with Credit Card" /></p>
     <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
     <%=Html.TextBox("Coupon") %>

@@ -62,7 +62,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 p.MovePersonStuff(DbUtil.Db, to);
                 DbUtil.Db.SubmitChanges();
             }
-            catch
+            catch(Exception ex)
             {
                 return Content("error");
             }
