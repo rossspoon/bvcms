@@ -85,7 +85,7 @@ namespace CmsData
                     msg.ReplyToList.Add(reply);
                     msg.Subject = subject;
                     msg.Body = @"<br>--<br>View this post online at: <a href=""{0}?user={1}"">{0}</a>
-<br>--<br>
+<br>--<br><br><br><br><br>
 Click <a href=""{2}"">here</a> to stop receiving notifications"
                         .Fmt(returnloc, i.Key, stopemail + i.Value.User);
                     msg.IsBodyHtml = true;

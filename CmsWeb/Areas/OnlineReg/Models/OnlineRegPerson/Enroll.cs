@@ -75,6 +75,11 @@ namespace CmsWeb.Models
             if (org.YesNoQuestions.HasValue())
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup(DbUtil.Db, (g.Value == true ? "Yes:" : "No:") + g.Key);
+            foreach (var ck in Checkboxes())
+                om.RemoveFromGroup(DbUtil.Db, ck.name);
+            if (org.Checkboxes.HasValue() && Checkbox != null)
+                foreach (var g in Checkbox)
+                    om.AddToGroup(DbUtil.Db, g);
             if (org.ExtraQuestions.HasValue())
                 foreach (var g in ExtraQuestion)
                     if (g.Value.HasValue())

@@ -294,19 +294,24 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
-                    "New user welcome",
-                    @"Hi {0},
+            var body = DbUtil.Content("NewUserEmail", 
+                    @"Hi {name},
 <p>You have a new account on our Church Management System which you can access at the following link:<br />
-<a href=""{1}"">{1}</a></p>
+<a href=""{cmshost}"">{1}</a></p>
 <table>
-<tr><td>Username:</td><td><b>{2}</b></td></tr>
-<tr><td>Password:</td><td><b>{3}</b></td></tr>
+<tr><td>Username:</td><td><b>{username}</b></td></tr>
+<tr><td>Password:</td><td><b>{password}</b></td></tr>
 </table>
-<p>Please visit <a href=""{1}/Display/Page/Welcome"">this welcome page</a> for more information</p>
+<p>Please visit <a href=""{cmshost}/Display/Page/Welcome"">this welcome page</a> for more information</p>
 <p>Thanks,<br />
 The bvCMS Team</p>
-".Fmt(user.Name, DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host), user.Username, newpassword));
+");
+            body = body.Replace("{name}", user.Name);
+            body = body.Replace("{cmshost}", DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host));
+            body = body.Replace("{username}", user.Username);
+            body = body.Replace("{password}", newpassword);
+            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
+                    "New user welcome", body);
             return Redirect("/Admin/Users.aspx?create=1");
         }
         [Authorize(Roles = "Admin")]

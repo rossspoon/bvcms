@@ -6,7 +6,7 @@
         .Add("/Content/js/jquery-1.4.2.js")
         .Add("/Content/js/jquery-ui-1.8.2.custom.js")
         .Add("/Content/js/jquery.idle-timer.js")
-        .Add("/Content/js/jquery.showpassword.js")
+        .Add("/Content/js/jquery.showpassword-1.0.js")
         .Add("/Scripts/OnlineRegPayment.js")
         .Render("/Content/OnLineRegPayment_#.js")
     %>
@@ -17,8 +17,10 @@
             });
             var tmout = parseInt('<%=ViewData["timeout"] %>');
             $.idleTimer(tmout);
+            $('#Coupon').showPassword('#showpassword');
         });
     </script>
+<div class="regform" style="width:400px">
     <h2>
         Payment Processing</h2>
 <% if(ViewData.ContainsKey("Terms"))
@@ -33,35 +35,46 @@
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 <% } %>
-    <p>
-    </p>
     <form action="/onlinereg/ProcessPayment/<%=Model.ti.DatumId %>" method="post">
-    <%=Html.Hidden("pf.DatumId", Model.ti.DatumId) %>
-    <%=Html.Hidden("pf.Amt", Model.ti.Amt) %>
-    <%=Html.Hidden("pf.Url", Model.ti.Url) %>
-    <table>
-    <tr><td>Name</td><td><%=Html.TextBox("pf.ti.Name", Model.ti.Name) %></td></tr>
-    <tr><td>Address</td><td><%=Html.TextBox("pf.ti.Address", Model.ti.Address) %></td></tr>
-    <tr><td>City</td><td><%=Html.TextBox("pf.ti.City", Model.ti.City) %></td></tr>
-    <tr><td>State</td><td><%=Html.TextBox("pf.ti.State", Model.ti.State) %></td></tr>
-    <tr><td>Zip</td><td><%=Html.TextBox("pf.ti.Zip", Model.ti.Zip) %></td></tr>
-    <tr><td>Phone</td><td><%=Html.TextBox("pf.ti.Phone", Model.ti.Phone) %></td></tr>
-    <tr><td>Amount to Pay</td><td><%=Model.ti.Amt.ToString2("N") %></td></tr>
-    <tr><td>CreditCard</td><td><%=Html.TextBox("pf.CreditCard") %></td></tr>
-    <tr><td>CCV</td><td><%=Html.TextBox("pf.CCV") %></td></tr>
-    <tr><td>Expires</td><td><%=Html.TextBox("pf.Expires") %></td></tr>
+    <%=Html.Hidden("pf.ti.DatumId", Model.ti.DatumId) %>
+    <%=Html.Hidden("pf.ti.Url", Model.ti.Url) %>
+    <%=Html.Hidden("pf.ti.Amt", Model.ti.Amt) %>
+    <table width="100%">
+    <col align="right" width="150" />
+    <col align="left" />
+    <tr><td>Name:</td>
+        <td><%=Html.TextBox("pf.ti.Name", Model.ti.Name, new { @class = "wide" })%></td></tr>
+    <tr><td>Address:</td>
+        <td><%=Html.TextBox("pf.ti.Address", Model.ti.Address, new { @class = "wide" })%></td></tr>
+    <tr><td>City:</td>
+        <td><%=Html.TextBox("pf.ti.City", Model.ti.City, new { @class = "wide" }) %></td></tr>
+    <tr><td>State:</td>
+        <td> <%=Html.TextBox("pf.ti.State", Model.ti.State, new { @class = "wide" }) %></td></tr>
+    <tr><td>Zip:</td>
+        <td> <%=Html.TextBox("pf.ti.Zip", Model.ti.Zip, new { @class = "wide" }) %></td></tr>
+    <tr><td>Phone:</td>
+        <td><%=Html.TextBox("pf.ti.Phone", Model.ti.Phone, new { @class = "wide" }) %></td></tr>
+    <tr><td>Email:</td>
+        <td><%=Html.TextBox("pf.ti.Emails", Model.ti.Emails, new { @class = "wide" }) %></td></tr>
+    <tr><td>Amount to Pay:</td>
+        <td><span class="right"><%=Model.ti.Amt.ToString2("N2")%></span></td></tr>
+    <tr><td>Credit Card #:</td>
+        <td><%=Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" }) %></td></tr>
+    <tr><td nowrap="nowrap">CC Security Code #:</td>
+        <td><%=Html.TextBox("pf.CCV", Model.CCV, new { @class = "short", autocomplete = "off" }) %></td></tr>
+    <tr><td>Expires (MMYY):</td>
+        <td><%=Html.TextBox("pf.Expires", Model.Expires, new { @class = "wide", autocomplete = "off" }) %></td></tr>
+    <tr><td></td>
+        <td height="40"><input id="Submit" type="submit" name="Submit" class="submitbutton" value="Pay with Credit Card" />
+            <div class="column"><%=Html.ValidationMessage("form") %></div></td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr><td>Payment Code:</td>
+        <td><%=Html.Password("Coupon", ViewData["Coupon"], new { @class = "wide", autocomplete = "off" }) %><br />
+            <input id="showpassword" type="checkbox" /> Show Code</td></tr>
+    <tr><td></td>
+        <td height="40"><a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Code</a>
+        <div class="right red" id="validatecoupon"></div></td></tr>
     </table>
-    <p>
-        <input id="Submit" type="submit" name="Submit" value="Pay with Credit Card" /><br />
-        <%=Html.ValidationMessage("form") %>
-        </p>
     </form>
-    <form action="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" method="post">
-    <p>
-        If you have received a Cash Payment Code, please enter that number here and click
-        the blue link next to it:</p>
-    <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
-    <a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Pay with coupon</a>
-    <span style="color: Red" id="validatecoupon"></span>
-    </form>
+</div>
 </asp:Content>

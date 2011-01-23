@@ -18,6 +18,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             decimal amt, 
             int tranid, 
             int PeopleId, 
+            string email,
             string first, 
             string last, 
             string addr, 
@@ -60,6 +61,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             p["x_city"] = city;
             p["x_state"] = state;
             p["x_zip"] = zip;
+            p["x_email"] = email;
 
             var sb = new StringBuilder();
             foreach (var kv in p)

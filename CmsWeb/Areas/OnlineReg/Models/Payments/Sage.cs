@@ -36,6 +36,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             decimal amt, 
             int tranid, 
             int PeopleId,
+            string email,
             string first,
             string last,
             string addr,

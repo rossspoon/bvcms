@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <%  var p = Model.current;
-    if (p.LastItem && !p.Finished())
+    if (p.LastItem && !p.Finished() && p.index > 0)
     { %>
     <tr><td><div class="instruct">New Registrations</div></td></tr>
 <%  }
@@ -26,8 +26,11 @@
             <%= Html.ValidationMessage("findf")%>
         </td>
     </tr>
-<%      } %>
+<%      } 
+        if(p.index > 0 || p.LoggedIn == true)
+        { %>
     <tr><td><h4>Enter new person's information</h4></td></tr>
+<%      } %>
     <tr>
         <td><h3 id="fillout" class="instruct">Please fill out the form.</h3></td>
     </tr>
@@ -80,7 +83,7 @@
                     <tr>
                         <td colspan="2">
                             <p>
-                                We <%=p.IsNew ? "have your new" : "found your"%> record,<br />
+                                We <%=p.IsNew ? "have your new" : "found your"%> record,
                                 please continue below.</p>
                         </td>
                     </tr>

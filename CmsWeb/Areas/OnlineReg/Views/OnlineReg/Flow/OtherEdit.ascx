@@ -21,7 +21,7 @@
    { %>
     <tr>
         <td><label for="request"><%=Util.PickFirst(Model.org.RequestLabel, "Request") %></label></td>
-        <td><%=Html.TextBox(Model.inputname("request"), Model.request, new { maxlength = "100" }) %>
+        <td><%=Html.TextBox(Model.inputname("request"), Model.request, new { maxlength = "100", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("request")) %></div></td>
     </tr>
 <% } 
@@ -29,7 +29,7 @@
    { %>
     <tr>
         <td><label for="grade"><%=Util.PickFirst(Model.org.GradeLabel, "Grade") %></label></td>
-        <td><%=Html.TextBox(Model.inputname("grade"), Model.grade) %>
+        <td><%=Html.TextBox(Model.inputname("grade"), Model.grade, new { @class = "short" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("grade")) %></div></td>
     </tr>
 <% } 
@@ -37,12 +37,12 @@
    { %>
     <tr>
         <td><label for="emcontact">Emergency Friend</label></td>
-        <td><%=Html.TextBox(Model.inputname("emcontact"), Model.emcontact, new { maxlength = "100" })%>
-        <td colspan="2"><%= Html.ValidationMessage(Model.inputname("emcontact"))%></td>
+        <td><%=Html.TextBox(Model.inputname("emcontact"), Model.emcontact, new { maxlength = "100", @class="wide" })%>
+            <div><%= Html.ValidationMessage(Model.inputname("emcontact"))%></div></td>
     </tr>
     <tr>
         <td><label for="emphone">Emergency Phone</label></td>
-        <td><%=Html.TextBox(Model.inputname("emphone"), Model.emphone, new { maxlength = "15" }) %>
+        <td><%=Html.TextBox(Model.inputname("emphone"), Model.emphone, new { maxlength = "15", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("emphone"))%></div></td>
     </tr>
 <% } 
@@ -50,12 +50,12 @@
    { %>
     <tr>
         <td><label for="insurance">Health Insurance Carrier</label></td>
-        <td><%=Html.TextBox(Model.inputname("insurance"), Model.insurance, new { maxlength = "100" }) %>
+        <td><%=Html.TextBox(Model.inputname("insurance"), Model.insurance, new { maxlength = "100", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("insurance"))%></div></td>
     </tr>
     <tr>
         <td><label for="policy">Policy #</label></td>
-        <td><%=Html.TextBox(Model.inputname("policy"), Model.policy, new { maxlength = "100" }) %>
+        <td><%=Html.TextBox(Model.inputname("policy"), Model.policy, new { maxlength = "100", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("policy"))%></div></td>
     </tr>
 <% } 
@@ -63,12 +63,12 @@
    { %>
     <tr>
         <td><label for="doctor">Family Physician Name</label></td>
-        <td><%=Html.TextBox(Model.inputname("doctor"), Model.doctor, new { maxlength = "100" }) %>
+        <td><%=Html.TextBox(Model.inputname("doctor"), Model.doctor, new { maxlength = "100", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("doctor"))%></div></td>
     </tr>
     <tr>
         <td><label for="docphone">Family Physician Phone</label></td>
-        <td><%=Html.TextBox(Model.inputname("docphone"), Model.docphone, new { maxlength = "15" }) %>
+        <td><%=Html.TextBox(Model.inputname("docphone"), Model.docphone, new { maxlength = "15", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("docphone"))%></div></td>
     </tr>
 <% } 
@@ -127,12 +127,12 @@
    { %>
     <tr>
         <td><label for="mname">Mother's Name (first last)</label></td>
-        <td><%=Html.TextBox(Model.inputname("mname"), Model.mname, new { maxlength = "80" }) %>
+        <td><%=Html.TextBox(Model.inputname("mname"), Model.mname, new { maxlength = "80", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("mname"))%></div></td>
     </tr>
     <tr>
         <td><label for="fname">Father's Name (first last)</label></td>
-        <td><%=Html.TextBox(Model.inputname("fname"), Model.fname, new { maxlength = "80" }) %>
+        <td><%=Html.TextBox(Model.inputname("fname"), Model.fname, new { maxlength = "80", @class="wide" }) %>
             <div><%= Html.ValidationMessage(Model.inputname("fname"))%></div></td>
     </tr>
 <% }
@@ -160,7 +160,7 @@
    { %>
     <tr>
         <td><label for="ntickets"><%=Util.PickFirst(Model.org.NumItemsLabel, "No. of Items") %></label></td>
-        <td><%=Html.TextBox(Model.inputname("ntickets"), Model.ntickets) %> />
+        <td><%=Html.TextBox(Model.inputname("ntickets"), Model.ntickets, new { @class = "short" })%> />
             <div><%= Html.ValidationMessage(Model.inputname("ntickets")) %></div></td>
     </tr>
 <% }
@@ -194,7 +194,7 @@
         <td><div class="wraparound"><%=a.question%></div></td>
         <td>
             <%=Html.Hidden(Model.inputname("ExtraQuestion[" + a.n + "].Key"), a.question) %>
-            <%=Html.TextBox(Model.inputname("ExtraQuestion[" + a.n + "].Value"), Model.ExtraQuestionValue(a.question)) %>
+            <%=Html.TextBox(Model.inputname("ExtraQuestion[" + a.n + "].Value"), Model.ExtraQuestionValue(a.question), new { @class = "wide" })%>
             <div><%=Html.ValidationMessage(Model.inputname("ExtraQuestion[" + a.n + "].Value"))%></div></td>
     </tr>
 <%  }
@@ -208,6 +208,18 @@
             <%=Html.RadioButton(Model.inputname("YesNoQuestion[" + a.n + "].Value"), false, Model.YesNoChecked(a.name, false)) %> No
             <div><%=Html.ValidationMessage(Model.inputname("YesNoQuestion[" + a.n + "].Value")) %></div></td>
     </tr>
+<% }
+   if (Model.Checkboxes().Count() > 0)
+   { %>
+   <tr>
+       <td><div class="wraparound"><%=Model.org.CheckboxesLabel%></div></td>
+       <td>
+<%     foreach (var a in Model.Checkboxes())
+       { %>
+           <input type="checkbox" value="<%=a.name %>" name='<%=Model.inputname("Checkbox") %>' <%=Model.CheckboxChecked(a.name) ? "checked='checked'" : "" %> /> <%=a.desc%><br />
+<%     } %>
+       </td>
+   </tr>
 <% }
    foreach(var i in Model.MenuItems())
    { %>
@@ -224,12 +236,10 @@
    { %>
     <tr>
         <td><label for="deposit">Payment</label></td>
-        <td>
-        <%=Html.RadioButton(Model.inputname("paydeposit"), true, Model.paydeposit) %> Pay Deposit Only<br />
+        <td><%=Html.RadioButton(Model.inputname("paydeposit"), true, Model.paydeposit) %> Pay Deposit Only<br />
             <%=Html.RadioButton(Model.inputname("paydeposit"), false, Model.paydeposit) %> Pay Full Amount
             <div><%=Html.ValidationMessage(Model.inputname("paydeposit"))%></div></td>
     </tr>
 <% } %>
-    <tr><td></td>
-        <td align="right" colspan="4"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
+    <tr><td align="right" colspan="2"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
     </tr>

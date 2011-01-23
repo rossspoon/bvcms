@@ -72,7 +72,8 @@ namespace CmsWeb.Models
                     {
                         ContributionId = d.ContributionId,
                         PeopleId = d.Contribution.PeopleId,
-                        Name = d.Contribution.Person.Name2,
+                        Name = d.Contribution.Person.Name2
+                             + (d.Contribution.Person.DeceasedDate.HasValue ? " [DECEASED]" : ""),
                         Amt = d.Contribution.ContributionAmount,
                         Fund = d.Contribution.ContributionFund.FundName,
                         FundId = d.Contribution.FundId,
@@ -459,8 +460,7 @@ namespace CmsWeb.Models
                 var pid = q.SingleOrDefault();
                 if (pid != null)
                     bd.Contribution.PeopleId = pid;
-                else
-                    bd.Contribution.BankAccount = eac;
+                bd.Contribution.BankAccount = eac;
                 bh.BundleDetails.Add(bd);
             }
             FinishBundle(bh);

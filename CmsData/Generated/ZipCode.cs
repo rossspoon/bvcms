@@ -52,7 +52,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="char(5) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="varchar(10) NOT NULL", IsPrimaryKey=true)]
 		public string Zip
 		{
 			get { return this._Zip; }

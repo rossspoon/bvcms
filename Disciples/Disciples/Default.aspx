@@ -11,7 +11,7 @@
             <asp:Panel ID="Panel1" runat="server">
                 <asp:Login ID="Login1" runat="server" LoginButtonText="Sign In" PasswordLabelText="Password"
                     TitleText="Sign In" RememberMeSet="True" UserNameLabelText="User Name" EnableViewState="False" 
-                     onauthenticate="Login1_Authenticate">
+                     onauthenticate="Login1_Authenticate" OnLoggedIn="Login1_LoggedIn">
                     <TextBoxStyle CssClass="CommonTextBig" />
                     <LoginButtonStyle CssClass="CommonTextButton Big" />
                     <TitleTextStyle CssClass="CommonMessageTitle" />

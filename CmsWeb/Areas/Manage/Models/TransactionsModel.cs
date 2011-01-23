@@ -33,8 +33,8 @@ namespace CmsWeb.Models
         public TransactionsModel()
         {
             Pager = new PagerModel2(Count);
-            Pager.Direction = "asc";
-            Pager.Sort = "Name";
+            Pager.Direction = "desc";
+            Pager.Sort = "Date";
         }
         public IEnumerable<Transaction> Transactions()
         {
@@ -73,7 +73,7 @@ namespace CmsWeb.Models
                         break;
                     case "Date":
                         q = from t in q
-                            orderby t.TransactionDate descending
+                            orderby t.TransactionDate 
                             select t;
                         break;
                     case "Description":
@@ -112,7 +112,7 @@ namespace CmsWeb.Models
                         break;
                     case "Date":
                         q = from t in q
-                            orderby t.TransactionDate
+                            orderby t.TransactionDate descending
                             select t;
                         break;
                     case "Description":

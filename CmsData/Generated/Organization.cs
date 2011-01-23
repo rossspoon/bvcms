@@ -231,6 +231,10 @@ namespace CmsData
 		
 		private string _GradeLabel;
 		
+		private string _Checkboxes;
+		
+		private string _CheckboxesLabel;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -600,6 +604,12 @@ namespace CmsData
 		
 		partial void OnGradeLabelChanging(string value);
 		partial void OnGradeLabelChanged();
+		
+		partial void OnCheckboxesChanging(string value);
+		partial void OnCheckboxesChanged();
+		
+		partial void OnCheckboxesLabelChanging(string value);
+		partial void OnCheckboxesLabelChanged();
 		
     #endregion
 		public Organization()
@@ -3023,6 +3033,50 @@ namespace CmsData
 					this._GradeLabel = value;
 					this.SendPropertyChanged("GradeLabel");
 					this.OnGradeLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Checkboxes", UpdateCheck=UpdateCheck.Never, Storage="_Checkboxes", DbType="varchar(500)")]
+		public string Checkboxes
+		{
+			get { return this._Checkboxes; }
+
+			set
+			{
+				if (this._Checkboxes != value)
+				{
+				
+                    this.OnCheckboxesChanging(value);
+					this.SendPropertyChanging();
+					this._Checkboxes = value;
+					this.SendPropertyChanged("Checkboxes");
+					this.OnCheckboxesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CheckboxesLabel", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesLabel", DbType="varchar(50)")]
+		public string CheckboxesLabel
+		{
+			get { return this._CheckboxesLabel; }
+
+			set
+			{
+				if (this._CheckboxesLabel != value)
+				{
+				
+                    this.OnCheckboxesLabelChanging(value);
+					this.SendPropertyChanging();
+					this._CheckboxesLabel = value;
+					this.SendPropertyChanged("CheckboxesLabel");
+					this.OnCheckboxesLabelChanged();
 				}
 
 			}

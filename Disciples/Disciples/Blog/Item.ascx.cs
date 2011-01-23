@@ -43,7 +43,13 @@ public partial class Blog_Item : System.Web.UI.UserControl
             || (Page.User.IsInRole("BlogAdministrator") && post.BlogCached.PrivacyLevel == 1)
             || post.BlogCached.PrivacyLevel == 0
             ))
-            Response.Redirect("~/");
+        {
+            string ret = "~/?returnUrl=" + Server.UrlEncode(Request.Url.PathAndQuery);
+            if (!Page.User.Identity.IsAuthenticated)
+                Response.Redirect(ret);
+            else
+                Response.Redirect("~/");
+        }
 
         Edit.NavigateUrl = "~/Blog/Edit.aspx?id=" + post.Id;
         Edit.Visible = BlogPost.BlogCached.IsBlogger || Roles.IsUserInRole("BlogAdministrator");

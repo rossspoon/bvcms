@@ -22,19 +22,18 @@ namespace CmsWeb.Models
         public decimal Amount()
         {
             var amt = List.Sum(p => p.AmountToPay());
-            if (org == null)
+            var max = List.Max(p => p.org != null ? p.org.MaximumFee ?? 0 : 0);
+            if (max == 0)
                 return amt;
             var totalother = List.Sum(p => p.TotalOther());
-            if (org.MaximumFee > 0 && (amt - totalother) > org.MaximumFee)
-                amt = org.MaximumFee.Value + totalother;
+            if ((amt - totalother) > max)
+                amt = max + totalother;
             return amt;
-        }
-        public decimal TotalAmount()
-        {
-            return List.Sum(p => p.TotalAmount());
         }
         public decimal TotalAmountDue()
         {
+            // there is a bug here I need to figure out
+            // max will not work correctly when there is a deposit.
             return List.Sum(p => p.AmountDue());
         }
         public string NameOnAccount

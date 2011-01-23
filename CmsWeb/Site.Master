@@ -214,6 +214,8 @@
                     Individual<br />
                     <input type="radio" id="addressedto2" name="addressedto" value="Family" title="Addressed as a family when there are children" />
                     Family<br />
+                    <input type="radio" id="addressedto6" name="addressedto" value="FamilyMembers" title="Includes entire Family as individuals" />
+                    Family Members<br />
                     <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" title="Addressed to a couple, if both are in selection" />
                     Couples (both)<br />
                     <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" title="Addressed to a couple, if one or both are in selection" />

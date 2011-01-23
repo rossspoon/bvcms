@@ -213,6 +213,15 @@
         <%= Html.ValidationMessage("yesnoquestions")%></td>
     </tr>
     <tr>
+        <th>Checkboxes:</th>
+        <td><%=Html.TextBox("org.Checkboxes")%> 
+        <%= Html.ValidationMessage("checkboxes")%></td>
+    </tr>
+    <tr>
+        <th>Checkboxes Label:</th>
+        <td><%=Html.TextBox("org.CheckboxesLabel")%></td>
+    </tr>
+    <tr>
         <th>Extra Questions:</th>
         <td><%=Html.TextBox("org.ExtraQuestions")%></td>
     </tr>

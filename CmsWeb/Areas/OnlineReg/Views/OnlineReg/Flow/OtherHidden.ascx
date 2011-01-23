@@ -77,6 +77,13 @@
 <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
 <input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />
 <% }
+   if (Model.Checkbox != null)
+   {
+        foreach (var a in Model.Checkbox)
+        { %>
+        <input type="hidden" name='<%=Model.inputname("Checkbox")%>' value="<%=a%>" />
+<%      }
+   }
    foreach (var i in Model.MenuItemsChosen())
    { %>
 <input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Key" value="<%=i.sg %>" />

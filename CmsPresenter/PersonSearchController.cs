@@ -93,6 +93,45 @@ namespace CMSPresenter
                     };
             return q.Take(maximumRows);
         }
+        public static IEnumerable FetchExcelListFamilyMembers(int? qid)
+        {
+            var q = DbUtil.Db.PeopleQuery(qid.Value);
+            var q2 = from pp in q
+                     group pp by pp.FamilyId into g
+                     from p in g.First().Family.People
+                     let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                     orderby p.FamilyId, p.PositionInFamilyId
+                     select new
+                     {
+                        PeopleId = p.PeopleId,
+                        Title = p.TitleCode,
+                        FirstName = p.PreferredName,
+                        LastName = p.LastName,
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        City = p.PrimaryCity,
+                        State = p.PrimaryState,
+                        Zip = p.PrimaryZip.FmtZip(),
+                        Email = p.EmailAddress,
+                        BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                        BirthDay = Util.FormatBirthday(null, p.BirthMonth, p.BirthDay),
+                        JoinDate = p.JoinDate.FormatDate(),
+                        HomePhone = p.HomePhone.FmtFone(),
+                        CellPhone = p.CellPhone.FmtFone(),
+                        WorkPhone = p.WorkPhone.FmtFone(),
+                        MemberStatus = p.MemberStatus.Description,
+                        FellowshipLeader = p.BFClass.LeaderName,
+                        Age = p.Age.ToString(),
+                        School = p.SchoolOther,
+                        Grade = p.Grade.ToString(),
+                        AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
+                        Married = p.MaritalStatus.Description,
+                        FamilyId = p.FamilyId,
+                        FamilyPosition = p.PositionInFamilyId,
+                        AltName = p.AltName,
+                    };
+            return q2;
+        }
         public static IEnumerable FetchExcelListFamily(int queryid)
         {
             var Db = DbUtil.Db;

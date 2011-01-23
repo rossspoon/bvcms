@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
 <% Model.ShowLoginInstructions = true; %>
-<div class="login box" style="margin-top:1em" >
+<div class="login box" style="margin-top:1em;width=350px" >
     <div style="margin: 10px">
         <div><label for="username">Username or Email</label></div>
         <div><input id="username" type="text" name="m.username" value="<%=Model.username%>" tabindex="1" /></div>

@@ -4,17 +4,15 @@
         <%=Html.Required() %>
         required
     </td>
-    <td>
-    </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td valign="top" nowrap="nowrap" width="30%">
         <%=Html.Required() %>
         <label id="personedit" for="first">
             First Name:</label>
     </td>
     <td>
-        <%=Html.TextBox(Model.inputname("first"), Model.first)%>
+        <%=Html.TextBox(Model.inputname("first"), Model.first, new { @class = "wide" })%>
         <div>
             <%= Html.ValidationMessage(Model.inputname("first"))%></div>
     </td>
@@ -26,7 +24,7 @@
             Middle Initial:</label>
     </td>
     <td>
-        <%=Html.TextBox(Model.inputname("middle"), Model.middle)%>
+        <%=Html.TextBox(Model.inputname("middle"), Model.middle, new { @class = "wide" })%>
     </td>
 </tr>
 <tr>
@@ -36,7 +34,7 @@
             Last Name:</label>
     </td>
     <td>
-        <%=Html.TextBox(Model.inputname("last"), Model.last)%>
+        <%=Html.TextBox(Model.inputname("last"), Model.last, new { @class = "wide" })%>
         <div>
             <%= Html.ValidationMessage(Model.inputname("last"))%></div>
     </td>
@@ -57,11 +55,7 @@
         <label for="dob">
             Birthdate:</label>
     </td>
-    <td>
-<%--        <%=Html.DropDownList("bmon", Model.bmons()) %>
-        <%=Html.DropDownList("bday", Model.bdays()) %>
-        <%=Html.DropDownList("byear", Model.byears()) %>
---%>    <%=Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })%>
+    <td><%=Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })%>
         (<span id="age"><%=Model.age %></span>)
         <div>
             <%= Html.ValidationMessage(Model.inputname("dob"))%></div>
@@ -74,7 +68,7 @@
             Phone:</label>
     </td>
     <td>
-        <%=Html.TextBox(Model.inputname("phone"), Model.phone)%>
+        <%=Html.TextBox(Model.inputname("phone"), Model.phone, new { @class = "wide" })%>
         <div>
             <%= Html.ValidationMessage(Model.inputname("phone"))%></div>
     </td>
@@ -86,7 +80,7 @@
             Email:</label>
     </td>
     <td>
-        <%=Html.TextBox(Model.inputname("email"), Model.email)%>
+        <%=Html.TextBox(Model.inputname("email"), Model.email, new { @class = "wide" })%>
         <div>
             <%= Html.ValidationMessage(Model.inputname("email"))%></div>
     </td>

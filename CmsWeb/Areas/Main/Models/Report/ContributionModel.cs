@@ -86,6 +86,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             //var pids = new int[] { 817023, 865610, 828611, 828612 };
 
             var noaddressok = Db.Setting("NoAddressOK", "false") == "true";
+            var MinAmt = Db.Setting("MinContributionAmount", "5").ToDecimal();
             var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.ContributionOptionsId
                       let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
@@ -102,7 +103,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9
-                      where (option == 1 && p.Amount > 0) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > 0)
+                      where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
                       {

@@ -1,6 +1,4 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
-<% if (Model.last != null && Model.last.OtherOK && Model.last.ShowDisplay())
-    { %>
 <div style="margin-top: 10px; text-align:right">
 <%      if (Model.ManagingSubscriptions())
         { %>
@@ -28,4 +26,3 @@
             value="Add Other Registrations" />
 <%      } %>
 </div>
-<% } %>

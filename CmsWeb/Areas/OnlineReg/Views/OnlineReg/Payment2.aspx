@@ -41,12 +41,11 @@
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p>
-    <%=Html.TextBox("Amount", Model.Amount.ToString("d2")) %>
+    <%=Html.TextBox("Amount", Model.Amount.ToString("f2")) %>
     <input type="submit" name="Submit" value="Pay with Credit Card" /></p>
-    </p>
     </form>
     <form>
-    <p>
+    <%=Html.Hidden("Amount") %>
     <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
     <%=Html.TextBox("Coupon") %>
     <a href="/OnlineReg/PayWithCouponOld/<%=Model._datumid %>" class="submitbutton">Pay with coupon</a>

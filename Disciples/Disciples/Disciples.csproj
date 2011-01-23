@@ -577,7 +577,6 @@
     <Content Include="Blog\player.swf" />
     <Content Include="Blog\Post.aspx" />
     <Content Include="Blog\Posts.aspx" />
-    <Content Include="Config\connectionStrings.config" />
     <Content Include="BlogPost\MetaWebLogApi.ashx" />
     <Compile Include="Admin\CMSParagraph.aspx.designer.cs">
       <DependentUpon>CMSParagraph.aspx</DependentUpon>
@@ -772,8 +771,6 @@
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="ckeditor\_samples\sample_posteddata.php" />
     <Content Include="CKUpload.ashx" />
-    <Content Include="Config\smtp.config" />
-    <Content Include="Config\AppSettings.config" />
     <None Include="pictures\GDT Week 1.flv" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\CookComputing.XmlRpc.dll.deploy" />
     <None Include="PostPodcast\Application Files\PostPodcast_1_0_0_24\PostPodcast.application" />

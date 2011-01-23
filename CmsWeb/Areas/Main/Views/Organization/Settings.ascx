@@ -221,6 +221,14 @@
         <td><%=Model.org.YesNoQuestions%></td>
     </tr>
     <tr>
+        <th>Checkboxes:</th>
+        <td><%=Model.org.Checkboxes%></td>
+    </tr>
+    <tr>
+        <th>Checkboxes Label:</th>
+        <td><%=Model.org.CheckboxesLabel%></td>
+    </tr>
+    <tr>
         <th>Extra Questions:</th>
         <td><%=Model.org.ExtraQuestions %></td>
     </tr>

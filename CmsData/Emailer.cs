@@ -24,7 +24,7 @@ namespace CmsData
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
             if (!emailqueue.Subject.HasValue() || !emailqueue.Body.HasValue())
             {
-                Util.SendMsg(Util.Smtp(), SysFromEmail, CmsHost, From, "sent emails", "no subject or body, no emails sent", null, From.Address, emailqueue.Id);
+                Util.SendMsg(Util.Smtp(), SysFromEmail, CmsHost, From, "sent emails - error", "no subject or body, no emails sent", null, From.Address, emailqueue.Id);
                 return;
             }
 
@@ -170,8 +170,9 @@ namespace CmsData
             sb.Append(body);
             if (Db.Setting("sendemail", "true") != "false")
             {
-                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, From.Address, id);
-                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, "sent emails", sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
+                string subj = "sent emails: " + subject;
+                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, subj, sb.ToString(), null, From.Address, id);
+                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, subj, sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
             }
             sb.Length = 0;
             sb.Append("<pre>\r\n");

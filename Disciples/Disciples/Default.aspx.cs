@@ -83,5 +83,12 @@ namespace Disciples
             else
                 e.Authenticated = Membership.ValidateUser(Login1.UserName, Login1.Password);
         }
+
+        protected void Login1_LoggedIn(object sender, EventArgs e)
+        {
+            var returnUrl = Request.QueryString["returnUrl"];
+            if (returnUrl.HasValue())
+                Response.Redirect(returnUrl);
+        }
     }
 }

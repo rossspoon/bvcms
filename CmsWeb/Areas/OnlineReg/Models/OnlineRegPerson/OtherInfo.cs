@@ -6,6 +6,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace CmsWeb.Models
 {
@@ -35,6 +36,21 @@ namespace CmsWeb.Models
                 return YesNoQuestion[key] == value;
             return false;
         }
+
+        [OptionalField]
+        private string[] _Checkbox;
+        public string[] Checkbox
+        {
+            get { return _Checkbox; }
+            set { _Checkbox = value; }
+        }
+
+        public bool CheckboxChecked(string key)
+        {
+            if (Checkbox == null)
+                return false;
+            return Checkbox.Contains(key);
+        }
         public List<SelectListItem> ShirtSizes()
         {
             return ShirtSizes(org);
@@ -49,6 +65,15 @@ namespace CmsWeb.Models
         {
             var i = 0;
             var q = from s in (org.YesNoQuestions ?? string.Empty).Split(',')
+                    let a = s.Split('=')
+                    where s.HasValue()
+                    select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
+            return q;
+        }
+        public IEnumerable<YesNoQuestionItem> Checkboxes()
+        {
+            var i = 0;
+            var q = from s in (org.Checkboxes ?? string.Empty).Split(',')
                     let a = s.Split('=')
                     where s.HasValue()
                     select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };

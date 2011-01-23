@@ -42,21 +42,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (tctl == null)
                 return Content("no gateway");
 
-            Person p = null;
-            if (m.UserPeopleId.HasValue)
-                p = m.user;
-            else
-                p = m.List[0].person;
-
             string first, last;
             Person.NameSplit(pf.ti.Name, out first, out last);
             var tinfo = tctl.PostTransaction(
                 pf.CreditCard,
                 pf.CCV,
                 pf.Expires,
-                m.Transaction.Amt.Value,
+                pf.ti.Amt ?? 0,
                 m.TranId.Value,
-                p.PeopleId,
+                m.UserPeopleId ?? 0,
+                pf.ti.Emails,
                 first,
                 last,
                 pf.ti.Address,
@@ -64,20 +59,41 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.ti.State,
                 pf.ti.Zip,
                 m.Transaction.Testing ?? false);
-            //Html.ValidationMessage("shirtsize")
+
+
             if (tinfo.Approved == false)
             {
                 ModelState.AddModelError("form", tinfo.Message);
+                // fill in things for new transaction that did not come with POST
+                pf.ti.TransactionId = tinfo.TransactionId;
+                pf.ti.Approved = tinfo.Approved;
+                pf.ti.Message = tinfo.Message;
+                pf.ti.AuthCode = tinfo.AuthCode;
+                pf.ti.TransactionDate = DateTime.Now;
+                pf.ti.Description = t.Description;
+                pf.ti.OrgId = t.OrgId;
+                pf.ti.OriginalId = t.OriginalId;
+                pf.ti.Participants = t.Participants;
+                DbUtil.Db.Transactions.InsertOnSubmit(pf.ti);
+                DbUtil.Db.SubmitChanges();
                 SetHeaders(m.orgid ?? m.divid ?? 0);
                 return View(pf);
             }
-
+            // update information for sucessful transaction from POST
             t.TransactionId = tinfo.TransactionId;
             t.Approved = tinfo.Approved;
             t.Message = tinfo.Message;
             t.AuthCode = tinfo.AuthCode;
+            t.TransactionDate = DateTime.Now;
+            t.Emails = pf.ti.Emails;
+            t.Address = pf.ti.Address;
+            t.City = pf.ti.City;
+            t.State = pf.ti.State;
+            t.Zip = pf.ti.Zip;
+            t.Emails = pf.ti.Emails;
+            t.Name = pf.ti.Name;
+            t.Phone = pf.ti.Phone;
             DbUtil.Db.SubmitChanges();
-
             return RedirectToAction("Confirm", new { id = id, TransactionID = "paid" });
         }
         public ActionResult Confirm(int? id, string TransactionID)

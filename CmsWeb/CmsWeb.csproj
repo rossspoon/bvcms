@@ -914,8 +914,10 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="Content\js\jquery.showpassword-1.0.js" />
     <Content Include="images\notreq.gif" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
     <Content Include="Views\Batch\MoveAndDelete.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />

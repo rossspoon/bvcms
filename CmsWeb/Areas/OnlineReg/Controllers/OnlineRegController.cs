@@ -327,20 +327,24 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var ti = new Transaction
             {
                 Name = m.NameOnAccount,
-                Address = pp != null ? pp.PrimaryAddress : p.address,
                 Amt = m.Amount(),
                 Amtdue = m.TotalAmountDue(),
-                City = pp != null ? pp.PrimaryCity : p.city,
-                Emails = pp != null ? pp.EmailAddress : p.city,
-                Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone(),
-                State = pp != null ? pp.PrimaryState : p.state,
-                Zip = pp != null ? pp.PrimaryZip : p.zip,
+                Emails = pp != null ? pp.EmailAddress : p.email,
                 Testing = m.testing ?? false,
                 Description = m.Header,
                 OrgId = m.orgid,
                 Url = m.URL,
-                DatumId = d.Id,
+                DatumId = d.Id
             };
+            if (m.UserPeopleId.HasValue || p.IsNew)
+            {
+                ti.Address = pp != null ? pp.PrimaryAddress : p.address;
+                ti.City = pp != null ? pp.PrimaryCity : p.city;
+                ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
+                ti.State = pp != null ? pp.PrimaryState : p.state;
+                ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
+            }
+
             ti.TransactionGateway = DbUtil.Db.Setting("TransactionGateway", "ServiceU");
             DbUtil.Db.Transactions.InsertOnSubmit(ti);
             DbUtil.Db.SubmitChanges();

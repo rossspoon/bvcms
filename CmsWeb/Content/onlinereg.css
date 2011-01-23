@@ -128,14 +128,9 @@ legend
     background: #e6e7e9;
     padding: 0;
 }
-input[type="text"], input[type="password"]
+div.login
 {
-    border: 1px solid #CCCCCC;
-}
-div.login.box
-{
-    margin: 5px;
-    width: 350px;
+    width:350px;
 }
 div.login div div
 {
@@ -296,11 +291,15 @@ table#leg td
     text-align:right;
     top:0;
 }
-form.DisplayEdit input[type=text],
-form.DisplayEdit input[type=password]
+input.wide
 {
     border: 1px solid #CCCCCC;
     width: 100%;
+}
+input.wide70
+{
+    border: 1px solid #CCCCCC;
+    width: 70%;
 }
 #dob
 {
@@ -308,7 +307,7 @@ form.DisplayEdit input[type=password]
 }
 div.wraparound
 {
-    width: 12em;
+    /*max-width: 12em;*/
 }
 td.alt0
 {
