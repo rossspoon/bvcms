@@ -189,9 +189,9 @@ namespace CmsWeb.Models.PersonPage
                 {
                     var smtp = Util.Smtp();        
                     Util.Email(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
-                        "Basic Person Info Changed",
-                        "{0} changed the following information:<br />\n<table>{1}{2}</table>"
-                        .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));
+                        "Basic Person Info Changed on " + Util.Host,
+                        "{0} changed the following information for {1} ({2}):<br />\n<table>{3}{4}</table>"
+                        .Fmt(Util.UserName, First + " " + Last, PeopleId, psb.ToString(),fsb.ToString()));
                 }
         }
         public static IEnumerable<SelectListItem> TitleCodes()

@@ -36,5 +36,29 @@
             $("a.submitbutton").attr("disabled", "disabled");
         }
     });
+    $.validator.setDefaults({
+        highlight: function (input) {
+            $(input).addClass("ui-state-highlight");
+        },
+        unhighlight: function (input) {
+            $(input).removeClass("ui-state-highlight");
+        }
+    });
+    // validate signup form on keyup and submit
+    $("form").validate({
+        rules: {
+            "pf.ti.Name": { required: true, maxlength: 50 },
+            "pf.ti.Address": {  required: true, maxlength: 50 },
+            "pf.ti.City": {  required: true, maxlength: 50 },
+            "pf.ti.State": {  required: true, maxlength: 4 },
+            "pf.ti.Zip": {  required: true, maxlength: 15 },
+            "pf.ti.Email": {  required: true, maxlength: 80 },
+            "pf.ti.Phone": { maxlength: 50 },
+            "pf.CreditCard": { digits:true },
+            "pf.CCV": { digits:true, maxlength: 4 },
+            "pf.Expires" :{ digits:true, maxlength: 4 }
+        }
+    });
+
 });
 

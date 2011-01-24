@@ -62,11 +62,6 @@
                 <div class="personheader">
                     <%=p.first + " " + p.last %>
                     <span class="blue" style="font-size: 80%">(<a class="toggle" href="#">Details</a>)</span>
-<%      if ((p.age >= 16 || !p.birthday.HasValue) && !Model.IsCreateAccount())
-        { %>
-                    <input type="checkbox" name="m.List[<%=p.index %>].CreatingAccount" value = "true" <%=p.CreatingAccount == true ? "checked='checked'" : "" %>/>
-                    Create Account (optional)
-<%      } %>
                 </div>
 <%  } %>
                 <table class="particpant" width="95%" cellpadding="6" style='<%=!p.Finished() ? "": "display: none" %>'>
@@ -77,7 +72,7 @@
         if (p.OtherOK && !p.ManageSubscriptions())
         // finished with other info
             Html.RenderPartial("Flow/OtherDisplay", p);
-        else if (p.AnyOtherInfo())
+        else /* if (p.AnyOtherInfo()) */
         // need to edit other info
         { %>
                     <tr>

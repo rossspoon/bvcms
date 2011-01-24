@@ -296,6 +296,11 @@ input.wide
     border: 1px solid #CCCCCC;
     width: 100%;
 }
+input.short 
+{
+    border: 1px solid #CCCCCC;
+    width: 4em;
+}
 input.wide70
 {
     border: 1px solid #CCCCCC;
@@ -322,10 +327,6 @@ td.alt1
 .blue
 {
     color: blue;
-}
-form.DisplayEdit input.short 
-{
-    width: 4em;
 }
 .instruct
 {

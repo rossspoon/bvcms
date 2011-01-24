@@ -106,13 +106,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (m.classid.HasValue)
                 m.orgid = m.classid;
             var p = m.LoadExistingPerson(id);
+            p.index = m.List.Count - 1;
+            m.List[p.index] = p;
             p.ValidateModelForFind(ModelState, m);
             if (!ModelState.IsValid)
                 return View("Flow/List", m);
-            m.List[m.List.Count - 1] = p;
             if (p.ManageSubscriptions() && p.Found == true)
             {
-                p.OtherOK = true;
+                //p.OtherOK = true;
                 return View("Flow/List", m);
             }
             if (p.org != null && p.Found == true)
@@ -122,8 +123,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ModelState.AddModelError(p.ErrorTarget, "Sorry, but registration is closed.");
                 if (p.Found == true)
                     p.FillPriorInfo();
-                if (!p.AnyOtherInfo())
-                    p.OtherOK = true;
+                //if (!p.AnyOtherInfo())
+                    //p.OtherOK = true;
                 return View("Flow/List", m);
             }
             if (p.ShowDisplay() && p.org != null && p.ComputesOrganizationByAge())
@@ -157,8 +158,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
                 if (p.Found == true)
                     p.FillPriorInfo();
-                if (!p.AnyOtherInfo())
-                    p.OtherOK = true;
+                //if (!p.AnyOtherInfo())
+                //    p.OtherOK = true;
                 return View("Flow/List", m);
             }
             if (!p.whatfamily.HasValue && (id > 0 || p.LoggedIn == true))
@@ -213,7 +214,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.ValidateModelForFind(ModelState, m);
             if (p.ManageSubscriptions())
             {
-                p.OtherOK = true;
+                //p.OtherOK = true;
                 //if (p.Found == true)
                 //    return Content("/OnlineReg//{0}".Fmt(m.divid));
             }
@@ -224,8 +225,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
                 if (p.Found == true)
                     p.FillPriorInfo();
-                if (!p.AnyOtherInfo())
-                    p.OtherOK = true;
+                //if (!p.AnyOtherInfo())
+                //    p.OtherOK = true;
             }
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
@@ -268,8 +269,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 p.FillPriorInfo();
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
-            if (!p.AnyOtherInfo())
-                p.OtherOK = ModelState.IsValid;
+            //if (!p.AnyOtherInfo())
+            //    p.OtherOK = ModelState.IsValid;
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -278,7 +279,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var p = m.List[id];
             p.index = id;
             p.ValidateModelForOther(ModelState);
-            p.OtherOK = ModelState.IsValid;
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -314,8 +314,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CompleteRegistration(OnlineRegModel m)
         {
-            DbUtil.Db.SetNoLock();
-
             var d = new ExtraDatum { Stamp = Util.Now };
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();

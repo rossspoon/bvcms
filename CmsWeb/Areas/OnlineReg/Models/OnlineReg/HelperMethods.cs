@@ -70,10 +70,11 @@ namespace CmsWeb.Models
         }
         public bool IsEnded()
         {
-            if (div != null)
+            if (div != null && UserSelectsOrganization())
                 return UserSelectClasses(div.Id).Count() == 0;
-            else
+            else if(org != null)
                 return org.ClassFilled == true;
+            return false;
         }
         public bool UserSelectsOrganization()
         {

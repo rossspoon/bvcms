@@ -4,8 +4,7 @@
        if (Model.index > 0)
        { %>
         <tr>
-            <th>Other Information</th>
-            <td colspan="4" align="right"><a href="#" id="copy">copy from previous</a></td>
+            <td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td>
         </tr>
     <% }
    }
@@ -240,6 +239,14 @@
             <%=Html.RadioButton(Model.inputname("paydeposit"), false, Model.paydeposit) %> Pay Full Amount
             <div><%=Html.ValidationMessage(Model.inputname("paydeposit"))%></div></td>
     </tr>
+<% }
+   if ((Model.age >= 16 || !Model.birthday.HasValue) && !Model.IsCreateAccount())
+   { %>
+   <tr>
+        <td></td>
+        <td><%=Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount) %>
+             Create Account (optional)</td>
+   </tr>
 <% } %>
     <tr><td align="right" colspan="2"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
     </tr>

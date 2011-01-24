@@ -874,6 +874,7 @@
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
     <Content Include="Areas\Main\Views\Reports\AttendanceDetail.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionStatements.aspx" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.ascx" />
@@ -898,7 +899,6 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonMetaHidden.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\FamilyList.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonHidden.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Index.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\List.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NoLeague.aspx" />
@@ -915,7 +915,11 @@
     <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
     <Content Include="Content\js\jquery.showpassword-1.0.js" />
+    <Content Include="images\amex.jpg" />
+    <Content Include="images\discovercard.jpg" />
+    <Content Include="images\mastercard.jpg" />
     <Content Include="images\notreq.gif" />
+    <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />

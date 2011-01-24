@@ -1,95 +1,96 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <% if (Model.org.AskShirtSize == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].shirtsize", Model.shirtsize)%>
+<%=Html.Hidden3(Model.inputname("shirtsize"), Model.shirtsize) %>
 <% }
    if (Model.org.AskRequest == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].request", Model.request)%>
+<%=Html.Hidden3(Model.inputname("request"), Model.request)%>
 <% }
    if (Model.org.AskGrade == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].grade", Model.grade)%>
+<%=Html.Hidden3(Model.inputname("grade"), Model.grade)%>
 <% }
    if (Model.org.AskEmContact == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].emcontact", Model.emcontact)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].emphone", Model.emphone)%>
+<%=Html.Hidden3(Model.inputname("emcontact"), Model.emcontact)%>
+<%=Html.Hidden3(Model.inputname("emphone"), Model.emphone)%>
 <% }
    if (Model.org.AskInsurance == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].insurance", Model.insurance)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].policy", Model.policy)%>
+<%=Html.Hidden3(Model.inputname("insurance"), Model.insurance)%>
+<%=Html.Hidden3(Model.inputname("policy"), Model.policy)%>
 <% }
    if (Model.org.AskDoctor == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].doctor", Model.doctor)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].docphone", Model.docphone)%>
+<%=Html.Hidden3(Model.inputname("doctor"), Model.doctor)%>
+<%=Html.Hidden3(Model.inputname("docphone"), Model.docphone)%>
 <% }
    if (Model.org.AskAllergies == true)
    { %>
-        <%=Html.Hidden3("m.list[" + Model.index + "].medical", Model.medical)%>
+        <%=Html.Hidden3(Model.inputname("medical"), Model.medical)%>
 <% }
    if (Model.org.AskTylenolEtc == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].tylenol", Model.tylenol) %>
-<%=Html.Hidden3("m.list[" + Model.index + "].advil", Model.advil)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].maalox", Model.maalox)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].robitussin", Model.robitussin)%>
+<%=Html.Hidden3(Model.inputname("tylenol"), Model.tylenol) %>
+<%=Html.Hidden3(Model.inputname("advil"), Model.advil)%>
+<%=Html.Hidden3(Model.inputname("maalox"), Model.maalox)%>
+<%=Html.Hidden3(Model.inputname("robitussin"), Model.robitussin)%>
 <% }
    if (Model.org.AskParents == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].mname", Model.mname)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].fname", Model.fname)%>
+<%=Html.Hidden3(Model.inputname("mname"), Model.mname)%>
+<%=Html.Hidden3(Model.inputname("fname"), Model.fname)%>
 <% }
    if (Model.org.AskCoaching == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].coaching", Model.coaching)%>
+<%=Html.Hidden3(Model.inputname("coaching"), Model.coaching)%>
 <% }
    if (Model.org.AskChurch == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].memberus", Model.memberus)%>
-<%=Html.Hidden3("m.list[" + Model.index + "].otherchurch", Model.otherchurch)%>
+<%=Html.Hidden3(Model.inputname("memberus"), Model.memberus)%>
+<%=Html.Hidden3(Model.inputname("otherchurch"), Model.otherchurch)%>
 <% }
    if (Model.org.AskTickets == true)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].ntickets", Model.ntickets)%>
+<%=Html.Hidden3(Model.inputname("ntickets"), Model.ntickets)%>
 <% }
    if(Model.org.AskOptions.HasValue())
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].option", Model.option)%>
+<%=Html.Hidden3(Model.inputname("option"), Model.option)%>
 <% }
    if(Model.org.ExtraOptions.HasValue())
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].option2", Model.option2)%>
+<%=Html.Hidden3(Model.inputname("option2"), Model.option2)%>
 <% }
    if(Model.org.GradeOptions.HasValue())
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].gradeoption", Model.gradeoption)%>
+<%=Html.Hidden3(Model.inputname("gradeoption"), Model.gradeoption)%>
 <% }
    foreach (var a in Model.ExtraQuestions())
    { %>
-<input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Key" value="<%=a.question %>" />
-<input type="hidden" name="m.List[<%=Model.index%>].ExtraQuestion[<%=a.n %>].Value" value="<%=Model.ExtraQuestion[a.question] %>" />
+<%=Html.Hidden3(Model.inputname("ExtraQuestion[" + a.n + "].Key"), a.question) %>
+<%=Html.Hidden3(Model.inputname("ExtraQuestion[" + a.n + "].Value"), Model.ExtraQuestion[a.question]) %>
 <% }
    foreach (var a in Model.YesNoQuestions())
    { %>
-<input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Key" value="<%=a.name %>" />
-<input type="hidden" name="m.List[<%=Model.index%>].YesNoQuestion[<%=a.n %>].Value" value="<%=Model.YesNoQuestion[a.name] %>" />
+<%=Html.Hidden3(Model.inputname("YesNoQuestion[" + a.n + "].Key"), a.name) %>
+<%=Html.Hidden3(Model.inputname("YesNoQuestion[" + a.n + "].Value"), Model.YesNoQuestion[a.name]) %>
 <% }
    if (Model.Checkbox != null)
    {
         foreach (var a in Model.Checkbox)
         { %>
-        <input type="hidden" name='<%=Model.inputname("Checkbox")%>' value="<%=a%>" />
+<%=Html.Hidden3(Model.inputname("Checkbox"), a)%>
 <%      }
    }
    foreach (var i in Model.MenuItemsChosen())
    { %>
-<input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Key" value="<%=i.sg %>" />
-<input type="hidden" name="m.List[<%=Model.index%>].MenuItem[<%=i.n %>].Value" value="<%=Model.MenuItemValue(i.sg) %>" />
+<%=Html.Hidden3(Model.inputname("MenuItem[" + i.n + "].Key"), i.sg) %>
+<%=Html.Hidden3(Model.inputname("MenuItem[" + i.n + "].Value"), Model.MenuItemValue(i.sg)) %>
 <% }
    if (Model.org.Deposit > 0)
    { %>
-<%=Html.Hidden3("m.list[" + Model.index + "].paydeposit", Model.paydeposit)%>
+<%=Html.Hidden3(Model.inputname("paydeposit"), Model.paydeposit)%>
 <% } %>
+<%=Html.Hidden3(Model.inputname("CreatingAccount"), Model.CreatingAccount)%>

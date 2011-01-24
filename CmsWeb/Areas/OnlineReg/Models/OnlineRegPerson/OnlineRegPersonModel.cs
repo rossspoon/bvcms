@@ -120,8 +120,6 @@ namespace CmsWeb.Models
             get { return _LoggedIn; }
             set { _LoggedIn = value; }
         }
-        [NonSerialized]
-        public OnlineRegModel model;
 
         [NonSerialized]
         private DateTime _Birthday;
@@ -194,6 +192,12 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);
             PeopleId = person.PeopleId;
+        }
+        public bool IsCreateAccount()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
+            return false;
         }
     }
 }

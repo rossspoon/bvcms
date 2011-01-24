@@ -299,6 +299,7 @@ Please search with a different email, phone, or birthday.";
                 if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(q.question) || !ExtraQuestion[q.question].HasValue())
                     modelState.AddModelError(inputname("ExtraQuestion[" + q.n + "].Value"), "please give some answer");
             }
+            OtherOK = modelState.IsValid;
         }
     }
 }
