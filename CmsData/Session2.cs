@@ -75,13 +75,36 @@ namespace CmsData
         }
         public void SetSetting(string name, string value)
         {
-            var list = HttpRuntime.Cache[Host + "Settings"] as Dictionary<string, string>;
+            var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {
                 list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
-                HttpRuntime.Cache[Host + "Settings"] = list;
+                HttpRuntime.Cache[Host + "Setting"] = list;
             }
             list[name] = value;
+
+            var setting = Settings.SingleOrDefault(c => c.Id == name);
+            if (setting == null)
+            {
+                setting = new Setting { Id = name, SettingX = value };
+                Settings.InsertOnSubmit(setting);
+            }
+            else
+                setting.SettingX = value;
+        }
+        public void DeleteSetting(string name)
+        {
+            var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
+            if (list == null)
+            {
+                list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
+                HttpRuntime.Cache[Host + "Setting"] = list;
+            }
+            list.Remove(name);
+
+            var setting = Settings.SingleOrDefault(c => c.Id == name);
+            if (setting != null)
+                Settings.DeleteOnSubmit(setting);
         }
     }
     public class Session2

@@ -297,7 +297,7 @@ CKEditorFuncNum, baseurl + fn, error));
             var body = DbUtil.Content("NewUserEmail", 
                     @"Hi {name},
 <p>You have a new account on our Church Management System which you can access at the following link:<br />
-<a href=""{cmshost}"">{1}</a></p>
+<a href=""{cmshost}"">{cmshost}</a></p>
 <table>
 <tr><td>Username:</td><td><b>{username}</b></td></tr>
 <tr><td>Password:</td><td><b>{password}</b></td></tr>

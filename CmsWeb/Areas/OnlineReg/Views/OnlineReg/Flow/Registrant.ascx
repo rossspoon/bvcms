@@ -103,5 +103,11 @@
 %>
                 </table>
             </div>
+<%      if (Model.List.Count == 1)
+        { %>
+            <div style="margin: 10px; text-align:center;">
+                <a href="/OnlineReg/YesLogin" class="submitlink">Login with an account</a>
+            </div>
+<%      } %>
         </td>
     </tr>

@@ -36,12 +36,10 @@ namespace CmsWeb.Areas.Setup.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Edit(string id, string value)
         {
-            var set = DbUtil.Db.Settings.SingleOrDefault(m => m.Id == id);
-            set.SettingX = value;
-            DbUtil.Db.SubmitChanges();
             DbUtil.Db.SetSetting(id, value);
+            DbUtil.Db.SubmitChanges();
             var c = new ContentResult();
-            c.Content = set.SettingX;
+            c.Content = value;
             return c;
         }
 

@@ -33,10 +33,10 @@
     </script>
     <h2>
         <%=Model.Header%></h2>
-    <% if (Model.IsEnded())
+    <% var msg = Model.Filled();
+       if (msg.HasValue())
        { %>
-    <h4 style="color: Red">
-        Sorry, registration has ended</h4>
+    <h4>Sorry, <%=msg %></h4>
     <% }
        else
        { %>

@@ -7,6 +7,7 @@ using UtilityExtensions;
 using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Areas.OnlineReg.Models.Payments;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -22,6 +23,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         // Main page
         public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin)
         {
+            Util.NoCache(Response);
             if (!id.HasValue && !div.HasValue)
                 return Content("no organization");
             var m = new OnlineRegModel
@@ -98,6 +100,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             m.nologin = true;
             m.CreateList();
+            return View("Flow/List", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult YesLogin(OnlineRegModel m)
+        {
+            m.nologin = false;
+            m.List = new List<OnlineRegPersonModel>();
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

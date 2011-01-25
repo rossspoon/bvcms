@@ -76,6 +76,14 @@ namespace CmsWeb.Models
                 return org.ClassFilled == true;
             return false;
         }
+        public string Filled()
+        {
+            if (div != null && UserSelectsOrganization())
+                return UserSelectClasses(div.Id).Count() == 0 ? "all registration options are full" : "";
+            else if (org != null)
+                return (org.ClassFilled ?? false || (org.Limit > 0 && org.Limit == org.MemberCount)) ? "registration is full" : "";
+            return "";
+        }
         public bool UserSelectsOrganization()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&

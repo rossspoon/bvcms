@@ -180,7 +180,9 @@ namespace CmsWeb.Models
             sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", person.LastName);
 
             sb.AppendFormat("<tr><td>DOB:</td><td>{0:d}</td></tr>\n", person.DOB);
-            sb.AppendFormat("<tr><td>Gender:</td><td>{0}</td></tr>\n", person.GenderId == 1 ? "M" : "F");
+            sb.AppendFormat("<tr><td>Gender:</td><td>{0}</td></tr>\n", 
+                person.GenderId == 1 ? "M" : 
+                person.GenderId == 2 ? "F" : "U");
             sb.AppendFormat("<tr><td>Addr:</td><td>{0}</td></tr>\n", person.PrimaryAddress);
             sb.AppendFormat("<tr><td>City:</td><td>{0}</td></tr>\n", person.PrimaryCity);
             sb.AppendFormat("<tr><td>State:</td><td>{0}</td></tr>\n", person.PrimaryState);
