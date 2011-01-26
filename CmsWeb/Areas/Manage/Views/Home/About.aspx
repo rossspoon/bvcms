@@ -7,6 +7,6 @@
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>About</h2>
     <p>
-        Put content here.
+        Build Date: <%=ViewData["build"] %>
     </p>
 </asp:Content>

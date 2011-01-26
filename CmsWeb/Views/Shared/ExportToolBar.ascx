@@ -24,6 +24,9 @@
             <li><a href='/bulkmail.aspx?id=<%=ViewData["queryid"]%>' class="ChooseLabelType" 
                 title="Comma separated values text file, opens in excel, for bulk mailings"><img src="/images/Excel.png" /> 
                 Bulk (csv)</a></li>
+            <li><a href='/ExportExcel.aspx?id=<%=ViewData["queryid"]%>&format=Library'
+                title="For Atrium Library Import"><img src="/images/Excel.png" /> 
+                Excel Library</a></li>
 <% if ((bool?)ViewData["OrganizationContext"] ?? false)
    { %>
             <li>

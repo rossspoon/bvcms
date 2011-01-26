@@ -8,6 +8,12 @@
             if (ret.error) {
                 $('#validatecoupon').text(ret.error);
             }
+            else if (ret.amt) {
+                $('#validatecoupon').text('');
+                $('#amt').text(ret.amt);
+                $('#pf_ti_Amt').val(ret.tiamt);
+                $('#Coupon').val('');
+            }
             else {
                 window.location = ret.confirm;
             }
@@ -48,15 +54,15 @@
     $("form").validate({
         rules: {
             "pf.ti.Name": { required: true, maxlength: 50 },
-            "pf.ti.Address": {  required: true, maxlength: 50 },
-            "pf.ti.City": {  required: true, maxlength: 50 },
-            "pf.ti.State": {  required: true, maxlength: 4 },
-            "pf.ti.Zip": {  required: true, maxlength: 15 },
-            "pf.ti.Email": {  required: true, maxlength: 80 },
+            "pf.ti.Address": { required: true, maxlength: 50 },
+            "pf.ti.City": { required: true, maxlength: 50 },
+            "pf.ti.State": { required: true, maxlength: 4 },
+            "pf.ti.Zip": { required: true, maxlength: 15 },
+            "pf.ti.Email": { required: true, maxlength: 80 },
             "pf.ti.Phone": { maxlength: 50 },
-            "pf.CreditCard": { digits:true },
-            "pf.CCV": { digits:true, maxlength: 4 },
-            "pf.Expires" :{ digits:true, maxlength: 4 }
+            "pf.CreditCard": { digits: true },
+            "pf.CCV": { digits: true, maxlength: 4 },
+            "pf.Expires": { digits: true, maxlength: 4 }
         }
     });
 

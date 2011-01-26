@@ -56,6 +56,32 @@ namespace CMSPresenter
                     };
             return q;
         }
+        public static IEnumerable FetchExcelLibraryList(int queryid)
+        {
+            var Db = DbUtil.Db;
+            var query = Db.PeopleQuery(queryid);
+            var q = from p in query
+                    let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                    select new
+                    {
+                        PeopleId = p.PeopleId,
+                        FirstName = p.PreferredName,
+                        LastName = p.LastName,
+                        Address = p.PrimaryAddress,
+                        City = p.PrimaryCity,
+                        State = p.PrimaryState,
+                        Zip = p.PrimaryZip.FmtZip(),
+                        Email = p.EmailAddress,
+                        BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                        HomePhone = p.HomePhone.FmtFone(),
+                        CellPhone = p.CellPhone.FmtFone(),
+                        WorkPhone = p.WorkPhone.FmtFone(),
+                        MemberStatus = p.MemberStatus.Description,
+                        Married = p.MaritalStatus.Description,
+                    };
+            return q;
+        }
+
         public static IEnumerable FetchExcelList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;

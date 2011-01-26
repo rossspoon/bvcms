@@ -30,6 +30,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             var m = new Setting { Id = id };
             DbUtil.Db.Settings.InsertOnSubmit(m);
             DbUtil.Db.SubmitChanges();
+            DbUtil.Db.SetSetting(id, null);
             return Redirect("/Setup/Setting/");
         }
 

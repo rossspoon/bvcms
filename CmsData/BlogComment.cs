@@ -57,7 +57,8 @@ namespace CmsData
             var stopemail = Util.ResolveServerUrl("~/StopNotifications.aspx") + "?blog={0}&user="
                 .Fmt(this.BlogPost.BlogCached.Id);
             var from = new MailAddress("bbcms01@bellevue.org");
-            var subject = "New comment posted regarding: {0}, from {1}".Fmt(BlogPost.Title, User.Username);
+            var subject = "New comment posted regarding: {0}, from {1}".Fmt(
+                HttpContext.Current.Server.HtmlDecode(BlogPost.Title), User.Username);
             var reply = Util.FirstAddress(PosterEmail);
             foreach (var i in BlogPost.BlogCached.GetNotificationList())
             {
@@ -77,7 +78,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
                     smtp = new SmtpClient();
       
                 n++;
-#if DEBUG
+#if DEBUG2
 #else
                 smtp.Send(msg);
 #endif

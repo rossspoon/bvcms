@@ -98,8 +98,8 @@
         <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
 <%          if (Model.age >= 16 || !Model.birthday.HasValue)
             { %>
-        <%=Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)%>
-        Create Account (optional)
+        <div><%=Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)%>
+        Create Account (optional)</div>
 <%          } %>
     </td>
 <%      }

@@ -22,7 +22,12 @@ namespace CmsWeb.Areas.Manage.Controllers
         }
         public ActionResult About()
         {
+            ViewData["build"] = BuildDate();
             return View();
+        }
+        public DateTime BuildDate()
+        {
+            return System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location);
         }
         [ValidateInput(false)]
         public ActionResult ShowError(string error, string url)

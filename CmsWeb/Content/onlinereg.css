@@ -366,3 +366,7 @@ div.instructions.find, div.instructions.options
     font-weight: bold;
     font-family: monospace;
 }
+.red
+{
+    color: Red;
+}

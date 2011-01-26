@@ -79,7 +79,7 @@ namespace CmsData
             b.EntryDate = dt;
             b.Post = entry;
             b.PosterId = u.UserId;
-            b.Title = HttpContext.Current.Server.HtmlEncode(title);
+            b.Title = title;
             this.BlogPosts.Add(b);
             return b;
         }

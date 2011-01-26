@@ -69,12 +69,14 @@
     // Already found
     {
         Html.RenderPartial("Flow/PersonDisplay", p);
-        if (p.OtherOK && !p.ManageSubscriptions())
-        // finished with other info
-            Html.RenderPartial("Flow/OtherDisplay", p);
-        else /* if (p.AnyOtherInfo()) */
-        // need to edit other info
-        { %>
+        if (!p.ManageSubscriptions())
+        {
+            if (p.OtherOK)
+                // finished with other info
+                Html.RenderPartial("Flow/OtherDisplay", p);
+            else /* if (p.AnyOtherInfo()) */
+            // need to edit other info
+            { %>
                     <tr>
                         <td colspan="2">
                             <p>
@@ -82,8 +84,9 @@
                                 please continue below.</p>
                         </td>
                     </tr>
-<%          Model.ShowOtherInstructions = true;
+    <%          Model.ShowOtherInstructions = true;
             Html.RenderPartial("Flow/OtherEdit", p);
+            }
         }
     }
     else if (!Model.IsEnded())
@@ -103,7 +106,7 @@
 %>
                 </table>
             </div>
-<%      if (Model.List.Count == 1)
+<%      if (Model.List.Count == 1 && p.Found != true && Model.UserPeopleId == null)
         { %>
             <div style="margin: 10px; text-align:center;">
                 <a href="/OnlineReg/YesLogin" class="submitlink">Login with an account</a>

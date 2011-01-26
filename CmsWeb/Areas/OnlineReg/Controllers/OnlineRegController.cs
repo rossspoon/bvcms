@@ -223,7 +223,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.ValidateModelForFind(ModelState, m);
             if (p.ManageSubscriptions())
             {
-                //p.OtherOK = true;
+                p.OtherOK = true;
                 //if (p.Found == true)
                 //    return Content("/OnlineReg//{0}".Fmt(m.divid));
             }
@@ -385,10 +385,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     return View("Payment", ti);
 
             var pf = new PaymentForm { ti = ti };
-                if (DbUtil.Db.Setting("newcoupon", "false") == "true")
-                    return View("NewProcessPayment", pf);
-                else
-                    return View("ProcessPayment", pf);
+            return View("ProcessPayment", pf);
         }
     }
 }

@@ -62,6 +62,9 @@ namespace CmsWeb
                     GridView1.AllowPaging = false;
                     GridView1.DataSource = PersonSearchController.FetchExcelListPics(qid.Value, maxExcelRows);
                     break;
+                case "Library":
+                    dg.DataSource = PersonSearchController.FetchExcelLibraryList(qid.Value);
+                    break;
                 case "Family":
                     dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
                     break;

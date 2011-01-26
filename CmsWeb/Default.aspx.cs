@@ -65,9 +65,9 @@ namespace CmsWeb
                         where om.PeopleId == u.PeopleId
                         where (om.Pending ?? false) == false
                         where !(om.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
-                        select new 
-                        { 
-                            Name = om.Organization.OrganizationName, 
+                        select new
+                        {
+                            Name = om.Organization.OrganizationName,
                             MemberType = om.MemberType.Description,
                             Id = om.OrganizationId
                         };

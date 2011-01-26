@@ -54,7 +54,7 @@
     <tr><td>City</td>
         <td><%=Html.TextBox("pf.ti.City", Model.ti.City, new { @class = "wide" }) %></td></tr>
     <tr><td>State</td>
-        <td> <%=Html.TextBox("pf.ti.State", Model.ti.State, new { @class = "wide" }) %></td></tr>
+        <td> <%=Html.TextBox("pf.ti.State", Model.ti.State, new { @class = "short" }) %></td></tr>
     <tr><td>Zip</td>
         <td> <%=Html.TextBox("pf.ti.Zip", Model.ti.Zip, new { @class = "wide" }) %></td></tr>
     <tr><td>Phone</td>
@@ -62,13 +62,13 @@
     <tr><td>Email</td>
         <td><%=Html.TextBox("pf.ti.Emails", Model.ti.Emails, new { @class = "wide" }) %></td></tr>
     <tr><td>Amount to Pay</td>
-        <td><span class="right"><%=Model.ti.Amt.ToString2("N2")%></span></td></tr>
+        <td><span id="amt" class="right"><%=Model.ti.Amt.ToString2("N2")%></span></td></tr>
     <tr><td>Credit Card</td>
         <td><%=Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" }) %></td></tr>
     <tr><td>Card ID number<br /><a id="findidclick" href="#"><span style="font-size:65%">How to find your ID#</span></a></td>
         <td><%=Html.TextBox("pf.CCV", Model.CCV, new { @class = "short", autocomplete = "off" }) %></td></tr>
     <tr><td>Expires (MMYY)</td>
-        <td><%=Html.TextBox("pf.Expires", Model.Expires, new { @class = "wide", autocomplete = "off" }) %></td></tr>
+        <td><%=Html.TextBox("pf.Expires", Model.Expires, new { @class = "short", autocomplete = "off" }) %></td></tr>
     <tr><td></td>
         <td height="40"><input id="Submit" type="submit" name="Submit" class="submitbutton" value="Pay with Credit Card" />
             <div class="column"><%=Html.ValidationMessage("form") %></div></td></tr>
@@ -77,8 +77,10 @@
         <td><%=Html.Password("Coupon", ViewData["Coupon"], new { @class = "wide", autocomplete = "off" }) %><br />
             <input id="showpassword" type="checkbox" /> Show Code</td></tr>
     <tr><td></td>
-        <td height="40"><a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Code</a>
-        <div class="right red" id="validatecoupon"></div></td></tr>
+        <td>
+        <a href="/OnlineReg/ApplyCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Code</a>
+        <div class="right red" id="validatecoupon"></div>
+        </td></tr>
     </table>
     </form>
 </div>
