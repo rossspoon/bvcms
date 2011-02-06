@@ -65,6 +65,12 @@ namespace CmsData
 		
 		private int? _OriginalId;
 		
+		private decimal? _Regfees;
+		
+		private decimal? _Donate;
+		
+		private string _Fund;
+		
    		
    		private EntitySet< TransactionPerson> _TransactionPeople;
 		
@@ -147,6 +153,15 @@ namespace CmsData
 		
 		partial void OnOriginalIdChanging(int? value);
 		partial void OnOriginalIdChanged();
+		
+		partial void OnRegfeesChanging(decimal? value);
+		partial void OnRegfeesChanged();
+		
+		partial void OnDonateChanging(decimal? value);
+		partial void OnDonateChanged();
+		
+		partial void OnFundChanging(string value);
+		partial void OnFundChanged();
 		
     #endregion
 		public Transaction()
@@ -535,7 +550,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="varchar(4)")]
+		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="varchar(20)")]
 		public string State
 		{
 			get { return this._State; }
@@ -682,6 +697,72 @@ namespace CmsData
 					this._OriginalId = value;
 					this.SendPropertyChanged("OriginalId");
 					this.OnOriginalIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="regfees", UpdateCheck=UpdateCheck.Never, Storage="_Regfees", DbType="money")]
+		public decimal? Regfees
+		{
+			get { return this._Regfees; }
+
+			set
+			{
+				if (this._Regfees != value)
+				{
+				
+                    this.OnRegfeesChanging(value);
+					this.SendPropertyChanging();
+					this._Regfees = value;
+					this.SendPropertyChanged("Regfees");
+					this.OnRegfeesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="donate", UpdateCheck=UpdateCheck.Never, Storage="_Donate", DbType="money")]
+		public decimal? Donate
+		{
+			get { return this._Donate; }
+
+			set
+			{
+				if (this._Donate != value)
+				{
+				
+                    this.OnDonateChanging(value);
+					this.SendPropertyChanging();
+					this._Donate = value;
+					this.SendPropertyChanged("Donate");
+					this.OnDonateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="fund", UpdateCheck=UpdateCheck.Never, Storage="_Fund", DbType="varchar(50)")]
+		public string Fund
+		{
+			get { return this._Fund; }
+
+			set
+			{
+				if (this._Fund != value)
+				{
+				
+                    this.OnFundChanging(value);
+					this.SendPropertyChanging();
+					this._Fund = value;
+					this.SendPropertyChanged("Fund");
+					this.OnFundChanged();
 				}
 
 			}

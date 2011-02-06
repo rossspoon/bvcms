@@ -18,11 +18,6 @@
             });
             var tmout = parseInt('<%=ViewData["timeout"] %>');
             $.idleTimer(tmout);
-            $('#Coupon').showPassword('#showpassword');
-
-            $('#findidclick').click(function () {
-                $("#findid").dialog({ width: 400 });
-            });
         });
     </script>
 <div class="regform" style="width:400px">
@@ -43,7 +38,12 @@
     <form action="/onlinereg/ProcessPayment/<%=Model.ti.DatumId %>" method="post">
     <%=Html.Hidden("pf.ti.DatumId", Model.ti.DatumId) %>
     <%=Html.Hidden("pf.ti.Url", Model.ti.Url) %>
+    <%=Html.Hidden("pf.AskDonation", Model.AskDonation) %>
     <%=Html.Hidden("pf.ti.Amt", Model.ti.Amt) %>
+<% if (Model.AskDonation)
+   { %>
+    <%=Html.Hidden("pf.ti.Regfees", Model.ti.Regfees)%>
+<% } %>
     <table width="100%">
     <col align="right" style="white-space:nowrap;padding-right:10px" />
     <col align="left" />
@@ -61,7 +61,15 @@
         <td><%=Html.TextBox("pf.ti.Phone", Model.ti.Phone, new { @class = "wide" }) %></td></tr>
     <tr><td>Email</td>
         <td><%=Html.TextBox("pf.ti.Emails", Model.ti.Emails, new { @class = "wide" }) %></td></tr>
-    <tr><td>Amount to Pay</td>
+<% if (Model.AskDonation)
+   { %>
+    <tr><td>Registration Fees</td>
+        <td><span id="regfees" class="right"><%=Model.ti.Regfees.ToString2("N2")%></span></td></tr>
+    <tr><td>Donate Additional Amount</td>
+        <td><%=Html.TextBox("pf.ti.Donate", Model.ti.Donate, new { @class = "short" }) %>
+            <a id="applydonation" href="#" style="font-size:90%">Apply Donation</a></td></tr>
+<% } %>
+    <tr><td>Total Transaction Amount</td>
         <td><span id="amt" class="right"><%=Model.ti.Amt.ToString2("N2")%></span></td></tr>
     <tr><td>Credit Card</td>
         <td><%=Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" }) %></td></tr>

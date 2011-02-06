@@ -96,7 +96,9 @@ namespace CmsWeb.Models
                 return true;
             if (org == null || IsFilled)
                 return false;
-            if (IsFamily || (IsNew && IsValidForNew))
+            if (IsFamily)
+                return IsValidForExisting;
+            else if (IsNew && IsValidForNew)
                 return true;
             return false;
         }

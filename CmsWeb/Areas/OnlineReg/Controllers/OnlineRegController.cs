@@ -239,6 +239,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             if (p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
+#if DEBUG
+            if (Util.Host == "redeemer")
+            {
+                p.option = "For-Profit";
+                p.option2 = "The Art of the Pitch";
+                p.ExtraQuestion["Church Affiliation:"] = "Bellevue";
+                p.ExtraQuestion["JobTitle:"] = "developer";
+                p.ExtraQuestion["Employer:"] = "self";
+            }
+#endif
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -335,6 +345,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 Name = m.NameOnAccount,
                 Amt = m.Amount(),
+                Regfees = m.Amount(),
                 Amtdue = m.TotalAmountDue(),
                 Emails = pp != null ? pp.EmailAddress : p.email,
                 Testing = m.testing ?? false,
@@ -377,14 +388,32 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             SetHeaders(m.orgid ?? m.divid ?? 0);
             if (m.Amount() == 0 && m.Terms.HasValue())
-                return View("Terms", d.Id);
+            {
+                return View("Terms", new PaymentModel
+                    {
+                         Terms = m.Terms,
+                         _URL = m.URL,
+                         _timeout = INT_timeout,
+                         PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
+                    });
+            }
             if (ti.TransactionGateway == "ServiceU")
                 if (DbUtil.Db.Setting("newcoupon", "false") == "true")
                     return View("NewPayment", m);
                 else
                     return View("Payment", ti);
 
-            var pf = new PaymentForm { ti = ti };
+            var pf = new PaymentForm { ti = ti, AskDonation = m.AskDonation() };
+#if DEBUG
+            ti.Address = pp != null ? pp.PrimaryAddress : p.address;
+            ti.City = pp != null ? pp.PrimaryCity : p.city;
+            ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
+            ti.State = pp != null ? pp.PrimaryState : p.state;
+            ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
+            pf.CreditCard = "4111111111111111";
+            pf.CCV = "123";
+            pf.Expires = "1011";
+#endif
             return View("ProcessPayment", pf);
         }
     }

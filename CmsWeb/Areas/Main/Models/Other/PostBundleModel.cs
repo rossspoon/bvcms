@@ -211,6 +211,76 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             return ContributionRowData(bd.ContributionId);
         }
+        public static Contribution PostUnattendedContribution(decimal Amt, int? PeopleId, int? Fund, string Description)
+        {
+            var d = Util.Now.Date;
+            d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
+            var q = from b in DbUtil.Db.BundleHeaders
+                    where b.BundleHeaderTypeId == (int)BundleHeader.TypeCode.Online
+                    where b.ContributionDate >= d
+                    where b.ContributionDate < Util.Now
+                    orderby b.ContributionDate descending
+                    select b;
+            var bundle = q.FirstOrDefault();
+            if (bundle == null)
+            {
+                bundle = new BundleHeader
+                {
+                    BundleHeaderTypeId = (int)BundleHeader.TypeCode.Online,
+                    BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                    CreatedBy = Util.UserId1,
+                    ContributionDate = d,
+                    CreatedDate = DateTime.Now,
+                    DepositDate = DateTime.Now,
+                    FundId = 1,
+                    RecordStatus = false,
+                    TotalCash = 0,
+                    TotalChecks = 0,
+                    TotalEnvelopes = 0,
+                    BundleTotal = 0
+                };
+                DbUtil.Db.BundleHeaders.InsertOnSubmit(bundle);
+            }
+            if (!Fund.HasValue)
+                Fund = (from f in DbUtil.Db.ContributionFunds
+                        where f.FundStatusId == 1
+                        orderby f.FundId
+                        select f.FundId).First();
+
+            var FinanceManagerId = DbUtil.Db.Setting("FinanceManagerId", "").ToInt2();
+            if (!FinanceManagerId.HasValue)
+            {
+                var qu = from u in DbUtil.Db.Users
+                         where u.UserRoles.Any(ur => ur.Role.RoleName == "Finance")
+                         orderby u.Person.LastName
+                         select u.UserId;
+                FinanceManagerId = qu.FirstOrDefault();
+                if (!FinanceManagerId.HasValue)
+                    FinanceManagerId = 1;
+            }
+            var bd = new CmsData.BundleDetail
+            {
+                BundleHeaderId = bundle.BundleHeaderId,
+                CreatedBy = FinanceManagerId.Value,
+                CreatedDate = DateTime.Now,
+            };
+            bd.Contribution = new Contribution
+            {
+                CreatedBy = FinanceManagerId.Value,
+                CreatedDate = bd.CreatedDate,
+                FundId = Fund.Value,
+                PeopleId = PeopleId,
+                ContributionDate = bd.CreatedDate,
+                ContributionAmount = Amt,
+                ContributionStatusId = 0,
+                PledgeFlag = false,
+                ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+                ContributionDesc = Description,
+            };
+            bundle.BundleDetails.Add(bd);
+            DbUtil.Db.SubmitChanges();
+            return bd.Contribution;
+        }
         public object UpdateContribution()
         {
             int type;
@@ -435,7 +505,7 @@ namespace CmsWeb.Models
                                         Debug.WriteLine(i.Contribution.BankAccount);
                                     }
                                 }
-                                    
+
                                 FinishBundle(bh);
                                 bh = GetBundleHeader(date, DateTime.Now);
                                 prevbundle = curbundle;
@@ -447,7 +517,7 @@ namespace CmsWeb.Models
                         //    break;
                         case "micr":
                             var m = re.Match(csv[c]);
-	                        rt = m.Groups["rt"].Value;
+                            rt = m.Groups["rt"].Value;
                             ac = m.Groups["ac"].Value;
                             bd.Contribution.ContributionDesc = m.Groups["ck"].Value;
                             break;
@@ -514,7 +584,7 @@ namespace CmsWeb.Models
                                         Debug.WriteLine(i.Contribution.BankAccount);
                                     }
                                 }
-                                    
+
                                 FinishBundle(bh);
                                 bh = GetBundleHeader(date, DateTime.Now);
                                 prevbundle = curbundle;
@@ -622,7 +692,7 @@ namespace CmsWeb.Models
                             addr = csv[c];
                             break;
                         case "Email Address":
-                            email = csv[c]; 
+                            email = csv[c];
                             break;
                         case "Designation for &quot;Other&quot;":
                             oth = csv[c];

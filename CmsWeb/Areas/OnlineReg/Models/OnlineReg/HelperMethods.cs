@@ -78,11 +78,12 @@ namespace CmsWeb.Models
         }
         public string Filled()
         {
+            var msg = "";
             if (div != null && UserSelectsOrganization())
-                return UserSelectClasses(div.Id).Count() == 0 ? "all registration options are full" : "";
+                msg = UserSelectClasses(div.Id).Count() == 0 ? "all registration options are full" : "";
             else if (org != null)
-                return (org.ClassFilled ?? false || (org.Limit > 0 && org.Limit == org.MemberCount)) ? "registration is full" : "";
-            return "";
+                msg = ((org.ClassFilled ?? false) || (org.Limit > 0 && org.Limit <= org.MemberCount)) ? "registration is full" : "";
+            return msg;
         }
         public bool UserSelectsOrganization()
         {
@@ -116,6 +117,13 @@ namespace CmsWeb.Models
                 return org.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions;
             return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                     o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ManageSubscriptions);
+        }
+        public bool AskDonation()
+        {
+            if (org != null)
+                return org.AskDonation ?? false;
+            return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
+                    o.AskDonation == true);
         }
         public string Header
         {

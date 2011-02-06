@@ -49,6 +49,7 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
+            var countorgs = 0;
             if (amt == 0 && org.OrgMemberFees.HasValue())
             {
                 var q = from o in org.OrgMemberFees.Split(',')
@@ -56,10 +57,11 @@ namespace CmsWeb.Models
                         where b.Length > 1
                         where person != null && person.OrganizationMembers.Any(om => om.OrganizationId.ToString() == b[0])
                         select decimal.Parse(b[1]);
-                if (q.Count() > 0)
+                countorgs = q.Count();
+                if (countorgs > 0)
                     amt = q.First();
             }
-            if (amt == 0)
+            if (amt == 0 && countorgs == 0)
                 amt = org.Fee ?? 0;
             if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
                 if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))

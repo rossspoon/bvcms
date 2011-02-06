@@ -159,7 +159,7 @@
    { %>
     <tr>
         <td><label for="ntickets"><%=Util.PickFirst(Model.org.NumItemsLabel, "No. of Items") %></label></td>
-        <td><%=Html.TextBox(Model.inputname("ntickets"), Model.ntickets, new { @class = "short" })%> />
+        <td><%=Html.TextBox(Model.inputname("ntickets"), Model.ntickets, new { @class = "short" })%>
             <div><%= Html.ValidationMessage(Model.inputname("ntickets")) %></div></td>
     </tr>
 <% }
@@ -167,7 +167,7 @@
    { %>
     <tr>
         <td><div class="wraparound"><%=Util.PickFirst(Model.org.OptionsLabel, "Options")%></div></td>
-        <td><%=Html.DropDownList3("", Model.inputname("option"), Model.Options(), "0")%>
+        <td><%=Html.DropDownList3("", Model.inputname("option"), Model.Options(), Model.option)%>
             <div><%=Html.ValidationMessage(Model.inputname("option"))%></div></td>
     </tr>
 <%  }
@@ -175,7 +175,7 @@
     { %>
     <tr>
         <td><div class="wraparound"><%=Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Options")%></div></td>
-        <td><%=Html.DropDownList3("", Model.inputname("option2"), Model.ExtraOptions(), "0")%>
+        <td><%=Html.DropDownList3("", Model.inputname("option2"), Model.ExtraOptions(), Model.option2)%>
             <div><%=Html.ValidationMessage(Model.inputname("option2"))%></div></td>
     </tr>
 <%  }

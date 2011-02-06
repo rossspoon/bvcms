@@ -60,7 +60,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.ti.Zip,
                 m.Transaction.Testing ?? false);
 
-
             if (tinfo.Approved == false)
             {
                 ModelState.AddModelError("form", tinfo.Message);
@@ -93,6 +92,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             t.Emails = pf.ti.Emails;
             t.Name = pf.ti.Name;
             t.Phone = pf.ti.Phone;
+            t.Amt = pf.ti.Amt;  // total, includes donation
+            if (pf.ti.Donate > 0)
+                t.Donate = pf.ti.Donate;
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Confirm", new { id = id, TransactionID = "paid" });
         }

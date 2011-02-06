@@ -15,6 +15,7 @@
             %>        
 
     <% CmsData.Organization o = Model.org; %>
+    <%=Html.Hidden("refreshed", "no") %>
     <%=Html.Hidden("OrganizationId") %>
     <div class="PersonHead">
         <%=o.OrganizationName %>,

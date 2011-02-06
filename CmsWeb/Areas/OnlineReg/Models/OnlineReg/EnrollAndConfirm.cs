@@ -173,6 +173,7 @@ namespace CmsWeb.Models
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
             message = message.Replace("{first}", p0.PreferredName);
+            message = message.Replace("{name}", p0.Name);
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
             message = message.Replace("{division}", DivisionName);
             message = message.Replace("{org}", OrganizationName);
@@ -187,10 +188,36 @@ namespace CmsWeb.Models
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
             var smtp = Util.Smtp();
+            var re = new Regex(@"\{donation(?<text>.*)donation\}", RegexOptions.Singleline | RegexOptions.Multiline);
+            if (ti.Donate > 0)
+            {
+                var desc = "{0}; {1}; {2}, {3} {4}".Fmt(ti.Name, ti.Address, ti.City, ti.State, ti.Zip);
+                int? pid = UserPeopleId;
+                if (!pid.HasValue)
+                {
+                    string first, last;
+                    Person.NameSplit(ti.Name, out first, out last);
+                    var pds = DbUtil.Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
+                    if (pds.Count() == 1)
+                        pid = pds.Single().PeopleId;
+                }
+                PostBundleModel.PostUnattendedContribution(ti.Donate.Value, pid, null, desc);
+            	var ma = re.Match(message);
+                if (ma.Success)
+                {
+		            var v = ma.Groups["text"].Value;
+                    message = re.Replace(message, v);
+                }
+                message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
+                Util.Email(smtp, EmailAddresses, EmailAddresses, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
+            }
+            else
+                message = re.Replace(message, "");
+
             Util.Email(smtp, EmailAddresses, emails, subject, message);
             foreach (var p in List)
                 Util.Email(smtp, p.person.EmailAddress, p.org.EmailAddresses, "{0}".Fmt(Header),
-@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}
+@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
 <pre>{4}</pre>"
                .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
         }
@@ -209,7 +236,7 @@ namespace CmsWeb.Models
                     var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);
                     c.RegAmount = Amount();
                     c.Used = DateTime.Now;
-                    c.PeopleId = List[0].PeopleId.Value;
+                    c.PeopleId = List[0].PeopleId;
                 }
             }
         }

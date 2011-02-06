@@ -11,5 +11,6 @@ namespace CmsWeb.Models
         public string CreditCard { get; set; }
         public string Expires { get; set; }
         public string CCV { get; set; }
+        public bool AskDonation { get; set; }
     }
 }

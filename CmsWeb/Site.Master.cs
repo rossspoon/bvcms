@@ -42,9 +42,9 @@ namespace CmsWeb
                 .Add("/Scripts/ExportToolBar.js")
                 .Render("/Content/combined_#.js");
 
-            urgentNotice.Visible = ((string)Application["getoff"]).HasValue();
+            urgentNotice.Visible = Util.UrgentMessage.HasValue();
             if (urgentNotice.Visible)
-                urgentNotice.Text = (string)Application["getoff"];
+                urgentNotice.Text = Util.UrgentMessage;
 
             if (NoCache)
                 Response.NoCache();

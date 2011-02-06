@@ -6,7 +6,7 @@
 &nbsp;<div style="clear: both"></div>
 <p>
 Count: <strong><%=Model.Count() %></strong>&nbsp;&nbsp;
-<a class="filtergroupslink" href="#">Filter by name/group<%= Model.isFiltered ? "(filtered)" : "" %></a>
+<a class="filtergroupslink" href="#">Filter by name/group<%= Model.isFiltered ? "<span style='color:red'>(filtered)</span>" : "" %></a>
 <% if(Page.User.IsInRole("Edit"))
    { %>
 | <a href="/SearchAdd/Index/<%=Model.OrganizationId %>?type=org" class="addmembers">add members</a>

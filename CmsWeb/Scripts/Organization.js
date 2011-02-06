@@ -1,4 +1,13 @@
-﻿$(function () {
+﻿onload=function() {
+var e=document.getElementById("refreshed");
+    if (e.value == "no")
+        e.value="yes";
+    else {
+        e.value = "no";
+        location.reload();
+    }
+}
+$(function () {
     var maintabs = $("#main-tab").tabs();
     $('#deleteorg').click(function (ev) {
         ev.preventDefault();

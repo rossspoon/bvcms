@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegModel>" %>
+    <div style="background-color:Yellow"><%=Util.UrgentMessage %></div>
 <%
     Html.RenderPartial("Flow/ModelHidden", Model);
     if (Model.DisplayLogin())

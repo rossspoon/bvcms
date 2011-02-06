@@ -853,6 +853,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\CMS_StarterDb.mdf" />
+    <Content Include="App_Data\CMS_StarterDb_log.ldf">
+      <DependentUpon>CMS_StarterDb.mdf</DependentUpon>
+    </Content>
     <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\Campuses.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\CheckIn.aspx" />
@@ -914,6 +918,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="Content\js\jquery.ba-bbq.min.js" />
     <Content Include="Content\js\jquery.showpassword-1.0.js" />
     <Content Include="images\amex.jpg" />
     <Content Include="images\discovercard.jpg" />

@@ -450,7 +450,7 @@ namespace CmsData
             if (SendNotices)
             {
                 var NewPeopleManagerId = Db.Settings.SingleOrDefault(ss => ss.Id == "NewPeopleManagerId").SettingX.ToInt2();
-                if (NewPeopleManagerId.HasValue)
+                if (!NewPeopleManagerId.HasValue)
                     NewPeopleManagerId = 1;
                 if (Util.UserPeopleId.HasValue
                         && Util.UserPeopleId.Value != NewPeopleManagerId

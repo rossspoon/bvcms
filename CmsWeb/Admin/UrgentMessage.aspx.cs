@@ -12,12 +12,12 @@ namespace CmsWeb.Admin
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-                Message.Text = (string)Application["getoff"];
+                Message.Text = UtilityExtensions.Util.UrgentMessage;
         }
 
         protected void SetMessage_Click(object sender, EventArgs e)
         {
-            Application["getoff"] = Message.Text;
+            UtilityExtensions.Util.UrgentMessage = Message.Text;
             Response.Redirect("/");
         }
 

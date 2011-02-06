@@ -106,8 +106,7 @@
             <td>
                 <cc1:DisplayOrEditDropDown ID="FundIdDropDown" runat="server" BindingMember="FundId"
                     BindingSource="bundleheader" BindingMode="TwoWay" DataTextField="Value" DataValueField="Id"
-                    DataSourceID="FundsODS" MakeDefault0="True" AppendDataBoundItems="true">
-                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                    DataSourceID="FundsODS" MakeDefault0="True">
                 </cc1:DisplayOrEditDropDown>
                 <asp:HyperLink ID="FundsLink" runat="server" Target="_blank">fund totals</asp:HyperLink>
             </td>

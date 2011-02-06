@@ -304,4 +304,8 @@
         <th>Members Only:</th>
         <td><%=Html.CheckBoxReadonly(Model.org.MemberOnly)%></td>
     </tr>
+    <tr>
+        <th>Ask Donation:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.AskDonation)%></td>
+    </tr>
 </table>

@@ -235,6 +235,8 @@ namespace CmsData
 		
 		private string _CheckboxesLabel;
 		
+		private bool? _AskDonation;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -610,6 +612,9 @@ namespace CmsData
 		
 		partial void OnCheckboxesLabelChanging(string value);
 		partial void OnCheckboxesLabelChanged();
+		
+		partial void OnAskDonationChanging(bool? value);
+		partial void OnAskDonationChanged();
 		
     #endregion
 		public Organization()
@@ -3077,6 +3082,28 @@ namespace CmsData
 					this._CheckboxesLabel = value;
 					this.SendPropertyChanged("CheckboxesLabel");
 					this.OnCheckboxesLabelChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AskDonation", UpdateCheck=UpdateCheck.Never, Storage="_AskDonation", DbType="bit")]
+		public bool? AskDonation
+		{
+			get { return this._AskDonation; }
+
+			set
+			{
+				if (this._AskDonation != value)
+				{
+				
+                    this.OnAskDonationChanging(value);
+					this.SendPropertyChanging();
+					this._AskDonation = value;
+					this.SendPropertyChanged("AskDonation");
+					this.OnAskDonationChanged();
 				}
 
 			}

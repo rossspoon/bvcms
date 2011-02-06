@@ -59,8 +59,6 @@ namespace CmsData
                     text = text.Replace("{first}", qp.PreferredName);
                 text = text.Replace("{occupation}", qp.OccupationOther);
 
-                text = text.Replace("{}", qp.OccupationOther);
-
             	var re = new Regex(@"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}", RegexOptions.Singleline | RegexOptions.Multiline);
                 var list = new Dictionary<string, OneTimeLink>();
                 var ma = re.Match(text);

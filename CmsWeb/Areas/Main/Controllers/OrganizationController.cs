@@ -19,7 +19,11 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!id.HasValue)
                 return Content("no org");
-            var m = new OrganizationModel(id.Value);
+            if (Util2.CurrentOrgId != id)
+                Util2.CurrentGroups = null;
+
+            var m = new OrganizationModel(id.Value, Util2.CurrentGroups);
+
             if (m.org == null)
                 return Content("organization not found");
 
@@ -31,8 +35,6 @@ namespace CmsWeb.Areas.Main.Controllers
             
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
-            if (Util2.CurrentOrgId != m.org.OrganizationId)
-                Util2.CurrentGroups = null;
             Util2.CurrentOrgId = m.org.OrganizationId;
             ViewData["OrganizationContext"] = true;
             var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
@@ -192,22 +194,22 @@ namespace CmsWeb.Areas.Main.Controllers
 
         public ActionResult Settings(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SettingsEdit(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SettingsUpdate(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
             DbUtil.Db.SubmitChanges();
-            m = new OrganizationModel(id);
+            m = new OrganizationModel(id, Util2.CurrentGroups);
             m.ValidateSettings(ModelState);
             if (ModelState.IsValid)
                 return View("Settings", m);
@@ -217,23 +219,23 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult OrgInfo(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult OrgInfoEdit(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult OrgInfoUpdate(int id)
         {
-            var m = new OrganizationModel(id);
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
             m.DivisionsList = Request.Form["DivisionsList"];
             m.UpdateOrganization();
-            m = new OrganizationModel(id);
+            m = new OrganizationModel(id, Util2.CurrentGroups);
             return View("OrgInfo", m);
         }
 
@@ -241,7 +243,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SmallGroups()
         {
-            var m = new OrganizationModel(Util2.CurrentOrgId);
+            var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

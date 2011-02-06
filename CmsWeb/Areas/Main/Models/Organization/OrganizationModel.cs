@@ -14,11 +14,11 @@ namespace CmsWeb.Models.OrganizationPage
     {
         public CmsData.Organization org { get; set; }
         public int? OrganizationId { get; set; }
-        public OrganizationModel(int? id)
+        public OrganizationModel(int? id, int[] groups)
         {
             OrganizationId = id;
             org = DbUtil.Db.LoadOrganizationById(id);
-            MemberModel = new MemberModel(id, null, MemberModel.GroupSelect.Active, String.Empty);
+            MemberModel = new MemberModel(id, groups, MemberModel.GroupSelect.Active, String.Empty);
         }
         public MemberModel MemberModel;
 

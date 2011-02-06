@@ -304,6 +304,10 @@
         <td><%=Html.CheckBox("org.GiveOrgMembAccess")%></td>
     </tr>
     <tr>
+        <th>Ask Donation:</th>
+        <td><%=Html.CheckBox("org.AskDonation")%></td>
+    </tr>
+    <tr>
         <th>Group to Join:</th>
         <td><%=Html.TextBox("org.GroupToJoin")%></td>
     </tr>

@@ -1045,7 +1045,17 @@ namespace UtilityExtensions
                 return null;
             }
         }
-
+        public static string UrgentMessage
+        {
+            get
+            {
+                return ((string)HttpContext.Current.Application["getoff"]);
+            }
+            set
+            {
+                HttpContext.Current.Application["getoff"] = value;
+            }
+        }
     }
     public class EventArg<T> : EventArgs
     {
