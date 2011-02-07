@@ -144,6 +144,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var q = DbUtil.Db.Users.Where(uu => uu.Username == userName || uu.Person.EmailAddress == userName);
 
+            var impersonating = false;
             User user = null;
             int n = q.Count();
             foreach (var u in q)
@@ -157,10 +158,8 @@ CKEditorFuncNum, baseurl + fn, error));
                 }
                 else if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
                 {
-                    Notify(WebConfigurationManager.AppSettings["senderrorsto"],
-                        "{0} is being impersonated on {1}".Fmt(u.Username, Util.Host),
-                        Util.Now.ToString());
                     user = u;
+                    impersonating = true;
                     break;
                 }
                 else if (Membership.Provider.ValidateUser(u.Username, password))
@@ -197,6 +196,18 @@ CKEditorFuncNum, baseurl + fn, error));
                         "{0} tried to login at {1} but is not approved"
                             .Fmt(userName, Util.Now));
                 return problem;
+            }
+            if (impersonating == true)
+            {
+                if (user.Roles.Contains("Finance"))
+                {
+                    NotifyAdmins("cannot impersonate Finance user on " + Request.Url.OriginalString,
+                            "{0} tried to login at {1}".Fmt(userName, Util.Now));
+                    return problem;
+                }
+                Notify(WebConfigurationManager.AppSettings["senderrorsto"],
+                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host),
+                    Util.Now.ToString());
             }
 
             FormsAuthentication.SetAuthCookie(user.Username, false);

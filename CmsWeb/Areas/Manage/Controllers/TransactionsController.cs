@@ -21,11 +21,10 @@ namespace CmsWeb.Areas.Manage.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult List()
+        public ActionResult List(TransactionsModel m)
         {
-            var m = new TransactionsModel();
-            UpdateModel(m);
-            return View("Index", m);
+            UpdateModel(m.Pager);
+            return View(m);
         }
     }
 }

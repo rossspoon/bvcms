@@ -4,47 +4,25 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Transactions";
 }
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".datepicker").datepicker();
-        });
-    </script>
-    <h2>Transactions</h2>
-    <form id="form" method="post" action="/Manage/Transactions/List">
-    <div class="modalPopup">
-    <table>
-    <tr><td>Description</td><td>@Html.TextBox("description")</td></tr>
-    <tr><td>Name</td><td>@Html.TextBox("name")</td></tr>
-    <tr><td>Start Date</td><td>@Html.DatePicker("startdate")</td></tr>
-    <tr><td>End Date</td><td>@Html.DatePicker("enddate")</td></tr>
-    <tr><td>&gt;= Amount</td><td>@Html.TextBox("gtamount")</td></tr>
-    <tr><td>&lt;= Amount</td><td>@Html.TextBox("ltamount")</td></tr>
-    </table>
-    <input type="submit" value="Filter" />
-    <a href="/Manage/Transactions">clear</a>
-    </div>
-    <table id="Transactions" class="grid">
-        <thead>
-        <tr>
-            <th><a href="#" class="sortable">Tran Id</a></th>
-            <th><a href="#" class="sortable">Appr</a></th>
-            <th><a href="#" class="sortable">Date</a></th>
-            <th><a href="#" class="sortable">Description</a></th>
-            <th><a href="#" class="sortable">Name</a></th>
-            <th><a href="#" class="sortable">Amount</a></th>
-            <th><a href="#" class="sortable">Due</a></th>
-            <th><a href="#" class="sortable">Message</a></th>
-            <th><a href="#" class="sortable">Code</a></th>
-            <th><a href="#" class="sortable">Auth</a></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var t in Model.Transactions())
-        {
-            Html.RenderPartial("Transaction", t);
-        }
-        </tbody>
-    </table>
-    @{Html.RenderPartial("Pager2", Model.Pager);}
-    </form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".datepicker").datepicker();
 
+        $("form input.submitbutton").live('click', function (ev) {
+            ev.preventDefault();
+            var f = $(this).closest('form');
+            var q = f.serialize();
+            $.post(f.attr('action'), q, function (ret) {
+                $(f).html(ret);
+                $('table.grid > tbody > tr:even').addClass('alt');
+            });
+            return false;
+        });
+        $('table.grid > tbody > tr:even').addClass('alt');
+    });
+</script>
+<script src="/Scripts/Pager.js" type="text/javascript"></script>
+<h2>Transactions</h2>
+<form id="form" method="post" action="/Manage/Transactions/List">
+@{Html.RenderPartial("List", Model);}
+</form>

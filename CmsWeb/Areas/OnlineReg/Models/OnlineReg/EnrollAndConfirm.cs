@@ -112,7 +112,7 @@ namespace CmsWeb.Models
                             list.Add("Access");
                         if (!list.Contains("OrgMembersOnly"))
                             list.Add("OrgMembersOnly");
-                        u.SetRoles(DbUtil.Db, list.ToArray());
+                        u.SetRoles(DbUtil.Db, list.ToArray(), false);
                         if (org.GroupToJoin.HasValue())
                         {
                             g.SetMember(u, true);

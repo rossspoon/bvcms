@@ -1,0 +1,155 @@
+﻿@model CmsData.NewContact
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>NewContact</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreatedBy)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreatedBy)
+            @Html.ValidationMessageFor(model => model.CreatedBy)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreatedDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreatedDate)
+            @Html.ValidationMessageFor(model => model.CreatedDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactTypeId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactTypeId)
+            @Html.ValidationMessageFor(model => model.ContactTypeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactDate)
+            @Html.ValidationMessageFor(model => model.ContactDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactReasonId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactReasonId)
+            @Html.ValidationMessageFor(model => model.ContactReasonId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MinistryId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MinistryId)
+            @Html.ValidationMessageFor(model => model.MinistryId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NotAtHome)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NotAtHome)
+            @Html.ValidationMessageFor(model => model.NotAtHome)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LeftDoorHanger)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LeftDoorHanger)
+            @Html.ValidationMessageFor(model => model.LeftDoorHanger)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LeftMessage)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LeftMessage)
+            @Html.ValidationMessageFor(model => model.LeftMessage)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GospelShared)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GospelShared)
+            @Html.ValidationMessageFor(model => model.GospelShared)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PrayerRequest)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PrayerRequest)
+            @Html.ValidationMessageFor(model => model.PrayerRequest)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactMade)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactMade)
+            @Html.ValidationMessageFor(model => model.ContactMade)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GiftBagGiven)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GiftBagGiven)
+            @Html.ValidationMessageFor(model => model.GiftBagGiven)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comments)
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ModifiedBy)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ModifiedBy)
+            @Html.ValidationMessageFor(model => model.ModifiedBy)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ModifiedDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ModifiedDate)
+            @Html.ValidationMessageFor(model => model.ModifiedDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

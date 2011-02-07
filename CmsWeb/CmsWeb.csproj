@@ -177,6 +177,7 @@
   <ItemGroup>
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Areas\Main\Models\Report\RollLabelsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\Manage\Models\TransactionModel.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsModel.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\ConfirmTest.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\SpecialRegistrations.cs" />
@@ -853,10 +855,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\CMS_StarterDb.mdf" />
-    <Content Include="App_Data\CMS_StarterDb_log.ldf">
-      <DependentUpon>CMS_StarterDb.mdf</DependentUpon>
-    </Content>
     <Content Include="Areas\Main\Views\CheckIn\Startup.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\Campuses.aspx" />
     <Content Include="Areas\Main\Views\CheckIn2\CheckIn.aspx" />
@@ -990,7 +988,13 @@
     <Content Include="UploadPicture.aspx" />
     <Content Include="UserControls\ExportToolBar.ascx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\Transactions\Transaction.cshtml" />
+    <Content Include="Areas\Manage\Views\Transactions\Row.cshtml" />
+    <Content Include="Areas\Main\Views\Contact\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Contact\Details.cshtml" />
+    <Content Include="Areas\Main\Views\Contact\Create.cshtml" />
+    <Content Include="Areas\Main\Views\Contact\Edit.cshtml" />
+    <Content Include="Areas\Main\Views\Contact\Delete.cshtml" />
+    <Content Include="Areas\Manage\Views\Transactions\List.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

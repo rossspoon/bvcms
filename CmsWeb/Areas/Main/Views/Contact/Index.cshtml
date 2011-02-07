@@ -1,0 +1,125 @@
+﻿@model IEnumerable<CmsData.NewContact>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        <th>
+            ContactTypeId
+        </th>
+        <th>
+            ContactDate
+        </th>
+        <th>
+            ContactReasonId
+        </th>
+        <th>
+            MinistryId
+        </th>
+        <th>
+            NotAtHome
+        </th>
+        <th>
+            LeftDoorHanger
+        </th>
+        <th>
+            LeftMessage
+        </th>
+        <th>
+            GospelShared
+        </th>
+        <th>
+            PrayerRequest
+        </th>
+        <th>
+            ContactMade
+        </th>
+        <th>
+            GiftBagGiven
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ContactId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ContactId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ContactId })
+        </td>
+        <td>
+            @item.CreatedBy
+        </td>
+        <td>
+            @String.Format("{0:g}", item.CreatedDate)
+        </td>
+        <td>
+            @item.ContactTypeId
+        </td>
+        <td>
+            @String.Format("{0:g}", item.ContactDate)
+        </td>
+        <td>
+            @item.ContactReasonId
+        </td>
+        <td>
+            @item.MinistryId
+        </td>
+        <td>
+            @item.NotAtHome
+        </td>
+        <td>
+            @item.LeftDoorHanger
+        </td>
+        <td>
+            @item.LeftMessage
+        </td>
+        <td>
+            @item.GospelShared
+        </td>
+        <td>
+            @item.PrayerRequest
+        </td>
+        <td>
+            @item.ContactMade
+        </td>
+        <td>
+            @item.GiftBagGiven
+        </td>
+        <td>
+            @item.Comments
+        </td>
+        <td>
+            @item.ModifiedBy
+        </td>
+        <td>
+            @String.Format("{0:g}", item.ModifiedDate)
+        </td>
+    </tr>
+}
+
+</table>
+

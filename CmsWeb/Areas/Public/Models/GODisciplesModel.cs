@@ -416,7 +416,7 @@ namespace CmsWeb.Models
             if (discuser == null)
             {
                 discuser = MembershipService.CreateUser(person.PeopleId, username, password);
-                discuser.SetRoles(DbUtil.Db, new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff });
+                discuser.SetRoles(DbUtil.Db, new string[] { "OrgMembersOnly", STR_Attendance, STR_Staff }, false);
             }
             else
             {
@@ -427,7 +427,7 @@ namespace CmsWeb.Models
                     roles.Add(STR_Attendance);
                 if (!roles.Contains(STR_Staff))
                     roles.Add(STR_Staff);
-                discuser.SetRoles(DbUtil.Db, roles.ToArray());
+                discuser.SetRoles(DbUtil.Db, roles.ToArray(), false);
             }
             DbUtil.Db.SubmitChanges();
         }

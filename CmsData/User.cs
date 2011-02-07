@@ -23,7 +23,7 @@ namespace CmsData
         {
             get { return UserRoles.Select(ur => ur.Role.RoleName).ToArray(); }
         }
-        public void SetRoles(CMSDataContext Db, string[] value)
+        public void SetRoles(CMSDataContext Db, string[] value, bool InFinance)
         {
             if (value == null)
             {
@@ -32,6 +32,7 @@ namespace CmsData
             }
             var qdelete = from r in UserRoles
                           where !value.Contains(r.Role.RoleName)
+                          where r.Role.RoleName != "Finance" || InFinance
                           select r;
             Db.UserRoles.DeleteAllOnSubmit(qdelete);
 
@@ -43,6 +44,8 @@ namespace CmsData
 
             foreach (var s in q)
             {
+                if (s == "Finance" && !InFinance)
+                    continue;
                 var role = Db.Roles.Single(r => r.RoleName == s);
                 UserRoles.Add(new UserRole { Role = role });
             }

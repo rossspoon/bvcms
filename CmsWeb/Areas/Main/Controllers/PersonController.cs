@@ -449,7 +449,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var u = DbUtil.Db.Users.Single(us => us.UserId == id);
             u.Username = username;
             u.IsLockedOut = islockedout;
-            u.SetRoles(DbUtil.Db, role);
+            u.SetRoles(DbUtil.Db, role, User.IsInRole("Finance"));
             if (password2.HasValue())
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();

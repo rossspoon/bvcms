@@ -414,7 +414,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                     var p = Person.Add(f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], false, 0, 0, null);
                     p.AltName = a[names["AltName"]];
                     p.CellPhone = a[names["CellPhone"]].GetDigits();
-                    p.EmailAddress = a[names["Email"]].GetDigits();
+                    p.EmailAddress = a[names["Email"]];
 
                     switch (a[names["Gender"]])
                     {
@@ -458,9 +458,6 @@ namespace CmsWeb.Areas.Setup.Controllers
 
                     if (names.ContainsKey("Campus"))
                         p.CampusId = campuses[a[names["Campus"]]];
-
-                    if (p.PossibleDuplicates().Count() > 0)
-                        p.HasDuplicates = true;
                 }
                 DbUtil.Db.SubmitChanges();
             }

@@ -33,8 +33,8 @@ namespace CmsWeb.Models
         public TransactionsModel()
         {
             Pager = new PagerModel2(Count);
-            Pager.Direction = "desc";
             Pager.Sort = "Date";
+            Pager.Direction = "desc";
         }
         public IEnumerable<Transaction> Transactions()
         {
@@ -50,9 +50,15 @@ namespace CmsWeb.Models
                = from t in DbUtil.Db.Transactions
                  where t.Amt >= gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
+                 where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
                  select t;
+            if (!enddt.HasValue && startdt.HasValue)
+            {
+                var edt = startdt.Value.AddHours(24);
+                _transactions = _transactions.Where(t => t.TransactionDate < edt);
+            }
             return _transactions;
         }
         public IQueryable<Transaction> ApplySort()
@@ -73,7 +79,7 @@ namespace CmsWeb.Models
                         break;
                     case "Date":
                         q = from t in q
-                            orderby t.TransactionDate 
+                            orderby t.TransactionDate
                             select t;
                         break;
                     case "Description":
