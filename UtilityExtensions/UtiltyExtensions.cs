@@ -156,7 +156,7 @@ namespace UtilityExtensions
         public static string Truncate(this string source, int length)
         {
             if (source.HasValue() && source.Length > length)
-                source = source.Substring(0, length);
+                source = source.Substring(0, length).Trim();
             return source;
         }
         public static string EmailHref(this string addr, string name)
