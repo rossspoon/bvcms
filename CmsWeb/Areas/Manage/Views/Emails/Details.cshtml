@@ -1,0 +1,29 @@
+﻿@using UtilityExtensions;
+@using CmsWeb;
+@model CmsWeb.Models.EmailModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<script type="text/javascript" src="/Scripts/Pager.js"></script>
+
+<h2>Details</h2>
+@Html.ActionLink("Back to List", "Index")
+
+<table>
+<tr><td>QueuedBy</td><td>@Model.queue.QueuedBy</td></tr>
+<tr><td>FromName</td><td>@Model.queue.FromName</td></tr>
+<tr><td>FromAddr</td><td>@Model.queue.FromAddr</td></tr>
+<tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDate()</td></tr>
+<tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
+<tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm()</td></tr>
+<tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>
+</table>
+<h2>@Html.Raw(Model.queue.Subject)</h2>
+<div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>
+<hr />
+<h2>Recipiants</h2>
+<form action="/Manage/Emails/Recipients/@Model.id" method="post">
+@{Html.RenderPartial("Recipients", Model);}
+</form>

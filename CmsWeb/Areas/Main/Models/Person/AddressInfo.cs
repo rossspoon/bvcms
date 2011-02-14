@@ -47,7 +47,7 @@ namespace CmsWeb.Models.PersonPage
         public string Zip { get; set; }
         public string CityStateZip()
         {
-            return Util.FormatCSZ4(City, State, Zip);
+            return Util.FormatCSZ(City, State, Zip);
         }
         public string AddrCityStateZip()
         {

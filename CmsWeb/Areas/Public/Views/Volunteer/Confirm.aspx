@@ -1,6 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.VolunteerModel>" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>    
+    <script src="/Content/js/jquery-1.4.4.min.js" type="text/javascript"></script>    
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {

@@ -142,7 +142,11 @@ CKEditorFuncNum, baseurl + fn, error));
         }
         public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
         {
-            var q = DbUtil.Db.Users.Where(uu => uu.Username == userName || uu.Person.EmailAddress == userName);
+            var q = DbUtil.Db.Users.Where(uu => 
+                uu.Username == userName || 
+                uu.Person.EmailAddress == userName ||
+                uu.Person.EmailAddress2 == userName
+                );
 
             var impersonating = false;
             User user = null;

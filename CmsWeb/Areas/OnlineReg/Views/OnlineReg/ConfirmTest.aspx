@@ -24,7 +24,8 @@
       {
           var p = i.m.List[n]; %>
    <tr><td></td><td>Item <%=n %></td><td colspan="2">
-   <%=p.first %> <%=p.last %><br />
+   <a href="<%=Util.CmsHost %>Person/Index/<%=p.PeopleId %>"><%=p.first %> <%=p.last %></a><br />
+   <a href="<%=Util.CmsHost %>Organization/Index/<%=p.orgid%>"><%=p.org.OrganizationName%></a><br/>
    <%=p.dob %> (<%=p.age %>)<br/>
    <%=p.phone.FmtFone() %><br/>
    <%=p.email %><br/>

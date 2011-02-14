@@ -4,23 +4,25 @@
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
     @Html.Raw(SquishIt.Framework.Bundle.Css()
-    .Add("/Content/jquery-ui-1.8.2.custom.css") 
+    .Add("/Content/jquery-ui-1.8.9.custom.css") 
     .Add("/Content/pager.css") 
     .Add("/Content/style.css")
+    .Add("/Content/jquery.tooltip.css")
     .Add("/Content/superfish.css") 
     .Add("/Content/supertabfish.css") 
     .Render("/Content/AllMVC3_#.css"))
 </head>
 <body>
     @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-    .Add("/Content/js/jquery-1.4.2.js")
-    .Add("/Content/js/jquery-ui-1.8.2.custom.js")
-    .Add("/Content/js/jquery.bgiframe-2.1.1.js")
+    .Add("/Content/js/jquery-1.4.4.js")
+    .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+    .Add("/Content/js/jquery.bgiframe-2.1.2.js")
     .Add("/Content/js/hoverIntent.js")
     .Add("/Content/js/jquery-cookie.js")
     .Add("/Content/js/jquery.blockUI.js")
     .Add("/Content/js/superfish.js")
     .Add("/Content/js/supersubs.js")
+    .Add("/Content/js/jquery.tooltip.js")
     .Add("/Scripts/ExportToolBar.js")
     .Render("/Content/combined3_#.js"))
     <script type="text/javascript">

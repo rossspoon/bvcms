@@ -23,7 +23,7 @@ a.submitbutton,a.button {
   text-decoration:none;
 }
 </style>
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {

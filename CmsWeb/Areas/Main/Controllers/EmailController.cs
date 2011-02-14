@@ -125,27 +125,10 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return CMSMembershipProvider.provider.ValidateUser(username, password);
         }
-        //public ActionResult SendEmails(int id)
-        //{
-        //    //if (Submit.StartsWith("Test"))
-        //    //{
-        //    //    m.TestSend(Util.UserPeopleId.Value);
-        //    //    return View("Index", m);
-        //    //}
-        //    if (!Authenticate())
-        //        return Content("not authorized");
-        //    DbUtil.LogActivity("Scheduled Emailing people");
-        //    var m = new MassEmailer();
-        //    m.Send(id);
-        //    return Content(@"<html><body><a href=""/Email/Progress/{0}"">progress</a></body></html>".Fmt(id));
-        //}
-        //[Authorize(Roles = "Admin")]
-        //public ActionResult SendNow(int id)
-        //{
-        //    DbUtil.LogActivity("Immediate Emailing people");
-        //    var m = new MassEmailer();
-        //    m.Send(id);
-        //    return RedirectToAction("Progress", new { id = id });
-        //}
+        public ActionResult List()
+        {
+            return View();
+        }
     }
+    
 }

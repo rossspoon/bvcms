@@ -1,8 +1,8 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/onlinereg.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Models.ManageSubsModel>" %> 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.4.2.js")
-        .Add("/Content/js/jquery-ui-1.8.2.custom.js")
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
         .Add("/Content/js/jquery.blockUI.js")
         .Add("/Content/js/jquery.tooltip.js")
         .Render("/Content/ManageSubs#.js") %>        

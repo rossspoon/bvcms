@@ -11,7 +11,7 @@
                 <%=Model.PrimaryAddr.Address1%></a>
                 <span style="color: Red"><%=Model.PrimaryAddr.BadAddress == true ? "bad address" : "" %></span>
         </td>
-        <td><a id="clipaddr" href="#" title="copy name and address to clipboard">clipboard</a></td>
+        <td><a id="" href="http://www.bing.com/maps/?q=<%=Model.PrimaryAddr.AddrCityStateZip() %>">bing</a></td>
     </tr>
     <% if (Model.PrimaryAddr.Address2.HasValue())
        { %>
@@ -24,8 +24,8 @@
     <% } %>
     <tr>
         <td><%=Model.PrimaryAddr.CityStateZip()%></td>
-        <td><a href='http://www.google.com/maps?f=d&saddr=<%=DbUtil.StartAddress %>&pw=2&daddr=<%=Model.PrimaryAddr.AddrCityStateZip() %>'
-                target="_blank">driving directions</a>
+        <td><a href='http://www.google.com/maps?f=d&saddr=<%=DbUtil.StartAddress %>&pw=2&daddr=<%=Model.PrimaryAddr.AddrCityStateZip() %>' target="_blank">directions</a>
+            <a href='http://www.bing.com/maps/?rtp=adr.<%=DbUtil.StartAddress %>~adr.<%=Model.PrimaryAddr.AddrCityStateZip() %>' target="_blank">bing</a>
         </td>
     </tr>
     <tr>

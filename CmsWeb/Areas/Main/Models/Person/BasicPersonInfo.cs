@@ -30,6 +30,9 @@ namespace CmsWeb.Models.PersonPage
         public string CellPhone { get; set; }
         public string WorkPhone { get; set; }
         public string EmailAddress { get; set; }
+        public bool SendEmailAddress1 { get; set; }
+        public string EmailAddress2 { get; set; }
+        public bool SendEmailAddress2 { get; set; }
         public string School { get; set; }
         public string Grade { get; set; }
         public string Employer { get; set; }
@@ -98,6 +101,9 @@ namespace CmsWeb.Models.PersonPage
                 DoNotMailFlag = p.DoNotMailFlag,
                 DoNotVisitFlag = p.DoNotVisitFlag,
                 EmailAddress = p.EmailAddress,
+                SendEmailAddress1 = p.SendEmailAddress1 ?? true,
+                EmailAddress2 = p.EmailAddress2,
+                SendEmailAddress2 = p.SendEmailAddress2 ?? false,
                 Employer = p.EmployerOther,
                 First = p.FirstName,
                 GenderId = p.GenderId,
@@ -137,6 +143,9 @@ namespace CmsWeb.Models.PersonPage
             UpdateValue(p, "DoNotMailFlag", DoNotMailFlag);
             UpdateValue(p, "DoNotVisitFlag", DoNotVisitFlag);
             UpdateValue(p, "EmailAddress", EmailAddress);
+            UpdateValue(p, "EmailAddress2", EmailAddress2);
+            UpdateValue(p, "SendEmailAddress1", SendEmailAddress1);
+            UpdateValue(p, "SendEmailAddress2", SendEmailAddress2);
             UpdateValue(p, "FirstName", First);
             UpdateValue(p, "LastName", Last);
             UpdateValue(p, "AltName", AltName);

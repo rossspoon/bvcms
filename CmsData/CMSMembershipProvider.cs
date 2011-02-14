@@ -514,7 +514,11 @@ namespace CmsData
         {
             var Db = GetDb();
             username = Util.GetUserName(username);
-            var user = Db.Users.FirstOrDefault(u => u.Username == username || u.EmailAddress == username);
+            var user = Db.Users.FirstOrDefault(u => 
+                u.Username == username 
+                || u.EmailAddress == username
+                || u.Person.EmailAddress2 == username
+                );
             if (user == null)
                 return false;
             if (CheckPassword(password, user.Password))

@@ -7,7 +7,7 @@
 <title>Online Registration</title>
 <%=Util.PickFirst((string)ViewData["header"], @"
 <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-<link href='/Content/jquery-ui-1.8.2.custom.css' rel='stylesheet' type='text/css' />
+<link href='/Content/jquery-ui-1.8.9.custom.css' rel='stylesheet' type='text/css' />
 <link href='/Content/onlinereg.css?v=7' rel='stylesheet' type='text/css' />
 ")%>
 </head>

@@ -43,7 +43,13 @@
         </tr>
         <tr>
             <th>Email:</th>
-            <td><%=Html.TextBox("EmailAddress") %></td>
+            <td><%=Html.TextBox("EmailAddress") %>
+                <%=Html.CheckBox("SendEmailAddress1") %> Active</td>
+        </tr>
+        <tr>
+            <th>Email2:</th>
+            <td><%=Html.TextBox("EmailAddress2") %>
+                <%=Html.CheckBox("SendEmailAddress2") %> Active</td>
         </tr>
         <tr>
             <th>School:</th>

@@ -46,7 +46,11 @@ namespace CmsWeb.Areas.Main.Models
                 q = q.Distinct();
             }
 
-            q = q.Where(p => p.EmailAddress != null && p.EmailAddress != "");
+            q = from p in q
+                where p.EmailAddress != null
+                where p.EmailAddress != ""
+                where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
+                select p;
             Count = q.Count();
         }
 
@@ -76,6 +80,7 @@ namespace CmsWeb.Areas.Main.Models
 
             q = from p in q.Distinct()
                 where p.EmailAddress != null && p.EmailAddress != ""
+                where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
                 where !p.EmailOptOuts.Any(oo => oo.FromEmail == emailqueue.FromAddr)
                 orderby p.PeopleId
                 select p;

@@ -21,10 +21,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 ViewData["hasshell"] = true;
                 var re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);
-                var t = re.Match(s).Groups[1].Value;
+                var t = re.Match(s).Groups[1].Value.Replace("<!--FORM CSS-->", 
+@"
+<link href=""/Content/jquery-ui-1.8.9.custom.css"" rel=""stylesheet"" type=""text/css"" />
+<link href=""/Content/onlinereg.css?v=4"" rel=""stylesheet"" type=""text/css"" />
+<style type=""text/css"">
+#username, #password {
+width: 10em;
+}</style>
+
+");
                 ViewData["top"] = t;
                 var b = re.Match(s).Groups[2].Value;
                 ViewData["bottom"] = b;
+
             }
             else
             {

@@ -29,7 +29,7 @@ You can include a file, image, mp3 or whatever you like in your email.
     <%=Html.TextBox("Subject", Model.Subject, new { style = "width:90%" })%>
     </p>
     <p><label>Body:</label>
-    <%=Html.TextArea("Body", Model.Body, new { rows="16", cols="20" }) %>
+    <%=Html.TextArea("Body", Model.Body, new { @class = "editor", rows="16", cols="20" }) %>
     </p>
     </fieldset>
     </div>
@@ -62,12 +62,9 @@ I could call you by your whole name like this: {name}.
         </tr>
     </table>
 </div>
-<a href='<%=ViewData["oldemailer"] %>'>old emailer</a>
-<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-<script src="/scripts/edit.js" type="text/javascript"></script>
-<script type="text/javascript">
-    ShowEditor('Body');
-</script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="/scripts/Edit.js"></script>
 <div id="progress">
 <h2>Working...</h2>
 </div>

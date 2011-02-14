@@ -3,8 +3,8 @@
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContent" runat="server">
     <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.4.2.js")
-        .Add("/Content/js/jquery-ui-1.8.2.custom.js")
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
         .Add("/Content/js/jquery.idle-timer.js")
         .Add("/Content/js/jquery.showpassword.js")
         .Add("/Scripts/OnlineRegPayment.js")

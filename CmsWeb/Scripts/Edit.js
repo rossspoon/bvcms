@@ -1,6 +1,5 @@
-﻿function ShowEditor(id) {
-    CKEDITOR.replace(id,
-    {
+﻿$(function () {
+    $('textarea.editor').ckeditor(function () { }, {
         height: 400,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
         filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
@@ -20,4 +19,4 @@
     ['Maximize', 'ShowBlocks', '-', 'About']
     ]
     });
-}
+});

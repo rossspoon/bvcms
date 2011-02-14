@@ -1,10 +1,12 @@
 ﻿@using UtilityExtensions;
 @model CmsData.Transaction
 <tr>
+    <td nowrap="nowrap" class="tip" title="@Model.TransactionId|@Model.ApprovalCode|@Model.AuthCode">@Model.Id</td>
+    <td>@Model.TransactionId</td>
     <td>@if (Model.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
-    <td nowrap="nowrap" class="tip">@Model.TransactionDate.FormatDateTm()</td>
+    <td>@Model.TransactionDate.FormatDateTm()</td>
     <td>@Model.Description</td>
-    <td>@Model.Name</td>
+    <td><a href='@Util.CmsHost.TrimEnd('/')/OnlineReg/ConfirmTest/@Model.DatumId'>@Model.Name</a></td>
     <td align="right">@Model.Amt.ToString2("N")</td>
     <td align="right">@Model.Amtdue.ToString2("N")</td>
 </tr>

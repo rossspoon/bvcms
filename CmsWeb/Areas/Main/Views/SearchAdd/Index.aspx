@@ -3,7 +3,7 @@
 <head id="Head1" runat="server">
     <title></title>
 <%= SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.2.custom.css")
+        .Add("/Content/jquery-ui-1.8.9.custom.css")
         .Add("/Content/Dialog.css")
         .Add("/Content/jquery.tooltip.css")
     .Render("/Content/SearchAdd_#.css")
@@ -11,8 +11,8 @@
 </head>
 <body>
 <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.4.2.js")
-        .Add("/Content/js/jquery-ui-1.8.2.custom.js")
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
         .Add("/Content/js/jquery.hoverIntent.js")
         .Add("/Content/js/jquery.tooltip.js")
         .Add("/Scripts/SearchAdd.js")

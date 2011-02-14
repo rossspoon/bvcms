@@ -1,0 +1,11 @@
+﻿@using UtilityExtensions;
+@using CmsWeb;
+@model CmsWeb.Models.EmailModel
+<table>
+@foreach(var p in Model.Recipients())
+{
+<tr><td><a href="/Manage/Emails/SentTo/@p.peopleid">@p.name</a></td>
+    <td>@p.address</td></tr>    
+}
+</table>
+@{Html.RenderPartial("Pager2", Model.Pager);}

@@ -1,0 +1,61 @@
+﻿@using CmsWeb;
+@using UtilityExtensions;
+@model CmsWeb.Models.EmailsModel
+<div class="modalPopup">
+<table cellpadding="4">
+<tr><td>From</td><td>@Html.TextBox("from")</td>
+    <td>SentById</td><td>@Html.TextBox("senderid")
+        @if(Model.senderid.HasValue) { <a href="/Person/Index/@Model.senderid">@Model.sender</a>}</td>
+</tr>
+<tr><td>Subject</td><td>@Html.TextBox("subject")</td>
+    <td>Body</td><td>@Html.TextBox("body")</td>
+</tr>
+<tr><td>Start Date</td><td>@Html.DatePicker("startdt")</td>
+    <td>End Date</td><td>@Html.DatePicker("enddt")</td>
+</tr>
+<tr><td>RecipientId</td><td colspan="3">@Html.TextBox("peopleid") 
+        @if(Model.peopleid.HasValue) { <a href="/Person/Index/@Model.peopleid">@Model.name</a>}</td></tr>
+</table>
+<input type="submit" class="submitbutton" value="Filter" />
+<a href="/Manage/Emails">clear</a>
+</div>
+<table id="Emails" class="grid" cellpadding="4">
+    <thead>
+    <tr>
+        <th></th>
+        <th><a href="#" class="sortable">Sent/Scheduled</a></th>
+        <th><a href="#" class="sortable">From</a></th>
+        <th><a href="#" class="sortable">Name</a></th>
+        <th><a href="#" class="sortable">Count</a></th>
+        <th><a href="#" class="sortable">Subject</a></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var i in Model.Emails()) {
+    <tr>
+        <td> </td>
+        <td>
+            @if(!i.queue.Sent.HasValue) {
+                <span style="color:red" title="scheduled">@i.queue.SendWhen.FormatDate())</span>
+            }
+            else {
+                @i.queue.Sent.FormatDateTm()
+            }
+        </td>
+        <td> <a href="/Manage/Emails/SentBy/@i.queue.QueuedBy">@i.queue.FromName</a> </td>
+        <td> @i.queue.FromAddr </td>
+        <td> @i.count </td>
+        <td>
+            <a href="/Manage/Emails/Details/@i.queue.Id">@i.queue.Subject</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+@{Html.RenderPartial("Pager2", Model.Pager);}
+
+<table>
+
+
+</table>
+

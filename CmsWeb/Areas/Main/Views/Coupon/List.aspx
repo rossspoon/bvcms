@@ -13,7 +13,7 @@
     </style>
 </head>
 <body style="font-family:Arial">
-    <script src="/Content/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function() {
             $("a.confirm").click(function() {

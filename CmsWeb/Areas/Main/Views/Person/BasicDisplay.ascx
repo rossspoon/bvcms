@@ -55,7 +55,13 @@
         </tr>
         <tr>
             <th>Email:</th>
-            <td><%=Model.EmailAddress %></td>
+            <td><span title="Use this email"><%=Html.CheckBoxReadonly(Model.SendEmailAddress1) %></span>
+                <%=Model.EmailAddress %></td>
+        </tr>
+        <tr>
+            <th>Email2:</th>
+            <td><span title="Use this email"><%=Html.CheckBoxReadonly(Model.SendEmailAddress2) %></span>
+                <%=Model.EmailAddress2 %></td>
         </tr>
         <tr>
             <th>School:</th>

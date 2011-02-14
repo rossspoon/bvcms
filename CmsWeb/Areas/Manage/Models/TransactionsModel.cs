@@ -33,7 +33,7 @@ namespace CmsWeb.Models
         public TransactionsModel()
         {
             Pager = new PagerModel2(Count);
-            Pager.Sort = "Date";
+            Pager.Sort = "Id";
             Pager.Direction = "desc";
         }
         public IEnumerable<Transaction> Transactions()
@@ -67,6 +67,11 @@ namespace CmsWeb.Models
             if (Pager.Direction == "asc")
                 switch (Pager.Sort)
                 {
+                    case "Id":
+                        q = from t in q
+                            orderby t.Id
+                            select t;
+                        break;
                     case "Tran Id":
                         q = from t in q
                             orderby t.TransactionId
@@ -106,6 +111,11 @@ namespace CmsWeb.Models
             else
                 switch (Pager.Sort)
                 {
+                    case "Id":
+                        q = from t in q
+                            orderby t.Id descending
+                            select t;
+                        break;
                     case "Tran Id":
                         q = from t in q
                             orderby t.TransactionId descending

@@ -160,7 +160,8 @@ namespace CmsWeb.Models
                      + "|" + p.PeopleId
                      + "|" + (p.Age ?? 0)
                      + "|" + p.PrimaryAddress;
-            return string.Join("\n", qu.Take(limit).ToArray());
+            var ret = string.Join("\n", qu.Take(limit).ToArray());
+            return ret;
         }
         private object ContributionRowData(int id)
         {

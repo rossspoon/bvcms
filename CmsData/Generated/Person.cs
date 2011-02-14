@@ -257,6 +257,12 @@ namespace CmsData
 		
 		private string _FirstName2;
 		
+		private string _EmailAddress2;
+		
+		private bool? _SendEmailAddress1;
+		
+		private bool? _SendEmailAddress2;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -733,6 +739,15 @@ namespace CmsData
 		
 		partial void OnFirstName2Changing(string value);
 		partial void OnFirstName2Changed();
+		
+		partial void OnEmailAddress2Changing(string value);
+		partial void OnEmailAddress2Changed();
+		
+		partial void OnSendEmailAddress1Changing(bool? value);
+		partial void OnSendEmailAddress1Changed();
+		
+		partial void OnSendEmailAddress2Changing(bool? value);
+		partial void OnSendEmailAddress2Changed();
 		
     #endregion
 		public Person()
@@ -3552,6 +3567,72 @@ namespace CmsData
 					this._FirstName2 = value;
 					this.SendPropertyChanged("FirstName2");
 					this.OnFirstName2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EmailAddress2", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress2", DbType="varchar(60)")]
+		public string EmailAddress2
+		{
+			get { return this._EmailAddress2; }
+
+			set
+			{
+				if (this._EmailAddress2 != value)
+				{
+				
+                    this.OnEmailAddress2Changing(value);
+					this.SendPropertyChanging();
+					this._EmailAddress2 = value;
+					this.SendPropertyChanged("EmailAddress2");
+					this.OnEmailAddress2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SendEmailAddress1", UpdateCheck=UpdateCheck.Never, Storage="_SendEmailAddress1", DbType="bit")]
+		public bool? SendEmailAddress1
+		{
+			get { return this._SendEmailAddress1; }
+
+			set
+			{
+				if (this._SendEmailAddress1 != value)
+				{
+				
+                    this.OnSendEmailAddress1Changing(value);
+					this.SendPropertyChanging();
+					this._SendEmailAddress1 = value;
+					this.SendPropertyChanged("SendEmailAddress1");
+					this.OnSendEmailAddress1Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SendEmailAddress2", UpdateCheck=UpdateCheck.Never, Storage="_SendEmailAddress2", DbType="bit")]
+		public bool? SendEmailAddress2
+		{
+			get { return this._SendEmailAddress2; }
+
+			set
+			{
+				if (this._SendEmailAddress2 != value)
+				{
+				
+                    this.OnSendEmailAddress2Changing(value);
+					this.SendPropertyChanging();
+					this._SendEmailAddress2 = value;
+					this.SendPropertyChanged("SendEmailAddress2");
+					this.OnSendEmailAddress2Changed();
 				}
 
 			}

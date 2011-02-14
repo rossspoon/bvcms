@@ -17,7 +17,8 @@
             <a href="/Person/AddAboutTask/<%=Model %>" 
                 confirm="Are you sure you want to add a new task about this person?" 
                 class="CreateAndGo">Add New Task</a>
-        </td>
+<%--            <div><a href="/Manage/Emails/SentTo/<%=Model %>">Received emails</a></div>
+--%>        </td>
     </tr>
     <tr>
         <td style="vertical-align: top">

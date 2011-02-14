@@ -389,10 +389,10 @@ namespace CmsData
                 p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
             else
                 p.LastName = "?";
-            p.FirstName = p.FirstName.Truncate(25);
-            p.MiddleName = p.MiddleName.Truncate(15);
-            p.NickName = p.NickName.Truncate(15);
-            p.LastName = p.LastName.Truncate(30);
+            p.FirstName = p.FirstName.Truncate(25).Trim();
+            p.MiddleName = p.MiddleName.Truncate(15).Trim();
+            p.NickName = p.NickName.Truncate(15).Trim();
+            p.LastName = p.LastName.Truncate(30).Trim();
 
             p.GenderId = gender;
             if (p.GenderId == 99)

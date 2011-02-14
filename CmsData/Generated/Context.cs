@@ -202,10 +202,6 @@ namespace CmsData
         partial void UpdateEmailQueueTo(EmailQueueTo instance);
         partial void DeleteEmailQueueTo(EmailQueueTo instance);
         
-        partial void InsertEmailSent(EmailSent instance);
-        partial void UpdateEmailSent(EmailSent instance);
-        partial void DeleteEmailSent(EmailSent instance);
-        
         partial void InsertEmailToText(EmailToText instance);
         partial void UpdateEmailToText(EmailToText instance);
         partial void DeleteEmailToText(EmailToText instance);
@@ -941,12 +937,6 @@ namespace CmsData
 		public Table< EmailQueueTo> EmailQueueTos
 		{
 			get	{ return this.GetTable< EmailQueueTo>(); }
-
-		}
-
-		public Table< EmailSent> EmailSents
-		{
-			get	{ return this.GetTable< EmailSent>(); }
 
 		}
 
@@ -2558,6 +2548,18 @@ namespace CmsData
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetPeopleIdFromIndividualNumber", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? GetPeopleIdFromIndividualNumber(
+            [Parameter(Name = "indnum", DbType="int")] int? indnum
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                indnum
                 ).ReturnValue));
 		}
 

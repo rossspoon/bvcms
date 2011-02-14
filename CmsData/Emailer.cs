@@ -45,7 +45,16 @@ namespace CmsData
             {
                 var qp = (from p in Db.People
                           where p.PeopleId == To.PeopleId
-                          select new { p.Name, p.PreferredName, p.EmailAddress, p.OccupationOther }).Single();
+                          select new 
+                          { 
+                              p.Name, 
+                              p.PreferredName, 
+                              p.EmailAddress, 
+                              p.OccupationOther,
+                              p.EmailAddress2,
+                              Send1 = p.SendEmailAddress1 ?? true,
+                              Send2 = p.SendEmailAddress2 ?? false,
+                          }).Single();
                 string text = emailqueue.Body;
 
                 if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
@@ -87,7 +96,11 @@ namespace CmsData
                     ma = ma.NextMatch();
                 }
 
-                var aa = qp.EmailAddress.SplitStr(",;").ToList();
+                var aa = new List<string>();
+                if (qp.Send1)
+                    aa.AddRange(qp.EmailAddress.SplitStr(",;"));
+                if (qp.Send2)
+                    aa.AddRange(qp.EmailAddress2.SplitStr(",;"));
                 if (To.OrgId.HasValue)
                 {
                     var qm = (from m in Db.OrganizationMembers
