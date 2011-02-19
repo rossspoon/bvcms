@@ -1,5 +1,4 @@
 ﻿$(function () {
-    $(".submitbutton").button();
     $.dpoptions = {
         changeMonth: true,
         changeYear: true,
@@ -55,12 +54,15 @@
             }
             $(f).html(ret).ready(function () {
                 $.InstructionsShow();
+                $("#dob").datepicker($.dpoptions);
+                setTimeout($.setButtons, 15);
             });
-            $(".submitbutton", f).button();
-            $("#dob").datepicker($.dpoptions);
         });
         return false;
     });
+    $.setButtons = function() {
+        $(".submitbutton").button();
+    }
     $.InstructionsShow = function () {
         $("div.instructions").hide();
         if ($("#personedit").attr("id")) {
@@ -86,8 +88,9 @@
         $.post($(this).attr('href'), q, function (ret) {
             if (ret == 'refresh')
                 location.reload();
-            $(f).html(ret);
-            $(".submitbutton", f).button();
+            $(f).html(ret).ready(function() {
+                setTimeout($.setButtons, 15);
+            });
         });
         return false;
     });
@@ -112,5 +115,6 @@
         return false;
     });
     $.InstructionsShow();
+    setTimeout($.setButtons, 18);
 });
 

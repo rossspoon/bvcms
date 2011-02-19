@@ -85,6 +85,13 @@ namespace CmsWeb.Models
                 msg = ((org.ClassFilled ?? false) || (org.Limit > 0 && org.Limit <= org.MemberCount)) ? "registration is full" : "";
             return msg;
         }
+        public bool NotAvailable()
+        {
+            if (divid != null)
+                return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
+                    o.RegistrationClosed == true);
+            return org.RegistrationClosed == true;
+        }
         public bool UserSelectsOrganization()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&

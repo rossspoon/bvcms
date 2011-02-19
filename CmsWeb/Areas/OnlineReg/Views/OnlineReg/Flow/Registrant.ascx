@@ -106,7 +106,7 @@
 %>
                 </table>
             </div>
-<%      if (Model.List.Count == 1 && p.Found != true && Model.UserPeopleId == null)
+<%      if (Model.List.Count == 1 && p.Found != true && Model.UserPeopleId == null && !p.OtherOK)
         { %>
             <div style="margin: 10px; text-align:center;">
                 <a href="/OnlineReg/YesLogin" class="submitlink">Login with an account</a>

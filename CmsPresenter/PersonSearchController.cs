@@ -231,6 +231,7 @@ namespace CMSPresenter
             var query = Db.PeopleQuery(queryid);
             var q = from p in query
                     let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                    let spouse = Db.People.Where(pp => pp.PeopleId == p.SpouseId).Select(pp => pp.PreferredName).SingleOrDefault()
                     select new
                     {
                         PeopleId = p.PeopleId,
@@ -243,14 +244,17 @@ namespace CMSPresenter
                         State = p.PrimaryState,
                         Zip = p.PrimaryZip.FmtZip(),
                         Email = p.EmailAddress,
-                        BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
-                        BirthDay = Util.FormatBirthday(null, p.BirthMonth, p.BirthDay),
+                        BirthDate = p.BirthMonth + "/" + p.BirthDay + "/" + p.BirthYear,
+                        BirthDay = p.BirthMonth + "/" + p.BirthDay,
+                        WeddingDate = p.WeddingDate.Value.Month + "/" + p.WeddingDate.Value.Day,
                         JoinDate = p.JoinDate.FormatDate(),
                         HomePhone = p.HomePhone.FmtFone(),
                         CellPhone = p.CellPhone.FmtFone(),
                         WorkPhone = p.WorkPhone.FmtFone(),
                         MemberStatus = p.MemberStatus.Description,
                         FellowshipLeader = p.BFClass.LeaderName,
+                        Spouse = spouse,
+                        JoinType = p.JoinType.Description,
                         Age = p.Age.ToString(),
                         School = p.SchoolOther,
                         Grade = p.Grade.ToString(),

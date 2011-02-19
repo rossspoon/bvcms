@@ -135,6 +135,70 @@ namespace CmsData
             }
             return true;
         }
+        public void CopySettings(CMSDataContext Db, int fromid)
+        {
+            var frorg = Db.LoadOrganizationById(fromid);
+            AgeFee = frorg.AgeFee;
+            AgeGroups = frorg.AgeGroups;
+            AllowLastYearShirt = frorg.AllowLastYearShirt;
+            AllowNonCampusCheckIn = frorg.AllowNonCampusCheckIn;
+            AllowOnlyOne = frorg.AllowOnlyOne;
+            AskAllergies = frorg.AskAllergies;
+            AskChurch = frorg.AskChurch;
+            AskCoaching = frorg.AskCoaching;
+            AskDoctor = frorg.AskDoctor;
+            AskEmContact = frorg.AskEmContact;
+            AskGrade = frorg.AskGrade;
+            AskInsurance = frorg.AskInsurance;
+            AskOptions = frorg.AskOptions;
+            AskParents = frorg.AskParents;
+            AskRequest = frorg.AskRequest;
+            AskShirtSize = frorg.AskShirtSize;
+            AskTickets = frorg.AskTickets;
+            AskTylenolEtc = frorg.AskTylenolEtc;
+            CanSelfCheckin = frorg.CanSelfCheckin;
+            Deposit = frorg.Deposit;
+            EmailAddresses = frorg.EmailAddresses;
+            EmailMessage = frorg.EmailMessage;
+            EmailSubject = frorg.EmailSubject;
+            ExtraFee = frorg.ExtraFee;
+            ExtraOptions = frorg.ExtraOptions;
+            ExtraOptionsLabel = frorg.ExtraOptionsLabel;
+            ExtraQuestions = frorg.ExtraQuestions;
+            Fee = frorg.Fee;
+            FirstMeetingDate = frorg.FirstMeetingDate;
+            GenderId = frorg.GenderId;
+            GradeOptions = frorg.GradeOptions;
+            Instructions = frorg.Instructions;
+            LastDayBeforeExtra = frorg.LastDayBeforeExtra;
+            LastMeetingDate = frorg.LastMeetingDate;
+            Limit = frorg.Limit;
+            LinkGroupsFromOrgs = frorg.LinkGroupsFromOrgs;
+            MaximumFee = frorg.MaximumFee;
+            MemberOnly = frorg.MemberOnly;
+            NoSecurityLabel = frorg.NoSecurityLabel;
+            NotReqAddr = frorg.NotReqAddr;
+            NotReqDOB = frorg.NotReqDOB;
+            NotReqGender = frorg.NotReqGender;
+            NotReqMarital = frorg.NotReqMarital;
+            NotReqPhone = frorg.NotReqPhone;
+            NotReqZip = frorg.NotReqZip;
+            NumCheckInLabels = frorg.NumCheckInLabels;
+            NumItemsLabel = frorg.NumItemsLabel;
+            NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
+            OptionsLabel = frorg.OptionsLabel;
+            OrgMemberFees = frorg.OrgMemberFees;
+            PhoneNumber = frorg.PhoneNumber;
+            RegistrationTypeId = frorg.RegistrationTypeId;
+            RequestLabel = frorg.RequestLabel;
+            SecurityTypeId = frorg.SecurityTypeId;
+            ShirtFee = frorg.ShirtFee;
+            ShirtSizes = frorg.ShirtSizes;
+            Terms = frorg.Terms;
+            ValidateOrgs = frorg.ValidateOrgs;
+            YesNoQuestions = frorg.YesNoQuestions;
+            Db.SubmitChanges();
+        }
         public Organization CloneOrg(CMSDataContext Db)
         {
             var neworg = new Organization
@@ -146,34 +210,24 @@ namespace CmsData
                 LeaderMemberTypeId = LeaderMemberTypeId,
                 OrganizationName = OrganizationName + " (copy)",
                 ScheduleId = ScheduleId,
-                SecurityTypeId = SecurityTypeId,
                 EntryPointId = EntryPointId,
                 OrganizationStatusId = OrganizationStatusId,
                 AllowAttendOverlap = AllowAttendOverlap,
                 AttendClassificationId = AttendClassificationId,
-                CanSelfCheckin = CanSelfCheckin,
                 GradeAgeStart = GradeAgeStart,
                 GradeAgeEnd = GradeAgeEnd,
-                NumCheckInLabels = NumCheckInLabels,
                 CampusId = CampusId,
-                FirstMeetingDate = FirstMeetingDate,
                 SchedDay = SchedDay,
                 SchedTime = SchedTime,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,
-                EmailSubject = EmailSubject,
-                EmailMessage = EmailMessage,
-                EmailAddresses = EmailAddresses,
-                RegType = RegType,
-                Limit = Limit,
-                AllowNonCampusCheckIn = AllowNonCampusCheckIn,
                 AttendTrackLevel = AttendTrackLevel,
                 RollSheetVisitorWks = RollSheetVisitorWks,
-                NumWorkerCheckInLabels = NumWorkerCheckInLabels,
             };
             Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)
                 neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
             Db.SubmitChanges();
+            neworg.CopySettings(Db, this.OrganizationId);
             return neworg;
         }
         public static DateTime? GetDateFromScheduleId(int id)
@@ -193,7 +247,7 @@ namespace CmsData
             get
             {
                 return Division != null ?
-                    (Division.Program != null ? Division.Program.Name : "no program") 
+                    (Division.Program != null ? Division.Program.Name : "no program")
                         + ":" + Division.Name :
                        "<span style='color:red'>need a main division</span>";
             }

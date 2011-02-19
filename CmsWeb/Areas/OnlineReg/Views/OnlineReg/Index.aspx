@@ -34,7 +34,11 @@
     <h2>
         <%=Model.Header%></h2>
     <% var msg = Model.Filled();
-       if (msg.HasValue())
+       if (Model.NotAvailable())
+       { %>
+    <h4>Sorry, Registration is not available at this time</h4>
+    <% }
+       else if (msg.HasValue())
        { %>
     <h4>Sorry, <%=msg %></h4>
     <% }

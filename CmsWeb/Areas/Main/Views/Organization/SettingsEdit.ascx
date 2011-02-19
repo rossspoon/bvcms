@@ -15,6 +15,10 @@
         <td><%=Html.CheckBox("org.ClassFilled") %></td>
     </tr>
     <tr>
+        <th>Registration Closed:</th>
+        <td><%=Html.CheckBox("org.RegistrationClosed") %></td>
+    </tr>
+    <tr>
         <th>Organization Phone Number:</th>
         <td><%=Html.TextBox("org.PhoneNumber")%></td>
     </tr>

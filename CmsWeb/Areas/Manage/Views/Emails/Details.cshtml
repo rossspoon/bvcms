@@ -23,7 +23,7 @@
 <h2>@Html.Raw(Model.queue.Subject)</h2>
 <div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>
 <hr />
-<h2>Recipiants</h2>
+<h2>Recipients</h2>
 <form action="/Manage/Emails/Recipients/@Model.id" method="post">
 @{Html.RenderPartial("Recipients", Model);}
 </form>

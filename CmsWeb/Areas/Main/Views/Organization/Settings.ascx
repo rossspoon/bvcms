@@ -19,6 +19,10 @@
         <td><%=Html.CheckBoxReadonly(Model.org.ClassFilled) %></td>
     </tr>
     <tr>
+        <th>Registration is Closed:</th>
+        <td><%=Html.CheckBoxReadonly(Model.org.RegistrationClosed) %></td>
+    </tr>
+    <tr>
         <th>Organization Phone Number:</th>
         <td><%=Model.org.PhoneNumber.FmtFone() %></td>
     </tr>

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
 <% if (Model.AnyOtherInfo())
    {
-       if (Model.index > 0)
+       if (Model.index > 0 && Model.NeedsCopyFromPrevious())
        { %>
         <tr>
             <td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td>

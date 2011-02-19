@@ -155,68 +155,12 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PasteSettings(OrgSearchModel m)
         {
-            var frorg = DbUtil.Db.LoadOrganizationById((int)Session["OrgCopySettings"]);
+            var frorg = (int)Session["OrgCopySettings"];
             foreach (var o in m.OrganizationList())
             {
                 var toorg = DbUtil.Db.LoadOrganizationById(o.Id);
-                toorg.AgeFee = frorg.AgeFee;
-                toorg.AgeGroups = frorg.AgeGroups;
-                toorg.AllowLastYearShirt = frorg.AllowLastYearShirt;
-                toorg.AllowOnlyOne = frorg.AllowOnlyOne;
-                toorg.AskAllergies = frorg.AskAllergies;
-                toorg.AskChurch = frorg.AskChurch;
-                toorg.AskCoaching = frorg.AskCoaching;
-                toorg.AskDoctor = frorg.AskDoctor;
-                toorg.AskEmContact = frorg.AskEmContact;
-                toorg.AskGrade = frorg.AskGrade;
-                toorg.AskInsurance = frorg.AskInsurance;
-                toorg.AskOptions = frorg.AskOptions;
-                toorg.AskParents = frorg.AskParents;
-                toorg.AskRequest = frorg.AskRequest;
-                toorg.AskShirtSize = frorg.AskShirtSize;
-                toorg.AskTickets = frorg.AskTickets;
-                toorg.AskTylenolEtc = frorg.AskTylenolEtc;
-                toorg.CanSelfCheckin = frorg.CanSelfCheckin;
-                toorg.Deposit = frorg.Deposit;
-                toorg.EmailAddresses = frorg.EmailAddresses;
-                toorg.EmailMessage = frorg.EmailMessage;
-                toorg.EmailSubject = frorg.EmailSubject;
-                toorg.ExtraFee = frorg.ExtraFee;
-                toorg.ExtraOptions = frorg.ExtraOptions;
-                toorg.ExtraOptionsLabel = frorg.ExtraOptionsLabel;
-                toorg.ExtraQuestions = frorg.ExtraQuestions;
-                toorg.Fee = frorg.Fee;
-                toorg.FirstMeetingDate = frorg.FirstMeetingDate;
-                toorg.GenderId = frorg.GenderId;
-                toorg.GradeOptions = frorg.GradeOptions;
-                toorg.Instructions = frorg.Instructions;
-                toorg.LastDayBeforeExtra = frorg.LastDayBeforeExtra;
-                toorg.LastMeetingDate = frorg.LastMeetingDate;
-                toorg.LinkGroupsFromOrgs = frorg.LinkGroupsFromOrgs;
-                toorg.MaximumFee = frorg.MaximumFee;
-                toorg.MemberOnly = frorg.MemberOnly;
-                toorg.NoSecurityLabel = frorg.NoSecurityLabel;
-                toorg.NumCheckInLabels = frorg.NumCheckInLabels;
-                toorg.NumItemsLabel = frorg.NumItemsLabel;
-                toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
-                toorg.OptionsLabel = frorg.OptionsLabel;
-                toorg.OrgMemberFees = frorg.OrgMemberFees;
-                toorg.PhoneNumber = frorg.PhoneNumber;
-                toorg.RegistrationTypeId = frorg.RegistrationTypeId;
-                toorg.RequestLabel = frorg.RequestLabel;
-                toorg.ShirtFee = frorg.ShirtFee;
-                toorg.ShirtSizes = frorg.ShirtSizes;
-                toorg.Terms = frorg.Terms;
-                toorg.ValidateOrgs = frorg.ValidateOrgs;
-                toorg.YesNoQuestions = frorg.YesNoQuestions;
-                toorg.NotReqAddr = frorg.NotReqAddr;
-                toorg.NotReqDOB = frorg.NotReqDOB;
-                toorg.NotReqGender = frorg.NotReqGender;
-                toorg.NotReqMarital = frorg.NotReqMarital;
-                toorg.NotReqPhone = frorg.NotReqPhone;
-                toorg.NotReqZip = frorg.NotReqZip;
+                toorg.CopySettings(DbUtil.Db, frorg);
             }
-            DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]

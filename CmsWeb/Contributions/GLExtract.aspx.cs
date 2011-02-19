@@ -12,6 +12,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CMSPresenter;
 using UtilityExtensions;
+using CmsData;
 
 namespace CmsWeb.Contributions
 {
@@ -39,11 +40,12 @@ namespace CmsWeb.Contributions
             Response.AddHeader("Content-Disposition", "attachment;filename=GLTRN2000.txt");
             var ctl = new BundleController();
             var q = ctl.GetGLExtract(dt1, dt2);
+            var GLBundlePrefix = DbUtil.Db.Setting("GLBundlePrefix", "CM");
             foreach (var i in q)
             {
                 Response.Write(
-                    "\"00000\",\"001{0}{1:00}CM{2}\",\"000\",\"{3:MMddyy}\",\"{4}\",\"\",\"{5}0000{6}\",\"{7:00000000000}\",\"\"\r\n"
-                    .Fmt(i.Fund, i.Month, i.HeaderId.PadLeft(5, '0'), i.ContributionDate, i.FundName, i.FundDept, i.FundAcct, i.Amount * 100));
+                    "\"00000\",\"001{0}{1:00}{2}{3}\",\"000\",\"{4:MMddyy}\",\"{5}\",\"\",\"{6}0000{7}\",\"{8:00000000000}\",\"\"\r\n"
+                    .Fmt(i.Fund, i.Month, GLBundlePrefix, i.HeaderId.PadLeft(5, '0'), i.ContributionDate, i.FundName, i.FundDept, i.FundAcct, i.Amount * 100));
             }
             Response.End();
         }

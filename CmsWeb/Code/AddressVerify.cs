@@ -66,33 +66,23 @@ namespace CmsWeb
             else if (result.VerifyLevel == SearchResult.VerificationLevels.Verified
                 || result.VerifyLevel == SearchResult.VerificationLevels.InteractionRequired)
             {
-                var q = from ad in result.Address.AddressLines
-                        where !string.IsNullOrEmpty(ad.Line)
-                        select ad.Line;
-                var sb = new StringBuilder();
-                foreach (var s in q)
-                {
-                    if (sb.Length > 0)
-                        sb.Append(";");
-                    sb.Append(s);
-                }
-                var m = Regex.Match(sb.ToString(), @"(?<line1>[^;]*)(;(?<line2>[^;]*))*;(?<city>.*)\s(?<st>[^ ]+)\s+(?<zip>\d{5}(-\d{4})?)");
-                var a = new AddressResult
-                {
-                    found = true,
-                    Line1 = m.Groups["line1"].Value,
-                    Line2 = m.Groups["line2"].Value,
-                    City = m.Groups["city"].Value,
-                    State = m.Groups["st"].Value,
-                    Zip = m.Groups["zip"].Value
-                };
-                string lab = a.Line1;
-                if (a.Line2.HasValue())
-                    lab += "\n" + a.Line2;
-                lab += "\n" + Util.FormatCSZ4(a.City, a.State, a.Zip);
-                a.address = lab;
+                var addr = new AddressResult();
+                var ads = result.Address.AddressLines;
+                if (ads[0].Line.HasValue())
+                    addr.found = true;
+                addr.Line1 = ads[0].Line;
+                addr.Line2 = ads[1].Line;
+                addr.City = ads[2].Line;
+                addr.State = ads[3].Line;
+                addr.Zip = ads[4].Line;
 
-                return a;
+                string lab = addr.Line1;
+                if (addr.Line2.HasValue())
+                    lab += "\n" + addr.Line2;
+                lab += "\n" + Util.FormatCSZ4(addr.City, addr.State, addr.Zip);
+                addr.address = lab;
+
+                return addr;
             }
             return new AddressResult { found = false };
         }

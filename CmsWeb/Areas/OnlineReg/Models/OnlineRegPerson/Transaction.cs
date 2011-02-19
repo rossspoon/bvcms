@@ -24,20 +24,14 @@ namespace CmsWeb.Models
             if (org == null)
                 return 0;
             decimal amt = 0;
-            if (amt == 0 && org.AskTickets == true)
+            var countorgs = 0;
+
+            // compute special fees first, in order of precedence, lowest to highest
+            if (org.AskTickets == true)
+                // fee based on number of tickets
                 amt = (org.Fee ?? 0) * (ntickets ?? 0);
-            if (amt == 0 && org.AskOptions.HasValue())
-            {
-                var q = from o in org.AskOptions.Split(',')
-                        let a = o.Split('=')
-                        where option == a[0].Trim() && a.Length > 1
-                        select decimal.Parse(a[1]);
-                if (q.Count() > 0)
-                    amt = q.First();
-            }
-            if (amt == 0 && org.MenuItems.HasValue())
-                amt = MenuItemsChosen().Sum(m => m.number * m.amt);
-            if (amt == 0 && org.AgeFee.HasValue())
+            if (org.AgeFee.HasValue())
+                // fee based on age
             {
                 var q = from o in org.AgeFee.Split(',')
                         let b = o.Split('=')
@@ -49,8 +43,8 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
-            var countorgs = 0;
-            if (amt == 0 && org.OrgMemberFees.HasValue())
+            if (org.OrgMemberFees.HasValue())
+                // fee based on being in an organization
             {
                 var q = from o in org.OrgMemberFees.Split(',')
                         let b = o.Split('=')
@@ -61,19 +55,33 @@ namespace CmsWeb.Models
                 if (countorgs > 0)
                     amt = q.First();
             }
+            // just use the simple fee if nothing else has been used yet.
             if (amt == 0 && countorgs == 0)
                 amt = org.Fee ?? 0;
-            if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
-                if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
-                    amt += org.ExtraFee.Value;
+
             amt += TotalOther();
             return amt;
         }
         public decimal TotalOther()
         {
+            decimal amt = 0;
+            if (org.MenuItems.HasValue())
+                amt += MenuItemsChosen().Sum(m => m.number * m.amt);
             if (shirtsize != "lastyear" && org.ShirtFee.HasValue)
-                return org.ShirtFee.Value;
-            return 0;
+                amt += org.ShirtFee.Value;
+            if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
+                if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
+                    amt += org.ExtraFee.Value;
+            if (org.AskOptions.HasValue())
+            {
+                var q = from o in org.AskOptions.Split(',')
+                        let a = o.Split('=')
+                        where option == a[0].Trim() && a.Length > 1
+                        select decimal.Parse(a[1]);
+                if (q.Count() > 0)
+                    amt += q.First();
+            }
+            return amt;
         }
     }
 }

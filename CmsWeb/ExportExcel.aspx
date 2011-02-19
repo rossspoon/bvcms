@@ -26,12 +26,14 @@
                 <asp:BoundField DataField = "Email" HeaderText = "Email" />
                 <asp:BoundField DataField = "BirthDate" HeaderText = "BirthDate" />
                 <asp:BoundField DataField = "BirthDay" HeaderText = "BirthDay" />
+                <asp:BoundField DataField = "WeddingDate" HeaderText = "WeddingDate" />
                 <asp:BoundField DataField = "JoinDate" HeaderText = "JoinDate" />
                 <asp:BoundField DataField = "HomePhone" HeaderText = "HomePhone" />
                 <asp:BoundField DataField = "CellPhone" HeaderText = "CellPhone" />
                 <asp:BoundField DataField = "WorkPhone" HeaderText = "WorkPhone" />
                 <asp:BoundField DataField = "MemberStatus" HeaderText = "Church" />
                 <asp:BoundField DataField = "FellowshipLeader" HeaderText = "Teacher" />
+                <asp:BoundField DataField = "Spouse" HeaderText = "Spouse" />
                 <asp:BoundField DataField = "Age" HeaderText = "Age" />
                 <asp:BoundField DataField = "School" HeaderText = "School" />
                 <asp:BoundField DataField = "Grade" HeaderText = "Grade" />

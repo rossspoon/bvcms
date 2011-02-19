@@ -286,5 +286,14 @@ namespace CmsWeb.Models
                 }
             }
         }
+        public bool NeedsCopyFromPrevious()
+        {
+            if (org != null)
+                return (org.AskEmContact == true
+                    || org.AskInsurance == true
+                    || org.AskDoctor == true
+                    || org.AskParents == true);
+            return false;
+        }
     }
 }

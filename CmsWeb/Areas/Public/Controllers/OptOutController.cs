@@ -45,13 +45,17 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             if (optout.HasValue() && optout.StartsWith("Yes"))
             {
-                var oo = new CmsData.EmailOptOut
+                var oo = DbUtil.Db.EmailOptOuts.SingleOrDefault(eo => eo.FromEmail == a[1] && eo.ToPeopleId == a[0].ToInt());
+                if (oo == null)
                 {
-                    ToPeopleId = a[0].ToInt(),
-                    FromEmail = a[1],
-                };
-                DbUtil.Db.EmailOptOuts.InsertOnSubmit(oo);
-                DbUtil.Db.SubmitChanges();
+                    oo = new CmsData.EmailOptOut
+                    {
+                        ToPeopleId = a[0].ToInt(),
+                        FromEmail = a[1],
+                    };
+                    DbUtil.Db.EmailOptOuts.InsertOnSubmit(oo);
+                    DbUtil.Db.SubmitChanges();
+                }
                 return View("Confirm");
             }
             return View("Cancel");
