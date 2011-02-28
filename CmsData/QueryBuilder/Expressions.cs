@@ -84,7 +84,7 @@ namespace CmsData
         //    return expr;
         //}
         internal static Expression WasMemberAsOf(
-            ParameterExpression parm, CMSDataContext Db,
+            ParameterExpression parm,
             DateTime? startdt,
             DateTime? enddt,
             int? progid,
@@ -205,6 +205,28 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression MadeContactTypeAsOf(
+            ParameterExpression parm,
+            DateTime? from,
+            DateTime? to,
+            int? ministryid,
+            CompareType op,
+            params int[] ids)
+        {
+            to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
+
+            Expression<Func<Person, bool>> pred = p =>
+                p.contactsMade.Any(et =>
+                    (et.contact.MinistryId == ministryid || ministryid == 0)
+                    && (ids.Contains(et.contact.ContactTypeId) || ids.Length == 0)
+                    && from <= (et.contact.ContactDate) // where it ends
+                    && et.contact.ContactDate <= to // where it begins
+                    );
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression RecentContactType(
             ParameterExpression parm,
             int days,
@@ -995,7 +1017,7 @@ namespace CmsData
            decimal pct)
         {
             // note: this only works for members because visitors do not have att%
-            var memb = WasMemberAsOf(parm, Db, start, end, progid, divid, org, CompareType.Equal, true);
+            var memb = WasMemberAsOf(parm, start, end, progid, divid, org, CompareType.Equal, true);
 
             Expression<Func<Person, double>> pred = p =>
 

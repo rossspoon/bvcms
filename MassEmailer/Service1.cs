@@ -15,6 +15,7 @@ using CmsData;
 using System.Threading;
 using System.Net.Mail;
 using System.Web.Configuration;
+using System.Web;
 
 namespace MassEmailer
 {
@@ -37,6 +38,11 @@ namespace MassEmailer
             {
                 connstr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString
             };
+            if (ConfigurationManager.AppSettings["awscreds"].HasValue())
+            {
+                var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
+                Util.InsertCacheNotRemovable("awscreds", a);
+            }
         }
         internal class WorkData
         {

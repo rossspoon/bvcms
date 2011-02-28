@@ -23,7 +23,7 @@
     </tr>
     <% } %>
     <tr>
-        <td><%=Model.PrimaryAddr.CityStateZip()%></td>
+        <td><%=Model.PrimaryAddr.CityStateZip4()%></td>
         <td><a href='http://www.google.com/maps?f=d&saddr=<%=DbUtil.StartAddress %>&pw=2&daddr=<%=Model.PrimaryAddr.AddrCityStateZip() %>' target="_blank">directions</a>
             <a href='http://www.bing.com/maps/?rtp=adr.<%=DbUtil.StartAddress %>~adr.<%=Model.PrimaryAddr.AddrCityStateZip() %>' target="_blank">bing</a>
         </td>

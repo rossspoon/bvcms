@@ -264,6 +264,9 @@ namespace CmsWeb.Models
                 foreach (var a in ExtraQuestion)
                     if (a.Value.HasValue())
                         sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
+            if (org.Checkboxes.HasValue())
+                foreach (var a in Checkboxes())
+                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, CheckboxChecked(a.name) == true ? "checked" : ""));
 
             var amt = AmountToPay();
             if (amt > 0)

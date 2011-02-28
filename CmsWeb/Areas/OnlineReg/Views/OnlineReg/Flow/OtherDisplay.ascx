@@ -141,6 +141,13 @@
         <td> <%=Model.YesNoQuestion[a.name] == true ? "Yes" : "No" %> </td>
     </tr>
 <% }
+   foreach (var a in Model.Checkboxes())
+   { %>
+    <tr>
+        <td><div class="wraparound"><%=a.desc%></div></td>
+        <td> <%=Model.CheckboxChecked(a.name) == true ? "Checked" : "" %> </td>
+    </tr>
+<% }
    foreach (var i in Model.MenuItemsChosen())
    { %>
     <tr>

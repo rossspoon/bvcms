@@ -29,7 +29,7 @@ namespace CmsCheckin
             var r = login.ShowDialog();
             if (r == DialogResult.Cancel)
                 return;
-            URL = "https://" + login.URL.Text;
+            URL = "http://" + login.URL.Text;
             Username = login.username.Text;
             Password = login.password.Text;
 

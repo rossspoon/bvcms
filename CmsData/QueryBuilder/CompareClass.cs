@@ -261,6 +261,13 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 // M -------------------
+                case QueryType.MadeContactTypeAsOf:
+                    return Expressions.MadeContactTypeAsOf(parm,
+                               c.StartDate,
+                               c.EndDate,
+                               c.Program,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.MembOfOrgWithSched:
                     return Expressions.MembOfOrgWithSched(parm,
                                c.Program,
@@ -458,7 +465,7 @@ namespace CmsData
                         int.Parse(c.TextValue));
                 // W ----------------------
                 case QueryType.WasMemberAsOf:
-                    return Expressions.WasMemberAsOf(parm, Db,
+                    return Expressions.WasMemberAsOf(parm, 
                                c.StartDate,
                                c.EndDate,
                                c.Program,

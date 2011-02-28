@@ -76,10 +76,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var m = new SlotModel(id, orgid);
             var slots = string.Join("<br />\n", m.MySlots());
             var smtp = Util.Smtp();
-            Util.Email(smtp, m.org.EmailAddresses, m.person.EmailAddress, "Commitment confirmation",
+            Emailer.Email(smtp, m.org.EmailAddresses, m.person, "Commitment confirmation",
 @"Thank you for committing to {0}. You have the following slots:<br/>
 {1}".Fmt(m.org.OrganizationName, slots));
-            Util.Email(smtp, m.person.EmailAddress, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
+            Util.Email(smtp, m.person.FromEmail, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
                 "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
             return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
         }
@@ -98,13 +98,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var smtp = Util.Smtp();
             var StaffEmail = ManageSubsModel.StaffEmail(m.divid);
 
-            Util.Email(smtp, StaffEmail, m.person.EmailAddress,
+            Emailer.Email(smtp, StaffEmail, m.person,
                 "Subscription Confirmation",
 @"Thank you for managing your subscriptions to {0}<br/>
 You have the following subscriptions:<br/>
 {1}".Fmt(m.Division.Name, m.Summary));
 
-            Util.Email(smtp, m.person.EmailAddress, StaffEmail,
+            Util.Email(smtp, m.person.FromEmail, StaffEmail,
                 "Subscriptions managed",
 @"{0} managed subscriptions to {1}<br/>
 You have the following subscriptions:<br/>

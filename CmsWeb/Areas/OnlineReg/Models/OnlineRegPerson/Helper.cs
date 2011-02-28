@@ -7,6 +7,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Web.Mvc;
 using System.Text;
+using System.Net.Mail;
 
 namespace CmsWeb.Models
 {
@@ -150,13 +151,29 @@ namespace CmsWeb.Models
         }
         public static void CheckNotifyDiffEmails(Person person, string fromemail, string regemail, string orgname, string phone)
         {
-            if (person.EmailAddress.HasValue() && string.Compare(regemail, person.EmailAddress.Trim(), true) == 0)
-                return;
-            var flist = (from fm in person.Family.People
-                         where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
-                         select fm.EmailAddress).ToList();
-            if (flist.Any(e => string.Compare(trim(e), regemail, true) == 0))
-                return;
+            MailAddress ma = null;
+            try { ma = new MailAddress(regemail); } catch (Exception) { }
+            if (ma != null)
+            {
+                if (person.EmailAddress.HasValue() && 
+                        string.Compare(ma.Address, person.EmailAddress, true) == 0)
+                    return;
+                if (person.EmailAddress2.HasValue() && 
+                        string.Compare(ma.Address, person.EmailAddress2, true) == 0)
+                    return;
+                var flist = from fm in person.Family.People
+                            where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
+                            select fm;
+                foreach (var fm in flist)
+                {
+                    if (fm.EmailAddress.HasValue() &&
+                            string.Compare(ma.Address, fm.EmailAddress, true) == 0)
+                        return;
+                    if (fm.EmailAddress2.HasValue() &&
+                            string.Compare(ma.Address, fm.EmailAddress2, true) == 0)
+                        return;
+                }
+            }
 
             var smtp = Util.Smtp();
             if (person.EmailAddress.HasValue())
@@ -169,7 +186,7 @@ so that you will receive future important notices regarding this registration.</
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
                 Util.Email(smtp, fromemail, regemail, subj, msg);
-                Util.Email(smtp, fromemail, person.EmailAddress, subj, msg);
+                Emailer.Email(smtp, fromemail, person, subj, msg);
             }
             else
             {

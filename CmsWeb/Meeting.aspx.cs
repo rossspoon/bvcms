@@ -202,5 +202,14 @@ namespace CmsWeb
             meeting.MeetingDate = dt;
             DbUtil.Db.SubmitChanges();
         }
+        protected void QuerySearch_Click(object sender, EventArgs e)
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            var comp = CompareType.Equal;
+            var clause = qb.AddNewClause(QueryType.MeetingId, comp, meeting.MeetingId);
+            DbUtil.Db.SubmitChanges();
+            Response.Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
     }
 }

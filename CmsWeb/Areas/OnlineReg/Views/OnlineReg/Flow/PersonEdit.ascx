@@ -95,7 +95,8 @@
 <%      if (Model.ManageSubscriptions())
         { %>
     <td align="right">
-        <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
+        <input type="button" href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton ajax" 
+            value="Submit" />
 <%          if (Model.age >= 16 || !Model.birthday.HasValue)
             { %>
         <div><%=Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)%>
@@ -106,7 +107,8 @@
         else
         { %>
     <td align="right">
-        <a href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton">Submit</a>
+        <input type="button" href="/OnlineReg/SubmitNew/<%=Model.index %>" class="submitbutton ajax"
+            value="Submit" />
     </td>
 <%      } %>
 </tr>
@@ -121,7 +123,8 @@
             $("div.instructions").hide();
             $("div.instructions.find").show();
         </script>
-        <a href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">Find Profile</a>
+        <input type="button" href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton ajax"
+            value="Find Profile" />
         <%=Html.ValidationMessage("classidguest")%>
     </td>
 </tr>
@@ -188,12 +191,12 @@
 <%          } %>
 <tr>
     <td colspan="2" align="right">
-        <a style="display: inline-block" href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton">
-            Search Again</a>
+        <input type="button" style="display: inline-block" href="/OnlineReg/PersonFind/<%=Model.index %>" class="submitbutton ajax" 
+                value="Search Again" />
 <%          if (Model.IsValidForContinue && !Model.MemberOnly() && Model.orgid != Util.CreateAccountCode)
             { %>
-        or <a id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton">
-            Add New Profile</a>
+        or <input type="button" id="regnew" href="/OnlineReg/ShowMoreInfo/<%=Model.index %>" class="submitbutton ajax" 
+                value="Add New Profile" />
 <%          }
             else if (Model.orgid == Util.CreateAccountCode)
             { %>

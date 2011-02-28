@@ -198,7 +198,7 @@ namespace CmsWeb.Models
                 null, first.Trim(), null, last.Trim(), dob, married.Value == 20, gender.Value,
                     DbUtil.Db.Setting("SaleOrigin", "0").ToInt(),
                     DbUtil.Db.Setting("SaleEntry", "0").ToInt());
-            p.EmailAddress = email;
+            p.EmailAddress = email.Trim();
             p.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)
                 p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;

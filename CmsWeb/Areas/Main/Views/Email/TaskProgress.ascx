@@ -6,7 +6,7 @@
 <% }
    else
    { %>
-<h3>Your emails are being sent.</h3>
+<h3>Your emails have been queued and will be sent.</h3>
 <% } %>
 <table cellspacing="0" border="1" cellpadding="3">
 <tr><td>Queued</td><td><%=ViewData["queued"] %></td></tr>

@@ -334,8 +334,8 @@ namespace CmsWeb.Models
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress), person.Name, person.EmailAddress, c.Title, c.Body);
-            Util.Email(smtp, person.EmailAddress, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress),
+            Emailer.Email(smtp, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress), person, c.Title, c.Body);
+            Util.Email(smtp, person.FromEmail, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress),
                 "new registration on {0}".Fmt(DbUtil.Db.Host),
                 "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
@@ -358,8 +358,8 @@ namespace CmsWeb.Models
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
             var smtp = Util.Smtp();
-            Util.Email(smtp, email, person.Name, person.EmailAddress, c.Title, c.Body);
-            Util.Email(smtp, person.EmailAddress, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+            Emailer.Email(smtp, email, person, c.Title, c.Body);
+            Util.Email(smtp, person.FromEmail, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
 
     }

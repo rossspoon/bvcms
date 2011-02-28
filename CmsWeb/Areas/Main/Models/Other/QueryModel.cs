@@ -40,6 +40,7 @@ namespace CmsWeb.Models
         string DateValue { get; set; }
         string NumberValue { get; set; }
         string IntegerValue { get; set; }
+        int? Ministry { get; set; }
         string SavedQueryDesc { get; set; }
         string Sort { get; set; }
         string Direction { get; set; }
@@ -108,6 +109,7 @@ namespace CmsWeb.Models
         public bool DaysVisible { get; set; }
         public bool AgeVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
+        public bool MinistryVisible { get; set; }
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
 
@@ -131,6 +133,7 @@ namespace CmsWeb.Models
         public string EndDate { get; set; }
         public string Comparison { get; set; }
         public string[] Tags { get; set; }
+        public int? Ministry { get; set; }
         public string SavedQueryDesc { get; set; }
         public bool IsPublic { get; set; }
 
@@ -180,6 +183,7 @@ namespace CmsWeb.Models
             DaysVisible = fieldMap.HasParam("Days");
             AgeVisible = fieldMap.HasParam("Age");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
+            MinistryVisible = fieldMap.HasParam("Ministry");
             QuartersVisible = fieldMap.HasParam("Quarters");
             if (QuartersVisible)
                 QuartersLabel = fieldMap.QuartersTitle;
@@ -324,6 +328,8 @@ namespace CmsWeb.Models
             c.Organization = Organization ?? 0;
             if (ViewVisible)
                 Quarters = View;
+            if (MinistryVisible)
+                c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
@@ -401,6 +407,8 @@ namespace CmsWeb.Models
                 foreach (var i in TagData)
                     i.Selected = Tags.Contains(i.Value);
             }
+            if (MinistryVisible)
+                Ministry = c.Program;
             SavedQueryDesc = c.SavedQueryIdDesc;
         }
         public void SetCodes()
@@ -607,6 +615,19 @@ namespace CmsWeb.Models
         {
             var cv = new CMSPresenter.CodeValueController();
             return ConvertToSelect(cv.UserQueries(), "Code");
+        }
+        public List<SelectListItem> Ministries()
+        {
+            var q = from t in Db.Ministries
+                    orderby t.MinistryDescription
+                    select new SelectListItem
+                    {
+                        Value = t.MinistryId.ToString(),
+                        Text = t.MinistryName
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
         }
 
         private IQueryable<Person> query;

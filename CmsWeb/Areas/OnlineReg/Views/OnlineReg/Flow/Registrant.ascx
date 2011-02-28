@@ -23,7 +23,6 @@
             <div class="box">
                 <% Html.RenderPartial("Flow/FamilyList", Model); %>
             </div>
-            <%= Html.ValidationMessage("findf")%>
         </td>
     </tr>
 <%      } 
@@ -32,7 +31,9 @@
     <tr><td><h4>Enter new person's information</h4></td></tr>
 <%      } %>
     <tr>
-        <td><h3 id="fillout" class="instruct">Please fill out the form.</h3></td>
+        <td>
+            <div><%= Html.ValidationMessage("findf")%></div>
+            <h3 id="fillout" class="instruct">Please fill out the form.</h3></td>
     </tr>
 <%  }
     // This is the registrant info, finished or not
@@ -50,7 +51,7 @@
         // need to store the other info too
             Html.RenderPartial("Flow/OtherHidden", p);
     }
-    if (!Model.IsCreateAccount() && !Model.ManagingSubscriptions())
+    if (!Model.IsCreateAccount() && !Model.ManagingSubscriptions() && (p.Found == true || p.IsNew == true))
     // This is the cancel link
     { %>
                 <a href="/OnlineReg/Cancel/<%=p.index %>" class="close submitlink">
@@ -106,7 +107,7 @@
 %>
                 </table>
             </div>
-<%      if (Model.List.Count == 1 && p.Found != true && Model.UserPeopleId == null && !p.OtherOK)
+<%      if (Model.List.Count == 1 && p.IsNew != true && p.Found != true && Model.UserPeopleId == null && !p.OtherOK)
         { %>
             <div style="margin: 10px; text-align:center;">
                 <a href="/OnlineReg/YesLogin" class="submitlink">Login with an account</a>

@@ -87,6 +87,7 @@ namespace CmsData
         LetterStatusId,
         LetterDateRequested,
         MeetingId,
+        MadeContactTypeAsOf,
         MaritalStatusId,
         MemberAnyChurch,
         MemberStatusId,

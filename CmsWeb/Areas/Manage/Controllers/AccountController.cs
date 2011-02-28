@@ -209,7 +209,8 @@ CKEditorFuncNum, baseurl + fn, error));
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
-                Notify(WebConfigurationManager.AppSettings["senderrorsto"],
+                Util.Email(Util.Smtp(), DbUtil.AdminMail, 
+                    WebConfigurationManager.AppSettings["senderrorsto"], 
                     "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host),
                     Util.Now.ToString());
             }
@@ -220,23 +221,12 @@ CKEditorFuncNum, baseurl + fn, error));
 
             return user;
         }
-        private static void Notify(string to, string subject, string message)
-        {
-            var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.AdminMail, to, subject, message);
-        }
         private static void NotifyAdmins(string subject, string message)
         {
-            var sb = new StringBuilder();
-            foreach (var u in CMSRoleProvider.provider.GetRoleUsers("Admin"))
-            {
-                if (!Util.ValidEmail(u.Person.EmailAddress))
-                    continue;
-                if (sb.Length > 0)
-                    sb.Append(",");
-                sb.Append(u.EmailAddress);
-            }
-            Notify(sb.ToString(), subject, message);
+            var list = CMSRoleProvider.provider.GetRoleUsers("Admin")
+                .Select(rr => rr.Person).ToList();
+            Emailer.Email(Util.Smtp(), DbUtil.AdminMail,
+                list, subject, message);
         }
         public static string CheckAccessRole(string name)
         {
@@ -325,8 +315,8 @@ The bvCMS Team</p>
             body = body.Replace("{cmshost}", DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host));
             body = body.Replace("{username}", user.Username);
             body = body.Replace("{password}", newpassword);
-            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
-                    "New user welcome", body);
+            Emailer.Email(smtp, DbUtil.AdminMail, user.Person, 
+                "New user welcome", body);
             return Redirect("/Admin/Users.aspx?create=1");
         }
         [Authorize(Roles = "Admin")]
@@ -356,15 +346,16 @@ The bvCMS Team</p>
             if (!ModelState.IsValid)
                 return View();
 
+            if (email != null)
+                email = email.Trim();
             var q = from u in DbUtil.Db.Users
-                    where u.Person.EmailAddress == email
+                    where u.Person.EmailAddress == email || u.Person.EmailAddress2 == email
+                    where email != "" && email != null
                     select u;
             var smtp = Util.Smtp();
             foreach (var user in q)
             {
-                Util.Email(smtp, DbUtil.AdminMail, user.Name, email,
-                    "bvcms forgot username",
-                    @"Hi {0},
+                Emailer.Email(smtp, DbUtil.AdminMail, user.Person, "bvcms forgot username", @"Hi {0},
 <p>Your username is: {1}</p>
 <p>If you did not request this, please disregard this message.</p>
 <p>Thanks,<br />
@@ -397,9 +388,7 @@ The bvCMS Team</p>
                 user.ResetPasswordCode = Guid.NewGuid();
                 var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt(
                     Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
-                Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
-                    "bvcms password reset link",
-                    @"Hi {0},
+                Emailer.Email(smtp, DbUtil.AdminMail, user.Person, "bvcms password reset link", @"Hi {0},
 <p>You recently requested a new password.  To reset your password, follow the link below:<br />
 <a href=""{1}"">{1}</a></p>
 <p>If you did not request a new password, please disregard this message.</p>
@@ -443,9 +432,7 @@ The bvCMS Team</p>
 
             DbUtil.Db.SubmitChanges();
             var smtp = Util.Smtp();
-            Util.Email(smtp, DbUtil.AdminMail, user.Name, user.Person.EmailAddress,
-                "bvcms new password",
-                @"Hi {0},
+            Emailer.Email(smtp, DbUtil.AdminMail, user.Person, "bvcms new password", @"Hi {0},
 <p>Your new password is {1}</p>
 <p>If you did not request a new password, please notify us ASAP.</p>
 <p>Thanks,<br />

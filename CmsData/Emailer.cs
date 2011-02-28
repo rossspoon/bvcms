@@ -14,11 +14,38 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Web;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace CmsData
 {
     public static class Emailer
     {
+        public static void Email(SmtpClient smtp,  
+            string from, Person p, string subject, string body)
+        {
+            Email(smtp, from, p, null, subject, body);
+        }
+        public static void Email(SmtpClient smtp,
+            string from, Person p, string addemail, string subject, string body)
+        {
+            var From = new MailAddress(from);
+            var addr = new List<string>();
+            if (p.SendEmailAddress1 ?? true)
+                addr.Add(p.EmailAddress);
+            if (p.SendEmailAddress2 ?? false)
+                addr.Add(p.EmailAddress2);
+            if (addemail.HasValue())
+                addr.Add(addemail);
+            if (addr.Count>0)
+                Util.SendMsg(smtp, Util.SysFromEmail, Util.CmsHost, From, subject, body, 
+                    p.Name, string.Join(",", addr));
+        }
+        public static void Email(SmtpClient smtp, 
+            string from, List<Person> list, string subject, string body)
+        {
+            foreach (var p in list)
+                Email(smtp, from, p, subject, body);
+        }
         public static void SendPeopleEmail(CMSDataContext Db, string SysFromEmail, string CmsHost, EmailQueue emailqueue)
         {
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
@@ -135,13 +162,15 @@ namespace CmsData
                         text = text.Replace("%7Bfromemail%7D", From.Address);
 
                         if (Db.Setting("sendemail", "true") != "false")
+                        {
                             Util.SendMsg(smtp, SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
-                        To.Sent = DateTime.Now;
+                            To.Sent = DateTime.Now;
 
-                        sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(qp.Name, ad, To.PeopleId));
-                        if (i % 500 == 0)
-                            NotifySentEmails(Db, SysFromEmail, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
-                        Db.SubmitChanges();
+                            sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(qp.Name, ad, To.PeopleId));
+                            if (i % 500 == 0)
+                                NotifySentEmails(Db, SysFromEmail, CmsHost, sb, smtp, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+                            Db.SubmitChanges();
+                        }
                     }
                 }
             }

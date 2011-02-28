@@ -123,8 +123,10 @@
                             Number Present:
                         </th>
                         <td>
-                            <cc1:DisplayOrEditText ID="NumPresent" runat="server" BindingSource="meeting" BindingMode="TwoWay"
-                                AssociatedRowId="TR_NumPresent" />
+                            <span style="font-weight:bold"><cc1:DisplayOrEditText ID="NumPresent" runat="server" BindingSource="meeting" BindingMode="TwoWay"
+                                AssociatedRowId="TR_NumPresent" /></span>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="QuerySearch" runat="server" 
+        onclick="QuerySearch_Click">Convert to Query</asp:LinkButton> 
                         </td>
                     </tr>
                     <tr id="TR_NumMembers" runat="server">

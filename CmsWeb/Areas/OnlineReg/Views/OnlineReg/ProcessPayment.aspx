@@ -86,7 +86,8 @@
             <input id="showpassword" type="checkbox" /> Show Code</td></tr>
     <tr><td></td>
         <td>
-        <a href="/OnlineReg/ApplyCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Code</a>
+        <input type="button" href="/OnlineReg/ApplyCoupon/<%=Model.ti.DatumId %>" class="submitbutton ajax"
+            value="Apply Code" />
         <div class="right red" id="validatecoupon"></div>
         </td></tr>
     </table>

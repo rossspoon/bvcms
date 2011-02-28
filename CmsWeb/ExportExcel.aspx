@@ -9,11 +9,11 @@
     <div>
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns = "false" Font-Names = "Arial" >
             <Columns>
-                <asp:TemplateField HeaderText="Picture" ItemStyle-Height = "200" ItemStyle-Width = "160">
+                <asp:TemplateField HeaderText="Picture" ItemStyle-Height = "203" ItemStyle-Width = "160">
                     <ItemTemplate>
                         <img src='<%# Eval("Image") %>' runat="server" width="160" height="200" />
                     </ItemTemplate> 
-                </asp:TemplateField> 
+                </asp:TemplateField>
                 <asp:BoundField DataField = "PeopleId" HeaderText = "PeopleId"/>
                 <asp:BoundField DataField = "Title" HeaderText = "Title"/>
                 <asp:BoundField DataField = "FirstName" HeaderText = "First" />
@@ -26,8 +26,9 @@
                 <asp:BoundField DataField = "Email" HeaderText = "Email" />
                 <asp:BoundField DataField = "BirthDate" HeaderText = "BirthDate" />
                 <asp:BoundField DataField = "BirthDay" HeaderText = "BirthDay" />
-                <asp:BoundField DataField = "WeddingDate" HeaderText = "WeddingDate" />
+                <asp:BoundField DataField = "Anniversary" HeaderText = "Anniversary" />
                 <asp:BoundField DataField = "JoinDate" HeaderText = "JoinDate" />
+                <asp:BoundField DataField = "JoinType" HeaderText = "JoinType" />
                 <asp:BoundField DataField = "HomePhone" HeaderText = "HomePhone" />
                 <asp:BoundField DataField = "CellPhone" HeaderText = "CellPhone" />
                 <asp:BoundField DataField = "WorkPhone" HeaderText = "WorkPhone" />

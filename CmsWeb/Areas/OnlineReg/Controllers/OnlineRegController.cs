@@ -209,6 +209,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PersonFind(int id, OnlineRegModel m)
         {
+            if (id >= m.List.Count)
+                return View("Flow/List", m);
             DbUtil.Db.SetNoLock();
             var p = m.List[id];
             p.index = id;
@@ -337,6 +339,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
 
+            if (m.List.Count == 0)
+                return Content("Can't find any registrants");
             var p = m.List[0];
             var pp = p.person;
             if (m.user != null)
@@ -347,7 +351,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 Amt = m.Amount(),
                 Regfees = m.Amount(),
                 Amtdue = m.TotalAmountDue(),
-                Emails = pp != null ? pp.EmailAddress : p.email,
+                Emails = pp != null ? pp.EmailAddress: p.email,
                 Testing = m.testing ?? false,
                 Description = m.Header,
                 OrgId = m.orgid,

@@ -36,10 +36,15 @@
         <td> </td>
         <td>
             @if(!i.queue.Sent.HasValue) {
-                <span style="color:red" title="scheduled">@i.queue.SendWhen.FormatDate())</span>
+                if(i.queue.SendWhen.HasValue) {
+                    <span style="color:green" title="scheduled">@i.queue.SendWhen.FormatDate()</span>
+                }
+                else {
+                    <span style="color:red" title="queued">@i.queue.Queued.FormatDateTm()</span>
+                }
             }
             else {
-                @i.queue.Sent.FormatDateTm()
+                <span title="sent">@i.queue.Sent.FormatDateTm()</span>
             }
         </td>
         <td> <a href="/Manage/Emails/SentBy/@i.queue.QueuedBy">@i.queue.FromName</a> </td>

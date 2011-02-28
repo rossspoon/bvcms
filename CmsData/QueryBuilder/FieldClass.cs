@@ -76,6 +76,8 @@ namespace CmsData
                 var s2 = s;
                 if (s2 == "Week")
                     s2 = "Quarters";
+                else if (s2 == "Ministry")
+                    s2 = "Program";
                 else if (s2 == "View")
                     s2 = "Quarters";
                 object prop = Util.GetProperty(c, s2);

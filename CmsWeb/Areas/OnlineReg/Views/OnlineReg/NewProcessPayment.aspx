@@ -7,6 +7,7 @@
         .Add("/Content/js/jquery-ui-1.8.9.custom.js")
         .Add("/Content/js/jquery.idle-timer.js")
         .Add("/Content/js/jquery.showpassword.js")
+        .Add("/Content/js/jquery.validate.js")
         .Add("/Scripts/OnlineRegPayment.js")
         .Render("/Content/OnLineRegPayment_#.js")
     %>
@@ -38,7 +39,8 @@
         If you have received a Cash Payment Code, please enter that number here and click
         the blue link next to it:</p>
     <input id="Coupon" type="password" name="Coupon" value='<%=ViewData["Coupon"] %>' />
-    <a href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton">Apply Coupon</a>
+    <input type="button" href="/OnlineReg/PayWithCoupon/<%=Model.ti.DatumId %>" class="submitbutton ajax" 
+        value="Apply Coupon" />
     <div><%=Html.ValidationMessage("coupon") %></div>
     </form>
     <form action="/onlinereg/ProcessPayment/<%=Model.ti.DatumId %>" method="post">

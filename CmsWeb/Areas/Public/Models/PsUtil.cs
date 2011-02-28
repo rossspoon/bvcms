@@ -32,21 +32,13 @@ namespace CmsWeb.Models
                     where n.NotifyType == "PrayerTime"
                     select n;
             var q2 = from n in q
-                     select new
-                     {
-                         n.Person.PreferredName,
-                         n.Person.Name,
-                         n.Person.PrayerSlots,
-                         n.Person.EmailAddress,
-                     };
+                     select n.Person;
             foreach (var n in q2)
             {
                 var sb = new StringBuilder();
                 foreach (var ps in n.PrayerSlots)
                     sb.AppendFormat("<tr><td>{0}</td><td>{1:hh:mm tt}</td></tr>\n", ((DayOfWeek)ps.Day), ps.Time);
-                Util.Email(Util.Smtp(), DbUtil.Db.Setting("PrayerEmail", "prayer@bellevue.org"), 
-                    n.Name, n.EmailAddress, "Your Prayer Commitment",
-@"Hi {0},<br/>
+                Emailer.Email(Util.Smtp(), DbUtil.Db.Setting("PrayerEmail", "prayer@bellevue.org"), n, "Your Prayer Commitment", @"Hi {0},<br/>
 You have reserved the following prayer times:
 <table>{1}</table>
 Thank you for praying!<br/>

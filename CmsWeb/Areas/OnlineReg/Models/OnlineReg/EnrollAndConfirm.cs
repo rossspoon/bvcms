@@ -16,7 +16,12 @@ namespace CmsWeb.Models
             var ti = Transaction;
             var elist = new List<string>();
             if (UserPeopleId.HasValue)
-                elist.Add(user.EmailAddress);
+            {
+                if (user.SendEmailAddress1 ?? true)
+                    elist.Add(user.FromEmail);
+                if (user.SendEmailAddress2 ?? false)
+                    elist.Add(user.FromEmail2);
+            }
             var participants = new StringBuilder();
             for (var i = 0; i < List.Count; i++)
             {
@@ -37,13 +42,19 @@ namespace CmsWeb.Models
                     p.AddPerson(uperson, p.org.EntryPointId ?? 0);
                 }
 
-                if (!elist.Contains(p.email))
-                    elist.Add(p.email);
+                if (!elist.Contains(p.fromemail))
+                    elist.Add(p.fromemail);
+
 
                 if (!p.IsNew)
-                    if (p.person.EmailAddress.HasValue())
-                        if (!elist.Contains(p.person.EmailAddress))
-                            elist.Add(p.person.EmailAddress);
+                {
+                    if (p.person.SendEmailAddress1 ?? true)
+                        if (!elist.Contains(p.person.FromEmail))
+                            elist.Add(p.person.FromEmail);
+                    if (p.person.SendEmailAddress2 ?? false)
+                        if (!elist.Contains(p.person.FromEmail2))
+                            elist.Add(p.person.FromEmail2);
+                }
                 participants.Append(p.ToString());
             }
             var p0 = List[0].person;
@@ -123,7 +134,7 @@ namespace CmsWeb.Models
                 }
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
                     p.org.EmailAddresses,
-                    p.email,
+                    p.fromemail,
                     p.org.OrganizationName,
                     p.org.PhoneNumber);
                 if (p.CreatingAccount == true && (p.org.GiveOrgMembAccess ?? false) == false)
@@ -216,7 +227,7 @@ namespace CmsWeb.Models
 
             Util.Email(smtp, EmailAddresses, emails, subject, message);
             foreach (var p in List)
-                Util.Email(smtp, p.person.EmailAddress, p.org.EmailAddresses, "{0}".Fmt(Header),
+                Util.Email(smtp, p.person.FromEmail, p.org.EmailAddresses, "{0}".Fmt(Header),
 @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
 <pre>{4}</pre>"
                .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));

@@ -338,6 +338,7 @@ function UpdateView(vs) {
     $('#Organization').val(vs.Organization);
     $('#View').val(vs.View);
     $('#SavedQueryDesc').val(vs.SavedQueryDesc);
+    $('#Ministry').val(vs.Ministry);
     $('#Schedule').val(vs.Schedule);
     $('#Days').val(vs.Days);
     $('#Age').val(vs.Age);
@@ -360,6 +361,7 @@ function UpdateView(vs) {
     $('#AgeDiv').showhide(vs.AgeVisible);
     $('#OtherLabel').text(vs.OtherLabel);
     $('#SavedQueryDiv').showhide(vs.SavedQueryVisible);
+    $('#MinistryDiv').showhide(vs.MinistryVisible);
     $('#QuartersDiv').showhide(vs.QuartersVisible);
     $('#QuartersLabel').text(vs.QuartersLabel);
 

@@ -197,7 +197,7 @@ namespace CmsWeb.Models.PersonPage
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
                     var smtp = Util.Smtp();        
-                    Util.Email(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
+                    Util.Email(smtp, p.FromEmail, DbUtil.NewPeopleEmailAddress,
                         "Basic Person Info Changed on " + Util.Host,
                         "{0} changed the following information for {1} ({2}):<br />\n<table>{3}{4}</table>"
                         .Fmt(Util.UserName, First + " " + Last, PeopleId, psb.ToString(),fsb.ToString()));

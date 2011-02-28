@@ -66,6 +66,12 @@
                         <%=Html.DropDownList("SavedQueryDesc", Model.SavedQueries())%>
                     </td>
                 </tr>
+                <tr id="MinistryDiv" style="display:none">
+                    <td align="right">Ministry:</td>
+                    <td>
+                        <%=Html.DropDownList("Ministry", Model.Ministries())%>
+                    </td>
+                </tr>
                 <tr id="StartDiv" style="display:none">
                     <td align="right">Start Date:</td>
                     <td>

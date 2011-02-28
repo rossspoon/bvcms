@@ -78,7 +78,7 @@ Click <a href=""{2}"">here</a> to stop receiving notifications"
                     smtp = new SmtpClient();
       
                 n++;
-#if DEBUG2
+#if DEBUG
 #else
                 smtp.Send(msg);
 #endif

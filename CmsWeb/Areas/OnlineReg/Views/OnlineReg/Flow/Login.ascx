@@ -12,7 +12,8 @@
         <div><%= Html.ValidationMessage("password") %></div>
     </div>
     <div style="margin: 20px 10px">
-        <div style="text-align:right"><a href="/OnlineReg/Login/" class="submitbutton" tabindex="3">Login</a></div>
+        <div style="text-align:right">
+        <input type="button" href="/OnlineReg/Login/" class="submitbutton ajax" tabindex="3" value="Login" /></div>
         <div><%= Html.ValidationMessage("authentication")%></div>
     </div>
     <div style="margin: 5px; text-align:center">
@@ -20,5 +21,5 @@
     </div>
 </div>
 <div style="margin: 10px; text-align:center; width:350px">
-    <a href="/OnlineReg/NoLogin" class="submitlink">Login without an account</a>
+    <a href="/OnlineReg/NoLogin" class="submitlink">Register without logging in</a>
 </div>

@@ -319,7 +319,9 @@ namespace CmsWeb.Models
                     select new
                     {
                         om,
+                        om.Person.FromEmail,
                         om.Person.EmailAddress,
+                        om.RegisterEmail,
                         om.Person.Name,
                         om.PeopleId,
                         om.Organization.OrganizationName,
@@ -340,34 +342,34 @@ Please call {4} if you have any questions.
 Thanks for registering!
 ".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, i.PhoneNumber.FmtFone(), onlineorg.OrganizationName);
 
-                if (i.om.RegisterEmail.HasValue())
+                if (i.RegisterEmail.HasValue())
                 {
-                    Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress, i.Name, i.om.RegisterEmail.Trim(), subj, msg);
-                    sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.om.RegisterEmail.Trim(), i.PeopleId, i.Location));
+                    Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, i.Name, i.RegisterEmail, subj, msg);
+                    sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.RegisterEmail, i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }
                 if (i.EmailAddress.HasValue())
                 {
-                    Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, i.EmailAddress.Trim(), subj, msg);
-                    sb.AppendFormat("\"{0}\" [{1}]I ({2}): {3}\r\n".Fmt(i.Name, i.EmailAddress.Trim(), i.PeopleId, i.Location));
+                    Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, i.FromEmail, subj, msg);
+                    sb.AppendFormat("{0}I ({1}): {2}\r\n".Fmt(i.FromEmail, i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }
                 if (i.om.Moved == true) // need to email parents
                 {
                     var flist = (from fm in i.om.Person.Family.People
+                                 where fm.EmailAddress != null && fm.EmailAddress != ""
                                  where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
-                                 select fm.EmailAddress).ToList();
-                    flist = flist.Where(fm => fm.HasValue()).ToList();
+                                 select fm);
                     foreach (var em in flist)
                     {
-                        Util.Email(smtp, DbUtil.Db.CurrentUser.EmailAddress.Trim(), i.Name, em.Trim(), subj, msg);
-                        sb.AppendFormat("\"{0}\" [{1}]P ({2}): {3}\r\n".Fmt(i.Name, em.Trim(), i.PeopleId, i.Location));
+                        Emailer.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, em, subj, msg);
+                        sb.AppendFormat("{0}P ({1}): {2}\r\n".Fmt(em, i.PeopleId, i.Location));
                         i.om.Moved = false;
                     }
                 }
             }
             sb.Append("</pre>\n");
-            Util.Email(smtp, DbUtil.Db.CurrentUser.Person.EmailAddress, null, onlineorg.EmailAddresses, "room notices sent to:", sb.ToString());
+            Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, onlineorg.EmailAddresses, "room notices sent to:", sb.ToString());
             DbUtil.Db.SubmitChanges();
         }
 

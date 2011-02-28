@@ -98,7 +98,7 @@ namespace CmsWeb.Models
                 {
                     case "Sent/Scheduled":
                         q = from t in q
-                            orderby t.SendWhen, t.Sent
+                            orderby (t.SendWhen ?? t.Sent) ?? t.Queued
                             select t;
                         break;
                     case "From":
@@ -127,7 +127,7 @@ namespace CmsWeb.Models
                 {
                     case "Sent/Scheduled":
                         q = from t in q
-                            orderby t.SendWhen descending, t.Sent descending
+                            orderby ((t.SendWhen ?? t.Sent) ?? t.Queued) descending
                             select t;
                         break;
                     case "From":

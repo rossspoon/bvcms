@@ -49,6 +49,10 @@ namespace CmsWeb.Models.PersonPage
         {
             return Util.FormatCSZ(City, State, Zip);
         }
+        public string CityStateZip4()
+        {
+            return Util.FormatCSZ4(City, State, Zip);
+        }
         public string AddrCityStateZip()
         {
             return Address1 + " " + CityStateZip();
@@ -180,7 +184,7 @@ namespace CmsWeb.Models.PersonPage
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
                     var smtp = Util.Smtp();        
-                    Util.Email(smtp, p.EmailAddress, DbUtil.NewPeopleEmailAddress,
+                    Util.Email(smtp, p.FromEmail, DbUtil.NewPeopleEmailAddress,
                         "Address Info Changed",
                         "{0} changed the following information:<br />\n<table>{1}{2}</table>"
                         .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));

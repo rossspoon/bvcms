@@ -35,7 +35,7 @@ Just login to <a href=""{host}"">{host}</a> and you will be taken to your record
                     .Replace("{host}", Util.CmsHost);
 
                 var smtp = Util.Smtp();
-                Util.Email(smtp, DbUtil.AdminMail, person.EmailAddress, "Account information for " + DbUtil.Db.Host, message);
+                Emailer.Email(smtp, DbUtil.AdminMail, person, "Account information for " + DbUtil.Db.Host, message);
             }
             else
             {
@@ -76,8 +76,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                     .Replace("{host}", Util.CmsHost);
 
                 var smtp = Util.Smtp();
-                Util.Email(smtp, DbUtil.AdminMail,
-                    uname, person.EmailAddress, "New account for " + DbUtil.Db.Host, message);
+                Emailer.Email(smtp, DbUtil.AdminMail, person, "New account for " + DbUtil.Db.Host, message);
             }
         }
         public void SendOneTimeLink(string from, string url)
@@ -100,7 +99,7 @@ Just login to {host} and you will be taken to your record where you can make cor
             message = message.Replace("{name}", person.Name);
             message = message.Replace("{first}", person.PreferredName);
 
-            Util.Email(Util.Smtp(), from, person.EmailAddress, "Manage Your Subscriptions", message);
+            Emailer.Email(Util.Smtp(), from, person, "Manage Your Subscriptions", message);
         }
     }
 }

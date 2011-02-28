@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.Main.Controllers
 {
 #if DEBUG
 #else
-   [RequireHttps]
+   //[RequireHttps]
 #endif
     //[RequireBasicAuthentication]
    public class Checkin2Controller : CmsController

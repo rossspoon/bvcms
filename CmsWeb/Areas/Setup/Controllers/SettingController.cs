@@ -414,7 +414,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                     var p = Person.Add(f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], false, 0, 0, null);
                     p.AltName = a[names["AltName"]];
                     p.CellPhone = a[names["CellPhone"]].GetDigits();
-                    p.EmailAddress = a[names["Email"]];
+                    p.EmailAddress = a[names["Email"]].Trim();
 
                     switch (a[names["Gender"]])
                     {

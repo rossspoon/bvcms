@@ -55,12 +55,11 @@
             $(f).html(ret).ready(function () {
                 $.InstructionsShow();
                 $("#dob").datepicker($.dpoptions);
-                setTimeout($.setButtons, 15);
             });
         });
         return false;
     });
-    $.setButtons = function() {
+    $.setButtons = function () {
         $(".submitbutton").button();
     }
     $.InstructionsShow = function () {
@@ -88,7 +87,7 @@
         $.post($(this).attr('href'), q, function (ret) {
             if (ret == 'refresh')
                 location.reload();
-            $(f).html(ret).ready(function() {
+            $(f).html(ret).ready(function () {
                 setTimeout($.setButtons, 15);
             });
         });
@@ -115,6 +114,5 @@
         return false;
     });
     $.InstructionsShow();
-    setTimeout($.setButtons, 18);
 });
 

@@ -47,6 +47,23 @@ namespace CmsWeb
         {
             return ctrl.GetContacteeList(ContactId);
         }
-
+        protected void QuerySearch_Click(object sender, EventArgs e)
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            var comp = CompareType.Equal;
+            var clause = qb.AddNewClause(QueryType.MadeContactTypeAsOf, comp, "1,T");
+            clause.Program = MinistryList.SelectedValue.ToInt();
+            clause.StartDate = startDate.Text.ToDate();
+            clause.EndDate = endDate.Text.ToDate();
+            var cvc = new CodeValueController();
+            var q = from v in cvc.ContactTypeCodes0()
+                    where v.Id == TypeList.SelectedValue.ToInt()
+                    select v.IdCode;
+            var idvalue = q.Single();
+            clause.CodeIdValue = idvalue;
+            DbUtil.Db.SubmitChanges();
+            Response.Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
     }
 }

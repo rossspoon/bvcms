@@ -248,5 +248,7 @@
              Create Account (optional)</td>
    </tr>
 <% } %>
-    <tr><td align="right" colspan="2"><a id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton">Submit</a></td>
+    <tr><td align="right" colspan="2">
+        <input type="button" id="otheredit" href="/OnlineReg/SubmitOtherInfo/<%=Model.index %>" class="submitbutton ajax" 
+            value="Submit" /></td>
     </tr>

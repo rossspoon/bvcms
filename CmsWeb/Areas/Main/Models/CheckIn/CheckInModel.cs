@@ -410,7 +410,7 @@ namespace CmsWeb.Models
                 var p = DbUtil.Db.LoadPersonById(PeopleId);
                 var what = Member? "joined" : "dropped";
                 var smtp = Util.Smtp();
-                Util.Email(smtp, null, org.EmailAddresses,
+                Util.Email(smtp, DbUtil.AdminMail, org.EmailAddresses,
                     "cms check-in, {0} class on ".Fmt(what) + Util.CmsHost, 
                     "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt( 
                         Util.ServerLink("/Person/Index/" + PeopleId), 

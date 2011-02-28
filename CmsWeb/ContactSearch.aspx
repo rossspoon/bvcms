@@ -94,7 +94,10 @@
         <br />
     </div>
     Count:
-    <asp:Label ID="GridCount" runat="server" Text="0"></asp:Label>
+    <asp:Label ID="GridCount" style="font-weight:bold" runat="server" Text="0"></asp:Label>
+    &nbsp;&nbsp;&nbsp;<asp:LinkButton ID="QuerySearch" runat="server" 
+        onclick="QuerySearch_Click">Convert to Query</asp:LinkButton>
+
     <asp:GridView ID="ContactGrid" runat="server" AllowPaging="True"
         PagerSettings-Position="Bottom" AutoGenerateColumns="False" PageSize="10" 
         AllowSorting="True" DataSourceID="ContactData"

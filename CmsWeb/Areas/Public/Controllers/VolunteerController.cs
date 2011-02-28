@@ -89,7 +89,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 var summary = m.PrepareSummaryText2();
                 var smtp = Util.Smtp();
                 Util.Email(smtp,
-                    Util.PickFirst(regemail, m.person.EmailAddress),
+                    Util.PickFirst(regemail, m.person.FromEmail),
                     email,
                     "{0} registration".Fmt(id),
                     "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
@@ -102,18 +102,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     var p = m.person;
                     body = body.Replace("{first}", p.PreferredName);
                     body = body.Replace("{serviceareas}", summary);
-                    var elist = new List<string>();
-                    elist.Add(regemail);
-                    if (m.person.EmailAddress.HasValue())
-                        elist.Add(m.person.EmailAddress);
-                    var em = string.Join(",", elist.ToArray());
-                    if (!Util.ValidEmail(email))
-                    {
-                        em = email;
-                        body = "<p>NO EMAIL</p>\n" + body;
-                    }
-                    Util.Email(smtp, email, m.person.Name, em,
-                         c.Title, body);
+                    Emailer.Email(smtp, email, m.person, regemail, c.Title, body);
                     OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }

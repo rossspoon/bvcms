@@ -1,15 +1,13 @@
 ﻿$(function () {
-    $(".submitbutton").button();
-    $("#applydonation").button();
     $("#applydonation").click(function (ev) {
         ev.preventDefault();
         return false;
     });
-    $("a.submitbutton").click(function (ev) {
+    $("a.submitbutton, a.submitlink, input.submitbutton.ajax").click(function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post(this.href, q, function (ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             if (ret.error) {
                 $('#validatecoupon').text(ret.error);
             }

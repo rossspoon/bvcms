@@ -328,6 +328,24 @@ namespace CmsData
         {
             get { return DeceasedDate.HasValue; }
         }
+        public string FromEmail
+        {
+            get
+            {
+                if (EmailAddress.HasValue())
+                    return Name + " <" + EmailAddress + ">";
+                return String.Empty;
+            }
+        }
+        public string FromEmail2
+        {
+            get
+            {
+                if (EmailAddress2.HasValue())
+                    return Name + " <" + EmailAddress2 + ">";
+                return String.Empty;
+            }
+        }
         public static void NameSplit(string name, out string First, out string Last)
         {
             First = "";
@@ -460,10 +478,7 @@ namespace CmsData
                 else
                 {
                     var em = Db.NewPeopleEmailAddress;
-                    Util.Email(Util.Smtp(), em, null, em,
-                        "Just Added Person on " + Db.Host,
-                        "{0} ({1})"
-                        .Fmt(p.Name, p.PeopleId));
+                    Util.Email(Util.Smtp(), Util.SysFromEmail, em, "Just Added Person on " + Db.Host, "{0} ({1})".Fmt(p.Name, p.PeopleId));
                 }
             }
             return p;

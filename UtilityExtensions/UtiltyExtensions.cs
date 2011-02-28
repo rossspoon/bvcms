@@ -22,6 +22,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web.Configuration;
 using System.Diagnostics;
+using System.Web.Caching;
 
 namespace UtilityExtensions
 {
@@ -465,6 +466,22 @@ namespace UtilityExtensions
                 return true;
             return false;
         }
+        public static bool BirthDateValid(string dt, out DateTime dt2)
+        {
+            dt2 = DateTime.MinValue;
+            if (!dt.HasValue())
+                return false;
+            if (!Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z")
+                    && !Regex.IsMatch(dt, @"\A(?:\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2}))\Z"))
+                return false;
+            if (DateTime.TryParse(dt, out dt2))
+            {
+                if (dt2 > DateTime.Now)
+                    dt2 = dt2.AddYears(-100);
+                return true;
+            }
+            return false;
+        }
 
         public static string FmtAttendStr(this string attendstr)
         {
@@ -815,13 +832,12 @@ namespace UtilityExtensions
         {
             if (!email.HasValue())
                 return false;
-            var re = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
+            var re1 = new Regex(@"^(.*\<)[A-Z0-9-._]+@([^.]|\w)[A-Z0-9._]*[^.]\.[A-Z]{2,4}\>$", RegexOptions.IgnoreCase);
+            var re2 = new Regex(@"^[A-Z0-9._]+@([^.]|\w)[A-Z0-9._]*[^.]\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
             var a = email.SplitStr(",;");
             foreach (var m in a)
             {
-                var b = re.IsMatch(m);
-                if (m.Contains("@."))
-                    b = false;
+                var b = re1.IsMatch(m) || re2.IsMatch(m);
                 if (b)
                     return true; // at least one good email address
             }
@@ -929,6 +945,8 @@ namespace UtilityExtensions
         }
         public static string Disallow(this string value, string dissallow)
         {
+            var v = value ?? "";
+            value = value.Trim();
             if (value == dissallow)
                 return "";
             return value;
@@ -1024,13 +1042,24 @@ namespace UtilityExtensions
             var a = addrs.SplitStr(",;");
             try
             {
-                return new MailAddress(a[0], name);
+                var ma = new MailAddress(a[0]);
+                if (name.HasValue())
+                    return new MailAddress(ma.Address, name);
+                return ma;
             }
             catch (Exception)
             {
                 return null;
             }
         }
+        public static void InsertCacheNotRemovable(string key, object value)
+        {
+                HttpRuntime.Cache.Insert(key, value, null,
+                    System.Web.Caching.Cache.NoAbsoluteExpiration,
+                    System.Web.Caching.Cache.NoSlidingExpiration,
+                    CacheItemPriority.NotRemovable, null);
+        }
+
         public static MailAddress FirstAddress2(string addrs, string name)
         {
             if (!addrs.HasValue())

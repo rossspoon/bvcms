@@ -919,6 +919,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
     <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="Binaries\AWSSDK.dll" />
     <Content Include="ckeditor\adapters\jquery.js" />
     <Content Include="ckeditor\ckeditor.js" />
     <Content Include="ckeditor\ckeditor_basic.js" />

@@ -5,6 +5,7 @@
         .Add("/Content/js/jquery-ui-1.8.9.custom.js")
         .Add("/Content/js/jquery.idle-timer.js")
         .Add("/Content/js/jquery.showpassword.js")
+        .Add("/Content/js/jquery.validate.js")
         .Add("/Scripts/OnlineRegPayment.js")
         .Render("/Content/OnLineRegPayment_#.js")
     %>
@@ -48,7 +49,8 @@
     <%=Html.Hidden("Amount") %>
     <p>If you have a coupon, please enter that number here and click the blue link next to it:</p>
     <%=Html.TextBox("Coupon") %>
-    <a href="/OnlineReg/PayWithCouponOld/<%=Model._datumid %>" class="submitbutton">Pay with coupon</a>
+    <input type="button" href="/OnlineReg/PayWithCouponOld/<%=Model._datumid %>" class="submitbutton ajax" 
+        value="Pay with coupon" />
     <span style="color:Red" id="validatecoupon"></span>
     </form>
 </asp:Content>

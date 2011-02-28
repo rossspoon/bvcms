@@ -10,7 +10,13 @@
 
 <h2>Details</h2>
 @Html.ActionLink("Back to List", "Index")
-
+@{
+    var ts = new TimeSpan(0);
+    if (Model.queue.Sent.HasValue && Model.queue.Started.HasValue) {
+        ts = Model.queue.Sent.Value.Subtract(Model.queue.Started.Value);
+    }
+    var dt = new DateTime(ts.Ticks);
+}
 <table>
 <tr><td>QueuedBy</td><td>@Model.queue.QueuedBy</td></tr>
 <tr><td>FromName</td><td>@Model.queue.FromName</td></tr>
@@ -19,6 +25,7 @@
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm()</td></tr>
 <tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>
+<tr><td>RunTime</td><td>@dt.ToString("H:mm:ss")</td></tr>
 </table>
 <h2>@Html.Raw(Model.queue.Subject)</h2>
 <div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>

@@ -36,6 +36,10 @@ namespace CmsWeb.Models
         public string dob { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
+        public string fromemail
+        {
+            get { return first + " " + last + " <" + email + ">"; }
+        }
         public string address { get; set; }
         public string city { get; set; }
         public string state { get; set; }
@@ -128,7 +132,7 @@ namespace CmsWeb.Models
             get
             {
                 if (_Birthday == DateTime.MinValue)
-                    Util.DateValid(dob, out _Birthday);
+                    Util.BirthDateValid(dob, out _Birthday);
                 return _Birthday == DateTime.MinValue ? (DateTime?)null : _Birthday;
             }
         }
@@ -178,7 +182,7 @@ namespace CmsWeb.Models
             _Person = Person.Add(f, (int)Family.PositionInFamily.Child,
                 null, first.Trim(), null, last.Trim(), dob, married == 20, gender ?? 0,
                     (int)Person.OriginCode.Enrollment, entrypoint);
-            person.EmailAddress = email;
+            person.EmailAddress = email.Trim();
             person.SuffixCode = suffix;
             person.MiddleName = middle;
             person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();

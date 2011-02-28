@@ -35,7 +35,18 @@ namespace CmsWeb
             if (File.Exists(smtppasswordfile))
             {
                 var a = File.ReadAllText(smtppasswordfile).Split(',');
-                HttpRuntime.Cache.Insert("smtpcreds", a, null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration);
+                Util.InsertCacheNotRemovable("smtpcreds", a);
+            }
+            string awscreds = Server.MapPath("awscreds.txt");
+            if (File.Exists(awscreds))
+            {
+                var a = File.ReadAllText(awscreds).Split(',');
+                Util.InsertCacheNotRemovable("awscreds", a);
+            }
+            else if (WebConfigurationManager.AppSettings["awscreds"].HasValue())
+            {
+                var a = WebConfigurationManager.AppSettings["awscreds"].Split(',');
+                Util.InsertCacheNotRemovable("awscreds", a);
             }
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
@@ -83,8 +94,7 @@ namespace CmsWeb
         {
             if (User.Identity.IsAuthenticated)
                 AccountController.SetUserInfo(Util.UserName, Session);
-            Util.SysFromEmail = DbUtil.Db.Setting("SysFromEmail",
-                WebConfigurationManager.AppSettings["sysfromemail"]);
+            Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
             Util.SessionStarting = true;
         }
         protected void Session_End(object sender, EventArgs e)
@@ -110,7 +120,7 @@ namespace CmsWeb
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-#if DEBUG2
+#if DEBUG
             if (HttpContext.Current != null)
                 return;
 #endif
