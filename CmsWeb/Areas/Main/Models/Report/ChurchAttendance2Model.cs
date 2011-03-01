@@ -89,26 +89,36 @@ namespace CmsWeb.Areas.Main.Models.Report
                 }
             }
 
-            public double Total()
+            public Average Total()
             {
+                var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)
-                    return 0;
-                return q.Average();
+                    a.avg = 0;
+                else
+                    a.avg = q.Average();
+                a.totalpeople = q.Sum();
+                a.totalmeetings = q.Count();
+                return a;
             }
-            public double Column(TimeSpan c)
+            public Average Column(TimeSpan c)
             {
+                var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
                         where m.date.TimeOfDay == c
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)
-                    return 0;
-                return q.Average();
+                    a.avg = 0;
+                else
+                    a.avg = q.Average();
+                a.totalmeetings = q.Count();//q.Where(g => g > 0).Count();
+                a.totalpeople = q.Sum();
+                return a;
             }
         }
         public class WeekInfo
@@ -140,29 +150,45 @@ namespace CmsWeb.Areas.Main.Models.Report
                     return q.Where(w => w.Meetings.Sum(m => m.Present) > 0);
                 }
             }
-            public double Total()
+            public Average Total()
             {
+                var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)
-                    return 0;
-                return q.Average();
+                    a.avg = 0;
+                else
+                    a.avg = q.Average();
+                a.totalmeetings = q.Count();
+                a.totalpeople = q.Sum();
+                return a;
             }
-            public double Column(TimeSpan c)
+            public Average Column(TimeSpan c)
             {
+                var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
                         where m.date.TimeOfDay == c
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)
-                    return 0;
-                return q.Average();
+                    a.avg = 0;
+                else
+                    a.avg = q.Average();
+                a.totalpeople = q.Sum();
+                a.totalmeetings = q.Count();
+                return a;
             }
         }
 
+        public class Average
+        {
+            public double avg { get; set; }
+            public int totalmeetings { get; set; }
+            public int totalpeople { get; set; }
+        }
         public class MeetInfo
         {
             public IEnumerable<DivInfo> Divs { get; set; }

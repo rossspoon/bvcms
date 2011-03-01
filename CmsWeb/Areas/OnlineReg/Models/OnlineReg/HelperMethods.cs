@@ -82,7 +82,14 @@ namespace CmsWeb.Models
             if (div != null && UserSelectsOrganization())
                 msg = UserSelectClasses(div.Id).Count() == 0 ? "all registration options are full" : "";
             else if (org != null)
+            {
                 msg = ((org.ClassFilled ?? false) || (org.Limit > 0 && org.Limit <= org.MemberCount)) ? "registration is full" : "";
+                if (msg.HasValue())
+                {
+                    org.ClassFilled = true;
+                    DbUtil.Db.SubmitChanges();
+                }
+            }
             return msg;
         }
         public bool NotAvailable()

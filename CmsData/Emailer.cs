@@ -46,6 +46,23 @@ namespace CmsData
             foreach (var p in list)
                 Email(smtp, from, p, subject, body);
         }
+        public static void QueueEmail(CMSDataContext Db, string sysfrom, string cmshost, MailAddress From, string subject, string body, IEnumerable<int> pids)
+        {
+            var emailqueue = new EmailQueue
+            {
+                Queued = DateTime.Now,
+                FromAddr = From.Address,
+                FromName = From.DisplayName,
+                Subject = subject,
+                Body = body,
+                QueuedBy = Util.UserPeopleId,
+            };
+            Db.EmailQueues.InsertOnSubmit(emailqueue);
+            foreach(var pid in pids)
+                emailqueue.EmailQueueTos.Add(new EmailQueueTo { PeopleId = pid, OrgId = DbUtil.Db.CurrentOrgId });
+            Db.SubmitChanges();
+            Db.QueueEmail(emailqueue.Id, Util.CmsHost, Util.Host);
+        }
         public static void SendPeopleEmail(CMSDataContext Db, string SysFromEmail, string CmsHost, EmailQueue emailqueue)
         {
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);

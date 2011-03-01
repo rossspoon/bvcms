@@ -40,7 +40,8 @@
     <% }
        else if (msg.HasValue())
        { %>
-    <h4>Sorry, <%=msg %></h4>
+    <h4 id="sorry">Sorry, <%=msg %></h4>
+        <%=Util.PickFirst(Model.Instructions, "")%>
     <% }
        else
        { %>
@@ -54,6 +55,8 @@
 <div class=""instructions other"">
 </div>
 <div class=""instructions submit"">
+</div>
+<div class=""instructions sorry"">
 </div>
 ") %>
     <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/<%=Model.qtesting %>"

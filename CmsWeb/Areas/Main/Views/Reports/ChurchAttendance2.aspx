@@ -68,19 +68,23 @@
            <tr>
            <td align="left"><%=d.Name%></td>
                <% foreach (var c in p.Cols)
-                  { %>
-           <td align="right"><%=d.Column(c.TimeOfDay).ToString("n0")%></td>
-               <% } %>
-           <td align="right"><%=d.Total().ToString("n0") %></td>
+                  {
+                      var a = d.Column(c.TimeOfDay); %>
+           <td align="right" title='<%="{0}/{1}".Fmt(a.totalpeople,a.totalmeetings) %>'><%=a.avg.ToString("n0")%></td>
+               <% }
+                  var ta = d.Total(); %>
+           <td align="right" title='<%="{0}/{1}".Fmt(ta.totalpeople,ta.totalmeetings) %>'><%=ta.avg.ToString("n0") %></td>
            </tr>
                 <% } %>
            <tr class="totalrow">
            <td align="left">Total</td>
                <% foreach (var c in p.Cols)
-                  { %>
-           <td><%=p.Column(c.TimeOfDay).ToString("n0")%></td>
-               <% } %>
-           <td><%=p.Total().ToString("n0")%></td>
+                  {
+                      var a = p.Column(c.TimeOfDay);%>
+           <td title='<%="{0}/{1}".Fmt(a.totalpeople,a.totalmeetings) %>'><%=a.avg.ToString("n0")%></td>
+               <% }
+                  var tta = p.Total(); %>
+           <td title='<%="{0}/{1}".Fmt(tta.totalpeople,tta.totalmeetings) %>'><%=tta.avg.ToString("n0")%></td>
            </tr>
         </table>
         </div>

@@ -74,6 +74,8 @@
             $("div.instructions.login").show();
         else if ($("#submitit").attr("id"))
             $("div.instructions.submit").show();
+        else if ($("#sorry").attr("id"))
+            $("div.instructions.sorry").show();
     }
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())

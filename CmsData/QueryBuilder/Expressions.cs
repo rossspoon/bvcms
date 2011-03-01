@@ -218,7 +218,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.contactsMade.Any(et =>
                     (et.contact.MinistryId == ministryid || ministryid == 0)
-                    && (ids.Contains(et.contact.ContactTypeId) || ids.Length == 0)
+                    && (ids.Contains(et.contact.ContactTypeId) || ids.Length == 0 || ids[0] == 0)
                     && from <= (et.contact.ContactDate) // where it ends
                     && et.contact.ContactDate <= to // where it begins
                     );

@@ -115,7 +115,7 @@
     <Field Name="RecentContactType" Title="Recent Contact Type" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="ContactTypeCodes" DataValueField="IdCode">
       Selects people based on an contact type looking back a specified number of days.
     </Field>
-    <Field Name="MadeContactTypeAsOf" Title="Made Contact Type As Of" Type="Code" DisplayAs="MadeContactTypeAsOf({0:d}, {1:d}, {2})" Params="StartDate,EndDate,Ministry" DataSource="ContactTypeCodes" DataValueField="IdCode">
+    <Field Name="MadeContactTypeAsOf" Title="Made Contact Type As Of" Type="Code" DisplayAs="MadeContactTypeAsOf({0:d}, {1:d}, {2})" Params="StartDate,EndDate,Ministry" DataSource="ContactTypeCodes0" DataValueField="IdCode">
       Selects people based on having made a contact type during the dates specified.
     </Field>
     <Field Name="HasContacts" Title="Has Contacts" Type="Bit" DataValueField="IdCode">

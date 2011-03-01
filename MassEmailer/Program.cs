@@ -24,15 +24,9 @@ namespace MassEmailer
 			};
             ServiceBase.Run(ServicesToRun);
 #else
-            if (!EventLog.SourceExists("MassEmailer"))
-                EventLog.CreateEventSource("MassEmailer", "MassEmailerLog");
 
             var service = new MassEmailer();
-            for(;;)
-            {
-                service.CheckQueue(service.data);
-                Thread.Sleep(15000);
-            }
+            service.StartListening();
 #endif
         }
     }

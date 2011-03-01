@@ -182,7 +182,7 @@ namespace UtilityExtensions
 
             var request = new SendRawEmailRequest();
             request.WithRawMessage(rawMessage);
-#if DEBUG
+#if DEBUG2
             var fullto = new MailAddress("davcar@pobox.com", nameto);
             request.WithDestinations(fullto.ToString());
 #else
@@ -279,13 +279,18 @@ namespace UtilityExtensions
             var o = HttpRuntime.Cache["awscreds"];
             if (o != null)
             {
-                string[] a = (string[])o;
-
-                var cfg = new AmazonSimpleEmailServiceConfig();
-                cfg.UseSecureStringForAwsSecretKey = false;
-                var ses = new AmazonSimpleEmailServiceClient(a[0], a[1], cfg);
-                var req = new GetSendQuotaRequest();
-                var resp = ses.GetSendQuota(req);
+                var resp = (GetSendQuotaResponse)HttpRuntime.Cache["ses_quota"];
+                if (resp == null)
+                {
+                    string[] a = (string[])o;
+                    var cfg = new AmazonSimpleEmailServiceConfig();
+                    cfg.UseSecureStringForAwsSecretKey = false;
+                    var ses = new AmazonSimpleEmailServiceClient(a[0], a[1], cfg);
+                    var req = new GetSendQuotaRequest();
+                    resp = ses.GetSendQuota(req);
+                    HttpRuntime.Cache.Insert("ses_quota", resp, null,
+                                DateTime.Now.AddMinutes(10), Cache.NoSlidingExpiration);
+                }
                 sendrate = resp.GetSendQuotaResult.MaxSendRate.ToInt();
                 if (resp.GetSendQuotaResult.SentLast24Hours < (resp.GetSendQuotaResult.Max24HourSend * 90 / 100))
                     cansend = true;
@@ -311,10 +316,11 @@ namespace UtilityExtensions
                     {
                         cmd.ExecuteNonQuery();
                     }
-                    catch (SqlException ex)
+                    catch (Exception ex)
                     {
-                        throw;
+                        
                     }
+                    
                     if (cansend)
                     {
                         cmd = new SqlCommand("select MAX(tm) from dbo.ses", cn);
