@@ -28,7 +28,7 @@ namespace CmsData
         public static void Email(SmtpClient smtp,
             string from, Person p, string addemail, string subject, string body)
         {
-            var From = new MailAddress(from);
+            var From = Util.FirstAddress(from);
             var addr = new List<string>();
             if (p.SendEmailAddress1 ?? true)
                 addr.Add(p.EmailAddress);
@@ -228,7 +228,7 @@ namespace CmsData
             if (Db.Setting("sendemail", "true") != "false")
             {
                 string subj = "sent emails: " + subject;
-                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, subj, sb.ToString(), null, From.Address, id);
+                Util.SendMsg(smtp, SysFromEmail, CmsHost, From, subj, sb.ToString(), From.DisplayName, From.Address, id);
                 Util.SendMsg(smtp, SysFromEmail, CmsHost, From, subj, sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
             }
             sb.Length = 0;
