@@ -394,6 +394,11 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecentEmailCount:
+                    return Expressions.RecentEmailCount(parm,
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.RecentContributionCount:
                     return Expressions.RecentContributionCount(parm, Db,
                                c.Days, c.Quarters.ToInt2(),

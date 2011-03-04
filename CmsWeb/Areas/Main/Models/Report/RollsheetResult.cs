@@ -260,6 +260,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
+                    orderby divorg.Division.Name, o.OrganizationName
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,

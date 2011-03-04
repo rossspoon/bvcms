@@ -88,12 +88,46 @@ namespace MassEmailer
                             WriteLog("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
                             data.lastrun = DateTime.Now;
                         }
-                        const string sql = @"
+                        const string sql1 = @"
 WAITFOR(
-    RECEIVE TOP(20) CONVERT(VARCHAR(max), message_body) AS message 
-    FROM EmailReceiveQueue
+    RECEIVE CONVERT(VARCHAR(max), message_body) AS message 
+    FROM EmailPriorityReceiveQueue
 ), TIMEOUT 10000";
-                        using (var cmdr = new SqlCommand(sql, cn))
+                        using (var cmdr = new SqlCommand(sql1, cn))
+                        {
+                            cmdr.CommandTimeout = 0;
+                            var reader = cmdr.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                var s = reader.GetString(0);
+                                if (!s.HasValue())
+                                    continue;
+
+                                var a = s.Split('|');
+                                var id = a[0].ToInt();
+                                var CmsHost = a[1];
+                                var Host = a[2];
+
+                                using (var Db = new CMSDataContext(GetConnectionString(Host, data.connstr)))
+                                {
+                                    Db.Host = Host;
+                                    var SysFromEmail = Db.Setting("SysFromEmail",
+                                        ConfigurationManager.AppSettings["sysfromemail"]);
+                                    var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
+                                    var nt = Db.EmailQueueTos.Count(et => et.Id == id);
+                                    WriteLog("Sending {0} Emails for {1}, id={2}".Fmt(nt, Host, emailqueue.Id));
+                                    var t = DateTime.Now;
+                                    Emailer.SendPeopleEmail(Db, SysFromEmail, CmsHost, emailqueue);
+                                    var dur = DateTime.Now - t;
+                                    WriteLog("Finished {0} Emails for {1}, id={2}, duration={3:mm\\:ss}".Fmt(nt, Host, emailqueue.Id, dur));
+                                }
+                            }
+                        }
+
+                        const string sql2 = @"
+    RECEIVE TOP(20) CONVERT(VARCHAR(max), message_body) AS message 
+    FROM EmailReceiveQueue";
+                        using (var cmdr = new SqlCommand(sql2, cn))
                         {
                             cmdr.CommandTimeout = 0;
                             var reader = cmdr.ExecuteReader();

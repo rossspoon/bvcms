@@ -28,12 +28,14 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int? qid { get; set; }
         public string format { get; set; }
         public bool titles { get; set; }
+        public bool usephone { get; set; }
 
         protected float H = .925f;
         protected float W = 3f;
 
         protected PdfContentByte dc;
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+        private Font smfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -43,7 +45,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             var document = new Document();
             document.SetPageSize(new Rectangle(72 * W, 72 * H));
-            document.SetMargins(18f, 0f, 3.6f, 0f);
+            document.SetMargins(14f, 0f, 3.6f, 1f);
             var w = PdfWriter.GetInstance(document, Response.OutputStream);
             document.Open();
             dc = w.DirectContent;
@@ -71,24 +73,38 @@ namespace CmsWeb.Areas.Main.Models.Report
                     q = ctl.FetchCouplesBothList(STR_Name, qid.Value);
                     break;
             }
-            AddLabel(document, "=====================", Util.UserName, "{0} labels printed".Fmt(q.Count()), "{0:M/d/yy h:mm tt}".Fmt(DateTime.Now));
+            AddLabel(document, "=========", Util.UserName, "{0} labels printed".Fmt(q.Count()), "{0:M/d/yy h:mm tt}".Fmt(DateTime.Now), String.Empty);
             foreach (var m in q)
-                AddLabel(document, m.LabelName, m.Address, m.Address2, m.CityStateZip);
+                AddLabel(document, m.LabelName, m.Address, m.Address2, m.CityStateZip, Util.PickFirst(m.CellPhone.FmtFone("C "), m.HomePhone.FmtFone("H ")));
 
             document.Close();
             Response.End();
         }
-        public void AddLabel(Document d, string name, string addr, string addr2, string csz)
+        public void AddLabel(Document d, string name, string addr, string addr2, string csz, string phone)
         {
             var t2 = new PdfPTable(1);
             t2.WidthPercentage = 100f;
             t2.DefaultCell.Border = PdfPCell.NO_BORDER;
 
-            var cc = new PdfPCell(new Phrase(name, font));
-            cc.Border = PdfPCell.NO_BORDER;
-            t2.AddCell(cc);
+            var nt = new PdfPTable(2);
+            nt.WidthPercentage = 100f;
+            nt.DefaultCell.Padding = 0;
+            nt.DefaultCell.Border = PdfPCell.NO_BORDER;
+            var c2 = new PdfPCell(new Phrase(name, font));
+            c2.Border = PdfPCell.NO_BORDER;
+            c2.Padding = 0.0F;
+            nt.AddCell(c2);
+            c2 = new PdfPCell(new Phrase(phone, smfont));
+            c2.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+            c2.Border = PdfPCell.NO_BORDER;
+            c2.Padding = 0.0F;
+            if (usephone)
+                nt.AddCell(c2);
+            else
+                nt.CompleteRow();
+            t2.AddCell(nt);
 
-            cc = new PdfPCell(new Phrase(addr, font));
+            var cc = new PdfPCell(new Phrase(addr, font));
             cc.Border = PdfPCell.NO_BORDER;
             t2.AddCell(cc);
 

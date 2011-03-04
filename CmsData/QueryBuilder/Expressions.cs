@@ -373,6 +373,19 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression RecentEmailCount(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int cnt)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, int>> pred = p =>
+                p.EmailQueueTos.Count(e => e.Sent >= mindt);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            return Compare(left, op, right);
+        }
         internal static Expression RecentContributionCount(
             ParameterExpression parm, CMSDataContext Db,
             int days,

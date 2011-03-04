@@ -40,7 +40,9 @@ namespace CMSPresenter
                          LabelName = UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name,
                          Name = p.Name,
                          LastName = p.LastName,
-                         PeopleId = p.PeopleId
+                         PeopleId = p.PeopleId,
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
                      };
             q2 = ApplySort(q2, sortExpression);
             return q2;
@@ -83,6 +85,8 @@ namespace CMSPresenter
                                       UseTitles ? (h.TitleCode != null ? h.TitleCode + " " + h.Name : h.Name) : h.Name),
                          Name = h.Name,
                          LastName = h.LastName,
+                         CellPhone = h.CellPhone,
+                         HomePhone = h.HomePhone,
                          PeopleId = h.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
@@ -117,6 +121,8 @@ namespace CMSPresenter
                          LabelName = (p.PositionInFamilyId == 30 ? ("Parents Of " + p.Name) : UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name),
                          Name = p.Name,
                          LastName = p.LastName,
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
                          PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
@@ -159,6 +165,8 @@ namespace CMSPresenter
                                              : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
                          Name = p.Name,
                          LastName = p.LastName,
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
                          PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);
@@ -188,6 +196,8 @@ namespace CMSPresenter
                                              : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
                          Name = p.Name,
                          LastName = p.LastName,
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
                          PeopleId = p.PeopleId
                      };
             q2 = ApplySort(q2, sortExpression);

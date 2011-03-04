@@ -21,7 +21,7 @@
             var url = ev.target.href
                 + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()
-                + "&web=" + $('#WebView')[0].checked;
+                + "&usephone=" + $('#UsePhone')[0].checked;
             $("#ChooseLabelType").dialog("close");
             window.open(url);
             return false;

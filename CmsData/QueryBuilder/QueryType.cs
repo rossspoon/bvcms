@@ -130,6 +130,7 @@ namespace CmsData
         RecentContactType,
         RecentContributionAmount,
         RecentContributionCount,
+        RecentEmailCount,
         RecInterestedCoaching,
         RecActiveOtherChurch,
         SavedQuery,

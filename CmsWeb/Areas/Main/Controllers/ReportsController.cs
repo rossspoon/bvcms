@@ -145,11 +145,16 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no format");
             return new AveryAddressResult { id = id, format = format, titles = titles };
         }
-        public ActionResult RollLabels(int? id, string format, bool? titles)
+        public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new RollLabelsResult { qid = id, format = format, titles = titles ?? false };
+            return new RollLabelsResult {
+                qid = id, 
+                format = format, 
+                titles = titles ?? false,
+                usephone = usephone ?? false,
+            };
         }
         public ActionResult Prospect(int? id, bool? Form)
         {
