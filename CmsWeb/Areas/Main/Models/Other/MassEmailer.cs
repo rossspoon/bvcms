@@ -8,6 +8,7 @@ using CMSPresenter;
 using UtilityExtensions;
 using System.IO;
 using System.Web.Mvc;
+using System.Net.Mail;
 
 namespace CmsWeb.Areas.Main.Models
 {
@@ -56,44 +57,8 @@ namespace CmsWeb.Areas.Main.Models
 
         public EmailQueue CreateQueue()
         {
-            var emailqueue = new EmailQueue
-            {
-                Queued = DateTime.Now,
-                FromAddr = FromAddress,
-                FromName = FromName,
-                Subject = Subject,
-                Body = Body,
-                SendWhen = Schedule,
-                QueuedBy = Util.UserPeopleId,
-            };
-            DbUtil.Db.EmailQueues.InsertOnSubmit(emailqueue);
-            DbUtil.Db.SubmitChanges();
-
-            var Qb = DbUtil.Db.LoadQueryById(QBId);
-            var q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db));
-            if (wantParents || Qb.ParentsOf)
-                q = from p in q
-                    from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)
-                    where (fm.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                    || (fm.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-                    select fm;
-
-            q = from p in q.Distinct()
-                where p.EmailAddress != null && p.EmailAddress != ""
-                where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
-                where !p.EmailOptOuts.Any(oo => oo.FromEmail == emailqueue.FromAddr)
-                orderby p.PeopleId
-                select p;
-
-            foreach (var p in q)
-            {
-                if (!Util.ValidEmail(p.EmailAddress))
-                    continue;
-                var to = new EmailQueueTo { Id = emailqueue.Id, PeopleId = p.PeopleId, OrgId = DbUtil.Db.CurrentOrgId };
-                DbUtil.Db.EmailQueueTos.InsertOnSubmit(to);
-            }
-            DbUtil.Db.SubmitChanges();
-            return emailqueue;
+            var From = new MailAddress(FromAddress, FromName);
+            return DbUtil.Db.CreateQueue(Util.CmsHost, From, Subject, Body, Schedule, QBId, wantParents ); 
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

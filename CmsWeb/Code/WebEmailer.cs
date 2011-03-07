@@ -85,8 +85,6 @@ namespace CmsWeb
                 msg.Subject = Subject;
                 msg.Body = Message;
                 msg.IsBodyHtml = true;
-                if (i % 20 == 0)
-                    smtp = Util.Smtp();
                 i++;
                 try
                 {

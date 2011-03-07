@@ -448,13 +448,10 @@ namespace CmsWeb.Models
             Body = Body.Replace("{disciplesurl}", DbUtil.Db.Setting("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, adminmail, p, c.Title, Body);
-            Util.Email(smtp, p.FromEmail, adminmail,
-                "new Leader GODisciple registration in cms", 
-                "{0}({1},{2}) joined {3}\r\nand has {4} own {5}"
-                .Fmt(p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName, 
-                p.GenderId == 2 ? "her" : "his", neworg.OrganizationName));
+            var Db = DbUtil.Db;
+            var staff = Db.UserPersonFromEmail(adminmail);
+            Db.Email(adminmail, p, c.Title, Body);
+            Db.Email(p.FromEmail, staff, "new Leader GODisciple registration in cms", "{0}({1},{2}) joined {3}\r\nand has {4} own {5}".Fmt(p.Name, p.PeopleId, discuser.Username, leaderorg.OrganizationName, p.GenderId == 2 ? "her" : "his", neworg.OrganizationName));
 
             //UpdatePhone(smtp, adminmail, p);
         }
@@ -473,15 +470,15 @@ namespace CmsWeb.Models
             Body = Body.Replace("{disciplesurl}", DbUtil.Db.Setting("GODisciplesURL", Util.ResolveServerUrl("~/Disciples/")));
             Body = Body.Replace("{password}", password);
 
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, adminmail, p, c.Title, Body);
-            Util.Email(smtp, p.FromEmail, adminmail, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+            DbUtil.Db.Email(adminmail, p, c.Title, Body);
+            var staff = DbUtil.Db.UserPersonFromEmail(adminmail);
+            DbUtil.Db.Email(p.FromEmail, staff, "new Group Member GODisciple registration in cms", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             var q = from om in neworg.OrganizationMembers
                     where om.MemberTypeId == neworg.LeaderMemberTypeId
                     select om.Person;
             var leader = q.FirstOrDefault();
             if (leader != null)
-                Emailer.Email(smtp, p.FromEmail, leader, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
+                DbUtil.Db.Email(p.FromEmail, leader, "new GO disciple registration", "{0}({1},{2}) joined {3}".Fmt(p.Name, p.PeopleId, discuser.Username, neworg.OrganizationName));
             //UpdatePhone(smtp, adminmail, p);
         }
         public Content ContentDefault(string name)
@@ -526,11 +523,9 @@ Link: <a href='{disciplesurl}'>GoDisciples</a>";
             Body = Body.Replace("{minister}", DbUtil.Db.Setting("GODisciplesMinister", "GO Disciples Team"));
             Body = Body.Replace("{password}", password);
 
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, adminmail, p, c.Title, Body);
-            Util.Email(smtp, p.FromEmail, adminmail, 
-                "new Individual GODisciple registration in cms", 
-                "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
+            var staff = DbUtil.Db.UserPersonFromEmail(adminmail);
+            DbUtil.Db.Email(adminmail, p, c.Title, Body);
+            DbUtil.Db.Email(p.FromEmail, staff, "new Individual GODisciple registration in cms", "{0}({1},{2}) registered".Fmt(p.Name, p.PeopleId, discuser.Username));
             //UpdatePhone(smtp, adminmail, p);
         }
         private string LinkResetPassword()

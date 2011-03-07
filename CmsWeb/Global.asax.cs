@@ -133,9 +133,7 @@ namespace CmsWeb
                     return;
             }
 
-            var u = DbUtil.Db.CurrentUser;
-            var smtp = Util.Smtp();
-            var msg = new MailMessage();
+            var u = DbUtil.Db.CurrentUserPerson;
 
             var sb = new StringBuilder();
             if (Request.RequestType == "POST")
@@ -143,23 +141,22 @@ namespace CmsWeb
                     if (!s.Contains("VIEWSTATE"))
                         sb.AppendFormat("\n{0}: {1}", s, Request.Form[s]);
 
-            msg.Subject = "bvcms error on " + Request.Url.Authority;
+            var subject = "bvcms error on " + Request.Url.Authority;
+            var from = string.Empty;
+            var body = string.Empty;
             if (u != null)
             {
-                msg.From = Util.FirstAddress(u.EmailAddress, u.Name);
-                msg.Body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.UserId, u.Name, Request.Url.OriginalString)
+                from = u.FromEmail;
+                body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.PeopleId, u.Name, Request.Url.OriginalString)
                     + ex.ToString() + sb.ToString();
             }
             else
             {
-                msg.From = new MailAddress(WebConfigurationManager.AppSettings["errorsfromemail"]);
-                msg.Body = "\n{0}\n".Fmt(Request.Url.OriginalString)
+                from = WebConfigurationManager.AppSettings["errorsfromemail"];
+                body = "\nanonymous\n{0}\n".Fmt(Request.Url.OriginalString)
                     + ex.ToString() + sb.ToString();
             }
-            foreach (var a in CMSRoleProvider.provider.GetRoleUsers("Developer"))
-                msg.To.Add(Util.FirstAddress(a.Person.EmailAddress, a.Name));
-
-            smtp.Send(msg);
+            DbUtil.Db.Email(from, CMSRoleProvider.provider.GetDevelopers(), subject, body);
         }
     }
 }

@@ -308,7 +308,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ApprovalCode", UpdateCheck=UpdateCheck.Never, Storage="_ApprovalCode", DbType="varchar(50)")]
+		[Column(Name="ApprovalCode", UpdateCheck=UpdateCheck.Never, Storage="_ApprovalCode", DbType="varchar(150)")]
 		public string ApprovalCode
 		{
 			get { return this._ApprovalCode; }
@@ -374,7 +374,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Message", UpdateCheck=UpdateCheck.Never, Storage="_Message", DbType="varchar(50)")]
+		[Column(Name="Message", UpdateCheck=UpdateCheck.Never, Storage="_Message", DbType="varchar(150)")]
 		public string Message
 		{
 			get { return this._Message; }
@@ -396,7 +396,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AuthCode", UpdateCheck=UpdateCheck.Never, Storage="_AuthCode", DbType="varchar(50)")]
+		[Column(Name="AuthCode", UpdateCheck=UpdateCheck.Never, Storage="_AuthCode", DbType="varchar(150)")]
 		public string AuthCode
 		{
 			get { return this._AuthCode; }
@@ -462,7 +462,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(80)")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(180)")]
 		public string Description
 		{
 			get { return this._Description; }
@@ -616,7 +616,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Emails", UpdateCheck=UpdateCheck.Never, Storage="_Emails", DbType="varchar(400)")]
+		[Column(Name="Emails", UpdateCheck=UpdateCheck.Never, Storage="_Emails", DbType="varchar")]
 		public string Emails
 		{
 			get { return this._Emails; }

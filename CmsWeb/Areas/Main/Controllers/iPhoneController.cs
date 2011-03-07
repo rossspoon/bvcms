@@ -138,13 +138,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
-                Util.Email(Util.Smtp(), DbUtil.AdminMail,
-                    "david@bvcms.com;kworrell@bellevue.org", 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetDevelopers(),
                     "meeting created with iphone on {0}".Fmt(Util.Host), 
-                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>".Fmt(
-                    meeting.Organization.OrganizationName, 
-                    Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId)),
-                    u.Name));
+                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
+                        .Fmt(meeting.Organization.OrganizationName, 
+                        Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId))));
             }
             return new RollListResult(meeting);
         }
@@ -352,13 +351,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
-                Util.Email(Util.Smtp(), DbUtil.AdminMail,
-                    "david@bvcms.com;kworrell@bellevue.org",
-                    "meeting created with iphone on {0}".Fmt(Util.Host),
-                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>".Fmt(
-                    meeting.Organization.OrganizationName,
-                    Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId)),
-                    u.Name));
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
+                    CMSRoleProvider.provider.GetDevelopers(), 
+                    "meeting created with iphone on {0}".Fmt(Util.Host), 
+                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
+                        .Fmt(meeting.Organization.OrganizationName, 
+                        Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId))));
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(id);

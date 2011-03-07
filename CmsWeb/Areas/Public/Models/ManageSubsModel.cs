@@ -24,15 +24,6 @@ namespace CmsWeb.Models
                 return _Person;
             }
         }
-        public static string StaffEmail(int divid)
-        {
-            var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions
-                    where o.EmailAddresses != null
-                    select o.EmailAddresses;
-            return q.FirstOrDefault();
-        }
         private Division _division;
         public Division Division
         {

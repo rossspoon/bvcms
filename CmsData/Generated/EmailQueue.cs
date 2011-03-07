@@ -37,6 +37,10 @@ namespace CmsData
 		
 		private int? _QueuedBy;
 		
+		private bool? _Redacted;
+		
+		private string _Addemail;
+		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
@@ -79,6 +83,12 @@ namespace CmsData
 		
 		partial void OnQueuedByChanging(int? value);
 		partial void OnQueuedByChanged();
+		
+		partial void OnRedactedChanging(bool? value);
+		partial void OnRedactedChanged();
+		
+		partial void OnAddemailChanging(string value);
+		partial void OnAddemailChanged();
 		
     #endregion
 		public EmailQueue()
@@ -311,6 +321,50 @@ namespace CmsData
 					this._QueuedBy = value;
 					this.SendPropertyChanged("QueuedBy");
 					this.OnQueuedByChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Redacted", UpdateCheck=UpdateCheck.Never, Storage="_Redacted", DbType="bit")]
+		public bool? Redacted
+		{
+			get { return this._Redacted; }
+
+			set
+			{
+				if (this._Redacted != value)
+				{
+				
+                    this.OnRedactedChanging(value);
+					this.SendPropertyChanging();
+					this._Redacted = value;
+					this.SendPropertyChanged("Redacted");
+					this.OnRedactedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="addemail", UpdateCheck=UpdateCheck.Never, Storage="_Addemail", DbType="varchar(80)")]
+		public string Addemail
+		{
+			get { return this._Addemail; }
+
+			set
+			{
+				if (this._Addemail != value)
+				{
+				
+                    this.OnAddemailChanging(value);
+					this.SendPropertyChanging();
+					this._Addemail = value;
+					this.SendPropertyChanged("Addemail");
+					this.OnAddemailChanged();
 				}
 
 			}

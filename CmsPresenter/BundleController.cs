@@ -497,9 +497,9 @@ namespace CMSPresenter
                     select new DepositInfo
                     {
                         BundleId = b.BundleHeaderId.ToString(),
-                        Cash = b.TotalCash.Value,
-                        Checks = b.TotalChecks.Value,
-                        Coins = b.TotalEnvelopes.Value,
+                        Cash = b.TotalCash ?? 0,
+                        Checks = b.TotalChecks ?? 0,
+                        Coins = b.TotalEnvelopes ?? 0,
                         Total = (b.TotalCash ?? 0) + (b.TotalChecks ?? 0) + (b.TotalEnvelopes ?? 0),
                     };
 

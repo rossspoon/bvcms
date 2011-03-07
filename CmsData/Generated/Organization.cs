@@ -237,6 +237,8 @@ namespace CmsData
 		
 		private bool? _AskDonation;
 		
+		private string _NotifyIds;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -615,6 +617,9 @@ namespace CmsData
 		
 		partial void OnAskDonationChanging(bool? value);
 		partial void OnAskDonationChanged();
+		
+		partial void OnNotifyIdsChanging(string value);
+		partial void OnNotifyIdsChanged();
 		
     #endregion
 		public Organization()
@@ -3104,6 +3109,28 @@ namespace CmsData
 					this._AskDonation = value;
 					this.SendPropertyChanged("AskDonation");
 					this.OnAskDonationChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NotifyIds", UpdateCheck=UpdateCheck.Never, Storage="_NotifyIds", DbType="varchar(50)")]
+		public string NotifyIds
+		{
+			get { return this._NotifyIds; }
+
+			set
+			{
+				if (this._NotifyIds != value)
+				{
+				
+                    this.OnNotifyIdsChanging(value);
+					this.SendPropertyChanging();
+					this._NotifyIds = value;
+					this.SendPropertyChanged("NotifyIds");
+					this.OnNotifyIdsChanged();
 				}
 
 			}

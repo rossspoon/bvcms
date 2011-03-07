@@ -248,8 +248,8 @@ namespace CmsWeb.Models
         }
         public void SendNotice()
         {
-            var smtp = Util.Smtp();
-            Util.Email(smtp, email, saleitem.Email, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
+            var staff = DbUtil.Db.UserPersonFromEmail(saleitem.Email);
+            DbUtil.Db.Email(email, staff, "Purchased Item", "{0}({1}) has purchased {2} {3}\r\n(check cms to confirm feepaid)".Fmt(person.Name, peopleid, quantity, Description));
         }
     }
 }

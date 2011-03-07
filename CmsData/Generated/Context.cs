@@ -2635,6 +2635,22 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.GetStartQueue", IsComposable = true)]
+		[return: Parameter(DbType = "uniqueidentifier")]
+		public Guid? GetStartQueue(
+            [Parameter(Name = "id", DbType="int")] int? id,
+            [Parameter(Name = "CmsHost", DbType="varchar")] string CmsHost,
+            [Parameter(Name = "Host", DbType="varchar")] string Host
+            )
+		{
+			return ((Guid?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                id,
+                CmsHost,
+                Host
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.DaysSinceContact", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? DaysSinceContact(
@@ -2644,6 +2660,22 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetStartPriorityQueue", IsComposable = true)]
+		[return: Parameter(DbType = "uniqueidentifier")]
+		public Guid? GetStartPriorityQueue(
+            [Parameter(Name = "id", DbType="int")] int? id,
+            [Parameter(Name = "CmsHost", DbType="varchar")] string CmsHost,
+            [Parameter(Name = "Host", DbType="varchar")] string Host
+            )
+		{
+			return ((Guid?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                id,
+                CmsHost,
+                Host
                 ).ReturnValue));
 		}
 

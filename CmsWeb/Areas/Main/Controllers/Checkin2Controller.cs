@@ -19,7 +19,7 @@ namespace CmsWeb.Areas.Main.Controllers
    //[RequireHttps]
 #endif
     //[RequireBasicAuthentication]
-   public class Checkin2Controller : CmsController
+    public class Checkin2Controller : CmsController
     {
         public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk)
         {
@@ -214,7 +214,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public class CampusItem
         {
-            public CmsData.Campu Campus{ get; set; }
+            public CmsData.Campu Campus { get; set; }
             public string password { get; set; }
         }
         public ActionResult Campuses()
@@ -385,20 +385,25 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var setting = "KioskEmail";
+            var setting = "KioskNotifyIds";
             if (campusid > 0)
                 setting += campusid;
-            var email = DbUtil.Db.Setting(setting, null);
-            if (email.HasValue())
+            var pids = DbUtil.Db.Setting(setting, null);
+            if (pids.HasValue())
             {
-                var smtp = Util.Smtp();
-                foreach (var em in email.SplitStr(",;"))
+                try
                 {
-                    var msg = new MailMessage(Util.SysFromEmail, em, "printer problem", kiosk + " at " + DateTime.Now.ToShortTimeString());
-                    smtp.Send(msg);
+                    var a = pids.SplitStr(",").Select(ss => ss.ToInt());
+                    var q = from u in DbUtil.Db.Users
+                            where a.Contains(u.PeopleId.Value)
+                            select u.Person;
+                    var msg = kiosk + " at " + DateTime.Now.ToShortTimeString();
+                    DbUtil.Db.EmailRedacted(Util.SysFromEmail, q, "Printer Problem", msg);
+                }
+                catch (Exception)
+                {
                 }
             }
-
             return new EmptyResult();
         }
     }

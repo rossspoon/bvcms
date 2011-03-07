@@ -62,21 +62,22 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         }
         public ActionResult Confirm2(int? id, string TransactionID, decimal Amount)
         {
+            var Db = DbUtil.Db;
             if (!id.HasValue)
                 return View("Unknown");
             if (!TransactionID.HasValue())
                 return Content("error no transaction");
 
-            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
+            var ed = Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
             if (ed == null)
                 return Content("no pending transaction found");
 
             var ti = Util.DeSerialize<TransactionInfo>(ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models"));
-            var org = DbUtil.Db.LoadOrganizationById(ti.orgid);
+            var org = Db.LoadOrganizationById(ti.orgid);
             if (ti.AmountDue == Amount)
             {
                 ti.AmountDue = 0;
-                DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+                Db.ExtraDatas.DeleteOnSubmit(ed);
             }
             else
             {
@@ -86,13 +87,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 ed.Stamp = Util.Now;
             }
             var amt = Amount;
-            var smtp = Util.Smtp();
+            var ar = new List<Person>();
             foreach (var pi in ti.people)
             {
-                var p = DbUtil.Db.LoadPersonById(pi.pid);
+                var p = Db.LoadPersonById(pi.pid);
+                ar.Add(p);
+
                 if (p != null)
                 {
-                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
+                    var om = Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.orgid && m.PeopleId == pi.pid);
 
                     if (om != null)
                     {
@@ -118,14 +121,18 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     }
                 }
                 else
-                    Util.Email(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
-                            "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
+                    Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
+                        Db.PeopleFromPidString(org.NotifyIds), 
+                        "missing person on payment due", 
+                        "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.name, pi.pid, pi.amt));
             }
             DbUtil.Db.SubmitChanges();
             var names = string.Join(", ", ti.people.Select(i => i.name).ToArray());
-            Util.Email(smtp, org.EmailAddresses, ti.Email, "Payment confirmation",
-                "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Header, ti.AmountDue, names));
-            Util.Email(smtp, ti.Email, org.EmailAddresses, "payment received for " + ti.Header,
+            Db.Email(Db.StaffEmailForOrg(org.OrganizationId), ar,
+                "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Header, ti.AmountDue, names));
+            Db.Email(ar.First().FromEmail,
+                Db.PeopleFromPidString(org.NotifyIds), 
+                "payment received for " + ti.Header, 
                 "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Header, ti.AmountDue, names));
             ViewData["URL"] = ti.URL;
 

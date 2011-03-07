@@ -13,6 +13,7 @@ namespace CmsWeb.Models
     {
         public void EnrollAndConfirm()
         {
+            var Db = DbUtil.Db;
             var ti = Transaction;
             var elist = new List<string>();
             if (UserPeopleId.HasValue)
@@ -32,7 +33,7 @@ namespace CmsWeb.Models
                     switch (p.whatfamily)
                     {
                         case 1:
-                            uperson = DbUtil.Db.LoadPersonById(UserPeopleId.Value);
+                            uperson = Db.LoadPersonById(UserPeopleId.Value);
                             break;
                         case 2:
                             if (i > 0)
@@ -45,16 +46,6 @@ namespace CmsWeb.Models
                 if (!elist.Contains(p.fromemail))
                     elist.Add(p.fromemail);
 
-
-                if (!p.IsNew)
-                {
-                    if (p.person.SendEmailAddress1 ?? true)
-                        if (!elist.Contains(p.person.FromEmail))
-                            elist.Add(p.person.FromEmail);
-                    if (p.person.SendEmailAddress2 ?? false)
-                        if (!elist.Contains(p.person.FromEmail2))
-                            elist.Add(p.person.FromEmail2);
-                }
                 participants.Append(p.ToString());
             }
             var p0 = List[0].person;
@@ -90,7 +81,7 @@ namespace CmsWeb.Models
             {
                 var p = List[i];
 
-                var q = from pp in DbUtil.Db.People
+                var q = from pp in Db.People
                         where pids.Contains(pp.PeopleId)
                         where pp.PeopleId != p.PeopleId
                         select pp.Name;
@@ -123,17 +114,17 @@ namespace CmsWeb.Models
                             list.Add("Access");
                         if (!list.Contains("OrgMembersOnly"))
                             list.Add("OrgMembersOnly");
-                        u.SetRoles(DbUtil.Db, list.ToArray(), false);
+                        u.SetRoles(Db, list.ToArray(), false);
                         if (org.GroupToJoin.HasValue())
                         {
                             g.SetMember(u, true);
                             u.DefaultGroup = g.Name;
                         }
                     }
-                    DbUtil.Db.SubmitChanges();
+                    Db.SubmitChanges();
                 }
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
-                    p.org.EmailAddresses,
+                    Db.StaffEmailForOrg(p.org.OrganizationId),
                     p.fromemail,
                     p.org.OrganizationName,
                     p.org.PhoneNumber);
@@ -141,7 +132,7 @@ namespace CmsWeb.Models
                     p.CreateAccount();
             }
             details.Append("\n</table>\n");
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
 
             string DivisionName = null;
             if (div != null)
@@ -169,11 +160,11 @@ namespace CmsWeb.Models
             else if (org != null)
                 EmailMessage = org.EmailMessage;
 
-            string EmailAddresses = null;
+            IEnumerable<Person> NotifyIds = null;
             if (div != null)
-                EmailAddresses = List[0].org.EmailAddresses;
+                NotifyIds = Db.StaffPeopleForDiv(div.Id);
             else if (org != null)
-                EmailAddresses = org.EmailAddresses;
+                NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
 
             string Location = null;
             if (div != null)
@@ -198,7 +189,6 @@ namespace CmsWeb.Models
             else
                 message = message.Replace("{paylink}", "You have a zero balance.");
 
-            var smtp = Util.Smtp();
             var re = new Regex(@"\{donation(?<text>.*)donation\}", RegexOptions.Singleline | RegexOptions.Multiline);
             if (ti.Donate > 0)
             {
@@ -208,7 +198,7 @@ namespace CmsWeb.Models
                 {
                     string first, last;
                     Person.NameSplit(ti.Name, out first, out last);
-                    var pds = DbUtil.Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
+                    var pds = Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
                     if (pds.Count() == 1)
                         pid = pds.Single().PeopleId;
                 }
@@ -220,17 +210,17 @@ namespace CmsWeb.Models
                     message = re.Replace(message, v);
                 }
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
-                Util.Email(smtp, EmailAddresses, EmailAddresses, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
+                Db.Email(NotifyIds.First().FromEmail, NotifyIds, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
             }
             else
                 message = re.Replace(message, "");
 
-            Util.Email(smtp, EmailAddresses, emails, subject, message);
+            Db.Email(NotifyIds.First().FromEmail, 
+                ti.TransactionPeople.Select(t => t.Person), emails,
+                subject, message);
             foreach (var p in List)
-                Util.Email(smtp, p.person.FromEmail, p.org.EmailAddresses, "{0}".Fmt(Header),
-@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
-<pre>{4}</pre>"
-               .Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
+                Db.Email(p.person.FromEmail, NotifyIds, "{0}".Fmt(Header), @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
+<pre>{4}</pre>".Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
         }
         public void UseCoupon(string TransactionID)
         {
@@ -259,7 +249,7 @@ namespace CmsWeb.Models
             if (p.CreatingAccount == true)
                 p.CreateAccount();
             p.SendOneTimeLink(
-                ManageSubsModel.StaffEmail(divid.Value),
+                DbUtil.Db.StaffPeopleForDiv(divid.Value).First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManageSubscriptions/"));
         }
         public int EntryPointForDiv()

@@ -476,10 +476,8 @@ namespace CmsData
                         && HttpContext.Current.User.IsInRole("Access"))
                     Task.AddNewPerson(p.PeopleId);
                 else
-                {
-                    var em = Db.NewPeopleEmailAddress;
-                    Util.Email(Util.Smtp(), Util.SysFromEmail, em, "Just Added Person on " + Db.Host, "{0} ({1})".Fmt(p.Name, p.PeopleId));
-                }
+                    Db.Email(Util.SysFromEmail, Db.GetNewPeopleManagers(),
+                            "Just Added Person on " + Db.Host, "{0} ({1})".Fmt(p.Name, p.PeopleId));
             }
             return p;
         }

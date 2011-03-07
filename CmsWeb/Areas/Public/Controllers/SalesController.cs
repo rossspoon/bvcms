@@ -57,24 +57,25 @@ namespace CmsWeb.Areas.Public.Controllers
 
             var m = new SalesModel { tranid = id };
 
+            var Db = DbUtil.Db;
             m.testing = false;
-            if ((string)DbUtil.Db.Setting("ServiceUOrgIDTest", "") == OrgId)
+            if ((string)Db.Setting("ServiceUOrgIDTest", "") == OrgId)
                 m.testing = true;
             if (m.testing)
                 m.transaction.TransactionId = "Test-" + TransactionID;
             else
                 m.transaction.TransactionId = TransactionID;
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
 
             var p = m.person;
             m.transaction.Username = MembershipService.FetchUsernameNoCheck(
                 m.person.FirstName, m.person.LastName);
-            var password = MembershipService.FetchPassword(DbUtil.Db);
+            var password = MembershipService.FetchPassword(Db);
             if (m.testing)
                 m.transaction.Password = password + ".test";
             else
                 m.transaction.Password = password;
-           DbUtil.Db.SubmitChanges();
+           Db.SubmitChanges();
 
             var c = DbUtil.Content("SaleMessage-" + m.saleitem.Id);
             var Body = c.Body;
@@ -87,7 +88,7 @@ namespace CmsWeb.Areas.Public.Controllers
             Body = Body.Replace("{download}", 
                 Request.Url.Scheme + "://" + Request.Url.Authority + "/Sales/Download/" + m.saleitem.Id);
 
-            Util.Email(Util.Smtp(), m.saleitem.Email, m.person.Name, m.transaction.EmailAddress, c.Title, Body);
+            Db.Email(m.saleitem.Email, m.person, m.transaction.EmailAddress, c.Title, Body, false);
             return View(m);
         }
         [Authorize(Roles="Attendance")]

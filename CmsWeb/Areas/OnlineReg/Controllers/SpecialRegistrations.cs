@@ -75,11 +75,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             var m = new SlotModel(id, orgid);
             var slots = string.Join("<br />\n", m.MySlots());
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, m.org.EmailAddresses, m.person, "Commitment confirmation",
+            var Db = DbUtil.Db;
+            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId), 
+                m.person, "Commitment confirmation",
 @"Thank you for committing to {0}. You have the following slots:<br/>
 {1}".Fmt(m.org.OrganizationName, slots));
-            Util.Email(smtp, m.person.FromEmail, m.org.EmailAddresses, "commitment received for " + m.org.OrganizationName,
+            Db.Email(m.person.FromEmail, 
+                Db.PeopleFromPidString(m.org.NotifyIds), 
+                "commitment received for " + m.org.OrganizationName, 
                 "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
             return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
         }
@@ -95,18 +98,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ConfirmSubscriptions(ManageSubsModel m)
         {
             m.UpdateSubscriptions();
-            var smtp = Util.Smtp();
-            var StaffEmail = ManageSubsModel.StaffEmail(m.divid);
+            var Staff = DbUtil.Db.StaffPeopleForDiv(m.divid);
 
-            Emailer.Email(smtp, StaffEmail, m.person,
+            DbUtil.Db.Email(Staff.First().FromEmail, m.person,
                 "Subscription Confirmation",
 @"Thank you for managing your subscriptions to {0}<br/>
 You have the following subscriptions:<br/>
 {1}".Fmt(m.Division.Name, m.Summary));
 
-            Util.Email(smtp, m.person.FromEmail, StaffEmail,
-                "Subscriptions managed",
-@"{0} managed subscriptions to {1}<br/>
+            DbUtil.Db.Email(m.person.FromEmail, Staff, "Subscriptions managed", @"{0} managed subscriptions to {1}<br/>
 You have the following subscriptions:<br/>
 {2}".Fmt(m.person.Name, m.Division.Name, m.Summary));
 

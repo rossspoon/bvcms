@@ -303,9 +303,10 @@ namespace CmsWeb.Models
         }
         public void SendMovedNotices()
         {
-            var q0 = from o in DbUtil.Db.Organizations
+            var Db = DbUtil.Db;
+            var q0 = from o in Db.Organizations
                      where o.DivOrgs.Any(di => di.DivId == DivId)
-                     where o.EmailAddresses.Length > 0
+                     where o.NotifyIds.Length > 0
                      where o.RegistrationTypeId > 0
                      select o;
             var onlineorg = q0.FirstOrDefault();
@@ -313,12 +314,13 @@ namespace CmsWeb.Models
                 return;
 
             var smtp = new SmtpClient();
-            var q = from om in DbUtil.Db.OrganizationMembers
+            var q = from om in Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
                     where om.Moved == true
                     select new
                     {
                         om,
+                        om.Person,
                         om.Person.FromEmail,
                         om.Person.EmailAddress,
                         om.RegisterEmail,
@@ -344,33 +346,30 @@ Thanks for registering!
 
                 if (i.RegisterEmail.HasValue())
                 {
-                    Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, i.Name, i.RegisterEmail, subj, msg);
-                    sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.RegisterEmail, i.PeopleId, i.Location));
+                    Db.Email(Db.CurrentUser.Person.FromEmail, i.om.Person, i.RegisterEmail, subj, msg, false);
+                    sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.FromEmail, i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }
-                if (i.EmailAddress.HasValue())
-                {
-                    Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, i.FromEmail, subj, msg);
-                    sb.AppendFormat("{0}I ({1}): {2}\r\n".Fmt(i.FromEmail, i.PeopleId, i.Location));
-                    i.om.Moved = false;
-                }
+                
                 if (i.om.Moved == true) // need to email parents
                 {
                     var flist = (from fm in i.om.Person.Family.People
                                  where fm.EmailAddress != null && fm.EmailAddress != ""
                                  where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
                                  select fm);
-                    foreach (var em in flist)
+                    Db.Email(Db.CurrentUser.Person.FromEmail, flist, subj, msg);
+                    foreach (var m in flist)
                     {
-                        Emailer.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, em, subj, msg);
-                        sb.AppendFormat("{0}P ({1}): {2}\r\n".Fmt(em, i.PeopleId, i.Location));
+                        sb.AppendFormat("{0}P ({1}): {2}\r\n".Fmt(m, i.PeopleId, i.Location));
                         i.om.Moved = false;
                     }
                 }
             }
             sb.Append("</pre>\n");
-            Util.Email(smtp, DbUtil.Db.CurrentUser.Person.FromEmail, onlineorg.EmailAddresses, "room notices sent to:", sb.ToString());
-            DbUtil.Db.SubmitChanges();
+            Db.Email(Db.CurrentUser.Person.FromEmail, 
+                Db.PeopleFromPidString(onlineorg.NotifyIds), 
+                "room notices sent to:", sb.ToString());
+            Db.SubmitChanges();
         }
 
         public class MemberInfo

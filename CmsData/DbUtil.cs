@@ -111,23 +111,12 @@ namespace CmsData
                 return content.Body;
             return def;
         }
-        public static int NewPeopleManagerId { get { return Db.Setting("NewPeopleManagerId", "1").ToInt(); } }
+
         public static string SystemEmailAddress { get { return Db.Setting("SystemEmailAddress", ""); } }
         public static string AdminMail { get { return Db.Setting("AdminMail", SystemEmailAddress); } }
-        public static string NewPeopleEmailAddress
-        {
-            get
-            {
-                var em = DbUtil.SystemEmailAddress;
-                var npm = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
-                if (npm != null && npm.EmailAddress.HasValue())
-                    em = npm.EmailAddress;
-                return Db.Setting("NewPeopleEmailAddress", em);
-            }
-        }
         public static string StartAddress { get { return Db.Setting("StartAddress", "2000+Appling+Rd,+Cordova,+Tennessee+38016"); } }
         public static bool CheckRemoteAccessRole { get { return Db.Setting("CheckRemoteAccessRole", "") == "true"; } }
-        
+
         public const string MiscTagsString = "Misc Tags";
         public const int TagTypeId_Personal = 1;
         public const int TagTypeId_OrgMembersOnly = 3;

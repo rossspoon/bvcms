@@ -100,6 +100,14 @@ namespace CmsData
                     select u;
             return q;
         }
+        public IEnumerable<Person> GetAdmins()
+        {
+            return GetRoleUsers("Admin").Select(u => u.Person);
+        }
+        public IEnumerable<Person> GetDevelopers()
+        {
+            return GetRoleUsers("Developer").Select(u => u.Person);
+        }
 
         public override bool IsUserInRole(string username, string rolename)
         {

@@ -105,7 +105,7 @@ namespace CmsData
         public IQueryable<Person> PeopleQuery(int qid)
         {
             var qB = this.LoadQueryById(qid);
-            var q = DbUtil.Db.People.Where(qB.Predicate(this));
+            var q = People.Where(qB.Predicate(this));
             if (qB.ParentsOf)
                 q = from p in q
                     from m in p.Family.People
@@ -313,17 +313,47 @@ namespace CmsData
         {
             return FetchOrCreateTag(Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
         }
-        public string NewPeopleEmailAddress
+        //public string NewPeopleEmailAddressx
+        //{
+        //    get
+        //    {
+        //        var em = DbUtil.SystemEmailAddress;
+        //        var npm = People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
+        //        if (npm != null && npm.EmailAddress.HasValue())
+        //            em = npm.EmailAddress;
+        //        var s = Settings.Where(ss => ss.Id == "NewPeopleEmailAddress").Select(ss => ss.SettingX).SingleOrDefault();
+        //        return Util.PickFirst(s, em);
+        //    }
+        //}
+        public int NewPeopleManagerId
         {
             get
             {
-                var em = DbUtil.SystemEmailAddress;
-                var npm = People.SingleOrDefault(p => p.PeopleId == DbUtil.NewPeopleManagerId);
-                if (npm != null && npm.EmailAddress.HasValue())
-                    em = npm.EmailAddress;
-                var s = Settings.Where(ss => ss.Id == "NewPeopleEmailAddress").Select(ss => ss.SettingX).SingleOrDefault();
-                return Util.PickFirst(s, em);
+                var s = Setting("NewPeopleManagerId", "");
+                if (s.HasValue())
+                    return s.SplitStr(",;")[0].ToInt();
+                var q = from u in Users
+                        where u.UserRoles.Any(ur => ur.Role.RoleName == "Admin")
+                        select u.PeopleId.Value;
+                return q.First();
             }
+        }
+        public IEnumerable<Person> GetNewPeopleManagers()
+        {
+            var s = Setting("NewPeopleManagerId", "");
+            IEnumerable<Person> q = null;
+            if (s.HasValue())
+            {
+                var a = s.SplitStr(",").Select(ss => ss.ToInt());
+                q = from u in Users
+                    where a.Contains(u.PeopleId.Value)
+                    select u.Person;
+            }
+            else
+            {
+                return CMSRoleProvider.provider.GetAdmins();
+            }
+            return q;
         }
         User _currentuser;
         public User CurrentUser
@@ -335,6 +365,13 @@ namespace CmsData
                 return Users.SingleOrDefault(u => u.UserId == Util.UserId);
             }
             set { _currentuser = value; }
+        }
+        public Person CurrentUserPerson
+        {
+            get
+            {
+                return Users.Where(u => u.UserId == Util.UserId).Select(u => u.Person).SingleOrDefault();
+            }
         }
         public Tag OrgMembersOnlyTag2()
         {
@@ -597,8 +634,23 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
             return ((int)(result.ReturnValue));
         }
-
-
-
+        [Function(Name = "dbo.QueuePriorityEmail")]
+        public int QueuePriorityEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
+            return ((int)(result.ReturnValue));
+        }
+        [Function(Name = "dbo.SendEndQueue")]
+        public int SendEndQueue([Parameter(DbType = "UNIQUEIDENTIFIER")] Guid guid, [Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), guid, id, CmsHost, Host);
+            return ((int)(result.ReturnValue));
+        }
+        [Function(Name = "dbo.EndQueue")]
+        public int EndQueue([Parameter(DbType = "UNIQUEIDENTIFIER")] Guid guid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), guid);
+            return ((int)(result.ReturnValue));
+        }
     }
 }

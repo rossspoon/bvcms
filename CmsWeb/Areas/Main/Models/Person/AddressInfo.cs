@@ -183,8 +183,7 @@ namespace CmsWeb.Models.PersonPage
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
-                    var smtp = Util.Smtp();        
-                    Util.Email(smtp, p.FromEmail, DbUtil.NewPeopleEmailAddress,
+                    DbUtil.Db.EmailRedacted(p.FromEmail, DbUtil.Db.GetNewPeopleManagers(),
                         "Address Info Changed",
                         "{0} changed the following information:<br />\n<table>{1}{2}</table>"
                         .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));

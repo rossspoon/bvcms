@@ -405,16 +405,14 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
 
             var org = DbUtil.Db.LoadOrganizationById(OrgId);
-            if (org != null && org.EmailAddresses.HasValue())
+            if (org != null && org.NotifyIds.HasValue())
             {
                 var p = DbUtil.Db.LoadPersonById(PeopleId);
-                var what = Member? "joined" : "dropped";
-                var smtp = Util.Smtp();
-                Util.Email(smtp, DbUtil.AdminMail, org.EmailAddresses,
+                var what = Member ? "joined" : "dropped";
+                DbUtil.Db.Email(DbUtil.AdminMail, 
+                    DbUtil.Db.PeopleFromPidString(org.NotifyIds), 
                     "cms check-in, {0} class on ".Fmt(what) + Util.CmsHost, 
-                    "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt( 
-                        Util.ServerLink("/Person/Index/" + PeopleId), 
-                        PeopleId, p.Name, what, org.OrganizationName));
+                    "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt(Util.ServerLink("/Person/Index/" + PeopleId), PeopleId, p.Name, what, org.OrganizationName));
             }
         }
     }

@@ -12,6 +12,7 @@ namespace CmsWeb.Models
     {
         public void CreateAccount()
         {
+            var Db = DbUtil.Db;
             if (!person.EmailAddress.HasValue())
                 CannotCreateAccount = true;
             else if (person.Users.Count() > 0) // already have account
@@ -34,14 +35,13 @@ Just login to <a href=""{host}"">{host}</a> and you will be taken to your record
                     .Replace("{name}", person.Name)
                     .Replace("{host}", Util.CmsHost);
 
-                var smtp = Util.Smtp();
-                Emailer.Email(smtp, DbUtil.AdminMail, person, "Account information for " + DbUtil.Db.Host, message);
+                Db.Email(DbUtil.AdminMail, person, "Account information for " + Db.Host, message);
             }
             else
             {
                 CreatedAccount = true;
-                var uname = MembershipService.FetchUsername(DbUtil.Db, person.PreferredName, person.LastName);
-                var pword = MembershipService.FetchPassword(DbUtil.Db);
+                var uname = MembershipService.FetchUsername(Db, person.PreferredName, person.LastName);
+                var pword = MembershipService.FetchPassword(Db);
                 var user = MembershipService.CreateUser(person.PeopleId, uname, pword);
 
                 var gobackurl = HttpContext.Current.Session["gobackurl"] as string;
@@ -75,8 +75,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                     .Replace("{gobackurl}", gobackurl)
                     .Replace("{host}", Util.CmsHost);
 
-                var smtp = Util.Smtp();
-                Emailer.Email(smtp, DbUtil.AdminMail, person, "New account for " + DbUtil.Db.Host, message);
+                Db.Email(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
             }
         }
         public void SendOneTimeLink(string from, string url)
@@ -86,8 +85,9 @@ Just login to {host} and you will be taken to your record where you can make cor
                 Id = Guid.NewGuid(),
                 Querystring = "{0},{1}".Fmt(divid, PeopleId) 
             };
-            DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
-            DbUtil.Db.SubmitChanges();
+            var Db = DbUtil.Db;
+            Db.OneTimeLinks.InsertOnSubmit(ot);
+            Db.SubmitChanges();
             var c = DbUtil.Content("OneTimeConfirmation");
             if (c == null)
                 c = new Content();
@@ -99,7 +99,7 @@ Just login to {host} and you will be taken to your record where you can make cor
             message = message.Replace("{name}", person.Name);
             message = message.Replace("{first}", person.PreferredName);
 
-            Emailer.Email(Util.Smtp(), from, person, "Manage Your Subscriptions", message);
+            Db.Email(from, person, "Manage Your Subscriptions", message);
         }
     }
 }

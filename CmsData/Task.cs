@@ -41,15 +41,16 @@ namespace CmsData
         public static void AddNewPerson(int newpersonid)
         {
             var Db = DbUtil.Db;
+            var NewPeopleManagerId = Db.NewPeopleManagerId;
             var task = new Task
             {
-                ListId = Task.GetRequiredTaskList("InBox", DbUtil.NewPeopleManagerId).Id,
-                OwnerId = DbUtil.NewPeopleManagerId,
+                ListId = Task.GetRequiredTaskList("InBox", NewPeopleManagerId).Id,
+                OwnerId = NewPeopleManagerId,
                 Description = "New Person Data Entry",
                 WhoId = newpersonid,
                 StatusId = (int)Task.StatusCode.Active,
             };
-            if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != DbUtil.NewPeopleManagerId)
+            if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != NewPeopleManagerId)
             {
                 task.CoOwnerId = Util.UserPeopleId.Value;
                 task.CoListId = Task.GetRequiredTaskList("InBox", Util.UserPeopleId.Value).Id;

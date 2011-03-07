@@ -25,6 +25,8 @@ namespace CmsData
 		
 		private DateTime? _Sent;
 		
+		private string _AddEmail;
+		
    		
     	
 		private EntityRef< EmailQueue> _EmailQueue;
@@ -49,6 +51,9 @@ namespace CmsData
 		
 		partial void OnSentChanging(DateTime? value);
 		partial void OnSentChanged();
+		
+		partial void OnAddEmailChanging(string value);
+		partial void OnAddEmailChanged();
 		
     #endregion
 		public EmailQueueTo()
@@ -152,6 +157,28 @@ namespace CmsData
 					this._Sent = value;
 					this.SendPropertyChanged("Sent");
 					this.OnSentChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AddEmail", UpdateCheck=UpdateCheck.Never, Storage="_AddEmail", DbType="varchar(50)")]
+		public string AddEmail
+		{
+			get { return this._AddEmail; }
+
+			set
+			{
+				if (this._AddEmail != value)
+				{
+				
+                    this.OnAddEmailChanging(value);
+					this.SendPropertyChanging();
+					this._AddEmail = value;
+					this.SendPropertyChanged("AddEmail");
+					this.OnAddEmailChanged();
 				}
 
 			}

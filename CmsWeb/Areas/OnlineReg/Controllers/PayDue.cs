@@ -86,27 +86,27 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         // called from PayAmountDue
         public ActionResult ConfirmDuePaid(int? id, string TransactionID, decimal Amount)
         {
+            var Db = DbUtil.Db;
             if (!id.HasValue)
                 return View("Unknown");
             if (!TransactionID.HasValue())
                 return Content("error no transaction");
 
-            var ti = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
+            var ti = Db.Transactions.SingleOrDefault(tt => tt.Id == id);
             if (ti == null)
                 return Content("no pending transaction found");
 
-            var org = DbUtil.Db.LoadOrganizationById(ti.OrgId);
+            var org = Db.LoadOrganizationById(ti.OrgId);
             ti.Amt = Amount;
             ti.Amtdue -= Amount;
             var amt = Amount;
-            var smtp = Util.Smtp();
             string paylink = null;
             foreach (var pi in ti.TransactionPeople)
             {
-                var p = DbUtil.Db.LoadPersonById(pi.PeopleId);
+                var p = Db.LoadPersonById(pi.PeopleId);
                 if (p != null)
                 {
-                    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.OrgId && m.PeopleId == pi.PeopleId);
+                    var om = Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.OrgId && m.PeopleId == pi.PeopleId);
                     paylink = om.PayLink;
 
                     var due = (om.Amount - om.AmountPaid) ?? 0;
@@ -131,18 +131,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     amt -= pay;
                 }
                 else
-                    Util.Email(smtp, org.EmailAddresses, org.EmailAddresses, "missing person on payment due",
-                            "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.Person.Name, pi.PeopleId, pi.Amt));
+                    Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
+                        Db.PeopleFromPidString(org.NotifyIds), 
+                        "missing person on payment due", 
+                        "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.Person.Name, pi.PeopleId, pi.Amt));
             }
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
             var names = string.Join(", ", ti.TransactionPeople.Select(i => i.Person.Name).ToArray());
             var msg = "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names);
             if (ti.Amtdue > 0)
                 msg += "<br/>\n<a href='{0}'>PayLink</a>".Fmt(paylink);
-            
-            Util.Email(smtp, org.EmailAddresses, ti.Emails, "Payment confirmation",
-                "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names));
-            Util.Email(smtp, ti.Emails, org.EmailAddresses, "payment received for " + ti.Description,
+
+            var qt = ti.TransactionPeople.Select(t => t.Person);
+            Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
+                qt, ti.Emails, "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names));
+            Db.Email(qt.First().FromEmail, 
+                Db.PeopleFromPidString(org.NotifyIds), 
+                "payment received for " + ti.Description, 
                 "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
 
             ViewData["timeout"] = INT_timeout;

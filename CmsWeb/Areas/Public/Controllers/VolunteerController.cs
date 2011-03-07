@@ -66,7 +66,8 @@ namespace CmsWeb.Areas.Public.Controllers
 
         public ActionResult PickList2(string id, int? pid, string regemail)
         {
-            var person = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == pid);
+            var Db = DbUtil.Db;
+            var person = Db.People.SingleOrDefault(p => p.PeopleId == pid);
             if (person == null)
                 return Content("person not found");
             var m = new Models.VolunteerModel { View = id, person = person };
@@ -80,20 +81,13 @@ namespace CmsWeb.Areas.Public.Controllers
             m.person.BuildVolInfoList(m.View); // 2nd time updates existing
             m.person.RefreshCommitments(m.View);
 
-            string email = DbUtil.Db.Setting("VolunteerMail-" + id, "");
-            if (!email.HasValue())
-                email = DbUtil.Db.Setting("VolunteerMail", DbUtil.SystemEmailAddress);
+            string email = Db.Setting("VolunteerMail-" + id, Db.Setting("VolunteerMail", ""));
+            var staff = Db.UserPersonFromEmail(email);
 
             if (Request.Form["noemail"] != "noemail")
             {
                 var summary = m.PrepareSummaryText2();
-                var smtp = Util.Smtp();
-                Util.Email(smtp,
-                    Util.PickFirst(regemail, m.person.FromEmail),
-                    email,
-                    "{0} registration".Fmt(id),
-                    "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n"
-                    .Fmt(m.person.Name, m.person.PeopleId, summary));
+                Db.Email(Util.PickFirst(regemail, m.person.FromEmail), staff, "{0} registration".Fmt(id), "{0}({1}) registered for the following areas<br/>\n<blockquote>{2}</blockquote>\n".Fmt(m.person.Name, m.person.PeopleId, summary));
 
                 var c = DbUtil.Content("Volunteer" + id);
                 if (c != null)
@@ -102,7 +96,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     var p = m.person;
                     body = body.Replace("{first}", p.PreferredName);
                     body = body.Replace("{serviceareas}", summary);
-                    Emailer.Email(smtp, email, m.person, regemail, c.Title, body);
+                    Db.Email(email, m.person, regemail, c.Title, body, false);
                     OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }

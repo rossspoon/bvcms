@@ -333,18 +333,18 @@ namespace CmsWeb.Models
             }
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress), person, c.Title, c.Body);
-            Util.Email(smtp, person.FromEmail, DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress),
-                "new registration on {0}".Fmt(DbUtil.Db.Host),
-                "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+            var staffemail = DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress);
+            var staff = DbUtil.Db.UserPersonFromEmail(staffemail);
+            DbUtil.Db.Email(staff.FromEmail, person, c.Title, c.Body);
+            DbUtil.Db.Email(person.FromEmail, staff, "new registration on {0}".Fmt(DbUtil.Db.Host), "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
 
         public void EmailVisit()
         {
-            string email = DbUtil.Db.Setting("VisitMail-" + campusid, "");
+            var Db = DbUtil.Db;
+            string email = Db.Setting("VisitMail-" + campusid, "");
             if (!email.HasValue())
-                email = DbUtil.Db.Setting("RegMail", DbUtil.SystemEmailAddress);
+                email = Db.Setting("RegMail", DbUtil.SystemEmailAddress);
 
             var c = DbUtil.Content("VisitMessage-" + campusid);
             if (c == null)
@@ -357,9 +357,9 @@ namespace CmsWeb.Models
             c.Body = c.Body.Replace("{firstname}", person.PreferredName);
             c.Body += "<p>We have the following information: <pre>\n{0}\n</pre></p>".Fmt(PrepareSummaryText());
 
-            var smtp = Util.Smtp();
-            Emailer.Email(smtp, email, person, c.Title, c.Body);
-            Util.Email(smtp, person.FromEmail, email, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
+            var staff = Db.UserPersonFromEmail(email);
+            Db.Email(email, person, c.Title, c.Body);
+            Db.Email(person.FromEmail, staff, "new registration in cms", "{0}({1}) registered in cms".Fmt(person.Name, person.PeopleId));
         }
 
     }

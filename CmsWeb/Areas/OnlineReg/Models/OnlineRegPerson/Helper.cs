@@ -175,8 +175,7 @@ namespace CmsWeb.Models
                 }
             }
 
-            var smtp = Util.Smtp();
-            if (person.EmailAddress.HasValue())
+            if (person.EmailAddress.HasValue() || person.EmailAddress2.HasValue())
             {
                 string subj = "{0}, different email address than one on record".Fmt(orgname);
                 string msg = @"Hi {0},
@@ -185,8 +184,7 @@ It is important that you call the church <strong>{2}</strong> to update our reco
 so that you will receive future important notices regarding this registration.</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                Util.Email(smtp, fromemail, regemail, subj, msg);
-                Emailer.Email(smtp, fromemail, person, subj, msg);
+                DbUtil.Db.Email(fromemail, person, regemail, subj, msg, false);
             }
             else
             {
@@ -203,7 +201,7 @@ But we won't add that to your record without your permission.
 Thank you</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                Util.Email(smtp, fromemail, regemail, subj, msg);
+                DbUtil.Db.Email(fromemail, person, regemail, subj, msg, false);
             }
         }
         private static string trim(string s)

@@ -275,7 +275,6 @@ namespace CmsData
         }
         public void NotifyNewUser(string newuserid)
         {
-            var smtp = Util.Smtp();
             var n = 0;
             var u = DbUtil.Db.Users.Single(uu => uu.Username == newuserid);
             var subject = "New user in Group: " + Name;
@@ -284,12 +283,7 @@ namespace CmsData
             var from = new MailAddress("bbcms01@bellevue.org");
 
             foreach (var mu in GetUsersInRole(GroupType.Admin))
-            {
-                if (n % 20 == 0)
-                    smtp = Util.Smtp();
-                n++;
-                Util.SendMsg(smtp, Util.SysFromEmail, Util.CmsHost, from, subject, body, mu.Name, mu.EmailAddress);
-            }
+                Util.SendMsg(Util.SysFromEmail, Util.CmsHost, from, subject, body, mu.Name, mu.EmailAddress, 0);
         }
     }
     public enum FetchType
