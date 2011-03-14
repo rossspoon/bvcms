@@ -43,7 +43,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var Db = DbUtil.Db;
             if (emailqueue.SendWhen.HasValue)
                 return Json(new { id = 0, content = "<h2>Emails Queued</h2>" });
-            if (Db.UseMassEmailer())
+            if (Db.UseMassEmailer)
                 Db.QueueEmail(emailqueue.Id, Util.CmsHost, Util.Host);
             else
                 Db.SendPeopleEmail(Util.CmsHost, emailqueue);
@@ -56,7 +56,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
-            DbUtil.Db.EmailRedacted(From.ToString(), p, m.Subject, m.Body);
+            DbUtil.Db.Email(From.ToString(), p, m.Subject, m.Body);
             return Content("<h2>Test Email Sent</h2>");
         }
         [HttpPost]

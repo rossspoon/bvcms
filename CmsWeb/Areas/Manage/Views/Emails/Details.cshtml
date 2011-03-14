@@ -21,6 +21,8 @@
 <tr><td>QueuedBy</td><td>@Model.queue.QueuedBy</td></tr>
 <tr><td>FromName</td><td>@Model.queue.FromName</td></tr>
 <tr><td>FromAddr</td><td>@Model.queue.FromAddr</td></tr>
+<tr><td>Opens</td><td>@Model.queue.EmailResponses.Count()</td></tr>
+<tr><td>Unique Opens</td><td>@Model.queue.EmailResponses.Select(er => er.PeopleId).Distinct().Count()</td></tr>
 <tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDate()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm()</td></tr>

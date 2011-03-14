@@ -458,7 +458,7 @@ namespace CmsData
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;
-            var r = Db.TopGivers(top.ToInt(), mindt, DateTime.Now);
+            var r = Db.TopGivers(top.ToInt(), mindt, DateTime.Now).ToList();
             var topgivers = r.Select(g => g.PeopleId).ToList();
             Expression<Func<Person, bool>> pred = p =>
                 topgivers.Contains(p.PeopleId);

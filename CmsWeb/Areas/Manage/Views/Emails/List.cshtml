@@ -13,8 +13,9 @@
 <tr><td>Start Date</td><td>@Html.DatePicker("startdt")</td>
     <td>End Date</td><td>@Html.DatePicker("enddt")</td>
 </tr>
-<tr><td>RecipientId</td><td colspan="3">@Html.TextBox("peopleid") 
-        @if(Model.peopleid.HasValue) { <a href="/Person/Index/@Model.peopleid">@Model.name</a>}</td></tr>
+<tr><td>RecipientId</td><td>@Html.TextBox("peopleid") 
+        @if(Model.peopleid.HasValue) { <a href="/Person/Index/@Model.peopleid">@Model.name</a>}</td>
+    <td>Transactional</td><td>@Html.CheckBox("transactional")</td></tr>
 </table>
 <input type="submit" class="submitbutton" value="Filter" />
 <a href="/Manage/Emails">clear</a>
@@ -27,6 +28,7 @@
         <th><a href="#" class="sortable">From</a></th>
         <th><a href="#" class="sortable">Name</a></th>
         <th><a href="#" class="sortable">Count</a></th>
+        <th>Opened</th>
         <th><a href="#" class="sortable">Subject</a></th>
     </tr>
     </thead>
@@ -50,6 +52,7 @@
         <td> <a href="/Manage/Emails/SentBy/@i.queue.QueuedBy">@i.queue.FromName</a> </td>
         <td> @i.queue.FromAddr </td>
         <td> @i.count </td>
+        <td> @i.nuopens </td>
         <td>
             <a href="/Manage/Emails/Details/@i.queue.Id">@i.queue.Subject</a>
         </td>
@@ -58,6 +61,7 @@
     </tbody>
 </table>
 @{Html.RenderPartial("Pager2", Model.Pager);}
+}
 
 <table>
 

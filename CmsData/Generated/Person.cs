@@ -292,6 +292,8 @@ namespace CmsData
 		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
+   		private EntitySet< EmailResponse> _EmailResponses;
+		
    		private EntitySet< PendingNotification> _PendingNotifications;
 		
    		private EntitySet< PeopleExtra> _PeopleExtras;
@@ -780,6 +782,8 @@ namespace CmsData
 			this._EmailQueues = new EntitySet< EmailQueue>(new Action< EmailQueue>(this.attach_EmailQueues), new Action< EmailQueue>(this.detach_EmailQueues)); 
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
+			
+			this._EmailResponses = new EntitySet< EmailResponse>(new Action< EmailResponse>(this.attach_EmailResponses), new Action< EmailResponse>(this.detach_EmailResponses)); 
 			
 			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
 			
@@ -3784,6 +3788,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_EmailResponses_People", Storage="_EmailResponses", OtherKey="PeopleId")]
+   		public EntitySet< EmailResponse> EmailResponses
+   		{
+   		    get { return this._EmailResponses; }
+
+			set	{ this._EmailResponses.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
    		public EntitySet< PendingNotification> PendingNotifications
    		{
@@ -5085,6 +5099,19 @@ namespace CmsData
 		}
 
 		private void detach_EmailQueueTos(EmailQueueTo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_EmailResponses(EmailResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_EmailResponses(EmailResponse entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

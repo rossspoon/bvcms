@@ -37,20 +37,29 @@ namespace MassEmailer
         {
             InitializeComponent();
 
-#if !DEBUG
-            var sSource = "MassEmailer";
+            var sSource = "MassEmailer2";
             var sLog = "Application";
             if (!EventLog.SourceExists(sSource))
                 EventLog.CreateEventSource(sSource, sLog);
-            eventLog1.Source = "MassEmailer";
-#endif
+            eventLog1.Source = "MassEmailer2";
+
             ConnStr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString;
 
-            if (ConfigurationManager.AppSettings["awscreds"].HasValue())
+            string awscreds = Path.Combine(GetApplicationPath(), "awscreds.txt");
+            if (File.Exists(awscreds))
+            {
+                var a = File.ReadAllText(awscreds).Split(',');
+                Util.InsertCacheNotRemovable("awscreds", a);
+            }
+            else if (ConfigurationManager.AppSettings["awscreds"].HasValue())
             {
                 var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
                 Util.InsertCacheNotRemovable("awscreds", a);
             }
+        }
+        private static string GetApplicationPath()
+        {
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6);
         }
         internal class WorkData
         {
@@ -69,9 +78,6 @@ namespace MassEmailer
         public void StartListening()
         {
             listener = new Thread(Listen);
-#if !DEBUG
-            listener.IsBackground = true;
-#endif
             serviceStarted = true;
             listener.Start();
         }
@@ -80,24 +86,30 @@ namespace MassEmailer
             var data = new WorkData { connstr = ConnStr };
             while (serviceStarted)
             {
-                using (var cn = new SqlConnection(data.connstr))
+                var todaysrun = DateTime.Today + data.dailyrun.TimeOfDay;
+                if (DateTime.Now > todaysrun && data.lastrun.Date != DateTime.Today)
                 {
-                    cn.Open();
-                    var todaysrun = DateTime.Today + data.dailyrun.TimeOfDay;
-                    if (DateTime.Now > todaysrun && data.lastrun.Date != DateTime.Today)
+                    WriteLog("Check for scheduled emails {0}".Fmt(todaysrun));
+                    var t = DateTime.Now;
+                    var cb = new SqlConnectionStringBuilder(data.connstr);
+                    cb.InitialCatalog = "BlogData";
+                    using (var cn2 = new SqlConnection(cb.ConnectionString))
                     {
-                        WriteLog("Check for scheduled emails {0}".Fmt(todaysrun));
-                        var t = DateTime.Now;
-                        using (var cmd = new SqlCommand("QueueScheduledEmails", cn))
+                        cn2.Open();
+                        using (var cmd = new SqlCommand("SendScheduledEmails", cn2))
                             cmd.ExecuteNonQuery();
                         var s = DateTime.Now - t;
                         WriteLog("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
                         data.lastrun = DateTime.Now;
                     }
+                }
+                using (var cn = new SqlConnection(data.connstr))
+                {
+                    cn.Open();
                     const string sql = @"
 WAITFOR(
     RECEIVE TOP(20) CONVERT(VARCHAR(max), message_body) AS message 
-    FROM EmailPriorityReceiveQueue
+    FROM EmailQueue
 ), TIMEOUT 10000";
                     using (var cmdr = new SqlCommand(sql, cn))
                     {
@@ -120,6 +132,9 @@ WAITFOR(
                                     var equeue = Db.EmailQueues.Single(ee => ee.Id == id);
                                     switch (a[0])
                                     {
+                                        case "SEND":
+                                            SendPersonEmail(Db, data, CmsHost, id, a[4].ToInt());
+                                            break;
                                         case "START":
                                             equeue.Started = DateTime.Now;
                                             Db.SubmitChanges();
@@ -131,11 +146,14 @@ WAITFOR(
                                             equeue.Sent = DateTime.Now;
                                             if (equeue.Redacted ?? false)
                                                 equeue.Body = "redacted";
+                                            else
+                                            {
+                                                nitems = equeue.EmailQueueTos.Count();
+                                                if (nitems > 1)
+                                                    NotifySentEmails(Db, data, CmsHost, equeue.FromAddr, equeue.FromName, equeue.Subject, nitems, id);
+                                            }
                                             Db.SubmitChanges();
-                                            Db.EndQueue(Guid.Parse(a[4]));
-                                            break;
-                                        case "SEND":
-                                            SendPersonEmail(Db, data, CmsHost, id, a[4].ToInt());
+                                            EndQueue(data, new Guid(a[4]));
                                             break;
                                         default:
                                             continue;
@@ -158,7 +176,7 @@ WAITFOR(
         private void SendPersonEmail(CMSDataContext Db, WorkData data, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
-            
+
             var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = Db.EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
@@ -167,82 +185,10 @@ WAITFOR(
 
             var q = from p in Db.People
                     where p.PeopleId == emailqueueto.PeopleId
-                    select new
-                     {
-                         p.Name,
-                         p.PreferredName,
-                         p.EmailAddress,
-                         p.OccupationOther,
-                         p.EmailAddress2,
-                         Send1 = p.SendEmailAddress1 ?? true,
-                         Send2 = p.SendEmailAddress2 ?? false,
-                     };
+                    select p;
             var qp = q.Single();
-
             string text = emailqueue.Body;
-
-            if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
-                text = text.Replace("{name}", string.Empty);
-            else
-                text = text.Replace("{name}", qp.Name);
-
-            if (qp.PreferredName.Contains("?") || qp.PreferredName.ToLower() == "unknown")
-                text = text.Replace("{first}", string.Empty);
-            else
-                text = text.Replace("{first}", qp.PreferredName);
-            text = text.Replace("{occupation}", qp.OccupationOther);
-
-            var re = new Regex(@"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}", RegexOptions.Singleline | RegexOptions.Multiline);
-            var list = new Dictionary<string, OneTimeLink>();
-            var ma = re.Match(text);
-            while (ma.Success)
-            {
-                var votelink = ma.Value;
-                var orgid = ma.Groups["orgid"].Value;
-                var smallgroup = ma.Groups["sg"].Value;
-                var qs = @"{0},{1}".Fmt(orgid, emailqueueto.PeopleId);
-                OneTimeLink ot;
-                if (list.ContainsKey(qs))
-                    ot = list[qs];
-                else
-                {
-                    ot = new OneTimeLink
-                    {
-                        Id = Guid.NewGuid(),
-                        Querystring = qs
-                    };
-                    Db.OneTimeLinks.InsertOnSubmit(ot);
-                    Db.SubmitChanges();
-                    list.Add(qs, ot);
-                }
-                var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}".Fmt(ot.Id, smallgroup));
-                text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, smallgroup));
-                ma = ma.NextMatch();
-            }
-
-            var aa = new List<string>();
-            if (qp.Send1)
-                aa.AddRange(qp.EmailAddress.SplitStr(",;"));
-            if (qp.Send2)
-                aa.AddRange(qp.EmailAddress2.SplitStr(",;"));
-            if (emailqueue.Addemail.HasValue())
-                aa.AddRange(emailqueue.Addemail.SplitStr(",;"));
-
-            if (emailqueueto.OrgId.HasValue)
-            {
-                var qm = (from m in Db.OrganizationMembers
-                          where m.PeopleId == emailqueueto.PeopleId && m.OrganizationId == emailqueueto.OrgId
-                          select new { m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail }).SingleOrDefault();
-                if (qm != null)
-                {
-                    if (qm.PayLink.HasValue())
-                        text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(qm.PayLink));
-                    text = text.Replace("{amtdue}", (qm.Amount - qm.AmountPaid).ToString2("c"));
-                    if (qm.RegisterEmail.HasValue() && !aa.Contains(qm.RegisterEmail, StringComparer.OrdinalIgnoreCase))
-                        aa.Add(qm.RegisterEmail);
-                }
-            }
-
+            var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
             foreach (var ad in aa)
             {
                 if (Util.ValidEmail(ad))
@@ -257,18 +203,9 @@ WAITFOR(
                     text = text.Replace("{fromemail}", From.Address);
                     text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                    if (Db.Setting("sendemail", "true") != "false")
-                    {
-                        if (useSES && SESCanSend(data))
-                        {
-                                SendAmazonSESRawEmail(CmsHost, From, ad, qp.Name, emailqueue.Subject, text, CmsHost, emailqueue.Id);
-                                data.lastSES = DateTime.Now;
-                        }
-                        else
-                            Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
-                        emailqueueto.Sent = DateTime.Now;
-                        Db.SubmitChanges();
-                    }
+                    EmailRoute(SysFromEmail, data, From, ad, qp.Name, emailqueue.Subject, text, CmsHost, id);
+                    emailqueueto.Sent = DateTime.Now;
+                    Db.SubmitChanges();
                 }
             }
         }
@@ -305,10 +242,10 @@ WAITFOR(
             }
             return false;
         }
-        public Boolean SendAmazonSESRawEmail(string CmsHost,
+        public Boolean SendAmazonSESRawEmail(
             MailAddress from, string to, string nameto, string Subject, string body, string host, int id)
         {
-            Util.RecordEmailSent(CmsHost, from, Subject, nameto, to, id, true);
+            Util.RecordEmailSent(host, from, Subject, nameto, to, id, true);
             var awsfrom = ConfigurationManager.AppSettings["awsfromemail"];
             var fromname = from.DisplayName;
             if (!fromname.HasValue())
@@ -348,13 +285,21 @@ WAITFOR(
             var bytes1 = Encoding.UTF8.GetBytes(text);
             var htmlStream1 = new MemoryStream(bytes1);
             var htmlView1 = new AlternateView(htmlStream1, MediaTypeNames.Text.Plain);
-            htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+            var lines = Regex.Split(text, @"\r?\n|\r");
+            if (lines.Any(li => li.Length > 990))
+                htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+            else
+                htmlView1.TransferEncoding = TransferEncoding.SevenBit;
             msg.AlternateViews.Add(htmlView1);
 
             var bytes = Encoding.UTF8.GetBytes(body);
             var htmlStream = new MemoryStream(bytes);
             var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-            htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+            lines = Regex.Split(body, @"\r?\n|\r");
+            if (lines.Any(li => li.Length > 990))
+                htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+            else
+                htmlView.TransferEncoding = TransferEncoding.SevenBit;
             msg.AlternateViews.Add(htmlView);
 
             var rawMessage = new RawMessage();
@@ -386,7 +331,7 @@ WAITFOR(
             catch (Exception ex)
             {
                 if (!msg.Subject.StartsWith("(sending error)"))
-                    return SendAmazonSESRawEmail(CmsHost, from, ConfigurationManager.AppSettings["senderrorsto"], nameto, "(sending error) " + Subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(to, ex.Message, body), host, id);
+                    return SendAmazonSESRawEmail(from, ConfigurationManager.AppSettings["senderrorsto"], nameto, "(sending error) " + Subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(to, ex.Message, body), host, id);
                 return false;
             }
         }
@@ -403,6 +348,48 @@ WAITFOR(
             closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
             return fileStream;
         }
+        private void EmailRoute(string SysFrom, WorkData data, MailAddress From, string To, string Name, string subject, string body, string CmsHost, int id)
+        {
+            var useSES = HttpRuntime.Cache["awscreds"] != null;
+            var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
+            if (useSES && SESCanSend(data))
+            {
+                SendAmazonSESRawEmail(From, To, Name, subject, body, CmsHost, id);
+                data.lastSES = DateTime.Now;
+            }
+            else
+                Util.SendMsg(SysFrom, CmsHost, From, subject, body, Name, To, id);
+        }
+        private void NotifySentEmails(CMSDataContext Db, WorkData data, string CmsHost, string From, string FromName, string subject, int count, int id)
+        {
+            if (Db.Setting("sendemail", "true") != "false")
+            {
+                var from = new MailAddress(From, FromName);
+                string subj = "sent emails: " + subject;
+                string body = @"<a href=""{0}Manage/Emails/Details/{1}"">{2} emails sent</a>".Fmt(CmsHost, id, count);
+                var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
+                var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
+                EmailRoute(SysFromEmail, data, from, From, FromName, subj, body, CmsHost, id);
+                var uri = new Uri(CmsHost);
+                var host = uri.Host;
+                EmailRoute(SysFromEmail, data, from, SendErrorsTo, null, host + " " + subj, body, CmsHost, id);
+            }
+        }
+        private static void EndQueue(WorkData data, Guid guid)
+        {
+            using (var cn = new SqlConnection(data.connstr))
+            {
+                cn.Open();
+                using (var cmd = new SqlCommand("EndConversation", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    var conv = new SqlParameter("@conversationID", SqlDbType.UniqueIdentifier);
+                    conv.Value = guid;
+                    cmd.Parameters.Add(conv);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         private void WriteLog(string message)
         {
@@ -410,13 +397,11 @@ WAITFOR(
         }
         private void WriteLog(string message, EventLogEntryType err)
         {
-#if !DEBUG
             eventLog1.WriteEntry(message, err);
-#endif
         }
         protected override void OnStop()
         {
-            WriteLog("MassEmailer service stopped");
+            WriteLog("MassEmailer2 service stopped");
             serviceStarted = false;
             // give it a little time to finish any pending work
             listener.Join(new TimeSpan(0, 0, 20));

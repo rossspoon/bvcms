@@ -19,10 +19,13 @@ using System.Diagnostics;
 namespace CmsData
 {
     public partial class CMSDataContext
-    {   
-        public bool UseMassEmailer()
+    {
+        public bool UseMassEmailer
         {
-            return Setting("UseMassEmailer", "false").ToBool();
+            get
+            {
+                return Setting("UseMassEmailer", "false").ToBool();
+            }
         }
         public void Email(string from, Person p, string subject, string body)
         {
@@ -43,7 +46,8 @@ namespace CmsData
                 Subject = subject,
                 Body = body,
                 QueuedBy = Util.UserPeopleId,
-                Redacted = redacted
+                Redacted = redacted,
+                Transactional = true
             };
             EmailQueues.InsertOnSubmit(emailqueue);
             emailqueue.EmailQueueTos.Add(new EmailQueueTo
@@ -51,12 +55,13 @@ namespace CmsData
                 PeopleId = p.PeopleId,
                 OrgId = CurrentOrgId,
                 AddEmail = addemail,
+                Guid = Guid.NewGuid(),
             });
             SubmitChanges();
-            if (UseMassEmailer())
+            if (UseMassEmailer)
                 QueuePriorityEmail(emailqueue.Id, Util.CmsHost, Util.Host);
             else
-                SendPersonEmail(Util.CmsHost, emailqueue.Id, p.PeopleId, addemail);
+                SendPersonEmail(Util.CmsHost, emailqueue.Id, p.PeopleId);
         }
         public void Email(string from, IEnumerable<Person> list, string subject, string body)
         {
@@ -79,9 +84,10 @@ namespace CmsData
         }
         public IEnumerable<Person> PeopleFromPidString(string pidstring)
         {
-            var a = pidstring.SplitStr(",").Select(ss => ss.ToInt());
+            var a = pidstring.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
             var q = from p in People
                     where a.Contains(p.PeopleId)
+                    orderby p.PeopleId == a[0] descending
                     select p;
             return q;
         }
@@ -92,10 +98,15 @@ namespace CmsData
                     where o.NotifyIds != null && o.NotifyIds != ""
                     select o.NotifyIds;
             var pids = string.Join(",", q);
-            var a = pids.SplitStr(",").Select(ss => ss.ToInt());
+            var a = pids.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
             var q2 = from p in People
                      where a.Contains(p.PeopleId)
+                     orderby p.PeopleId == a[0] descending
                      select p;
+            if (q2.Count() == 0)
+                return from p in CMSRoleProvider.provider.GetAdmins()
+                       orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+                       select p;
             return q2;
         }
         public string StaffEmailForOrg(int orgid)
@@ -105,10 +116,14 @@ namespace CmsData
                     where o.NotifyIds != null && o.NotifyIds != ""
                     select o.NotifyIds;
             var pids = string.Join(",", q);
-            var a = pids.SplitStr(",").Select(ss => ss.ToInt());
+            var a = pids.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
             var q2 = from p in People
-                     where p.PeopleId == a.First()
+                     where p.PeopleId == a[0]
                      select p.FromEmail;
+            if (q2.Count() == 0)
+                return (from p in CMSRoleProvider.provider.GetAdmins()
+                        orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+                        select p.FromEmail).First();
             return q2.SingleOrDefault();
         }
         public IEnumerable<Person> StaffPeopleForOrg(int orgid)
@@ -118,10 +133,15 @@ namespace CmsData
                     where o.NotifyIds != null && o.NotifyIds != ""
                     select o.NotifyIds;
             var pids = string.Join(",", q);
-            var a = pids.SplitStr(",").Select(ss => ss.ToInt());
+            var a = pids.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
             var q2 = from p in People
-                     where p.PeopleId == a.First()
+                     where a.Contains(p.PeopleId)
+                     orderby p.PeopleId == a[0] descending
                      select p;
+            if (q2.Count() == 0)
+                return from p in CMSRoleProvider.provider.GetAdmins()
+                       orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+                       select p;
             return q2;
         }
         public Person UserPersonFromEmail(string email)
@@ -134,9 +154,6 @@ namespace CmsData
                 p = UserPersonFromEmail(DbUtil.SystemEmailAddress);
             return p;
         }
-        public void QueueMsg(string CmsHost, MailAddress From, string subject, string Message, Person p, string AddEmail)
-        {
-        }
         public EmailQueue CreateQueue(string cmshost, MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents)
         {
             var emailqueue = new EmailQueue
@@ -148,6 +165,7 @@ namespace CmsData
                 Body = body,
                 SendWhen = schedule,
                 QueuedBy = Util.UserPeopleId,
+                Transactional = false,
             };
             EmailQueues.InsertOnSubmit(emailqueue);
 
@@ -167,45 +185,66 @@ namespace CmsData
                      orderby p.PeopleId
                      select p.PeopleId;
 
+            var i = 0;
             foreach (var pid in q2)
-                emailqueue.EmailQueueTos.Add(new EmailQueueTo { PeopleId = pid, OrgId = CurrentOrgId });
+            {
+                i++;
+                emailqueue.EmailQueueTos.Add(new EmailQueueTo 
+                { 
+                    PeopleId = pid, 
+                    OrgId = CurrentOrgId,
+                    Guid = Guid.NewGuid()
+                });
+            }
             SubmitChanges();
             return emailqueue;
         }
-        public void SendPersonEmail(string CmsHost, int id, int pid, string addemail)
+        public void SendPersonEmail(string CmsHost, int id, int pid)
         {
             var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var emailqueue = EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
-            var Message = emailqueue.Body;
 
-            var q = from p in People
-                    where p.PeopleId == emailqueueto.PeopleId
-                    select new
-                     {
-                         p.Name,
-                         p.PreferredName,
-                         p.EmailAddress,
-                         p.OccupationOther,
-                         p.EmailAddress2,
-                         Send1 = p.SendEmailAddress1 ?? true,
-                         Send2 = p.SendEmailAddress2 ?? false,
-                     };
-            var qp = q.Single();
-
+            var p = LoadPersonById(emailqueueto.PeopleId);
             string text = emailqueue.Body;
+            var aa = DoReplacements(ref text, CmsHost, p, emailqueueto);
 
-            if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
+            foreach (var ad in aa)
+            {
+                if (Util.ValidEmail(ad))
+                {
+                    var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
+                    var url = Util.URLCombine(CmsHost, qs);
+                    var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
+                    text = text.Replace("{unsubscribe}", link);
+                    text = text.Replace("{Unsubscribe}", link);
+                    text = text.Replace("{toemail}", ad);
+                    text = text.Replace("%7Btoemail%7D", ad);
+                    text = text.Replace("{fromemail}", From.Address);
+                    text = text.Replace("%7Bfromemail%7D", From.Address);
+
+                    if (Setting("sendemail", "true") != "false")
+                    {
+                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, p.Name, ad, emailqueue.Id);
+                        emailqueueto.Sent = DateTime.Now;
+                        SubmitChanges();
+                    }
+                }
+            }
+        }
+        public List<string> DoReplacements(ref string text, string CmsHost, Person p, EmailQueueTo emailqueueto)
+        {
+            if (p.Name.Contains("?") || p.Name.ToLower().Contains("unknown"))
                 text = text.Replace("{name}", string.Empty);
             else
-                text = text.Replace("{name}", qp.Name);
+                text = text.Replace("{name}", p.Name);
 
-            if (qp.PreferredName.Contains("?") || qp.PreferredName.ToLower() == "unknown")
+            if (p.PreferredName.Contains("?") || p.PreferredName.ToLower() == "unknown")
                 text = text.Replace("{first}", string.Empty);
             else
-                text = text.Replace("{first}", qp.PreferredName);
-            text = text.Replace("{occupation}", qp.OccupationOther);
+                text = text.Replace("{first}", p.PreferredName);
+            text = text.Replace("{occupation}", p.OccupationOther);
 
             var re = new Regex(@"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}", RegexOptions.Singleline | RegexOptions.Multiline);
             var list = new Dictionary<string, OneTimeLink>();
@@ -230,18 +269,22 @@ namespace CmsData
                     SubmitChanges();
                     list.Add(qs, ot);
                 }
-                var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}".Fmt(ot.Id, smallgroup));
+                var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}".Fmt(ot.Id.ToCode(), smallgroup));
                 text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, smallgroup));
                 ma = ma.NextMatch();
             }
+            var turl = Util.URLCombine(CmsHost, "/Track/Index/" + emailqueueto.Guid.ToCode());
+            text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl));
 
             var aa = new List<string>();
-            if (qp.Send1)
-                aa.AddRange(qp.EmailAddress.SplitStr(",;"));
-            if (qp.Send2)
-                aa.AddRange(qp.EmailAddress2.SplitStr(",;"));
-            if (addemail.HasValue())
-                aa.AddRange(addemail.SplitStr(",;"));
+            if (p.SendEmailAddress1 ?? true)
+                aa.Add(p.FromEmail);
+            if (p.SendEmailAddress2 ?? false)
+                aa.Add(p.FromEmail2);
+            if (emailqueueto.AddEmail.HasValue())
+                foreach (var ad in emailqueueto.AddEmail.SplitStr(","))
+                    if (!aa.Contains(ad))
+                        aa.Add(ad);
 
             if (emailqueueto.OrgId.HasValue)
             {
@@ -257,29 +300,7 @@ namespace CmsData
                         aa.Add(qm.RegisterEmail);
                 }
             }
-
-            foreach (var ad in aa)
-            {
-                if (Util.ValidEmail(ad))
-                {
-                    var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
-                    var url = Util.URLCombine(CmsHost, qs);
-                    var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-                    text = text.Replace("{unsubscribe}", link);
-                    text = text.Replace("{Unsubscribe}", link);
-                    text = text.Replace("{toemail}", ad);
-                    text = text.Replace("%7Btoemail%7D", ad);
-                    text = text.Replace("{fromemail}", From.Address);
-                    text = text.Replace("%7Bfromemail%7D", From.Address);
-
-                    if (Setting("sendemail", "true") != "false")
-                    {
-                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
-                        emailqueueto.Sent = DateTime.Now;
-                        SubmitChanges();
-                    }
-                }
-            }
+            return aa;
         }
         public void SendPeopleEmail(string CmsHost, EmailQueue emailqueue)
         {
@@ -304,79 +325,9 @@ namespace CmsData
                     select To;
             foreach (var To in q)
             {
-                var qp = (from p in People
-                          where p.PeopleId == To.PeopleId
-                          select new
-                          {
-                              p.Name,
-                              p.PreferredName,
-                              p.EmailAddress,
-                              p.OccupationOther,
-                              p.EmailAddress2,
-                              Send1 = p.SendEmailAddress1 ?? true,
-                              Send2 = p.SendEmailAddress2 ?? false,
-                          }).Single();
+                var p = LoadPersonById(To.PeopleId);
                 string text = emailqueue.Body;
-
-                if (qp.Name.Contains("?") || qp.Name.ToLower().Contains("unknown"))
-                    text = text.Replace("{name}", string.Empty);
-                else
-                    text = text.Replace("{name}", qp.Name);
-
-                if (qp.PreferredName.Contains("?") || qp.PreferredName.ToLower() == "unknown")
-                    text = text.Replace("{first}", string.Empty);
-                else
-                    text = text.Replace("{first}", qp.PreferredName);
-                text = text.Replace("{occupation}", qp.OccupationOther);
-
-                var re = new Regex(@"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}", RegexOptions.Singleline | RegexOptions.Multiline);
-                var list = new Dictionary<string, OneTimeLink>();
-                var ma = re.Match(text);
-                while (ma.Success)
-                {
-                    var votelink = ma.Value;
-                    var orgid = ma.Groups["orgid"].Value;
-                    var smallgroup = ma.Groups["sg"].Value;
-                    var qs = @"{0},{1}".Fmt(orgid, To.PeopleId);
-                    OneTimeLink ot;
-                    if (list.ContainsKey(qs))
-                        ot = list[qs];
-                    else
-                    {
-                        ot = new OneTimeLink
-                        {
-                            Id = Guid.NewGuid(),
-                            Querystring = qs
-                        };
-                        OneTimeLinks.InsertOnSubmit(ot);
-                        SubmitChanges();
-                        list.Add(qs, ot);
-                    }
-                    var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}".Fmt(ot.Id, smallgroup));
-                    text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, smallgroup));
-                    ma = ma.NextMatch();
-                }
-
-                var aa = new List<string>();
-                if (qp.Send1)
-                    aa.AddRange(qp.EmailAddress.SplitStr(",;"));
-                if (qp.Send2)
-                    aa.AddRange(qp.EmailAddress2.SplitStr(",;"));
-                if (To.OrgId.HasValue)
-                {
-                    var qm = (from m in OrganizationMembers
-                              where m.PeopleId == To.PeopleId && m.OrganizationId == To.OrgId
-                              select new { m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail }).SingleOrDefault();
-                    if (qm != null)
-                    {
-                        if (qm.PayLink.HasValue())
-                            text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(qm.PayLink));
-                        text = text.Replace("{amtdue}", (qm.Amount - qm.AmountPaid).ToString2("c"));
-                        if (qm.RegisterEmail.HasValue() && !aa.Contains(qm.RegisterEmail, StringComparer.OrdinalIgnoreCase))
-                            aa.Add(qm.RegisterEmail);
-                    }
-                }
-
+                var aa = DoReplacements(ref text, CmsHost, p, To);
                 foreach (var ad in aa)
                 {
                     if (Util.ValidEmail(ad))
@@ -395,37 +346,37 @@ namespace CmsData
 
                         if (Setting("sendemail", "true") != "false")
                         {
-                            Util.SendMsg(sysFromEmail, CmsHost, From, emailqueue.Subject, text, qp.Name, ad, emailqueue.Id);
+                            Util.SendMsg(sysFromEmail, CmsHost, From, emailqueue.Subject, text, p.Name, ad, emailqueue.Id);
                             To.Sent = DateTime.Now;
 
-                            sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(qp.Name, ad, To.PeopleId));
-                            if (i % 500 == 0)
-                                NotifySentEmails(CmsHost, sb, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+                            sb.AppendFormat("\"{0}\" [{1}] ({2})\r\n".Fmt(p.Name, ad, To.PeopleId));
                             SubmitChanges();
                         }
                     }
                 }
             }
-            NotifySentEmails(CmsHost, sb, From, emailqueue.Subject, emailqueue.Body, emailqueue.Id);
+            NotifySentEmails(CmsHost, From.DisplayName, From.Address, emailqueue.Subject, i, emailqueue.Id);
             if (emailqueue.Redacted ?? false)
                 emailqueue.Body = "redacted";
             emailqueue.Sent = DateTime.Now;
             SubmitChanges();
         }
-        private void NotifySentEmails(string CmsHost, StringBuilder sb, MailAddress From, string subject, string body, int id)
+        
+        private void NotifySentEmails(string CmsHost, string From, string FromName, string subject, int count, int id)
         {
-            var sysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
-            sb.Append("</pre>\r\n<h2>{0}</h2>".Fmt(subject));
-            sb.Append(body);
             if (Setting("sendemail", "true") != "false")
             {
+                var from = new MailAddress(From, FromName);
                 string subj = "sent emails: " + subject;
-                Util.SendMsg(sysFromEmail, CmsHost, From, subj, sb.ToString(), From.DisplayName, From.Address, id);
-                Util.SendMsg(sysFromEmail, CmsHost, From, subj, sb.ToString(), null, ConfigurationManager.AppSettings["senderrorsto"], id);
+                string body = @"<a href=""{0}Manage/Emails/Details/{1}"">{2} emails sent</a>".Fmt(CmsHost, id, count);
+                var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
+                var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
+
+                Util.SendMsg(SysFromEmail, CmsHost, from, subj, body, from.DisplayName, from.Address, id);
+                var uri = new Uri(CmsHost);
+                var host = uri.Host;
+                Util.SendMsg(SysFromEmail, CmsHost, from, host + " " + subj, body, null, ConfigurationManager.AppSettings["senderrorsto"], id);
             }
-            sb.Length = 0;
-            sb.Append("<pre>\r\n");
         }
     }
 }
-

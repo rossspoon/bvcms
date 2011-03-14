@@ -102,7 +102,7 @@ namespace CmsData
         }
         public IEnumerable<Person> GetAdmins()
         {
-            return GetRoleUsers("Admin").Select(u => u.Person);
+            return GetRoleUsers("Admin").Select(u => u.Person).Distinct();
         }
         public IEnumerable<Person> GetDevelopers()
         {

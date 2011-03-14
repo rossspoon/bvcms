@@ -329,7 +329,7 @@ namespace CmsData
         {
             get
             {
-                var s = Setting("NewPeopleManagerId", "");
+                var s = Setting("NewPeopleManagerIds", "1");
                 if (s.HasValue())
                     return s.SplitStr(",;")[0].ToInt();
                 var q = from u in Users
@@ -340,7 +340,7 @@ namespace CmsData
         }
         public IEnumerable<Person> GetNewPeopleManagers()
         {
-            var s = Setting("NewPeopleManagerId", "");
+            var s = Setting("NewPeopleManagerIds", "");
             IEnumerable<Person> q = null;
             if (s.HasValue())
             {
@@ -638,18 +638,6 @@ namespace CmsData
         public int QueuePriorityEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
-            return ((int)(result.ReturnValue));
-        }
-        [Function(Name = "dbo.SendEndQueue")]
-        public int SendEndQueue([Parameter(DbType = "UNIQUEIDENTIFIER")] Guid guid, [Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
-        {
-            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), guid, id, CmsHost, Host);
-            return ((int)(result.ReturnValue));
-        }
-        [Function(Name = "dbo.EndQueue")]
-        public int EndQueue([Parameter(DbType = "UNIQUEIDENTIFIER")] Guid guid)
-        {
-            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), guid);
             return ((int)(result.ReturnValue));
         }
     }

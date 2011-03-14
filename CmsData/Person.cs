@@ -467,11 +467,8 @@ namespace CmsData
             Db.SubmitChanges();
             if (SendNotices)
             {
-                var NewPeopleManagerId = Db.Settings.SingleOrDefault(ss => ss.Id == "NewPeopleManagerId").SettingX.ToInt2();
-                if (!NewPeopleManagerId.HasValue)
-                    NewPeopleManagerId = 1;
                 if (Util.UserPeopleId.HasValue
-                        && Util.UserPeopleId.Value != NewPeopleManagerId
+                        && Util.UserPeopleId.Value != Db.NewPeopleManagerId
                         && !HttpContext.Current.User.IsInRole("OrgMembersOnly")
                         && HttpContext.Current.User.IsInRole("Access"))
                     Task.AddNewPerson(p.PeopleId);

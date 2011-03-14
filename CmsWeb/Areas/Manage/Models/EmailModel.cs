@@ -48,7 +48,8 @@ namespace CmsWeb.Models
                      {
                          peopleid = e.PeopleId,
                          name = e.Person.Name,
-                         address = e.Person.EmailAddress
+                         address = e.Person.EmailAddress,
+                         nopens = e.Person.EmailResponses.Count(er => er.EmailQueueId == e.Id)
                      };
             return q2;
         }
@@ -65,5 +66,6 @@ namespace CmsWeb.Models
         public string name { get; set; }
         public int peopleid { get; set; }
         public string address { get; set; }
+        public int nopens { get; set; }
     }
 }

@@ -368,6 +368,7 @@
       <DependentUpon>TotalsByFundAgeRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
+    <Compile Include="Areas\Public\Controllers\TrackController.cs" />
     <Compile Include="Dialog\AddTagShareds.aspx.cs">
       <DependentUpon>AddTagShareds.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

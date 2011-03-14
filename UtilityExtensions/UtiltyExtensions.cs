@@ -548,6 +548,9 @@ namespace UtilityExtensions
         {
             get
             {
+#if DEBUG
+                return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
+#else
                 var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
                 if (cs == null)
                     cs = ConfigurationManager.ConnectionStrings["CMS"];
@@ -555,6 +558,7 @@ namespace UtilityExtensions
                 var a = Host.SplitStr(".:");
                 cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
                 return cb.ConnectionString;
+#endif
             }
         }
         //public static string ConnectionStringDisc
@@ -1054,10 +1058,10 @@ namespace UtilityExtensions
         }
         public static void InsertCacheNotRemovable(string key, object value)
         {
-                HttpRuntime.Cache.Insert(key, value, null,
-                    System.Web.Caching.Cache.NoAbsoluteExpiration,
-                    System.Web.Caching.Cache.NoSlidingExpiration,
-                    CacheItemPriority.NotRemovable, null);
+            HttpRuntime.Cache.Insert(key, value, null,
+                System.Web.Caching.Cache.NoAbsoluteExpiration,
+                System.Web.Caching.Cache.NoSlidingExpiration,
+                CacheItemPriority.NotRemovable, null);
         }
 
         public static MailAddress FirstAddress2(string addrs, string name)
@@ -1083,6 +1087,29 @@ namespace UtilityExtensions
             set
             {
                 HttpContext.Current.Application["getoff"] = value;
+            }
+        }
+        public static string ToCode(this Guid guid)
+        {
+            string encoded = Convert.ToBase64String(guid.ToByteArray());
+            encoded = encoded
+              .Replace("/", "_")
+              .Replace("+", "-");
+            return encoded.Substring(0, 22);
+        }
+        public static Guid? ToGuid(this string value)
+        {
+            try
+            {
+                value = value
+                  .Replace("_", "/")
+                  .Replace("-", "+");
+                byte[] buffer = Convert.FromBase64String(value + "==");
+                return new Guid(buffer);
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

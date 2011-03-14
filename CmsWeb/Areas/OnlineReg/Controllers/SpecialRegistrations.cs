@@ -52,10 +52,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m = new ManageSubsModel(td.ToInt(), id.ToInt());
             else
             {
-                Guid guid;
-                if (!Guid.TryParse(id, out guid))
+                var guid = id.ToGuid();
+                if (guid == null)
                     return Content("invalid link");
-                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid);
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
                 if (ot == null)
                     return Content("invalid link");
                 if (ot.Used)
@@ -118,10 +118,10 @@ You have the following subscriptions:<br/>
             if (!id.HasValue())
                 return Content("bad link");
 
-            Guid guid;
-            if (!Guid.TryParse(id, out guid))
+            var guid = id.ToGuid();
+            if (guid == null)
                 return Content("invalid link");
-            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid);
+            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
             if (ot == null)
                 return Content("invalid link");
             if (ot.Used)

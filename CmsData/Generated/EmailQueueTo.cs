@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private string _AddEmail;
 		
+		private Guid _Guid;
+		
    		
     	
 		private EntityRef< EmailQueue> _EmailQueue;
@@ -54,6 +56,9 @@ namespace CmsData
 		
 		partial void OnAddEmailChanging(string value);
 		partial void OnAddEmailChanged();
+		
+		partial void OnGuidChanging(Guid value);
+		partial void OnGuidChanged();
 		
     #endregion
 		public EmailQueueTo()
@@ -164,7 +169,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddEmail", UpdateCheck=UpdateCheck.Never, Storage="_AddEmail", DbType="varchar(50)")]
+		[Column(Name="AddEmail", UpdateCheck=UpdateCheck.Never, Storage="_AddEmail", DbType="varchar")]
 		public string AddEmail
 		{
 			get { return this._AddEmail; }
@@ -179,6 +184,28 @@ namespace CmsData
 					this._AddEmail = value;
 					this.SendPropertyChanged("AddEmail");
 					this.OnAddEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="guid", UpdateCheck=UpdateCheck.Never, Storage="_Guid", DbType="uniqueidentifier NOT NULL")]
+		public Guid Guid
+		{
+			get { return this._Guid; }
+
+			set
+			{
+				if (this._Guid != value)
+				{
+				
+                    this.OnGuidChanging(value);
+					this.SendPropertyChanging();
+					this._Guid = value;
+					this.SendPropertyChanged("Guid");
+					this.OnGuidChanged();
 				}
 
 			}

@@ -39,10 +39,12 @@ namespace CmsData
 		
 		private bool? _Redacted;
 		
-		private string _Addemail;
+		private bool? _Transactional;
 		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
+		
+   		private EntitySet< EmailResponse> _EmailResponses;
 		
     	
 		private EntityRef< Person> _Person;
@@ -87,14 +89,16 @@ namespace CmsData
 		partial void OnRedactedChanging(bool? value);
 		partial void OnRedactedChanged();
 		
-		partial void OnAddemailChanging(string value);
-		partial void OnAddemailChanged();
+		partial void OnTransactionalChanging(bool? value);
+		partial void OnTransactionalChanged();
 		
     #endregion
 		public EmailQueue()
 		{
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
+			
+			this._EmailResponses = new EntitySet< EmailResponse>(new Action< EmailResponse>(this.attach_EmailResponses), new Action< EmailResponse>(this.detach_EmailResponses)); 
 			
 			
 			this._Person = default(EntityRef< Person>); 
@@ -350,21 +354,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="addemail", UpdateCheck=UpdateCheck.Never, Storage="_Addemail", DbType="varchar(80)")]
-		public string Addemail
+		[Column(Name="Transactional", UpdateCheck=UpdateCheck.Never, Storage="_Transactional", DbType="bit")]
+		public bool? Transactional
 		{
-			get { return this._Addemail; }
+			get { return this._Transactional; }
 
 			set
 			{
-				if (this._Addemail != value)
+				if (this._Transactional != value)
 				{
 				
-                    this.OnAddemailChanging(value);
+                    this.OnTransactionalChanging(value);
 					this.SendPropertyChanging();
-					this._Addemail = value;
-					this.SendPropertyChanged("Addemail");
-					this.OnAddemailChanged();
+					this._Transactional = value;
+					this.SendPropertyChanged("Transactional");
+					this.OnTransactionalChanged();
 				}
 
 			}
@@ -382,6 +386,16 @@ namespace CmsData
    		    get { return this._EmailQueueTos; }
 
 			set	{ this._EmailQueueTos.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_EmailResponses_EmailQueue", Storage="_EmailResponses", OtherKey="EmailQueueId")]
+   		public EntitySet< EmailResponse> EmailResponses
+   		{
+   		    get { return this._EmailResponses; }
+
+			set	{ this._EmailResponses.Assign(value); }
 
    		}
 
@@ -456,6 +470,19 @@ namespace CmsData
 		}
 
 		private void detach_EmailQueueTos(EmailQueueTo entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = null;
+		}
+
+		
+		private void attach_EmailResponses(EmailResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = this;
+		}
+
+		private void detach_EmailResponses(EmailResponse entity)
 		{
 			this.SendPropertyChanging();
 			entity.EmailQueue = null;

@@ -5,15 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using CmsWeb.Models;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    [Authorize(Roles="Admin")]
     public class EmailsController : Controller
     {
         public ActionResult Index()
         {
             var m = new EmailsModel();
+            UpdateModel(m);
             return View(m);
         }
         public ActionResult SentBy(int? id)
@@ -30,6 +31,13 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult Details(int id)
         {
             var m = new EmailModel { id = id };
+            if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
+            {
+                var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
+                if (m.queue.FromAddr != u.EmailAddress
+                        && !m.queue.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId))
+                    return Content("not authorized");
+            }
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -42,7 +50,6 @@ namespace CmsWeb.Areas.Manage.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult List(EmailsModel m)
         {
-            UpdateModel(m.Pager);
             return View(m);
         }
     }

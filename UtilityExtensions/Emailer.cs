@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
 using System.Net.Mail;
 using System.Web.Configuration;
 using System.IO;
@@ -58,14 +59,22 @@ namespace UtilityExtensions
             var bytes1 = Encoding.UTF8.GetBytes(text);
             var htmlStream1 = new MemoryStream(bytes1);
             var htmlView1 = new AlternateView(htmlStream1, MediaTypeNames.Text.Plain);
-            htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+            var lines = Regex.Split(text, @"\r?\n|\r");
+            if (lines.Any(li => li.Length > 990))
+                htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+            else
+                htmlView1.TransferEncoding = TransferEncoding.SevenBit;
             msg.AlternateViews.Add(htmlView1);
 
             var html = Message;
             var bytes = Encoding.UTF8.GetBytes(html);
             var htmlStream = new MemoryStream(bytes);
             var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-            htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+            lines = Regex.Split(html, @"\r?\n|\r");
+            if (lines.Any(li => li.Length > 990))
+                htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+            else
+                htmlView.TransferEncoding = TransferEncoding.SevenBit;
             msg.AlternateViews.Add(htmlView);
 
             if (SysFromEmail.HasValue())

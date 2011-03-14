@@ -125,8 +125,13 @@
         <td><%=Model.org.Limit%></td>
     </tr>
     <tr>
-        <th>Online Notify Emails:</th>
-        <td><%=Model.org.EmailAddresses%></td>
+        <th>Online Notify Persons:</th>
+        <td>
+            <% foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
+               { %>
+               <div><%:p.FromEmail %> &mdash; (<%=p.PeopleId %>)</div>
+            <% } %>
+        </td>
     </tr>
     <tr>
         <th>Start Grade/Age:</th>

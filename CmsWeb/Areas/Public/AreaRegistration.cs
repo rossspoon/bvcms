@@ -22,6 +22,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "Register");
             AddRoute(context, "Sales");
             AddRoute(context, "OptOut");
+            AddRoute(context, "Track");
             AddRoute(context, "StepClass");
             AddRoute(context, "Event");
             AddRoute(context, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");

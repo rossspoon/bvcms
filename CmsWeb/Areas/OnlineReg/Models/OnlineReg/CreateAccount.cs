@@ -95,7 +95,7 @@ Just login to {host} and you will be taken to your record where you can make cor
             var message = Util.PickFirst(c.Body,
                     @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your subscriptions. (note: it will only work once for security reasons)</p> ");
-            message = message.Replace("{url}", url + ot.Id);
+            message = message.Replace("{url}", url + ot.Id.ToCode());
             message = message.Replace("{name}", person.Name);
             message = message.Replace("{first}", person.PreferredName);
 

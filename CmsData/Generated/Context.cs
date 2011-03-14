@@ -202,6 +202,10 @@ namespace CmsData
         partial void UpdateEmailQueueTo(EmailQueueTo instance);
         partial void DeleteEmailQueueTo(EmailQueueTo instance);
         
+        partial void InsertEmailResponse(EmailResponse instance);
+        partial void UpdateEmailResponse(EmailResponse instance);
+        partial void DeleteEmailResponse(EmailResponse instance);
+        
         partial void InsertEmailToText(EmailToText instance);
         partial void UpdateEmailToText(EmailToText instance);
         partial void DeleteEmailToText(EmailToText instance);
@@ -937,6 +941,12 @@ namespace CmsData
 		public Table< EmailQueueTo> EmailQueueTos
 		{
 			get	{ return this.GetTable< EmailQueueTo>(); }
+
+		}
+
+		public Table< EmailResponse> EmailResponses
+		{
+			get	{ return this.GetTable< EmailResponse>(); }
 
 		}
 
@@ -2635,22 +2645,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.GetStartQueue", IsComposable = true)]
-		[return: Parameter(DbType = "uniqueidentifier")]
-		public Guid? GetStartQueue(
-            [Parameter(Name = "id", DbType="int")] int? id,
-            [Parameter(Name = "CmsHost", DbType="varchar")] string CmsHost,
-            [Parameter(Name = "Host", DbType="varchar")] string Host
-            )
-		{
-			return ((Guid?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                id,
-                CmsHost,
-                Host
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.DaysSinceContact", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? DaysSinceContact(
@@ -2660,22 +2654,6 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetStartPriorityQueue", IsComposable = true)]
-		[return: Parameter(DbType = "uniqueidentifier")]
-		public Guid? GetStartPriorityQueue(
-            [Parameter(Name = "id", DbType="int")] int? id,
-            [Parameter(Name = "CmsHost", DbType="varchar")] string CmsHost,
-            [Parameter(Name = "Host", DbType="varchar")] string Host
-            )
-		{
-			return ((Guid?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                id,
-                CmsHost,
-                Host
                 ).ReturnValue));
 		}
 
@@ -2728,6 +2706,18 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 oid,
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.UserPeopleIdFromEmail", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? UserPeopleIdFromEmail(
+            [Parameter(Name = "email", DbType="varchar")] string email
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                email
                 ).ReturnValue));
 		}
 

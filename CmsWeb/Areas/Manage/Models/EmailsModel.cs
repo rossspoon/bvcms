@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Data.Linq;
-using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
@@ -43,7 +42,38 @@ namespace CmsWeb.Models
         public string from { get; set; }
         public DateTime? startdt { get; set; }
         public DateTime? enddt { get; set; }
+        public bool transactional { get; set; }
         public PagerModel2 Pager { get; set; }
+        //public string Sort { get; set; }
+        //private int? _Page;
+        //public int? Page
+        //{
+        //    get { return _Page ?? 1; }
+        //    set { _Page = value; }
+        //}
+        //public int StartRow
+        //{
+        //    get { return (Page.Value - 1) * PageSize; }
+        //}
+        //public int PageSize
+        //{
+        //    get { return DbUtil.Db.UserPreference("PageSize", "10").ToInt(); }
+        //    set
+        //    {
+        //        DbUtil.Db.SetUserPreference("PageSize", value);
+        //    }
+        //}
+        //public PagerModel pagerModel()
+        //{
+        //    return new PagerModel
+        //    {
+        //        Page = Page.Value,
+        //        PageSize = PageSize,
+        //        Action = "List",
+        //        Controller = "Task",
+        //        Count = Count(),
+        //    };
+        //}
         int? _count;
         public int Count()
         {
@@ -65,7 +95,9 @@ namespace CmsWeb.Models
                      select new EmailQueueInfo
                      {
                          queue = e,
-                         count = e.EmailQueueTos.Count()
+                         count = e.EmailQueueTos.Count(),
+                         nopens = e.EmailResponses.Count(),
+                         nuopens = e.EmailResponses.Select(er => er.PeopleId).Distinct().Count()
                      };
             return q2;
         }
@@ -73,6 +105,8 @@ namespace CmsWeb.Models
         private IQueryable<EmailQueue> _emails;
         private IQueryable<EmailQueue> FetchEmails()
         {
+            if (_emails != null)
+                return _emails;
             _emails
                = from t in DbUtil.Db.EmailQueues
                  where t.Sent >= startdt || startdt == null
@@ -82,11 +116,20 @@ namespace CmsWeb.Models
                  where @from == null || t.FromName.Contains(@from) || t.FromAddr.Contains(@from)
                  where peopleid == null || t.EmailQueueTos.Any(et => et.PeopleId == peopleid)
                  where senderid == null || t.QueuedBy == senderid
+                 where (t.Transactional ?? false) == transactional
                  select t;
             if (!enddt.HasValue && startdt.HasValue)
             {
                 var edt = startdt.Value.AddHours(24);
                 _emails = _emails.Where(t => t.Sent < edt);
+            }
+            if(!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
+            {
+                var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
+                _emails = from t in _emails
+                          where t.FromAddr == u.EmailAddress
+                          || t.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId)
+                          select t;
             }
             return _emails;
         }
@@ -151,7 +194,6 @@ namespace CmsWeb.Models
                             select t;
                         break;
                 }
-
             return q;
         }
     }
@@ -159,5 +201,7 @@ namespace CmsWeb.Models
     {
         public EmailQueue queue { get; set; }
         public int count { get; set; }
+        public int nopens { get; set; }
+        public int nuopens { get; set; }
     }
 }
