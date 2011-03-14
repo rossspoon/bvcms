@@ -1,5 +1,5 @@
 ﻿$(function () {
-    setInterval(KeepSessionAlive, 120000);
+    var aliveid = setInterval(KeepSessionAlive, 120000);
     $("#progress").dialog({
         autoOpen: false,
         modal: true,
@@ -19,7 +19,7 @@
             }
             else {
                 var intervalid = window.setInterval(function () {
-                    $.post('/Email/TaskProgress/' + taskid, function (ret) {
+                    $.post('/Email/TaskProgress/' + taskid, null, function (ret) {
                         if (ret.substr(0, 20).toLowerCase().indexOf('<!--completed-->') >= 0)
                             window.clearInterval(intervalid);
                         d.html(ret);
@@ -39,5 +39,8 @@
     };
 });
 function KeepSessionAlive() {
-    $.post("/Account/KeepAlive", null, null);
+    $.post("/Account/KeepAlive", null, function (ret) {
+        if (ret != "alive")
+            window.clearInterval(aliveid);
+    });
 }  

@@ -63,7 +63,18 @@ namespace MassEmailer
         }
         internal class WorkData
         {
-            public DateTime dailyrun = new DateTime(10, 10, 1, 4, 0, 0);// 4:00 AM
+            public DateTime[] dailyruns = new DateTime[] {
+                new DateTime(10, 10, 1, 4, 0, 0), // 4:00 AM
+                new DateTime(10, 10, 1, 6, 0, 0), // 6:00 AM
+                new DateTime(10, 10, 1, 8, 0, 0), // 8:00 AM
+                new DateTime(10, 10, 1, 10, 0, 0), // 10:00 AM
+                new DateTime(10, 10, 1, 12, 0, 0), // 12:00 AM
+                new DateTime(10, 10, 1, 14, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 16, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 18, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 20, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 22, 0, 0), // 2:00 PM
+            };
             public string connstr { get; set; }
             public DateTime lastrun { get; set; }
             public DateTime lastSES { get; set; }
@@ -83,47 +94,50 @@ namespace MassEmailer
         }
         private void Listen()
         {
+            string Host = "";
             var data = new WorkData { connstr = ConnStr };
             while (serviceStarted)
             {
-                var todaysrun = DateTime.Today + data.dailyrun.TimeOfDay;
-                if (DateTime.Now > todaysrun && data.lastrun.Date != DateTime.Today)
+                try
                 {
-                    WriteLog("Check for scheduled emails {0}".Fmt(todaysrun));
-                    var t = DateTime.Now;
-                    var cb = new SqlConnectionStringBuilder(data.connstr);
-                    cb.InitialCatalog = "BlogData";
-                    using (var cn2 = new SqlConnection(cb.ConnectionString))
+                    foreach (var thisrun in data.dailyruns)
                     {
-                        cn2.Open();
-                        using (var cmd = new SqlCommand("SendScheduledEmails", cn2))
-                            cmd.ExecuteNonQuery();
-                        var s = DateTime.Now - t;
-                        WriteLog("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
-                        data.lastrun = DateTime.Now;
+                        if (DateTime.Now > thisrun && data.lastrun.Date < thisrun)
+                        {
+                            WriteLog("Check for scheduled emails {0}".Fmt(thisrun));
+                            var t = DateTime.Now;
+                            var cb = new SqlConnectionStringBuilder(data.connstr);
+                            cb.InitialCatalog = "BlogData";
+                            using (var cn2 = new SqlConnection(cb.ConnectionString))
+                            {
+                                cn2.Open();
+                                using (var cmd = new SqlCommand("SendScheduledEmails", cn2))
+                                    cmd.ExecuteNonQuery();
+                                var s = DateTime.Now - t;
+                                WriteLog("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
+                                data.lastrun = DateTime.Now;
+                            }
+                        }
                     }
-                }
-                using (var cn = new SqlConnection(data.connstr))
-                {
-                    cn.Open();
-                    const string sql = @"
+                    using (var cn = new SqlConnection(data.connstr))
+                    {
+                        cn.Open();
+                        const string sql = @"
 WAITFOR(
     RECEIVE TOP(20) CONVERT(VARCHAR(max), message_body) AS message 
     FROM EmailQueue
 ), TIMEOUT 10000";
-                    using (var cmdr = new SqlCommand(sql, cn))
-                    {
-                        cmdr.CommandTimeout = 0;
-                        var reader = cmdr.ExecuteReader();
-                        while (reader.Read())
+                        using (var cmdr = new SqlCommand(sql, cn))
                         {
-                            var s = reader.GetString(0);
-                            if (!s.HasValue())
-                                continue;
-                            try
+                            cmdr.CommandTimeout = 0;
+                            var reader = cmdr.ExecuteReader();
+                            while (reader.Read())
                             {
+                                var s = reader.GetString(0);
+                                if (!s.HasValue())
+                                    continue;
                                 var a = s.Split('|');
-                                var Host = a[1];
+                                Host = a[1];
                                 var CmsHost = a[2];
                                 var id = a[3].ToInt();
                                 using (var Db = new CMSDataContext(GetConnectionString(Host, data.connstr)))
@@ -160,15 +174,18 @@ WAITFOR(
                                     }
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                WriteLog("Error sending emails ", EventLogEntryType.Error);
-                                var smtp = Util.Smtp();
-                                var msg = new MailMessage("david@bvcms.com", "david@bvcms.com", "Mass Emailer Error " + cn.DataSource, Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace));
-                                smtp.Send(msg);
-                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog("Error sending emails ", EventLogEntryType.Error);
+                    var smtp = Util.Smtp();
+                    var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
+                    var msg = new MailMessage(Util.FirstAddress(erroremails).Address, erroremails, 
+                        "Mass Emailer Error " + Host, 
+                        Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace));
+                    smtp.Send(msg);
                 }
             }
             Thread.CurrentThread.Abort();

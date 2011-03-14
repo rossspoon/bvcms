@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<CmsWeb.Areas.Main.Models.MassEmailer>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<script src="/Scripts/Email.js" type="text/javascript"></script>
+<script src="/Scripts/Email.js?v=2" type="text/javascript"></script>
 <div>
 <span class="style1">Please Note</span>: 
 You can include a file, image, mp3 or whatever you like in your email. 
