@@ -14,7 +14,6 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult Index()
         {
             var m = new EmailsModel();
-            UpdateModel(m);
             return View(m);
         }
         public ActionResult SentBy(int? id)
@@ -50,6 +49,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult List(EmailsModel m)
         {
+            UpdateModel(m.Pager);
             return View(m);
         }
     }

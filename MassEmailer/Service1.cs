@@ -32,6 +32,7 @@ namespace MassEmailer
         private bool serviceStarted = false;
         private Thread listener;
         private string ConnStr;
+        private int SleepTime;
 
         public MassEmailer()
         {
@@ -56,6 +57,7 @@ namespace MassEmailer
                 var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
                 Util.InsertCacheNotRemovable("awscreds", a);
             }
+            SleepTime = ConfigurationManager.AppSettings["SleepTime"].ToInt();
         }
         private static string GetApplicationPath()
         {
@@ -73,11 +75,14 @@ namespace MassEmailer
                 new DateTime(10, 10, 1, 16, 0, 0), // 2:00 PM
                 new DateTime(10, 10, 1, 18, 0, 0), // 2:00 PM
                 new DateTime(10, 10, 1, 20, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 21, 15, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 21, 45, 0), // 2:00 PM
                 new DateTime(10, 10, 1, 22, 0, 0), // 2:00 PM
             };
             public string connstr { get; set; }
             public DateTime lastrun { get; set; }
             public DateTime lastSES { get; set; }
+            public int sleep { get; set; }
         }
 
         protected override void OnStart(string[] args)
@@ -95,16 +100,18 @@ namespace MassEmailer
         private void Listen()
         {
             string Host = "";
-            var data = new WorkData { connstr = ConnStr };
+            var data = new WorkData { connstr = ConnStr, sleep = SleepTime };
             while (serviceStarted)
             {
                 try
                 {
-                    foreach (var thisrun in data.dailyruns)
+                    foreach (var run in data.dailyruns)
                     {
-                        if (DateTime.Now > thisrun && data.lastrun.Date < thisrun)
+                        var scheduledtime = DateTime.Today + run.TimeOfDay;
+                        if (DateTime.Now >= scheduledtime // at or past the scheduled time
+                            && data.lastrun < scheduledtime) // have not run for this time
                         {
-                            WriteLog("Check for scheduled emails {0}".Fmt(thisrun));
+                            WriteLog("Check for scheduled emails {0}".Fmt(scheduledtime));
                             var t = DateTime.Now;
                             var cb = new SqlConnectionStringBuilder(data.connstr);
                             cb.InitialCatalog = "BlogData";
@@ -113,8 +120,6 @@ namespace MassEmailer
                                 cn2.Open();
                                 using (var cmd = new SqlCommand("SendScheduledEmails", cn2))
                                     cmd.ExecuteNonQuery();
-                                var s = DateTime.Now - t;
-                                WriteLog("Check Complete for scheduled emails {0:n1} sec".Fmt(s.TotalSeconds));
                                 data.lastrun = DateTime.Now;
                             }
                         }
@@ -182,6 +187,7 @@ WAITFOR(
                     WriteLog("Error sending emails ", EventLogEntryType.Error);
                     var smtp = Util.Smtp();
                     var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
+                    erroremails = erroremails.Replace(';', ',');
                     var msg = new MailMessage(Util.FirstAddress(erroremails).Address, erroremails, 
                         "Mass Emailer Error " + Host, 
                         Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace));
@@ -262,6 +268,7 @@ WAITFOR(
         public Boolean SendAmazonSESRawEmail(
             MailAddress from, string to, string nameto, string Subject, string body, string host, int id)
         {
+            to = to.Replace(';', ',');
             Util.RecordEmailSent(host, from, Subject, nameto, to, id, true);
             var awsfrom = ConfigurationManager.AppSettings["awsfromemail"];
             var fromname = from.DisplayName;
@@ -376,6 +383,7 @@ WAITFOR(
             }
             else
                 Util.SendMsg(SysFrom, CmsHost, From, subject, body, Name, To, id);
+            System.Threading.Thread.Sleep(data.sleep);
         }
         private void NotifySentEmails(CMSDataContext Db, WorkData data, string CmsHost, string From, string FromName, string subject, int count, int id)
         {
@@ -383,11 +391,11 @@ WAITFOR(
             {
                 var from = new MailAddress(From, FromName);
                 string subj = "sent emails: " + subject;
-                string body = @"<a href=""{0}Manage/Emails/Details/{1}"">{2} emails sent</a>".Fmt(CmsHost, id, count);
+                var uri = new Uri(new Uri(CmsHost), "/Manage/Emails/Details/" + id);
+                string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
                 var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
                 var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
                 EmailRoute(SysFromEmail, data, from, From, FromName, subj, body, CmsHost, id);
-                var uri = new Uri(CmsHost);
                 var host = uri.Host;
                 EmailRoute(SysFromEmail, data, from, SendErrorsTo, null, host + " " + subj, body, CmsHost, id);
             }

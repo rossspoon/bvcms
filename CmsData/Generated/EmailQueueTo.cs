@@ -27,7 +27,7 @@ namespace CmsData
 		
 		private string _AddEmail;
 		
-		private Guid _Guid;
+		private Guid? _Guid;
 		
    		
     	
@@ -57,7 +57,7 @@ namespace CmsData
 		partial void OnAddEmailChanging(string value);
 		partial void OnAddEmailChanged();
 		
-		partial void OnGuidChanging(Guid value);
+		partial void OnGuidChanging(Guid? value);
 		partial void OnGuidChanged();
 		
     #endregion
@@ -191,8 +191,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="guid", UpdateCheck=UpdateCheck.Never, Storage="_Guid", DbType="uniqueidentifier NOT NULL")]
-		public Guid Guid
+		[Column(Name="guid", UpdateCheck=UpdateCheck.Never, Storage="_Guid", DbType="uniqueidentifier")]
+		public Guid? Guid
 		{
 			get { return this._Guid; }
 

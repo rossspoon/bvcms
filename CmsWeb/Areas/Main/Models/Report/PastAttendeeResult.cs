@@ -171,7 +171,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     .Select(aa => aa.AttendStr)
                                     .SingleOrDefault()
                     let visitor = !a.Organization.OrganizationMembers.Any(m => m.PeopleId == p.PeopleId)
-                    orderby !visitor, lastattend descending
+                    orderby !visitor, lastattend descending, p.Name2
 
                     select new AttendInfo
                     {

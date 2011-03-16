@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.IO;
 
 namespace CmsData
 {
@@ -273,8 +274,11 @@ namespace CmsData
                 text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, smallgroup));
                 ma = ma.NextMatch();
             }
-            var turl = Util.URLCombine(CmsHost, "/Track/Index/" + emailqueueto.Guid.ToCode());
-            text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl));
+            if (emailqueueto.Guid.HasValue)
+            {
+                var turl = Util.URLCombine(CmsHost, "/Track/Index/" + emailqueueto.Guid.Value.ToCode());
+                text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl));
+            }
 
             var aa = new List<string>();
             if (p.SendEmailAddress1 ?? true)
@@ -283,8 +287,9 @@ namespace CmsData
                 aa.Add(p.FromEmail2);
             if (emailqueueto.AddEmail.HasValue())
                 foreach (var ad in emailqueueto.AddEmail.SplitStr(","))
-                    if (!aa.Contains(ad))
-                        aa.Add(ad);
+                    if (Util.ValidEmail(ad))
+                        if (!aa.Any(mm => EmailMatch(mm, ad)))
+                            aa.Add(ad);
 
             if (emailqueueto.OrgId.HasValue)
             {
@@ -301,6 +306,15 @@ namespace CmsData
                 }
             }
             return aa;
+        }
+        bool EmailMatch(string existing, string addemail)
+        {
+            var exist = Util.TryGetMailAddress(existing, null);
+            var add = Util.TryGetMailAddress(addemail, null);
+            if (add == null || exist == null)
+                return false;
+            var r = string.Compare(exist.Address, add.Address, true);
+            return r == 0;
         }
         public void SendPeopleEmail(string CmsHost, EmailQueue emailqueue)
         {
@@ -355,7 +369,7 @@ namespace CmsData
                     }
                 }
             }
-            NotifySentEmails(CmsHost, From.DisplayName, From.Address, emailqueue.Subject, i, emailqueue.Id);
+            NotifySentEmails(CmsHost, From.Address, From.DisplayName, emailqueue.Subject, i, emailqueue.Id);
             if (emailqueue.Redacted ?? false)
                 emailqueue.Body = "redacted";
             emailqueue.Sent = DateTime.Now;
@@ -368,12 +382,13 @@ namespace CmsData
             {
                 var from = new MailAddress(From, FromName);
                 string subj = "sent emails: " + subject;
-                string body = @"<a href=""{0}Manage/Emails/Details/{1}"">{2} emails sent</a>".Fmt(CmsHost, id, count);
+                var uri = new Uri(new Uri(CmsHost), "/Manage/Emails/Details/" + id);
+                string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
                 var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
                 var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
+                SendErrorsTo = SendErrorsTo.Replace(';', ',');
 
                 Util.SendMsg(SysFromEmail, CmsHost, from, subj, body, from.DisplayName, from.Address, id);
-                var uri = new Uri(CmsHost);
                 var host = uri.Host;
                 Util.SendMsg(SysFromEmail, CmsHost, from, host + " " + subj, body, null, ConfigurationManager.AppSettings["senderrorsto"], id);
             }

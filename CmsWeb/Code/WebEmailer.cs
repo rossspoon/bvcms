@@ -24,87 +24,83 @@ namespace CmsWeb
 {
     public class WebEmailer : ITaskNotify
     {
-        private string Subject;
-        private string Message;
-        private MailAddress _From;
-        public MailAddress From
-        {
-            get
-            {
-                if (_From == null)
-                    _From = Util.FirstAddress(DbUtil.Db.Setting("AdminMail", DbUtil.SystemEmailAddress));
-                return _From;
-            }
-            set
-            {
-                _From = value;
-            }
-        }
+        //private string Subject;
+        //private string Message;
+        //private MailAddress _From;
+        //public MailAddress From
+        //{
+        //    get
+        //    {
+        //        if (_From == null)
+        //            _From = Util.FirstAddress(DbUtil.Db.Setting("AdminMail", DbUtil.SystemEmailAddress));
+        //        return _From;
+        //    }
+        //    set
+        //    {
+        //        _From = value;
+        //    }
+        //}
 
-        private MailAddressCollection Addresses = new MailAddressCollection();
+        //private MailAddressCollection Addresses = new MailAddressCollection();
 
-        public WebEmailer(string fromaddr, string fromname)
-        {
-            From = Util.FirstAddress(fromaddr, fromname);
-        }
-        public WebEmailer(string fromaddr)
-        {
-            From = Util.FirstAddress(fromaddr);
-        }
-        public WebEmailer()
-        {
-        }
-        public void LoadAddress(string Address, string Name)
-        {
-            var aa = Address.SplitStr(",;");
-            foreach (var ad in aa)
-            {
-                var ma = Util.TryGetMailAddress(ad, Name);
-                if (ma != null)
-                    Addresses.Add(ma);
-            }
-        }
+        //public WebEmailer(string fromaddr, string fromname)
+        //{
+        //    From = Util.FirstAddress(fromaddr, fromname);
+        //}
+        //public WebEmailer(string fromaddr)
+        //{
+        //    From = Util.FirstAddress(fromaddr);
+        //}
+        //public WebEmailer()
+        //{
+        //}
+        //public void LoadAddress(string Address, string Name)
+        //{
+        //    var aa = Address.SplitStr(",;");
+        //    foreach (var ad in aa)
+        //    {
+        //        var ma = Util.TryGetMailAddress(ad, Name);
+        //        if (ma != null)
+        //            Addresses.Add(ma);
+        //    }
+        //}
 
-        private void NotifyEmail(string subject, string message)
-        {
-            Subject = subject;
-            Message = message;
-            var i = 0;
-            SmtpClient smtp = null;
+        //private void NotifyEmail(string subject, string message)
+        //{
+        //    Subject = subject;
+        //    Message = message;
+        //    var i = 0;
 
-            foreach (var a in Addresses)
-            {
-                var msg = new MailMessage(From, a);
-                string sysfromemail = Util.SysFromEmail;
-                if (sysfromemail.HasValue())
-                {
-                    var sysmail = new MailAddress(sysfromemail);
-                    if (From.Host != sysmail.Host)
-                        msg.Sender = sysmail;
-                }
-                msg.Subject = Subject;
-                msg.Body = Message;
-                msg.IsBodyHtml = true;
-                i++;
-                try
-                {
-                    smtp.Send(msg);
-                }
-                catch (Exception ex)
-                {
-                    if (ex.InnerException != null && ex.InnerException.Message.StartsWith("The remote name could not be resolved"))
-                        return;
-                    throw;
-                }
-            }
-        }
+        //    foreach (var a in Addresses)
+        //    {
+        //        DbUtil.Db.Email(From.ToString(), null, subject, message)
+        //        var msg = new MailMessage(From, a);
+        //        string sysfromemail = Util.SysFromEmail;
+        //        if (sysfromemail.HasValue())
+        //        {
+        //            var sysmail = new MailAddress(sysfromemail);
+        //            if (From.Host != sysmail.Host)
+        //                msg.Sender = sysmail;
+        //        }
+        //        msg.Subject = Subject;
+        //        msg.Body = Message;
+        //        msg.IsBodyHtml = true;
+        //        i++;
+        //        try
+        //        {
+        //            smtp.Send(msg);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (ex.InnerException != null && ex.InnerException.Message.StartsWith("The remote name could not be resolved"))
+        //                return;
+        //            throw;
+        //        }
+        //    }
+        //}
         public void EmailNotification(Person from, Person to, string subject, string message)
         {
-            From = Util.FirstAddress(from.EmailAddress, from.Name);
-            Addresses.Clear();
-            LoadAddress(to.EmailAddress, to.Name);
-            if (Addresses.Count > 0)
-                NotifyEmail(subject, message);
+            DbUtil.Db.Email(from.FromEmail, to, null, subject, message, false);
         }
     }
 }

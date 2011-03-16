@@ -37,17 +37,17 @@ namespace CmsWeb
                 var a = File.ReadAllText(smtppasswordfile).Split(',');
                 Util.InsertCacheNotRemovable("smtpcreds", a);
             }
-            string awscreds = Server.MapPath("awscreds.txt");
-            if (File.Exists(awscreds))
-            {
-                var a = File.ReadAllText(awscreds).Split(',');
-                Util.InsertCacheNotRemovable("awscreds", a);
-            }
-            else if (WebConfigurationManager.AppSettings["awscreds"].HasValue())
-            {
-                var a = WebConfigurationManager.AppSettings["awscreds"].Split(',');
-                Util.InsertCacheNotRemovable("awscreds", a);
-            }
+            //string awscreds = Server.MapPath("awscreds.txt");
+            //if (File.Exists(awscreds))
+            //{
+            //    var a = File.ReadAllText(awscreds).Split(',');
+            //    Util.InsertCacheNotRemovable("awscreds", a);
+            //}
+            //else if (WebConfigurationManager.AppSettings["awscreds"].HasValue())
+            //{
+            //    var a = WebConfigurationManager.AppSettings["awscreds"].Split(',');
+            //    Util.InsertCacheNotRemovable("awscreds", a);
+            //}
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif

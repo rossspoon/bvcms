@@ -313,7 +313,6 @@ namespace CmsWeb.Models
             if (onlineorg == null)
                 return;
 
-            var smtp = new SmtpClient();
             var q = from om in Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
                     where om.Moved == true
