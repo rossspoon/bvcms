@@ -156,7 +156,8 @@ namespace CmsWeb
                 body = "\nanonymous\n{0}\n".Fmt(Request.Url.OriginalString)
                     + ex.ToString() + sb.ToString();
             }
-            DbUtil.Db.Email(from, CMSRoleProvider.provider.GetDevelopers(), subject, body);
+            DbUtil.Db.Email(from, CMSRoleProvider.provider.GetDevelopers(), 
+                subject, Util.SafeFormat(body));
         }
     }
 }

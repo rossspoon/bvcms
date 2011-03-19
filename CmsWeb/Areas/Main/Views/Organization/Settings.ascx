@@ -125,6 +125,10 @@
         <td><%=Model.org.Limit%></td>
     </tr>
     <tr>
+        <th>Online Notify Emails (old):</th>
+        <td><%=Model.org.EmailAddresses%></td>
+    </tr>
+    <tr>
         <th>Online Notify Persons:</th>
         <td>
             <% foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))

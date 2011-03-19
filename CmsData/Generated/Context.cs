@@ -2585,6 +2585,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.UserPeopleIdFromEmail", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? UserPeopleIdFromEmail(
+            [Parameter(Name = "email", DbType="varchar")] string email
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                email
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.DayAndTime", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string DayAndTime(
@@ -2706,18 +2718,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 oid,
                 pid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.UserPeopleIdFromEmail", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? UserPeopleIdFromEmail(
-            [Parameter(Name = "email", DbType="varchar")] string email
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                email
                 ).ReturnValue));
 		}
 

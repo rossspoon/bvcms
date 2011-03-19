@@ -276,6 +276,8 @@
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\OnlineRegPersonModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\OnlineRegModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\SlotModel.cs" />
+    <Compile Include="Areas\Setup\Controllers\UpdateController.cs" />
+    <Compile Include="Areas\Setup\Models\UpdateModel.cs" />
     <Compile Include="Controllers\BatchController.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
@@ -1136,6 +1138,7 @@
     <Content Include="Areas\Manage\Views\Emails\Details.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Recipients.cshtml" />
+    <Content Include="Areas\Setup\Views\Update\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

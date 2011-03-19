@@ -49,7 +49,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         location = m.Organization.Location,
                         date = m.MeetingDate.Value,
                         OrgId = m.OrganizationId,
-                        Present = m.NumPresent,
+                        Present = m.NumPresent + m.NumOtherAttends,
                         Visitors = m.NumNewVisit + m.NumRepeatVst,
                         OutTowners = m.NumOutTown ?? 0
                     };
@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          Leader = m.Leader,
                          date = m.date.ToString("M/d/yy h:mm tt"),
                          OrgId = m.OrgId.ToString(),
-                         Present = m.Present,
+                         Present = m.Present ?? 0,
                          Visitors = m.Visitors,
                          OutTowners = m.OutTowners
                      };

@@ -12,6 +12,7 @@ using CMSPresenter;
 using System.Text;
 using System.Web.Mvc;
 using CmsWeb.Models;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -19,10 +20,13 @@ namespace CmsWeb.Areas.Main.Models.Report
     {
         public int? id;
         public string format;
-        public bool? titles;
+        public bool? titles; 
+        public bool usephone { get; set; }
+
         const float H = 72f;
         const float W = 197f;
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+        private Font smfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
         protected PdfContentByte dc;
 
@@ -78,12 +82,24 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             foreach (var m in q)
             {
+                var c = new PdfPCell(t.DefaultCell);
                 var ph = new Paragraph();
                 ph.AddLine(m.LabelName, font);
                 ph.AddLine(m.Address, font);
                 ph.AddLine(m.Address2, font);
                 ph.AddLine(m.CityStateZip, font);
-                t.AddCell(ph);
+                c.AddElement(ph);
+                if (usephone)
+                {
+                    var phone = Util.PickFirst(m.CellPhone.FmtFone("C "), m.HomePhone.FmtFone("H "));
+                    var p = new Paragraph();
+                    c.PaddingRight = 7f;
+                    p.Alignment = Element.ALIGN_RIGHT;
+                    p.Add(new Chunk(phone, smfont));
+                    p.ExtraParagraphSpace = 0f;
+                    c.AddElement(p);
+                }
+                t.AddCell(c);
             }
             t.CompleteRow();
             document.Add(t);

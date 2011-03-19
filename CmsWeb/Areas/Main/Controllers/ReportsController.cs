@@ -137,13 +137,19 @@ namespace CmsWeb.Areas.Main.Controllers
         //{
         //    return new CouponsResult(null, null);
         //}
-        public ActionResult AveryAddress(int? id, string format, bool? titles)
+        public ActionResult AveryAddress(int? id, string format, bool? titles, bool? usephone)
         {
             if (!id.HasValue)
                 return Content("no query");
             if (!format.HasValue())
                 return Content("no format");
-            return new AveryAddressResult { id = id, format = format, titles = titles };
+            return new AveryAddressResult 
+            { 
+                id = id, 
+                format = format, 
+                titles = titles,
+                usephone = usephone ?? false,
+            };
         }
         public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone)
         {

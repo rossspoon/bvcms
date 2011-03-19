@@ -138,12 +138,13 @@ namespace CmsWeb.Areas.Main.Controllers
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
+
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                     CMSRoleProvider.provider.GetDevelopers(),
-                    "meeting created with iphone on {0}".Fmt(Util.Host), 
+                    "meeting created with iphone on " + Util.Host, 
                     "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
                         .Fmt(meeting.Organization.OrganizationName, 
-                        Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId))));
+                        Util.ResolveServerUrl("/Meeting.aspx?id=" + meeting.MeetingId), u.Name));
             }
             return new RollListResult(meeting);
         }

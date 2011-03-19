@@ -102,6 +102,10 @@
         <td><%=Html.TextBox("org.Limit")%></td>
     </tr>
     <tr>
+        <th>Online Notify Emails (old):</th>
+        <td><%=Model.org.EmailAddresses%></td>
+    </tr>
+    <tr>
         <th>Online Notify PeopleIds:</th>
         <td><%=Html.TextBox("org.NotifyIds")%>
             <% foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))

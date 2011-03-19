@@ -33,6 +33,10 @@ namespace MassEmailer
         private Thread listener;
         private string ConnStr;
         private int SleepTime;
+        DateTime lastSES;
+        public DateTime lastRun { get; set; }
+        public DateTime lastThrottle { get; set; }
+        public int sentSinceQuotaCheck { get; set; }
 
         public MassEmailer()
         {
@@ -63,33 +67,24 @@ namespace MassEmailer
         {
             return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6);
         }
-        internal class WorkData
-        {
-            public DateTime[] dailyruns = new DateTime[] {
+        public DateTime[] dailyruns = new DateTime[] {
                 new DateTime(10, 10, 1, 4, 0, 0), // 4:00 AM
                 new DateTime(10, 10, 1, 6, 0, 0), // 6:00 AM
                 new DateTime(10, 10, 1, 8, 0, 0), // 8:00 AM
                 new DateTime(10, 10, 1, 10, 0, 0), // 10:00 AM
                 new DateTime(10, 10, 1, 12, 0, 0), // 12:00 AM
                 new DateTime(10, 10, 1, 14, 0, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 16, 0, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 18, 0, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 20, 0, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 21, 15, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 21, 45, 0), // 2:00 PM
-                new DateTime(10, 10, 1, 22, 0, 0), // 2:00 PM
+                new DateTime(10, 10, 1, 16, 0, 0), // 4:00 PM
+                new DateTime(10, 10, 1, 18, 0, 0), // 6:00 PM
+                new DateTime(10, 10, 1, 20, 0, 0), // 8:00 PM
+                new DateTime(10, 10, 1, 22, 0, 0), // 10:00 PM
+                new DateTime(10, 10, 1, 21, 55, 0), // 11:55 PM
             };
-            public string connstr { get; set; }
-            public DateTime lastrun { get; set; }
-            public DateTime lastSES { get; set; }
-            public int sleep { get; set; }
-        }
 
         protected override void OnStart(string[] args)
         {
             WriteLog("MassEmailer service started");
             StartListening();
-
         }
         public void StartListening()
         {
@@ -100,31 +95,30 @@ namespace MassEmailer
         private void Listen()
         {
             string Host = "";
-            var data = new WorkData { connstr = ConnStr, sleep = SleepTime };
             while (serviceStarted)
             {
                 try
                 {
-                    foreach (var run in data.dailyruns)
+                    foreach (var run in dailyruns)
                     {
                         var scheduledtime = DateTime.Today + run.TimeOfDay;
                         if (DateTime.Now >= scheduledtime // at or past the scheduled time
-                            && data.lastrun < scheduledtime) // have not run for this time
+                            && lastRun < scheduledtime) // have not run for this time
                         {
                             WriteLog("Check for scheduled emails {0}".Fmt(scheduledtime));
                             var t = DateTime.Now;
-                            var cb = new SqlConnectionStringBuilder(data.connstr);
+                            var cb = new SqlConnectionStringBuilder(ConnStr);
                             cb.InitialCatalog = "BlogData";
                             using (var cn2 = new SqlConnection(cb.ConnectionString))
                             {
                                 cn2.Open();
                                 using (var cmd = new SqlCommand("SendScheduledEmails", cn2))
                                     cmd.ExecuteNonQuery();
-                                data.lastrun = DateTime.Now;
+                                lastRun = DateTime.Now;
                             }
                         }
                     }
-                    using (var cn = new SqlConnection(data.connstr))
+                    using (var cn = new SqlConnection(ConnStr))
                     {
                         cn.Open();
                         const string sql = @"
@@ -145,14 +139,14 @@ WAITFOR(
                                 Host = a[1];
                                 var CmsHost = a[2];
                                 var id = a[3].ToInt();
-                                using (var Db = new CMSDataContext(GetConnectionString(Host, data.connstr)))
+                                using (var Db = new CMSDataContext(GetConnectionString(Host, ConnStr)))
                                 {
                                     Db.Host = Host;
                                     var equeue = Db.EmailQueues.Single(ee => ee.Id == id);
                                     switch (a[0])
                                     {
                                         case "SEND":
-                                            SendPersonEmail(Db, data, CmsHost, id, a[4].ToInt());
+                                            SendPersonEmail(Db, CmsHost, id, a[4].ToInt());
                                             break;
                                         case "START":
                                             equeue.Started = DateTime.Now;
@@ -169,10 +163,10 @@ WAITFOR(
                                             {
                                                 nitems = equeue.EmailQueueTos.Count();
                                                 if (nitems > 1)
-                                                    NotifySentEmails(Db, data, CmsHost, equeue.FromAddr, equeue.FromName, equeue.Subject, nitems, id);
+                                                    NotifySentEmails(Db, CmsHost, equeue.FromAddr, equeue.FromName, equeue.Subject, nitems, id);
                                             }
                                             Db.SubmitChanges();
-                                            EndQueue(data, new Guid(a[4]));
+                                            EndQueue(new Guid(a[4]));
                                             break;
                                         default:
                                             continue;
@@ -188,15 +182,15 @@ WAITFOR(
                     var smtp = Util.Smtp();
                     var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
                     erroremails = erroremails.Replace(';', ',');
-                    var msg = new MailMessage(Util.FirstAddress(erroremails).Address, erroremails, 
-                        "Mass Emailer Error " + Host, 
+                    var msg = new MailMessage(Util.FirstAddress(erroremails).Address, erroremails,
+                        "Mass Emailer Error " + Host,
                         Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace));
                     smtp.Send(msg);
                 }
             }
             Thread.CurrentThread.Abort();
         }
-        private void SendPersonEmail(CMSDataContext Db, WorkData data, string CmsHost, int id, int pid)
+        private void SendPersonEmail(CMSDataContext Db, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
 
@@ -226,16 +220,22 @@ WAITFOR(
                     text = text.Replace("{fromemail}", From.Address);
                     text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                    EmailRoute(SysFromEmail, data, From, ad, qp.Name, emailqueue.Subject, text, CmsHost, id);
+                    EmailRoute(SysFromEmail, From, ad, qp.Name, emailqueue.Subject, text, CmsHost, id);
                     emailqueueto.Sent = DateTime.Now;
                     Db.SubmitChanges();
                 }
             }
         }
-        private Boolean SESCanSend(WorkData data)
+        private Boolean SESCanSend()
         {
             var cansend = false;
             var sendrate = 0D;
+
+            if (lastThrottle > DateTime.MinValue)
+                if(DateTime.Now.Subtract(lastThrottle).TotalSeconds < 100)
+                    return false;
+                else
+                    lastThrottle = DateTime.MinValue;
 
             var o = HttpRuntime.Cache["awscreds"];
             if (o != null)
@@ -251,21 +251,26 @@ WAITFOR(
                     resp = ses.GetSendQuota(req);
                     HttpRuntime.Cache.Insert("ses_quota", resp, null,
                                 DateTime.Now.AddMinutes(15), Cache.NoSlidingExpiration);
+                    sentSinceQuotaCheck = 0;
                 }
                 sendrate = resp.GetSendQuotaResult.MaxSendRate.ToInt();
-                if (resp.GetSendQuotaResult.SentLast24Hours < (resp.GetSendQuotaResult.Max24HourSend * 90 / 100))
-                    cansend = true;
+                cansend = (resp.GetSendQuotaResult.SentLast24Hours + sentSinceQuotaCheck) 
+                    < (resp.GetSendQuotaResult.Max24HourSend * 90 / 100);
             }
             if (cansend)
             {
-                var ms = 1000 / sendrate;
-                var elapsed = DateTime.Now.Subtract(data.lastSES).TotalMilliseconds;
+                var ms = 700;// 1000 / sendrate;
+                var elapsed = DateTime.Now.Subtract(lastSES).TotalMilliseconds;
                 if (elapsed >= ms)
+                {
+                    lastSES = DateTime.Now;
+                    sentSinceQuotaCheck++;
                     return true;
+                }
             }
             return false;
         }
-        public Boolean SendAmazonSESRawEmail(
+        private void SendAmazonSESRawEmail(string SysEmailFrom,
             MailAddress from, string to, string nameto, string Subject, string body, string host, int id)
         {
             to = to.Replace(';', ',');
@@ -342,21 +347,29 @@ WAITFOR(
             var fullsys = new MailAddress(awsfrom, fromname);
             request.WithSource(fullsys.ToString());
 
+            SendRawEmailResponse response = null;
+            SendRawEmailResult result = null;
             string[] a = (string[])HttpRuntime.Cache["awscreds"];
             try
             {
                 var cfg = new AmazonSimpleEmailServiceConfig();
                 cfg.UseSecureStringForAwsSecretKey = false;
                 var ses = new AmazonSimpleEmailServiceClient(a[0], a[1], cfg);
-                var response = ses.SendRawEmail(request);
-                var result = response.SendRawEmailResult;
-                return true;
+                response = ses.SendRawEmail(request);
+                result = response.SendRawEmailResult;
             }
-            catch (Exception ex)
+            catch (AmazonSimpleEmailServiceException ex)
             {
-                if (!msg.Subject.StartsWith("(sending error)"))
-                    return SendAmazonSESRawEmail(from, ConfigurationManager.AppSettings["senderrorsto"], nameto, "(sending error) " + Subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(to, ex.Message, body), host, id);
-                return false;
+                if (ex.ErrorCode == "Throttling")
+                {
+                    lastThrottle = DateTime.Now;
+                    EmailRoute(SysEmailFrom, from, to, nameto, Subject, body, host, id);
+                }
+                else if (!msg.Subject.StartsWith("(sending error)"))
+                    EmailRoute(SysEmailFrom, from,
+                        ConfigurationManager.AppSettings["senderrorsto"], nameto,
+                        "(sending error) " + Subject,
+                        "<p>(to: {0})</p><pre>{1}</pre>{2}<br><br>{3}".Fmt(to, ex.Message, body, response.SendRawEmailResult.ToString()), host, id);
             }
         }
         public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
@@ -372,20 +385,17 @@ WAITFOR(
             closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
             return fileStream;
         }
-        private void EmailRoute(string SysFrom, WorkData data, MailAddress From, string To, string Name, string subject, string body, string CmsHost, int id)
+        private void EmailRoute(string SysFrom, MailAddress From, string To, string Name, string subject, string body, string CmsHost, int id)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
             var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
-            if (useSES && SESCanSend(data))
-            {
-                SendAmazonSESRawEmail(From, To, Name, subject, body, CmsHost, id);
-                data.lastSES = DateTime.Now;
-            }
+            if (useSES && SESCanSend())
+                SendAmazonSESRawEmail(SysFrom, From, To, Name, subject, body, CmsHost, id);
             else
                 Util.SendMsg(SysFrom, CmsHost, From, subject, body, Name, To, id);
-            System.Threading.Thread.Sleep(data.sleep);
+            System.Threading.Thread.Sleep(SleepTime);
         }
-        private void NotifySentEmails(CMSDataContext Db, WorkData data, string CmsHost, string From, string FromName, string subject, int count, int id)
+        private void NotifySentEmails(CMSDataContext Db, string CmsHost, string From, string FromName, string subject, int count, int id)
         {
             if (Db.Setting("sendemail", "true") != "false")
             {
@@ -395,14 +405,14 @@ WAITFOR(
                 string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
                 var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
                 var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
-                EmailRoute(SysFromEmail, data, from, From, FromName, subj, body, CmsHost, id);
+                EmailRoute(SysFromEmail, from, From, FromName, subj, body, CmsHost, id);
                 var host = uri.Host;
-                EmailRoute(SysFromEmail, data, from, SendErrorsTo, null, host + " " + subj, body, CmsHost, id);
+                EmailRoute(SysFromEmail, from, SendErrorsTo, null, host + " " + subj, body, CmsHost, id);
             }
         }
-        private static void EndQueue(WorkData data, Guid guid)
+        private void EndQueue(Guid guid)
         {
-            using (var cn = new SqlConnection(data.connstr))
+            using (var cn = new SqlConnection(ConnStr))
             {
                 cn.Open();
                 using (var cmd = new SqlCommand("EndConversation", cn))

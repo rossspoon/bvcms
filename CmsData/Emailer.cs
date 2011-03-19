@@ -181,6 +181,8 @@ namespace CmsData
                     select fm;
 
             var q2 = from p in q.Distinct()
+                     where p.EmailAddress != null
+                     where p.EmailAddress != ""
                      where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
                      where !p.EmailOptOuts.Any(oo => oo.FromEmail == emailqueue.FromAddr)
                      orderby p.PeopleId
@@ -190,9 +192,9 @@ namespace CmsData
             foreach (var pid in q2)
             {
                 i++;
-                emailqueue.EmailQueueTos.Add(new EmailQueueTo 
-                { 
-                    PeopleId = pid, 
+                emailqueue.EmailQueueTos.Add(new EmailQueueTo
+                {
+                    PeopleId = pid,
                     OrgId = CurrentOrgId,
                     Guid = Guid.NewGuid()
                 });
@@ -375,7 +377,7 @@ namespace CmsData
             emailqueue.Sent = DateTime.Now;
             SubmitChanges();
         }
-        
+
         private void NotifySentEmails(string CmsHost, string From, string FromName, string subject, int count, int id)
         {
             if (Setting("sendemail", "true") != "false")

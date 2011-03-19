@@ -86,23 +86,26 @@ namespace CmsWeb.Areas.Main.Models.Report
             t2.WidthPercentage = 100f;
             t2.DefaultCell.Border = PdfPCell.NO_BORDER;
 
-            var nt = new PdfPTable(2);
-            nt.WidthPercentage = 100f;
-            nt.DefaultCell.Padding = 0;
-            nt.DefaultCell.Border = PdfPCell.NO_BORDER;
             var c2 = new PdfPCell(new Phrase(name, font));
             c2.Border = PdfPCell.NO_BORDER;
-            c2.Padding = 0.0F;
-            nt.AddCell(c2);
-            c2 = new PdfPCell(new Phrase(phone, smfont));
-            c2.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
-            c2.Border = PdfPCell.NO_BORDER;
-            c2.Padding = 0.0F;
             if (usephone)
+            {
+                var nt = new PdfPTable(new float[] { 20f, 10f });
+                nt.WidthPercentage = 100f;
+                nt.DefaultCell.Padding = 0;
+                nt.DefaultCell.Border = PdfPCell.NO_BORDER;
+                c2.Padding = 0.0F;
                 nt.AddCell(c2);
+                c2 = new PdfPCell(new Phrase(phone, smfont));
+                c2.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+                c2.Border = PdfPCell.NO_BORDER;
+                c2.Padding = 0.0F;
+                c2.PaddingRight = 3F;
+                nt.AddCell(c2);
+                t2.AddCell(nt);
+            }
             else
-                nt.CompleteRow();
-            t2.AddCell(nt);
+                t2.AddCell(c2);
 
             var cc = new PdfPCell(new Phrase(addr, font));
             cc.Border = PdfPCell.NO_BORDER;

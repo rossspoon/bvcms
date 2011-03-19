@@ -472,13 +472,22 @@ namespace CmsWeb {
         protected global::System.Web.UI.WebControls.HyperLink Divisions;
         
         /// <summary>
-        /// Ministries control.
+        /// Settings control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink Ministries;
+        protected global::System.Web.UI.WebControls.HyperLink Settings;
+        
+        /// <summary>
+        /// Content control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink Content;
         
         /// <summary>
         /// MetroZips control.
@@ -499,6 +508,15 @@ namespace CmsWeb {
         protected global::System.Web.UI.WebControls.HyperLink Funds;
         
         /// <summary>
+        /// Ministries control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink Ministries;
+        
+        /// <summary>
         /// MemberTypes control.
         /// </summary>
         /// <remarks>
@@ -506,15 +524,6 @@ namespace CmsWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink MemberTypes;
-        
-        /// <summary>
-        /// Settings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink Settings;
         
         /// <summary>
         /// Lookups control.
@@ -526,31 +535,13 @@ namespace CmsWeb {
         protected global::System.Web.UI.WebControls.HyperLink Lookups;
         
         /// <summary>
-        /// Content control.
+        /// Updates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink Content;
-        
-        /// <summary>
-        /// Recreation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink Recreation;
-        
-        /// <summary>
-        /// OrgMembersOnly control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink OrgMembersOnly;
+        protected global::System.Web.UI.WebControls.HyperLink Updates;
         
         /// <summary>
         /// ClearCache control.
@@ -560,6 +551,15 @@ namespace CmsWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink ClearCache;
+        
+        /// <summary>
+        /// OrgMembersOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink OrgMembersOnly;
         
         /// <summary>
         /// DeleteSpecialTags control.
@@ -578,24 +578,6 @@ namespace CmsWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink UrgentMessage;
-        
-        /// <summary>
-        /// NewUserItem control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NewUserItem;
-        
-        /// <summary>
-        /// NewUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink NewUser;
         
         /// <summary>
         /// ActivityLog control.

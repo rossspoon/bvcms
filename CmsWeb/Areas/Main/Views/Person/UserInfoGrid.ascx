@@ -1,4 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsData.Person>" %>
+<% if (Page.User.IsInRole("Admin"))
+   { %>
+<a href="/Account/AddUser/<%=Util2.CurrentPeopleId %>">Add New User</a>
+<% } %>
 <% if (Model.Users.Count > 0)
    { %>
 <table class="grid">

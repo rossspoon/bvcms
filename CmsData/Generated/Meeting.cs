@@ -45,6 +45,8 @@ namespace CmsData
 		
 		private int? _NumOutTown;
 		
+		private int? _NumOtherAttends;
+		
    		
    		private EntitySet< SoulMate> _ChildSoulMates;
 		
@@ -105,6 +107,9 @@ namespace CmsData
 		
 		partial void OnNumOutTownChanging(int? value);
 		partial void OnNumOutTownChanged();
+		
+		partial void OnNumOtherAttendsChanging(int? value);
+		partial void OnNumOtherAttendsChanged();
 		
     #endregion
 		public Meeting()
@@ -431,6 +436,28 @@ namespace CmsData
 					this._NumOutTown = value;
 					this.SendPropertyChanged("NumOutTown");
 					this.OnNumOutTownChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NumOtherAttends", UpdateCheck=UpdateCheck.Never, Storage="_NumOtherAttends", DbType="int")]
+		public int? NumOtherAttends
+		{
+			get { return this._NumOtherAttends; }
+
+			set
+			{
+				if (this._NumOtherAttends != value)
+				{
+				
+                    this.OnNumOtherAttendsChanging(value);
+					this.SendPropertyChanging();
+					this._NumOtherAttends = value;
+					this.SendPropertyChanged("NumOtherAttends");
+					this.OnNumOtherAttendsChanged();
 				}
 
 			}

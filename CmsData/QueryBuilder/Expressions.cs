@@ -155,7 +155,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a => a.MeetingDate >= from
                     && a.MeetingDate < to
-                    && a.AttendanceFlag == true
+                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == (int)Attend.AttendTypeCode.Offsite))
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && (org == 0 || a.Meeting.OrganizationId == org)
                     && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
@@ -179,7 +179,7 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a => a.MeetingDate >= mindt
-                    && a.AttendanceFlag == true
+                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == (int)Attend.AttendTypeCode.Offsite))
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && (org == 0 || a.Meeting.OrganizationId == org)
                     && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))

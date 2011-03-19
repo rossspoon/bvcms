@@ -70,18 +70,11 @@ namespace CmsWeb
                 Response.Redirect(ResolveUrl("/ChangePassword.aspx"));
             Membership.GetUser(); // record activity
 
-            NewUserItem.Visible = false;
             if (Util2.CurrentPeopleId != 0)
             {
                 CurrentPersonMenuItem.Visible = true;
                 CurrentPersonLink.NavigateUrl = "Person/Index/{0}".Fmt(Util2.CurrentPeopleId);
                 CurrentPersonLink.Text = Session["ActivePerson"].ToString();
-                if (Page.User.IsInRole("Admin"))
-                {
-                    NewUserItem.Visible = true;
-                    NewUser.NavigateUrl = "/Account/AddUser/" + Util2.CurrentPeopleId;
-                    NewUser.Text = "Add '" + Session["ActivePerson"].ToString() + "' as user";
-                }
             }
 
             if (Util2.CurrentOrgId > 0)

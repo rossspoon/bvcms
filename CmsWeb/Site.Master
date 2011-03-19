@@ -151,33 +151,34 @@
                         <li>
                             <asp:HyperLink ID="Divisions" NavigateUrl="/Setup/Division/" runat="server">Divisions</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/" runat="server">Ministries</asp:HyperLink></li>
+                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/" runat="server">Settings</asp:HyperLink></li>
+                        <li>
+                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/" runat="server">Special Content</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="MetroZips" NavigateUrl="/Setup/MetroZip/" runat="server">MetroZips</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="Funds" NavigateUrl="/Setup/Fund/" runat="server">Funds</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/" runat="server">MemberTypes</asp:HyperLink></li>
+                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/" runat="server">Ministries</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/" runat="server">Settings</asp:HyperLink></li>
+                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/" runat="server">MemberTypes</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="Lookups" NavigateUrl="/Setup/Lookup/" runat="server">Lookups</asp:HyperLink></li>
                         <li>
-                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/" runat="server">Special Content</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Recreation" NavigateUrl="/Setup/Recreation/" runat="server">Recreation Setup</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
-                                runat="server">OrgMembersOnly</asp:HyperLink></li>
-                        <li>
+                            <asp:HyperLink ID="Updates" NavigateUrl="/Setup/Update/" runat="server">Update for a Tag</asp:HyperLink></li>
+                        <li><asp:HyperLink NavigateUrl="#" runat="server">Special Tasks</asp:HyperLink>
+                            <ul>
+                            <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx"
-                                runat="server">Delete Special Tags</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
-                        <li id="NewUserItem" runat="server" visible="false">
-                            <asp:HyperLink ID="NewUser" runat="server">Add As New User</asp:HyperLink></li>
+                            <li>
+                                <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
+                                    runat="server">OrgMembersOnly</asp:HyperLink></li>
+                            <li>
+                                <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx"
+                                    runat="server">Delete Special Tags</asp:HyperLink></li>
+                            <li>
+                                <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
+                            </ul></li>
                         <li>
                             <asp:HyperLink ID="ActivityLog" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
                         <li>
