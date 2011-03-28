@@ -24,6 +24,8 @@ You can include a file, image, mp3 or whatever you like in your email.
         <% } %>
    <p>From: <%=Html.DropDownList("FromAddress", Model.EmailFroms()) %>
     <input type="button" name="TestSend" value="Test (Send To Yourself)" onclick="$.TestSend()" />
+    &nbsp;&nbsp;Should this email be publicly viewable? 
+    <input type="checkbox" name="PublicViewable" />
     </p>
     <p><label>Subject:</label>
     <%=Html.TextBox("Subject", Model.Subject, new { style = "width:90%" })%>

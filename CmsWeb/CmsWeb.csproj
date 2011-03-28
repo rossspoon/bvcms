@@ -126,6 +126,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI">
+      <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Framework, Version=0.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -179,6 +182,7 @@
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
+    <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
@@ -196,6 +200,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\RollListResult.cs" />
@@ -218,7 +223,7 @@
     <Compile Include="Areas\Main\Models\Other\PostBundleModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\OrgExcelResult.cs" />
+    <Compile Include="Areas\Main\Models\Export\OrgExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyMemberInfo.cs" />
@@ -276,9 +281,8 @@
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\OnlineRegPersonModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\OnlineRegModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\SlotModel.cs" />
-    <Compile Include="Areas\Setup\Controllers\UpdateController.cs" />
-    <Compile Include="Areas\Setup\Models\UpdateModel.cs" />
-    <Compile Include="Controllers\BatchController.cs" />
+    <Compile Include="Areas\Manage\Models\UpdateFieldsModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\BatchController.cs" />
     <Compile Include="Areas\Setup\Models\DivisionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\EditMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\MeetingModel.cs" />
@@ -873,7 +877,6 @@
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.ascx" />
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionYears.aspx" />
-    <Content Include="Areas\Main\Views\Reports\AttendanceDetail.aspx" />
     <Content Include="Areas\Main\Views\Reports\ContributionStatements.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.ascx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.aspx" />
@@ -913,9 +916,15 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PickSlots.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.aspx" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchUpdatePeople.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchUploadPeople.aspx" />
+    <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\UploadPeople.aspx" />
     <Content Include="Binaries\AWSSDK.dll" />
+    <Content Include="Binaries\NPOI\Ionic.Zip.dll" />
+    <Content Include="Binaries\NPOI\Ionic_Utils_Zip_license.txt" />
+    <Content Include="Binaries\NPOI\License.txt" />
+    <Content Include="Binaries\NPOI\NPOI.dll" />
+    <Content Include="Binaries\NPOI\Read Me.txt" />
+    <Content Include="Binaries\NPOI\Release Notes.txt" />
     <Content Include="ckeditor\adapters\jquery.js" />
     <Content Include="ckeditor\ckeditor.js" />
     <Content Include="ckeditor\ckeditor_basic.js" />
@@ -1065,6 +1074,16 @@
     <Content Include="ckeditor\skins\v2\skin.js" />
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
+    <Content Include="newhome\Content\bvcms132x55.png" />
+    <Content Include="newhome\Content\cmenu.css" />
+    <Content Include="newhome\Content\cssreset.css" />
+    <Content Include="newhome\Content\darrowdown.gif" />
+    <Content Include="newhome\Content\jquery-1.4.2.min.js" />
+    <Content Include="newhome\Content\JScript1.js" />
+    <Content Include="newhome\Content\magnifier.png" />
+    <Content Include="newhome\Content\site.css" />
+    <Content Include="newhome\Content\StyleSheet1.css" />
+    <Content Include="newhome\default.htm" />
     <Content Include="Content\jquery-ui-1.8.9.custom.css" />
     <Content Include="Content\js\jquery-1.4.4.js" />
     <Content Include="Content\js\jquery-1.4.4.min.js" />
@@ -1081,7 +1100,7 @@
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
-    <Content Include="Views\Batch\MoveAndDelete.aspx" />
+    <Content Include="Areas\Manage\Views\Batch\MoveAndDelete.aspx" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\bluebullet.gif" />
     <Content Include="Content\onlinereg.css" />
@@ -1138,8 +1157,14 @@
     <Content Include="Areas\Manage\Views\Emails\Details.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Recipients.cshtml" />
-    <Content Include="Areas\Setup\Views\Update\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\UpdateFields.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\AttendanceDetail.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\LookupData.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\LookupTable.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\LookupDataPage.cshtml" />
+    <Content Include="Areas\Manage\Views\Emails\View.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Content\UpdatePeople.xls" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1565,10 +1590,9 @@
     <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
     <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchReportSpecs.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchGrade.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchRegMail.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\BatchUpdateOrg.aspx" />
+    <Content Include="Areas\Manage\Views\Batch\Grade.aspx" />
+    <Content Include="Areas\Manage\Views\Batch\RegistrationMail.aspx" />
+    <Content Include="Areas\Manage\Views\Batch\UpdateOrg.aspx" />
     <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
     <Content Include="Areas\Setup\Views\Setting\OrphanedImages.aspx" />
     <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.aspx" />
@@ -1800,12 +1824,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
+    <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Models\" />
     <Folder Include="Report\rdlc\" />
@@ -1840,7 +1866,9 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>58724</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost/cms</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

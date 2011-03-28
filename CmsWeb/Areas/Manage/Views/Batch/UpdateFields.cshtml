@@ -1,0 +1,19 @@
+﻿@model CmsWeb.Models.UpdateFieldsModel
+@{
+    ViewBag.Title = "Update Fields for Tag";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>Update Fields for Tag</h2>
+<h4>@ViewData["success"]</h4>
+<form method="post" action="/Batch/UpdateFields/Run">
+<table>
+<tr><td><b>Tag:</b></td><td><b>Field:</b></td></tr>
+<tr><td>@Html.DropDownList("Tag", Model.Tags())</td>
+    <td>@Html.DropDownList("Field", Model.Fields())</td></tr>
+<tr><td align="right"><b>New Value:</b>@Html.TextBox("NewValue")</td><td></td></tr>
+<tr><td></td><td><input type="submit" value="Run" /></td></tr>
+</table>
+</form>
+
+@{Html.RenderPartial("LookupData", Model.TitleItems());}

@@ -12,22 +12,6 @@ namespace UtilityExtensions
 {
     public static partial class Util
     {
-        //public static void Email(string from, string name, string addrs, string subject, string message)
-        //{
-        //    var fr = FirstAddress(from);
-        //    if (fr == null)
-        //        fr = FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
-        //    if (!addrs.HasValue())
-        //    {
-        //        addrs = fr.Address + "," + WebConfigurationManager.AppSettings["senderrorsto"];
-        //        message = "<p style=\"color:red\">you are receiving this email because the recipient had no email</p>" + message;
-        //    }
-        //    SendMsg(Util.SysFromEmail, Util.CmsHost, fr, subject, message, name, addrs);
-        //}
-        //public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr)
-        //{
-        //    SendMsg(SysFromEmail, CmsHost, From, subject, Message, Name, addr, 0);
-        //}
         public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr, int id)
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")

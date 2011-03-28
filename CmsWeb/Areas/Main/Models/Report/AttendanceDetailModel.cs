@@ -44,23 +44,25 @@ namespace CmsWeb.Areas.Main.Models.Report
                     orderby m.Organization.OrganizationName, m.OrganizationId, m.MeetingDate descending
                     select new
                     {
+                        MeetingId = m.MeetingId,
                         OrgName = m.Organization.OrganizationName,
                         Leader = m.Organization.LeaderName,
                         location = m.Organization.Location,
                         date = m.MeetingDate.Value,
                         OrgId = m.OrganizationId,
-                        Present = m.NumPresent + m.NumOtherAttends,
+                        Present = m.NumPresent + (m.NumOtherAttends ?? 0),
                         Visitors = m.NumNewVisit + m.NumRepeatVst,
                         OutTowners = m.NumOutTown ?? 0
                     };
             var q2 = from m in q.ToList()
                      select new MeetingRow
                      {
+                         MeetingId = m.MeetingId,
                          OrgName = m.OrgName,
                          Leader = m.Leader,
                          date = m.date.ToString("M/d/yy h:mm tt"),
                          OrgId = m.OrgId.ToString(),
-                         Present = m.Present ?? 0,
+                         Present = m.Present,
                          Visitors = m.Visitors,
                          OutTowners = m.OutTowners
                      };
@@ -80,6 +82,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         public class MeetingRow
         {
+            public int MeetingId { get; set; }
             public string OrgName { get; set; }
             public string Leader { get; set; }
             public string date { get; set; }

@@ -95,6 +95,9 @@ namespace MassEmailer
         private void Listen()
         {
             string Host = "";
+            string CmsHost = "";
+            int id = 0;
+            int pid = 0;
             while (serviceStarted)
             {
                 try
@@ -137,8 +140,8 @@ WAITFOR(
                                     continue;
                                 var a = s.Split('|');
                                 Host = a[1];
-                                var CmsHost = a[2];
-                                var id = a[3].ToInt();
+                                CmsHost = a[2];
+                                id = a[3].ToInt();
                                 using (var Db = new CMSDataContext(GetConnectionString(Host, ConnStr)))
                                 {
                                     Db.Host = Host;
@@ -146,7 +149,8 @@ WAITFOR(
                                     switch (a[0])
                                     {
                                         case "SEND":
-                                            SendPersonEmail(Db, CmsHost, id, a[4].ToInt());
+                                            pid = a[4].ToInt();
+                                            SendPersonEmail(Db, CmsHost, id, pid);
                                             break;
                                         case "START":
                                             equeue.Started = DateTime.Now;
@@ -179,13 +183,13 @@ WAITFOR(
                 catch (Exception ex)
                 {
                     WriteLog("Error sending emails ", EventLogEntryType.Error);
-                    var smtp = Util.Smtp();
                     var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
                     erroremails = erroremails.Replace(';', ',');
-                    var msg = new MailMessage(Util.FirstAddress(erroremails).Address, erroremails,
-                        "Mass Emailer Error " + Host,
-                        Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace));
-                    smtp.Send(msg);
+                    var SysFromEmail = DbUtil.Db.Setting("SysFromEmail", 
+                        ConfigurationManager.AppSettings["sysfromemail"]);                
+                    Util.SendMsg(SysFromEmail, CmsHost, Util.FirstAddress(erroremails), 
+                        "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
+                        Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), null, erroremails, 0);
                 }
             }
             Thread.CurrentThread.Abort();
@@ -210,13 +214,14 @@ WAITFOR(
             {
                 if (Util.ValidEmail(ad))
                 {
+                    var ma = new MailAddress(ad);
                     var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
                     var url = Util.URLCombine(CmsHost, qs);
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                     text = text.Replace("{unsubscribe}", link);
                     text = text.Replace("{Unsubscribe}", link);
-                    text = text.Replace("{toemail}", ad);
-                    text = text.Replace("%7Btoemail%7D", ad);
+                    text = text.Replace("{toemail}", ma.Address);
+                    text = text.Replace("%7Btoemail%7D", ma.Address);
                     text = text.Replace("{fromemail}", From.Address);
                     text = text.Replace("%7Bfromemail%7D", From.Address);
 
@@ -232,7 +237,7 @@ WAITFOR(
             var sendrate = 0D;
 
             if (lastThrottle > DateTime.MinValue)
-                if(DateTime.Now.Subtract(lastThrottle).TotalSeconds < 100)
+                if(DateTime.Now.Subtract(lastThrottle).TotalSeconds < 30)
                     return false;
                 else
                     lastThrottle = DateTime.MinValue;
@@ -255,11 +260,11 @@ WAITFOR(
                 }
                 sendrate = resp.GetSendQuotaResult.MaxSendRate.ToInt();
                 cansend = (resp.GetSendQuotaResult.SentLast24Hours + sentSinceQuotaCheck) 
-                    < (resp.GetSendQuotaResult.Max24HourSend * 90 / 100);
+                    < (resp.GetSendQuotaResult.Max24HourSend);
             }
             if (cansend)
             {
-                var ms = 700;// 1000 / sendrate;
+                var ms = 1000 / sendrate;
                 var elapsed = DateTime.Now.Subtract(lastSES).TotalMilliseconds;
                 if (elapsed >= ms)
                 {
@@ -366,10 +371,16 @@ WAITFOR(
                     EmailRoute(SysEmailFrom, from, to, nameto, Subject, body, host, id);
                 }
                 else if (!msg.Subject.StartsWith("(sending error)"))
-                    EmailRoute(SysEmailFrom, from,
-                        ConfigurationManager.AppSettings["senderrorsto"], nameto,
+                {
+                    string resp = "no response";
+                    if (response.IsNotNull())
+                        resp = response.SendRawEmailResult.ToString();
+                    Util.SendMsg(SysEmailFrom, host, from,
                         "(sending error) " + Subject,
-                        "<p>(to: {0})</p><pre>{1}</pre>{2}<br><br>{3}".Fmt(to, ex.Message, body, response.SendRawEmailResult.ToString()), host, id);
+                        "<p>(to: {0})</p><pre>{1}</pre>{2}<br><br>{3}".Fmt(
+                            to, ex.Message, body, resp), nameto,
+                        ConfigurationManager.AppSettings["senderrorsto"], id);
+                }
             }
         }
         public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)

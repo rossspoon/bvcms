@@ -35,6 +35,11 @@
                     <asp:Image ID="Image6" ImageUrl="~/images/Excel.png" runat="server" />
                     Excel Pictures</asp:HyperLink></li>
             <li>
+                <asp:HyperLink ID="ExcelUpdateLink" ToolTip="For Doing a Mass Update"
+                    runat="server">
+                    <asp:Image ID="Image9" ImageUrl="~/images/Excel.png" runat="server" />
+                    Excel Update</asp:HyperLink></li>
+            <li>
                 <asp:HyperLink ID="BulkMailLink" class="ChooseLabelType" ToolTip="Comma separated values text file, opens in excel, for bulk mailings"
                     runat="server">
                     <asp:Image ID="Image7" ImageUrl="~/images/Excel.png" runat="server" />

@@ -28,6 +28,7 @@ namespace CmsData
         ContributionChange,
         CreatedBy,
         CreatedDate,
+        DaysBetween12Attendance,
         DaysSinceContact,
         DaysTillBirthday,
         DeceasedDate,

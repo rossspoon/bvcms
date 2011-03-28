@@ -136,63 +136,44 @@ namespace CmsWeb.Models.PersonPage
             if (CampusId == 0)
                 CampusId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
-            UpdateValue(p, "DOB", Birthday);;
-            UpdateValue(p, "CampusId", CampusId);
-            UpdateValue(p, "DeceasedDate", DeceasedDate);
-            UpdateValue(p, "DoNotCallFlag", DoNotCallFlag);
-            UpdateValue(p, "DoNotMailFlag", DoNotMailFlag);
-            UpdateValue(p, "DoNotVisitFlag", DoNotVisitFlag);
-            UpdateValue(p, "EmailAddress", EmailAddress);
-            UpdateValue(p, "EmailAddress2", EmailAddress2);
-            UpdateValue(p, "SendEmailAddress1", SendEmailAddress1);
-            UpdateValue(p, "SendEmailAddress2", SendEmailAddress2);
-            UpdateValue(p, "FirstName", First);
-            UpdateValue(p, "LastName", Last);
-            UpdateValue(p, "AltName", AltName);
-            UpdateValue(p, "GenderId", GenderId);
-            UpdateValue(p, "Grade", Grade.ToInt2());
-            UpdateValue(p, "CellPhone", CellPhone.GetDigits());
-            UpdateValue(p.Family, "HomePhone", HomePhone.GetDigits());
-            UpdateValue(p, "MaidenName", Maiden);
-            UpdateValue(p, "MaritalStatusId", MaritalStatusId);
-            UpdateValue(p, "MiddleName", Middle);
-            UpdateValue(p, "NickName", NickName);
-            UpdateValue(p, "OccupationOther", Occupation);
-            UpdateValue(p, "SchoolOther", School);
-            UpdateValue(p, "SuffixCode", Suffix);
-            UpdateValue(p, "EmployerOther", Employer);
-            UpdateValue(p, "TitleCode", Title);
-            UpdateValue(p, "WeddingDate", WeddingDate);
-            UpdateValue(p, "WorkPhone", WorkPhone.GetDigits());
+            var psb = new StringBuilder();
+            var fsb = new StringBuilder();
+            p.UpdateValue(psb, "DOB", Birthday);
+            p.UpdateValue(psb, "CampusId", CampusId);
+            p.UpdateValue(psb, "DeceasedDate", DeceasedDate);
+            p.UpdateValue(psb, "DoNotCallFlag", DoNotCallFlag);
+            p.UpdateValue(psb, "DoNotMailFlag", DoNotMailFlag);
+            p.UpdateValue(psb, "DoNotVisitFlag", DoNotVisitFlag);
+            p.UpdateValue(psb, "EmailAddress", EmailAddress);
+            p.UpdateValue(psb, "EmailAddress2", EmailAddress2);
+            p.UpdateValue(psb, "SendEmailAddress1", SendEmailAddress1);
+            p.UpdateValue(psb, "SendEmailAddress2", SendEmailAddress2);
+            p.UpdateValue(psb, "FirstName", First);
+            p.UpdateValue(psb, "LastName", Last);
+            p.UpdateValue(psb, "AltName", AltName);
+            p.UpdateValue(psb, "GenderId", GenderId);
+            p.UpdateValue(psb, "Grade", Grade.ToInt2());
+            p.UpdateValue(psb, "CellPhone", CellPhone.GetDigits());
+            p.Family.UpdateValue(fsb, "HomePhone", HomePhone.GetDigits());
+            p.UpdateValue(psb, "MaidenName", Maiden);
+            p.UpdateValue(psb, "MaritalStatusId", MaritalStatusId);
+            p.UpdateValue(psb, "MiddleName", Middle);
+            p.UpdateValue(psb, "NickName", NickName);
+            p.UpdateValue(psb, "OccupationOther", Occupation);
+            p.UpdateValue(psb, "SchoolOther", School);
+            p.UpdateValue(psb, "SuffixCode", Suffix);
+            p.UpdateValue(psb, "EmployerOther", Employer);
+            p.UpdateValue(psb, "TitleCode", Title);
+            p.UpdateValue(psb, "WeddingDate", WeddingDate);
+            p.UpdateValue(psb, "WorkPhone", WorkPhone.GetDigits());
             if (p.DeceasedDateChanged)
                 p.MemberProfileAutomation(DbUtil.Db);
 
-            if (psb.Length > 0)
-            {
-                var c = new ChangeLog
-                {
-                    UserPeopleId = Util.UserPeopleId.Value,
-                    PeopleId = PeopleId,
-                    Field = "Basic Info",
-                    Data = "<table>\n" + psb.ToString() + "</table>",
-                    Created = Util.Now
-                };
-                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
-            }
-            if (fsb.Length > 0)
-            {
-                var c = new ChangeLog
-                {
-                    FamilyId = p.FamilyId,
-                    UserPeopleId = Util.UserPeopleId.Value,
-                    PeopleId = PeopleId,
-                    Field = "HomePhone",
-                    Data = "<table>\n" + fsb.ToString() + "</table>",
-                    Created = Util.Now
-                };
-                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
-            }
+            p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId.Value);
+            p.Family.LogChanges(DbUtil.Db, psb, p.PeopleId, Util.UserPeopleId.Value);
+
             DbUtil.Db.SubmitChanges();
+            
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
@@ -226,28 +207,6 @@ namespace CmsWeb.Models.PersonPage
         {
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
-        }
-        private StringBuilder fsb = new StringBuilder();
-        private void UpdateValue(Family f, string field, object value)
-        {
-            var o = Util.GetProperty(f, field);
-            if (o == null && value == null)
-                return;
-            if (o != null && o.Equals(value))
-                return;
-            fsb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
-            Util.SetProperty(f, field, value);
-        }
-        private StringBuilder psb = new StringBuilder();
-        private void UpdateValue(Person p, string field, object value)
-        {
-            var o = Util.GetProperty(p, field);
-            if (o == null && value == null)
-                return;
-            if (o != null && o.Equals(value))
-                return;
-            psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
-            Util.SetProperty(p, field, value);
         }
     }
 }

@@ -164,10 +164,10 @@
                             <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/" runat="server">MemberTypes</asp:HyperLink></li>
                         <li>
                             <asp:HyperLink ID="Lookups" NavigateUrl="/Setup/Lookup/" runat="server">Lookups</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Updates" NavigateUrl="/Setup/Update/" runat="server">Update for a Tag</asp:HyperLink></li>
                         <li><asp:HyperLink NavigateUrl="#" runat="server">Special Tasks</asp:HyperLink>
                             <ul>
+                            <li>
+                                <asp:HyperLink ID="Updates" NavigateUrl="/Batch/UpdateFields/" runat="server">Update for a Tag</asp:HyperLink></li>
                             <li>
                             <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
                             <li>
@@ -190,8 +190,16 @@
                     <ul>
                         <li>
                             <asp:HyperLink ID="HelpLink2" Target="_blank" NavigateUrl="#" runat="server">Wiki Documentation</asp:HyperLink></li>
+<% if (Page.User.IsInRole("Admin"))
+   { %>
                         <li>
-                            <asp:HyperLink ID="HyperLink22" Target="_blank" NavigateUrl="http://bvcms.wufoo.com/forms/bvcms-bug-tracker/" runat="server">Bug Report</asp:HyperLink></li>
+                            <asp:HyperLink ID="HyperLink22" Target="_blank" NavigateUrl="http://www.bvcms.com/Page/Bug" runat="server">Bug Report</asp:HyperLink></li>
+<% }
+   if (Page.Request.Url.Authority == "bvcms.com" || Page.Request.Url.Authority == "bellevue.org")
+   { %>
+                        <li>
+                            <asp:HyperLink ID="HyperLink21" Target="_blank" NavigateUrl="http://www.bvcms.com/Page/OnlineReg" runat="server">Online Registration Request Form</asp:HyperLink></li>
+<% } %>
                     </ul>
                 </li>
             </ul>

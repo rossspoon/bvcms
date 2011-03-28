@@ -326,7 +326,8 @@ namespace CMSPresenter
                 NameSplit(name, out First, out Last);
                 if (First.HasValue())
                     query = from p in query
-                            where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last))
+                            where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                                || p.LastName.StartsWith(name) || p.MaidenName.StartsWith(name))
                             && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First))
                             select p;
                 else
@@ -337,6 +338,7 @@ namespace CMSPresenter
                     else
                         query = from p in query
                                 where p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                                    || p.LastName.StartsWith(name) || p.MaidenName.StartsWith(name)
                                 select p;
             }
             if (addr.IsNotNull())

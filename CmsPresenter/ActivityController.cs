@@ -21,7 +21,7 @@ namespace CMSPresenter
     {
         public string Name { get; set; }
         public string Username { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string Activity { get; set; }
         public string Url { get; set; }
         public DateTime Date { get; set; }
@@ -49,7 +49,7 @@ namespace CMSPresenter
                          Url = a.PageUrl,
                          Date = a.ActivityDate.Value,
                          Name = a.User.Name2,
-                         UserId = a.UserId.Value,
+                         UserId = a.UserId,
                          Username = a.User.Username,
                      };
             return q2.Skip(startRowIndex).Take(maximumRows);

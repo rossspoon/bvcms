@@ -357,6 +357,9 @@
     <Field Name="KidsRecentAttendCount" Title="Kids Recent Attendance Count" Type="Integer" DisplayAs="KidsRecentAttendCount({0})" Params="Days">
       Selects people based on their kids attendance count for anything looking back a specified number of days.
     </Field>
+    <Field Name="DaysBetween12Attendance" Title="Days Between First/Second Attend" Type="Integer" DisplayAs="DaysBetween12Attendance({0}, {1}, {2}, {3})" Params="Days,Program,Division,Organization">
+      Selects attendees based on # days between their first and second attendance. The first attendance can be specified to be within a Program, Program/Division or Program/Division/Organization for a specified date range.
+    </Field>
       <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
       Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.
     </Field>-->

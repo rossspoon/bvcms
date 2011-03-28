@@ -26,6 +26,7 @@ namespace CmsWeb
             LabelsLink.NavigateUrl = "/Reports/RollLabels/" + queryId;
             VolunteerLink.NavigateUrl = "/Volunteers/Index/" + queryId;
             ExcelLink.NavigateUrl = "/ExportExcel.aspx?id=" + queryId;
+            ExcelUpdateLink.NavigateUrl = "/Export/Update/" + queryId;
             ExcelFamLink.NavigateUrl = "/ExportExcel.aspx?format=AllFamily&id=" + queryId;
             ExcelPicLink.NavigateUrl = "/ExportExcel.aspx?format=IndividualPicture&id=" + queryId;
             BulkMailLink.NavigateUrl = "/bulkmail.aspx?id=" + queryId;

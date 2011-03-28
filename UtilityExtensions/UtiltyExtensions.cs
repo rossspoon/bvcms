@@ -1112,6 +1112,18 @@ namespace UtilityExtensions
                 return null;
             }
         }
+        public static bool Contains(this string s, string c, bool ignoreCase)
+        {
+            bool result = false;
+            if (s != null && c != null)
+            {
+                if (ignoreCase)
+                    result = s.ToLower().Contains(c.ToLower());
+                else
+                    result = s.Contains(c);
+            }
+            return result;
+        }
     }
     public class EventArg<T> : EventArgs
     {

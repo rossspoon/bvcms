@@ -166,7 +166,31 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-
+        internal static Expression DaysBetween12Attendance(
+            ParameterExpression parm, CMSDataContext Db,
+            int? lookback,
+            int? progid,
+            int? divid,
+            int? org,
+            CompareType op,
+            int days)
+        {
+            Expression<Func<Person, int>> pred = p =>
+                    Db.DaysBetween12Attend(p.PeopleId, progid, divid, org, lookback).Value;
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred2 = p =>
+                p.Attends.Any(a =>
+            	a.MeetingDate >= mindt
+                && a.AttendanceFlag == true
+                && (org == 0 || a.Meeting.OrganizationId == org)
+                && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))));
+            Expression left = Expression.Invoke(pred, parm);
+            Expression attended = Expression.Invoke(pred2, parm);
+            var right = Expression.Convert(Expression.Constant(days), left.Type);
+            Expression cmp = Compare(left, op, right);
+            return Expression.And(attended, cmp);
+        }
         internal static Expression RecentAttendType(
             ParameterExpression parm,
             int? progid,
@@ -516,9 +540,9 @@ namespace CmsData
                     && a.MeetingDate >= mindt
                     && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                     && ids.Contains(a.AttendanceTypeId.Value)
-                    && a.Meeting.OrganizationId == Db .CurrentOrgId
+                    && a.Meeting.OrganizationId == Db.CurrentOrgId
                     )
-                && !p.OrganizationMembers.Any(m => m.OrganizationId == Db .CurrentOrgId
+                && !p.OrganizationMembers.Any(m => m.OrganizationId == Db.CurrentOrgId
                     && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -526,7 +550,7 @@ namespace CmsData
             return expr;
         }
         internal static Expression AttendMemberTypeAsOf(CMSDataContext Db,
-            ParameterExpression parm, 
+            ParameterExpression parm,
             DateTime? from,
             DateTime? to,
             int? progid,

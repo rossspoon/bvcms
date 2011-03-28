@@ -23,6 +23,7 @@ namespace CmsWeb.Areas.Main.Models
         public string Subject { get; set; }
         public string Body { get; set; }
         public DateTime? Schedule { get; set; }
+        public bool PublicViewable { get; set; }
 
         public string CmsHost { get; set; }
         public string Host { get; set; }
@@ -58,7 +59,7 @@ namespace CmsWeb.Areas.Main.Models
         public EmailQueue CreateQueue()
         {
             var From = new MailAddress(FromAddress, FromName);
-            return DbUtil.Db.CreateQueue(Util.CmsHost, From, Subject, Body, Schedule, QBId, wantParents ); 
+            return DbUtil.Db.CreateQueue(Util.CmsHost, From, Subject, Body, Schedule, QBId, wantParents , false); 
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

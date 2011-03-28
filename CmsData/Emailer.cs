@@ -155,7 +155,7 @@ namespace CmsData
                 p = UserPersonFromEmail(DbUtil.SystemEmailAddress);
             return p;
         }
-        public EmailQueue CreateQueue(string cmshost, MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents)
+        public EmailQueue CreateQueue(string cmshost, MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents, bool PublicViewable)
         {
             var emailqueue = new EmailQueue
             {
@@ -167,6 +167,7 @@ namespace CmsData
                 SendWhen = schedule,
                 QueuedBy = Util.UserPeopleId,
                 Transactional = false,
+                PublicX = PublicViewable,
             };
             EmailQueues.InsertOnSubmit(emailqueue);
 
@@ -217,13 +218,14 @@ namespace CmsData
             {
                 if (Util.ValidEmail(ad))
                 {
+                    var ma = new MailAddress(ad);
                     var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
                     var url = Util.URLCombine(CmsHost, qs);
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                     text = text.Replace("{unsubscribe}", link);
                     text = text.Replace("{Unsubscribe}", link);
-                    text = text.Replace("{toemail}", ad);
-                    text = text.Replace("%7Btoemail%7D", ad);
+                    text = text.Replace("{toemail}", ma.Address);
+                    text = text.Replace("%7Btoemail%7D", ma.Address);
                     text = text.Replace("{fromemail}", From.Address);
                     text = text.Replace("%7Bfromemail%7D", From.Address);
 
@@ -238,12 +240,12 @@ namespace CmsData
         }
         public List<string> DoReplacements(ref string text, string CmsHost, Person p, EmailQueueTo emailqueueto)
         {
-            if (p.Name.Contains("?") || p.Name.ToLower().Contains("unknown"))
+            if (p.Name.Contains("?") || p.Name.Contains("unknown", true))
                 text = text.Replace("{name}", string.Empty);
             else
                 text = text.Replace("{name}", p.Name);
 
-            if (p.PreferredName.Contains("?") || p.PreferredName.ToLower() == "unknown")
+            if (p.PreferredName.Contains("?", true) || (p.PreferredName.Contains("unknown", true)))
                 text = text.Replace("{first}", string.Empty);
             else
                 text = text.Replace("{first}", p.PreferredName);
@@ -303,8 +305,9 @@ namespace CmsData
                     if (qm.PayLink.HasValue())
                         text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(qm.PayLink));
                     text = text.Replace("{amtdue}", (qm.Amount - qm.AmountPaid).ToString2("c"));
-                    if (qm.RegisterEmail.HasValue() && !aa.Contains(qm.RegisterEmail, StringComparer.OrdinalIgnoreCase))
-                        aa.Add(qm.RegisterEmail);
+                    if (qm.RegisterEmail.HasValue())
+                        if (!aa.Any(mm => EmailMatch(mm, qm.RegisterEmail)))
+                            aa.Add(qm.RegisterEmail);
                 }
             }
             return aa;

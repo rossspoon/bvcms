@@ -1,0 +1,35 @@
+﻿@model CmsWeb.Areas.Main.Models.Report.AttendanceDetailModel
+
+@{
+    ViewBag.Title = "AttendanceDetail";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>AttendanceDetail</h2>
+
+    <table cellpadding="3">
+    <thead>
+    <tr>
+    <th align="left">OrgName</th>
+    <th align="left">Leader</th>
+    <th align="left">Date</th>
+    <th align="right">Present</th>
+    <th align="right">Visitors</th>
+    <th align="right">OutTowners</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var m in Model.FetchMeetings())
+    {
+        <tr>
+        <td>@m.OrgName</td>
+        <td>@m.Leader</td>
+        <td><a href="/Meeting.aspx?id=@m.MeetingId">@m.date</a></td>
+        <td align="right">@m.Present</td>
+        <td align="right">@m.Visitors</td>
+        <td align="right">@m.OutTowners</td>
+        </tr>
+    }
+    </tbody>
+    </table>
+

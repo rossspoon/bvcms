@@ -20,12 +20,11 @@ using CMSPresenter;
 
 namespace CmsWeb.Models
 {
-    public class UpdateModel
+    public class UpdateFieldsModel
     {
         public string Tag { get; set; }
         public string Field { get; set; }
         public string NewValue { get; set; }
-        public CMSPresenter.CodeValueController cv = new CodeValueController();
 
         public SelectList Fields()
         {
@@ -44,9 +43,27 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Tags()
         {
+            var cv = new CodeValueController();
             var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
             tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return tg;
         }
+        public IEnumerable<TitleItems> TitleItems()
+        {
+            var Model = new CodeValueController();
+            return new List<TitleItems>
+            {
+                new TitleItems { title = "Member Status Codes", items = Model.MemberStatusCodes() },
+                new TitleItems { title = "Campus Codes", items = Model.AllCampuses() },
+                new TitleItems { title = "Marital Status Codes", items = Model.MaritalStatusCodes() },
+                new TitleItems { title = "Gender Codes", items = Model.GenderCodes() },
+                new TitleItems { title = "Family Position Codes", items = Model.FamilyPositionCodes() },
+            };
+        }
+    }
+    public class TitleItems
+    {
+        public string title { get; set; }
+        public IEnumerable<CodeValueItem> items { get; set; }
     }
 }

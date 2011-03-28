@@ -109,11 +109,5 @@ namespace CmsWeb
         {
             return MyTags.ToggleTag(PeopleId, controlid);
         }
-
-        //protected void NewSearch_Click(object sender, EventArgs e)
-        //{
-        //    Session.Remove(STR_PersonSearch);
-        //    Response.Redirect("~/Search.aspx");
-        //}
     }
 }

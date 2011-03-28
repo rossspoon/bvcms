@@ -1,0 +1,20 @@
+﻿@using UtilityExtensions;
+@using CmsWeb;
+@model CmsData.EmailQueue
+<html>
+<head>
+<style type="text/css">
+#maindiv {
+        max-width: 600px;
+        width:expression(document.body.clientWidth > 600? "600px": "auto" );
+        font-family:Arial;
+}
+</style>
+</head>
+<body>          
+<div id="maindiv">
+<h3>Subject: @Html.Raw(Model.Subject)</h3>
+@Html.Raw(Model.Body)
+</div>
+</body>
+</html>

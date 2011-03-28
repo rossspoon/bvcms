@@ -345,15 +345,12 @@ namespace CmsData
             if (s.HasValue())
             {
                 var a = s.SplitStr(",").Select(ss => ss.ToInt());
-                q = from u in Users
-                    where a.Contains(u.PeopleId.Value)
-                    select u.Person;
+                q = from p in People
+                    where a.Contains(p.PeopleId)
+                    select p;
+                return q;
             }
-            else
-            {
-                return CMSRoleProvider.provider.GetAdmins();
-            }
-            return q;
+            return CMSRoleProvider.provider.GetAdmins();
         }
         User _currentuser;
         public User CurrentUser

@@ -333,7 +333,10 @@ namespace CmsData
             get
             {
                 if (EmailAddress.HasValue())
-                    return Name + " <" + EmailAddress + ">";
+                    if (Name.Contains("?"))
+                        return EmailAddress;
+                    else
+                        return Name + " <" + EmailAddress + ">";
                 return String.Empty;
             }
         }
@@ -342,7 +345,10 @@ namespace CmsData
             get
             {
                 if (EmailAddress2.HasValue())
-                    return Name + " <" + EmailAddress2 + ">";
+                    if (Name.Contains("?"))
+                        return EmailAddress2;
+                    else
+                        return Name + " <" + EmailAddress2 + ">";
                 return String.Empty;
             }
         }
@@ -869,6 +875,32 @@ namespace CmsData
             c.contactees.Add(new Contactee { PeopleId = PeopleId });
             DbUtil.Db.SubmitChanges();
             return c;
+        }
+
+        public void UpdateValue(StringBuilder psb, string field, object value)
+        {
+            var o = Util.GetProperty(this, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
+            Util.SetProperty(this, field, value);
+        }
+        public void LogChanges(CMSDataContext Db, StringBuilder psb, int UserPeopleId)
+        {
+            if (psb.Length > 0)
+            {
+                var c = new ChangeLog
+                {
+                    UserPeopleId = UserPeopleId,
+                    PeopleId = PeopleId,
+                    Field = "Basic Info",
+                    Data = "<table>\n" + psb.ToString() + "</table>",
+                    Created = Util.Now
+                };
+                Db.ChangeLogs.InsertOnSubmit(c);
+            }
         }
     }
 }

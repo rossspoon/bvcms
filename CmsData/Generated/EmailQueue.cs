@@ -41,6 +41,8 @@ namespace CmsData
 		
 		private bool? _Transactional;
 		
+		private bool? _PublicX;
+		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
@@ -91,6 +93,9 @@ namespace CmsData
 		
 		partial void OnTransactionalChanging(bool? value);
 		partial void OnTransactionalChanged();
+		
+		partial void OnPublicXChanging(bool? value);
+		partial void OnPublicXChanged();
 		
     #endregion
 		public EmailQueue()
@@ -369,6 +374,28 @@ namespace CmsData
 					this._Transactional = value;
 					this.SendPropertyChanged("Transactional");
 					this.OnTransactionalChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Public", UpdateCheck=UpdateCheck.Never, Storage="_PublicX", DbType="bit")]
+		public bool? PublicX
+		{
+			get { return this._PublicX; }
+
+			set
+			{
+				if (this._PublicX != value)
+				{
+				
+                    this.OnPublicXChanging(value);
+					this.SendPropertyChanging();
+					this._PublicX = value;
+					this.SendPropertyChanged("PublicX");
+					this.OnPublicXChanged();
 				}
 
 			}

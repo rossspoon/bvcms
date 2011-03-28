@@ -122,6 +122,14 @@ namespace CmsData
                                CompType,
                                double.Parse(c.TextValue));
                 // D --------------------
+                case QueryType.DaysBetween12Attendance:
+                    return Expressions.DaysBetween12Attendance(parm, Db,
+                               c.Days,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.DaysTillBirthday:
                     return Expressions.DaysTillBirthday(parm, Db,
                                CompType,

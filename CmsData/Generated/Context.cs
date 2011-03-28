@@ -2669,6 +2669,26 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.DaysBetween12Attend", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? DaysBetween12Attend(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "progid", DbType="int")] int? progid,
+            [Parameter(Name = "divid", DbType="int")] int? divid,
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "lookback", DbType="int")] int? lookback
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                progid,
+                divid,
+                orgid,
+                lookback
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.VBSOrg", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? VBSOrg(

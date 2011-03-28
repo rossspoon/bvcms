@@ -1,0 +1,133 @@
+@charset "utf-8";
+html {
+	font-family: Arial, Helvetica, sans-serif;
+	height: 100%;
+}
+/*
+Generics
+*/
+
+body {
+	background-image: none;
+	margin-top: .7em;
+	margin-left: 8%;
+	margin-right: 8%;
+	height: 100%;
+}
+a ,a:hover,a:visited,a:active{
+	color: #666;
+	text-decoration: none;
+}
+#header h1 {
+	font-size:x-large;
+	/* [disabled]font-weight: bold;
+*/
+}
+#header h2 {
+	font-size:small;
+	font-weight: normal;
+	color: #666;
+}
+#userarea{
+	font-size: smaller;
+	margin-top: 0px;
+}
+#userarea strong {
+	font-weight: normal;
+}
+#userarea a {
+	color:#393;
+}
+#userarea input  {
+	font-size: small;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #999;
+	width: 8em;
+	margin-top: 3px;
+}
+#header td.left {
+	vertical-align: text-top;
+}
+#header td.center {
+	text-align: center;
+	vertical-align: middle;
+}
+#header td.right {
+	text-align: right;
+	vertical-align: middle;
+}
+a:hover, a:active {
+	color: #666;
+	text-decoration: underline;
+}
+#main {
+	margin-top: 8px;
+
+}
+#mainlayout    td{
+	vertical-align: top;
+	width: 33%;
+	height: 100%;
+}
+#mainlayout {
+	width: 100%;
+}
+
+#main div.roundbox {
+	border: 2px solid #808183;
+	-moz-border-radius: 10px;
+	border-radius: 20px;
+	padding: 8px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	margin-left: 3px;
+	margin-right: 3px;
+	background-color: #F8F8F8;
+}
+#col1 div.roundbox {
+	border-radius: 20px;
+	min-height: 480px;
+}
+#col2 div.roundbox {
+	border-radius: 20px;
+	min-height: 228px;
+}
+#col3 div.roundbox {
+	border-radius: 20px;
+	min-height: 480px;
+}
+#main div.roundbox  h2{
+	color: #666;
+	border-bottom-color: #97BE3E;
+	border-bottom-width: 3px;
+	border-bottom-style: solid;
+	margin-top: .6em;
+	margin-bottom: 6px;
+}
+#main div.roundbox  h3{
+	font-size: smaller;
+	font-weight: bold;
+	margin-top: .3em;
+	border-bottom: 1px solid #ccc;
+	color: #666;
+}
+#main div.roundbox  p{
+	font-size: smaller;
+}
+#welcome a:hover {
+	text-decoration:none;
+}
+#logout {
+	display:none;
+	background-color:#f3f3f3;
+	border: 1px solid #222;
+	padding: 6px;
+	position:absolute;
+	left: auto;
+	right: 8%;
+	top: 1.8em;
+}
+#logout a:hover {
+	text-decoration:underline;
+}

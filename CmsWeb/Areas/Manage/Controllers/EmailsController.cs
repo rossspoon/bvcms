@@ -39,6 +39,13 @@ namespace CmsWeb.Areas.Manage.Controllers
             }
             return View(m);
         }
+        public ActionResult View(int id)
+        {
+            var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
+            if (email.PublicX ?? false == false)
+                return Content("no email available");
+            return View(email);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Recipients(int id)
         {

@@ -29,6 +29,10 @@
 <tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>
 <tr><td>RunTime</td><td>@dt.ToString("H:mm:ss")</td></tr>
 </table>
+@if (Model.queue.PublicX ?? false)
+{
+@Html.ActionLink("View Email", "View", new { id = Model.id })
+}
 <h2>@Html.Raw(Model.queue.Subject)</h2>
 <div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>
 <hr />

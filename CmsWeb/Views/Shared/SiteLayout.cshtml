@@ -157,9 +157,9 @@ else
                                 <li><a href="/Setup/Ministry/">Ministries</a></li>
                                 <li><a href="/Setup/MemberType/">MemberTypes</a></li>
                                 <li><a href="/Setup/Lookup/">Lookups</a></li>                                
-                                <li><a href="/Setup/Update/">Update for a Tag</a></li>
                                 <li><a href="#">Special Tasks</a>
                                     <ul>
+                                    <li><a href="/Batch/UpdateFields/">Update for a Tag</a></li>
                                     <li><a href="/Admin/ToggleOrgMembersOnly.ashx">
                                         @(Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On")</a></li>
                                     <li><a href="/Admin/ClearCache.aspx">Clear Cache</a></li>
@@ -171,12 +171,17 @@ else
                             </ul>
                         </li>
     }
-                        <li class="headlink"><a href="@Util.HelpLink(Util.Helpfile)"
-                            target="_blank">Help</a>
+                        <li class="headlink"><a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a>
                             <ul>
-                                <li><a href="@Util.HelpLink(Util.Helpfile)"
-                                    target="_blank">Wiki Documentation</a></li>
-                                <li><a href="http://bvcms.wufoo.com/forms/bvcms-bug-tracker/" target="_blank">Bug Report</a></li>
+                                <li><a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Wiki Documentation</a></li>
+@if (Context.User.IsInRole("Admin"))
+{
+                                <li><a href="http://bvcms.com/Page/Bug/" target="_blank">Bug Report</a></li>
+}
+@if (Context.Request.Url.Authority == "bvcms.com" || Context.Request.Url.Authority == "bellevue.org")
+{
+                                <li><a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request Form</a></li>
+}
                             </ul>
                         </li>
                     </ul>

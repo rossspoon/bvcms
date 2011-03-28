@@ -28,7 +28,7 @@ namespace CmsWeb.Admin
             foreach(var i in q)
             {
                 n += 1;
-                if (n < 40 || dt.Subtract(i.LastActivityDate.Value).TotalHours <= 24)
+                if (n < 180 || dt.Subtract(i.LastActivityDate.Value).TotalHours <= 48)
                     sb.AppendFormat("<tr><td>{4}</td><td><a href='{3}'>{0}</a></td><td>{1}</td><td>{2}</td></tr>",
                         i.Name, i.LastActivityDate, i.Host,
                         ResolveUrl("~/Admin/Activity.aspx?uid={0}".Fmt(i.UserId)), i.Username);

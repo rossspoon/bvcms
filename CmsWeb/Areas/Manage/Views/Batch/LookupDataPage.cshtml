@@ -1,0 +1,7 @@
+﻿@using CmsWeb.Models
+@model IEnumerable<TitleItems>
+@{
+    ViewBag.Title = "Lookup Data";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+    Html.RenderPartial("LookupData", Model);
+}
