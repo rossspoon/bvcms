@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style="text-align: center; font-size: large">
+    <div style="text-align: center; font-size: 110%">
         <div>
             <h1>
                 Pledge Report</h1>
@@ -14,7 +14,7 @@
                         To Date:
                     </td>
                     <td>
-                        <asp:TextBox ID="ToDt" runat="server" AutoPostBack="false" Style="font-size: large"
+                        <asp:TextBox ID="ToDt" runat="server" AutoPostBack="false" Style="font-size: 110%"
                             Width="100"></asp:TextBox>
                         <cc1:CalendarExtender ID="ToDateExtender" runat="server" TargetControlID="ToDt">
                         </cc1:CalendarExtender>
@@ -27,7 +27,7 @@
             </table>
         </div>
         <hr />
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+        <asp:GridView ID="GridView1" CssClass="aspgrid" runat="server" AutoGenerateColumns="False" 
             DataSourceID="ObjectDataSource1"
         CellPadding="4" ForeColor="#333333" GridLines="None" >
         <PagerSettings Position="TopAndBottom" />

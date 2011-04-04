@@ -312,7 +312,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/");
+            return Redirect("/Home");
         }
         public ActionResult UploadPeople(string text)
         {
@@ -390,7 +390,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
                 foreach (var a in fam)
                 {
-                    var p = Person.Add(f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], false, 0, 0, null);
+                    var p = Person.Add(DbUtil.Db, false, f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], 0, 0, 0, null);
                     p.AltName = a[names["AltName"]];
                     p.CellPhone = a[names["CellPhone"]].GetDigits();
                     p.EmailAddress = a[names["Email"]].Trim();
@@ -440,12 +440,18 @@ namespace CmsWeb.Areas.Manage.Controllers
                     var nq = from name in names.Keys
                              where !standardnames.Contains(name)
                              select name;
+                    var dt = DateTime.Now;
                     foreach (var name in nq)
-                        p.PeopleExtras.Add(new PeopleExtra {  Field = name, StrValue = a[names[name]] });
+                        p.PeopleExtras.Add(new PeopleExtra 
+                        {  
+                            Field = name, 
+                            StrValue = a[names[name]],
+                            TransactionTime = dt
+                        });
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/");
+            return Redirect("/Home");
         }
         public ActionResult UpdatePeople0(string text)
         {
@@ -582,7 +588,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/");
+            return Redirect("/Home");
         }
         public ActionResult UpdateFields()
         {

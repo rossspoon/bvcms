@@ -35,6 +35,13 @@ namespace CmsWeb
             ctl = new TagController();
             if (!IsPostBack)
             {
+                var tag = Page.QueryString<string>("tag");
+                if (tag.HasValue())
+                {
+                    var a = tag.SplitStr(",", 2);
+                    Util2.CurrentTag = a[1];
+                    ShareLinkText = ctl.SharedCount();
+                }
                 DbUtil.LogActivity("Managing Tags");
                 Tags.DataBind();
                 SetSelectedItem();

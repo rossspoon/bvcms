@@ -118,7 +118,7 @@
     &nbsp;|
     <asp:LinkButton ID="NewBundle" runat="server" OnClick="NewBundle_Click">Create New Bundle</asp:LinkButton>
     | <a href="/PostBundle/Index/<%=bundleheader.BundleHeaderId %>">PostBundle (edit)</a>
-    <table style="font-size: large">
+    <table style="font-size: 110%">
         <tr>
             <td>
                 Total Header:

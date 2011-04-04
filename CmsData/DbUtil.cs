@@ -78,6 +78,34 @@ namespace CmsData
                 InternalDb = null;
             }
         }
+        public static string TopNotice()
+        {
+            var hc = HttpRuntime.Cache[Db.Host + "topnotice"] as string;
+            if (hc == null)
+            {
+                var h = Content("TopNotice");
+                if (h != null)
+                    hc = h.Body;
+                else
+                    hc = string.Empty;
+                HttpRuntime.Cache[Db.Host + "topnotice"] = hc;
+            }
+            return hc;
+        }
+        public static string HeaderImage(string def)
+        {
+            var hc = HttpRuntime.Cache[Db.Host + "headerimg"] as string;
+            if (hc == null)
+            {
+                var h = Content("HeaderImg");
+                if (h != null)
+                    hc = h.Body;
+                else
+                    hc = def;
+                HttpRuntime.Cache[Db.Host + "headerimg"] = hc;
+            }
+            return hc;
+        }
         public static string Header()
         {
             var hc = HttpRuntime.Cache[Db.Host + "header"] as string;

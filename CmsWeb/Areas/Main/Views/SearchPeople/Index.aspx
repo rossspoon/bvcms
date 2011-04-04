@@ -6,7 +6,7 @@
 <%=Html.Hidden("origin", Model.EntryPoint) %>
 <div>
 <table class="modalPopup">
-    <tr style="font-size: small">
+    <tr style="font-size: 90%">
         <td colspan="2">
             <a id="ClearForm" href="#">clear</a>
         </td>

@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             string expdate, 
             decimal amt, 
             int tranid, 
+            string description,
             int PeopleId, 
             string email,
             string first, 
@@ -53,7 +54,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             p["x_card_code"] = ccv;
             p["x_exp_date"] = expdate;
             p["x_amount"] = amt.ToString();
-            p["x_description"] = tranid.ToString(); // should goto invoice number, this s/b description
+            p["x_description"] = description;
             p["x_cust_id"] = PeopleId.ToString(); // not passing?
             p["x_first_name"] = first;
             p["x_last_name"] = last;

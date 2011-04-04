@@ -503,7 +503,7 @@ namespace UtilityExtensions
             }
         }
 
-        public static string CmsHost
+        public static string CmsHost2
         {
             get
             {

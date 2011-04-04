@@ -49,7 +49,7 @@
     </script>
 
     <asp:Button ID="RefreshGrids" runat="server" Style="display: none" OnClick="RefreshGrids_Click" />
-    <table class="PersonHead" border="0">
+    <table class="PersonHead" border="0" width="100%">
         <tr>
             <td>
                 <cc1:DisplayLabel ID="FamilyName" runat="server" BindingSource="family" />
@@ -156,7 +156,7 @@
             <table>
                 <tr>
                     <td>
-                        <asp:GridView ID="FamilyGrid" runat="server" AutoGenerateColumns="False" CellPadding="3"
+                        <asp:GridView ID="FamilyGrid" CssClass="aspgrid" runat="server" AutoGenerateColumns="False" CellPadding="3"
                             EmptyDataText="No Family Members" OnRowDataBound="GridView1_RowDataBound"
                             DataSourceID="FamilyMembersODS" 
                             DataKeyNames="PeopleId"
@@ -251,7 +251,7 @@
             <table>
                 <tr>
                     <td>
-                        <asp:GridView ID="RelatedFamilyGrid" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                        <asp:GridView ID="RelatedFamilyGrid" CssClass="aspgrid" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                             CellPadding="3" EmptyDataText="No Related Families Found" 
                             OnRowDataBound="RelatedFamilyGrid_RowDataBound"  
                             DataKeyNames="FamilyId,RelatedFamilyId" DataSourceID="RelatedFamiliesODS"

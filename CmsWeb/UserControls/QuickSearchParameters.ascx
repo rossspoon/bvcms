@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="True" CodeBehind="QuickSearchParameters.ascx.cs"
     Inherits="QuickSearchParameters" %>
 <asp:Panel runat="server" ID="QSPanel" DefaultButton="SearchButton"><table class="modalPopup">
-    <tr style="font-size: small">
+    <tr style="font-size: 90%">
         <td colspan="2">
             <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
         </td>

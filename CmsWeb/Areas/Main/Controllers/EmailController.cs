@@ -15,7 +15,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? parents)
         {
             var m = new MassEmailer(id, parents);
-            m.CmsHost = Util.CmsHost;
+            m.CmsHost = DbUtil.Db.CmsHost;
             m.Host = Util.Host;
             if (body.HasValue())
                 m.Body = Server.UrlDecode(body);
@@ -44,9 +44,9 @@ namespace CmsWeb.Areas.Main.Controllers
             if (emailqueue.SendWhen.HasValue)
                 return Json(new { id = 0, content = "<h2>Emails Queued</h2>" });
             if (Db.UseMassEmailer)
-                Db.QueueEmail(emailqueue.Id, Util.CmsHost, Util.Host);
+                Db.QueueEmail(emailqueue.Id, DbUtil.Db.CmsHost, Util.Host);
             else
-                Db.SendPeopleEmail(Util.CmsHost, emailqueue);
+                Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
 
             return Json(new { id = emailqueue.Id });
         }

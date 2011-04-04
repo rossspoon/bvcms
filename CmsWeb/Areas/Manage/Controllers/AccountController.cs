@@ -99,14 +99,14 @@ CKEditorFuncNum, baseurl + fn, error));
 
         public ActionResult LogOn()
         {
-            if (Request.Url.Scheme == "http" && Util.CmsHost.StartsWith("https://"))
+            if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)
-                    return Redirect(Util.CmsHost + "Logon?" + Request.QueryString);
+                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
                 else
-                    return Redirect(Util.CmsHost + "Logon");
+                    return Redirect(DbUtil.Db.CmsHost + "Logon");
 
             if (User.Identity.IsAuthenticated)
-                return Redirect("/");
+                return Redirect("/Home");
 
             return View();
         }
@@ -118,7 +118,7 @@ CKEditorFuncNum, baseurl + fn, error));
             {
                 var lc = returnUrl.ToLower();
                 if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
-                    returnUrl = null;
+                    returnUrl = "/Home";
             }
 
             if (!userName.HasValue())
@@ -139,7 +139,7 @@ CKEditorFuncNum, baseurl + fn, error));
                     return Redirect("/Person/Index/" + Util.UserPeopleId);
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);
-            return Redirect("/");
+            return Redirect("/Home");
         }
         public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
         {
@@ -330,7 +330,7 @@ The bvCMS Team</p>
         public ActionResult LogOff()
         {
             FormsAuth.SignOut();
-            return Redirect("/");
+            return Redirect("/Home");
         }
 
         public ActionResult ForgotUsername(string email)

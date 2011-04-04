@@ -249,19 +249,31 @@ function EditCondition(ev) {
 (function($) {
     var o = {};
     $.fn.SelectCondition = function() {
-        $('#QueryConditionSelect').dialog({
-            overlay: { background: "#000", opacity: 0.3 },
-            bgiframe: true,
-            modal: true,
-            autoOpen: false,
-            closeOnEscape: true,
-            width: 750,
-            height: 575,
-            position: 'top'
-        });
+//        $('#QueryConditionSelect').dialog({
+//            overlay: { background: "#000", opacity: 0.3 },
+//            bgiframe: true,
+//            modal: true,
+//            autoOpen: false,
+//            closeOnEscape: true,
+//            width: 750,
+//            height: 575,
+//            position: 'top'
+//        });
         this.click(function(ev) {
             o.Id = this.id;
-            $('#QueryConditionSelect').dialog("open");
+            $.blockUI({ 
+                message: $('#QueryConditionSelect'),
+                css: { 
+                    padding:        0, 
+                    top: '10%',
+                    left: '2em',
+                    margin:         0, 
+                    width:          '750px', 
+                    textAlign:      'left',
+                    cursor:         'arrow'
+                } 
+            });
+            $('.blockOverlay').click($.unblockUI); 
             return false;
         });
         $('.FieldLink').click(function(ev) {
@@ -269,10 +281,13 @@ function EditCondition(ev) {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()
             }, function(ret) {
-                $('#QueryConditionSelect').dialog("close");
+                $.unblockUI();
                 UpdateView(ret);
             }, "json");
             return false;
+        });
+        $("a.closeit").click(function(ev) {
+            $.unblockUI();
         });
         return this;
     };

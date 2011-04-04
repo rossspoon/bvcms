@@ -305,7 +305,7 @@ ul#ConditionGrid
     list-style-type: none; 
     margin-left: 0; 
     padding-left: 0; 
-    font-size: large;
+    font-size: 110%;
     margin-top: 0px; 
     margin-bottom: 0px;
 }

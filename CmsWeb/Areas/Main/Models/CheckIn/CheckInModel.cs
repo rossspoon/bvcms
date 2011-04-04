@@ -411,7 +411,7 @@ namespace CmsWeb.Models
                 var what = Member ? "joined" : "dropped";
                 DbUtil.Db.Email(DbUtil.AdminMail, 
                     DbUtil.Db.PeopleFromPidString(org.NotifyIds), 
-                    "cms check-in, {0} class on ".Fmt(what) + Util.CmsHost, 
+                    "cms check-in, {0} class on ".Fmt(what) + DbUtil.Db.CmsHost, 
                     "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt(Util.ServerLink("/Person/Index/" + PeopleId), PeopleId, p.Name, what, org.OrganizationName));
             }
         }

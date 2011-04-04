@@ -1,15 +1,17 @@
 ﻿<html>
 <head>
-<meta content="en-us" http-equiv="Content-Language">
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="en-us" http-equiv="Content-Language"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>BVCMS Home</title>
-<link href="Content/cssreset.css" rel="stylesheet" type="text/css">
-<link href="Content/site.css" rel="stylesheet" type="text/css">
-<link href="Content/cmenu.css" rel="stylesheet" type="text/css">
+<!--<link href="Content/cssreset.css" rel="stylesheet" type="text/css"/>
+--><link href="../Content/cmenu.css" rel="stylesheet" type="text/css"/>
+<link href="../Content/Style2.css" rel="stylesheet" type="text/css"/>
+<link href="../Content/site.css" rel="stylesheet" type="text/css"/>
+<style type="text/css"></style>
 </head>
 
 <body>
-<script src="Content/jquery-1.4.2.min.js" type="text/javascript"></script> 
+<script src="../Content/jquery-1.4.4.min.js" type="text/javascript"></script> 
 <script type="text/javascript">
     $(function () {
         $("#welcome").hover(function () {
@@ -19,130 +21,323 @@
         });
     });
 </script>
-<div id="header">
-  <table cellpadding="0" cellspacing="0" style="width: 100%">
-    <tr>
-      <td class="left"><img src="Content/bvcms132x55.png" width="132" height="55"></td>
-      <td class="center"><div>
-          <h1>Redeemer Presbyterian Church<br>
-          </h1>
-          <h2> Seeking to renew the City Socially, Spiritually, and Culturally</h2>
-        </div></td>
-      <td class="right"><div id="userarea">
-          <div id="welcome"><a href="#">Welcome, Chris! <img src="Content/darrowdown.gif" width="15" /></a>
-            <div id="logout"> <a href="#">Logout</a><br>
-              <a href="#">Change Password</a></div>
-          </div>
-          <strong>Active Tag:</strong> <a href="#">UnNamed</a><br>
-          <form method="post">
-            <img src="Content/magnifier.png">
-            <input name="Text1" type="text">
-          </form>
-        </div></td>
-    </tr>
-    <tr>
-      <td colspan="2"><div></div></td>
-      <td></td>
-    </tr>
-  </table>
-  <div class="cmenu" style="border-bottom:4px solid #ddd">
-    <ul>
-      <li><a href="#">People</a>
-        <ul>
-          <li><a href="#">Quick Search</a></li>
-          <li><a href="#">Manage Tags</a></li>
-          <li><a href="#">Tasks</a></li>
-          <li><a href="#">Contact Search</a></li>
-          <li><a href="#">David Carroll</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Organization</a>
-        <ul>
-          <li><a href="#">Search</a></li>
-          <li><a href="#">Email Attendance Notices</a></li>
-          <li><a href="#">Enrollment Control Report</a></li>
-          <li><a href="#">Org Members Management</a></li>
-          <li><a href="#">Faithful Men Class</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Reports</a>
-        <ul>
-          <li><a href="#">Week at a Glance</a></li>
-          <li><a href="#">Average Week at a Glance</a></li>
-          <li><a href="#">Church Attendance Summary</a></li>
-          <li><a href="#">Weekly Decisions</a></li>
-          <li><a href="#">Decision Summary</a></li>
-        </ul>
-      </li>
-      <li><a href="#">QueryBuilder</a>
-        <ul>
-          <li><a href="#">Last Query</a></li>
-          <li><a href="#">New Query</a></li>
-          <li><a href="#">Saved Queries</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Contributions</a>
-        <ul>
-          <li><a href="#">Bundles</a></li>
-          <li><a href="#">All</a></li>
-          <li><a href="#">---Reports---</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Admin</a>
-        <ul class="last">
-          <li><a href="#">Users</a></li>
-          <li><a href="#">Programs</a></li>
-          <li><a href="#">Divisions</a></li>
-          <li><a href="#">Settings</a></li>
-          <li><a href="#">Special Content</a></li>
-          <li><a href="#">Metro Zips</a></li>
-          <li><a href="#">Funds</a></li>
-          <li><a href="#">Ministries</a></li>
-          <li><a href="#">Member Types</a></li>
-          <li><a href="#">Lookups</a></li>
-          <li><a href="#">Special Tasks</a></li>
-          <li><a href="#">Activity Log</a></li>
-          <li><a href="#">Last Activity</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Help</a>
-        <ul class="last">
-          <li><a href="#">Wiki Documentation</a></li>
-          <li><a href="#">Bug Report</a></li>
-        </ul>
-      </li>
-    </ul>
+<div id="container">
+  <div id="header">
+    <table cellpadding="0" cellspacing="0" style="width: 100%">
+      <tr>
+        <td class="left"><img src="Content/bvcms132x55.png" width="132" height="55"/></td>
+        <td class="center"><div>
+            <h1>Redeemer Presbyterian Church</h1>
+            <h2>Seeking to renew the City Socially, Spiritually, and Culturally</h2>
+          </div></td>
+        <td class="right"><div id="userarea">
+            <div id="welcome"><a href="#">Welcome, Chris! <img src="Content/Welcome.png" width="39" height="16"></a>
+              <ul id="logout">
+                <li><a href="/Account/LogOff/">Logout</a></li>
+                <li><a href="/ChangePassword.aspx">Change Password</a></li>
+                <li><a href="/Admin/Users.aspx">Users</a></li>
+                <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                <li><a href="/Admin/LastActivity.aspx">Last Activity</a></li>
+              </ul>
+            </div>
+            <strong>Active Tag:</strong> <a href="#">UnNamed</a><br/>
+            <form method="post">
+              <img src="Content/magnifier.png"/>
+              <input name="Text1" type="text"/>
+            </form>
+          </div></td>
+      </tr>
+      <tr>
+        <td colspan="2"><div></div></td>
+        <td></td>
+      </tr>
+    </table>
+    <div id="cmenu" style="border-bottom:4px solid #ddd">
+      <ul>
+        <li><a href="#">People</a>
+          <ul>
+            <li><a href="#">Quick Search</a></li>
+            <li><a href="#">Manage Tags</a></li>
+            <li><a href="#">Tasks</a></li>
+            <li><a href="#">Contact Search</a></li>
+            <li><a href="#">David Carroll</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Organization</a>
+          <ul>
+            <li><a href="#">Search</a></li>
+            <li><a href="#">Email Attendance Notices</a></li>
+            <li><a href="#">Enrollment Control Report</a></li>
+            <li><a href="#">Org Members Management</a></li>
+            <li><a href="#">Faithful Men Class</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Reports</a>
+          <ul>
+            <li><a href="#">Week at a Glance</a></li>
+            <li><a href="#">Average Week at a Glance</a></li>
+            <li><a href="#">Church Attendance Summary</a></li>
+            <li><a href="#">Weekly Decisions</a></li>
+            <li><a href="#">Decision Summary</a></li>
+          </ul>
+        </li>
+        <li><a href="#">QueryBuilder</a>
+          <ul>
+            <li><a href="#">Last Query</a></li>
+            <li><a href="#">New Query</a></li>
+            <li><a href="#">Saved Queries</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Contributions</a>
+          <ul>
+            <li><a href="#">Bundles</a></li>
+            <li><a href="#">All</a></li>
+            <li><a href="#">---Reports---</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Admin</a>
+          <ul class="last">
+            <li><a href="#">Users</a></li>
+            <li><a href="#">Programs</a></li>
+            <li><a href="#">Divisions</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Special Content</a></li>
+            <li><a href="#">Metro Zips</a></li>
+            <li><a href="#">Funds</a></li>
+            <li><a href="#">Ministries</a></li>
+            <li><a href="#">Member Types</a></li>
+            <li><a href="#">Lookups</a></li>
+            <li><a href="#">Special Tasks</a></li>
+            <li><a href="#">Activity Log</a></li>
+            <li><a href="#">Last Activity</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Help</a>
+          <ul class="last">
+            <li><a href="#">Wiki Documentation</a></li>
+            <li><a href="#">Bug Report</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div style="clear:both"></div>
   </div>
-  <div style="clear:both"></div>
-</div>
-<div id="main">
-  <table id="mainlayout">
+  <div id="main">
+	<table id="mainlayout">
+      <tr>
+        <td id="col1"><div class="roundbox">
+            <h2><a href="#">My Queries</a></h2>
+            <p><a href="#">Prospects</a></p>
+            <p><a href="#">Recent Absents</a></p>
+            <p><a href="#">First time Givers</a></p>
+            <h2>My Involvement</h2>
+            <p><a href="#">Fellowship Class</a></p>
+            <p><a href="#">Committee</a></p>
+            <p><a href="#">Deacons</a></p>
+            <p><a href="#">Wed Discipleship Class</a></p>
+            <h2>Birthdays</h2>
+            <p><a href="#">Allen Hobart (4/13)</a></p>
+            <p><a href="#">George Jones (4/21)</a></p>
+          </div></td>
+        <td id="col2"><div class="roundbox">
+            <h2><a href="#">BVCMS News</a></h2>
+          </div></td>
+        <td id="col3"><div class="roundbox">
+            <h2><a href="#">My Tasks</a></h2>
+          </div></td>
+      </tr>
+    </table>
+<!--<form id="conditionForm" action="/QueryBuilder/Main" method="get">
+<h3 id="Description"></h3>
+<table id="ConfigCondition" class="modalPopup">
+    <tr class="QBConditionTitle"><td colspan="3">Configure the query condition</td></tr>
     <tr>
-      <td id="col1"><div class="roundbox">
-          <h2><a href="#">My Queries</a></h2>
-          <p><a href="#">Prospects</a></p>
-          <p><a href="#">Recent Absents</a></p>
-          <p><a href="#">First time Givers</a></p>
-          <h2>My Involvement</h2>
-          <p><a href="#">Fellowship Class</a></p>
-          <p><a href="#">Committee</a></p>
-          <p><a href="#">Deacons</a></p>
-          <p><a href="#">Wed Discipleship Class</a></p>
-          <h2>Birthdays</h2>
-          <p><a href="#">Allen Hobart (4/13)</a></p>
-          <p><a href="#">George Jones (4/21)</a></p>
-        </div></td>
-      <td id="col2"><div class="roundbox">
-          <h2><a href="#">BVCMS News</a></h2>
-        </div>
-        <div class="roundbox">
-          <h2><a href="#">Redeemer News</a></h2>
-        </div></td>
-      <td id="col3"><div class="roundbox">
-          <h2><a href="#">My Tasks</a></h2>
-        </div></td>
+        <td valign="top">
+            <table>
+                <tr><th colspan="2">Left Side</th></tr>
+                <tr id="CategoryDiv2">
+                    <td>
+                      <input id="SelectCondition" type="button" value="Select Condition" />
+                    </td>
+                    <td>
+                        <span id='ConditionText' style="font-size: 110%">Group</span>
+                        <input id="ConditionName" name="ConditionName" type="hidden" value="Group" />
+                    </td>
+                </tr>
+                <tr id="DaysDiv" style="display:none">
+                    <td align="right">Days:</td>
+                    <td>
+                        <input class="validate" id="Days" name="Days" type="text" value=""></input>
+                    </td>
+                </tr>
+                <tr id="AgeDiv" style="display:none">
+                    <td align="right">Age Less or Equal:</td>
+                    <td>
+                        <input class="validate" id="Age" name="Age" type="text" value=""></input>
+                    </td>
+                </tr>
+                <tr id="QuartersDiv" style="display:none">
+                    <td align="right"><span id="QuartersLabel">Quarters</span>:</td>
+                    <td>
+                        <input class="validate" id="Quarters" name="Quarters" type="text" value=""></input>
+                    </td>
+                </tr>
+                <tr id="ViewDiv" style="display:none">
+                    <td align="right">Volunteer Views:</td>
+                    <td>
+                        <select id="View" name="View"><option value="ns">(not specified)</option>
+</select>
+                    </td>
+                </tr>
+                <tr id="TagsDiv" style="display:none">
+                    <td align="right">Tags:</td>
+                    <td>
+                        <span id="tagvalues" class="validate" style="display:none"></span>
+                    </td>
+                </tr>
+                <tr id="SavedQueryDiv" style="display:none">
+                    <td align="right">Saved Query:</td>
+                    <td>
+                        <select id="SavedQueryDesc" name="SavedQueryDesc"><option selected="selected" value="7">david:&lt;--ScratchPad--&gt;</option>
+</select>
+                    </td>
+                </tr>
+                <tr id="MinistryDiv" style="display:none">
+                    <td align="right">Ministry:</td>
+                    <td>
+                        <select id="Ministry" name="Ministry"><option value="0">(not specified)</option>
+<option value="0">(unspecified)</option>
+</select>
+                    </td>
+                </tr>
+                <tr id="StartDiv" style="display:none">
+                    <td align="right">Start Date:</td>
+                    <td>
+                        <input class="datepicker validate" id="StartDate" name="StartDate" type="text" value=""></input>
+                    </td>
+                </tr>
+                <tr id="EndDiv" style="display:none">
+                    <td align="right">End Date:</td>
+                    <td>
+                        <input class="datepicker validate" id="EndDate" name="EndDate" type="text" value=""></input>
+                    </td>
+                </tr>
+                <tr id="ProgDiv" style="display:none">
+                    <td align="right">Program:</td>
+                    <td>
+                        <select id="Program" name="Program"><option value="0">(not specified)</option>
+<option value="1">First Program</option>
+<option value="2">Misc Tags</option>
+</select>
+                    </td>
+                </tr>
+                <tr id="DivDiv" style="display:none">
+                    <td align="right">Division:</td>
+                    <td>
+                        <select id="Division" ></select>
+                    </td>
+                </tr>
+                <tr id="OrgDiv" style="display:none">
+                    <td align="right">Organization:</td>
+                    <td>
+                        <select id="Organization" ></select>
+                    </td>
+                </tr>
+                <tr id="SchedDiv" style="display:none">
+                    <td align="right">Schedule:</td>
+                    <td>
+                        <select id="Schedule" name="Schedule"><option value="0">(not specified)</option>
+<option value="10930">Sunday 9:30 AM</option>
+</select>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td valign="top">
+            <table>
+                <tr><th>Comparison</th></tr>
+                <tr>
+                    <td>
+                        <select id="Comparison" name="Comparison"><option value="AllTrue">AllTrue</option>
+<option value="AnyTrue">AnyTrue</option>
+<option value="AllFalse">AllFalse</option>
+<option value="AnyFalse">AnyFalse</option>
+</select>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td id="RightPanel" valign="top" style="display:none">
+            <table>
+                <tr><th>Right Side</th></tr>
+                <tr>
+                    <td>
+                        <span id="values" style="display:none"></span>
+                        <input class="validate" id="TextValue" name="TextValue" type="text" value=""></input>
+                        <input class="validate" id="NumberValue" name="NumberValue" type="text" value=""></input>
+                        <input class="validate" id="IntegerValue" name="IntegerValue" type="text" value=""></input>
+                        <input class="datepicker validate" id="DateValue" name="DateValue" type="text" value=""></input>
+                    </td>
+                </tr>
+            </table>
+        </td>
     </tr>
-  </table>
+    <tr>
+        <td align="right" colspan="3">
+            <input id="Update" type="button" class="conditionButton" value="Update" disabled="disabled" />
+            <input id="Add" type="button" class="conditionButton" value="Add" disabled="disabled" />
+            <input id="AddToGroup" type="button" class="conditionButton" value="Add To Group" />
+            <input id="Remove" type="button" class="conditionButton" value="Remove" disabled="disabled" />
+        </td>
+    </tr>
+</table>
+<input id="SelectedId" name="SelectedId" type="hidden" value="7" />
+<table class="modalPopup" style="margin-top: 6px">
+    <tr><td colspan="2" style="background-color: #a9cfe2; border: solid 1px Gray; color: Black;
+            font-size: medium">Conditions</td>
+    </tr>
+    <tr>
+        <td>
+            <ul id="ConditionGrid">
+            
+   <li class="conditionPopup" id='7'>
+        <img src="../images/1pix.gif" width="0px" height="1px" />
+        <img src="../images/DownRight.gif" width="19px" height="12px" />
+        <a href='#'>Select records where ALL of these are TRUE</a>
+   </li>
+ 
+            </ul>
+        </td>
+        <td align="center" valign="bottom">
+            <div>
+                <input id="Run" type="image" src="../images/Run.png" alt="Run Query" title="Run Query" />
+            </div>
+            <div>Run</div>
+        </td>
+    </tr>
+</table>
+<ul id="InsCopyMenu" class="popupMenu">
+    <li><a href="#ins">Insert Group Above</a></li>
+    <li><a href="#copy">Copy As New</a></li>
+</ul>
+
+<div id="Results" style="clear:both; margin-top: 6px">
+    
 </div>
+</form>
+--> 
+    </div>
+    <div id="CommonFooter">
+        <div id="Common">
+            <div style="text-align: center">
+                &copy;2011
+                <span id="ctl00_FooterEntity">Bellevue Baptist Church</span>
+                All rights reserved.<br />
+            </div>
+        </div>
+    </div>
+    </div>
+    
+   
 </body>
 </html>

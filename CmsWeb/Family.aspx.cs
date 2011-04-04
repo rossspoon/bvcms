@@ -26,10 +26,10 @@ namespace CmsWeb
         {
             int? id = this.QueryString<int?>("id");
             if (!id.HasValue)
-                Response.EndShowMessage("no familyId supplied", "/", "home");
+                Response.EndShowMessage("no familyId supplied", "/Home", "home");
             family = DbUtil.Db.Families.SingleOrDefault(f => f.FamilyId == id.Value);
             if (family == null)
-                Response.EndShowMessage("family not found", "/", "home");
+                Response.EndShowMessage("family not found", "/Home", "home");
             person = family.People.SingleOrDefault(p => p.PeopleId == family.HeadOfHouseholdId);
             if (person == null)
                 person = family.People.FirstOrDefault();

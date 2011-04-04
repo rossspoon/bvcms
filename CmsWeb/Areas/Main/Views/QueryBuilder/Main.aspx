@@ -26,7 +26,7 @@
                       <input id="SelectCondition" type="button" value="Select Condition" />
                     </td>
                     <td>
-                        <span id='ConditionText' style="font-size: large">Group</span>
+                        <span id='ConditionText'>Group</span>
                         <%=Html.Hidden("ConditionName") %>
                     </td>
                 </tr>
@@ -177,31 +177,31 @@
 </form>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="PopupsPlaceholder" runat="server">
-<div id="QueryConditionSelect" class="modalPopup" title="Select a Condition" style="font-size: smaller;">
-    <div>
-        <a id="NewGroup" href="#">Or start a new group of conditions</a><br />
-    </div>
+<div id="QueryConditionSelect" class="modalPopup" title="Select a Condition">
+    <table width="100%"><tr>
+        <td><a id="NewGroup" href="#">Or start a new group of conditions</a></td>
+        <td align="right"><a class="closeit" href="#">close</a></td>
+    </tr></table>
     <div id="tabber" class="ui-tabs">
-    <ul class="ui-tabs-nav">
+        <ul class="ui-tabs-nav">
 <% foreach(var c in Model.FieldCategories())
-   { %>
+    { %>
         <li><a href='<%= "#" + c.Name %>'><span><%= c.Title %></span></a></li>
 <% } %>
-    </ul>
+        </ul>
 <% foreach(var c in Model.FieldCategories())
-   { %>
-    <div id="<%=c.Name %>"  style="overflow: auto; height: 450px; margin:4px;" class="ui-tabs-panel ui-tabs-hide">
-        <% foreach(var p in c.Fields) 
-           { %>
-                <div>
-                    <a id='<%=p.Name %>' class="FieldLink" href="#"><%=p.Title %></a>
-                    <span style="cursor: pointer" onclick="toggle(this);return false;"><img src="/images/help_out.gif" /></span>
-                </div>
-                <div class="moreinfo">
-                    <%=p.Description %>
-                </div>
-        <% } %>
-    </div>
+    { %>
+        <div id="<%=c.Name %>" style="margin:4px;height:450px;overflow:auto" class="ui-tabs-panel ui-tabs-hide">
+            <% foreach(var p in c.Fields) 
+                { %>
+                    <div class="FieldLink">
+                        <a id='<%=p.Name %>' href="#"><%=p.Title %></a>
+                    </div>
+                    <div class="moreinfo">
+                        <%=p.Description %>
+                    </div>
+            <% } %>
+        </div>
 <% } %>
     </div>
 </div>

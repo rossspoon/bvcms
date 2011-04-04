@@ -163,7 +163,7 @@
                 <table style="vertical-align: top">
                     <tr style="vertical-align: top">
                         <td style="vertical-align: top">
-                            <asp:GridView ID="ContactorGrid" runat="server" AllowPaging="True" AllowSorting="True"
+                            <asp:GridView ID="ContactorGrid" CssClass="aspgrid" runat="server" AllowPaging="True" AllowSorting="True"
                                 AutoGenerateColumns="False" CellPadding="3" EmptyDataText="No Contactors Found"
                                 PageSize="10" DataSourceID="ContactorList" DataKeyNames="ContactId, PeopleId"
         ForeColor="#333333" GridLines="None" >
@@ -216,7 +216,7 @@
                 <table style="vertical-align: top">
                     <tr style="vertical-align: top">
                         <td style="vertical-align: top">
-                            <asp:GridView ID="ContacteeGrid" runat="server" AllowPaging="True" AllowSorting="True"
+                            <asp:GridView ID="ContacteeGrid" CssClass="aspgrid" runat="server" AllowPaging="True" AllowSorting="True"
                                 AutoGenerateColumns="False" CellPadding="3" EmptyDataText="No Conactees Found"
                                 PageSize="10" DataSourceID="ContacteeList" DataKeyNames="ContactId,PeopleId"
                                 OnRowCreated="ContacteeGrid_RowCreated"
@@ -330,12 +330,7 @@
     <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="PopupsPlaceholder" runat="server">
     <div id="contactDialog" style="display:none">
     <iframe style="width:99%;height:99%"></iframe>
-    </div>
-    <div id="ttt" style="display:none">
-        this is a test
     </div>
 </asp:Content>

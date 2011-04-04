@@ -8,7 +8,8 @@
                 indicator: "<img src='/images/loading.gif'>",
                 tooltip: "Click to edit...",
                 style: 'display: inline',
-                width: '200px'
+                width: '200px',
+                height:25
             });
             $("a.delete").click(function(ev) {
                 ev.preventDefault();

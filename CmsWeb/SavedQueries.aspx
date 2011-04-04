@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:CheckBox ID="OnlyMyQueries" runat="server" AutoPostBack="true" Text="Show only my queries" />
     <asp:CheckBox ID="ShowScratchPads" runat="server" AutoPostBack="true" Text="Show Scratch pad queries" /><br />
-    <asp:GridView ID="GridView1" runat="server" DataSourceID="ObjectDataSource1" AllowPaging="True"
+    <asp:GridView ID="GridView1" CssClass="aspgrid" runat="server" DataSourceID="ObjectDataSource1" AllowPaging="True"
         AutoGenerateColumns="False" AllowSorting="True" DataKeyNames="QueryId"
         PageSize="10"
         CellPadding="4" ForeColor="#333333" GridLines="None" >

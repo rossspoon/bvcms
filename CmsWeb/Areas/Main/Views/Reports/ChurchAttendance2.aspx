@@ -3,7 +3,7 @@
     <style type="text/css">
         body
         {
-            font-size: large;
+            font-size: 100%;
         }
         .totalrow td
         {
@@ -19,7 +19,7 @@
         input#SundayDate
         {
             width: 100px;
-            font-size: large;
+            font-size: 100%;
         }
     </style>
 </asp:Content>

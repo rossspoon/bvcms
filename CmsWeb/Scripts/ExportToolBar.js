@@ -1,7 +1,4 @@
 ﻿$(document).ready(function() {
-    $("ul.sf-tab").superfish({
-        autoArrows: false
-    });
     $("#ChooseLabelType").dialog({
         overlay: { background: "#000", opacity: 0.3 },
         bgiframe: true,

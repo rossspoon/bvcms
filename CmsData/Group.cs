@@ -283,7 +283,7 @@ namespace CmsData
             var from = new MailAddress("bbcms01@bellevue.org");
 
             foreach (var mu in GetUsersInRole(GroupType.Admin))
-                Util.SendMsg(Util.SysFromEmail, Util.CmsHost, from, subject, body, mu.Name, mu.EmailAddress, 0);
+                Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, mu.Name, mu.EmailAddress, 0);
         }
     }
     public enum FetchType

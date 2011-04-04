@@ -69,7 +69,7 @@ namespace CmsWeb.Models
         public string guid { get; set; }
         public string host
         {
-            get { return Util.CmsHost; }
+            get { return DbUtil.Db.CmsHost; }
         }
         public CheckInRecModel(int orgId, int? pid)
         {

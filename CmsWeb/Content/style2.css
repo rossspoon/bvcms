@@ -2,143 +2,17 @@
 Generics
 */
 
-body, html
-{
-	margin: 0;
-	padding: 0;
-	color: #333;
-	background-color: #EAECE0;
-	background-image: none;
-	font-family: Helvetica, Arial;
-	font-size: 12px;
-}
-
-form
-{
-	background-color: #fff;
-	/*min-width: 890px;*/
-}
-
-#CommonHeader
-{
-	margin: 0;
-	width: 100%;
-	border-top: solid 9px #4296CC;
-	background-image: url(header-gradient.png);
-	background-repeat: repeat-x;
-	background-position: left top;
-	z-index: 2000;
-}
-
-#CommonHeaderImage
-{
-	vertical-align: top;
-	float:left;
-}
-
-#CommonHeaderImage a
-{
-	display: block;
-	margin: 0 8px 0 0;
-	position: relative;
-	z-index: 100;
-}
-
-#CommonHeaderTitleBlock
-{
-	float:left;
-}
-#CommonHeaderTitleBlock h1
-{
-	margin: 0;
-	padding: 0;
-	font-size: 300%;
-	color: #A0AE5A;
-}
-#CommonHeaderTitleBlock h2
-{
-	margin: 0;
-	padding: 0;
-	font-size:small;
-}
-
-#CommonHeaderUserArea
-{
-	float:right;
-}
-
-#CommonFooter
-{
-	clear: both;
-	margin: 40px 0 0 0;
-	padding: 24px 0 24px 0;
-	width: 100%;
-	overflow: hidden;
-	background-color: #EAECE0;
-	text-align: center;
-	font-size: 85%;
-	font-weight: bold;
-	color: #aaa;
-	line-height: 240%;
-}
-
-#CommonNavigationShadow
-{
-	background-image: url(navigation-shadow.png);
-	background-repeat: repeat-x;
-	background-position: left top;
-	min-height: 6px;
-	margin: 0;
-	padding: 0;
-	clear: both;
-}
-
-#CommonNavigation
-{
-	clear:both;
-	padding-top: 4px;
-	font-size:  medium;
-	font-family: Tahoma;
-}
-.CommonNavigationSearch
-{
-	float:right;
-	margin-right:5px;
-}
-
-a, a:link, a:visited {
-	color: #336699;
-	text-decoration: none;
-}
-a:hover, a:active, a:focus {
-	text-decoration: underline;
-}
-
-
-
 .PersonHead
 {
-	background: #2b637d;
-	width: 100%;
-	font: large Arial, Helvetica, sans-serif;
+	background-color: #8B8B8B;
+	font-size: 130%;
 	color: white;
-	margin: 1px 0 .5em 0;
+	padding: 4px 0 4px 4px;
 }
 .SearchDialog
 {
     width: 600px; 
     height: 475px;
-}
-
-a
-{
-	color: #393939;
-	text-decoration: underline;
-}
-a:hover
-{
-	color: #78a;
-	text-decoration: underline;
 }
 .pagerstyle
 {
@@ -184,18 +58,6 @@ a:hover
 .SelectedRow
 {
 	background-color: #d0ddee;
-}
-.QBConditionTitle
-{
-	background-color: #a9cfe2;
-	border: solid 1px Gray;
-	color: Black;
-	font-size: medium;
-}
-
-.FieldLink
-{
-	font-size:large;
 }
 
 table.Design2 th {
@@ -244,7 +106,7 @@ table.Design2 th {
     overflow:auto;
     font-weight:normal;
     font-family:tahoma;
-    font-size:12px;            
+    font-size:100%;            
 }
 .autocomplete_highlighted_listitem
 {
@@ -533,14 +395,6 @@ div.bottomhyperlink img
     padding-right: .4em;
     border: none;
 }
-.urgentNotice
-{
-    font-size: x-large;
-    color:Red;
-    background-color: Yellow;
-    padding-left: 1em;
-    padding-right: 1em;
-}
 .dashbox 
 {
     background-color:#EFF3FB;
@@ -569,5 +423,5 @@ table.participant tr.out
     position:relative;
     left: -1em;
     color:Blue;
-    font-size: larger;
+    font-size: 110%;
 }

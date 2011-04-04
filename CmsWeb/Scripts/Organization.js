@@ -22,7 +22,7 @@ $(function () {
                     $.blockUI({ message: "org deleted" });
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
-                        window.location = "/";
+                        window.location = "/Home";
                     });
                 }
             });
@@ -124,6 +124,7 @@ $(function () {
                     matchContains: 1
                 };
                 $.initDatePicker();
+                $(".submitbutton").button();
                 $("#DivisionsList").multiSelect();
             });
         });

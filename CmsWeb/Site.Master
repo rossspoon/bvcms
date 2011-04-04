@@ -6,214 +6,230 @@
 <head runat="server">
     <title>CMS2</title>
     <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
-    <asp:Literal ID="cssbundle" runat="server"></asp:Literal>
+    <asp:Literal id="cssbundle" runat="server"></asp:Literal>
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <asp:Literal ID="jsbundle" runat="server"></asp:Literal>
+    <%= SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+        .Add("/Content/js/jquery.bgiframe-2.1.2.js")
+        .Add("/Content/js/hoverIntent.js")
+        .Add("/Content/js/jquery-cookie.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Scripts/ExportToolBar.js")
+        .Add("/Scripts/menu.js")
+        .Render("/Content/combined1_#.js")          
+    %>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("ul.sf-menu").supersubs({
-                minWidth: 8,
-                maxWidth: 27,
-                extraWidth: 1,
-                autoArrows: false
-            }).superfish();
-        });
-        function EnterSubmit(e, myform) {
-            var key = window.event ? e.keyCode : e.which;
-            if (key == 13) {
-                var s = $get('<%=SearchText.ClientID%>');
-                if (s.value != "Quick Search")
-                    window.location = '<%=ResolveUrl("~/Search.aspx?name=")%>' + s.value;
-            }
-            else
+        $(document).ready(function () {
+            $('#SearchText').keypress(function (e) {
+                if ((e.keyCode || e.which) == 13) {
+                    e.preventDefault();
+                    var s = $('#SearchText').val();
+                    if (s != "")
+                        window.location = '/Search.aspx?name=' + escape(s);
+                }
                 return true;
-        }
+            });
+        });
         function TBNewWindow(url) {
             window.open(url, "_blank");
         }
         function TBNavWindow(url) {
             window.open(url, "_self");
-        }
+        } 
     </script>
-    <form id="form1" runat="server">
+    <form runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-    <asp:Label ID="urgentNotice" class="urgentNotice" runat="server" Visible="false">System is shutting down in 5 minutes, back up in 15</asp:Label>
-    <div id="CommonHeader">
-        <div>
-            <asp:Label ID="UserHeader" runat="server"></asp:Label>
-            <div id="CommonHeaderUserArea">
-                <uc1:UserArea ID="UserArea1" runat="server" />
-            </div>
-        </div>
-        <div id="CommonNavigation">
-            <ul id="menuone" class="sf-menu" runat="server">
-                <li class="headlink">
-                    <asp:HyperLink ID="HomeLink" NavigateUrl="~/" runat="server">Home</asp:HyperLink>
-                    <ul id="HomeDrop" runat="server">
-                        <li>
-                            <asp:HyperLink ID="HyperLink4" NavigateUrl="~/" runat="server">Home Page</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink5" NavigateUrl="~/Task/List/" runat="server">Tasks</asp:HyperLink></li>
-                    </ul>
-                </li>
-                <li class="headlink">
-                    <asp:HyperLink ID="PersonLink" NavigateUrl="~/Search.aspx" runat="server">Person</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="SearchLink" NavigateUrl="~/Search.aspx" runat="server">Quick Search</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="TagLink" NavigateUrl="~/MyTags.aspx" runat="server">Manage Tags</asp:HyperLink></li>
-                        <li id="CurrentPersonMenuItem" runat="server" visible="false">
-                            <asp:HyperLink ID="CurrentPersonLink" runat="server"></asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink1" NavigateUrl="~/ContactSearch.aspx" runat="server">Contact Search</asp:HyperLink></li>
-                    </ul>
-                </li>
-                <li class="headlink">
-                    <asp:HyperLink ID="OrgLink" runat="server" NavigateUrl="/OrgSearch">Organization</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="OrgSearchLink" runat="server" NavigateUrl="/OrgSearch">Search</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink15" NavigateUrl="~/EmailAttendanceNotices.aspx" runat="server">Email Attendance Notices</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink20" NavigateUrl="~/EnrollmentControlReport.aspx" runat="server">Enrollment Control Report</asp:HyperLink></li>
-                        <li id="OrgMembersMenuItem" runat="server">
-                            <asp:HyperLink ID="HyperLink19" NavigateUrl="~/OrgMembers" runat="server">Org Members Management</asp:HyperLink></li>
-                        <li id="CurrentOrgMenuItem" runat="server" visible="false">
-                            <asp:HyperLink ID="CurrentOrgLink" runat="server"></asp:HyperLink></li>
-                    </ul>
-                </li>
-                <li id="QueryMenuItem" class="headlink" runat="server">
-                    <asp:HyperLink ID="QueryLink" NavigateUrl="/QueryBuilder/Main" runat="server">QueryBuilder</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="LastQueryLink" NavigateUrl="/QueryBuilder/Main" runat="server">Last Query</asp:HyperLink></li>
-                        <li>
-                            <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton></li>
-                        <li>
-                            <asp:HyperLink ID="SavedQueriesLink" NavigateUrl="~/SavedQueries.aspx" runat="server">Saved Queries</asp:HyperLink></li>
-                    </ul>
-                </li>
-                <li id="ContributionsMenuItem" class="headlink" runat="server" visible="false">
-                    <asp:HyperLink ID="HyperLink7" NavigateUrl="#" runat="server">Contributions</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="HyperLink8" NavigateUrl="~/Contributions/Bundles.aspx" runat="server">Bundles</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="HyperLink9" NavigateUrl="~/Contributions/All.aspx" runat="server">All</asp:HyperLink></li>
-                        <li class="headlink">
-                            <asp:HyperLink NavigateUrl="#" runat="server">Reports</asp:HyperLink>
-                            <ul>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink14" NavigateUrl="/Reports/ContributionStatements"
-                                         Target="_blank" runat="server">Statements (All)</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink12" NavigateUrl="~/Contributions/GLExtract.aspx" runat="server">GL Extract</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink10" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFund2.aspx"
-                                        runat="server">Totals by Fund</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink2" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundAgeRange.aspx"
-                                        runat="server">Totals by Fund Age Range</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink18" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both"
-                                        runat="server">Totals by Fund Age Range (pledges included)</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink11" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx"
-                                        runat="server">Totals by Fund Range</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink3" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx?pledged=both"
-                                        runat="server">Totals by Fund Range (pledges included)</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink16" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFund2.aspx?pledged=true"
-                                        runat="server">Pledge Totals by Fund</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink17" Target="_blank" NavigateUrl="~/Contributions/Reports/TotalsByFundRange.aspx?pledged=true"
-                                        runat="server">Pledge Totals by Fund Range</asp:HyperLink></li>
-                                <li>
-                                    <asp:HyperLink ID="HyperLink13" Target="_blank" NavigateUrl="~/Contributions/Reports/PledgeReport.aspx"
-                                        runat="server">Pledge Report</asp:HyperLink></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li id="AdminMenuItem" class="headlink" runat="server" visible="false">
-                    <asp:HyperLink ID="AdminMenuLink" NavigateUrl="#" runat="server">Admin</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="HyperLink6" NavigateUrl="~/Admin/Users.aspx" runat="server">Users</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Programs" NavigateUrl="/Setup/Program/" runat="server">Programs</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Divisions" NavigateUrl="/Setup/Division/" runat="server">Divisions</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Settings" NavigateUrl="/Setup/Setting/" runat="server">Settings</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Content" NavigateUrl="/Display/Index/" runat="server">Special Content</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="MetroZips" NavigateUrl="/Setup/MetroZip/" runat="server">MetroZips</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Funds" NavigateUrl="/Setup/Fund/" runat="server">Funds</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Ministries" NavigateUrl="/Setup/Ministry/" runat="server">Ministries</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="MemberTypes" NavigateUrl="/Setup/MemberType/" runat="server">MemberTypes</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="Lookups" NavigateUrl="/Setup/Lookup/" runat="server">Lookups</asp:HyperLink></li>
-                        <li><asp:HyperLink NavigateUrl="#" runat="server">Special Tasks</asp:HyperLink>
-                            <ul>
-                            <li>
-                                <asp:HyperLink ID="Updates" NavigateUrl="/Batch/UpdateFields/" runat="server">Update for a Tag</asp:HyperLink></li>
-                            <li>
-                            <asp:HyperLink ID="ClearCache" NavigateUrl="~/Admin/ClearCache.aspx" runat="server">Clear Cache</asp:HyperLink></li>
-                            <li>
-                                <asp:HyperLink ID="OrgMembersOnly" NavigateUrl="~/Admin/ToggleOrgMembersOnly.ashx"
-                                    runat="server">OrgMembersOnly</asp:HyperLink></li>
-                            <li>
-                                <asp:HyperLink ID="DeleteSpecialTags" onclick="return confirm('are you sure?')" NavigateUrl="~/Admin/DeleteSpecialTags.aspx"
-                                    runat="server">Delete Special Tags</asp:HyperLink></li>
-                            <li>
-                                <asp:HyperLink ID="UrgentMessage" NavigateUrl="~/Admin/UrgentMessage.aspx" runat="server">Urgent Message</asp:HyperLink></li>
-                            </ul></li>
-                        <li>
-                            <asp:HyperLink ID="ActivityLog" NavigateUrl="~/Admin/Activity.aspx" runat="server">Activity Log</asp:HyperLink></li>
-                        <li>
-                            <asp:HyperLink ID="LastActivity" NavigateUrl="~/Admin/LastActivity.aspx" runat="server">Last Activity</asp:HyperLink></li>
-                    </ul>
-                </li>
-                <li id="HelpItem" class="headlink" runat="server">
-                    <asp:HyperLink ID="HelpLink" NavigateUrl="#" Target="_blank" runat="server">Help</asp:HyperLink>
-                    <ul>
-                        <li>
-                            <asp:HyperLink ID="HelpLink2" Target="_blank" NavigateUrl="#" runat="server">Wiki Documentation</asp:HyperLink></li>
-<% if (Page.User.IsInRole("Admin"))
-   { %>
-                        <li>
-                            <asp:HyperLink ID="HyperLink22" Target="_blank" NavigateUrl="http://www.bvcms.com/Page/Bug" runat="server">Bug Report</asp:HyperLink></li>
-<% }
-   if (Page.Request.Url.Authority == "bvcms.com" || Page.Request.Url.Authority == "bellevue.org")
-   { %>
-                        <li>
-                            <asp:HyperLink ID="HyperLink21" Target="_blank" NavigateUrl="http://www.bvcms.com/Page/OnlineReg" runat="server">Online Registration Request Form</asp:HyperLink></li>
-<% } %>
-                    </ul>
-                </li>
-            </ul>
-            <asp:TextBox CssClass="CommonNavigationSearch" ID="SearchText" runat="server" OnTextChanged="SearchText_TextChanged"
-                Width="100px" Text="Quick Search" defaultValue="Quick Search" onclick="if(this.defaultValue==this.value) this.value='';"
-                onblur="if(this.value=='') this.value=this.defaultValue;" onkeypress="return EnterSubmit(event,this.form)"></asp:TextBox>
-        </div>
+
+    <% if (Util.UrgentMessage.HasValue())
+       { %>
+    <div id='urgentNotice'><%=Util.UrgentMessage%></div>
+    <% }
+       if (DbUtil.TopNotice().HasValue())
+       { %>
+    <div id='TopNotice'><%=DbUtil.TopNotice()%></div>
+    <% } %>
+
+    <div id="container">
+    <div class="header">
+        <table cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="left">
+                    <a href="/Home">
+                        <%=DbUtil.HeaderImage(@"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />") %></a>
+                </td>
+                <td class="center">
+                    <%=DbUtil.Header() %>
+                </td>
+                <td class="right">
+                    <div id="userarea">
+                        <div id="welcome" class="dropdown left">
+                            <div><a href="#">Welcome,
+                                <%=DbUtil.Db.CurrentUserPerson.PreferredName %>!
+                                <img src="/Content/Welcome.png" width="39" height="16"></a></div>
+                            <div class="sublinks">
+                                <a href="/Account/LogOff/">Logout</a>
+                                <a href="/ChangePassword.aspx">Change Password</a>
+                                <% if(Page.User.IsInRole("Admin"))
+                                   { %>
+                                <a href="/Admin/Users.aspx">Manage Users</a>
+                                <a href="/Admin/Activity.aspx">Activity Log</a>
+                                <a href="/Admin/LastActivity.aspx">Last Activity</a>
+                                <a href="/Admin/UrgentMessage.aspx">Urgent Message</a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% if (Page.User.IsInRole("Access"))
+                           { %>
+                        <strong>Active Tag:</strong> <a href="/MyTags.aspx">
+                            <%=Util2.CurrentTagName%></a><br />
+                        <img src="/Content/magnifier.png" />
+                        <input id="SearchText" type="text" />
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+
+        <% if(Page.User.IsInRole("Access"))
+           { %>
+        <table id="cmenu">
+        <tr>
+            <td class="dropdown">
+                <div><a href="/home">Home</a></div>
+            </td>
+            <td class="dropdown">
+                <div><a href="/Search.aspx">People</a></div>
+                <div class="sublinks">
+                    <a href="/Search.aspx">Quick Search</a>
+                    <a href="/MyTags.aspx">Manage Tags</a>
+                    <a href="/Task/List/">Tasks</a>
+                    <a href="/ContactSearch.aspx">Contact Search</a>
+                    <% if(Util2.CurrentPeopleId != 0)
+                        { %>
+                    <a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
+                        <%=Session["ActivePerson"] %></a>
+                    <% } %>
+                </div>
+            </td>
+            <td class="dropdown">
+                <div><a href="/OrgSearch">Organization</a></div>
+                <div class="sublinks">
+                    <a href="/OrgSearch">Search</a>
+                    <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a>
+                    <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
+                    <asp:PlaceHolder ID="edit1" runat="server">
+                    <% if (Page.User.IsInRole("Edit"))
+                        { %>
+                    <a href="/OrgMembers">Org Members Management</a>
+                    <% } %>
+                    </asp:PlaceHolder>
+                    <% if (((string)Session["ActiveOrganization"]).HasValue())
+                        { %>
+                    <a href="/Organization/Index/<%=Util2.CurrentOrgId%>">
+                        <%=Session["ActiveOrganization"] %></a>
+                    <% } %> 
+                </div>
+            </td>
+            <td class="dropdown">
+                <div><a href="/Reports/ChurchAttendance" target="_blank">Reports</a></div>
+                <div class="sublinks">
+                    <a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance</a>
+                    <a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance</a>
+                    <a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">Church Attendance Summary</a>
+                    <a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions</a>
+                    <a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary</a>
+                </div>
+            </td>
+            <td class="dropdown">
+                <div><a href="/QueryBuilder/Main">QueryBuilder</a></div>
+                <div class="sublinks">
+                    <a href="/QueryBuilder/Main">Last Query</a>
+                        <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton>
+                    <a href="/SavedQueries.aspx">Saved Queries</a>
+                </div>
+            </td>
+            <% if (Page.User.IsInRole("Finance"))
+                { %>
+            <td class="dropdown">
+                <div><a href="/Contributions/Bundles.aspx">Contributions</a></div>
+                <div class="sublinks">
+                    <a href="/Contributions/Bundles.aspx">Bundles</a>
+                    <a href="/Contributions/All.aspx">All</a>
+                    <a href="#" class="heading">&mdash; Reports &mdash;</a>
+                    <a href="/Reports/ContributionStatements" target="_blank">Statements (All)</a>
+                    <a href="/Contributions/GLExtract.aspx">GL Extract</a>
+                    <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">Totals by Fund</a>
+                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals
+                        by Fund Age Range</a>
+                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">
+                        Totals by Fund Age Range (pledges included)</a>
+                    <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by
+                        Fund Range</a>
+                    <a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">
+                        Pledge Totals by Fund</a>
+                    <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
+                        Pledge Totals by Fund Range</a>
+                    <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">Pledge Report</a>
+                </div>
+            </td>
+            <% }
+                if (Page.User.IsInRole("Admin"))
+                { %>
+            <td class="dropdown">
+                <div><a href="/Admin/Users.aspx">Admin</a></div>
+                <div class="sublinks">
+                    <a href="/Setup/Program/">Programs</a>
+                    <a href="/Setup/Division/">Divisions</a>
+                    <a href="/Setup/Setting">Settings</a>
+                    <a href="/Display/Index/">Special Content</a>
+                    <a href="/Setup/MetroZip/">Metro Zips</a>
+                    <a href="/Setup/Fund">Funds</a>
+                    <a href="/Setup/Ministry">Ministries</a>
+                    <a href="/Setup/MemberTypes">Member Types</a>
+                    <a href="/Setup/Lookup/">Lookups</a>
+                    <a href="/Batch/UpdateFields/">Update for a Tag</a>
+                    <a href="/Admin/ToggleOrgMembersOnly.ashx">
+                        <%=Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On" %></a>
+                    <a href="/Admin/ClearCache.aspx">Clear Cache</a>
+                </div>
+            </td>
+            <% } %>
+            <td class="dropdown left">
+                <div><a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Help</a></div>
+                <div class="sublinks">
+                    <a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Wiki Documentation</a>
+                    <% if (Page.User.IsInRole("Admin"))
+                        { %>
+                    <a href="http://bvcms.com/Page/Bug/">Bug Report</a>
+                    <% }
+                        if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
+                        { %>
+                    <a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request
+                        Form</a>
+                    <% } %>
+                </div>
+            </td>
+        </tr>
+        </table>
+        <% } %>
+        <div style="clear: both; border-bottom: 4px solid #ddd"></div>
     </div>
-    <div id="CommonNavigationShadow">
-    </div>
-    <div style="padding-left: 2em">
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-        </asp:ContentPlaceHolder>
-    </div>
+
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+    </asp:ContentPlaceHolder>
     <div id="ChooseLabelType" class="modalPopup" style="display:none; width: 400px; padding: 10px">
         <table>
             <tr>
@@ -255,8 +271,7 @@
             </div>
         </div>
     </div>
+    </div>
     </form>
-    <asp:ContentPlaceHolder ID="PopupsPlaceholder" runat="server">
-    </asp:ContentPlaceHolder>
 </body>
 </html>

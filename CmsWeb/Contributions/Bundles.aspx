@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style="font-size: large">
+    <div style="font-size: 110%">
         <asp:LinkButton ID="NewBundle" runat="server" OnClick="NewBundle_Click">Create New Bundle</asp:LinkButton>
     </div>
     <asp:ListView ID="ListView1" runat="server" DataKeyNames="BundleId" DataSourceID="ObjectDataSource1">

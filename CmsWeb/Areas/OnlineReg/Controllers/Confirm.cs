@@ -50,6 +50,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.Expires,
                 pf.ti.Amt ?? 0,
                 m.TranId.Value,
+                m.Header,
                 m.UserPeopleId ?? 0,
                 pf.ti.Emails,
                 first,

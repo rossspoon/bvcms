@@ -28,6 +28,14 @@ namespace CmsData
                 return Setting("UseMassEmailer", "false").ToBool();
             }
         }
+        public string CmsHost
+        {
+            get
+            {
+                var h = ConfigurationManager.AppSettings["cmshost"];
+                return h.Replace("{church}", Host);
+            }
+        }
         public void Email(string from, Person p, string subject, string body)
         {
             Email(from, p, null, subject, body, false);
@@ -60,9 +68,9 @@ namespace CmsData
             });
             SubmitChanges();
             if (UseMassEmailer)
-                QueuePriorityEmail(emailqueue.Id, Util.CmsHost, Util.Host);
+                QueuePriorityEmail(emailqueue.Id, CmsHost, Host);
             else
-                SendPersonEmail(Util.CmsHost, emailqueue.Id, p.PeopleId);
+                SendPersonEmail(CmsHost, emailqueue.Id, p.PeopleId);
         }
         public void Email(string from, IEnumerable<Person> list, string subject, string body)
         {
@@ -155,7 +163,7 @@ namespace CmsData
                 p = UserPersonFromEmail(DbUtil.SystemEmailAddress);
             return p;
         }
-        public EmailQueue CreateQueue(string cmshost, MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents, bool PublicViewable)
+        public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents, bool PublicViewable)
         {
             var emailqueue = new EmailQueue
             {

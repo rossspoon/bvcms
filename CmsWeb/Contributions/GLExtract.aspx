@@ -9,13 +9,13 @@
         <div style="text-align: center">
             <h1>
                 General Ledger Extract</h1>
-            <table style="font-size: large; text-align: left">
+            <table style="font-size: 110%; text-align: left">
                 <tr>
                     <td style="text-align: right">
                         From Date:
                     </td>
                     <td>
-                        <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                        <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                             Width="100"></asp:TextBox>
                         <cc2:CalendarExtender ID="FromExtender" runat="server" TargetControlID="FromDate">
                         </cc2:CalendarExtender>
@@ -29,7 +29,7 @@
                         To Date:
                     </td>
                     <td>
-                        <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                        <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                             Width="100"></asp:TextBox>
                         <cc2:CalendarExtender ID="ToDateExtender" runat="server" TargetControlID="ToDate">
                         </cc2:CalendarExtender>

@@ -17,7 +17,6 @@ namespace CmsWeb
     {
         public int queryId { get; set; }
         public bool Single { get; set; }
-        public bool OrganizationContext { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -43,15 +42,8 @@ namespace CmsWeb
             FamilyLink.NavigateUrl = GoTo2("NewWindow", "/Reports/Family/" + queryId);
             ChildrenLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Children&");
             ChurchLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Church&");
-            MemberLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Organization&");
-            SmlLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=SML&");
-            PromoLink.NavigateUrl = GoTo("NewWindow", "ExportExcel.aspx?format=Promotion&");
             TagAddLabel.Text = Single ? "Add" : "Add All";
             TagRemoveLabel.Text = Single? "Remove" : "Remove All";
-            RollsheetItem.Visible = OrganizationContext;
-            MemberItem.Visible = OrganizationContext;
-            SmlItem.Visible = OrganizationContext;
-            PromoItem.Visible = OrganizationContext;
         }
         private string GoTo(string function, string target)
         {

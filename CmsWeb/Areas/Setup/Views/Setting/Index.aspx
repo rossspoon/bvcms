@@ -7,6 +7,7 @@
             $(".clickEdit").editable("/Setup/Setting/Edit", {
                 indicator: "<img src='/images/loading.gif'>",
                 width: 400,
+                height:22,
                 tooltip: "Click to edit..."
             });
             $("a.delete").click(function(ev) {
@@ -15,12 +16,12 @@
                         window.location = "/Setup/Setting/";
                     });
             });
-            $("table tr:even").attr("style", "background-color:#ddd");
+            $("#settings tr:even").attr("style", "background-color:#eee");
         });
     </script>
    <h2>Settings</h2>
 
-    <table>
+    <table id="settings">
         <tr>
             <th>
                 SettingId

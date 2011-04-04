@@ -9,7 +9,7 @@
     <tr>
         <td><a href="http://www.google.com/maps?q=<%=Model.PrimaryAddr.AddrCityStateZip() %>" target="_blank">
                 <%=Model.PrimaryAddr.Address1%></a>
-                <span style="color: Red"><%=Model.PrimaryAddr.BadAddress == true ? "bad address" : "" %></span>
+                <span style="color:Red"><%=Model.PrimaryAddr.BadAddress == true ? "bad address" : "" %></span>
         </td>
         <td><a id="" href="http://www.bing.com/maps/?q=<%=Model.PrimaryAddr.AddrCityStateZip() %>">bing</a></td>
     </tr>
@@ -32,7 +32,7 @@
         <td colspan="2"><a href="mailto:<%=Model.basic.EmailAddress %>"><%=Model.basic.EmailAddress%></a></td>
     </tr>
     <tr>
-        <td colspan="2"><%=Model.basic.HomePhone.FmtFone("h")%></a></td>
+        <td colspan="2"><%=Model.basic.HomePhone.FmtFone("h")%></td>
     </tr>
 </table>
 <textarea id="addrhidden" rows="5" cols="20" style="display: none"><%=Model.Name %>

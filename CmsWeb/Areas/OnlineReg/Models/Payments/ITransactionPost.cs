@@ -13,6 +13,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             string expdate,
             decimal amt,
             int tranid,
+            string description,
             int PeopleId,
             string email,
             string first,

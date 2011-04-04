@@ -180,7 +180,7 @@ namespace CmsWeb.Models
             message = message.Replace("{division}", DivisionName);
             message = message.Replace("{org}", OrganizationName);
             message = message.Replace("{location}", Location);
-            message = message.Replace("{cmshost}", Util.CmsHost);
+            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
             message = message.Replace("{participants}", details.ToString());

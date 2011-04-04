@@ -68,7 +68,6 @@ namespace CmsWeb
             routes.IgnoreRoute("CustomErrors/{*pathInfo}");
             routes.IgnoreRoute("Contributions/{*pathInfo}");
             routes.IgnoreRoute("Report/{*pathInfo}");
-            routes.IgnoreRoute("newhome/{*pathInfo}");
             routes.IgnoreRoute("Dialog/{*pathInfo}");
             routes.IgnoreRoute("ckeditor/{*pathInfo}");
             routes.IgnoreRoute("StaffOnly/{*pathInfo}");
@@ -85,9 +84,9 @@ namespace CmsWeb
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.css");
 
             routes.MapRoute(
-                "Default",                                              // Route name
-                "{controller}/{action}/{id}",                           // URL with parameters
-                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
         }
 

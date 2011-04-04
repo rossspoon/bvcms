@@ -7,7 +7,7 @@
     <style type="text/css">
         body
         {
-            font-size: large;
+            font-size: 110%;
         }
         .totalrow td
         {
@@ -25,7 +25,7 @@
         <h1>
             Church Attendance</h1>
         Sunday Date:
-        <asp:TextBox ID="SundayDate" runat="server" AutoPostBack="True" Width="100" Style="font-size: large"></asp:TextBox>
+        <asp:TextBox ID="SundayDate" runat="server" AutoPostBack="True" Width="100" Style="font-size: 110%"></asp:TextBox>
         <cc2:CalendarExtender ID="SundayDateExtender" runat="server" TargetControlID="SundayDate">
         </cc2:CalendarExtender>
         <hr />

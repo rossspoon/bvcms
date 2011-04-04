@@ -30,7 +30,6 @@ namespace CmsWeb
                 DivOrg.DataSource = CVController.OrgDivTags();
                 DivOrg.DataBind();
             }
-            Button1.Enabled = DbUtil.Db.Setting("emailer", "on") != "off";
         }
         private void ReBindDivOrg()
         {

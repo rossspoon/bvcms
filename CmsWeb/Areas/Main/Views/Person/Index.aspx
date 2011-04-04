@@ -13,13 +13,7 @@
         .Render("/Content/Person_#.js")
             %>        
     <% CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; %>
-    <table class="PersonHead" border="0">
-        <tr>
-            <td><%=Model.Name %></td>
-            <td align="right"></td>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
+    <div class="PersonHead"><%=Model.Name %></div>
     <table>
         <tr>
             <td>

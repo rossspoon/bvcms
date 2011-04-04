@@ -246,6 +246,7 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />
     <Compile Include="Areas\Manage\Models\TransactionModel.cs" />
@@ -587,7 +588,7 @@
     </Compile>
     <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
     <Compile Include="Areas\Main\Controllers\Checkin2Controller.cs" />
-    <Compile Include="Areas\Manage\Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Manage\Controllers\RecreationController.cs" />
@@ -1074,15 +1075,22 @@
     <Content Include="ckeditor\skins\v2\skin.js" />
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
+    <Content Include="Content\bvcms132x55.png" />
+    <Content Include="Content\cmenu.css" />
+    <Content Include="Content\cssreset.css" />
+    <Content Include="Content\jquery.jscrollpane.css" />
+    <Content Include="Content\js\jquery.jscrollpane.js" />
+    <Content Include="Content\js\jquery.mousewheel.js" />
+    <Content Include="Content\magnifier.png" />
+    <Content Include="Content\Welcome.png" />
     <Content Include="newhome\Content\bvcms132x55.png" />
     <Content Include="newhome\Content\cmenu.css" />
     <Content Include="newhome\Content\cssreset.css" />
-    <Content Include="newhome\Content\darrowdown.gif" />
-    <Content Include="newhome\Content\jquery-1.4.2.min.js" />
-    <Content Include="newhome\Content\JScript1.js" />
     <Content Include="newhome\Content\magnifier.png" />
     <Content Include="newhome\Content\site.css" />
+    <Content Include="newhome\Content\style2.css" />
     <Content Include="newhome\Content\StyleSheet1.css" />
+    <Content Include="newhome\Content\Welcome.png" />
     <Content Include="newhome\default.htm" />
     <Content Include="Content\jquery-ui-1.8.9.custom.css" />
     <Content Include="Content\js\jquery-1.4.4.js" />
@@ -1098,6 +1106,7 @@
     <Content Include="images\notreq.gif" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
     <Content Include="Areas\Manage\Views\Batch\MoveAndDelete.aspx" />
@@ -1163,6 +1172,7 @@
     <Content Include="Areas\Manage\Views\Batch\LookupTable.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\LookupDataPage.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\View.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <None Include="Properties\Settings.settings">
@@ -1543,11 +1553,11 @@
     <Content Include="Areas\Main\Views\Person\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
-    <Content Include="Areas\Manage\Views\Home\DoDrops.aspx" />
+    <Content Include="Views\Home\DoDrops.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
     <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.aspx" />
-    <Content Include="Areas\Manage\Views\Home\ShowError.aspx" />
+    <Content Include="Views\Home\ShowError.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\Confirm.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\Index.aspx" />
     <Content Include="Areas\Public\Views\GODisciples\RenameGroup.aspx" />
@@ -1645,10 +1655,7 @@
     <Content Include="Content\jquery.cluetip.css" />
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />
-    <Content Include="Content\js\jquery-1.4.2.js" />
-    <Content Include="Content\js\jquery-1.4.2.min.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
-    <Content Include="Content\js\jquery-ui-1.8.2.custom.js" />
     <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.1.js" />
     <Content Include="Content\js\jquery.cookie.js" />
@@ -1732,7 +1739,7 @@
     <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Areas\Main\Views\CheckIn\Campuses.aspx" />
     <Content Include="Areas\Main\Views\CheckIn\CheckIn.aspx" />
-    <Content Include="Areas\Manage\Views\Home\BatchTag.aspx" />
+    <Content Include="Views\Home\BatchTag.aspx" />
     <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Areas\Main\Views\Reports\Attendance.aspx" />
     <Content Include="Content\newsletter.css" />
@@ -1759,7 +1766,7 @@
     <Content Include="Areas\Manage\Views\Account\ResetPassword.aspx" />
     <Content Include="Areas\Main\Views\CheckIn\Index.aspx" />
     <Content Include="Areas\Main\Views\CheckIn\Keyboard.ascx" />
-    <Content Include="Areas\Manage\Views\Home\About.aspx" />
+    <Content Include="Views\Home\About.aspx" />
     <Content Include="Areas\Manage\Views\Promotion\Index.aspx" />
     <Content Include="Areas\Manage\Views\Promotion\List.ascx" />
     <Content Include="Areas\Main\Views\QueryBuilder\Conditions.ascx" />
@@ -1831,9 +1838,7 @@
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
-    <Folder Include="Controllers\" />
     <Folder Include="demos\checkboxtree\images\" />
-    <Folder Include="Models\" />
     <Folder Include="Report\rdlc\" />
     <Folder Include="Upload\" />
   </ItemGroup>

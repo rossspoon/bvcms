@@ -39,7 +39,7 @@ namespace CmsWeb
             int? id = this.QueryString<int?>("id");
             contact = DbUtil.Db.NewContacts.SingleOrDefault(c => c.ContactId == id);
             if (contact == null)
-                Response.EndShowMessage("no contact", "/", "home");
+                Response.EndShowMessage("no contact", "/Home", "home");
 
             if (!Page.IsPostBack)
             {

@@ -38,7 +38,7 @@
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}"
         SelectMethod="BadETCodes" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <br />
-    <asp:GridView ID="GridView1" runat="server" AllowPaging="True"
+    <asp:GridView ID="GridView1" CssClass="aspgrid" runat="server" AllowPaging="True"
         AutoGenerateColumns="False" DataSourceID="ObjectDataSource2" 
         PageSize="200" onrowcommand="GridView1_RowCommand" 
         onrowdatabound="GridView1_RowDataBound" EnableViewState="false"

@@ -33,7 +33,7 @@ Just login to <a href=""{host}"">{host}</a> and you will be taken to your record
 ";
                 message = message
                     .Replace("{name}", person.Name)
-                    .Replace("{host}", Util.CmsHost);
+                    .Replace("{host}", DbUtil.Db.CmsHost);
 
                 Db.Email(DbUtil.AdminMail, person, "Account information for " + Db.Host, message);
             }
@@ -73,7 +73,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                     .Replace("{username}", uname)
                     .Replace("{password}", pword)
                     .Replace("{gobackurl}", gobackurl)
-                    .Replace("{host}", Util.CmsHost);
+                    .Replace("{host}", DbUtil.Db.CmsHost);
 
                 Db.Email(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
             }

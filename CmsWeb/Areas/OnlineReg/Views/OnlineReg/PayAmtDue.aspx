@@ -37,7 +37,7 @@
     <%=Html.Hidden("Misc3") %>
     <%=Html.Hidden("Misc4") %>
     <p>
-        When you click the 'Pay with Credit Card' button button will be redirected to ServiceU.com to process your credit card payment of $<%=Model.Amt.Value.ToString("N") %>.
+        When you click the 'Pay with Credit Card' button you will be redirected to ServiceU.com to process your credit card payment of $<%=Model.Amt.Value.ToString("N") %>.
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>

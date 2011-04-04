@@ -6,7 +6,7 @@
     <style type="text/css">
         body
         {
-            font-size: large;
+            font-size: 110%;
         }
         .TotalLine
         {
@@ -27,13 +27,13 @@
     <div style="text-align: center">
     <h1>
         Decision Summary Report</h1>
-        <table style="font-size: large; text-align: left" align="center">
+        <table style="font-size: 110%; text-align: left" align="center">
             <tr>
                 <td style="text-align: right">
                     From Date:
                 </td>
                 <td>
-                    <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                    <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                         Width="100"></asp:TextBox>
                 </td>
                 <td>
@@ -45,7 +45,7 @@
                     To Date:
                 </td>
                 <td>
-                    <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                    <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                         Width="100"></asp:TextBox>
                 </td>
                 <td>

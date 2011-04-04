@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style="text-align: center; font-size: large">
+    <div style="text-align: center; font-size: 110%">
         <div>
             <h1>
                 <asp:Label ID="Label1" runat="server" Text="Totals By Fund"></asp:Label></h1>
@@ -27,7 +27,7 @@
                         From Date:
                     </td>
                     <td>
-                        <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                        <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                             Width="100"></asp:TextBox>
                     </td>
                     <td>
@@ -39,7 +39,7 @@
                         To Date:
                     </td>
                     <td>
-                        <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: large"
+                        <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
                             Width="100"></asp:TextBox>
                     </td>
                     <td>

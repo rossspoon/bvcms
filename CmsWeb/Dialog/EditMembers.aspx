@@ -31,7 +31,7 @@
         <input type="hidden" id="retval" />
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
         <table class="modalPopup">
-            <tr style="font-size: small">
+            <tr style="font-size: 90%">
                 <td colspan="2">
                     <asp:LinkButton ID="ClearSearch" runat="server" OnClick="ClearSearch_Click">clear</asp:LinkButton>
                 </td>

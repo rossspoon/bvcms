@@ -9,7 +9,8 @@
                 tooltip: "Click to edit...",
                 style: 'display: inline',
                 onblur: 'submit',
-                width: '200px'
+                width: '200px',
+                height: 25
             });
             $("a.delete").click(function(ev) {
                 if (confirm("are you sure?"))

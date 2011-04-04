@@ -180,7 +180,7 @@ namespace CmsWeb.Models.PersonPage
                                     Id = m.PeopleId,
                                     Name = m.Name,
                                     Age = m.Age,
-                                    Color = m.DeceasedDate != null ? "red" : "#336699",
+                                    Color = m.DeceasedDate != null ? "red" : "auto",
                                     PositionInFamily = m.FamilyPosition.Code,
                                     SpouseIndicator = m.PeopleId == p.SpouseId ? "*" : "&nbsp;",
                                     Email = m.EmailAddress

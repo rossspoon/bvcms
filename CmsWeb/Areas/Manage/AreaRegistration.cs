@@ -16,7 +16,6 @@ namespace CmsWeb.Areas.Manage
         {
             AddRoute(context, "Account");
             AddRoute(context, "Display");
-            AddRoute(context, "Home");
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Batch");
             AddRoute(context, "Promotion");

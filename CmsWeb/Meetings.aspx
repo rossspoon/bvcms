@@ -8,7 +8,7 @@
     <h1>
         Meetings</h1>
     Meeting Date:
-    <asp:TextBox ID="MeetingDate" runat="server" AutoPostBack="True" Width="100" Style="font-size: large"></asp:TextBox>
+    <asp:TextBox ID="MeetingDate" runat="server" AutoPostBack="True" Width="100" Style="font-size: 110%"></asp:TextBox>
     <cc2:CalendarExtender ID="MeetingDateExtender" runat="server" TargetControlID="MeetingDate">
     </cc2:CalendarExtender>
     <hr />

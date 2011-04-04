@@ -18,13 +18,13 @@ namespace CmsWeb.Admin
         protected void SetMessage_Click(object sender, EventArgs e)
         {
             UtilityExtensions.Util.UrgentMessage = Message.Text;
-            Response.Redirect("/");
+            Response.Redirect("/Home");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Application.Remove("getoff");
-            Response.Redirect("/");
+            Response.Redirect("/Home");
         }
     }
 }

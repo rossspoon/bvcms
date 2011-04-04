@@ -13,7 +13,7 @@
 <body>
     <h2>
         Contribution Statements</h2>
-        <a href="/">Home</a>
+        <a href="/Home">Home</a>
 <% if (Model == null)
    { %>
     <form action="/Reports/ContributionStatements" method="post">

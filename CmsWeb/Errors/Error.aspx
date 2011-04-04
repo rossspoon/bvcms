@@ -33,7 +33,7 @@
     <div>
     <h1>An error occurred while processing your request.</h1>
     <div>An email has been sent to the developer to report the problem.</div>
-    <a href="/Default.aspx">Home</a>
+    <a href="/Home">Home</a>
     </div>
 </body>
 </html>

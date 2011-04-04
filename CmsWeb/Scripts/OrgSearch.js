@@ -81,10 +81,12 @@
             event: 'click',
             submit: 'OK',
             cancel: 'Cancel',
-            width: '100px'
+            width: '100px',
+            height: 25
         });
         $('#results.edit span.yesno').editable('/OrgSearch/Edit', {
             type: 'checkbox',
+            onblur: 'ignore',
             submit: 'OK'
         });
     }
@@ -111,6 +113,7 @@
         $(f).find('select').each(function () {
             $(this).val("0");
         });
+        $("#OnlineReg").val("-1");
         $('#DivisionId').html('<option value="0">(select a program)</option>');
         $('#StatusId').val("30");
         return $.getTable();

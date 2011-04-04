@@ -73,13 +73,15 @@ namespace CmsWeb.Areas.Main.Controllers
 #if DEBUG
             var uname = "david";
 #else
-            if (!Authenticate())
+            if (!Authenticate() )
                 return Content("not authorized");
             var uname = Request.Headers["username"];
 #endif
             AccountController.SetUserInfo(uname, Session);
+            if(!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
+                return Content("not authorized");
 
-            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
+            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(uname, "OrgMembersOnly"))
             {
                 Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();

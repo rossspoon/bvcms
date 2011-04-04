@@ -4,7 +4,8 @@
         tooltip: "Click to edit...",
         style: 'display: inline',
         onblur: 'submit',
-        width: '200px'
+        width: '200px',
+        height: 25
     };
     $("#create").click(function(ev) {
         ev.preventDefault();

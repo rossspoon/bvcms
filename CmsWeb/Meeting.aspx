@@ -77,7 +77,7 @@
 
     </script>
 
-    <table class="PersonHead" border="0">
+    <table class="PersonHead" border="0" width="100%">
         <tr>
             <td>
                 <cc1:DisplayHyperlink ID="OrgName" runat="server"
