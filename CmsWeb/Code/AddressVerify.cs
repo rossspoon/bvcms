@@ -40,7 +40,7 @@ namespace CmsWeb
         public class AddressResult
         {
             public bool found { get; set; }
-            public string selector { get; set; }
+            //public string selector { get; set; }
             public string address { get; set; }
             public string Line1 { get; set; }
             public string Line2 { get; set; }

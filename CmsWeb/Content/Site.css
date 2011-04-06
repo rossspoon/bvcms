@@ -17,9 +17,6 @@ img {
 
 
 #topNotice {
-	background-color: #DDD;
-	font-size: 120%;
-	padding: .2em 1em .2em 1em;
 }
 #container {
 	margin-top: .7em;
@@ -114,6 +111,7 @@ img {
 	border: 1px solid;
 	background-color: #EAF8FF;
 	border-color: #009CF0;
+	padding-bottom: 1px;
 }
 #toolbar .dropdown a,
 #toolbar .dropdown a:visited, 
@@ -192,7 +190,7 @@ a:hover, a:active {
 	margin-left: 0;
 	margin-right: 0;
 	background-color: #F8F8F8;
-	height: 45em;
+	height: 500px;
 	float: left;
 	width: 30%;
 }
@@ -254,10 +252,10 @@ div.drow {
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
-div.drow a.isnew {
-	font-weight:bold;
-	font-size:110%;
-	color: #930;
+div.drow span.isnew {
+	font-weight: 700;
+	font-size:130%;
+	color: #86BE00;
 } 
 .alt {
 	background-color: #EEE;

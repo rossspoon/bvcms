@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
+using System.Net.Mail;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -44,7 +45,12 @@ namespace CmsWeb.Areas.Manage.Controllers
             var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
             if (email.PublicX ?? false == false)
                 return Content("no email available");
-            return View(email);
+            var em = new EmailQueue
+            {
+                Subject = email.Subject,
+                Body = email.Body.Replace("{track}", "").Replace("{first}", "")
+            };
+            return View(em);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Recipients(int id)

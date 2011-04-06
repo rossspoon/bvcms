@@ -8,6 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Data.Linq.SqlClient;
 using System.Data.Linq;
+using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
@@ -86,6 +87,8 @@ namespace CmsWeb.Models.PersonPage
             if (BaptismTypeId == 0)
                 BaptismTypeId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
+            var psb = new StringBuilder();
+            p.UpdateValue(psb, "MemberStatusId", MemberStatusId);
             p.BaptismSchedDate = BaptismSchedDate;
             p.BaptismTypeId = BaptismTypeId;
             p.BaptismStatusId = BaptismStatusId;
@@ -102,12 +105,19 @@ namespace CmsWeb.Models.PersonPage
             p.OtherPreviousChurch = PrevChurch;
             p.DiscoveryClassDate = NewMemberClassDate;
             p.DiscoveryClassStatusId = NewMemberClassStatusId;
-            p.MemberStatusId = MemberStatusId;
+            p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId.Value);
             p.MemberProfileAutomation(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
         }
+        private static int? CviOrNull(CodeValueItem cvi)
+        {
+            if (cvi == null)
+                return null;
+            return cvi.Id;
+        }
+
         public static IEnumerable<SelectListItem> MemberStatuses()
         {
             return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");

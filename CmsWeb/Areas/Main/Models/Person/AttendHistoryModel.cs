@@ -32,14 +32,14 @@ namespace CmsWeb.Models.PersonPage
                 {
                     _attends = from a in _attends
                                where a.MeetingDate >= midnight
-                               where a.Registered == true || a.AttendanceFlag == true
+                               where a.AttendanceTypeId != (int)Attend.AttendTypeCode.Absent
                                select a;
                 }
                 else
                 {
                     _attends = from a in _attends
                                where a.MeetingDate < midnight
-                               where a.AttendanceFlag == true
+                               where a.AttendanceTypeId != (int)Attend.AttendTypeCode.Absent
                                select a;
                 }
             }

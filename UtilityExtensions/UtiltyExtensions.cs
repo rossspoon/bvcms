@@ -827,6 +827,8 @@ namespace UtilityExtensions
         {
             if (address.HasValue())
                 address = address.Trim();
+            if (name.HasValue())
+                name = name.Replace("\"", "");
             if (ValidEmail(address))
                 return Util.FirstAddress(address, name);
             else

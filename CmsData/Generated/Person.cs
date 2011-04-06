@@ -2554,7 +2554,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SchoolOther", UpdateCheck=UpdateCheck.Never, Storage="_SchoolOther", DbType="varchar(60)")]
+		[Column(Name="SchoolOther", UpdateCheck=UpdateCheck.Never, Storage="_SchoolOther", DbType="varchar(100)")]
 		public string SchoolOther
 		{
 			get { return this._SchoolOther; }
@@ -2576,7 +2576,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmployerOther", UpdateCheck=UpdateCheck.Never, Storage="_EmployerOther", DbType="varchar(60)")]
+		[Column(Name="EmployerOther", UpdateCheck=UpdateCheck.Never, Storage="_EmployerOther", DbType="varchar(120)")]
 		public string EmployerOther
 		{
 			get { return this._EmployerOther; }
@@ -2598,7 +2598,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OccupationOther", UpdateCheck=UpdateCheck.Never, Storage="_OccupationOther", DbType="varchar(60)")]
+		[Column(Name="OccupationOther", UpdateCheck=UpdateCheck.Never, Storage="_OccupationOther", DbType="varchar(120)")]
 		public string OccupationOther
 		{
 			get { return this._OccupationOther; }

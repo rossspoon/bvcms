@@ -1079,6 +1079,8 @@
     <Content Include="Content\cmenu.css" />
     <Content Include="Content\cssreset.css" />
     <Content Include="Content\jquery.jscrollpane.css" />
+    <Content Include="Content\js\jquery-1.5.2.js" />
+    <Content Include="Content\js\jquery-1.5.2.min.js" />
     <Content Include="Content\js\jquery.jscrollpane.js" />
     <Content Include="Content\js\jquery.mousewheel.js" />
     <Content Include="Content\magnifier.png" />

@@ -34,7 +34,7 @@ Generics
 .popupMenu
 {
 	position: absolute;
-	visibility: hidden;
+    display:none;
 	background-color: white;
 	border: 1px outset white;
 	padding: 2px;
