@@ -35,6 +35,13 @@ namespace CmsWeb.Models
         public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
+        [OptionalField]
+        private string _Homephone;
+        public string homephone
+        {
+            get { return _Homephone; }
+            set { _Homephone = value; }
+        }
         public string email { get; set; }
         public string fromemail
         {
@@ -175,6 +182,7 @@ namespace CmsWeb.Models
                     CityName = city,
                     StateCode = state,
                     ZipCode = zip,
+                    HomePhone = homephone,
                 };
             else
                 f = p.Family;
@@ -188,10 +196,7 @@ namespace CmsWeb.Models
             person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
                 person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
-            if (f.HomePhone.HasValue())
-                person.CellPhone = phone.GetDigits();
-            else
-                f.HomePhone = phone.GetDigits();
+            person.CellPhone = phone.GetDigits();
 
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, person);

@@ -63,9 +63,16 @@
 </tr>
 <tr>
     <td valign="top" nowrap="nowrap">
-        <%=Model.ShowAddress == true? Html.IsRequired(Model.RequiredPhone()) : Html.NotRequired() %>
-        <label for="phone">
-            Phone:</label>
+        <% if(Model.ShowAddress == true)
+           { %>
+           <%=Html.IsRequired(Model.RequiredPhone())%>
+        <label for="phone">Cell Phone:</label>
+        <% }
+           else
+           { %>
+           <%=Html.NotRequired() %>
+        <label for="phone">Phone:</label>
+        <% } %>
     </td>
     <td>
         <%=Html.TextBox(Model.inputname("phone"), Model.phone, new { @class = "wide" })%>

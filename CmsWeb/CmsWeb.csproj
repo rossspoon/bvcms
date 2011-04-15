@@ -146,6 +146,8 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -200,6 +202,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />

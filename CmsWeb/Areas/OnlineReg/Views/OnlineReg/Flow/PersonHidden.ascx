@@ -5,6 +5,7 @@
 <%=Html.Hidden3("m.List[" + Model.index + "].suffix", Model.suffix) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].dob", Model.dob) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].phone", Model.phone) %>
+<%=Html.Hidden3("m.List[" + Model.index + "].homephone", Model.homephone) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].address", Model.address) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].email", Model.email) %>
 <%=Html.Hidden3("m.List[" + Model.index + "].zip", Model.zip) %>

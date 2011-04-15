@@ -69,8 +69,9 @@ namespace CmsWeb
         }
         protected override void OnError(EventArgs e)
         {
+            var ex = Server.GetLastError();
+            Util.EndShowMessage(Response, ex.Message, "/Home", "click here");
             Server.ClearError();
-            Util.EndShowMessage(Response, "Image file too large or invalid", "/Home", "click here");
         }
     }
 }

@@ -48,9 +48,11 @@ namespace CmsWeb.Contributions
             ReqTotalChecks.Enabled = EditUpdateButton1.Editing;
             ReqTotalEnv.Enabled = EditUpdateButton1.Editing;
 
+            BundleStatusIdDropDown.Enabled = true;
             var nopid = bundleheader.BundleDetails.Any(bd => bd.Contribution.PeopleId == null);
-            BundleStatusIdDropDown.Enabled = nopid == false && TotalItems.Text == TotalHeader.Text;
-
+            if (bundleheader.BundleStatusId == (int)BundleHeader.StatusCode.Open)
+                BundleStatusIdDropDown.Enabled = nopid == false && TotalItems.Text == TotalHeader.Text;
+                
             FundsLink.NavigateUrl = "/PostBundle/FundTotals/" + bundleheader.BundleHeaderId;
         }
 

@@ -85,7 +85,6 @@
                         <strong>Active Tag:</strong> <a href="/MyTags.aspx">
                             <%=Util2.CurrentTagName%></a><br />
                         <form method="post">
-                        <img src="/Content/magnifier.png" />
                         <input id="SearchText" type="text" />
                         </form>
                         <% } %>

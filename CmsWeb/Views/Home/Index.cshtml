@@ -59,9 +59,9 @@
         <div class="jscroll" style="height:17em">
         @foreach (var ni in Model.BVCMSNews())
         {
-            <div class="drow"><a href="@ni.Url">@ni.Title</a>
+            <div class="drow">
             @if (DateTime.Now.Subtract(ni.Published).TotalDays < 8) { <span class="isnew">*</span> }
-            </div>
+            <a href="@ni.Url">@ni.Title</a></div>
         }
         </div>
         <h2><a href="@DbUtil.Db.Setting("ChurchBlogUrl", "#")">Church News</a></h2>

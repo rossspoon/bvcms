@@ -283,9 +283,10 @@ WAITFOR(
                 fromname = fromaddress;
             else
                 fromname = fromname.Replace("\"", "");
+            var from = new MailAddress(fromaddress, fromname);
             var msg = new MailMessage();
             msg.From = new MailAddress(awsfrom, fromname);
-            Util.RecordEmailSent(host, msg.From, Subject, nameto, to, id, true);
+            Util.RecordEmailSent(host, from, Subject, nameto, to, id, true);
 #if DEBUG2
             msg.To.Add(new MailAddress("davcar@pobox.com", nameto));
 #else
@@ -308,7 +309,7 @@ WAITFOR(
                 msg.Subject = Subject;
             else
                 msg.Subject = "no subject";
-            msg.ReplyToList.Add(msg.From);
+            msg.ReplyToList.Add(from);
             msg.Headers.Add("X-bvcms-host", host);
             msg.Headers.Add("X-bvcms-mail-id", id.ToString());
             msg.Headers.Add("X-bvcms-peopleid", pid.ToString());
@@ -383,7 +384,7 @@ WAITFOR(
                     string resp = "no response";
                     if (response.IsNotNull())
                         resp = response.SendRawEmailResult.ToString();
-                    Util.SendMsg(SysEmailFrom, host, msg.From,
+                    Util.SendMsg(SysEmailFrom, host, from,
                         "(sending error) " + Subject,
                         "<p>to: \"{0}\" <{1}><br>host:{2} id:{3} pid:{4}</p><pre>{5}</pre>{6}<br><br>{7}".Fmt(
                             nameto, to, host, id, pid, ex.Message, body, resp),

@@ -85,7 +85,6 @@
                            { %>
                         <strong>Active Tag:</strong> <a href="/MyTags.aspx">
                             <%=Util2.CurrentTagName%></a><br />
-                        <img src="/Content/magnifier.png" />
                         <input id="SearchText" type="text" />
                         <% } %>
                     </div>
@@ -226,8 +225,10 @@
         <div style="clear: both; border-bottom: 4px solid #ddd"></div>
     </div>
 
+    <div id="main">
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
     </asp:ContentPlaceHolder>
+    </div>
     <div id="ChooseLabelType" class="modalPopup" style="display:none; width: 400px; padding: 10px">
         <table>
             <tr>

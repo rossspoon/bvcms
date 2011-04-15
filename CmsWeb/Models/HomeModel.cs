@@ -15,6 +15,8 @@ using System.Data.Linq.SqlClient;
 using System.Net;
 using System.IO;
 using System.Xml.Linq;
+using System.ServiceModel.Syndication;
+using System.Xml;
 
 namespace CmsWeb.Models
 {
@@ -124,14 +126,14 @@ namespace CmsWeb.Models
                 }
                 if (feed.Data != null)
                 {
-                    var rssFeed = XDocument.Parse(feed.Data);
-                    var posts = from item in rssFeed.Descendants("item")
-                                let au = item.Element("author")
+                    var reader = XmlReader.Create(new StringReader(feed.Data));
+                    var f = SyndicationFeed.Load(reader);
+                    var posts = from item in f.Items
                                 select new NewsInfo
                                 {
-                                    Title = item.Element("title").Value,
-                                    Published = DateTime.Parse(item.Element("pubDate").Value),
-                                    Url = item.Element("link").Value,
+                                    Title = item.Title.Text,
+                                    Published = item.PublishDate.DateTime,
+                                    Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
                                 };
                     return posts;
                 }
@@ -142,8 +144,8 @@ namespace CmsWeb.Models
         {
             var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
 
-            var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
+
 
             HttpWebRequest req = null;
             try
@@ -173,6 +175,7 @@ namespace CmsWeb.Models
             {
                 try
                 {
+
                     var resp = req.GetResponse() as HttpWebResponse;
                     feed.LastModified = resp.LastModified;
                     feed.ETag = resp.Headers["ETag"];
@@ -186,14 +189,15 @@ namespace CmsWeb.Models
                 }
                 if (feed.Data != null)
                 {
-                    var rssFeed = XDocument.Parse(feed.Data);
-                    var posts = from item in rssFeed.Descendants("item")
-                                let au = item.Element("author")
+                    var reader = XmlReader.Create(new StringReader(feed.Data));
+                    var f = SyndicationFeed.Load(reader);
+                    var posts = from item in f.Items
+                                let au = item.Authors.First().Name
                                 select new NewsInfo
                                 {
-                                    Title = item.Element("title").Value,
-                                    Published = DateTime.Parse(item.Element("pubDate").Value),
-                                    Url = item.Element("link").Value,
+                                    Title = item.Title.Text,
+                                    Published = item.PublishDate.DateTime,
+                                    Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
                                 };
                     return posts;
                 }

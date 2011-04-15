@@ -245,7 +245,8 @@ namespace CmsData
                 om2.UserData = om.UserData;
                 Db.SubmitChanges();
                 foreach (var m in om.OrgMemMemTags)
-                    om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
+                    if (!om2.OrgMemMemTags.Any(mm => mm.MemberTagId == m.MemberTagId))
+                        om2.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = m.MemberTagId });
                 Db.SubmitChanges();
                 Db.OrgMemMemTags.DeleteAllOnSubmit(om.OrgMemMemTags);
                 Db.SubmitChanges();

@@ -55,6 +55,7 @@ namespace CmsWeb.Areas.OnlineReg.Models.Payments
             p["x_exp_date"] = expdate;
             p["x_amount"] = amt.ToString();
             p["x_description"] = description;
+            p["x_invoice_num"] = tranid.ToString();
             p["x_cust_id"] = PeopleId.ToString(); // not passing?
             p["x_first_name"] = first;
             p["x_last_name"] = last;

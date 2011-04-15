@@ -18,6 +18,7 @@ namespace CmsWeb.Models
     {
         public string description { get; set; }
         public string name { get; set; }
+        public string Submit { get; set; }
         public decimal? gtamount { get; set; }
         public decimal? ltamount { get; set; }
         public DateTime? startdt { get; set; }
@@ -154,6 +155,41 @@ namespace CmsWeb.Models
                 }
 
             return q;
+        }
+        public IQueryable ExportTransactions()
+        {
+            var q
+               = from t in DbUtil.Db.Transactions
+                 where t.Amt >= gtamount || gtamount == null
+                 where t.Amt <= ltamount || ltamount == null
+                 where t.TransactionDate >= startdt || startdt == null
+                 where description == null || t.Description.Contains(description)
+                 where name == null || t.Name.Contains(name)
+                 select t;
+            if (!enddt.HasValue && startdt.HasValue)
+            {
+                var edt = startdt.Value.AddHours(24);
+                q = q.Where(t => t.TransactionDate < edt);
+            }
+            var q2 = from t in q
+                     select new
+                 {
+                     t.Id,
+                     t.TransactionId,
+                     t.Approved,
+                     t.TransactionDate,
+                     Amt = t.Amt ?? 0,
+                     Amtdue = t.Amtdue ?? 0,
+                     t.Description,
+                     t.Message,
+                     t.Name,
+                     t.Address,
+                     t.City,
+                     t.State,
+                     t.Zip,
+                     t.Fund
+                 };
+            return q2;
         }
     }
 }

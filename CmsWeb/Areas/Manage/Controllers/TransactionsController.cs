@@ -23,8 +23,12 @@ namespace CmsWeb.Areas.Manage.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult List(TransactionsModel m)
         {
-            UpdateModel(m.Pager);
-            return View(m);
+            if (m.Submit == "Filter")
+            {
+                UpdateModel(m.Pager);
+                return View(m);
+            }
+            return new TransactionsExcelResult(m);
         }
     }
 }

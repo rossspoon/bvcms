@@ -12,7 +12,7 @@
                 showURL: false,
                 showBody: "|"
             });
-            $("form input.submitbutton").live('click', function (ev) {
+            $("form input.submitbutton[value='Filter'").live('click', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();

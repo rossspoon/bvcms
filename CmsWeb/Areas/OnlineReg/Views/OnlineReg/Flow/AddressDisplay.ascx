@@ -1,5 +1,10 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<CmsWeb.Models.OnlineRegPersonModel>" %>
     <tr>
+        <td><label for="homephone">Home Phone</label></td>
+        <td><%=Model.homephone.FmtFone()%>
+        </td>
+    </tr>
+    <tr>
         <td><label for="addr">Address</label></td>
         <td><%=Model.address %>
         </td>
