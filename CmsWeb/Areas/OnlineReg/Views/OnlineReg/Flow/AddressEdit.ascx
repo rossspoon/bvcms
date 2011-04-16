@@ -5,8 +5,7 @@
     <tr>
         <td><%=Html.NotRequired() %>
             <label for="addr">Home Phone</label> </td>
-        <td><%=Html.TextBox(Model.inputname("homephone"), Model.homephone) %>
-            <div><%= Html.ValidationMessage(Model.inputname("address"))%></div></td>
+        <td><%=Html.TextBox(Model.inputname("homephone"), Model.homephone) %></td>
         <td colspan="3"></td>
     </tr>
     <tr>

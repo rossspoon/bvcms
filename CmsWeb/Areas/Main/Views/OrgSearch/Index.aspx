@@ -10,6 +10,7 @@
         .Add("/Scripts/OrgSearch.js")
         .Render("/Content/OrgSearch_#.js")
             %>  
+    <h3>Organization Search</h3>
     <form method="post">
     <table>
         <tr>

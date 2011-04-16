@@ -14,7 +14,7 @@ namespace CmsWeb.Models
         public bool IsValidForContinue { get; set; }
         private void ValidateBirthdayRange(ModelStateDictionary ModelState)
         {
-            if (org != null)
+            if(org != null)
                 if (!birthday.HasValue && (org.BirthDayStart.HasValue || org.BirthDayEnd.HasValue))
                     ModelState.AddModelError(inputname("dob"), "birthday required");
                 else if (birthday.HasValue)
@@ -172,9 +172,20 @@ Please search with a different email, phone, or birthday.";
                 ModelState.AddModelError(inputname("dob"), "birthday required");
             if (orgid == Util.CreateAccountCode && age < 16)
                 ModelState.AddModelError(inputname("dob"), "must be 16 to create account");
+
+            if (ComputesOrganizationByAge() && GetAppropriateOrg() == null)
+                ModelState.AddModelError(inputname("dob"), "Sorry, cannot find an appropriate age group");
+
             ValidateBirthdayRange(ModelState);
-            if (!phone.HasValue() && RequiredPhone())
-                ModelState.AddModelError(inputname("phone"), "phone required");
+            int n = 0;
+            if (phone.HasValue() && phone.GetDigits().Length == 10)
+                n++;
+            if (ShowAddress && homephone.HasValue() && homephone.GetDigits().Length == 10)
+                n++;
+
+            if (RequiredPhone() && n == 0)
+                ModelState.AddModelError(inputname("phone"), "cell or home phone required");
+
             if (email.HasValue())
                 email = email.Trim();
             if (!email.HasValue() || !Util.ValidEmail(email))

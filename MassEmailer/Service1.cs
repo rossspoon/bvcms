@@ -98,6 +98,7 @@ namespace MassEmailer
             string CmsHost = "";
             int id = 0;
             int pid = 0;
+            string lasterror = null;
             while (serviceStarted)
             {
                 try
@@ -179,16 +180,22 @@ WAITFOR(
                             }
                         }
                     }
+                    lasterror = null;
                 }
                 catch (Exception ex)
                 {
-                    WriteLog("Error sending emails ", EventLogEntryType.Error);
-                    var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
-                    erroremails = erroremails.Replace(';', ',');
-                    var SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];                
-                    Util.SendMsg(SysFromEmail, CmsHost, Util.FirstAddress(erroremails), 
-                        "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
-                        Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), null, erroremails, 0);
+                    if (lasterror != ex.Message)
+                    {
+                        WriteLog("Error sending emails ", EventLogEntryType.Error);
+                        var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
+                        erroremails = erroremails.Replace(';', ',');
+                        var SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];
+                        Util.SendMsg(SysFromEmail, CmsHost, Util.FirstAddress(erroremails),
+                            "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
+                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), null, erroremails, 0);
+                        lasterror = ex.Message;
+                    }
+                    Thread.Sleep(5000);
                 }
             }
             Thread.CurrentThread.Abort();

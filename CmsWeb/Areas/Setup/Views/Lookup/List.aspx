@@ -22,6 +22,7 @@
     <a href="/Setup/Lookup/Index/FamilyMemberType">FamilyMemberType</a><br />
     <a href="/Setup/Lookup/Index/FamilyPosition">FamilyPosition</a><br />
     <a href="/Setup/Lookup/Index/FamilyRelationship">FamilyRelationship</a><br />
+    <a href="/Setup/Fund">Funds</a><br />
     <a href="/Setup/Lookup/Index/Gender">Gender</a><br />
     <a href="/Setup/Lookup/Index/GenderClass">GenderClass</a><br />
     <a href="/Setup/Lookup/Index/InterestPoint">InterestPoint</a><br />
@@ -30,6 +31,8 @@
     <a href="/Setup/Lookup/Index/MeetingType">MeetingType</a><br />
     <a href="/Setup/Lookup/Index/MemberLetterStatus">MemberLetterStatus</a><br />
     <a href="/Setup/Lookup/Index/MemberStatus">MemberStatus</a><br />
+    <a href="/Setup/MemberTypes">Member Types</a><br />
+    <a href="/Setup/Ministry">Ministries</a><br />
     <a href="/Setup/Lookup/Index/NameSuffix">NameSuffix</a><br />
     <a href="/Setup/Lookup/Index/NameTitle">NameTitle</a><br />
     <a href="/Setup/Lookup/Index/NewContactReason">NewContactReason</a><br />

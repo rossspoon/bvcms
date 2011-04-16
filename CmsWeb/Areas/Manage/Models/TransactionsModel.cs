@@ -179,6 +179,7 @@ namespace CmsWeb.Models
                      t.Approved,
                      t.TransactionDate,
                      Amt = t.Amt ?? 0,
+                     Donate = t.Donate ?? 0,
                      Amtdue = t.Amtdue ?? 0,
                      t.Description,
                      t.Message,

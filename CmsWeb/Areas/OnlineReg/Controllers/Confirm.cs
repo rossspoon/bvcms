@@ -44,6 +44,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             string first, last;
             Person.NameSplit(pf.ti.Name, out first, out last);
+            var pid = m.UserPeopleId ?? 0;
+            if (pid == 0)
+            {
+                var pds = DbUtil.Db.FindPerson(first, last, null, pf.ti.Emails, pf.ti.Phone);
+                if (pds.Count() == 1)
+                    pid = pds.Single().PeopleId.Value;
+            }
             var tinfo = tctl.PostTransaction(
                 pf.CreditCard,
                 pf.CCV,
@@ -51,7 +58,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.ti.Amt ?? 0,
                 m.TranId.Value,
                 m.Header,
-                m.UserPeopleId ?? 0,
+                pid,
                 pf.ti.Emails,
                 first,
                 last,

@@ -193,9 +193,8 @@
                     <a href="/Setup/Setting">Settings</a>
                     <a href="/Display/Index/">Special Content</a>
                     <a href="/Setup/MetroZip/">Metro Zips</a>
-                    <a href="/Setup/Fund">Funds</a>
-                    <a href="/Setup/Ministry">Ministries</a>
-                    <a href="/Setup/MemberTypes">Member Types</a>
+                    <a href="/Manage/Transactions">Transactions</a>
+                    <a href="/Manage/Emails">Emails</a>
                     <a href="/Setup/Lookup/">Lookups</a>
                     <a href="/Batch/UpdateFields/">Update for a Tag</a>
                     <a href="/Admin/ToggleOrgMembersOnly.ashx">

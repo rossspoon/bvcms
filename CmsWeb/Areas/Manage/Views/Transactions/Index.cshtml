@@ -12,11 +12,11 @@
                 showURL: false,
                 showBody: "|"
             });
-            $("form input.submitbutton[value='Filter'").live('click', function (ev) {
+            $('input[value="Filter"].submitbutton').live('click', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();
-                $.post(f.attr('action'), q, function (ret) {
+                $.post("/Manage/Transactions/List", q, function (ret) {
                     $(f).html(ret);
                     $('table.grid > tbody > tr:even').addClass('alt');
                 });
@@ -27,6 +27,6 @@
 </script>
 <script src="/Scripts/Pager.js" type="text/javascript"></script>
 <h2>Transactions</h2>
-<form id="form" method="post" action="/Manage/Transactions/List">
+<form id="form" method="post" action="/Manage/Transactions/Export">
 @{Html.RenderPartial("List", Model);}
 </form>
