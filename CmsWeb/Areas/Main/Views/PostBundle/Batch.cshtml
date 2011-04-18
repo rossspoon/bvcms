@@ -1,0 +1,18 @@
+﻿@using CmsWeb
+<script type="text/javascript">
+    $(function() {
+        $(".datepicker").datepicker({
+            dateFormat: 'm/d/yy',
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+</script>
+    <h2>Batch Load Bundle</h2>
+    
+<form action="/PostBundle/BatchUpload" method="post" enctype="multipart/form-data">
+    <label>Filename: <input type="file" name="file" /></label>
+    <label>Contribution Date: </label> @Html.DatePicker("date")
+    <input type="submit" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "10", cols = "1000", wrap = "off", style = "width:90%" })<br />
+</form>

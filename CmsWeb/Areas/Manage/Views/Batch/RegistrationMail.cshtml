@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "RegistrationMail";
+}
+<h2>RegistrationMail</h2>
+@using(Html.BeginForm())
+{ 
+    @Html.TextArea("text", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+    <input type="submit" value="Submit" />
+} 

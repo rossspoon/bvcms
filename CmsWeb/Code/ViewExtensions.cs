@@ -99,51 +99,51 @@ namespace CmsWeb
             string sOut = Protocol + pg.ViewContext.HttpContext.Request.ServerVariables["SERVER_NAME"] + Port + appPath;
             return sOut;
         }
-        public static string HyperLink(this HtmlHelper helper, string link, string text)
-        {
-            var tb = new TagBuilder("a");
-            tb.InnerHtml = HttpUtility.HtmlEncode(text);
-            var b = tb;
-            b.MergeAttribute("href", link);
-            return b.ToString(TagRenderMode.Normal);
-        }
-        public static string HyperLink(this HtmlHelper helper,
-            string link,
-            string text,
-            object htmlAttributes)
-        {
-            var attr = new RouteValueDictionary(htmlAttributes);
-            var tb = new TagBuilder("a");
-            tb.InnerHtml = HttpUtility.HtmlEncode(text);
-            var b = tb;
-            b.MergeAttribute("href", link);
-            b.MergeAttributes<string, object>(attr);
-            return b.ToString(TagRenderMode.Normal);
-        }
-        public static string HyperLink(this HtmlHelper helper,
-            string link,
-            string text,
-            string onclick)
-        {
-            return helper.HyperLink(link, text, onclick, null);
-        }
-        public static string HyperLink(this HtmlHelper helper,
-            string link,
-            string text,
-            string onclick,
-            object htmlAttributes)
-        {
-            var tb = new TagBuilder("a");
-            tb.InnerHtml = HttpUtility.HtmlEncode(text);
-            var b = tb;
-            b.MergeAttribute("href", link);
-            if (onclick.HasValue())
-                b.MergeAttribute("onclick", "return " + onclick);
-            var attr = new RouteValueDictionary(htmlAttributes);
-            b.MergeAttributes<string, object>(attr);
-            return b.ToString(TagRenderMode.Normal);
-        }
-        public static string PageSizesDropDown(this HtmlHelper helper, string id, string onchange)
+        //public static HtmlString HyperLink(this HtmlHelper helper, string link, string text)
+        //{
+        //    var tb = new TagBuilder("a");
+        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
+        //    var b = tb;
+        //    b.MergeAttribute("href", link);
+        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
+        //}
+        //public static HtmlString HyperLink(this HtmlHelper helper,
+        //    string link,
+        //    string text,
+        //    object htmlAttributes)
+        //{
+        //    var attr = new RouteValueDictionary(htmlAttributes);
+        //    var tb = new TagBuilder("a");
+        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
+        //    var b = tb;
+        //    b.MergeAttribute("href", link);
+        //    b.MergeAttributes<string, object>(attr);
+        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
+        //}
+        //public static HtmlString HyperLink(this HtmlHelper helper,
+        //    string link,
+        //    string text,
+        //    string onclick)
+        //{
+        //    return helper.HyperLink(link, text, onclick, null);
+        //}
+        //public static HtmlString HyperLink(this HtmlHelper helper,
+        //    string link,
+        //    string text,
+        //    string onclick,
+        //    object htmlAttributes)
+        //{
+        //    var tb = new TagBuilder("a");
+        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
+        //    var b = tb;
+        //    b.MergeAttribute("href", link);
+        //    if (onclick.HasValue())
+        //        b.MergeAttribute("onclick", "return " + onclick);
+        //    var attr = new RouteValueDictionary(htmlAttributes);
+        //    b.MergeAttributes<string, object>(attr);
+        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
+        //}
+        public static HtmlString PageSizesDropDown(this HtmlHelper helper, string id, string onchange)
         {
             var tb = new TagBuilder("select");
             tb.MergeAttribute("id", id);
@@ -160,7 +160,7 @@ namespace CmsWeb
                 sb.Append(ot.ToString());
             }
             tb.InnerHtml = sb.ToString();
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
         public static IEnumerable<SelectListItem> PageSizes(this HtmlHelper helper)
         {
@@ -170,19 +170,19 @@ namespace CmsWeb
                 list.Add(new SelectListItem { Text = size.ToString() });
             return list;
         }
-        public static string HyperlinkIf(this HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
-        {
-            if (!condition)
-                return null;
-            return helper.HyperLink(link, text, onclick, htmlAttributes);
-        }
+        //public static HtmlString HyperlinkIf(this HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
+        //{
+        //    if (!condition)
+        //        return null;
+        //    return helper.HyperLink(link, text, onclick, htmlAttributes);
+        //}
         //public static string ActionLinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         //{
         //    if (!condition)
         //        return null;
         //    return helper.ActionLink(linkText, controllerName, routeValues, htmlAttributes);
         //}
-        public static string SpanIf(this HtmlHelper helper, bool condition, string text, object htmlAttributes)
+        public static HtmlString SpanIf(this HtmlHelper helper, bool condition, string text, object htmlAttributes)
         {
             if (!condition)
                 return null;
@@ -190,15 +190,15 @@ namespace CmsWeb
             var attr = new RouteValueDictionary(htmlAttributes);
             tb.InnerHtml = text;
             tb.MergeAttributes<string, object>(attr);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string Span(this HtmlHelper helper, string text, object htmlAttributes)
+        public static HtmlString Span(this HtmlHelper helper, string text, object htmlAttributes)
         {
             var tb = new TagBuilder("span");
             var attr = new RouteValueDictionary(htmlAttributes);
             tb.InnerHtml = text;
             tb.MergeAttributes<string, object>(attr);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
         public static bool IsDebug(this HtmlHelper helper)
         {
@@ -217,7 +217,7 @@ namespace CmsWeb
                 s = val.Value.AttemptedValue;
             return s;
         }
-        public static string DropDownList2(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list, bool visible)
+        public static HtmlString DropDownList2(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list, bool visible)
         {
             var tb = new TagBuilder("select");
             tb.MergeAttribute("id", name);
@@ -241,9 +241,9 @@ namespace CmsWeb
                 sb.Append(ot.ToString());
             }
             tb.InnerHtml = sb.ToString();
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string DropDownList3(this HtmlHelper helper, string id, string name, IEnumerable<SelectListItem> list, string value)
+        public static HtmlString DropDownList3(this HtmlHelper helper, string id, string name, IEnumerable<SelectListItem> list, string value)
         {
             var tb = new TagBuilder("select");
             if (id.HasValue())
@@ -260,9 +260,9 @@ namespace CmsWeb
                 sb.Append(ot.ToString());
             }
             tb.InnerHtml = sb.ToString();
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string TextBox2(this HtmlHelper helper, string name, bool visible)
+        public static HtmlString TextBox2(this HtmlHelper helper, string name, bool visible)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
@@ -273,18 +273,18 @@ namespace CmsWeb
             var s = helper.TryGetModel(name);
             var viewDataValue = Convert.ToString(helper.ViewData.Eval(name));
             tb.MergeAttribute("value", s ?? viewDataValue);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string TextBox3(this HtmlHelper helper, string id, string name, string value)
+        public static HtmlString TextBox3(this HtmlHelper helper, string id, string name, string value)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
             tb.MergeAttribute("id", id);
             tb.MergeAttribute("name", name);
             tb.MergeAttribute("value", value);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string TextBox3(this HtmlHelper helper, string id, string name, string value, object htmlAttributes)
+        public static HtmlString TextBox3(this HtmlHelper helper, string id, string name, string value, object htmlAttributes)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
@@ -296,9 +296,9 @@ namespace CmsWeb
             ModelState state;
             if (helper.ViewData.ModelState.TryGetValue(name, out state) && (state.Errors.Count > 0))
                 tb.AddCssClass(HtmlHelper.ValidationInputCssClassName);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string TextBoxClass(this HtmlHelper helper, string name, string @class)
+        public static HtmlString TextBoxClass(this HtmlHelper helper, string name, string @class)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
@@ -308,7 +308,7 @@ namespace CmsWeb
             var s = helper.TryGetModel(name);
             var viewDataValue = Convert.ToString(helper.ViewData.Eval(name));
             tb.MergeAttribute("value", s ?? viewDataValue);
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
         public static HtmlString DatePicker(this HtmlHelper helper, string name)
         {
@@ -322,16 +322,16 @@ namespace CmsWeb
             tb.MergeAttribute("value", viewDataValue.FormatDate2());
             return new HtmlString(tb.ToString());
         }
-        public static string CheckBoxReadonly(this HtmlHelper helper, bool? ck)
+        public static HtmlString CheckBoxReadonly(this HtmlHelper helper, bool? ck)
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "checkbox");
             tb.MergeAttribute("disabled", "disabled");
             if (ck == true)
                 tb.MergeAttribute("checked", "checked");
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string CodeDesc(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list)
+        public static HtmlString CodeDesc(this HtmlHelper helper, string name, IEnumerable<SelectListItem> list)
         {
             var tb = new TagBuilder("span");
             var viewDataValue = helper.ViewData.Eval(name);
@@ -342,9 +342,9 @@ namespace CmsWeb
                 tb.InnerHtml = si.Text;
             else
                 tb.InnerHtml = "?";
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string Hidden3(this HtmlHelper helper, string id, string name, object value)
+        public static HtmlString Hidden3(this HtmlHelper helper, string id, string name, object value)
         {
             var tb = new TagBuilder("input");
             if (id.HasValue())
@@ -352,13 +352,13 @@ namespace CmsWeb
             tb.MergeAttribute("type", "hidden");
             tb.MergeAttribute("name", name);
             tb.MergeAttribute("value", value != null ? value.ToString() : "");
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string Hidden3(this HtmlHelper helper, string name, object value)
+        public static HtmlString Hidden3(this HtmlHelper helper, string name, object value)
         {
             return helper.Hidden3(null, name, value);
         }
-        public static string HiddenIf(this HtmlHelper helper, string name, bool? include)
+        public static HtmlString HiddenIf(this HtmlHelper helper, string name, bool? include)
         {
             if (include == true)
             {
@@ -368,11 +368,11 @@ namespace CmsWeb
                 tb.MergeAttribute("name", name);
                 var viewDataValue = helper.ViewData.Eval(name);
                 tb.MergeAttribute("value", viewDataValue.ToString());
-                return tb.ToString();
+                return new HtmlString(tb.ToString());
             }
-            return "";
+            return new HtmlString("");
         }
-        public static string IsRequired(this HtmlHelper helper, bool? Required)
+        public static HtmlString IsRequired(this HtmlHelper helper, bool? Required)
         {
             //var tb = new TagBuilder("img");
             //tb.MergeAttribute("border", "0");
@@ -391,20 +391,20 @@ namespace CmsWeb
             if ((Required ?? true) == true)
             {
                 tb.InnerHtml = "*";
-                return tb.ToString();
+                return new HtmlString(tb.ToString());
             }
             tb.InnerHtml = "&nbsp;";
-            return tb.ToString();
+            return new HtmlString(tb.ToString());
         }
-        public static string Required(this HtmlHelper helper)
+        public static HtmlString Required(this HtmlHelper helper)
         {
             return helper.IsRequired(true);
         }
-        public static string NotRequired(this HtmlHelper helper)
+        public static HtmlString NotRequired(this HtmlHelper helper)
         {
             return helper.IsRequired(false);
         }
-        public static string HiddenIf(this HtmlHelper helper, string name, object value, bool? include)
+        public static HtmlString HiddenIf(this HtmlHelper helper, string name, object value, bool? include)
         {
             if (include == true)
             {
@@ -413,9 +413,9 @@ namespace CmsWeb
                 tb.MergeAttribute("id", name);
                 tb.MergeAttribute("name", name);
                 tb.MergeAttribute("value", value.ToString());
-                return tb.ToString();
+                return new HtmlString(tb.ToString());
             }
-            return "";
+            return new HtmlString("");
         }
     }
 }

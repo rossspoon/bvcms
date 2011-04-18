@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "UploadPeople";
+}
+<h2>Batch Upload People</h2>
+@using(Html.BeginForm())
+{ 
+    @Html.TextArea("text", ViewData["text"].ToString(), new { rows = "30", cols = "1000", wrap = "off", style = "width:90%" })<br />
+    <input type="submit" value="Submit" />
+} 

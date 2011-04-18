@@ -96,7 +96,7 @@
 }
 </script>
     <h2>
-        Prayer Times <span style="font-size:10pt">(<%=ViewData.Model.TotalCount()%> commitments)</span></h2>
+        Prayer Times <span style="font-size:10pt">(<%=Model.TotalCount()%> commitments)</span></h2>
         <%= Html.Hidden("uid", Model.person.PeopleId) %>
    <table align="center" border="0" cellspacing="0" cellpadding="0"><tr><td>
    <table border="0" cellpadding="0" cellspacing="0" id="slots">
@@ -116,11 +116,11 @@
             </tr>
         </thead>
         <tbody>
-<% foreach(var ts in ViewData.Model.FetchTimeSlots())
+<% foreach(var ts in Model.FetchTimeSlots())
    { %>
             <tr>
                 <th><%=string.Format("{0:h:mm tt}", ts)%></th>
-    <% foreach (var si in ViewData.Model.FetchWeekForTime(ts))
+    <% foreach (var si in Model.FetchWeekForTime(ts))
            Response.Write(si.SlotCell() + "\n"); %>
             </tr>
 <% } %>

@@ -75,7 +75,7 @@
             showBody: "|"
         });
         $('#results > tbody > tr:even').addClass('alt');
-        $("#results.edit span.bday").editable('/OrgSearch/Edit/', {
+        $("span.bday").editable('/OrgSearch/Edit/', {
             type: 'datepicker',
             tooltip: 'click to edit...',
             event: 'click',
@@ -84,7 +84,7 @@
             width: '100px',
             height: 25
         });
-        $('#results.edit span.yesno').editable('/OrgSearch/Edit', {
+        $('span.yesno').editable('/OrgSearch/Edit', {
             type: 'checkbox',
             onblur: 'ignore',
             submit: 'OK'

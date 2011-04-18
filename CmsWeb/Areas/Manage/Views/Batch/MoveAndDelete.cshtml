@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "MoveAndDelete";
+}
+<h2>Batch Move and Delete People</h2>
+<p>please paste data, tab delimited (copied from Excel), no headers, fromid(tab)toid, one set per row</p>
+@using(Html.BeginForm())
+{ 
+    @Html.TextArea("text", new { rows = "30", cols = "1000", wrap = "off", style = "width:90%" })<br />
+    <input type="submit" value="Submit" />
+} 

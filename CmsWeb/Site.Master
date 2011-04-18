@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>CMS2</title>
-    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <asp:Literal id="cssbundle" runat="server"></asp:Literal>
 
     <asp:ContentPlaceHolder ID="head" runat="server">

@@ -88,7 +88,7 @@
         </tr>
     </thead>
     <tbody>
-        <% Html.RenderPartial("Rows", ViewData.Model); %>
+        <% Html.RenderPartial("Rows", Model); %>
     </tbody>
 </table>
 </form>

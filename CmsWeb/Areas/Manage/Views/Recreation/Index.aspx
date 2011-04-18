@@ -67,7 +67,7 @@
        <input type="submit" name="submit" value="Assign to Group" />
        <% if((Model.AgeDivId ?? 0) > 0)
           { %>
-       <%=Html.HyperLink("/Organization/Index/" + Model.AgeDivId, Model.AgeDiv.OrganizationName) %>
+       <a href="/Organization/Index/<%=Model.AgeDivId%>"><%=Model.AgeDiv.OrganizationName %></a>
        <% } %>
     </div>
     <%=Html.Hidden("Sort", Model.Sort) %>

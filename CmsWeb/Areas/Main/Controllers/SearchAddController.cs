@@ -178,6 +178,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             switch (m.type)
             {
+                case "addpeople":
+                    return AddPeople(m);
                 case "family":
                     return AddFamilyMembers(id.Value, m, false);
                 case "relatedfamily":
@@ -306,6 +308,13 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
+        private JsonResult AddPeople(SearchModel m)
+        {
+            foreach (var p in m.List)
+                AddPerson(p, m.List, 0, 0);
+            DbUtil.Db.SubmitChanges();
+            return Json(new { close = true, how = "CloseAddDialog" });
+        }
         private JsonResult AddOrgMembers(int id, SearchModel m, bool pending)
         {
             if (id > 0)
@@ -318,7 +327,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "rebindgrids" });
+            return Json(new { close = true });
         }
         private JsonResult AddContributor(int id, SearchModel m)
         {
@@ -368,7 +377,7 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Json(new { close = true, how = "addselected", error = sb.ToString() });
         }
-        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int Origin, int EntryPoint)
+        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int Origin, int? EntryPoint)
         {
             if (p.IsNew)
                 p.AddPerson(Origin, EntryPoint);

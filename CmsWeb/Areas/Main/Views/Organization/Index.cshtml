@@ -1,0 +1,148 @@
+﻿@using CmsWeb
+@model CmsWeb.Models.OrganizationPage.OrganizationModel
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Organization";
+}
+@section head {
+    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+}
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+                .Add("/Content/js/jquery.pagination.js")
+                .Add("/Scripts/Pager.js")
+                .Add("/Content/js/jquery.multiSelect.js")
+                .Add("/Content/js/jquery.validate.js")
+                .Add("/Scripts/Organization.js")
+                .Render("/Content/Organization_#.js")
+)
+
+    @{ CmsData.Organization o = Model.org; }
+    @Html.Hidden("refreshed", "no")
+    @Html.Hidden("OrganizationId")
+    <div class="PersonHead">
+        @o.OrganizationName,
+        @o.LeaderName
+    </div>
+
+<table>
+<tr>
+    <td valign="top">
+    <form action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
+         @Html.Partial("OrgInfo", Model) 
+    </form>
+    </td>
+@if (User.IsInRole("ManageGroups"))
+{ 
+    <td>
+    <a href="/OrgGroups/Index/@Model.OrganizationId">Group Member Management</a>
+    </td>
+} 
+</tr>
+</table>
+
+<div style="margin-bottom: 20px">
+@if (User.IsInRole("Admin"))
+{ 
+<a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">
+            <img border="0" src="/images/delete.gif" align="middle" /></a> @:|
+} 
+        <a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">Recent Attendance Report</a> |
+        <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">Attendance Percentages</a> | 
+        <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">Volunteer Calendar</a>
+@if (User.IsInRole("Edit"))
+{ 
+        @:| <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
+}
+@if (User.IsInRole("Admin"))
+{ 
+        @:| <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
+}
+    </div>
+    <div id="main-tab" class="ui-tabs">
+        <ul class="ui-tabs-nav">
+            <li><a href="#Members-tab"><span>Members</span></a></li>
+            <li><a id="inactive-link" href="#Inactive-tab"><span>Inactive</span></a></li>
+            <li><a id="pending-link" href="#Pending-tab"><span>Pending</span></a></li>
+            <li><a id="priors-link" href="#Priors-tab"><span>Previous</span></a></li>
+            <li><a id="visitors-link" href="#Visitors-tab"><span>Visitors</span></a></li>
+            <li><a href="#Schedule-tab"><span>Settings</span></a></li>
+            <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
+        </ul>
+        <div id="Members-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/CurrMemberGrid/@Model.OrganizationId" method="post">
+             @Html.Partial("CurrMemberGrid", Model.MemberModel) 
+            </form>
+        </div>
+        <div id="Inactive-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/InactiveMemberGrid/@Model.OrganizationId" method="post">
+            </form>
+        </div>
+        <div id="Pending-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/PendingMemberGrid/@Model.OrganizationId" method="post">
+            </form>
+        </div>
+        <div id="Priors-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/PrevMemberGrid/@Model.OrganizationId" method="post">
+            </form>
+        </div>
+        <div id="Visitors-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/VisitorGrid/@Model.OrganizationId" method="post">
+            </form>
+        </div>
+        <div id="Schedule-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form id="settingsForm" class="DisplayEdit" action="">
+             @Html.Partial("Settings", Model) 
+            </form>
+        </div>
+        <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
+            <form action="/Organization/MeetingGrid/@Model.OrganizationId" method="post">
+            @Html.Hidden("future", false)
+            </form>
+        </div>
+</div>
+    <div id="NewMeetingDialog" class="modalDiv" style="display:none">
+    <table>
+        <tr>
+            <th colspan="2" style="font-size: larger; font-weight: bold">
+                Please select a meeting date and time:
+            </th>
+        </tr>
+        <tr>
+            <th>Meeting Date:</th>
+            <td>@Html.DatePicker("NewMeetingDate")</td>
+        </tr>
+        <tr>
+            <th>Meeting Time:</th>
+            <td>@Html.TextBox("NewMeetingTime", Model.NewMeetingTime, new { title = "Time in Format hh:mm am or pm" })</td>
+        </tr>
+        <tr>
+            <th id="grouplabel"></th>
+            <td>@Html.CheckBox("group")</td>
+        </tr>
+        <tr>
+            <th>Use Alt Names</th>
+            <td>@Html.CheckBox("altnames")</td>
+        </tr>
+    </table>
+    </div>
+    <div id="AddFromTag" class="modalDiv" style="display:none">
+        @Html.DropDownList("addfromtagid", Model.Tags())
+    </div>
+    <div id="memberDialog">
+    <iframe id="memberDialogiframe" style="width:99%;height:99%"></iframe>
+    </div>
+    <div id="FilterGroups" class="modalDiv" style="display:none;">
+        <form action="">
+        <h3>Name Filter</h3>
+        <div>First and last name or just last name. You can put just the first few letters of each.</div>
+        <input name="namefilter" type="text" />
+        <h3>Small Group Filter</h3>
+        <div>Select multiple items by holding down the control key (individual) or shift key (range) while you click. Select (not specified) to cancel the filter.</div>
+        <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
+@foreach (var s in Model.MemberModel.SmallGroups())
+{ 
+            <option @s.Selected ? "selected='selected'" : "" value="@s.Value">@s.Text</option>
+}
+        </select>
+        </form>
+    </div>

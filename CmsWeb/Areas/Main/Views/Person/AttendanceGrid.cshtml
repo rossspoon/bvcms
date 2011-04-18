@@ -1,0 +1,40 @@
+﻿@model CmsWeb.Models.PersonPage.PersonAttendHistoryModel
+Show Future Meetings: @Html.CheckBox("future")
+<table class="grid" cellPadding="4">
+<thead>
+<tr>
+    <th><a href="#" class="sortable">Meeting</a></th>
+    <th><a href="#" class="sortable">Organization</a></th>
+    <th><a href="#" class="sortable">MemberType</a></th>
+    <th><a href="#" class="sortable">AttendType</a></th>
+</tr>
+</thead>
+<tbody>
+@if (User.IsInRole("Access"))
+   {
+       foreach (var a in Model.Attendances())
+       { 
+    <tr>
+    <td><a href="/Meeting.aspx?id=@a.MeetingId">@a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt")</a></td>
+    <td><a href="/Organization/Index/@a.OrganizationId">@a.OrganizationName</a></td>
+    <td>@a.MemberType</td>
+    <td>@a.AttendType</td>
+    </tr>
+     }
+   }
+   else
+   {
+       foreach (var a in Model.Attendances())
+       { 
+    <tr>
+    <td>@a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt")</td>
+    <td>@a.OrganizationName</td>
+    <td>@a.MemberType</td>
+    <td>@a.AttendType</td>
+    </tr>
+     }
+   } 
+</tbody>
+</table>
+ @Html.Partial("Pager2", Model.Pager) 
+

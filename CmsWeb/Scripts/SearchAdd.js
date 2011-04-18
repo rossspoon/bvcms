@@ -18,6 +18,10 @@
                         if (self.parent.AddSelected2)
                             self.parent.AddSelected2(ret);
                         break;
+                    case 'CloseAddDialog':
+                        if (self.parent.CloseAddDialog)
+                            self.parent.CloseAddDialog();
+                        break;
                 }
             }
             else

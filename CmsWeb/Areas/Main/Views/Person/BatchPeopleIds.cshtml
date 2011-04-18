@@ -1,0 +1,20 @@
+﻿
+
+
+
+    <h2>Batch Load PeopleIds</h2>
+    
+<form action="/Person/BatchUploadPeopleIds" method="post" enctype="multipart/form-data">
+    <label>Filename: <input type="file" name="file" /></label>
+    <label>Tag name: </label> @Html.TextBox("name")
+    <input type="submit" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "10", cols = "100", wrap = "off", style = "width:90%" })<br />
+</form>
+
+
+
+@section head {
+
+
+}
+

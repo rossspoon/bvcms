@@ -1,0 +1,10 @@
+﻿@model CmsWeb.Models.QueryModel
+@Html.Partial("Conditions", Model) 
+<---------->
+{
+@foreach(var e in Model.Errors)
+{ 
+@e.Key@:: '@e.Value',
+}
+count: @Model.Errors.Count
+}

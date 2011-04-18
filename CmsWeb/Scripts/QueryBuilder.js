@@ -1,6 +1,5 @@
 ﻿var qs = "";
 $(function() {
-    $("#tabber").tabs();
     $("#SelectCondition").SelectCondition();
     $('#Tags').click(function(ev) {
         $('#TagsPopup').show();
@@ -249,39 +248,44 @@ function EditCondition(ev) {
 (function($) {
     var o = {};
     $.fn.SelectCondition = function() {
-//        $('#QueryConditionSelect').dialog({
-//            overlay: { background: "#000", opacity: 0.3 },
-//            bgiframe: true,
-//            modal: true,
-//            autoOpen: false,
-//            closeOnEscape: true,
-//            width: 750,
-//            height: 575,
-//            position: 'top'
-//        });
+        $('#QueryConditionSelect').dialog({
+            overlay: { background: "#000", opacity: 0.3 },
+            bgiframe: true,
+            modal: true,
+            autoOpen: false,
+            closeOnEscape: true,
+            width: 750,
+            height: 575,
+            position: 'top'
+        });
+        $("#tabber").tabs();
         this.click(function(ev) {
             o.Id = this.id;
-            $.blockUI({ 
-                message: $('#QueryConditionSelect'),
-                css: { 
-                    padding:        0, 
-                    top: '10%',
-                    left: '2em',
-                    margin:         0, 
-                    width:          '750px', 
-                    textAlign:      'left',
-                    cursor:         'arrow'
-                } 
-            });
-            $('.blockOverlay').click($.unblockUI); 
+            $('#QueryConditionSelect').dialog("open");
             return false;
         });
+//            $.blockUI({ 
+//                message: $('#QueryConditionSelect'),
+//                css: { 
+//                    padding:        0, 
+//                    top: '10%',
+//                    left: '2em',
+//                    margin:         0, 
+//                    width:          '750px', 
+//                    textAlign:      'left',
+//                    cursor:         'arrow'
+//                } 
+//            });
+//            $('.blockOverlay').click($.unblockUI); 
+//            return false;
+//        });
         $('.FieldLink').click(function(ev) {
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()
             }, function(ret) {
-                $.unblockUI();
+                //$.unblockUI();
+                $('#QueryConditionSelect').dialog("close");
                 UpdateView(ret);
             }, "json");
             return false;

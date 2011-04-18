@@ -1,14 +1,11 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
-
 <html>
 <head id="Head1" runat="server">
     <meta content="en-us" http-equiv="Content-Language" />
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <title>
         <%= Html.Encode(ViewData["Title"]) %></title>
-    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <%= SquishIt.Framework.Bundle.Css()
         .Add("/Content/jquery-ui-1.8.9.custom.css")
         .Add("/Content/site.css")
@@ -17,6 +14,8 @@
         .Add("/Content/pager.css")
         .Render("/Content/AllMVC_#.css")
     %>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
 </head>
 <body>
     <%= SquishIt.Framework.Bundle.JavaScript()

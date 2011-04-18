@@ -1,0 +1,32 @@
+﻿@model IEnumerable<CmsData.Content>
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Special Content";
+}
+<h2>Content</h2>
+<table>
+    <tr>
+        <th></th>
+        <th> Name </th>
+        <th> Title </th>
+        <th></th>
+    </tr>
+@foreach (var item in Model)
+{ 
+    <tr>
+        <td> @Html.ActionLink("Edit", "EditPage", new { id = item.Name }) </td>
+        <td> @item.Name </td>
+        <td> @item.Title </td>
+        <td> @Html.ActionLink("Delete", "DeletePage", new { id = item.Name }) </td>
+    </tr>
+}
+</table>
+
+
+
+@section head {
+
+
+}
+
+

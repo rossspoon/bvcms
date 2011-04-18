@@ -1,0 +1,42 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Models.PersonPage.PersonPrevEnrollmentsModel
+<table class="grid" cellPadding="4">
+<thead>
+<tr>
+    <th><a href="#" class="sortable">Organization</a></th>
+    <th><a href="#" class="sortable">Enroll Date</a></th>
+    <th>MemberType</th>
+    <th>AttendPct</th>
+</tr>
+</thead>
+<tbody>
+@if (User.IsInRole("Access"))
+   {
+       foreach (var om in Model.PrevEnrollments())
+       { 
+    <tr>
+    <td><a href="/Organization/Index/@om.OrgId" title="@om.DivisionName">@om.Name</a></td>
+    <td>@om.EnrollDate.FormatDate()</td>
+    <td><a target="_blank" 
+        href="/AttendStrDetail.aspx?id=@om.PeopleId&oid=@om.OrgId">@om.MemberType</a></td>
+    <td>@(om.AttendPct.HasValue ? om.AttendPct.Value.ToString("N1") : "")</td>
+    </tr>
+     }
+   }
+   else
+   {
+       foreach (var om in Model.PrevEnrollments())
+       { 
+    <tr>
+    <td><span title="@om.DivisionName">@om.Name</span></td>
+    <td>@om.EnrollDate.FormatDate()</td>
+    <td>@om.MemberType</td>
+    <td>@(om.AttendPct.HasValue ? om.AttendPct.Value.ToString("N1") : "")</td>
+    </tr>
+     }
+   } 
+</tbody>
+</table>
+ @Html.Partial("Pager2", Model.Pager) 
+
+

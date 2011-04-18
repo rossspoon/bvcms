@@ -1,0 +1,33 @@
+﻿@model CmsWeb.Models.CouponModel
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<body>
+    <fieldset>
+        <legend>Registration Coupon</legend>
+        <table cellpadding="5">
+        <tr>
+        <td>Registration</td>
+        <td>@Model.Registration()</td>
+        </tr>
+        <tr>
+        <td>Amount</td>
+        <td>@Model.amount.ToString("C")</td>
+        </tr>
+        <tr>
+        <td>Name</td>
+        <td>@Model.name</td>
+        </tr>
+        <tr>
+        <td>Coupon Code</td>
+        <td><span style="font-family: Courier New;font-weight:bold">@Model.couponcode</span></td>
+        </tr>
+        </table>
+    </fieldset>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+</body>
+</html>
+
+

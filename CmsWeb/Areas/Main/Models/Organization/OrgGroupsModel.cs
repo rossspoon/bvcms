@@ -173,9 +173,10 @@ namespace CmsWeb.Models
                 }
             }
             public bool ischecked { get; set; }
-            public string IsInGroup()
+            public HtmlString IsInGroup()
             {
-                return ischecked ? "style='color:blue;'" : "";
+                var s = ischecked ? "style='color:blue;'" : "";
+                return new HtmlString(s);
             }
             public string ToolTip
             {

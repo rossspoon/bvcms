@@ -153,7 +153,7 @@ namespace CmsWeb.Models
                     ModelState.AddModelError("zip", "valid zip (or \"na\")");
             }
         }
-        internal void AddPerson(int origin, int entrypoint)
+        internal void AddPerson(int origin, int? entrypoint)
         {
             Family f;
             string na = "na";

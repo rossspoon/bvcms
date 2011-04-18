@@ -1,0 +1,45 @@
+﻿@model CmsWeb.Models.PagerModel
+<table width="100%">
+    <tr>
+        <td class="pager">
+@if(Model.Page > 1)
+{
+            <a href="#" onclick="GotoPage(@(Model.Page-1))" title="goto page @(Model.Page-1)" class="page-numbers">prev</a>
+}
+@foreach (var p in Model.PageList())
+{ 
+    if(p == 0)
+    {
+            <span class="page-numbers dots">&hellip;</span>
+    }
+    if(p > 0 && Model.Page != p)
+    {
+            <a href="#" onclick="GotoPage(@p)" title="goto page @p" class="page-numbers">@p</a>
+    }
+    if(Model.Page == p)
+    {
+            <span title="goto page @p" class="current page-numbers">@p</span>
+    }
+}
+@if(Model.Page < Model.LastPage)
+{
+            <a href="#" onclick="GotoPage(@(Model.Page+1))" title="goto page @(Model.Page+1)" class="page-numbers">next</a>
+}
+        </td>
+        <td class="page-sizer">
+@foreach (var sz in Model.PageSizeList())
+{ 
+    if(sz == Model.PageSize)
+    {
+            <span class="current page-numbers">@sz</span>
+    }
+    if(sz != Model.PageSize)
+    {
+            <a href="#" onclick="SetPageSize(@sz)" title="show @sz items per page" class="page-numbers">@sz</a>
+    }
+} 
+            <span class="page-numbers next">per page</span>
+        </td>
+    </tr>
+</table>
+
