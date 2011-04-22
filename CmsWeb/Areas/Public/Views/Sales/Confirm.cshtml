@@ -1,0 +1,13 @@
+﻿@model CmsWeb.Models.SalesModel
+@{
+    Layout = "/Views/Shared/Site2.cshtml";
+    ViewBag.Title = "Purchase Confirmation";
+}
+<h2>Transaction Successful</h2>
+<p>
+    Thank you for purchase. @Model.person.Name has purchased @Model.quantity items of the @Model.Description.  
+    You should receive a confirmation email with download instructions shortly.
+</p>
+
+
+

@@ -48,7 +48,7 @@
         <strong>Groups:</strong><br />
         @foreach (var mt in Model.Organization.MemberTags.OrderBy(t => t.Name))
         { 
-           <input id="smallgroup@comboid-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") />
+           <input id="smallgroup@(comboid)-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") />
            @mt.Name<br />
         }
         </div>

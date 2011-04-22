@@ -201,7 +201,7 @@ namespace UtilityExtensions
         }
         public static string FormatDateTm(this DateTime dt)
         {
-            return dt.ToString("M/d/yy H:mm");
+            return dt.ToString("M/d/yy h:mm tt");
         }
         public static string FormatDateTm(this DateTime? dt)
         {
@@ -210,7 +210,7 @@ namespace UtilityExtensions
         public static string FormatDateTm(this DateTime? dt, string def)
         {
             if (dt.HasValue)
-                return dt.ToString2("M/d/yy H:mm");
+                return dt.ToString2("M/d/yy h:mm tt");
             return def;
         }
         public static string ToString2(this int? i, string fmt)
@@ -822,6 +822,11 @@ namespace UtilityExtensions
         public static string EndShowMessage(string message, string href, string text)
         {
             return "<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>".Fmt(message, href, text);
+        }
+        public static MailAddress TryGetMailAddress(string address)
+        {
+            string name = String.Empty;
+            return TryGetMailAddress(address, name);
         }
         public static MailAddress TryGetMailAddress(string address, string name)
         {

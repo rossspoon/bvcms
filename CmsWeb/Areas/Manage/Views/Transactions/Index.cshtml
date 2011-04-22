@@ -22,11 +22,19 @@
                 });
                 return false;
             });
+            $('input[value="Export"].submitbutton').live('click', function (ev) {
+                ev.preventDefault();
+                var f = $(this).closest('form');
+                f.attr("action", "/Manage/Transactions/Export");
+                f.submit();
+                f.attr("action", "/Manage/Transactions/List");
+                return false;
+            });
             $('table.grid > tbody > tr:even').addClass('alt');
         });
 </script>
 <script src="/Scripts/Pager.js" type="text/javascript"></script>
 <h2>Transactions</h2>
-<form id="form" method="post" action="/Manage/Transactions/Export">
+<form id="form" method="post" action="/Manage/Transactions/List">
 @{Html.RenderPartial("List", Model);}
 </form>

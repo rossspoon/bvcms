@@ -309,17 +309,54 @@ namespace CmsData
             var frrecreg = RecRegs.SingleOrDefault();
             if (torecreg == null && frrecreg != null)
                 frrecreg.PeopleId = otherid;
-
-            foreach (var sale in this.SaleTransactions)
-                sale.PeopleId = otherid;
-        }
-        public bool PurgePerson(CMSDataContext Db)
-        {
-            try
+            if (torecreg != null && frrecreg != null)
             {
-                Db.PurgePerson(PeopleId);
+                torecreg.Comments = frrecreg.Comments + "\n" + torecreg.Comments;
+                if (frrecreg.ShirtSize.HasValue())
+                    torecreg.ShirtSize = frrecreg.ShirtSize;
+                if (frrecreg.MedicalDescription.HasValue())
+                    torecreg.MedicalDescription = frrecreg.MedicalDescription;
+                if (frrecreg.Doctor.HasValue())
+                    torecreg.Doctor = frrecreg.Doctor;
+                if (frrecreg.Docphone.HasValue())
+                    torecreg.Docphone = frrecreg.Docphone;
+                if (frrecreg.MedAllergy.HasValue)
+                    torecreg.MedAllergy = frrecreg.MedAllergy;
+                if (frrecreg.Tylenol.HasValue)
+                    torecreg.Tylenol = frrecreg.Tylenol;
+                if (frrecreg.Robitussin.HasValue)
+                    torecreg.Robitussin = frrecreg.Robitussin;
+                if (frrecreg.Advil.HasValue)
+                    torecreg.Advil = frrecreg.Advil;
+                if (frrecreg.Maalox.HasValue)
+                    torecreg.Maalox = frrecreg.Maalox;
+                if (frrecreg.Insurance.HasValue())
+                    torecreg.Insurance = frrecreg.Insurance;
+                if (frrecreg.Policy.HasValue())
+                    torecreg.Policy = frrecreg.Policy;
+                if (frrecreg.Mname.HasValue())
+                    torecreg.Mname = frrecreg.Mname;
+                if (frrecreg.Fname.HasValue())
+                    torecreg.Fname = frrecreg.Fname;
+                if (frrecreg.Emcontact.HasValue())
+                    torecreg.Emcontact = frrecreg.Emcontact;
+                if (frrecreg.Emphone.HasValue())
+                    torecreg.Emphone = frrecreg.Emphone;
+                if (frrecreg.ActiveInAnotherChurch.HasValue)
+                    torecreg.ActiveInAnotherChurch = frrecreg.ActiveInAnotherChurch;
             }
-            catch
+
+                foreach (var sale in this.SaleTransactions)
+                    sale.PeopleId = otherid;
+                Db.SubmitChanges();
+            }
+            public bool PurgePerson(CMSDataContext Db)
+            {
+                try
+                {
+                    Db.PurgePerson(PeopleId);
+                }
+                catch
             {
                 return false;
             }

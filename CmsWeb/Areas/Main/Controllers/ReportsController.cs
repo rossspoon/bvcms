@@ -91,6 +91,27 @@ namespace CmsWeb.Areas.Main.Controllers
                 schedule = schedule,
             };
         }
+        public class ShirtSizeInfo
+        {
+            public string Size { get; set; }
+            public int Count { get; set; }
+        }
+        public ActionResult ShirtSizes(string org, int? div, int? schedule, string name)
+        {
+            var orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null;
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    let o = om.Organization
+                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
+                    where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
+                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    group om.Person by om.Person.RecRegs.First().ShirtSize into g
+                    select new ShirtSizeInfo
+                    {
+                        Size = g.Key,
+                        Count = g.Count(),
+                    };
+            return View(q);
+        }
         public ActionResult Roster1(int? queryid, int? org, int? div, int? schedule, string name, string tm)
         {
             return new RosterResult

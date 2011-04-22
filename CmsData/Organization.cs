@@ -158,7 +158,7 @@ namespace CmsData
             AskTylenolEtc = frorg.AskTylenolEtc;
             CanSelfCheckin = frorg.CanSelfCheckin;
             Deposit = frorg.Deposit;
-            EmailAddresses = frorg.EmailAddresses;
+            NotifyIds = frorg.NotifyIds;
             EmailMessage = frorg.EmailMessage;
             EmailSubject = frorg.EmailSubject;
             ExtraFee = frorg.ExtraFee;

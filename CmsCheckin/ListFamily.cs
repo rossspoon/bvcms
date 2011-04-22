@@ -625,16 +625,16 @@ namespace CmsCheckin
             Program.FamilyId = 0;
             classlist = new List<ClassInfo>();
             PrintAll.Text = string.Empty;
-            var f = new DidItWork();
-            var ret = f.ShowDialog();
-            f.Hide();
-            f.Dispose();
-            if (ret == DialogResult.No)
-            {
-                Util.ReportPrinterProblem();
-                var fa = new AdminLogin();
-                fa.ShowDialog();
-            }
+            //var f = new DidItWork();
+            //var ret = f.ShowDialog();
+            //f.Hide();
+            //f.Dispose();
+            //if (ret == DialogResult.No)
+            //{
+            //    Util.ReportPrinterProblem();
+            //    var fa = new AdminLogin();
+            //    fa.ShowDialog();
+            //}
             this.GoHome(string.Empty);
         }
         private void PrintLabels()

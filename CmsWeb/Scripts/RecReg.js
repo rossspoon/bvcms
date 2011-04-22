@@ -51,7 +51,7 @@
         return false;
     });
     $("#zip").live("blur", function() {
-        $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
+        $.post('/OnlineReg/CityState/' + $(this).val(), null, function(ret) {
             if (ret) {
                 $('#state').val(ret.state);
                 $('#city').val(ret.city);
@@ -70,7 +70,7 @@
         }
     });
     $("#zip").live("blur", function() {
-        $.post('/Register/CityState/' + $(this).val(), null, function(ret) {
+        $.post('/OnlineReg/CityState/' + $(this).val(), null, function(ret) {
             if (ret) {
                 $('#state').val(ret.state);
                 $('#city').val(ret.city);

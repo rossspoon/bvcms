@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -20,7 +21,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Index()
         {
-            var m = new Models.PrayerModel();
+            var m = new PrayerModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -45,14 +46,14 @@ namespace CmsWeb.Areas.Public.Controllers
             var id = (int?)TempData["PeopleId"];
             if (!id.HasValue)
                 return Content("no person");
-            var m = new Models.PrayerModel(id.Value);
+            var m = new PrayerModel(id.Value);
             return View(m); 
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ToggleSlot(int id, string slot, bool ck)
         {
             var g = Group.LoadByName(STR_PrayerPartners);
-            var m = new Models.PrayerModel(id);
+            var m = new PrayerModel(id);
             var ret = m.ToggleSlot(slot, ck);
             return Json(ret);
         }
@@ -62,7 +63,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Notify()
         {
-            Models.PsUtil.SendNotifications();
+            PsUtil.SendNotifications();
             return new EmptyResult();
         }
     }

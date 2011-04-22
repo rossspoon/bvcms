@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+@Html.Raw(SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.9.custom.css")
+        .Add("/Content/style.css")
+        .Render("/Content/report_#.css")
+)
+    <style type="text/css" media="print">
+       input.noPrint { display: none; }
+       span.noPrint { display:none; }
+    </style>
+@RenderSection("head", required: false);
+</head>
+<body>
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+        .Render("/Content/report_#.js")
+)
+@RenderBody()
+

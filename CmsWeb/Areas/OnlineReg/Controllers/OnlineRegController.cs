@@ -420,5 +420,22 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
             return View("ProcessPayment", pf);
         }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public ContentResult Schools(string q, int limit)
+        //{
+        //    var qu = from p in DbUtil.Db.People
+        //            where p.SchoolOther.Contains(q)
+        //            group p by p.SchoolOther into g
+        //            select g.Key;
+        //    return Content(string.Join("\n", qu.Take(limit).ToArray()));
+        //}
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult CityState(string id)
+        {
+            var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);
+            if (z == null)
+                return Json(null);
+            return Json(new { city = z.City.Trim(), state = z.State });
+        }
     }
 }

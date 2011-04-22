@@ -33,7 +33,7 @@
     <td>
 @foreach (var r in DbUtil.Db.Roles.Select(ro => ro.RoleName).OrderBy(ro=> ro))
 { 
-       <input name="role" value="@r" class="ckbox" type="checkbox" @Model.Roles.Any(ro => ro == r) ? "checked='checked'" : "" />
+       <input name="role" value="@r" class="ckbox" type="checkbox" @(Model.Roles.Any(ro => ro == r) ? "checked='checked'" : "") />
        @r<br />
 }
     </td>

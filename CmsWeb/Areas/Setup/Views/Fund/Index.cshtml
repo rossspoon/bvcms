@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CmsData.ContributionFund>
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Funds";
+}
+<h2>ViewPage1</h2>
+<table>
+    <tr>
+        <th></th>
+        <th> FundId </th>
+        <th> FundName </th>
+        <th> FundDescription </th>
+        <th> FundStatusId </th>
+        <th> FundTypeId </th>
+        <th> FundPledgeFlag </th>
+    </tr>
+@foreach (var item in Model)
+{ 
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.FundId }) |
+        </td>
+        <td> @item.FundId </td>
+        <td> @item.FundName </td>
+        <td> @item.FundDescription </td>
+        <td> @item.FundStatusId </td>
+        <td> @item.FundTypeId </td>
+        <td> @item.FundPledgeFlag </td>
+    </tr>
+}
+
+</table>
+
+@using (Html.BeginForm("Create", "Fund"))
+{ 
+    <p>
+        Your first fund should have a fundid of 1<br />
+        New Fund Id: @Html.TextBox("fundid")
+        <input type="submit" value="Create" />
+        @Html.ValidationMessage("fundid")
+    </p>
+} 

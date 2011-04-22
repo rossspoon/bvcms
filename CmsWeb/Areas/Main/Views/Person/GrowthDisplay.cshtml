@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th>Is a member of another Church?</th>
-                    <td><input type="checkbox" @Model.MemberAnyChurch == true ? "checked='checked'" : "" disabled="disabled" /></td>
+                    <td><input type="checkbox" @(Model.MemberAnyChurch == true ? "checked='checked'" : "") disabled="disabled" /></td>
                 </tr>
             </table>
         </td>
@@ -31,19 +31,19 @@
         <td valign="top" style="border-style: groove; border-width: thin;">
             <table class="Design2">
                 <tr>
-                    <td><input type="checkbox" @Model.ChristAsSavior ? "checked='checked'" : "" disabled="disabled" /></td>
+                    <td><input type="checkbox" @(Model.ChristAsSavior ? "checked='checked'" : "") disabled="disabled" /></td>
                     <th>Prayed for Christ as Savior</th>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" @Model.PleaseVisit ? "checked='checked'" : "" disabled="disabled" /></td>
+                    <td><input type="checkbox" @(Model.PleaseVisit ? "checked='checked'" : "") disabled="disabled" /></td>
                     <th>Would like someone to visit</th>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" @Model.InterestedInJoining ? "checked='checked'" : "" disabled="disabled" /></td>
+                    <td><input type="checkbox" @(Model.InterestedInJoining ? "checked='checked'" : "") disabled="disabled" /></td>
                    <th>Interested in joining Church</th>
                 </tr>
                 <tr>
-                    <td><input type="checkbox" @Model.SendInfo ? "checked='checked'" : "" disabled="disabled" /></td>
+                    <td><input type="checkbox" @(Model.SendInfo ? "checked='checked'" : "") disabled="disabled" /></td>
                     <th>Would like to know how to become a Christian</th>
                 </tr>
             </table>

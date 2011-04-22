@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Batch Settings";
+}
+<h2>Batch</h2>
+@using(Html.BeginForm())
+{ 
+    @Html.TextArea("text", ViewData["text"].ToString(), new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+    <input type="submit" value="Submit" />
+} 

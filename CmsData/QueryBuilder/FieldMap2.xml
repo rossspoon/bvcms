@@ -177,6 +177,10 @@
     <Field Name="PrimaryBadAddrFlag" Title="Bad Address Flag" Type="Bit" DataValueField="IdCode">
       Address is flagged as invalid
     </Field>
+    <Field Name="SendEmailAddress1" Title="Send EmailAddress1" Type="NullBit" DataValueField="IdCode">
+    </Field>
+    <Field Name="SendEmailAddress2" Title="Send EmailAddress2" Type="NullBit" DataValueField="IdCode">
+    </Field>
   </Category>
   <Category Title="Church Status">
     <Field Name="MemberStatusId" Title="Church Member Status" Type="Code" DisplayAs="ChurchMemberStatus" DataSource="MemberStatusCodes" DataValueField="IdCode">

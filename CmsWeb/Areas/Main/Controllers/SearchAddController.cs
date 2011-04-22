@@ -327,7 +327,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true });
+            return Json(new { close = true, how = "rebindgrids" });
         }
         private JsonResult AddContributor(int id, SearchModel m)
         {
@@ -381,6 +381,16 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (p.IsNew)
                 p.AddPerson(Origin, EntryPoint);
+            else 
+            {
+                if (EntryPoint != 0 && 
+                        (!p.person.EntryPointId.HasValue || p.person.EntryPointId == 0))
+                    p.person.EntryPointId = EntryPoint;
+                if (Origin != 0 &&
+                        (!p.person.OriginId.HasValue || p.person.OriginId == 0))
+                    p.person.OriginId = Origin;
+                DbUtil.Db.SubmitChanges();
+            }
             if (p.FamilyId < 0) // fix up new family pointers
             {
                 var q = from m in list
@@ -390,6 +400,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 foreach (var m in list2)
                     m.FamilyId = p.person.FamilyId;
             }
+            Util2.CurrentPeopleId = p.person.PeopleId;
+            Session["ActivePerson"] = p.person.Name;
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult VerifyAddress(SearchModel m)

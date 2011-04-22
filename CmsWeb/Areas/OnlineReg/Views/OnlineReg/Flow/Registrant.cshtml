@@ -1,0 +1,122 @@
+﻿@model CmsWeb.Models.OnlineRegModel
+@{  var p = Model.current; }
+@if (p.LastItem // displaying the last registrant (the one we are editing)
+    && !p.Finished() // it is not finished
+    && p.index > 0 // it is not the first one
+    )
+{ 
+    <tr><td><div class="instruct">New Registrations</div></td></tr>
+}
+@if (!p.ShowDisplay())
+{ // This is a header that will show above the last unfinished item
+    if (Model.UserSelectsOrganization())
+    { // show a select organization dropdown
+    <tr><td><div class="instruct">Make a Selection</div></td></tr>
+    <tr><td><div> @Html.Partial("Flow/ChooseClass", Model) </div></td></tr>
+    }
+    if (Model.UserPeopleId.HasValue // logged in
+        && Model.FamilyMembers().Count() > 0 // more than one in family
+        )
+    { // show a family list cause we are logged in
+    <tr><td><h4>Select Family Member</h4></td></tr>
+    <tr>
+        <td>
+            <div class="box">
+                 @Html.Partial("Flow/FamilyList", Model) 
+            </div>
+        </td>
+    </tr>
+    } 
+    if(p.index > 0 || p.LoggedIn == true)
+    {// logged in and not on first registrant 
+    <tr><td><h4>Enter new person's information</h4></td></tr>
+    } 
+    <tr>
+        <td>
+            <div>@Html.ValidationMessage("findf")</div>
+            <h3 id="fillout" class="instruct">Please fill out the form.</h3></td>
+    </tr>
+} 
+@* This is the registrant info, finished or not *@
+    <tr>
+        <td>
+            <div class="box">
+@* This is where we store some non editable meta data about the person *@
+    @Html.Partial("Flow/PersonMetaHidden", p)
+@if (p.ShowDisplay())
+{ // We have either found or committed to add a new person 
+  // This is where we store the already entered info
+    @Html.Partial("Flow/PersonHidden", p)
+  if (p.OtherOK // the other info is complete and passes validation
+      && !p.ManageSubscriptions() // we are not managing subscriptions
+      )
+  { // need to store the other info too
+    @Html.Partial("Flow/OtherHidden", p)
+  }
+}
+@if (!Model.IsCreateAccount() // we're not in create account mode
+    && !Model.ManagingSubscriptions() // we're not in manage subscriptions mode 
+    && (p.Found == true || p.IsNew == true) // we have found the record or this is a new record
+    )
+{ // This is the cancel link
+                <a href="/OnlineReg/Cancel/@p.index" class="close submitlink">
+                    <img src="/images/delete.gif" border="0" alt="cancel" title="cancel this registration" /></a>
+}
+@if (p.Finished())
+{ // This is where we show the finished registrant in a box
+                <div class="personheader">
+                    @(p.first + " " + p.last)
+                    <span class="blue" style="font-size: 80%">(<a class="toggle" href="#">Details</a>)</span>
+                </div>
+}
+                <table class="particpant" width="95%" cellpadding="6" style='@(!p.Finished() ? "" : "display: none")'>
+@if (p.ShowDisplay())
+{ // Already found
+        @Html.Partial("Flow/PersonDisplay", p)
+    if (!p.ManageSubscriptions())
+    {
+        if (p.OtherOK)
+        { // finished with other info
+                @Html.Partial("Flow/OtherDisplay", p)
+        }
+        else
+        { // need to edit other info
+                    <tr>
+                        <td colspan="2">
+                            <p>
+                                We @(p.IsNew ? "have your new" : "found your") record,
+                                please continue below.</p>
+                        </td>
+                    </tr>
+              Model.ShowOtherInstructions = true;
+            @Html.Partial("Flow/OtherEdit", p)
+         }
+    }
+}
+else if (!Model.IsEnded())
+{ // still taking registrations
+    if (p.IsFamily)
+    { // Already found, display only
+            @Html.Partial("Flow/PersonDisplay", p)
+    }
+    else
+    { // Find or Add New
+            Model.ShowFindInstructions = true;
+            @Html.Partial("Flow/PersonEdit", p)
+    }
+}
+                </table>
+            </div>
+@if (Model.List.Count == 1 // we only have one registrant so far
+    && p.IsNew != true // we have committed to a new record yet
+    && p.Found != true // we have not found a record yet
+    && Model.UserPeopleId == null  // we are not logged in
+    && !p.OtherOK // we have not got past the other info yet
+    )
+{ // allow them to go back to log in
+            <div style="margin: 10px; text-align:center;">
+                <a href="/OnlineReg/YesLogin" class="submitlink">Login with an account</a>
+            </div>
+} 
+        </td>
+    </tr>

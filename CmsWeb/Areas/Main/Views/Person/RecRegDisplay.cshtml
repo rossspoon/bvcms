@@ -54,15 +54,15 @@
 { 
         <td>Tylenol: @(Model.tylenol == true ? "Yes" : "No")</td>
 } 
-if (Model.advil.HasValue)
+@if (Model.advil.HasValue)
 { 
         <td>Advil: @(Model.advil == true ? "Yes" : "No")</td>
 } 
-if (Model.robitussin.HasValue)
+@if (Model.robitussin.HasValue)
 { 
         <td>Robitussin: @(Model.robitussin == true ? "Yes" : "No")</td>
 } 
-if (Model.maalox.HasValue)
+@if (Model.maalox.HasValue)
 { 
         <td>Maalox: @(Model.maalox == true ? "Yes" : "No")</td>
 }

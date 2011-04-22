@@ -248,6 +248,8 @@ namespace CmsData
         }
         public List<string> DoReplacements(ref string text, string CmsHost, Person p, EmailQueueTo emailqueueto)
         {
+            if (text == null)
+                text = "(no content)";
             if (p.Name.Contains("?") || p.Name.Contains("unknown", true))
                 text = text.Replace("{name}", string.Empty);
             else

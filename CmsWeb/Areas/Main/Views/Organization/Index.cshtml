@@ -141,7 +141,7 @@
         <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
 @foreach (var s in Model.MemberModel.SmallGroups())
 { 
-            <option @s.Selected ? "selected='selected'" : "" value="@s.Value">@s.Text</option>
+            <option @(s.Selected ? "selected='selected'" : "") value="@s.Value">@s.Text</option>
 }
         </select>
         </form>

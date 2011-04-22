@@ -2,12 +2,13 @@
 @model CmsWeb.Models.TransactionsModel
 <div class="modalPopup">
 <table cellpadding="4">
-<tr><td>Description</td><td>@Html.TextBox("description")</td></tr>
-<tr><td>Name</td><td>@Html.TextBox("name")</td></tr>
-<tr><td>Start Date</td><td>@Html.DatePicker("startdt")</td></tr>
-<tr><td>End Date</td><td>@Html.DatePicker("enddt")</td></tr>
-<tr><td>&gt;= Amount</td><td>@Html.TextBox("gtamount")</td></tr>
-<tr><td>&lt;= Amount</td><td>@Html.TextBox("ltamount")</td></tr>
+<tr><td>Description</td><td>@Html.TextBox("description")</td>
+    <td>Test Transactions</td><td>@Html.CheckBox("testtransactions")</td></tr>
+<tr><td>Name</td><td colspan="3">@Html.TextBox("name")</td></tr>
+<tr><td>Start Date</td><td>@Html.DatePicker("startdt")</td>
+    <td>End Date</td><td>@Html.DatePicker("enddt")</td></tr>
+<tr><td>&gt; Amount</td><td>@Html.TextBox("gtamount")</td>
+    <td>&lt;= Amount</td><td>@Html.TextBox("ltamount")</td></tr>
 </table>
 <input name="Submit" type="submit" class="submitbutton" value="Filter" />
 <input name="Submit" type="submit" class="submitbutton" value="Export" />

@@ -1844,6 +1844,19 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTodaysMeetingHours", IsComposable = true)]
+		public IQueryable< View.GetTodaysMeetingHour > GetTodaysMeetingHours(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? thisday
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTodaysMeetingHour>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                thisday
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,

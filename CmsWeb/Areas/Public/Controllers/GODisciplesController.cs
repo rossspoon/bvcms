@@ -8,6 +8,7 @@ using CmsData;
 using System.Configuration;
 using UtilityExtensions;
 using System.Net.Mail;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -36,7 +37,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
-            var m = new Models.GODisciplesModel("Leader");
+            var m = new GODisciplesModel("Leader");
             if (id.HasValue)
                 m.campus = id;
             else
@@ -63,7 +64,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
-            var m = new Models.GODisciplesModel("Disciple", id.Value);
+            var m = new GODisciplesModel("Disciple", id.Value);
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View("Signup", m);
 
@@ -82,7 +83,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (bool.Parse(DbUtil.Db.Setting("GODisciplesDisabled", "false")))
                 return Content(DbUtil.Content("GoDisciplesDisabled").Body);
             ViewData["header"] = Header;
-            var m = new Models.GODisciplesModel("Individual");
+            var m = new GODisciplesModel("Individual");
             if (Request.HttpMethod.ToUpper() == "GET")
             {
 #if DEBUG
@@ -116,18 +117,18 @@ namespace CmsWeb.Areas.Public.Controllers
 
             if (!(oldname.HasValue() && newname.HasValue() && newname != oldname))
                 return View();
-            Models.GODisciplesModel.RenameGroups(oldname, newname);
+            GODisciplesModel.RenameGroups(oldname, newname);
             return Content(Util.EndShowMessage("rename successful", "/Home", "home"));
         }
         public ActionResult Confirm(int id)
         {
-            var m = new Models.GODisciplesModel("Confirm", id);
+            var m = new GODisciplesModel("Confirm", id);
             ViewData["header"] = Header + " Successful";
             return View(m);
         }
         public ActionResult Confirm2()
         {
-            var m = new Models.GODisciplesModel("Confirm");
+            var m = new GODisciplesModel("Confirm");
             ViewData["header"] = Header + " Successful";
             return View("Confirm", m);
         }

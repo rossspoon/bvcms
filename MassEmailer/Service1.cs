@@ -382,9 +382,18 @@ WAITFOR(
                 if (!Subject.EndsWith(" .rs") && 
                        (ex.Message.StartsWith("The underlying connection was closed")
                         || ex.Message.StartsWith("Root element is missing")
+                        || ex.Message.StartsWith("The operation has timed out")
+                        || ex.Message.StartsWith("The remote name could not be resolved")
                         ))
                 {
-                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to, nameto, Subject + " .rs", body, host, id, pid);
+                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to, nameto, 
+                        Subject + " .rs", body, host, id, pid);
+                }
+                else if (Subject.EndsWith(" .rs"))
+                {
+                    // resort to SMTP instead of Amazon
+                    Util.SendMsg(SysEmailFrom, host, from, Subject, body,
+                            nameto, to , id);
                 }
                 else if (!msg.Subject.StartsWith("(sending error)"))
                 {

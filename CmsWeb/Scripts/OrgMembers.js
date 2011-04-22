@@ -1,6 +1,6 @@
 ﻿$(function() {
     $.RefreshPage = function() {
-        var f = $('form');
+        var f = $('#form');
         var q = f.serialize();
         $.blockUI();
         $.post("/OrgMembers/List", q, function(ret) {
@@ -10,13 +10,13 @@
             });
         });
     }
-    $("form").delegate('#ProgId', "change", $.RefreshPage);
-    $("form").delegate('#DivId', "change", $.RefreshPage);
-    $("form").delegate('#SourceId', "change", $.RefreshPage);
-    $("form").delegate('#TargetId', "change", $.RefreshPage);
-    $("form").delegate('#MembersOnly', "change", $.RefreshPage);
-    $("form").delegate('#Grades', "change", $.RefreshPage);
-    $("form").delegate('#move', "click", function(e) {
+    $("#form").delegate('#ProgId', "change", $.RefreshPage);
+    $("#form").delegate('#DivId', "change", $.RefreshPage);
+    $("#form").delegate('#SourceId', "change", $.RefreshPage);
+    $("#form").delegate('#TargetId', "change", $.RefreshPage);
+    $("#form").delegate('#MembersOnly', "change", $.RefreshPage);
+    $("#form").delegate('#Grades', "change", $.RefreshPage);
+    $("#form").delegate('#move', "click", function(e) {
         e.preventDefault();
         var f = $('#form');
         var q = f.serialize();
@@ -66,7 +66,7 @@
         });
         return false;
     });
-    $("form").submit(function() {
+    $("#form").submit(function() {
         return false;
     });
 

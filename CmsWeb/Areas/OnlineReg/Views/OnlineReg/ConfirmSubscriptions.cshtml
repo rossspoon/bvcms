@@ -1,0 +1,13 @@
+﻿@model CmsWeb.Models.ManageSubsModel
+@{
+    Layout = "/Views/Shared/onlinereg.cshtml";
+    ViewBag.Title = "Online Registration";
+}
+
+   <h2>Confirmation</h2>
+    <p>
+        Thank you @Model.person.PreferredName, for managing your subscriptions to @Model.Division.Name<br />
+        You should receive a confirmation email shortly.</p>
+    <p> You have subscribed to the following:</p>
+    @Html.Raw(Model.Summary)
+

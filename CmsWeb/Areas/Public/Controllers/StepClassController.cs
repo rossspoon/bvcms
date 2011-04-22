@@ -20,7 +20,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Step1()
         {
-            var m = new Models.StepClassModel();
+            var m = new CmsWeb.Models.StepClassModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -52,7 +52,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Step2()
         {
-            var m = new Models.StepClassModel();
+            var m = new CmsWeb.Models.StepClassModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -72,7 +72,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Step3()
         {
-            var m = new Models.StepClassModel();
+            var m = new CmsWeb.Models.StepClassModel();
             if (Request.HttpMethod.ToUpper() == "GET")
                 return View(m);
 
@@ -90,7 +90,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             return View();
         }
-        private void ValidateStep23(Models.StepClassModel m)
+        private void ValidateStep23(CmsWeb.Models.StepClassModel m)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 }
             }
         }
-        private void SendEmail(Models.StepClassModel m, string name)
+        private void SendEmail(CmsWeb.Models.StepClassModel m, string name)
         {
             DbUtil.Db.Email(DbUtil.Db.Setting("StepMail", DbUtil.SystemEmailAddress), m.person, "Step Class Registration", @"Hi {0},<p>Thank you for registering. You are now enrolled in the {2} Class for the following date:</p>
 <p>{1:ddd MMM d, yyyy h:mm tt} to {3:h:mm tt}</p>".Fmt(m.person.PreferredName.TrimEnd(), m.meeting.MeetingDate, name, m.meeting.MeetingDate.Value.AddMinutes(90)));

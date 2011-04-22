@@ -1,6 +1,6 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.OrgSearchModel
-<table id="results" @User.IsInRole("Edit") ? "class='edit'" : "">
+<table id="results" @(User.IsInRole("Edit") ? "class='edit'" : "")>
 <thead>
     <tr><td colspan="10">
 <div>Count: @Model.Count()</div>

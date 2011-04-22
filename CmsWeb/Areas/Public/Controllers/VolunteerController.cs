@@ -35,7 +35,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Index(string id)
         {
-            var m = new Models.VolunteerModel { View = id };
+            var m = new VolunteerModel { View = id };
             if (!m.formcontent.HasValue())
                 return Content("view not found");
             SetHeader(id);
@@ -70,7 +70,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var person = Db.People.SingleOrDefault(p => p.PeopleId == pid);
             if (person == null)
                 return Content("person not found");
-            var m = new Models.VolunteerModel { View = id, person = person };
+            var m = new VolunteerModel { View = id, person = person };
             SetHeader(m.View);
             m.person.BuildVolInfoList(m.View); // gets existing
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -108,7 +108,7 @@ namespace CmsWeb.Areas.Public.Controllers
             ViewData["url"] = Session["continuelink"];
             SetHeader(id);
             //Response.AppendHeader("Refresh", "30; URL=/Volunteer/" + id);
-            var m = new Models.VolunteerModel { View = id };
+            var m = new VolunteerModel { View = id };
             return View(m);
         }
         private void SetHeaders(string id)

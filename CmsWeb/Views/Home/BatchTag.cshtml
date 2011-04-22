@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Batch Tag";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>BatchTag</h2>
+@using(Html.BeginForm())
+{ 
+    @Html.TextArea("text", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+    <input type="submit" value="Submit" />
+} 

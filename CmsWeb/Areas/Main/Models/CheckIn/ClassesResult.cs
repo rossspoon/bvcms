@@ -53,7 +53,6 @@ namespace CmsWeb.Models
                 w.WriteStartElement("Results");
                 w.WriteAttributeString("pid", peopleid.ToString());
                 w.WriteAttributeString("fid", familyid.ToString());
-                var q = DbUtil.Db.Organizations.AsQueryable();
                 //if (kioskmode == true)
                 //    q = from o in q
                 //        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
@@ -68,8 +67,8 @@ namespace CmsWeb.Models
                 //        orderby bdaystart, o.OrganizationName
                 //        select o;
                 //else
-                q = from o in q
-                    let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
+                var q = from o in DbUtil.Db.Organizations
+                    let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
                     let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
                     where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
                     where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
@@ -77,23 +76,23 @@ namespace CmsWeb.Models
                     where (o.ClassFilled ?? false) == false
                     where o.CampusId == campusid || campusid == 0
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                    where Hour1 != null
                     orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
-                    select o;
+                    from meeting in meetingHours
+                    select new { o, meeting.Hour };
 
-                var q2 = from o in q
+                var q2 = from i in q
                          select new
                          {
-                             o.LeaderName,
-                             o.OrganizationId,
-                             o.Location,
-                             o.BirthDayStart,
-                             o.BirthDayEnd,
-                             o.MeetingTime,
-                             o.OrganizationName,
-                             o.NumCheckInLabels,
-                             o.Limit,
-                             MemberCount = o.OrganizationMembers.Count(om =>
+                             i.o.LeaderName,
+                             i.o.OrganizationId,
+                             i.o.Location,
+                             i.o.BirthDayStart,
+                             i.o.BirthDayEnd,
+                             i.Hour,
+                             i.o.OrganizationName,
+                             i.o.NumCheckInLabels,
+                             i.o.Limit,
+                             MemberCount = i.o.OrganizationMembers.Count(om =>
                                  om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                                  && om.Pending != true
                                  ),
@@ -113,7 +112,7 @@ namespace CmsWeb.Models
                     if (bdays == " [-]")
                         bdays = null;
                     w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
-                            .Fmt(o.MeetingTime, o.OrganizationName, leader, loc, bdays));
+                            .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
                     w.WriteEndElement();
                 }

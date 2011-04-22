@@ -188,9 +188,9 @@
                 <table class="Design2" style="border-style: groove; border-width: thin;">
                     <tr>
                         <th>Approvals:</th>
-                        <td><input type="checkbox" @Model.vol.Standard ? "checked='checked'" : "" disabled="disabled" />
+                        <td><input type="checkbox" @(Model.vol.Standard ? "checked='checked'" : "") disabled="disabled" />
                             Standard (references only)<br />
-                            <input type="checkbox" @Model.vol.Leader ? "checked='checked'" : "" disabled="disabled" />
+                            <input type="checkbox" @(Model.vol.Leader ? "checked='checked'" : "") disabled="disabled" />
                             Leadership (background check)
                         </td>
                         <td>

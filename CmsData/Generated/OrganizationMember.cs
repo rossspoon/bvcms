@@ -661,7 +661,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PayLink", UpdateCheck=UpdateCheck.Never, Storage="_PayLink", DbType="varchar(80)")]
+		[Column(Name="PayLink", UpdateCheck=UpdateCheck.Never, Storage="_PayLink", DbType="varchar(100)")]
 		public string PayLink
 		{
 			get { return this._PayLink; }

@@ -22,6 +22,10 @@ namespace CmsWeb.Areas.Main.Controllers
             NoCheckRole = true;
             base.Initialize(requestContext);
         }
+        public ActionResult Current()
+        {
+            return Redirect("/Person/Index/" + Util2.CurrentPeopleId);
+        }
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)

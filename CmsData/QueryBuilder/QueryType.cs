@@ -135,6 +135,8 @@ namespace CmsData
         RecInterestedCoaching,
         RecActiveOtherChurch,
         SavedQuery,
+        SendEmailAddress1,
+        SendEmailAddress2,
         SchoolOther,
         SmallGroup,
         TitleCode,

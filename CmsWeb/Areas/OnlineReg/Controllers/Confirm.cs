@@ -138,6 +138,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             else if (t.TransactionGateway == "ServiceU")
             {
                 t.TransactionId = TransactionID;
+                if (m.testing == true)
+                    t.TransactionId += "(testing)";
                 t.Message = "Transaction Completed";
                 t.Approved = true;
                 m.EnrollAndConfirm();
@@ -146,7 +148,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             else
             {
                 if (!t.TransactionId.HasValue())
+                {
                     t.TransactionId = TransactionID;
+                    if (m.testing == true)
+                        t.TransactionId += "(testing)";
+                }
                 m.EnrollAndConfirm();
                 m.UseCoupon(t.TransactionId);
             }

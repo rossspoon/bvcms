@@ -2004,7 +2004,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(25)")]
 		public string FirstName
 		{
 			get { return this._FirstName; }
@@ -2070,7 +2070,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(30) NOT NULL")]
+		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(100) NOT NULL")]
 		public string LastName
 		{
 			get { return this._LastName; }
@@ -3267,7 +3267,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(56)", IsDbGenerated=true)]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
 		public string Name
 		{
 			get { return this._Name; }
@@ -3289,7 +3289,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(57)", IsDbGenerated=true)]
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(127)", IsDbGenerated=true)]
 		public string Name2
 		{
 			get { return this._Name2; }

@@ -79,6 +79,8 @@ namespace CmsWeb.Models
         public int count;
         public IEnumerable<PersonInfo> FetchOrgMemberList()
         {
+            if (ingroup == null)
+                ingroup = string.Empty;
             var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);
@@ -107,6 +109,16 @@ namespace CmsWeb.Models
                         orderby !ck, m.Person.Name2
                         select m;
                     break;
+                case "Groups":
+                    q = from m in q
+                        let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
+                        let grp = (from g in m.OrgMemMemTags
+                                  where g.MemberTag.Name.StartsWith(ingroup)
+                                  orderby g.MemberTag.Name
+                                  select g.MemberTag.Name).FirstOrDefault()
+                        orderby !ck, grp, m.Person.Name2
+                        select m;
+                    break;
             }
             var q2 = from m in q
                      let p = m.Person
@@ -129,7 +141,14 @@ namespace CmsWeb.Models
                          ischecked = ck,
                          Gender = p.Gender.Description,
                          Request = m.Request,
-                         Groups = m.OrgMemMemTags.Select(mt => new GroupInfo { Name = mt.MemberTag.Name, Count = mt.MemberTag.OrgMemMemTags.Count() }).OrderBy(s => s.Name)
+                         Groups = from mt in m.OrgMemMemTags
+                                  let ck2 = mt.MemberTag.Name.StartsWith(ingroup)
+                                  orderby ck2 descending, mt.MemberTag.Name
+                                  select new GroupInfo
+                                  {
+                                      Name = mt.MemberTag.Name,
+                                      Count = mt.MemberTag.OrgMemMemTags.Count()
+                                  }
                      };
             return q2;
         }
@@ -164,12 +183,13 @@ namespace CmsWeb.Models
             public string Gender { get; set; }
             public string Request { get; set; }
             public IEnumerable<GroupInfo> Groups { get; set; }
-            public string GroupsDisplay
+            public HtmlString GroupsDisplay
             {
                 get
                 {
                     var s = string.Join(",~", Groups.Select(g => "{0}({1})".Fmt(g.Name, g.Count)).ToArray());
-                    return s.Replace(" ", "&nbsp;").Replace(",~", "<br />\n");
+                    s = s.Replace(" ", "&nbsp;").Replace(",~", "<br />\n");
+                    return new HtmlString(s);
                 }
             }
             public bool ischecked { get; set; }

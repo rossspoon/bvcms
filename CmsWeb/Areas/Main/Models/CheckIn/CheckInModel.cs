@@ -8,7 +8,6 @@ using CmsData;
 using System.Web.Mvc;
 using System.Data.Linq.SqlClient;
 
-
 namespace CmsWeb.Models
 {
     public class CheckInModel
@@ -44,8 +43,7 @@ namespace CmsWeb.Models
             // get org members first
             var members =
                 from om in DbUtil.Db.OrganizationMembers
-                let Hour = DbUtil.Db.GetTodaysMeetingHour(om.OrganizationId, thisday)
-                let CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(om.OrganizationId, thisday, om.PeopleId)
+                let meetingHours = DbUtil.Db.GetTodaysMeetingHours(om.OrganizationId, thisday)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 where om.Organization.CanSelfCheckin.Value
                 where (om.Pending ?? false) == false
@@ -53,7 +51,12 @@ namespace CmsWeb.Models
                 where om.Organization.OrganizationStatusId == (int)Organization.OrgStatusCode.Active
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
-                where Hour != null
+                from meeting in meetingHours
+                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa => 
+                    aa.OrganizationId == om.OrganizationId 
+                    && aa.PeopleId == om.PeopleId 
+                    && aa.MeetingDate == meeting.Hour 
+                    && aa.AttendanceFlag == true) != null
                 select new Attendee
                 {
                     Id = om.PeopleId,
@@ -75,9 +78,8 @@ namespace CmsWeb.Models
                         (int)CmsData.OrganizationMember.MemberTypeCode.Member ?
                             (om.Organization.NumCheckInLabels ?? 1)
                             : (om.Organization.NumWorkerCheckInLabels ?? 0),
-                    Hour = Hour,
-                    CheckedIn = CheckedIn ?? false,
-
+                    Hour = meeting.Hour,
+                    CheckedIn = CheckedIn,
                     goesby = om.Person.NickName,
                     email = om.Person.EmailAddress,
                     addr = om.Person.Family.AddressLineOne,
@@ -104,7 +106,6 @@ namespace CmsWeb.Models
 
             var visitors =
                 from a in DbUtil.Db.Attends
-                let Hour1 = DbUtil.Db.GetTodaysMeetingHour(a.OrganizationId, thisday)
                 where a.Person.FamilyId == id
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
@@ -112,10 +113,16 @@ namespace CmsWeb.Models
                 where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
-                where Hour1 != null
                 group a by new { a.PeopleId, a.OrganizationId } into g
                 let a = g.OrderByDescending(att => att.MeetingDate).First()
+                let meetingHours = DbUtil.Db.GetTodaysMeetingHours(a.OrganizationId, thisday)
                 let recreg = a.Person.RecRegs.FirstOrDefault()
+                from meeting in meetingHours
+                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa => 
+                    aa.OrganizationId == a.OrganizationId 
+                    && aa.PeopleId == a.PeopleId 
+                    && aa.MeetingDate == meeting.Hour 
+                    && aa.AttendanceFlag == true) != null
                 select new Attendee
                 {
                     Id = a.PeopleId,
@@ -135,8 +142,8 @@ namespace CmsWeb.Models
                     Age = a.Person.Age ?? 0,
                     Gender = a.Person.Gender.Code,
                     NumLabels = a.Organization.NumCheckInLabels ?? 1,
-                    Hour = DbUtil.Db.GetTodaysMeetingHour(a.OrganizationId, thisday),
-                    CheckedIn = DbUtil.Db.GetAttendedTodaysMeeting(a.OrganizationId, thisday, a.PeopleId) ?? false,
+                    Hour = meeting.Hour,
+                    CheckedIn = CheckedIn,
 
                     goesby = a.Person.NickName,
                     email = a.Person.EmailAddress,

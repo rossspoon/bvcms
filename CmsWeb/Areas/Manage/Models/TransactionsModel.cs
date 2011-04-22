@@ -23,6 +23,7 @@ namespace CmsWeb.Models
         public decimal? ltamount { get; set; }
         public DateTime? startdt { get; set; }
         public DateTime? enddt { get; set; }
+        public bool testtransactions { get; set; }
         public PagerModel2 Pager { get; set; }
         int? _count;
         public int Count()
@@ -49,11 +50,12 @@ namespace CmsWeb.Models
         {
             _transactions
                = from t in DbUtil.Db.Transactions
-                 where t.Amt >= gtamount || gtamount == null
+                 where t.Amt > gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
                  where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
+                 where t.Testing == testtransactions
                  select t;
             if (!enddt.HasValue && startdt.HasValue)
             {

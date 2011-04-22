@@ -249,6 +249,7 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />
@@ -595,7 +596,6 @@
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Manage\Controllers\RecreationController.cs" />
-    <Compile Include="Areas\Public\Controllers\RegisterController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
@@ -862,44 +862,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSlots.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressEdit.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ChooseClass.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmAccount.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmTest.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSubscriptions.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageSub.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmDuePaid.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ProcessPayment.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\TransactionTest.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ModelHidden.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageSubscriptions.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Login.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Registrant.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonMetaHidden.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\FamilyList.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonHidden.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Index.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\List.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\NoLeague.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherDisplay.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherEdit.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment2.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonDisplay.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonEdit.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PickSlot.ascx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\PickSlots.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.aspx" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.aspx" />
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml" />
     <Content Include="Binaries\AWSSDK.dll" />
     <Content Include="Binaries\NPOI\Ionic.Zip.dll" />
@@ -1303,6 +1265,210 @@
     <Content Include="Areas\Manage\Views\Display\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Display\OrgContent.cshtml" />
     <Content Include="Areas\Manage\Views\Display\Page.cshtml" />
+    <Content Include="Areas\Manage\Views\OrgMembers\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\OrgMembers\List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Division\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Division\Results.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Division\Row.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Fund\Edit.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Fund\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Lookup\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Lookup\List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\MemberType\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\MetroZip\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Ministry\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Program\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Promotion\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Recreation\Errors.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Recreation\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Setting\Batch.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Setting\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\Setting\OrphanedImages.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Promotion\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Promotion\List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Recreation\All.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Recreation\Coaches.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Recreation\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Recreation\List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Volunteers\Calendar.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Volunteers\CustomReport.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Download.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Item.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Items.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Login.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Payment.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Transactions.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Sales\Unknown.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step2.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step3.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Volunteer\Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Volunteer\Index.cshtml" />
+    <Content Include="Areas\Public\Views\Volunteer\PickList2.cshtml" />
+    <Content Include="Areas\Public\Views\Volunteer\Unknown.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmAccount.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmDuePaid.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageSub.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSlots.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSubscriptions.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmTest.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Index.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageSubscriptions.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\NoLeague.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment2.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\PickSlots.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ProcessPayment.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\TransactionTest.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressEdit.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ChooseClass.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\FamilyList.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\List.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Login.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ModelHidden.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherDisplay.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherEdit.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonDisplay.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonEdit.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonHidden.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonMetaHidden.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PickSlot.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Registrant.cshtml" />
+    <Content Include="Areas\Public\Views\GODisciples\Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\GODisciples\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\GODisciples\RenameGroup.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\GODisciples\Signup.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\OptOut\Cancel.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\OptOut\Confirm.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\OptOut\UnSubscribe.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Prayer\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Public\Views\Prayer\PickTimes.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <None Include="Properties\Settings.settings">
@@ -1318,6 +1484,26 @@
     <Content Include="Views\Shared\SiteLayout.cshtml" />
     <Content Include="Views\Shared\Pager.cshtml" />
     <Content Include="Views\Shared\Pager2.cshtml" />
+    <Content Include="Views\Home\About.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Home\BatchTag.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Home\DoDrops.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Home\ShowError.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Shared\Site3.cshtml" />
+    <Content Include="Views\Shared\Site2.cshtml" />
+    <Content Include="Views\Shared\onlinereg.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Shared\Reports.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangePassword.aspx" />
@@ -1606,55 +1792,9 @@
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
-    <Content Include="Areas\Setup\Views\Division\Results.ascx" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
-    <Content Include="Views\Home\DoDrops.aspx" />
-    <Content Include="Areas\Manage\Views\OrgMembers\Index.aspx" />
-    <Content Include="Areas\Manage\Views\OrgMembers\List.ascx" />
-    <Content Include="Views\Home\ShowError.aspx" />
-    <Content Include="Areas\Public\Views\GODisciples\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\GODisciples\Index.aspx" />
-    <Content Include="Areas\Public\Views\GODisciples\RenameGroup.aspx" />
-    <Content Include="Areas\Public\Views\GODisciples\Signup.aspx" />
-    <Content Include="Areas\Public\Views\OptOut\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\OptOut\Cancel.aspx" />
-    <Content Include="Areas\Public\Views\OptOut\UnSubscribe.aspx" />
-    <Content Include="Areas\Public\Views\Prayer\Index.aspx" />
-    <Content Include="Areas\Public\Views\Prayer\PickTimes.aspx" />
     <Content Include="Areas\Public\Views\Prayer\Report.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Download.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Item.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Items.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Login.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Payment.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Transactions.aspx" />
-    <Content Include="Areas\Public\Views\Sales\Unknown.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step1.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step2.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step3.aspx" />
-    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.aspx" />
-    <Content Include="Areas\Setup\Views\Division\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Division\Row.ascx" />
-    <Content Include="Areas\Setup\Views\Fund\Edit.aspx" />
-    <Content Include="Areas\Setup\Views\Fund\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Lookup\List.aspx" />
-    <Content Include="Areas\Setup\Views\Lookup\Index.aspx" />
-    <Content Include="Areas\Setup\Views\MemberType\Index.aspx" />
-    <Content Include="Areas\Setup\Views\MetroZip\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Ministry\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Program\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Promotion\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Recreation\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Recreation\Errors.aspx" />
-    <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\Batch.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\Index.aspx" />
-    <Content Include="Areas\Setup\Views\Setting\OrphanedImages.aspx" />
-    <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.aspx" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />
@@ -1751,10 +1891,8 @@
     <Content Include="Areas\Main\Views\Web.config" />
     <Content Include="Areas\OnlineReg\Views\Web.config" />
     <Content Include="Scripts\Divisions.js" />
-    <Content Include="Views\Shared\Reports.Master" />
     <Content Include="Scripts\PostBundle.js" />
     <Content Include="Scripts\OrgGroups.js" />
-    <Content Include="Views\Shared\onlinereg.Master" />
     <Content Include="Scripts\OrgMembers.js" />
     <Content Include="Scripts\OrgMembersDialog.js" />
     <Content Include="Scripts\OnlineReg.js" />
@@ -1786,42 +1924,16 @@
     <Content Include="Scripts\Pager.js" />
     <Content Include="Scripts\Person.js" />
     <Content Include="Scripts\SearchPeople.js" />
-    <Content Include="Views\Home\BatchTag.aspx" />
-    <Content Include="Areas\Public\Views\Register\Add.aspx" />
     <Content Include="Content\newsletter.css" />
     <Content Include="Views\Shared\bvorg.Master" />
-    <Content Include="Views\Shared\Site.Master" />
-    <Content Include="Views\Shared\Site2.Master" />
-    <Content Include="Views\Shared\Site3.Master" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Report\Reports.Master" />
     <Content Include="Scripts\ExportToolBar.js" />
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Scripts\Task.js" />
     <Content Include="StaffOnly\Web.config" />
-    <Content Include="Views\Home\About.aspx" />
-    <Content Include="Areas\Manage\Views\Promotion\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Promotion\List.ascx" />
-    <Content Include="Areas\Manage\Views\Recreation\All.aspx" />
-    <Content Include="Areas\Manage\Views\Recreation\Coaches.aspx" />
-    <Content Include="Areas\Manage\Views\Recreation\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Recreation\List.ascx" />
-    <Content Include="Areas\Public\Views\Register\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\Register\ConfirmVisit.aspx" />
-    <Content Include="Areas\Public\Views\Register\Form2.aspx" />
-    <Content Include="Areas\Public\Views\Register\Index.aspx" />
-    <Content Include="Areas\Public\Views\Register\Login.aspx" />
-    <Content Include="Areas\Public\Views\Register\Visit.aspx" />
-    <Content Include="Areas\Public\Views\Register\Visit2.aspx" />
     <Content Include="Views\Shared\ExportToolBar.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
-    <Content Include="Areas\Manage\Views\Volunteers\CustomReport.aspx" />
-    <Content Include="Areas\Manage\Views\Volunteers\Index.aspx" />
-    <Content Include="Areas\Manage\Views\Volunteers\Calendar.aspx" />
-    <Content Include="Areas\Public\Views\Volunteer\Confirm.aspx" />
-    <Content Include="Areas\Public\Views\Volunteer\PickList2.aspx" />
-    <Content Include="Areas\Public\Views\Volunteer\Index.aspx" />
-    <Content Include="Areas\Public\Views\Volunteer\Unknown.aspx" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1855,7 +1967,6 @@
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="demos\checkboxtree\images\" />
-    <Folder Include="Report\rdlc\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>

@@ -47,7 +47,7 @@ namespace CmsWeb.Models
         }
         public string formcontent { get; set; }
         public string formtitle { get; set; }
-        public string FormInitialize()
+        public HtmlString FormInitialize()
         {
             var q = from vi in person.FetchVolInterestInterestCodes(View)
                     select vi.VolInterestCode;
@@ -58,7 +58,7 @@ namespace CmsWeb.Models
                 sb.AppendFormat("$(\"input[name={0}{1}]\").attr('checked', true);\n", vi.Org, vi.Code);
             sb.AppendLine("});");
             sb.AppendLine("</script>");
-            return sb.ToString();
+            return new HtmlString(sb.ToString());
         }
 
         public string zip { get; set; }

@@ -27,7 +27,7 @@
     <div style="text-align: center">
     <h1>
         Decision Summary Report</h1>
-        <table style="font-size: 110%; text-align: left" align="center">
+        <table style="font-size: 110%; text-align: left; margin-left:auto;margin-right:auto;">
             <tr>
                 <td style="text-align: right">
                     From Date:
@@ -63,13 +63,13 @@
             SetFocusOnError="True" ValidationGroup="vgDates" Type="Date" Text="To Date must be after From Date."
             CssClass="noPrint"></asp:CompareValidator>
         <hr />
-        <table cellpadding="4" align="center">
+        <table cellspacing="18" style="margin-left:auto;margin-right:auto">
             <tr>
-                <td colspan="2">
+                <td colspan="2" align="center">
                     <asp:ListView ID="DecisionsView" runat="server" DataSourceID="ODSDecisions" 
                         onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="" align="center">
+                            <table id="itemPlaceholderContainer" runat="server" border="0">
                                 <tr id="Tr7" runat="server" style="">
                                     <th class="HeaderLine" id="Th13" runat="server" colspan="2">
                                         Decisions
@@ -102,7 +102,7 @@
                 </td>
             </tr>
             <tr>
-                <td valign="top">
+                <td valign="top" align="center">
                     <asp:ListView ID="BaptismsByAgeView" runat="server" 
                         DataSourceID="ODSBaptismsByAge" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -137,11 +137,11 @@
                         </EmptyDataTemplate>
                     </asp:ListView>
                 </td>
-                <td valign="top">
+                <td valign="top" align="center">
                     <asp:ListView ID="BaptismsByTypeView" runat="server" 
                         DataSourceID="ODSBaptismsByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                            <table id="itemPlaceholderContainer" runat="server" border="0"  style="margin-left:auto;margin-right:auto">
                                 <tr id="Tr10" runat="server" style="">
                                     <th class="HeaderLine" id="Th16" runat="server" colspan="2">
                                         Baptisms by Type
@@ -165,7 +165,7 @@
                 </td>
             </tr>
             <tr>
-                <td valign="top">
+                <td valign="top" align="center">
                     <asp:ListView ID="NewMemberView" runat="server" 
                         DataSourceID="ODSNewMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -200,7 +200,7 @@
                         </EmptyDataTemplate>
                     </asp:ListView>
                 </td>
-                <td valign="top">
+                <td valign="top" align="center">
                     <asp:ListView ID="DroppedMemberView" runat="server" 
                         DataSourceID="ODSDroppedMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -237,11 +237,11 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="2" align="center">
                     <asp:ListView ID="DroppedMemberChurchView" runat="server" 
                         DataSourceID="ODSDroppedMembersByChurch" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="" align="center">
+                            <table id="itemPlaceholderContainer" runat="server" border="0">
                                 <tr id="Tr13" runat="server" style="">
                                     <th class="HeaderLine" id="Th19" runat="server" colspan="2">
                                         Dropped Members by Church

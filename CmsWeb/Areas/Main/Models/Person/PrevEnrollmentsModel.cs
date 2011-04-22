@@ -22,12 +22,16 @@ namespace CmsWeb.Models.PersonPage
         private IQueryable<EnrollmentTransaction> FetchPrevEnrollments()
         {
             if (_enrollments == null)
+            {
+                var limitvisibility = Util2.OrgMembersOnly
+                    || !HttpContext.Current.User.IsInRole("Access");
                 _enrollments = from etd in DbUtil.Db.EnrollmentTransactions
-                    where etd.TransactionStatus == false
-                    where etd.PeopleId == PeopleId
-                    where etd.TransactionTypeId >= 4
-                    where !(etd.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
-                    select etd;
+                               where etd.TransactionStatus == false
+                               where etd.PeopleId == PeopleId
+                               where etd.TransactionTypeId >= 4
+                               where !(limitvisibility && etd.Organization.SecurityTypeId == 3)
+                               select etd;
+            }
             return _enrollments;
         }
         int? _count;

@@ -1,6 +1,10 @@
 ﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Areas.Main.Models.Report.ContributionModel
+@{
+    Layout = "/Views/Shared/Reports.cshtml";
+    ViewBag.Title = "Reports";
+}
 @section head 
 {
     <style type="text/css">
@@ -43,7 +47,7 @@
                     var fd = $('#FromDate').val();
                     var td = $('#ToDate').val();
                     var typ = $('input[name=indfam]:radio:checked').val();
-                    var args = "<%=Model.person.PeopleId %>?FromDate=" + fd + "&ToDate=" + td + "&typ=" + typ;
+                    var args = "@Model.person.PeopleId?FromDate=" + fd + "&ToDate=" + td + "&typ=" + typ;
                     var newWindowUrl = "/Reports/ContributionStatement/" + args;
                     window.open(newWindowUrl);
                     d.dialog('close');
@@ -59,7 +63,7 @@
     <a id="Statement" href="#">statement</a><br />
 
     <div style="text-align: center">
-        <table border="0">
+        <table border="0" style="margin-left:auto;margin-right:auto;">
             <tr>
                 <th>Year</th>
                 <th align="right">Count</th>

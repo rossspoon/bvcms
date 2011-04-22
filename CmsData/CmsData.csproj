@@ -160,6 +160,7 @@
     <Compile Include="ContentService.cs" />
     <Compile Include="Generated\EmailResponse.cs" />
     <Compile Include="Generated\EmailToText.cs" />
+    <Compile Include="Generated\Functions\GetTodaysMeetingHour.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />

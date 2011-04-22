@@ -22,11 +22,15 @@ namespace CmsWeb.Models.PersonPage
         private IQueryable<OrganizationMember> FetchEnrollments()
         {
             if (_enrollments == null)
+            {
+                var limitvisibility = Util2.OrgMembersOnly 
+                    || !HttpContext.Current.User.IsInRole("Access");
                 _enrollments = from om in DbUtil.Db.OrganizationMembers
                                where om.PeopleId == PeopleId
                                where (om.Pending ?? false) == false
-                               where !(om.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
+                               where !(limitvisibility && om.Organization.SecurityTypeId == 3)
                                select om;
+            }
             return _enrollments;
         }
         int? _count;
