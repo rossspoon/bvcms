@@ -7,35 +7,37 @@ using System.IO;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace UtilityExtensions
 {
     public static partial class Util
     {
-        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, string Name, string addr, int id)
+        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, MailAddress to, int id)
+        {
+            SendMsg(SysFromEmail, CmsHost, From, subject, Message, Util.ToMailAddressList(to), id);
+        }
+        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id)
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")
                 return;
 
-            RecordEmailSent(CmsHost, From, subject, Name, addr, id, false);
+            RecordEmailSent(CmsHost, From, subject, to, id, false);
             var msg = new MailMessage();
             if (From == null)
                 From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
             msg.From = From;
-            var aa = addr.SplitStr(",;");
-            foreach (var ad in aa)
+            foreach (var ma in to)
             {
-                if (Name.HasValue() && Name.Contains("?"))
-                    Name = null;
-                var ma = Util.TryGetMailAddress(ad, Name);
-                if (ma != null && !ma.Address.ToLower().Contains("nowhere.name"))
+                if (ma.Host != "nowhere.name")
                     msg.To.Add(ma);
             }
             msg.Subject = subject;
+            var addrs = string.Join(", ", to.Select(tt => tt.ToString()));
             if (msg.To.Count == 0)
             {
                 msg.To.Add(msg.From);
-                msg.Subject = "(bad addr:{0}) {1}".Fmt(addr, subject);
+                msg.Subject += "-- bad addr:" + addrs;
             }
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
@@ -78,12 +80,15 @@ namespace UtilityExtensions
             catch (Exception ex)
             {
                 if (!msg.Subject.StartsWith("(smtp error)"))
-                    SendMsg(SysFromEmail, CmsHost, From, "(smtp error) " + subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addr, ex.Message, Message), Name, WebConfigurationManager.AppSettings["senderrorsto"], id);
+                    SendMsg(SysFromEmail, CmsHost, From, 
+                        "(smtp error) " + subject, 
+                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message), 
+                        Util.SendErrorsTo(), id);
             }
             htmlView.Dispose();
             htmlStream.Dispose();
         }
-        public static void RecordEmailSent(string CmsHost, MailAddress From, string subject, string Name, string addr, int id, bool cansend)
+        public static void RecordEmailSent(string CmsHost, MailAddress From, string subject, List<MailAddress> to, int id, bool cansend)
         {
             var sescn = WebConfigurationManager.ConnectionStrings["ses"];
             if (sescn != null)
@@ -91,11 +96,10 @@ namespace UtilityExtensions
                 using (var cn = new SqlConnection(sescn.ConnectionString))
                 {
                     cn.Open();
-                    var cmd = new SqlCommand("insert dbo.ses (host, fromemail, name, toemail, subject, qid, useSES) values(@host,@fromemail,@name,@toemail,@subject,@qid,@useSES)", cn);
+                    var cmd = new SqlCommand("insert dbo.ses (host, fromemail, toemail, subject, qid, useSES) values(@host,@fromemail,@toemail,@subject,@qid,@useSES)", cn);
                     cmd.Parameters.AddWithValue("@host", CmsHost);
                     cmd.Parameters.AddWithValue("@fromemail", From.ToString());
-                    cmd.Parameters.AddWithValue("@name", Name ?? "");
-                    cmd.Parameters.AddWithValue("@toemail", addr);
+                    cmd.Parameters.AddWithValue("@toemail", to.EmailAddressListToString());
                     cmd.Parameters.AddWithValue("@subject", subject ?? "");
                     cmd.Parameters.AddWithValue("@qid", id);
                     cmd.Parameters.AddWithValue("@useSES", cansend);

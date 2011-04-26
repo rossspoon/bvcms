@@ -344,6 +344,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="CmsCheckin_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\Match.datasource" />
     <None Include="Settings1.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

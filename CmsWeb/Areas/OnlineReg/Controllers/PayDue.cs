@@ -142,10 +142,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (ti.Amtdue > 0)
                 msg += "<br/>\n<a href='{0}'>PayLink</a>".Fmt(paylink);
 
-            var qt = ti.TransactionPeople.Select(t => t.Person);
+            var pid = ti.TransactionPeople.Select(t => t.PeopleId).First();
+            var p0 = Db.LoadPersonById(pid);
             Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
-                qt, ti.Emails, "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names));
-            Db.Email(qt.First().FromEmail, 
+                p0, Util.ToMailAddressList(ti.Emails), "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), false);
+            Db.Email(p0.FromEmail, 
                 Db.PeopleFromPidString(org.NotifyIds), 
                 "payment received for " + ti.Description, 
                 "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));

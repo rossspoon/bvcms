@@ -243,6 +243,17 @@ namespace CmsWeb.Areas.Main.Controllers
             return r;
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult RecordAttend2(int PeopleId, int OrgId, bool Present, DateTime hour, string kiosk)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+            var m = new CheckInModel();
+            m.RecordAttend2(PeopleId, OrgId, Present, hour);
+            var r = new ContentResult();
+            r.Content = "success";
+            return r;
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Membership(int PeopleId, int OrgId, bool Member)
         {
             if (!Authenticate())
@@ -385,20 +396,18 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var setting = "KioskNotifyIds";
+            var setting = "KioskNotify";
             if (campusid > 0)
                 setting += campusid;
-            var pids = DbUtil.Db.Setting(setting, null);
-            if (pids.HasValue())
+            var address = DbUtil.Db.Setting(setting, null);
+            if (address.HasValue())
             {
                 try
                 {
-                    var a = pids.SplitStr(",").Select(ss => ss.ToInt());
-                    var q = from u in DbUtil.Db.Users
-                            where a.Contains(u.PeopleId.Value)
-                            select u.Person;
                     var msg = kiosk + " at " + DateTime.Now.ToShortTimeString();
-                    DbUtil.Db.EmailRedacted(Util.SysFromEmail, q, "Printer Problem", msg);
+                    Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost,
+                        Util.TryGetMailAddress(Util.SysFromEmail),
+                        "Printer Problem", msg, Util.ToMailAddressList(address), 0);
                 }
                 catch (Exception)
                 {

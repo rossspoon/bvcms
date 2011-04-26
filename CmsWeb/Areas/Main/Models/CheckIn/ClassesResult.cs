@@ -78,7 +78,7 @@ namespace CmsWeb.Models
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                     from meeting in meetingHours
-                    select new { o, meeting.Hour };
+                    select new { o, Hour = meeting.Hour.Value };
 
                 var q2 = from i in q
                          select new
@@ -114,6 +114,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
                             .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
+                    w.WriteAttributeString("hour", o.Hour.ToString("M/d/yy h:mm tt"));
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

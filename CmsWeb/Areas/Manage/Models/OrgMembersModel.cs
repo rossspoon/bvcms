@@ -345,7 +345,9 @@ Thanks for registering!
 
                 if (i.RegisterEmail.HasValue())
                 {
-                    Db.Email(Db.CurrentUser.Person.FromEmail, i.om.Person, i.RegisterEmail, subj, msg, false);
+                    Db.Email(Db.CurrentUser.Person.FromEmail, 
+                        i.om.Person, Util.ToMailAddressList(i.RegisterEmail),
+                        subj, msg, false);
                     sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.FromEmail, i.PeopleId, i.Location));
                     i.om.Moved = false;
                 }

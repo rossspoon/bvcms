@@ -121,8 +121,8 @@ Please call the church to resolve this before we can complete your account.<br /
                         {
 #if DEBUG
 #else
-                            ModelState.AddModelError(ErrorTarget, "This person is already registered");
-                            IsValidForContinue = false;
+                            //ModelState.AddModelError(ErrorTarget, "This person is already registered");
+                            //IsValidForContinue = false;
 #endif
                         }
                         else if (org.ValidateOrgs.HasValue())

@@ -368,27 +368,11 @@ namespace CmsData
         }
         public string FromEmail
         {
-            get
-            {
-                if (EmailAddress.HasValue())
-                    if (Name.Contains("?"))
-                        return EmailAddress;
-                    else
-                        return Name + " <" + EmailAddress + ">";
-                return String.Empty;
-            }
+            get { return Util.FullEmail(EmailAddress, Name); }
         }
         public string FromEmail2
         {
-            get
-            {
-                if (EmailAddress2.HasValue())
-                    if (Name.Contains("?"))
-                        return EmailAddress2;
-                    else
-                        return Name + " <" + EmailAddress2 + ">";
-                return String.Empty;
-            }
+            get { return Util.FullEmail(EmailAddress2, Name); }
         }
         public static void NameSplit(string name, out string First, out string Last)
         {

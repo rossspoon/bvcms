@@ -100,6 +100,7 @@ namespace CmsCheckin
                     oid = e.Attribute("orgid").Value.ToInt(),
                     pid = PeopleId,
                     nlabels = e.Attribute("nlabels").Value.ToInt(),
+                    hour = DateTime.Parse(e.Attribute("hour").Value),
                 });
             }
             ShowPage(1);
@@ -217,5 +218,6 @@ namespace CmsCheckin
         public string mv { get; set; }
         public string bdays { get; set; }
         public int nlabels { get; set; }
+        public DateTime? hour { get; set; }
     }
 }

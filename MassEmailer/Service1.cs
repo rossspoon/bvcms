@@ -187,12 +187,12 @@ WAITFOR(
                     if (lasterror != ex.Message)
                     {
                         WriteLog("Error sending emails ", EventLogEntryType.Error);
-                        var erroremails = ConfigurationManager.AppSettings["senderrorsto"];
-                        erroremails = erroremails.Replace(';', ',');
                         var SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];
-                        Util.SendMsg(SysFromEmail, CmsHost, Util.FirstAddress(erroremails),
+                        var senderrorsto = Util.SendErrorsTo();
+                        Util.SendMsg(SysFromEmail, CmsHost, senderrorsto[0],
                             "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
-                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), null, erroremails, 0);
+                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), 
+                            senderrorsto, 0);
                         lasterror = ex.Message;
                     }
                     Thread.Sleep(5000);
@@ -216,26 +216,25 @@ WAITFOR(
             var qp = q.Single();
             string text = emailqueue.Body;
             var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
-            foreach (var ad in aa)
-            {
-                if (Util.ValidEmail(ad))
-                {
-                    var ma = new MailAddress(ad);
-                    var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
-                    var url = Util.URLCombine(CmsHost, qs);
-                    var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-                    text = text.Replace("{unsubscribe}", link);
-                    text = text.Replace("{Unsubscribe}", link);
-                    text = text.Replace("{toemail}", ma.Address);
-                    text = text.Replace("%7Btoemail%7D", ma.Address);
-                    text = text.Replace("{fromemail}", From.Address);
-                    text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                    emailqueueto.Messageid = EmailRoute(SysFromEmail, From.DisplayName, From.Address, ad, qp.Name, emailqueue.Subject, text, CmsHost, id, pid);
-                    emailqueueto.Sent = DateTime.Now;
-                    Db.SubmitChanges();
-                }
+            var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
+            var url = Util.URLCombine(CmsHost, qs);
+            var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
+            text = text.Replace("{unsubscribe}", link);
+            text = text.Replace("{Unsubscribe}", link);
+            if (aa.Count > 0)
+            {
+                text = text.Replace("{toemail}", aa[0].Address);
+                text = text.Replace("%7Btoemail%7D", aa[0].Address);
             }
+            text = text.Replace("{fromemail}", From.Address);
+            text = text.Replace("%7Bfromemail%7D", From.Address);
+
+            emailqueueto.Messageid = EmailRoute(
+                SysFromEmail, From.DisplayName, From.Address, 
+                aa, emailqueue.Subject, text, CmsHost, id, pid);
+            emailqueueto.Sent = DateTime.Now;
+            Db.SubmitChanges();
         }
         private Boolean SESCanSend()
         {
@@ -282,9 +281,8 @@ WAITFOR(
             return false;
         }
         private string SendAmazonSESRawEmail(string SysEmailFrom,
-            string fromname, string fromaddress, string to, string nameto, string Subject, string body, string host, int id, int pid)
+            string fromname, string fromaddress, List<MailAddress> to, string Subject, string body, string host, int id, int pid)
         {
-            to = to.Replace(';', ',');
             var awsfrom = ConfigurationManager.AppSettings["awsfromemail"];
             if (!fromname.HasValue())
                 fromname = fromaddress;
@@ -293,25 +291,18 @@ WAITFOR(
             var from = new MailAddress(fromaddress, fromname);
             var msg = new MailMessage();
             msg.From = new MailAddress(awsfrom, fromname);
-            Util.RecordEmailSent(host, from, Subject, nameto, to, id, true);
-#if DEBUG2
-            msg.To.Add(new MailAddress("davcar@pobox.com", nameto));
-#else
-            var aa = to.SplitStr(",;");
-            foreach (var ad in aa)
+            Util.RecordEmailSent(host, from, Subject, to, id, true);
+
+            foreach (var t in to)
             {
-                if (nameto.HasValue() && nameto.Contains("?"))
-                    nameto = null;
-                var ma = Util.TryGetMailAddress(ad, nameto);
-                if (ma != null)
-                    msg.To.Add(ma);
+                if (t.Host != "nowhere.name")
+                    msg.To.Add(t);
             }
             if (msg.To.Count == 0)
             {
                 msg.To.Add(msg.From);
-                msg.Subject = "(bad addr:{0}) {1}".Fmt(to, Subject);
+                Subject += "-- NO GOOD EMAIL({0},{1})".Fmt(host, pid);
             }
-#endif
             if (Subject.HasValue())
                 msg.Subject = Subject;
             else
@@ -347,13 +338,8 @@ WAITFOR(
 
             var request = new SendRawEmailRequest();
             request.WithRawMessage(rawMessage);
-#if DEBUG2
-            var fullto = new MailAddress("davcar@pobox.com", nameto);
-            request.WithDestinations(fullto.ToString());
-#else
-            var toarray = msg.To.Select(tt => tt.ToString()).ToArray();
-            request.WithDestinations(toarray);
-#endif
+            var tolist = msg.To.Select(tt => tt.ToString());
+            request.WithDestinations(tolist);
             var fullsys = new MailAddress(awsfrom, fromname);
             request.WithSource(fullsys.ToString());
 
@@ -374,7 +360,7 @@ WAITFOR(
                 if (ex.ErrorCode == "Throttling")
                 {
                     lastThrottle = DateTime.Now;
-                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to, nameto, Subject, body, host, id, pid);
+                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to, Subject, body, host, id, pid);
                 }
             }
             catch (Exception ex)
@@ -386,25 +372,26 @@ WAITFOR(
                         || ex.Message.StartsWith("The remote name could not be resolved")
                         ))
                 {
-                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to, nameto, 
+                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to,  
                         Subject + " .rs", body, host, id, pid);
                 }
                 else if (Subject.EndsWith(" .rs"))
                 {
                     // resort to SMTP instead of Amazon
                     Util.SendMsg(SysEmailFrom, host, from, Subject, body,
-                            nameto, to , id);
+                            to , id);
                 }
                 else if (!msg.Subject.StartsWith("(sending error)"))
                 {
                     string resp = "no response";
                     if (response.IsNotNull())
                         resp = response.SendRawEmailResult.ToString();
+                    var addrs = to.EmailAddressListToString();
                     Util.SendMsg(SysEmailFrom, host, from,
                         "(sending error) " + Subject,
                         "<p>to: \"{0}\" <{1}><br>host:{2} id:{3} pid:{4}</p><pre>{5}</pre>{6}<br><br>{7}".Fmt(
-                            nameto, to, host, id, pid, ex.Message, body, resp),
-                            nameto, ConfigurationManager.AppSettings["senderrorsto"], id);
+                            addrs, host, id, pid, ex.Message, body, resp),
+                            Util.SendErrorsTo(), id);
                 }
             }
             return "no messageid";
@@ -422,14 +409,14 @@ WAITFOR(
             closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
             return fileStream;
         }
-        private string EmailRoute(string SysFrom, string fromname, string fromaddress, string To, string Name, string subject, string body, string CmsHost, int id, int pid)
+        private string EmailRoute(string SysFrom, string fromname, string fromaddress, List<MailAddress> to, string subject, string body, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
             var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
             if (useSES && SESCanSend())
-                return SendAmazonSESRawEmail(SysFrom, fromname, fromaddress, To, Name, subject, body, CmsHost, id, pid);
+                return SendAmazonSESRawEmail(SysFrom, fromname, fromaddress, to, subject, body, CmsHost, id, pid);
             else
-                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, Name, To, id);
+                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, to, id);
             return "no messageid";
         }
         private void NotifySentEmails(CMSDataContext Db, string CmsHost, string FromAddress, string FromName, string subject, int count, int id)
@@ -440,10 +427,12 @@ WAITFOR(
                 var uri = new Uri(new Uri(CmsHost), "/Manage/Emails/Details/" + id);
                 string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
                 var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
-                var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
-                EmailRoute(SysFromEmail, FromName, FromAddress, FromAddress, FromName, subj, body, CmsHost, id, 0);
+                var SendErrorsTo = Util.SendErrorsTo();
+                var to = Util.ToMailAddressList(FromAddress, FromName);
+                EmailRoute(SysFromEmail, FromName, FromAddress, to, subj, body, CmsHost, id, 0);
                 var host = uri.Host;
-                EmailRoute(SysFromEmail, FromName, FromAddress, SendErrorsTo, null, host + " " + subj, body, CmsHost, id, 0);
+                EmailRoute(SysFromEmail, FromName, FromAddress, 
+                    SendErrorsTo, host + " " + subj, body, CmsHost, id, 0);
             }
         }
         private void EndQueue(Guid guid)

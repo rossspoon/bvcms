@@ -117,7 +117,7 @@ namespace CmsCheckin
 
             foreach (var e in x.Descendants("attendee"))
             {
-                list.Add(new AttendLabel
+                var a = new AttendLabel
                 {
                     cinfo = new ClassInfo
                     {
@@ -146,7 +146,6 @@ namespace CmsCheckin
                     activeother = e.Attribute("activeother").Value,
                     parent = e.Attribute("parent").Value,
 
-                    _hour = e.Attribute("hour").Value,
                     org = e.Attribute("org").Value,
                     orgname = e.Attribute("orgname").Value,
                     custody = bool.Parse(e.Attribute("custody").Value),
@@ -159,7 +158,11 @@ namespace CmsCheckin
                     HasPicture = bool.Parse(e.Attribute("haspicture").Value),
                     RequiresSecurityLabel = bool.Parse(e.Attribute("requiressecuritylabel").Value),
                     leadtime = double.Parse(e.Attribute("leadtime").Value),
-                });
+                };
+                DateTime dt;
+                if (DateTime.TryParse(e.Attribute("hour").Value, out dt))
+                    a.cinfo.hour = dt;
+                list.Add(a);
             }
             ShowPage(1);
         }
@@ -221,7 +224,7 @@ namespace CmsCheckin
                     twidlb = Math.Max(twidlb, (int)Math.Ceiling(size.Width));
                     twidlb = Math.Max(twidlb, mwid);
 
-                    size = g.MeasureString("{0:h:mm tt} {1}".Fmt(c.hour, c.org), font);
+                    size = g.MeasureString("{0:h:mm tt} {1}".Fmt(c.cinfo.hour, c.org), font);
                     widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
 
                     size = g.MeasureString("|", labfont);
@@ -370,7 +373,7 @@ namespace CmsCheckin
                 org.Size = new Size(widorg + 5, maxheight);
                 org.Font = font;
                 org.UseMnemonic = false;
-                org.Text = "{0:h:mm tt} {1}".Fmt(c.hour, c.org);
+                org.Text = "{0:h:mm tt} {1}".Fmt(c.cinfo.hour, c.org);
                 org.TextAlign = ContentAlignment.MiddleLeft;
                 org.Name = "org" + c.Row;
                 if (c.cinfo.oid != 0)
@@ -417,7 +420,7 @@ namespace CmsCheckin
                 first = c.first,
                 last = c.last,
                 location = c.location,
-                hour = c.hour,
+                hour = c.cinfo.hour,
                 org = c.org,
                 custody = c.custody,
                 transport = c.transport,
@@ -625,16 +628,19 @@ namespace CmsCheckin
             Program.FamilyId = 0;
             classlist = new List<ClassInfo>();
             PrintAll.Text = string.Empty;
-            //var f = new DidItWork();
-            //var ret = f.ShowDialog();
-            //f.Hide();
-            //f.Dispose();
-            //if (ret == DialogResult.No)
-            //{
-            //    Util.ReportPrinterProblem();
-            //    var fa = new AdminLogin();
-            //    fa.ShowDialog();
-            //}
+            if (Program.AskLabels)
+            {
+                var f = new DidItWork();
+                var ret = f.ShowDialog();
+                f.Hide();
+                f.Dispose();
+                if (ret == DialogResult.No)
+                {
+                    Util.ReportPrinterProblem();
+                    var fa = new AdminLogin();
+                    fa.ShowDialog();
+                }
+            }
             this.GoHome(string.Empty);
         }
         private void PrintLabels()
@@ -656,7 +662,7 @@ namespace CmsCheckin
                         first = c.first,
                         last = c.last,
                         location = c.location,
-                        hour = c.hour,
+                        hour = c.cinfo.hour,
                         org = c.org,
                         custody = c.custody,
                         transport = c.transport,
@@ -795,17 +801,6 @@ namespace CmsCheckin
         public bool HasPicture { get; set; }
         public bool RequiresSecurityLabel { get; set; }
         public double leadtime { get; set; }
-        internal string _hour { get; set; }
-        public DateTime? hour
-        {
-            get
-            {
-                DateTime dt;
-                if (DateTime.TryParse(_hour, out dt))
-                    return dt;
-                return null;
-            }
-        }
     }
     public class LabelInfo
     {

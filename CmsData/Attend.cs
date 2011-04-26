@@ -43,9 +43,13 @@ namespace CmsData
         }
         public static string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
+            return RecordAttendance(DbUtil.Db, PeopleId, MeetingId, attended);
+        }
+        public static string RecordAttendance(CMSDataContext Db, int PeopleId, int MeetingId, bool attended)
+        {
             var OtherMeetings = new List<Attend>();
 
-            var o = DbUtil.Db.AttendMeetingInfo0(MeetingId, PeopleId);
+            var o = Db.AttendMeetingInfo0(MeetingId, PeopleId);
 
             // do not record inactive members
             if (o.info.MemberTypeId.HasValue // member of this class
@@ -89,7 +93,7 @@ namespace CmsData
                 && o.info.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive) 
             {
                 o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
-                o.Attendance.AttendanceTypeId = GetAttendType(o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);
+                o.Attendance.AttendanceTypeId = GetAttendType(Db, o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);
                 o.Attendance.BFCAttendance = o.Attendance.OrganizationId == o.info.BFClassId;
 
                 if (o.BFCMember != null && (attended || o.BFCAttendance != null)) // related BFC
@@ -100,7 +104,7 @@ namespace CmsData
                      * I don't need to be here if I am reversing my attendance and there is no BFCAttendance to fix
                      */
                     if (o.BFCAttendance == null)
-                        o.BFCAttendance = CreateOtherAttend(o.Meeting, o.BFCMember);
+                        o.BFCAttendance = CreateOtherAttend(Db, o.Meeting, o.BFCMember);
 
                     o.BFCAttendance.OtherAttends = attended ? 1 : 0;
                     o.Attendance.OtherAttends = o.BFCAttendance.AttendanceFlag ? 1 : 0;
@@ -110,7 +114,7 @@ namespace CmsData
                         if (o.BFCAttendance.OtherAttends > 0)
                             o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         else
-                            o.BFCAttendance.AttendanceTypeId = GetAttendType(o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
+                            o.BFCAttendance.AttendanceTypeId = GetAttendType(Db, o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
                         o.path = 3;
                     }
                     else if (o.BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
@@ -160,14 +164,14 @@ namespace CmsData
                         o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
                     }
                     if (o.BFCAttendance == null)
-                        o.BFCAttendance = CreateOtherAttend(o.Meeting, o.BFCMember);
+                        o.BFCAttendance = CreateOtherAttend(Db, o.Meeting, o.BFCMember);
 
                     o.BFCAttendance.OtherAttends = attended ? 1 : 0;
 
                     if (o.BFCAttendance.OtherAttends > 0)
                         o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
                     else
-                        o.BFCAttendance.AttendanceTypeId = GetAttendType(o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
+                        o.BFCAttendance.AttendanceTypeId = GetAttendType(Db, o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
                     o.path = 8;
 
                     OtherMeetings.Add(o.BFCAttendance);
@@ -175,9 +179,10 @@ namespace CmsData
             }
             try
             {
-                HttpContext.Current.Items["attendinfo"] = o;
-                DbUtil.Db.SubmitChanges();
-                DbUtil.Db.UpdateAttendStr(o.Meeting.OrganizationId, PeopleId);
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items["attendinfo"] = o;
+                Db.SubmitChanges();
+                Db.UpdateAttendStr(o.Meeting.OrganizationId, PeopleId);
             }
             catch (SqlException ex)
             {
@@ -186,14 +191,14 @@ namespace CmsData
 
             foreach (var m in OtherMeetings)
             {
-                DbUtil.Db.UpdateAttendStr(m.OrganizationId, PeopleId);
-                DbUtil.Db.UpdateMeetingCounters(m.MeetingId);
+                Db.UpdateAttendStr(m.OrganizationId, PeopleId);
+                Db.UpdateMeetingCounters(m.MeetingId);
             }
             return null; // no error
         }
-        private static Attend CreateOtherAttend(Meeting meeting, OrganizationMember member)
+        private static Attend CreateOtherAttend(CMSDataContext Db, Meeting meeting, OrganizationMember member)
         {
-            var q = from m in DbUtil.Db.Meetings
+            var q = from m in Db.Meetings
                     where m.MeetingDate == meeting.MeetingDate
                     where m.OrganizationId == member.OrganizationId
                     select m;
@@ -210,9 +215,9 @@ namespace CmsData
                     GroupMeetingFlag = false,
                     Location = member.Organization.Location,
                 };
-                DbUtil.Db.Meetings.InsertOnSubmit(othMeeting);
+                Db.Meetings.InsertOnSubmit(othMeeting);
             }
-            var q2 = from a in DbUtil.Db.Attends
+            var q2 = from a in Db.Attends
                      where a.PeopleId == member.PeopleId
                      where a.MeetingId == othMeeting.MeetingId
                      select a;
@@ -229,18 +234,18 @@ namespace CmsData
                     CreatedBy = Util.UserId1,
                     Meeting = othMeeting,
                 };
-                DbUtil.Db.Attends.InsertOnSubmit(othAttend);
+                Db.Attends.InsertOnSubmit(othAttend);
             }
             return othAttend;
         }
-        private static int? GetAttendType(bool attended, int? memberTypeId, Meeting meeting)
+        private static int? GetAttendType(CMSDataContext Db, bool attended, int? memberTypeId, Meeting meeting)
         {
             if (meeting != null && meeting.GroupMeetingFlag == true)
                 return (int)Attend.AttendTypeCode.Group;
             if (!attended)
                 return null;
 
-            var q = from mt in DbUtil.Db.MemberTypes
+            var q = from mt in Db.MemberTypes
                     where mt.Id == memberTypeId
                     select mt.AttendanceTypeId;
             return q.Single();

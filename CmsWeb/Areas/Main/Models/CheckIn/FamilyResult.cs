@@ -99,7 +99,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("checkedin", c.CheckedIn.ToString());
                     w.WriteAttributeString("custody", c.Custody.ToString());
                     w.WriteAttributeString("transport", c.Transport.ToString());
-                    w.WriteAttributeString("hour", c.Hour.ToString());
+                    w.WriteAttributeString("hour", c.Hour.FormatDateTm());
                     w.WriteAttributeString("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
                     w.WriteAttributeString("church", c.church);
 

@@ -823,10 +823,94 @@ namespace UtilityExtensions
         {
             return "<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>".Fmt(message, href, text);
         }
+        public static string FullEmail(string Email, string Name)
+        {
+            if (Email.HasValue())
+                if (Name.Contains("?"))
+                    return Email;
+                else
+                    return Name + " <" + Email + ">";
+            return String.Empty;
+        }
+        public static List<MailAddress> DistinctEmails(this List<MailAddress> list)
+        {
+            for (var i = 0; i < list.Count; i++)
+                if (list[i] != null)
+                    for (var j = i + 1; j < list.Count; j++)
+                        if (list[j] != null)
+                            if (string.Compare(list[i].Address, list[j].Address, ignoreCase: true) == 0)
+                                list[j] = null;
+            return list.Where(ll => ll != null).ToList();
+        }
+        private class MailAddressComparer : IEqualityComparer<MailAddress>
+        {
+            public bool Equals(MailAddress x, MailAddress y)
+            {
+                if (x == null)
+                    return y == null;
+                if (y == null)
+                    return false;
+                var eq = string.Compare(x.Address, y.Address, ignoreCase: true) == 0;
+                return eq;
+            }
+            public int GetHashCode(MailAddress obj)
+            {
+                return obj.Address.ToLower().GetHashCode();
+            }
+        }
+        public static List<MailAddress> ToMailAddressList(string addresses)
+        {
+            var list = new List<MailAddress>();
+            foreach (var ad in addresses.Split(','))
+                AddGoodAddress(list, ad);
+            return list;
+        }
+        public static List<MailAddress> ToMailAddressList(string address, string name)
+        {
+            return ToMailAddressList(Util.TryGetMailAddress(address, name));
+        }
+        public static List<MailAddress> ToMailAddressList(MailAddress ma)
+        {
+            return new List<MailAddress> { ma };
+        }
+        public static void AddGoodAddress(List<MailAddress> list, string a)
+        {
+            var ma = Util.TryGetMailAddress(a);
+            if (ma != null)
+                list.Add(ma);
+        }
+        public static string EmailAddressListToString(this List<MailAddress> list)
+        {
+            var addrs = string.Join(", ", list.Select(tt => tt.ToString()));
+            return addrs;
+        }
+        public static List<MailAddress> SendErrorsTo()
+        {
+            var a = WebConfigurationManager.AppSettings["senderrorsto"];
+            return EmailAddressListFromString(a);
+        }
+        public static List<MailAddress> EmailAddressListFromString(string addresses)
+        {
+            var a = addresses.Split(',');
+            var list = new List<MailAddress>();
+            foreach (var ad in a)
+                AddGoodAddress(list, ad);
+            return list;
+        }
         public static MailAddress TryGetMailAddress(string address)
         {
-            string name = String.Empty;
-            return TryGetMailAddress(address, name);
+            if (address.HasValue())
+                address = address.Trim();
+            try
+            {
+                var ma = new MailAddress(address);
+                if (ValidEmail(ma.Address))
+                    return ma;
+            }
+            catch (Exception)
+            {
+            }
+            return null;
         }
         public static MailAddress TryGetMailAddress(string address, string name)
         {

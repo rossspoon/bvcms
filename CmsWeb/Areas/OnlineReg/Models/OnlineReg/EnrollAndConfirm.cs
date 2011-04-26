@@ -6,6 +6,7 @@ using CmsData;
 using System.Text;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace CmsWeb.Models
 {
@@ -15,13 +16,14 @@ namespace CmsWeb.Models
         {
             var Db = DbUtil.Db;
             var ti = Transaction;
-            var elist = new List<string>();
-            if (UserPeopleId.HasValue && !List.Any(pp => pp.PeopleId == UserPeopleId))
+            // make a list of email addresses
+            var elist = new List<MailAddress>();
+            if (UserPeopleId.HasValue)
             {
                 if (user.SendEmailAddress1 ?? true)
-                    elist.Add(user.FromEmail);
+                    Util.AddGoodAddress(elist, user.FromEmail);
                 if (user.SendEmailAddress2 ?? false)
-                    elist.Add(user.FromEmail2);
+                    Util.AddGoodAddress(elist, user.FromEmail2);
             }
             var participants = new StringBuilder();
             for (var i = 0; i < List.Count; i++)
@@ -43,16 +45,14 @@ namespace CmsWeb.Models
                     p.AddPerson(uperson, p.org.EntryPointId ?? 0);
                 }
 
-                if (!elist.Contains(p.fromemail))
-                    elist.Add(p.fromemail);
-
+                Util.AddGoodAddress(elist, p.fromemail);
                 participants.Append(p.ToString());
             }
             var p0 = List[0].person;
             if (this.user != null)
                 p0 = user;
 
-            var emails = string.Join(",", elist.ToArray());
+            //var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
             var amtdue = TotalAmountDue();
             var amtpaid = Amount();
@@ -66,7 +66,7 @@ namespace CmsWeb.Models
                     OrgId = orgid,
                 });
 
-            ti.Emails = emails;
+            ti.Emails = Util.EmailAddressListToString(elist);
             ti.Participants = participants.ToString();
             ti.TransactionDate = DateTime.Now;
             ti.TransactionPeople.AddRange(pids2);
@@ -160,11 +160,12 @@ namespace CmsWeb.Models
             else if (org != null)
                 EmailMessage = org.EmailMessage;
 
-            IEnumerable<Person> NotifyIds = null;
+            List<Person> NotifyIds = null;
             if (div != null)
                 NotifyIds = Db.StaffPeopleForDiv(div.Id);
             else if (org != null)
                 NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
+            var notify = NotifyIds[0];
 
             string Location = null;
             if (div != null)
@@ -188,7 +189,7 @@ namespace CmsWeb.Models
                 message = message.Replace("{paylink}", "<a href='{0}'>Click this link to pay balance of {1:C}</a>.".Fmt(paylink, amtdue));
             else
                 message = message.Replace("{paylink}", "You have a zero balance.");
-            var notify = NotifyIds.FirstOrDefault();
+
             var re = new Regex(@"\{donation(?<text>.*)donation\}", RegexOptions.Singleline | RegexOptions.Multiline);
             if (ti.Donate > 0)
             {
@@ -210,21 +211,28 @@ namespace CmsWeb.Models
                     message = re.Replace(message, v);
                 }
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
-                Db.Email(NotifyIds.First().FromEmail, NotifyIds, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
+                // send donation confirmations
+                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
             }
             else
                 message = re.Replace(message, "");
 
-            Db.Email(NotifyIds.First().FromEmail, 
-                ti.TransactionPeople.Select(t => t.Person), emails,
-                subject, message);
+            // send confirmations
+            Db.Email(notify.FromEmail, p0, elist, 
+                subject, message, false);
+            // notify the staff
             foreach (var p in List)
-                Db.Email(p.person.FromEmail, NotifyIds, "{0}".Fmt(Header), @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
+            {
+                Db.Email(p.person.FromEmail, 
+                    Db.StaffPeopleForOrg(p.org.OrganizationId),
+                    "{0}".Fmt(Header),
+@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
 <pre>{4}</pre>".Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
+            }
         }
         public void UseCoupon(string TransactionID)
         {
-            string matchcoupon = @"Coupon\((?<coupon>.*)\)";
+            string matchcoupon = @"Coupon\((?<coupon>[^)]*)\)";
             if (Regex.IsMatch(TransactionID, matchcoupon, RegexOptions.IgnoreCase))
             {
                 var match = Regex.Match(TransactionID, matchcoupon, RegexOptions.IgnoreCase);
@@ -234,10 +242,13 @@ namespace CmsWeb.Models
                     coupon = coup.Value.Replace(" ", "");
                 if (coupon != "Admin")
                 {
-                    var c = DbUtil.Db.Coupons.Single(cp => cp.Id == coupon);
-                    c.RegAmount = Amount();
-                    c.Used = DateTime.Now;
-                    c.PeopleId = List[0].PeopleId;
+                    var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
+                    if (c != null)
+                    {
+                        c.RegAmount = Amount();
+                        c.Used = DateTime.Now;
+                        c.PeopleId = List[0].PeopleId;
+                    }
                 }
             }
         }

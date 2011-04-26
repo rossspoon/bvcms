@@ -155,12 +155,18 @@ namespace CmsWeb.Models
             try { ma = new MailAddress(regemail); } catch (Exception) { }
             if (ma != null)
             {
+                /* If one of the email addresses we have on record
+                 * is the same as the email address given in registration
+                 * then no problem, (not different) */
                 if (person.EmailAddress.HasValue() && 
                         string.Compare(ma.Address, person.EmailAddress, true) == 0)
                     return;
                 if (person.EmailAddress2.HasValue() && 
                         string.Compare(ma.Address, person.EmailAddress2, true) == 0)
                     return;
+                /* So now we check to see if anybody in the famiy
+                 * has the email address used in registration
+                 * if so then that is OK too. */
                 var flist = from fm in person.Family.People
                             where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
                             select fm;
@@ -174,7 +180,8 @@ namespace CmsWeb.Models
                         return;
                 }
             }
-
+            /* so now we have a different email address than the one on record
+             * we need to notify them */
             if (person.EmailAddress.HasValue() || person.EmailAddress2.HasValue())
             {
                 string subj = "{0}, different email address than one on record".Fmt(orgname);
@@ -184,7 +191,9 @@ It is important that you call the church <strong>{2}</strong> to update our reco
 so that you will receive future important notices regarding this registration.</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                DbUtil.Db.Email(fromemail, person, regemail, subj, msg, false);
+                DbUtil.Db.Email(fromemail, 
+                    person, Util.ToMailAddressList(regemail), 
+                    subj, msg, false);
             }
             else
             {
@@ -201,7 +210,9 @@ But we won't add that to your record without your permission.
 Thank you</p>"
                     .Fmt(person.Name, orgname, phone.FmtFone());
 
-                DbUtil.Db.Email(fromemail, person, regemail, subj, msg, false);
+                DbUtil.Db.Email(fromemail, 
+                    person, Util.ToMailAddressList(regemail), 
+                    subj, msg, false);
             }
         }
         private static string trim(string s)

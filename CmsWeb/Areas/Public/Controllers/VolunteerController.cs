@@ -96,7 +96,9 @@ namespace CmsWeb.Areas.Public.Controllers
                     var p = m.person;
                     body = body.Replace("{first}", p.PreferredName);
                     body = body.Replace("{serviceareas}", summary);
-                    Db.Email(email, m.person, regemail, c.Title, body, false);
+                    Db.Email(email, 
+                        m.person, Util.ToMailAddressList(regemail), 
+                        c.Title, body, false);
                     OnlineRegPersonModel.CheckNotifyDiffEmails(m.person, email, regemail, c.Title, "");
 
                 }

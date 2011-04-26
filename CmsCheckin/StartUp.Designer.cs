@@ -47,6 +47,7 @@
             this.AskChurchName = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.KioskName = new System.Windows.Forms.TextBox();
+            this.AskLabels = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -269,11 +270,23 @@
             this.KioskName.Size = new System.Drawing.Size(538, 31);
             this.KioskName.TabIndex = 24;
             // 
+            // AskLabels
+            // 
+            this.AskLabels.AutoSize = true;
+            this.AskLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AskLabels.Location = new System.Drawing.Point(271, 360);
+            this.AskLabels.Name = "AskLabels";
+            this.AskLabels.Size = new System.Drawing.Size(214, 24);
+            this.AskLabels.TabIndex = 25;
+            this.AskLabels.Text = "Ask whether labels printed";
+            this.AskLabels.UseVisualStyleBackColor = true;
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 519);
+            this.Controls.Add(this.AskLabels);
             this.Controls.Add(this.KioskName);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.EnableTimer);
@@ -324,5 +337,6 @@
         public System.Windows.Forms.CheckBox AskChurchName;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox KioskName;
+        public System.Windows.Forms.CheckBox AskLabels;
     }
 }

@@ -38,7 +38,6 @@ namespace CmsWeb
                             .Add("/Content/pager.css")
                             .Render("/Content/AllMVC_#.css");
 
-            FooterEntity.ToolTip = HttpContext.Current.Request.UserHostAddress.ToString();
             if (Util.SessionStarting)
             {
                 if (Util2.OrgMembersOnly)

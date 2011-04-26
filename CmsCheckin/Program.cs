@@ -44,6 +44,7 @@ namespace CmsCheckin
             HideCursor = f.HideCursor.Checked;
             Printer = f.Printer.Text;
             AskGrade = f.AskGrade.Checked;
+            AskLabels = f.AskLabels.Checked;
             LeadTime = int.Parse(f.LeadHours.Text);
             EarlyCheckin = int.Parse(f.LateMinutes.Text);
             AskEmFriend = f.AskEmFriend.Checked;
@@ -87,6 +88,7 @@ namespace CmsCheckin
         public static bool AskGrade { get; set; }
         public static bool AskChurch { get; set; }
         public static bool AskChurchName { get; set; }
+        public static bool AskLabels { get; set; }
 
         public static string QueryString
         {

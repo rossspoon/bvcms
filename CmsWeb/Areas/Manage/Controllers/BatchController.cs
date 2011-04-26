@@ -390,63 +390,89 @@ namespace CmsWeb.Areas.Manage.Controllers
 
                 foreach (var a in fam)
                 {
-                    var p = Person.Add(DbUtil.Db, false, f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], 0, 0, 0, null);
-                    p.AltName = a[names["AltName"]];
-                    p.CellPhone = a[names["CellPhone"]].GetDigits();
-                    p.EmailAddress = a[names["Email"]].Trim();
+                    var first = a[names["First"]];
+                    var last = a[names["Last"]];
+                    DateTime dt;
+                    DateTime? dob = null;
+                    if (DateTime.TryParse(a[names["Birthday"]], out dt))
+                        dob = dt;
+                    var email = a[names["Email"]].Trim();
+                    var cell = a[names["CellPhone"]].GetDigits();
+                    Person p = null;
+                    var pid = DbUtil.Db.FindPerson3(first, last, dob, email, cell, f.HomePhone, null).FirstOrDefault();
+                    if (pid != null) // found
+                    {
+                        p = DbUtil.Db.LoadPersonById(pid.PeopleId.Value);
+                    }
+                    else
+                    {
+                        p = Person.Add(DbUtil.Db, false, f, 10, null, a[names["First"]], a[names["GoesBy"]], a[names["Last"]], a[names["Birthday"]], 0, 0, 0, null);
+                        p.AltName = a[names["AltName"]];
+                        p.CellPhone = a[names["CellPhone"]].GetDigits();
+                        p.EmailAddress = a[names["Email"]].Trim();
 
-                    switch (a[names["Gender"]])
-                    {
-                        case "Male":
-                            p.GenderId = 1;
-                            break;
-                        case "Female":
-                            p.GenderId = 2;
-                            break;
-                    }
-                    switch (a[names["Married"]])
-                    {
-                        case "Married":
-                            p.MaritalStatusId = 20;
-                            break;
-                        case "Single":
-                            p.MaritalStatusId = 10;
-                            break;
-                        default:
-                            p.MaritalStatusId = 0;
-                            break;
-                    }
-                    p.TitleCode = a[names["Title"]];
-                    switch (a[names["Position"]])
-                    {
-                        case "Primary":
-                            p.PositionInFamilyId = 10;
-                            break;
-                        case "Secondary":
-                            p.PositionInFamilyId = 20;
-                            break;
-                        case "Child":
-                            p.PositionInFamilyId = 30;
-                            break;
-                    }
-                    p.AddressLineOne = a[names["Address"]];
-                    p.AddressLineTwo = a[names["Address2"]];
-                    p.CityName = a[names["City"]];
-                    p.StateCode = a[names["State"]];
-                    p.ZipCode = a[names["Zip"]];
+                        switch (a[names["Gender"]])
+                        {
+                            case "Male":
+                                p.GenderId = 1;
+                                break;
+                            case "Female":
+                                p.GenderId = 2;
+                                break;
+                        }
+                        switch (a[names["Married"]])
+                        {
+                            case "Married":
+                                p.MaritalStatusId = 20;
+                                break;
+                            case "Single":
+                                p.MaritalStatusId = 10;
+                                break;
+                            case "Widowed":
+                                p.MaritalStatusId = 50;
+                                break;
+                            case "Divorced":
+                                p.MaritalStatusId = 40;
+                                break;
+                            case "Separated":
+                                p.MaritalStatusId = 30;
+                                break;
+                            default:
+                                p.MaritalStatusId = 0;
+                                break;
+                        }
+                        p.TitleCode = a[names["Title"]];
+                        switch (a[names["Position"]])
+                        {
+                            case "Primary":
+                                p.PositionInFamilyId = 10;
+                                break;
+                            case "Secondary":
+                                p.PositionInFamilyId = 20;
+                                break;
+                            case "Child":
+                                p.PositionInFamilyId = 30;
+                                break;
+                        }
+                        p.AddressLineOne = a[names["Address"]];
+                        p.AddressLineTwo = a[names["Address2"]];
+                        p.CityName = a[names["City"]];
+                        p.StateCode = a[names["State"]];
+                        p.ZipCode = a[names["Zip"]];
 
-                    if (names.ContainsKey("Campus"))
-                        p.CampusId = campuses[a[names["Campus"]]];
+                        if (names.ContainsKey("Campus"))
+                            p.CampusId = campuses[a[names["Campus"]]];
+                    }
                     var nq = from name in names.Keys
                              where !standardnames.Contains(name)
                              select name;
-                    var dt = DateTime.Now;
+                    var now = DateTime.Now;
                     foreach (var name in nq)
-                        p.PeopleExtras.Add(new PeopleExtra 
-                        {  
-                            Field = name, 
-                            StrValue = a[names[name]],
-                            TransactionTime = dt
+                        p.PeopleExtras.Add(new PeopleExtra
+                        {
+                            Field = name,
+                            StrValue = a[names[name]].Trim(),
+                            TransactionTime = now
                         });
                 }
                 DbUtil.Db.SubmitChanges();
@@ -668,6 +694,29 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult LookupDataPage()
         {
             return View(new UpdateFieldsModel().TitleItems());
+        }
+
+        public ActionResult DoVisits()
+        {
+            var q = from p in DbUtil.Db.People
+                    where p.PeopleExtras.Any(pp => pp.FieldValue == "VisitEaster:1")
+                    select p.PeopleId;
+
+            foreach (var pid in q)
+                Attend.RecordAttendance(pid, 4272905, true);
+
+            DbUtil.Db.UpdateMeetingCounters(4272905);
+
+            var j = from p in DbUtil.Db.People
+                    where p.PeopleExtras.Any(pp => pp.FieldValue == "VisitEaster:2")
+                    select p.PeopleId;
+
+            foreach (var pid in j)
+                Attend.RecordAttendance(pid, 4272907, true);
+
+            DbUtil.Db.UpdateMeetingCounters(4272907);
+
+            return Content("done");
         }
     }
 }

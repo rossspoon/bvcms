@@ -282,8 +282,10 @@ namespace CmsData
                     .Fmt(u.EmailAddress, u.Name, "", Name, newuserid, u.Person.BirthDay);
             var from = new MailAddress("bbcms01@bellevue.org");
 
+            var list = new List<MailAddress>();
             foreach (var mu in GetUsersInRole(GroupType.Admin))
-                Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, mu.Name, mu.EmailAddress, 0);
+                Util.AddGoodAddress(list, mu.EmailAddress);
+            Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, list, 0);
         }
     }
     public enum FetchType
