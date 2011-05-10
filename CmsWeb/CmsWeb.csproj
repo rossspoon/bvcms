@@ -12,7 +12,6 @@
     <RootNamespace>CmsWeb</RootNamespace>
     <AssemblyName>CmsWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews>true</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -219,6 +218,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
@@ -1037,6 +1037,7 @@
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
     <Content Include="Content\bvcms132x55.png" />
+    <Content Include="Errors\SessionTimeout.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Content\cmenu.css" />
     <Content Include="Content\cssreset.css" />
@@ -1487,6 +1488,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\AskDonation.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1523,6 +1525,7 @@
     <Content Include="Views\Shared\Reports.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Shared\ExportToolBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangePassword.aspx" />
@@ -1951,7 +1954,7 @@
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Scripts\Task.js" />
     <Content Include="StaffOnly\Web.config" />
-    <Content Include="Views\Shared\ExportToolBar.ascx" />
+    <Content Include="Views\Shared\ExportToolBar2.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2006,25 +2009,11 @@
     <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Parent" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
     <CopyAreaManifests ManifestPath="$(AreasManifestDir)" CrossCopy="false" RenameViews="true" />
   </Target>-->
-  <Target Name="AfterBuildCompiler" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
-  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>58724</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/cms</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/</IISAppRootUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

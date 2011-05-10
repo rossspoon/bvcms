@@ -111,7 +111,20 @@ namespace CmsWeb.Models
             get { return _Nologin; }
             set { _Nologin = value; }
         }
-
+        [OptionalField]
+        private decimal? _donation;
+        public decimal? donation
+        {
+            get { return _donation; }
+            set { _donation = value; }
+        }
+        [OptionalField]
+        private int? _donor;
+        public int? donor
+        {
+            get { return _donor; }
+            set { _donor = value; }
+        }
 
         [OptionalField]
         private int? _UserPeopleId;

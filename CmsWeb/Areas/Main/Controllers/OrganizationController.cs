@@ -208,11 +208,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
-            DbUtil.Db.SubmitChanges();
-            m = new OrganizationModel(id, Util2.CurrentGroups);
             m.ValidateSettings(ModelState);
             if (ModelState.IsValid)
+            {
+                DbUtil.Db.SubmitChanges();
                 return View("Settings", m);
+            }
             return View("SettingsEdit", m);
         }
 

@@ -154,7 +154,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(mt);
             }
             doc.Close();
-            Response.End();
         }
         public IEnumerable<AttendInfo> VisitsAbsents(int mtgid)
         {

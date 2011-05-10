@@ -131,8 +131,9 @@ You have the following subscriptions:<br/>
             var a = ot.Querystring.Split(',');
             var oid = a[0].ToInt();
             var pid = a[1].ToInt();
+            var pre = a[2];
             var om = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
-            om.AddToGroup(DbUtil.Db, smallgroup);
+            om.AddToGroup(DbUtil.Db, pre + smallgroup);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
 

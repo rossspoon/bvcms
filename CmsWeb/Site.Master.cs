@@ -26,6 +26,14 @@ namespace CmsWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session != null)
+                if (Session.IsNewSession)
+                {
+                    string CookieHeader = Request.Headers["Cookie"];
+                    if ((null != CookieHeader) && (CookieHeader.IndexOf("ASP.NET_SessionId") >= 0))
+                        Response.Redirect("/Errors/SessionTimeout.htm");
+                }
+
             if (ScriptManager.IsInAsyncPostBack)
                 return;
             if (NoCache)

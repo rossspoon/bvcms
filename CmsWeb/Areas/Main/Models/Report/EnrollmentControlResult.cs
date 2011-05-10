@@ -82,7 +82,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             else
                 doc.Add(new Phrase("no data"));
             doc.Close();
-            Response.End();
         }
         public class MemberInfo
         {

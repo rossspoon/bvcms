@@ -275,7 +275,6 @@ namespace CmsData
         }
         public void NotifyNewUser(string newuserid)
         {
-            var n = 0;
             var u = DbUtil.Db.Users.Single(uu => uu.Username == newuserid);
             var subject = "New user in Group: " + Name;
             var body = "<br>--<br>{0}, {1} is a new user in group={3} with id={4} and birthday={5:d}.<br>--<br>"
@@ -285,7 +284,7 @@ namespace CmsData
             var list = new List<MailAddress>();
             foreach (var mu in GetUsersInRole(GroupType.Admin))
                 Util.AddGoodAddress(list, mu.EmailAddress);
-            Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, list, 0);
+            Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, list, 0, Record: true);
         }
     }
     public enum FetchType

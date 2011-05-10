@@ -138,6 +138,7 @@ $(function () {
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
+            $(".submitbutton").button();
         });
         return false;
     });
@@ -208,7 +209,8 @@ $(function () {
             "org.OptionsLabel": { maxlength: 50 },
             "org.NumItemsLabel": { maxlength: 50 },
             "org.GroupToJoin": { digits: true },
-            "org.RequestLabel": { maxlength: 50 }
+            "org.RequestLabel": { maxlength: 50 },
+            "org.DonationFundId": { number: true }
         }
     });
 

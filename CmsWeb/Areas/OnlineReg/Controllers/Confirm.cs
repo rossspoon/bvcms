@@ -83,7 +83,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.ti.Participants = t.Participants;
                 DbUtil.Db.Transactions.InsertOnSubmit(pf.ti);
                 DbUtil.Db.SubmitChanges();
-                SetHeaders(m.orgid ?? m.divid ?? 0);
+                SetHeaders(m);
                 return View(pf);
             }
             // update information for sucessful transaction from POST
@@ -164,11 +164,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             else
                 ViewData["email"] = m.List[0].email;
             ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
-            ViewData["URL"] = m.URL;
-            ViewData["timeout"] = INT_timeout;
             ViewData["message"] = t.Message;
 
-            SetHeaders(m.divid ?? m.orgid ?? 0);
+            SetHeaders(m);
             return View(confirm, m);
         }
     }

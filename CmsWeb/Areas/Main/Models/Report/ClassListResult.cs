@@ -69,7 +69,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(new Phrase("\nno data"));
             pageEvents.EndPageSet();
             doc.Close();
-            Response.End();
         }
 
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);

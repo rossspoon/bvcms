@@ -61,7 +61,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Add(t);
 
             document.Close();
-            Response.End();
         }
         private void AddRow(PdfPTable t, string fname, string lname, string phone, string dob, int pid)
         {

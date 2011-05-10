@@ -127,11 +127,7 @@
         <td>@Model.org.Limit</td>
     </tr>
     <tr>
-        <th>Online Notify Emails (old):</th>
-        <td>@Model.org.EmailAddresses</td>
-    </tr>
-    <tr>
-        <th>Online Notify Persons:</th>
+        <th title="old:@Model.org.EmailAddresses">Online Notify Persons:</th>
         <td>
             @foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
             { 
@@ -322,6 +318,10 @@
     <tr>
         <th>Ask Donation:</th>
         <td>@Html.CheckBoxReadonly(Model.org.AskDonation)</td>
+    </tr>
+    <tr>
+        <th>Donation Fund:</th>
+        <td>@(Model.org.ContributionFund != null ? Model.org.ContributionFund.FundName : "" )</td>
     </tr>
 </table>
 

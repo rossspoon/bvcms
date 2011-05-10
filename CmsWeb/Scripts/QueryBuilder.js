@@ -279,7 +279,7 @@ function EditCondition(ev) {
 //            $('.blockOverlay').click($.unblockUI); 
 //            return false;
 //        });
-        $('.FieldLink').click(function(ev) {
+        $('div.FieldLink a').click(function(ev) {
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()

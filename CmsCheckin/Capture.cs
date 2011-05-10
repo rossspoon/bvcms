@@ -225,7 +225,7 @@ namespace CmsCheckin
                     return IntPtr.Zero;
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 Marshal.FreeCoTaskMem(m_ipBuffer);
                 m_ipBuffer = IntPtr.Zero;

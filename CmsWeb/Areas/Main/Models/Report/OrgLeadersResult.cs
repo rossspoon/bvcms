@@ -74,7 +74,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
             pageEvents.EndPageSet();
             doc.Close();
-            Response.End();
         }
 
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD);

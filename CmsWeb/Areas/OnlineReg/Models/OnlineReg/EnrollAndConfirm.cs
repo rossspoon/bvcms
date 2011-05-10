@@ -193,17 +193,19 @@ namespace CmsWeb.Models
             var re = new Regex(@"\{donation(?<text>.*)donation\}", RegexOptions.Singleline | RegexOptions.Multiline);
             if (ti.Donate > 0)
             {
-                var desc = "{0}; {1}; {2}, {3} {4}".Fmt(ti.Name, ti.Address, ti.City, ti.State, ti.Zip);
-                int? pid = UserPeopleId;
-                if (!pid.HasValue)
-                {
-                    string first, last;
-                    Person.NameSplit(ti.Name, out first, out last);
-                    var pds = Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
-                    if (pds.Count() == 1)
-                        pid = pds.Single().PeopleId;
-                }
-                PostBundleModel.PostUnattendedContribution(ti.Donate.Value, pid, null, desc);
+                ti.Fund = org.ContributionFund.FundName;
+                var p = List[donor.Value].person;
+                var desc = "{0}; {1}; {2}, {3} {4}".Fmt(p.Name, p.PrimaryAddress, p.PrimaryCity, p.PrimaryState, p.PrimaryZip);
+                //int? pid = UserPeopleId;
+                //if (!pid.HasValue)
+                //{
+                //    string first, last;
+                //    Person.NameSplit(ti.Name, out first, out last);
+                //    var pds = Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
+                //    if (pds.Count() == 1)
+                //        pid = pds.Single().PeopleId;
+                //}
+                PostBundleModel.PostUnattendedContribution(ti.Donate.Value, p.PeopleId, org.DonationFundId, desc);
             	var ma = re.Match(message);
                 if (ma.Success)
                 {

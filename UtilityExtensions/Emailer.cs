@@ -15,14 +15,15 @@ namespace UtilityExtensions
     {
         public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, MailAddress to, int id)
         {
-            SendMsg(SysFromEmail, CmsHost, From, subject, Message, Util.ToMailAddressList(to), id);
+            SendMsg(SysFromEmail, CmsHost, From, subject, Message, Util.ToMailAddressList(to), id, Record: true);
         }
-        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id)
+        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, bool Record)
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")
                 return;
 
-            RecordEmailSent(CmsHost, From, subject, to, id, false);
+            if (Record)
+                RecordEmailSent(CmsHost, From, subject, to, id, false);
             var msg = new MailMessage();
             if (From == null)
                 From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
@@ -83,7 +84,7 @@ namespace UtilityExtensions
                     SendMsg(SysFromEmail, CmsHost, From, 
                         "(smtp error) " + subject, 
                         "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message), 
-                        Util.SendErrorsTo(), id);
+                        Util.SendErrorsTo(), id, Record:true);
             }
             htmlView.Dispose();
             htmlStream.Dispose();
@@ -95,7 +96,8 @@ namespace UtilityExtensions
             {
                 using (var cn = new SqlConnection(sescn.ConnectionString))
                 {
-                    cn.Open();
+                    try { cn.Open(); }
+                    catch (Exception) { return; }
                     var cmd = new SqlCommand("insert dbo.ses (host, fromemail, toemail, subject, qid, useSES) values(@host,@fromemail,@toemail,@subject,@qid,@useSES)", cn);
                     cmd.Parameters.AddWithValue("@host", CmsHost);
                     cmd.Parameters.AddWithValue("@fromemail", From.ToString());
@@ -107,7 +109,7 @@ namespace UtilityExtensions
                     {
                         cmd.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
 
                     }

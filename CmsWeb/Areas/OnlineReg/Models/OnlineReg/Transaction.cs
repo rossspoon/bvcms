@@ -19,6 +19,10 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegModel
     {
+        public static string GetTransactionGateway()
+        {
+            return DbUtil.Db.Setting("TransactionGateway", "ServiceU");
+        }
         public decimal Amount()
         {
             var amt = List.Sum(p => p.AmountToPay());

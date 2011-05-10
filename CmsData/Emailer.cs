@@ -158,7 +158,7 @@ namespace CmsData
                     select u.Person;
             var p = q.SingleOrDefault();
             if (p == null)
-                p = UserPersonFromEmail(DbUtil.SystemEmailAddress);
+                p = CMSRoleProvider.provider.GetAdmins().First();
             return p;
         }
         public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents, bool PublicViewable)
@@ -232,12 +232,12 @@ namespace CmsData
 
             if (Setting("sendemail", "true") != "false")
             {
-                Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id);
+                Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, Record:true);
                 emailqueueto.Sent = DateTime.Now;
                 SubmitChanges();
             }
         }
-        private const string VoteLinkRE = @"\{votelink:(?<orgid>\d+),(?<sg>[^}]*)\}";
+        private const string VoteLinkRE = @"\{votelink:(?<orgid>\d+),(?<pre>[^,]+:){0,1}(?<sg>[^}]*)\}";
         public List<MailAddress> DoReplacements(ref string text, string CmsHost, Person p, EmailQueueTo emailqueueto)
         {
             if (text == null)
@@ -260,8 +260,9 @@ namespace CmsData
             {
                 var votelink = match.Value;
                 var orgid = match.Groups["orgid"].Value;
+                var pre = match.Groups["pre"].Value;
                 var smallgroup = match.Groups["sg"].Value;
-                var qs = @"{0},{1}".Fmt(orgid, emailqueueto.PeopleId);
+                var qs = @"{0},{1},{2}".Fmt(orgid, emailqueueto.PeopleId, pre);
                 OneTimeLink ot;
                 if (list.ContainsKey(qs))
                     ot = list[qs];
@@ -319,7 +320,7 @@ namespace CmsData
             if (p.SendEmailAddress2 ?? false)
                 Util.AddGoodAddress(aa, p.FromEmail2);
             if (regemail.HasValue())
-                foreach (var ad in regemail.Split(','))
+                foreach (var ad in regemail.SplitStr(",;"))
                     Util.AddGoodAddress(aa, ad);
             return aa;
         }
@@ -342,7 +343,7 @@ namespace CmsData
                 Util.SendMsg(sysFromEmail, CmsHost, From,
                     "sent emails - error", "no subject or body, no emails sent",
                     Util.ToMailAddressList(From),
-                    emailqueue.Id);
+                    emailqueue.Id, Record: true);
                 return;
             }
 
@@ -375,7 +376,7 @@ namespace CmsData
                 if (Setting("sendemail", "true") != "false")
                 {
                     Util.SendMsg(sysFromEmail, CmsHost, From,
-                        emailqueue.Subject, text, aa, emailqueue.Id);
+                        emailqueue.Subject, text, aa, emailqueue.Id, Record: true);
                     To.Sent = DateTime.Now;
 
                     foreach (var ma in aa)
@@ -404,11 +405,11 @@ namespace CmsData
                 SendErrorsTo = SendErrorsTo.Replace(';', ',');
 
                 Util.SendMsg(SysFromEmail, CmsHost, from,
-                    subj, body, Util.ToMailAddressList(from), id);
+                    subj, body, Util.ToMailAddressList(from), id, Record: true);
                 var host = uri.Host;
                 Util.SendMsg(SysFromEmail, CmsHost, from,
                     host + " " + subj, body,
-                    Util.SendErrorsTo(), id);
+                    Util.SendErrorsTo(), id, Record: true);
             }
         }
     }

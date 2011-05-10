@@ -7,6 +7,8 @@
     <td>@Model.TransactionDate.FormatDateTm()</td>
     <td>@Model.Description</td>
     <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@Model.DatumId'>@Model.Name</a></td>
+    <td align="right">@((Model.Amt ?? 0 - Model.Donate ?? 0).ToString("N"))</td>
+    <td align="right">@Model.Donate.ToString2("N")</td>
     <td align="right">@Model.Amt.ToString2("N")</td>
     <td align="right">@Model.Amtdue.ToString2("N")</td>
 </tr>

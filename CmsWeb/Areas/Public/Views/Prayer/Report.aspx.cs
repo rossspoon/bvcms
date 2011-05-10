@@ -73,7 +73,6 @@ namespace CmsWeb.Models.Prayer
                 doc.Add(Chunk.NEXTPAGE);
             }
             doc.Close();
-            Response.End();
         }
     }
 }

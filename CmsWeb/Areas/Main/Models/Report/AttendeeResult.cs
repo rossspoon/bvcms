@@ -145,7 +145,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(mt);
             }
             doc.Close();
-            Response.End();
         }
         public static IEnumerable<AttendInfo> Attendees(int mtgid)
         {

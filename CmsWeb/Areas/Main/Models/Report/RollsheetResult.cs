@@ -164,8 +164,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(mct);
             }
             pageEvents.EndPageSet();
+            Response.Flush();
             doc.Close();
-            Response.End();
         }
         private static int[] VisitAttendTypes = new int[] 
         { 

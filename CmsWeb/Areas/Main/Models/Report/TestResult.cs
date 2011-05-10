@@ -97,7 +97,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             t2.WriteSelectedRows(0, -1, 36f, 46f, dc);
 
             doc.Close();
-            Response.End();
         }
         private void DisplayTable(string title, float width, float x, float y, List<string> reasons)
         {

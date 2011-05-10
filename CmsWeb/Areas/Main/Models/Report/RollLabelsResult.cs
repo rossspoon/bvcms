@@ -78,7 +78,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 AddLabel(document, m.LabelName, m.Address, m.Address2, m.CityStateZip, Util.PickFirst(m.CellPhone.FmtFone("C "), m.HomePhone.FmtFone("H ")));
 
             document.Close();
-            Response.End();
         }
         public void AddLabel(Document d, string name, string addr, string addr2, string csz, string phone)
         {

@@ -77,7 +77,6 @@ namespace CmsWeb.Models
             Response.AddHeader("Content-Disposition", "attachment;filename=UpdatePeople.xls");
             Response.Charset = "";
             wb.Write(Response.OutputStream);
-            Response.End();
         }
         public IEnumerable<UpdatePeopleItem> UpdatePeopleRows()
         {

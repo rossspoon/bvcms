@@ -110,7 +110,8 @@
     </tr>
     <tr>
         <th>Online Notify PeopleIds:</th>
-        <td>@Html.TextBox("org.NotifyIds")
+        <td>@Html.TextBox("org.NotifyIds", Model.org.NotifyIds)
+            @Html.ValidationMessage("NotifyIds")
 @foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
 { 
                <div>@p.FromEmail &mdash; (@p.PeopleId)</div>
@@ -324,6 +325,11 @@
         <td>@Html.CheckBox("org.AskDonation")</td>
     </tr>
     <tr>
+        <th>Donation FundId:</th>
+        <td>@Html.TextBox("org.DonationFundId", Model.org.DonationFundId)
+            @Html.ValidationMessage("DonationFundId")</td>
+    </tr>
+    <tr>
         <th>Group to Join:</th>
         <td>@Html.TextBox("org.GroupToJoin")</td>
     </tr>
@@ -352,6 +358,10 @@
         <td>@Html.CheckBox("org.NotReqMarital")</td>
     </tr>
 } 
-    <tr><td></td><td><a href="/Organization/SettingsUpdate/@Model.OrganizationId" class="submitbutton">Save Changes</a></td></tr>
+    <tr>
+        <td></td>
+        <td><a href="/Organization/SettingsUpdate/@Model.OrganizationId" class="submitbutton">Save Changes</a>
+            @Html.ValidationSummary()</td>
+        </tr>
 </table>
 

@@ -58,6 +58,9 @@ namespace CmsWeb.Models
             var q = from t in DbUtil.Db.EmailQueueTos
                     where t.Id == id
                     select t;
+            if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin")
+                    && queue.QueuedBy != Util.UserPeopleId)
+                q = q.Where(ee => ee.PeopleId == Util.UserPeopleId);
             return q;
         }
     }

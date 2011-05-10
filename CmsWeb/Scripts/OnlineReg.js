@@ -116,5 +116,18 @@
         return false;
     });
     $.InstructionsShow();
+    $.validator.setDefaults({
+        highlight: function (input) {
+            $(input).addClass("ui-state-highlight");
+        },
+        unhighlight: function (input) {
+            $(input).removeClass("ui-state-highlight");
+        }
+    });
+    $("form.DisplayEdit").validate({
+        rules: {
+            "m.donation": { number: true },
+        }
+    });
 });
 

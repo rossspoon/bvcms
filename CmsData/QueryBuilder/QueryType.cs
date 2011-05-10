@@ -47,6 +47,7 @@ namespace CmsData
         EmployerOther,
         EntryPointId,
         EnvelopeOptionsId,
+        FamilyId,
         FamilyHasChildren,
         FamilyHasChildrenAged,
         FamilyHasChildrenAged2,

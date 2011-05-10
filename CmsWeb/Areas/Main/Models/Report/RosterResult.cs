@@ -93,7 +93,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
             pageEvents.EndPageSet();
             doc.Close();
-            Response.End();
         }
         public class MemberInfo
         {

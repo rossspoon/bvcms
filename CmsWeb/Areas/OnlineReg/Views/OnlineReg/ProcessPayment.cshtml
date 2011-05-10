@@ -30,7 +30,7 @@
     <a id="displayterms" title="click to display terms" href="#">Display Terms</a>
     <div id="Terms" title="Terms of Agreement" class="modalPopup" style="display: none;
         width: 400px; padding: 10px">
-        @ViewData["Terms"]</div>
+        @Html.Raw((string)ViewData["Terms"])</div>
     <p>
         @Html.CheckBox("IAgree")
         I agree to the above terms and conditions.</p>
@@ -63,14 +63,6 @@
         <td>@Html.TextBox("pf.ti.Phone", Model.ti.Phone, new { @class = "wide" })</td></tr>
     <tr><td>Email</td>
         <td>@Html.TextBox("pf.ti.Emails", Model.ti.Emails, new { @class = "wide" })</td></tr>
-@if (Model.AskDonation)
-{ 
-    <tr><td>Registration Fees</td>
-        <td><span id="regfees" class="right">@Model.ti.Regfees.ToString2("N2")</span></td></tr>
-    <tr><td>Donate Additional Amount</td>
-        <td>@Html.TextBox("pf.ti.Donate", Model.ti.Donate, new { @class = "short" })
-            <a id="applydonation" href="#" style="font-size:90%">Apply Donation</a></td></tr>
-} 
     <tr><td>Total Transaction Amount</td>
         <td><span id="amt" class="right">@Model.ti.Amt.ToString2("N2")</span></td></tr>
     <tr><td>Credit Card</td>

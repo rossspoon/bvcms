@@ -53,6 +53,7 @@ namespace CmsWeb.Models
                  where t.Amt > gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
                  where t.TransactionDate >= startdt || startdt == null
+                 where t.TransactionDate <= enddt || enddt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
                  where t.Testing == testtransactions
@@ -179,9 +180,10 @@ namespace CmsWeb.Models
                      t.Id,
                      t.TransactionId,
                      t.Approved,
-                     t.TransactionDate,
-                     Amt = t.Amt ?? 0,
+                     TranDate = t.TransactionDate.FormatDate(),
+                     RegAmt = (t.Amt ?? 0) - (t.Donate ?? 0),
                      Donate = t.Donate ?? 0,
+                     TotalAmt = t.Amt ?? 0,
                      Amtdue = t.Amtdue ?? 0,
                      t.Description,
                      t.Message,

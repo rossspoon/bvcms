@@ -44,10 +44,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     return Content("no registration allowed on this div");
             m.URL = Request.Url.OriginalString;
 
-            Session["gobackurl"] = m.URL;
-
-            ViewData["timeout"] = INT_timeout;
-            SetHeaders(m.divid ?? m.orgid ?? 0);
+            SetHeaders(m);
 
 #if DEBUG
 
@@ -307,7 +304,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Flow/List", m.List);
-#if DEBUG
+#if DEBUG2
             m.List.Add(new OnlineRegPersonModel
             {
                 divid = m.divid,
@@ -333,8 +330,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AskDonation(OnlineRegModel m)
+        {
+            if (m.List.Count == 0)
+                return Content("Can't find any registrants");
+            SetHeaders(m);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CompleteRegistration(OnlineRegModel m)
         {
+            if (m.AskDonation() && !m.donor.HasValue && m.donation > 0)
+            {
+                SetHeaders(m);
+                ModelState.AddModelError("donation", 
+                    "Please indicate a donor or clear the donation amount");
+                return View("AskDonation", m);
+            }
             var d = new ExtraDatum { Stamp = Util.Now };
             DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
@@ -348,7 +360,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var ti = new Transaction
             {
                 Name = m.NameOnAccount,
-                Amt = m.Amount(),
+                Amt = m.Amount() + (m.donation ?? 0),
+                Donate = m.donation,
                 Regfees = m.Amount(),
                 Amtdue = m.TotalAmountDue(),
                 Emails = pp != null ? pp.EmailAddress: p.email,
@@ -367,7 +380,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
             }
 
-            ti.TransactionGateway = DbUtil.Db.Setting("TransactionGateway", "ServiceU");
+            ti.TransactionGateway = OnlineRegModel.GetTransactionGateway();
             DbUtil.Db.Transactions.InsertOnSubmit(ti);
             DbUtil.Db.SubmitChanges();
             m.TranId = ti.Id;
@@ -388,9 +401,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var terms = Util.PickFirst(m.Terms, "");
             if (terms.HasValue())
                 ViewData["Terms"] = terms;
-            ViewData["timeout"] = INT_timeout;
 
-            SetHeaders(m.orgid ?? m.divid ?? 0);
+            SetHeaders(m);
             if (m.Amount() == 0 && m.Terms.HasValue())
             {
                 return View("Terms", new PaymentModel

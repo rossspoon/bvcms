@@ -53,6 +53,8 @@
         <tr>
             <td>
                 <cc1:DisplayLabel ID="FamilyName" runat="server" BindingSource="family" />
+                            <asp:LinkButton ID="QuerySearch" runat="server" 
+        onclick="QuerySearch_Click">Convert to Query</asp:LinkButton> 
             </td>
             <td align="right">
                 <b>Members:</b>

@@ -30,7 +30,6 @@ namespace CmsWeb.Models
             dg.DataSource = d;
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(Response.Output));
-            Response.End();
         }
     }
 }

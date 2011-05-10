@@ -924,5 +924,9 @@ namespace CmsData
                 Db.ChangeLogs.InsertOnSubmit(c);
             }
         }
+        public override string ToString()
+        {
+            return Name + "(" + PeopleId + ")";
+        }
     }
 }

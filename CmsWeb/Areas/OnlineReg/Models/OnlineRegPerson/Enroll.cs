@@ -132,7 +132,12 @@ namespace CmsWeb.Models
                 foreach (var i in MenuItemsChosen())
                 {
                     om.AddToMemberData(menulabel);
-                    om.AddToMemberData("{0} {1} (at {2:N2})".Fmt(i.number, i.desc, i.amt));
+                    string desc;
+                    if (i.amt > 0)
+                        desc = "{0} {1} (at {2:N2})".Fmt(i.number, i.desc, i.amt);
+                    else
+                        desc = "{0} {1}".Fmt(i.number, i.desc);
+                    om.AddToMemberData(desc);
                     menulabel = string.Empty;
                 }
             }
@@ -250,7 +255,12 @@ namespace CmsWeb.Models
                 var menulabel = "Menu Items";
                 foreach (var i in MenuItemsChosen())
                 {
-                    sb.AppendFormat("<tr><td>{0}</td><td>{1} {2} (at {3:N2}</td></tr>\n", menulabel, i.number, i.desc, i.amt);
+                    string row;
+                    if (i.amt > 0)
+                        row = "<tr><td>{0}</td><td>{1} {2} (at {3:N2}</td></tr>\n".Fmt(menulabel, i.number, i.desc, i.amt);
+                    else
+                        row = "<tr><td>{0}</td><td>{1} {2}</td></tr>\n".Fmt(menulabel, i.number, i.desc);
+                    sb.AppendFormat(row);
                     menulabel = string.Empty;
                 }
             }
@@ -267,6 +277,9 @@ namespace CmsWeb.Models
             if (org.Checkboxes.HasValue())
                 foreach (var a in Checkboxes())
                     sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, CheckboxChecked(a.name) == true ? "checked" : ""));
+
+            //if (donation > 0)
+            //    sb.AppendFormat("<tr><td>Donation:</td><td>{0:c}</td></tr>\n", donation);
 
             var amt = AmountToPay();
             if (amt > 0)

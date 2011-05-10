@@ -229,17 +229,9 @@ namespace CmsData
 		
 		private int? _BibleFellowshipClassId;
 		
-		private string _Name;
-		
-		private string _Name2;
-		
-		private int? _HashNum;
-		
 		private int? _CampusId;
 		
 		private string _CellPhoneAC;
-		
-		private string _PreferredName;
 		
 		private string _CheckInNotes;
 		
@@ -262,6 +254,14 @@ namespace CmsData
 		private bool? _SendEmailAddress1;
 		
 		private bool? _SendEmailAddress2;
+		
+		private string _Name;
+		
+		private string _Name2;
+		
+		private int? _HashNum;
+		
+		private string _PreferredName;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -700,23 +700,11 @@ namespace CmsData
 		partial void OnBibleFellowshipClassIdChanging(int? value);
 		partial void OnBibleFellowshipClassIdChanged();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
-		
-		partial void OnName2Changing(string value);
-		partial void OnName2Changed();
-		
-		partial void OnHashNumChanging(int? value);
-		partial void OnHashNumChanged();
-		
 		partial void OnCampusIdChanging(int? value);
 		partial void OnCampusIdChanged();
 		
 		partial void OnCellPhoneACChanging(string value);
 		partial void OnCellPhoneACChanged();
-		
-		partial void OnPreferredNameChanging(string value);
-		partial void OnPreferredNameChanged();
 		
 		partial void OnCheckInNotesChanging(string value);
 		partial void OnCheckInNotesChanged();
@@ -750,6 +738,18 @@ namespace CmsData
 		
 		partial void OnSendEmailAddress2Changing(bool? value);
 		partial void OnSendEmailAddress2Changed();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
+		
+		partial void OnName2Changing(string value);
+		partial void OnName2Changed();
+		
+		partial void OnHashNumChanging(int? value);
+		partial void OnHashNumChanged();
+		
+		partial void OnPreferredNameChanging(string value);
+		partial void OnPreferredNameChanged();
 		
     #endregion
 		public Person()
@@ -3267,72 +3267,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
-		public string Name
-		{
-			get { return this._Name; }
-
-			set
-			{
-				if (this._Name != value)
-				{
-				
-                    this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(127)", IsDbGenerated=true)]
-		public string Name2
-		{
-			get { return this._Name2; }
-
-			set
-			{
-				if (this._Name2 != value)
-				{
-				
-                    this.OnName2Changing(value);
-					this.SendPropertyChanging();
-					this._Name2 = value;
-					this.SendPropertyChanged("Name2");
-					this.OnName2Changed();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
-		public int? HashNum
-		{
-			get { return this._HashNum; }
-
-			set
-			{
-				if (this._HashNum != value)
-				{
-				
-                    this.OnHashNumChanging(value);
-					this.SendPropertyChanging();
-					this._HashNum = value;
-					this.SendPropertyChanged("HashNum");
-					this.OnHashNumChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="CampusId", UpdateCheck=UpdateCheck.Never, Storage="_CampusId", DbType="int")]
 		public int? CampusId
 		{
@@ -3373,28 +3307,6 @@ namespace CmsData
 					this._CellPhoneAC = value;
 					this.SendPropertyChanged("CellPhoneAC");
 					this.OnCellPhoneACChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
-		public string PreferredName
-		{
-			get { return this._PreferredName; }
-
-			set
-			{
-				if (this._PreferredName != value)
-				{
-				
-                    this.OnPreferredNameChanging(value);
-					this.SendPropertyChanging();
-					this._PreferredName = value;
-					this.SendPropertyChanged("PreferredName");
-					this.OnPreferredNameChanged();
 				}
 
 			}
@@ -3637,6 +3549,94 @@ namespace CmsData
 					this._SendEmailAddress2 = value;
 					this.SendPropertyChanged("SendEmailAddress2");
 					this.OnSendEmailAddress2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(127)", IsDbGenerated=true)]
+		public string Name2
+		{
+			get { return this._Name2; }
+
+			set
+			{
+				if (this._Name2 != value)
+				{
+				
+                    this.OnName2Changing(value);
+					this.SendPropertyChanging();
+					this._Name2 = value;
+					this.SendPropertyChanged("Name2");
+					this.OnName2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
+		public int? HashNum
+		{
+			get { return this._HashNum; }
+
+			set
+			{
+				if (this._HashNum != value)
+				{
+				
+                    this.OnHashNumChanging(value);
+					this.SendPropertyChanging();
+					this._HashNum = value;
+					this.SendPropertyChanged("HashNum");
+					this.OnHashNumChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
+		public string PreferredName
+		{
+			get { return this._PreferredName; }
+
+			set
+			{
+				if (this._PreferredName != value)
+				{
+				
+                    this.OnPreferredNameChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredName = value;
+					this.SendPropertyChanged("PreferredName");
+					this.OnPreferredNameChanged();
 				}
 
 			}

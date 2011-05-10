@@ -56,7 +56,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                     break;
                 default:
                     Response.Write("unknown format");
-                    Response.End();
                     return;
             }
             Response.ContentType = "application/pdf";
@@ -105,7 +104,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Add(t);
 
             document.Close();
-            Response.End();
         }
     }
 }

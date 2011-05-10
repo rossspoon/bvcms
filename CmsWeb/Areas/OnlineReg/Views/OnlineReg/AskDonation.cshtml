@@ -1,0 +1,70 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Models.OnlineRegModel
+@{
+    Layout = "/Views/Shared/onlinereg.cshtml";
+    ViewBag.Title = "Online Registration";
+}
+<div class="regform">
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.4.4.js")
+        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+        .Add("/Content/js/jquery.validate.js")
+        .Add("/Content/js/jquery.idle-timer.js")
+        .Add("/Scripts/OnlineReg.js")
+        .Render("/Content/OnLineReg_#.js")
+)
+    <script type="text/javascript">
+        $(function () {
+            $(document).bind("idle.idleTimer", function () {
+                window.location.href = '@Model.URL';
+            });
+            var tmout = parseInt('@ViewData["timeout"]');
+
+            if ($('input:text[value!=""]').length == 0)
+                $(document).bind("keydown", function () {
+                    $(document).unbind("keydown");
+                    $.idleTimer(tmout);
+                });
+            else
+                $.idleTimer(tmout);
+            $(".personheader a").live("click", function (e) {
+                e.preventDefault();
+                $(this).closest('div').nextAll('table').slideToggle();
+                return false;
+            });
+        });
+    </script>
+    <h2>@Model.Header</h2>
+    <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/@Model.qtesting" method="post">
+        @Html.Partial("Flow/ModelHidden", Model)
+    <table>
+    <tr><td>If you would like to make an extra donation, please indicate which person is the donor and enter an amount.</td>
+        <td style="white-space: nowrap">
+    @for (var i = 0; i < Model.List.Count; i++)
+    { 
+        var p = Model.List[i];
+        Model.current = Model.List[i];
+        Model.current.index = i;
+        @Html.Partial("Flow/PersonMetaHidden", p)
+        @Html.Partial("Flow/PersonHidden", p)
+        @Html.Partial("Flow/OtherHidden", p)
+        if(Model.List.Count > 1)
+        {
+            <input type="radio" name="m.donor" value="@i" /> @(p.first + " " + p.last + " " + p.suffix) @:(@p.age)<br />
+        }
+     }
+     @if(Model.List.Count == 1)
+     {
+            <input type="hidden" name="m.donor" value="0" />
+     }
+        </td></tr>
+    <tr><td align="right">Donation Amount: </td>
+        <td><input type="text" name="m.donation" value="@Model.donation" />
+            <div>@Html.ValidationMessage("donation")</div>
+        </td></tr>
+    <tr><td></td>
+        <td><input id="submitit" type="submit" class="submitbutton" value='Complete Registration' /></td>
+    </tr>
+    </table>
+    </form>
+</div>

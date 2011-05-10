@@ -76,7 +76,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Add(t);
 
             document.Close();
-            Response.End();
         }
         protected float H = 1.0f;
         protected float W = 2.625f;

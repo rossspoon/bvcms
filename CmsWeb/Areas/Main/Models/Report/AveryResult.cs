@@ -60,7 +60,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Add(t);
 
             document.Close();
-            Response.End();
         }
         public void AddCell(PdfPTable t, string fname, string lname, string phone, int pid)
         {

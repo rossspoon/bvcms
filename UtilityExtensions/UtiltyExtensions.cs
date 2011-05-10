@@ -861,7 +861,7 @@ namespace UtilityExtensions
         public static List<MailAddress> ToMailAddressList(string addresses)
         {
             var list = new List<MailAddress>();
-            foreach (var ad in addresses.Split(','))
+            foreach (var ad in addresses.SplitStr(",;"))
                 AddGoodAddress(list, ad);
             return list;
         }
@@ -891,7 +891,7 @@ namespace UtilityExtensions
         }
         public static List<MailAddress> EmailAddressListFromString(string addresses)
         {
-            var a = addresses.Split(',');
+            var a = addresses.SplitStr(",;");
             var list = new List<MailAddress>();
             foreach (var ad in a)
                 AddGoodAddress(list, ad);
@@ -927,8 +927,8 @@ namespace UtilityExtensions
         {
             if (!email.HasValue())
                 return false;
-            var re1 = new Regex(@"^(.*\<)[A-Z0-9-._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}\>$", RegexOptions.IgnoreCase);
-            var re2 = new Regex(@"^[A-Z0-9-._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
+            var re1 = new Regex(@"^(.*\<)[A-Z0-9-+._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}\>$", RegexOptions.IgnoreCase);
+            var re2 = new Regex(@"^[A-Z0-9-+._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
             var a = email.SplitStr(",;");
             foreach (var m in a)
             {
@@ -1198,7 +1198,7 @@ namespace UtilityExtensions
                 byte[] buffer = Convert.FromBase64String(value + "==");
                 return new Guid(buffer);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }

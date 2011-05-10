@@ -84,6 +84,9 @@
     <Field Name="EmailAddress"  Title="Email" Type="String">
       Email address
     </Field>
+    <Field Name="FamilyId" Title="Family" Type="Integer">
+      Search for entire family
+    </Field>
     <Field Name="PeopleId" Type="Integer">
       Advanced use
     </Field>

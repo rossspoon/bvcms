@@ -145,5 +145,14 @@ namespace CmsWeb
             Response.Redirect("~/Family.aspx?id=" + family.FamilyId);
 
         }
+        protected void QuerySearch_Click(object sender, EventArgs e)
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            var comp = CompareType.Equal;
+            var clause = qb.AddNewClause(QueryType.FamilyId, comp, family.FamilyId);
+            DbUtil.Db.SubmitChanges();
+            Response.Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
     }
 }

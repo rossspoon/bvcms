@@ -1,5 +1,5 @@
 ﻿$(function () {
-    var aliveid = setInterval(KeepSessionAlive, 120000);
+    //    var aliveid = setInterval(KeepSessionAlive, 120000);
     $("#progress").dialog({
         autoOpen: false,
         modal: true,
@@ -13,6 +13,10 @@
         $('#Body').text(CKEDITOR.instances["Body"].getData());
         var q = $('form').serialize();
         $.post('/Email/QueueEmails', q, function (ret) {
+            if (ret == "timeout") {
+                window.location = window.location.protocol + "//" + window.location.host + "/Errors/SessionTimeout.htm";
+                return;
+            }
             var taskid = ret.id;
             if (taskid == 0) {
                 d.html(ret.content);
@@ -34,13 +38,17 @@
         $('#Body').text(CKEDITOR.instances["Body"].getData());
         var q = $('form').serialize();
         $.post('/Email/TestEmail', q, function (ret) {
+            if (ret == "timeout") {
+                window.location = "/Errors/SessionTimeout.htm";
+                return;
+            }
             d.html(ret);
         });
     };
 });
-function KeepSessionAlive() {
-    $.post("/Account/KeepAlive", null, function (ret) {
-        if (ret != "alive")
-            window.clearInterval(aliveid);
-    });
-}  
+//function KeepSessionAlive() {
+//    $.post("/Account/KeepAlive", null, function (ret) {
+//        if (ret != "alive")
+//            window.clearInterval(aliveid);
+//    });
+//}  

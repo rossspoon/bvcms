@@ -85,7 +85,6 @@ namespace CmsWeb.Contributions.Reports
                     writeGifts(c);
                     writeSummary(c);
                 }
-                current.Response.End();
             }
             private void rWrite(string s)
             {

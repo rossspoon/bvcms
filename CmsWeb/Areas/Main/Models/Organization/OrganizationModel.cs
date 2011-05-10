@@ -193,6 +193,30 @@ namespace CmsWeb.Models.OrganizationPage
                 {
                     ModelState.AddModelError("yesnoquestions", STR_NotFormedCorrectly);
                 }
+            if (org.NotifyIds.HasValue())
+            {
+                var a = org.NotifyIds.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
+                var q = from p in DbUtil.Db.People
+                        where a.Contains(p.PeopleId)
+                        select p.PeopleId;
+                var g = from i in a
+                        join p in q on i equals p into j
+                        from pid in j.DefaultIfEmpty()
+                        where pid == 0
+                        select i;
+                if (g.Count() > 0)
+                    ModelState.AddModelError("NotifyIds", "Id: " + g.First() + " not found");
+            }
+            else if (org.RegistrationTypeId > (int)Organization.RegistrationEnum.None)
+                ModelState.AddModelError("NotifyIds", "Need a PeopleId in the NotifyIds field");
+
+            if (org.DonationFundId.HasValue)
+            {
+                var f = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == org.DonationFundId);
+                if (f == null)
+                    ModelState.AddModelError("DonationFundId", "fund not found");
+            }
+
         }
         public IEnumerable<SelectListItem> Divisions()
         {

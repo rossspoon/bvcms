@@ -385,7 +385,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 f.CityName = line0[names["City"]];
                 f.StateCode = line0[names["State"]];
                 f.ZipCode = line0[names["Zip"]];
-                f.HomePhone = line0[names["HomePhone"]];
+                f.HomePhone = line0[names["HomePhone"]].GetDigits();
                 DbUtil.Db.SubmitChanges();
 
                 foreach (var a in fam)

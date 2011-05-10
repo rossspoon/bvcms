@@ -239,6 +239,8 @@ namespace CmsData
 		
 		private string _NotifyIds;
 		
+		private int? _DonationFundId;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -270,6 +272,8 @@ namespace CmsData
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
 		private EntityRef< Campu> _Campu;
+		
+		private EntityRef< ContributionFund> _ContributionFund;
 		
 		private EntityRef< Division> _Division;
 		
@@ -621,6 +625,9 @@ namespace CmsData
 		partial void OnNotifyIdsChanging(string value);
 		partial void OnNotifyIdsChanged();
 		
+		partial void OnDonationFundIdChanging(int? value);
+		partial void OnDonationFundIdChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -655,6 +662,8 @@ namespace CmsData
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
 			this._Campu = default(EntityRef< Campu>); 
+			
+			this._ContributionFund = default(EntityRef< ContributionFund>); 
 			
 			this._Division = default(EntityRef< Division>); 
 			
@@ -3138,6 +3147,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="DonationFundId", UpdateCheck=UpdateCheck.Never, Storage="_DonationFundId", DbType="int")]
+		public int? DonationFundId
+		{
+			get { return this._DonationFundId; }
+
+			set
+			{
+				if (this._DonationFundId != value)
+				{
+				
+					if (this._ContributionFund.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnDonationFundIdChanging(value);
+					this.SendPropertyChanging();
+					this._DonationFundId = value;
+					this.SendPropertyChanged("DonationFundId");
+					this.OnDonationFundIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3385,6 +3419,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Campu");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_ContributionFund", Storage="_ContributionFund", ThisKey="DonationFundId", IsForeignKey=true)]
+		public ContributionFund ContributionFund
+		{
+			get { return this._ContributionFund.Entity; }
+
+			set
+			{
+				ContributionFund previousValue = this._ContributionFund.Entity;
+				if (((previousValue != value) 
+							|| (this._ContributionFund.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ContributionFund.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._ContributionFund.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._DonationFundId = value.FundId;
+						
+					}
+
+					else
+					{
+						
+						this._DonationFundId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("ContributionFund");
 				}
 
 			}

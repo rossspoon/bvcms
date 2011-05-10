@@ -159,7 +159,7 @@ namespace CmsWeb.Models
                      + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
                      + "|" + p.PeopleId
                      + "|" + (p.Age ?? 0)
-                     + "|" + p.PrimaryAddress;
+                     + "|" + (p.PrimaryAddress ?? "");
             var ret = string.Join("\n", qu.Take(limit).ToArray());
             return ret;
         }

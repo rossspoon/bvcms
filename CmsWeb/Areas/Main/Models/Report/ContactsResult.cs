@@ -74,7 +74,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(new Phrase("no data"));
             pageEvents.EndPageSet();
             doc.Close();
-            Response.End();
         }
 
         float[] w = new float[] { 40 + 70 + 80, 40 + 130 };

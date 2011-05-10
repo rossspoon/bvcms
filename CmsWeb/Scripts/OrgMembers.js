@@ -71,18 +71,18 @@
     });
 
     //    $('input.check').click(UpdateTotals);
-    //    $('form table.grid a.sortable').click(function(ev) {
-    //        var newsort = $(this).text();
-    //        var oldsort = $("#Sort").val();
-    //        $("#Sort").val(newsort);
-    //        var dir = $("#Dir").val();
-    //        if (oldsort == newsort && dir == 'asc')
-    //            $("#Dir").val('desc');
-    //        else
-    //            $("#Dir").val('asc');
-    //        RefreshList();
-    //    });
-    //    //$('#total').text($('.check').length);
+        $('form table.grid a.sortable').live("click", function(ev) {
+            var newsort = $(this).text();
+            var oldsort = $("#Sort").val();
+            $("#Sort").val(newsort);
+            var dir = $("#Dir").val();
+            if (oldsort == newsort && dir == 'asc')
+                $("#Dir").val('desc');
+            else
+                $("#Dir").val('asc');
+            $.RefreshPage();
+        });
+        //$('#total').text($('.check').length);
     //    UpdateTotals = function() {
     //        $('#ttotal').text($('.check:checked').length);
     //    }

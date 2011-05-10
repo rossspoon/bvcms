@@ -14,6 +14,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [ValidateInput(false)]
         public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? parents)
         {
+            if (SessionTimedOut())
+                return Redirect("/Errors/SessionTimeout.htm");
             var m = new MassEmailer(id, parents);
             m.CmsHost = DbUtil.Db.CmsHost;
             m.Host = Util.Host;
@@ -54,10 +56,23 @@ namespace CmsWeb.Areas.Main.Controllers
         [ValidateInput(false)]
         public ActionResult TestEmail(MassEmailer m)
         {
+            if (SessionTimedOut())
+                return Content("timeout");
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
             DbUtil.Db.Email(From.ToString(), p, m.Subject, m.Body);
             return Content("<h2>Test Email Sent</h2>");
+        }
+        private bool SessionTimedOut()
+        {
+            if (Session != null)
+                if (Session.IsNewSession)
+                {
+                    string sessionCookie = Request.Headers["Cookie"];
+                    if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                        return true;
+                }
+            return false;
         }
         [HttpPost]
         public ActionResult TaskProgress(int id)

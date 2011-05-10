@@ -347,7 +347,7 @@ namespace CmsCheckin
 #endif
                 var s = Encoding.ASCII.GetString(resp);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
             }
         }

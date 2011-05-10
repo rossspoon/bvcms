@@ -68,7 +68,6 @@ namespace CmsWeb.Areas.Main.Controllers
             dg.DataSource = d;
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(Response.Output));
-            Response.End();
         }
     }
 }

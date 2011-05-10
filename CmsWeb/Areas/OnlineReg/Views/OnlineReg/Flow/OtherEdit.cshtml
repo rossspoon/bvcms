@@ -229,7 +229,7 @@
         <td>
             @Html.Hidden(Model.inputname("MenuItem[" + i.n + "].Key"), i.sg)
             @Html.TextBox(Model.inputname("MenuItem[" + i.n + "].Value"), Model.MenuItemValue(i.sg), new { @class = "short" })
-            @i.desc ($@i.amt.ToString("N2"))
+            @i.desc @if (i.amt > 0) { <text>(@i.amt.ToString("N2"))</text> }
             <div>@Html.ValidationMessage(Model.inputname("MenuItem[" + i.n + "].Value"))</div></td>
     </tr>
 }
@@ -249,7 +249,7 @@
         <td>@Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)
              Create Account (optional)</td>
    </tr>
-} 
+}
     <tr><td align="right" colspan="2">
         <input type="button" id="otheredit" href="/OnlineReg/SubmitOtherInfo/@Model.index" class="submitbutton ajax" 
             value="Submit" /></td>

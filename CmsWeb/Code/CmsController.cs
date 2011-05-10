@@ -110,4 +110,20 @@ namespace CmsWeb
             }
         }
     }
+
+    public class SessionExpire : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var context = filterContext.HttpContext;
+            if (context.Session != null)
+                if (context.Session.IsNewSession)
+                {
+                    string sessionCookie = context.Request.Headers["Cookie"];
+                    if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                        filterContext.Result = new RedirectResult("/Errors/SessionTimeout.htm");
+                }
+            base.OnActionExecuting(filterContext);
+        }
+    }
 }

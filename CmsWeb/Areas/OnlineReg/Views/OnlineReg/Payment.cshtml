@@ -30,7 +30,7 @@
     <a id="displayterms" title="click to display terms" href="#">Display Terms</a>
     <div id="Terms" title="Terms of Agreement" class="modalPopup" style="display: none;
         width: 400px; padding: 10px">
-        @ViewData["Terms"]</div>
+        @Html.Raw((string)ViewData["Terms"])</div>
     <p>
         @Html.CheckBox("IAgree")
         I agree to the above terms and conditions.</p>
@@ -60,6 +60,7 @@
     @Html.Hidden("Misc2", ti.Description)
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")
+
     <p>
         <input id="Submit" type="submit" name="Submit" value="Pay with Credit Card" /></p>
     </form>

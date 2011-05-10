@@ -30,15 +30,6 @@
     $('#findidclick').click(function () {
         $("#findid").dialog({ width: 400 });
     });
-    $('#pf_ti_Donate').change(function () {
-        var d = parseFloat($('#pf_ti_Donate').val());
-        var r = parseFloat($('#pf_ti_Regfees').val());
-        var amt = r + d;
-        if (amt < r)
-            amt = r;
-        $('#pf_ti_Amt').val(amt);
-        $('#amt').text(amt.toFixed(2));
-    });
 
     $("#Terms").dialog({ autoOpen: false });
     $("#displayterms").click(function () {

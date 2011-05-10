@@ -346,3 +346,17 @@ height: 1.5em;
 	width: 10em;
 	margin-top: 7px;
 }
+.field-validation-error
+{
+    color: #FF0000;
+}
+.input-validation-error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+.validation-summary-errors
+{
+    color: #FF0000;
+    font-weight: bold;
+}

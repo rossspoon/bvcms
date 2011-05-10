@@ -5,11 +5,18 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
     public partial class OnlineRegController : CmsController
     {
+        private void SetHeaders(OnlineRegModel m2)
+        {
+            Session["gobackurl"] = m2.URL;
+            ViewData["timeout"] = INT_timeout;
+            SetHeaders(m2.orgid ?? m2.divid ?? 0);
+        }
         private void SetHeaders(int id)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
@@ -47,5 +54,6 @@ width: 10em;
                     DbUtil.Content("OnlineRegBottom", ""));
             }
         }
+        
     }
 }

@@ -191,8 +191,8 @@ WAITFOR(
                         var senderrorsto = Util.SendErrorsTo();
                         Util.SendMsg(SysFromEmail, CmsHost, senderrorsto[0],
                             "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
-                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace), 
-                            senderrorsto, 0);
+                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace),
+                            senderrorsto, 0, Record: false);
                         lasterror = ex.Message;
                     }
                     Thread.Sleep(5000);
@@ -231,7 +231,7 @@ WAITFOR(
             text = text.Replace("%7Bfromemail%7D", From.Address);
 
             emailqueueto.Messageid = EmailRoute(
-                SysFromEmail, From.DisplayName, From.Address, 
+                SysFromEmail, From.DisplayName, From.Address,
                 aa, emailqueue.Subject, text, CmsHost, id, pid);
             emailqueueto.Sent = DateTime.Now;
             Db.SubmitChanges();
@@ -242,7 +242,7 @@ WAITFOR(
             var sendrate = 0D;
 
             if (lastThrottle > DateTime.MinValue)
-                if(DateTime.Now.Subtract(lastThrottle).TotalSeconds < 30)
+                if (DateTime.Now.Subtract(lastThrottle).TotalSeconds < 30)
                     return false;
                 else
                     lastThrottle = DateTime.MinValue;
@@ -264,7 +264,7 @@ WAITFOR(
                     sentSinceQuotaCheck = 0;
                 }
                 sendrate = resp.GetSendQuotaResult.MaxSendRate.ToInt();
-                cansend = (resp.GetSendQuotaResult.SentLast24Hours + sentSinceQuotaCheck) 
+                cansend = (resp.GetSendQuotaResult.SentLast24Hours + sentSinceQuotaCheck)
                     < (resp.GetSendQuotaResult.Max24HourSend);
             }
             if (cansend)
@@ -310,7 +310,9 @@ WAITFOR(
             msg.ReplyToList.Add(from);
             msg.Headers.Add("X-bvcms-host", host);
             msg.Headers.Add("X-bvcms-mail-id", id.ToString());
-            msg.Headers.Add("X-bvcms-peopleid", pid.ToString());
+            var addrs = to.EmailAddressListToString();
+            if (addrs.HasValue())
+                msg.Headers.Add("X-bvcms-cc", addrs);
 
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
@@ -362,36 +364,43 @@ WAITFOR(
                     lastThrottle = DateTime.Now;
                     return EmailRoute(SysEmailFrom, fromname, fromaddress, to, Subject, body, host, id, pid);
                 }
+                string resp = "no response";
+                if (response.IsNotNull())
+                    resp = response.SendRawEmailResult.ToString();
+                Util.SendMsg(SysEmailFrom, host, from,
+                    "({0}) {1}".Fmt(ex.ErrorCode, Subject),
+                    "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
+                        addrs, host, id, pid, ex.Message, body, resp),
+                        Util.SendErrorsTo(), id, Record: true);
             }
             catch (Exception ex)
             {
-                if (!Subject.EndsWith(" .rs") && 
+                if (!Subject.EndsWith(" .rs") &&
                        (ex.Message.StartsWith("The underlying connection was closed")
                         || ex.Message.StartsWith("Root element is missing")
                         || ex.Message.StartsWith("The operation has timed out")
                         || ex.Message.StartsWith("The remote name could not be resolved")
                         ))
                 {
-                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to,  
+                    return EmailRoute(SysEmailFrom, fromname, fromaddress, to,
                         Subject + " .rs", body, host, id, pid);
                 }
                 else if (Subject.EndsWith(" .rs"))
                 {
                     // resort to SMTP instead of Amazon
                     Util.SendMsg(SysEmailFrom, host, from, Subject, body,
-                            to , id);
+                        to, id, Record: true);
                 }
                 else if (!msg.Subject.StartsWith("(sending error)"))
                 {
                     string resp = "no response";
                     if (response.IsNotNull())
                         resp = response.SendRawEmailResult.ToString();
-                    var addrs = to.EmailAddressListToString();
                     Util.SendMsg(SysEmailFrom, host, from,
                         "(sending error) " + Subject,
-                        "<p>to: \"{0}\" <{1}><br>host:{2} id:{3} pid:{4}</p><pre>{5}</pre>{6}<br><br>{7}".Fmt(
+                        "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
                             addrs, host, id, pid, ex.Message, body, resp),
-                            Util.SendErrorsTo(), id);
+                            Util.SendErrorsTo(), id, Record: true);
                 }
             }
             return "no messageid";
@@ -412,11 +421,10 @@ WAITFOR(
         private string EmailRoute(string SysFrom, string fromname, string fromaddress, List<MailAddress> to, string subject, string body, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
-            var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
             if (useSES && SESCanSend())
                 return SendAmazonSESRawEmail(SysFrom, fromname, fromaddress, to, subject, body, CmsHost, id, pid);
             else
-                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, to, id);
+                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, to, id, Record: true);
             return "no messageid";
         }
         private void NotifySentEmails(CMSDataContext Db, string CmsHost, string FromAddress, string FromName, string subject, int count, int id)
@@ -431,7 +439,7 @@ WAITFOR(
                 var to = Util.ToMailAddressList(FromAddress, FromName);
                 EmailRoute(SysFromEmail, FromName, FromAddress, to, subj, body, CmsHost, id, 0);
                 var host = uri.Host;
-                EmailRoute(SysFromEmail, FromName, FromAddress, 
+                EmailRoute(SysFromEmail, FromName, FromAddress,
                     SendErrorsTo, host + " " + subj, body, CmsHost, id, 0);
             }
         }

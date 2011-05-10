@@ -25,7 +25,7 @@ namespace CmsWeb.Models
         public int DivId { get; set; }
         public string Grades { get; set; }
         public string Sort { get; set; }
-        public string Direction { get; set; }
+        public string Dir { get; set; }
 
         public OrgMembersModel()
         {
@@ -193,7 +193,7 @@ namespace CmsWeb.Models
         {
             var q = GetMembers();
 
-            if (Direction == "asc")
+            if (Dir == "asc")
                 switch (Sort)
                 {
                     default:
@@ -417,7 +417,6 @@ Thanks for registering!
                 dg.DataSource = d;
                 dg.DataBind();
                 dg.RenderControl(new HtmlTextWriter(Response.Output));
-                Response.End();
             }
         }
     }

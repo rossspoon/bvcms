@@ -9,7 +9,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
-    [Authorize(Roles="Developer")]
+    [Authorize(Roles = "Admin")]
     public class LookupController : CmsStaffController
     {
         public class Row
@@ -18,7 +18,6 @@ namespace CmsWeb.Areas.Setup.Controllers
             public string Code { get; set; }
             public string Description { get; set; }
         }
-        [Authorize(Roles = "Admin")]
         public ActionResult Index(string id)
         {
             if (!id.HasValue())

@@ -29,11 +29,11 @@
 <a href="/SearchAdd/Results/" class="bt formlink default">Search</a>
 @if (Model.type == "family")
 { 
-    <a href="/SearchAdd/FormAbbreviated/@Model.typeid" class="bt formlink" title="shame on you for even thinking about doing this">Skip Search, Add New</a>
+    <a href="/SearchAdd/FormAbbreviated/@Model.typeid" class="bt formlink" title="Use this only if you are certain the record is not already added">Skip Search, Add New</a>
 }
 else
 { 
-    <a href="/SearchAdd/FormFull/" class="bt formlink" title="shame on you for even thinking about doing this">Skip Search, Add New</a>
+    <a href="/SearchAdd/FormFull/" class="bt formlink" title="Use this only if you are certain the record is not already added">Skip Search, Add New</a>
 } 
     <a href="/SearchAdd/SearchCancel/" class="bt formlink" title="@(Model.List.Count > 0 ? "back to selections" : "quit the dialog")">@(Model.List.Count > 0 ? "go back" : "close")</a></td>
   

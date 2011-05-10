@@ -211,8 +211,9 @@ namespace CmsData
                 if (Deceased)
                 {
                     spouse.MaritalStatusId = (int)Person.MaritalStatusCode.Widowed;
-                    if (spouse.EnvelopeOptionsId != (int)Person.EnvelopeOptionCode.None)
-                        spouse.EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.Individual;
+                    if (spouse.EnvelopeOptionsId.HasValue)
+                        if (spouse.EnvelopeOptionsId != (int)Person.EnvelopeOptionCode.None)
+                            spouse.EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.Individual;
                     spouse.ContributionOptionsId = (int)Person.EnvelopeOptionCode.Individual;
                 }
 
