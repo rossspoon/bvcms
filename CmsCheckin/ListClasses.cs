@@ -62,6 +62,7 @@ namespace CmsCheckin
         int page;
         List<Control> controls = new List<Control>();
         bool ShowAllClasses;
+        public bool JoiningNotAttending = false;
 
         public void ShowResults(int pid)
         {
@@ -171,8 +172,12 @@ namespace CmsCheckin
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
             var ra = new Util.ClassCheckedInfo { c = c, ischecked = true };
-            Util.AttendUnAttend(ra);
+            if (JoiningNotAttending)
+                Util.JoinUnJoin(ra);
+            else
+                Util.AttendUnAttend(ra);
             ShowAllClasses = false;
+            JoiningNotAttending = false;
             this.Swap(Program.family);
             Program.family.classlist.Add(c);
             Program.family.ShowFamily(FamilyId);

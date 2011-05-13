@@ -113,7 +113,7 @@ You have the following subscriptions:<br/>
             SetHeaders(m.divid);
             return View(m);
         }
-        public ActionResult VoteLink(string id, string smallgroup)
+        public ActionResult VoteLink(string id, string smallgroup, string message, bool confirm)
         {
             if (!id.HasValue())
                 return Content("bad link");
@@ -131,13 +131,21 @@ You have the following subscriptions:<br/>
             var a = ot.Querystring.Split(',');
             var oid = a[0].ToInt();
             var pid = a[1].ToInt();
-            var pre = a[2];
-            var om = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
-            om.AddToGroup(DbUtil.Db, pre + smallgroup);
+            var emailid = a[2].ToInt();
+            var pre = a[3];
+            var org = DbUtil.Db.LoadOrganizationById(oid);
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(omm => omm.OrganizationId == oid && omm.PeopleId == pid);
+            if (om == null && org.Limit <= org.MemberCount)
+                return Content("sorry, maximum limit has been reached");
+
+            om = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
+            
+            om.AddToGroup(DbUtil.Db, smallgroup);
+            om.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
 
-            return Content("Thanks for your response");
+            return Content(message);
         }
     }
 }

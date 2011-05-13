@@ -1,7 +1,4 @@
-@charset "utf-8";
-/* CSS Document */
-
-table#cmenu {
+#cmenu {
 	width: 100%;
 	margin-top: .5em;
 }

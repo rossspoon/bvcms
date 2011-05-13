@@ -204,6 +204,7 @@ namespace CmsData
                         else
                             BirthYear = n;
                 }
+                var d = new Division();
             }
         }
         public DateTime? GetBirthdate()
@@ -901,10 +902,18 @@ namespace CmsData
 
         public void UpdateValue(StringBuilder psb, string field, object value)
         {
+            if (value is string)
+                value = ((string)value).TrimEnd();
             var o = Util.GetProperty(this, field);
+            if (o is string)
+                o = ((string)o).TrimEnd();
             if (o == null && value == null)
                 return;
             if (o != null && o.Equals(value))
+                return;
+            if (o == null && value is string && !((string)value).HasValue())
+                return;
+            if (value == null && o is string && !((string)o).HasValue())
                 return;
             psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(this, field, value);

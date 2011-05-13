@@ -80,7 +80,7 @@
             this.Join.Name = "Join";
             this.Join.Size = new System.Drawing.Size(179, 45);
             this.Join.TabIndex = 20;
-            this.Join.Text = "Join Class";
+            this.Join.Text = "Join a Class";
             this.Join.UseVisualStyleBackColor = false;
             this.Join.Click += new System.EventHandler(this.Join_Click);
             // 

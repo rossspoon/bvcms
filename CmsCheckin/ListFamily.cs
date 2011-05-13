@@ -502,7 +502,6 @@ namespace CmsCheckin
             mask.Show();
             menu.VisitClass += Visit_Click;
             var c = list[(int)menu.Tag];
-            menu.Join.Visible = c.cinfo.mv != "M";
             nam.Enabled = false;
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
@@ -518,9 +517,11 @@ namespace CmsCheckin
             var c = list[(int)menu.Tag];
             var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
             org.ForeColor = Color.Blue;
-            var info = new Util.ClassCheckedInfo { c = c.cinfo, ischecked = true };
-            Util.JoinUnJoin(info);
+            SaveClasses();
             RemoveMenu();
+            this.Swap(Program.classes);
+            Program.classes.JoiningNotAttending = true;
+            Program.classes.ShowResults(c.cinfo.pid);
         }
 
         void CancelMenu_Click(object sender, EventArgs e)

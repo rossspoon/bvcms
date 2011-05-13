@@ -266,6 +266,8 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\m\Controllers\MeetingController.cs" />
+    <Compile Include="Areas\m\mAreaRegistration.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -1489,6 +1491,8 @@
     </Content>
     <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\AskDonation.cshtml" />
+    <Content Include="Areas\m\Views\Web.config" />
+    <Content Include="Areas\m\Views\Meeting\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1526,6 +1530,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\ExportToolBar.cshtml" />
+    <Content Include="Areas\m\Views\Shared\Mobile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangePassword.aspx" />
@@ -1985,6 +1990,7 @@
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />
+    <Folder Include="Areas\m\Models\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
